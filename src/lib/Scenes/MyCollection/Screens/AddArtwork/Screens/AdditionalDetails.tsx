@@ -26,6 +26,7 @@ export const AdditionalDetails = () => {
               onChangeText={formik.handleChange("title")}
               onBlur={formik.handleBlur("title")}
               defaultValue={formik.values.title}
+              data-test-id="TitleInput"
             />
             <Input
               title="Date"
@@ -33,10 +34,12 @@ export const AdditionalDetails = () => {
               onChangeText={formik.handleChange("date")}
               onBlur={formik.handleBlur("date")}
               defaultValue={formik.values.date}
+              data-test-id="DateInput"
             />
 
             <Checkbox
               onPress={() => setIsEdition(!isEdition)}
+              data-test-id="EditionCheckbox"
               // disabled={isLoading}
             >
               <Sans size="3" color="black60">
@@ -52,12 +55,14 @@ export const AdditionalDetails = () => {
                   onBlur={formik.handleBlur("editionNumber")}
                   defaultValue={String(formik.values.editionNumber)}
                   style={{ marginRight: space(1) }}
+                  data-test-id="EditionNumberInput"
                 />
                 <Input
                   placeholder="Edition size"
                   onChangeText={formik.handleChange("editionSize")}
                   onBlur={formik.handleBlur("editionSize")}
                   defaultValue={formik.values.editionSize}
+                  data-test-id="EditionSizeInput"
                 />
               </Flex>
             )}
@@ -68,6 +73,7 @@ export const AdditionalDetails = () => {
               onChangeText={formik.handleChange("category")}
               onBlur={formik.handleBlur("category")}
               defaultValue={formik.values.category}
+              data-test-id="MaterialsInput"
             />
 
             <Input
@@ -76,6 +82,7 @@ export const AdditionalDetails = () => {
               onChangeText={formik.handleChange("costMinor")}
               onBlur={formik.handleBlur("costMinor")}
               defaultValue={String(formik.values.costMinor)}
+              data-test-id="PricePaidInput"
             />
 
             <Select
@@ -89,6 +96,7 @@ export const AdditionalDetails = () => {
               onSelectValue={(value) => {
                 formik.handleChange("costCurrencyCode")(value)
               }}
+              data-test-id="CurrencyInput"
             />
           </Join>
         </ScreenMargin>

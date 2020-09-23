@@ -6,18 +6,16 @@ import { Separator, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { InfoModal } from "./InfoModal"
-import { MyCollectionArtworkArtistArticlesFragmentContainer as ArtistArticles } from "./MyCollectionArtworkArtistArticles"
-import { MyCollectionArtworkArtistAuctionResultsFragmentContainer as ArtistAuctionResults } from "./MyCollectionArtworkArtistAuctionResults"
-import { MyCollectionArtworkArtistMarketFragmentContainer as ArtistMarket } from "./MyCollectionArtworkArtistMarket"
-import { MyCollectionArtworkDemandIndexFragmentContainer as ArtworkDemandIndex } from "./MyCollectionArtworkDemandIndex"
-import { MyCollectionArtworkPriceEstimateFragmentContainer as ArtworkPriceEstimate } from "./MyCollectionArtworkPriceEstimate"
+import { MyCollectionArtworkArtistArticlesFragmentContainer } from "./MyCollectionArtworkArtistArticles"
+import { MyCollectionArtworkArtistAuctionResultsFragmentContainer } from "./MyCollectionArtworkArtistAuctionResults"
+import { MyCollectionArtworkArtistMarketFragmentContainer } from "./MyCollectionArtworkArtistMarket"
+import { MyCollectionArtworkDemandIndexFragmentContainer } from "./MyCollectionArtworkDemandIndex"
+import { MyCollectionArtworkPriceEstimateFragmentContainer } from "./MyCollectionArtworkPriceEstimate"
 
 interface MyCollectionArtworkInsightsProps {
   artwork: MyCollectionArtworkInsights_artwork
   marketPriceInsights: MyCollectionArtworkInsights_marketPriceInsights
 }
-
-// TODO: Add fancymodals for info icon clicks
 
 export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsProps> = ({
   artwork,
@@ -39,23 +37,23 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
             </Text>
           </ScreenMargin>
           <Spacer mt={3} />
-          <ArtworkDemandIndex marketPriceInsights={marketPriceInsights} />
+          <MyCollectionArtworkDemandIndexFragmentContainer marketPriceInsights={marketPriceInsights} />
           <ScreenMargin my={3}>
             <Divider />
           </ScreenMargin>
-          <ArtworkPriceEstimate marketPriceInsights={marketPriceInsights} />
+          <MyCollectionArtworkPriceEstimateFragmentContainer marketPriceInsights={marketPriceInsights} />
           <ScreenMargin mt={2} mb={3}>
             <Divider />
           </ScreenMargin>
-          <ArtistMarket marketPriceInsights={marketPriceInsights} />
+          <MyCollectionArtworkArtistMarketFragmentContainer marketPriceInsights={marketPriceInsights} />
           <ScreenMargin mt={2} mb={3}>
             <Divider />
           </ScreenMargin>
         </>
       )}
 
-      <ArtistAuctionResults artwork={artwork} />
-      <ArtistArticles artwork={artwork} />
+      <MyCollectionArtworkArtistAuctionResultsFragmentContainer artwork={artwork} />
+      <MyCollectionArtworkArtistArticlesFragmentContainer artwork={artwork} />
       <InfoModal />
     </>
   )

@@ -7,13 +7,13 @@ import { RefObject } from "react"
 import NavigatorIOS from "react-native-navigator-ios"
 import { NavigatorProps, NavigatorTarget } from "../Components/Navigator"
 import { AdditionalDetails } from "../Screens/AddArtwork/Screens/AdditionalDetails"
-import { AddArtworkAddPhotos } from "../Screens/AddArtwork/Screens/AddPhotos"
+import { AddPhotos } from "../Screens/AddArtwork/Screens/AddPhotos"
 import { MyCollectionArtworkDetailQueryRenderer } from "../Screens/ArtworkDetail/MyCollectionArtworkDetail"
 import { ViewAllDetails } from "../Screens/ArtworkDetail/Screens/ViewAllDetails"
 import { ConsignmentsSubmissionForm } from "../Screens/ConsignmentsHome/ConsignmentsSubmissionForm"
 
 type ModalType = "add" | "edit" | null
-type InfoModalType = "demandIndex" | "priceEstimate" | "artistMarket" | "auctionResults" | null
+export type InfoModalType = "demandIndex" | "priceEstimate" | "artistMarket" | "auctionResults" | null
 
 export interface MyCollectionNavigationModel {
   sessionState: {
@@ -170,7 +170,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
       artworkActions.takeOrPickPhotos()
     } else {
       navigator.push({
-        component: AddArtworkAddPhotos,
+        component: AddPhotos,
       })
     }
   }),

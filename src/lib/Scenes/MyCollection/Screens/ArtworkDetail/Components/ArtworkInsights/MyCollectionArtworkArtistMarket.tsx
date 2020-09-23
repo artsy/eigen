@@ -22,7 +22,7 @@ const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketP
     annualValueSoldCents,
     sellThroughRate,
     medianSaleToEstimateRatio,
-    liquidityRank,
+    liquidityRank: _liquidityRate,
     demandTrend: _demandTrend,
   } = marketPriceInsights
 
@@ -41,22 +41,24 @@ const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketP
     }
   }
 
-  const formattedDemandTrend = getFormattedDemandTrend() as string
+  const getFormattedLiquidityRank = () => {
+    const liquidityRank = _liquidityRate!
 
-  const formatLiquidityRank = (rank: number): string => {
     switch (true) {
-      case rank < Number(0.25):
+      case liquidityRank < 0.25:
         return "Low"
-      case rank >= 0.25 && rank < 0.7:
+      case liquidityRank >= 0.25 && liquidityRank < 0.7:
         return "Medium"
-      case rank >= 0.7 && rank < 0.85:
+      case liquidityRank >= 0.7 && liquidityRank < 0.85:
         return "High"
-      case rank >= 0.85:
+      case liquidityRank >= 0.85:
         return "Very High"
-      default:
-        return ""
     }
   }
+
+  const formattedAnnualValueSold = formatCentsToDollars(Number(annualValueSoldCents))
+  const formattedDemandTrend = getFormattedDemandTrend() as string
+  const formatLiquidityRank = getFormattedLiquidityRank() as string
 
   return (
     <ScreenMargin>
@@ -68,11 +70,11 @@ const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketP
 
       <Spacer my={0.5} />
 
-      <Field label="Avg. Annual Value Sold" value={formatCentsToDollars(Number(annualValueSoldCents))} />
+      <Field label="Avg. Annual Value Sold" value={formattedAnnualValueSold} />
       <Field label="Avg. Annual Lots Sold" value={`${annualLotsSold}`} />
       <Field label="Sell-through Rate" value={`${sellThroughRate}%`} />
       <Field label="Median Sale Price to Estimate" value={`${medianSaleToEstimateRatio}x`} />
-      {!Number.isNaN(liquidityRank) && <Field label="Liquidity" value={formatLiquidityRank(liquidityRank!)} />}
+      <Field label="Liquidity" value={formatLiquidityRank} />
       <Field label="1-Year Trend" value={formattedDemandTrend} />
     </ScreenMargin>
   )

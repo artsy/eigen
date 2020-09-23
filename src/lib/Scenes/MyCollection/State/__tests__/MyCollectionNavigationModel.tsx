@@ -1,0 +1,5 @@
+describe("MyCollectionNavigationkModel", () => {
+  it("works", () => {
+    //
+  })
+})

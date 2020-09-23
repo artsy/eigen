@@ -31,7 +31,7 @@ export const renderWithWrappers = (component: ReactElement) => {
           error
       )
     } else {
-      throw new Error(error.message)
+      throw new Error(error.stack)
     }
   }
 }
