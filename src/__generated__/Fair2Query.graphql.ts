@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 149dbb12f6bc918a02fa329f82cdc68b */
+/* @relayHash 9c7471858a3c9c82245ddf53f6727010 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -36,12 +36,12 @@ fragment Fair2Header_fair on Fair {
   slug
   profile {
     icon {
-      url
+      url(version: "large")
     }
     id
   }
   image {
-    url
+    url(version: "large_rectangle")
     aspectRatio
   }
   tagline
@@ -87,18 +87,11 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v5 = [
+v4 = [
   {
     "kind": "Literal",
     "name": "format",
@@ -186,10 +179,22 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  (v3/*: any*/)
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "url",
+                    "args": [
+                      {
+                        "kind": "Literal",
+                        "name": "version",
+                        "value": "large"
+                      }
+                    ],
+                    "storageKey": "url(version:\"large\")"
+                  }
                 ]
               },
-              (v4/*: any*/)
+              (v3/*: any*/)
             ]
           },
           {
@@ -201,7 +206,19 @@ return {
             "concreteType": "Image",
             "plural": false,
             "selections": [
-              (v3/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "url",
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "version",
+                    "value": "large_rectangle"
+                  }
+                ],
+                "storageKey": "url(version:\"large_rectangle\")"
+              },
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -228,7 +245,7 @@ return {
             "plural": false,
             "selections": [
               (v2/*: any*/),
-              (v4/*: any*/)
+              (v3/*: any*/)
             ]
           },
           {
@@ -242,31 +259,31 @@ return {
             "kind": "ScalarField",
             "alias": null,
             "name": "hours",
-            "args": (v5/*: any*/),
+            "args": (v4/*: any*/),
             "storageKey": "hours(format:\"HTML\")"
           },
           {
             "kind": "ScalarField",
             "alias": null,
             "name": "links",
-            "args": (v5/*: any*/),
+            "args": (v4/*: any*/),
             "storageKey": "links(format:\"HTML\")"
           },
           {
             "kind": "ScalarField",
             "alias": null,
             "name": "tickets",
-            "args": (v5/*: any*/),
+            "args": (v4/*: any*/),
             "storageKey": "tickets(format:\"HTML\")"
           },
           {
             "kind": "ScalarField",
             "alias": null,
             "name": "contact",
-            "args": (v5/*: any*/),
+            "args": (v4/*: any*/),
             "storageKey": "contact(format:\"HTML\")"
           },
-          (v4/*: any*/)
+          (v3/*: any*/)
         ]
       }
     ]
@@ -274,7 +291,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "Fair2Query",
-    "id": "4f1206b5b1bdd6d63bafac911de52fce",
+    "id": "fc27d0a8d9afb1449abed239ff801751",
     "text": null,
     "metadata": {}
   }

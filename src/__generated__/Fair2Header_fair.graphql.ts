@@ -44,14 +44,7 @@ var v0 = {
   "args": null,
   "storageKey": null
 },
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "url",
-  "args": null,
-  "storageKey": null
-},
-v2 = [
+v1 = [
   {
     "kind": "Literal",
     "name": "format",
@@ -105,7 +98,19 @@ return {
           "concreteType": "Image",
           "plural": false,
           "selections": [
-            (v1/*: any*/)
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "url",
+              "args": [
+                {
+                  "kind": "Literal",
+                  "name": "version",
+                  "value": "large"
+                }
+              ],
+              "storageKey": "url(version:\"large\")"
+            }
           ]
         }
       ]
@@ -119,7 +124,19 @@ return {
       "concreteType": "Image",
       "plural": false,
       "selections": [
-        (v1/*: any*/),
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "url",
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "version",
+              "value": "large_rectangle"
+            }
+          ],
+          "storageKey": "url(version:\"large_rectangle\")"
+        },
         {
           "kind": "ScalarField",
           "alias": null,
@@ -159,32 +176,32 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "hours",
-      "args": (v2/*: any*/),
+      "args": (v1/*: any*/),
       "storageKey": "hours(format:\"HTML\")"
     },
     {
       "kind": "ScalarField",
       "alias": null,
       "name": "links",
-      "args": (v2/*: any*/),
+      "args": (v1/*: any*/),
       "storageKey": "links(format:\"HTML\")"
     },
     {
       "kind": "ScalarField",
       "alias": null,
       "name": "tickets",
-      "args": (v2/*: any*/),
+      "args": (v1/*: any*/),
       "storageKey": "tickets(format:\"HTML\")"
     },
     {
       "kind": "ScalarField",
       "alias": null,
       "name": "contact",
-      "args": (v2/*: any*/),
+      "args": (v1/*: any*/),
       "storageKey": "contact(format:\"HTML\")"
     }
   ]
 };
 })();
-(node as any).hash = 'c8ed887838d5c2d8f4c8a1022c592e2e';
+(node as any).hash = 'cbcfb142999cdaffdf71881de7bb1e20';
 export default node;
