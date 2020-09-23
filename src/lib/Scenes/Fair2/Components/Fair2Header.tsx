@@ -33,7 +33,7 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
   }
 
   return (
-    <Box>
+    <Box ref={navRef}>
       {!!image && (
         <Flex alignItems="center" justifyContent="center" style={{ position: "relative" }}>
           <OpaqueImageView width={screenWidth} height={screenWidth / image.aspectRatio} imageURL={image.url} />

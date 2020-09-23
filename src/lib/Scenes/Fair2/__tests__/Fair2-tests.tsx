@@ -20,7 +20,7 @@ describe("Fair2", () => {
     <QueryRenderer<Fair2TestsQuery>
       environment={env}
       query={graphql`
-        query Fair2TestsQuery @raw_response_type {
+        query Fair2TestsQuery($fairID: String!) @raw_response_type {
           fair(id: $fairID) {
             ...Fair2_fair
           }
