@@ -36,7 +36,7 @@ export const CollapsibleArtworkDetails: React.FC<{ artwork: InquiryButtons_artwo
               style={{ alignSelf: "center" }}
             />
           )}
-          <Flex ml={2} style={{ flex: 1 }}>
+          <Flex ml={2} flex="1">
             <Text mb={0.25}>{artwork.artist?.name}</Text>
             <Text color="black60" variant="caption">
               {artwork.title}, {artwork.date}
