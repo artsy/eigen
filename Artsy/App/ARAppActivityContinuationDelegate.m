@@ -38,7 +38,6 @@ static  NSString *SailthruLinkDomain = @"link.artsy.net";
 
         // Show the screen they clicked on
         if ([[ARUserManager sharedManager] hasExistingAccount]) {
-            // TODO: figure out how to test this
             [[AREmission sharedInstance] navigate:[decodedURL absoluteString]];
         }
     });
