@@ -18,21 +18,20 @@ interface Fair2Props {
 }
 
 export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
-  const sections = ["fair2Header", "fair2Editorial"]
+  const hasArticles = !!fair.articles?.edges?.length
+
+  const sections = [
+    <Fair2HeaderFragmentContainer fair={fair} />,
+    ...(hasArticles ? [<Fair2EditorialFragmentContainer fair={fair} />] : []),
+  ]
+
   return (
     <Theme>
       <FlatList
         data={sections}
-        keyExtractor={(_item, index) => String(index)}
         ItemSeparatorComponent={() => <Separator my={3} />}
-        renderItem={({ item }): null | any => {
-          switch (item) {
-            case "fair2Header":
-              return <Fair2HeaderFragmentContainer fair={fair} />
-            case "fair2Editorial":
-              return <Fair2EditorialFragmentContainer fair={fair} />
-          }
-        }}
+        keyExtractor={(_item, index) => String(index)}
+        renderItem={({ item }) => item}
       />
     </Theme>
   )
@@ -41,6 +40,11 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
 export const Fair2FragmentContainer = createFragmentContainer(Fair2, {
   fair: graphql`
     fragment Fair2_fair on Fair {
+      articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
+        edges {
+          __typename
+        }
+      }
       ...Fair2Header_fair
       ...Fair2Editorial_fair
     }
