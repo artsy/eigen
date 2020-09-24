@@ -89,5 +89,6 @@ const Fair2Fixture: Fair2TestsQueryRawResponse = {
     hours: null,
     tickets: null,
     ticketsLink: "",
+    articles: { edges: [] },
   },
 }
