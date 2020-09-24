@@ -1,6 +1,7 @@
 import { SaleHeader_sale } from "__generated__/SaleHeader_sale.graphql"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Flex, Text } from "palette"
-import React from "react"
+import React, { useRef } from "react"
 import { Animated, Dimensions, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CaretButton } from "../../../Components/Buttons/CaretButton"
@@ -19,6 +20,8 @@ interface Props {
 }
 
 export const SaleHeader: React.FC<Props> = (props) => {
+  const navRef = useRef<any>(null)
+
   const saleTimeDetails = saleTime(props.sale)
   return (
     <>
@@ -64,6 +67,7 @@ export const SaleHeader: React.FC<Props> = (props) => {
           backgroundColor: "white",
           marginTop: COVER_IMAGE_HEIGHT,
         }}
+        ref={navRef}
       >
         <Flex mx="2" mt="2">
           <Text variant="largeTitle" testID="saleName">
@@ -79,7 +83,12 @@ export const SaleHeader: React.FC<Props> = (props) => {
               </Text>
             )}
           </Flex>
-          <CaretButton text="More info about this auction" />
+          <CaretButton
+            text="More info about this auction"
+            onPress={() => {
+              SwitchBoard.presentNavigationViewController(navRef.current!, `auction/${props.sale.internalID}/info`)
+            }}
+          />
         </Flex>
       </View>
     </>

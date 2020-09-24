@@ -69,6 +69,7 @@ import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { SaleQueryRenderer } from "./Scenes/Sale"
+import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
 import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryRenderer } from "./Scenes/Show"
@@ -372,6 +373,7 @@ export const modules = defineModules({
   Auction: { nativeModuleName: "Auction" },
   Auction2: { Component: SaleQueryRenderer, fullBleed: true },
   Auctions: { Component: SalesQueryRenderer },
+  AuctionInfo: { Component: SaleInfoQueryRenderer },
   AuctionRegistration: { nativeModuleName: "AuctionRegistration", alwaysPresentModally: true },
   AuctionBidArtwork: { nativeModuleName: "AuctionBidArtwork", alwaysPresentModally: true },
   BidFlow: { Component: BidderFlow },

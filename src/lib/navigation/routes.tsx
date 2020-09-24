@@ -67,6 +67,9 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     getCurrentEmissionState().options.AROptionsNewSalePage
       ? new RouteMatcher("/auction/:saleID", "Auction2")
       : new RouteMatcher("/auction/:id", "Auction"),
+    getCurrentEmissionState().options.AROptionsNewSalePage
+      ? new RouteMatcher("/auction/:saleID/info", "AuctionInfo")
+      : null,
     new RouteMatcher("/auction/:id/bid/:artwork_id", "AuctionBidArtwork"),
     new RouteMatcher("/gene/:geneID", "Gene"),
     new RouteMatcher("/show/:showID", "Show"),
