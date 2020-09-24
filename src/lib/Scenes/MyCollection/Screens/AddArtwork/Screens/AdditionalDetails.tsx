@@ -50,7 +50,7 @@ export const AdditionalDetails = () => {
                   placeholder="Edition number"
                   onChangeText={formik.handleChange("editionNumber")}
                   onBlur={formik.handleBlur("editionNumber")}
-                  defaultValue={formik.values.editionNumber}
+                  defaultValue={String(formik.values.editionNumber)}
                   style={{ marginRight: space(1) }}
                 />
                 <Input

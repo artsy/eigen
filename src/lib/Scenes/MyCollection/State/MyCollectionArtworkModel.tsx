@@ -25,7 +25,7 @@ export interface ArtworkFormValues {
   date: string
   depth: string
   editionSize: string
-  editionNumber: string
+  editionNumber: number | null
   height: string
   medium: string
   metric: Metric
@@ -44,7 +44,7 @@ const initialFormValues: ArtworkFormValues = {
   date: "",
   depth: "",
   editionSize: "",
-  editionNumber: "",
+  editionNumber: null,
   height: "",
   medium: "",
   metric: "",
