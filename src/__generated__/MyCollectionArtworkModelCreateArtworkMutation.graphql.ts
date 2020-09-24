@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 1079ed6888958e98aeacb10b229d7f2d */
+/* @relayHash 87110181faf533b605a71e1b0f96dbe0 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionCreateArtworkInput = {
@@ -34,6 +34,9 @@ export type MyCollectionArtworkModelCreateArtworkMutationResponse = {
                     readonly slug: string;
                 } | null;
             } | null;
+            readonly mutationError?: {
+                readonly message: string | null;
+            } | null;
         } | null;
     } | null;
 };
@@ -60,6 +63,11 @@ mutation MyCollectionArtworkModelCreateArtworkMutation(
             slug
             id
           }
+        }
+      }
+      ... on MyCollectionArtworkMutationFailure {
+        mutationError {
+          message
         }
       }
     }
@@ -122,6 +130,30 @@ v6 = {
       "storageKey": null
     }
   ]
+},
+v7 = {
+  "kind": "InlineFragment",
+  "type": "MyCollectionArtworkMutationFailure",
+  "selections": [
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "mutationError",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "GravityMutationError",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "message",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    }
+  ]
 };
 return {
   "kind": "Request",
@@ -182,7 +214,8 @@ return {
                     ]
                   }
                 ]
-              }
+              },
+              (v7/*: any*/)
             ]
           }
         ]
@@ -258,7 +291,8 @@ return {
                     ]
                   }
                 ]
-              }
+              },
+              (v7/*: any*/)
             ]
           }
         ]
@@ -268,11 +302,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "MyCollectionArtworkModelCreateArtworkMutation",
-    "id": "79e45d807c3eef28f2e7e733e89b7569",
+    "id": "aa25b79f9c3fd0de4251b7f8136567d9",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'b114178a59df47c798317bbc2ffd116d';
+(node as any).hash = '48ecd70a5b8dfe2d7227a96895948f89';
 export default node;
