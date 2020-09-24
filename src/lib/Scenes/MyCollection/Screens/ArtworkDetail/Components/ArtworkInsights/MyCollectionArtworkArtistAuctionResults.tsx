@@ -7,7 +7,7 @@ import { AppStore } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { DateTime } from "luxon"
 import { Box, Flex, Spacer, Text } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { InfoButton } from "./InfoButton"
@@ -17,7 +17,6 @@ interface MyCollectionArtworkArtistAuctionResultsProps {
 }
 
 const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtistAuctionResultsProps> = (props) => {
-  const navRef = useRef<View>(null)
   const results = extractNodes(props?.artwork?.artist?.auctionResultsConnection)
   const navActions = AppStore.actions.myCollection.navigation
 
@@ -27,7 +26,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
 
   return (
     <View>
-      <ScreenMargin ref={navRef}>
+      <ScreenMargin>
         <InfoButton title="Recent auction results" onPress={() => navActions.showInfoModal("auctionResults")} />
 
         <Spacer my={0.5} />

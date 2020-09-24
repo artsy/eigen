@@ -7162,6 +7162,8 @@ input MyCollectionCreateArtworkInput {
   costMinor: Int
   date: String
   depth: String
+  editionNumber: Int
+  editionSize: String
   height: String
   medium: String!
   metric: String
@@ -7202,6 +7204,8 @@ input MyCollectionUpdateArtworkInput {
   costMinor: Int
   date: String
   depth: String
+  editionNumber: Int
+  editionSize: String
   height: String
   medium: String
   metric: String
