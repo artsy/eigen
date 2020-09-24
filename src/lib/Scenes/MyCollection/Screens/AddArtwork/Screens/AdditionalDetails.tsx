@@ -50,7 +50,7 @@ export const AdditionalDetails = () => {
                   placeholder="Edition number"
                   onChangeText={formik.handleChange("editionNumber")}
                   onBlur={formik.handleBlur("editionNumber")}
-                  defaultValue={formik.values.editionNumber}
+                  defaultValue={String(formik.values.editionNumber)}
                   style={{ marginRight: space(1) }}
                 />
                 <Input
@@ -75,7 +75,7 @@ export const AdditionalDetails = () => {
               placeholder="Price paid"
               onChangeText={formik.handleChange("costMinor")}
               onBlur={formik.handleBlur("costMinor")}
-              defaultValue={formik.values.costMinor}
+              defaultValue={String(formik.values.costMinor)}
             />
 
             <Select

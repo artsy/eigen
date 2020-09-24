@@ -13,18 +13,19 @@ import { MyCollectionArtworkModelCreateArtworkMutation } from "__generated__/MyC
 import { MyCollectionArtworkModelDeleteArtworkMutation } from "__generated__/MyCollectionArtworkModelDeleteArtworkMutation.graphql"
 import { MyCollectionArtworkModelUpdateArtworkMutation } from "__generated__/MyCollectionArtworkModelUpdateArtworkMutation.graphql"
 import { Metric } from "../Screens/AddArtwork/Components/Dimensions"
+import { cleanArtworkPayload } from "../utils/cleanArtworkPayload"
 
 export interface ArtworkFormValues {
   artist: string
   artistIds: string[]
   artistSearchResult: AutosuggestResult | null
   category: string // this refers to "materials" in UI
-  costMinor: string
+  costMinor: number | null
   costCurrencyCode: string
   date: string
   depth: string
   editionSize: string
-  editionNumber: string
+  editionNumber: number | null
   height: string
   medium: string
   metric: Metric
@@ -38,12 +39,12 @@ const initialFormValues: ArtworkFormValues = {
   artistIds: [],
   artistSearchResult: null,
   category: "",
-  costMinor: "", // in cents
+  costMinor: null, // in cents
   costCurrencyCode: "",
   date: "",
   depth: "",
   editionSize: "",
-  editionNumber: "",
+  editionNumber: null,
   height: "",
   medium: "",
   metric: "",
@@ -139,8 +140,9 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     )
   }),
 
-  addArtwork: thunk(async (actions, input, { getState }) => {
+  addArtwork: thunk(async (actions, { artistSearchResult, artist, artistIds, photos, ...payload }, { getState }) => {
     const state = getState()
+    const input = cleanArtworkPayload(payload) as typeof payload
 
     try {
       commitMutation<MyCollectionArtworkModelCreateArtworkMutation>(defaultEnvironment, {
@@ -161,32 +163,26 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
                 }
 
                 # TODO: Handle error case
+                ... on MyCollectionArtworkMutationFailure {
+                  mutationError {
+                    message
+                  }
+                }
               }
             }
           }
         `,
         variables: {
           input: {
-            artistIds: [input!.artistSearchResult!.internalID as string],
-            category: input.category,
-            date: input.date,
-            depth: input.depth,
-            costMinor: Number(input.costMinor),
-            costCurrencyCode: input.costCurrencyCode,
-            // editionSize: input.editionSize,
-            // editionNumber: input.editionSize,
-            height: input.height,
-            medium: input.medium,
-            metric: input.metric,
-            title: input.title,
-            width: input.width,
+            artistIds: [artistSearchResult!.internalID as string],
+            ...input,
           },
         },
 
         // TODO: Relay v10 introduces a new directive-based mechanism for updating post-mutation.
         // See https://github.com/facebook/relay/releases/tag/v10.0.0.
         updater: (store) => {
-          const payload = store
+          const response = store
             .getRootField("myCollectionCreateArtwork")
             .getLinkedRecord("artworkOrError")
             // FIXME: Handle the error ("orError") case. Right now this will fail as the
@@ -200,7 +196,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
             const connection = ConnectionHandler.getConnection(meNode, "MyCollectionArtworkList_myCollectionConnection")
 
             if (connection) {
-              ConnectionHandler.insertEdgeBefore(connection, payload)
+              ConnectionHandler.insertEdgeBefore(connection, response)
             }
           }
         },
@@ -260,9 +256,10 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     actions.setFormValues(editProps)
   }),
 
-  editArtwork: thunk(async (actions, input, { getState }) => {
+  editArtwork: thunk(async (actions, { artistSearchResult, artist, artistIds, photos, ...payload }, { getState }) => {
     try {
       const { sessionState } = getState()
+      const input = cleanArtworkPayload(payload) as typeof payload
 
       commitMutation<MyCollectionArtworkModelUpdateArtworkMutation>(defaultEnvironment, {
         mutation: graphql`
@@ -284,35 +281,19 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
         `,
         variables: {
           input: {
-            artistIds: [input!.artistSearchResult!.internalID as string],
+            artistIds: [artistSearchResult!.internalID as string],
             artworkId: sessionState.artworkId,
-            category: input.category,
-            date: input.date,
-            depth: input.depth,
-            costMinor: Number(input.costMinor),
-            costCurrencyCode: input.costCurrencyCode,
-            // editionSize: input.editionSize,
-            // editionNumber: input.editionSize,
-            height: input.height,
-            medium: input.medium,
-            metric: input.metric,
-            title: input.title,
-            width: input.width,
+            ...input,
           },
         },
         // TODO: Revist this once we update with new Relay v10 mutation API
         updater: (store) => {
           const artwork = store.get(sessionState.artworkGlobalId)
-          artwork!.setValue(input.artistSearchResult?.displayLabel, "artistNames")
-          artwork!.setValue(input.category, "category")
-          artwork!.setValue(input.costMinor, "costMinor")
-          artwork!.setValue(input.costCurrencyCode, "costCurrencyCode")
-          artwork!.setValue(input.date, "date")
-          artwork!.setValue(input.depth, "depth")
-          artwork!.setValue(input.height, "height")
-          artwork!.setValue(input.medium, "medium")
-          artwork!.setValue(input.title, "title")
-          artwork!.setValue(input.width, "width")
+          artwork!.setValue(artistSearchResult?.displayLabel, "artistNames")
+
+          Object.entries(input).forEach(([key, value]) => {
+            artwork!.setValue(value, key)
+          })
         },
         onCompleted: (response) => {
           actions.editArtworkComplete(response)
