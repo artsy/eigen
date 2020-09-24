@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 603e7420f0173329016150863569c72e */
+/* @relayHash 1f8b6563e18862e4c6c133a3022a6be5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,6 +26,22 @@ query Fair2Query(
   fair(id: $fairID) @principalField {
     ...Fair2_fair
     id
+  }
+}
+
+fragment Fair2Editorial_fair on Fair {
+  articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
+    edges {
+      node {
+        id
+        title
+        href
+        publishedAt(format: "MMM Do, YY")
+        thumbnailImage {
+          src: imageURL
+        }
+      }
+    }
   }
 }
 
@@ -58,6 +74,7 @@ fragment Fair2Header_fair on Fair {
 
 fragment Fair2_fair on Fair {
   ...Fair2Header_fair
+  ...Fair2Editorial_fair
 }
 */
 
@@ -283,6 +300,96 @@ return {
             "args": (v4/*: any*/),
             "storageKey": "contact(format:\"HTML\")"
           },
+          {
+            "kind": "LinkedField",
+            "alias": "articles",
+            "name": "articlesConnection",
+            "storageKey": "articlesConnection(first:5,sort:\"PUBLISHED_AT_DESC\")",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 5
+              },
+              {
+                "kind": "Literal",
+                "name": "sort",
+                "value": "PUBLISHED_AT_DESC"
+              }
+            ],
+            "concreteType": "ArticleConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "edges",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ArticleEdge",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "node",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Article",
+                    "plural": false,
+                    "selections": [
+                      (v3/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "title",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "href",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "publishedAt",
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "format",
+                            "value": "MMM Do, YY"
+                          }
+                        ],
+                        "storageKey": "publishedAt(format:\"MMM Do, YY\")"
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "thumbnailImage",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": "src",
+                            "name": "imageURL",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
           (v3/*: any*/)
         ]
       }
@@ -291,7 +398,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "Fair2Query",
-    "id": "8281ca0047bf0e674515a29792c58105",
+    "id": "c1139c5bbdc429f299b170aa5e77c357",
     "text": null,
     "metadata": {}
   }
