@@ -5,7 +5,6 @@
 
 RCT_EXPORT_MODULE();
 
-
 RCT_EXPORT_METHOD(requestNotificationPermissions)
 {
     /* In eigen, this should request push notification permissions */
@@ -48,6 +47,17 @@ RCT_EXPORT_METHOD(setApplicationIconBadgeNumber:(nonnull NSNumber *)count)
 RCT_EXPORT_METHOD(validateAuthCredentialsAreCorrect)
 {
     self.authValidationChecker();
+}
+
+- (NSDictionary *)constantsToExport
+{
+    return @{@"appVersion"  : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]};
+
+}
+
++ (BOOL)requiresMainQueueSetup
+{
+    return YES;
 }
 
 @end
