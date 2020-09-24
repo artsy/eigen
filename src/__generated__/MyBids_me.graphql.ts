@@ -17,7 +17,6 @@ export type MyBids_me = {
                     readonly position: number | null;
                     readonly sale: {
                         readonly internalID: string;
-                        readonly displayTimelyAt: string | null;
                         readonly liveStartAt: string | null;
                         readonly endAt: string | null;
                         readonly status: string | null;
@@ -141,13 +140,6 @@ return {
                         {
                           "kind": "ScalarField",
                           "alias": null,
-                          "name": "displayTimelyAt",
-                          "args": null,
-                          "storageKey": null
-                        },
-                        {
-                          "kind": "ScalarField",
-                          "alias": null,
                           "name": "liveStartAt",
                           "args": null,
                           "storageKey": null
@@ -194,5 +186,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'a57c79aaebd8b0e974014f13b2854435';
+(node as any).hash = '6048cb7c56148cf77b09ca0e2e5def21';
 export default node;

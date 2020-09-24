@@ -1,5 +1,5 @@
 upcoming:
-  version: 6.6.4
+  version: 6.6.5
   date: TBD
   dev:
     - Add haptic feedback on buttons - pavlos
@@ -13,8 +13,19 @@ upcoming:
     - Fix navigation bug on Artwork consign button - david
     - Add auction lots rail to the auctions screen - mounir
     - Enable pagination on My Collection artworks screen - ashley
+    - Add auction lots grid to the auctions screen - mounir
+    - Add auction lots list to the auctions screen - mounir
+    - Enable filtering on artist series views - sweir
 
 releases:
+  - version: 6.6.4
+    date: Sept 23, 2020
+    dev:
+      - Update Aerodramus - ash, brian, david, mounir, pavlos
+      - Change Echo.json to EchoNew.json - ash, david, brian, mounir, pavlos
+    user_facing:
+      - Fix issue that caused the app to crash - ash, brian, david, mounir, pavlos
+
   - version: 6.6.3
     date: Sept 16, 2020
     dev:
@@ -40,6 +51,7 @@ releases:
       - Adds new inquiry buttons and modal behind lab option - lily
       - Fix new works for you rail sorting- mounir
       - Fix missing date issue on auctions rail at home - mounir
+
   - version: 6.6.2
     date: Sept 1, 2020
     dev:

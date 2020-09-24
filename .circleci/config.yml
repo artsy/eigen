@@ -137,7 +137,7 @@ commands:
           command: bundle exec pod check --ignore-dev-pods || bundle exec pod install
       - run:
           name: Update echo
-          command: ls Artsy/App/Echo.json || make update_echo
+          command: ls Artsy/App/EchoNew.json || make update_echo
       - save_cache:
           key: v7-pods-{{ checksum ".manifests/cocoapods" }}
           paths:

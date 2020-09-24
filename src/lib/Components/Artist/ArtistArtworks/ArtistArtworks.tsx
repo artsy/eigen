@@ -173,8 +173,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
   const filteredArtworks = () => {
     if (artworksTotal === 0) {
       return (
-        <Box>
-          <Separator />
+        <Box mb="80px" pt={1}>
           <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} trackClear={trackClear} />
         </Box>
       )

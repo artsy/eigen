@@ -68,6 +68,12 @@ export interface Props {
 
   /** An array of child indices determining which children get docked to the top of the screen when scrolling.  */
   stickyHeaderIndices?: number[]
+
+  // Hide urgency tags (3 Days left, 1 hour left)
+  hideUrgencyTags?: boolean
+
+  /** Show Lot Label  */
+  showLotLabel?: boolean
 }
 
 interface PrivateProps {
@@ -203,6 +209,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             contextScreenOwnerSlug={this.props.contextScreenOwnerSlug}
             artwork={artwork}
             key={"artwork-" + j + "-" + artwork.id}
+            hideUrgencyTags={this.props.hideUrgencyTags}
+            showLotLabel={this.props.showLotLabel}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
@@ -259,8 +267,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             </View>
           </Box>
 
-          {!autoFetch && !!hasMore() && (
-            <Button mt={5} mb={3} variant="secondaryGray" size="large" block onPress={this.fetchNextPage}>
+          {!autoFetch && !!hasMore() && !isLoading() && (
+            <Button variant="secondaryGray" size="large" block onPress={this.fetchNextPage}>
               Show more
             </Button>
           )}

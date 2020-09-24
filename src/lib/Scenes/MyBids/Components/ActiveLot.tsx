@@ -2,10 +2,14 @@ import { ActiveLot_lotStanding } from "__generated__/ActiveLot_lotStanding.graph
 import { Flex, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { TimelySale } from "../helpers/timely"
 import { HighestBid, Outbid, ReserveNotMet } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
 export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding }) => {
+  const timelySale = TimelySale.create(lotStanding?.saleArtwork?.sale!)
+  const isLAI = timelySale.isLiveBiddingNow()
+
   const sellingPrice = lotStanding?.lotState?.sellingPrice?.displayAmount
   const bidCount = lotStanding?.lotState?.bidCount
   const { saleArtwork, lotState } = lotStanding
@@ -22,7 +26,7 @@ export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding 
           </Text>
         </Flex>
         <Flex flexDirection="row" alignItems="center">
-          {lotStanding?.isHighestBidder && lotStanding.lotState.reserveStatus === "ReserveNotMet" ? (
+          {!isLAI && lotStanding?.isHighestBidder && lotStanding.lotState.reserveStatus === "ReserveNotMet" ? (
             <ReserveNotMet />
           ) : lotStanding?.isHighestBidder ? (
             <HighestBid />
@@ -53,6 +57,9 @@ export const ActiveLotFragmentContainer = createFragmentContainer(ActiveLot, {
       }
       saleArtwork {
         ...Lot_saleArtwork
+        sale {
+          liveStartAt
+        }
       }
     }
   `,

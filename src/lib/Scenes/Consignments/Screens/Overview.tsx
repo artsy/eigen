@@ -5,6 +5,8 @@ import { Alert } from "react-native"
 import { AsyncStorage, Dimensions, Route, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { AppStore } from "lib/store/AppStore"
 import { Box, Button, color, Flex, Serif, Spacer, Theme } from "palette"
 import { ArtistResult, ConsignmentMetadata, ConsignmentSetup } from "../"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
@@ -243,56 +245,64 @@ export default class Overview extends React.Component<Props, State> {
     const isPad = Dimensions.get("window").width > 700
 
     return (
-      <Theme>
-        <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} centerContent>
-          <View
-            style={{
-              paddingTop: 10,
-              alignSelf: "center",
-              width: "100%",
-              maxWidth: 540,
-              flex: 1,
-            }}
-          >
-            <Box px={2}>
-              <Serif size="6" style={{ textAlign: isPad ? "center" : "left" }}>
-                {title}
-              </Serif>
-              <Spacer mb={2} />
-              <Serif
-                size="4"
-                color={color("black60")}
-                style={{ textAlign: isPad ? "center" : "left", marginBottom: isPad ? 80 : 0, marginTop: -15 }}
-              >
-                {subtitle}
-              </Serif>
-            </Box>
-            <TODO
-              goToArtist={this.goToArtistTapped}
-              goToPhotos={this.goToPhotosTapped}
-              goToEdition={this.goToEditionTapped}
-              goToMetadata={this.goToMetadataTapped}
-              goToLocation={this.goToLocationTapped}
-              goToProvenance={this.goToProvenanceTapped}
-              {...this.state}
-            />
-            <Spacer mb={isPad ? 80 : 2} />
-            <Flex justifyContent="center" alignItems="center" flexDirection="column">
-              {!!this.state.hasLoaded && (
-                <Button onPress={canSubmit ? this.submitFinalSubmission : undefined} disabled={!canSubmit}>
-                  Submit
-                </Button>
-              )}
-              <Spacer mb={1} />
-              {!this.props.isArrivingFromMyCollection && (
-                <Button variant="noOutline" onPress={() => SwitchBoard.dismissModalViewController(this)}>
-                  Close
-                </Button>
-              )}
-            </Flex>
-          </View>
-        </ScrollView>
-      </Theme>
+      <>
+        {!!this.props.isArrivingFromMyCollection && <MyCollectionsNavHeader />}
+        <Theme>
+          <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} centerContent>
+            <View
+              style={{
+                paddingTop: 10,
+                alignSelf: "center",
+                width: "100%",
+                maxWidth: 540,
+                flex: 1,
+              }}
+            >
+              <Box px={2}>
+                <Serif size="6" style={{ textAlign: isPad ? "center" : "left" }}>
+                  {title}
+                </Serif>
+                <Spacer mb={2} />
+                <Serif
+                  size="4"
+                  color={color("black60")}
+                  style={{ textAlign: isPad ? "center" : "left", marginBottom: isPad ? 80 : 0, marginTop: -15 }}
+                >
+                  {subtitle}
+                </Serif>
+              </Box>
+              <TODO
+                goToArtist={this.goToArtistTapped}
+                goToPhotos={this.goToPhotosTapped}
+                goToEdition={this.goToEditionTapped}
+                goToMetadata={this.goToMetadataTapped}
+                goToLocation={this.goToLocationTapped}
+                goToProvenance={this.goToProvenanceTapped}
+                {...this.state}
+              />
+              <Spacer mb={isPad ? 80 : 2} />
+              <Flex justifyContent="center" alignItems="center" flexDirection="column">
+                {!!this.state.hasLoaded && (
+                  <Button onPress={canSubmit ? this.submitFinalSubmission : undefined} disabled={!canSubmit}>
+                    Submit
+                  </Button>
+                )}
+                <Spacer mb={1} />
+                {!this.props.isArrivingFromMyCollection && (
+                  <Button variant="noOutline" onPress={() => SwitchBoard.dismissModalViewController(this)}>
+                    Close
+                  </Button>
+                )}
+              </Flex>
+            </View>
+          </ScrollView>
+        </Theme>
+      </>
     )
   }
+}
+
+const MyCollectionsNavHeader = () => {
+  const navActions = AppStore.actions.myCollection.navigation
+  return <FancyModalHeader onLeftButtonPress={() => navActions.goBack()} hideBottomDivider />
 }

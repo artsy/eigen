@@ -43,6 +43,21 @@ const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketP
 
   const formattedDemandTrend = getFormattedDemandTrend() as string
 
+  const formatLiquidityRank = (rank: number): string => {
+    switch (true) {
+      case rank < Number(0.25):
+        return "Low"
+      case rank >= 0.25 && rank < 0.7:
+        return "Medium"
+      case rank >= 0.7 && rank < 0.85:
+        return "High"
+      case rank >= 0.85:
+        return "Very High"
+      default:
+        return ""
+    }
+  }
+
   return (
     <ScreenMargin>
       <InfoButton
@@ -57,7 +72,7 @@ const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketP
       <Field label="Avg. Annual Lots Sold" value={`${annualLotsSold}`} />
       <Field label="Sell-through Rate" value={`${sellThroughRate}%`} />
       <Field label="Median Sale Price to Estimate" value={`${medianSaleToEstimateRatio}x`} />
-      <Field label="Liquidity" value={`${liquidityRank} - ? - Very high`} />
+      {!Number.isNaN(liquidityRank) && <Field label="Liquidity" value={formatLiquidityRank(liquidityRank!)} />}
       <Field label="1-Year Trend" value={formattedDemandTrend} />
     </ScreenMargin>
   )

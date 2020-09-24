@@ -1,9 +1,8 @@
-const swannSale = {
+// an open timed auction
+const timedSale = {
   internalID: "swann",
   href: "/auction/swann-auction-galleries-lgbtq-plus-art-material-culture-and-history",
-  endAt: null,
-  liveStartAt: "2020-08-13T16:00:00+00:00",
-  displayTimelyAt: "live in 10d",
+  endAt: "2020-08-13T16:00:00+00:00",
   timeZone: "America/New_York",
   status: "open",
   name: "Swann Auction Galleries: LGBTQ+ Art, Material Culture & History",
@@ -17,21 +16,20 @@ const swannSale = {
   },
 }
 
-const swannEnded = {
-  ...swannSale,
+const timedEnded = {
+  ...timedSale,
   name: "Swann, but closed",
   internalID: "swann-ended",
   status: "closed",
-  displayTimelyAt: "",
 }
 
-const heritageSale = {
+// an open, LAI auction
+const laiSale = {
   internalID: "heritage",
   saleType: "auction",
   href: "/auction/heritage-urban-art-summer-skate",
-  endAt: "2020-08-05T15:00:00+00:00",
+  liveStartAt: "2020-08-05T15:00:00+00:00",
   status: "open",
-  displayTimelyAt: "live in 2d",
   timeZone: "America/Chicago",
   name: "Heritage: Urban Art Summer Skate",
   slug: "heritage-urban-art-summer-skate",
@@ -43,12 +41,12 @@ const heritageSale = {
   },
 }
 
-const heritageEnded = {
-  ...heritageSale,
+const laiEnded = {
+  ...laiSale,
   name: "Heritage but closed",
   internalID: "heritage-ended",
   status: "closed",
-  displayTimelyAt: "",
+  endAt: "2020-08-05T16:04:00+00:00",
 }
 
 export const me = {
@@ -82,7 +80,7 @@ export const me = {
                 url: "https://d2v80f5yrouhh2.cloudfront.net/zrtyPc3hnFNl-1yv80qS2w/medium.jpg",
               },
             },
-            sale: swannSale,
+            sale: timedSale,
           },
         },
       },
@@ -115,7 +113,7 @@ export const me = {
                 url: "https://d2v80f5yrouhh2.cloudfront.net/NtVjXx1dzUIsOfFdyW0XZw/medium.jpg",
               },
             },
-            sale: heritageSale,
+            sale: laiSale,
           },
         },
       },
@@ -149,7 +147,7 @@ export const me = {
                 url: "https://d2v80f5yrouhh2.cloudfront.net/dwqgENIWYbWFU_wntBtxFg/medium.jpg",
               },
             },
-            sale: swannSale,
+            sale: timedSale,
           },
         },
       },
@@ -183,7 +181,7 @@ export const me = {
                 url: "https://d2v80f5yrouhh2.cloudfront.net/zrtyPc3hnFNl-1yv80qS2w/medium.jpg",
               },
             },
-            sale: swannEnded,
+            sale: timedEnded,
           },
         },
       },
@@ -217,7 +215,7 @@ export const me = {
                 url: "https://d2v80f5yrouhh2.cloudfront.net/NtVjXx1dzUIsOfFdyW0XZw/medium.jpg",
               },
             },
-            sale: heritageEnded,
+            sale: laiEnded,
           },
         },
       },
@@ -251,7 +249,7 @@ export const me = {
                 url: "https://d2v80f5yrouhh2.cloudfront.net/dwqgENIWYbWFU_wntBtxFg/medium.jpg",
               },
             },
-            sale: swannEnded,
+            sale: timedEnded,
           },
         },
       },
