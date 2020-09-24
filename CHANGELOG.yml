@@ -8,6 +8,7 @@ upcoming:
     - Move artwork categories to a common util file - ashley
     - Send id token from apple sign in - brian
     - Add admin-only skeleton view for Fair2 - will
+    - Add header for Fair2 (visible only to admins) - will
   user_facing:
     - Fix navigation bug on Artwork consign button - david
     - Add auction lots rail to the auctions screen - mounir

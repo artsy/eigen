@@ -1,30 +1,60 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 603e7420f0173329016150863569c72e */
+/* @relayHash 9b7e1104d471e0f53cec7853bb32df27 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Fair2QueryVariables = {
+export type Fair2HeaderTestsQueryVariables = {
     fairID: string;
 };
-export type Fair2QueryResponse = {
+export type Fair2HeaderTestsQueryResponse = {
     readonly fair: {
-        readonly " $fragmentRefs": FragmentRefs<"Fair2_fair">;
+        readonly " $fragmentRefs": FragmentRefs<"Fair2Header_fair">;
     } | null;
 };
-export type Fair2Query = {
-    readonly response: Fair2QueryResponse;
-    readonly variables: Fair2QueryVariables;
+export type Fair2HeaderTestsQueryRawResponse = {
+    readonly fair: ({
+        readonly about: string | null;
+        readonly summary: string | null;
+        readonly name: string | null;
+        readonly slug: string;
+        readonly profile: ({
+            readonly icon: ({
+                readonly url: string | null;
+            }) | null;
+            readonly id: string | null;
+        }) | null;
+        readonly image: ({
+            readonly url: string | null;
+            readonly aspectRatio: number;
+        }) | null;
+        readonly tagline: string | null;
+        readonly location: ({
+            readonly summary: string | null;
+            readonly id: string | null;
+        }) | null;
+        readonly ticketsLink: string | null;
+        readonly hours: string | null;
+        readonly links: string | null;
+        readonly tickets: string | null;
+        readonly contact: string | null;
+        readonly id: string | null;
+    }) | null;
+};
+export type Fair2HeaderTestsQuery = {
+    readonly response: Fair2HeaderTestsQueryResponse;
+    readonly variables: Fair2HeaderTestsQueryVariables;
+    readonly rawResponse: Fair2HeaderTestsQueryRawResponse;
 };
 
 
 
 /*
-query Fair2Query(
+query Fair2HeaderTestsQuery(
   $fairID: String!
 ) {
-  fair(id: $fairID) @principalField {
-    ...Fair2_fair
+  fair(id: $fairID) {
+    ...Fair2Header_fair
     id
   }
 }
@@ -54,10 +84,6 @@ fragment Fair2Header_fair on Fair {
   links(format: HTML)
   tickets(format: HTML)
   contact(format: HTML)
-}
-
-fragment Fair2_fair on Fair {
-  ...Fair2Header_fair
 }
 */
 
@@ -102,7 +128,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "Fair2Query",
+    "name": "Fair2HeaderTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -118,7 +144,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "Fair2_fair",
+            "name": "Fair2Header_fair",
             "args": null
           }
         ]
@@ -127,7 +153,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "Fair2Query",
+    "name": "Fair2HeaderTestsQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -290,12 +316,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "Fair2Query",
-    "id": "8281ca0047bf0e674515a29792c58105",
+    "name": "Fair2HeaderTestsQuery",
+    "id": "f18d6bddb902e5c91aec785ee3162d3f",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'b1f906d210896b4e7da4a511c6846b3a';
+(node as any).hash = 'd67f7b938f15488dd0d372a50194cc9b';
 export default node;

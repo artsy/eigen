@@ -1,29 +1,59 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 603e7420f0173329016150863569c72e */
+/* @relayHash d2d2cad5b369b6793d17b299b9ccdf14 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Fair2QueryVariables = {
+export type Fair2TestsQueryVariables = {
     fairID: string;
 };
-export type Fair2QueryResponse = {
+export type Fair2TestsQueryResponse = {
     readonly fair: {
         readonly " $fragmentRefs": FragmentRefs<"Fair2_fair">;
     } | null;
 };
-export type Fair2Query = {
-    readonly response: Fair2QueryResponse;
-    readonly variables: Fair2QueryVariables;
+export type Fair2TestsQueryRawResponse = {
+    readonly fair: ({
+        readonly about: string | null;
+        readonly summary: string | null;
+        readonly name: string | null;
+        readonly slug: string;
+        readonly profile: ({
+            readonly icon: ({
+                readonly url: string | null;
+            }) | null;
+            readonly id: string | null;
+        }) | null;
+        readonly image: ({
+            readonly url: string | null;
+            readonly aspectRatio: number;
+        }) | null;
+        readonly tagline: string | null;
+        readonly location: ({
+            readonly summary: string | null;
+            readonly id: string | null;
+        }) | null;
+        readonly ticketsLink: string | null;
+        readonly hours: string | null;
+        readonly links: string | null;
+        readonly tickets: string | null;
+        readonly contact: string | null;
+        readonly id: string | null;
+    }) | null;
+};
+export type Fair2TestsQuery = {
+    readonly response: Fair2TestsQueryResponse;
+    readonly variables: Fair2TestsQueryVariables;
+    readonly rawResponse: Fair2TestsQueryRawResponse;
 };
 
 
 
 /*
-query Fair2Query(
+query Fair2TestsQuery(
   $fairID: String!
 ) {
-  fair(id: $fairID) @principalField {
+  fair(id: $fairID) {
     ...Fair2_fair
     id
   }
@@ -102,7 +132,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "Fair2Query",
+    "name": "Fair2TestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -127,7 +157,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "Fair2Query",
+    "name": "Fair2TestsQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -290,12 +320,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "Fair2Query",
-    "id": "8281ca0047bf0e674515a29792c58105",
+    "name": "Fair2TestsQuery",
+    "id": "43dd6e663170d706154a08f00ab0cdd5",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'b1f906d210896b4e7da4a511c6846b3a';
+(node as any).hash = 'f798451e6e6d390e226e7d5ffcf097fd';
 export default node;

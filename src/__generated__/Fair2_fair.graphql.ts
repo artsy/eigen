@@ -4,7 +4,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Fair2_fair = {
-    readonly name: string | null;
+    readonly " $fragmentRefs": FragmentRefs<"Fair2Header_fair">;
     readonly " $refType": "Fair2_fair";
 };
 export type Fair2_fair$data = Fair2_fair;
@@ -23,13 +23,11 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "name",
-      "args": null,
-      "storageKey": null
+      "kind": "FragmentSpread",
+      "name": "Fair2Header_fair",
+      "args": null
     }
   ]
 };
-(node as any).hash = 'cb5de6d0deaea313a1bb191189abedc7';
+(node as any).hash = 'aeae39f78791ccfe2d9f486de4909dcb';
 export default node;
