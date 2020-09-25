@@ -1,6 +1,7 @@
 import { ViewingRoomsList_query$key } from "__generated__/ViewingRoomsList_query.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
+import LoadFailureView from "lib/Components/LoadFailureView"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { PAGE_SIZE } from "lib/data/constants"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -199,13 +200,14 @@ const LoadingMorePlaceholder = () => (
 )
 
 export const ViewingRoomsListQueryRenderer: React.FC = () => {
-  const { props, error } = useQuery<ViewingRoomsListQuery>(query, { count: PAGE_SIZE })
+  const { props, error, retry } = useQuery<ViewingRoomsListQuery>(query, { count: PAGE_SIZE })
 
   if (props) {
     return <ViewingRoomsListContainer query={props} featured={props.featured!} />
   }
   if (error) {
-    throw error
+    console.error(error)
+    return <LoadFailureView onRetry={retry} style={{ flex: 1 }} />
   }
 
   return <Placeholder />

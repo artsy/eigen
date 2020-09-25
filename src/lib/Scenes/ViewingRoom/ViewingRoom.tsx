@@ -72,10 +72,6 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
   )
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
 
-  if (viewingRoom === null) {
-    return <LoadFailureView style={{ flex: 1 }} />
-  }
-
   const sections: ViewingRoomSection[] = []
 
   if (viewingRoom.status === ViewingRoomStatus.CLOSED || viewingRoom.status === ViewingRoomStatus.SCHEDULED) {
