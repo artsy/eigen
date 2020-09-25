@@ -25,7 +25,6 @@
 
 /// The Artsy echo instance for feature flags, and url routing etc
 @property (nonatomic, readwrite, strong) ArtsyEcho *echo;
-@property (nonatomic, assign) BOOL isEchoSetup;
 
 - (void)finishOnboarding:(AROnboardingViewController *)viewController animated:(BOOL)animated;
 @end
