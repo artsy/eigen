@@ -44,7 +44,7 @@ const Sale: React.FC<Props> = (props) => {
       key: "registerToBid",
       content: (
         <Flex mx="2" mt={2}>
-          <RegisterToBidButton sale={props.sale} />
+          <RegisterToBidButton sale={props.sale} contextType="sale" />
         </Flex>
       ),
     },

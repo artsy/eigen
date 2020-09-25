@@ -8,10 +8,10 @@ import { saleStatus } from "../helpers"
 
 interface RegisterToBidButtonProps {
   sale: RegisterToBidButton_sale
+  contextType: string
 }
 
-const RegisterToBidButtonComp: React.FC<RegisterToBidButtonProps> = (props) => {
-  const { sale } = props
+const RegisterToBidButtonComp: React.FC<RegisterToBidButtonProps> = ({ contextType, sale }) => {
   const { trackEvent } = useTracking()
   const navRef = useRef<any>(null)
 
@@ -22,8 +22,13 @@ const RegisterToBidButtonComp: React.FC<RegisterToBidButtonProps> = (props) => {
           block
           size="large"
           onPress={() => {
-            trackEvent(tracks.auctionBidButtonTapped(sale.slug, saleStatus(sale.startAt, sale.endAt)))
-
+            trackEvent(
+              tracks.auctionBidButtonTapped({
+                slug: sale.slug,
+                status: saleStatus(sale.startAt, sale.endAt),
+                contextType,
+              })
+            )
             SwitchBoard.presentNavigationViewController(navRef.current, `/auction-registration/${sale.slug}`)
           }}
         >
@@ -87,16 +92,10 @@ export const RegisterToBidButton = createFragmentContainer(RegisterToBidButtonCo
 })
 
 const tracks = {
-  auctionBidButtonTapped: (slug: string, status: string) => ({
+  auctionBidButtonTapped: ({ slug, status, contextType }: { slug: string; status: string; contextType: string }) => ({
     action_name: "Tapped Register To Bid",
     auction_slug: slug,
     auction_state: status,
-
-    // TODO: `context_type` should be something like
-    // self.navigationController.topViewController == self ? "sale" : "sale information"
-    // so that it sends `sale` when we are in the auction page, and `sale information` when we are in the info page of an auction.
-    // We don't have the info page migrated to RN yet. We should fix this when we do.
-    // link: https://artsyproduct.atlassian.net/browse/MX-523
-    context_type: "sale",
+    context_type: contextType,
   }),
 }

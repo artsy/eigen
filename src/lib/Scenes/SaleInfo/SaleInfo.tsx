@@ -8,7 +8,7 @@ import { saleTime } from "lib/utils/saleTime"
 import moment from "moment"
 import { Flex, Join, Sans, Separator, Text } from "palette"
 import React, { useRef } from "react"
-import { ScrollView } from "react-native"
+import { Linking, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { PlaceholderBox } from "../../utils/placeholders"
 import { MyProfileMenuItem } from "../MyProfile/Components/MyProfileMenuItem"
@@ -34,7 +34,9 @@ export const AuctionSupport = () => {
       <MyProfileMenuItem
         title="Contact us for help"
         onPress={() => {
-          SwitchBoard.presentNavigationViewController(navRef.current!, "my-account/edit-name")
+          Linking.openURL("mailto:specialist@artsy.net").catch((error) => {
+            console.log(error)
+          })
         }}
       />
     </Flex>
@@ -88,7 +90,7 @@ export const SaleInfo: React.FC<Props> = ({ sale }) => {
           <Sans size="5" mt={1} mb={3}>
             {sale.name}
           </Sans>
-          <RegisterToBidButton sale={sale} />
+          <RegisterToBidButton sale={sale} contextType="sale_information" />
           <Text variant="text" color="black" fontSize="size4" mt={25}>
             {sale.description}
           </Text>
@@ -134,7 +136,7 @@ export const SaleInfoContainer = createFragmentContainer(SaleInfo, {
   `,
 })
 
-export const SaleInfoQueryRenderer: React.FC<{ sale_id: string }> = ({ sale_id: saleID }) => {
+export const SaleInfoQueryRenderer: React.FC<{ saleID: string }> = ({ saleID: saleID }) => {
   return (
     <QueryRenderer<SaleInfoQueryRendererQuery>
       environment={defaultEnvironment}
