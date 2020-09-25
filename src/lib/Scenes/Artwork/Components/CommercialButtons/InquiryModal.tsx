@@ -1,13 +1,14 @@
-import { InquiryButtons_artwork } from "__generated__/InquiryButtons_artwork.graphql"
+import { InquiryModal_artwork } from "__generated__/InquiryModal_artwork.graphql"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Text } from "palette"
 import React from "react"
 import NavigatorIOS from "react-native-navigator-ios"
-import { CollapsibleArtworkDetails } from "./CollapsibleArtworkDetails"
+import { createFragmentContainer, graphql } from "react-relay"
+import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
 
 interface InquiryModalProps {
-  artwork: InquiryButtons_artwork
+  artwork: InquiryModal_artwork
   closeModal?: () => void
   exitModal?: () => void
   toggleVisibility: () => void
@@ -15,7 +16,7 @@ interface InquiryModalProps {
   modalIsVisible: boolean
 }
 
-export const InquiryModal: React.FC<InquiryModalProps> = (props) => {
+export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props }) => {
   const { toggleVisibility, modalIsVisible } = props
 
   return (
@@ -23,10 +24,18 @@ export const InquiryModal: React.FC<InquiryModalProps> = (props) => {
       <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => toggleVisibility()}>
         Contact Gallery
       </FancyModalHeader>
-      <CollapsibleArtworkDetails artwork={props.artwork} />
+      <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
       <Text m={2} variant="title">
         More here
       </Text>
     </FancyModal>
   )
 }
+
+export const InquiryModalFragmentContainer = createFragmentContainer(InquiryModal, {
+  artwork: graphql`
+    fragment InquiryModal_artwork on Artwork {
+      ...CollapsibleArtworkDetails_artwork
+    }
+  `,
+})

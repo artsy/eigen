@@ -1,9 +1,14 @@
-import { InquiryButtons_artwork } from "__generated__/InquiryButtons_artwork.graphql"
+import { CollapsibleArtworkDetails_artwork } from "__generated__/CollapsibleArtworkDetails_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { Flex, Separator, Text } from "palette"
 import React, { useState } from "react"
 import { LayoutAnimation, TouchableOpacity } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
+
+export interface CollapsibleArtworkDetailsProps {
+  artwork: CollapsibleArtworkDetails_artwork
+}
 
 const makeRow = (name: string, value: string) => (
   <Flex flexDirection="row" mb={1}>
@@ -14,7 +19,7 @@ const makeRow = (name: string, value: string) => (
   </Flex>
 )
 
-export const CollapsibleArtworkDetails: React.FC<{ artwork: InquiryButtons_artwork }> = ({ artwork }) => {
+export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps> = ({ artwork }) => {
   const [isExpanded, setExpanded] = useState(false)
   const toggleExpanded = () => {
     LayoutAnimation.configureNext({
@@ -57,3 +62,31 @@ export const CollapsibleArtworkDetails: React.FC<{ artwork: InquiryButtons_artwo
     </>
   ) : null
 }
+
+export const CollapsibleArtworkDetailsFragmentContainer = createFragmentContainer(CollapsibleArtworkDetails, {
+  artwork: graphql`
+    fragment CollapsibleArtworkDetails_artwork on Artwork {
+      image {
+        url
+        width
+        height
+      }
+      internalID
+      isPriceHidden
+      title
+      date
+      medium
+      dimensions {
+        in
+        cm
+      }
+      editionOf
+      signatureInfo {
+        details
+      }
+      artist {
+        name
+      }
+    }
+  `,
+})

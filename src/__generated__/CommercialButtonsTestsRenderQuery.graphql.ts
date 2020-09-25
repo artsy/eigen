@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 266da3313e35bd4d5c7a73a3c42bd965 */
+/* @relayHash 5723aab4ff2e24090d4b9de3619788c0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -127,6 +127,31 @@ fragment BuyNowButton_artwork on Artwork {
   saleMessage
 }
 
+fragment CollapsibleArtworkDetails_artwork on Artwork {
+  image {
+    url
+    width
+    height
+  }
+  internalID
+  isPriceHidden
+  title
+  date
+  medium
+  dimensions {
+    in
+    cm
+  }
+  editionOf
+  signatureInfo {
+    details
+  }
+  artist {
+    name
+    id
+  }
+}
+
 fragment CommercialButtons_artwork on Artwork {
   slug
   isAcquireable
@@ -171,6 +196,11 @@ fragment InquiryButtons_artwork on Artwork {
     name
     id
   }
+  ...InquiryModal_artwork
+}
+
+fragment InquiryModal_artwork on Artwork {
+  ...CollapsibleArtworkDetails_artwork
 }
 
 fragment MakeOfferButton_artwork on Artwork {
@@ -584,7 +614,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CommercialButtonsTestsRenderQuery",
-    "id": "06dc97d7b5d4f0654d7c35b6b27d9c99",
+    "id": "b2880350da8a9c5c54d66f57d5a47e82",
     "text": null,
     "metadata": {}
   }

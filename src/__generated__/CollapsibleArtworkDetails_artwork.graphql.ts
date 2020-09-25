@@ -3,7 +3,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type InquiryButtons_artwork = {
+export type CollapsibleArtworkDetails_artwork = {
     readonly image: {
         readonly url: string | null;
         readonly width: number | null;
@@ -25,20 +25,19 @@ export type InquiryButtons_artwork = {
     readonly artist: {
         readonly name: string | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"InquiryModal_artwork">;
-    readonly " $refType": "InquiryButtons_artwork";
+    readonly " $refType": "CollapsibleArtworkDetails_artwork";
 };
-export type InquiryButtons_artwork$data = InquiryButtons_artwork;
-export type InquiryButtons_artwork$key = {
-    readonly " $data"?: InquiryButtons_artwork$data;
-    readonly " $fragmentRefs": FragmentRefs<"InquiryButtons_artwork">;
+export type CollapsibleArtworkDetails_artwork$data = CollapsibleArtworkDetails_artwork;
+export type CollapsibleArtworkDetails_artwork$key = {
+    readonly " $data"?: CollapsibleArtworkDetails_artwork$data;
+    readonly " $fragmentRefs": FragmentRefs<"CollapsibleArtworkDetails_artwork">;
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "InquiryButtons_artwork",
+  "name": "CollapsibleArtworkDetails_artwork",
   "type": "Artwork",
   "metadata": null,
   "argumentDefinitions": [],
@@ -177,13 +176,8 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ]
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "InquiryModal_artwork",
-      "args": null
     }
   ]
 };
-(node as any).hash = 'f9d9ba45dc76c4b3b16b963fba41c09e';
+(node as any).hash = '6018fcd7f35d980cf8b52c404e0302f4';
 export default node;

@@ -2,7 +2,7 @@ import { InquiryButtons_artwork } from "__generated__/InquiryButtons_artwork.gra
 import { Button, ButtonVariant } from "palette"
 import React, { useState } from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
-import { InquiryModal } from "./InquiryModal"
+import { InquiryModalFragmentContainer } from "./InquiryModal"
 
 export interface InquiryButtonsProps {
   artwork: InquiryButtons_artwork
@@ -34,7 +34,7 @@ export const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, relay, 
       <Button onPress={() => setModalVisibility(true)} size="large" block width={100} variant="secondaryOutline">
         Contact Gallery
       </Button>
-      <InquiryModal
+      <InquiryModalFragmentContainer
         artwork={artwork}
         modalIsVisible={modalVisibility}
         toggleVisibility={() => setModalVisibility(!modalVisibility)}
@@ -67,6 +67,7 @@ export const InquiryButtonsFragmentContainer = createFragmentContainer(InquiryBu
       artist {
         name
       }
+      ...InquiryModal_artwork
     }
   `,
 })
