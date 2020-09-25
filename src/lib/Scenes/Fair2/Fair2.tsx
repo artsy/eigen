@@ -6,8 +6,9 @@ import { Separator, Theme } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { Fair2EditorialFragmentContainer } from "./Components/Fair2Editorial"
-import { Fair2HeaderFragmentContainer } from "./Components/Fair2Header"
+import { Fair2CollectionsFragmentContainer as FairCollections } from "./Components/Fair2Collections"
+import { Fair2EditorialFragmentContainer as FairEditorial } from "./Components/Fair2Editorial"
+import { Fair2HeaderFragmentContainer as FairHeader } from "./Components/Fair2Header"
 
 interface Fair2QueryRendererProps {
   fairID: string
@@ -19,10 +20,12 @@ interface Fair2Props {
 
 export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
   const hasArticles = !!fair.articles?.edges?.length
+  const hasCollections = !!fair.marketingCollections.length
 
   const sections = [
-    <Fair2HeaderFragmentContainer fair={fair} />,
-    ...(hasArticles ? [<Fair2EditorialFragmentContainer fair={fair} />] : []),
+    <FairHeader fair={fair} />,
+    ...(hasArticles ? [<FairEditorial fair={fair} />] : []),
+    ...(hasCollections ? [<FairCollections fair={fair} />] : []),
   ]
 
   return (
@@ -45,8 +48,12 @@ export const Fair2FragmentContainer = createFragmentContainer(Fair2, {
           __typename
         }
       }
+      marketingCollections(size: 4) {
+        __typename
+      }
       ...Fair2Header_fair
       ...Fair2Editorial_fair
+      ...Fair2Collections_fair
     }
   `,
 })
