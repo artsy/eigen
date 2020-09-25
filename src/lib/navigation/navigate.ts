@@ -12,7 +12,7 @@ export function navigate(url: string, options: { modal?: boolean } = {}) {
 
   const module = modules[result.module]
 
-  const presentModally = options.modal ?? (result.params as any).present_modally ?? module.alwaysPresentModally ?? false
+  const presentModally = options.modal ?? module.alwaysPresentModally ?? false
 
   if (isNativeModule(module)) {
     NativeModules.ARScreenPresenterModule.presentNativeScreen(result.module, result.params, presentModally)
