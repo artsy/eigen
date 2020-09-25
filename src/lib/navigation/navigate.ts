@@ -23,7 +23,12 @@ export function navigate(url: string, options: { modal?: boolean } = {}) {
       if (module.onlyShowInTabName) {
         NativeModules.ARScreenPresenterModule.switchTab(module.onlyShowInTabName, {}, true)
       }
-      NativeModules.ARScreenPresenterModule.presentReactScreen(result.module, result.params, presentModally, false)
+      NativeModules.ARScreenPresenterModule.presentReactScreen(
+        result.module,
+        result.params,
+        presentModally,
+        module.hidesBackButton ?? false
+      )
     }
   }
 }
