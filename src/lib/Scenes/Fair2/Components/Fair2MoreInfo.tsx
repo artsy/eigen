@@ -4,11 +4,13 @@ import { LocationMapContainer, PartnerType } from "lib/Components/LocationMap"
 import { Markdown } from "lib/Components/Markdown"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { defaultRules } from "lib/utils/renderMarkdown"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Box, Spacer, Text, Theme } from "palette"
 import React, { useRef } from "react"
 import { ScrollView, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { blockRegex } from "simple-markdown"
 
 interface Fair2MoreInfoQueryRendererProps {
   fairID: string
@@ -17,6 +19,20 @@ interface Fair2MoreInfoQueryRendererProps {
 interface Fair2MoreInfoProps {
   fair: Fair2MoreInfo_fair
 }
+
+// Default markdown rules center align text, which we don't want.
+const markdownRules = defaultRules(false, {
+  paragraph: {
+    match: blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
+    react: (node, output, state) => {
+      return (
+        <Text variant="text" key={state.key} textAlign="left">
+          {output(node.content, state)}
+        </Text>
+      )
+    },
+  },
+})
 
 export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
   const navRef = useRef<any>()
@@ -37,20 +53,20 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
           {!!fair.summary && (
             <>
               <Text variant="text">{fair.summary}</Text>
-              <Spacer my={2} />
+              <Spacer my={1} />
             </>
           )}
           {!!fair.about && (
             <>
               <Text variant="text">{fair.about}</Text>
-              <Spacer my={2} />
+              <Spacer my={1} />
             </>
           )}
 
           {!!fair.tagline && (
             <>
               <Text variant="text">{fair.tagline}</Text>
-              <Spacer my={2} />
+              <Spacer my={1} />
             </>
           )}
 
@@ -65,22 +81,22 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
                   partnerName={fair.profile?.name ?? fair.name}
                 />
               )}
-              <Spacer my={2} />
+              <Spacer my={1} />
             </>
           )}
 
           {!!fair.hours && (
             <>
               <Text variant="mediumText">Hours</Text>
-              <Markdown>{fair.hours}</Markdown>
-              <Spacer my={3} />
+              <Markdown rules={markdownRules}>{fair.hours}</Markdown>
+              <Spacer my={1} />
             </>
           )}
           {!!fair.tickets && (
             <>
               <Text variant="mediumText">Tickets</Text>
-              <Markdown>{fair.tickets}</Markdown>
-              <Spacer my={2} />
+              <Markdown rules={markdownRules}>{fair.tickets}</Markdown>
+              <Spacer my={1} />
             </>
           )}
           {!!fair.ticketsLink && (
@@ -88,21 +104,21 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
               <TouchableOpacity onPress={() => handleNavigation(fair.ticketsLink!)}>
                 <Text variant="mediumText">Buy Tickets</Text>
               </TouchableOpacity>
-              <Spacer my={2} />
+              <Spacer my={1} />
             </>
           )}
           {!!fair.links && (
             <>
               <Text variant="mediumText">Links</Text>
-              <Markdown>{fair.links}</Markdown>
-              <Spacer my={2} />
+              <Markdown rules={markdownRules}>{fair.links}</Markdown>
+              <Spacer my={1} />
             </>
           )}
           {!!fair.contact && (
             <>
               <Text variant="mediumText">Contact</Text>
-              <Markdown>{fair.contact}</Markdown>
-              <Spacer my={2} />
+              <Markdown rules={markdownRules}>{fair.contact}</Markdown>
+              <Spacer my={1} />
             </>
           )}
         </Box>
