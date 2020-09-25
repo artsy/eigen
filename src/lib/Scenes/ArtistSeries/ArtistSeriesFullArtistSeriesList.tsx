@@ -53,7 +53,7 @@ export const FullArtistSeriesList: React.FC<FullArtistSeriesListProps> = ({ arti
 export const ArtistSeriesFullArtistSeriesListFragmentContainer = createFragmentContainer(FullArtistSeriesList, {
   artist: graphql`
     fragment ArtistSeriesFullArtistSeriesList_artist on Artist {
-      artistSeriesConnection {
+      artistSeriesConnection(first: 50) {
         edges {
           node {
             slug
