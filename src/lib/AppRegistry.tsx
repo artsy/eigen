@@ -102,9 +102,7 @@ YellowBox.ignoreWarnings([
   // RN 0.59.0 ships with this issue, which has been effectively marked as #wontfix: https://github.com/facebook/react-native/issues/23130
   "Require cycle: node_modules/react-native/Libraries/Network/fetch.js -> node_modules/react-native/Libraries/vendor/core/whatwg-fetch.js -> node_modules/react-native/Libraries/Network/fetch.js",
 
-  "Require cycle: src/lib/store/AppStore.tsx -> src/lib/store/AppStoreModel.ts -> src/lib/Scenes/MyCollection/State/MyCollectionModel.tsx -> src/lib/Scenes/MyCollection/State/MyCollectionNavigationModel.tsx -> src/lib/Scenes/MyCollection/Screens/AddArtwork/Screens/AddPhotos.tsx -> src/lib/store/AppStore.tsx",
-  "Require cycle: src/lib/store/AppStore.tsx -> src/lib/store/AppStoreModel.ts -> src/lib/Scenes/MyCollection/State/MyCollectionModel.tsx -> src/lib/Scenes/MyCollection/State/MyCollectionNavigationModel.tsx -> src/lib/Scenes/MyCollection/Screens/AddArtwork/Screens/AdditionalDetails.tsx -> src/lib/store/AppStore.tsx",
-  "Require cycle: src/lib/store/AppStore.tsx -> src/lib/store/AppStoreModel.ts -> src/lib/Scenes/MyCollection/State/MyCollectionModel.tsx -> src/lib/Scenes/MyCollection/State/MyCollectionNavigationModel.tsx -> src/lib/Scenes/MyCollection/Screens/AddArtwork/Screens/AddArtworkTitleAndYear.tsx -> src/lib/store/AppStore.tsx",
+  "Require cycle: src/lib/store/AppStore.tsx -> src/lib/store/AppStoreModel.ts -> src/lib/Scenes/MyCollection/State/MyCollectionModel.tsx -> src/lib/Scenes/MyCollection/State/MyCollectionNavigationModel.tsx",
 
   // This is for the Artist page, which will likely get redone soon anyway.
   "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
