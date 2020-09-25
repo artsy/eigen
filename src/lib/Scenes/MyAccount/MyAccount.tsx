@@ -68,7 +68,7 @@ const MyAccountPlaceholder: React.FC<{}> = ({}) => {
   )
 }
 
-const MyAccountContainer = createFragmentContainer(MyAccount, {
+export const MyAccountContainer = createFragmentContainer(MyAccount, {
   me: graphql`
     fragment MyAccount_me on Me {
       name
