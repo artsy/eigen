@@ -9,7 +9,10 @@ export type Fair2_fair = {
             readonly __typename: string;
         } | null> | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"Fair2Header_fair" | "Fair2Editorial_fair">;
+    readonly marketingCollections: ReadonlyArray<{
+        readonly __typename: string;
+    } | null>;
+    readonly " $fragmentRefs": FragmentRefs<"Fair2Header_fair" | "Fair2Editorial_fair" | "Fair2Collections_fair">;
     readonly " $refType": "Fair2_fair";
 };
 export type Fair2_fair$data = Fair2_fair;
@@ -20,7 +23,17 @@ export type Fair2_fair$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "__typename",
+    "args": null,
+    "storageKey": null
+  }
+];
+return {
   "kind": "Fragment",
   "name": "Fair2_fair",
   "type": "Fair",
@@ -55,17 +68,25 @@ const node: ReaderFragment = {
           "args": null,
           "concreteType": "ArticleEdge",
           "plural": true,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "__typename",
-              "args": null,
-              "storageKey": null
-            }
-          ]
+          "selections": (v0/*: any*/)
         }
       ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "marketingCollections",
+      "storageKey": "marketingCollections(size:4)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "size",
+          "value": 4
+        }
+      ],
+      "concreteType": "MarketingCollection",
+      "plural": true,
+      "selections": (v0/*: any*/)
     },
     {
       "kind": "FragmentSpread",
@@ -76,8 +97,14 @@ const node: ReaderFragment = {
       "kind": "FragmentSpread",
       "name": "Fair2Editorial_fair",
       "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "Fair2Collections_fair",
+      "args": null
     }
   ]
 };
-(node as any).hash = 'f4f5fc4db1badbd49e1d6f960cfec388';
+})();
+(node as any).hash = 'b3405559e962fd4974ccbd337a541e71';
 export default node;
