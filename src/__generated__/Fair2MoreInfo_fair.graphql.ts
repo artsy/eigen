@@ -6,7 +6,6 @@ import { FragmentRefs } from "relay-runtime";
 export type Fair2MoreInfo_fair = {
     readonly about: string | null;
     readonly name: string | null;
-    readonly slug: string;
     readonly tagline: string | null;
     readonly profile: {
         readonly name: string | null;
@@ -72,13 +71,6 @@ return {
       "storageKey": null
     },
     (v0/*: any*/),
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "slug",
-      "args": null,
-      "storageKey": null
-    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -179,5 +171,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'fff28916fcb01e8d4fa3465946d0bfce';
+(node as any).hash = 'e97c82f264b236875fa1acdf28507f9f';
 export default node;

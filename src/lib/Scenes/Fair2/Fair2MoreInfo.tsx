@@ -133,7 +133,6 @@ export const Fair2MoreInfoFragmentContainer = createFragmentContainer(Fair2MoreI
     fragment Fair2MoreInfo_fair on Fair {
       about
       name
-      slug
       tagline
       profile {
         name

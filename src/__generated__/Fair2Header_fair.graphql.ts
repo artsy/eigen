@@ -48,7 +48,7 @@ v1 = [
   {
     "kind": "Literal",
     "name": "format",
-    "value": "HTML"
+    "value": "MARKDOWN"
   }
 ];
 return {
@@ -177,31 +177,31 @@ return {
       "alias": null,
       "name": "hours",
       "args": (v1/*: any*/),
-      "storageKey": "hours(format:\"HTML\")"
+      "storageKey": "hours(format:\"MARKDOWN\")"
     },
     {
       "kind": "ScalarField",
       "alias": null,
       "name": "links",
       "args": (v1/*: any*/),
-      "storageKey": "links(format:\"HTML\")"
+      "storageKey": "links(format:\"MARKDOWN\")"
     },
     {
       "kind": "ScalarField",
       "alias": null,
       "name": "tickets",
       "args": (v1/*: any*/),
-      "storageKey": "tickets(format:\"HTML\")"
+      "storageKey": "tickets(format:\"MARKDOWN\")"
     },
     {
       "kind": "ScalarField",
       "alias": null,
       "name": "contact",
       "args": (v1/*: any*/),
-      "storageKey": "contact(format:\"HTML\")"
+      "storageKey": "contact(format:\"MARKDOWN\")"
     }
   ]
 };
 })();
-(node as any).hash = '802361372c22c48ee8b199e39f67eea1';
+(node as any).hash = '45891118801486778b80c302d68fa0c5';
 export default node;

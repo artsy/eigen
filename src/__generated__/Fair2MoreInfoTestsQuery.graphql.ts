@@ -1,29 +1,78 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e08eaf8794c32dbeeefa862bce13f179 */
+/* @relayHash c13fe0c1f0d6f74dde886c6302078d19 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Fair2MoreInfoQueryVariables = {
+export type Fair2MoreInfoTestsQueryVariables = {
     fairID: string;
 };
-export type Fair2MoreInfoQueryResponse = {
+export type Fair2MoreInfoTestsQueryResponse = {
     readonly fair: {
         readonly " $fragmentRefs": FragmentRefs<"Fair2MoreInfo_fair">;
     } | null;
 };
-export type Fair2MoreInfoQuery = {
-    readonly response: Fair2MoreInfoQueryResponse;
-    readonly variables: Fair2MoreInfoQueryVariables;
+export type Fair2MoreInfoTestsQueryRawResponse = {
+    readonly fair: ({
+        readonly about: string | null;
+        readonly name: string | null;
+        readonly tagline: string | null;
+        readonly profile: ({
+            readonly name: string | null;
+            readonly id: string | null;
+        }) | null;
+        readonly location: ({
+            readonly id: string;
+            readonly internalID: string;
+            readonly city: string | null;
+            readonly address: string | null;
+            readonly address_2: string | null;
+            readonly postal_code: string | null;
+            readonly summary: string | null;
+            readonly coordinates: ({
+                readonly lat: number | null;
+                readonly lng: number | null;
+            }) | null;
+            readonly day_schedules: ReadonlyArray<({
+                readonly start_time: number | null;
+                readonly end_time: number | null;
+                readonly day_of_week: string | null;
+            }) | null> | null;
+            readonly openingHours: ({
+                readonly __typename: "OpeningHoursArray";
+                readonly schedules: ReadonlyArray<({
+                    readonly days: string | null;
+                    readonly hours: string | null;
+                }) | null> | null;
+            } | {
+                readonly __typename: "OpeningHoursText";
+                readonly text: string | null;
+            } | {
+                readonly __typename: string | null;
+            }) | null;
+        }) | null;
+        readonly ticketsLink: string | null;
+        readonly hours: string | null;
+        readonly links: string | null;
+        readonly tickets: string | null;
+        readonly summary: string | null;
+        readonly contact: string | null;
+        readonly id: string | null;
+    }) | null;
+};
+export type Fair2MoreInfoTestsQuery = {
+    readonly response: Fair2MoreInfoTestsQueryResponse;
+    readonly variables: Fair2MoreInfoTestsQueryVariables;
+    readonly rawResponse: Fair2MoreInfoTestsQueryRawResponse;
 };
 
 
 
 /*
-query Fair2MoreInfoQuery(
+query Fair2MoreInfoTestsQuery(
   $fairID: String!
 ) {
-  fair(id: $fairID) @principalField {
+  fair(id: $fairID) {
     ...Fair2MoreInfo_fair
     id
   }
@@ -134,7 +183,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "Fair2MoreInfoQuery",
+    "name": "Fair2MoreInfoTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -159,7 +208,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "Fair2MoreInfoQuery",
+    "name": "Fair2MoreInfoTestsQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -409,12 +458,12 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "Fair2MoreInfoQuery",
-    "id": "d208d155c557ae4aa88edf113c7ddef2",
+    "name": "Fair2MoreInfoTestsQuery",
+    "id": "44635ee5734a14f12974fde627e6000d",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'c0b78e780c064aed6d48946928a2bcb0';
+(node as any).hash = 'c75f58ca32cf8f91786e6fcab00ac7f8';
 export default node;

@@ -48,8 +48,8 @@ import {
   FairMoreInfoQueryRenderer,
 } from "./Scenes/Fair"
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
-import { Fair2MoreInfoQueryRenderer } from "./Scenes/Fair2/Components/Fair2MoreInfo"
 import { Fair2QueryRenderer } from "./Scenes/Fair2/Fair2"
+import { Fair2MoreInfoQueryRenderer } from "./Scenes/Fair2/Fair2MoreInfo"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"

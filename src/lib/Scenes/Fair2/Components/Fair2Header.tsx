@@ -61,7 +61,7 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
         <Text variant="text">{previewText}</Text>
         {!!canShowMoreInfoLink && (
           <TouchableOpacity onPress={() => handleNavigation(slug)}>
-            <Flex flexDirection="row" justifyContent="flex-start">
+            <Flex py={2} flexDirection="row" justifyContent="flex-start">
               <Text variant="mediumText">More info</Text>
               <ChevronIcon mr="-5px" mt="2px" />
             </Flex>
@@ -94,10 +94,10 @@ export const Fair2HeaderFragmentContainer = createFragmentContainer(Fair2Header,
         summary
       }
       ticketsLink
-      hours(format: HTML)
-      links(format: HTML)
-      tickets(format: HTML)
-      contact(format: HTML)
+      hours(format: MARKDOWN)
+      links(format: MARKDOWN)
+      tickets(format: MARKDOWN)
+      contact(format: MARKDOWN)
     }
   `,
 })
