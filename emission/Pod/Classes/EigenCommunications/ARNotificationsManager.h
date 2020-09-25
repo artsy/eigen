@@ -11,6 +11,7 @@
 + (NSString *)gravityURL;
 + (NSString *)metaphysicsURL;
 + (NSString *)predictionURL;
++ (NSString *)webURL;
 + (NSString *)userAgent;
 + (NSString *)options;
 
@@ -29,5 +30,6 @@
 
 - (void)notificationReceived;
 - (void)reset;
+- (void)requestNavigation:(NSString *)route;
 
 @end

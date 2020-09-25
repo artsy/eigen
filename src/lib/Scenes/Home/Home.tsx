@@ -1,5 +1,5 @@
-import React, { createRef, RefObject, useRef, useState } from "react"
-import { RefreshControl, View, ViewProperties } from "react-native"
+import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
+import { Alert, RefreshControl, View, ViewProperties } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
@@ -311,7 +311,42 @@ const HomePlaceholder: React.FC<{}> = () => {
   )
 }
 
-export const HomeQueryRenderer: React.SFC = () => {
+const messages = {
+  confirmed: {
+    title: "Email Confirmed",
+    message: "Your email has been confirmed.",
+  },
+  already_confirmed: {
+    title: "Already Confirmed",
+    message: "You have already confirmed your email.",
+  },
+  invalid_token: {
+    title: "Error",
+    message: "An error has occurred. Please contact supportartsy.net.",
+  },
+  blank_token: {
+    title: "Error",
+    message: "An error has occurred. Please contact supportartsy.net.",
+  },
+  expired_token: {
+    title: "Link Expired",
+    message: "Link expired. Please request a new verification email below.",
+  },
+}
+
+export const HomeQueryRenderer: React.FC<{ flash_message?: string }> = ({ flash_message }) => {
+  useEffect(() => {
+    if (flash_message) {
+      const message = messages[flash_message as keyof typeof messages]
+
+      if (!message) {
+        console.error(`Invalid flash_message type ${JSON.stringify(flash_message)}`)
+        return
+      }
+
+      Alert.alert(message.title, message.message, [{ text: "Ok" }])
+    }
+  }, [flash_message])
   return (
     <QueryRenderer<HomeQuery>
       environment={defaultEnvironment}

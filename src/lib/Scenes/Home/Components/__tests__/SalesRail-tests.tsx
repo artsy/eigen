@@ -7,14 +7,10 @@ import "react-native"
 import { SalesRail_salesModule } from "__generated__/SalesRail_salesModule.graphql"
 import { extractText } from "lib/tests/extractText"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
+import { navigate } from "lib/navigation/navigate"
 import { useTracking } from "react-tracking"
 import HomeAnalytics from "../../homeAnalytics"
 import { SalesRailFragmentContainer } from "../SalesRail"
@@ -143,14 +139,11 @@ it("routes to live URL if present, otherwise href", () => {
   // Timed sale
   // @ts-ignore STRICTNESS_MIGRATION
   first(tree.root.findAllByType(CardRailCard)).props.onPress()
-  expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/auction/the-sale")
+  expect(navigate).toHaveBeenCalledWith("/auction/the-sale")
   // LAI sale
   // @ts-ignore STRICTNESS_MIGRATION
   last(tree.root.findAllByType(CardRailCard)).props.onPress()
-  expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-    expect.anything(),
-    "https://live.artsy.net/the-lai-sale"
-  )
+  expect(navigate).toHaveBeenCalledWith("https://live.artsy.net/the-lai-sale")
 })
 
 describe("analytics", () => {

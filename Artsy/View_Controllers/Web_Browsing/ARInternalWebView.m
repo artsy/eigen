@@ -1,7 +1,7 @@
 #import "ARInternalWebView.h"
 #import "ARInternalMobileWebViewController.h"
 #import "UIViewController+SimpleChildren.h"
-#import "ARSwitchBoard.h"
+#import "ARRouter.h"
 #import <React/UIView+React.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 
@@ -30,11 +30,11 @@
 
 - (void)embedWebView
 {
-    NSURL *resolvedURL = [ARSwitchBoard.sharedInstance resolveRelativeUrl:self.route];
+    NSURL *resolvedURL = [ARRouter resolveRelativeUrl:self.route];
     ARInternalMobileWebViewController *webVC = [[ARInternalMobileWebViewController alloc] initWithURL:resolvedURL];
     UIViewController *parentVC = [self reactViewController];
     [parentVC ar_addModernChildViewController:webVC];
-    [webVC.view alignToView:parentVC.view];
+    [webVC.view alignToView:self];
     self.webViewController = webVC;
 }
 @end

@@ -96,7 +96,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 
   onPressConditionsOfSale = () => {
-    SwitchBoard.presentModalViewController(this, "/conditions-of-sale?present_modally=true")
+    SwitchBoard.presentModalViewController(this, "/conditions-of-sale")
   }
 
   onCreditCardAdded(token: StripeToken, params: PaymentCardTextFieldParams) {

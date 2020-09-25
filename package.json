@@ -114,6 +114,7 @@
     "styled-system": "5.1.5",
     "supercluster": "6.0.1",
     "tipsi-stripe": "https://github.com/ashfurrow/tipsi-stripe.git#fix-infinite-loop",
+    "url": "^0.11.0",
     "yup": "0.29.1"
   },
   "devDependencies": {

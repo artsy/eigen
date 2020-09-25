@@ -1,4 +1,5 @@
 import React from "react"
+import { findNodeHandle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -10,11 +11,9 @@ const Container = styled.View`
 `
 
 export interface AttachmentProps {
-  /**
-   * This callback is bound to the attachment preview component, meaning that `this` refers to the instance you can pass
-   * to e.g. `findNodeHandle`.
-   */
-  onSelected?: (attachmentID: string) => void
+  // reactNodeHandle is passed to the native side to decide which UIView to show the
+  // download progress bar on.
+  onSelected?: (reactNodeHandle: number, attachmentID: string) => void
 }
 
 interface Props extends AttachmentProps {
@@ -25,7 +24,10 @@ export class AttachmentPreview extends React.Component<Props> {
   render() {
     const { attachment, children, onSelected } = this.props
     return (
-      <Touchable underlayColor={color("black5")} onPress={onSelected && onSelected.bind(this, attachment.internalID)}>
+      <Touchable
+        underlayColor={color("black5")}
+        onPress={() => onSelected?.(findNodeHandle(this)!, attachment.internalID)}
+      >
         <Container>{children}</Container>
       </Touchable>
     )

@@ -4,7 +4,6 @@ import { ShowArtistsQuery } from "__generated__/ShowArtistsQuery.graphql"
 import { ArtistsGroupedByName } from "lib/Components/ArtistsGroupedByName"
 import { Schema, screenTrack } from "lib/utils/track"
 import { get } from "lodash"
-import { Theme } from "palette"
 import React from "react"
 import { ViewProperties } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -41,11 +40,7 @@ export class ShowArtists extends React.Component<Props, State> {
   }
 
   render() {
-    return (
-      <Theme>
-        <ArtistsGroupedByName data={this.state.data} Component={this} />
-      </Theme>
-    )
+    return <ArtistsGroupedByName data={this.state.data} Component={this} />
   }
 }
 

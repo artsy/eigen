@@ -1,7 +1,5 @@
 #import "ARAuctionWebViewController.h"
-#import "ARSwitchBoard.h"
-#import "ARSwitchBoard+Eigen.h"
-#import <Emission/ARArtworkComponentViewController.h>
+#import "ARRouter.h"
 
 #import <OCMock/OCObserverMockObject.h>
 
@@ -15,7 +13,7 @@ static NSURL *
 URLWithPath(NSString *path)
 {
     // For some reason the URL produced by this method does not equal a NSURL initialized with -URLWithString:
-    NSURL *URL = [[ARSwitchBoard sharedInstance] resolveRelativeUrl:path];
+    NSURL *URL = [ARRouter resolveRelativeUrl:path];
     return [NSURL URLWithString:URL.absoluteString];
 }
 

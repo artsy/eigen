@@ -5,7 +5,6 @@
 #import "UIView+HitTestExpansion.h"
 #import "ARMenuAwareViewController.h"
 #import "AROptions.h"
-#import "ARSwitchBoard.h"
 #import "ArtsyEcho.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>

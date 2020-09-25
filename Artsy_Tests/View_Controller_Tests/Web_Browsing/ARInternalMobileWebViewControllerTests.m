@@ -3,9 +3,8 @@
 #import "ARUserManager+Stubs.h"
 #import "ARUserManager.h"
 #import "ARNetworkConstants.h"
-#import "ARSwitchBoard.h"
-#import "ARSwitchBoard+Eigen.h"
 #import "ARInternalShareValidator.h"
+
 
 static WKNavigationAction *StubNavActionForRequest(NSURLRequest *request, WKNavigationType type)
 {
@@ -25,27 +24,6 @@ static WKNavigationAction *StubNavActionForRequest(NSURLRequest *request, WKNavi
 @end
 
 SpecBegin(ARInternalMobileViewController);
-
-it(@"passes on fair context", ^{
-    id fair = [OCMockObject mockForClass:[Fair class]];
-    id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
-    [[switchboardMock expect] loadURL:OCMOCK_ANY fair:[OCMArg checkWithBlock:^BOOL(id obj) {
-        return obj == fair;
-    }]];
-
-    ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://artsy.net/foo/bar"]];
-    controller.fair = fair;
-
-    NSURL *url = [NSURL URLWithString:@"http://artsy.net/foo/bar"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-
-    id action = StubNavActionForRequest(request, WKNavigationTypeLinkActivated);
-    [controller shouldLoadNavigationAction:action];
-
-    [switchboardMock verify];
-    [switchboardMock stopMocking];
-    [fair stopMocking];
-});
 
 describe(@"initWithURL", ^{
     describe(@"in production", ^{

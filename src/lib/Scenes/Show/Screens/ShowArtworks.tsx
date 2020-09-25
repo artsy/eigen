@@ -3,7 +3,6 @@ import { ShowArtworksQuery } from "__generated__/ShowArtworksQuery.graphql"
 import { FilteredInfiniteScrollGrid } from "lib/Components/FilteredInfiniteScrollGrid"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { Schema, screenTrack } from "lib/utils/track"
-import { Theme } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
@@ -30,11 +29,7 @@ interface State {
 }))
 export class ShowArtworks extends React.Component<Props, State> {
   render() {
-    return (
-      <Theme>
-        <FilteredInfiniteScrollGrid entity={this.props.show} />
-      </Theme>
-    )
+    return <FilteredInfiniteScrollGrid entity={this.props.show} hideBackButtonOnScroll />
   }
 }
 

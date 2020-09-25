@@ -19,6 +19,7 @@
 + (void)setupUserAgent;
 + (BOOL)isWebURL:(NSURL *)url;
 + (BOOL)isTelURL:(NSURL *)url;
++ (NSURL *)resolveRelativeUrl:(NSString *)path;
 
 + (BOOL)isBNMORequestURL:(NSURL *)url;
 

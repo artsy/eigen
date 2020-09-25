@@ -3,8 +3,9 @@ import { MoreInfoQuery } from "__generated__/MoreInfoQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { hideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 import { Schema, screenTrack, track } from "lib/utils/track"
-import { Box, Sans, Separator, Serif, Spacer, Theme } from "palette"
+import { Box, Sans, Separator, Serif, Spacer } from "palette"
 import React from "react"
 import { FlatList, Linking, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -160,24 +161,24 @@ export class MoreInfo extends React.Component<Props, State> {
 
   render() {
     return (
-      <Theme>
-        <FlatList
-          data={this.state.sections}
-          ListHeaderComponent={
-            <>
-              <ListHeaderText size="8" mt={12} px={2}>
-                About the show
-              </ListHeaderText>
-              {this.renderItemSeparator()}
-            </>
-          }
-          ListFooterComponent={<Spacer pb={4} />}
-          ItemSeparatorComponent={this.renderItemSeparator}
-          renderItem={(item) => <Box px={2}>{this.renderItem(item)}</Box>}
-          // @ts-ignore STRICTNESS_MIGRATION
-          keyExtractor={(item, index) => item.type + String(index)}
-        />
-      </Theme>
+      <FlatList
+        data={this.state.sections}
+        ListHeaderComponent={
+          <>
+            <ListHeaderText size="8" mt={12} px={2}>
+              About the show
+            </ListHeaderText>
+            {this.renderItemSeparator()}
+          </>
+        }
+        ListFooterComponent={<Spacer pb={4} />}
+        ItemSeparatorComponent={this.renderItemSeparator}
+        renderItem={(item) => <Box px={2}>{this.renderItem(item)}</Box>}
+        // @ts-ignore STRICTNESS_MIGRATION
+        keyExtractor={(item, index) => item.type + String(index)}
+        onScroll={hideBackButtonOnScroll}
+        scrollEventThrottle={100}
+      />
     )
   }
 }

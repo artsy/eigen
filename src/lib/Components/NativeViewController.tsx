@@ -5,6 +5,7 @@ const ARNativeViewController = requireNativeComponent("ARNativeViewController") 
 
 export const NativeViewController: React.FC<{
   viewName: "Onboarding" | "Main"
-}> = ({ viewName }) => {
-  return <ARNativeViewController style={{ flex: 1 }} key={viewName} viewName={viewName} />
+  viewProps?: object
+}> = ({ viewName, viewProps = {} }) => {
+  return <ARNativeViewController style={{ flex: 1 }} key={viewName} viewName={viewName} viewProps={viewProps} />
 }

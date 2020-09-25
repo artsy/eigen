@@ -11,13 +11,13 @@
 #import "ARAppDelegate.h"
 #import "ARAppDelegate+Analytics.h"
 #import "ARAppDelegate+Emission.h"
+#import "ARAppDelegate+Echo.h"
 #import "ARAppDelegate+TestScenarios.h"
 #import "ARAppNotificationsDelegate.h"
 #import "ARAppConstants.h"
 #import "ARFonts.h"
 #import "ARUserManager.h"
 #import "AROptions.h"
-#import "ARSwitchBoard.h"
 #import "ARTopMenuViewController.h"
 
 #import "UIViewController+InnermostTopViewController.h"
@@ -72,6 +72,8 @@ static ARAppDelegate *_sharedInstance = nil;
     // protocol, as it means we would have to implement `application:openURL:options:` which seems tricky if we still
     // have to implement `application:openURL:sourceApplication:annotation:` as well.
     [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = (id)_sharedInstance;
+
+
 }
 
 + (ARAppDelegate *)sharedInstance
@@ -93,6 +95,9 @@ static ARAppDelegate *_sharedInstance = nil;
     if ([[NSProcessInfo processInfo] environment][@"TEST_SCENARIO"]) {
         [self setupIntegrationTests];
     }
+
+    self.echo = [[ArtsyEcho alloc] init];
+    [self setupEcho];
 
     [ARDefaults setup];
     [ARRouter setup];
@@ -196,7 +201,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)killSwitch;
 {
-    Message *killSwitchVersion = ARSwitchBoard.sharedInstance.echo.messages[@"KillSwitchBuildMinimum"];
+    Message *killSwitchVersion = ARAppDelegate.sharedInstance.echo.messages[@"KillSwitchBuildMinimum"];
     NSString *echoMinimumBuild = killSwitchVersion.content;
     if (echoMinimumBuild != nil && [echoMinimumBuild length] > 0) {
         NSDictionary *infoDictionary = [[[NSBundle mainBundle] infoDictionary] mutableCopy];
@@ -340,12 +345,7 @@ static ARAppDelegate *_sharedInstance = nil;
         NSString *urlString = [data valueForKey:@"url"];
 
         if (urlString) {
-            _landingURLRepresentation = urlString;
-
-            UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:[NSURL URLWithString:urlString]];
-            if (viewController) {
-                [[ARTopMenuViewController sharedController] pushViewController:viewController];
-            }
+            [[AREmission sharedInstance] navigate:urlString];
             return YES;
 
         } else {
@@ -353,10 +353,7 @@ static ARAppDelegate *_sharedInstance = nil;
         }
     }
 
-    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:url];
-    if (viewController) {
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-    }
+    [[AREmission sharedInstance] navigate:[url absoluteString]];
 
     return YES;
 }

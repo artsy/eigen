@@ -41,4 +41,13 @@
     return [mutableOptions copy];
 }
 
+- (BOOL)isFeatureEnabled:(NSString *)featureFlag {
+    Feature *currentFeature = self.features[featureFlag];
+    if (currentFeature) {
+        return currentFeature.state;
+    } else {
+        return NO;
+    }
+}
+
 @end

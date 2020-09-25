@@ -20,6 +20,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
+import { hideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 import { Box, Button, space, Theme } from "palette"
 import { graphql } from "relay-runtime"
 
@@ -74,6 +75,9 @@ export interface Props {
 
   /** Show Lot Label  */
   showLotLabel?: boolean
+
+  /** Set as true to automatically manage the back button visibility as the user scrolls */
+  hideBackButtonOnScroll?: boolean
 }
 
 interface PrivateProps {
@@ -114,6 +118,9 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       }
     })
   }
+
+  // tslint:disable-next-line:member-ordering
+  handleFetchNextPageOnScroll = isCloseToBottom(this.fetchNextPage)
 
   /** A simplified version of the Relay debugging logs for infinite scrolls */
   debugLog(query: string, response?: any, error?: any) {
@@ -253,7 +260,14 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     return (
       <Theme>
         <ScrollView
-          onScroll={autoFetch ? isCloseToBottom(this.fetchNextPage) : () => null}
+          onScroll={(ev) => {
+            if (this.props.hideBackButtonOnScroll) {
+              hideBackButtonOnScroll(ev)
+            }
+            if (autoFetch) {
+              this.handleFetchNextPageOnScroll(ev)
+            }
+          }}
           scrollEventThrottle={50}
           onLayout={this.onLayout}
           scrollsToTop={false}
@@ -273,7 +287,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             </Button>
           )}
 
-          {!!isLoading() && (
+          {!!(isLoading() && hasMore()) && (
             <Box my={2}>
               <Spinner />
             </Box>

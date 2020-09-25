@@ -37,11 +37,6 @@ RCT_EXPORT_METHOD(markNotificationsRead:(RCTResponseSenderBlock)block)
     self.notificationReadStatusAssigner(block);
 }
 
-RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)widthIn height:(CGFloat)heightIn artworkSlug:(NSString *)artworkSlug artworkId:(NSString *)artworkId)
-{
-    self.augmentedRealityVIRPresenter(imgUrl, widthIn, heightIn, artworkSlug, artworkId);
-}
-
 RCT_EXPORT_METHOD(setApplicationIconBadgeNumber:(nonnull NSNumber *)count)
 {
     __block int icount = [count intValue];
@@ -53,12 +48,6 @@ RCT_EXPORT_METHOD(setApplicationIconBadgeNumber:(nonnull NSNumber *)count)
 RCT_EXPORT_METHOD(validateAuthCredentialsAreCorrect)
 {
     self.authValidationChecker();
-}
-
-
-RCT_EXPORT_METHOD(resolveRelativeURL:(NSString *)path resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    self.urlResolver(path, resolve, reject);
 }
 
 @end

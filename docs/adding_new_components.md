@@ -17,68 +17,36 @@ export class MyNewComponent extends React.Component {
 }
 ```
 
-## Adding a Native Controller (Optional)
+## Adding a new screen (Optional)
 
-Emission can export components through its CocoaPod to be consumed by Eigen. This isn't necessary for new components like buttons or grids, but will be necessary if any part of Eigen needs to use the new component directly.
-
-We need to add the component to our app registry. Open `AppRegistry.tsx` and add an import statement for the component:
+To add your component as a new screen, open `AppRegistry.tsx` and add an import statement for the component:
 
 ```tsx
 import MyNewComponent from "./Components/Path/To/MyNewComponent"
 ```
 
-And add the following line with the rest of the calls to `registerComponent()`:
+And add an entry to the `modules` object.
 
-```tsx
-AppRegistry.registerComponent("MyNewComponent", () => MyNewComponent)
+```diff
+  FullFeaturedArtistList: { Component: CollectionFullFeaturedArtistListQueryRenderer },
+  Gene: { Component: Gene },
++ MyNewComponent: {Component: MyNewComponent},
+  Home: { Component: HomeQueryRenderer, isRootViewForTabName: "home" },
+  Inbox: { Component: Inbox, isRootViewForTabName: "inbox" },
 ```
 
-This will expose the component as a module that can be loaded in our view controller, which we'll create now.
+Then add a route in `routes.tsx`
 
-Create two new files in the `Pod/Classes/ViewControllers` directory, named `ARMyNewComponentViewController.h` and `ARMyNewComponentViewController.m`. You need to include `AR` at the beginning of these file names, and the beginning of your class name. This uses Objective-C, so don't be shy about asking for help in Slack. In the `.h` header file, add something _like_ this.
-
-```objc
-#import <Emission/ARComponentViewController.h>
-
-NS_ASSUME_NONNULL_BEGIN
-
-@interface ARMyNewComponentViewController: ARComponentViewController
-
-- (instancetype)initWithSomeIDThatEmissionNeeds:(NSString *)someID NS_DESIGNATED_INITIALIZER;
-
-- (instancetype)initWithEmission:(nullable AREmission *)emission
-                      moduleName:(NSString *)moduleName
-               initialProperties:(nullable NSDictionary *)initialProperties NS_UNAVAILABLE;
-
-@property (nonatomic, readonly) NSString *someID;
-
-@end
-
-NS_ASSUME_NONNULL_END
+```diff
+  new RouteMatcher("/fair/:fairID/info", "FairMoreInfo"),
+  new RouteMatcher("/fair/:fairID/bmw-sponsored-content", "FairBMWArtActivation"),
++ new RouteMatcher("/my-new-component", "MyNewComponent"),
+  new RouteMatcher("/city/:citySlug/:section", "CitySectionList"),
+  new RouteMatcher("/city-fair/:citySlug", "CityFairList"),
 ```
 
-We say _like_ this because the specifics will depend on your needs. Our `MyNewComponent` React component doesn't have any props, but if it did then we would include those props here as parameters to the initializer, and as Objective-C properties. (Objective-C convention is that any parameters to an object's initializer should be properties, often `readonly` ones.) Look at the other header files in the `Pod/Classes/ViewControllers` for examples.
+Any path parameters you declare in the route (using the `/foo/:paramName/bar` syntax) will be passed as props to your component.
 
-Okay now for the `.m` implementation file:
+Similarly, any uri query parameters folks include when navigating to your screen will be passed as props to your component.
 
-```objc
-#import "ARMyNewComponentViewController.h"
-
-@implementation ARMyNewComponentViewController
-
-- (instancetype)initWithSomeIDThatEmissionNeeds:(NSString *)someID
-{
-  if ((self = [super initWithEmission:nil
-                           moduleName:@"MyNewComponent"
-                    initialProperties:@{ @"someID": someID }])) {
-    _someID = someID;
-  }
-  return self;
-}
-
-@end
-```
-
-Again, this will vary depending on the props that you're injecting in. Look for a `.h` file that matches your use case, and then look at its corresponding `.m` file.
-
-Okay. With the new view controllers created, re-run `bundle exec pod install` to integrate the new view controller into the app. You can now add routing to this in `ARSwitchBoard.md` ([see example PR](https://github.com/artsy/eigen/pull/3039)).
+So for the route matcher `new RouteMatcher("/city-fair/:citySlug", "CityFairList")` and the path `/city-fair/london?show_controls=false` we will essentially mount a new screen like `<CityFairList citySlug="london" show_controls="false" />`

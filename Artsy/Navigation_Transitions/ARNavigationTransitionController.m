@@ -2,7 +2,6 @@
 
 #import "ARDefaultNavigationTransition.h"
 
-#import <Emission/ARArtworkComponentViewController.h>
 #import "ARViewInRoomViewController.h"
 
 
