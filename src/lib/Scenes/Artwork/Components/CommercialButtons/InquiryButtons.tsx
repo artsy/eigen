@@ -1,12 +1,11 @@
 import { InquiryButtons_artwork } from "__generated__/InquiryButtons_artwork.graphql"
 import { Button, ButtonVariant } from "palette"
 import React, { useState } from "react"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 import { InquiryModalFragmentContainer } from "./InquiryModal"
 
 export interface InquiryButtonsProps {
   artwork: InquiryButtons_artwork
-  relay: RelayProp
   // EditionSetID is passed down from the edition selected by the user
   editionSetID?: string
   variant?: ButtonVariant
@@ -16,7 +15,7 @@ export interface InquiryButtonsState {
   modalIsVisible: boolean
 }
 
-export const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, relay, ...props }) => {
+export const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...props }) => {
   const [modalVisibility, setModalVisibility] = useState(false)
 
   return (

@@ -6,7 +6,7 @@ import { getCurrentEmissionState } from "lib/store/AppStore"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { Button, Spacer } from "palette"
 import React from "react"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 import { BidButtonFragmentContainer } from "./BidButton"
 import { BuyNowButtonFragmentContainer } from "./BuyNowButton"
 import { InquiryButtonsFragmentContainer } from "./InquiryButtons"
@@ -15,7 +15,6 @@ import { MakeOfferButtonFragmentContainer } from "./MakeOfferButton"
 export interface CommercialButtonProps {
   artwork: CommercialButtons_artwork
   me: CommercialButtons_me
-  relay: RelayProp
   // EditionSetID is passed down from the edition selected by the user
   editionSetID?: string
   auctionState: AuctionTimerState
