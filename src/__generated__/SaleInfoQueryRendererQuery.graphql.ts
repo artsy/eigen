@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash d77d611949a02d96f4875178d5de744f */
+/* @relayHash c2b3b9a36ac2c0555ae01cbfe248b6e6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,8 +29,25 @@ query SaleInfoQueryRendererQuery(
   }
 }
 
+fragment RegisterToBidButton_sale on Sale {
+  slug
+  startAt
+  endAt
+  requireIdentityVerification
+  registrationStatus {
+    qualifiedForBidding
+    id
+  }
+}
+
 fragment SaleInfo_sale on Sale {
+  description
+  endAt
+  liveStartAt
   name
+  startAt
+  timeZone
+  ...RegisterToBidButton_sale
 }
 */
 
@@ -49,7 +66,14 @@ v1 = [
     "name": "id",
     "variableName": "saleID"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -94,6 +118,27 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
+            "name": "description",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "endAt",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "liveStartAt",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
             "name": "name",
             "args": null,
             "storageKey": null
@@ -101,10 +146,51 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "startAt",
             "args": null,
             "storageKey": null
-          }
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "timeZone",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "slug",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "requireIdentityVerification",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "registrationStatus",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Bidder",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "qualifiedForBidding",
+                "args": null,
+                "storageKey": null
+              },
+              (v2/*: any*/)
+            ]
+          },
+          (v2/*: any*/)
         ]
       }
     ]
@@ -112,7 +198,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleInfoQueryRendererQuery",
-    "id": "f5c6d1f86ba305588f8efd13695d8b0b",
+    "id": "5487e9e74d4760d636909b88ece8fefc",
     "text": null,
     "metadata": {}
   }

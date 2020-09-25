@@ -1,13 +1,12 @@
 import { SaleHeader_sale } from "__generated__/SaleHeader_sale.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { saleTime } from "lib/utils/saleTime"
 import { Flex, Text } from "palette"
 import React, { useRef } from "react"
 import { Animated, Dimensions, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CaretButton } from "../../../Components/Buttons/CaretButton"
 import OpaqueImageView from "../../../Components/OpaqueImageView/OpaqueImageView"
-import { saleTime } from "../helpers/saleTime"
-
 const COVER_IMAGE_HEIGHT = 260
 
 interface AnimatedValue {
@@ -75,7 +74,7 @@ export const SaleHeader: React.FC<Props> = (props) => {
           </Text>
           <Flex my="1">
             <Text style={{ fontWeight: "bold" }} variant="text">
-              {saleTimeDetails?.absolute}
+              {saleTimeDetails?.absoluteConcatenated}
             </Text>
             {!!saleTimeDetails?.relative && (
               <Text variant="text" color="black60">

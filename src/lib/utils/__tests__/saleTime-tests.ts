@@ -46,6 +46,13 @@ const finishedSaleNY = {
   timeZone: TIME_ZONE_NY,
 }
 
+const finishedLiveSaleNY = {
+  liveStartAt: "2020-08-01T15:00:00",
+  startAt: "2020-08-01T15:00:00",
+  endAt: "2021-08-01T15:00:00",
+  timeZone: TIME_ZONE_NY,
+}
+
 const liveSaleDE = {
   liveStartAt: "2020-10-01T15:00:00",
   timeZone: TIME_ZONE_DE,
@@ -61,17 +68,18 @@ const liveSaleTomorrow = {
   timeZone: TIME_ZONE_DE,
 }
 
-describe("#saleTime.absolute", () => {
+describe("#saleTime.absoluteConcatenated", () => {
   it("shows the time in the correct timezone", () => {
-    expect(saleTime(liveSaleNY)?.absolute).toEqual("Live bidding begins Oct 1 at 3:00pm EDT")
-    expect(saleTime(liveSaleDE)?.absolute).toEqual("Live bidding begins Oct 1 at 9:00am EDT")
+    expect(saleTime(liveSaleNY)?.absoluteConcatenated).toEqual("Live bidding begins Oct 1 at 3:00pm EDT")
+    expect(saleTime(liveSaleDE)?.absoluteConcatenated).toEqual("Live bidding begins Oct 1 at 9:00am EDT")
   })
   it("recognises whether an auction is live or not", () => {
-    expect(saleTime(liveSaleNY)?.absolute).toEqual("Live bidding begins Oct 1 at 3:00pm EDT")
-    expect(saleTime(timedSaleNY)?.absolute).toEqual("Bidding begins Oct 1 at 3:00pm EDT")
+    expect(saleTime(liveSaleNY)?.absoluteConcatenated).toEqual("Live bidding begins Oct 1 at 3:00pm EDT")
+    expect(saleTime(timedSaleNY)?.absoluteConcatenated).toEqual("Bidding begins Oct 1 at 3:00pm EDT")
   })
   it("recognises whether an auction is over or not", () => {
-    expect(saleTime(finishedSaleNY)?.absolute).toEqual("Closed on Sep 1")
+    expect(saleTime(finishedSaleNY)?.absoluteConcatenated).toEqual("Closed on Sep 1")
+    expect(saleTime(finishedLiveSaleNY)?.absoluteConcatenated).toEqual("Live bidding closes Aug 1 at 3:00pm")
   })
 })
 

@@ -223,7 +223,7 @@ static ARSwitchBoard *sharedInstance = nil;
     }];
 
     if (![self isFeatureEnabled:@"DisableNativeAuctions"] && [AROptions boolForOption:AROptionsNewSalePage]) {
-        [self.routes addRoute:@"/auction/:sale_id/info" handler:JLRouteParams {
+        [self.routes addRoute:@"/auction/:slug/info" handler:JLRouteParams {
             return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"AuctionInfo" initialProperties:parameters];
         }];
     }

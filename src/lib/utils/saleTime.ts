@@ -17,24 +17,37 @@ export const saleTime = (sale?: {
   const endDateMoment = endDate && moment.tz(endDate, moment.ISO_8601, sale.timeZone).tz(userTimeZone)
   const now = moment()
 
+  const absoluteSaleTime = absolute(now, startDateMoment, endDateMoment, userTimeZone, isLive)
+
   return {
-    absolute: absolute(now, startDateMoment, endDateMoment, userTimeZone, isLive),
+    absolute: absoluteSaleTime,
+    absoluteConcatenated: `${absoluteSaleTime.headline} ${absoluteSaleTime.date}`,
     relative: relative(now, startDateMoment, endDateMoment),
   }
 }
 
 const absolute = (now: any, startDateMoment: any, endDateMoment: any, userTimeZone: string, isLive: boolean) => {
-  if (endDateMoment && now.diff(endDateMoment) > 0) {
-    return `Closed on ${endDateMoment.format("MMM D")}`
+  if (now.diff(endDateMoment) > 0) {
+    return {
+      headline: "Closed on",
+      date: endDateMoment.format("MMM D"),
+    }
   } else {
-    return (
-      `${isLive ? "Live bidding" : "Bidding"} ` +
-      (now.diff(startDateMoment) < 0
-        ? `begins ${startDateMoment.format("MMM D")} ` +
-          `at ${startDateMoment.format("h:mma")} ` +
-          moment.tz(userTimeZone).format("z")
-        : `closes ${endDateMoment.format("MMM D")} ` + `at ${endDateMoment.format("h:mma")} `)
-    )
+    const biddingLivePrefix = isLive ? "Live bidding" : "Bidding"
+    const biddingStartPrefix = now.diff(startDateMoment) < 0 ? "begins" : "closes"
+
+    if (now.diff(startDateMoment) < 0) {
+      return {
+        headline: `${biddingLivePrefix} ${biddingStartPrefix}`,
+        date: `${startDateMoment.format("MMM D")} at ${startDateMoment.format("h:mma")} ${moment
+          .tz(userTimeZone)
+          .format("z")}`,
+      }
+    }
+    return {
+      headline: `${biddingLivePrefix} ${biddingStartPrefix}`,
+      date: `${endDateMoment.format("MMM D")} at ${endDateMoment.format("h:mma")}`,
+    }
   }
 }
 
