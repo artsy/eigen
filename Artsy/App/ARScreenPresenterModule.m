@@ -159,7 +159,7 @@ RCT_EXPORT_METHOD(switchTab:(nonnull NSString *)tabType props:(nonnull NSDiction
 
 + (UIViewController *)loadAuctionWithID:(NSString *)saleID
 {
-    if ([[[ARAppDelegate sharedInstance] echo] isFeatureEnabled:@"DisableNativeAuctions"] == NO) {
+    if ([[[ARAppDelegate sharedInstance] echo] isFeatureEnabled:@"DisableNativeAuctions"] == YES) {
         NSString *path = [NSString stringWithFormat:@"/auction/%@", saleID];
         NSURL *URL = [ARRouter resolveRelativeUrl:path];
         return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:nil];
