@@ -4,7 +4,7 @@ import {
 } from "__generated__/Fair2CollectionsTestsQuery.graphql"
 import { Fair2CollectionsFragmentContainer } from "lib/Scenes/Fair2/Components/Fair2Collections"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Text, Touchable } from "palette"
+import { Text, TouchableWithScale } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -127,7 +127,7 @@ describe("Fair2Collections", () => {
   it("renders the 2 collections", () => {
     const wrapper = getWrapper()
 
-    const links = wrapper.root.findAllByType(Touchable)
+    const links = wrapper.root.findAllByType(TouchableWithScale)
     expect(links).toHaveLength(2)
 
     const text = wrapper.root

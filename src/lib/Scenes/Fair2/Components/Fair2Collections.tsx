@@ -3,7 +3,7 @@ import { CARD_WIDTH } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { compact } from "lodash"
-import { Box, BoxProps, SmallCard, Text, Touchable } from "palette"
+import { Box, BoxProps, SmallCard, Text, TouchableWithScale } from "palette"
 import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -37,14 +37,14 @@ export const Fair2Collections: React.FC<Fair2CollectionsProps> = ({ fair, ...res
           const images = compact(collection.artworks.edges.map((edge) => edge?.node?.image?.url))
 
           return (
-            <Touchable
+            <TouchableWithScale
               key={collection.slug}
               onPress={() => {
                 SwitchBoard.presentNavigationViewController(ref.current, `/collection/${collection.slug}`)
               }}
             >
               <SmallCard width={CARD_WIDTH} images={images} title={collection.title} subtitle={collection.category} />
-            </Touchable>
+            </TouchableWithScale>
           )
         }}
       />
