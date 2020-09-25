@@ -12,120 +12,88 @@ function join(...parts: string[]) {
   return parts.map((s) => s.replace(/(^\/+|\/+$)/g, "")).join("/")
 }
 
-export const VanityURLPossibleRedirect: React.FC<{ slug: string }> = ({ slug }) => {
-  const [state, setState] = useState<null | RedirectResult>()
-  const { authenticationToken, webURL } = AppStore.useAppState((store) => store.native.sessionState)
+const ArtsyWebView: React.FC<{ url: string }> = ({ url }) => {
   const useReactNativeWebView = useEmissionOption("AROptionsUseReactNativeWebView")
 
-  useEffect(() => {
-    evaluateRedirect({ webURL, authenticationToken, slug }).then((result) => {
-      switch (result.type) {
-        case "error":
-        case "show_internal_web_view":
-          setState(result)
-          break
-        case "open_external_link":
-        case "show_native_view":
-          // TODO: implement `replace` mode of navigation
-          goBack()
-          navigate(result.url)
-          break
-        default:
-          assertNever(result)
-      }
-    })
-  }, [])
-
-  if (!state) {
-    return (
-      <Flex style={{ flex: 1 }} flexDirection="row" alignItems="center" justifyContent="center">
-        <Spinner />
-      </Flex>
-    )
-  }
-
-  if (state.type === "error") {
-    return (
-      <Stack style={{ flex: 1 }} mx={2} alignItems="center" justifyContent="center">
-        <Text variant="largeTitle">404</Text>
-        <Text variant="text" textAlign="center">
-          We can't find that page.
-        </Text>
-
-        <Button
-          variant="secondaryOutline"
-          onPress={() => {
-            Linking.openURL(join(webURL, slug))
-          }}
-        >
-          Open in browser
-        </Button>
-      </Stack>
-    )
-  }
-
   if (useReactNativeWebView) {
-    return <WebView source={{ uri: state.url }} />
+    return <WebView source={{ uri: url }} />
   } else {
-    return <InternalWebView route={state.url} />
+    return <InternalWebView route={url} />
   }
 }
 
-type RedirectResult =
-  | {
-      type: "error"
-    }
-  | {
-      type: "open_external_link"
-      url: string
-    }
-  | {
-      type: "show_internal_web_view"
-      url: string
-    }
-  | {
-      type: "show_native_view"
-      url: string
-    }
+export const VanityURLPossibleRedirect: React.FC<{ slug: string }> = ({ slug }) => {
+  const [jsx, setJSX] = useState(<Loading />)
 
-const evaluateRedirect = async ({
-  slug,
-  authenticationToken,
-  webURL,
-}: {
-  slug: string
-  authenticationToken: string
-  webURL: string
-}): Promise<RedirectResult> => {
-  try {
-    const response = await fetch(join(webURL, slug), {
+  const { authenticationToken, webURL } = AppStore.useAppState((store) => store.native.sessionState)
+  const resolvedURL = join(webURL, slug)
+
+  useEffect(() => {
+    fetch(resolvedURL, {
       method: "HEAD",
       headers: { "X-Access-Token": authenticationToken },
     })
-    if (!response.ok) {
-      // Test this with any junk, e.g. `artsy:///asdfasdfasdf`
-      return { type: "error" }
-    }
+      .then((response) => {
+        if (!response.ok) {
+          // Test this with any junk, e.g. `artsy:///asdfasdfasdf`
+          setJSX(<NotFound url={resolvedURL} />)
+          return
+        }
 
-    const screen = matchRoute(response.url)
-    if (screen.type === "external_url") {
-      // not sure if we have any URLs in force that would trigger this, but better safe than sorry!
-      return { type: "open_external_link", url: response.url }
-    } else if (screen.module === "WebView") {
-      // Test this with `artsy:///artsy-vanguard-2019` which force should redirect to /series/artsy-vanguard-2019
-      return { type: "show_internal_web_view", url: response.url }
-    } else if (screen.module === "VanityURLEntity" && slug === (screen.params as any).slug) {
-      // No redirect, it's some other kind of single-segment URI path.
-      // Just show the web version of this page.
-      // Test this with `artsy:///identity-verification-faq`
-      return { type: "show_internal_web_view", url: response.url }
-    } else {
-      // The app has a native screen for the redirect URL, let's show it.
-      // Test this with `artsy:///auction` which force should redirect to /auctions
-      return { type: "show_native_view", url: response.url }
-    }
-  } catch (e) {
-    // Happens only if there's a network problem
-    return { type: "error" }
-  }
+        const screen = matchRoute(response.url)
+        if (screen.type === "external_url") {
+          // not sure if we have any URLs in force that would trigger this, but better safe than sorry!
+          goBack()
+          navigate(response.url)
+        } else if (screen.module === "WebView") {
+          // Test this with `artsy:///artsy-vanguard-2019` which force should redirect to /series/artsy-vanguard-2019
+          setJSX(<ArtsyWebView url={response.url} />)
+        } else if (screen.module === "VanityURLEntity" && slug === (screen.params as any).slug) {
+          // No redirect, it's some other kind of single-segment URI path.
+          // Just show the web version of this page.
+          // Test this with `artsy:///identity-verification-faq`
+          setJSX(<ArtsyWebView url={response.url} />)
+        } else {
+          // The app has a native screen for the redirect URL, let's show it.
+          // Test this with `artsy:///auction` which force should redirect to /auctions
+
+          // TODO: add `replace` mode of navigation
+          goBack()
+          navigate(response.url)
+        }
+      })
+      .catch(() => {
+        setJSX(<NotFound url={resolvedURL} />)
+      })
+  }, [])
+
+  return jsx
+}
+
+const Loading: React.FC<{}> = ({}) => {
+  return (
+    <Flex style={{ flex: 1 }} flexDirection="row" alignItems="center" justifyContent="center">
+      <Spinner />
+    </Flex>
+  )
+}
+
+const NotFound: React.FC<{ url: string }> = ({ url }) => {
+  return (
+    <Stack style={{ flex: 1 }} mx={2} alignItems="center" justifyContent="center">
+      <Text variant="largeTitle">404</Text>
+      <Text variant="text" textAlign="center">
+        We can't find that page.
+      </Text>
+
+      <Button
+        variant="secondaryOutline"
+        onPress={() => {
+          Linking.openURL(url)
+        }}
+      >
+        Open in browser
+      </Button>
+    </Stack>
+  )
 }

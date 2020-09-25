@@ -18,6 +18,10 @@ beforeEach(() => {
 
 describe(VanityURLPossibleRedirect, () => {
   it("shows a loading spinner before anything has happened", () => {
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      url: "https://artsy.net/test",
+    })
     const tree = renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
     expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
   })
@@ -86,7 +90,7 @@ describe(VanityURLPossibleRedirect, () => {
     })
 
     it("shows the error page if the response is not `ok`", async () => {
-      fetchMock.mockReturnValueOnce({ ok: false, url: "https://whatever" })
+      fetchMock.mockResolvedValueOnce({ ok: false, url: "https://whatever" })
       const tree = renderWithWrappers(<VanityURLPossibleRedirect slug="test-not-ok" />)
       await flushPromiseQueue()
       expect(extractText(tree.root)).toContain("We can't find that page")
@@ -97,14 +101,14 @@ describe(VanityURLPossibleRedirect, () => {
   })
 
   it("shows an internal web view when there is no redirect", async () => {
-    fetchMock.mockReturnValueOnce({ ok: true, url: "https://artsy.net/no-redirect" })
+    fetchMock.mockResolvedValueOnce({ ok: true, url: "https://artsy.net/no-redirect" })
     const tree = renderWithWrappers(<VanityURLPossibleRedirect slug="no-redirect" />)
     await flushPromiseQueue()
     expect(tree.root.findAllByType(InternalWebView)).toHaveLength(1)
   })
 
   it("shows an internal web view when there is a redirect to a page that is supposed to be shown in a web view", async () => {
-    fetchMock.mockReturnValueOnce({ ok: true, url: "https://artsy.net/categories" })
+    fetchMock.mockResolvedValueOnce({ ok: true, url: "https://artsy.net/categories" })
     const tree = renderWithWrappers(<VanityURLPossibleRedirect slug="genes" />)
     await flushPromiseQueue()
     expect(tree.root.findAllByType(InternalWebView)).toHaveLength(1)
