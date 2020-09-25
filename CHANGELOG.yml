@@ -11,6 +11,8 @@ upcoming:
     - Add header for Fair2 (visible only to admins) - will
     - Add editorial for Fair2 (visible only to admins) - damon
     - Add collections rail for Fair2 (visible only to admins) - damon
+    - Add More Info view for Fiar2 (visible only to admins) - will
+    - Add More Info view for Fair2 (visible only to admins) - will
   user_facing:
     - Fix navigation bug on Artwork consign button - david
     - Add auction lots rail to the auctions screen - mounir

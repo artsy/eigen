@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9b7e1104d471e0f53cec7853bb32df27 */
+/* @relayHash 5b08dd3295760f5d39e310a8a4227f08 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -80,10 +80,10 @@ fragment Fair2Header_fair on Fair {
     id
   }
   ticketsLink
-  hours(format: HTML)
-  links(format: HTML)
-  tickets(format: HTML)
-  contact(format: HTML)
+  hours(format: MARKDOWN)
+  links(format: MARKDOWN)
+  tickets(format: MARKDOWN)
+  contact(format: MARKDOWN)
 }
 */
 
@@ -121,7 +121,7 @@ v4 = [
   {
     "kind": "Literal",
     "name": "format",
-    "value": "HTML"
+    "value": "MARKDOWN"
   }
 ];
 return {
@@ -286,28 +286,28 @@ return {
             "alias": null,
             "name": "hours",
             "args": (v4/*: any*/),
-            "storageKey": "hours(format:\"HTML\")"
+            "storageKey": "hours(format:\"MARKDOWN\")"
           },
           {
             "kind": "ScalarField",
             "alias": null,
             "name": "links",
             "args": (v4/*: any*/),
-            "storageKey": "links(format:\"HTML\")"
+            "storageKey": "links(format:\"MARKDOWN\")"
           },
           {
             "kind": "ScalarField",
             "alias": null,
             "name": "tickets",
             "args": (v4/*: any*/),
-            "storageKey": "tickets(format:\"HTML\")"
+            "storageKey": "tickets(format:\"MARKDOWN\")"
           },
           {
             "kind": "ScalarField",
             "alias": null,
             "name": "contact",
             "args": (v4/*: any*/),
-            "storageKey": "contact(format:\"HTML\")"
+            "storageKey": "contact(format:\"MARKDOWN\")"
           },
           (v3/*: any*/)
         ]
@@ -317,7 +317,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "Fair2HeaderTestsQuery",
-    "id": "f18d6bddb902e5c91aec785ee3162d3f",
+    "id": "bb7c7c68f5493b1342f22acb61e03dbf",
     "text": null,
     "metadata": {}
   }

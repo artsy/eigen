@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c39e37749425bad8a8e8af3c990da1ab */
+/* @relayHash 85ff45ab38cebdc053600ca2f04a6080 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -86,10 +86,10 @@ fragment Fair2Header_fair on Fair {
     id
   }
   ticketsLink
-  hours(format: HTML)
-  links(format: HTML)
-  tickets(format: HTML)
-  contact(format: HTML)
+  hours(format: MARKDOWN)
+  links(format: MARKDOWN)
+  tickets(format: MARKDOWN)
+  contact(format: MARKDOWN)
 }
 
 fragment Fair2_fair on Fair {
@@ -163,7 +163,7 @@ v7 = [
   {
     "kind": "Literal",
     "name": "format",
-    "value": "HTML"
+    "value": "MARKDOWN"
   }
 ];
 return {
@@ -500,28 +500,28 @@ return {
             "alias": null,
             "name": "hours",
             "args": (v7/*: any*/),
-            "storageKey": "hours(format:\"HTML\")"
+            "storageKey": "hours(format:\"MARKDOWN\")"
           },
           {
             "kind": "ScalarField",
             "alias": null,
             "name": "links",
             "args": (v7/*: any*/),
-            "storageKey": "links(format:\"HTML\")"
+            "storageKey": "links(format:\"MARKDOWN\")"
           },
           {
             "kind": "ScalarField",
             "alias": null,
             "name": "tickets",
             "args": (v7/*: any*/),
-            "storageKey": "tickets(format:\"HTML\")"
+            "storageKey": "tickets(format:\"MARKDOWN\")"
           },
           {
             "kind": "ScalarField",
             "alias": null,
             "name": "contact",
             "args": (v7/*: any*/),
-            "storageKey": "contact(format:\"HTML\")"
+            "storageKey": "contact(format:\"MARKDOWN\")"
           },
           (v3/*: any*/)
         ]
@@ -531,7 +531,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "Fair2Query",
-    "id": "9f2bd57d17a9a8222ec848f15fc5976d",
+    "id": "95c68061aa0206a0bb3c479146cd5024",
     "text": null,
     "metadata": {}
   }

@@ -3,35 +3,33 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Fair2Header_fair = {
+export type Fair2MoreInfo_fair = {
     readonly about: string | null;
-    readonly summary: string | null;
     readonly name: string | null;
-    readonly slug: string;
-    readonly profile: {
-        readonly icon: {
-            readonly url: string | null;
-        } | null;
-    } | null;
-    readonly image: {
-        readonly url: string | null;
-        readonly aspectRatio: number;
-    } | null;
     readonly tagline: string | null;
+    readonly profile: {
+        readonly name: string | null;
+    } | null;
     readonly location: {
+        readonly coordinates: {
+            readonly lat: number | null;
+            readonly lng: number | null;
+        } | null;
         readonly summary: string | null;
+        readonly " $fragmentRefs": FragmentRefs<"LocationMap_location">;
     } | null;
     readonly ticketsLink: string | null;
     readonly hours: string | null;
     readonly links: string | null;
     readonly tickets: string | null;
+    readonly summary: string | null;
     readonly contact: string | null;
-    readonly " $refType": "Fair2Header_fair";
+    readonly " $refType": "Fair2MoreInfo_fair";
 };
-export type Fair2Header_fair$data = Fair2Header_fair;
-export type Fair2Header_fair$key = {
-    readonly " $data"?: Fair2Header_fair$data;
-    readonly " $fragmentRefs": FragmentRefs<"Fair2Header_fair">;
+export type Fair2MoreInfo_fair$data = Fair2MoreInfo_fair;
+export type Fair2MoreInfo_fair$key = {
+    readonly " $data"?: Fair2MoreInfo_fair$data;
+    readonly " $fragmentRefs": FragmentRefs<"Fair2MoreInfo_fair">;
 };
 
 
@@ -40,11 +38,18 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "summary",
   "args": null,
   "storageKey": null
 },
-v1 = [
+v2 = [
   {
     "kind": "Literal",
     "name": "format",
@@ -53,7 +58,7 @@ v1 = [
 ];
 return {
   "kind": "Fragment",
-  "name": "Fair2Header_fair",
+  "name": "Fair2MoreInfo_fair",
   "type": "Fair",
   "metadata": null,
   "argumentDefinitions": [],
@@ -69,14 +74,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "name",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "slug",
+      "name": "tagline",
       "args": null,
       "storageKey": null
     },
@@ -89,69 +87,8 @@ return {
       "concreteType": "Profile",
       "plural": false,
       "selections": [
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "icon",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Image",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "url",
-              "args": [
-                {
-                  "kind": "Literal",
-                  "name": "version",
-                  "value": "untouched-png"
-                }
-              ],
-              "storageKey": "url(version:\"untouched-png\")"
-            }
-          ]
-        }
+        (v0/*: any*/)
       ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "image",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Image",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "url",
-          "args": [
-            {
-              "kind": "Literal",
-              "name": "version",
-              "value": "large_rectangle"
-            }
-          ],
-          "storageKey": "url(version:\"large_rectangle\")"
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "aspectRatio",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "tagline",
-      "args": null,
-      "storageKey": null
     },
     {
       "kind": "LinkedField",
@@ -162,7 +99,37 @@ return {
       "concreteType": "Location",
       "plural": false,
       "selections": [
-        (v0/*: any*/)
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "coordinates",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "LatLng",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "lat",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "lng",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
+        (v1/*: any*/),
+        {
+          "kind": "FragmentSpread",
+          "name": "LocationMap_location",
+          "args": null
+        }
       ]
     },
     {
@@ -176,32 +143,33 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "hours",
-      "args": (v1/*: any*/),
+      "args": (v2/*: any*/),
       "storageKey": "hours(format:\"MARKDOWN\")"
     },
     {
       "kind": "ScalarField",
       "alias": null,
       "name": "links",
-      "args": (v1/*: any*/),
+      "args": (v2/*: any*/),
       "storageKey": "links(format:\"MARKDOWN\")"
     },
     {
       "kind": "ScalarField",
       "alias": null,
       "name": "tickets",
-      "args": (v1/*: any*/),
+      "args": (v2/*: any*/),
       "storageKey": "tickets(format:\"MARKDOWN\")"
     },
+    (v1/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
       "name": "contact",
-      "args": (v1/*: any*/),
+      "args": (v2/*: any*/),
       "storageKey": "contact(format:\"MARKDOWN\")"
     }
   ]
 };
 })();
-(node as any).hash = '45891118801486778b80c302d68fa0c5';
+(node as any).hash = 'e97c82f264b236875fa1acdf28507f9f';
 export default node;

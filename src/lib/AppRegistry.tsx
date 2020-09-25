@@ -49,6 +49,7 @@ import {
 } from "./Scenes/Fair"
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
 import { Fair2QueryRenderer } from "./Scenes/Fair2/Fair2"
+import { Fair2MoreInfoQueryRenderer } from "./Scenes/Fair2/Fair2MoreInfo"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
@@ -384,6 +385,7 @@ export const modules = defineModules({
   Conversation: { Component: Conversation, onlyShowInTabName: "inbox" },
   Fair: { Component: FairQueryRenderer, fullBleed: true },
   Fair2: { Component: Fair2QueryRenderer, fullBleed: true },
+  Fair2MoreInfo: { Component: Fair2MoreInfoQueryRenderer },
   FairArtists: { Component: FairArtists },
   FairArtworks: { Component: FairArtworks },
   FairBMWArtActivation: { Component: FairBMWArtActivation, fullBleed: true },
