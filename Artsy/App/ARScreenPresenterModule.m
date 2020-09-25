@@ -1,11 +1,3 @@
-//
-//  ARScreenPresenter.m
-//  Artsy
-//
-//  Created by David Sheldrick on 26/08/2020.
-//  Copyright © 2020 Artsy. All rights reserved.
-//
-
 #import "ARScreenPresenterModule.h"
 #import "ARTopMenuViewController.h"
 #import <Emission/ARComponentViewController.h>
@@ -78,7 +70,7 @@ RCT_EXPORT_METHOD(presentNativeScreen:(nonnull NSString *)moduleName props:(nonn
             vc = [[ARSerifNavigationViewController alloc] initWithRootViewController:vc];
         }
     } else {
-        [NSException raise:@"Unrecognized native module name" format:@"%@", moduleName];
+        NSAssert(false, @"Unrecognized native module name", moduleName);
     }
     [self presentViewController:vc modalPresentationStyle:modalPresentationStyle];
 }
@@ -215,7 +207,7 @@ RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag rou
                                                           cacheKey:cacheKey
                                                 hostViewController:[[ARTopMenuViewController sharedController] rootNavigationController]
                                                    originatingView:originatingView] presentPreview];
-    
+
 }
 
 RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSString *)toAddress subject:(nonnull NSString *)subject body:(NSString *)body)
@@ -251,7 +243,7 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
     // A bit weird, eh? Normally CGSize stores width+height in terms of pixels, but this one is stored in inches instead.
     CGSize size = CGSizeMake(widthIn, heightIn);
     NSURL *url = [NSURL URLWithString:imgUrl];
-    
+
     [ARAugmentedVIRSetupViewController canSkipARSetup:[NSUserDefaults standardUserDefaults] callback:^(bool allowedAccess) {
         // The image can come from either the SDWebImage cache or from the internet.
         // In either case, this block gets called with that image.
@@ -317,7 +309,7 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
 
 RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide)
 {
-    
+
     [[[ARTopMenuViewController sharedController] rootNavigationController] showBackButton:!shouldHide animated:YES];
 }
 
