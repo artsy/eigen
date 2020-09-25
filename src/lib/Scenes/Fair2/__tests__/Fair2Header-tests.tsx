@@ -1,6 +1,6 @@
 import { Fair2HeaderTestsQuery, Fair2HeaderTestsQueryRawResponse } from "__generated__/Fair2HeaderTestsQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Fair2Header, Fair2HeaderFragmentContainer } from "lib/Scenes/Fair2/Components/Fair2Header"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -10,9 +10,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 describe("Fair2Header", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -92,10 +89,7 @@ describe("Fair2Header", () => {
   it("navigates to the fair info page on press of More Info", () => {
     const wrapper = getWrapper().root.findByType(TouchableOpacity)
     wrapper.props.onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-      expect.anything(),
-      "/fair2/art-basel-hong-kong-2020/info"
-    )
+    expect(navigate).toHaveBeenCalledWith("/fair2/art-basel-hong-kong-2020/info")
   })
 
   it("does not show the More Info link if there is no info to show", () => {

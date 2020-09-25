@@ -1,8 +1,8 @@
 import { Fair2Header_fair } from "__generated__/Fair2Header_fair.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Box, ChevronIcon, Flex, Text } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { Dimensions, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -27,13 +27,8 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
     !!summary ||
     !!tickets
 
-  const navRef = useRef<any>()
-  const handleNavigation = (fairSlug: string) => {
-    return SwitchBoard.presentNavigationViewController(navRef.current, `/fair2/${fairSlug}/info`)
-  }
-
   return (
-    <Box ref={navRef}>
+    <Box>
       {!!image && (
         <Flex alignItems="center" justifyContent="center" style={{ position: "relative" }}>
           <OpaqueImageView width={screenWidth} height={screenWidth / image.aspectRatio} imageURL={image.url} />
@@ -60,7 +55,7 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
         </Text>
         <Text variant="text">{previewText}</Text>
         {!!canShowMoreInfoLink && (
-          <TouchableOpacity onPress={() => handleNavigation(slug)}>
+          <TouchableOpacity onPress={() => navigate(`/fair2/${slug}/info`)}>
             <Flex py={2} flexDirection="row" justifyContent="flex-start">
               <Text variant="mediumText">More info</Text>
               <ChevronIcon mr="-5px" mt="2px" />

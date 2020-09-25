@@ -1,9 +1,9 @@
 import { Fair2MoreInfoTestsQueryRawResponse } from "__generated__/Fair2MoreInfoTestsQuery.graphql"
+import { LocationMapContainer } from "lib/Components/LocationMap"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { graphql } from "react-relay"
 import { Fair2MoreInfoFragmentContainer } from "../Fair2MoreInfo"
-import { LocationMapContainer } from "lib/Components/LocationMap"
 
 jest.unmock("react-relay")
 

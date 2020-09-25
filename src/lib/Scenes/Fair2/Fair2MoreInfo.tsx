@@ -3,12 +3,12 @@ import { Fair2MoreInfoQuery } from "__generated__/Fair2MoreInfoQuery.graphql"
 import { LocationMapContainer, PartnerType } from "lib/Components/LocationMap"
 import { Markdown } from "lib/Components/Markdown"
 import { LinkText } from "lib/Components/Text/LinkText"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { defaultRules } from "lib/utils/renderMarkdown"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Box, Spacer, Text, Theme } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { ScrollView, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { blockRegex } from "simple-markdown"
@@ -36,15 +36,11 @@ const markdownRules = defaultRules(false, {
 })
 
 export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
-  const navRef = useRef<any>()
-  const handleNavigation = (link: string) => {
-    return SwitchBoard.presentNavigationViewController(navRef.current, link)
-  }
   const coordinates = fair.location?.coordinates
   const shouldShowLocationMap = coordinates && coordinates?.lat && coordinates?.lng
 
   return (
-    <ScrollView ref={navRef}>
+    <ScrollView>
       <Theme>
         <Box px={2} pb={2} pt={6}>
           <Text variant="largeTitle">About</Text>
@@ -102,7 +98,7 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
           )}
           {!!fair.ticketsLink && (
             <>
-              <TouchableOpacity onPress={() => handleNavigation(fair.ticketsLink!)}>
+              <TouchableOpacity onPress={() => navigate(fair.ticketsLink!)}>
                 <LinkText>Buy Tickets</LinkText>
               </TouchableOpacity>
               <Spacer my={1} />
