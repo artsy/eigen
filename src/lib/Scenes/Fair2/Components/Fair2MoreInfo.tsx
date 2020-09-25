@@ -2,6 +2,7 @@ import { Fair2MoreInfo_fair } from "__generated__/Fair2MoreInfo_fair.graphql"
 import { Fair2MoreInfoQuery } from "__generated__/Fair2MoreInfoQuery.graphql"
 import { LocationMapContainer, PartnerType } from "lib/Components/LocationMap"
 import { Markdown } from "lib/Components/Markdown"
+import { LinkText } from "lib/Components/Text/LinkText"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { defaultRules } from "lib/utils/renderMarkdown"
@@ -45,7 +46,7 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
   return (
     <ScrollView ref={navRef}>
       <Theme>
-        <Box p={2}>
+        <Box px={2} pb={2} pt={6}>
           <Text variant="largeTitle">About</Text>
 
           <Spacer my={1} />
@@ -102,7 +103,7 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
           {!!fair.ticketsLink && (
             <>
               <TouchableOpacity onPress={() => handleNavigation(fair.ticketsLink!)}>
-                <Text variant="mediumText">Buy Tickets</Text>
+                <LinkText>Buy Tickets</LinkText>
               </TouchableOpacity>
               <Spacer my={1} />
             </>
