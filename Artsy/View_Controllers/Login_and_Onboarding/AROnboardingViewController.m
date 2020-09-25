@@ -21,7 +21,6 @@
 #import "ArtsyAPI+Private.h"
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
-#import "ARSwitchBoard+Eigen.h"
 #import "ARDispatchManager.h"
 #import "ARFollowable.h"
 #import "ARRouter.h"

@@ -12,7 +12,6 @@
 #import "ARAnalyticsConstants.h"
 #import "ARFonts.h"
 #import "User.h"
-#import "ARSwitchBoard.h"
 #import "ARAppNotificationsDelegate.h"
 
 #import "UIView+HitTestExpansion.h"
@@ -28,19 +27,12 @@
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
-#import <Emission/ARHomeComponentViewController.h>
-#import <Emission/ARInboxComponentViewController.h>
-#import <Emission/ARFavoritesComponentViewController.h>
-#import <Emission/ARMyProfileComponentViewController.h>
+
 #import <Emission/ARMapContainerViewController.h>
-#import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARBidFlowViewController.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARNotificationsManager.h>
 #import <React/RCTScrollView.h>
-
-#import "ARAugmentedFloorBasedVIRViewController.h"
-#import "ARAugmentedVIRSetupViewController.h"
 
 @interface ARTopMenuViewController () <ARTabViewDelegate>
 
@@ -51,8 +43,8 @@
 @property (readonly, nonatomic, strong) ArtsyEcho *echo;
 
 // we need to wait for the view to load before we push a deep link VC on startup
-@property (readwrite, nonatomic, strong) NSMutableArray<NSDictionary*> *pushQueue;
-@property (readwrite, nonatomic, assign) BOOL didLoad;
+@property (readwrite, nonatomic, strong) NSMutableArray<void (^)(void)> *bootstrapQueue;
+@property (readwrite, nonatomic, assign) BOOL didBootstrap;
 @end
 
 static ARTopMenuViewController *_sharedManager = nil;
@@ -78,8 +70,8 @@ static ARTopMenuViewController *_sharedManager = nil;
         return self;
     }
 
-    _didLoad = NO;
-    _pushQueue = [[NSMutableArray alloc] init];
+    _didBootstrap = NO;
+    _bootstrapQueue = [[NSMutableArray alloc] init];
 
     return self;
 }
@@ -110,45 +102,21 @@ static ARTopMenuViewController *_sharedManager = nil;
     // be assured that any VCs guide can be trusted.
     (void)self.keyboardLayoutGuide;
 
-    [self registerWithSwitchBoard:ARSwitchBoard.sharedInstance];
-
-    self.didLoad = YES;
+    self.didBootstrap = YES;
     __weak typeof(self) wself = self;
     dispatch_async(dispatch_get_main_queue(), ^() {
         __strong typeof(self) sself = wself;
         if (!sself) {
             return;
         }
-        while (sself.pushQueue.count > 0) {
-            NSDictionary *item = [sself.pushQueue firstObject];
-            [sself.pushQueue removeObjectAtIndex:0];
-            UIViewController* viewController = [item valueForKey:@"viewController"];
-            void (^completion)(void) = [item valueForKey:@"completion"];
-
-            [sself pushViewController:viewController animated:NO completion:completion];
+        while (self.bootstrapQueue.count > 0) {
+            void (^completion)() = [self.bootstrapQueue firstObject];
+            [self.bootstrapQueue removeObjectAtIndex:0];
+            completion();
         }
     });
 }
 
-
-- (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
-{
-    for (NSString *tabType in self.navigationDataSource.registeredTabTypes) {
-        [switchboard registerPathCallbackAtPath:[self.navigationDataSource switchBoardRouteForTabType:tabType]  callback:^id _Nullable(NSDictionary *_Nullable parameters) {
-
-            NSString *messageCode = parameters[@"flash_message"];
-
-            if ([tabType isEqualToString:[ARTabType home]]) {
-                if (messageCode != nil) {
-                    return [self homeWithMessageAlert:messageCode];
-                }
-                return [self rootNavigationControllerAtTab:tabType].rootViewController;
-            } else {
-                return [self rootNavigationControllerAtTab:tabType].rootViewController;
-            }
-        }];
-    }
-}
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
@@ -228,72 +196,41 @@ static ARTopMenuViewController *_sharedManager = nil;
     [self pushViewController:viewController animated:animated completion:nil];
 }
 
-+ (BOOL)shouldPresentViewControllerAsModal:(UIViewController *)viewController
+- (void)pushViewController:(__strong UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
 {
-    NSArray *modalClasses = @[ UINavigationController.class, UISplitViewController.class, LiveAuctionViewController.class ];
-    for (Class klass in modalClasses) {
-        if ([viewController isKindOfClass:klass]) {
-            return YES;
-        }
+    __weak typeof(self) wself = self;
+    [self afterBootstrap:^{
+        __strong typeof(self) sself = wself;
+        if (!sself) return;
+        [sself pushViewControllerNow:viewController animated:animated completion:completion];
+    }];
+}
+
+- (void)afterBootstrap:(void (^)(void))completion {
+    if (self.didBootstrap) {
+        completion();
+    } else {
+        [self.bootstrapQueue addObject:completion];
     }
-    return NO;
 }
 
-+ (BOOL)shouldPresentModalFullScreen:(UIViewController *)viewController {
-    return [viewController isKindOfClass:LiveAuctionViewController.class];
-}
-
-- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
+- (void)pushViewControllerNow:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
 {
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
-
-    if(!self.didLoad) {
-        NSMutableDictionary *queueItem = [[NSMutableDictionary alloc] init];
-        [queueItem setValue:viewController forKey:@"viewController"];
-        if (completion) {
-            [queueItem setValue:completion forKey:@"completion"];
-        }
-        [self.pushQueue addObject:queueItem];
-        return;
-    }
-
-    if ([viewController isKindOfClass:ARAugmentedFloorBasedVIRViewController.class] || [viewController isKindOfClass:ARAugmentedVIRSetupViewController.class]) {
-        viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-        viewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self presentViewController:viewController animated:animated completion:completion];
-        return;
-    }
-
-    if ([self.class shouldPresentViewControllerAsModal:viewController]) {
-        // iOS 13 introduced a new modal presentation style that are cards. They look cool!
-        // But they break React Native's KeyboardAvoidingView, see this open PR: https://github.com/facebook/react-native/pull/27607
-        // Once that PR is merged and we've upgraded, we can remove the following line
-        // of code, which opts us out of the new modal presentation stylel.
-        if ([UIDevice isPhone]) {
-            viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-        } else {
-            if ([viewController isKindOfClass:UINavigationController.class] && [[(UINavigationController *)viewController topViewController] isKindOfClass:ARBidFlowViewController.class]) {
-                // Bid Flow gets form sheet
-                viewController.modalPresentationStyle = UIModalPresentationFormSheet;
-            } else if ([viewController isKindOfClass:UINavigationController.class] && [[(UINavigationController *)viewController topViewController] isKindOfClass:ARShowConsignmentsFlowViewController.class]) {
-                // Consignments gets full screen
-                viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-            } else if ([self.class shouldPresentModalFullScreen:viewController]) {
-                viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-            }
-        }
-        [self presentViewController:viewController animated:animated completion:completion];
-        return;
-    }
-
-    if ([viewController isKindOfClass:ARComponentViewController.class] && [(id)viewController tabRootName] ) {
-        [self presentRootViewControllerInTab:[(id)viewController tabRootName] animated:YES];
-    } else {
-        [self.rootNavigationController pushViewController:viewController animated:animated];
-    }
+    [self.rootNavigationController pushViewController:viewController animated:animated];
 }
 
-- (void)presentRootViewControllerInTab:(NSString *)tabType animated:(BOOL)animated;
+- (void)presentRootViewControllerInTab:(NSString *)tabType animated:(BOOL)animated props:(NSDictionary *)props;
+{
+    __weak typeof(self) wself = self;
+    [self afterBootstrap:^{
+        __strong typeof(self) sself = wself;
+        if (!sself) return;
+        [sself presentRootViewControllerInTabNow:tabType animated:animated props:props];
+    }];
+}
+
+- (void)presentRootViewControllerInTabNow:(NSString *)tabType animated:(BOOL)animated props:(NSDictionary *)props;
 {
     BOOL alreadySelectedTab = [self.currentTab isEqual:tabType];
     ARNavigationController *controller = [self rootNavigationControllerAtTab:tabType];
@@ -309,6 +246,12 @@ static ARTopMenuViewController *_sharedManager = nil;
         UIViewController *currentRootViewController = [controller.childViewControllers first];
         UIScrollView *rootScrollView = (id)[self firstScrollToTopScrollViewFromRootView:currentRootViewController.view];
         [rootScrollView setContentOffset:CGPointMake(rootScrollView.contentOffset.x, -rootScrollView.contentInset.top) animated:YES];
+    }
+    if ([controller.rootViewController isKindOfClass:ARComponentViewController.class]) {
+        ARComponentViewController *vc = (ARComponentViewController *)controller.rootViewController;
+        [props each:^(id key, id value) {
+            [vc setProperty:value forKey:key];
+        }];
     }
 }
 
@@ -330,20 +273,6 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
     return self.rootNavigationController.preferredInterfaceOrientationForPresentation ?: UIInterfaceOrientationPortrait;
-}
-
-#pragma mark Spinners
-
-- (void)startLoading
-{
-    ARTopMenuViewController *topMenuViewController = [ARTopMenuViewController sharedController];
-    [topMenuViewController ar_presentIndeterminateLoadingIndicatorAnimated:YES];
-}
-
-- (void)stopLoading
-{
-    ARTopMenuViewController *topMenuViewController = [ARTopMenuViewController sharedController];
-    [topMenuViewController ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 }
 
 #pragma mark - ARTabViewDelegate
@@ -368,15 +297,6 @@ static ARTopMenuViewController *_sharedManager = nil;
     }
 
     return nil;
-}
-
-#pragma mark - Email Confirmation
-
-- (ARHomeComponentViewController *)homeWithMessageAlert:(NSString *)messageCode {
-    ARNavigationController *rootNav = [self rootNavigationControllerAtTab:[ARTabType home]];
-    ARHomeComponentViewController *homeVC = (ARHomeComponentViewController *) rootNav.rootViewController;
-    [homeVC showMessageAlertWithCode:messageCode];
-    return homeVC;
 }
 
 @end

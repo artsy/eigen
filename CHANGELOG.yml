@@ -10,6 +10,7 @@ upcoming:
     - Add admin-only skeleton view for Fair2 - will
     - Add header for Fair2 (visible only to admins) - will
     - Add editorial for Fair2 (visible only to admins) - damon
+    - Add collections rail for Fair2 (visible only to admins) - damon
   user_facing:
     - Fix navigation bug on Artwork consign button - david
     - Add auction lots rail to the auctions screen - mounir
@@ -19,6 +20,7 @@ upcoming:
     - Add auction lots list to the auctions screen - mounir
     - Add LoadFailureView to Viewing Rooms screens for relay errors - pavlos
     - Enable filtering on artist series views - sweir
+    - Show up to 50 artist series in the full list of an artist's series - roop
 
 releases:
   - version: 6.6.4

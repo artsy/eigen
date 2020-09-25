@@ -107,6 +107,11 @@ static NSString *hostFromString(NSString *string)
     return [NSURL URLWithString:url];
 }
 
++ (NSURL *)resolveRelativeUrl:(NSString *)path
+{
+    return [NSURL URLWithString:path relativeToURL:[ARRouter baseWebURL]];
+}
+
 + (void)setupWithBaseApiURL:(NSURL *)baseApiURL
 {
     staticHTTPClient = [[AFHTTPSessionManager alloc] initWithBaseURL:baseApiURL];

@@ -12,6 +12,11 @@
 
 @implementation ARComponentViewController
 
++ (instancetype)module:(nonnull NSString *)moduleName withProps:(nullable NSDictionary *)props
+{
+    return [[ARComponentViewController alloc] initWithEmission:nil moduleName:moduleName initialProperties:props];
+}
+
 - (instancetype)initWithEmission:(AREmission *)emission
                       moduleName:(NSString *)moduleName
                initialProperties:(NSDictionary *)initialProperties;

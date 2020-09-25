@@ -1,6 +1,6 @@
 #import "ARTabType.h"
 
-@class ARHomeComponentViewController, ARNavigationController;
+@class ARNavigationController;
 
 @protocol ARTopMenuRootViewController <NSObject>
 @optional
@@ -10,7 +10,6 @@
 @interface ARTopMenuNavigationDataSource : NSObject
 
 - (ARNavigationController *)navigationControllerForTabType:(NSString *)tabType;
-- (NSString *)switchBoardRouteForTabType:(NSString *)tabType;
 - (NSArray<NSNumber *> *)registeredTabTypes;
 
 @end

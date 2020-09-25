@@ -1,16 +1,7 @@
-import { findNodeHandle, NativeModules } from "react-native"
-const { ARSwitchBoardModule } = NativeModules
+import { dismissModal, goBack, navigate } from "lib/navigation/navigate"
 
-function presentNavigationViewController(component: React.Component<any, any>, route: string) {
-  let reactTag
-  try {
-    reactTag = findNodeHandle(component)
-  } catch (err) {
-    console.error(`Unable to find tag in presentNavigationViewController: ${err.message}`)
-    return
-  }
-
-  ARSwitchBoardModule.presentNavigationViewController(reactTag, route)
+function presentNavigationViewController(_component: React.Component<any, any>, route: string) {
+  navigate(route)
 }
 
 export enum EntityType {
@@ -52,82 +43,23 @@ function presentFairViewController(component: React.Component<any, any>, slug: s
   presentEntityViewController(component, slug, EntityType.Fair, slugType ?? SlugType.FairID)
 }
 
-function presentModalViewController(component: React.Component<any, any>, route: string) {
-  let reactTag
-  try {
-    reactTag = findNodeHandle(component)
-  } catch (err) {
-    console.error(`Unable to find tag in presentModalViewController: ${err.message}`)
-    return
-  }
-
-  ARSwitchBoardModule.presentModalViewController(reactTag, route)
+function presentModalViewController(_component: React.Component<any, any>, route: string) {
+  navigate(route, { modal: true })
 }
 
-function presentMediaPreviewController(
-  component: React.Component<any, any>,
-  route: string,
-  mimeType: string,
-  cacheKey?: string
-) {
-  let reactTag
-  try {
-    reactTag = findNodeHandle(component)
-  } catch (err) {
-    console.error(`Unable to find tag in presentMediaPreviewController: ${err.message}`)
-    return
-  }
-
-  ARSwitchBoardModule.presentMediaPreviewController(reactTag, route, mimeType, cacheKey)
+function dismissModalViewController(_component: React.Component<any, any>) {
+  dismissModal()
 }
 
-function dismissModalViewController(component: React.Component<any, any>) {
-  let reactTag
-  try {
-    reactTag = findNodeHandle(component)
-  } catch (err) {
-    console.error(`Unable to find tag in dismissModalViewController: ${err.message}`)
-    return
-  }
-
-  ARSwitchBoardModule.dismissModalViewController(reactTag)
+function dismissNavigationViewController(_component: React.Component<any, any>) {
+  goBack()
 }
 
-function dismissNavigationViewController(component: React.Component<any, any>) {
-  let reactTag
-  try {
-    reactTag = findNodeHandle(component)
-  } catch (err) {
-    console.error(`Unable to find tag in dismissNavigationViewController: ${err.message}`)
-    return
-  }
-
-  ARSwitchBoardModule.dismissNavigationViewController(reactTag)
-}
-
-function presentEmailComposer(component: React.Component<any, any>, to: string, subject: string, body?: string) {
-  let reactTag
-  try {
-    reactTag = findNodeHandle(component)
-  } catch (err) {
-    console.error(`Unable to find tag in dismissNavigationViewController: ${err.message}`)
-    return
-  }
-
-  ARSwitchBoardModule.presentEmailComposer(reactTag, to, subject, body)
-}
-
-function updateShouldHideBackButton(hideBackButton: boolean) {
-  ARSwitchBoardModule.updateShouldHideBackButton(hideBackButton)
-}
 export default {
-  presentEmailComposer,
   presentNavigationViewController,
-  presentMediaPreviewController,
   presentModalViewController,
   presentPartnerViewController,
   presentFairViewController,
   dismissModalViewController,
   dismissNavigationViewController,
-  updateShouldHideBackButton,
 }

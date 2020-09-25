@@ -1,12 +1,11 @@
-import React from "react"
-import { View } from "react-native"
-
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { Flex, Sans, Spacer } from ".."
-import { color, space } from "../../helpers"
+import React from "react"
+import { Box, Spacer, Text } from ".."
+import { space } from "../../helpers"
+import { BoxProps } from "../Box"
 import { CardTag, CardTagProps } from "./CardTag"
 
-export interface SmallCardProps {
+export interface SmallCardProps extends BoxProps {
   images: string[]
   title: string
   subtitle?: string
@@ -18,43 +17,49 @@ export interface SmallCardProps {
  * one tall or two square images on the right, and text for title and subtitle
  * at the bottom.
  */
-export const SmallCard: React.FC<SmallCardProps> = ({ images, title, subtitle, tag }) => {
+export const SmallCard: React.FC<SmallCardProps> = ({ images, title, subtitle, tag, ...rest }) => {
   return (
-    <View>
-      <View
+    <Box {...rest}>
+      <Box
+        width="100%"
+        flexDirection="row"
+        borderRadius={4}
+        overflow="hidden"
         style={{
-          width: "100%",
           aspectRatio: 1.5 / 1.0,
-          flexDirection: "row",
-          borderRadius: 4,
-          overflow: "hidden",
         }}
       >
-        <Flex flex={2} background={color("black10")}>
+        <Box flex={2} bg="black10">
           <OpaqueImageView imageURL={images[0]} style={{ flex: 1 }} />
-        </Flex>
+        </Box>
+
         <Spacer mr="2px" />
-        <Flex flex={1}>
-          {images.length < 2 && <Flex flex={1} background={color("black10")} />}
+
+        <Box flex={1}>
+          {images.length < 2 && <Box flex={1} bg="black10" />}
+
           {!!images[1] && <OpaqueImageView imageURL={images[1]} style={{ flex: 1 }} />}
+
           {!!images[2] && (
             <>
               <Spacer mt="2px" />
               <OpaqueImageView imageURL={images[2]} style={{ flex: 1 }} />
             </>
           )}
-        </Flex>
-      </View>
-      <Spacer mt={1} />
-      <Sans size="3t" weight="medium">
+        </Box>
+      </Box>
+
+      <Text variant="text" mt={1}>
         {title}
-      </Sans>
+      </Text>
+
       {!!subtitle && (
-        <Sans size="3t" color={color("black60")}>
+        <Text variant="text" color="black60">
           {subtitle}
-        </Sans>
+        </Text>
       )}
+
       {!!tag && <CardTag {...tag} style={{ position: "absolute", top: space(1), left: space(1) }} />}
-    </View>
+    </Box>
   )
 }

@@ -8,7 +8,6 @@
 #import "ArtsyAPI+Notifications.h"
 #import "ARDispatchManager.h"
 #import "ARNetworkErrorManager.h"
-#import "ARSwitchBoard+Eigen.h"
 #import "ARTopMenuViewController.h"
 #import "ARAppConstants.h"
 #import "AROptions.h"
@@ -30,31 +29,11 @@
 #import <react-native-config/ReactNativeConfig.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARTemporaryAPIModule.h>
-#import <Emission/ARSwitchBoardModule.h>
 #import <Emission/AREventsModule.h>
 #import <Emission/ARTakeCameraPhotoModule.h>
 #import <Emission/ARRefineOptionsModule.h>
-#import <Emission/ARArtistComponentViewController.h>
-#import <Emission/ARHomeComponentViewController.h>
-#import <Emission/ARMyProfileComponentViewController.h>
-#import <Emission/ARInboxComponentViewController.h>
-#import <Emission/ARFavoritesComponentViewController.h>
-#import <Emission/ARSearchComponentViewController.h>
 #import "AREigenMapContainerViewController.h"
-#import <Emission/ARSalesComponentViewController.h>
 #import <SDWebImage/SDImageCache.h>
-
-// Fairs
-#import <Emission/ARFairMoreInfoComponentViewController.h>
-#import <Emission/ARFairArtistsComponentViewController.h>
-#import <Emission/ARFairArtworksComponentViewController.h>
-#import <Emission/ARFairExhibitorsComponentViewController.h>
-
-// Shows
-#import <Emission/ARShowComponentViewController.h>
-#import <Emission/ARShowArtworksComponentViewController.h>
-#import <Emission/ARShowArtistsComponentViewController.h>
-#import <Emission/ARShowMoreInfoComponentViewController.h>
 
 #import <React/RCTUtils.h>
 #import <React/RCTDevSettings.h>
@@ -149,24 +128,21 @@ SOFTWARE.
     NSString *gravity = [[ARRouter baseApiURL] absoluteString];
     NSString *metaphysics = [ARRouter baseMetaphysicsApiURLString];
 
-    NSString *liveAuctionsURL = [[[ARSwitchBoard sharedInstance] liveAuctionsURL] absoluteString];
-
     // Grab echo features and make that the base of all options
     ArtsyEcho *aero = [[ArtsyEcho alloc] init];
     [aero setup];
 
-    NSString *stripePublishableKey;
-    if ([AROptions boolForOption:ARUseStagingDefault]) {
-        stripePublishableKey = [aero.messages[@"StripeStagingPublishableKey"] content];
-    } else {
-        stripePublishableKey = [aero.messages[@"StripeProductionPublishableKey"] content];
-    }
-
     NSString *env;
+    NSString *stripePublishableKey;
+    NSString *liveAuctionsURL;
     if ([AROptions boolForOption:ARUseStagingDefault]) {
-      env = @"staging";
+        env = @"staging";
+        stripePublishableKey = [aero.messages[@"StripeStagingPublishableKey"] content];
+        liveAuctionsURL = @"https://live-staging.artsy.net";
     } else {
-      env = @"production";
+        env = @"production";
+        stripePublishableKey = [aero.messages[@"StripeProductionPublishableKey"] content];
+        liveAuctionsURL = @"https://live.artsy.net";
     }
 
     NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
@@ -184,6 +160,7 @@ SOFTWARE.
         [ARStateKey gravityURL]: gravity,
         [ARStateKey metaphysicsURL]: metaphysics,
         [ARStateKey predictionURL]: liveAuctionsURL,
+        [ARStateKey webURL]: [[ARRouter baseWebURL] absoluteString],
         [ARStateKey userAgent]: ARRouter.userAgent,
         [ARStateKey env]: env,
         [ARStateKey options]: options,
@@ -215,15 +192,6 @@ SOFTWARE.
         }];
     };
 
-    emission.APIModule.augmentedRealityVIRPresenter = ^(NSString *imgUrl, CGFloat widthIn, CGFloat heightIn, NSString *artworkSlug, NSString *artworkId) {
-        // A bit weird, eh? Normally CGSize stores width+height in terms of pixels, but this one is stored in inches instead.
-        CGSize size = CGSizeMake(widthIn, heightIn);
-        NSURL *url = [NSURL URLWithString:imgUrl];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showARVIRWithImageURL:url size:size artworkSlug:artworkSlug artworkID:artworkId defaults:[NSUserDefaults standardUserDefaults]];
-        });
-    };
-
 #pragma mark - Native Module: Refine filter
 
     emission.refineModule.triggerRefine = ^(NSDictionary *_Nonnull initial, NSDictionary *_Nonnull current, UIViewController *_Nonnull controller, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
@@ -233,66 +201,6 @@ SOFTWARE.
                                                       completion:^(NSDictionary<NSString *,id> * _Nullable newRefineSettings) {
             resolve(newRefineSettings);
         }];
-    };
-
-# pragma mark - Native Module: URL resolver
-
-        emission.APIModule.urlResolver = ^(NSString *path, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
-            NSURL *resolvedURL = [[ARSwitchBoard sharedInstance] resolveRelativeUrl:path];
-            if (resolvedURL) {
-                resolve(resolvedURL.absoluteString);
-            } else {
-                NSString *errorMessage = [NSString stringWithFormat:@"Could not resolve relative route in eigen %@", path];
-                NSError *error = [NSError errorWithDomain:@"net.artsy.artsy" code:404 userInfo:@{ @"text": errorMessage }];
-                reject(@"404", errorMessage, error);
-            }
-        };
-
-#pragma mark - Native Module: SwitchBoard
-
-    emission.switchBoardModule.updateShouldHideBackButton = ^(BOOL shouldHide) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[[ARTopMenuViewController sharedController] rootNavigationController] showBackButton:!shouldHide animated:YES];
-        });
-    };
-
-    emission.switchBoardModule.presentNavigationViewController = ^(UIViewController *_fromViewController,
-                                                                   NSString *_Nonnull route) {
-        UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPath:route];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-    };
-
-    emission.switchBoardModule.presentModalViewController = ^(UIViewController *_fromViewController,
-                                                              NSString *_Nonnull route) {
-        UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPath:route];
-        UIViewController *targetViewController = [ARTopMenuViewController sharedController];
-
-        // We need to accomodate presenting a modal _on top_ of an existing modal view controller. Consignments
-        // and BidFlow are presented modally, and we want to let them present modal view controllers on top of themselves.
-        if (targetViewController.presentedViewController) {
-            targetViewController = targetViewController.presentedViewController;
-        }
-
-        // When presenting modally, view controller generally have to be wrapped in a navigation controller
-        // so the user can hit the close button. Consignments is the exception, and it has its own close button.
-        if (!([viewController isKindOfClass:[UINavigationController class]] || [viewController isKindOfClass:[LiveAuctionViewController class]])) {
-            viewController = [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
-        }
-        // Explanation for this behaviour is described in ARTopMenuViewController's
-        // pushViewController:animated: method. Once that is removed, we can remove this.
-        if ([UIDevice isPhone]) {
-            viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-        } else {
-            // BNMO goes through this code path instead of the one in ARTopMenuViewController.
-            if ([viewController isKindOfClass:ARSerifNavigationViewController.class] &&
-                [[[(ARInternalMobileWebViewController *)[(ARSerifNavigationViewController *)viewController topViewController] initialURL] absoluteString] containsString:@"/orders/"]) {
-                viewController.modalPresentationStyle = UIModalPresentationFormSheet;
-            }
-        }
-
-        [targetViewController presentViewController:viewController
-                                           animated:ARPerformWorkAsynchronously
-                                         completion:nil];
     };
 
     emission.APIModule.authValidationChecker = ^() {
@@ -344,124 +252,4 @@ SOFTWARE.
     return options;
 }
 
-#pragma mark - AR View-in-Room Experience
-
-- (void)showARVIRWithImageURL:(NSURL *)url size:(CGSize)size artworkSlug:(NSString *)artworkSlug artworkID:(NSString *)artworkId defaults:(NSUserDefaults *)userDefauls
-{
-    BOOL supportsARVIR = [ARAugmentedVIRSetupViewController canOpenARView];
-    if (supportsARVIR) {
-        [ARAugmentedVIRSetupViewController canSkipARSetup:userDefauls callback:^(bool allowedAccess) {
-            // The image can come from either the SDWebImage cache or from the internet.
-            // In either case, this block gets called with that image.
-            void (^gotImageBlock)(UIImage *image) = ^void(UIImage *image) {
-                ARAugmentedRealityConfig *config = [[ARAugmentedRealityConfig alloc] initWithImage:image size:size];
-                config.artworkID = artworkId;
-                config.artworkSlug = artworkSlug;
-                config.floorBasedVIR = YES;
-                config.debugMode =  [AROptions boolForOption:AROptionsDebugARVIR];
-
-                if (allowedAccess) {
-                    id viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:config];
-                    [[ARTopMenuViewController sharedController] pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
-                } else {
-                    ArtsyEcho *echo = [[ArtsyEcho alloc] init];
-                    [echo setup];
-
-                    Message *setupURL = echo.messages[@"ARVIRVideo"];
-
-                    NSURL *movieURL = setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;
-                    ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config];
-                    [[ARTopMenuViewController sharedController] pushViewController:setupVC animated:ARPerformWorkAsynchronously];
-                }
-            };
-
-            // Try to get a cached image from SDWebImage. This will succeed under normal runtime conditions.
-            // But in case there is severe RAM or disk pressure, the image might already be evicted from the cache.
-            // In the rare occurence that a cache lookup fails, download the image into the cache first.
-            SDWebImageManager *manager = [SDWebImageManager sharedManager];
-            if ([manager cachedImageExistsForURL:url]) {
-                NSString *key = [manager cacheKeyForURL:url];
-                UIImage *image = [manager.imageCache imageFromDiskCacheForKey:key];
-                // TODO: Verify that this _does_ actually get a cache hit most often.
-                gotImageBlock(image);
-            } else {
-                [manager downloadImageWithURL:url options:(SDWebImageHighPriority) progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-                    if (finished && !error) {
-                        gotImageBlock(image);
-                    } else {
-                        // Errors are unlikely to happen, but we should handle them just in case.
-                        // This represents both an image cache-miss _and_ a failure to
-                        // download the image on its own. Very unlikely.
-                        NSLog(@"[ARAppDelegate+Emission] Couldn't download image for AR VIR (%@, %@): %@", artworkSlug, imageURL, error);
-                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Failed to Load Image" message:@"We could not download the image to present in View-in-Room." preferredStyle:UIAlertControllerStyleAlert];
-                        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                        [alert addAction:defaultAction];
-                        [[ARTopMenuViewController sharedController] presentViewController:alert animated:YES completion:nil];
-                    }
-                }];
-            }
-        }];
-    } else {
-        // nop: we don't expect Emission to call this on non-AR devices.
-    }
-}
-
 @end
-
-/// Utilities to extend a view controller class to conform to ARMenuAwareViewController, with an
-/// implementation of menuAwareScrollView that uses UIViewController callbacks to work. This is
-/// helpful for Emission view controllers.
-#pragma mark - ARMenuAwareViewController additions
-
-static UIScrollView *
-FindFirstScrollView(UIView *view)
-{
-    for (UIView *subview in view.subviews) {
-        if ([subview isKindOfClass:UIScrollView.class]) {
-            return (UIScrollView *)subview;
-        }
-    }
-    for (UIView *subview in view.subviews) {
-        UIScrollView *result = FindFirstScrollView(subview);
-        if (result) return result;
-    }
-    return nil;
-}
-static char menuAwareScrollViewKey;
-
-/// Macro to extend view controller classes to conform to ARMenuAwareViewController.
-#define MakeMenuAware(ControllerClass) @interface ControllerClass (ARMenuAwareViewController) <ARMenuAwareViewController>\
-@end\
-@implementation ControllerClass (ARMenuAwareViewController)\
-- (void)viewDidLayoutSubviews {\
-    [super viewDidLayoutSubviews];\
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{\
-        self.menuAwareScrollView = FindFirstScrollView(self.view);\
-        NSLog(@"Making menu-aware scroll view: %@", self.menuAwareScrollView);\
-    });\
-}\
-- (void)setMenuAwareScrollView:(UIScrollView *)scrollView {\
-    if (scrollView != self.menuAwareScrollView) {\
-        [self willChangeValueForKey:@"menuAwareScrollView"];\
-        objc_setAssociatedObject(self, &menuAwareScrollViewKey, scrollView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);\
-        [self didChangeValueForKey:@"menuAwareScrollView"];\
-    }\
-}\
-- (UIScrollView *)menuAwareScrollView {\
-    return objc_getAssociatedObject(self, &menuAwareScrollViewKey);\
-}\
-@end
-
-MakeMenuAware(ARArtistComponentViewController)
-
-// Make Shows menu-aware
-MakeMenuAware(ARShowComponentViewController)
-MakeMenuAware(ARShowArtworksComponentViewController)
-MakeMenuAware(ARShowArtistsComponentViewController)
-MakeMenuAware(ARShowMoreInfoComponentViewController)
-
-// Make Fairs menu-aware
-MakeMenuAware(ARFairMoreInfoComponentViewController)
-MakeMenuAware(ARFairArtistsComponentViewController)
-MakeMenuAware(ARFairArtworksComponentViewController)
-MakeMenuAware(ARFairExhibitorsComponentViewController)

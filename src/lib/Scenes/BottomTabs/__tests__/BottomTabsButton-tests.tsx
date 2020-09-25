@@ -1,10 +1,9 @@
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
 import { BottomTabsButton } from "../BottomTabsButton"
 
@@ -24,9 +23,9 @@ describe(BottomTabsButton, () => {
   it(`navigates on press`, async () => {
     const tree = renderWithWrappers(<TestWrapper tab="search" />)
 
-    expect(SwitchBoard.presentNavigationViewController).not.toHaveBeenCalled()
+    expect(NativeModules.ARScreenPresenterModule.switchTab).not.toHaveBeenCalled()
     tree.root.findByType(TouchableWithoutFeedback).props.onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/search")
+    expect(NativeModules.ARScreenPresenterModule.switchTab).toHaveBeenCalledWith("search", {}, false)
   })
 
   it(`updates the selected tab state on press`, async () => {

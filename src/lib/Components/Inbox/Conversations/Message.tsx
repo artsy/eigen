@@ -1,6 +1,6 @@
 import moment from "moment"
 import React from "react"
-import { Dimensions, View } from "react-native"
+import { Dimensions, NativeModules, View } from "react-native"
 // @ts-ignore STRICTNESS_MIGRATION
 import Hyperlink from "react-native-hyperlink"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -18,6 +18,7 @@ import PDFPreview from "./Preview/Attachment/PDFPreview"
 import { Schema, Track, track as _track } from "../../../utils/track"
 
 import { Message_message } from "__generated__/Message_message.graphql"
+import { compact } from "lodash"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -96,38 +97,27 @@ const track: Track<Props> = _track
 @track()
 export class Message extends React.Component<Props> {
   renderAttachmentPreviews(attachments: Props["message"]["attachments"]) {
-    // This function does not use the arrow syntax, because it shouldn’t be force bound to this component. Instead, it
-    // gets bound to the AttachmentPreview component instance that’s touched, so we can pass `this` to `findNodeHandle`.
-    // @ts-ignore STRICTNESS_MIGRATION
-    const previewAttachment = function (this: React.Component<any, any>, attachmentID) {
-      // @ts-ignore STRICTNESS_MIGRATION
-      const attachment = attachments.find(({ internalID }) => internalID === attachmentID)
-      SwitchBoard.presentMediaPreviewController(
-        this,
-        // @ts-ignore STRICTNESS_MIGRATION
+    // reactNodeHandle is passed to the native side to decide which UIView to show the
+    // download progress bar on.
+    const previewAttachment = (reactNodeHandle: number, attachmentID: string) => {
+      const attachment = compact(attachments).find(({ internalID }) => internalID === attachmentID)!
+      NativeModules.ARScreenPresenterModule.presentMediaPreviewController(
+        reactNodeHandle,
         attachment.downloadURL,
-        // @ts-ignore STRICTNESS_MIGRATION
         attachment.contentType,
-        // @ts-ignore STRICTNESS_MIGRATION
         attachment.internalID
       )
     }
 
-    // @ts-ignore STRICTNESS_MIGRATION
-    return attachments.map((attachment) => {
-      // @ts-ignore STRICTNESS_MIGRATION
+    return compact(attachments).map((attachment) => {
       if (attachment.contentType.startsWith("image")) {
         return (
-          // @ts-ignore STRICTNESS_MIGRATION
           <PreviewContainer key={attachment.id}>
             <ImagePreview attachment={attachment as any} onSelected={previewAttachment} />
           </PreviewContainer>
         )
-      }
-      // @ts-ignore STRICTNESS_MIGRATION
-      else if (attachment.contentType === "application/pdf") {
+      } else if (attachment.contentType === "application/pdf") {
         return (
-          // @ts-ignore STRICTNESS_MIGRATION
           <PreviewContainer key={attachment.id}>
             <PDFPreview attachment={attachment as any} onSelected={previewAttachment} />
           </PreviewContainer>
@@ -148,8 +138,7 @@ export class Message extends React.Component<Props> {
     owner_type: Schema.OwnerEntityTypes.Conversation,
     owner_id: props.conversationId,
   }))
-  // @ts-ignore STRICTNESS_MIGRATION
-  onLinkPress(url) {
+  onLinkPress(url: string) {
     return SwitchBoard.presentNavigationViewController(this, url)
   }
 

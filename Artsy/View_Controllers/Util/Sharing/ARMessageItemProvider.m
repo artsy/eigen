@@ -1,6 +1,5 @@
 #import "ARMessageItemProvider.h"
-
-#import "ARSwitchBoard+Eigen.h"
+#import "ARRouter.h"
 
 
 @interface ARMessageItemProvider ()
@@ -53,7 +52,7 @@
 
 - (NSURL *)url
 {
-    return [ARSwitchBoard.sharedInstance resolveRelativeUrl:self.path];
+    return [ARRouter resolveRelativeUrl:self.path];
 }
 
 @end
