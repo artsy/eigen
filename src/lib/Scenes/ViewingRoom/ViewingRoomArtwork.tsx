@@ -236,7 +236,7 @@ export const ViewingRoomArtworkQueryRenderer: React.FC<{ viewing_room_id: string
   viewing_room_id: viewingRoomID,
   artwork_id: artworkID,
 }) => {
-  const { props, error } = useQuery<ViewingRoomArtworkQuery>(
+  const { props, error, relay } = useQuery<ViewingRoomArtworkQuery>(
     query,
     { viewingRoomID, artworkID },
     { networkCacheConfig: { force: true } }
