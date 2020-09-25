@@ -1,5 +1,6 @@
 import { Fair2MoreInfo_fair } from "__generated__/Fair2MoreInfo_fair.graphql"
 import { Fair2MoreInfoQuery } from "__generated__/Fair2MoreInfoQuery.graphql"
+import { LocationMapContainer, PartnerType } from "lib/Components/LocationMap"
 import { Markdown } from "lib/Components/Markdown"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -22,6 +23,8 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
   const handleNavigation = (link: string) => {
     return SwitchBoard.presentNavigationViewController(navRef.current, link)
   }
+  const coordinates = fair.location?.coordinates
+  const shouldShowLocationMap = coordinates && coordinates?.lat && coordinates?.lng
 
   return (
     <ScrollView ref={navRef}>
@@ -34,28 +37,35 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
           {!!fair.summary && (
             <>
               <Text variant="text">{fair.summary}</Text>
-              <Spacer my={3} />
+              <Spacer my={2} />
             </>
           )}
           {!!fair.about && (
             <>
               <Text variant="text">{fair.about}</Text>
-              <Spacer my={3} />
+              <Spacer my={2} />
             </>
           )}
 
           {!!fair.tagline && (
             <>
               <Text variant="text">{fair.tagline}</Text>
-              <Spacer my={3} />
+              <Spacer my={2} />
             </>
           )}
 
-          {!!fair.location?.summary && (
+          {!!fair.location && (
             <>
               <Text variant="mediumText">Location</Text>
-              <Text variant="text">{fair.location?.summary}</Text>
-              <Spacer my={3} />
+              {!!fair.location?.summary && <Text variant="text">{fair.location?.summary}</Text>}
+              {!!shouldShowLocationMap && (
+                <LocationMapContainer
+                  location={fair.location}
+                  partnerType={PartnerType.fair}
+                  partnerName={fair.profile?.name ?? fair.name}
+                />
+              )}
+              <Spacer my={2} />
             </>
           )}
 
@@ -70,7 +80,7 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
             <>
               <Text variant="mediumText">Tickets</Text>
               <Markdown>{fair.tickets}</Markdown>
-              <Spacer my={3} />
+              <Spacer my={2} />
             </>
           )}
           {!!fair.ticketsLink && (
@@ -78,21 +88,21 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
               <TouchableOpacity onPress={() => handleNavigation(fair.ticketsLink!)}>
                 <Text variant="mediumText">Buy Tickets</Text>
               </TouchableOpacity>
-              <Spacer my={3} />
+              <Spacer my={2} />
             </>
           )}
           {!!fair.links && (
             <>
               <Text variant="mediumText">Links</Text>
               <Markdown>{fair.links}</Markdown>
-              <Spacer my={3} />
+              <Spacer my={2} />
             </>
           )}
           {!!fair.contact && (
             <>
               <Text variant="mediumText">Contact</Text>
               <Markdown>{fair.contact}</Markdown>
-              <Spacer my={3} />
+              <Spacer my={2} />
             </>
           )}
         </Box>
@@ -108,7 +118,15 @@ export const Fair2MoreInfoFragmentContainer = createFragmentContainer(Fair2MoreI
       name
       slug
       tagline
+      profile {
+        name
+      }
       location {
+        ...LocationMap_location
+        coordinates {
+          lat
+          lng
+        }
         summary
       }
       ticketsLink
