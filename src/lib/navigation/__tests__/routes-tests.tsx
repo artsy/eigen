@@ -987,6 +987,18 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes /privacy to a web view", () => {
+    expect(matchRoute("/privacy")).toMatchInlineSnapshot(`
+      Object {
+        "module": "WebView",
+        "params": Object {
+          "url": "/privacy",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes to CityBMWList", () => {
     expect(matchRoute("/city-bmw-list/la")).toMatchInlineSnapshot(`
       Object {
