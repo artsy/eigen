@@ -6243,9 +6243,6 @@ type HomePageSalesModule {
 }
 
 type IdentityVerification {
-  # Verification flow entry point
-  flowURL: String
-
   # A globally unique ID.
   id: ID!
 
