@@ -5,34 +5,34 @@ import {
   FilterParamName,
   FilterParams,
 } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { Schema } from "lib/utils/track"
-import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
-import _ from "lodash"
-import { ArrowRightIcon, Box, Button, CloseIcon, color, FilterIcon, Flex, Sans, Separator } from "palette"
-import React, { useContext } from "react"
-import { FlatList, TouchableOpacity, View, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
-import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
 import {
   AggregationName,
   Aggregations,
   ArtworkFilterContext,
   FilterData,
   useSelectedOptionsDisplay,
-} from "../utils/ArtworkFiltersStore"
-import { AnimatedBottomButton } from "./AnimatedBottomButton"
-import { ColorOption, ColorOptionsScreen } from "./ArtworkFilterOptions/ColorOptions"
-import { colorHexMap } from "./ArtworkFilterOptions/ColorSwatch"
-import { GalleryOptionsScreen } from "./ArtworkFilterOptions/GalleryOptions"
-import { InstitutionOptionsScreen } from "./ArtworkFilterOptions/InstitutionOptions"
-import { MediumOptionsScreen } from "./ArtworkFilterOptions/MediumOptions"
-import { PriceRangeOptionsScreen } from "./ArtworkFilterOptions/PriceRangeOptions"
-import { SizeOptionsScreen } from "./ArtworkFilterOptions/SizeOptions"
-import { SortOptionsScreen } from "./ArtworkFilterOptions/SortOptions"
-import { TimePeriodOptionsScreen } from "./ArtworkFilterOptions/TimePeriodOptions"
-import { WaysToBuyOptionsScreen } from "./ArtworkFilterOptions/WaysToBuyOptions"
-import { FancyModal } from "./FancyModal/FancyModal"
+} from "lib/utils/ArtworkFiltersStore"
+import { Schema } from "lib/utils/track"
+import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
+import _ from "lodash"
+import { ArrowRightIcon, Box, Button, CloseIcon, color, FilterIcon, Flex, Sans, Separator } from "palette"
+import React, { useCallback, useContext } from "react"
+import { FlatList, TouchableOpacity, View, ViewProperties } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
+import { useTracking } from "react-tracking"
+import styled from "styled-components/native"
+import { AnimatedBottomButton } from "../AnimatedBottomButton"
+import { ColorOption, ColorOptionsScreen } from "../ArtworkFilterOptions/ColorOptions"
+import { colorHexMap } from "../ArtworkFilterOptions/ColorSwatch"
+import { GalleryOptionsScreen } from "../ArtworkFilterOptions/GalleryOptions"
+import { InstitutionOptionsScreen } from "../ArtworkFilterOptions/InstitutionOptions"
+import { MediumOptionsScreen } from "../ArtworkFilterOptions/MediumOptions"
+import { PriceRangeOptionsScreen } from "../ArtworkFilterOptions/PriceRangeOptions"
+import { SizeOptionsScreen } from "../ArtworkFilterOptions/SizeOptions"
+import { SortOptionsScreen } from "../ArtworkFilterOptions/SortOptions"
+import { TimePeriodOptionsScreen } from "../ArtworkFilterOptions/TimePeriodOptions"
+import { WaysToBuyOptionsScreen } from "../ArtworkFilterOptions/WaysToBuyOptions"
+import { FancyModal } from "../FancyModal/FancyModal"
 
 interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
@@ -105,7 +105,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
               const appliedFiltersParams = filterArtworksParams(state.appliedFilters)
               // TODO: Update to use cohesion
               switch (mode) {
-                case "Collection":
+                case FilterModalMode.Collection:
                   trackChangeFilters(
                     PageNames.Collection,
                     OwnerEntityTypes.Collection,
@@ -113,7 +113,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                     changedFiltersParams(appliedFiltersParams, state.selectedFilters)
                   )
                   break
-                case "ArtistArtworks":
+                case FilterModalMode.ArtistArtworks:
                   trackChangeFilters(
                     PageNames.ArtistPage,
                     OwnerEntityTypes.Artist,
@@ -155,9 +155,10 @@ export interface FilterDisplayConfig {
 }
 
 export enum FilterModalMode {
-  Collection = "Collection",
   ArtistArtworks = "ArtistArtworks",
   ArtistSeries = "ArtistSeries",
+  Collection = "Collection",
+  SaleArtworks = "SaleArtworks",
 }
 
 interface FilterOptionsProps {
@@ -193,60 +194,63 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
     filterOptionToDisplayConfigMap.waysToBuy,
   ]
 
-  const filterScreenSort = (left: FilterDisplayConfig, right: FilterDisplayConfig): number => {
-    let sortOrder: FilterScreen[] = []
+  const filterScreenSort = useCallback(
+    (left: FilterDisplayConfig, right: FilterDisplayConfig): number => {
+      let sortOrder: FilterScreen[] = []
 
-    // Filter order is based on frequency of use for a given page
-    switch (mode) {
-      case "Collection":
-        sortOrder = [
-          "sort",
-          "medium",
-          "priceRange",
-          "waysToBuy",
-          "dimensionRange",
-          "majorPeriods",
-          "color",
-          "gallery",
-          "institution",
-        ]
-        break
-      case "ArtistArtworks":
-        sortOrder = [
-          "sort",
-          "medium",
-          "priceRange",
-          "waysToBuy",
-          "gallery",
-          "institution",
-          "dimensionRange",
-          "majorPeriods",
-          "color",
-        ]
-        break
-      case "ArtistSeries":
-        sortOrder = [
-          "sort",
-          "medium",
-          "priceRange",
-          "waysToBuy",
-          "dimensionRange",
-          "majorPeriods",
-          "color",
-          "gallery",
-          "institution",
-        ]
-        break
-    }
+      // Filter order is based on frequency of use for a given page
+      switch (mode) {
+        case FilterModalMode.Collection:
+          sortOrder = [
+            "sort",
+            "medium",
+            "priceRange",
+            "waysToBuy",
+            "dimensionRange",
+            "majorPeriods",
+            "color",
+            "gallery",
+            "institution",
+          ]
+          break
+        case FilterModalMode.ArtistArtworks:
+          sortOrder = [
+            "sort",
+            "medium",
+            "priceRange",
+            "waysToBuy",
+            "gallery",
+            "institution",
+            "dimensionRange",
+            "majorPeriods",
+            "color",
+          ]
+          break
+        case FilterModalMode.ArtistSeries:
+          sortOrder = [
+            "sort",
+            "medium",
+            "priceRange",
+            "waysToBuy",
+            "dimensionRange",
+            "majorPeriods",
+            "color",
+            "gallery",
+            "institution",
+          ]
+          break
+      }
 
-    const leftParam = left.filterType
-    const rightParam = right.filterType
-    if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
-      return -1
-    } else {
-      return 1
-    }
-  }
+      const leftParam = left.filterType
+      const rightParam = right.filterType
+      if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
+        return -1
+      } else {
+        return 1
+      }
+    },
+    [mode]
+  )
 
   const filterOptions: FilterDisplayConfig[] = staticFilterOptions.concat(aggregateFilterOptions)
   const sortedFilterOptions = filterOptions.sort(filterScreenSort)
@@ -312,13 +316,13 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
         <ClearAllButton
           onPress={() => {
             switch (mode) {
-              case "Collection":
+              case FilterModalMode.Collection:
                 trackClear(PageNames.Collection, OwnerEntityTypes.Collection)
                 break
-              case "ArtistArtworks":
+              case FilterModalMode.ArtistArtworks:
                 trackClear(PageNames.ArtistPage, OwnerEntityTypes.Artist)
                 break
-              case "ArtistSeries":
+              case FilterModalMode.ArtistSeries:
                 trackClear(PageNames.ArtistSeriesPage, OwnerEntityTypes.ArtistSeries)
                 break
             }

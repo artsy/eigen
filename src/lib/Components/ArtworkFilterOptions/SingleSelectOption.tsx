@@ -5,7 +5,7 @@ import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
-import { OptionListItem } from "../FilterModal"
+import { OptionListItem } from "../FilterModal/FilterModal"
 
 interface SingleSelectOptionScreenProps {
   navigator: NavigatorIOS

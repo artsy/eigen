@@ -8,7 +8,7 @@ import {
 import _ from "lodash"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
-import { aggregationForFilter } from "../FilterModal"
+import { aggregationForFilter } from "../FilterModal/FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface TimePeriodOptionsScreenProps {

@@ -10,9 +10,12 @@ import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__
 import { FilterParamName, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Aggregations, ArtworkFilterContext, ArtworkFilterContextState, reducer } from "lib/utils/ArtworkFiltersStore"
 import { Sans, Theme } from "palette"
 import { useTracking } from "react-tracking"
-import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
+import { NavigateBackIconContainer } from "../../ArtworkFilterOptions/SingleSelectOption"
+import { FakeNavigator as MockNavigator } from "../../Bidding/__tests__/Helpers/FakeNavigator"
+import { closeModalMock, MockFilterScreen } from "../__tests__/FilterTestHelper"
 import {
   ApplyButton,
   ClearAllButton,
@@ -22,10 +25,7 @@ import {
   FilterModalNavigator,
   FilterOptions,
   TouchableOptionListItemRow,
-} from "../../../lib/Components/FilterModal"
-import { Aggregations, ArtworkFilterContext, ArtworkFilterContextState, reducer } from "../../utils/ArtworkFiltersStore"
-import { NavigateBackIconContainer } from "../ArtworkFilterOptions/SingleSelectOption"
-import { closeModalMock, MockFilterScreen } from "./FilterTestHelper"
+} from "../FilterModal"
 
 let mockNavigator: MockNavigator
 let state: ArtworkFilterContextState

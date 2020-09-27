@@ -23,14 +23,15 @@ export type FilterParams = {
 }
 
 export enum FilterDisplayName {
-  sort = "Sort",
-  medium = "Medium",
-  priceRange = "Price range",
-  size = "Size",
   color = "Color",
   gallery = "Gallery",
   institution = "Institution",
+  medium = "Medium",
+  priceRange = "Price/estimate range",
+  size = "Size",
+  sort = "Sort by",
   timePeriod = "Time period",
+  viewAs = "View as",
   waysToBuy = "Ways to buy",
 }
 

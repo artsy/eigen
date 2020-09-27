@@ -1,4 +1,4 @@
-import { aggregationForFilter } from "lib/Components/FilterModal"
+import { aggregationForFilter } from "lib/Components/FilterModal/FilterModal"
 import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Aggregations, ArtworkFilterContext, ArtworkFilterContextState, reducer } from "lib/utils/ArtworkFiltersStore"

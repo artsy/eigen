@@ -2,7 +2,7 @@ import { InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelper
 import { ArtworkFilterContext, reducer } from "lib/utils/ArtworkFiltersStore"
 import { Theme } from "palette"
 import React from "react"
-import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
+import { FakeNavigator as MockNavigator } from "../../Bidding/__tests__/Helpers/FakeNavigator"
 import { FilterModalMode, FilterOptions } from "../FilterModal"
 
 const mockNavigator = new MockNavigator()

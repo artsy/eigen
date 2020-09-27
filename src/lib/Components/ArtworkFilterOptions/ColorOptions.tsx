@@ -16,7 +16,7 @@ import React, { useContext, useState } from "react"
 import { LayoutChangeEvent, NavigatorIOS, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
-import { aggregationForFilter } from "../FilterModal"
+import { aggregationForFilter } from "../FilterModal/FilterModal"
 import { ColorSwatch } from "./ColorSwatch"
 
 // Color types
