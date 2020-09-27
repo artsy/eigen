@@ -300,15 +300,15 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
 
   return (
     <Flex style={{ flex: 1 }}>
-      <Flex flexGrow={0} flexDirection="row" justifyContent="space-between">
-        <Flex alignItems="flex-end" mt={0.5} mb={2}>
-          <CloseIconContainer hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={handleTappingCloseIcon}>
-            <CloseIcon fill="black100" />
-          </CloseIconContainer>
+      <Flex flexDirection="row" justifyContent="space-between" height={60}>
+        <CloseIconContainer hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={handleTappingCloseIcon}>
+          <CloseIcon fill="black100" marginLeft={20} />
+        </CloseIconContainer>
+        <Flex flex={1} alignItems="center" justifyContent="center">
+          <Sans size="4" weight="medium" textAlign="center">
+            Filter
+          </Sans>
         </Flex>
-        <Sans size="4" weight="medium" style={{ alignSelf: "center" }}>
-          Filter
-        </Sans>
         <ClearAllButton
           onPress={() => {
             switch (mode) {
@@ -326,7 +326,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
             clearAllFilters()
           }}
         >
-          <Sans mr={2} mt={2} size="4" color="black100">
+          <Sans size="4" color="black100" pr={2}>
             Clear all
           </Sans>
         </ClearAllButton>
@@ -425,7 +425,9 @@ export const AnimatedArtworkFilterButton: React.FC<{ count: number; isVisible: b
 export const TouchableOptionListItemRow = styled(TouchableOpacity)``
 
 export const CloseIconContainer = styled(TouchableOpacity)`
-  margin: 20px 0px 0px 20px;
+  flex: 1;
+  align-items: flex-start;
+  justify-content: center;
 `
 
 export const OptionListItem = styled(Flex)`
@@ -441,7 +443,11 @@ export const OptionListItem = styled(Flex)`
 export const CurrentOption = styled(Sans)`
   color: ${color("black60")};
 `
-export const ClearAllButton = styled(TouchableOpacity)``
+export const ClearAllButton = styled(TouchableOpacity)`
+  flex: 1;
+  align-items: flex-end;
+  justify-content: center;
+`
 export const ApplyButton = styled(Button)``
 export const ApplyButtonContainer = styled(Box)`
   padding: 20px;
