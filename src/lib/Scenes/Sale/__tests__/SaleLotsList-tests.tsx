@@ -23,12 +23,15 @@ describe("SaleLotsList", () => {
           me {
             ...SaleLotsList_me
           }
+          sale(id: "the-sale") {
+            ...SaleLotsList_sale
+          }
         }
       `}
       variables={{}}
       render={({ props }) => {
-        if (props?.me) {
-          return <SaleLotsList me={props.me} showGrid={showGrid} />
+        if (props?.me && props?.sale) {
+          return <SaleLotsList me={props.me} showGrid={showGrid} sale={props.sale} />
         }
         return null
       }}
@@ -44,23 +47,8 @@ describe("SaleLotsList", () => {
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
-        Me: () => ({
-          lotsByFollowedArtistsConnection: {
-            edges: [
-              {
-                node: {
-                  name: "TestName",
-                  sale: {
-                    is_open: true,
-                  },
-                  artwork: {
-                    id: "foo",
-                  },
-                },
-              },
-            ],
-          },
-        }),
+        Me: () => mockMe,
+        Sale: () => mockSale,
       })
     )
 
@@ -72,26 +60,41 @@ describe("SaleLotsList", () => {
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
-        Me: () => ({
-          lotsByFollowedArtistsConnection: {
-            edges: [
-              {
-                node: {
-                  name: "TestName",
-                  sale: {
-                    is_open: true,
-                  },
-                  artwork: {
-                    id: "foo",
-                  },
-                },
-              },
-            ],
-          },
-        }),
+        Me: () => mockMe,
+        Sale: () => mockSale,
       })
     )
 
     expect(tree.root.findAllByType(SaleArtworkList)).toHaveLength(1)
   })
 })
+
+const mockMe = {
+  lotsByFollowedArtistsConnection: {
+    edges: [
+      {
+        node: {
+          name: "TestName",
+          sale: {
+            is_open: true,
+          },
+          artwork: {
+            id: "foo",
+          },
+        },
+      },
+    ],
+  },
+}
+
+const mockSale = {
+  endAt: "2020-11-01T15:00:00",
+  startAt: "2020-10-01T15:00:00",
+  timeZone: "Europe/Berlin",
+  coverImage: {
+    url: "cover image url",
+  },
+  name: "sale name",
+  liveStartAt: "2020-10-01T15:00:00",
+  internalID: "the-sale-internal",
+}

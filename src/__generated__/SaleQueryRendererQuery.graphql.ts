@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 71b6dbaed185002b5e50e98488c38c3b */
+/* @relayHash 365254b27a35e6b57bd8e905d39d56d1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -223,13 +223,20 @@ fragment SaleLotsList_me on Me {
   ...SaleArtworkList_me
 }
 
+fragment SaleLotsList_sale on Sale {
+  internalID
+  slug
+}
+
 fragment Sale_me on Me {
   ...SaleLotsList_me
 }
 
 fragment Sale_sale on Sale {
+  internalID
   ...SaleHeader_sale
   ...RegisterToBidButton_sale
+  ...SaleLotsList_sale
   saleArtworksConnection(first: 10) {
     edges {
       node {
@@ -260,14 +267,14 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
@@ -397,7 +404,7 @@ v14 = {
   "concreteType": "Partner",
   "plural": false,
   "selections": [
-    (v2/*: any*/),
+    (v3/*: any*/),
     (v6/*: any*/)
   ]
 },
@@ -617,7 +624,7 @@ return {
                           (v9/*: any*/),
                           (v10/*: any*/),
                           (v5/*: any*/),
-                          (v3/*: any*/),
+                          (v2/*: any*/),
                           (v11/*: any*/),
                           {
                             "kind": "LinkedField",
@@ -759,7 +766,7 @@ return {
                         "storageKey": null
                       },
                       (v9/*: any*/),
-                      (v3/*: any*/),
+                      (v2/*: any*/),
                       (v10/*: any*/),
                       (v8/*: any*/),
                       (v11/*: any*/),
@@ -844,7 +851,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleQueryRendererQuery",
-    "id": "7ec6b038b95fa1f6512f4b713dc02967",
+    "id": "4345fa85aa60b3e50b4d4859a21c0454",
     "text": null,
     "metadata": {}
   }

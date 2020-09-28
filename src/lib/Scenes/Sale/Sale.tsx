@@ -68,7 +68,7 @@ const Sale: React.FC<Props> = (props) => {
     },
     {
       key: "saleLotsList",
-      content: <SaleLotsList me={props.me} showGrid={showGrid} />,
+      content: <SaleLotsList me={props.me} showGrid={showGrid} sale={props.sale} />,
     },
   ]
 
@@ -98,8 +98,10 @@ const Sale: React.FC<Props> = (props) => {
 export const SaleContainer = createFragmentContainer(Sale, {
   sale: graphql`
     fragment Sale_sale on Sale {
+      internalID
       ...SaleHeader_sale
       ...RegisterToBidButton_sale
+      ...SaleLotsList_sale
       saleArtworksConnection(first: 10) {
         edges {
           node {
