@@ -43,7 +43,7 @@
     ARTopMenuViewController *topMenu = [ARTopMenuViewController sharedController];
     UIViewController *hostVC = topMenu.visibleViewController;
     BOOL showOnTopMenu = topMenu.presentedViewController == nil;
-    UIView *hostView = showOnTopMenu ? topMenu.tabContentView : hostVC.view;
+    UIView *hostView = showOnTopMenu ? (UIView *)topMenu.tabContentView : hostVC.view;
 
     // This happens when there’s no network on app launch and onboarding will be shown.
     if (hostView.superview == nil) {
