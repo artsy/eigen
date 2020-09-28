@@ -1,8 +1,8 @@
 import { Fair2Editorial_fair } from "__generated__/Fair2Editorial_fair.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Box, BoxProps, color, Text, Touchable } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Fair2EditorialProps extends BoxProps {
@@ -10,14 +10,12 @@ interface Fair2EditorialProps extends BoxProps {
 }
 
 export const Fair2Editorial: React.FC<Fair2EditorialProps> = ({ fair, ...rest }) => {
-  const ref = useRef<any>()
-
   if (!fair.articles?.edges || fair.articles.edges.length === 0) {
     return null
   }
 
   return (
-    <Box ref={ref} {...rest}>
+    <Box {...rest}>
       <Text mx={2} mb={2} variant="subtitle">
         Related articles
       </Text>
@@ -33,8 +31,7 @@ export const Fair2Editorial: React.FC<Fair2EditorialProps> = ({ fair, ...rest })
               if (!article.href) {
                 return
               }
-
-              SwitchBoard.presentNavigationViewController(ref.current, article.href)
+              navigate(article.href)
             }}
           >
             <Box flexDirection="row" py={1} px={2}>
