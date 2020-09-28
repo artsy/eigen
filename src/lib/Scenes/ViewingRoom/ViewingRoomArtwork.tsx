@@ -1,6 +1,7 @@
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
+import LoadFailureView from "lib/Components/LoadFailureView" 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { cm2in } from "lib/utils/conversions"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
@@ -235,7 +236,7 @@ export const ViewingRoomArtworkQueryRenderer: React.FC<{ viewing_room_id: string
   viewing_room_id: viewingRoomID,
   artwork_id: artworkID,
 }) => {
-  const { props, error } = useQuery<ViewingRoomArtworkQuery>(
+  const { props, error, retry } = useQuery<ViewingRoomArtworkQuery>(
     query,
     { viewingRoomID, artworkID },
     { networkCacheConfig: { force: true } }
@@ -244,7 +245,8 @@ export const ViewingRoomArtworkQueryRenderer: React.FC<{ viewing_room_id: string
     return <ViewingRoomArtworkContainer selectedArtwork={props.artwork!} viewingRoomInfo={props.viewingRoom!} />
   }
   if (error) {
-    throw error
+    console.error(error)
+    return <LoadFailureView onRetry={retry} style={{ flex: 1 }} />
   }
 
   return <Placeholder />
