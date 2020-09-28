@@ -38,7 +38,7 @@
 
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
 
-@property (readwrite, nonatomic, assign) NSString * currentTab;
+@property (readwrite, nonatomic, assign) NSString *currentTab;
 
 @property (readonly, nonatomic, strong) ArtsyEcho *echo;
 
