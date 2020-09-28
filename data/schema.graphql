@@ -1192,7 +1192,7 @@ type Artwork implements Node & Searchable & Sellable {
   description(format: Format): String
   dimensions: dimensions
   displayLabel: String
-  editionNumber: Int
+  editionNumber: String
   editionOf: String
   editionSets(sort: EditionSetSorts): [EditionSet]
   editionSize: String
