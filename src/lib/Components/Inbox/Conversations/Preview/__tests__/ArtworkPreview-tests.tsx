@@ -4,17 +4,17 @@ import "react-native"
 
 import ArtworkPreview from "../ArtworkPreview"
 
-import { Touchable } from "palette"
+import { TouchableHighlight } from "react-native"
 
 describe("concerning selection handling", () => {
   it("passes a onPress handler to the touchable component if an onSelected handler is given", () => {
     const tree = renderWithWrappers(<ArtworkPreview artwork={artwork as any} onSelected={() => null} />)
-    expect(tree.root.findByType(Touchable).props.onPress).toBeTruthy()
+    expect(tree.root.findByType(TouchableHighlight).props.onPress).toBeTruthy()
   })
 
   it("does not pass a onPress handler to the touchable component if no onSelected handler is given", () => {
     const tree = renderWithWrappers(<ArtworkPreview artwork={artwork as any} />)
-    expect(tree.root.findByType(Touchable).props.onPress).toBeFalsy()
+    expect(tree.root.findByType(TouchableHighlight).props.onPress).toBeFalsy()
   })
 })
 
