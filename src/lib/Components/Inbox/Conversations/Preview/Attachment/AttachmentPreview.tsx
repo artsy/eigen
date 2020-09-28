@@ -9,7 +9,9 @@ import colors from "lib/data/colors"
 import { AttachmentPreview_attachment } from "__generated__/AttachmentPreview_attachment.graphql"
 
 const Container = styled.View`
-  flex-direction: row;
+  flex-direction: column;
+  flex: 1;
+  flex-grow: 1;
 `
 
 export interface AttachmentProps {

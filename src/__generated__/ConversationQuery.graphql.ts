@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9da6f5e3d1c3b25af79ac7d2c3d4423b */
+/* @relayHash f5da9b739dd2ee403e0a3a577ef20c2d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -102,15 +102,13 @@ fragment Messages_conversation on Conversation {
   from {
     name
     email
-    initials
     id
   }
   to {
     name
-    initials
     id
   }
-  initial_message: initialMessage
+  initialMessage
   lastMessageID
   messagesConnection(first: 10, sort: DESC) {
     pageInfo {
@@ -124,7 +122,6 @@ fragment Messages_conversation on Conversation {
       node {
         id
         internalID
-        impulseID
         isFromUser
         isFirstMessage
         body
@@ -224,13 +221,10 @@ v3 = {
   "args": null,
   "storageKey": null
 },
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "initials",
-  "args": null,
-  "storageKey": null
-},
+v4 = [
+  (v3/*: any*/),
+  (v2/*: any*/)
+],
 v5 = {
   "kind": "ScalarField",
   "alias": null,
@@ -367,11 +361,7 @@ return {
                 "args": null,
                 "concreteType": "ConversationResponder",
                 "plural": false,
-                "selections": [
-                  (v3/*: any*/),
-                  (v2/*: any*/),
-                  (v4/*: any*/)
-                ]
+                "selections": (v4/*: any*/)
               },
               {
                 "kind": "LinkedField",
@@ -384,13 +374,12 @@ return {
                 "selections": [
                   (v5/*: any*/),
                   (v2/*: any*/),
-                  (v3/*: any*/),
-                  (v4/*: any*/)
+                  (v3/*: any*/)
                 ]
               },
               {
                 "kind": "ScalarField",
-                "alias": "initial_message",
+                "alias": null,
                 "name": "initialMessage",
                 "args": null,
                 "storageKey": null
@@ -470,13 +459,6 @@ return {
                         "selections": [
                           (v2/*: any*/),
                           (v1/*: any*/),
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "impulseID",
-                            "args": null,
-                            "storageKey": null
-                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -661,10 +643,7 @@ return {
                             "args": null,
                             "concreteType": "Fair",
                             "plural": false,
-                            "selections": [
-                              (v3/*: any*/),
-                              (v2/*: any*/)
-                            ]
+                            "selections": (v4/*: any*/)
                           },
                           {
                             "kind": "LinkedField",
@@ -702,7 +681,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConversationQuery",
-    "id": "320001cf3eebfa1d03a8e688b53179bc",
+    "id": "30d6bf741b728868d9739b1b66f0fc93",
     "text": null,
     "metadata": {}
   }

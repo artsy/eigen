@@ -61,8 +61,6 @@ export class ShowPreview extends React.Component<Props> {
   }
 
   render() {
-    const img =
-      "https://cdnuploads.aa.com.tr/uploads/Contents/2020/05/14/thumbs_b_c_88bedbc66bb57f0e884555e8250ae5f9.jpg?v=140708"
     const show = this.props.show
     const name = show.fair ? show.fair.name : show.name
     return (
@@ -76,7 +74,7 @@ export class ShowPreview extends React.Component<Props> {
             <OpaqueImageView
               imageURL={
                 // @ts-ignore STRICTNESS_MIGRATION
-                img || show.coverImage.url
+                show.coverImage.url
               }
               style={{ flex: 1 }}
               aspectRatio={show.coverImage?.aspectRatio}

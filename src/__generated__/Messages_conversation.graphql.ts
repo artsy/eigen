@@ -9,13 +9,11 @@ export type Messages_conversation = {
     readonly from: {
         readonly name: string;
         readonly email: string;
-        readonly initials: string | null;
     };
     readonly to: {
         readonly name: string;
-        readonly initials: string | null;
     };
-    readonly initial_message: string;
+    readonly initialMessage: string;
     readonly lastMessageID: string | null;
     readonly messagesConnection: {
         readonly pageInfo: {
@@ -29,7 +27,6 @@ export type Messages_conversation = {
             readonly node: {
                 readonly id: string;
                 readonly internalID: string;
-                readonly impulseID: string;
                 readonly isFromUser: boolean | null;
                 readonly isFirstMessage: boolean | null;
                 readonly body: string | null;
@@ -96,18 +93,11 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "initials",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "__typename",
   "args": null,
   "storageKey": null
 },
-v5 = {
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
@@ -163,8 +153,7 @@ return {
           "name": "email",
           "args": null,
           "storageKey": null
-        },
-        (v3/*: any*/)
+        }
       ]
     },
     {
@@ -176,13 +165,12 @@ return {
       "concreteType": "ConversationResponder",
       "plural": false,
       "selections": [
-        (v2/*: any*/),
-        (v3/*: any*/)
+        (v2/*: any*/)
       ]
     },
     {
       "kind": "ScalarField",
-      "alias": "initial_message",
+      "alias": null,
       "name": "initialMessage",
       "args": null,
       "storageKey": null
@@ -272,13 +260,6 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "impulseID",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
                   "name": "isFromUser",
                   "args": null,
                   "storageKey": null
@@ -353,7 +334,7 @@ return {
                     }
                   ]
                 },
-                (v4/*: any*/),
+                (v3/*: any*/),
                 {
                   "kind": "FragmentSpread",
                   "name": "Message_message",
@@ -383,12 +364,12 @@ return {
           "concreteType": null,
           "plural": false,
           "selections": [
-            (v4/*: any*/),
+            (v3/*: any*/),
             {
               "kind": "InlineFragment",
               "type": "Artwork",
               "selections": [
-                (v5/*: any*/),
+                (v4/*: any*/),
                 {
                   "kind": "FragmentSpread",
                   "name": "ArtworkPreview_artwork",
@@ -400,7 +381,7 @@ return {
               "kind": "InlineFragment",
               "type": "Show",
               "selections": [
-                (v5/*: any*/),
+                (v4/*: any*/),
                 {
                   "kind": "FragmentSpread",
                   "name": "ShowPreview_show",
@@ -415,5 +396,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '870cb86d888163a47e31ed64728d5a9b';
+(node as any).hash = '8175de5196eb8355c89e6f428a9a3002';
 export default node;

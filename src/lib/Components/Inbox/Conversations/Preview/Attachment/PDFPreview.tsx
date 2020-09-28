@@ -1,4 +1,4 @@
-import { Text } from "palette"
+import { Flex, Text } from "palette"
 import React from "react"
 import { Image } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -8,21 +8,20 @@ import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
 
 import { PDFPreview_attachment } from "__generated__/PDFPreview_attachment.graphql"
 
-export const AttachmentContainer = styled.View`
+export const AttachmentContainer = styled(Flex)`
   flex: 1;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `
 
 export const AttachmentTextContainer = styled.View`
-  flex: 1;
-  flex-direction: column;
-  align-self: center;
+  max-width: 66%;
 `
 const Icon = styled(Image)`
   resize-mode: contain;
   width: 40;
   margin-top: 12;
-  margin-left: 12;
   margin-right: 12;
   margin-bottom: 12;
 `

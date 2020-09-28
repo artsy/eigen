@@ -24,13 +24,12 @@ type Item = NonNullable<NonNullable<Messages_conversation["items"]>[0]>["item"]
 interface MessageGroupProps {
   group: Message_message[]
   conversationId: string
-  to: Messages_conversation["to"]
   subjectItem: Item
 }
 
 export class MessageGroup extends React.Component<MessageGroupProps> {
   renderMessage = (message: Message_message, messageIndex: number) => {
-    const { group, to, subjectItem, conversationId } = this.props
+    const { group, subjectItem, conversationId } = this.props
     const nextMessage = group[messageIndex + 1]
     const senderChanges = !!nextMessage && nextMessage.isFromUser !== message.isFromUser
     const lastMessageInGroup = messageIndex === group.length - 1
@@ -59,8 +58,6 @@ export class MessageGroup extends React.Component<MessageGroupProps> {
           message={message}
           key={message.internalID}
           showTimeSince={!!(message.createdAt && today && group.length - 1 === messageIndex)}
-          initials={to.initials as string}
-          showAvatar={!message.isFromUser && (senderChanges || messageIndex === 0)}
           conversationId={conversationId!}
         />
         <Spacer mb={spaceAfter} />

@@ -1,15 +1,14 @@
 import { Message_message } from "__generated__/Message_message.graphql"
-import { Box, BoxProps, color, Flex, Sans, Spacer } from "palette"
+import { BoxProps, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
-import { Dimensions, View } from "react-native"
+import { View } from "react-native"
 // @ts-ignore STRICTNESS_MIGRATION
 import Hyperlink from "react-native-hyperlink"
 import { createFragmentContainer } from "react-relay"
-import styled from "styled-components"
+import styled from "styled-components/native"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
-import Avatar from "./Avatar"
 import { FileDownloadFragmentContainer as FileDownload } from "./Preview/Attachment/FileDownload"
 import ImagePreview from "./Preview/Attachment/ImagePreview"
 import { PDFPreview } from "./Preview/Attachment/PDFPreview"
@@ -18,15 +17,8 @@ import { TimeSince } from "./TimeSince"
 import { graphql } from "relay-runtime"
 import { Schema, Track, track as _track } from "../../../utils/track"
 
-const isPad = Dimensions.get("window").width > 700
-
-const MessagesStyles = {
-  padding: 10,
-  borderRadius: 15,
-}
-
-const PreviewContainer = styled(View)`
-  ${isPad ? "width: 295;" : ""};
+const AttachmentContainer = styled(Flex)`
+  border-radius: 15px;
 `
 
 const linkStyle = {
@@ -36,9 +28,7 @@ const linkStyle = {
 
 interface Props extends Omit<BoxProps, "color"> {
   message: Message_message
-  initials?: string
   showTimeSince?: boolean
-  showAvatar?: boolean
   conversationId: string
 }
 
@@ -69,35 +59,37 @@ export class Message extends React.Component<Props> {
       const isImage = attachment?.contentType?.startsWith("image")
       const isPDF = attachment?.contentType === "application/pdf"
       return (
-        <Box
+        <AttachmentContainer
           bg={backgroundColor}
-          style={{ width: "100%", ...MessagesStyles }}
+          width="100%"
+          p={1}
+          flex={1}
           mb={index === attachments!.length - 1 ? 0 : 0.5}
         >
           {
             // @ts-ignore STRICTNESS_MIGRATION
             !!isImage && (
               // @ts-ignore STRICTNESS_MIGRATION
-              <PreviewContainer key={attachment.id}>
+              <View key={attachment.id}>
                 <ImagePreview attachment={attachment as any} onSelected={previewAttachment} />
-              </PreviewContainer>
+              </View>
             )
           }
           {
             // @ts-ignore STRICTNESS_MIGRATION
             !!isPDF && (
               // @ts-ignore STRICTNESS_MIGRATION
-              <PreviewContainer key={attachment.id}>
+              <View key={attachment.id}>
                 <PDFPreview attachment={attachment as any} onSelected={previewAttachment} />
-              </PreviewContainer>
+              </View>
             )
           }
           {!isImage && !isPDF && !!attachment?.id && (
-            <PreviewContainer key={attachment.id}>
+            <View key={attachment.id}>
               <FileDownload attachment={attachment} />
-            </PreviewContainer>
+            </View>
           )}
-        </Box>
+        </AttachmentContainer>
       )
     })
   }
@@ -114,7 +106,7 @@ export class Message extends React.Component<Props> {
   }
 
   render() {
-    const { message, initials, showAvatar, showTimeSince, ...boxProps } = this.props
+    const { message, showTimeSince, ...boxProps } = this.props
     const { isFromUser, body } = message
     const bgColor = isFromUser ? "black100" : "black10"
     const textColor = isFromUser ? "white100" : "black100"
@@ -124,32 +116,21 @@ export class Message extends React.Component<Props> {
       <>
         <Flex
           maxWidth="66.67%"
-          flexDirection="row"
-          style={{
-            alignSelf,
-          }}
+          flexDirection="column"
+          alignItems={alignAttachments}
+          flexGrow={1}
+          flex={1}
+          style={{ alignSelf }}
         >
-          {!isFromUser && (
-            <Box {...boxProps} width={46} mr={10}>
-              {!!showAvatar && (
-                <Avatar
-                  isUser={message.isFromUser as any /* STRICTNESS_MIGRATION */}
-                  initials={initials as any /* STRICTNESS_MIGRATION */}
-                />
-              )}
-            </Box>
-          )}
-          <Flex style={{ flexDirection: "column", alignItems: alignAttachments, flexGrow: 1, flex: 1 }}>
-            <Box {...boxProps} bg={bgColor} style={MessagesStyles}>
-              <Hyperlink onPress={this.onLinkPress.bind(this)} linkStyle={linkStyle}>
-                <Sans size="4" color={textColor}>
-                  {body}
-                </Sans>
-              </Hyperlink>
-            </Box>
-            {!!message.attachments?.length && <Spacer mb={0.5} />}
-            {this.renderAttachmentPreviews(message.attachments, bgColor)}
-          </Flex>
+          <AttachmentContainer {...boxProps} flex={1} bg={bgColor} p={1}>
+            <Hyperlink onPress={this.onLinkPress.bind(this)} linkStyle={linkStyle}>
+              <Sans size="4" color={textColor}>
+                {body}
+              </Sans>
+            </Hyperlink>
+          </AttachmentContainer>
+          {!!message.attachments?.length && <Spacer mb={0.5} />}
+          {this.renderAttachmentPreviews(message.attachments, bgColor)}
         </Flex>
         {showTimeSince && <TimeSince time={message.createdAt} style={{ alignSelf }} mt={0.5} />}
       </>

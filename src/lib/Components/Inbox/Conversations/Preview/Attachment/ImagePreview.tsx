@@ -8,7 +8,7 @@ import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
 import { ImagePreview_attachment } from "__generated__/ImagePreview_attachment.graphql"
 
 const Image = styled(OpaqueImageView)`
-  height: 150;
+  height: 250;
   flex: 1;
 `
 

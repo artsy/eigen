@@ -33,8 +33,8 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   const [messages, setMessages] = useState<MessageGroupType[]>()
   useEffect(() => {
     const nodes = extractNodes(conversation.messagesConnection)
-      .filter(node => node.body?.length || node.attachments?.length)
-      .map(node => {
+      .filter((node) => node.body?.length || node.attachments?.length)
+      .map((node) => {
         return { key: node.id, ...node }
       })
       .reverse()
@@ -63,7 +63,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
     }
 
     updateState(true)
-    relay.loadMore(PAGE_SIZE, error => {
+    relay.loadMore(PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("Messages.tsx", error.message)
@@ -83,7 +83,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   const reload = () => {
     const count = extractNodes(conversation.messagesConnection).length
     setReloadingData(true)
-    relay.refetchConnection(count, error => {
+    relay.refetchConnection(count, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("Messages.tsx", error.message)
@@ -103,6 +103,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
 
   return (
     <FlatList
+      key={conversation.internalID!}
       data={messages}
       renderItem={({ item, index }) => {
         return (
@@ -110,7 +111,6 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
             group={item}
             conversationId={conversation.internalID!}
             subjectItem={conversation.items?.[0]?.item!}
-            to={conversation.to}
             key={`group-${index}-${item[0]?.key}`}
           />
         )
@@ -149,16 +149,14 @@ export default createPaginationContainer(
         from {
           name
           email
-          initials
         }
         to {
           name
-          initials
         }
-        initial_message: initialMessage
+        initialMessage
         lastMessageID
         messagesConnection(first: $count, after: $after, sort: DESC)
-          @connection(key: "Messages_messagesConnection", filters: []) {
+        @connection(key: "Messages_messagesConnection", filters: []) {
           pageInfo {
             startCursor
             endCursor
@@ -170,7 +168,6 @@ export default createPaginationContainer(
             node {
               id
               internalID
-              impulseID
               isFromUser
               isFirstMessage
               body
