@@ -25,7 +25,7 @@ system 'yarn install --ignore-engines' if installing_pods
 
 target 'Artsy' do
   # Networking
-  pod 'AFNetworking', '~> 2.5', subspecs: ['Reachability', 'Serialization', 'Security', 'NSURLSession', 'NSURLConnection']
+  pod 'AFNetworking', '~> 2.5', subspecs: %w[Reachability Serialization Security NSURLSession NSURLConnection]
   pod 'AFOAuth1Client', git: 'https://github.com/artsy/AFOAuth1Client.git', tag: '0.4.0-subspec-fix'
   pod 'AFNetworkActivityLogger'
   pod 'SDWebImage', '>= 3.7.2' # 3.7.2 contains a fix that allows you to not force decoding each image, which uses lots of memory
@@ -115,8 +115,8 @@ target 'Artsy' do
   pod 'RNImageCropPicker', path: './node_modules/react-native-image-crop-picker/RNImageCropPicker.podspec'
   # TODO: Remove the `.podspec` files from these paths
   pod 'react-native-config', path: 'node_modules/react-native-config'
-  pod 'RNReactNativeHapticFeedback', :path => 'node_modules/react-native-haptic-feedback'
-  pod 'react-native-webview', :path => 'node_modules/react-native-webview'
+  pod 'RNReactNativeHapticFeedback', path: 'node_modules/react-native-haptic-feedback'
+  pod 'react-native-webview', path: 'node_modules/react-native-webview'
 
   # For Stripe integration with Emission. Using Ash's fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
   pod 'Pulley', git: 'https://github.com/l2succes/Pulley.git', branch: 'master'
@@ -169,10 +169,12 @@ post_install do |installer|
 
   # Note: we don't want EchoNew.json checked in, so Artsy staff download it at pod install time. We
   # use a stubbed copy for OSS developers.
-  echo_key = `dotenv -f ".env.shared,.env.ci env" | grep ARTSY_ECHO_PRODUCTION_TOKEN | awk -F "=" {'print $2'}`
+  echo_key = `dotenv -f ".env.shared,.env.ci" env | grep ARTSY_ECHO_PRODUCTION_TOKEN | awk -F "=" {'print $2'}`
   if echo_key.length > 1 # OSS contributors have "-" as their key
     puts 'Updating Echo...'
     `make update_echo &> /dev/null`
+  else
+    puts 'Skipping Echo update for OSS contributors'
   end
 
   # Disable bitcode for now. Specifically needed for HockeySDK and ARAnalytics.
