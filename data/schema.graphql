@@ -1192,8 +1192,10 @@ type Artwork implements Node & Searchable & Sellable {
   description(format: Format): String
   dimensions: dimensions
   displayLabel: String
+  editionNumber: Int
   editionOf: String
   editionSets(sort: EditionSetSorts): [EditionSet]
+  editionSize: String
 
   # Returns an HTML string representing the embedded content (video)
   embed(autoplay: Boolean = false, height: Int = 450, width: Int = 853): String
