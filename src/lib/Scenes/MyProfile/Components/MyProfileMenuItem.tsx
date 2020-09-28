@@ -10,7 +10,7 @@ export const MyProfileMenuItem: React.FC<{
 }> = ({ title, value, onPress, chevron = <ChevronIcon direction="right" fill="black60" />, ellipsizeMode }) => {
   return (
     <Touchable onPress={onPress} underlayColor={color("black5")}>
-      <Flex flexDirection="row" alignItems="center" py={7.5} px="2" pr="15px">
+      <Flex flexDirection="row" alignItems="center" justifyContent="space-between" py={7.5} px="2" pr="15px">
         <Flex mr="2">
           <Sans size="4">{title}</Sans>
         </Flex>
