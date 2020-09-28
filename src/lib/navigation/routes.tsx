@@ -127,6 +127,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/works-for-you", "WorksForYou"),
     new RouteMatcher("/categories", "WebView", () => ({ url: "/categories" })),
     new RouteMatcher("/privacy", "WebView", () => ({ url: "/privacy" })),
+    new RouteMatcher("/auction-faq", "WebView", () => ({ url: "/auction-faq" })),
+    new RouteMatcher("/identity-verification-faq", "WebView", () => ({ url: "/identity-verification-faq" })),
 
     new RouteMatcher("/city-bmw-list/:citySlug", "CityBMWList"),
     new RouteMatcher("/:slug", "VanityURLEntity"),
