@@ -179,6 +179,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     currentBid {
       display
     }
+    lotLabel
     id
   }
   partner {
@@ -898,14 +899,14 @@ v21 = {
 v22 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "cents",
+  "name": "lotLabel",
   "args": null,
   "storageKey": null
 },
 v23 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "display",
+  "name": "cents",
   "args": null,
   "storageKey": null
 },
@@ -974,15 +975,11 @@ v27 = {
 v28 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "editionOf",
   "args": null,
   "storageKey": null
 },
 v29 = [
   {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "details",
     "args": null,
     "storageKey": null
   },
@@ -1319,13 +1316,7 @@ return {
             "concreteType": "SaleArtwork",
             "plural": false,
             "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "lotLabel",
-                "args": null,
-                "storageKey": null
-              },
+              (v19/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,

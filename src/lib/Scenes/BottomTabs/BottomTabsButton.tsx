@@ -1,10 +1,9 @@
 import { tappedTabBar } from "@artsy/cohesion"
 import { PopIn } from "lib/Components/PopIn"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { AppStore, useSelectedTab } from "lib/store/AppStore"
 import { color, Sans } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { Animated, Easing, TouchableWithoutFeedback, View } from "react-native"
+import { Animated, Easing, NativeModules, TouchableWithoutFeedback, View } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { bottomTabsConfig } from "./bottomTabsConfig"
@@ -40,7 +39,7 @@ export const BottomTabsButton: React.FC<{
     // otherwise, if we wait for the native routing logic to do its job and get back to us,
     // it can take a couple hundred milliseconds for the tab buttons to update their active state
     AppStore.actions.native.setLocalState({ selectedTab: tab })
-    SwitchBoard.presentNavigationViewController(navRef.current!, bottomTabsConfig[tab].route)
+    NativeModules.ARScreenPresenterModule.switchTab(tab, {}, false)
     tracking.trackEvent(tappedTabBar({ tab: bottomTabsConfig[tab].analyticsDescription, badge: badgeCount > 0 }))
   }
 

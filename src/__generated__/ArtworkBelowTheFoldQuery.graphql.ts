@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9fe62a588ccc0b5542e61d48811f5a10 */
+/* @relayHash 619e2a68efba05ee5f268d283c0e8463 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -128,6 +128,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     currentBid {
       display
     }
+    lotLabel
     id
   }
   partner {
@@ -579,52 +580,40 @@ v23 = {
 v24 = {
   "kind": "LinkedField",
   "alias": null,
-  "name": "saleArtwork",
+  "name": "counts",
   "storageKey": null,
   "args": null,
-  "concreteType": "SaleArtwork",
+  "concreteType": "SaleArtworkCounts",
   "plural": false,
   "selections": [
     {
-      "kind": "LinkedField",
+      "kind": "ScalarField",
       "alias": null,
-      "name": "counts",
-      "storageKey": null,
+      "name": "bidderPositions",
       "args": null,
-      "concreteType": "SaleArtworkCounts",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "bidderPositions",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "currentBid",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "SaleArtworkCurrentBid",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "display",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
-    (v2/*: any*/)
+      "storageKey": null
+    }
   ]
 },
 v25 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "currentBid",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "SaleArtworkCurrentBid",
+  "plural": false,
+  "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "display",
+      "args": null,
+      "storageKey": null
+    }
+  ]
+},
+v26 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "partner",
@@ -1151,8 +1140,28 @@ return {
                               (v2/*: any*/)
                             ]
                           },
-                          (v24/*: any*/),
-                          (v25/*: any*/)
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "saleArtwork",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "SaleArtwork",
+                            "plural": false,
+                            "selections": [
+                              (v24/*: any*/),
+                              (v25/*: any*/),
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "lotLabel",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              (v2/*: any*/)
+                            ]
+                          },
+                          (v26/*: any*/)
                         ]
                       }
                     ]
@@ -1287,11 +1296,24 @@ return {
                                       (v2/*: any*/)
                                     ]
                                   },
-                                  (v24/*: any*/),
+                                  {
+                                    "kind": "LinkedField",
+                                    "alias": null,
+                                    "name": "saleArtwork",
+                                    "storageKey": null,
+                                    "args": null,
+                                    "concreteType": "SaleArtwork",
+                                    "plural": false,
+                                    "selections": [
+                                      (v24/*: any*/),
+                                      (v25/*: any*/),
+                                      (v2/*: any*/)
+                                    ]
+                                  },
                                   (v20/*: any*/),
                                   (v10/*: any*/),
                                   (v19/*: any*/),
-                                  (v25/*: any*/)
+                                  (v26/*: any*/)
                                 ]
                               }
                             ]
@@ -1365,7 +1387,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkBelowTheFoldQuery",
-    "id": "9f85065f62a4cdefc783485916ff71ea",
+    "id": "b27827368c8f2363eac9610b5a697783",
     "text": null,
     "metadata": {}
   }

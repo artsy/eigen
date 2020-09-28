@@ -20,7 +20,7 @@ Get setup [here](docs/getting_started.md). Further documentation can be found in
 
 Instead of `make oss` below, run `make artsy`. You will need [awscli](https://formulae.brew.sh/formula/awscli) to get our ENV vars.
 
-The file `Artsy/App/Echo.json` is not checked in (a sample file is included for OSS contributors). When you run `pod install`, the latest `Echo.json` file will be downloaded for you. See note in `Podfile`.
+The file `Artsy/App/EchoNew.json` is not checked in (a sample file is included for OSS contributors). When you run `pod install`, the latest `EchoNew.json` file will be downloaded for you. See note in `Podfile`.
 
 ### Quick Start
 

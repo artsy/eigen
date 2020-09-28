@@ -5,7 +5,7 @@ import { Select } from "lib/Components/Select"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/AddArtwork/Form/useArtworkForm"
 import { AppStore } from "lib/store/AppStore"
-import { Flex, Join, Sans, space, Spacer } from "palette"
+import { Box, Flex, Join, Sans, space, Spacer } from "palette"
 import React, { useRef, useState } from "react"
 
 export const AdditionalDetails = () => {
@@ -15,8 +15,8 @@ export const AdditionalDetails = () => {
   const { formik } = useArtworkForm()
 
   return (
-    <>
-      <FancyModalHeader onLeftButtonPress={() => navActions.goBack()}>Additional Details</FancyModalHeader>
+    <Box>
+      <FancyModalHeader onLeftButtonPress={() => navActions.goBackInModal()}>Additional Details</FancyModalHeader>
       <Flex mt={2}>
         <ScreenMargin>
           <Join separator={<Spacer my={1} />}>
@@ -50,7 +50,7 @@ export const AdditionalDetails = () => {
                   placeholder="Edition number"
                   onChangeText={formik.handleChange("editionNumber")}
                   onBlur={formik.handleBlur("editionNumber")}
-                  defaultValue={formik.values.editionNumber}
+                  defaultValue={String(formik.values.editionNumber)}
                   style={{ marginRight: space(1) }}
                 />
                 <Input
@@ -75,7 +75,7 @@ export const AdditionalDetails = () => {
               placeholder="Price paid"
               onChangeText={formik.handleChange("costMinor")}
               onBlur={formik.handleBlur("costMinor")}
-              defaultValue={formik.values.costMinor}
+              defaultValue={String(formik.values.costMinor)}
             />
 
             <Select
@@ -93,7 +93,7 @@ export const AdditionalDetails = () => {
           </Join>
         </ScreenMargin>
       </Flex>
-    </>
+    </Box>
   )
 }
 

@@ -77,17 +77,18 @@ describe(MyBidsQueryRenderer, () => {
 
     const closedLots = closedSectionLots(tree.root).map(extractText)
 
+    // Closed lots have no ordering - assume they are served by recentness
     expect(closedLots[0]).toContain("Closed Swann RNM Artist")
     expect(closedLots[0]).toContain("Passed")
-    expect(closedLots[0]).toContain("Lot 3")
+    expect(closedLots[0]).toContain("Closed Aug 13")
 
     expect(closedLots[1]).toContain("Closed Heritage Winning Artist")
     expect(closedLots[1]).toContain("You won!")
-    expect(closedLots[1]).toContain("Lot 2")
+    expect(closedLots[1]).toContain("Closed Aug 5")
 
     expect(closedLots[2]).toContain("Closed Swann Outbid Artist")
     expect(closedLots[2]).toContain("Outbid")
-    expect(closedLots[2]).toContain("Lot 1")
+    expect(closedLots[2]).toContain("Closed Aug 13")
   })
 
   it("renders a completed lot in an ongoing live sale in the 'active' column", () => {

@@ -2,7 +2,7 @@ import { LinkText } from "lib/Components/Text/LinkText"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
 import React from "react"
-import { View } from "react-native"
+import { NativeModules, View } from "react-native"
 
 export class PrivacyRequest extends React.Component {
   render() {
@@ -29,7 +29,12 @@ export class PrivacyRequest extends React.Component {
             <Sans size="3" textAlign="left">
               To submit a personal data request tap the button below or email{" "}
               <LinkText
-                onPress={() => SwitchBoard.presentEmailComposer(this, "privacy@artsy.net", "Personal Data Request")}
+                onPress={() =>
+                  NativeModules.ARScreenPresenterModule.presentEmailComposer(
+                    "privacy@artsy.net",
+                    "Personal Data Request"
+                  )
+                }
               >
                 privacy@artsy.net.
               </LinkText>{" "}
@@ -40,8 +45,7 @@ export class PrivacyRequest extends React.Component {
               size="large"
               mt={1}
               onPress={() =>
-                SwitchBoard.presentEmailComposer(
-                  this,
+                NativeModules.ARScreenPresenterModule.presentEmailComposer(
                   "privacy@artsy.net",
                   "Personal Data Request",
                   "Hello, I'm contacting you to ask that..."

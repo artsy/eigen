@@ -20,6 +20,9 @@ export type ActiveLot_lotStanding = {
         } | null;
     };
     readonly saleArtwork: {
+        readonly sale: {
+            readonly liveStartAt: string | null;
+        } | null;
         readonly " $fragmentRefs": FragmentRefs<"Lot_saleArtwork">;
     } | null;
     readonly " $refType": "ActiveLot_lotStanding";
@@ -131,6 +134,24 @@ return {
       "plural": false,
       "selections": [
         {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "sale",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Sale",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "liveStartAt",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
+        {
           "kind": "FragmentSpread",
           "name": "Lot_saleArtwork",
           "args": null
@@ -140,5 +161,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '3c3ecf231146fcf66b9fed26cfa6a4af';
+(node as any).hash = '92094a5996a0066dabc4c4065c080578';
 export default node;

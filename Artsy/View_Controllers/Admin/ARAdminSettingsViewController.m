@@ -5,7 +5,6 @@
 #import "AREchoContentsViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARAdminSentryBreadcrumbViewController.h"
-#import "AREigenArtistSeriesComponentViewController.h"
 
 #import "ARDefaults.h"
 #import "ARAnimatedTickView.h"
@@ -21,8 +20,6 @@
 #import "ARAppNotificationsDelegate.h"
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <Emission/AREmission.h>
-#import <Emission/ARInboxComponentViewController.h>
-#import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Sentry/SentryClient.h>
 #import <Emission/ARGraphQLQueryCache.h>
 #import <React/RCTBridge.h>
@@ -113,23 +110,22 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 - (ARCellData *)generateFeaturePage
 {
-    return [self tappableCellDataWithTitle:@"→ Feature Page (use production first)" selection:^{
-        [[ARTopMenuViewController sharedController] pushViewController:[[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Feature" initialProperties:@{@"slug": @"milan-gallery-community"}] animated:YES];
+    return [self tappableCellDataWithTitle:@"→ Feature Page" selection:^{
+        [[AREmission sharedInstance] navigate:@"/feature/milan-gallery-community"];
     }];
 }
 
 - (ARCellData *)generateArtistSeries
 {
     return [self tappableCellDataWithTitle:@"→ Artist Series" selection:^{
-        AREigenArtistSeriesComponentViewController *viewController = [[AREigenArtistSeriesComponentViewController alloc] initWithArtistSeriesID:@"alex-katz-ada"];
-        [[ARTopMenuViewController sharedController] pushViewController:viewController animated:YES];
+        [[AREmission sharedInstance] navigate:@"/artist-series/alex-katz-ada"];
     }];
 }
 
 - (ARCellData *)generateFair2
 {
     return [self tappableCellDataWithTitle:@"→ Fair2" selection:^{
-        [[ARTopMenuViewController sharedController] pushViewController:[[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Fair2" initialProperties:@{@"fairID": @"art-basel-hong-kong-2020"}] animated:YES];
+        [[ARTopMenuViewController sharedController] pushViewController:[[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Fair2" initialProperties:@{@"fairID": @"art-basel-hong-kong-2019"}] animated:YES];
     }];
 }
 
@@ -215,8 +211,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 - (ARCellData *)showConsignmentsFlow
 {
     return [self tappableCellDataWithTitle:@"→ Consignments Flow" selection:^{
-        id vc = [[ARShowConsignmentsFlowViewController alloc] init];
-        [self.navigationController presentViewController:vc animated:YES completion:NULL];
+        [[AREmission sharedInstance] navigate:@"/consign/submission"];
     }];
 }
 

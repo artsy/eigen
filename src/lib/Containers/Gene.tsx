@@ -211,7 +211,6 @@ export class Gene extends React.Component<Props, State> {
                     // @ts-ignore STRICTNESS_MIGRATION
                     connection={this.props.gene.artworks}
                     hasMore={this.props.relay.hasMore}
-                    isLoading={this.props.relay.isLoading}
                     loadMore={this.props.relay.loadMore}
                     HeaderComponent={this.renderStickyRefineSection()}
                     stickyHeaderIndices={[0]}

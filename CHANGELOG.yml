@@ -1,18 +1,38 @@
 upcoming:
-  version: 6.6.4
+  version: 6.6.5
   date: TBD
   dev:
+    - Add haptic feedback on buttons - pavlos
     - Use our Touchable instead of TouchableHighlight - pavlos
     - Move auction CTA button to RN - pavlos
     - Move artwork categories to a common util file - ashley
     - Send id token from apple sign in - brian
     - Add admin-only skeleton view for Fair2 - will
+    - Add header for Fair2 (visible only to admins) - will
+    - Add editorial for Fair2 (visible only to admins) - damon
+    - Add collections rail for Fair2 (visible only to admins) - damon
+    - Add More Info view for Fiar2 (visible only to admins) - will
+    - Add More Info view for Fair2 (visible only to admins) - will
   user_facing:
     - Fix navigation bug on Artwork consign button - david
     - Add auction lots rail to the auctions screen - mounir
     - Enable pagination on My Collection artworks screen - ashley
+    - Add long email truncation - pavlos
+    - Add auction lots grid to the auctions screen - mounir
+    - Add auction lots list to the auctions screen - mounir
+    - Add LoadFailureView to Viewing Rooms screens for relay errors - pavlos
+    - Enable filtering on artist series views - sweir
+    - Show up to 50 artist series in the full list of an artist's series - roop
 
 releases:
+  - version: 6.6.4
+    date: Sept 23, 2020
+    dev:
+      - Update Aerodramus - ash, brian, david, mounir, pavlos
+      - Change Echo.json to EchoNew.json - ash, david, brian, mounir, pavlos
+    user_facing:
+      - Fix issue that caused the app to crash - ash, brian, david, mounir, pavlos
+
   - version: 6.6.3
     date: Sept 16, 2020
     dev:
@@ -38,6 +58,7 @@ releases:
       - Adds new inquiry buttons and modal behind lab option - lily
       - Fix new works for you rail sorting- mounir
       - Fix missing date issue on auctions rail at home - mounir
+
   - version: 6.6.2
     date: Sept 1, 2020
     dev:

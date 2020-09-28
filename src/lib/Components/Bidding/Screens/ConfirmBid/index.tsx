@@ -338,7 +338,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   onConditionsOfSaleLinkPressed() {
-    SwitchBoard.presentModalViewController(this, "/conditions-of-sale?present_modally=true")
+    SwitchBoard.presentModalViewController(this, "/conditions-of-sale")
   }
 
   refreshBidderInfo = () => {

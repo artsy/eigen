@@ -5,8 +5,8 @@ import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Box, Flex, Spacer, Text } from "palette"
-import React, { useRef } from "react"
-import { TouchableOpacity, View } from "react-native"
+import React from "react"
+import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface MyCollectionArtworkArtistArticlesProps {
@@ -17,19 +17,18 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
   const artist = props?.artwork?.artist!
   const articleEdges = extractNodes(artist?.articlesConnection)
   const navActions = AppStore.actions.myCollection.navigation
-  const navRef = useRef<View>(null)
 
   if (!articleEdges.length) {
     return null
   }
 
   return (
-    <ScreenMargin ref={navRef}>
+    <ScreenMargin>
       <Text variant="mediumText">Latest Articles</Text>
 
       {articleEdges.map(({ thumbnailTitle, slug, publishedAt, internalID, thumbnailImage }) => {
         return (
-          <TouchableOpacity onPress={() => navActions.navigateToArticleDetail(slug!)}>
+          <TouchableOpacity onPress={() => navActions.navigateToArticleDetail(slug!)} key={internalID}>
             <Box my={0.5} key={internalID}>
               <Flex flexDirection="row" justifyContent="space-between">
                 <Box pr={1} maxWidth="80%">

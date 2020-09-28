@@ -50,13 +50,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Present the root view controller of the navigation controller at the specified tab. If a navigation stack
 /// exists, it is popped to said root view controller.
-- (void)presentRootViewControllerInTab:(NSString *)tabType animated:(BOOL)animated;
+- (void)presentRootViewControllerInTab:(NSString *)tabType animated:(BOOL)animated props:(NSDictionary *)props;
 
 /// Returns the root navigation controller for specified tab
 - (ARNavigationController *)rootNavigationControllerAtTab:(NSString *)tab;
-
-/// Not all view controllers should be presented as a push, use this to determine whether the topVC will present modally or push.
-+ (BOOL)shouldPresentViewControllerAsModal:(UIViewController *)viewController;
 
 @end
 

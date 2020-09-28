@@ -49,6 +49,7 @@ import {
 } from "./Scenes/Fair"
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
 import { Fair2QueryRenderer } from "./Scenes/Fair2/Fair2"
+import { Fair2MoreInfoQueryRenderer } from "./Scenes/Fair2/Fair2MoreInfo"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
@@ -73,6 +74,7 @@ import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryR
 import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
+import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
@@ -100,6 +102,8 @@ YellowBox.ignoreWarnings([
   "Require cycle: node_modules/react-native-sentry/lib/Sentry.js -> node_modules/react-native-sentry/lib/RavenClient.js -> node_modules/react-native-sentry/lib/Sentry.js",
   // RN 0.59.0 ships with this issue, which has been effectively marked as #wontfix: https://github.com/facebook/react-native/issues/23130
   "Require cycle: node_modules/react-native/Libraries/Network/fetch.js -> node_modules/react-native/Libraries/vendor/core/whatwg-fetch.js -> node_modules/react-native/Libraries/Network/fetch.js",
+
+  "Require cycle: src/lib/store/AppStore.tsx -> src/lib/store/AppStoreModel.ts -> src/lib/Scenes/MyCollection/State/MyCollectionModel.tsx -> src/lib/Scenes/MyCollection/State/MyCollectionNavigationModel.tsx",
 
   // This is for the Artist page, which will likely get redone soon anyway.
   "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
@@ -137,7 +141,8 @@ const Inbox: React.FC<{}> = screenTrack<{}>(
 
 interface GeneProps {
   geneID: string
-  refineSettings: { medium: string; price_range: string }
+  medium: string
+  price_range: string
 }
 
 const Gene: React.FC<GeneProps> = screenTrack<GeneProps>((props) => {
@@ -146,9 +151,8 @@ const Gene: React.FC<GeneProps> = screenTrack<GeneProps>((props) => {
     context_screen_owner_slug: props.geneID,
     context_screen_owner_type: Schema.OwnerEntityTypes.Gene,
   }
-})(({ geneID, refineSettings: { medium, price_range } }) => {
-  const initialProps = { geneID, medium, price_range }
-  return <GeneQueryRenderer {...initialProps} />
+})((props) => {
+  return <GeneQueryRenderer {...props} />
 })
 
 interface InquiryProps {
@@ -319,10 +323,32 @@ function register(screenName: string, Component: React.ComponentType<any>, optio
   AppRegistry.registerComponent(screenName, () => WrappedComponent)
 }
 
-interface ModuleDescriptor {
+interface ReactModuleDescriptor {
+  hidesBackButton?: boolean
+  alwaysPresentModally?: boolean
   fullBleed?: boolean
   Component: React.ComponentType<any>
+  // If this module is the root view of a particular tab, name it here
+  isRootViewForTabName?: BottomTabType
+  // If this module should only be shown in one particular tab, name it here
+  onlyShowInTabName?: BottomTabType
 }
+
+type NativeModuleName =
+  | "Admin"
+  | "Auction"
+  | "AuctionRegistration"
+  | "AuctionBidArtwork"
+  | "LiveAuction"
+  | "LocalDiscovery"
+  | "WebView"
+
+interface NativeModuleDescriptor {
+  nativeModuleName: NativeModuleName
+  alwaysPresentModally?: boolean
+}
+
+type ModuleDescriptor = ReactModuleDescriptor | NativeModuleDescriptor
 
 // little helper function to make sure we get both intellisense and good type information on the result
 function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
@@ -331,13 +357,21 @@ function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
 
 export type AppModule = keyof typeof modules
 
-const modules = defineModules({
+export function isNativeModule(moduleDescriptor: ModuleDescriptor): moduleDescriptor is NativeModuleDescriptor {
+  return "nativeModuleName" in moduleDescriptor
+}
+
+export const modules = defineModules({
+  Admin: { nativeModuleName: "Admin" },
   Artist: { Component: ArtistQueryRenderer },
   ArtistSeries: { Component: ArtistSeriesQueryRenderer },
   Artwork: { Component: Artwork },
   ArtworkAttributionClassFAQ: { Component: ArtworkAttributionClassFAQQueryRenderer },
-  Auction: { Component: SaleQueryRenderer, fullBleed: true },
+  Auction: { nativeModuleName: "Auction" },
+  Auction2: { Component: SaleQueryRenderer, fullBleed: true },
   Auctions: { Component: SalesQueryRenderer },
+  AuctionRegistration: { nativeModuleName: "AuctionRegistration", alwaysPresentModally: true },
+  AuctionBidArtwork: { nativeModuleName: "AuctionBidArtwork", alwaysPresentModally: true },
   BidFlow: { Component: BidderFlow },
   BottomTabs: { Component: BottomTabs, fullBleed: true },
   City: { Component: CityView, fullBleed: true },
@@ -347,11 +381,11 @@ const modules = defineModules({
   CitySavedList: { Component: CitySavedListQueryRenderer },
   CitySectionList: { Component: CitySectionListQueryRenderer },
   Collection: { Component: CollectionQueryRenderer, fullBleed: true },
-  Consignments: { Component: setupMyCollectionScreen(Consignments) },
-  ConsignmentsSubmissionForm: { Component: ConsignmentsSubmissionForm },
-  Conversation: { Component: Conversation },
+  ConsignmentsSubmissionForm: { Component: ConsignmentsSubmissionForm, alwaysPresentModally: true },
+  Conversation: { Component: Conversation, onlyShowInTabName: "inbox" },
   Fair: { Component: FairQueryRenderer, fullBleed: true },
   Fair2: { Component: Fair2QueryRenderer, fullBleed: true },
+  Fair2MoreInfo: { Component: Fair2MoreInfoQueryRenderer },
   FairArtists: { Component: FairArtists },
   FairArtworks: { Component: FairArtworks },
   FairBMWArtActivation: { Component: FairBMWArtActivation, fullBleed: true },
@@ -363,29 +397,37 @@ const modules = defineModules({
   FullArtistSeriesList: { Component: ArtistSeriesFullArtistSeriesListQueryRenderer },
   FullFeaturedArtistList: { Component: CollectionFullFeaturedArtistListQueryRenderer },
   Gene: { Component: Gene },
-  Home: { Component: HomeQueryRenderer },
-  Inbox: { Component: Inbox },
-  Inquiry: { Component: Inquiry },
+  Home: { Component: HomeQueryRenderer, isRootViewForTabName: "home" },
+  Inbox: { Component: Inbox, isRootViewForTabName: "inbox" },
+  Inquiry: { Component: Inquiry, alwaysPresentModally: true },
+  LiveAuction: {
+    nativeModuleName: "LiveAuction",
+    alwaysPresentModally: true,
+  },
+  LocalDiscovery: {
+    nativeModuleName: "LocalDiscovery",
+  },
+  WebView: { nativeModuleName: "WebView" },
   Map: { Component: MapContainer, fullBleed: true },
   MyAccount: { Component: MyAccountQueryRenderer },
-  MyAccountEditEmail: { Component: MyAccountEditEmailQueryRenderer },
-  MyAccountEditName: { Component: MyAccountEditNameQueryRenderer },
-  MyAccountEditPassword: { Component: MyAccountEditPassword },
-  MyAccountEditPhone: { Component: MyAccountEditPhoneQueryRenderer },
+  MyAccountEditEmail: { Component: MyAccountEditEmailQueryRenderer, hidesBackButton: true },
+  MyAccountEditName: { Component: MyAccountEditNameQueryRenderer, hidesBackButton: true },
+  MyAccountEditPassword: { Component: MyAccountEditPassword, hidesBackButton: true },
+  MyAccountEditPhone: { Component: MyAccountEditPhoneQueryRenderer, hidesBackButton: true },
   MyBids: { Component: MyBidsQueryRenderer },
   AddEditArtwork: { Component: setupMyCollectionScreen(AddEditArtwork) },
   MyCollectionArtworkDetail: { Component: setupMyCollectionScreen(MyCollectionArtworkDetail) },
   MyCollectionArtworkList: { Component: setupMyCollectionScreen(MyCollectionArtworkList) },
-  MyProfile: { Component: MyProfileQueryRenderer },
+  MyProfile: { Component: MyProfileQueryRenderer, isRootViewForTabName: "profile" },
   MyProfilePayment: { Component: MyProfilePaymentQueryRenderer },
-  MyProfilePaymentNewCreditCard: { Component: MyProfilePaymentNewCreditCard },
+  MyProfilePaymentNewCreditCard: { Component: MyProfilePaymentNewCreditCard, hidesBackButton: true },
   MyProfilePushNotifications: { Component: MyProfilePushNotificationsQueryRenderer },
   MySellingProfile: { Component: View },
   Partner: { Component: Partner, fullBleed: true },
   PartnerLocations: { Component: PartnerLocations },
   PrivacyRequest: { Component: PrivacyRequest },
-  Sales: { Component: setupMyCollectionScreen(Consignments) },
-  Search: { Component: SearchWithTracking },
+  Sales: { Component: setupMyCollectionScreen(Consignments), isRootViewForTabName: "sell" },
+  Search: { Component: SearchWithTracking, isRootViewForTabName: "search" },
   SellTabApp: { Component: setupMyCollectionScreen(SellTabApp) },
   Show: { Component: ShowQueryRenderer },
   ShowArtists: { Component: ShowArtists },
@@ -399,9 +441,12 @@ const modules = defineModules({
   WorksForYou: { Component: WorksForYouQueryRenderer },
 })
 
+// Register react modules with the app registry
 for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
-  register(moduleName, descriptor.Component, { fullBleed: descriptor.fullBleed })
+  if ("Component" in descriptor) {
+    register(moduleName, descriptor.Component, { fullBleed: descriptor.fullBleed })
+  }
 }
 
 const Main: React.FC<{}> = track()(({}) => {

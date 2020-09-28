@@ -1,5 +1,6 @@
 import { Action, action, Thunk, thunk } from "easy-peasy"
 import { NotificationsManager } from "lib/NativeModules/NotificationsManager"
+import { navigate } from "lib/navigation/navigate"
 import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import { NativeModules } from "react-native"
 import { AppStore } from "./AppStore"
@@ -18,6 +19,10 @@ export type NativeEvent =
       type: "RESET_APP_STATE"
       payload: NativeState
     }
+  | {
+      type: "REQUEST_NAVIGATION"
+      payload: { route: string }
+    }
 
 export interface NativeState {
   selectedTab: BottomTabType
@@ -29,6 +34,7 @@ export interface NativeState {
   gravityURL: string
   metaphysicsURL: string
   predictionURL: string
+  webURL: string
   userAgent: string
 
   env: "production" | "staging" | "test"
@@ -42,6 +48,8 @@ export interface NativeState {
     AROptionsEnableMyCollection: boolean
     AROptionsLotConditionReport: boolean
     AROptionsPriceTransparency: boolean
+    AROptionsNewSalePage: boolean
+    AROptionsViewingRooms: boolean
     AREnableViewingRooms: boolean
     ipad_vir: boolean
     iphone_vir: boolean
@@ -87,5 +95,10 @@ listenToNativeEvents((event: NativeEvent) => {
       AppStore.actions.reset()
       AppStore.actions.native.setLocalState(event.payload)
       return
+    case "REQUEST_NAVIGATION":
+      navigate(event.payload.route)
+      return
+    default:
+      assertNever(event)
   }
 })

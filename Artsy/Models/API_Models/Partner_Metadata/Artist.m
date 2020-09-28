@@ -6,7 +6,6 @@
 #import "ARNetworkConstants.h"
 #import "ARSpotlight.h"
 #import "User.h"
-#import "ARSwitchBoard.h"
 
 
 @interface Artist () {
@@ -102,13 +101,6 @@
         sself.followed = result;
         success(result ? ARHeartStatusYes : ARHeartStatusNo);
     } failure:failure];
-}
-
-- (NSString *)publicURL
-{
-    NSString *path = [NSString stringWithFormat:ARArtistInformationURLFormat, self.artistID];
-    NSURL *url = [ARSwitchBoard.sharedInstance resolveRelativeUrl:path];
-    return [url absoluteString];
 }
 
 - (BOOL)isEqual:(id)object

@@ -18,6 +18,7 @@
 + (NSString *)gravityURL { return @"gravityURL"; }
 + (NSString *)metaphysicsURL { return @"metaphysicsURL"; }
 + (NSString *)predictionURL { return @"predictionURL"; }
++ (NSString *)webURL { return @"webURL"; }
 + (NSString *)userAgent { return @"userAgent"; }
 + (NSString *)options { return @"options"; }
 
@@ -31,6 +32,9 @@
 @interface ARNotificationsManager ()
 @property (nonatomic, assign, readwrite) BOOL isBeingObserved;
 @property (strong, nonatomic, readwrite) NSDictionary *state;
+
+@property (readwrite, nonatomic, strong) NSMutableArray<void (^)()> *bootstrapQueue;
+@property (readwrite, nonatomic, assign) BOOL didBootStrap;
 @end
 
 // event keys
@@ -38,6 +42,7 @@
 static const NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
 static const NSString *stateChanged = @"STATE_CHANGED";
 static const NSString *resetState = @"RESET_APP_STATE";
+static const NSString *requestNavigation = @"REQUEST_NAVIGATION";
 
 @implementation ARNotificationsManager
 
@@ -48,6 +53,7 @@ RCT_EXPORT_MODULE();
     self = [super init];
     if (self) {
         _state = [state copy];
+        _bootstrapQueue = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -104,6 +110,16 @@ RCT_EXPORT_MODULE();
     [self dispatch:resetState data:self.state];
 }
 
+- (void)requestNavigation:(NSString *)route
+{
+    __weak typeof(self) wself = self;
+    [self afterBootstrap:^{
+        __strong typeof(self) sself = wself;
+        if (!sself) return;
+        [sself dispatch:requestNavigation data:@{@"route": route}];
+    }];
+}
+
 // Will be called when this module's first listener is added.
 - (void)startObserving {
     self.isBeingObserved = true;
@@ -114,9 +130,27 @@ RCT_EXPORT_MODULE();
     self.isBeingObserved = false;
 }
 
+- (void)afterBootstrap:(void (^)())completion {
+    if (self.didBootStrap) {
+        completion();
+    } else {
+        [self.bootstrapQueue addObject:completion];
+    }
+}
+
 RCT_EXPORT_METHOD(postNotificationName:(nonnull NSString *)notificationName userInfo:(NSDictionary *)userInfo)
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil userInfo:userInfo];
+}
+
+RCT_EXPORT_METHOD(didFinishBootstrapping)
+{
+    self.didBootStrap = true;
+    while (self.bootstrapQueue.count > 0) {
+        void (^completion)() = [self.bootstrapQueue firstObject];
+        [self.bootstrapQueue removeObjectAtIndex:0];
+        completion();
+    }
 }
 
 // All notification JS methods occur on the main queue/thread.

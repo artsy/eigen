@@ -4,10 +4,11 @@
 #import "Artwork.h"
 #import "AREmbeddedModelsViewController.h"
 #import "AREmbeddedModelPreviewViewController.h"
-#import "ARSwitchBoard+Eigen.h"
 #import "ARTopMenuViewController.h"
 #import "ARSpotlight.h"
 #import "Gene.h"
+
+#import <Emission/AREmission.h>
 
 
 @interface AREmbeddedModelsPreviewDelegate ()
@@ -62,24 +63,9 @@
 - (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(AREmbeddedModelPreviewViewController *)viewControllerToCommit
 {
     id object = viewControllerToCommit.object;
-    id viewController = nil;
-    ARSwitchBoard *switchBoard = ARSwitchBoard.sharedInstance;
-
-    if ([object isKindOfClass:Artwork.class]) {
-        viewController = [switchBoard loadArtwork:object inFair:nil];
-
-    } else if ([object isKindOfClass:Artist.class]) {
-        viewController = [switchBoard loadArtistWithID:[object artistID]];
-    } else if ([object isKindOfClass:Gene.class]) {
-        viewController = [switchBoard loadGene:object];
-    }
-
-    if (viewController) {
-        [[ARTopMenuViewController sharedController] pushViewController:viewController];
-    } else {
-        if ([object respondsToSelector:@selector(publicArtsyPath)]) {
-            [switchBoard loadPath:[object publicArtsyPath]];
-        }
+    
+    if ([object respondsToSelector:@selector(publicArtsyPath)]) {
+        [[AREmission sharedInstance] navigate:[object publicArtsyPath]];
     }
 }
 

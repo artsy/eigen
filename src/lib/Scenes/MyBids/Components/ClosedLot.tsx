@@ -1,23 +1,35 @@
 import { ClosedLot_lotStanding } from "__generated__/ClosedLot_lotStanding.graphql"
-import { capitalize } from "lodash"
+import moment from "moment-timezone"
 import { Flex, Text } from "palette"
 import { StarCircleFill } from "palette/svgs/sf"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { TimelySale } from "../helpers/timely"
 import { Lost, Passed, Won } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
 type BidderResult = "won" | "lost" | "passed"
 
+const saleClosedMessage: (sale: { endAt: string | null; status: string | null }) => string | undefined = (sale) => {
+  const timelySale = TimelySale.create(sale)
+  if (timelySale.isClosed) {
+    const tz = moment.tz.guess(true)
+    const endedAtMoment = moment(sale.endAt!).tz(tz)
+
+    return `Closed ${endedAtMoment.format("MMM D")}`
+  }
+}
+
 export const ClosedLot = ({
   lotStanding,
-  withTimelyInfo = false,
+  withTimelyInfo = true,
 }: {
   lotStanding: ClosedLot_lotStanding
   withTimelyInfo?: boolean
 }) => {
+  const sale = lotStanding?.saleArtwork?.sale!
   const sellingPrice = lotStanding?.lotState?.sellingPrice?.displayAmount
-  const subtitle = withTimelyInfo ? capitalize(lotStanding?.saleArtwork?.sale?.displayTimelyAt!) : undefined
+  const subtitle = withTimelyInfo ? saleClosedMessage(sale) : undefined
 
   const result: BidderResult =
     lotStanding?.lotState.soldStatus === "Passed" ? "passed" : lotStanding?.isHighestBidder ? "won" : "lost"
@@ -63,7 +75,8 @@ export const ClosedLotFragmentContainer = createFragmentContainer(ClosedLot, {
       saleArtwork {
         ...Lot_saleArtwork
         sale {
-          displayTimelyAt
+          endAt
+          status
         }
       }
     }

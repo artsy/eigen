@@ -1,6 +1,5 @@
 #import "AREmission.h"
 #import "AREventsModule.h"
-#import "ARSwitchBoardModule.h"
 #import "ARTemporaryAPIModule.h"
 #import "ARRefineOptionsModule.h"
 #import "ARTakeCameraPhotoModule.h"
@@ -38,18 +37,16 @@ static AREmission *_sharedInstance = nil;
     // When adding a new native module, remember to add it
     // to the array of modules below.
     _eventsModule = [AREventsModule new];
-    _switchBoardModule = [ARSwitchBoardModule new];
     _APIModule = [ARTemporaryAPIModule new];
     _refineModule = [ARRefineOptionsModule new];
     _cameraModule = [ARTakeCameraPhotoModule new];
-    _notificationsManagerModule = [[ARNotificationsManager alloc] initWithState: state];
+    _notificationsManagerModule = [[ARNotificationsManager alloc] initWithState:state];
     _graphQLQueryCacheModule = [ARGraphQLQueryCache new];
     _graphQLQueryPreloaderModule = [[ARGraphQLQueryPreloader alloc] initWithCache:_graphQLQueryCacheModule];
 
     NSArray *modules = @[
         _APIModule,
         _eventsModule,
-        _switchBoardModule,
         _refineModule,
         _cameraModule,
         _notificationsManagerModule,
@@ -76,6 +73,11 @@ static AREmission *_sharedInstance = nil;
     [self.notificationsManagerModule reset];
 }
 
+- (void)navigate:(NSString *)route
+{
+    [[self notificationsManagerModule] requestNavigation:route];
+}
+
 - (void)updateState:(NSDictionary *)state
 {
     [self.notificationsManagerModule updateState:state];
@@ -93,6 +95,11 @@ static AREmission *_sharedInstance = nil;
 - (NSURL *)releaseBundleURL;
 {
   return [[NSBundle bundleForClass:self.class] URLForResource:@"Emission" withExtension:@"js"];
+}
+
+- (NSURL *)liveAuctionsURL
+{
+    return [NSURL URLWithString:[self stateStringForKey:[ARStateKey predictionURL]]];
 }
 
 @end
