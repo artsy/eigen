@@ -23,7 +23,6 @@ export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay }) => 
         connection={artworks}
         loadMore={relay.loadMore}
         hasMore={relay.hasMore}
-        isLoading={relay.isLoading}
         autoFetch={false}
         pageSize={20}
         contextScreenOwnerType={OwnerType.fair}

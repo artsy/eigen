@@ -109,7 +109,7 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
                       return <Tabs setActiveTab={setActiveTab} activeTab={activeTab} tabs={tabs} />
                     }
                     case "fairTabChildContent": {
-                      return <TabChildContent activeTab={activeTab} fair={fair} tabs={tabs} />
+                      return <TabChildContent activeTab={activeTab} tabs={tabs} />
                     }
                   }
                 }}
