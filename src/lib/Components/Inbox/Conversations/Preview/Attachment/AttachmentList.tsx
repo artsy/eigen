@@ -3,7 +3,7 @@ import { Box, Sans, Spacer, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { FileDownload } from "./FileDownload"
+import { FileDownloadFragmentContainer as FileDownload } from "./FileDownload"
 
 interface Props {
   messageConnection: AttachmentList_messageConnection
@@ -17,26 +17,26 @@ const AttachmentList: React.FC<Props> = (props) => {
       ?.reduce((previous, current) => current && previous?.concat(current), [])
       ?.filter((attachment) => attachment && !attachment?.contentType.includes("image")) || []
 
-  const renderAttachment = ({ item }: { item: any }) => {
-    return <FileDownload tiny={true} attachment={item} />
-  }
   return (
-    <Box>
-      <Sans px={2} size="3" weight="medium" mb={2}>
-        Attachments {}
-      </Sans>
-      {attachmentItems?.length ? (
-        <FlatList
-          data={attachmentItems}
-          keyExtractor={(item, index) => String(item?.id || index)}
-          renderItem={renderAttachment}
-          ItemSeparatorComponent={() => <Spacer mb={0.5} />}
-        />
-      ) : (
-        <Text px={2} pb={1}>
-          No Attachments
-        </Text>
-      )}
+    <Box px={1}>
+      <FlatList
+        data={attachmentItems}
+        keyExtractor={(item, index) => String(item?.id || index)}
+        renderItem={({ item }) => {
+          return item && <FileDownload tiny={true} attachment={item} />
+        }}
+        ListHeaderComponent={
+          <Sans size="3" weight="medium" mb={2} px={1}>
+            Attachments
+          </Sans>
+        }
+        ItemSeparatorComponent={() => <Spacer mb={0.5} />}
+        ListEmptyComponent={
+          <Text px={1} pb={1}>
+            No Attachments
+          </Text>
+        }
+      />
     </Box>
   )
 }
@@ -49,8 +49,6 @@ export const AttachmentListFragmentContainer = createFragmentContainer(Attachmen
           attachments {
             id
             contentType
-            fileName
-            downloadURL
             ...FileDownload_attachment
           }
         }

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0dd0b3e2d03ba38526b1a17b1db6d91d */
+/* @relayHash 7d0a37b91ad17e552c6a13cd7d18df4f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -46,8 +46,6 @@ fragment AttachmentList_messageConnection on MessageConnection {
       attachments {
         id
         contentType
-        fileName
-        downloadURL
         ...FileDownload_attachment
       }
       id
@@ -506,7 +504,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConversationDetailsQuery",
-    "id": "72b9dda0a3a327843d25dad73d826773",
+    "id": "daa3d58510f0a038fe404b864e1bda58",
     "text": null,
     "metadata": {}
   }

@@ -3,36 +3,16 @@ import { ConversationDetailsQuery } from "__generated__/ConversationDetailsQuery
 import { ArtworkInfoFragmentContainer as ArtworkInfo } from "lib/Components/Inbox/Conversations/ArtworkInfo"
 import { AttachmentListFragmentContainer as AttachmentList } from "lib/Components/Inbox/Conversations/Preview/Attachment/AttachmentList"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Box, Flex, Join, QuestionCircleIcon, Sans, Separator } from "palette"
+import { Box, Flex, Join, QuestionCircleIcon, Sans, Separator, Touchable } from "palette"
 import React from "react"
 import { useRef } from "react"
-import { TouchableHighlight, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import styled from "styled-components/native"
-import { SmallHeadline } from "../Components/Inbox/Typography"
 import { track as _track } from "../utils/track"
-
-const Container = styled.View`
-  flex-direction: column;
-  flex: 1;
-`
-const Header = styled.View`
-  align-self: stretch;
-  margin-top: 22px;
-  flex-direction: column;
-  margin-bottom: 18px;
-`
-
-// This makes it really easy to style the HeaderTextContainer with space-between
-const PlaceholderView = View
-
-const HeaderTextContainer = styled.View`
-  flex-direction: row;
-  justify-content: center;
-`
 
 const ImageView = styled(OpaqueImageView)`
   width: 80px;
@@ -46,7 +26,7 @@ interface Props {
 }
 
 export const ConversationDetails: React.FC<Props> = (props) => {
-  const itemRef = useRef<any>()
+  const navRef = useRef<any>()
   const conversation = props.me?.conversation
   const partnerName = conversation?.to.name
 
@@ -58,9 +38,9 @@ export const ConversationDetails: React.FC<Props> = (props) => {
           {item.__typename}
         </Sans>
 
-        <TouchableHighlight
+        <Touchable
           onPress={() => {
-            SwitchBoard.presentNavigationViewController(itemRef.current!, item.href!)
+            SwitchBoard.presentNavigationViewController(navRef.current!, item.href!)
           }}
         >
           <Flex flexDirection="row">
@@ -69,7 +49,7 @@ export const ConversationDetails: React.FC<Props> = (props) => {
             </Box>
             {item.__typename === "Artwork" && <ArtworkInfo artwork={item} />}
           </Flex>
-        </TouchableHighlight>
+        </Touchable>
       </Flex>
     </Box>
   )
@@ -83,10 +63,10 @@ export const ConversationDetails: React.FC<Props> = (props) => {
       <Sans size="3" weight="medium" mb={2}>
         Support
       </Sans>
-      <TouchableHighlight
+      <Touchable
         onPress={() => {
           SwitchBoard.presentModalViewController(
-            itemRef.current!,
+            navRef.current!,
             "https://support.artsy.net/hc/en-us/sections/360008203054-Contact-a-gallery"
           )
         }}
@@ -95,24 +75,18 @@ export const ConversationDetails: React.FC<Props> = (props) => {
           <QuestionCircleIcon mr={1} />
           <Sans size="3">Inquiries FAQ</Sans>
         </Flex>
-      </TouchableHighlight>
+      </Touchable>
     </Flex>
   )
 
   const sections = [itemInfoSection, attachmentsSection, supportSection]
 
   return (
-    <Container ref={itemRef}>
-      <Header>
-        <HeaderTextContainer>
-          <SmallHeadline style={{ fontSize: 14 }}>{partnerName}</SmallHeadline>
-          <PlaceholderView />
-        </HeaderTextContainer>
-      </Header>
-      <Flex flexGrow={1}>
+    <PageWithSimpleHeader title={partnerName!}>
+      <Flex ref={navRef}>
         <Join separator={<Separator my={1} />}>{sections}</Join>
       </Flex>
-    </Container>
+    </PageWithSimpleHeader>
   )
 }
 

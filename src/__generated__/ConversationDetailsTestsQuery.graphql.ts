@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 3a1b0c7d18cf5384c24237e264977ac9 */
+/* @relayHash c5bf31fc91fb394391a9d8acce8e4dfe */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -46,8 +46,6 @@ fragment AttachmentList_messageConnection on MessageConnection {
       attachments {
         id
         contentType
-        fileName
-        downloadURL
         ...FileDownload_attachment
       }
       id
@@ -530,7 +528,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConversationDetailsTestsQuery",
-    "id": "d1fd6b90f984538cb58d405b061d554a",
+    "id": "4874cfde5a24761f3a6573073c7fe90b",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -641,10 +639,10 @@ return {
         "me.conversation.items.item.image.thumbnailUrl": (v11/*: any*/),
         "me.conversation.messagesConnection.edges.node.attachments.id": (v9/*: any*/),
         "me.conversation.messagesConnection.edges.node.attachments.contentType": (v10/*: any*/),
-        "me.conversation.messagesConnection.edges.node.attachments.fileName": (v10/*: any*/),
-        "me.conversation.messagesConnection.edges.node.attachments.downloadURL": (v10/*: any*/),
         "me.conversation.items.item.partner.name": (v11/*: any*/),
         "me.conversation.items.item.partner.id": (v8/*: any*/),
+        "me.conversation.messagesConnection.edges.node.attachments.fileName": (v10/*: any*/),
+        "me.conversation.messagesConnection.edges.node.attachments.downloadURL": (v10/*: any*/),
         "me.conversation.messagesConnection.edges.node.attachments.internalID": (v9/*: any*/)
       }
     }

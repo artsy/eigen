@@ -9,8 +9,6 @@ export type AttachmentList_messageConnection = {
             readonly attachments: ReadonlyArray<{
                 readonly id: string;
                 readonly contentType: string;
-                readonly fileName: string;
-                readonly downloadURL: string;
                 readonly " $fragmentRefs": FragmentRefs<"FileDownload_attachment">;
             } | null> | null;
         } | null;
@@ -74,20 +72,6 @@ const node: ReaderFragment = {
                   "storageKey": null
                 },
                 {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "fileName",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "downloadURL",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
                   "kind": "FragmentSpread",
                   "name": "FileDownload_attachment",
                   "args": null
@@ -100,5 +84,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '7fed3caf19228a8befd078f2e7b27547';
+(node as any).hash = 'd3a42877c188836cd050e0526e2b47ad';
 export default node;

@@ -4,9 +4,9 @@ import { FileDownload } from "lib/Components/Inbox/Conversations/Preview/Attachm
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Touchable } from "palette"
 import React from "react"
 import "react-native"
-import { TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -68,7 +68,7 @@ describe("ConversationDetailsFragmentContainer", () => {
     const artworkInfo = tree.root.findByType(ArtworkInfo)
     expect(extractText(artworkInfo)).toContain("happy little accident")
 
-    tree.root.findAllByType(TouchableHighlight)[0].props.onPress()
+    tree.root.findAllByType(Touchable)[0].props.onPress()
 
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
       expect.anything(),
@@ -97,7 +97,7 @@ describe("ConversationDetailsFragmentContainer", () => {
       })
     })
 
-    tree.root.findAllByType(TouchableHighlight)[3].props.onPress()
+    tree.root.findAllByType(Touchable)[3].props.onPress()
 
     expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(
       expect.anything(),
