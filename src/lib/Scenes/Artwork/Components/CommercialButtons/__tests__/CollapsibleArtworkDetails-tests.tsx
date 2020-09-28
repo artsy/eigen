@@ -1,58 +1,73 @@
-import { InquiryButtons_artwork } from "__generated__/InquiryButtons_artwork.graphql"
+import { CollapsibleArtworkDetailsTestsQuery } from "__generated__/CollapsibleArtworkDetailsTestsQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
-import { CollapsibleArtworkDetails } from "../CollapsibleArtworkDetails"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { CollapsibleArtworkDetailsFragmentContainer } from "../CollapsibleArtworkDetails"
 
-const testArtwork: InquiryButtons_artwork = {
-  title: "Dance",
-  date: "n/a",
-  medium: "Canvas/Oil",
-  internalID: "xyz",
-  isPriceHidden: false,
-  editionOf: "100",
-  dimensions: {
-    in: "59 1/10 × 59 1/10 in",
-    cm: "150 × 150 cm",
-  },
-  image: {
-    url: "https://d32dm0rphc51dk.cloudfront.net/gpCChJoRzYT3-cpz_R3M_A/medium.jpg",
-    width: 801,
-    height: 801,
-  },
-  signatureInfo: {
-    details: "Hand-signed by artist",
-  },
-  artist: {
-    name: "Alexey Terenin",
-  },
-  " $refType": "InquiryButtons_artwork",
-}
+jest.unmock("react-relay")
 
 describe("CollapsibleArtworkDetails", () => {
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const TestRenderer = () => (
+    <QueryRenderer<CollapsibleArtworkDetailsTestsQuery>
+      environment={mockEnvironment}
+      query={graphql`
+        query CollapsibleArtworkDetailsTestsQuery @relay_test_operation {
+          artwork(id: "some-slug") {
+            ...CollapsibleArtworkDetails_artwork
+          }
+        }
+      `}
+      variables={{}}
+      render={({ props }) => {
+        if (props?.artwork) {
+          return <CollapsibleArtworkDetailsFragmentContainer artwork={props.artwork} />
+        }
+        return null
+      }}
+    />
+  )
+
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+  })
+
+  const resolveData = (passedProps = {}) => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, passedProps)
+    )
+  }
+
   it("renders the data if available", () => {
-    const component = renderWithWrappers(<CollapsibleArtworkDetails artwork={testArtwork} />)
-    expect(component.root.findAllByType(OpaqueImageView)).toHaveLength(1)
-    expect(component.root.findAllByType(Text)).toHaveLength(2)
+    const wrapper = renderWithWrappers(<TestRenderer />)
+    resolveData()
+    expect(wrapper.root.findAllByType(OpaqueImageView)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(Text)).toHaveLength(2)
   })
 
   it("expands component on press", () => {
-    const component = renderWithWrappers(<CollapsibleArtworkDetails artwork={testArtwork} />)
-    expect(component.root.findAllByType(Text)).toHaveLength(2)
-    component.root.findByType(TouchableOpacity).props.onPress()
-    expect(component.root.findAllByType(Text)).toHaveLength(10)
+    const wrapper = renderWithWrappers(<TestRenderer />)
+    resolveData()
+    expect(wrapper.root.findAllByType(Text)).toHaveLength(2)
+    wrapper.root.findByType(TouchableOpacity).props.onPress()
+    expect(wrapper.root.findAllByType(Text)).toHaveLength(10)
   })
 
   it("doesn't render what it doesn't have", () => {
-    const testArtworkNoSig = {
-      ...testArtwork,
-      signatureInfo: null,
-    }
-    const component = renderWithWrappers(<CollapsibleArtworkDetails artwork={testArtworkNoSig} />)
-    component.root.findByType(TouchableOpacity).props.onPress()
-    expect(component.root.findAllByType(Text)).toHaveLength(8)
+    const wrapper = renderWithWrappers(<TestRenderer />)
+    resolveData({
+      Artwork: () => ({
+        signatureInfo: {
+          details: null,
+        },
+      }),
+    })
+    wrapper.root.findByType(TouchableOpacity).props.onPress()
+    expect(wrapper.root.findAllByType(Text)).toHaveLength(8)
   })
 })
