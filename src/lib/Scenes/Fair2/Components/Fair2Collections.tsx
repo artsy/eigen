@@ -1,10 +1,10 @@
 import { Fair2Collections_fair } from "__generated__/Fair2Collections_fair.graphql"
 import { CARD_WIDTH } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { compact } from "lodash"
 import { Box, BoxProps, SmallCard, Text, TouchableWithScale } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 type Collection = Fair2Collections_fair["marketingCollections"][number]
@@ -14,14 +14,12 @@ interface Fair2CollectionsProps extends BoxProps {
 }
 
 export const Fair2Collections: React.FC<Fair2CollectionsProps> = ({ fair, ...rest }) => {
-  const ref = useRef<any>()
-
   if (fair.marketingCollections.length === 0) {
     return null
   }
 
   return (
-    <Box ref={ref} {...rest}>
+    <Box {...rest}>
       <Text mx={2} mb={2} variant="subtitle">
         Curated Highlights
       </Text>
@@ -40,7 +38,7 @@ export const Fair2Collections: React.FC<Fair2CollectionsProps> = ({ fair, ...res
             <TouchableWithScale
               key={collection.slug}
               onPress={() => {
-                SwitchBoard.presentNavigationViewController(ref.current, `/collection/${collection.slug}`)
+                navigate(`/collection/${collection.slug}`)
               }}
             >
               <SmallCard width={CARD_WIDTH} images={images} title={collection.title} subtitle={collection.category} />
