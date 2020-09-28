@@ -186,7 +186,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
             connection={artist.artworks}
             loadMore={relay.loadMore}
             hasMore={relay.hasMore}
-            isLoading={relay.isLoading}
             {...props}
             contextScreenOwnerType={OwnerType.artist}
             contextScreenOwnerId={artist.internalID}

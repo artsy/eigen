@@ -59,7 +59,6 @@ describe("Artist Series Artworks", () => {
               connection={artworksConnection}
               loadMore={relayMock.loadMore}
               hasMore={relayMock.hasMore}
-              isLoading={relayMock.isLoading}
             />
           )
         } else if (error) {

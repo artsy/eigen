@@ -73,7 +73,6 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
           connection={artworks}
           loadMore={relay.loadMore}
           hasMore={relay.hasMore}
-          isLoading={relay.isLoading}
           autoFetch={false}
           pageSize={ARTIST_SERIES_PAGE_SIZE}
           contextScreenOwnerType={OwnerType.artistSeries}

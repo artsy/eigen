@@ -10,7 +10,6 @@ import React from "react"
 import { Dimensions, LayoutChangeEvent, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, RelayPaginationProp } from "react-relay"
 
-import Spinner from "../Spinner"
 import Artwork from "./ArtworkGridItem"
 
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
@@ -84,11 +83,11 @@ interface PrivateProps {
   connection: InfiniteScrollArtworksGrid_connection
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]
-  isLoading: RelayPaginationProp["isLoading"]
 }
 
 interface State {
   sectionDimension: number
+  isLoading: boolean
 }
 
 class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, State> {
@@ -104,14 +103,18 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   state = {
     sectionDimension: 0,
+    isLoading: false,
   }
 
   fetchNextPage = () => {
-    if (!this.props.hasMore() || this.props.isLoading()) {
+    if (!this.props.hasMore() || this.state.isLoading) {
       return
     }
 
+    this.setState({ isLoading: true })
+
     this.props.loadMore(this.props.pageSize!, (error) => {
+      this.setState({ isLoading: false })
       if (error) {
         // FIXME: Handle error
         console.error("InfiniteScrollGrid.tsx", error.message)
@@ -254,7 +257,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
-    const { shouldAddPadding, autoFetch, hasMore, isLoading, stickyHeaderIndices } = this.props
+    const { shouldAddPadding, autoFetch, hasMore, stickyHeaderIndices } = this.props
     const boxPadding = shouldAddPadding ? 2 : 0
 
     return (
@@ -281,16 +284,18 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             </View>
           </Box>
 
-          {!autoFetch && !!hasMore() && !isLoading() && (
-            <Button variant="secondaryGray" size="large" block onPress={this.fetchNextPage}>
+          {!autoFetch && !!hasMore() && (
+            <Button
+              mt={5}
+              mb={3}
+              variant="secondaryGray"
+              size="large"
+              block
+              onPress={this.fetchNextPage}
+              loading={this.state.isLoading}
+            >
               Show more
             </Button>
-          )}
-
-          {!!(isLoading() && hasMore()) && (
-            <Box my={2}>
-              <Spinner />
-            </Box>
           )}
         </ScrollView>
       </Theme>
