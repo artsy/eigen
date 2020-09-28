@@ -1,3 +1,4 @@
+import { ICON_HEIGHT } from "lib/Scenes/BottomTabs/BottomTabsIcon"
 import React from "react"
 import { Dimensions, KeyboardAvoidingView, View } from "react-native"
 
@@ -14,7 +15,7 @@ const defaultVerticalOffset = isPhoneX ? 30 : 15
 const BottomAlignedButtonWrapper: React.FC<BottomAlignedProps> = (props) => (
   <KeyboardAvoidingView
     behavior="padding"
-    keyboardVerticalOffset={props.verticalOffset || defaultVerticalOffset}
+    keyboardVerticalOffset={props.verticalOffset || defaultVerticalOffset + ICON_HEIGHT}
     style={{ flex: 1 }}
   >
     <View key="space-eater" style={{ flexGrow: 1 }}>

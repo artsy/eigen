@@ -1,3 +1,4 @@
+import { ICON_HEIGHT } from "lib/Scenes/BottomTabs/BottomTabsIcon"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Button, Separator, Spacer } from "palette"
 import React from "react"
@@ -13,7 +14,7 @@ export interface BottomAlignedProps extends React.Props<JSX.Element> {
 export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({ buttonText, onPress, children, disabled }) => (
   <KeyboardAvoidingView
     behavior="padding"
-    keyboardVerticalOffset={useScreenDimensions().safeAreaInsets.top}
+    keyboardVerticalOffset={useScreenDimensions().safeAreaInsets.top + ICON_HEIGHT}
     style={{ flex: 1 }}
   >
     <View key="space-eater" style={{ flexGrow: 1 }}>
