@@ -7,6 +7,7 @@ upcoming:
     - Move auction CTA button to RN - pavlos
     - Move artwork categories to a common util file - ashley
     - Send id token from apple sign in - brian
+    - Rework principalField middleware - david, pavlos, mounir, brian
     - Add admin-only skeleton view for Fair2 - will
     - Add header for Fair2 (visible only to admins) - will
     - Add editorial for Fair2 (visible only to admins) - damon
