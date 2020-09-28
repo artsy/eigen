@@ -34,6 +34,7 @@
     ARInternalMobileWebViewController *webVC = [[ARInternalMobileWebViewController alloc] initWithURL:resolvedURL];
     UIViewController *parentVC = [self reactViewController];
     [parentVC ar_addModernChildViewController:webVC];
+    [self alignToView:parentVC.view];
     [webVC.view alignToView:self];
     self.webViewController = webVC;
 }
