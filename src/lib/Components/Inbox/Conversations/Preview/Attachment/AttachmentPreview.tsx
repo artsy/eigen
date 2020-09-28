@@ -1,12 +1,10 @@
 import React from "react"
+import { findNodeHandle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-
-import { TouchableHighlight } from "react-native"
 import styled from "styled-components/native"
 
-import colors from "lib/data/colors"
-
 import { AttachmentPreview_attachment } from "__generated__/AttachmentPreview_attachment.graphql"
+import { color, Touchable } from "palette"
 
 const Container = styled.View`
   flex-direction: column;
@@ -15,11 +13,9 @@ const Container = styled.View`
 `
 
 export interface AttachmentProps {
-  /**
-   * This callback is bound to the attachment preview component, meaning that `this` refers to the instance you can pass
-   * to e.g. `findNodeHandle`.
-   */
-  onSelected?: (attachmentID: string) => void
+  // reactNodeHandle is passed to the native side to decide which UIView to show the
+  // download progress bar on.
+  onSelected?: (reactNodeHandle: number, attachmentID: string) => void
 }
 
 interface Props extends AttachmentProps {
@@ -30,12 +26,12 @@ export class AttachmentPreview extends React.Component<Props> {
   render() {
     const { attachment, children, onSelected } = this.props
     return (
-      <TouchableHighlight
-        underlayColor={colors["gray-light"]}
-        onPress={onSelected && onSelected.bind(this, attachment.internalID)}
+      <Touchable
+        underlayColor={color("black5")}
+        onPress={() => onSelected?.(findNodeHandle(this)!, attachment.internalID)}
       >
         <Container>{children}</Container>
-      </TouchableHighlight>
+      </Touchable>
     )
   }
 }

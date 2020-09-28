@@ -5,9 +5,11 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkArtistArticles_artwork = {
     readonly artist: {
+        readonly slug: string;
         readonly articlesConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
+                    readonly slug: string | null;
                     readonly internalID: string;
                     readonly href: string | null;
                     readonly thumbnailTitle: string | null;
@@ -32,7 +34,15 @@ export type MyCollectionArtworkArtistArticles_artwork$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "slug",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "MyCollectionArtworkArtistArticles_artwork",
   "type": "Artwork",
@@ -48,6 +58,7 @@ const node: ReaderFragment = {
       "concreteType": "Artist",
       "plural": false,
       "selections": [
+        (v0/*: any*/),
         {
           "kind": "LinkedField",
           "alias": null,
@@ -91,6 +102,7 @@ const node: ReaderFragment = {
                   "concreteType": "Article",
                   "plural": false,
                   "selections": [
+                    (v0/*: any*/),
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -171,5 +183,6 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '16394c40e32eab13654717a80386dd13';
+})();
+(node as any).hash = 'ff2eb4e9aab66c5f0211b9ff7f3548ab';
 export default node;

@@ -34,7 +34,6 @@
 #import "ARPriceRangeViewController.h"
 #import "ARViewInRoomViewController.h"
 #import "ARSharingController.h"
-#import "ARBrowseCategoriesViewController.h"
 #import "ARNavigationController.h"
 #import "ARSentryAnalyticsProvider.h"
 #import "ARSegmentProvider.h"
@@ -42,7 +41,6 @@
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
 
-#import <Emission/ARGeneComponentViewController.h>
 
 // Views
 #import "ARButtonWithImage.h"

@@ -1178,6 +1178,12 @@ type Artwork implements Node & Searchable & Sellable {
   # Returns the associated Fair/Sale/Show
   context: ArtworkContext
   contextGrids: [ArtworkContextGrid]
+
+  # The currency code used to pay for the artwork
+  costCurrencyCode: String
+
+  # The amount paid for the artwork, in cents
+  costMinor: Int
   culturalMaker: String
   date: String
 
@@ -6852,6 +6858,9 @@ type Me implements Node {
     state: CommerceOrderStateEnum
   ): CommerceOrderConnectionWithTotalCount
   paddleNumber: String
+
+  # The user's most current pending identity verification, if it exists
+  pendingIdentityVerification: IdentityVerification
   phone: String
 
   # This user should receive lot opening notifications
@@ -7152,8 +7161,12 @@ input MyCollectionCreateArtworkInput {
   artistIds: [String]!
   category: String
   clientMutationId: String
+  costCurrencyCode: String
+  costMinor: Int
   date: String
   depth: String
+  editionNumber: Int
+  editionSize: String
   height: String
   medium: String!
   metric: String
@@ -7190,8 +7203,12 @@ input MyCollectionUpdateArtworkInput {
   artworkId: String!
   category: String
   clientMutationId: String
+  costCurrencyCode: String
+  costMinor: Int
   date: String
   depth: String
+  editionNumber: Int
+  editionSize: String
   height: String
   medium: String
   metric: String
@@ -8489,6 +8506,7 @@ type Sale implements Node {
   # Auction's buyer's premium policy.
   buyersPremium: [BuyersPremium]
   cached: Int
+  collectPayments: Boolean!
   coverImage: Image
   currency: String
   description: String

@@ -17,7 +17,7 @@ interface ArtistSeriesMetaProps {
 
 type ArtistToFollowOrUnfollow = NonNullable<NonNullable<ArtistSeriesMetaProps["artistSeries"]["artists"]>[0]>
 
-export const ArtistSeriesMeta: React.SFC<ArtistSeriesMetaProps> = ({ artistSeries, relay }) => {
+export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries, relay }) => {
   const metaRef = useRef<View | null>(null)
   const { trackEvent } = useTracking()
   const maxChars = truncatedTextLimit()
@@ -71,7 +71,7 @@ export const ArtistSeriesMeta: React.SFC<ArtistSeriesMetaProps> = ({ artistSerie
 
   return (
     <View ref={metaRef}>
-      <Sans size="8" mt={3} data-test-id="title">
+      <Sans size="8" data-test-id="title">
         {artistSeries.title}
       </Sans>
       {!!artist && (

@@ -33,7 +33,7 @@ const priceSort = (left: FilterData, right: FilterData): number => {
   }
 }
 
-export const PriceRangeOptionsScreen: React.SFC<PriceRangeOptionsScreenProps> = ({ navigator }) => {
+export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigator }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const paramName = FilterParamName.priceRange

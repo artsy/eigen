@@ -18,7 +18,7 @@ interface InstitutionOptionsScreenProps {
   navigator: NavigatorIOS
 }
 
-export const InstitutionOptionsScreen: React.SFC<InstitutionOptionsScreenProps> = ({ navigator }) => {
+export const InstitutionOptionsScreen: React.FC<InstitutionOptionsScreenProps> = ({ navigator }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const paramName = FilterParamName.institution

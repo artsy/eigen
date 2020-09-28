@@ -37,7 +37,7 @@ next: update_bundle_version
 oss:
 	touch .env.ci
 	cp .env.example .env.shared
-	cp Artsy/App/Echo.json.example Artsy/App/Echo.json
+	cp Artsy/App/Echo.json.example Artsy/App/EchoNew.json
 
 artsy:
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
@@ -135,7 +135,7 @@ update_echo:
 	# Touch both files so dotenv will work.
 	@touch .env.ci
 	@touch .env.shared
-	@curl https://echo-api-production.herokuapp.com/accounts/1 --header "Http-Authorization: $(shell dotenv -f ".env.shared,.env.ci" env | grep ARTSY_ECHO_PRODUCTION_TOKEN | awk -F "=" {'print $$2'})" --header "Accept: application/vnd.echo-v2+json" > Artsy/App/Echo.json
+	@curl https://echo-api-production.herokuapp.com/accounts/1 --header "Http-Authorization: $(shell dotenv -f ".env.shared,.env.ci" env | grep ARTSY_ECHO_PRODUCTION_TOKEN | awk -F "=" {'print $$2'})" --header "Accept: application/vnd.echo-v2+json" > Artsy/App/EchoNew.json
 
 storyboards:
 	swiftgen storyboards Artsy --output Artsy/Tooling/Generated/StoryboardConstants.swift
@@ -174,6 +174,7 @@ flip_table:
 	rm -rf emission/Pod/Assets/assets
 	@echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
 	bundle exec pod install --repo-update
+	$(MAKE) update_echo
 
 # Clear global and local caches and build files
 flip_table_extreme:

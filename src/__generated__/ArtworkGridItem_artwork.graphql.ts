@@ -24,6 +24,7 @@ export type ArtworkGridItem_artwork = {
         readonly currentBid: {
             readonly display: string | null;
         } | null;
+        readonly lotLabel: string | null;
     } | null;
     readonly partner: {
         readonly name: string | null;
@@ -181,6 +182,13 @@ const node: ReaderFragment = {
               "storageKey": null
             }
           ]
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "lotLabel",
+          "args": null,
+          "storageKey": null
         }
       ]
     },
@@ -235,5 +243,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'a907851ea1b00a4ffa7afde73bcf3c85';
+(node as any).hash = 'e16b72b00d843bc38430e61ed44ea305';
 export default node;

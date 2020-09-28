@@ -5,6 +5,7 @@ import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "lib/Components/Show/ShowArtistsPreview"
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "lib/Components/Show/ShowArtworksPreview"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { hideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import { Box, Sans, Separator } from "palette"
 import React from "react"
@@ -185,6 +186,8 @@ export class Detail extends React.Component<Props, State> {
           </Box>
         )}
         keyExtractor={(item, index) => item.type + String(index)}
+        onScroll={hideBackButtonOnScroll}
+        scrollEventThrottle={100}
       />
     )
   }

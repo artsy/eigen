@@ -5,10 +5,10 @@
 #import "ARRouter.h"
 #import "ARInternalShareValidator.h"
 #import "ARAppDelegate.h"
-#import "ARSwitchBoard+Eigen.h"
 #import "ARTopMenuViewController.h"
 #import "UIViewController+TopMenuViewController.h"
 #import "AROptions.h"
+#import <Emission/AREmission.h>
 
 static void *ARProgressContext = &ARProgressContext;
 
@@ -164,28 +164,8 @@ static void *ARProgressContext = &ARProgressContext;
             return WKNavigationActionPolicyCancel;
 
         } else {
-            UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:URL fair:self.fair];
-
-            if (viewController) {
-                if ([viewController isKindOfClass:[UINavigationController class]]) {
-                    // Navigation controllers can't be pushed onto regular navigation controllers, only the top menu VC.
-                    [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
-                } else if (viewController.navigationController) {
-                    // viewController already has a navigation controller set on it, which indicates it's a special case
-                    // where it's already in a navigation stack somewhere. Let's dismiss ourselves (if applicable) and then
-                    // show the VC through the normal ARTopMenuViewController flow, which handles all special cases.
-
-                    if (self.presentingViewController) {
-                        [self.presentingViewController dismissViewControllerAnimated:ARPerformWorkAsynchronously completion:^{
-                            [[ARTopMenuViewController sharedController] pushViewController:viewController animated:ARPerformWorkAsynchronously];
-                        }];
-                    } else {
-                        [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
-                    }
-                } else {
-                    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
-                }
-            }
+            // TODO: this opens a new web view for every navigation action. Let's switch to react-native web views and fix that
+            [[AREmission sharedInstance] navigate:[URL absoluteString]];
 
             ARActionLog(@"Artsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
             return WKNavigationActionPolicyCancel;

@@ -425,7 +425,7 @@ export const ArtworkContainer = createRefetchContainer(
   `
 )
 
-export const ArtworkQueryRenderer: React.SFC<{
+export const ArtworkQueryRenderer: React.FC<{
   artworkID: string
   isVisible: boolean
   environment?: RelayModernEnvironment

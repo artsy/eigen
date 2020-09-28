@@ -205,9 +205,9 @@ class AuctionInformationViewController: UIViewController {
             "context_type": navigationController?.topViewController == self ? "sale" : "sale information"
             ])
 
-        let controller = ARSwitchBoard.sharedInstance().loadPath("/auction/\(saleID)/buyers-premium")
-        controller.title = "Buyer's Premium"
-        navigationController?.pushViewController(controller, animated: animated)
+        let controller = ARInternalMobileWebViewController(url: URL(string: "/auction/\(saleID)/buyers-premium"))
+        controller?.title = "Buyer's Premium"
+        navigationController?.pushViewController(controller!, animated: animated)
     }
 }
 

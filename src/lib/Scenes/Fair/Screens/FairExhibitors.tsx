@@ -1,6 +1,7 @@
 import { FairExhibitors_fair } from "__generated__/FairExhibitors_fair.graphql"
 import { FairExhibitorsQuery } from "__generated__/FairExhibitorsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { hideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { Box, Sans, Separator, Serif, Theme } from "palette"
 import React from "react"
@@ -125,6 +126,8 @@ export class FairExhibitors extends React.Component<Props, State> {
           }}
           sections={this.state.sections}
           keyExtractor={(item, index) => item + index}
+          onScroll={hideBackButtonOnScroll}
+          scrollEventThrottle={100}
         />
       </Theme>
     )
@@ -149,7 +152,7 @@ const FairExhibitorsFragmentContainer = createFragmentContainer(FairExhibitors, 
   `,
 })
 
-export const FairExhibitorsQueryRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
+export const FairExhibitorsQueryRenderer: React.FC<{ fairID: string }> = ({ fairID }) => (
   <QueryRenderer<FairExhibitorsQuery>
     environment={defaultEnvironment}
     query={graphql`

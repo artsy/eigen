@@ -1,4 +1,3 @@
-import { Theme } from "palette"
 import React from "react"
 import { ViewProperties } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -8,6 +7,7 @@ import { Show_show } from "__generated__/Show_show.graphql"
 import { ShowQuery } from "__generated__/ShowQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { FairBoothQueryRenderer } from "../Fair"
 
 interface Props extends ViewProperties {
   show: Show_show
@@ -15,11 +15,7 @@ interface Props extends ViewProperties {
 
 export class Show extends React.Component<Props> {
   render() {
-    return (
-      <Theme>
-        <DetailScreen show={this.props.show} />
-      </Theme>
-    )
+    return <DetailScreen show={this.props.show} />
   }
 }
 
@@ -33,9 +29,13 @@ export const ShowContainer = createFragmentContainer(Show, {
 
 interface ShowQueryRendererProps {
   showID: string
+  entity?: string
 }
 
-export const ShowQueryRenderer: React.SFC<ShowQueryRendererProps> = ({ showID }) => {
+export const ShowQueryRenderer: React.FC<ShowQueryRendererProps> = ({ showID, entity }) => {
+  if (entity === "fair-booth") {
+    return <FairBoothQueryRenderer showID={showID} />
+  }
   return (
     <QueryRenderer<ShowQuery>
       environment={defaultEnvironment}

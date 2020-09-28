@@ -14,10 +14,23 @@ interface MyCollectionArtworkMetaProps {
   viewAll?: boolean
 }
 
-const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwork, viewAll = true }) => {
-  const navActions = AppStore.actions.myCollection.navigation
-  const { artistNames, category, date, depth, height, medium, metric, title, width } = artwork
+export const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwork, viewAll = false }) => {
+  const {
+    artistNames,
+    category,
+    costMinor,
+    costCurrencyCode,
+    date,
+    depth,
+    height,
+    medium,
+    metric,
+    title,
+    width,
+  } = artwork
+
   const dimensions = formatArtworkDimensions({ height, width, depth, metric })
+  const navActions = AppStore.actions.myCollection.navigation
 
   if (viewAll) {
     return (
@@ -33,7 +46,7 @@ const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwo
         <Field label="Materials" value={capitalize(category as string)} />
         <Field label="Dimensions" value={dimensions} />
         <Field label="Edition" value="TODO" />
-        <Field label="Price paid" value="TODO" />
+        <Field label="Price paid" value={`${costMinor} ${costCurrencyCode}`} />
       </ScreenMargin>
     )
   } else {
@@ -42,12 +55,18 @@ const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwo
         <Field label="Category" value={capitalize(medium as string)} />
         <Field label="Dimensions" value={dimensions} />
         <Field label="Edition" value="TODO" />
-        <Field label="Price paid" value="TODO" />
+        <Field label="Price paid" value={`${costMinor} ${costCurrencyCode}`} />
 
         <Spacer my={0.5} />
 
         <CaretButton
-          onPress={() => navActions.navigateToViewAllArtworkDetails({ passProps: artwork })} // FIXME: need to fix NavigatorIOS
+          onPress={() =>
+            navActions.navigateToViewAllArtworkDetails({
+              passProps: {
+                artwork,
+              },
+            })
+          }
           text="View more"
         />
       </ScreenMargin>
@@ -58,15 +77,7 @@ const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwo
 export const MyCollectionArtworkMetaFragmentContainer = createFragmentContainer(MyCollectionArtworkMeta, {
   artwork: graphql`
     fragment MyCollectionArtworkMeta_artwork on Artwork {
-      title
-      artistNames
-      date
-      medium
-      category
-      height
-      width
-      depth
-      metric
+      ...MyCollectionArtworkDetail_sharedProps @relay(mask: false)
     }
   `,
 })

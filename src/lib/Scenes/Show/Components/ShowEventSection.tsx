@@ -42,7 +42,7 @@ const formatTime = (startAt, endAt) => {
   }
 }
 
-const ShowEventSection: React.SFC<Props> = ({ event: { start_at, end_at, event_type, description } }) => (
+const ShowEventSection: React.FC<Props> = ({ event: { start_at, end_at, event_type, description } }) => (
   <>
     <Sans size="3t" weight="medium" mb={2}>
       {event_type}

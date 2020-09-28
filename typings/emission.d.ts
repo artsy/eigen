@@ -8,19 +8,12 @@ declare module "react-native" {
       fetchNotificationPermissions(callback: (error: any, result: PushAuthorizationStatus) => void): void
       markNotificationsRead(): void
       setApplicationIconBadgeNumber(n: number): void
-      presentAugmentedRealityVIR(
-        imgUrl: string,
-        widthInches: number,
-        heightInches: number,
-        artworkSlug: string,
-        artworkId: string
-      ): void
       validateAuthCredentialsAreCorrect(): void
-      resolveRelativeURL(path: string): Promise<string>
     }
     ARNotificationsManager: {
       nativeState: NativeState
       postNotificationName(type: string, data: object): void
+      didFinishBootstrapping(): void
     }
     ARCocoaConstantsModule: {
       AREnabled: boolean
@@ -29,6 +22,23 @@ declare module "react-native" {
       LocalTimeZone: string
     }
     Emission: never
+    ARScreenPresenterModule: {
+      presentReactScreen(module: string, props: object, modal: boolean, hidesBackButton: boolean): void
+      presentNativeScreen(module: string, props: object, modal: boolean): void
+      dismissModal(): void
+      goBack(): void
+      switchTab(tabType: string, props: object, popToRoot: boolean): void
+      presentMediaPreviewController(reactTag: number, route: string, mimeType: string, cacheKey: string): void
+      presentEmailComposer(to: string, subject: string, body?: string): void
+      presentAugmentedRealityVIR(
+        imgUrl: string,
+        widthInches: number,
+        heightInches: number,
+        artworkSlug: string,
+        artworkId: string
+      ): void
+      updateShouldHideBackButton(shouldHideBackButton: boolean): void
+    }
   }
 }
 

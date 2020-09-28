@@ -1,5 +1,6 @@
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
+import { hideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 import { Box, Sans, Separator, Serif } from "palette"
 import React from "react"
 import { SectionList } from "react-native"
@@ -14,7 +15,7 @@ interface Props {
   onEndReached?: () => void
 }
 
-export const ArtistsGroupedByName: React.SFC<Props> = ({ data, onEndReached }) => (
+export const ArtistsGroupedByName: React.FC<Props> = ({ data, onEndReached }) => (
   <SectionList
     windowSize={6}
     onEndReached={onEndReached}
@@ -50,5 +51,7 @@ export const ArtistsGroupedByName: React.SFC<Props> = ({ data, onEndReached }) =
     }}
     sections={data}
     keyExtractor={(_, index) => index.toString()}
+    onScroll={hideBackButtonOnScroll}
+    scrollEventThrottle={100}
   />
 )

@@ -1,6 +1,4 @@
 #import "ARAppNotificationsDelegate.h"
-#import "ARSwitchBoard.h"
-#import "ARSwitchBoard+Eigen.h"
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "ARNotificationView.h"
@@ -9,6 +7,7 @@
 #import "ARTopMenuNavigationDataSource.h"
 #import "UIApplicationStateEnum.h"
 #import <Emission/ARBidFlowViewController.h>
+#import <Emission/AREmission.h>
 
 static NSDictionary *
 DictionaryWithAppState(NSDictionary *input, UIApplicationState appState)
@@ -80,8 +79,8 @@ describe(@"receiveRemoteNotification", ^{
             });
 
             it(@"navigates to the url provided", ^{
-                id mock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
-                [[mock expect] loadPath:@"http://artsy.net/works-for-you"];
+                id mock = [OCMockObject partialMockForObject:AREmission.sharedInstance];
+                [[mock expect] navigate:@"http://artsy.net/works-for-you"];
                 [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
                 [mock verify];
@@ -151,43 +150,6 @@ describe(@"receiveRemoteNotification", ^{
 
             [mock verify];
             [mock stopMocking];
-        });
-
-        it(@"suppresses showing the notification view when a notification about outbidding ", ^{
-            UIViewController *globalRootController = [UIViewController new];
-            ARBidFlowViewController *bidController = [[ARBidFlowViewController alloc] initWithArtworkID:@"artwork-by-someone-famous" saleID:@"some-sale-id"];
-            ARSerifNavigationViewController *navigationController = [[ARSerifNavigationViewController alloc] initWithRootViewController:bidController];
-
-            id mockGlbalRootController = [OCMockObject partialMockForObject:globalRootController];
-            [[[mockGlbalRootController stub] andReturn:navigationController] presentedViewController];
-
-            id mockedNotificationsDelegate = [OCMockObject partialMockForObject:delegate];
-            [[[mockedNotificationsDelegate stub] andReturn:mockGlbalRootController] getGlobalTopViewController];
-
-            id mock = [OCMockObject mockForClass:[ARNotificationView class]];
-            [[mock reject] showNoticeInView:OCMOCK_ANY title:OCMOCK_ANY response:OCMOCK_ANY];
-
-            [delegate applicationDidReceiveRemoteNotification:@{ @"sale_slug" : @"some-sale-id", @"artwork_slug": @"artwork-by-someone-famous", @"action": @"bid outbid" } inApplicationState:appState];
-
-            [mock verify];
-            [mock stopMocking];
-            [mockedNotificationsDelegate stopMocking];
-        });
-
-        it(@"shows the notification view when a notification about bidding stuff but not the action outbid ", ^{
-            ARBidFlowViewController *bidController = [[ARBidFlowViewController alloc] initWithArtworkID:@"asd1432asda" saleID:@"123ffg3edfsd"];
-
-            id mockedNotificationsDelegate = [OCMockObject partialMockForObject:delegate];
-            [[[mockedNotificationsDelegate stub] andReturn:bidController] getGlobalTopViewController];
-
-            id mock = [OCMockObject mockForClass:[ARNotificationView class]];
-            [[mock expect] showNoticeInView:OCMOCK_ANY title:OCMOCK_ANY response:OCMOCK_ANY];
-
-            [delegate applicationDidReceiveRemoteNotification:@{ @"sale_id" : @"123ffg3edfsd", @"artwork_id": @"asd1432asda", @"action": @"winning" } inApplicationState:appState];
-
-            [mock verify];
-            [mock stopMocking];
-            [mockedNotificationsDelegate stopMocking];
         });
     });
 });

@@ -18,7 +18,7 @@ const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexPro
   }
 
   const navActions = AppStore.actions.myCollection.navigation
-  const demandRank = marketPriceInsights.demandRank! * 10
+  const demandRank = Number((marketPriceInsights.demandRank! * 10).toFixed(2))
 
   return (
     <ScreenMargin>

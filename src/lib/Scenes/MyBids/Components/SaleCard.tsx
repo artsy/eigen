@@ -1,10 +1,8 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { SaleTime } from "lib/Scenes/MyBids/Components/SaleTime"
-import { capitalize } from "lodash"
-import { Flex, Separator, Text } from "palette"
+import { SaleInfo } from "lib/Scenes/MyBids/Components/SaleInfo"
+import { Flex, Separator, Text, Touchable } from "palette"
 import React from "react"
-import { TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { SaleCard_sale } from "__generated__/SaleCard_sale.graphql"
@@ -16,7 +14,7 @@ export class SaleCard extends React.Component<{ sale: SaleCard_sale }> {
     const { sale, children } = this.props
     return (
       <React.Fragment>
-        <TouchableHighlight
+        <Touchable
           underlayColor="transparent"
           activeOpacity={0.8}
           onPress={() => SwitchBoard.presentNavigationViewController(this, sale?.href as string)}
@@ -31,22 +29,14 @@ export class SaleCard extends React.Component<{ sale: SaleCard_sale }> {
               )}
               <Text variant="title">{sale?.name}</Text>
 
-              <Flex style={{ marginTop: 15 }} flexDirection="row">
-                <Flex style={{ marginLeft: 5 }}>
-                  <SaleTime sale={sale} />
-                  <Text variant="caption" color="black60">
-                    {!!sale?.liveStartAt ? "Live Auction" : "Timed Auction"} •{" "}
-                    {capitalize(sale?.displayTimelyAt as string)}
-                  </Text>
-                </Flex>
-              </Flex>
+              <SaleInfo sale={sale} />
             </Flex>
             <Separator mt={1} />
             <Flex mx={2} my={1}>
               {children}
             </Flex>
           </Flex>
-        </TouchableHighlight>
+        </Touchable>
       </React.Fragment>
     )
   }
@@ -59,7 +49,6 @@ export const SaleCardFragmentContainer = createFragmentContainer(SaleCard, {
       name
       liveStartAt
       endAt
-      displayTimelyAt
       coverImage {
         url
       }

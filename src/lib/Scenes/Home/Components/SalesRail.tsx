@@ -6,7 +6,6 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import Switchboard from "lib/NativeModules/SwitchBoard"
 import { useTracking } from "react-tracking"
 
 import {
@@ -17,7 +16,7 @@ import {
   CardRailMetadataContainer as MetadataContainer,
 } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { capitalize, compact } from "lodash"
 import HomeAnalytics from "../homeAnalytics"
@@ -30,7 +29,6 @@ interface Props {
 type Sale = SalesRail_salesModule["results"][0]
 
 const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
-  const navRef = useRef<any>()
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
 
@@ -47,14 +45,14 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
   }))
 
   return (
-    <View ref={navRef}>
+    <View>
       <Flex pl="2" pr="2">
         <SectionTitle
           title="Auctions"
           subtitle="Bid online in live and timed auctions"
           onPress={() => {
             tracking.trackEvent(HomeAnalytics.auctionHeaderTapEvent())
-            SwitchBoard.presentNavigationViewController(navRef.current, "/auctions")
+            navigate("/auctions")
           }}
         />
       </Flex>
@@ -79,10 +77,10 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
               key={result?.href! /* STRICTNESS_MIGRATION */}
               onPress={() => {
                 tracking.trackEvent(HomeAnalytics.auctionThumbnailTapEvent(result?.internalID, result?.slug, index))
-                Switchboard.presentNavigationViewController(
-                  navRef.current,
-                  result?.liveURLIfOpen! /* STRICTNESS_MIGRATION */ || result?.href! /* STRICTNESS_MIGRATION */
-                )
+                const url = result?.liveURLIfOpen ?? result?.href
+                if (url) {
+                  navigate(url)
+                }
               }}
             >
               <View>

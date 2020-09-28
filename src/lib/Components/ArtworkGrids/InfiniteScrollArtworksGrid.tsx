@@ -10,7 +10,6 @@ import React from "react"
 import { Dimensions, LayoutChangeEvent, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, RelayPaginationProp } from "react-relay"
 
-import Spinner from "../Spinner"
 import Artwork from "./ArtworkGridItem"
 
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
@@ -20,6 +19,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
+import { hideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 import { Box, Button, space, Theme } from "palette"
 import { graphql } from "relay-runtime"
 
@@ -68,17 +68,26 @@ export interface Props {
 
   /** An array of child indices determining which children get docked to the top of the screen when scrolling.  */
   stickyHeaderIndices?: number[]
+
+  // Hide urgency tags (3 Days left, 1 hour left)
+  hideUrgencyTags?: boolean
+
+  /** Show Lot Label  */
+  showLotLabel?: boolean
+
+  /** Set as true to automatically manage the back button visibility as the user scrolls */
+  hideBackButtonOnScroll?: boolean
 }
 
 interface PrivateProps {
   connection: InfiniteScrollArtworksGrid_connection
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]
-  isLoading: RelayPaginationProp["isLoading"]
 }
 
 interface State {
   sectionDimension: number
+  isLoading: boolean
 }
 
 class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, State> {
@@ -94,20 +103,27 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   state = {
     sectionDimension: 0,
+    isLoading: false,
   }
 
   fetchNextPage = () => {
-    if (!this.props.hasMore() || this.props.isLoading()) {
+    if (!this.props.hasMore() || this.state.isLoading) {
       return
     }
 
+    this.setState({ isLoading: true })
+
     this.props.loadMore(this.props.pageSize!, (error) => {
+      this.setState({ isLoading: false })
       if (error) {
         // FIXME: Handle error
         console.error("InfiniteScrollGrid.tsx", error.message)
       }
     })
   }
+
+  // tslint:disable-next-line:member-ordering
+  handleFetchNextPageOnScroll = isCloseToBottom(this.fetchNextPage)
 
   /** A simplified version of the Relay debugging logs for infinite scrolls */
   debugLog(query: string, response?: any, error?: any) {
@@ -203,6 +219,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             contextScreenOwnerSlug={this.props.contextScreenOwnerSlug}
             artwork={artwork}
             key={"artwork-" + j + "-" + artwork.id}
+            hideUrgencyTags={this.props.hideUrgencyTags}
+            showLotLabel={this.props.showLotLabel}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
@@ -239,13 +257,20 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
-    const { shouldAddPadding, autoFetch, hasMore, isLoading, stickyHeaderIndices } = this.props
+    const { shouldAddPadding, autoFetch, hasMore, stickyHeaderIndices } = this.props
     const boxPadding = shouldAddPadding ? 2 : 0
 
     return (
       <Theme>
         <ScrollView
-          onScroll={autoFetch ? isCloseToBottom(this.fetchNextPage) : () => null}
+          onScroll={(ev) => {
+            if (this.props.hideBackButtonOnScroll) {
+              hideBackButtonOnScroll(ev)
+            }
+            if (autoFetch) {
+              this.handleFetchNextPageOnScroll(ev)
+            }
+          }}
           scrollEventThrottle={50}
           onLayout={this.onLayout}
           scrollsToTop={false}
@@ -260,15 +285,17 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
           </Box>
 
           {!autoFetch && !!hasMore() && (
-            <Button mt={5} mb={3} variant="secondaryGray" size="large" block onPress={this.fetchNextPage}>
+            <Button
+              mt={5}
+              mb={3}
+              variant="secondaryGray"
+              size="large"
+              block
+              onPress={this.fetchNextPage}
+              loading={this.state.isLoading}
+            >
               Show more
             </Button>
-          )}
-
-          {!!isLoading() && (
-            <Box my={2}>
-              <Spinner />
-            </Box>
           )}
         </ScrollView>
       </Theme>

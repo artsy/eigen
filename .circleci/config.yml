@@ -43,7 +43,8 @@ commands:
             scripts/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
             scripts/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__tests__|__mocks__|__fixtures__))'
             scripts/generate-manifest.js .manifests/js_test_results '^\.manifests/js_transform' '^data/' '^src/'
-            scripts/generate-manifest.js .manifests/cocoapods '^Podfile' '^Gemfile'
+            ls -lR emission > .manifests/emission_pod_file_list
+            scripts/generate-manifest.js .manifests/cocoapods '^Podfile' '^Gemfile' '^\.manifests/emission_pod_file_list'
   setup-env-file:
     steps:
       - run:
@@ -53,12 +54,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v2-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+            - v4-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
       - run:
           name: Install node modules
           command: ls node_modules || yarn install
       - save_cache:
-          key: v2-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+          key: v4-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
   generate-query-map:
@@ -116,7 +117,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v1-gems-{{ checksum "Gemfile.lock" }}
+            - v2-gems-{{ checksum "Gemfile.lock" }}
       - run:
           name: Bundle install
           command: bundle check || bundle install
@@ -124,22 +125,22 @@ commands:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
       - save_cache:
-          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          key: v2-gems-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
   install-cocoapods:
     steps:
       - restore_cache:
           keys:
-            - v5-pods-{{ checksum ".manifests/cocoapods" }}
+            - v8-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: bundle exec pod check --ignore-dev-pods || bundle exec pod install
       - run:
           name: Update echo
-          command: ls Artsy/App/Echo.json || make update_echo
+          command: ls Artsy/App/EchoNew.json || make update_echo
       - save_cache:
-          key: v5-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v8-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - Pods
             # this changes after pod install because we don't instal dev tools on CI
@@ -149,12 +150,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v6-app_build-{{ checksum ".manifests/app_build" }}
+            - v8-app_build-{{ checksum ".manifests/app_build" }}
       - run:
           name: Build App
           command: ls derived_data || make ci
       - save_cache:
-          key: v6-app_build-{{ checksum ".manifests/app_build" }}
+          key: v8-app_build-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -227,8 +228,7 @@ jobs:
       - bundle-js
       - run:
           name: Generate app_build manifest
-          command:
-            ./scripts/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^emission/Pod/Assets/'
+          command: ./scripts/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^emission/Pod/Assets/'
       - store_artifacts:
           path: .manifests
       - persist_to_workspace:
@@ -250,7 +250,7 @@ jobs:
           at: ../workspace
       - restore_cache:
           keys:
-            - v4-test-success-{{ checksum "../workspace/.manifests/native_code" }}
+            - v5-test-success-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
       # and we're not on the beta branch
       - run:
@@ -282,7 +282,7 @@ jobs:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || make ci-test
       - save_cache:
-          key: v4-test-success-{{ checksum ".manifests/native_code" }}
+          key: v5-test-success-{{ checksum ".manifests/native_code" }}
           paths:
             - xcode_test_raw.log
 

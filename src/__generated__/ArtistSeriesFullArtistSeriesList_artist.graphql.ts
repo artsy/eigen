@@ -39,8 +39,14 @@ const node: ReaderFragment = {
       "kind": "LinkedField",
       "alias": null,
       "name": "artistSeriesConnection",
-      "storageKey": null,
-      "args": null,
+      "storageKey": "artistSeriesConnection(first:50)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 50
+        }
+      ],
       "concreteType": "ArtistSeriesConnection",
       "plural": false,
       "selections": [
@@ -123,5 +129,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '18f2747a77bb6e07a33aa8eaa01fe26e';
+(node as any).hash = '005fd788fe343d46f5bebb5663ae6ac2';
 export default node;

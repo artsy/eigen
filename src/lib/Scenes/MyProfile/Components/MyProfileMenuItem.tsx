@@ -1,33 +1,29 @@
-import { ChevronIcon, color, Flex, Sans } from "palette"
+import { ChevronIcon, color, Flex, Sans, SansProps, Touchable } from "palette"
 import React from "react"
-import { TouchableHighlight } from "react-native"
 
 export const MyProfileMenuItem: React.FC<{
   title: React.ReactNode
   value?: React.ReactNode
   onPress?: () => void
   chevron?: React.ReactNode
-}> = ({ title, value, onPress, chevron = <ChevronIcon direction="right" fill="black60" /> }) => {
+  ellipsizeMode?: SansProps["ellipsizeMode"]
+}> = ({ title, value, onPress, chevron = <ChevronIcon direction="right" fill="black60" />, ellipsizeMode }) => {
   return (
-    <TouchableHighlight onPress={onPress} underlayColor={color("black5")}>
-      <Flex flexDirection="row" alignItems="center" py={7.5} px="2" pr="15px">
-        <Flex flexGrow={1}>
+    <Touchable onPress={onPress} underlayColor={color("black5")}>
+      <Flex flexDirection="row" alignItems="center" justifyContent="space-between" py={7.5} px="2" pr="15px">
+        <Flex mr="2">
           <Sans size="4">{title}</Sans>
         </Flex>
 
         {!!value && (
-          <Flex flexGrow={0}>
-            <Sans size="4" color="black60">
+          <Flex flex={1}>
+            <Sans size="4" color="black60" numberOfLines={1} ellipsizeMode={ellipsizeMode} textAlign="right">
               {value}
             </Sans>
           </Flex>
         )}
-        {!!(onPress && chevron) && (
-          <Flex ml="1" flexGrow={0}>
-            {chevron}
-          </Flex>
-        )}
+        {!!(onPress && chevron) && <Flex ml="1">{chevron}</Flex>}
       </Flex>
-    </TouchableHighlight>
+    </Touchable>
   )
 }

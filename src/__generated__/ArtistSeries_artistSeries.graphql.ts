@@ -8,6 +8,9 @@ export type ArtistSeries_artistSeries = {
     readonly slug: string;
     readonly artistIDs: ReadonlyArray<string>;
     readonly artist: ReadonlyArray<{
+        readonly artistSeriesConnection: {
+            readonly totalCount: number;
+        } | null;
         readonly " $fragmentRefs": FragmentRefs<"ArtistSeriesMoreSeries_artist">;
     } | null> | null;
     readonly " $fragmentRefs": FragmentRefs<"ArtistSeriesHeader_artistSeries" | "ArtistSeriesMeta_artistSeries" | "ArtistSeriesArtworks_artistSeries">;
@@ -65,6 +68,30 @@ const node: ReaderFragment = {
       "plural": true,
       "selections": [
         {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "artistSeriesConnection",
+          "storageKey": "artistSeriesConnection(first:4)",
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "first",
+              "value": 4
+            }
+          ],
+          "concreteType": "ArtistSeriesConnection",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "totalCount",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
+        {
           "kind": "FragmentSpread",
           "name": "ArtistSeriesMoreSeries_artist",
           "args": null
@@ -88,5 +115,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'f7520ea6af7709f9d9c353454d7f7749';
+(node as any).hash = 'a4b3a5706086f1d6fd73bbe788d2e0e9';
 export default node;

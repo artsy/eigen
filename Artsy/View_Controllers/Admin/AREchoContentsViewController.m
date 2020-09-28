@@ -2,7 +2,7 @@
 
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
-#import "ARSwitchBoard.h"
+#import "ARAppDelegate+Echo.h"
 
 
 enum : NSUInteger {
@@ -41,7 +41,7 @@ static NSString *CellIdentifier = @"Cell";
 {
     [super viewDidLoad];
 
-    self.echo = [[ARSwitchBoard sharedInstance] echo];
+    self.echo = [[ARAppDelegate sharedInstance] echo];
     self.messages = self.echo.messages.allValues;
     self.routeKeys = self.echo.routes.allKeys;
     self.featureKeys = self.echo.features.allKeys;

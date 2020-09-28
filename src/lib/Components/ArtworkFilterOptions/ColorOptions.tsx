@@ -75,7 +75,7 @@ const INTER_ITEM_SPACE = isPad() ? 40 : 20
 const SIDE_MARGIN = isPad() ? 32 : 16
 const FLEX_MARGIN = SIDE_MARGIN - INTER_ITEM_SPACE / 2
 
-export const ColorOptionsScreen: React.SFC<ColorOptionsScreenProps> = ({ navigator }) => {
+export const ColorOptionsScreen: React.FC<ColorOptionsScreenProps> = ({ navigator }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const [itemSize, setItemSize] = useState(0)
 

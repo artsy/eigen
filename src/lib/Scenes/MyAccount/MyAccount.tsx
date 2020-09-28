@@ -27,6 +27,7 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
         <MyProfileMenuItem
           title="Email"
           value={me.email}
+          ellipsizeMode="middle"
           onPress={() => {
             SwitchBoard.presentNavigationViewController(navRef.current!, "my-account/edit-email")
           }}
@@ -67,7 +68,7 @@ const MyAccountPlaceholder: React.FC<{}> = ({}) => {
   )
 }
 
-const MyAccountContainer = createFragmentContainer(MyAccount, {
+export const MyAccountContainer = createFragmentContainer(MyAccount, {
   me: graphql`
     fragment MyAccount_me on Me {
       name

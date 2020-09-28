@@ -1,5 +1,6 @@
 import React, { ReactNode, useState } from "react"
 import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
+import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
@@ -28,6 +29,15 @@ export interface ButtonProps extends ButtonBaseProps {
   variant?: ButtonVariant
   /** React Native only, Callback on press, use instead of onClick */
   onPress?: (event: GestureResponderEvent) => void
+
+  /**
+   * `haptic` can be used like:
+   * <Button haptic />
+   * or
+   * <Button haptic="impactHeavy" />
+   * to add haptic feedback on the button.
+   */
+  haptic?: HapticFeedbackTypes | true
 }
 
 export interface ButtonBaseProps extends BoxProps {
@@ -181,23 +191,28 @@ export const Button: React.FC<ButtonProps> = (props) => {
   })()
 
   const onPress = (event: GestureResponderEvent) => {
-    if (props.onPress) {
-      // Did someone tap really fast? Flick the highlighted state
-
-      if (current === DisplayState.Enabled) {
-        setPrevious(current)
-        setCurrent(DisplayState.Highlighted)
-        setTimeout(() => {
-          setPrevious(current)
-          setCurrent(DisplayState.Enabled)
-        }, 0.3)
-      } else {
-        // Was already selected
-        setCurrent(DisplayState.Enabled)
-      }
-
-      props.onPress(event)
+    if (props.onPress === undefined) {
+      return
     }
+
+    // Did someone tap really fast? Flick the highlighted state
+    if (current === DisplayState.Enabled) {
+      setPrevious(current)
+      setCurrent(DisplayState.Highlighted)
+      setTimeout(() => {
+        setPrevious(current)
+        setCurrent(DisplayState.Enabled)
+      }, 0.3)
+    } else {
+      // Was already selected
+      setCurrent(DisplayState.Enabled)
+    }
+
+    if (props.haptic !== undefined) {
+      Haptic.trigger(props.haptic === true ? "impactLight" : props.haptic)
+    }
+
+    props.onPress(event)
   }
 
   const { children, loading, disabled, inline, longestText, ...rest } = props

@@ -3,7 +3,7 @@
 #import <React/RCTBridgeModule.h>
 #import "ARNotificationsManager.h"
 
-@class AREventsModule, ARSwitchBoardModule, ARTemporaryAPIModule, ARRefineOptionsModule, ARTakeCameraPhotoModule, RCTBridge, ARGraphQLQueryPreloader, ARGraphQLQueryCache;
+@class AREventsModule, ARTemporaryAPIModule, ARRefineOptionsModule, ARTakeCameraPhotoModule, RCTBridge, ARGraphQLQueryPreloader, ARGraphQLQueryCache;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,7 +15,6 @@ extern NSString *const AREnvTest;
 
 @property (nonatomic, strong, readonly) RCTBridge *bridge;
 @property (nonatomic, strong, readonly) AREventsModule *eventsModule;
-@property (nonatomic, strong, readonly) ARSwitchBoardModule *switchBoardModule;
 @property (nonatomic, strong, readonly) ARTemporaryAPIModule *APIModule;
 @property (nonatomic, strong, readonly) ARRefineOptionsModule *refineModule;
 @property (nonatomic, strong, readonly) ARTakeCameraPhotoModule *cameraModule;
@@ -31,6 +30,9 @@ extern NSString *const AREnvTest;
 
 - (void)updateState:(NSDictionary *)state;
 - (NSString *)stateStringForKey:(NSString *)stateKey;
+- (void)navigate:(NSString *)route;
+
+- (NSURL *)liveAuctionsURL;
 
 - (instancetype)init NS_UNAVAILABLE;
 

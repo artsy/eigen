@@ -31,7 +31,8 @@ const defaultLotStanding = {
       },
     },
     sale: {
-      displayTimelyAt: "Closed on 7/15/20",
+      endAt: "2020-08-05T15:00:00+00:00",
+      status: "closed",
     },
   },
 }
@@ -71,6 +72,13 @@ describe(ClosedLot, () => {
           <ClosedLot lotStanding={lotStandingFixture({ isHighestBidder: true, lotState: { soldStatus: "Sold" } })} />
         ).root.findAllByType(StarCircleFill).length
       ).toBe(1)
+    })
+  })
+
+  describe("closing time", () => {
+    it("renders the time the sale ended by default", () => {
+      const tree = renderWithWrappers(<ClosedLot lotStanding={lotStandingFixture()} />)
+      expect(extractText(tree.root)).toContain("Closed Aug 5")
     })
   })
 })

@@ -1,7 +1,6 @@
 #import "ARLogger.h"
 #import "ARTextView.h"
 
-#import "ARSwitchBoard+Eigen.h"
 #import "ARDispatchManager.h"
 #import "Artsy-Swift.h"
 
@@ -156,15 +155,18 @@
 
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange interaction:(UITextItemInteraction)interaction
 {
-    UIViewController *viewController = nil;
+    ARInternalMobileWebViewController *webVC = nil;
+
     if ([URL.scheme isEqualToString:@"applewebdata"]) {
-        viewController = [ARSwitchBoard.sharedInstance loadPath:URL.path];
+        // TODO: Move url host fixing to typescript
+        NSURL *updatedURL = [ARRouter resolveRelativeUrl:URL.path];
+        webVC = [[ARInternalMobileWebViewController alloc] initWithURL:updatedURL];
     } else {
-        viewController = [ARSwitchBoard.sharedInstance loadURL:URL];
+        webVC = [[ARInternalMobileWebViewController alloc] initWithURL:URL];
     }
 
-    if (viewController) {
-        [self.viewControllerDelegate textView:self shouldOpenViewController:viewController];
+    if (webVC) {
+        [self.viewControllerDelegate textView:self shouldOpenViewController:webVC];
     }
 
     return NO;

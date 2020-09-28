@@ -92,6 +92,7 @@ export const AddEditArtwork: React.FC = () => {
 
         {modalType === "edit" && (
           <Button
+            mt={2}
             variant="secondaryGray"
             block
             onPress={() =>

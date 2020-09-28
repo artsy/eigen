@@ -1,10 +1,7 @@
 import { VanityURLEntity_fairOrPartner } from "__generated__/VanityURLEntity_fairOrPartner.graphql"
 import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
-import InternalWebView from "lib/Components/InternalWebView"
-import { RelativeURLWebView } from "lib/Components/WebView/RelativeURLWebView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { useEmissionOption } from "lib/store/AppStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Spinner } from "palette"
@@ -13,6 +10,7 @@ import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { FairContainer, FairPlaceholder, FairQueryRenderer } from "../Fair/Fair"
 import { PartnerContainer } from "../Partner"
+import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
 interface EntityProps {
   originalSlug: string
@@ -20,7 +18,6 @@ interface EntityProps {
 }
 
 const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug }) => {
-  const useReactNativeWebView = useEmissionOption("AROptionsUseReactNativeWebView")
   if (fairOrPartner.__typename === "Fair") {
     return <FairContainer fair={fairOrPartner} />
   } else if (fairOrPartner.__typename === "Partner") {
@@ -31,11 +28,7 @@ const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug })
       </View>
     )
   } else {
-    if (useReactNativeWebView) {
-      return <RelativeURLWebView route={originalSlug} />
-    } else {
-      return <InternalWebView route={originalSlug} />
-    }
+    return <VanityURLPossibleRedirect slug={originalSlug} />
   }
 }
 
@@ -59,12 +52,11 @@ interface RendererProps {
   slug: string
 }
 
-export const VanityURLEntityRenderer: React.SFC<RendererProps> = ({ entity, slugType, slug }) => {
+export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugType, slug }) => {
   if (slugType === "fairID") {
     return <FairQueryRenderer fairID={slug} />
   } else {
     const { safeAreaInsets } = useScreenDimensions()
-    const useReactNativeWebView = useEmissionOption("AROptionsUseReactNativeWebView")
     return (
       <QueryRenderer<VanityURLEntityQuery>
         environment={defaultEnvironment}
@@ -87,7 +79,7 @@ export const VanityURLEntityRenderer: React.SFC<RendererProps> = ({ entity, slug
                     <HeaderTabsGridPlaceholder />
                   </View>
                 )
-              case "unknown":
+              default:
                 return (
                   <Flex style={{ flex: 1 }} flexDirection="row" alignItems="center" justifyContent="center">
                     <Spinner />
@@ -99,11 +91,7 @@ export const VanityURLEntityRenderer: React.SFC<RendererProps> = ({ entity, slug
             if (props.vanityURLEntity) {
               return <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} originalSlug={slug} />
             } else {
-              if (useReactNativeWebView) {
-                return <RelativeURLWebView route={slug} />
-              } else {
-                return <InternalWebView route={slug} />
-              }
+              return <VanityURLPossibleRedirect slug={slug} />
             }
           },
         })}

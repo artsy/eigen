@@ -207,7 +207,7 @@ export const ConversationFragmentContainer = createFragmentContainer(Conversatio
   `,
 })
 
-export const ConversationQueryRenderer: React.SFC<{
+export const ConversationQueryRenderer: React.FC<{
   conversationID: string
 }> = ({ conversationID }) => {
   return (

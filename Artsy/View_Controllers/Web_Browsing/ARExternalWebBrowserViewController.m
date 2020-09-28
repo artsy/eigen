@@ -1,7 +1,5 @@
 #import "ARExternalWebBrowserViewController.h"
 #import "ARWebViewCacheHost.h"
-#import "ARSwitchBoard.h"
-#import "ARSwitchBoard+Eigen.h"
 #import "ARLogger.h"
 #import "ARExternalWebBrowserViewController.h"
 
@@ -15,7 +13,11 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import "ARDispatchManager.h"
 
+#import "ARTopMenuViewController.h"
+
 #import <CoreServices/CoreServices.h>
+
+#import <Emission/AREmission.h>
 
 @interface ARExternalWebBrowserViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate, WKUIDelegate>
 @property (nonatomic, readonly, strong) UIGestureRecognizer *gesture;
@@ -156,19 +158,14 @@
 
 #pragma mark WKWebViewDelegate
 
+/**
+ * See https://stackoverflow.com/questions/25713069/why-is-wkwebview-not-opening-links-with-target-blank/25853806#25853806 for details.
+ */
 - (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
 {
   if (!navigationAction.targetFrame.isMainFrame) {
-    NSURL *URL = navigationAction.request.URL;
-    ARSwitchBoard *switchboard = ARSwitchBoard.sharedInstance;
-    if ([switchboard canRouteURL:URL]) {
-      UIViewController *controller = [switchboard loadURL:URL];
-      if (controller) {
-        [self.navigationController pushViewController:controller animated:YES];
-      }
-    }
+    [AREmission.sharedInstance navigate:navigationAction.request.URL.absoluteString];
   }
-
   return nil;
 }
 
@@ -179,17 +176,23 @@
 
 - (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
 {
-    if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
-        NSURL *URL = navigationAction.request.URL;
-        ARSwitchBoard *switchboard = ARSwitchBoard.sharedInstance;
-        if ([switchboard canRouteURL:URL]) {
-            UIViewController *controller = [switchboard loadURL:URL];
-            if (controller) {
-                [switchboard presentViewController:controller];
-            }
-            return WKNavigationActionPolicyCancel;
-        }
-    }
+    // TODO: this is broken by the new force app shell anyway so I'm just commenting it out for now
+    // This method was used to intercept navigation requests and, in cases where we can show a native view, it would show that view by pushing
+    // it onto the current nav stack.
+    // Now that our code to decide whether to show a native view lives in TypeScript, we can't do that here.
+    // In the future we should either migrate to a react-native web view and figure it out there, or do some best-effort
+    // synchronous logic here. e.g. by handling well-known cases like Artwork, artist, etc.
+//    if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
+//        NSURL *URL = navigationAction.request.URL;
+//        ARSwitchBoard *switchboard = ARSwitchBoard.sharedInstance;
+//        if ([switchboard canRouteURL:URL]) {
+//            UIViewController *controller = [switchboard loadURL:URL];
+//            if (controller) {
+//                [switchboard presentViewController:controller];
+//            }
+//            return WKNavigationActionPolicyCancel;
+//        }
+//    }
     return WKNavigationActionPolicyAllow;
 }
 
@@ -203,8 +206,7 @@
     if ([navigationResponse.response isKindOfClass:NSHTTPURLResponse.class]) {
         NSHTTPURLResponse *response = (id)navigationResponse.response;
         if (![navigationResponse canShowMIMEType]) {
-            ARSwitchBoard *switchboard = ARSwitchBoard.sharedInstance;
-            [switchboard openURLInExternalService:response.URL];
+            [self openURLInExternalService:response.URL];
 
             // Go back to whatever page you're on, because otherwise you just have a white screen
             ar_dispatch_after(0.5, ^{
@@ -216,6 +218,29 @@
     }
 
     return WKNavigationResponsePolicyAllow;
+}
+
+- (void)openURLInExternalService:(NSURL *)url
+{
+    BOOL isWebsite = [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"];
+    NSString *title = isWebsite ? @"Open in Safari" : @"Open with other App";
+    NSString *messsage = [NSString stringWithFormat:@"Would you like to visit '%@'?", url.absoluteString];
+    messsage = [messsage stringByReplacingOccurrencesOfString:@"www." withString:@""];
+    messsage = [messsage stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+    messsage = [messsage stringByReplacingOccurrencesOfString:@"https://" withString:@""];
+
+    ARTopMenuViewController *presentationVC = [ARTopMenuViewController sharedController];
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:title message:messsage preferredStyle:UIAlertControllerStyleAlert];
+
+    [controller addAction:[UIAlertAction actionWithTitle:@"Open" style:UIAlertActionStyleDefault handler:^(UIAlertAction *_Nonnull action) {
+        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
+    }]];
+
+    [controller addAction:[UIAlertAction actionWithTitle:@"Go back to Artsy" style:UIAlertActionStyleCancel handler:^(UIAlertAction *_Nonnull action) {
+        [presentationVC dismissViewControllerAnimated:YES completion:nil];
+    }]];
+
+    [presentationVC presentViewController:controller animated:YES completion:nil];
 }
 
 - (BOOL)shouldAutorotate

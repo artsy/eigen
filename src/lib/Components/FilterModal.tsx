@@ -44,7 +44,7 @@ interface FilterModalProps extends ViewProperties {
   mode: FilterModalMode
 }
 
-export const FilterModalNavigator: React.SFC<FilterModalProps> = (props) => {
+export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
   const tracking = useTracking()
 
   const { closeModal, exitModal, isFilterArtworksModalVisible, id, slug, mode } = props
@@ -151,12 +151,13 @@ type FilterScreen =
 export interface FilterDisplayConfig {
   filterType: FilterScreen
   displayText: string
-  ScreenComponent: React.SFC<any>
+  ScreenComponent: React.FC<any>
 }
 
 export enum FilterModalMode {
   Collection = "Collection",
   ArtistArtworks = "ArtistArtworks",
+  ArtistSeries = "ArtistSeries",
 }
 
 interface FilterOptionsProps {
@@ -167,7 +168,7 @@ interface FilterOptionsProps {
   mode: FilterModalMode
 }
 
-export const FilterOptions: React.SFC<FilterOptionsProps> = (props) => {
+export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
   const tracking = useTracking()
   const { closeModal, navigator, id, slug, mode } = props
 
@@ -221,6 +222,19 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = (props) => {
           "dimensionRange",
           "majorPeriods",
           "color",
+        ]
+        break
+      case "ArtistSeries":
+        sortOrder = [
+          "sort",
+          "medium",
+          "priceRange",
+          "waysToBuy",
+          "dimensionRange",
+          "majorPeriods",
+          "color",
+          "gallery",
+          "institution",
         ]
         break
     }
@@ -303,6 +317,9 @@ export const FilterOptions: React.SFC<FilterOptionsProps> = (props) => {
                 break
               case "ArtistArtworks":
                 trackClear(PageNames.ArtistPage, OwnerEntityTypes.Artist)
+                break
+              case "ArtistSeries":
+                trackClear(PageNames.ArtistSeriesPage, OwnerEntityTypes.ArtistSeries)
                 break
             }
 

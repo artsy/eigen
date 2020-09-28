@@ -1,17 +1,15 @@
 import {
-  MyCollectionArtworkDetailMarketInsightsQuery,
-  MyCollectionArtworkDetailMarketInsightsQueryResponse,
-} from "__generated__/MyCollectionArtworkDetailMarketInsightsQuery.graphql"
-import {
   MyCollectionArtworkDetailQuery,
   MyCollectionArtworkDetailQueryResponse,
 } from "__generated__/MyCollectionArtworkDetailQuery.graphql"
+import { Divider } from "lib/Components/Bidding/Components/Divider"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { AppStore } from "lib/store/AppStore"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Button, Join, Separator, Spacer } from "palette"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { Button, Flex, Join, Spacer } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -22,7 +20,7 @@ import { WhySell } from "./Components/WhySell"
 
 export interface MyCollectionArtworkDetailProps {
   artwork: NonNullable<MyCollectionArtworkDetailQueryResponse["artwork"]>
-  marketPriceInsights: NonNullable<MyCollectionArtworkDetailMarketInsightsQueryResponse["marketPriceInsights"]>
+  marketPriceInsights: NonNullable<MyCollectionArtworkDetailQueryResponse["marketPriceInsights"]>
 }
 
 const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ artwork, marketPriceInsights }) => {
@@ -32,7 +30,7 @@ const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ a
   return (
     <ScrollView>
       <FancyModalHeader
-        leftButtonText=""
+        onLeftButtonPress={() => navActions.goBack()}
         rightButtonText="Edit"
         onRightButtonPress={() => {
           artworkActions.startEditingArtwork(artwork as any) // FIXME: remove `any` type
@@ -42,19 +40,17 @@ const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ a
       <Join separator={<Spacer my={1} />}>
         <ArtworkHeader artwork={artwork} />
         <ArtworkMeta artwork={artwork} />
-        <Separator />
         <ArtworkInsights artwork={artwork} marketPriceInsights={marketPriceInsights} />
-        <Separator />
         <WhySell />
 
         <ScreenMargin>
-          <Button size="large" block onPress={() => navActions.navigateToConsign()}>
+          <Button size="large" block onPress={() => navActions.navigateToConsignSubmission()}>
             Submit this work
           </Button>
 
           <Spacer my={0.5} />
 
-          <Button size="large" variant="secondaryGray" block>
+          <Button size="large" variant="secondaryGray" block onPress={() => navActions.navigateToConsignLearnMore()}>
             Learn more
           </Button>
         </ScreenMargin>
@@ -65,50 +61,129 @@ const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ a
   )
 }
 
-export const MyCollectionArtworkDetailQueryRenderer: React.FC<{ artworkID: string }> = ({ artworkID }) => {
+/**
+ * The following shared artwork fields are needed for initializing the edit
+ * artwork view.
+ *
+ * When adding new fields this fragment needs to be updated.
+ */
+export const ArtworkMetaProps = graphql`
+  fragment MyCollectionArtworkDetail_sharedProps on Artwork {
+    artist {
+      internalID
+    }
+    artistNames
+    category
+    costMinor
+    costCurrencyCode
+    date
+    depth
+    height
+    id
+    image {
+      url
+    }
+    internalID
+    medium
+    metric
+    slug
+    title
+    width
+  }
+`
+
+export const MyCollectionArtworkDetailQueryRenderer: React.FC<{
+  artworkSlug: string
+  artistInternalID: string
+  medium: string
+}> = ({ artworkSlug, artistInternalID, medium }) => {
   return (
     <QueryRenderer<MyCollectionArtworkDetailQuery>
       environment={defaultEnvironment}
-      // TODO: Need to add <Skeleton> stuff
-      // First fetch the artwork query to get props needed to fetch second query
       query={graphql`
-        query MyCollectionArtworkDetailQuery($artworkID: String!) {
-          artwork(id: $artworkID) {
-            artist {
-              internalID
-            }
-            medium
-
+        query MyCollectionArtworkDetailQuery($artworkSlug: String!, $artistInternalID: ID!, $medium: String!) {
+          artwork(id: $artworkSlug) {
+            ...MyCollectionArtworkDetail_sharedProps @relay(mask: false)
             ...MyCollectionArtworkHeader_artwork
             ...MyCollectionArtworkMeta_artwork
             ...MyCollectionArtworkInsights_artwork
           }
+
+          marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
+            ...MyCollectionArtworkInsights_marketPriceInsights
+          }
         }
       `}
       variables={{
-        artworkID,
+        artworkSlug,
+        artistInternalID,
+        medium,
       }}
-      // Then fetch market insights using results from artwork query as input variables
-      render={renderWithLoadProgress((props: MyCollectionArtworkDetailQueryResponse) => {
-        return (
-          <QueryRenderer<MyCollectionArtworkDetailMarketInsightsQuery>
-            environment={defaultEnvironment}
-            query={graphql`
-              query MyCollectionArtworkDetailMarketInsightsQuery($artistID: ID!, $medium: String!) {
-                marketPriceInsights(artistId: $artistID, medium: $medium) {
-                  ...MyCollectionArtworkInsights_marketPriceInsights
-                }
-              }
-            `}
-            variables={{
-              artistID: props!.artwork!.artist!.internalID!,
-              medium: props!.artwork!.medium!,
-            }}
-            // TODO: Need to add <Skeleton> stuff
-            render={renderWithLoadProgress(MyCollectionArtworkDetail, props)}
-          />
-        )
+      render={renderWithPlaceholder({
+        Container: MyCollectionArtworkDetail,
+        renderPlaceholder: LoadingSkeleton,
       })}
     />
+  )
+}
+
+const LoadingSkeleton = () => {
+  return (
+    <>
+      <ScreenMargin>
+        <Spacer mb={6} />
+
+        {/* Artist Name */}
+        <PlaceholderBox width={300} height={30} />
+        <Spacer mb={1} />
+
+        {/* Artwork title, year */}
+        <PlaceholderText width={100} />
+        <Spacer mb={1} />
+      </ScreenMargin>
+
+      {/* Main image */}
+      <PlaceholderBox width="100%" height={300} />
+      <Spacer mb={3} />
+
+      {/* Metadata stats  */}
+      <ScreenMargin>
+        <Flex flexDirection="column">
+          <Join separator={<Spacer mb={1} />}>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+              <PlaceholderBox width={50} height={20} />
+              <PlaceholderBox width={80} height={20} />
+            </Flex>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+              <PlaceholderBox width={30} height={20} />
+              <PlaceholderBox width={100} height={20} />
+            </Flex>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+              <PlaceholderBox width={10} height={20} />
+              <PlaceholderBox width={40} height={20} />
+            </Flex>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+              <PlaceholderBox width={30} height={20} />
+              <PlaceholderBox width={70} height={20} />
+            </Flex>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+              <PlaceholderBox width={50} height={20} />
+              <PlaceholderBox width={80} height={20} />
+            </Flex>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center" pt={1}>
+              <PlaceholderText width={50} />
+            </Flex>
+          </Join>
+        </Flex>
+
+        {/* Price / Market insight info */}
+        <Spacer mb={3} />
+        <Divider />
+        <Spacer mb={2} />
+        <PlaceholderBox width={100} height={30} />
+        <Spacer mb={1} />
+        <PlaceholderText width={30} />
+      </ScreenMargin>
+    </>
   )
 }

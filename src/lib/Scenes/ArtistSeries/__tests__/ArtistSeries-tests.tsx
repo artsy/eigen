@@ -100,6 +100,41 @@ describe("Artist Series Rail", () => {
       expect(wrapper.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(0)
     })
   })
+
+  describe("with an artist series artist without an artistSeriesConnection", () => {
+    it("does not render ArtistSeriesMoreSeries", () => {
+      const artistSeriesNoMoreSeries = {
+        artistSeries: {
+          ...ArtistSeriesFixture.artistSeries,
+          artist: [
+            {
+              id: "an-id",
+              internalID: "123456ASCFG",
+              artistSeriesConnection: {
+                totalCount: 0,
+                edges: [
+                  {
+                    node: {
+                      slug: "yayoi-kusama-other-fruits",
+                      internalID: "abc",
+                      title: "Other Fruits",
+                      featured: false,
+                      artworksCountMessage: "22 available",
+                      image: {
+                        url: "https://www.images.net/fruits",
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      } as ArtistSeriesTestsQueryRawResponse
+      const wrapper = getWrapper(artistSeriesNoMoreSeries)
+      expect(wrapper.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(0)
+    })
+  })
 })
 
 const ArtistSeriesFixture: ArtistSeriesTestsQueryRawResponse = {
@@ -153,6 +188,7 @@ const ArtistSeriesFixture: ArtistSeriesTestsQueryRawResponse = {
         startCursor: "ajdjabnz81",
         endCursor: "aknqa9d81",
       },
+      aggregations: null,
       id: null,
       counts: { total: 4 },
       edges: [
@@ -191,8 +227,9 @@ const ArtistSeriesNoArtistFixture: ArtistSeriesTestsQueryRawResponse = {
     },
     artistIDs: [],
     artists: [],
-    artist: [],
+    artist: null,
     artistSeriesArtworks: {
+      aggregations: null,
       pageInfo: {
         hasNextPage: false,
         startCursor: "ajdjabnz81",

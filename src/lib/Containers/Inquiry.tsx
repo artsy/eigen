@@ -24,7 +24,7 @@ const Container = styled.View`
 `
 const Header = styled.View`
   align-self: stretch;
-  margin-top: 10;
+  margin-top: 30;
   flex-direction: column;
   margin-bottom: 30;
 `
@@ -240,7 +240,7 @@ export const InquiryFragmentContainer = createFragmentContainer(Inquiry, {
   `,
 })
 
-export const InquiryQueryRenderer: React.SFC<{ artworkID: string }> = ({ artworkID }) => {
+export const InquiryQueryRenderer: React.FC<{ artworkID: string }> = ({ artworkID }) => {
   return (
     <QueryRenderer<InquiryQuery>
       environment={defaultEnvironment}

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash acda126156a416c0e70cd8f4e898593d */
+/* @relayHash 712d9f1d75aa2257493ce46d5231e313 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,20 +26,32 @@ query MyCollectionArtworkListQuery {
 }
 
 fragment MyCollectionArtworkListItem_artwork on Artwork {
-  id
-  internalID
-  slug
+  artist {
+    internalID
+    id
+  }
   artistNames
-  medium
-  title
+  category
+  costMinor
+  costCurrencyCode
+  date
+  depth
+  height
+  id
   image {
     url
   }
+  internalID
+  medium
+  metric
+  slug
+  title
+  width
 }
 
 fragment MyCollectionArtworkList_me on Me {
   id
-  artworks: myCollectionConnection(first: 20) {
+  myCollectionConnection(first: 20, sort: CREATED_AT_DESC) {
     pageInfo {
       hasNextPage
       endCursor
@@ -70,8 +82,20 @@ v1 = [
     "kind": "Literal",
     "name": "first",
     "value": 20
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "CREATED_AT_DESC"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -116,9 +140,9 @@ return {
           (v0/*: any*/),
           {
             "kind": "LinkedField",
-            "alias": "artworks",
+            "alias": null,
             "name": "myCollectionConnection",
-            "storageKey": "myCollectionConnection(first:20)",
+            "storageKey": "myCollectionConnection(first:20,sort:\"CREATED_AT_DESC\")",
             "args": (v1/*: any*/),
             "concreteType": "MyCollectionConnection",
             "plural": false,
@@ -175,11 +199,17 @@ return {
                         "storageKey": null
                       },
                       {
-                        "kind": "ScalarField",
+                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "internalID",
+                        "name": "artist",
+                        "storageKey": null,
                         "args": null,
-                        "storageKey": null
+                        "concreteType": "Artist",
+                        "plural": false,
+                        "selections": [
+                          (v2/*: any*/),
+                          (v0/*: any*/)
+                        ]
                       },
                       {
                         "kind": "ScalarField",
@@ -191,14 +221,42 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "medium",
+                        "name": "category",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "title",
+                        "name": "costMinor",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "costCurrencyCode",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "date",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "depth",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "height",
                         "args": null,
                         "storageKey": null
                       },
@@ -219,6 +277,35 @@ return {
                             "storageKey": null
                           }
                         ]
+                      },
+                      (v2/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "medium",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "metric",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "title",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "width",
+                        "args": null,
+                        "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
@@ -242,12 +329,12 @@ return {
           },
           {
             "kind": "LinkedHandle",
-            "alias": "artworks",
+            "alias": null,
             "name": "myCollectionConnection",
             "args": (v1/*: any*/),
             "handle": "connection",
-            "key": "MyCollectionArtworkList_artworks",
-            "filters": null
+            "key": "MyCollectionArtworkList_myCollectionConnection",
+            "filters": []
           }
         ]
       }
@@ -256,7 +343,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkListQuery",
-    "id": "92d0a93816087ed4a2fefe6b19a0bc57",
+    "id": "7ddc2daee72b7af5bd1945f9a331d4d3",
     "text": null,
     "metadata": {}
   }

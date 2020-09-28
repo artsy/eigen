@@ -24,6 +24,4 @@
 - (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure;
 
 - (NSURL *)squareImageURL;
-
-- (NSString *)publicURL;
 @end

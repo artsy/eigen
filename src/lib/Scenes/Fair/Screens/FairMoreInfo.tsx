@@ -2,6 +2,7 @@ import { FairMoreInfo_fair } from "__generated__/FairMoreInfo_fair.graphql"
 import { FairMoreInfoQuery } from "__generated__/FairMoreInfoQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { hideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { Box, Separator, Serif, Spacer, Theme } from "palette"
 import React from "react"
@@ -152,6 +153,8 @@ export class FairMoreInfo extends React.Component<Props, State> {
           ItemSeparatorComponent={this.renderItemSeparator}
           // @ts-ignore STRICTNESS_MIGRATION
           keyExtractor={(item, index) => item.type + String(index)}
+          onScroll={hideBackButtonOnScroll}
+          scrollEventThrottle={100}
         />
       </Theme>
     )
@@ -172,7 +175,7 @@ const FairMoreInfoFragmentContainer = createFragmentContainer(FairMoreInfo, {
   `,
 })
 
-export const FairMoreInfoQueryRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
+export const FairMoreInfoQueryRenderer: React.FC<{ fairID: string }> = ({ fairID }) => (
   <QueryRenderer<FairMoreInfoQuery>
     environment={defaultEnvironment}
     query={graphql`

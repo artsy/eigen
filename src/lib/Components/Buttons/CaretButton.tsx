@@ -9,7 +9,7 @@ interface Props {
   textColor?: string
 }
 
-export const CaretButton: React.SFC<Props> = ({ text, onPress, textColor }) => {
+export const CaretButton: React.FC<Props> = ({ text, onPress, textColor }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <Flex flexDirection="row" align-items="base-line">

@@ -145,6 +145,7 @@ function getNativeModules(): typeof NativeModules {
         metaphysicsURL: "metaphysicsURL",
         deviceId: "testDevice",
         predictionURL: "predictionURL",
+        webURL: "webURL",
         sentryDSN: "sentryDSN",
         stripePublishableKey: "stripePublishableKey",
         userID: "userID",
@@ -154,6 +155,8 @@ function getNativeModules(): typeof NativeModules {
           AROptionsEnableMyCollection: false,
           AROptionsLotConditionReport: false,
           AROptionsPriceTransparency: false,
+          AROptionsViewingRooms: false,
+          AROptionsNewSalePage: false,
           AREnableViewingRooms: false,
           AROptionsArtistSeries: false,
           ipad_vir: false,
@@ -165,6 +168,7 @@ function getNativeModules(): typeof NativeModules {
         },
       },
       postNotificationName: jest.fn(),
+      didFinishBootstrapping: jest.fn(),
     },
 
     ARTemporaryAPIModule: {
@@ -173,8 +177,6 @@ function getNativeModules(): typeof NativeModules {
       fetchNotificationPermissions: jest.fn(),
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
-      presentAugmentedRealityVIR: jest.fn(),
-      resolveRelativeURL: jest.fn(),
     },
 
     ARSwitchBoardModule: {
@@ -182,10 +184,44 @@ function getNativeModules(): typeof NativeModules {
       presentModalViewController: jest.fn(),
       presentMediaPreviewController: jest.fn(),
       presentArtworksSet: jest.fn(),
+      updateShouldHideBackButton: jest.fn(),
     },
     Emission: null as never,
+    ARScreenPresenterModule: {
+      presentMediaPreviewController: jest.fn(),
+      dismissModal: jest.fn(),
+      presentReactScreen: jest.fn(),
+      goBack: jest.fn(),
+      presentNativeScreen: jest.fn(),
+      switchTab: jest.fn(),
+      updateShouldHideBackButton: jest.fn(),
+      presentAugmentedRealityVIR: jest.fn(),
+      presentEmailComposer: jest.fn(),
+    },
   }
 }
+
+jest.mock("lib/navigation/navigate", () => ({
+  navigate: jest.fn(),
+  goBack: jest.fn(),
+  dismissModal: jest.fn(),
+}))
+jest.mock("lib/NativeModules/SwitchBoard", () => {
+  const fns = {
+    presentNavigationViewController: jest.fn(),
+    presentMediaPreviewController: jest.fn(),
+    presentModalViewController: jest.fn(),
+    presentPartnerViewController: jest.fn(),
+    presentFairViewController: jest.fn(),
+    dismissModalViewController: jest.fn(),
+    dismissNavigationViewController: jest.fn(),
+  }
+  return {
+    EntityType: { partner: "partner", fair: "fair" },
+    SlugType: { partner: "partner", fair: "fair" },
+    ...fns,
+  }
+})
 
 Object.assign(NativeModules, getNativeModules())
 

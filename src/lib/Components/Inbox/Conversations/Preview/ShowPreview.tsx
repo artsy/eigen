@@ -1,11 +1,9 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { TouchableHighlight } from "react-native"
-
 import { Schema, Track, track as _track } from "../../../../utils/track"
 
-import { color, Flex, Sans } from "palette"
+import { color, Flex, Sans, Touchable } from "palette"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import colors from "lib/data/colors"
@@ -64,7 +62,7 @@ export class ShowPreview extends React.Component<Props> {
     const show = this.props.show
     const name = show.fair ? show.fair.name : show.name
     return (
-      <TouchableHighlight
+      <Touchable
         underlayColor={colors["gray-light"]}
         onPress={() => this.attachmentSelected()}
         style={{ maxWidth: "66.67%" }}
@@ -92,7 +90,7 @@ export class ShowPreview extends React.Component<Props> {
             </Sans>
           </TextContainer>
         </Container>
-      </TouchableHighlight>
+      </Touchable>
     )
   }
 }

@@ -5,7 +5,7 @@ import React from "react"
 import { DurationProvider } from "../DurationProvider"
 
 describe("DurationProvider", () => {
-  const DurationConsumer: React.SFC<any> = jest.fn()
+  const DurationConsumer: React.FC<any> = jest.fn()
 
   beforeEach(() => {
     jest.useFakeTimers()

@@ -29,9 +29,7 @@ const defaultLotStanding = {
         url: "https://d2v80f5yrouhh2.cloudfront.net/zrtyPc3hnFNl-1yv80qS2w/medium.jpg",
       },
     },
-    sale: {
-      displayTimelyAt: "Closed on 7/15/20",
-    },
+    sale: {},
   },
 }
 
@@ -59,13 +57,17 @@ describe(ActiveLot, () => {
       expect(extractText(tree.root)).toContain("Highest bid")
     })
 
-    it("says 'outbid' if the user is outbid on the lot", () => {
+    it("says 'Highest bid' if the user is winning the lot but the reserveStatus is ReserveNotMet in a Live Auction", () => {
       const tree = renderWithWrappers(
         <ActiveLot
-          lotStanding={lotStandingFixture({ isHighestBidder: false, lotState: { reserveStatus: "ReserveMet" } })}
+          lotStanding={lotStandingFixture({
+            isHighestBidder: true,
+            lotState: { reserveStatus: "ReserveNotMet" },
+            saleArtwork: { sale: { liveStartAt: new Date().toJSON() } },
+          })}
         />
       )
-      expect(extractText(tree.root)).toContain("Outbid")
+      expect(extractText(tree.root)).toContain("Highest bid")
     })
 
     it("says 'Reserve not met' if the user is winning the lot, but the reserveStatus is ReserveNotMet", () => {
@@ -81,6 +83,15 @@ describe(ActiveLot, () => {
       const tree = renderWithWrappers(
         <ActiveLot
           lotStanding={lotStandingFixture({ isHighestBidder: false, lotState: { reserveStatus: "ReserveNotMet" } })}
+        />
+      )
+      expect(extractText(tree.root)).toContain("Outbid")
+    })
+
+    it("says 'outbid' if the user is outbid on the lot and reserve is met", () => {
+      const tree = renderWithWrappers(
+        <ActiveLot
+          lotStanding={lotStandingFixture({ isHighestBidder: false, lotState: { reserveStatus: "ReserveMet" } })}
         />
       )
       expect(extractText(tree.root)).toContain("Outbid")

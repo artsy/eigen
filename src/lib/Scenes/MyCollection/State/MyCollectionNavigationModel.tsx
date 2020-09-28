@@ -1,13 +1,16 @@
 import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { ConsignmentsHomeQueryRenderer } from "lib/Scenes/MyCollection/Screens/ConsignmentsHome/ConsignmentsHome"
 import { AppStoreModel } from "lib/store/AppStoreModel"
 import { isEmpty } from "lodash"
 import { RefObject } from "react"
-import { NavigatorIOS } from "react-native"
-import { AddArtworkTitleAndYear } from "../Screens/AddArtwork/Screens/AddArtworkTitleAndYear"
+import NavigatorIOS from "react-native-navigator-ios"
+import { NavigatorProps, NavigatorTarget } from "../Components/Navigator"
 import { AdditionalDetails } from "../Screens/AddArtwork/Screens/AdditionalDetails"
 import { AddArtworkAddPhotos } from "../Screens/AddArtwork/Screens/AddPhotos"
-import { MyCollectionArtworkMetaFragmentContainer as ArtworkMeta } from "../Screens/ArtworkDetail/Components/MyCollectionArtworkMeta"
+import { MyCollectionArtworkDetailQueryRenderer } from "../Screens/ArtworkDetail/MyCollectionArtworkDetail"
+import { ViewAllDetails } from "../Screens/ArtworkDetail/Screens/ViewAllDetails"
+import { ConsignmentsSubmissionForm } from "../Screens/ConsignmentsHome/ConsignmentsSubmissionForm"
 
 type ModalType = "add" | "edit" | null
 type InfoModalType = "demandIndex" | "priceEstimate" | "artistMarket" | "auctionResults" | null
@@ -17,7 +20,9 @@ export interface MyCollectionNavigationModel {
     modalType: ModalType
     infoModalType: InfoModalType
     navViewRef: RefObject<any>
-    navigator: NavigatorIOS | null
+    navigators: {
+      [key: string]: NavigatorProps
+    }
   }
 
   setupNavigation: Action<
@@ -27,9 +32,10 @@ export interface MyCollectionNavigationModel {
     }
   >
 
-  setNavigator: Action<MyCollectionNavigationModel, NavigatorIOS>
+  addNavigator: Action<MyCollectionNavigationModel, NavigatorProps>
 
   goBack: Action<MyCollectionNavigationModel>
+  goBackInModal: Action<MyCollectionNavigationModel>
 
   // Modals
   setModalType: Action<MyCollectionNavigationModel, ModalType>
@@ -45,17 +51,19 @@ export interface MyCollectionNavigationModel {
   // Nav actions
   navigateToAddArtwork: Action<MyCollectionNavigationModel>
   navigateToAddArtworkPhotos: Thunk<MyCollectionNavigationModel, any, any, AppStoreModel>
-  navigateToAddTitleAndYear: Action<MyCollectionNavigationModel>
   navigateToAddAdditionalDetails: Action<MyCollectionNavigationModel>
-  navigateToArtworkDetail: Action<MyCollectionNavigationModel, string>
+  navigateToAllAuctions: Action<MyCollectionNavigationModel, string>
+  navigateToArticleDetail: Action<MyCollectionNavigationModel, string>
+  navigateToAllArticles: Action<MyCollectionNavigationModel, string>
+  navigateToArtworkDetail: Action<
+    MyCollectionNavigationModel,
+    { artistInternalID: string; artworkSlug: string; medium: string | null }
+  >
   navigateToViewAllArtworkDetails: Action<MyCollectionNavigationModel, { passProps: any }> // FIXME: any
-  navigateToArtworkList: Action<MyCollectionNavigationModel>
-  navigateToHome: Action<MyCollectionNavigationModel>
-  navigateToMarketingHome: Action<MyCollectionNavigationModel>
 
   // External app locations
-  navigateToConsign: Action<MyCollectionNavigationModel>
-  navigateToArtist: Action<MyCollectionNavigationModel>
+  navigateToConsignSubmission: Action<MyCollectionNavigationModel>
+  navigateToConsignLearnMore: Action<MyCollectionNavigationModel>
 }
 
 export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
@@ -63,7 +71,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     modalType: null,
     infoModalType: null,
     navViewRef: { current: null },
-    navigator: null,
+    navigators: {},
   },
 
   setupNavigation: action((state, { navViewRef }) => {
@@ -72,12 +80,21 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     }
   }),
 
-  setNavigator: action((state, navigator) => {
-    state.sessionState.navigator = navigator
+  /**
+   * Add a new NavigatorIOS instance, targeted by name. For example, when the
+   * modal slides up and we have additional screens to navigate between, we
+   * need to know which navigator to use at any given time.
+   */
+  addNavigator: action((state, navigator) => {
+    state.sessionState.navigators[navigator.name] = navigator
   }),
 
   goBack: action((state) => {
-    state.sessionState.navigator?.pop()
+    getNavigator(state.sessionState, "main").pop()
+  }),
+
+  goBackInModal: action((state) => {
+    getNavigator(state.sessionState, "modal").pop()
   }),
 
   setModalType: action((state, modalType) => {
@@ -100,11 +117,6 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   onAddArtworkComplete: thunkOn(
     (_, storeActions) => storeActions.myCollection.artwork.addArtworkComplete,
     (actions) => {
-      // const artworkId = getStoreState().myCollection.artwork.sessionState.artworkId
-
-      // FIXME: Reenable transition
-      // actions.artworkDetail(artworkId)
-
       setTimeout(() => {
         actions.dismissModal()
       })
@@ -150,69 +162,102 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   }),
 
   navigateToAddArtworkPhotos: thunk((_actions, _payload, { getState, getStoreState, getStoreActions }) => {
-    const { navigator } = getState().sessionState
+    const navigator = getNavigator(getState().sessionState, "modal")
     const { artwork: artworkState } = getStoreState().myCollection
     const { artwork: artworkActions } = getStoreActions().myCollection
 
     if (isEmpty(artworkState.sessionState.formValues.photos)) {
       artworkActions.takeOrPickPhotos()
     } else {
-      navigator?.push({
+      navigator.push({
         component: AddArtworkAddPhotos,
       })
     }
   }),
 
-  navigateToAddTitleAndYear: action((state) => {
-    state.sessionState.navigator?.push({
-      component: AddArtworkTitleAndYear,
-    })
-  }),
-
   navigateToAddAdditionalDetails: action((state) => {
-    state.sessionState.navigator?.push({
+    getNavigator(state.sessionState, "modal").push({
       component: AdditionalDetails,
     })
   }),
 
-  navigateToArtworkDetail: action((state, artworkID) => {
+  navigateToArtworkDetail: action((state, { artistInternalID, medium, artworkSlug }) => {
+    getNavigator(state.sessionState).push({
+      component: MyCollectionArtworkDetailQueryRenderer,
+      passProps: {
+        artistInternalID,
+        artworkSlug,
+        medium,
+      },
+    })
+
+    // FIXME: Remove these obj-c files
+    // SwitchBoard.presentNavigationViewController(
+    //   state.sessionState.navViewRef.current,
+    //   `/my-collection/artwork-detail/${artworkSlug}`
+    // )
+  }),
+
+  navigateToAllAuctions: action((state, artistID) => {
     SwitchBoard.presentNavigationViewController(
       state.sessionState.navViewRef.current,
-      `/my-collection/artwork-detail/${artworkID}`
+      `/artist/${artistID}/auction-results`
     )
   }),
 
+  navigateToArticleDetail: action((state, slug) => {
+    SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, `/article/${slug}`)
+  }),
+
+  navigateToAllArticles: action((state, slug) => {
+    SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, `/artist/${slug}/articles`)
+  }),
+
   navigateToViewAllArtworkDetails: action((state, { passProps }) => {
-    state.sessionState.navigator?.push({
-      component: ArtworkMeta,
+    getNavigator(state.sessionState).push({
+      component: ViewAllDetails,
       passProps,
     })
   }),
 
-  navigateToArtworkList: action((state) => {
-    SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, "/my-collection/artwork-list")
-  }),
-
-  navigateToMarketingHome: action((state) => {
-    SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, "/my-collection/marketing-home")
-  }),
-
-  navigateToHome: action((state) => {
-    SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, "/my-collection/home")
-  }),
-
   /**
-   * External app navigtion
+   * Pages outside of MyCollection
    */
 
-  navigateToConsign: action((state) => {
-    SwitchBoard.presentModalViewController(
-      state.sessionState.navViewRef.current,
-      "/collections/my-collection/artworks/new/submissions/new"
-    )
+  navigateToConsignLearnMore: action((state) => {
+    getNavigator(state.sessionState).push({
+      component: ConsignmentsHomeQueryRenderer,
+      passProps: {
+        // TODO: Eventually, when consignments submissions and MyCollection are merged,
+        // these flags can go away
+        isArrivingFromMyCollection: true,
+      },
+    })
   }),
 
-  navigateToArtist: action((state) => {
-    SwitchBoard.presentModalViewController(state.sessionState.navViewRef.current, "/artist/cindy-sherman")
+  navigateToConsignSubmission: action((state) => {
+    getNavigator(state.sessionState).push({
+      component: ConsignmentsSubmissionForm,
+      passProps: {
+        // TODO: Eventually, when consignments submissions and MyCollection are merged,
+        // these flags can go away
+        isArrivingFromMyCollection: true,
+      },
+    })
   }),
+}
+
+/**
+ * Finds and returns a NavigatorIOS instance by name. `navigators.main` refers to the main
+ * navigator instance; `navigators.modal` refers to the one in the modal -- and so on.
+ */
+function getNavigator(
+  state: MyCollectionNavigationModel["sessionState"],
+  name: NavigatorTarget = "main"
+): NavigatorIOS {
+  const navigator = state.navigators[name].navigator
+  if (!navigator) {
+    throw new Error("MyCollectionNavigationModel.tsx - Navigator not found")
+  }
+  return navigator
 }

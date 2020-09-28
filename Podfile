@@ -115,6 +115,7 @@ target 'Artsy' do
   pod 'RNImageCropPicker', path: './node_modules/react-native-image-crop-picker/RNImageCropPicker.podspec'
   # TODO: Remove the `.podspec` files from these paths
   pod 'react-native-config', path: 'node_modules/react-native-config'
+  pod 'RNReactNativeHapticFeedback', :path => 'node_modules/react-native-haptic-feedback'
   pod 'react-native-webview', :path => 'node_modules/react-native-webview'
 
   # For Stripe integration with Emission. Using Ash's fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
@@ -166,7 +167,7 @@ post_install do |installer|
   emission_podspec_json = installer.pod_targets.find { |f| f.name == 'Emission' }.specs[0].to_json
   File.write('Pods/Local Podspecs/Emission.podspec.json', emission_podspec_json)
 
-  # Note: we don't want Echo.json checked in, so Artsy staff download it at pod install time. We
+  # Note: we don't want EchoNew.json checked in, so Artsy staff download it at pod install time. We
   # use a stubbed copy for OSS developers.
   echo_key = `dotenv -f ".env.shared,.env.ci env" | grep ARTSY_ECHO_PRODUCTION_TOKEN | awk -F "=" {'print $2'}`
   if echo_key.length > 1 # OSS contributors have "-" as their key

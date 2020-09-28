@@ -18,7 +18,7 @@ interface MediumOptionsScreenProps {
   navigator: NavigatorIOS
 }
 
-export const MediumOptionsScreen: React.SFC<MediumOptionsScreenProps> = ({ navigator }) => {
+export const MediumOptionsScreen: React.FC<MediumOptionsScreenProps> = ({ navigator }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const paramName = FilterParamName.medium

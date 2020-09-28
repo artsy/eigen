@@ -3,7 +3,6 @@ import { shallow } from "enzyme"
 import React from "react"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentEmailComposer: jest.fn(),
   presentModalViewController: jest.fn(),
 }))
 
@@ -11,6 +10,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 import { LinkText } from "lib/Components/Text/LinkText"
 import { Button } from "palette"
+import { NativeModules } from "react-native"
 import { PrivacyRequest } from "../PrivacyRequest"
 
 describe(PrivacyRequest, () => {
@@ -27,8 +27,7 @@ describe(PrivacyRequest, () => {
 
     tree.find(LinkText).at(1).simulate("press")
 
-    expect(SwitchBoard.presentEmailComposer).toHaveBeenCalledWith(
-      expect.anything(),
+    expect(NativeModules.ARScreenPresenterModule.presentEmailComposer).toHaveBeenCalledWith(
       "privacy@artsy.net",
       "Personal Data Request"
     )
@@ -39,10 +38,10 @@ describe(PrivacyRequest, () => {
 
     tree.find(Button).simulate("press")
 
-    expect(SwitchBoard.presentEmailComposer).toHaveBeenCalledWith(
-      expect.anything(),
+    expect(NativeModules.ARScreenPresenterModule.presentEmailComposer).toHaveBeenCalledWith(
       "privacy@artsy.net",
-      "Personal Data Request"
+      "Personal Data Request",
+      "Hello, I'm contacting you to ask that..."
     )
   })
 })

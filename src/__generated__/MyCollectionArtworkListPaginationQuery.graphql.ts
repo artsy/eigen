@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash d7fdc852f45b2a7831e86a2d6fbf8bc9 */
+/* @relayHash 81dc3c6a2736210e94f9c5ddbe032f6f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -32,20 +32,32 @@ query MyCollectionArtworkListPaginationQuery(
 }
 
 fragment MyCollectionArtworkListItem_artwork on Artwork {
-  id
-  internalID
-  slug
+  artist {
+    internalID
+    id
+  }
   artistNames
-  medium
-  title
+  category
+  costMinor
+  costCurrencyCode
+  date
+  depth
+  height
+  id
   image {
     url
   }
+  internalID
+  medium
+  metric
+  slug
+  title
+  width
 }
 
 fragment MyCollectionArtworkList_me_1G22uz on Me {
   id
-  artworks: myCollectionConnection(first: $count, after: $cursor) {
+  myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC) {
     pageInfo {
       hasNextPage
       endCursor
@@ -95,8 +107,20 @@ v2 = [
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "CREATED_AT_DESC"
   }
-];
+],
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -152,7 +176,7 @@ return {
           (v1/*: any*/),
           {
             "kind": "LinkedField",
-            "alias": "artworks",
+            "alias": null,
             "name": "myCollectionConnection",
             "storageKey": null,
             "args": (v2/*: any*/),
@@ -211,11 +235,17 @@ return {
                         "storageKey": null
                       },
                       {
-                        "kind": "ScalarField",
+                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "internalID",
+                        "name": "artist",
+                        "storageKey": null,
                         "args": null,
-                        "storageKey": null
+                        "concreteType": "Artist",
+                        "plural": false,
+                        "selections": [
+                          (v3/*: any*/),
+                          (v1/*: any*/)
+                        ]
                       },
                       {
                         "kind": "ScalarField",
@@ -227,14 +257,42 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "medium",
+                        "name": "category",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "title",
+                        "name": "costMinor",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "costCurrencyCode",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "date",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "depth",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "height",
                         "args": null,
                         "storageKey": null
                       },
@@ -255,6 +313,35 @@ return {
                             "storageKey": null
                           }
                         ]
+                      },
+                      (v3/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "medium",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "metric",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "title",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "width",
+                        "args": null,
+                        "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
@@ -278,12 +365,12 @@ return {
           },
           {
             "kind": "LinkedHandle",
-            "alias": "artworks",
+            "alias": null,
             "name": "myCollectionConnection",
             "args": (v2/*: any*/),
             "handle": "connection",
-            "key": "MyCollectionArtworkList_artworks",
-            "filters": null
+            "key": "MyCollectionArtworkList_myCollectionConnection",
+            "filters": []
           }
         ]
       }
@@ -292,7 +379,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkListPaginationQuery",
-    "id": "e481df6600fa46696dd0d575937ce128",
+    "id": "e1069a11d1252a9fb993d8f8cef91d66",
     "text": null,
     "metadata": {}
   }

@@ -2,7 +2,6 @@ import { FairArtworks_fair } from "__generated__/FairArtworks_fair.graphql"
 import { FairArtworksQuery } from "__generated__/FairArtworksQuery.graphql"
 import { FilteredInfiniteScrollGrid } from "lib/Components/FilteredInfiniteScrollGrid"
 import { Schema, screenTrack } from "lib/utils/track"
-import { Theme } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
@@ -24,11 +23,7 @@ interface Props {
 }))
 export class FairArtworks extends React.Component<Props> {
   render() {
-    return (
-      <Theme>
-        <FilteredInfiniteScrollGrid entity={this.props.fair} />
-      </Theme>
-    )
+    return <FilteredInfiniteScrollGrid entity={this.props.fair} hideBackButtonOnScroll />
   }
 }
 
@@ -47,7 +42,7 @@ export const FairArtworksContainer = createFragmentContainer(FairArtworks, {
   `,
 })
 
-export const FairArtworksQueryRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => {
+export const FairArtworksQueryRenderer: React.FC<{ fairID: string }> = ({ fairID }) => {
   return (
     <QueryRenderer<FairArtworksQuery>
       environment={defaultEnvironment}

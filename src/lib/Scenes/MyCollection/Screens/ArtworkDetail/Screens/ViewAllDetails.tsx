@@ -1,9 +1,10 @@
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { AppStore } from "lib/store/AppStore"
+import { Spacer } from "palette"
 import React from "react"
-import { MyCollectionArtworkMetaFragmentContainer as ArtworkMeta } from "../Components/MyCollectionArtworkMeta"
+import { MyCollectionArtworkMeta } from "../Components/MyCollectionArtworkMeta"
 
-export const ViewAllDetails: React.FC<any /* TODO */> = props => {
+export const ViewAllDetails: React.FC<any /* TODO */> = (props) => {
   const { artwork: artworkActions, navigation: navActions } = AppStore.actions.myCollection
 
   return (
@@ -15,7 +16,8 @@ export const ViewAllDetails: React.FC<any /* TODO */> = props => {
       >
         Artwork Details
       </FancyModalHeader>
-      <ArtworkMeta artwork={props.artwork} viewAll />
+      <Spacer my={0.5} />
+      <MyCollectionArtworkMeta artwork={props.artwork} viewAll />
     </>
   )
 }

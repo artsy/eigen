@@ -107,6 +107,11 @@ static NSString *hostFromString(NSString *string)
     return [NSURL URLWithString:url];
 }
 
++ (NSURL *)resolveRelativeUrl:(NSString *)path
+{
+    return [NSURL URLWithString:path relativeToURL:[ARRouter baseWebURL]];
+}
+
 + (void)setupWithBaseApiURL:(NSURL *)baseApiURL
 {
     staticHTTPClient = [[AFHTTPSessionManager alloc] initWithBaseURL:baseApiURL];
@@ -296,11 +301,12 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"POST" path:AROAuthURL parameters:params];
 }
 
-+ (NSURLRequest *)newAppleOAuthRequestWithUID:(NSString *)appleUID
++ (NSURLRequest *)newAppleOAuthRequestWithUID:(NSString *)appleUID idToken:(NSString *)idToken
 {
     NSDictionary *params = @{
         @"oauth_provider" : @"apple",
         @"apple_uid": appleUID,
+        @"id_token": idToken,
         @"client_id" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_KEY"],
         @"client_secret" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_SECRET"],
         @"grant_type" : @"apple_uid",
@@ -357,11 +363,12 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"POST" path:ARCreateUserURL parameters:params];
 }
 
-+ (NSURLRequest *)newCreateUserViaAppleRequestWithUID:(NSString * _Nonnull)appleUID email:(NSString * _Nonnull)email name:(NSString * _Nullable)name
++ (NSURLRequest *)newCreateUserViaAppleRequestWithUID:(NSString * _Nonnull)appleUID email:(NSString * _Nonnull)email name:(NSString * _Nullable)name idToken:(NSString * _Nonnull)idToken
 {
     NSMutableDictionary *params = [@{
         @"provider" : @"apple",
         @"apple_uid" : appleUID,
+        @"id_token": idToken,
         @"email" : email,
         @"agreed_to_receive_emails": @YES,
         @"accepted_terms_of_service": @YES
