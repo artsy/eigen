@@ -18,11 +18,15 @@ export const principalFieldErrorMiddleware = () => {
       return res
     }
 
+    // at this point, we have errors
+
     const requestHasPrincipalField = req.operation.text?.includes("@principalField")
 
     if (!requestHasPrincipalField) {
       throw createRequestError(req, res)
     }
+
+    // at this point, we have errors and we have a principalField
 
     // This represents whether or not the query experienced an error and that error was thrown while resolving
     // a field marked with the @principalField directive, or any sub-selection of such a field.

@@ -37,7 +37,7 @@ describe(principalFieldErrorMiddleware, () => {
 
       const next: MiddlewareNextFn = () => Promise.resolve(relayResponse)
 
-      it("passes through if there is no principalField in the query", async () => {
+      it("throws error if there is no principalField in the query", async () => {
         expect.assertions(1)
         try {
           await middleware(next)(request)
@@ -72,7 +72,7 @@ describe(principalFieldErrorMiddleware, () => {
     })
 
     describe("with errors", () => {
-      it("passes through if there is no principalField in the query", async () => {
+      it("passes through when the principalField isn't involved in the errors", async () => {
         // @ts-ignore
         const relayResponse: RelayNetworkLayerResponse = {
           json: {
@@ -86,7 +86,7 @@ describe(principalFieldErrorMiddleware, () => {
         expect(res).toBe(relayResponse)
       })
 
-      it("throws an error when the principalField is involved in the errors", async () => {
+      it("throws error when the principalField is involved in the errors", async () => {
         // @ts-ignore
         const relayResponse: RelayNetworkLayerResponse = {
           json: {
