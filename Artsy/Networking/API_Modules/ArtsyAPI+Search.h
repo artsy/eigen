@@ -7,7 +7,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ArtsyAPI (Search)
 
-+ (nullable AFHTTPRequestOperation *)searchWithQuery:(NSString *)query success:(void (^)(NSArray *results))success failure:(void (^)(NSError *error))failure;
 + (nullable AFHTTPRequestOperation *)artistSearchWithQuery:(NSString *)query excluding:(NSArray *)artistsToExclude success:(void (^)(NSArray *results))success failure:(void (^)(NSError *error))failure;
 + (nullable AFHTTPRequestOperation *)geneSearchWithQuery:(NSString *)query excluding:(NSArray *)genesToExclude success:(void (^)(NSArray *results))success failure:(void (^)(NSError *error))failure;
 
