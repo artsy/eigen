@@ -1,23 +1,19 @@
 import React from "react"
-import { TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-
 import styled from "styled-components/native"
 
+import { ArtworkPreview_artwork } from "__generated__/ArtworkPreview_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Colors } from "lib/data/colors"
-import { color, Flex, Sans } from "palette"
+import { color, Flex, Text, Touchable } from "palette"
 
-import { ArtworkPreview_artwork } from "__generated__/ArtworkPreview_artwork.graphql"
 import { Schema, Track, track as _track } from "../../../../utils/track"
 
 const Container = styled.View`
-  flex-direction: column;
   background-color: ${color("black100")};
   border-radius: 15;
   overflow: hidden;
   margin-bottom: 5;
-  flex: 1;
 `
 
 const ImageContainer = styled(Flex)`
@@ -32,7 +28,7 @@ const VerticalLayout = styled.View`
 `
 
 const TextContainer = styled(VerticalLayout)`
-  align-self: center;
+  align-self: flex-start;
   padding: 10px;
 `
 
@@ -68,8 +64,8 @@ export class ArtworkPreview extends React.Component<Props> {
     const artworkImage = artwork.image
 
     return (
-      <TouchableHighlight
-        style={{ maxWidth: "66.67%" }}
+      <Touchable
+        style={{ maxWidth: "66.67%", flex: 1 }}
         underlayColor={Colors.GrayLight}
         onPress={this.props.onSelected && this.attachmentSelected.bind(this)}
       >
@@ -80,19 +76,18 @@ export class ArtworkPreview extends React.Component<Props> {
             </ImageContainer>
           )}
           <TextContainer>
-            <Sans size="4" color="white100">
+            <Text variant="mediumText" color="white100">
               {artwork.artist_names}
-            </Sans>
+            </Text>
             <TitleAndDate>
               {/* Nested Text components are necessary for the correct behaviour on both short and long titles + dates */}
-              <Sans size="3" color="white100" numberOfLines={1} ellipsizeMode={"middle"}>
-                {`${artwork.title}`}
-                {`, ${artwork.date}`}
-              </Sans>
+              <Text variant="small" color="white100" numberOfLines={1} ellipsizeMode={"middle"}>
+                {`${artwork.title} / ${artwork.date}`}
+              </Text>
             </TitleAndDate>
           </TextContainer>
         </Container>
-      </TouchableHighlight>
+      </Touchable>
     )
   }
 }
