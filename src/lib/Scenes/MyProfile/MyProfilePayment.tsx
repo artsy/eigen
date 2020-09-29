@@ -2,6 +2,7 @@ import { MyProfilePayment_me } from "__generated__/MyProfilePayment_me.graphql"
 import { MyProfilePaymentDeleteCardMutation } from "__generated__/MyProfilePaymentDeleteCardMutation.graphql"
 import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graphql"
 import { CreditCardDetailsContainer } from "lib/Components/CreditCardDetails"
+import { MenuItem } from "lib/Components/MenuItem"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -13,7 +14,6 @@ import { Flex, Sans, Spacer } from "palette"
 import React, { useCallback, useEffect, useReducer, useRef, useState } from "react"
 import { ActivityIndicator, Alert, FlatList, LayoutAnimation, RefreshControl, TouchableOpacity } from "react-native"
 import { commitMutation, createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { MyProfileMenuItem } from "./Components/MyProfileMenuItem"
 
 const NUM_CARDS_TO_FETCH = 100 // stupidly high because most people will have 1 or *maybe* 2
 
@@ -142,7 +142,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
         ItemSeparatorComponent={() => <Spacer mb={10} />}
         ListFooterComponent={
           <Flex pt={creditCards.length === 0 ? 0 : "2"}>
-            <MyProfileMenuItem
+            <MenuItem
               title="Add New Card"
               onPress={() =>
                 SwitchBoard.presentNavigationViewController(navRef.current!, "/my-profile/payment/new-card")

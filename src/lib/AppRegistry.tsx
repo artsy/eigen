@@ -13,6 +13,7 @@ import { InboxQueryRenderer } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowQueryRenderer } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
+import { About } from "./Scenes/About/About"
 import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
@@ -363,6 +364,7 @@ export function isNativeModule(moduleDescriptor: ModuleDescriptor): moduleDescri
 
 export const modules = defineModules({
   Admin: { nativeModuleName: "Admin" },
+  About: { Component: About },
   Artist: { Component: ArtistQueryRenderer },
   ArtistSeries: { Component: ArtistSeriesQueryRenderer },
   Artwork: { Component: Artwork },

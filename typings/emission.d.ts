@@ -4,6 +4,7 @@ import { NativeModulesStatic } from "react-native"
 declare module "react-native" {
   interface NativeModulesStatic {
     ARTemporaryAPIModule: {
+      appVersion: string
       requestNotificationPermissions(): void
       fetchNotificationPermissions(callback: (error: any, result: PushAuthorizationStatus) => void): void
       markNotificationsRead(): void

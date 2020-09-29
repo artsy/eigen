@@ -86,6 +86,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/conversation/:conversationID", "Conversation"),
     new RouteMatcher("/user/conversations/:conversationID", "Conversation"),
     new RouteMatcher("/admin", "Admin"),
+    new RouteMatcher("/about", "About"),
     new RouteMatcher("/favorites", "Favorites"),
     new RouteMatcher("/my-account", "MyAccount"),
     new RouteMatcher("/my-account/edit-name", "MyAccountEditName"),
@@ -129,6 +130,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/privacy", "WebView", () => ({ url: "/privacy" })),
     new RouteMatcher("/auction-faq", "WebView", () => ({ url: "/auction-faq" })),
     new RouteMatcher("/identity-verification-faq", "WebView", () => ({ url: "/identity-verification-faq" })),
+    new RouteMatcher("/terms", "WebView", () => ({ url: "/terms" })),
 
     new RouteMatcher("/city-bmw-list/:citySlug", "CityBMWList"),
     new RouteMatcher("/:slug", "VanityURLEntity"),
