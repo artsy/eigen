@@ -5226,7 +5226,7 @@ type ExternalPartner {
 }
 
 type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
-  about: String
+  about(format: Format): String
   activeStartAt(
     format: String
 
@@ -5365,7 +5365,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
-  summary: String
+  summary(format: Format): String
   tagline: String
   tickets(format: Format): String
   ticketsLink: String
