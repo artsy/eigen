@@ -1,8 +1,8 @@
 import { useEmissionOption } from "lib/store/AppStore"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import React from "react"
-import { MyCollectionArtworkListQueryRenderer as MyCollectionArtworkList } from "./Screens/ArtworkList/MyCollectionArtworkList"
-import { ConsignmentsHomeQueryRenderer as ConsignmentsHome } from "./Screens/ConsignmentsHome/ConsignmentsHome"
+import { MyCollectionArtworkListQueryRenderer } from "./Screens/ArtworkList/MyCollectionArtworkList"
+import { ConsignmentsHomeQueryRenderer } from "./Screens/ConsignmentsHome/ConsignmentsHome"
 
 // TODO: Rename to MyCollectionApp once launched
 export const SellTabApp: React.FC = () => {
@@ -14,7 +14,7 @@ export const SellTabApp: React.FC = () => {
         context_screen_owner_type: null,
       }}
     >
-      {myCollectionEnabled ? <MyCollectionArtworkList /> : <ConsignmentsHome />}
+      {myCollectionEnabled ? <MyCollectionArtworkListQueryRenderer /> : <ConsignmentsHomeQueryRenderer />}
     </ProvideScreenTracking>
   )
 }

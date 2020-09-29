@@ -15,7 +15,7 @@ export const ArtistSearchResult: React.FC<{ result: AutosuggestResult }> = ({ re
         />
         <Spacer ml={1} />
         <View>
-          <Text ellipsizeMode="tail" numberOfLines={1}>
+          <Text ellipsizeMode="tail" numberOfLines={1} data-test-id="displayLabel">
             {result.displayLabel}
           </Text>
         </View>

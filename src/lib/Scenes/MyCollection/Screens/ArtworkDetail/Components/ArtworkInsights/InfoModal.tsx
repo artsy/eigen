@@ -5,10 +5,10 @@ import { AppStore } from "lib/store/AppStore"
 import { Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 
-export const InfoModal: React.FC = () => {
+export const InfoModal: React.FC<{ show?: boolean }> = ({ show = false }) => {
   const navActions = AppStore.actions.myCollection.navigation
   const infoModalType = AppStore.useAppState((state) => state.myCollection.navigation.sessionState.infoModalType)
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(show)
 
   useEffect(() => {
     if (infoModalType) {

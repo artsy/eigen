@@ -128,3 +128,8 @@ export const MyCollectionArtworkDemandIndexFragmentContainer = createFragmentCon
     }
   `,
 })
+
+export const tests = {
+  DemandRankScale,
+  DemandRankDetails,
+}

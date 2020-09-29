@@ -7,8 +7,10 @@ interface Props {
   metric: "in" | "cm" | string | null
 }
 
+// TODO: We need to flesh out this behavior more in formik validation
+
 export function formatArtworkDimensions({ height, width, depth, metric }: Props): string | null {
-  const hasValues = [height, width, depth, metric].every(Boolean)
+  const hasValues = [height, width, metric].every(Boolean)
   if (!hasValues) {
     return null
   }
