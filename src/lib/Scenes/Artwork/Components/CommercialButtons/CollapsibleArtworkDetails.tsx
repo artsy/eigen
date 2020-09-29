@@ -72,7 +72,6 @@ export const CollapsibleArtworkDetailsFragmentContainer = createFragmentContaine
         height
       }
       internalID
-      isPriceHidden
       title
       date
       medium

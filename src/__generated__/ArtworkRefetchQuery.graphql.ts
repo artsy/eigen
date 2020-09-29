@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 650fb71c676442ddab310cea394a9754 */
+/* @relayHash be4128dc8297263b0edf65c977765b3a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -468,7 +468,6 @@ fragment CollapsibleArtworkDetails_artwork on Artwork {
     height
   }
   internalID
-  isPriceHidden
   title
   date
   medium
@@ -2270,7 +2269,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkRefetchQuery",
-    "id": "fb855754f5aa50bd919e81acf852687f",
+    "id": "365cacab3dfc3560b89e10c957288cc3",
     "text": null,
     "metadata": {}
   }

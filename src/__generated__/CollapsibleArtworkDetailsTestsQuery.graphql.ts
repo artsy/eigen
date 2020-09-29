@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash dbb1f488b346395b28b81d1b5d300314 */
+/* @relayHash af790210fea50da8def89293944b4704 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -32,7 +32,6 @@ fragment CollapsibleArtworkDetails_artwork on Artwork {
     height
   }
   internalID
-  isPriceHidden
   title
   date
   medium
@@ -167,13 +166,6 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "isPriceHidden",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
             "name": "title",
             "args": null,
             "storageKey": null
@@ -269,7 +261,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CollapsibleArtworkDetailsTestsQuery",
-    "id": "e230d785bc13de6c6895851b6b148234",
+    "id": "ad7757da531ea630b4ec6e9073539f13",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -291,12 +283,6 @@ return {
           "enumValues": null,
           "plural": false,
           "nullable": false
-        },
-        "artwork.isPriceHidden": {
-          "type": "Boolean",
-          "enumValues": null,
-          "plural": false,
-          "nullable": true
         },
         "artwork.title": (v3/*: any*/),
         "artwork.date": (v3/*: any*/),

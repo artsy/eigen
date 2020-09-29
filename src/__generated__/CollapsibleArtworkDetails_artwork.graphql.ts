@@ -10,7 +10,6 @@ export type CollapsibleArtworkDetails_artwork = {
         readonly height: number | null;
     } | null;
     readonly internalID: string;
-    readonly isPriceHidden: boolean | null;
     readonly title: string | null;
     readonly date: string | null;
     readonly medium: string | null;
@@ -78,13 +77,6 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "internalID",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "isPriceHidden",
       "args": null,
       "storageKey": null
     },
@@ -179,5 +171,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '6018fcd7f35d980cf8b52c404e0302f4';
+(node as any).hash = '78faf77994e0d624d950f984f7b98876';
 export default node;

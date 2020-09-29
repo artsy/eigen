@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9dfdbc739874d74008172510a5318d87 */
+/* @relayHash 270b4ab12c81918fac15d8e328e536d3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -226,7 +226,6 @@ fragment CollapsibleArtworkDetails_artwork on Artwork {
     height
   }
   internalID
-  isPriceHidden
   title
   date
   medium
@@ -1243,7 +1242,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkAboveTheFoldQuery",
-    "id": "f4c4b46aa86929244ecf4446b7090c07",
+    "id": "2e472e6e43d65c33e8430893fee3a6a8",
     "text": null,
     "metadata": {}
   }

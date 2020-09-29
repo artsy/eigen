@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 08b7cbc15c5833389c86859436d0dbdd */
+/* @relayHash 19a1408bd39de89538eb870ae5d56fd5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -134,7 +134,6 @@ fragment CollapsibleArtworkDetails_artwork on Artwork {
     height
   }
   internalID
-  isPriceHidden
   title
   date
   medium
@@ -614,7 +613,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CommercialButtonsTestsMutationQuery",
-    "id": "84aacdc7912109f21288dbc070c7074b",
+    "id": "7cc7ba155d6b8b5e06fa6f27bddf0626",
     "text": null,
     "metadata": {}
   }
