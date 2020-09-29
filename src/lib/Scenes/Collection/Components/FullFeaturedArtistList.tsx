@@ -23,7 +23,7 @@ export class FullFeaturedArtistList extends React.Component<Props> {
     // instead of all the artists in the collection.
     if (artistIDs.length > 0) {
       // @ts-ignore STRICTNESS_MIGRATION
-      return allArtists.filter((artist) => artistIDs.includes(artist.internalID))
+      return allArtists.filter((artist) => artistIDs.includes(artist?.internalID))
     }
 
     // Some artist even though they are within the collection shouldn't be displayed as featured artists
