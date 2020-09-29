@@ -1230,6 +1230,9 @@ type Artwork implements Node & Searchable & Sellable {
   imageTitle: String
   imageUrl: String
 
+  # Structured questions a collector can inquire on about this work
+  inquiryQuestions: [InquiryQuestion]
+
   # A type-specific ID likely used as a database ID.
   internalID: ID!
 
@@ -6299,6 +6302,15 @@ type Image {
 
 type ImageURLs {
   normalized: String
+}
+
+type InquiryQuestion {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  question: String!
 }
 
 enum Intents {
