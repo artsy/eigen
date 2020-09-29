@@ -68,6 +68,39 @@ const liveSaleTomorrow = {
   timeZone: TIME_ZONE_DE,
 }
 
+describe("#saleTime.absolute", () => {
+  it("shows the time in the correct timezone", () => {
+    expect(saleTime(liveSaleNY)?.absolute).toEqual({
+      headline: "Live bidding begins",
+      date: "Oct 1 at 3:00pm EDT",
+    })
+    expect(saleTime(liveSaleDE)?.absolute).toEqual({
+      headline: "Live bidding begins",
+      date: "Oct 1 at 9:00am EDT",
+    })
+  })
+  it("recognises whether an auction is live or not", () => {
+    expect(saleTime(liveSaleNY)?.absolute).toEqual({
+      headline: "Live bidding begins",
+      date: "Oct 1 at 3:00pm EDT",
+    })
+    expect(saleTime(timedSaleNY)?.absolute).toEqual({
+      headline: "Bidding begins",
+      date: "Oct 1 at 3:00pm EDT",
+    })
+  })
+  it("recognises whether an auction is over or not", () => {
+    expect(saleTime(finishedSaleNY)?.absolute).toEqual({
+      headline: "Closed on",
+      date: "Sep 1",
+    })
+    expect(saleTime(finishedLiveSaleNY)?.absolute).toEqual({
+      headline: "Live bidding closes",
+      date: "Aug 1 at 3:00pm",
+    })
+  })
+})
+
 describe("#saleTime.absoluteConcatenated", () => {
   it("shows the time in the correct timezone", () => {
     expect(saleTime(liveSaleNY)?.absoluteConcatenated).toEqual("Live bidding begins Oct 1 at 3:00pm EDT")

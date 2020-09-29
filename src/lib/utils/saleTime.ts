@@ -20,8 +20,21 @@ export const saleTime = (sale?: {
   const absoluteSaleTime = absolute(now, startDateMoment, endDateMoment, userTimeZone, isLive)
 
   return {
+    /**
+     * Returns an object containing the headline and date of a sale
+     * @example
+     * {
+     *  headline: "Bidding closes",
+     *  label: "July 6th"
+     * }
+     */
     absolute: absoluteSaleTime,
     absoluteConcatenated: `${absoluteSaleTime.headline} ${absoluteSaleTime.date}`,
+    /**
+     * Returns an object containing the headline and date of a sale
+     * @example
+     * "Starts in 1 day"
+     */
     relative: relative(now, startDateMoment, endDateMoment),
   }
 }

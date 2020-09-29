@@ -1,23 +1,22 @@
 import { RegisterToBidButton_sale } from "__generated__/RegisterToBidButton_sale.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Box, Button, CheckIcon, Flex, Spacer, Text } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { navigate } from "../../../navigation/navigate"
 import { saleStatus } from "../helpers"
 
 interface RegisterToBidButtonProps {
   sale: RegisterToBidButton_sale
-  contextType: string
+  contextType: "sale" | "sale_information"
 }
 
 const RegisterToBidButtonComp: React.FC<RegisterToBidButtonProps> = ({ contextType, sale }) => {
   const { trackEvent } = useTracking()
-  const navRef = useRef<any>(null)
 
   if (sale.registrationStatus === null) {
     return (
-      <Box ref={navRef}>
+      <Box>
         <Button
           block
           size="large"
@@ -29,7 +28,7 @@ const RegisterToBidButtonComp: React.FC<RegisterToBidButtonProps> = ({ contextTy
                 contextType,
               })
             )
-            SwitchBoard.presentNavigationViewController(navRef.current, `/auction-registration/${sale.slug}`)
+            navigate(`/auction-registration/${sale.slug}`)
           }}
         >
           Register to bid
@@ -45,9 +44,7 @@ const RegisterToBidButtonComp: React.FC<RegisterToBidButtonProps> = ({ contextTy
               variant="caption"
               color="black60"
               style={{ textDecorationLine: "underline" }}
-              onPress={() =>
-                void SwitchBoard.presentNavigationViewController(navRef.current, "/identity-verification-faq")
-              }
+              onPress={() => navigate("/identity-verification-faq")}
             >
               Learn more.
             </Text>

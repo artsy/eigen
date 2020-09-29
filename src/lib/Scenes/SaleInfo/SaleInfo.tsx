@@ -1,17 +1,16 @@
 import { SaleInfo_sale } from "__generated__/SaleInfo_sale.graphql"
 import { SaleInfoQueryRendererQuery } from "__generated__/SaleInfoQueryRendererQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { MenuItem } from "lib/Components/MenuItem"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { saleTime } from "lib/utils/saleTime"
 import moment from "moment"
 import { Flex, Join, Sans, Separator, Text } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { Linking, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { PlaceholderBox } from "../../utils/placeholders"
-import { MyProfileMenuItem } from "../MyProfile/Components/MyProfileMenuItem"
 import { RegisterToBidButton } from "../Sale/Components/RegisterToBidButton"
 
 interface Props {
@@ -19,19 +18,18 @@ interface Props {
 }
 
 export const AuctionSupport = () => {
-  const navRef = useRef(null)
   return (
     <Flex>
       <Sans px={2} size="5t" mb={15}>
         Auction support
       </Sans>
-      <MyProfileMenuItem
+      <MenuItem
         title="Auction FAQs"
         onPress={() => {
-          SwitchBoard.presentNavigationViewController(navRef.current!, "my-account/edit-name")
+          console.log("navigate to auctions FAQ")
         }}
       />
-      <MyProfileMenuItem
+      <MenuItem
         title="Contact us for help"
         onPress={() => {
           Linking.openURL("mailto:specialist@artsy.net").catch((error) => {
