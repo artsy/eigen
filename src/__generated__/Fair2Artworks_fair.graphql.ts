@@ -23,6 +23,7 @@ export type Fair2Artworks_fair = {
         } | null> | null;
         readonly counts: {
             readonly total: number | null;
+            readonly followedArtists: number | null;
         } | null;
         readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
     } | null;
@@ -130,6 +131,12 @@ const node: ReaderFragment = {
       "name": "offerable",
       "type": "Boolean",
       "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "includeArtworksByFollowedArtists",
+      "type": "Boolean",
+      "defaultValue": null
     }
   ],
   "selections": [
@@ -168,7 +175,8 @@ const node: ReaderFragment = {
             "INSTITUTION",
             "MAJOR_PERIOD",
             "MEDIUM",
-            "PRICE_RANGE"
+            "PRICE_RANGE",
+            "FOLLOWED_ARTISTS"
           ]
         },
         {
@@ -185,6 +193,11 @@ const node: ReaderFragment = {
           "kind": "Variable",
           "name": "dimensionRange",
           "variableName": "dimensionRange"
+        },
+        {
+          "kind": "Variable",
+          "name": "includeArtworksByFollowedArtists",
+          "variableName": "includeArtworksByFollowedArtists"
         },
         {
           "kind": "Variable",
@@ -333,6 +346,13 @@ const node: ReaderFragment = {
               "name": "total",
               "args": null,
               "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "followedArtists",
+              "args": null,
+              "storageKey": null
             }
           ]
         },
@@ -370,5 +390,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '4da05c767329e5cb16192c4109565936';
+(node as any).hash = '06024cf92938979a780c90b0f06f4c06';
 export default node;

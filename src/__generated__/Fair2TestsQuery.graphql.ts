@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 920c096ef4d775d21abc8b987616b713 */
+/* @relayHash cdd83a16bdd14d8b76924b6ebbc11d03 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -127,6 +127,7 @@ export type Fair2TestsQueryRawResponse = {
             }) | null> | null;
             readonly counts: ({
                 readonly total: number | null;
+                readonly followedArtists: number | null;
             }) | null;
             readonly pageInfo: {
                 readonly hasNextPage: boolean;
@@ -262,7 +263,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment Fair2Artworks_fair on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  fairArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS]) {
     aggregations {
       slice
       counts {
@@ -280,6 +281,7 @@ fragment Fair2Artworks_fair on Fair {
     }
     counts {
       total
+      followedArtists
     }
     ...InfiniteScrollArtworksGrid_connection
     pageInfo {
@@ -600,7 +602,8 @@ v14 = [
       "INSTITUTION",
       "MAJOR_PERIOD",
       "MEDIUM",
-      "PRICE_RANGE"
+      "PRICE_RANGE",
+      "FOLLOWED_ARTISTS"
     ]
   },
   {
@@ -1091,7 +1094,7 @@ return {
             "kind": "LinkedField",
             "alias": "fairArtworks",
             "name": "filterArtworksConnection",
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:20,medium:\"*\",sort:\"-decayed_merch\")",
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\"],dimensionRange:\"*-*\",first:20,medium:\"*\",sort:\"-decayed_merch\")",
             "args": (v14/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
@@ -1275,6 +1278,13 @@ return {
                     "name": "total",
                     "args": null,
                     "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "followedArtists",
+                    "args": null,
+                    "storageKey": null
                   }
                 ]
               },
@@ -1320,6 +1330,7 @@ return {
               "inquireableOnly",
               "atAuction",
               "offerable",
+              "includeArtworksByFollowedArtists",
               "aggregations"
             ]
           },
@@ -1538,7 +1549,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "Fair2TestsQuery",
-    "id": "90b6b598bcee4b8f7d10dce517bebb1a",
+    "id": "9ececaf96a76b586004a36e549184705",
     "text": null,
     "metadata": {}
   }

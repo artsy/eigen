@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a0a8086dd6ef1af76cf4ce369de19c9f */
+/* @relayHash ce92ec48331df1395742527ce43a481c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -67,7 +67,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment Fair2Artworks_fair on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  fairArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS]) {
     aggregations {
       slice
       counts {
@@ -85,6 +85,7 @@ fragment Fair2Artworks_fair on Fair {
     }
     counts {
       total
+      followedArtists
     }
     ...InfiniteScrollArtworksGrid_connection
     pageInfo {
@@ -405,7 +406,8 @@ v14 = [
       "INSTITUTION",
       "MAJOR_PERIOD",
       "MEDIUM",
-      "PRICE_RANGE"
+      "PRICE_RANGE",
+      "FOLLOWED_ARTISTS"
     ]
   },
   {
@@ -896,7 +898,7 @@ return {
             "kind": "LinkedField",
             "alias": "fairArtworks",
             "name": "filterArtworksConnection",
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:20,medium:\"*\",sort:\"-decayed_merch\")",
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\"],dimensionRange:\"*-*\",first:20,medium:\"*\",sort:\"-decayed_merch\")",
             "args": (v14/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
@@ -1080,6 +1082,13 @@ return {
                     "name": "total",
                     "args": null,
                     "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "followedArtists",
+                    "args": null,
+                    "storageKey": null
                   }
                 ]
               },
@@ -1125,6 +1134,7 @@ return {
               "inquireableOnly",
               "atAuction",
               "offerable",
+              "includeArtworksByFollowedArtists",
               "aggregations"
             ]
           },
@@ -1343,7 +1353,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "Fair2Query",
-    "id": "695c9cc74e935509b0a5fbe98e40098a",
+    "id": "c15d20223eeeffe06769d94edd3adcbb",
     "text": null,
     "metadata": {}
   }

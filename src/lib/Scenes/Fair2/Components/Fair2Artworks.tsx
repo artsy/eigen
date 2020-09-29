@@ -2,10 +2,14 @@ import { OwnerType } from "@artsy/cohesion"
 import { Fair2Artworks_fair } from "__generated__/Fair2Artworks_fair.graphql"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { filterArtworksParams } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import {
+  aggregationsType,
+  aggregationsWithFollowedArtists,
+  filterArtworksParams,
+} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
-import { Box, Separator, Spacer } from "palette"
+import { Box } from "palette"
 import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -48,10 +52,14 @@ export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay }) => 
     }
   }, [state.appliedFilters])
 
+  const followedArtistCount = artworks?.counts?.followedArtists ?? 0
+  const artworkAggregations = (artworks?.aggregations ?? []) as aggregationsType
+  const aggregations = aggregationsWithFollowedArtists(followedArtistCount, artworkAggregations)
+
   useEffect(() => {
     dispatch({
       type: "setAggregations",
-      payload: artworks?.aggregations,
+      payload: aggregations,
     })
   }, [])
 
@@ -98,6 +106,7 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
         inquireableOnly: { type: "Boolean" }
         atAuction: { type: "Boolean" }
         offerable: { type: "Boolean" }
+        includeArtworksByFollowedArtists: { type: "Boolean" }
       ) {
         slug
         internalID
@@ -115,7 +124,17 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
           inquireableOnly: $inquireableOnly
           atAuction: $atAuction
           offerable: $offerable
-          aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
+          includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
+          aggregations: [
+            COLOR
+            DIMENSION_RANGE
+            GALLERY
+            INSTITUTION
+            MAJOR_PERIOD
+            MEDIUM
+            PRICE_RANGE
+            FOLLOWED_ARTISTS
+          ]
         ) @connection(key: "Fair_fairArtworks") {
           aggregations {
             slice
@@ -132,6 +151,7 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
           }
           counts {
             total
+            followedArtists
           }
           ...InfiniteScrollArtworksGrid_connection
         }
@@ -174,6 +194,7 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
         $inquireableOnly: Boolean
         $atAuction: Boolean
         $offerable: Boolean
+        $includeArtworksByFollowedArtists: Boolean
       ) {
         fair(id: $id) {
           ...Fair2Artworks_fair
@@ -191,6 +212,7 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
             inquireableOnly: $inquireableOnly
             atAuction: $atAuction
             offerable: $offerable
+            includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
           )
         }
       }

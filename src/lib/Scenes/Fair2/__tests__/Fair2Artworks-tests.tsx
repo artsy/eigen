@@ -2,15 +2,15 @@ import {
   Fair2ArtworksTestsQuery,
   Fair2ArtworksTestsQueryRawResponse,
 } from "__generated__/Fair2ArtworksTestsQuery.graphql"
+import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Fair2ArtworksFragmentContainer } from "lib/Scenes/Fair2/Components/Fair2Artworks"
-import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
+import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFiltersStore"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { extractText } from "lib/tests/extractText"
-import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFiltersStore"
 
 jest.unmock("react-relay")
 
@@ -78,6 +78,7 @@ describe("Fair2Artworks", () => {
           edges: [],
           counts: {
             total: 0,
+            followedArtists: 0,
           },
         },
       },
@@ -99,6 +100,7 @@ const FAIR_2_ARTWORKS_FIXTURE: Fair2ArtworksTestsQueryRawResponse = {
       id: "fa123",
       counts: {
         total: 2,
+        followedArtists: 0,
       },
       pageInfo: {
         hasNextPage: false,
