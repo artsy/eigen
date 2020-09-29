@@ -4,14 +4,29 @@ import {
 } from "__generated__/Fair2ArtworksTestsQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Fair2ArtworksFragmentContainer } from "lib/Scenes/Fair2/Components/Fair2Artworks"
+import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
+import { extractText } from "lib/tests/extractText"
+import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFiltersStore"
 
 jest.unmock("react-relay")
 
 describe("Fair2Artworks", () => {
+  let state: ArtworkFilterContextState
+
+  beforeEach(() => {
+    state = {
+      selectedFilters: [],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: [],
+    }
+  })
+
   const getWrapper = (fixture = FAIR_2_ARTWORKS_FIXTURE) => {
     const env = createMockEnvironment()
 
@@ -35,8 +50,11 @@ describe("Fair2Artworks", () => {
           if (!props || !props.fair) {
             return null
           }
-
-          return <Fair2ArtworksFragmentContainer fair={props.fair} />
+          return (
+            <ArtworkFilterContext.Provider value={{ state, dispatch: jest.fn() }}>
+              <Fair2ArtworksFragmentContainer fair={props.fair} />
+            </ArtworkFilterContext.Provider>
+          )
         }}
       />
     )
@@ -66,6 +84,9 @@ describe("Fair2Artworks", () => {
     } as Fair2ArtworksTestsQueryRawResponse)
 
     expect(wrapper.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(0)
+    expect(wrapper.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(0)
+    expect(wrapper.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
+    expect(extractText(wrapper.root)).toContain("Unfortunately, there are no works that meet your criteria.")
   })
 })
 
@@ -84,6 +105,7 @@ const FAIR_2_ARTWORKS_FIXTURE: Fair2ArtworksTestsQueryRawResponse = {
         startCursor: "123",
         endCursor: "abc",
       },
+      aggregations: [],
       edges: [
         {
           node: {

@@ -158,6 +158,7 @@ export enum FilterModalMode {
   Collection = "Collection",
   ArtistArtworks = "ArtistArtworks",
   ArtistSeries = "ArtistSeries",
+  Fair = "Fair",
 }
 
 interface FilterOptionsProps {
@@ -225,6 +226,19 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
         ]
         break
       case "ArtistSeries":
+        sortOrder = [
+          "sort",
+          "medium",
+          "priceRange",
+          "waysToBuy",
+          "dimensionRange",
+          "majorPeriods",
+          "color",
+          "gallery",
+          "institution",
+        ]
+        break
+      case "Fair":
         sortOrder = [
           "sort",
           "medium",
