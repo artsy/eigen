@@ -14,6 +14,7 @@ import { Fair2ArtworksFragmentContainer } from "./Components/Fair2Artworks"
 import { Fair2CollectionsFragmentContainer } from "./Components/Fair2Collections"
 import { Fair2EditorialFragmentContainer } from "./Components/Fair2Editorial"
 import { Fair2ExhibitorsFragmentContainer } from "./Components/Fair2Exhibitors"
+import { Fair2FollowedArtistsFragmentContainer as FairFollowedArtists } from "./Components/Fair2FollowedArtists"
 import { Fair2HeaderFragmentContainer } from "./Components/Fair2Header"
 import { Tabs, TabsType } from "./Components/SimpleTabs"
 
@@ -43,6 +44,7 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
   const hasCollections = !!fair.marketingCollections.length
   const hasArtworks = !!(fair.counts?.artworks ?? 0 > 0)
   const hasExhibitors = !!(fair.counts?.partnerShows ?? 0 > 0)
+  const hasFollowedArtistArtworks = !!(fair.followedArtistArtworks?.edges?.length ?? 0 > 0)
 
   const tracking = useTracking()
   const [activeTab, setActiveTab] = useState(0)
@@ -92,6 +94,7 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
     "fairHeader",
     ...(hasArticles ? ["fairEditorial"] : []),
     ...(hasCollections ? ["fairCollections"] : []),
+    ...(hasFollowedArtistArtworks ? ["fairFollowedArtists"] : []),
     ...(hasArtworks && hasExhibitors ? ["fairTabs", "fairTabChildContent"] : []),
   ]
 
@@ -120,6 +123,9 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
                           <Separator mt={3} />
                         </>
                       )
+                    }
+                    case "fairFollowedArtists": {
+                      return <FairFollowedArtists fair={fair} />
                     }
                     case "fairEditorial": {
                       return <Fair2EditorialFragmentContainer fair={fair} />
@@ -190,11 +196,17 @@ export const Fair2FragmentContainer = createFragmentContainer(Fair2, {
         artworks
         partnerShows
       }
+      followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
+        edges {
+          __typename
+        }
+      }
       ...Fair2Header_fair
       ...Fair2Editorial_fair
       ...Fair2Collections_fair
       ...Fair2Artworks_fair
       ...Fair2Exhibitors_fair
+      ...Fair2FollowedArtists_fair
     }
   `,
 })
