@@ -102,7 +102,7 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
 
   const lotNumber = lotLabel ? (
     <Sans size="3t" color="black60" numberOfLines={1}>
-      LOT {lotLabel}
+      Lot {lotLabel}
     </Sans>
   ) : null
 
