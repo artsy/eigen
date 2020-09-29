@@ -11,7 +11,7 @@ import { StyleSheet, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface Props {
+export interface ArtworkProps {
   artwork: ArtworkGridItem_artwork
   // If it's not provided, then it will push just the one artwork
   // to the switchboard.
@@ -33,7 +33,7 @@ interface Props {
   showLotLabel?: boolean
 }
 
-export const Artwork: React.FC<Props> = ({
+export const Artwork: React.FC<ArtworkProps> = ({
   artwork,
   onPress,
   trackTap,
