@@ -89,6 +89,8 @@ export const ArtworkMetaProps = graphql`
     costCurrencyCode
     date
     depth
+    editionSize
+    editionNumber
     height
     id
     image {

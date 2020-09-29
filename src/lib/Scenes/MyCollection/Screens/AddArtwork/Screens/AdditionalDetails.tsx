@@ -6,13 +6,19 @@ import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/AddArtwork/Form/useArtworkForm"
 import { AppStore } from "lib/store/AppStore"
 import { Box, Flex, Join, Sans, space, Spacer } from "palette"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 export const AdditionalDetails = () => {
-  const [isEdition, setIsEdition] = useState(false) // TODO: pass in edition props from db to compute initial state
+  const { formik } = useArtworkForm()
+  const [isEdition, setIsEdition] = useState(false)
   const pricePaidCurrencyInputRef = useRef<Select<string>>(null)
   const navActions = AppStore.actions.myCollection.navigation
-  const { formik } = useArtworkForm()
+  const formValue = formik?.values
+  const validatedEdition: boolean = !!formValue?.editionNumber!
+
+  useEffect(() => {
+    setIsEdition(validatedEdition)
+  }, [])
 
   return (
     <Box>
@@ -25,21 +31,22 @@ export const AdditionalDetails = () => {
               placeholder="Title"
               onChangeText={formik.handleChange("title")}
               onBlur={formik.handleBlur("title")}
-              defaultValue={formik.values.title}
               data-test-id="TitleInput"
+              defaultValue={formValue.title}
             />
             <Input
               title="Date"
               placeholder="Date"
               onChangeText={formik.handleChange("date")}
               onBlur={formik.handleBlur("date")}
-              defaultValue={formik.values.date}
               data-test-id="DateInput"
+              defaultValue={formValue.date}
             />
 
             <Checkbox
               onPress={() => setIsEdition(!isEdition)}
               data-test-id="EditionCheckbox"
+              checked={validatedEdition}
               // disabled={isLoading}
             >
               <Sans size="3" color="black60">
@@ -53,7 +60,7 @@ export const AdditionalDetails = () => {
                   placeholder="Edition number"
                   onChangeText={formik.handleChange("editionNumber")}
                   onBlur={formik.handleBlur("editionNumber")}
-                  defaultValue={String(formik.values.editionNumber)}
+                  defaultValue={formValue.editionNumber!}
                   style={{ marginRight: space(1) }}
                   data-test-id="EditionNumberInput"
                 />
@@ -61,8 +68,8 @@ export const AdditionalDetails = () => {
                   placeholder="Edition size"
                   onChangeText={formik.handleChange("editionSize")}
                   onBlur={formik.handleBlur("editionSize")}
-                  defaultValue={formik.values.editionSize}
                   data-test-id="EditionSizeInput"
+                  defaultValue={formValue.editionSize}
                 />
               </Flex>
             )}
@@ -72,8 +79,8 @@ export const AdditionalDetails = () => {
               placeholder="Materials"
               onChangeText={formik.handleChange("category")}
               onBlur={formik.handleBlur("category")}
-              defaultValue={formik.values.category}
               data-test-id="MaterialsInput"
+              defaultValue={formValue.category}
             />
 
             <Input
@@ -81,15 +88,15 @@ export const AdditionalDetails = () => {
               placeholder="Price paid"
               onChangeText={formik.handleChange("costMinor")}
               onBlur={formik.handleBlur("costMinor")}
-              defaultValue={String(formik.values.costMinor)}
               data-test-id="PricePaidInput"
+              defaultValue={String(formValue.costMinor)}
             />
 
             <Select
               title="Currency"
               placeholder="Currency"
               options={pricePaidCurrencySelectOptions}
-              value={formik.values.costCurrencyCode}
+              value={formValue.costCurrencyCode}
               enableSearch={false}
               showTitleLabel={false}
               ref={pricePaidCurrencyInputRef}

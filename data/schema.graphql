@@ -7221,7 +7221,7 @@ input MyCollectionUpdateArtworkInput {
   costMinor: Int
   date: String
   depth: String
-  editionNumber: Int
+  editionNumber: String
   editionSize: String
   height: String
   medium: String

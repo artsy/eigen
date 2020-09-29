@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 87110181faf533b605a71e1b0f96dbe0 */
+/* @relayHash fa7f3e5cb2b79a6fe5e01811fe45d43b */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionCreateArtworkInput = {
@@ -32,6 +32,8 @@ export type MyCollectionArtworkModelCreateArtworkMutationResponse = {
                     readonly medium: string | null;
                     readonly internalID: string;
                     readonly slug: string;
+                    readonly editionNumber: string | null;
+                    readonly editionSize: string | null;
                 } | null;
             } | null;
             readonly mutationError?: {
@@ -61,6 +63,8 @@ mutation MyCollectionArtworkModelCreateArtworkMutation(
             medium
             internalID
             slug
+            editionNumber
+            editionSize
             id
           }
         }
@@ -120,6 +124,20 @@ v5 = {
   "storageKey": null
 },
 v6 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "editionNumber",
+  "args": null,
+  "storageKey": null
+},
+v7 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "editionSize",
+  "args": null,
+  "storageKey": null
+},
+v8 = {
   "kind": "ClientExtension",
   "selections": [
     {
@@ -131,7 +149,7 @@ v6 = {
     }
   ]
 },
-v7 = {
+v9 = {
   "kind": "InlineFragment",
   "type": "MyCollectionArtworkMutationFailure",
   "selections": [
@@ -207,15 +225,17 @@ return {
                           (v2/*: any*/),
                           (v3/*: any*/),
                           (v4/*: any*/),
-                          (v5/*: any*/)
+                          (v5/*: any*/),
+                          (v6/*: any*/),
+                          (v7/*: any*/)
                         ]
                       },
-                      (v6/*: any*/)
+                      (v8/*: any*/)
                     ]
                   }
                 ]
               },
-              (v7/*: any*/)
+              (v9/*: any*/)
             ]
           }
         ]
@@ -278,6 +298,8 @@ return {
                           (v3/*: any*/),
                           (v4/*: any*/),
                           (v5/*: any*/),
+                          (v6/*: any*/),
+                          (v7/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -287,12 +309,12 @@ return {
                           }
                         ]
                       },
-                      (v6/*: any*/)
+                      (v8/*: any*/)
                     ]
                   }
                 ]
               },
-              (v7/*: any*/)
+              (v9/*: any*/)
             ]
           }
         ]
@@ -302,11 +324,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "MyCollectionArtworkModelCreateArtworkMutation",
-    "id": "aa25b79f9c3fd0de4251b7f8136567d9",
+    "id": "5dc3e97a9d6d9f3aa62ed1112330aedc",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '48ecd70a5b8dfe2d7227a96895948f89';
+(node as any).hash = '2fd85d12e6759b6310fee89658c2b9d1';
 export default node;

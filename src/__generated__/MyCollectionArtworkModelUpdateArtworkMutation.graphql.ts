@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b81a0c8fb7aa418acf2f3a3dc3b269df */
+/* @relayHash e86485b40afeced73875b989210a540f */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionUpdateArtworkInput = {
@@ -12,7 +12,7 @@ export type MyCollectionUpdateArtworkInput = {
     costMinor?: number | null;
     date?: string | null;
     depth?: string | null;
-    editionNumber?: number | null;
+    editionNumber?: string | null;
     editionSize?: string | null;
     height?: string | null;
     medium?: string | null;
@@ -30,6 +30,8 @@ export type MyCollectionArtworkModelUpdateArtworkMutationResponse = {
                 readonly medium: string | null;
                 readonly id: string;
                 readonly internalID: string;
+                readonly editionNumber: string | null;
+                readonly editionSize: string | null;
             } | null;
         } | null;
     } | null;
@@ -53,6 +55,8 @@ mutation MyCollectionArtworkModelUpdateArtworkMutation(
           medium
           id
           internalID
+          editionNumber
+          editionSize
         }
       }
     }
@@ -107,6 +111,20 @@ v2 = {
           "kind": "ScalarField",
           "alias": null,
           "name": "internalID",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "editionNumber",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "editionSize",
           "args": null,
           "storageKey": null
         }
@@ -188,11 +206,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "MyCollectionArtworkModelUpdateArtworkMutation",
-    "id": "863d4d31b6cbe0096b63432387b2e069",
+    "id": "61dae8fb35398a15d74734dc9af54e6c",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'e469f0ec5892608703eddd6467a77489';
+(node as any).hash = 'c1a9a05edb35f618d01d3383aac261d4';
 export default node;

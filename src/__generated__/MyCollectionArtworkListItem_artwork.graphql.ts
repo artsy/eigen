@@ -13,6 +13,8 @@ export type MyCollectionArtworkListItem_artwork = {
     readonly costCurrencyCode: string | null;
     readonly date: string | null;
     readonly depth: string | null;
+    readonly editionSize: string | null;
+    readonly editionNumber: string | null;
     readonly height: string | null;
     readonly id: string;
     readonly image: {
@@ -100,6 +102,20 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "depth",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "editionSize",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "editionNumber",
       "args": null,
       "storageKey": null
     },

@@ -57,7 +57,11 @@ export interface MyCollectionNavigationModel {
   navigateToAllArticles: Action<MyCollectionNavigationModel, string>
   navigateToArtworkDetail: Action<
     MyCollectionNavigationModel,
-    { artistInternalID: string; artworkSlug: string; medium: string | null }
+    {
+      artistInternalID: string
+      artworkSlug: string
+      medium: string | null
+    }
   >
   navigateToViewAllArtworkDetails: Action<MyCollectionNavigationModel, { passProps: any }> // FIXME: any
 
