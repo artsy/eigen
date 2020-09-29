@@ -301,14 +301,16 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
   return (
     <Flex style={{ flex: 1 }}>
       <Flex flexGrow={0} flexDirection="row" justifyContent="space-between">
+        <Flex position="absolute" width="100%" height={67} justifyContent="center" alignItems="center">
+          <Sans size="4" weight="medium">
+            Filter
+          </Sans>
+        </Flex>
         <Flex alignItems="flex-end" mt={0.5} mb={2}>
           <CloseIconContainer hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={handleTappingCloseIcon}>
             <CloseIcon fill="black100" />
           </CloseIconContainer>
         </Flex>
-        <Sans size="4" weight="medium" style={{ alignSelf: "center" }}>
-          Filter
-        </Sans>
         <ClearAllButton
           onPress={() => {
             switch (mode) {

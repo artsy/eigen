@@ -27,6 +27,7 @@ upcoming:
     - Show up to 50 artist series in the full list of an artist's series - roop
     - Fix layout issue in internal webviews - brian
     - Add about page - mounir
+    - Center filters modal title - mounir
 
 releases:
   - version: 6.6.4
