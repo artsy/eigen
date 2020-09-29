@@ -1,10 +1,9 @@
 import React from "react"
-import { TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { Schema, Track, track as _track } from "../../../../utils/track"
 
-import { color, Flex, Sans } from "palette"
+import { color, Flex, Text, Touchable } from "palette"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import colors from "lib/data/colors"
@@ -13,12 +12,10 @@ import styled from "styled-components/native"
 import { ShowPreview_show } from "__generated__/ShowPreview_show.graphql"
 
 const Container = styled.View`
-  flex-direction: column;
   background-color: ${color("black100")};
   border-radius: 15;
   overflow: hidden;
   margin-bottom: 5;
-  flex: 1;
 `
 
 const ImageContainer = styled(Flex)`
@@ -33,7 +30,7 @@ const VerticalLayout = styled.View`
 `
 
 const TextContainer = styled(VerticalLayout)`
-  align-self: center;
+  align-self: flex-start;
   padding: 10px;
   flex-grow: 0;
 `
@@ -63,10 +60,10 @@ export class ShowPreview extends React.Component<Props> {
     const show = this.props.show
     const name = show.fair ? show.fair.name : show.name
     return (
-      <TouchableHighlight
+      <Touchable
         underlayColor={colors["gray-light"]}
         onPress={() => this.attachmentSelected()}
-        style={{ maxWidth: "66.67%" }}
+        style={{ maxWidth: "66.67%", flex: 1 }}
       >
         <Container>
           <ImageContainer>
@@ -80,18 +77,18 @@ export class ShowPreview extends React.Component<Props> {
             />
           </ImageContainer>
           <TextContainer>
-            <Sans size="4" color="white100">
+            <Text variant="mediumText" color="white100">
               {name}
-            </Sans>
-            <Sans size="3" color="white100" numberOfLines={1} ellipsizeMode={"middle"}>
+            </Text>
+            <Text variant="small" color="white100" numberOfLines={1} ellipsizeMode={"middle"}>
               {
                 // @ts-ignore STRICTNESS_MIGRATION
                 show.partner.name
               }
-            </Sans>
+            </Text>
           </TextContainer>
         </Container>
-      </TouchableHighlight>
+      </Touchable>
     )
   }
 }
