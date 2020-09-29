@@ -7,7 +7,7 @@ import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Box, Flex, Join, QuestionCircleIcon, Sans, Separator, Touchable } from "palette"
+import { Box, Flex, Join, QuestionCircleIcon, Separator, Text, Touchable } from "palette"
 import React from "react"
 import { useRef } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
@@ -34,9 +34,9 @@ export const ConversationDetails: React.FC<Props> = (props) => {
   const itemInfoSection = !!item && item.__typename !== "%other" && (
     <Box key="iteminfo-section">
       <Flex flexDirection="column" p={2}>
-        <Sans mb={2} size="3" weight="medium">
+        <Text mb={2} variant="mediumText">
           {item.__typename}
-        </Sans>
+        </Text>
 
         <Touchable
           onPress={() => {
@@ -60,9 +60,9 @@ export const ConversationDetails: React.FC<Props> = (props) => {
 
   const supportSection = (
     <Flex flexDirection="column" p={2} key="support-section">
-      <Sans size="3" weight="medium" mb={2}>
+      <Text variant="mediumText" mb={2}>
         Support
-      </Sans>
+      </Text>
       <Touchable
         onPress={() => {
           SwitchBoard.presentModalViewController(
@@ -73,7 +73,7 @@ export const ConversationDetails: React.FC<Props> = (props) => {
       >
         <Flex mb={1} flexDirection="row">
           <QuestionCircleIcon mr={1} />
-          <Sans size="3">Inquiries FAQ</Sans>
+          <Text variant="text">Inquiries FAQ</Text>
         </Flex>
       </Touchable>
     </Flex>

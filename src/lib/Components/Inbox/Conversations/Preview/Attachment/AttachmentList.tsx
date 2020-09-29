@@ -1,5 +1,5 @@
 import { AttachmentList_messageConnection } from "__generated__/AttachmentList_messageConnection.graphql"
-import { Box, Sans, Spacer, Text } from "palette"
+import { Box, Spacer, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -26,9 +26,9 @@ const AttachmentList: React.FC<Props> = (props) => {
           return item && <FileDownload tiny={true} attachment={item} />
         }}
         ListHeaderComponent={
-          <Sans size="3" weight="medium" mb={2} px={1}>
+          <Text variant="mediumText" mb={2} px={1}>
             Attachments
-          </Sans>
+          </Text>
         }
         ItemSeparatorComponent={() => <Spacer mb={0.5} />}
         ListEmptyComponent={

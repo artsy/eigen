@@ -32,7 +32,7 @@ export const FileDownload: React.FC<Props> = (props) => {
       <Container>
         <DownloadIcon width={iconSize} height={iconSize} mx={1} my={0.5} />
         <AttachmentTextContainer>
-          <Text>{attachment.fileName}</Text>
+          <Text variant="caption">{attachment.fileName}</Text>
         </AttachmentTextContainer>
       </Container>
     </AttachmentPreview>

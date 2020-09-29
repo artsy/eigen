@@ -1,5 +1,5 @@
 import { ArtworkInfo_artwork } from "__generated__/ArtworkInfo_artwork.graphql"
-import { Flex, Sans } from "palette"
+import { Flex, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -10,19 +10,19 @@ interface Props {
 export const ArtworkInfo: React.FC<Props> = (props) => {
   const { artwork } = props
   return (
-    <Flex flexDirection="column" ml={1}>
-      <Sans size="3t" weight="medium" numberOfLines={1}>
+    <Flex flexDirection="column" ml={2}>
+      <Text variant="mediumText" numberOfLines={1}>
         {artwork.artistNames}
-      </Sans>
-      <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode={"clip"}>
+      </Text>
+      <Text variant="caption" color="black60" numberOfLines={1} ellipsizeMode={"clip"}>
         {[artwork.title, artwork.date].join(", ")}
-      </Sans>
-      <Sans size="3t" color="black60" numberOfLines={1}>
+      </Text>
+      <Text variant="caption" color="black60" numberOfLines={1}>
         {artwork.partner?.name}
-      </Sans>
-      <Sans size="3t" color="black60" numberOfLines={1}>
+      </Text>
+      <Text variant="caption" color="black60" numberOfLines={1}>
         {artwork.saleMessage}
-      </Sans>
+      </Text>
     </Flex>
   )
 }
