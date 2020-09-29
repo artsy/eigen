@@ -6,7 +6,8 @@ import React from "react"
 import Artwork from "../ArtworkGridItem"
 
 import { OwnerType } from "@artsy/cohesion"
-import { Touchable } from "palette"
+import { extractText } from "lib/tests/extractText"
+import { Sans, Touchable } from "palette"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 
@@ -130,6 +131,52 @@ describe("in a closed sale", () => {
       />
     )
   })
+
+  it("does not show the partner name if hidePartner is set to true", () => {
+    const saleArtwork = {
+      currentBid: { display: "$200" },
+      sale: {
+        isClosed: false,
+        // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
+      },
+    }
+    const tree = renderWithWrappers(
+      <Artwork
+        artwork={
+          artworkProps(
+            // @ts-ignore STRICTNESS_MIGRATION
+            saleArtwork
+          ) as any
+        }
+        hidePartner
+      />
+    )
+
+    expect(extractText(tree.root)).not.toContain("partner")
+  })
+
+  it("shows the partner name if hidePartner is set to false", () => {
+    const saleArtwork = {
+      currentBid: { display: "$200" },
+      sale: {
+        isClosed: false,
+        // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
+      },
+    }
+    const tree = renderWithWrappers(
+      <Artwork
+        artwork={
+          artworkProps(
+            // @ts-ignore STRICTNESS_MIGRATION
+            saleArtwork
+          ) as any
+        }
+        hidePartner={false}
+      />
+    )
+
+    expect(extractText(tree.root)).toContain("partner")
+  })
 })
 
 const artworkProps = (saleArtwork = null) => {
@@ -149,6 +196,9 @@ const artworkProps = (saleArtwork = null) => {
       aspectRatio: 0.74,
     },
     artistsNames: "Mikael Olson",
+    partner: {
+      name: "partner",
+    },
     id: "mikael-olson-some-kind-of-dinosaur",
     href: "/artwork/mikael-olson-some-kind-of-dinosaur",
     slug: "cool-artwork",

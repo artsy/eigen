@@ -27,6 +27,8 @@ interface Props {
   contextScreenOwnerSlug?: string
   // Hide urgency tags (3 Days left, 1 hour left)
   hideUrgencyTags?: boolean
+  // Hide partner name
+  hidePartner?: boolean
   // Show the lot number (Lot 213)
   showLotLabel?: boolean
 }
@@ -40,6 +42,7 @@ export const Artwork: React.FC<Props> = ({
   contextScreenOwnerSlug,
   contextScreenOwnerType,
   hideUrgencyTags = false,
+  hidePartner = false,
   showLotLabel = false,
 }) => {
   const itemRef = useRef<any>()
@@ -111,7 +114,7 @@ export const Artwork: React.FC<Props> = ({
               {!!artwork.date && `, ${artwork.date}`}
             </Sans>
           )}
-          {!!artwork.partner?.name && (
+          {!hidePartner && !!artwork.partner?.name && (
             <Sans size="3t" color="black60" numberOfLines={1}>
               {artwork.partner.name}
             </Sans>

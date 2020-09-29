@@ -13,7 +13,11 @@ interface Props {
 export const SaleLotsList: React.FC<Props> = ({ me, showGrid }) => {
   return (
     <Flex my={3}>
-      {showGrid ? <LotsByFollowedArtists title="" me={me} showLotLabel hideUrgencyTags /> : <SaleArtworkList me={me} />}
+      {showGrid ? (
+        <LotsByFollowedArtists title="" me={me} showLotLabel hidePartner hideUrgencyTags />
+      ) : (
+        <SaleArtworkList me={me} />
+      )}
     </Flex>
   )
 }
