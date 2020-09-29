@@ -10,5 +10,5 @@ it("renders without throwing an error", () => {
 
 const attachment = {
   id: "cats",
-  download_url: "/path/to/cats.jpg",
+  downloadURL: "/path/to/cats.jpg",
 }

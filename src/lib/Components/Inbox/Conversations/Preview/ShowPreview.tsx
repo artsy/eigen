@@ -52,8 +52,7 @@ export class ShowPreview extends React.Component<Props> {
     owner_id: props.show.internalID,
   }))
   attachmentSelected() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    this.props.onSelected()
+    this.props.onSelected!()
   }
 
   render() {
@@ -68,10 +67,7 @@ export class ShowPreview extends React.Component<Props> {
         <Container>
           <ImageContainer>
             <OpaqueImageView
-              imageURL={
-                // @ts-ignore STRICTNESS_MIGRATION
-                show.coverImage.url
-              }
+              imageURL={show.coverImage?.url}
               style={{ flex: 1 }}
               aspectRatio={show.coverImage?.aspectRatio}
             />
@@ -81,10 +77,7 @@ export class ShowPreview extends React.Component<Props> {
               {name}
             </Text>
             <Text variant="small" color="white100" numberOfLines={1} ellipsizeMode={"middle"}>
-              {
-                // @ts-ignore STRICTNESS_MIGRATION
-                show.partner.name
-              }
+              {show.partner?.name}
             </Text>
           </TextContainer>
         </Container>

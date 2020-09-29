@@ -1,4 +1,5 @@
 import { Message_message } from "__generated__/Message_message.graphql"
+
 import { BoxProps, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { NativeModules, View } from "react-native"
@@ -11,7 +12,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 import { FileDownloadFragmentContainer as FileDownload } from "./Preview/Attachment/FileDownload"
 import ImagePreview from "./Preview/Attachment/ImagePreview"
-import { PDFPreview } from "./Preview/Attachment/PDFPreview"
+import PDFPreview from "./Preview/Attachment/PDFPreview"
 import { TimeSince } from "./TimeSince"
 
 import { graphql } from "relay-runtime"
@@ -51,7 +52,6 @@ export class Message extends React.Component<Props> {
       )
     }
 
-    // @ts-ignore STRICTNESS_MIGRATION
     return compact(attachments).map((attachment, index) => {
       const isImage = attachment?.contentType?.startsWith("image")
       const isPDF = attachment?.contentType === "application/pdf"
@@ -63,24 +63,16 @@ export class Message extends React.Component<Props> {
           flex={1}
           mb={index === attachments!.length - 1 ? 0 : 0.5}
         >
-          {
-            // @ts-ignore STRICTNESS_MIGRATION
-            !!isImage && (
-              // @ts-ignore STRICTNESS_MIGRATION
-              <View key={attachment.id}>
-                <ImagePreview attachment={attachment as any} onSelected={previewAttachment} />
-              </View>
-            )
-          }
-          {
-            // @ts-ignore STRICTNESS_MIGRATION
-            !!isPDF && (
-              // @ts-ignore STRICTNESS_MIGRATION
-              <View key={attachment.id}>
-                <PDFPreview attachment={attachment as any} onSelected={previewAttachment} />
-              </View>
-            )
-          }
+          {!!isImage && (
+            <View key={attachment.id}>
+              <ImagePreview attachment={attachment} onSelected={previewAttachment} />
+            </View>
+          )}
+          {!!isPDF && (
+            <View key={attachment.id}>
+              <PDFPreview attachment={attachment} onSelected={previewAttachment} />
+            </View>
+          )}
           {!isImage && !isPDF && !!attachment?.id && (
             <View key={attachment.id}>
               <FileDownload attachment={attachment} />
@@ -152,8 +144,8 @@ export default createFragmentContainer(Message, {
         contentType
         downloadURL
         fileName
-        ...ImagePreview_attachment
         ...PDFPreview_attachment
+        ...ImagePreview_attachment
         ...FileDownload_attachment
       }
     }

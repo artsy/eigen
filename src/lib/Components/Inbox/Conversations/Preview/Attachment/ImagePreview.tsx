@@ -17,15 +17,15 @@ interface Props extends AttachmentProps {
 }
 
 export const ImagePreview: React.FC<Props> = ({ attachment, onSelected }) => (
-  <AttachmentPreview attachment={attachment as any} onSelected={onSelected}>
-    <Image imageURL={attachment.download_url} />
+  <AttachmentPreview attachment={attachment} onSelected={onSelected}>
+    <Image imageURL={attachment.downloadURL} />
   </AttachmentPreview>
 )
 
 export default createFragmentContainer(ImagePreview, {
   attachment: graphql`
     fragment ImagePreview_attachment on Attachment {
-      download_url: downloadURL
+      downloadURL
       ...AttachmentPreview_attachment
     }
   `,

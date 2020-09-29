@@ -55,8 +55,7 @@ export class ArtworkPreview extends React.Component<Props> {
     owner_slug: props.artwork.slug,
   }))
   attachmentSelected() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    this.props.onSelected()
+    this.props.onSelected!()
   }
 
   render() {
@@ -77,7 +76,7 @@ export class ArtworkPreview extends React.Component<Props> {
           )}
           <TextContainer>
             <Text variant="mediumText" color="white100">
-              {artwork.artist_names}
+              {artwork.artistNames}
             </Text>
             <TitleAndDate>
               {/* Nested Text components are necessary for the correct behaviour on both short and long titles + dates */}
@@ -98,7 +97,7 @@ export default createFragmentContainer(ArtworkPreview, {
       slug
       internalID
       title
-      artist_names: artistNames
+      artistNames
       date
       image {
         url

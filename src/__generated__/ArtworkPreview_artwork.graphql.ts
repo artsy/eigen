@@ -7,7 +7,7 @@ export type ArtworkPreview_artwork = {
     readonly slug: string;
     readonly internalID: string;
     readonly title: string | null;
-    readonly artist_names: string | null;
+    readonly artistNames: string | null;
     readonly date: string | null;
     readonly image: {
         readonly url: string | null;
@@ -53,7 +53,7 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": "artist_names",
+      "alias": null,
       "name": "artistNames",
       "args": null,
       "storageKey": null
@@ -92,5 +92,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'b9cf96cdd66d415c421772126d7cc9bf';
+(node as any).hash = '00ffea70d4a2fd6267c6ed5bfb023f59';
 export default node;

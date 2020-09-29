@@ -19,7 +19,7 @@ export type Message_message = {
         readonly contentType: string;
         readonly downloadURL: string;
         readonly fileName: string;
-        readonly " $fragmentRefs": FragmentRefs<"ImagePreview_attachment" | "PDFPreview_attachment" | "FileDownload_attachment">;
+        readonly " $fragmentRefs": FragmentRefs<"PDFPreview_attachment" | "ImagePreview_attachment" | "FileDownload_attachment">;
     } | null> | null;
     readonly " $refType": "Message_message";
 };
@@ -140,12 +140,12 @@ return {
         },
         {
           "kind": "FragmentSpread",
-          "name": "ImagePreview_attachment",
+          "name": "PDFPreview_attachment",
           "args": null
         },
         {
           "kind": "FragmentSpread",
-          "name": "PDFPreview_attachment",
+          "name": "ImagePreview_attachment",
           "args": null
         },
         {
@@ -158,5 +158,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'f09de18f951d4543861f0936ed76f501';
+(node as any).hash = 'e057ee50789a28c46009ac43c3d57a63';
 export default node;

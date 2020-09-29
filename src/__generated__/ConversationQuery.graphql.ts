@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash f5da9b739dd2ee403e0a3a577ef20c2d */
+/* @relayHash a8dcfac769e14dfb4e7bf7f34fb37a86 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,7 +33,7 @@ fragment ArtworkPreview_artwork on Artwork {
   slug
   internalID
   title
-  artist_names: artistNames
+  artistNames
   date
   image {
     url
@@ -70,7 +70,7 @@ fragment FileDownload_attachment on Attachment {
 }
 
 fragment ImagePreview_attachment on Attachment {
-  download_url: downloadURL
+  downloadURL
   ...AttachmentPreview_attachment
 }
 
@@ -90,8 +90,8 @@ fragment Message_message on Message {
     contentType
     downloadURL
     fileName
-    ...ImagePreview_attachment
     ...PDFPreview_attachment
+    ...ImagePreview_attachment
     ...FileDownload_attachment
   }
 }
@@ -518,13 +518,6 @@ return {
                                 "name": "fileName",
                                 "args": null,
                                 "storageKey": null
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": "download_url",
-                                "name": "downloadURL",
-                                "args": null,
-                                "storageKey": null
                               }
                             ]
                           },
@@ -593,7 +586,7 @@ return {
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": "artist_names",
+                            "alias": null,
                             "name": "artistNames",
                             "args": null,
                             "storageKey": null
@@ -681,7 +674,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConversationQuery",
-    "id": "30d6bf741b728868d9739b1b66f0fc93",
+    "id": "5274f9b3b38897b0ea865cd2c0606d4c",
     "text": null,
     "metadata": {}
   }
