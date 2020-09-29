@@ -7,7 +7,7 @@ import Artwork from "../ArtworkGridItem"
 
 import { OwnerType } from "@artsy/cohesion"
 import { extractText } from "lib/tests/extractText"
-import { Sans, Touchable } from "palette"
+import { Touchable } from "palette"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 
@@ -140,17 +140,7 @@ describe("in a closed sale", () => {
         // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
-    const tree = renderWithWrappers(
-      <Artwork
-        artwork={
-          artworkProps(
-            // @ts-ignore STRICTNESS_MIGRATION
-            saleArtwork
-          ) as any
-        }
-        hidePartner
-      />
-    )
+    const tree = renderWithWrappers(<Artwork artwork={artworkProps(saleArtwork as any) as any} hidePartner />)
 
     expect(extractText(tree.root)).not.toContain("partner")
   })
@@ -163,17 +153,7 @@ describe("in a closed sale", () => {
         // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
-    const tree = renderWithWrappers(
-      <Artwork
-        artwork={
-          artworkProps(
-            // @ts-ignore STRICTNESS_MIGRATION
-            saleArtwork
-          ) as any
-        }
-        hidePartner={false}
-      />
-    )
+    const tree = renderWithWrappers(<Artwork artwork={artworkProps(saleArtwork as any) as any} hidePartner={false} />)
 
     expect(extractText(tree.root)).toContain("partner")
   })
