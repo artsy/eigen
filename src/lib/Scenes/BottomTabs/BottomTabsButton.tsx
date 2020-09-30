@@ -35,11 +35,7 @@ export const BottomTabsButton: React.FC<{
   const tracking = useTracking()
 
   const onPress = () => {
-    // need to eagerly update the selected tab state
-    // otherwise, if we wait for the native routing logic to do its job and get back to us,
-    // it can take a couple hundred milliseconds for the tab buttons to update their active state
-    AppStore.actions.native.setLocalState({ selectedTab: tab })
-    NativeModules.ARScreenPresenterModule.switchTab(tab, {}, false)
+    AppStore.actions.bottomTabs.setSelectedTab(tab)
     tracking.trackEvent(tappedTabBar({ tab: bottomTabsConfig[tab].analyticsDescription, badge: badgeCount > 0 }))
   }
 

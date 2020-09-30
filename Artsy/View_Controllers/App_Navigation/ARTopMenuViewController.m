@@ -36,8 +36,6 @@
 
 @interface ARTopMenuViewController () <ARTabViewDelegate>
 
-@property (readwrite, nonatomic, assign) NSString *currentTab;
-
 @property (readonly, nonatomic, strong) ArtsyEcho *echo;
 
 // we need to wait for the view to load before we push a deep link VC on startup
@@ -83,18 +81,17 @@ static ARTopMenuViewController *_sharedManager = nil;
     self.view.backgroundColor = [UIColor whiteColor];
 
 //    self.navigationDataSource = _navigationDataSource ?: [[ARTopMenuNavigationDataSource alloc] init];
+//
+//    ARTabContentView *tabContentView = [[ARTabContentView alloc] initWithFrame:CGRectZero
+//                                                            hostViewController:self
+//                                                                      delegate:self
+//                                                                    dataSource:self.navigationDataSource];
 
-    ARTabContentView *tabContentView = [[ARTabContentView alloc] initWithFrame:CGRectZero
-                                                            hostViewController:self
-                                                                      delegate:self
-                                                                    dataSource:self.navigationDataSource];
+//    _tabContentView = tabContentView;
+//    [self.view addSubview:tabContentView];
+//    [tabContentView alignToView:self.view];
 
-    _tabContentView = tabContentView;
-    [self.view addSubview:tabContentView];
-    [tabContentView alignToView:self.view];
-    self.currentTab = [ARTabType home];
-    [self.tabContentView forceSetCurrentTab:[ARTabType home] animated:NO];
-
+    
     // Ensure it's created now and started listening for keyboard changes.
     // TODO Ideally this pod would start listening from launch of the app, so we don't need to rely on this one but can
     // be assured that any VCs guide can be trusted.

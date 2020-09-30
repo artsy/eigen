@@ -34,7 +34,7 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.MoveTabNavToReactNative]: (state) => {
     const tab = state.native.sessionState.selectedTab
-    state.bottomTabs.selectedTab = tab
+    state.bottomTabs.sessionState.selectedTab = tab
     delete state.native.sessionState.selectedTab
   },
 }

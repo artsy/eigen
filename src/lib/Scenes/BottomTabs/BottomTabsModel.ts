@@ -8,16 +8,18 @@ import { BottomTabType } from "./BottomTabType"
 export interface BottomTabsModel {
   sessionState: {
     unreadConversationCount: number
+    selectedTab: BottomTabType
   }
   unreadConversationCountChanged: Action<BottomTabsModel, number>
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
 
-  selectedTab: BottomTabType
+  setSelectedTab: Action<BottomTabsModel, BottomTabType>
 }
 
 export const BottomTabsModel: BottomTabsModel = {
   sessionState: {
     unreadConversationCount: 0,
+    selectedTab: "home",
   },
   unreadConversationCountChanged: action((state, unreadConversationCount) => {
     state.sessionState.unreadConversationCount = unreadConversationCount
@@ -41,5 +43,7 @@ export const BottomTabsModel: BottomTabsModel = {
     }
   }),
 
-  selectedTab: "home",
+  setSelectedTab: action((state, nextSelectedTab) => {
+    state.sessionState.selectedTab = nextSelectedTab
+  }),
 }
