@@ -40,13 +40,19 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
         }),
       })
       const response = await res.json()
-      if (response.error) {
-        return alert(typeof response.error === "string" ? response.error : "Something went wrong.")
+
+      if (res.status < 200 || res.status > 299 || response.error) {
+        let message: string
+        if (response.type === "param_error") {
+          message = response.message
+        } else if (typeof response.error === "string") {
+          message = response.error
+        } else {
+          message = "Something went wrong."
+        }
+        return alert(message)
       }
 
-      if (response.type === "param_error") {
-        return alert(response.message)
-      }
       // The user successfully updated their password
       return alert(
         "Password Changed",
