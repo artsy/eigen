@@ -22,6 +22,8 @@ export const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = (
     costCurrencyCode,
     date,
     depth,
+    editionNumber,
+    editionSize,
     height,
     medium,
     metric,
@@ -45,7 +47,8 @@ export const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = (
         <Field label="Category" value={capitalize(medium as string)} />
         <Field label="Materials" value={capitalize(category as string)} />
         <Field label="Dimensions" value={dimensions} />
-        <Field label="Edition" value="TODO" />
+        <Field label="Edition number" value={editionNumber} />
+        <Field label="Edition size" value={editionSize} />
         <Field label="Price paid" value={`${costMinor} ${costCurrencyCode}`} />
       </ScreenMargin>
     )
@@ -54,7 +57,8 @@ export const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = (
       <ScreenMargin>
         <Field label="Category" value={capitalize(medium as string)} />
         <Field label="Dimensions" value={dimensions} />
-        <Field label="Edition" value="TODO" />
+        <Field label="Edition number" value={editionNumber} />
+        <Field label="Edition size" value={editionSize} />
         <Field label="Price paid" value={`${costMinor} ${costCurrencyCode}`} />
 
         <Spacer my={0.5} />

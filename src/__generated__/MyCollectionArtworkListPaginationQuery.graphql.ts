@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 81dc3c6a2736210e94f9c5ddbe032f6f */
+/* @relayHash 5132bfaf640936333b13799f5e1950fa */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -42,6 +42,8 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
   costCurrencyCode
   date
   depth
+  editionSize
+  editionNumber
   height
   id
   image {
@@ -292,6 +294,20 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
+                        "name": "editionSize",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "editionNumber",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
                         "name": "height",
                         "args": null,
                         "storageKey": null
@@ -379,7 +395,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkListPaginationQuery",
-    "id": "e1069a11d1252a9fb993d8f8cef91d66",
+    "id": "4c14c4daf846aa976b5e94113562df3b",
     "text": null,
     "metadata": {}
   }

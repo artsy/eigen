@@ -25,7 +25,7 @@ export interface ArtworkFormValues {
   date: string
   depth: string
   editionSize: string
-  editionNumber: number | null
+  editionNumber: string
   height: string
   medium: string
   metric: Metric
@@ -44,7 +44,7 @@ const initialFormValues: ArtworkFormValues = {
   date: "",
   depth: "",
   editionSize: "",
-  editionNumber: null,
+  editionNumber: "",
   height: "",
   medium: "",
   metric: "",
@@ -158,6 +158,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
                       medium
                       internalID
                       slug
+                      editionNumber
+                      editionSize
                     }
                   }
                 }
@@ -244,8 +246,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       depth: artwork.depth,
       costMinor: artwork.costMinor,
       costCurrencyCode: artwork.costCurrencyCode,
-      // editionSize: artwork.editionSize,
-      // editionNumber: artwork.editionSize,
+      editionSize: artwork.editionSize,
+      editionNumber: artwork.editionNumber,
       height: artwork.height,
       medium: artwork.medium,
       metric: artwork.metric,
@@ -253,6 +255,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       title: artwork.title,
       width: artwork.width,
     }
+
     actions.setFormValues(editProps)
   }),
 
@@ -271,6 +274,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
                     medium
                     id
                     internalID
+                    editionNumber
+                    editionSize
                   }
                 }
 

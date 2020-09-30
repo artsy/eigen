@@ -9,10 +9,12 @@ import { Box, Flex, Join, Sans, space, Spacer } from "palette"
 import React, { useRef, useState } from "react"
 
 export const AdditionalDetails = () => {
-  const [isEdition, setIsEdition] = useState(false) // TODO: pass in edition props from db to compute initial state
+  const { formik } = useArtworkForm()
+  const formikValues = formik?.values
+  const hasEditionNumber: boolean = !!formikValues?.editionNumber!
+  const [isEdition, setIsEdition] = useState(hasEditionNumber)
   const pricePaidCurrencyInputRef = useRef<Select<string>>(null)
   const navActions = AppStore.actions.myCollection.navigation
-  const { formik } = useArtworkForm()
 
   return (
     <Box>
@@ -25,21 +27,22 @@ export const AdditionalDetails = () => {
               placeholder="Title"
               onChangeText={formik.handleChange("title")}
               onBlur={formik.handleBlur("title")}
-              defaultValue={formik.values.title}
               data-test-id="TitleInput"
+              defaultValue={formikValues.title}
             />
             <Input
               title="Date"
               placeholder="Date"
               onChangeText={formik.handleChange("date")}
               onBlur={formik.handleBlur("date")}
-              defaultValue={formik.values.date}
               data-test-id="DateInput"
+              defaultValue={formikValues.date}
             />
 
             <Checkbox
               onPress={() => setIsEdition(!isEdition)}
               data-test-id="EditionCheckbox"
+              checked={hasEditionNumber}
               // disabled={isLoading}
             >
               <Sans size="3" color="black60">
@@ -53,7 +56,7 @@ export const AdditionalDetails = () => {
                   placeholder="Edition number"
                   onChangeText={formik.handleChange("editionNumber")}
                   onBlur={formik.handleBlur("editionNumber")}
-                  defaultValue={String(formik.values.editionNumber)}
+                  defaultValue={formikValues.editionNumber!}
                   style={{ marginRight: space(1) }}
                   data-test-id="EditionNumberInput"
                 />
@@ -61,8 +64,8 @@ export const AdditionalDetails = () => {
                   placeholder="Edition size"
                   onChangeText={formik.handleChange("editionSize")}
                   onBlur={formik.handleBlur("editionSize")}
-                  defaultValue={formik.values.editionSize}
                   data-test-id="EditionSizeInput"
+                  defaultValue={formikValues.editionSize}
                 />
               </Flex>
             )}
@@ -72,8 +75,8 @@ export const AdditionalDetails = () => {
               placeholder="Materials"
               onChangeText={formik.handleChange("category")}
               onBlur={formik.handleBlur("category")}
-              defaultValue={formik.values.category}
               data-test-id="MaterialsInput"
+              defaultValue={formikValues.category}
             />
 
             <Input
@@ -81,15 +84,15 @@ export const AdditionalDetails = () => {
               placeholder="Price paid"
               onChangeText={formik.handleChange("costMinor")}
               onBlur={formik.handleBlur("costMinor")}
-              defaultValue={String(formik.values.costMinor)}
               data-test-id="PricePaidInput"
+              defaultValue={String(formikValues.costMinor)}
             />
 
             <Select
               title="Currency"
               placeholder="Currency"
               options={pricePaidCurrencySelectOptions}
-              value={formik.values.costCurrencyCode}
+              value={formikValues.costCurrencyCode}
               enableSearch={false}
               showTitleLabel={false}
               ref={pricePaidCurrencyInputRef}

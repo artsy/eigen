@@ -13,6 +13,8 @@ export type MyCollectionArtworkDetail_sharedProps = {
     readonly costCurrencyCode: string | null;
     readonly date: string | null;
     readonly depth: string | null;
+    readonly editionSize: string | null;
+    readonly editionNumber: string | null;
     readonly height: string | null;
     readonly id: string;
     readonly image: {
@@ -106,6 +108,20 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "editionSize",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "editionNumber",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "height",
       "args": null,
       "storageKey": null
@@ -174,5 +190,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '97687953da52ac8984f2ed61a5860642';
+(node as any).hash = 'deb0461bc27776da85cea94bc72dc72f';
 export default node;
