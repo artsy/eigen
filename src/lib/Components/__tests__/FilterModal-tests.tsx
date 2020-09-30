@@ -7,9 +7,9 @@ import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graph
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import { FilterParamName, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Sans, Theme } from "palette"
 import { useTracking } from "react-tracking"
 import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
@@ -23,7 +23,12 @@ import {
   FilterOptions,
   TouchableOptionListItemRow,
 } from "../../../lib/Components/FilterModal"
-import { Aggregations, ArtworkFilterContext, ArtworkFilterContextState, reducer } from "../../utils/ArtworkFiltersStore"
+import {
+  Aggregations,
+  ArtworkFilterContext,
+  ArtworkFilterContextState,
+  reducer,
+} from "../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { NavigateBackIconContainer } from "../ArtworkFilterOptions/SingleSelectOption"
 import { closeModalMock, MockFilterScreen } from "./FilterTestHelper"
 

@@ -5,7 +5,7 @@ import {
   FilterParamName,
   FilterParams,
   selectedOption,
-} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
@@ -20,7 +20,7 @@ import {
   Aggregations,
   ArtworkFilterContext,
   useSelectedOptionsDisplay,
-} from "../utils/ArtworkFiltersStore"
+} from "../utils/ArtworkFilter/ArtworkFiltersStore"
 import { AnimatedBottomButton } from "./AnimatedBottomButton"
 import { ArtistsIFollowOptionsScreen } from "./ArtworkFilterOptions/ArtistsIFollowOptions"
 import { ColorOption, ColorOptionsScreen } from "./ArtworkFilterOptions/ColorOptions"

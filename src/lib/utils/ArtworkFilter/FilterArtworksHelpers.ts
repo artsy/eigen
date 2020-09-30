@@ -1,5 +1,5 @@
 import { FilterScreen } from "lib/Components/FilterModal"
-import { Aggregations, FilterArray } from "lib/utils/ArtworkFiltersStore"
+import { Aggregations, FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { forOwn } from "lodash"
 
 // General filter types and objects
