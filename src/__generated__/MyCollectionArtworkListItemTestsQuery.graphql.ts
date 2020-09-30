@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ac2b80d4e459526219aa49194cb961a7 */
+/* @relayHash 0989387b8bf20c3b4b93c5febce40686 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionArtworkListItemTestsQueryVariables = {};
@@ -15,6 +15,8 @@ export type MyCollectionArtworkListItemTestsQueryResponse = {
         readonly costCurrencyCode: string | null;
         readonly date: string | null;
         readonly depth: string | null;
+        readonly editionSize: string | null;
+        readonly editionNumber: string | null;
         readonly height: string | null;
         readonly id: string;
         readonly image: {
@@ -48,6 +50,8 @@ query MyCollectionArtworkListItemTestsQuery {
     costCurrencyCode
     date
     depth
+    editionSize
+    editionNumber
     height
     id
     image {
@@ -123,18 +127,32 @@ v7 = {
 v8 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "height",
+  "name": "editionSize",
   "args": null,
   "storageKey": null
 },
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "editionNumber",
   "args": null,
   "storageKey": null
 },
 v10 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "height",
+  "args": null,
+  "storageKey": null
+},
+v11 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v12 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -152,48 +170,48 @@ v10 = {
     }
   ]
 },
-v11 = {
+v13 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "medium",
   "args": null,
   "storageKey": null
 },
-v12 = {
+v14 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "metric",
   "args": null,
   "storageKey": null
 },
-v13 = {
+v15 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "slug",
   "args": null,
   "storageKey": null
 },
-v14 = {
+v16 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "title",
   "args": null,
   "storageKey": null
 },
-v15 = {
+v17 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "width",
   "args": null,
   "storageKey": null
 },
-v16 = {
+v18 = {
   "type": "ID",
   "enumValues": null,
   "plural": false,
   "nullable": false
 },
-v17 = {
+v19 = {
   "type": "String",
   "enumValues": null,
   "plural": false,
@@ -238,12 +256,14 @@ return {
           (v8/*: any*/),
           (v9/*: any*/),
           (v10/*: any*/),
-          (v1/*: any*/),
           (v11/*: any*/),
           (v12/*: any*/),
+          (v1/*: any*/),
           (v13/*: any*/),
           (v14/*: any*/),
-          (v15/*: any*/)
+          (v15/*: any*/),
+          (v16/*: any*/),
+          (v17/*: any*/)
         ]
       }
     ]
@@ -272,7 +292,7 @@ return {
             "plural": false,
             "selections": [
               (v1/*: any*/),
-              (v9/*: any*/)
+              (v11/*: any*/)
             ]
           },
           (v2/*: any*/),
@@ -284,12 +304,14 @@ return {
           (v8/*: any*/),
           (v9/*: any*/),
           (v10/*: any*/),
-          (v1/*: any*/),
           (v11/*: any*/),
           (v12/*: any*/),
+          (v1/*: any*/),
           (v13/*: any*/),
           (v14/*: any*/),
-          (v15/*: any*/)
+          (v15/*: any*/),
+          (v16/*: any*/),
+          (v17/*: any*/)
         ]
       }
     ]
@@ -297,7 +319,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkListItemTestsQuery",
-    "id": "89b41bb5433d9334a23873894f1257bd",
+    "id": "d5e3d7a80451b0f2f13b2389f2281bbf",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -307,45 +329,47 @@ return {
           "plural": false,
           "nullable": true
         },
-        "artwork.id": (v16/*: any*/),
+        "artwork.id": (v18/*: any*/),
         "artwork.artist": {
           "type": "Artist",
           "enumValues": null,
           "plural": false,
           "nullable": true
         },
-        "artwork.artistNames": (v17/*: any*/),
-        "artwork.category": (v17/*: any*/),
+        "artwork.artistNames": (v19/*: any*/),
+        "artwork.category": (v19/*: any*/),
         "artwork.costMinor": {
           "type": "Int",
           "enumValues": null,
           "plural": false,
           "nullable": true
         },
-        "artwork.costCurrencyCode": (v17/*: any*/),
-        "artwork.date": (v17/*: any*/),
-        "artwork.depth": (v17/*: any*/),
-        "artwork.height": (v17/*: any*/),
+        "artwork.costCurrencyCode": (v19/*: any*/),
+        "artwork.date": (v19/*: any*/),
+        "artwork.depth": (v19/*: any*/),
+        "artwork.editionSize": (v19/*: any*/),
+        "artwork.editionNumber": (v19/*: any*/),
+        "artwork.height": (v19/*: any*/),
         "artwork.image": {
           "type": "Image",
           "enumValues": null,
           "plural": false,
           "nullable": true
         },
-        "artwork.internalID": (v16/*: any*/),
-        "artwork.medium": (v17/*: any*/),
-        "artwork.metric": (v17/*: any*/),
-        "artwork.slug": (v16/*: any*/),
-        "artwork.title": (v17/*: any*/),
-        "artwork.width": (v17/*: any*/),
-        "artwork.artist.internalID": (v16/*: any*/),
+        "artwork.internalID": (v18/*: any*/),
+        "artwork.medium": (v19/*: any*/),
+        "artwork.metric": (v19/*: any*/),
+        "artwork.slug": (v18/*: any*/),
+        "artwork.title": (v19/*: any*/),
+        "artwork.width": (v19/*: any*/),
+        "artwork.artist.internalID": (v18/*: any*/),
         "artwork.artist.id": {
           "type": "ID",
           "enumValues": null,
           "plural": false,
           "nullable": true
         },
-        "artwork.image.url": (v17/*: any*/)
+        "artwork.image.url": (v19/*: any*/)
       }
     }
   }

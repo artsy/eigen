@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 631eff845e23832169bfbc9ead3e84ae */
+/* @relayHash 559543db0f093bf624ee9b3326557017 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -36,6 +36,8 @@ fragment MyCollectionArtworkMeta_artwork on Artwork {
   costCurrencyCode
   date
   depth
+  editionSize
+  editionNumber
   height
   id
   image {
@@ -183,6 +185,20 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
+            "name": "editionSize",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "editionNumber",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
             "name": "height",
             "args": null,
             "storageKey": null
@@ -249,7 +265,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkMetaTestsQuery",
-    "id": "aac1d97677369d81e2a075340fde312b",
+    "id": "ae1fd3275b0e12d911ca8dc92f8a9fab",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -277,6 +293,8 @@ return {
         "artwork.costCurrencyCode": (v4/*: any*/),
         "artwork.date": (v4/*: any*/),
         "artwork.depth": (v4/*: any*/),
+        "artwork.editionSize": (v4/*: any*/),
+        "artwork.editionNumber": (v4/*: any*/),
         "artwork.height": (v4/*: any*/),
         "artwork.image": {
           "type": "Image",

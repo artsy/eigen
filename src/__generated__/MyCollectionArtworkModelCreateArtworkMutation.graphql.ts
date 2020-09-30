@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash fa7f3e5cb2b79a6fe5e01811fe45d43b */
+/* @relayHash 55d94b960bf6042d4cf8df0e06a60184 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionCreateArtworkInput = {
@@ -11,7 +11,7 @@ export type MyCollectionCreateArtworkInput = {
     costMinor?: number | null;
     date?: string | null;
     depth?: string | null;
-    editionNumber?: number | null;
+    editionNumber?: string | null;
     editionSize?: string | null;
     height?: string | null;
     medium: string;

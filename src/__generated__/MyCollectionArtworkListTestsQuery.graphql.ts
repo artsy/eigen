@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0deb3e71263d8415271782e01999ce3c */
+/* @relayHash 8172752d925ab26efe3e33622c806bec */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -36,6 +36,8 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
   costCurrencyCode
   date
   depth
+  editionSize
+  editionNumber
   height
   id
   image {
@@ -274,6 +276,20 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
+                        "name": "editionSize",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "editionNumber",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
                         "name": "height",
                         "args": null,
                         "storageKey": null
@@ -361,7 +377,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MyCollectionArtworkListTestsQuery",
-    "id": "bb5964492d40862140cf957f860bfa04",
+    "id": "3acb5a54bc244a009c083d151774aa65",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -424,6 +440,8 @@ return {
         "me.myCollectionConnection.edges.node.costCurrencyCode": (v4/*: any*/),
         "me.myCollectionConnection.edges.node.date": (v4/*: any*/),
         "me.myCollectionConnection.edges.node.depth": (v4/*: any*/),
+        "me.myCollectionConnection.edges.node.editionSize": (v4/*: any*/),
+        "me.myCollectionConnection.edges.node.editionNumber": (v4/*: any*/),
         "me.myCollectionConnection.edges.node.height": (v4/*: any*/),
         "me.myCollectionConnection.edges.node.image": {
           "type": "Image",
