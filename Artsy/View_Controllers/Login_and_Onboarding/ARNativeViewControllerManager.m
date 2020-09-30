@@ -3,7 +3,7 @@
 #import "ARSlideshowViewController.h"
 #import "UIDevice-Hardware.h"
 #import <Emission/ARComponentViewController.h>
-#import "ARTopMenuViewController.h"
+
 
 @interface ARNativeViewControllerWrapperView : UIView
 
@@ -38,8 +38,6 @@
 - (UIViewController *)getWrappedViewController {
     if ([self.viewName isEqualToString:@"Onboarding"]) {
         return [[AROnboardingViewController alloc] init];
-    } else if ([self.viewName isEqualToString:@"Main"]) {
-        return [ARTopMenuViewController sharedController];
     } else {
         return nil;
     }
