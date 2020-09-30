@@ -1,6 +1,7 @@
 import moment from "moment"
 import { Box, BoxProps, Sans, SansSize } from "palette"
 import React from "react"
+import { ViewStyle } from "react-native"
 
 const exactDate = (time: string) => {
   if (!time) {
@@ -31,7 +32,7 @@ interface TimeSinceProps extends Omit<BoxProps, "color"> {
   size?: SansSize
   time: string | null
   exact?: boolean
-  style?: any // FIXME: React.CSSProperties
+  style?: ViewStyle
 }
 export const TimeSince: React.FC<TimeSinceProps> = ({ size = "2", time, exact, ...props }) => {
   if (!time) {

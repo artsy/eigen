@@ -37,6 +37,5 @@ export const groupMessages = (messages: MessageGroup): MessageGroup[] => {
       lastGroup.push(currentMessage)
     }
   }
-  // FIXME
   return groups as MessageGroup[]
 }
