@@ -191,7 +191,6 @@ describe("filterArtworksParams helper", () => {
       atAuction: false,
       acquireable: false,
       offerable: false,
-      includeArtworksByFollowedArtists: false,
     })
   })
 
@@ -206,7 +205,6 @@ describe("filterArtworksParams helper", () => {
       atAuction: false,
       acquireable: false,
       offerable: false,
-      includeArtworksByFollowedArtists: false,
     })
   })
 
@@ -227,7 +225,6 @@ describe("filterArtworksParams helper", () => {
       atAuction: false,
       acquireable: false,
       offerable: false,
-      includeArtworksByFollowedArtists: false,
     })
   })
 
@@ -268,6 +265,11 @@ describe("filterArtworksParams helper", () => {
         paramValue: false,
         paramName: FilterParamName.waysToBuyMakeOffer,
       },
+      {
+        displayText: "Artists I follow",
+        paramValue: true,
+        paramName: FilterParamName.artistsIFollow,
+      },
     ]
     expect(filterArtworksParams(appliedFilters)).toEqual({
       sort: "-partner_updated_at",
@@ -278,7 +280,7 @@ describe("filterArtworksParams helper", () => {
       atAuction: false,
       acquireable: true,
       offerable: false,
-      includeArtworksByFollowedArtists: false,
+      includeArtworksByFollowedArtists: true,
     })
   })
 })

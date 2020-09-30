@@ -61,7 +61,6 @@ const defaultFilterParams = {
   acquireable: false,
   inquireableOnly: false,
   offerable: false,
-  includeArtworksByFollowedArtists: false,
 } as FilterParams
 
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams) => {
