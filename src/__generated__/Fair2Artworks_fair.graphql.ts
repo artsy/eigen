@@ -3,10 +3,19 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type ArtworkAggregation = "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 export type Fair2Artworks_fair = {
     readonly slug: string;
     readonly internalID: string;
     readonly fairArtworks: {
+        readonly aggregations: ReadonlyArray<{
+            readonly slice: ArtworkAggregation | null;
+            readonly counts: ReadonlyArray<{
+                readonly count: number;
+                readonly name: string;
+                readonly value: string;
+            } | null> | null;
+        } | null> | null;
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
@@ -14,6 +23,7 @@ export type Fair2Artworks_fair = {
         } | null> | null;
         readonly counts: {
             readonly total: number | null;
+            readonly followedArtists: number | null;
         } | null;
         readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
     } | null;
@@ -61,6 +71,72 @@ const node: ReaderFragment = {
       "name": "sort",
       "type": "String",
       "defaultValue": "-decayed_merch"
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "medium",
+      "type": "String",
+      "defaultValue": "*"
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "priceRange",
+      "type": "String",
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "color",
+      "type": "String",
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "partnerID",
+      "type": "ID",
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "dimensionRange",
+      "type": "String",
+      "defaultValue": "*-*"
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "majorPeriods",
+      "type": "[String]",
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "acquireable",
+      "type": "Boolean",
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "inquireableOnly",
+      "type": "Boolean",
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "atAuction",
+      "type": "Boolean",
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "offerable",
+      "type": "Boolean",
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "includeArtworksByFollowedArtists",
+      "type": "Boolean",
+      "defaultValue": null
     }
   ],
   "selections": [
@@ -86,6 +162,75 @@ const node: ReaderFragment = {
       "args": [
         {
           "kind": "Variable",
+          "name": "acquireable",
+          "variableName": "acquireable"
+        },
+        {
+          "kind": "Literal",
+          "name": "aggregations",
+          "value": [
+            "COLOR",
+            "DIMENSION_RANGE",
+            "GALLERY",
+            "INSTITUTION",
+            "MAJOR_PERIOD",
+            "MEDIUM",
+            "PRICE_RANGE",
+            "FOLLOWED_ARTISTS"
+          ]
+        },
+        {
+          "kind": "Variable",
+          "name": "atAuction",
+          "variableName": "atAuction"
+        },
+        {
+          "kind": "Variable",
+          "name": "color",
+          "variableName": "color"
+        },
+        {
+          "kind": "Variable",
+          "name": "dimensionRange",
+          "variableName": "dimensionRange"
+        },
+        {
+          "kind": "Variable",
+          "name": "includeArtworksByFollowedArtists",
+          "variableName": "includeArtworksByFollowedArtists"
+        },
+        {
+          "kind": "Variable",
+          "name": "inquireableOnly",
+          "variableName": "inquireableOnly"
+        },
+        {
+          "kind": "Variable",
+          "name": "majorPeriods",
+          "variableName": "majorPeriods"
+        },
+        {
+          "kind": "Variable",
+          "name": "medium",
+          "variableName": "medium"
+        },
+        {
+          "kind": "Variable",
+          "name": "offerable",
+          "variableName": "offerable"
+        },
+        {
+          "kind": "Variable",
+          "name": "partnerID",
+          "variableName": "partnerID"
+        },
+        {
+          "kind": "Variable",
+          "name": "priceRange",
+          "variableName": "priceRange"
+        },
+        {
+          "kind": "Variable",
           "name": "sort",
           "variableName": "sort"
         }
@@ -93,6 +238,56 @@ const node: ReaderFragment = {
       "concreteType": "FilterArtworksConnection",
       "plural": false,
       "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "aggregations",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ArtworksAggregationResults",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "slice",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "counts",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "AggregationCount",
+              "plural": true,
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "count",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "name",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "value",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
+            }
+          ]
+        },
         {
           "kind": "LinkedField",
           "alias": null,
@@ -151,6 +346,13 @@ const node: ReaderFragment = {
               "name": "total",
               "args": null,
               "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "followedArtists",
+              "args": null,
+              "storageKey": null
             }
           ]
         },
@@ -188,5 +390,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'bb5394b06085e2888272e96a0b1cbbec';
+(node as any).hash = '06024cf92938979a780c90b0f06f4c06';
 export default node;

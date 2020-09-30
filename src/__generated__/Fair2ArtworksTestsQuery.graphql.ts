@@ -1,9 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 056a09e1db046d1fed052a2b3430ef53 */
+/* @relayHash f67657e16126495e33710170a1ccc04d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type ArtworkAggregation = "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 export type Fair2ArtworksTestsQueryVariables = {
     fairID: string;
 };
@@ -17,6 +18,14 @@ export type Fair2ArtworksTestsQueryRawResponse = {
         readonly slug: string;
         readonly internalID: string;
         readonly fairArtworks: ({
+            readonly aggregations: ReadonlyArray<({
+                readonly slice: ArtworkAggregation | null;
+                readonly counts: ReadonlyArray<({
+                    readonly count: number;
+                    readonly name: string;
+                    readonly value: string;
+                }) | null> | null;
+            }) | null> | null;
             readonly edges: ReadonlyArray<({
                 readonly node: ({
                     readonly id: string;
@@ -59,6 +68,7 @@ export type Fair2ArtworksTestsQueryRawResponse = {
             }) | null> | null;
             readonly counts: ({
                 readonly total: number | null;
+                readonly followedArtists: number | null;
             }) | null;
             readonly pageInfo: {
                 readonly hasNextPage: boolean;
@@ -126,7 +136,15 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment Fair2Artworks_fair on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch") {
+  fairArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS]) {
+    aggregations {
+      slice
+      counts {
+        count
+        name
+        value
+      }
+    }
     edges {
       node {
         id
@@ -136,6 +154,7 @@ fragment Fair2Artworks_fair on Fair {
     }
     counts {
       total
+      followedArtists
     }
     ...InfiniteScrollArtworksGrid_connection
     pageInfo {
@@ -202,8 +221,32 @@ v3 = {
 v4 = [
   {
     "kind": "Literal",
+    "name": "aggregations",
+    "value": [
+      "COLOR",
+      "DIMENSION_RANGE",
+      "GALLERY",
+      "INSTITUTION",
+      "MAJOR_PERIOD",
+      "MEDIUM",
+      "PRICE_RANGE",
+      "FOLLOWED_ARTISTS"
+    ]
+  },
+  {
+    "kind": "Literal",
+    "name": "dimensionRange",
+    "value": "*-*"
+  },
+  {
+    "kind": "Literal",
     "name": "first",
     "value": 20
+  },
+  {
+    "kind": "Literal",
+    "name": "medium",
+    "value": "*"
   },
   {
     "kind": "Literal",
@@ -212,6 +255,13 @@ v4 = [
   }
 ],
 v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
@@ -265,11 +315,55 @@ return {
             "kind": "LinkedField",
             "alias": "fairArtworks",
             "name": "filterArtworksConnection",
-            "storageKey": "filterArtworksConnection(first:20,sort:\"-decayed_merch\")",
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\"],dimensionRange:\"*-*\",first:20,medium:\"*\",sort:\"-decayed_merch\")",
             "args": (v4/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "aggregations",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ArtworksAggregationResults",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "slice",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "counts",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "AggregationCount",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "count",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      (v5/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "value",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
+                  }
+                ]
+              },
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -288,7 +382,7 @@ return {
                     "concreteType": "Artwork",
                     "plural": false,
                     "selections": [
-                      (v5/*: any*/),
+                      (v6/*: any*/),
                       (v2/*: any*/),
                       {
                         "kind": "LinkedField",
@@ -394,7 +488,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v5/*: any*/)
+                          (v6/*: any*/)
                         ]
                       },
                       {
@@ -449,7 +543,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v5/*: any*/)
+                          (v6/*: any*/)
                         ]
                       },
                       {
@@ -461,14 +555,8 @@ return {
                         "concreteType": "Partner",
                         "plural": false,
                         "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "name",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          (v5/*: any*/)
+                          (v5/*: any*/),
+                          (v6/*: any*/)
                         ]
                       },
                       {
@@ -487,7 +575,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v5/*: any*/)
+                  (v6/*: any*/)
                 ]
               },
               {
@@ -503,6 +591,13 @@ return {
                     "kind": "ScalarField",
                     "alias": null,
                     "name": "total",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "followedArtists",
                     "args": null,
                     "storageKey": null
                   }
@@ -540,7 +635,7 @@ return {
                   }
                 ]
               },
-              (v5/*: any*/)
+              (v6/*: any*/)
             ]
           },
           {
@@ -551,10 +646,22 @@ return {
             "handle": "connection",
             "key": "Fair_fairArtworks",
             "filters": [
-              "sort"
+              "sort",
+              "medium",
+              "priceRange",
+              "color",
+              "partnerID",
+              "dimensionRange",
+              "majorPeriods",
+              "acquireable",
+              "inquireableOnly",
+              "atAuction",
+              "offerable",
+              "includeArtworksByFollowedArtists",
+              "aggregations"
             ]
           },
-          (v5/*: any*/)
+          (v6/*: any*/)
         ]
       }
     ]
@@ -562,7 +669,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "Fair2ArtworksTestsQuery",
-    "id": "6f0b6148204dc6f8b4aa88fb9fa7d223",
+    "id": "421cb2e3fa86613cd4ece8d49988b650",
     "text": null,
     "metadata": {}
   }
