@@ -36,8 +36,6 @@
 
 @interface ARTopMenuViewController () <ARTabViewDelegate>
 
-@property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
-
 @property (readwrite, nonatomic, assign) NSString *currentTab;
 
 @property (readonly, nonatomic, strong) ArtsyEcho *echo;
@@ -84,7 +82,7 @@ static ARTopMenuViewController *_sharedManager = nil;
 
     self.view.backgroundColor = [UIColor whiteColor];
 
-    self.navigationDataSource = _navigationDataSource ?: [[ARTopMenuNavigationDataSource alloc] init];
+//    self.navigationDataSource = _navigationDataSource ?: [[ARTopMenuNavigationDataSource alloc] init];
 
     ARTabContentView *tabContentView = [[ARTabContentView alloc] initWithFrame:CGRectZero
                                                             hostViewController:self

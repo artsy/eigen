@@ -15,8 +15,9 @@
 
 
 @implementation ARTabContentView
+/// move to RN?
 
-- (id)initWithFrame:(CGRect)frame hostViewController:(UIViewController *)controller delegate:(id<ARTabViewDelegate>)delegate dataSource:(ARTopMenuNavigationDataSource *)dataSource
+- (id)initWithFrame:(CGRect)frame hostViewController:(UIViewController *)controller delegate:(id<ARTabViewDelegate>)delegate dataSource:(id)dataSource
 {
     self = [super initWithFrame:frame];
     if (!self) return nil;
@@ -27,7 +28,6 @@
 
     _hostViewController = controller;
     _delegate = delegate;
-    _dataSource = dataSource;
 
     return self;
 }
@@ -41,75 +41,11 @@
 }
 
 
-#pragma mark -
-#pragma mark Setting the Current View Index
-
-- (void)setCurrentTab:(NSString *)tabType animated:(BOOL)animated
-{
-    [self forceSetCurrentTab:tabType animated:animated];
-}
-
 
 - (void)forceSetCurrentTab:(NSString *)tabType animated:(BOOL)animated
 {
-    BOOL isARNavigationController = [self.currentNavigationController isKindOfClass:ARNavigationController.class];
-
-    __block UINavigationController *oldViewController = self.currentNavigationController;
-
-    // Ensure there is only one scrollview that has `scrollsToTop`
-    if (isARNavigationController) {
-      UIViewController<ARMenuAwareViewController> *oldTopViewController = (id)oldViewController.topViewController;
-      if ([oldTopViewController respondsToSelector:@selector(menuAwareScrollView)]) {
-          oldTopViewController.menuAwareScrollView.scrollsToTop = NO;
-      }
-    }
-
-    // Get the next View Controller, add to self
-    _currentNavigationController = [self.dataSource navigationControllerForTabType:tabType];
-    self.currentNavigationController.view.alpha = 0;
-
-
-    if (!self.currentNavigationController.parentViewController) {
-        // Add the new ViewController to our view's host
-        [self.currentNavigationController willMoveToParentViewController:self.hostViewController];
-        [self.hostViewController addChildViewController:self.currentNavigationController];
-        [self.currentNavigationController didMoveToParentViewController:_hostViewController];
-    }
-
-    void (^animationBlock)(void);
-    animationBlock = ^{
-        self.currentNavigationController.view.frame = self.bounds;
-        self.currentNavigationController.view.alpha = 1;
-        oldViewController.view.alpha = 0;
-    };
-
-    void (^completionBlock)(BOOL finished);
-    completionBlock = ^(BOOL finished) {
-        if ([self.delegate respondsToSelector:@selector(tabContentView:didChangeToTab:)]) {
-            [self.delegate tabContentView:self didChangeToTab:tabType];
-        }
-    };
-
-    ar_dispatch_main_queue(^{
-        if (animated && oldViewController && oldViewController.parentViewController) {
-            [self.hostViewController transitionFromViewController:oldViewController toViewController:self.currentNavigationController duration:0.1 options:0 animations:animationBlock completion:completionBlock];
-        } else {
-            [oldViewController beginAppearanceTransition:NO animated:NO];
-            [oldViewController endAppearanceTransition];
-            [self.currentNavigationController beginAppearanceTransition:YES animated:NO];
-            [self addSubview:self.currentNavigationController.view];
-            [self.currentNavigationController endAppearanceTransition];
-
-            // Ensure there is only one scrollview that has `scrollsToTop`
-            if (isARNavigationController && [self.currentNavigationController.topViewController conformsToProtocol:@protocol(ARMenuAwareViewController)] && [self.currentNavigationController.topViewController respondsToSelector:@selector(menuAwareScrollView)]) {
-                [(id)self.currentNavigationController.topViewController menuAwareScrollView].scrollsToTop = YES;
-            }
-
-            animationBlock();
-            completionBlock(YES);
-        }
-    });
+    /// do the crossfade
+//    alpha from 0 to 1, duration 0.1
 }
-
 
 @end

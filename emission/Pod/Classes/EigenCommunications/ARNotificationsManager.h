@@ -2,7 +2,6 @@
 #import <React/RCTEventEmitter.h>
 
 @interface ARStateKey : NSObject
-+ (NSString *)selectedTab;
 + (NSString *)userID;
 + (NSString *)authenticationToken;
 + (NSString *)launchCount;

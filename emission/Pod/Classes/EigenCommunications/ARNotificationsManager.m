@@ -9,7 +9,6 @@
 
 @implementation ARStateKey
 // These should match the values in src/lib/store/NativeModel.ts
-+ (NSString *)selectedTab { return @"selectedTab"; }
 + (NSString *)userID { return @"userID"; }
 + (NSString *)authenticationToken { return @"authenticationToken"; }
 + (NSString *)launchCount { return @"launchCount"; }

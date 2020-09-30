@@ -68,7 +68,6 @@ static AREmission *_sharedInstance = nil;
         [ARStateKey authenticationToken]: [NSNull null],
         [ARStateKey userID]: [NSNull null],
         [ARStateKey onboardingState]: @"none",
-        [ARStateKey selectedTab]: @"home",
     }];
     [self.notificationsManagerModule reset];
 }

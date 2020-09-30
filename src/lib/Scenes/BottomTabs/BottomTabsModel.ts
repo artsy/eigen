@@ -1,8 +1,7 @@
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
-import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy"
+import { Action, action, Thunk, thunk } from "easy-peasy"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AppStore } from "lib/store/AppStore"
-import { AppStoreModel } from "lib/store/AppStoreModel"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
@@ -13,9 +12,7 @@ export interface BottomTabsModel {
   unreadConversationCountChanged: Action<BottomTabsModel, number>
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
 
-  // TODO: move navigation routing logic to TS so this can be a source of truth rather
-  // than derived from the native state
-  selectedTab: Computed<BottomTabsModel, BottomTabType, AppStoreModel>
+  selectedTab: BottomTabType
 }
 
 export const BottomTabsModel: BottomTabsModel = {
@@ -44,5 +41,5 @@ export const BottomTabsModel: BottomTabsModel = {
     }
   }),
 
-  selectedTab: computed([(_, store) => store.native.sessionState.selectedTab], (selectedTab) => selectedTab),
+  selectedTab: "home",
 }

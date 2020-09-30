@@ -10,6 +10,7 @@ export const Versions = {
   AddSearchesAndNativeAndBottomTabs: 1,
   AddConsignments: 2,
   RenameConsignmentsToMyCollection: 3,
+  MoveTabNavToReactNative: 4,
 }
 
 export const CURRENT_APP_VERSION = Versions.RenameConsignmentsToMyCollection
@@ -30,6 +31,11 @@ export const artsyAppMigrations: Migrations = {
   [Versions.RenameConsignmentsToMyCollection]: (state) => {
     state.myCollection = state.consignments
     delete state.consignments
+  },
+  [Versions.MoveTabNavToReactNative]: (state) => {
+    const tab = state.native.sessionState.selectedTab
+    state.bottomTabs.selectedTab = tab
+    delete state.native.sessionState.selectedTab
   },
 }
 

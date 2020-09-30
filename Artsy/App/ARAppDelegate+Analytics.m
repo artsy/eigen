@@ -13,7 +13,6 @@
 #import "Artwork.h"
 #import "ARDefaults.h"
 #import "ARUserManager.h"
-#import "ARTopMenuNavigationDataSource.h"
 #import "Fair.h"
 #import "FairOrganizer.h"
 #import "FeaturedLink.h"

@@ -1,2 +1,2 @@
-// This file must match "ARTabType.m/h"
+// This file must match "TopMenu.ts"
 export type BottomTabType = "home" | "search" | "inbox" | "sell" | "profile"

@@ -6,7 +6,6 @@
 
 #import "ARMenuAwareViewController.h"
 #import "ARNavigationController.h"
-#import "ARTopMenuNavigationDataSource.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
