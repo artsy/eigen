@@ -33,7 +33,7 @@ target 'Artsy' do
   # Core
   pod 'ARGenericTableViewController', git: 'https://github.com/orta/ARGenericTableViewController.git'
   pod 'CocoaLumberjack', git: 'https://github.com/CocoaLumberjack/CocoaLumberjack.git' # Unreleased > 2.0.1 version has a CP modulemap fix
-  pod 'FLKAutoLayout', git: 'https://github.com/orta/FLKAutoLayout.git', branch: 'v1'
+  pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
   pod 'FXBlurView'
   pod 'ISO8601DateFormatter', git: 'https://github.com/orta/iso-8601-date-formatter'
   pod 'JLRoutes', git: 'https://github.com/orta/JLRoutes.git'

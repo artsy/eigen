@@ -491,7 +491,7 @@ DEPENDENCIES:
   - FBSDKCoreKit (~> 7.1.1)
   - FBSDKLoginKit (~> 7.1.1)
   - FBSnapshotTestCase
-  - FLKAutoLayout (from `https://github.com/orta/FLKAutoLayout.git`, branch `v1`)
+  - FLKAutoLayout (from `https://github.com/artsy/FLKAutoLayout.git`, branch `v1`)
   - Folly (from `node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - Forgeries/Mocks
   - FXBlurView
@@ -640,7 +640,7 @@ EXTERNAL SOURCES:
     :path: node_modules/react-native/Libraries/FBReactNativeSpec
   FLKAutoLayout:
     :branch: v1
-    :git: https://github.com/orta/FLKAutoLayout.git
+    :git: https://github.com/artsy/FLKAutoLayout.git
   Folly:
     :podspec: node_modules/react-native/third-party-podspecs/Folly.podspec
   glog:
@@ -747,8 +747,8 @@ CHECKOUT OPTIONS:
     :commit: a09dd37888d9f51159c4926d4280794f915d726c
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
   FLKAutoLayout:
-    :commit: 4aa27fa1a9aba36d5465e6cd181ba4b78b0691d3
-    :git: https://github.com/orta/FLKAutoLayout.git
+    :commit: 44a277d21d4fa104589703a34a4d82647414f435
+    :git: https://github.com/artsy/FLKAutoLayout.git
   Interstellar:
     :commit: ca22646f5a8449795fba3d3436a045da0aeb5949
     :git: https://github.com/ashfurrow/Interstellar.git
@@ -872,6 +872,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 50fb6eb13d2152e7363293ff603385db380815b1
 
-PODFILE CHECKSUM: 8d281b381dabd0086e37b37a832c2c9f4bfd66cb
+PODFILE CHECKSUM: e69af109eab83a5f06b11b82869aeef694dd6dd0
 
 COCOAPODS: 1.7.5
