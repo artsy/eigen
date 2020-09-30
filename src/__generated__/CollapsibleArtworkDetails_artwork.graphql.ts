@@ -3,14 +3,13 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type InquiryButtons_artwork = {
+export type CollapsibleArtworkDetails_artwork = {
     readonly image: {
         readonly url: string | null;
         readonly width: number | null;
         readonly height: number | null;
     } | null;
     readonly internalID: string;
-    readonly isPriceHidden: boolean | null;
     readonly title: string | null;
     readonly date: string | null;
     readonly medium: string | null;
@@ -25,20 +24,19 @@ export type InquiryButtons_artwork = {
     readonly artist: {
         readonly name: string | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"InquiryModal_artwork">;
-    readonly " $refType": "InquiryButtons_artwork";
+    readonly " $refType": "CollapsibleArtworkDetails_artwork";
 };
-export type InquiryButtons_artwork$data = InquiryButtons_artwork;
-export type InquiryButtons_artwork$key = {
-    readonly " $data"?: InquiryButtons_artwork$data;
-    readonly " $fragmentRefs": FragmentRefs<"InquiryButtons_artwork">;
+export type CollapsibleArtworkDetails_artwork$data = CollapsibleArtworkDetails_artwork;
+export type CollapsibleArtworkDetails_artwork$key = {
+    readonly " $data"?: CollapsibleArtworkDetails_artwork$data;
+    readonly " $fragmentRefs": FragmentRefs<"CollapsibleArtworkDetails_artwork">;
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "InquiryButtons_artwork",
+  "name": "CollapsibleArtworkDetails_artwork",
   "type": "Artwork",
   "metadata": null,
   "argumentDefinitions": [],
@@ -79,13 +77,6 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "internalID",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "isPriceHidden",
       "args": null,
       "storageKey": null
     },
@@ -177,13 +168,8 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ]
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "InquiryModal_artwork",
-      "args": null
     }
   ]
 };
-(node as any).hash = 'f9d9ba45dc76c4b3b16b963fba41c09e';
+(node as any).hash = '78faf77994e0d624d950f984f7b98876';
 export default node;
