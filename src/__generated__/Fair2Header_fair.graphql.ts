@@ -26,6 +26,7 @@ export type Fair2Header_fair = {
     readonly links: string | null;
     readonly tickets: string | null;
     readonly contact: string | null;
+    readonly " $fragmentRefs": FragmentRefs<"Fair2Timing_fair">;
     readonly " $refType": "Fair2Header_fair";
 };
 export type Fair2Header_fair$data = Fair2Header_fair;
@@ -199,9 +200,14 @@ return {
       "name": "contact",
       "args": (v1/*: any*/),
       "storageKey": "contact(format:\"MARKDOWN\")"
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "Fair2Timing_fair",
+      "args": null
     }
   ]
 };
 })();
-(node as any).hash = '45891118801486778b80c302d68fa0c5';
+(node as any).hash = 'ad3a286d7e637b1383f45fc1f32a86b5';
 export default node;
