@@ -24,9 +24,3 @@
   There was a case where echo returns 401 when a user asks for the latest echo options. This might be caused by some key misconfiguration, or it might not. Right now we have figured out that the app was storing broken Echo.json when the status was 401, and this caused the app to crash. As the simplest way to get around that we decided to rename the file, so in the next app update we would force all users to grab a new echo json file (this time named EchoNew.json). We have also added code to make sure we don't store broken echo json files locally anymore.
 
   After a few months we should be safe to return to the old name if we want. If we decide to do that, we should make sure to remove the old file that might have been sitting on users' phones.
-
-- TOCropViewController version pin
-
-  Whenever [this PR](https://github.com/TimOliver/TOCropViewController/pull/432) gets merged, we can do a `pod update TOCropViewController`.
-  
-  Context is described in the Podfile comment.

@@ -118,10 +118,6 @@ target 'Artsy' do
   pod 'RNReactNativeHapticFeedback', path: 'node_modules/react-native-haptic-feedback'
   pod 'react-native-webview', path: 'node_modules/react-native-webview'
 
-  # This is a dependency of RNImageCropPicker but is introducing duplicated UUIDs. We're using a previous
-  # version to avoid warnings in `pod install`. See: https://github.com/TimOliver/TOCropViewController/issues/424
-  pod 'TOCropViewController', '2.5.3'
-
   # For Stripe integration with Emission. Using Ash's fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
   pod 'Pulley', git: 'https://github.com/l2succes/Pulley.git', branch: 'master'
 
