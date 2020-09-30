@@ -4,10 +4,13 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React, { useRef, useState } from "react"
-import { Alert } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { MyAccountEditPhone_me } from "../../../__generated__/MyAccountEditPhone_me.graphql"
-import { MyAccountFieldEditScreen, MyAccountFieldEditScreenPlaceholder } from "./Components/MyAccountFieldEditScreen"
+import {
+  deferredAlert,
+  MyAccountFieldEditScreen,
+  MyAccountFieldEditScreenPlaceholder,
+} from "./Components/MyAccountFieldEditScreen"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
 const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me }> = ({ me }) => {
@@ -23,7 +26,7 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me }> = ({ me }) => 
           await updateMyUserProfile({ phone })
           dismiss()
         } catch (e) {
-          Alert.alert(typeof e === "string" ? e : "Something went wrong.")
+          deferredAlert(typeof e === "string" ? e : "Something went wrong.")
         }
       }}
     >

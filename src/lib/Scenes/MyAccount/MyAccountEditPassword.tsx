@@ -40,22 +40,25 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
         }),
       })
       const response = await res.json()
-      // The user successfully updated their password
       if (response.error) {
-        alert(typeof response.error === "string" ? response.error : "Something went wrong.")
-      } else {
-        alert(
-          "Password Changed",
-          "Your password has been changed successfully. Use your new password to log in.",
-          [
-            {
-              text: "OK",
-              onPress: () => NativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
-            },
-          ],
-          { cancelable: false }
-        )
+        return alert(typeof response.error === "string" ? response.error : "Something went wrong.")
       }
+
+      if (response.type === "param_error") {
+        return alert(response.message)
+      }
+      // The user successfully updated their password
+      return alert(
+        "Password Changed",
+        "Your password has been changed successfully. Use your new password to log in.",
+        [
+          {
+            text: "OK",
+            onPress: () => NativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
+          },
+        ],
+        { cancelable: false }
+      )
     } catch (error) {
       console.log(error)
       alert(typeof error === "string" ? error : "Something went wrong.")
