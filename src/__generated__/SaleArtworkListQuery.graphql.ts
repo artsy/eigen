@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 1128047d6915a4eea6aef4c4d7adc453 */
+/* @relayHash 033f0d2b4416cf572637013a555e01ae */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -57,7 +57,10 @@ fragment SaleArtworkListItem_artwork on Artwork {
     id
   }
   image {
-    square: url(version: "square")
+    small: url(version: "small")
+    aspectRatio
+    height
+    width
   }
 }
 
@@ -366,16 +369,37 @@ return {
                         "selections": [
                           {
                             "kind": "ScalarField",
-                            "alias": "square",
+                            "alias": "small",
                             "name": "url",
                             "args": [
                               {
                                 "kind": "Literal",
                                 "name": "version",
-                                "value": "square"
+                                "value": "small"
                               }
                             ],
-                            "storageKey": "url(version:\"square\")"
+                            "storageKey": "url(version:\"small\")"
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "aspectRatio",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "height",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "width",
+                            "args": null,
+                            "storageKey": null
                           }
                         ]
                       },
@@ -439,7 +463,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleArtworkListQuery",
-    "id": "c0ff54283e29dfa3cea1bb37b5999b59",
+    "id": "de1afcd4a37fb38b1384a16145cad4c6",
     "text": null,
     "metadata": {}
   }
