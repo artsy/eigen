@@ -9,14 +9,13 @@ export type Messages_conversation = {
     readonly from: {
         readonly name: string;
         readonly email: string;
-        readonly initials: string | null;
     };
     readonly to: {
         readonly name: string;
-        readonly initials: string | null;
     };
-    readonly initial_message: string;
-    readonly messages: {
+    readonly initialMessage: string;
+    readonly lastMessageID: string | null;
+    readonly messagesConnection: {
         readonly pageInfo: {
             readonly startCursor: string | null;
             readonly endCursor: string | null;
@@ -27,11 +26,18 @@ export type Messages_conversation = {
             readonly cursor: string;
             readonly node: {
                 readonly id: string;
-                readonly impulse_id: string;
-                readonly is_from_user: boolean | null;
+                readonly internalID: string;
+                readonly isFromUser: boolean | null;
+                readonly isFirstMessage: boolean | null;
                 readonly body: string | null;
+                readonly createdAt: string | null;
                 readonly attachments: ReadonlyArray<{
+                    readonly id: string;
                     readonly internalID: string;
+                    readonly contentType: string;
+                    readonly downloadURL: string;
+                    readonly fileName: string;
+                    readonly " $fragmentRefs": FragmentRefs<"ImagePreview_attachment" | "PDFPreview_attachment" | "FileDownload_attachment">;
                 } | null> | null;
                 readonly " $fragmentRefs": FragmentRefs<"Message_message">;
             } | null;
@@ -87,18 +93,11 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "initials",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "__typename",
   "args": null,
   "storageKey": null
 },
-v5 = {
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
@@ -116,7 +115,7 @@ return {
         "cursor": "after",
         "direction": "forward",
         "path": [
-          "messages"
+          "messagesConnection"
         ]
       }
     ]
@@ -154,8 +153,7 @@ return {
           "name": "email",
           "args": null,
           "storageKey": null
-        },
-        (v3/*: any*/)
+        }
       ]
     },
     {
@@ -167,21 +165,27 @@ return {
       "concreteType": "ConversationResponder",
       "plural": false,
       "selections": [
-        (v2/*: any*/),
-        (v3/*: any*/)
+        (v2/*: any*/)
       ]
     },
     {
       "kind": "ScalarField",
-      "alias": "initial_message",
+      "alias": null,
       "name": "initialMessage",
       "args": null,
       "storageKey": null
     },
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "lastMessageID",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "LinkedField",
-      "alias": "messages",
-      "name": "__Messages_messages_connection",
+      "alias": "messagesConnection",
+      "name": "__Messages_messagesConnection_connection",
       "storageKey": null,
       "args": null,
       "concreteType": "MessageConnection",
@@ -252,16 +256,10 @@ return {
               "plural": false,
               "selections": [
                 (v0/*: any*/),
+                (v1/*: any*/),
                 {
                   "kind": "ScalarField",
-                  "alias": "impulse_id",
-                  "name": "impulseID",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": "is_from_user",
+                  "alias": null,
                   "name": "isFromUser",
                   "args": null,
                   "storageKey": null
@@ -269,7 +267,21 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
+                  "name": "isFirstMessage",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
                   "name": "body",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "createdAt",
                   "args": null,
                   "storageKey": null
                 },
@@ -282,10 +294,47 @@ return {
                   "concreteType": "Attachment",
                   "plural": true,
                   "selections": [
-                    (v1/*: any*/)
+                    (v0/*: any*/),
+                    (v1/*: any*/),
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "contentType",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "downloadURL",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "fileName",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "FragmentSpread",
+                      "name": "ImagePreview_attachment",
+                      "args": null
+                    },
+                    {
+                      "kind": "FragmentSpread",
+                      "name": "PDFPreview_attachment",
+                      "args": null
+                    },
+                    {
+                      "kind": "FragmentSpread",
+                      "name": "FileDownload_attachment",
+                      "args": null
+                    }
                   ]
                 },
-                (v4/*: any*/),
+                (v3/*: any*/),
                 {
                   "kind": "FragmentSpread",
                   "name": "Message_message",
@@ -315,12 +364,12 @@ return {
           "concreteType": null,
           "plural": false,
           "selections": [
-            (v4/*: any*/),
+            (v3/*: any*/),
             {
               "kind": "InlineFragment",
               "type": "Artwork",
               "selections": [
-                (v5/*: any*/),
+                (v4/*: any*/),
                 {
                   "kind": "FragmentSpread",
                   "name": "ArtworkPreview_artwork",
@@ -332,7 +381,7 @@ return {
               "kind": "InlineFragment",
               "type": "Show",
               "selections": [
-                (v5/*: any*/),
+                (v4/*: any*/),
                 {
                   "kind": "FragmentSpread",
                   "name": "ShowPreview_show",
@@ -347,5 +396,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'c84f9ba53f1b3d4026fdd9826aa695aa';
+(node as any).hash = '8175de5196eb8355c89e6f428a9a3002';
 export default node;

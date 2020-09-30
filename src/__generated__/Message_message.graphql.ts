@@ -5,8 +5,10 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Message_message = {
     readonly body: string | null;
-    readonly created_at: string | null;
-    readonly is_from_user: boolean | null;
+    readonly createdAt: string | null;
+    readonly internalID: string;
+    readonly isFromUser: boolean | null;
+    readonly isFirstMessage: boolean | null;
     readonly from: {
         readonly name: string | null;
         readonly email: string | null;
@@ -17,7 +19,7 @@ export type Message_message = {
         readonly contentType: string;
         readonly downloadURL: string;
         readonly fileName: string;
-        readonly " $fragmentRefs": FragmentRefs<"ImagePreview_attachment" | "PDFPreview_attachment" | "FileDownload_attachment">;
+        readonly " $fragmentRefs": FragmentRefs<"PDFPreview_attachment" | "ImagePreview_attachment" | "FileDownload_attachment">;
     } | null> | null;
     readonly " $refType": "Message_message";
 };
@@ -29,7 +31,15 @@ export type Message_message$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "Message_message",
   "type": "Message",
@@ -45,15 +55,23 @@ const node: ReaderFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": "created_at",
+      "alias": null,
       "name": "createdAt",
+      "args": null,
+      "storageKey": null
+    },
+    (v0/*: any*/),
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isFromUser",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
-      "alias": "is_from_user",
-      "name": "isFromUser",
+      "alias": null,
+      "name": "isFirstMessage",
       "args": null,
       "storageKey": null
     },
@@ -98,13 +116,7 @@ const node: ReaderFragment = {
           "args": null,
           "storageKey": null
         },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "internalID",
-          "args": null,
-          "storageKey": null
-        },
+        (v0/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -128,12 +140,12 @@ const node: ReaderFragment = {
         },
         {
           "kind": "FragmentSpread",
-          "name": "ImagePreview_attachment",
+          "name": "PDFPreview_attachment",
           "args": null
         },
         {
           "kind": "FragmentSpread",
-          "name": "PDFPreview_attachment",
+          "name": "ImagePreview_attachment",
           "args": null
         },
         {
@@ -145,5 +157,6 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'ff69fae6b933d05a4c49315b173217a4';
+})();
+(node as any).hash = 'e057ee50789a28c46009ac43c3d57a63';
 export default node;

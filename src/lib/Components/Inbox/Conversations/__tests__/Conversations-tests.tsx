@@ -34,11 +34,11 @@ describe("messaging inbox", () => {
         {
           node: {
             id: "582",
-            inquiryId: "59302144275b244a81d0f9c6",
+            inquiry_id: "59302144275b244a81d0f9c6",
             from: { name: "Jean-Luc Collecteur", email: "luc+messaging@artsymail.com" },
             to: { name: "ACA Galleries" },
             lastMessage: "Karl and Anna... Fab!",
-            created_at: "2017-06-01T14:14:35.538Z",
+            createdAt: "2017-06-01T14:14:35.538Z",
             items: [
               {
                 title: "Karl and Anna Face Off (Diptych)",

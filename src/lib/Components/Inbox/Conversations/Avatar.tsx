@@ -6,9 +6,9 @@ import styled from "styled-components/native"
 
 const BackgroundCircle = styled.View`
   background-color: ${colors["gray-regular"]};
-  height: 30;
-  width: 30;
-  border-radius: 15;
+  height: 46;
+  width: 46;
+  border-radius: 22;
 `
 
 interface NameProps {
@@ -18,9 +18,9 @@ interface NameProps {
 const Name = styled.Text`
   color: ${(props: NameProps) => (props.user ? "white" : colors["gray-semibold"])};
   font-family: ${fonts["avant-garde-regular"]};
-  font-size: 10;
+  font-size: 12;
   align-self: center;
-  margin-top: 8;
+  margin-top: 14;
 `
 
 interface Props {

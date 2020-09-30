@@ -1,22 +1,25 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-
-import { color, Touchable } from "palette"
-
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { Colors } from "lib/data/colors"
-import { Fonts } from "lib/data/fonts"
 import styled from "styled-components/native"
 
-import { Schema, Track, track as _track } from "../../../../utils/track"
-import { PreviewText as P, Subtitle } from "../../Typography"
-
 import { ArtworkPreview_artwork } from "__generated__/ArtworkPreview_artwork.graphql"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { Colors } from "lib/data/colors"
+import { color, Flex, Text, Touchable } from "palette"
+
+import { Schema, Track, track as _track } from "../../../../utils/track"
 
 const Container = styled.View`
-  border-width: 1;
-  border-color: ${Colors.GrayRegular};
-  flex-direction: row;
+  background-color: ${color("black100")};
+  border-radius: 15;
+  overflow: hidden;
+  margin-bottom: 5;
+`
+
+const ImageContainer = styled(Flex)`
+  background-color: ${color("black10")};
+  padding: 10px;
+  flex: 1;
 `
 
 const VerticalLayout = styled.View`
@@ -24,25 +27,9 @@ const VerticalLayout = styled.View`
   flex-direction: column;
 `
 
-const Image = styled(OpaqueImageView)`
-  margin-top: 12;
-  margin-left: 12;
-  margin-right: 12;
-  margin-bottom: 12;
-  width: 80;
-  height: 55;
-`
-
 const TextContainer = styled(VerticalLayout)`
-  align-self: center;
-`
-
-const SerifText = styled(P)`
-  font-size: 14;
-`
-
-const Date = styled.Text`
-  font-family: ${Fonts.GaramondRegular};
+  align-self: flex-start;
+  padding: 10px;
 `
 
 const TitleAndDate = styled.View`
@@ -68,8 +55,7 @@ export class ArtworkPreview extends React.Component<Props> {
     owner_slug: props.artwork.slug,
   }))
   attachmentSelected() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    this.props.onSelected()
+    this.props.onSelected!()
   }
 
   render() {
@@ -77,17 +63,26 @@ export class ArtworkPreview extends React.Component<Props> {
     const artworkImage = artwork.image
 
     return (
-      <Touchable underlayColor={color("black5")} onPress={this.props.onSelected && this.attachmentSelected.bind(this)}>
+      <Touchable
+        style={{ maxWidth: "66.67%", flex: 1 }}
+        underlayColor={Colors.GrayLight}
+        onPress={this.props.onSelected && this.attachmentSelected.bind(this)}
+      >
         <Container>
-          {!!artworkImage && <Image imageURL={artworkImage.url} />}
+          {!!artworkImage && (
+            <ImageContainer>
+              <OpaqueImageView aspectRatio={artworkImage.aspectRatio} imageURL={artworkImage.url} />
+            </ImageContainer>
+          )}
           <TextContainer>
-            <SerifText>{artwork.artist_names}</SerifText>
+            <Text variant="mediumText" color="white100">
+              {artwork.artistNames}
+            </Text>
             <TitleAndDate>
               {/* Nested Text components are necessary for the correct behaviour on both short and long titles + dates */}
-              <Subtitle numberOfLines={1} ellipsizeMode={"middle"}>
-                {`${artwork.title}`}
-                <Date>{`, ${artwork.date}`}</Date>
-              </Subtitle>
+              <Text variant="small" color="white100" numberOfLines={1} ellipsizeMode={"middle"}>
+                {`${artwork.title} / ${artwork.date}`}
+              </Text>
             </TitleAndDate>
           </TextContainer>
         </Container>
@@ -102,10 +97,11 @@ export default createFragmentContainer(ArtworkPreview, {
       slug
       internalID
       title
-      artist_names: artistNames
+      artistNames
       date
       image {
         url
+        aspectRatio
       }
     }
   `,
