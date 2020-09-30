@@ -1,13 +1,15 @@
 <!-- Template
 
 - Title
-Tell us when we can remove this hack.
 
-Explain why the hack was added.
+  Tell us when we can remove this hack.
 
- -->
+  Explain why the hack was added.
+
+-->
 
 - "cheerio" resolution
+
   Remove after `enzyme` is removed.
 
   This is an existing resolution at the creation of HACKS.md. For what I gathered, it is required by enzyme. It requires ~1.0.0, but we need 0.22.0.
@@ -15,6 +17,7 @@ Explain why the hack was added.
   Using enzyme we created `renderUntil`. To replace that, we probably need @testing-library/react or something to replace it. Then we can remove enzyme and cheerio resolution as well.
 
 - EchoNew.json
+
   Maybe sometime end of 2020, we can change the file EchoNew.json back to Echo.json.
 
   Context: https://artsy.slack.com/archives/CDU4AH60Z/p1600737384008500?thread_ts=1600642583.000100&cid=CDU4AH60Z
@@ -23,6 +26,7 @@ Explain why the hack was added.
   After a few months we should be safe to return to the old name if we want. If we decide to do that, we should make sure to remove the old file that might have been sitting on users' phones.
 
 - TOCropViewController version pin
+
   Whenever [this PR](https://github.com/TimOliver/TOCropViewController/pull/432) gets merged, we can do a `pod update TOCropViewController`.
   
   Context is described in the Podfile comment.
