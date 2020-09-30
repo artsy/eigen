@@ -1,14 +1,10 @@
 import {
-  AggregateOption,
-  FilterDisplayName,
-  FilterParamName,
-} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import {
   ArtworkFilterContext,
   FilterData,
   ParamDefaultValues,
   useSelectedOptionsDisplay,
-} from "lib/utils/ArtworkFiltersStore"
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { AggregateOption, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
 import { aggregationForFilter } from "../FilterModal"

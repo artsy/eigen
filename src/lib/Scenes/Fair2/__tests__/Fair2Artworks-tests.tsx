@@ -7,7 +7,7 @@ import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids
 import { Fair2ArtworksFragmentContainer } from "lib/Scenes/Fair2/Components/Fair2Artworks"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"

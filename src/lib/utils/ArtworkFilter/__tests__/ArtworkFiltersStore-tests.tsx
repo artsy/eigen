@@ -1,5 +1,5 @@
-import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { ArtworkFilterContextState, FilterActions, reducer } from "lib/utils/ArtworkFiltersStore"
+import { ArtworkFilterContextState, FilterActions, reducer } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 
 let filterState: ArtworkFilterContextState
 let filterAction: FilterActions
