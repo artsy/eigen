@@ -458,7 +458,7 @@ const Main: React.FC<{}> = track()(({}) => {
 
   const screen = useScreenDimensions()
   if (!isHydrated) {
-    return <View></View>
+    return <View />
   }
   if (!isLoggedIn || onboardingState === "incomplete") {
     return <NativeViewController viewName="Onboarding" />
@@ -473,12 +473,4 @@ const Main: React.FC<{}> = track()(({}) => {
   )
 })
 
-AppRegistry.registerComponent("Main", () => () => {
-  return (
-    <AppStoreProvider>
-      <ProvideScreenDimensions>
-        <Main />
-      </ProvideScreenDimensions>
-    </AppStoreProvider>
-  )
-})
+register("Main", Main, { fullBleed: true })
