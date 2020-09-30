@@ -1,9 +1,9 @@
-import LoadingModal from "lib/Components/Modals/LoadingModal"
+import { useLoadingBlock } from "lib/Components/Modals/LoadingModal"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { goBack } from "lib/navigation/navigate"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Sans } from "palette"
-import React, { useImperativeHandle, useRef, useState } from "react"
+import React, { useImperativeHandle, useRef } from "react"
 import { KeyboardAvoidingView, ScrollView, TouchableOpacity, ViewStyle } from "react-native"
 
 export interface MyAccountFieldEditScreen {
@@ -19,12 +19,13 @@ export const MyAccountFieldEditScreen = React.forwardRef<
     onSave(dismiss: () => void): Promise<any>
   }>
 >(({ children, canSave, onSave, title, contentContainerStyle }, ref) => {
-  const [isSaving, setIsSaving] = useState<boolean>(false)
+  const setLoadingBlock = useLoadingBlock()
   const scrollViewRef = useRef<ScrollView>(null)
   const screen = useScreenDimensions()
 
   const onDismiss = () => {
-    SwitchBoard.dismissNavigationViewController(scrollViewRef.current!)
+    setLoadingBlock(false)
+    goBack()
   }
 
   const handleSave = async () => {
@@ -32,12 +33,12 @@ export const MyAccountFieldEditScreen = React.forwardRef<
       return
     }
     try {
-      setIsSaving(true)
+      setLoadingBlock(true)
       await onSave(onDismiss)
     } catch (e) {
       console.error(e)
     } finally {
-      setIsSaving(false)
+      setLoadingBlock(false)
     }
   }
 
@@ -81,7 +82,6 @@ export const MyAccountFieldEditScreen = React.forwardRef<
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
         >
-          <LoadingModal isVisible={isSaving} />
           {children}
         </ScrollView>
       </PageWithSimpleHeader>

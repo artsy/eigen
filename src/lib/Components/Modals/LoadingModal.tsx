@@ -1,17 +1,42 @@
 import { Flex } from "palette"
-import React from "react"
-import { ActivityIndicator, Modal, ModalProps } from "react-native"
+import React, { useContext, useState } from "react"
+import { ActivityIndicator } from "react-native"
 
-interface LoadingModalProps {
-  isVisible: boolean
-}
-
-const LoadingModal: React.FC<LoadingModalProps & ModalProps> = ({ isVisible, ...rest }) => (
-  <Modal animationType="fade" visible={isVisible} {...(rest as any)} transparent>
-    <Flex flex={1} alignItems="center" justifyContent="center" style={{ backgroundColor: "rgba(0, 0, 0, 0.15)" }}>
-      <ActivityIndicator size="large" />
-    </Flex>
-  </Modal>
+const LoadingBlockingView: React.FC = () => (
+  <LoadingBlockContext.Consumer>
+    {({ loadingBlock }) => {
+      return loadingBlock ? (
+        <Flex
+          position="absolute"
+          width="100%"
+          height="100%"
+          alignItems="center"
+          justifyContent="center"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.15)" }}
+        >
+          <ActivityIndicator size="large" />
+        </Flex>
+      ) : null
+    }}
+  </LoadingBlockContext.Consumer>
 )
 
-export default LoadingModal
+const LoadingBlockContext = React.createContext<{ loadingBlock: boolean; setLoadingBlock: (val: boolean) => void }>(
+  null!
+)
+
+export const LoadingBlockProvider: React.FC = ({ children }) => {
+  const [loadingBlock, setLoadingBlock] = useState(false)
+
+  return (
+    <LoadingBlockContext.Provider value={{ loadingBlock, setLoadingBlock }}>
+      {children}
+      <LoadingBlockingView />
+    </LoadingBlockContext.Provider>
+  )
+}
+
+export const useLoadingBlock = () => {
+  const { setLoadingBlock } = useContext(LoadingBlockContext)
+  return setLoadingBlock
+}

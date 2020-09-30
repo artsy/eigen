@@ -75,6 +75,7 @@ import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryR
 import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
+import { LoadingBlockProvider } from "./Components/Modals/LoadingModal"
 import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
@@ -303,11 +304,13 @@ class PageWrapper extends React.Component<PageWrapperProps> {
       <ProvideScreenDimensions>
         <RelayEnvironmentProvider environment={defaultEnvironment}>
           <AppStoreProvider>
-            <Theme>
-              <_FancyModalPageWrapper>
-                <InnerPageWrapper {...this.props} />
-              </_FancyModalPageWrapper>
-            </Theme>
+            <LoadingBlockProvider>
+              <Theme>
+                <_FancyModalPageWrapper>
+                  <InnerPageWrapper {...this.props} />
+                </_FancyModalPageWrapper>
+              </Theme>
+            </LoadingBlockProvider>
           </AppStoreProvider>
         </RelayEnvironmentProvider>
       </ProvideScreenDimensions>
