@@ -18,6 +18,7 @@ upcoming:
     - Update timing display on Fair2 - mzikherman
     - `ConversationDetail` component - sepand
     - Adds "Artworks by Artists You Follow" rail (visible only to admins) - damon
+    - Upgrade Relay to 10 - chris
   user_facing:
     - Fix navigation bug on Artwork consign button - david
     - Add auction lots rail to the auctions screen - mounir
