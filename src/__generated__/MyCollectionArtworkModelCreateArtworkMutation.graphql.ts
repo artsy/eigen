@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 55d94b960bf6042d4cf8df0e06a60184 */
+/* @relayHash e64300af8f7059b3c6ee8c860498e14e */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionCreateArtworkInput = {
@@ -13,6 +13,7 @@ export type MyCollectionCreateArtworkInput = {
     depth?: string | null;
     editionNumber?: string | null;
     editionSize?: string | null;
+    externalImageUrls?: Array<string | null> | null;
     height?: string | null;
     medium: string;
     metric?: string | null;
