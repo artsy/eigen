@@ -1,6 +1,7 @@
 import { CollapsibleArtworkDetailsTestsQuery } from "__generated__/CollapsibleArtworkDetailsTestsQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Text } from "palette"
 import React from "react"
@@ -48,6 +49,16 @@ describe("CollapsibleArtworkDetails", () => {
     resolveData()
     expect(wrapper.root.findAllByType(OpaqueImageView)).toHaveLength(1)
     expect(wrapper.root.findAllByType(Text)).toHaveLength(2)
+  })
+
+  it("renders artist names", () => {
+    const wrapper = renderWithWrappers(<TestRenderer />)
+    resolveData({
+      Artwork: () => ({
+        artistNames: "Vladimir Petrov, Kristina Kost",
+      }),
+    })
+    expect(extractText(wrapper.root)).toContain("Vladimir Petrov, Kristina Kost")
   })
 
   it("expands component on press", () => {

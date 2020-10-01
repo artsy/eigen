@@ -22,9 +22,7 @@ export type CollapsibleArtworkDetails_artwork = {
     readonly signatureInfo: {
         readonly details: string | null;
     } | null;
-    readonly artist: {
-        readonly name: string | null;
-    } | null;
+    readonly artistNames: string | null;
     readonly " $refType": "CollapsibleArtworkDetails_artwork";
 };
 export type CollapsibleArtworkDetails_artwork$data = CollapsibleArtworkDetails_artwork;
@@ -154,24 +152,13 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
-      "concreteType": "Artist",
-      "kind": "LinkedField",
-      "name": "artist",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "name",
-          "storageKey": null
-        }
-      ],
+      "kind": "ScalarField",
+      "name": "artistNames",
       "storageKey": null
     }
   ],
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '78faf77994e0d624d950f984f7b98876';
+(node as any).hash = 'ea27830e66ce26507000d6a7a74807c1';
 export default node;

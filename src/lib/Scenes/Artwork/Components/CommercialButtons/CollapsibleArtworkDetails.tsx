@@ -42,7 +42,7 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
             />
           )}
           <Flex ml={2} flex="1">
-            <Text>{artwork.artist?.name}</Text>
+            <Text>{artwork.artistNames}</Text>
             <Text color="black60" variant="caption">
               {artwork.title}, {artwork.date}
             </Text>
@@ -83,9 +83,7 @@ export const CollapsibleArtworkDetailsFragmentContainer = createFragmentContaine
       signatureInfo {
         details
       }
-      artist {
-        name
-      }
+      artistNames
     }
   `,
 })

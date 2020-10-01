@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2e472e6e43d65c33e8430893fee3a6a8 */
+/* @relayHash 48ee80b12e6c017b8f6d84600eaac61f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -238,10 +238,7 @@ fragment CollapsibleArtworkDetails_artwork on Artwork {
   signatureInfo {
     details
   }
-  artist {
-    name
-    id
-  }
+  artistNames
 }
 
 fragment CommercialButtons_artwork on Artwork {
@@ -1171,6 +1168,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "artistNames",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "shippingOrigin",
             "storageKey": null
           },
@@ -1241,7 +1245,7 @@ return {
     ]
   },
   "params": {
-    "id": "2e472e6e43d65c33e8430893fee3a6a8",
+    "id": "48ee80b12e6c017b8f6d84600eaac61f",
     "metadata": {},
     "name": "ArtworkAboveTheFoldQuery",
     "operationKind": "query",

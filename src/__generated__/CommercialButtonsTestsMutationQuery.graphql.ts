@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7cc7ba155d6b8b5e06fa6f27bddf0626 */
+/* @relayHash cf19fd56ccc7d96fd7c548cc6e0d374f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -73,6 +73,7 @@ export type CommercialButtonsTestsMutationQueryRawResponse = {
             readonly name: string | null;
             readonly id: string;
         }) | null;
+        readonly artistNames: string | null;
         readonly id: string;
     }) | null;
 };
@@ -146,10 +147,7 @@ fragment CollapsibleArtworkDetails_artwork on Artwork {
   signatureInfo {
     details
   }
-  artist {
-    name
-    id
-  }
+  artistNames
 }
 
 fragment CommercialButtons_artwork on Artwork {
@@ -606,6 +604,13 @@ return {
             ],
             "storageKey": null
           },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "artistNames",
+            "storageKey": null
+          },
           (v2/*: any*/)
         ],
         "storageKey": "artwork(id:\"artworkID\")"
@@ -613,7 +618,7 @@ return {
     ]
   },
   "params": {
-    "id": "7cc7ba155d6b8b5e06fa6f27bddf0626",
+    "id": "cf19fd56ccc7d96fd7c548cc6e0d374f",
     "metadata": {},
     "name": "CommercialButtonsTestsMutationQuery",
     "operationKind": "query",

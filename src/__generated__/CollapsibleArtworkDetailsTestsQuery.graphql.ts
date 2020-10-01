@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ad7757da531ea630b4ec6e9073539f13 */
+/* @relayHash 722738e21ca4461c6ccd0a847e89a70e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -44,10 +44,7 @@ fragment CollapsibleArtworkDetails_artwork on Artwork {
   signatureInfo {
     details
   }
-  artist {
-    name
-    id
-  }
+  artistNames
 }
 */
 
@@ -60,11 +57,10 @@ var v0 = [
   }
 ],
 v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
 },
 v2 = {
   "enumValues": null,
@@ -73,12 +69,6 @@ v2 = {
   "type": "ID"
 },
 v3 = {
-  "enumValues": null,
-  "nullable": true,
-  "plural": false,
-  "type": "String"
-},
-v4 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -238,30 +228,24 @@ return {
           {
             "alias": null,
             "args": null,
-            "concreteType": "Artist",
-            "kind": "LinkedField",
-            "name": "artist",
-            "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "name",
-                "storageKey": null
-              },
-              (v1/*: any*/)
-            ],
+            "kind": "ScalarField",
+            "name": "artistNames",
             "storageKey": null
           },
-          (v1/*: any*/)
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "id",
+            "storageKey": null
+          }
         ],
         "storageKey": "artwork(id:\"some-slug\")"
       }
     ]
   },
   "params": {
-    "id": "ad7757da531ea630b4ec6e9073539f13",
+    "id": "722738e21ca4461c6ccd0a847e89a70e",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -270,24 +254,17 @@ return {
           "plural": false,
           "type": "Artwork"
         },
-        "artwork.artist": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Artist"
-        },
-        "artwork.artist.id": (v2/*: any*/),
-        "artwork.artist.name": (v3/*: any*/),
-        "artwork.date": (v3/*: any*/),
+        "artwork.artistNames": (v1/*: any*/),
+        "artwork.date": (v1/*: any*/),
         "artwork.dimensions": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "dimensions"
         },
-        "artwork.dimensions.cm": (v3/*: any*/),
-        "artwork.dimensions.in": (v3/*: any*/),
-        "artwork.editionOf": (v3/*: any*/),
+        "artwork.dimensions.cm": (v1/*: any*/),
+        "artwork.dimensions.in": (v1/*: any*/),
+        "artwork.editionOf": (v1/*: any*/),
         "artwork.id": (v2/*: any*/),
         "artwork.image": {
           "enumValues": null,
@@ -295,19 +272,19 @@ return {
           "plural": false,
           "type": "Image"
         },
-        "artwork.image.height": (v4/*: any*/),
-        "artwork.image.url": (v3/*: any*/),
-        "artwork.image.width": (v4/*: any*/),
+        "artwork.image.height": (v3/*: any*/),
+        "artwork.image.url": (v1/*: any*/),
+        "artwork.image.width": (v3/*: any*/),
         "artwork.internalID": (v2/*: any*/),
-        "artwork.medium": (v3/*: any*/),
+        "artwork.medium": (v1/*: any*/),
         "artwork.signatureInfo": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "ArtworkInfoRow"
         },
-        "artwork.signatureInfo.details": (v3/*: any*/),
-        "artwork.title": (v3/*: any*/)
+        "artwork.signatureInfo.details": (v1/*: any*/),
+        "artwork.title": (v1/*: any*/)
       }
     },
     "name": "CollapsibleArtworkDetailsTestsQuery",
