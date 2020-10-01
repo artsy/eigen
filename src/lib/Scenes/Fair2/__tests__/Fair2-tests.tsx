@@ -3,6 +3,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { Fair2ArtworksFragmentContainer } from "../Components/Fair2Artworks"
 import { Fair2CollectionsFragmentContainer } from "../Components/Fair2Collections"
@@ -10,10 +11,12 @@ import { Fair2EditorialFragmentContainer } from "../Components/Fair2Editorial"
 import { Fair2ExhibitorsFragmentContainer } from "../Components/Fair2Exhibitors"
 import { Fair2FollowedArtistsFragmentContainer } from "../Components/Fair2FollowedArtists"
 import { Fair2Header, Fair2HeaderFragmentContainer } from "../Components/Fair2Header"
-import { Tabs } from "../Components/SimpleTabs"
+import { Tab, Tabs } from "../Components/SimpleTabs"
 import { Fair2, Fair2FragmentContainer } from "../Fair2"
 
 jest.unmock("react-relay")
+
+const trackEvent = useTracking().trackEvent
 
 describe("Fair2", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -97,6 +100,7 @@ describe("Fair2", () => {
         marketingCollections: [
           {
             __typename: "MarketingCollection",
+            internalID: "xyz123",
             id: "1223456",
             slug: "collection-1",
             title: "First collection",
@@ -106,6 +110,7 @@ describe("Fair2", () => {
           {
             __typename: "MarketingCollection",
             id: "1223456",
+            internalID: "abc123",
             slug: "collection-1",
             title: "First collection",
             category: "prints",
@@ -129,6 +134,8 @@ describe("Fair2", () => {
               __typename: "Article",
               node: {
                 id: "sssss",
+                internalID: "sss123",
+                slug: "great-article",
                 title: "Great Article",
                 href: "/article/great-article",
                 publishedAt: "2020-11-02",
@@ -188,6 +195,42 @@ describe("Fair2", () => {
     expect(wrapper.root.findAllByType(Tabs)).toHaveLength(1)
     expect(wrapper.root.findAllByType(Fair2ExhibitorsFragmentContainer)).toHaveLength(1)
     expect(wrapper.root.findAllByType(Fair2ArtworksFragmentContainer)).toHaveLength(0)
+  })
+
+  it("tracks taps navigating between the artworks tab and exhibitors tab", () => {
+    const artworksDataFixture = {
+      fair: {
+        ...Fair2Fixture.fair,
+        counts: {
+          artworks: 100,
+          partnerShows: 20,
+        },
+      },
+    } as Fair2TestsQueryRawResponse
+    const wrapper = getWrapper(artworksDataFixture)
+    const tabs = wrapper.root.findAllByType(Tab)
+    const exhibitorsTab = tabs[0]
+    const artworksTab = tabs[1]
+
+    act(() => artworksTab.props.onPress())
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedNavigationTab",
+      context_module: "exhibitorsTab",
+      context_screen_owner_type: "fair",
+      context_screen_owner_slug: "art-basel-hong-kong-2020",
+      context_screen_owner_id: "fair1244",
+      subject: "Artworks",
+    })
+
+    act(() => exhibitorsTab.props.onPress())
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedNavigationTab",
+      context_module: "artworksTab",
+      context_screen_owner_type: "fair",
+      context_screen_owner_slug: "art-basel-hong-kong-2020",
+      context_screen_owner_id: "fair1244",
+      subject: "Exhibitors",
+    })
   })
 })
 
