@@ -18,7 +18,12 @@ export type Fair2_fair = {
         readonly artworks: number | null;
         readonly partnerShows: number | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"Fair2Header_fair" | "Fair2Editorial_fair" | "Fair2Collections_fair" | "Fair2Artworks_fair" | "Fair2Exhibitors_fair">;
+    readonly followedArtistArtworks: {
+        readonly edges: ReadonlyArray<{
+            readonly __typename: string;
+        } | null> | null;
+    } | null;
+    readonly " $fragmentRefs": FragmentRefs<"Fair2Header_fair" | "Fair2Editorial_fair" | "Fair2Collections_fair" | "Fair2Artworks_fair" | "Fair2Exhibitors_fair" | "Fair2FollowedArtists_fair">;
     readonly " $refType": "Fair2_fair";
 };
 export type Fair2_fair$data = Fair2_fair;
@@ -134,6 +139,38 @@ return {
       ]
     },
     {
+      "kind": "LinkedField",
+      "alias": "followedArtistArtworks",
+      "name": "filterArtworksConnection",
+      "storageKey": "filterArtworksConnection(first:20,includeArtworksByFollowedArtists:true)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 20
+        },
+        {
+          "kind": "Literal",
+          "name": "includeArtworksByFollowedArtists",
+          "value": true
+        }
+      ],
+      "concreteType": "FilterArtworksConnection",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "FilterArtworksEdge",
+          "plural": true,
+          "selections": (v0/*: any*/)
+        }
+      ]
+    },
+    {
       "kind": "FragmentSpread",
       "name": "Fair2Header_fair",
       "args": null
@@ -157,9 +194,14 @@ return {
       "kind": "FragmentSpread",
       "name": "Fair2Exhibitors_fair",
       "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "Fair2FollowedArtists_fair",
+      "args": null
     }
   ]
 };
 })();
-(node as any).hash = '1598f12e2e9b1fee9f5d08fc5dd01221';
+(node as any).hash = '30fc186373d808a8ba5181c7f91b8f04';
 export default node;
