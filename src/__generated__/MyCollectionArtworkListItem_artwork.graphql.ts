@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -38,156 +39,157 @@ export type MyCollectionArtworkListItem_artwork$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 };
 return {
-  "kind": "Fragment",
-  "name": "MyCollectionArtworkListItem_artwork",
-  "type": "Artwork",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "MyCollectionArtworkListItem_artwork",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "artist",
-      "storageKey": null,
       "args": null,
       "concreteType": "Artist",
+      "kind": "LinkedField",
+      "name": "artist",
       "plural": false,
       "selections": [
         (v0/*: any*/)
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "artistNames",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "category",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "costMinor",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "costCurrencyCode",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "date",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "depth",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "editionSize",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "editionNumber",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "height",
-      "args": null,
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
-      "alias": null,
       "name": "id",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "image",
-      "storageKey": null,
       "args": null,
       "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "image",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "url",
           "args": null,
+          "kind": "ScalarField",
+          "name": "url",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     (v0/*: any*/),
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "medium",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "metric",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "title",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "width",
       "args": null,
+      "kind": "ScalarField",
+      "name": "width",
       "storageKey": null
     }
-  ]
+  ],
+  "type": "Artwork",
+  "abstractKey": null
 };
 })();
 (node as any).hash = '9695fc56ee4b9a93c8586f5e83f5cc62';

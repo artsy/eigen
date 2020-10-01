@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 830449dd116d4960701f1169d75ef876 */
+// @ts-nocheck
+/* @relayHash d6dcea734ed2c6dc355355d8a3a1c833 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowShowInput = {
@@ -45,10 +46,9 @@ mutation ShowHeaderFollowShowMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "FollowShowInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
@@ -59,107 +59,108 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 },
 v4 = {
-  "kind": "ScalarField",
   "alias": "is_followed",
-  "name": "isFollowed",
   "args": null,
+  "kind": "ScalarField",
+  "name": "isFollowed",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ShowHeaderFollowShowMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ShowHeaderFollowShowMutation",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "followShow",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "FollowShowPayload",
+        "kind": "LinkedField",
+        "name": "followShow",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "show",
-            "storageKey": null,
             "args": null,
             "concreteType": "Show",
+            "kind": "LinkedField",
+            "name": "show",
             "plural": false,
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/)
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "ShowHeaderFollowShowMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "followShow",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "FollowShowPayload",
+        "kind": "LinkedField",
+        "name": "followShow",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "show",
-            "storageKey": null,
             "args": null,
             "concreteType": "Show",
+            "kind": "LinkedField",
+            "name": "show",
             "plural": false,
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/),
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "id",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "id",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "ShowHeaderFollowShowMutation",
     "id": "d6dcea734ed2c6dc355355d8a3a1c833",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "ShowHeaderFollowShowMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

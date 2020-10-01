@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,79 +28,80 @@ export type FairExhibitors_fair$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 };
 return {
-  "kind": "Fragment",
-  "name": "FairExhibitors_fair",
-  "type": "Fair",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "FairExhibitors_fair",
   "selections": [
     (v0/*: any*/),
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "internalID",
       "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "exhibitorsGroupedByName",
-      "storageKey": null,
       "args": null,
       "concreteType": "FairExhibitorsGroup",
+      "kind": "LinkedField",
+      "name": "exhibitorsGroupedByName",
       "plural": true,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "letter",
           "args": null,
+          "kind": "ScalarField",
+          "name": "letter",
           "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "exhibitors",
-          "storageKey": null,
           "args": null,
           "concreteType": "FairExhibitor",
+          "kind": "LinkedField",
+          "name": "exhibitors",
           "plural": true,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "name",
               "args": null,
+              "kind": "ScalarField",
+              "name": "name",
               "storageKey": null
             },
             (v0/*: any*/),
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "profileID",
               "args": null,
+              "kind": "ScalarField",
+              "name": "profileID",
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "partnerID",
               "args": null,
+              "kind": "ScalarField",
+              "name": "partnerID",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Fair",
+  "abstractKey": null
 };
 })();
 (node as any).hash = '18b238bbd00241542a381b2fc2cc97f7';

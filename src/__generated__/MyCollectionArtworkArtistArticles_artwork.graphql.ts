@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -36,34 +37,29 @@ export type MyCollectionArtworkArtistArticles_artwork$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 };
 return {
-  "kind": "Fragment",
-  "name": "MyCollectionArtworkArtistArticles_artwork",
-  "type": "Artwork",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "MyCollectionArtworkArtistArticles_artwork",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "artist",
-      "storageKey": null,
       "args": null,
       "concreteType": "Artist",
+      "kind": "LinkedField",
+      "name": "artist",
       "plural": false,
       "selections": [
         (v0/*: any*/),
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "articlesConnection",
-          "storageKey": "articlesConnection(first:3,inEditorialFeed:true,sort:\"PUBLISHED_AT_DESC\")",
           "args": [
             {
               "kind": "Literal",
@@ -82,70 +78,68 @@ return {
             }
           ],
           "concreteType": "ArticleConnection",
+          "kind": "LinkedField",
+          "name": "articlesConnection",
           "plural": false,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "edges",
-              "storageKey": null,
               "args": null,
               "concreteType": "ArticleEdge",
+              "kind": "LinkedField",
+              "name": "edges",
               "plural": true,
               "selections": [
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "node",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "Article",
+                  "kind": "LinkedField",
+                  "name": "node",
                   "plural": false,
                   "selections": [
                     (v0/*: any*/),
                     {
-                      "kind": "ScalarField",
                       "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
                       "name": "internalID",
-                      "args": null,
                       "storageKey": null
                     },
                     {
-                      "kind": "ScalarField",
                       "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
                       "name": "href",
-                      "args": null,
                       "storageKey": null
                     },
                     {
+                      "alias": null,
+                      "args": null,
                       "kind": "ScalarField",
-                      "alias": null,
                       "name": "thumbnailTitle",
-                      "args": null,
                       "storageKey": null
                     },
                     {
-                      "kind": "LinkedField",
                       "alias": null,
-                      "name": "author",
-                      "storageKey": null,
                       "args": null,
                       "concreteType": "Author",
+                      "kind": "LinkedField",
+                      "name": "author",
                       "plural": false,
                       "selections": [
                         {
-                          "kind": "ScalarField",
                           "alias": null,
-                          "name": "name",
                           "args": null,
+                          "kind": "ScalarField",
+                          "name": "name",
                           "storageKey": null
                         }
-                      ]
+                      ],
+                      "storageKey": null
                     },
                     {
-                      "kind": "ScalarField",
                       "alias": null,
-                      "name": "publishedAt",
                       "args": [
                         {
                           "kind": "Literal",
@@ -153,35 +147,43 @@ return {
                           "value": "MMM Do, YYYY"
                         }
                       ],
+                      "kind": "ScalarField",
+                      "name": "publishedAt",
                       "storageKey": "publishedAt(format:\"MMM Do, YYYY\")"
                     },
                     {
-                      "kind": "LinkedField",
                       "alias": null,
-                      "name": "thumbnailImage",
-                      "storageKey": null,
                       "args": null,
                       "concreteType": "Image",
+                      "kind": "LinkedField",
+                      "name": "thumbnailImage",
                       "plural": false,
                       "selections": [
                         {
-                          "kind": "ScalarField",
                           "alias": null,
-                          "name": "url",
                           "args": null,
+                          "kind": "ScalarField",
+                          "name": "url",
                           "storageKey": null
                         }
-                      ]
+                      ],
+                      "storageKey": null
                     }
-                  ]
+                  ],
+                  "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": "articlesConnection(first:3,inEditorialFeed:true,sort:\"PUBLISHED_AT_DESC\")"
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Artwork",
+  "abstractKey": null
 };
 })();
 (node as any).hash = 'ff2eb4e9aab66c5f0211b9ff7f3548ab';

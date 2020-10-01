@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,42 +27,45 @@ export type VanityURLEntity_fairOrPartner$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "VanityURLEntity_fairOrPartner",
-  "type": "VanityURLEntityType",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "VanityURLEntity_fairOrPartner",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "__typename",
       "args": null,
+      "kind": "ScalarField",
+      "name": "__typename",
       "storageKey": null
     },
     {
       "kind": "InlineFragment",
-      "type": "Fair",
       "selections": [
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "Fair_fair",
-          "args": null
+          "name": "Fair_fair"
         }
-      ]
+      ],
+      "type": "Fair",
+      "abstractKey": null
     },
     {
       "kind": "InlineFragment",
-      "type": "Partner",
       "selections": [
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "Partner_partner",
-          "args": null
+          "name": "Partner_partner"
         }
-      ]
+      ],
+      "type": "Partner",
+      "abstractKey": null
     }
-  ]
+  ],
+  "type": "VanityURLEntityType",
+  "abstractKey": "__isVanityURLEntityType"
 };
 (node as any).hash = '2a63752cb302d399d30c3672b4be379e';
 export default node;

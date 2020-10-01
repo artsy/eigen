@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,17 +30,13 @@ export type Fair2Collections_fair$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "Fair2Collections_fair",
-  "type": "Fair",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Fair2Collections_fair",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "marketingCollections",
-      "storageKey": "marketingCollections(size:4)",
       "args": [
         {
           "kind": "Literal",
@@ -48,34 +45,33 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "MarketingCollection",
+      "kind": "LinkedField",
+      "name": "marketingCollections",
       "plural": true,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "slug",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "title",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "category",
           "args": null,
+          "kind": "ScalarField",
+          "name": "category",
           "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": "artworks",
-          "name": "artworksConnection",
-          "storageKey": "artworksConnection(first:3)",
           "args": [
             {
               "kind": "Literal",
@@ -84,39 +80,36 @@ const node: ReaderFragment = {
             }
           ],
           "concreteType": "FilterArtworksConnection",
+          "kind": "LinkedField",
+          "name": "artworksConnection",
           "plural": false,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "edges",
-              "storageKey": null,
               "args": null,
               "concreteType": "FilterArtworksEdge",
+              "kind": "LinkedField",
+              "name": "edges",
               "plural": true,
               "selections": [
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "node",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "Artwork",
+                  "kind": "LinkedField",
+                  "name": "node",
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "LinkedField",
                       "alias": null,
-                      "name": "image",
-                      "storageKey": null,
                       "args": null,
                       "concreteType": "Image",
+                      "kind": "LinkedField",
+                      "name": "image",
                       "plural": false,
                       "selections": [
                         {
-                          "kind": "ScalarField",
                           "alias": null,
-                          "name": "url",
                           "args": [
                             {
                               "kind": "Literal",
@@ -124,19 +117,28 @@ const node: ReaderFragment = {
                               "value": "larger"
                             }
                           ],
+                          "kind": "ScalarField",
+                          "name": "url",
                           "storageKey": "url(version:\"larger\")"
                         }
-                      ]
+                      ],
+                      "storageKey": null
                     }
-                  ]
+                  ],
+                  "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": "artworksConnection(first:3)"
         }
-      ]
+      ],
+      "storageKey": "marketingCollections(size:4)"
     }
-  ]
+  ],
+  "type": "Fair",
+  "abstractKey": null
 };
 (node as any).hash = '4712ef10d0dba7256a903b60973e1fa6';
 export default node;

@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 3b27bc400980ad1139661342fdbf9ee7 */
+// @ts-nocheck
+/* @relayHash 1f2fe351db671db305e2398c685053b7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -61,201 +62,202 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "FavoriteCategoriesQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "FavoriteCategoriesQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "me",
-        "storageKey": null,
         "args": null,
         "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "FavoriteCategories_me",
-            "args": null
+            "name": "FavoriteCategories_me"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "FavoriteCategoriesQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "me",
-        "storageKey": null,
         "args": null,
         "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "followsAndSaves",
-            "storageKey": null,
             "args": null,
             "concreteType": "FollowsAndSaves",
+            "kind": "LinkedField",
+            "name": "followsAndSaves",
             "plural": false,
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": "genes",
-                "name": "genesConnection",
-                "storageKey": "genesConnection(first:10)",
                 "args": (v0/*: any*/),
                 "concreteType": "FollowGeneConnection",
+                "kind": "LinkedField",
+                "name": "genesConnection",
                 "plural": false,
                 "selections": [
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "pageInfo",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "PageInfo",
+                    "kind": "LinkedField",
+                    "name": "pageInfo",
                     "plural": false,
                     "selections": [
                       {
-                        "kind": "ScalarField",
                         "alias": null,
-                        "name": "endCursor",
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "endCursor",
                         "storageKey": null
                       },
                       {
-                        "kind": "ScalarField",
                         "alias": null,
-                        "name": "hasNextPage",
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "hasNextPage",
                         "storageKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   },
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "edges",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "FollowGeneEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
                     "plural": true,
                     "selections": [
                       {
-                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "node",
-                        "storageKey": null,
                         "args": null,
                         "concreteType": "FollowGene",
+                        "kind": "LinkedField",
+                        "name": "node",
                         "plural": false,
                         "selections": [
                           {
-                            "kind": "LinkedField",
                             "alias": null,
-                            "name": "gene",
-                            "storageKey": null,
                             "args": null,
                             "concreteType": "Gene",
+                            "kind": "LinkedField",
+                            "name": "gene",
                             "plural": false,
                             "selections": [
                               (v1/*: any*/),
                               {
-                                "kind": "ScalarField",
                                 "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
                                 "name": "name",
-                                "args": null,
                                 "storageKey": null
                               },
                               {
+                                "alias": null,
+                                "args": null,
                                 "kind": "ScalarField",
-                                "alias": null,
                                 "name": "href",
-                                "args": null,
                                 "storageKey": null
                               },
                               {
-                                "kind": "LinkedField",
                                 "alias": null,
-                                "name": "image",
-                                "storageKey": null,
                                 "args": null,
                                 "concreteType": "Image",
+                                "kind": "LinkedField",
+                                "name": "image",
                                 "plural": false,
                                 "selections": [
                                   {
-                                    "kind": "ScalarField",
                                     "alias": null,
-                                    "name": "url",
                                     "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "url",
                                     "storageKey": null
                                   }
-                                ]
+                                ],
+                                "storageKey": null
                               }
-                            ]
+                            ],
+                            "storageKey": null
                           },
                           (v1/*: any*/),
                           {
-                            "kind": "ScalarField",
                             "alias": null,
-                            "name": "__typename",
                             "args": null,
+                            "kind": "ScalarField",
+                            "name": "__typename",
                             "storageKey": null
                           }
-                        ]
+                        ],
+                        "storageKey": null
                       },
                       {
-                        "kind": "ScalarField",
                         "alias": null,
-                        "name": "cursor",
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "cursor",
                         "storageKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": "genesConnection(first:10)"
               },
               {
-                "kind": "LinkedHandle",
                 "alias": "genes",
-                "name": "genesConnection",
                 "args": (v0/*: any*/),
+                "filters": null,
                 "handle": "connection",
                 "key": "Categories_followed_genes",
-                "filters": null
+                "kind": "LinkedHandle",
+                "name": "genesConnection"
               }
-            ]
+            ],
+            "storageKey": null
           },
           (v1/*: any*/)
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "FavoriteCategoriesQuery",
     "id": "1f2fe351db671db305e2398c685053b7",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "FavoriteCategoriesQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

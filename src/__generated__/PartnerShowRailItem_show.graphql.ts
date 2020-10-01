@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,76 +29,77 @@ export type PartnerShowRailItem_show$key = {
 const node: ReaderFragment = (function(){
 var v0 = [
   {
-    "kind": "ScalarField",
     "alias": null,
-    "name": "url",
     "args": null,
+    "kind": "ScalarField",
+    "name": "url",
     "storageKey": null
   }
 ];
 return {
-  "kind": "Fragment",
-  "name": "PartnerShowRailItem_show",
-  "type": "Show",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "PartnerShowRailItem_show",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "internalID",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "name",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "exhibitionPeriod",
-      "args": null,
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
-      "alias": null,
       "name": "endAt",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "coverImage",
-      "storageKey": null,
       "args": null,
       "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "coverImage",
       "plural": false,
-      "selections": (v0/*: any*/)
+      "selections": (v0/*: any*/),
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "images",
-      "storageKey": null,
       "args": null,
       "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "images",
       "plural": true,
-      "selections": (v0/*: any*/)
+      "selections": (v0/*: any*/),
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Show",
+  "abstractKey": null
 };
 })();
 (node as any).hash = '54b5a51d6b04d0248ff1995a6fb3e0b4';

@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 33c669627966801c9c3a72b904d13023 */
+// @ts-nocheck
+/* @relayHash b167d55e9973d983c1dabae6bfee28ca */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -21,12 +22,12 @@ export type CollectionHeaderTestsQueryRawResponse = {
                     readonly image: ({
                         readonly url: string | null;
                     }) | null;
-                    readonly id: string | null;
+                    readonly id: string;
                 }) | null;
             }) | null> | null;
-            readonly id: string | null;
+            readonly id: string;
         }) | null;
-        readonly id: string | null;
+        readonly id: string;
     }) | null;
 };
 export type CollectionHeaderTestsQuery = {
@@ -72,79 +73,76 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "CollectionHeaderTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "CollectionHeaderTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "marketingCollection",
-        "storageKey": "marketingCollection(slug:\"street-art-now\")",
         "args": (v0/*: any*/),
         "concreteType": "MarketingCollection",
+        "kind": "LinkedField",
+        "name": "marketingCollection",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "CollectionHeader_collection",
-            "args": null
+            "name": "CollectionHeader_collection"
           }
-        ]
+        ],
+        "storageKey": "marketingCollection(slug:\"street-art-now\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "CollectionHeaderTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "marketingCollection",
-        "storageKey": "marketingCollection(slug:\"street-art-now\")",
         "args": (v0/*: any*/),
         "concreteType": "MarketingCollection",
+        "kind": "LinkedField",
+        "name": "marketingCollection",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "title",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "headerImage",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "descriptionMarkdown",
             "args": null,
+            "kind": "ScalarField",
+            "name": "descriptionMarkdown",
             "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": "image",
-            "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:1,sort:\"-decayed_merch\")",
             "args": [
               {
                 "kind": "Literal",
@@ -158,39 +156,36 @@ return {
               }
             ],
             "concreteType": "FilterArtworksConnection",
+            "kind": "LinkedField",
+            "name": "artworksConnection",
             "plural": false,
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "edges",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "FilterArtworksEdge",
+                "kind": "LinkedField",
+                "name": "edges",
                 "plural": true,
                 "selections": [
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "node",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "Artwork",
+                    "kind": "LinkedField",
+                    "name": "node",
                     "plural": false,
                     "selections": [
                       {
-                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "image",
-                        "storageKey": null,
                         "args": null,
                         "concreteType": "Image",
+                        "kind": "LinkedField",
+                        "name": "image",
                         "plural": false,
                         "selections": [
                           {
-                            "kind": "ScalarField",
                             "alias": null,
-                            "name": "url",
                             "args": [
                               {
                                 "kind": "Literal",
@@ -198,29 +193,36 @@ return {
                                 "value": "larger"
                               }
                             ],
+                            "kind": "ScalarField",
+                            "name": "url",
                             "storageKey": "url(version:\"larger\")"
                           }
-                        ]
+                        ],
+                        "storageKey": null
                       },
                       (v1/*: any*/)
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": null
               },
               (v1/*: any*/)
-            ]
+            ],
+            "storageKey": "artworksConnection(first:1,sort:\"-decayed_merch\")"
           },
           (v1/*: any*/)
-        ]
+        ],
+        "storageKey": "marketingCollection(slug:\"street-art-now\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "CollectionHeaderTestsQuery",
     "id": "b167d55e9973d983c1dabae6bfee28ca",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "CollectionHeaderTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

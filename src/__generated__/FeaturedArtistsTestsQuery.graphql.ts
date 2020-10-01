@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c87c384a7f4776631ce00c991b102344 */
+// @ts-nocheck
+/* @relayHash f89058226e8d41b3e432b966e4be1fd1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,14 +30,14 @@ export type FeaturedArtistsTestsQueryRawResponse = {
                     readonly url: string | null;
                 }) | null;
             }) | null> | null;
-            readonly id: string | null;
+            readonly id: string;
         }) | null;
         readonly query: {
             readonly artistIDs: ReadonlyArray<string> | null;
             readonly id: string | null;
         };
         readonly featuredArtistExclusionIds: ReadonlyArray<string> | null;
-        readonly id: string | null;
+        readonly id: string;
     }) | null;
 };
 export type FeaturedArtistsTestsQuery = {
@@ -98,66 +99,63 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 },
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "FeaturedArtistsTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "FeaturedArtistsTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "marketingCollection",
-        "storageKey": "marketingCollection(slug:\"emerging-photographers\")",
         "args": (v0/*: any*/),
         "concreteType": "MarketingCollection",
+        "kind": "LinkedField",
+        "name": "marketingCollection",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "FeaturedArtists_collection",
-            "args": null
+            "name": "FeaturedArtists_collection"
           }
-        ]
+        ],
+        "storageKey": "marketingCollection(slug:\"emerging-photographers\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "FeaturedArtistsTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "marketingCollection",
-        "storageKey": "marketingCollection(slug:\"emerging-photographers\")",
         "args": (v0/*: any*/),
         "concreteType": "MarketingCollection",
+        "kind": "LinkedField",
+        "name": "marketingCollection",
         "plural": false,
         "selections": [
           (v1/*: any*/),
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "artworksConnection",
-            "storageKey": "artworksConnection(aggregations:[\"MERCHANDISABLE_ARTISTS\"],size:0,sort:\"-decayed_merch\")",
             "args": [
               {
                 "kind": "Literal",
@@ -178,13 +176,12 @@ return {
               }
             ],
             "concreteType": "FilterArtworksConnection",
+            "kind": "LinkedField",
+            "name": "artworksConnection",
             "plural": false,
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "merchandisableArtists",
-                "storageKey": "merchandisableArtists(size:4)",
                 "args": [
                   {
                     "kind": "Literal",
@@ -193,126 +190,131 @@ return {
                   }
                 ],
                 "concreteType": "Artist",
+                "kind": "LinkedField",
+                "name": "merchandisableArtists",
                 "plural": true,
                 "selections": [
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "internalID",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "internalID",
                     "storageKey": null
                   },
                   (v2/*: any*/),
                   (v1/*: any*/),
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "name",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "initials",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "href",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": "is_followed",
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "isFollowed",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "nationality",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "birthday",
-                    "args": null,
                     "storageKey": null
                   },
                   {
+                    "alias": null,
+                    "args": null,
                     "kind": "ScalarField",
-                    "alias": null,
                     "name": "deathday",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "image",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "Image",
+                    "kind": "LinkedField",
+                    "name": "image",
                     "plural": false,
                     "selections": [
                       {
-                        "kind": "ScalarField",
                         "alias": null,
-                        "name": "url",
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "url",
                         "storageKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": "merchandisableArtists(size:4)"
               },
               (v2/*: any*/)
-            ]
+            ],
+            "storageKey": "artworksConnection(aggregations:[\"MERCHANDISABLE_ARTISTS\"],size:0,sort:\"-decayed_merch\")"
           },
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "query",
-            "storageKey": null,
             "args": null,
             "concreteType": "MarketingCollectionQuery",
+            "kind": "LinkedField",
+            "name": "query",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "artistIDs",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "artistIDs",
                 "storageKey": null
               },
               (v2/*: any*/)
-            ]
+            ],
+            "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "featuredArtistExclusionIds",
             "args": null,
+            "kind": "ScalarField",
+            "name": "featuredArtistExclusionIds",
             "storageKey": null
           },
           (v2/*: any*/)
-        ]
+        ],
+        "storageKey": "marketingCollection(slug:\"emerging-photographers\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "FeaturedArtistsTestsQuery",
     "id": "f89058226e8d41b3e432b966e4be1fd1",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "FeaturedArtistsTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

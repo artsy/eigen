@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -19,30 +20,25 @@ export type ConfirmBid_me$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "ConfirmBid_me",
-  "type": "Me",
-  "metadata": null,
   "argumentDefinitions": [
     {
       "kind": "RootArgument",
-      "name": "saleID",
-      "type": "String"
+      "name": "saleID"
     }
   ],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ConfirmBid_me",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": "has_qualified_credit_cards",
-      "name": "hasQualifiedCreditCards",
       "args": null,
+      "kind": "ScalarField",
+      "name": "hasQualifiedCreditCards",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "bidders",
-      "storageKey": null,
       "args": [
         {
           "kind": "Variable",
@@ -51,18 +47,23 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "Bidder",
+      "kind": "LinkedField",
+      "name": "bidders",
       "plural": true,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "id",
           "args": null,
+          "kind": "ScalarField",
+          "name": "id",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Me",
+  "abstractKey": null
 };
 (node as any).hash = '316558546349c6c6cd56a990b045c1e4';
 export default node;

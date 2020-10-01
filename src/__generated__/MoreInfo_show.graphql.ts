@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,95 +28,97 @@ export type MoreInfo_show$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "MoreInfo_show",
-  "type": "Show",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "MoreInfo_show",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "internalID",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "pressReleaseUrl",
-      "args": null,
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
-      "alias": null,
       "name": "openingReceptionText",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "partner",
-      "storageKey": null,
       "args": null,
       "concreteType": null,
+      "kind": "LinkedField",
+      "name": "partner",
       "plural": false,
       "selections": [
         {
           "kind": "InlineFragment",
-          "type": "Partner",
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "website",
               "args": null,
+              "kind": "ScalarField",
+              "name": "website",
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "type",
               "args": null,
+              "kind": "ScalarField",
+              "name": "type",
               "storageKey": null
             }
-          ]
+          ],
+          "type": "Partner",
+          "abstractKey": null
         }
-      ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": "press_release",
-      "name": "pressRelease",
-      "args": null,
+      ],
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
+      "alias": "press_release",
+      "args": null,
+      "kind": "ScalarField",
+      "name": "pressRelease",
+      "storageKey": null
+    },
+    {
       "alias": null,
-      "name": "events",
-      "storageKey": null,
       "args": null,
       "concreteType": "ShowEventType",
+      "kind": "LinkedField",
+      "name": "events",
       "plural": true,
       "selections": [
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "ShowEventSection_event",
-          "args": null
+          "name": "ShowEventSection_event"
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Show",
+  "abstractKey": null
 };
 (node as any).hash = '85085e24aa4e107b81ae3e19c8567e7a';
 export default node;

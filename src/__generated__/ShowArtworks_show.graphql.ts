@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -19,39 +20,40 @@ export type ShowArtworks_show$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "ShowArtworks_show",
-  "type": "Show",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ShowArtworks_show",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "id",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "internalID",
       "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
       "storageKey": null
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "FilteredInfiniteScrollGrid_entity",
-      "args": null
+      "name": "FilteredInfiniteScrollGrid_entity"
     }
-  ]
+  ],
+  "type": "Show",
+  "abstractKey": null
 };
 (node as any).hash = 'd18ae5be25656a4cea38614cf43825e9';
 export default node;

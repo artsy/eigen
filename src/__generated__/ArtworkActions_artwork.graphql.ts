@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,137 +35,138 @@ export type ArtworkActions_artwork$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "ArtworkActions_artwork",
-  "type": "Artwork",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ArtworkActions_artwork",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "id",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "internalID",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "title",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "href",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": "is_saved",
-      "name": "isSaved",
       "args": null,
-      "storageKey": null
-    },
-    {
       "kind": "ScalarField",
-      "alias": "is_hangable",
-      "name": "isHangable",
-      "args": null,
+      "name": "isSaved",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
+      "alias": "is_hangable",
+      "args": null,
+      "kind": "ScalarField",
+      "name": "isHangable",
+      "storageKey": null
+    },
+    {
       "alias": null,
-      "name": "artists",
-      "storageKey": null,
       "args": null,
       "concreteType": "Artist",
+      "kind": "LinkedField",
+      "name": "artists",
       "plural": true,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "name",
           "args": null,
+          "kind": "ScalarField",
+          "name": "name",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "image",
-      "storageKey": null,
       "args": null,
       "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "image",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "url",
           "args": null,
+          "kind": "ScalarField",
+          "name": "url",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "sale",
-      "storageKey": null,
       "args": null,
       "concreteType": "Sale",
+      "kind": "LinkedField",
+      "name": "sale",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "isAuction",
           "args": null,
+          "kind": "ScalarField",
+          "name": "isAuction",
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "isClosed",
           "args": null,
+          "kind": "ScalarField",
+          "name": "isClosed",
           "storageKey": null
         }
-      ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "widthCm",
-      "args": null,
+      ],
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "heightCm",
       "args": null,
+      "kind": "ScalarField",
+      "name": "widthCm",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "heightCm",
       "storageKey": null
     }
-  ]
+  ],
+  "type": "Artwork",
+  "abstractKey": null
 };
 (node as any).hash = '7a2fe8699b1d63776558e40651380e28';
 export default node;

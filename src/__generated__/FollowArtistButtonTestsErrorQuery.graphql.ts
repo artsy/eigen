@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 3255eb56d03bb00a3d938728f3742919 */
+// @ts-nocheck
+/* @relayHash 1b7cfa5b786e32f0faccd54efa1c07bd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -51,84 +52,85 @@ var v0 = [
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "FollowArtistButtonTestsErrorQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "FollowArtistButtonTestsErrorQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artist",
-        "storageKey": "artist(id:\"artistID\")",
         "args": (v0/*: any*/),
         "concreteType": "Artist",
+        "kind": "LinkedField",
+        "name": "artist",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "FollowArtistButton_artist",
-            "args": null
+            "name": "FollowArtistButton_artist"
           }
-        ]
+        ],
+        "storageKey": "artist(id:\"artistID\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "FollowArtistButtonTestsErrorQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artist",
-        "storageKey": "artist(id:\"artistID\")",
         "args": (v0/*: any*/),
         "concreteType": "Artist",
+        "kind": "LinkedField",
+        "name": "artist",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "id",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "slug",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "internalID",
             "args": null,
+            "kind": "ScalarField",
+            "name": "internalID",
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": "is_followed",
-            "name": "isFollowed",
             "args": null,
+            "kind": "ScalarField",
+            "name": "isFollowed",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": "artist(id:\"artistID\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "FollowArtistButtonTestsErrorQuery",
     "id": "1b7cfa5b786e32f0faccd54efa1c07bd",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "FollowArtistButtonTestsErrorQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

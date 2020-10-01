@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 17cc832aff0c51c397258e3aa19bffdd */
+// @ts-nocheck
+/* @relayHash 1829179a8a73f48f9575be267da96788 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,112 +38,113 @@ fragment MyProfilePushNotifications_me on Me {
 */
 
 const node: ConcreteRequest = {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "MyProfilePushNotificationsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "MyProfilePushNotificationsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "me",
-        "storageKey": null,
         "args": null,
         "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "MyProfilePushNotifications_me",
-            "args": null
+            "name": "MyProfilePushNotifications_me"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "MyProfilePushNotificationsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "me",
-        "storageKey": null,
         "args": null,
         "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "receiveLotOpeningSoonNotification",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "receiveNewSalesNotification",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "receiveNewWorksNotification",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "receiveOutbidNotification",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "receivePromotionNotification",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "receivePurchaseNotification",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "receiveSaleOpeningClosingNotification",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "id",
             "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "MyProfilePushNotificationsQuery",
     "id": "1829179a8a73f48f9575be267da96788",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "MyProfilePushNotificationsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 (node as any).hash = 'bcdcedb47646f44024b41af1fd280dca';

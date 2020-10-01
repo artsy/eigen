@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -38,174 +39,177 @@ export type LocationMap_location$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "LocationMap_location",
-  "type": "Location",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "LocationMap_location",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "id",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "internalID",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "city",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "address",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": "address_2",
+      "args": null,
+      "kind": "ScalarField",
       "name": "address2",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": "postal_code",
-      "name": "postalCode",
       "args": null,
-      "storageKey": null
-    },
-    {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "summary",
-      "args": null,
+      "name": "postalCode",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "coordinates",
-      "storageKey": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "summary",
+      "storageKey": null
+    },
+    {
+      "alias": null,
       "args": null,
       "concreteType": "LatLng",
+      "kind": "LinkedField",
+      "name": "coordinates",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "lat",
           "args": null,
+          "kind": "ScalarField",
+          "name": "lat",
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "lng",
           "args": null,
+          "kind": "ScalarField",
+          "name": "lng",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": "day_schedules",
-      "name": "daySchedules",
-      "storageKey": null,
       "args": null,
       "concreteType": "DaySchedule",
+      "kind": "LinkedField",
+      "name": "daySchedules",
       "plural": true,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": "start_time",
+          "args": null,
+          "kind": "ScalarField",
           "name": "startTime",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": "end_time",
-          "name": "endTime",
           "args": null,
+          "kind": "ScalarField",
+          "name": "endTime",
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": "day_of_week",
-          "name": "dayOfWeek",
           "args": null,
+          "kind": "ScalarField",
+          "name": "dayOfWeek",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "openingHours",
-      "storageKey": null,
       "args": null,
       "concreteType": null,
+      "kind": "LinkedField",
+      "name": "openingHours",
       "plural": false,
       "selections": [
         {
           "kind": "InlineFragment",
-          "type": "OpeningHoursArray",
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "schedules",
-              "storageKey": null,
               "args": null,
               "concreteType": "FormattedDaySchedules",
+              "kind": "LinkedField",
+              "name": "schedules",
               "plural": true,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "days",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "days",
                   "storageKey": null
                 },
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "hours",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "hours",
                   "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "type": "OpeningHoursArray",
+          "abstractKey": null
         },
         {
           "kind": "InlineFragment",
-          "type": "OpeningHoursText",
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "text",
               "args": null,
+              "kind": "ScalarField",
+              "name": "text",
               "storageKey": null
             }
-          ]
+          ],
+          "type": "OpeningHoursText",
+          "abstractKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Location",
+  "abstractKey": null
 };
 (node as any).hash = 'f4911b776eb98bf925c62fde4c6bfaf8';
 export default node;

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -22,59 +23,60 @@ export type RegisterToBidButton_sale$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "RegisterToBidButton_sale",
-  "type": "Sale",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "RegisterToBidButton_sale",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "startAt",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "endAt",
-      "args": null,
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
-      "alias": null,
       "name": "requireIdentityVerification",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "registrationStatus",
-      "storageKey": null,
       "args": null,
       "concreteType": "Bidder",
+      "kind": "LinkedField",
+      "name": "registrationStatus",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "qualifiedForBidding",
           "args": null,
+          "kind": "ScalarField",
+          "name": "qualifiedForBidding",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Sale",
+  "abstractKey": null
 };
 (node as any).hash = '1dce249f87a8c895f8d854c78caf2813';
 export default node;

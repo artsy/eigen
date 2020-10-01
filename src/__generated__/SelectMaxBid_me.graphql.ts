@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -16,18 +17,19 @@ export type SelectMaxBid_me$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "SelectMaxBid_me",
-  "type": "Me",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "SelectMaxBid_me",
   "selections": [
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "ConfirmBid_me",
-      "args": null
+      "name": "ConfirmBid_me"
     }
-  ]
+  ],
+  "type": "Me",
+  "abstractKey": null
 };
 (node as any).hash = 'a89deffbe0bc2e15f42b67f98064cfda';
 export default node;

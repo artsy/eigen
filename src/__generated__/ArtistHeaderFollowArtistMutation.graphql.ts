@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 03a1ad5382435e6b650239b1d9b0d92a */
+// @ts-nocheck
+/* @relayHash ab85a2eccf1a38b11df8fe6fa1f4f700 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowArtistInput = {
@@ -42,18 +43,14 @@ mutation ArtistHeaderFollowArtistMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "FollowArtistInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "followArtist",
-    "storageKey": null,
     "args": [
       {
         "kind": "Variable",
@@ -62,58 +59,62 @@ v1 = [
       }
     ],
     "concreteType": "FollowArtistPayload",
+    "kind": "LinkedField",
+    "name": "followArtist",
     "plural": false,
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artist",
-        "storageKey": null,
         "args": null,
         "concreteType": "Artist",
+        "kind": "LinkedField",
+        "name": "artist",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "id",
             "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "isFollowed",
             "args": null,
+            "kind": "ScalarField",
+            "name": "isFollowed",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "storageKey": null
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ArtistHeaderFollowArtistMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ArtistHeaderFollowArtistMutation",
+    "selections": (v1/*: any*/),
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "ArtistHeaderFollowArtistMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "ArtistHeaderFollowArtistMutation",
     "id": "ab85a2eccf1a38b11df8fe6fa1f4f700",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "ArtistHeaderFollowArtistMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

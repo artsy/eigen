@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -24,73 +25,74 @@ export type ArtworkPreview_artwork$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "ArtworkPreview_artwork",
-  "type": "Artwork",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ArtworkPreview_artwork",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "internalID",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "title",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "artistNames",
-      "args": null,
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
-      "alias": null,
       "name": "date",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "image",
-      "storageKey": null,
       "args": null,
       "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "image",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "url",
           "args": null,
+          "kind": "ScalarField",
+          "name": "url",
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "aspectRatio",
           "args": null,
+          "kind": "ScalarField",
+          "name": "aspectRatio",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Artwork",
+  "abstractKey": null
 };
 (node as any).hash = '00ffea70d4a2fd6267c6ed5bfb023f59';
 export default node;

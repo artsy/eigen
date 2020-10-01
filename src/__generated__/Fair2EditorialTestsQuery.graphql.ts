@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 3383521146f55990db2616e71ac25006 */
+// @ts-nocheck
+/* @relayHash 7884d3612557621503fc9585967cfede */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,7 +28,7 @@ export type Fair2EditorialTestsQueryRawResponse = {
                 }) | null;
             }) | null> | null;
         }) | null;
-        readonly id: string | null;
+        readonly id: string;
     }) | null;
 };
 export type Fair2EditorialTestsQuery = {
@@ -68,10 +69,9 @@ fragment Fair2Editorial_fair on Fair {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "fairID",
-    "type": "String!",
-    "defaultValue": null
+    "name": "fairID"
   }
 ],
 v1 = [
@@ -82,58 +82,55 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "Fair2EditorialTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "Fair2EditorialTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "Fair2Editorial_fair",
-            "args": null
+            "name": "Fair2Editorial_fair"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "Fair2EditorialTestsQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": "articles",
-            "name": "articlesConnection",
-            "storageKey": "articlesConnection(first:5,sort:\"PUBLISHED_AT_DESC\")",
             "args": [
               {
                 "kind": "Literal",
@@ -147,45 +144,43 @@ return {
               }
             ],
             "concreteType": "ArticleConnection",
+            "kind": "LinkedField",
+            "name": "articlesConnection",
             "plural": false,
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "edges",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "ArticleEdge",
+                "kind": "LinkedField",
+                "name": "edges",
                 "plural": true,
                 "selections": [
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "node",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "Article",
+                    "kind": "LinkedField",
+                    "name": "node",
                     "plural": false,
                     "selections": [
                       (v2/*: any*/),
                       {
-                        "kind": "ScalarField",
                         "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "title",
-                        "args": null,
                         "storageKey": null
                       },
                       {
-                        "kind": "ScalarField",
                         "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "href",
-                        "args": null,
                         "storageKey": null
                       },
                       {
-                        "kind": "ScalarField",
                         "alias": null,
-                        "name": "publishedAt",
                         "args": [
                           {
                             "kind": "Literal",
@@ -193,43 +188,49 @@ return {
                             "value": "MMM Do, YY"
                           }
                         ],
+                        "kind": "ScalarField",
+                        "name": "publishedAt",
                         "storageKey": "publishedAt(format:\"MMM Do, YY\")"
                       },
                       {
-                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "thumbnailImage",
-                        "storageKey": null,
                         "args": null,
                         "concreteType": "Image",
+                        "kind": "LinkedField",
+                        "name": "thumbnailImage",
                         "plural": false,
                         "selections": [
                           {
-                            "kind": "ScalarField",
                             "alias": "src",
-                            "name": "imageURL",
                             "args": null,
+                            "kind": "ScalarField",
+                            "name": "imageURL",
                             "storageKey": null
                           }
-                        ]
+                        ],
+                        "storageKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": null
               }
-            ]
+            ],
+            "storageKey": "articlesConnection(first:5,sort:\"PUBLISHED_AT_DESC\")"
           },
           (v2/*: any*/)
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "Fair2EditorialTestsQuery",
     "id": "7884d3612557621503fc9585967cfede",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "Fair2EditorialTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

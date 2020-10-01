@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,91 +28,94 @@ export type Metadata_show$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "name",
   "args": null,
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 },
 v1 = [
   (v0/*: any*/)
 ];
 return {
-  "kind": "Fragment",
-  "name": "Metadata_show",
-  "type": "Show",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Metadata_show",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "kind",
       "args": null,
+      "kind": "ScalarField",
+      "name": "kind",
       "storageKey": null
     },
     (v0/*: any*/),
     {
-      "kind": "ScalarField",
       "alias": "exhibition_period",
+      "args": null,
+      "kind": "ScalarField",
       "name": "exhibitionPeriod",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": "status_update",
-      "name": "statusUpdate",
       "args": null,
-      "storageKey": null
-    },
-    {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "status",
-      "args": null,
+      "name": "statusUpdate",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "partner",
-      "storageKey": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "status",
+      "storageKey": null
+    },
+    {
+      "alias": null,
       "args": null,
       "concreteType": null,
+      "kind": "LinkedField",
+      "name": "partner",
       "plural": false,
       "selections": [
         {
           "kind": "InlineFragment",
+          "selections": (v1/*: any*/),
           "type": "Partner",
-          "selections": (v1/*: any*/)
+          "abstractKey": null
         },
         {
           "kind": "InlineFragment",
+          "selections": (v1/*: any*/),
           "type": "ExternalPartner",
-          "selections": (v1/*: any*/)
+          "abstractKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "location",
-      "storageKey": null,
       "args": null,
       "concreteType": "Location",
+      "kind": "LinkedField",
+      "name": "location",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "city",
           "args": null,
+          "kind": "ScalarField",
+          "name": "city",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Show",
+  "abstractKey": null
 };
 })();
 (node as any).hash = '87e26f99d1fce5212d9e1e429ce4eb8a';

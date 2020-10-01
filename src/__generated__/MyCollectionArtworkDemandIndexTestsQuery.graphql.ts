@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 454a02f7ac3b0eafc045bc789a197526 */
+// @ts-nocheck
+/* @relayHash 0c091bcca9188d6ad138bd745ced6aea */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -43,78 +44,79 @@ var v0 = [
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "MyCollectionArtworkDemandIndexTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "MyCollectionArtworkDemandIndexTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "marketPriceInsights",
-        "storageKey": "marketPriceInsights(artistId:\"some-artist-id\",medium:\"painting\")",
         "args": (v0/*: any*/),
         "concreteType": "MarketPriceInsights",
+        "kind": "LinkedField",
+        "name": "marketPriceInsights",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "MyCollectionArtworkDemandIndex_marketPriceInsights",
-            "args": null
+            "name": "MyCollectionArtworkDemandIndex_marketPriceInsights"
           }
-        ]
+        ],
+        "storageKey": "marketPriceInsights(artistId:\"some-artist-id\",medium:\"painting\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "MyCollectionArtworkDemandIndexTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "marketPriceInsights",
-        "storageKey": "marketPriceInsights(artistId:\"some-artist-id\",medium:\"painting\")",
         "args": (v0/*: any*/),
         "concreteType": "MarketPriceInsights",
+        "kind": "LinkedField",
+        "name": "marketPriceInsights",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "demandRank",
             "args": null,
+            "kind": "ScalarField",
+            "name": "demandRank",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": "marketPriceInsights(artistId:\"some-artist-id\",medium:\"painting\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "MyCollectionArtworkDemandIndexTestsQuery",
     "id": "0c091bcca9188d6ad138bd745ced6aea",
-    "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "marketPriceInsights": {
-          "type": "MarketPriceInsights",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "MarketPriceInsights"
         },
         "marketPriceInsights.demandRank": {
-          "type": "Float",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Float"
         }
       }
-    }
+    },
+    "name": "MyCollectionArtworkDemandIndexTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,17 +29,13 @@ export type Inbox_me$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "Inbox_me",
-  "type": "Me",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Inbox_me",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": "lot_standings",
-      "name": "lotStandings",
-      "storageKey": "lotStandings(live:true)",
       "args": [
         {
           "kind": "Literal",
@@ -47,33 +44,33 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "LotStanding",
+      "kind": "LinkedField",
+      "name": "lotStandings",
       "plural": true,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": "most_recent_bid",
-          "name": "mostRecentBid",
-          "storageKey": null,
           "args": null,
           "concreteType": "BidderPosition",
+          "kind": "LinkedField",
+          "name": "mostRecentBid",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "id",
               "args": null,
+              "kind": "ScalarField",
+              "name": "id",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": "lotStandings(live:true)"
     },
     {
-      "kind": "LinkedField",
       "alias": "conversations_existence_check",
-      "name": "conversationsConnection",
-      "storageKey": "conversationsConnection(first:1)",
       "args": [
         {
           "kind": "Literal",
@@ -82,50 +79,55 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "ConversationConnection",
+      "kind": "LinkedField",
+      "name": "conversationsConnection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "ConversationEdge",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "Conversation",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "internalID",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "internalID",
                   "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": "conversationsConnection(first:1)"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "Conversations_me",
-      "args": null
+      "name": "Conversations_me"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "ActiveBids_me",
-      "args": null
+      "name": "ActiveBids_me"
     }
-  ]
+  ],
+  "type": "Me",
+  "abstractKey": null
 };
 (node as any).hash = 'fc3a51501e74ad6cd70d9cb1a4fa9f85';
 export default node;

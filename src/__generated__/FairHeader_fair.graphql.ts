@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -52,136 +53,132 @@ export type FairHeader_fair$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 },
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "name",
   "args": null,
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 },
 v2 = [
   (v1/*: any*/),
   {
-    "kind": "ScalarField",
     "alias": null,
-    "name": "href",
     "args": null,
+    "kind": "ScalarField",
+    "name": "href",
     "storageKey": null
   },
   (v0/*: any*/),
   {
-    "kind": "ScalarField",
     "alias": null,
-    "name": "internalID",
     "args": null,
+    "kind": "ScalarField",
+    "name": "internalID",
     "storageKey": null
   }
 ];
 return {
-  "kind": "Fragment",
-  "name": "FairHeader_fair",
-  "type": "Fair",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "FairHeader_fair",
   "selections": [
     (v0/*: any*/),
     (v1/*: any*/),
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "formattedOpeningHours",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "startAt",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "endAt",
-      "args": null,
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
-      "alias": null,
       "name": "exhibitionPeriod",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "counts",
-      "storageKey": null,
       "args": null,
       "concreteType": "FairCounts",
+      "kind": "LinkedField",
+      "name": "counts",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "artists",
           "args": null,
+          "kind": "ScalarField",
+          "name": "artists",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "image",
-      "storageKey": null,
       "args": null,
       "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "image",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "url",
           "args": null,
+          "kind": "ScalarField",
+          "name": "url",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "followedContent",
-      "storageKey": null,
       "args": null,
       "concreteType": "FollowedContent",
+      "kind": "LinkedField",
+      "name": "followedContent",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "artists",
-          "storageKey": null,
           "args": null,
           "concreteType": "Artist",
+          "kind": "LinkedField",
+          "name": "artists",
           "plural": true,
-          "selections": (v2/*: any*/)
+          "selections": (v2/*: any*/),
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "artistsConnection",
-      "storageKey": "artistsConnection(first:3)",
       "args": [
         {
           "kind": "Literal",
@@ -190,60 +187,59 @@ return {
         }
       ],
       "concreteType": "ArtistConnection",
+      "kind": "LinkedField",
+      "name": "artistsConnection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "ArtistEdge",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "Artist",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
-              "selections": (v2/*: any*/)
+              "selections": (v2/*: any*/),
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": "artistsConnection(first:3)"
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "profile",
-      "storageKey": null,
       "args": null,
       "concreteType": "Profile",
+      "kind": "LinkedField",
+      "name": "profile",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "id",
           "args": null,
+          "kind": "ScalarField",
+          "name": "id",
           "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "icon",
-          "storageKey": null,
           "args": null,
           "concreteType": "Image",
+          "kind": "LinkedField",
+          "name": "icon",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "url",
               "args": [
                 {
                   "kind": "Literal",
@@ -251,13 +247,19 @@ return {
                   "value": "square140"
                 }
               ],
+              "kind": "ScalarField",
+              "name": "url",
               "storageKey": "url(version:\"square140\")"
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Fair",
+  "abstractKey": null
 };
 })();
 (node as any).hash = '7313dd563d2f4aae124bdc1f4cba7ddc';

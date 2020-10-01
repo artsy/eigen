@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash af47ebb67dd634085643f531a22a2e00 */
+// @ts-nocheck
+/* @relayHash b40a5708fe30e1c90843565893d045f7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -15,7 +16,7 @@ export type PartnerHeaderTestsQueryRawResponse = {
         readonly name: string | null;
         readonly profile: ({
             readonly name: string | null;
-            readonly id: string | null;
+            readonly id: string;
             readonly internalID: string;
             readonly isFollowed: boolean | null;
         }) | null;
@@ -24,7 +25,7 @@ export type PartnerHeaderTestsQueryRawResponse = {
         }) | null;
         readonly internalID: string;
         readonly slug: string;
-        readonly id: string | null;
+        readonly id: string;
     }) | null;
 };
 export type PartnerHeaderTestsQuery = {
@@ -75,126 +76,127 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "name",
   "args": null,
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 },
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "PartnerHeaderTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "PartnerHeaderTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "partner",
-        "storageKey": "partner(id:\"gagosian\")",
         "args": (v0/*: any*/),
         "concreteType": "Partner",
+        "kind": "LinkedField",
+        "name": "partner",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "PartnerHeader_partner",
-            "args": null
+            "name": "PartnerHeader_partner"
           }
-        ]
+        ],
+        "storageKey": "partner(id:\"gagosian\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "PartnerHeaderTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "partner",
-        "storageKey": "partner(id:\"gagosian\")",
         "args": (v0/*: any*/),
         "concreteType": "Partner",
+        "kind": "LinkedField",
+        "name": "partner",
         "plural": false,
         "selections": [
           (v1/*: any*/),
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "profile",
-            "storageKey": null,
             "args": null,
             "concreteType": "Profile",
+            "kind": "LinkedField",
+            "name": "profile",
             "plural": false,
             "selections": [
               (v1/*: any*/),
               (v2/*: any*/),
               (v3/*: any*/),
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "isFollowed",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "isFollowed",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "counts",
-            "storageKey": null,
             "args": null,
             "concreteType": "PartnerCounts",
+            "kind": "LinkedField",
+            "name": "counts",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "eligibleArtworks",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "eligibleArtworks",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           },
           (v3/*: any*/),
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "slug",
             "args": null,
+            "kind": "ScalarField",
+            "name": "slug",
             "storageKey": null
           },
           (v2/*: any*/)
-        ]
+        ],
+        "storageKey": "partner(id:\"gagosian\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "PartnerHeaderTestsQuery",
     "id": "b40a5708fe30e1c90843565893d045f7",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "PartnerHeaderTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 2d6a880966a4961aa525173f3868ee4a */
+// @ts-nocheck
+/* @relayHash 8207876052c2dd48e797c2c005ea9c8a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -15,7 +16,7 @@ export type PartnerCardTestsErrorQueryRawResponse = {
         readonly sale: ({
             readonly isBenefit: boolean | null;
             readonly isGalleryAuction: boolean | null;
-            readonly id: string | null;
+            readonly id: string;
         }) | null;
         readonly partner: ({
             readonly cities: ReadonlyArray<string | null> | null;
@@ -35,7 +36,7 @@ export type PartnerCardTestsErrorQueryRawResponse = {
                 }) | null;
             }) | null;
         }) | null;
-        readonly id: string | null;
+        readonly id: string;
     }) | null;
 };
 export type PartnerCardTestsErrorQuery = {
@@ -90,175 +91,170 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "PartnerCardTestsErrorQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "PartnerCardTestsErrorQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artwork",
-        "storageKey": "artwork(id:\"artworkID\")",
         "args": (v0/*: any*/),
         "concreteType": "Artwork",
+        "kind": "LinkedField",
+        "name": "artwork",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "PartnerCard_artwork",
-            "args": null
+            "name": "PartnerCard_artwork"
           }
-        ]
+        ],
+        "storageKey": "artwork(id:\"artworkID\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "PartnerCardTestsErrorQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artwork",
-        "storageKey": "artwork(id:\"artworkID\")",
         "args": (v0/*: any*/),
         "concreteType": "Artwork",
+        "kind": "LinkedField",
+        "name": "artwork",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "sale",
-            "storageKey": null,
             "args": null,
             "concreteType": "Sale",
+            "kind": "LinkedField",
+            "name": "sale",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "isBenefit",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "isBenefit",
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "isGalleryAuction",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "isGalleryAuction",
                 "storageKey": null
               },
               (v1/*: any*/)
-            ]
+            ],
+            "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "partner",
-            "storageKey": null,
             "args": null,
             "concreteType": "Partner",
+            "kind": "LinkedField",
+            "name": "partner",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "cities",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": "is_default_profile_public",
+                "args": null,
+                "kind": "ScalarField",
                 "name": "isDefaultProfilePublic",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "type",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "name",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "slug",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "slug",
                 "storageKey": null
               },
               (v1/*: any*/),
               {
-                "kind": "ScalarField",
                 "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "href",
-                "args": null,
                 "storageKey": null
               },
               {
+                "alias": null,
+                "args": null,
                 "kind": "ScalarField",
-                "alias": null,
                 "name": "initials",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "profile",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "Profile",
+                "kind": "LinkedField",
+                "name": "profile",
                 "plural": false,
                 "selections": [
                   (v1/*: any*/),
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "internalID",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": "is_followed",
-                    "name": "isFollowed",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "isFollowed",
                     "storageKey": null
                   },
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "icon",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "Image",
+                    "kind": "LinkedField",
+                    "name": "icon",
                     "plural": false,
                     "selections": [
                       {
-                        "kind": "ScalarField",
                         "alias": null,
-                        "name": "url",
                         "args": [
                           {
                             "kind": "Literal",
@@ -266,25 +262,31 @@ return {
                             "value": "square140"
                           }
                         ],
+                        "kind": "ScalarField",
+                        "name": "url",
                         "storageKey": "url(version:\"square140\")"
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           },
           (v1/*: any*/)
-        ]
+        ],
+        "storageKey": "artwork(id:\"artworkID\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "PartnerCardTestsErrorQuery",
     "id": "8207876052c2dd48e797c2c005ea9c8a",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "PartnerCardTestsErrorQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

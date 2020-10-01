@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c278f9355f098a9f80a6bc0a7bf82672 */
+// @ts-nocheck
+/* @relayHash d492efc5bb01d11b8045f4bd9a8013d7 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowShowInput = {
@@ -46,18 +47,14 @@ mutation ContextCardFollowMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "FollowShowInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "followShow",
-    "storageKey": null,
     "args": [
       {
         "kind": "Variable",
@@ -66,72 +63,76 @@ v1 = [
       }
     ],
     "concreteType": "FollowShowPayload",
+    "kind": "LinkedField",
+    "name": "followShow",
     "plural": false,
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "show",
-        "storageKey": null,
         "args": null,
         "concreteType": "Show",
+        "kind": "LinkedField",
+        "name": "show",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "slug",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "internalID",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "isFollowed",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "id",
             "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "storageKey": null
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ContextCardFollowMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ContextCardFollowMutation",
+    "selections": (v1/*: any*/),
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "ContextCardFollowMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "ContextCardFollowMutation",
     "id": "d492efc5bb01d11b8045f4bd9a8013d7",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "ContextCardFollowMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

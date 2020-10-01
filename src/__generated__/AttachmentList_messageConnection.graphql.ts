@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -24,65 +25,66 @@ export type AttachmentList_messageConnection$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "AttachmentList_messageConnection",
-  "type": "MessageConnection",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "AttachmentList_messageConnection",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "edges",
-      "storageKey": null,
       "args": null,
       "concreteType": "MessageEdge",
+      "kind": "LinkedField",
+      "name": "edges",
       "plural": true,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "node",
-          "storageKey": null,
           "args": null,
           "concreteType": "Message",
+          "kind": "LinkedField",
+          "name": "node",
           "plural": false,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "attachments",
-              "storageKey": null,
               "args": null,
               "concreteType": "Attachment",
+              "kind": "LinkedField",
+              "name": "attachments",
               "plural": true,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "id",
-                  "args": null,
                   "storageKey": null
                 },
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "contentType",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "contentType",
                   "storageKey": null
                 },
                 {
+                  "args": null,
                   "kind": "FragmentSpread",
-                  "name": "FileDownload_attachment",
-                  "args": null
+                  "name": "FileDownload_attachment"
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "MessageConnection",
+  "abstractKey": null
 };
 (node as any).hash = 'd3a42877c188836cd050e0526e2b47ad';
 export default node;

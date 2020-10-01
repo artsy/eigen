@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -21,47 +22,48 @@ export type Sales_sales$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "Sales_sales",
-  "type": "SaleConnection",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Sales_sales",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "edges",
-      "storageKey": null,
       "args": null,
       "concreteType": "SaleEdge",
+      "kind": "LinkedField",
+      "name": "edges",
       "plural": true,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "node",
-          "storageKey": null,
           "args": null,
           "concreteType": "Sale",
+          "kind": "LinkedField",
+          "name": "node",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": "live_start_at",
-              "name": "liveStartAt",
               "args": null,
+              "kind": "ScalarField",
+              "name": "liveStartAt",
               "storageKey": null
             },
             {
+              "args": null,
               "kind": "FragmentSpread",
-              "name": "SaleListItem_sale",
-              "args": null
+              "name": "SaleListItem_sale"
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "SaleConnection",
+  "abstractKey": null
 };
 (node as any).hash = 'cc3a203ba7ba157f6de5cb954d6c1e6f';
 export default node;

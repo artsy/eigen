@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,16 +26,36 @@ export type FilteredInfiniteScrollGrid_entity$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
+  "argumentDefinitions": [
+    {
+      "defaultValue": 10,
+      "kind": "LocalArgument",
+      "name": "count"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "cursor"
+    },
+    {
+      "defaultValue": "*",
+      "kind": "LocalArgument",
+      "name": "medium"
+    },
+    {
+      "defaultValue": "*-*",
+      "kind": "LocalArgument",
+      "name": "priceRange"
+    }
+  ],
   "kind": "Fragment",
-  "name": "FilteredInfiniteScrollGrid_entity",
-  "type": "EntityWithFilterArtworksConnectionInterface",
   "metadata": {
     "connection": [
       {
@@ -47,39 +68,11 @@ return {
       }
     ]
   },
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "count",
-      "type": "Int",
-      "defaultValue": 10
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "cursor",
-      "type": "String",
-      "defaultValue": null
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "medium",
-      "type": "String",
-      "defaultValue": "*"
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "priceRange",
-      "type": "String",
-      "defaultValue": "*-*"
-    }
-  ],
+  "name": "FilteredInfiniteScrollGrid_entity",
   "selections": [
     (v0/*: any*/),
     {
-      "kind": "LinkedField",
       "alias": "filterArtworksConnection",
-      "name": "__FilteredInfiniteScrollGridContainer_filterArtworksConnection_connection",
-      "storageKey": null,
       "args": [
         {
           "kind": "Literal",
@@ -102,83 +95,88 @@ return {
         }
       ],
       "concreteType": "FilterArtworksConnection",
+      "kind": "LinkedField",
+      "name": "__FilteredInfiniteScrollGridContainer_filterArtworksConnection_connection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "FilterArtworksEdge",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "Artwork",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
                 (v0/*: any*/),
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "__typename",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
                   "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "cursor",
               "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "pageInfo",
-          "storageKey": null,
           "args": null,
           "concreteType": "PageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "endCursor",
               "args": null,
+              "kind": "ScalarField",
+              "name": "endCursor",
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "hasNextPage",
               "args": null,
+              "kind": "ScalarField",
+              "name": "hasNextPage",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "Filters_filteredArtworks",
-          "args": null
+          "name": "Filters_filteredArtworks"
         },
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "InfiniteScrollArtworksGrid_connection",
-          "args": null
+          "name": "InfiniteScrollArtworksGrid_connection"
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "EntityWithFilterArtworksConnectionInterface",
+  "abstractKey": "__isEntityWithFilterArtworksConnectionInterface"
 };
 })();
 (node as any).hash = '299cf05b1674172e889e1edb203eb98e';
