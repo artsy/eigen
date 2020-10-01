@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ce92ec48331df1395742527ce43a481c */
+/* @relayHash 927acbed108a6aeab860da54dafe0b9d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -249,6 +249,13 @@ fragment Fair2Header_fair on Fair {
   links(format: MARKDOWN)
   tickets(format: MARKDOWN)
   contact(format: MARKDOWN)
+  ...Fair2Timing_fair
+}
+
+fragment Fair2Timing_fair on Fair {
+  exhibitionPeriod
+  startAt
+  endAt
 }
 
 fragment Fair2_fair on Fair {
@@ -391,11 +398,18 @@ v12 = [
   }
 ],
 v13 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "endAt",
+  "args": null,
+  "storageKey": null
+},
+v14 = {
   "kind": "Literal",
   "name": "first",
   "value": 20
 },
-v14 = [
+v15 = [
   {
     "kind": "Literal",
     "name": "aggregations",
@@ -415,7 +429,7 @@ v14 = [
     "name": "dimensionRange",
     "value": "*-*"
   },
-  (v13/*: any*/),
+  (v14/*: any*/),
   {
     "kind": "Literal",
     "name": "medium",
@@ -427,38 +441,31 @@ v14 = [
     "value": "-decayed_merch"
   }
 ],
-v15 = {
+v16 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "saleMessage",
   "args": null,
   "storageKey": null
 },
-v16 = {
+v17 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "artistNames",
   "args": null,
   "storageKey": null
 },
-v17 = {
+v18 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "isAuction",
   "args": null,
   "storageKey": null
 },
-v18 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "isClosed",
-  "args": null,
-  "storageKey": null
-},
 v19 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "endAt",
+  "name": "isClosed",
   "args": null,
   "storageKey": null
 },
@@ -895,11 +902,26 @@ return {
             "storageKey": "contact(format:\"MARKDOWN\")"
           },
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "exhibitionPeriod",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "startAt",
+            "args": null,
+            "storageKey": null
+          },
+          (v13/*: any*/),
+          {
             "kind": "LinkedField",
             "alias": "fairArtworks",
             "name": "filterArtworksConnection",
             "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\"],dimensionRange:\"*-*\",first:20,medium:\"*\",sort:\"-decayed_merch\")",
-            "args": (v14/*: any*/),
+            "args": (v15/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "plural": false,
             "selections": [
@@ -1000,9 +1022,9 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v15/*: any*/),
-                      (v2/*: any*/),
                       (v16/*: any*/),
+                      (v2/*: any*/),
+                      (v17/*: any*/),
                       (v7/*: any*/),
                       {
                         "kind": "LinkedField",
@@ -1013,8 +1035,8 @@ return {
                         "concreteType": "Sale",
                         "plural": false,
                         "selections": [
-                          (v17/*: any*/),
                           (v18/*: any*/),
+                          (v19/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -1022,7 +1044,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v19/*: any*/),
+                          (v13/*: any*/),
                           (v5/*: any*/)
                         ]
                       },
@@ -1119,7 +1141,7 @@ return {
             "kind": "LinkedHandle",
             "alias": "fairArtworks",
             "name": "filterArtworksConnection",
-            "args": (v14/*: any*/),
+            "args": (v15/*: any*/),
             "handle": "connection",
             "key": "Fair_fairArtworks",
             "filters": [
@@ -1209,7 +1231,7 @@ return {
                         "name": "artworksConnection",
                         "storageKey": "artworksConnection(first:20)",
                         "args": [
-                          (v13/*: any*/)
+                          (v14/*: any*/)
                         ],
                         "concreteType": "ArtworkConnection",
                         "plural": false,
@@ -1233,7 +1255,7 @@ return {
                                 "plural": false,
                                 "selections": [
                                   (v7/*: any*/),
-                                  (v16/*: any*/),
+                                  (v17/*: any*/),
                                   (v5/*: any*/),
                                   {
                                     "kind": "LinkedField",
@@ -1254,7 +1276,7 @@ return {
                                       (v11/*: any*/)
                                     ]
                                   },
-                                  (v15/*: any*/),
+                                  (v16/*: any*/),
                                   {
                                     "kind": "LinkedField",
                                     "alias": null,
@@ -1298,9 +1320,9 @@ return {
                                     "concreteType": "Sale",
                                     "plural": false,
                                     "selections": [
-                                      (v18/*: any*/),
-                                      (v17/*: any*/),
                                       (v19/*: any*/),
+                                      (v18/*: any*/),
+                                      (v13/*: any*/),
                                       (v5/*: any*/)
                                     ]
                                   },
@@ -1353,7 +1375,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "Fair2Query",
-    "id": "c15d20223eeeffe06769d94edd3adcbb",
+    "id": "402878f4ea73c5bad4f71211f1999ea8",
     "text": null,
     "metadata": {}
   }

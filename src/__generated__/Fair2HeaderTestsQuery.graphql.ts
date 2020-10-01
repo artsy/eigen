@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5b08dd3295760f5d39e310a8a4227f08 */
+/* @relayHash cca4fdc01820c9dbedb140b25bf6b450 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -38,6 +38,9 @@ export type Fair2HeaderTestsQueryRawResponse = {
         readonly links: string | null;
         readonly tickets: string | null;
         readonly contact: string | null;
+        readonly exhibitionPeriod: string | null;
+        readonly startAt: string | null;
+        readonly endAt: string | null;
         readonly id: string | null;
     }) | null;
 };
@@ -84,6 +87,13 @@ fragment Fair2Header_fair on Fair {
   links(format: MARKDOWN)
   tickets(format: MARKDOWN)
   contact(format: MARKDOWN)
+  ...Fair2Timing_fair
+}
+
+fragment Fair2Timing_fair on Fair {
+  exhibitionPeriod
+  startAt
+  endAt
 }
 */
 
@@ -309,6 +319,27 @@ return {
             "args": (v4/*: any*/),
             "storageKey": "contact(format:\"MARKDOWN\")"
           },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "exhibitionPeriod",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "startAt",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "endAt",
+            "args": null,
+            "storageKey": null
+          },
           (v3/*: any*/)
         ]
       }
@@ -317,7 +348,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "Fair2HeaderTestsQuery",
-    "id": "bb7c7c68f5493b1342f22acb61e03dbf",
+    "id": "924a840c188fa12c4b16d804e1c2a11f",
     "text": null,
     "metadata": {}
   }

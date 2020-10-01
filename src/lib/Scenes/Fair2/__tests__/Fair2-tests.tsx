@@ -199,5 +199,8 @@ const Fair2Fixture: Fair2TestsQueryRawResponse = {
     },
     fairArtworks: null,
     exhibitors: null,
+    exhibitionPeriod: "Aug 19 - Sep 19",
+    startAt: "2020-08-19T08:00:00+00:00",
+    endAt: "2020-09-19T08:00:00+00:00",
   },
 }
