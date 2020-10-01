@@ -1385,7 +1385,6 @@
 		9D50B9542450CFB600A6DCD0 /* BackChevron.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BackChevron.png; sourceTree = "<group>"; };
 		9D50B9552450CFB600A6DCD0 /* BackChevron@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackChevron@2x.png"; sourceTree = "<group>"; };
 		9DCC0F6723EE04A500F0A773 /* ARTabContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTabContentView.m; sourceTree = "<group>"; };
-		9DCC0F6823EE04A500F0A773 /* ARTabContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTabContentView.h; sourceTree = "<group>"; };
 		B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBidButtonTests.m; sourceTree = "<group>"; };
 		B316E2F218170DF40086CCDB /* SaleArtwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaleArtwork.h; sourceTree = "<group>"; };
 		B316E2F318170DF40086CCDB /* SaleArtwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaleArtwork.m; sourceTree = "<group>"; };
@@ -2439,7 +2438,6 @@
 		6008A58F16D8155C007E8E26 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				9DCC0F6823EE04A500F0A773 /* ARTabContentView.h */,
 				9DCC0F6723EE04A500F0A773 /* ARTabContentView.m */,
 				3C48E20E1965AC640077A80B /* ARCustomEigenLabels.h */,
 				3C48E20F1965AC640077A80B /* ARCustomEigenLabels.m */,

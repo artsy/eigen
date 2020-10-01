@@ -94,7 +94,7 @@ export const AppStoreProvider: React.FC<{}> = ({ children }) => {
 }
 
 export function useSelectedTab() {
-  return hooks.useStoreState((state) => state.bottomTabs.selectedTab)
+  return hooks.useStoreState((state) => state.bottomTabs.sessionState.selectedTab)
 }
 
 let appStoreInstance = createAppStore()

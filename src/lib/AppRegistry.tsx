@@ -1,10 +1,10 @@
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
-import { AppRegistry, View, YellowBox } from "react-native"
+import { AppRegistry, NativeModules, View, YellowBox } from "react-native"
 import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
-import { Theme } from "palette"
+import { Text, Theme } from "palette"
 import { FadeIn } from "./Components/FadeIn"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { NativeViewController } from "./Components/NativeViewController"
@@ -76,7 +76,7 @@ import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { AppStore, AppStoreProvider } from "./store/AppStore"
+import { AppStore, AppStoreProvider, useSelectedTab } from "./store/AppStore"
 import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 
@@ -453,6 +453,7 @@ const Main: React.FC<{}> = track()(({}) => {
   const onboardingState = AppStore.useAppState((state) => state.native.sessionState.onboardingState)
 
   const screen = useScreenDimensions()
+
   if (!isHydrated) {
     return <View></View>
   }
@@ -469,12 +470,4 @@ const Main: React.FC<{}> = track()(({}) => {
   )
 })
 
-AppRegistry.registerComponent("Main", () => () => {
-  return (
-    <AppStoreProvider>
-      <ProvideScreenDimensions>
-        <Main />
-      </ProvideScreenDimensions>
-    </AppStoreProvider>
-  )
-})
+register("WOW", Main, {fullBleed: true})
