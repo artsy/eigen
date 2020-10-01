@@ -180,11 +180,11 @@ const FeaturedCollectionsFixture: FeaturedCollectionsRailTestsQueryRawResponse =
             priceGuidance: 15000,
             descriptionMarkdown: "Featured collection 1 description",
             featuredCollectionArtworks: {
-              id: null,
+              id: "",
               edges: [
                 {
                   node: {
-                    id: null,
+                    id: "",
                     image: {
                       url: "https://featured-collection-one/medium.jpg",
                     },
@@ -200,11 +200,11 @@ const FeaturedCollectionsFixture: FeaturedCollectionsRailTestsQueryRawResponse =
             priceGuidance: 25000,
             descriptionMarkdown: "Featured collection 2 description",
             featuredCollectionArtworks: {
-              id: null,
+              id: "",
               edges: [
                 {
                   node: {
-                    id: null,
+                    id: "",
                     image: {
                       url: "https://featured-collection-two/medium.jpg",
                     },
@@ -220,11 +220,11 @@ const FeaturedCollectionsFixture: FeaturedCollectionsRailTestsQueryRawResponse =
             priceGuidance: 35000,
             descriptionMarkdown: "Featured collection 3 description",
             featuredCollectionArtworks: {
-              id: null,
+              id: "",
               edges: [
                 {
                   node: {
-                    id: null,
+                    id: "",
                     image: {
                       url: "https://featured-collection-three /medium.jpg",
                     },

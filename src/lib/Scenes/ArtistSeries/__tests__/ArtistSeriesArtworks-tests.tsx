@@ -87,13 +87,14 @@ const ArtistSeriesArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
     slug: "a-slug",
     internalID: "abc",
     artistSeriesArtworks: {
+      __isArtworkConnectionInterface: "FilterArtworksConnection",
       aggregations: null,
       pageInfo: {
         hasNextPage: false,
         startCursor: "ajdjabnz81",
         endCursor: "aknqa9d81",
       },
-      id: null,
+      id: "",
       counts: { total: 4 },
       edges: [
         {
@@ -182,13 +183,14 @@ const ArtistSeriesZeroArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse
     slug: "a-slug",
     internalID: "abc",
     artistSeriesArtworks: {
+      __isArtworkConnectionInterface: "FilterArtworksConnection",
       aggregations: null,
       pageInfo: {
         hasNextPage: false,
         startCursor: "ajdjabnz81",
         endCursor: "aknqa9d81",
       },
-      id: null,
+      id: "",
       counts: {
         total: 0,
       },

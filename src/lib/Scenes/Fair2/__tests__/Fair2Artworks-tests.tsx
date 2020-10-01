@@ -97,6 +97,7 @@ const FAIR_2_ARTWORKS_FIXTURE: Fair2ArtworksTestsQueryRawResponse = {
     slug: "art-basel-hong-kong-2020",
     internalID: "BSON-id-random",
     fairArtworks: {
+      __isArtworkConnectionInterface: "FilterArtworksConnection",
       id: "fa123",
       counts: {
         total: 2,

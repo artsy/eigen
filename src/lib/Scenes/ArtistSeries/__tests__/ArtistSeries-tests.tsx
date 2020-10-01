@@ -183,13 +183,14 @@ const ArtistSeriesFixture: ArtistSeriesTestsQueryRawResponse = {
       },
     ],
     artistSeriesArtworks: {
+      __isArtworkConnectionInterface: "FilterArtworksConnection",
       pageInfo: {
         hasNextPage: false,
         startCursor: "ajdjabnz81",
         endCursor: "aknqa9d81",
       },
       aggregations: null,
-      id: null,
+      id: "foo",
       counts: { total: 4 },
       edges: [
         {
@@ -229,13 +230,14 @@ const ArtistSeriesNoArtistFixture: ArtistSeriesTestsQueryRawResponse = {
     artists: [],
     artist: null,
     artistSeriesArtworks: {
+      __isArtworkConnectionInterface: "FilterArtworksConnection",
       aggregations: null,
       pageInfo: {
         hasNextPage: false,
         startCursor: "ajdjabnz81",
         endCursor: "aknqa9d81",
       },
-      id: null,
+      id: "foo",
       counts: { total: 4 },
       edges: [
         {

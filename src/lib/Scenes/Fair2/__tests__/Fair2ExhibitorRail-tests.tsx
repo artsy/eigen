@@ -59,7 +59,8 @@ const FAIR_2_EXHIBITOR_RAIL_FIXTURE: Fair2ExhibitorRailTestsQueryRawResponse = {
     counts: { artworks: 10 },
     href: "/show/example-2",
     partner: {
-      __typename: "Partner",
+      __typename: "ExternalPartner" as "ExternalPartner",
+      __isNode: "ExternalPartner",
       id: "example-2",
       name: "First Partner Has Artworks",
     },

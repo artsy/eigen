@@ -260,6 +260,7 @@ export const ZeroStateCollectionFixture = {
     ],
   },
   collectionArtworks: {
+    __isArtworkConnectionInterface: "FilterArtworksConnection" as "FilterArtworksConnection",
     id: "QXJ0d29yazpjYXJvbHluLWJyYWR5LXN0b3VyaGVhZC1hY3Jvc3MtdGhlLWxha2U",
     pageInfo: {
       startCursor: "YXJyYXljb25uZWN0aW9uOjA=",
