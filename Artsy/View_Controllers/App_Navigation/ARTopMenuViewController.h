@@ -4,7 +4,6 @@
     It also handles the status bar API, and the Menu / Back button.
 */
 
-#import "ARMenuAwareViewController.h"
 #import "ARNavigationController.h"
 
 NS_ASSUME_NONNULL_BEGIN
