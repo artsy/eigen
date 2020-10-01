@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7884d3612557621503fc9585967cfede */
+/* @relayHash b15df5b7cba8e98bc063d427981fef56 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -15,10 +15,14 @@ export type Fair2EditorialTestsQueryResponse = {
 };
 export type Fair2EditorialTestsQueryRawResponse = {
     readonly fair: ({
+        readonly internalID: string;
+        readonly slug: string;
         readonly articles: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
                     readonly id: string;
+                    readonly internalID: string;
+                    readonly slug: string | null;
                     readonly title: string | null;
                     readonly href: string | null;
                     readonly publishedAt: string | null;
@@ -50,10 +54,14 @@ query Fair2EditorialTestsQuery(
 }
 
 fragment Fair2Editorial_fair on Fair {
+  internalID
+  slug
   articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
     edges {
       node {
         id
+        internalID
+        slug
         title
         href
         publishedAt(format: "MMM Do, YY")
@@ -82,6 +90,20 @@ v1 = [
   }
 ],
 v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -129,6 +151,8 @@ return {
         "name": "fair",
         "plural": false,
         "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
           {
             "alias": "articles",
             "args": [
@@ -164,7 +188,9 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
+                      (v4/*: any*/),
                       (v2/*: any*/),
+                      (v3/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -219,14 +245,14 @@ return {
             ],
             "storageKey": "articlesConnection(first:5,sort:\"PUBLISHED_AT_DESC\")"
           },
-          (v2/*: any*/)
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "7884d3612557621503fc9585967cfede",
+    "id": "b15df5b7cba8e98bc063d427981fef56",
     "metadata": {},
     "name": "Fair2EditorialTestsQuery",
     "operationKind": "query",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7615c6570e2e8293f6995f06909791af */
+/* @relayHash 059cc22cbb00a5ad70b001cf874c8651 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -129,10 +129,14 @@ fragment Fair2Collections_fair on Fair {
 }
 
 fragment Fair2Editorial_fair on Fair {
+  internalID
+  slug
   articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
     edges {
       node {
         id
+        internalID
+        slug
         title
         href
         publishedAt(format: "MMM Do, YY")
@@ -685,6 +689,8 @@ return {
                     "plural": false,
                     "selections": [
                       (v5/*: any*/),
+                      (v2/*: any*/),
+                      (v3/*: any*/),
                       (v6/*: any*/),
                       (v7/*: any*/),
                       {
@@ -1510,7 +1516,7 @@ return {
     ]
   },
   "params": {
-    "id": "7615c6570e2e8293f6995f06909791af",
+    "id": "059cc22cbb00a5ad70b001cf874c8651",
     "metadata": {},
     "name": "Fair2Query",
     "operationKind": "query",
