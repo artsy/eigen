@@ -1,19 +1,19 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ca73679d8b2509314abc455925c27682 */
+/* @relayHash de9b5a685f287631cadbaf71fee139c6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtworkInfoTestsQueryVariables = {
+export type ItemInfoTestsQueryVariables = {
     conversationID: string;
 };
-export type ArtworkInfoTestsQueryResponse = {
+export type ItemInfoTestsQueryResponse = {
     readonly me: {
         readonly conversation: {
             readonly items: ReadonlyArray<{
                 readonly item: ({
                     readonly __typename: "Artwork";
-                    readonly " $fragmentRefs": FragmentRefs<"ArtworkInfo_artwork">;
+                    readonly " $fragmentRefs": FragmentRefs<"ItemInfo_item">;
                 } | {
                     /*This will never be '%other', but we need some
                     value in case none of the concrete values match.*/
@@ -23,15 +23,15 @@ export type ArtworkInfoTestsQueryResponse = {
         } | null;
     } | null;
 };
-export type ArtworkInfoTestsQuery = {
-    readonly response: ArtworkInfoTestsQueryResponse;
-    readonly variables: ArtworkInfoTestsQueryVariables;
+export type ItemInfoTestsQuery = {
+    readonly response: ItemInfoTestsQueryResponse;
+    readonly variables: ItemInfoTestsQueryVariables;
 };
 
 
 
 /*
-query ArtworkInfoTestsQuery(
+query ItemInfoTestsQuery(
   $conversationID: String!
 ) {
   me {
@@ -40,7 +40,7 @@ query ArtworkInfoTestsQuery(
         item {
           __typename
           ... on Artwork {
-            ...ArtworkInfo_artwork
+            ...ItemInfo_item
           }
           ... on Node {
             id
@@ -53,14 +53,41 @@ query ArtworkInfoTestsQuery(
   }
 }
 
-fragment ArtworkInfo_artwork on Artwork {
-  title
-  artistNames
-  date
-  saleMessage
-  partner {
+fragment ItemInfo_item on ConversationItemType {
+  __typename
+  ... on Artwork {
+    href
+    image {
+      thumbnailUrl: url(version: "small")
+    }
+    title
+    artistNames
+    date
+    saleMessage
+    partner {
+      name
+      id
+    }
+  }
+  ... on Show {
     name
-    id
+    href
+    exhibitionPeriod
+    partner {
+      __typename
+      ... on Partner {
+        name
+      }
+      ... on Node {
+        id
+      }
+      ... on ExternalPartner {
+        id
+      }
+    }
+    image: coverImage {
+      thumbnailUrl: url(version: "small")
+    }
   }
 }
 */
@@ -96,12 +123,19 @@ v3 = {
   "storageKey": null
 },
 v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
   "type": "ID",
   "enumValues": null,
   "plural": false,
   "nullable": true
 },
-v5 = {
+v6 = {
   "type": "String",
   "enumValues": null,
   "plural": false,
@@ -111,7 +145,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "ArtworkInfoTestsQuery",
+    "name": "ItemInfoTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -159,7 +193,7 @@ return {
                         "selections": [
                           {
                             "kind": "FragmentSpread",
-                            "name": "ArtworkInfo_artwork",
+                            "name": "ItemInfo_item",
                             "args": null
                           }
                         ]
@@ -176,7 +210,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "ArtworkInfoTestsQuery",
+    "name": "ItemInfoTestsQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -224,6 +258,37 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
+                            "name": "href",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "image",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Image",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": "thumbnailUrl",
+                                "name": "url",
+                                "args": [
+                                  {
+                                    "kind": "Literal",
+                                    "name": "version",
+                                    "value": "small"
+                                  }
+                                ],
+                                "storageKey": "url(version:\"small\")"
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
                             "name": "title",
                             "args": null,
                             "storageKey": null
@@ -258,14 +323,22 @@ return {
                             "concreteType": "Partner",
                             "plural": false,
                             "selections": [
+                              (v4/*: any*/),
+                              (v3/*: any*/)
+                            ]
+                          },
+                          {
+                            "kind": "InlineFragment",
+                            "type": "Show",
+                            "selections": [
+                              (v4/*: any*/),
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "name",
+                                "name": "exhibitionPeriod",
                                 "args": null,
                                 "storageKey": null
-                              },
-                              (v3/*: any*/)
+                              }
                             ]
                           }
                         ]
@@ -284,8 +357,8 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "ArtworkInfoTestsQuery",
-    "id": "5349614b5965386d33debd779fc00957",
+    "name": "ItemInfoTestsQuery",
+    "id": "705b778f66a50fdd540e4b97c02262ad",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -301,14 +374,14 @@ return {
           "plural": false,
           "nullable": true
         },
-        "me.id": (v4/*: any*/),
+        "me.id": (v5/*: any*/),
         "me.conversation.items": {
           "type": "ConversationItem",
           "enumValues": null,
           "plural": true,
           "nullable": true
         },
-        "me.conversation.id": (v4/*: any*/),
+        "me.conversation.id": (v5/*: any*/),
         "me.conversation.items.item": {
           "type": "ConversationItemType",
           "enumValues": null,
@@ -321,23 +394,33 @@ return {
           "plural": false,
           "nullable": false
         },
-        "me.conversation.items.item.id": (v4/*: any*/),
-        "me.conversation.items.item.title": (v5/*: any*/),
-        "me.conversation.items.item.artistNames": (v5/*: any*/),
-        "me.conversation.items.item.date": (v5/*: any*/),
-        "me.conversation.items.item.saleMessage": (v5/*: any*/),
-        "me.conversation.items.item.partner": {
-          "type": "Partner",
+        "me.conversation.items.item.id": (v5/*: any*/),
+        "me.conversation.items.item.href": (v6/*: any*/),
+        "me.conversation.items.item.image": {
+          "type": "Image",
           "enumValues": null,
           "plural": false,
           "nullable": true
         },
-        "me.conversation.items.item.partner.name": (v5/*: any*/),
-        "me.conversation.items.item.partner.id": (v4/*: any*/)
+        "me.conversation.items.item.title": (v6/*: any*/),
+        "me.conversation.items.item.artistNames": (v6/*: any*/),
+        "me.conversation.items.item.date": (v6/*: any*/),
+        "me.conversation.items.item.saleMessage": (v6/*: any*/),
+        "me.conversation.items.item.partner": {
+          "type": "PartnerTypes",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
+        "me.conversation.items.item.name": (v6/*: any*/),
+        "me.conversation.items.item.exhibitionPeriod": (v6/*: any*/),
+        "me.conversation.items.item.image.thumbnailUrl": (v6/*: any*/),
+        "me.conversation.items.item.partner.name": (v6/*: any*/),
+        "me.conversation.items.item.partner.id": (v5/*: any*/)
       }
     }
   }
 };
 })();
-(node as any).hash = '0ac6a68fd5329acc8dfa3503edcdeb99';
+(node as any).hash = 'a034f53c876bb9333c6993acf188bcaa';
 export default node;

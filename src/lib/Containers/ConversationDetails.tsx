@@ -1,8 +1,7 @@
 import { ConversationDetails_me } from "__generated__/ConversationDetails_me.graphql"
 import { ConversationDetailsQuery } from "__generated__/ConversationDetailsQuery.graphql"
-import { ArtworkInfoFragmentContainer as ArtworkInfo } from "lib/Components/Inbox/Conversations/ArtworkInfo"
+import { ItemInfoFragmentContainer as ItemInfo } from "lib/Components/Inbox/Conversations/ItemInfo"
 import { AttachmentListFragmentContainer as AttachmentList } from "lib/Components/Inbox/Conversations/Preview/Attachment/AttachmentList"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -11,14 +10,7 @@ import { Box, Flex, Join, QuestionCircleIcon, Separator, Text, Touchable } from 
 import React from "react"
 import { useRef } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
-import styled from "styled-components/native"
 import { track as _track } from "../utils/track"
-
-const ImageView = styled(OpaqueImageView)`
-  width: 80px;
-  height: 80px;
-  border-radius: 2px;
-`
 
 interface Props {
   me: ConversationDetails_me
@@ -43,12 +35,7 @@ export const ConversationDetails: React.FC<Props> = (props) => {
             SwitchBoard.presentNavigationViewController(navRef.current!, item.href!)
           }}
         >
-          <Flex flexDirection="row">
-            <Box height="80px" width="80px">
-              <ImageView imageURL={item.image?.thumbnailUrl} />
-            </Box>
-            {item.__typename === "Artwork" && <ArtworkInfo artwork={item} />}
-          </Flex>
+          <ItemInfo item={item} />
         </Touchable>
       </Flex>
     </Box>
@@ -113,18 +100,12 @@ export const ConversationDetailsFragmentContainer = createFragmentContainer(Conv
           item {
             __typename
             ... on Artwork {
-              ...ArtworkInfo_artwork
               href
-              image {
-                thumbnailUrl: url(version: "small")
-              }
             }
             ... on Show {
               href
-              image: coverImage {
-                thumbnailUrl: url(version: "small")
-              }
             }
+            ...ItemInfo_item
           }
         }
       }

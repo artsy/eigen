@@ -21,24 +21,11 @@ export type ConversationDetails_me = {
             readonly " $fragmentRefs": FragmentRefs<"AttachmentList_messageConnection">;
         } | null;
         readonly items: ReadonlyArray<{
-            readonly item: ({
-                readonly __typename: "Artwork";
-                readonly href: string | null;
-                readonly image: {
-                    readonly thumbnailUrl: string | null;
-                } | null;
-                readonly " $fragmentRefs": FragmentRefs<"ArtworkInfo_artwork">;
-            } | {
-                readonly __typename: "Show";
-                readonly href: string | null;
-                readonly image: {
-                    readonly thumbnailUrl: string | null;
-                } | null;
-            } | {
-                /*This will never be '%other', but we need some
-                value in case none of the concrete values match.*/
-                readonly __typename: "%other";
-            }) | null;
+            readonly item: {
+                readonly __typename: string;
+                readonly href?: string | null;
+                readonly " $fragmentRefs": FragmentRefs<"ItemInfo_item">;
+            } | null;
         } | null> | null;
     } | null;
     readonly " $refType": "ConversationDetails_me";
@@ -59,26 +46,13 @@ var v0 = {
   "args": null,
   "storageKey": null
 },
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "href",
-  "args": null,
-  "storageKey": null
-},
-v2 = [
+v1 = [
   {
     "kind": "ScalarField",
-    "alias": "thumbnailUrl",
-    "name": "url",
-    "args": [
-      {
-        "kind": "Literal",
-        "name": "version",
-        "value": "small"
-      }
-    ],
-    "storageKey": "url(version:\"small\")"
+    "alias": null,
+    "name": "href",
+    "args": null,
+    "storageKey": null
   }
 ];
 return {
@@ -272,41 +246,17 @@ return {
                 {
                   "kind": "InlineFragment",
                   "type": "Artwork",
-                  "selections": [
-                    (v1/*: any*/),
-                    {
-                      "kind": "LinkedField",
-                      "alias": null,
-                      "name": "image",
-                      "storageKey": null,
-                      "args": null,
-                      "concreteType": "Image",
-                      "plural": false,
-                      "selections": (v2/*: any*/)
-                    },
-                    {
-                      "kind": "FragmentSpread",
-                      "name": "ArtworkInfo_artwork",
-                      "args": null
-                    }
-                  ]
+                  "selections": (v1/*: any*/)
                 },
                 {
                   "kind": "InlineFragment",
                   "type": "Show",
-                  "selections": [
-                    (v1/*: any*/),
-                    {
-                      "kind": "LinkedField",
-                      "alias": "image",
-                      "name": "coverImage",
-                      "storageKey": null,
-                      "args": null,
-                      "concreteType": "Image",
-                      "plural": false,
-                      "selections": (v2/*: any*/)
-                    }
-                  ]
+                  "selections": (v1/*: any*/)
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "ItemInfo_item",
+                  "args": null
                 }
               ]
             }
@@ -317,5 +267,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7f10c995e3c75b4214f4bf34bf2a1d6d';
+(node as any).hash = '5ca4875e2e7827adf182f3dc7170f151';
 export default node;

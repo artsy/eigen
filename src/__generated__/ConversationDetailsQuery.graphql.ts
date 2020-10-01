@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 7d0a37b91ad17e552c6a13cd7d18df4f */
+/* @relayHash 5e9c089159d264f6e46e145462833242 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,17 +25,6 @@ query ConversationDetailsQuery(
 ) {
   me {
     ...ConversationDetails_me
-    id
-  }
-}
-
-fragment ArtworkInfo_artwork on Artwork {
-  title
-  artistNames
-  date
-  saleMessage
-  partner {
-    name
     id
   }
 }
@@ -89,18 +78,12 @@ fragment ConversationDetails_me on Me {
       item {
         __typename
         ... on Artwork {
-          ...ArtworkInfo_artwork
           href
-          image {
-            thumbnailUrl: url(version: "small")
-          }
         }
         ... on Show {
           href
-          image: coverImage {
-            thumbnailUrl: url(version: "small")
-          }
         }
+        ...ItemInfo_item
         ... on Node {
           id
         }
@@ -113,6 +96,44 @@ fragment FileDownload_attachment on Attachment {
   fileName
   downloadURL
   ...AttachmentPreview_attachment
+}
+
+fragment ItemInfo_item on ConversationItemType {
+  __typename
+  ... on Artwork {
+    href
+    image {
+      thumbnailUrl: url(version: "small")
+    }
+    title
+    artistNames
+    date
+    saleMessage
+    partner {
+      name
+      id
+    }
+  }
+  ... on Show {
+    name
+    href
+    exhibitionPeriod
+    partner {
+      __typename
+      ... on Partner {
+        name
+      }
+      ... on Node {
+        id
+      }
+      ... on ExternalPartner {
+        id
+      }
+    }
+    image: coverImage {
+      thumbnailUrl: url(version: "small")
+    }
+  }
 }
 */
 
@@ -419,6 +440,17 @@ return {
                         "kind": "InlineFragment",
                         "type": "Artwork",
                         "selections": [
+                          (v6/*: any*/),
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "image",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Image",
+                            "plural": false,
+                            "selections": (v7/*: any*/)
+                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -459,17 +491,6 @@ return {
                               (v3/*: any*/),
                               (v2/*: any*/)
                             ]
-                          },
-                          (v6/*: any*/),
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "image",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "Image",
-                            "plural": false,
-                            "selections": (v7/*: any*/)
                           }
                         ]
                       },
@@ -478,6 +499,34 @@ return {
                         "type": "Show",
                         "selections": [
                           (v6/*: any*/),
+                          (v3/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "exhibitionPeriod",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "partner",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": null,
+                            "plural": false,
+                            "selections": [
+                              (v5/*: any*/),
+                              (v2/*: any*/),
+                              {
+                                "kind": "InlineFragment",
+                                "type": "Partner",
+                                "selections": [
+                                  (v3/*: any*/)
+                                ]
+                              }
+                            ]
+                          },
                           {
                             "kind": "LinkedField",
                             "alias": "image",
@@ -504,7 +553,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConversationDetailsQuery",
-    "id": "daa3d58510f0a038fe404b864e1bda58",
+    "id": "2af875c173b6d595683d16a406a7d2b6",
     "text": null,
     "metadata": {}
   }

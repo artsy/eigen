@@ -1,6 +1,6 @@
-import { ArtworkInfoTestsQuery } from "__generated__/ArtworkInfoTestsQuery.graphql"
+import { ItemInfoTestsQuery } from "__generated__/ItemInfoTestsQuery.graphql"
 
-import { ArtworkInfo_artwork } from "__generated__/ArtworkInfo_artwork.graphql"
+import { ItemInfo_item } from "__generated__/ItemInfo_item.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -8,7 +8,7 @@ import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { ArtworkInfoFragmentContainer } from "../ArtworkInfo"
+import { ItemInfoFragmentContainer } from "../ItemInfo"
 
 jest.unmock("react-relay")
 
@@ -17,21 +17,21 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentModalViewController: jest.fn(),
 }))
 
-describe("ArtworkInfoFragmentContainer", () => {
+describe("ItemInfoFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
-    <QueryRenderer<ArtworkInfoTestsQuery>
+    <QueryRenderer<ItemInfoTestsQuery>
       environment={env}
       query={graphql`
-        query ArtworkInfoTestsQuery($conversationID: String!) @relay_test_operation {
+        query ItemInfoTestsQuery($conversationID: String!) @relay_test_operation {
           me {
             conversation(id: $conversationID) {
               items {
                 item {
                   __typename
                   ... on Artwork {
-                    ...ArtworkInfo_artwork
+                    ...ItemInfo_item
                   }
                 }
               }
@@ -43,7 +43,7 @@ describe("ArtworkInfoFragmentContainer", () => {
       render={({ props, error }) => {
         if (props) {
           const item = props.me?.conversation?.items?.[0]?.item
-          return item?.__typename === "Artwork" && <ArtworkInfoFragmentContainer artwork={item} />
+          return item?.__typename === "Artwork" && <ItemInfoFragmentContainer item={item} />
         } else if (error) {
           console.log(error)
         }
@@ -67,7 +67,7 @@ describe("ArtworkInfoFragmentContainer", () => {
   })
 })
 
-const artworkMock: Partial<ArtworkInfo_artwork> = {
+const artworkMock: Partial<ItemInfo_item> = {
   title: "happy little accident",
   artistNames: "Bob Ross",
   partner: {

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c5bf31fc91fb394391a9d8acce8e4dfe */
+/* @relayHash b934cfb4319a00e5a434a90587cc8b8d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,17 +25,6 @@ query ConversationDetailsTestsQuery(
 ) {
   me {
     ...ConversationDetails_me
-    id
-  }
-}
-
-fragment ArtworkInfo_artwork on Artwork {
-  title
-  artistNames
-  date
-  saleMessage
-  partner {
-    name
     id
   }
 }
@@ -89,18 +78,12 @@ fragment ConversationDetails_me on Me {
       item {
         __typename
         ... on Artwork {
-          ...ArtworkInfo_artwork
           href
-          image {
-            thumbnailUrl: url(version: "small")
-          }
         }
         ... on Show {
           href
-          image: coverImage {
-            thumbnailUrl: url(version: "small")
-          }
         }
+        ...ItemInfo_item
         ... on Node {
           id
         }
@@ -113,6 +96,44 @@ fragment FileDownload_attachment on Attachment {
   fileName
   downloadURL
   ...AttachmentPreview_attachment
+}
+
+fragment ItemInfo_item on ConversationItemType {
+  __typename
+  ... on Artwork {
+    href
+    image {
+      thumbnailUrl: url(version: "small")
+    }
+    title
+    artistNames
+    date
+    saleMessage
+    partner {
+      name
+      id
+    }
+  }
+  ... on Show {
+    name
+    href
+    exhibitionPeriod
+    partner {
+      __typename
+      ... on Partner {
+        name
+      }
+      ... on Node {
+        id
+      }
+      ... on ExternalPartner {
+        id
+      }
+    }
+    image: coverImage {
+      thumbnailUrl: url(version: "small")
+    }
+  }
 }
 */
 
@@ -443,6 +464,17 @@ return {
                         "kind": "InlineFragment",
                         "type": "Artwork",
                         "selections": [
+                          (v6/*: any*/),
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "image",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Image",
+                            "plural": false,
+                            "selections": (v7/*: any*/)
+                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -483,17 +515,6 @@ return {
                               (v3/*: any*/),
                               (v2/*: any*/)
                             ]
-                          },
-                          (v6/*: any*/),
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "image",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "Image",
-                            "plural": false,
-                            "selections": (v7/*: any*/)
                           }
                         ]
                       },
@@ -502,6 +523,34 @@ return {
                         "type": "Show",
                         "selections": [
                           (v6/*: any*/),
+                          (v3/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "exhibitionPeriod",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "partner",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": null,
+                            "plural": false,
+                            "selections": [
+                              (v5/*: any*/),
+                              (v2/*: any*/),
+                              {
+                                "kind": "InlineFragment",
+                                "type": "Partner",
+                                "selections": [
+                                  (v3/*: any*/)
+                                ]
+                              }
+                            ]
+                          },
                           {
                             "kind": "LinkedField",
                             "alias": "image",
@@ -528,7 +577,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConversationDetailsTestsQuery",
-    "id": "4874cfde5a24761f3a6573073c7fe90b",
+    "id": "f8b0e7b1fa4d441a587591100b9121fd",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -611,12 +660,6 @@ return {
           "nullable": false
         },
         "me.conversation.items.item.href": (v11/*: any*/),
-        "me.conversation.items.item.image": {
-          "type": "Image",
-          "enumValues": null,
-          "plural": false,
-          "nullable": true
-        },
         "me.conversation.items.item.id": (v8/*: any*/),
         "me.conversation.messagesConnection.edges.node.__typename": (v10/*: any*/),
         "me.conversation.messagesConnection.edges.node.id": (v8/*: any*/),
@@ -626,19 +669,27 @@ return {
           "plural": true,
           "nullable": true
         },
+        "me.conversation.items.item.image": {
+          "type": "Image",
+          "enumValues": null,
+          "plural": false,
+          "nullable": true
+        },
         "me.conversation.items.item.title": (v11/*: any*/),
         "me.conversation.items.item.artistNames": (v11/*: any*/),
         "me.conversation.items.item.date": (v11/*: any*/),
         "me.conversation.items.item.saleMessage": (v11/*: any*/),
         "me.conversation.items.item.partner": {
-          "type": "Partner",
+          "type": "PartnerTypes",
           "enumValues": null,
           "plural": false,
           "nullable": true
         },
-        "me.conversation.items.item.image.thumbnailUrl": (v11/*: any*/),
+        "me.conversation.items.item.name": (v11/*: any*/),
+        "me.conversation.items.item.exhibitionPeriod": (v11/*: any*/),
         "me.conversation.messagesConnection.edges.node.attachments.id": (v9/*: any*/),
         "me.conversation.messagesConnection.edges.node.attachments.contentType": (v10/*: any*/),
+        "me.conversation.items.item.image.thumbnailUrl": (v11/*: any*/),
         "me.conversation.items.item.partner.name": (v11/*: any*/),
         "me.conversation.items.item.partner.id": (v8/*: any*/),
         "me.conversation.messagesConnection.edges.node.attachments.fileName": (v10/*: any*/),

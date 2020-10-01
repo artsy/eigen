@@ -1,5 +1,5 @@
 import { ConversationDetailsTestsQuery } from "__generated__/ConversationDetailsTestsQuery.graphql"
-import { ArtworkInfo } from "lib/Components/Inbox/Conversations/ArtworkInfo"
+import { ItemInfo } from "lib/Components/Inbox/Conversations/ItemInfo"
 import { FileDownload } from "lib/Components/Inbox/Conversations/Preview/Attachment/FileDownload"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { extractText } from "lib/tests/extractText"
@@ -65,7 +65,7 @@ describe("ConversationDetailsFragmentContainer", () => {
         data: meMock,
       })
     })
-    const artworkInfo = tree.root.findByType(ArtworkInfo)
+    const artworkInfo = tree.root.findByType(ItemInfo)
     expect(extractText(artworkInfo)).toContain("happy little accident")
 
     tree.root.findAllByType(Touchable)[0].props.onPress()
