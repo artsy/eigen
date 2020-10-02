@@ -15,13 +15,13 @@ describe("ArtsyWebView", () => {
     const expectUpdatedURL = (url: string) => {
       const tree = renderWithWrappers(<ArtsyWebView initialURL={url} />)
       const webview = tree.root.findAllByType(WebView)[0]
-      expect(webview.props.source).toEqual({ uri: "https://staging.artsy.net/foo/bar" })
+      expect(webview.props.source.uri).toEqual("https://staging.artsy.net/foo/bar")
     }
 
     const expectSameURL = (url: string) => {
       const tree = renderWithWrappers(<ArtsyWebView initialURL={url} />)
       const webview = tree.root.findAllByType(WebView)[0]
-      expect(webview.props.source).toEqual({ uri: url })
+      expect(webview.props.source.uri).toEqual(url)
     }
 
     it("rewrites the scheme to use https for artsy domains", () => {
@@ -63,13 +63,13 @@ describe("ArtsyWebView", () => {
     const expectUpdatedURL = (url: string) => {
       const tree = renderWithWrappers(<ArtsyWebView initialURL={url} />)
       const webview = tree.root.findAllByType(WebView)[0]
-      expect(webview.props.source).toEqual({ uri: "https://www.artsy.net/foo/bar" })
+      expect(webview.props.source.uri).toEqual("https://www.artsy.net/foo/bar")
     }
 
     const expectSameURL = (url: string) => {
       const tree = renderWithWrappers(<ArtsyWebView initialURL={url} />)
       const webview = tree.root.findAllByType(WebView)[0]
-      expect(webview.props.source).toEqual({ uri: url })
+      expect(webview.props.source.uri).toEqual(url)
     }
 
     it("rewrites the scheme to use https for artsy domains", () => {
@@ -98,6 +98,41 @@ describe("ArtsyWebView", () => {
 
     it("does not update host or scheme for external urls", () => {
       expectSameURL("http://example.com/foo/bar")
+    })
+  })
+
+  describe("auth injection", () => {
+    it("injects x-access-token headers in requests", () => {
+      __appStoreTestUtils__?.injectState({
+        native: {
+          sessionState: {
+            authenticationToken: "SOME-ACCESS-TOKEN",
+            userAgent: "SOME-USER-AGENT",
+          },
+        },
+      })
+      const url = "http://www.artsy.net/foo/bar"
+      const tree = renderWithWrappers(<ArtsyWebView initialURL={url} />)
+      const webview = tree.root.findAllByType(WebView)[0]
+      expect(webview.props.source.headers).toEqual({
+        "User-Agent": "SOME-USER-AGENT",
+        "X-ACCESS-TOKEN": "SOME-ACCESS-TOKEN",
+      })
+    })
+
+    it("doesn't leak x-auth-token header to non-artsy domains", () => {
+      __appStoreTestUtils__?.injectState({
+        native: {
+          sessionState: {
+            authenticationToken: "SOME-ACCESS-TOKEN",
+            userAgent: "SOME-USER-AGENT",
+          },
+        },
+      })
+      const url = "http://example.com/foo/bar"
+      const tree = renderWithWrappers(<ArtsyWebView initialURL={url} />)
+      const webview = tree.root.findAllByType(WebView)[0]
+      expect(webview.props.source.headers).toBeUndefined()
     })
   })
 })

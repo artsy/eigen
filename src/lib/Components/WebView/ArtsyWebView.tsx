@@ -1,4 +1,4 @@
-import { useIsStaging } from "lib/store/AppStore"
+import { getCurrentEmissionState, useIsStaging } from "lib/store/AppStore"
 import React from "react"
 import { WebView } from "react-native-webview"
 import { URL } from "url"
@@ -51,5 +51,22 @@ export const ArtsyWebView: React.FC<Props> = ({ initialURL }) => {
     }
   }
 
-  return <WebView source={{ uri: updateURL(initialURL) }} />
+  const headersForURL = (url: string) => {
+    const { authenticationToken, userAgent } = getCurrentEmissionState()
+    const passedURL = new URL(url)
+    if (artsyDomains.includes(passedURL.host)) {
+      return {
+        "X-ACCESS-TOKEN": authenticationToken,
+        "User-Agent": userAgent,
+      }
+    }
+  }
+
+  // TODO: There is a bug on rn-webview that causes headers to not be passed on subsequent requests
+  // The behavior we actually want is to intercept all requests and check if the domain is
+  // an artsy domain and if so inject auth headers
+  // See this issue: https://github.com/react-native-webview/react-native-webview/issues/4#issuecomment-427671845
+  // See this PR: https://github.com/react-native-webview/react-native-webview/pull/181/files
+  const updatedURL = updateURL(initialURL)
+  return <WebView source={{ uri: updatedURL, headers: headersForURL(updatedURL) }} />
 }

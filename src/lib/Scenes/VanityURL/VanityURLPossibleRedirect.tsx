@@ -1,22 +1,22 @@
 import InternalWebView from "lib/Components/InternalWebView"
 import { Stack } from "lib/Components/Stack"
+import { ArtsyWebView } from "lib/Components/WebView/ArtsyWebView"
 import { goBack, navigate } from "lib/navigation/navigate"
 import { matchRoute } from "lib/navigation/routes"
 import { AppStore, useEmissionOption } from "lib/store/AppStore"
 import { Button, Flex, Spinner, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { Linking } from "react-native"
-import WebView from "react-native-webview"
 
 function join(...parts: string[]) {
   return parts.map((s) => s.replace(/(^\/+|\/+$)/g, "")).join("/")
 }
 
-const ArtsyWebView: React.FC<{ url: string }> = ({ url }) => {
+const WebView: React.FC<{ url: string }> = ({ url }) => {
   const useReactNativeWebView = useEmissionOption("AROptionsUseReactNativeWebView")
 
   if (useReactNativeWebView) {
-    return <WebView source={{ uri: url }} />
+    return <ArtsyWebView initialURL={url} />
   } else {
     return <InternalWebView route={url} />
   }
@@ -47,12 +47,12 @@ export const VanityURLPossibleRedirect: React.FC<{ slug: string }> = ({ slug }) 
           navigate(response.url)
         } else if (screen.module === "WebView") {
           // Test this with `artsy:///artsy-vanguard-2019` which force should redirect to /series/artsy-vanguard-2019
-          setJSX(<ArtsyWebView url={response.url} />)
+          setJSX(<WebView url={response.url} />)
         } else if (screen.module === "VanityURLEntity" && slug === (screen.params as any).slug) {
           // No redirect, it's some other kind of single-segment URI path.
           // Just show the web version of this page.
           // Test this with `artsy:///identity-verification-faq`
-          setJSX(<ArtsyWebView url={response.url} />)
+          setJSX(<WebView url={response.url} />)
         } else {
           // The app has a native screen for the redirect URL, let's show it.
           // Test this with `artsy:///auction` which force should redirect to /auctions
