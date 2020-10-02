@@ -14,6 +14,7 @@ export type MyCollectionCreateArtworkInput = {
     depth?: string | null;
     editionNumber?: string | null;
     editionSize?: string | null;
+    externalImageUrls?: Array<string | null> | null;
     height?: string | null;
     medium: string;
     metric?: string | null;
