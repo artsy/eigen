@@ -17,10 +17,12 @@ import {
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Sans, Theme } from "palette"
+import { array } from "prop-types"
 import { useTracking } from "react-tracking"
 import { NavigateBackIconContainer } from "../../ArtworkFilterOptions/SingleSelectOption"
 import { FakeNavigator as MockNavigator } from "../../Bidding/__tests__/Helpers/FakeNavigator"
 import { closeModalMock, MockFilterScreen } from "../__tests__/FilterTestHelper"
+import { FilterDisplayConfig } from "../FilterModal"
 import {
   ApplyButton,
   ClearAllButton,
@@ -29,6 +31,9 @@ import {
   FilterModalMode,
   FilterModalNavigator,
   FilterOptions,
+  filterOptionToDisplayConfigMap,
+  getFilterScreenSortByMode,
+  getStaticFilterOptionsByMode,
   TouchableOptionListItemRow,
 } from "../FilterModal"
 
@@ -233,7 +238,7 @@ describe("Filter modal navigation flow", () => {
     // @ts-ignore STRICTNESS_MIGRATION
     const getNextScreenTitle = (component) => component.root.findByType(Sans).props.children
 
-    expect(getNextScreenTitle(nextScreen)).toEqual("Sort")
+    expect(getNextScreenTitle(nextScreen)).toEqual("Sort by")
   })
 
   it("allows users to navigate forward to medium screen from filter screen", () => {
@@ -583,5 +588,31 @@ describe("Applying filters", () => {
         "sort": null,
       }
     `)
+  })
+})
+
+describe(getStaticFilterOptionsByMode, () => {
+  it("returns the right static filters by mode", async () => {
+    expect(getStaticFilterOptionsByMode(FilterModalMode.ArtistArtworks)).toEqual([
+      filterOptionToDisplayConfigMap.sort,
+      filterOptionToDisplayConfigMap.waysToBuy,
+    ])
+    expect(getStaticFilterOptionsByMode(FilterModalMode.ArtistSeries)).toEqual([
+      filterOptionToDisplayConfigMap.sort,
+      filterOptionToDisplayConfigMap.waysToBuy,
+    ])
+
+    expect(getStaticFilterOptionsByMode(FilterModalMode.Collection)).toEqual([
+      filterOptionToDisplayConfigMap.sort,
+      filterOptionToDisplayConfigMap.waysToBuy,
+    ])
+    expect(getStaticFilterOptionsByMode(FilterModalMode.Fair)).toEqual([
+      filterOptionToDisplayConfigMap.sort,
+      filterOptionToDisplayConfigMap.waysToBuy,
+    ])
+    expect(getStaticFilterOptionsByMode(FilterModalMode.SaleArtworks)).toEqual([
+      filterOptionToDisplayConfigMap.sort,
+      filterOptionToDisplayConfigMap.viewAs,
+    ])
   })
 })

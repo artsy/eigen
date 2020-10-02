@@ -292,21 +292,17 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
   )
 }
 
-const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
+export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
   switch (mode) {
     case FilterModalMode.SaleArtworks:
       return [filterOptionToDisplayConfigMap.sort, filterOptionToDisplayConfigMap.viewAs]
 
     default:
-      return [
-        filterOptionToDisplayConfigMap.sort,
-        filterOptionToDisplayConfigMap.viewAs,
-        filterOptionToDisplayConfigMap.waysToBuy,
-      ]
+      return [filterOptionToDisplayConfigMap.sort, filterOptionToDisplayConfigMap.waysToBuy]
   }
 }
 
-const getFilterScreenSortByMode = (mode: FilterModalMode) => (
+export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
   left: FilterDisplayConfig,
   right: FilterDisplayConfig
 ): number => {
@@ -461,7 +457,7 @@ export const aggregationForFilter = (filterKey: string, aggregations: Aggregatio
   return aggregation
 }
 
-const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
+export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
   artistsIFollow: {
     displayText: FilterDisplayName.artistsIFollow,
     filterType: "artistsIFollow",
