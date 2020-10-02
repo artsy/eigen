@@ -60,6 +60,7 @@ export interface NativeState {
     AROptionsUseReactNativeWebView: boolean
     AROptionsShowNewFairScreen: boolean
   }
+  legacyFairSlugs: string[]
 }
 
 export type EmissionOptions = NativeState["options"]

@@ -21,6 +21,7 @@
 + (NSString *)webURL { return @"webURL"; }
 + (NSString *)userAgent { return @"userAgent"; }
 + (NSString *)options { return @"options"; }
++ (NSString *)legacyFairSlugs { return @"legacyFairSlugs"; }
 
 + (NSString *)env { return @"env"; }
 + (NSString *)deviceId { return @"deviceId"; }

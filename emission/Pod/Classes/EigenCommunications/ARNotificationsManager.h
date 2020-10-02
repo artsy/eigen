@@ -14,6 +14,7 @@
 + (NSString *)webURL;
 + (NSString *)userAgent;
 + (NSString *)options;
++ (NSString *)legacyFairSlugs;
 
 + (NSString *)env;
 + (NSString *)deviceId;

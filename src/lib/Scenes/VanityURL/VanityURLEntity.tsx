@@ -21,6 +21,8 @@ interface EntityProps {
 
 const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug }) => {
   const useNewFairView = getCurrentEmissionState().options.AROptionsShowNewFairScreen
+  const fairSlugs = getCurrentEmissionState().legacyFairSlugs
+  console.log(fairSlugs)
 
   if (fairOrPartner.__typename === "Fair") {
     return useNewFairView ? <Fair2FragmentContainer fair={fairOrPartner} /> : <FairContainer fair={fairOrPartner} />

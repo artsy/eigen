@@ -167,6 +167,7 @@ function getNativeModules(): typeof NativeModules {
           AROptionsUseReactNativeWebView: false,
           AROptionsShowNewFairScreen: false,
         },
+        legacyFairSlugs: ["some-fairs-slug", "some-other-fair-slug"],
       },
       postNotificationName: jest.fn(),
       didFinishBootstrapping: jest.fn(),

@@ -130,6 +130,8 @@ SOFTWARE.
         liveAuctionsURL = @"https://live.artsy.net";
     }
 
+    NSArray *fairSlugs = [aero legacyFairSlugs];
+
     NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
     AROnboardingUserProgressStage onboardingState = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage];
 
@@ -149,6 +151,7 @@ SOFTWARE.
         [ARStateKey userAgent]: ARRouter.userAgent,
         [ARStateKey env]: env,
         [ARStateKey options]: options,
+        [ARStateKey legacyFairSlugs]: fairSlugs,
         [ARStateKey deviceId]: self.deviceId
     } packagerURL:packagerURL];
 

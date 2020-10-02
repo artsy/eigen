@@ -50,4 +50,10 @@
     }
 }
 
+- (NSArray *)legacyFairSlugs {
+    Message *legacyFairMessage = self.messages[@"LegacyFairSlugs"];
+    NSArray *fairSlugs = [legacyFairMessage.content componentsSeparatedByString:@","];
+    return fairSlugs;
+}
+
 @end
