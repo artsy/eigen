@@ -20,11 +20,11 @@ interface EntityProps {
 }
 
 const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug }) => {
-  const useNewFairView = getCurrentEmissionState().options.AROptionsShowNewFairScreen
-  const fairSlugs = getCurrentEmissionState().legacyFairSlugs
-  console.log(fairSlugs)
-
   if (fairOrPartner.__typename === "Fair") {
+    const showNewFairViewFeatureEnabled = getCurrentEmissionState().options.AROptionsShowNewFairScreen
+    const fairSlugs = getCurrentEmissionState().legacyFairSlugs
+    const useNewFairView = showNewFairViewFeatureEnabled && !fairSlugs?.includes(fairOrPartner.slug)
+
     return useNewFairView ? <Fair2FragmentContainer fair={fairOrPartner} /> : <FairContainer fair={fairOrPartner} />
   } else if (fairOrPartner.__typename === "Partner") {
     const { safeAreaInsets } = useScreenDimensions()
@@ -44,6 +44,7 @@ const VanityURLEntityFragmentContainer = createFragmentContainer(VanityURLEntity
     @argumentDefinitions(useNewFairView: { type: "Boolean", defaultValue: false }) {
       __typename
       ... on Fair {
+        slug
         ...Fair2_fair @include(if: $useNewFairView)
         ...Fair_fair @skip(if: $useNewFairView)
       }
@@ -61,7 +62,9 @@ interface RendererProps {
 }
 
 export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugType, slug }) => {
-  const useNewFairView = getCurrentEmissionState().options.AROptionsShowNewFairScreen
+  const showNewFairViewFeatureEnabled = getCurrentEmissionState().options.AROptionsShowNewFairScreen
+  const fairProfileSlugs = getCurrentEmissionState().legacyFairProfileSlugs
+  const useNewFairView = showNewFairViewFeatureEnabled && !fairProfileSlugs?.includes(slug)
 
   if (slugType === "fairID") {
     return <FairQueryRenderer fairID={slug} />

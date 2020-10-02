@@ -58,6 +58,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
         new RouteMatcher("/fair/:fairID/bmw-sponsored-content", "Fair2MoreInfo"),
       ]
     : [
+        new RouteMatcher("/fair/:fairID", "FairArtworks"),
         new RouteMatcher("/fair/:fairID/artworks", "FairArtworks"),
         new RouteMatcher("/fair/:fairID/info", "FairMoreInfo"),
         new RouteMatcher("/fair/:fairID/artists", "FairArtists"),
@@ -131,7 +132,13 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     new RouteMatcher("/partner-locations/:partnerID", "PartnerLocations"),
 
-    ...fairRoutes,
+    // Update these when we've migrated fully from the old fair view
+    new RouteMatcher("/fair/:fairID", "FairArtworks"),
+    new RouteMatcher("/fair/:fairID/artworks", "FairArtworks"),
+    new RouteMatcher("/fair/:fairID/info", "FairMoreInfo"),
+    new RouteMatcher("/fair/:fairID/artists", "FairArtists"),
+    new RouteMatcher("/fair/:fairID/exhibitors", "FairExhibitors"),
+    new RouteMatcher("/fair/:fairID/bmw-sponsored-content", "FairBMWArtActivation"),
 
     new RouteMatcher("/city/:citySlug/:section", "CitySectionList"),
     new RouteMatcher("/city-fair/:citySlug", "CityFairList"),

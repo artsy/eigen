@@ -1,4 +1,5 @@
 import { isNativeModule, modules } from "lib/AppRegistry"
+import { getCurrentEmissionState } from "lib/store/AppStore"
 import { Linking, NativeModules } from "react-native"
 import { matchRoute } from "./routes"
 
@@ -9,6 +10,28 @@ export function navigate(url: string, options: { modal?: boolean } = {}) {
     Linking.openURL(result.url)
     return
   }
+
+  if (result.params.fairID) {
+    const showNewFairViewFeatureEnabled = getCurrentEmissionState().options.AROptionsShowNewFairScreen
+    const fairSlugs = getCurrentEmissionState().legacyFairSlugs
+    const useNewFairView = showNewFairViewFeatureEnabled && !fairSlugs?.includes(result.params.fairID)
+
+    const fairModuleMapping = {
+      FairArtworks: "Fair2",
+      FairMoreInfo: "Fair2MoreInfo",
+      FairArtists: "Fair2",
+      FairExhibitors: "Fair2",
+      FairBMWArtActivation: "Fair2MoreInfo",
+    }
+
+    if (useNewFairView) {
+      console.log("RESULT.MODULE", result.module)
+      const fairModule = fairModuleMapping[result.module]
+      result.module = fairModule
+    }
+  }
+
+  console.log("result", result)
 
   const module = modules[result.module]
 

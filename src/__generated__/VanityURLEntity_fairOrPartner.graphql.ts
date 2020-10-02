@@ -5,6 +5,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type VanityURLEntity_fairOrPartner = {
     readonly __typename: "Fair";
+    readonly slug: string;
     readonly " $fragmentRefs": FragmentRefs<"Fair2_fair" | "Fair_fair">;
     readonly " $refType": "VanityURLEntity_fairOrPartner";
 } | {
@@ -51,6 +52,13 @@ const node: ReaderFragment = {
       "type": "Fair",
       "selections": [
         {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "slug",
+          "args": null,
+          "storageKey": null
+        },
+        {
           "kind": "Condition",
           "passingValue": true,
           "condition": "useNewFairView",
@@ -89,5 +97,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'a45efee3a131453bfba982b2610f0ade';
+(node as any).hash = 'd887180404e9d331b968e01d820aa307';
 export default node;

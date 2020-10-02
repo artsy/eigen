@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 1bd10f2359b973fa275465155690d8f5 */
+/* @relayHash 55ee4f8120ca11ed4de326ad618793f1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -687,6 +687,7 @@ fragment Partner_partner on Partner {
 fragment VanityURLEntity_fairOrPartner_18FOGk on VanityURLEntityType {
   __typename
   ... on Fair {
+    slug
     ...Fair2_fair @include(if: $useNewFairView)
     ...Fair_fair @skip(if: $useNewFairView)
   }
@@ -735,14 +736,14 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -1011,7 +1012,7 @@ v32 = [
     "plural": false,
     "selections": [
       (v3/*: any*/),
-      (v5/*: any*/),
+      (v4/*: any*/),
       {
         "kind": "LinkedField",
         "alias": null,
@@ -1028,7 +1029,7 @@ v32 = [
       (v7/*: any*/),
       (v18/*: any*/),
       (v19/*: any*/),
-      (v4/*: any*/),
+      (v5/*: any*/),
       (v20/*: any*/),
       (v8/*: any*/),
       (v24/*: any*/),
@@ -1140,8 +1141,8 @@ v45 = {
 v46 = [
   (v12/*: any*/),
   (v8/*: any*/),
-  (v5/*: any*/),
   (v4/*: any*/),
+  (v5/*: any*/),
   (v3/*: any*/)
 ],
 v47 = {
@@ -1291,12 +1292,12 @@ return {
             "kind": "InlineFragment",
             "type": "Fair",
             "selections": [
+              (v4/*: any*/),
               {
                 "kind": "Condition",
                 "passingValue": true,
                 "condition": "useNewFairView",
                 "selections": [
-                  (v4/*: any*/),
                   (v5/*: any*/),
                   {
                     "kind": "LinkedField",
@@ -1390,7 +1391,7 @@ return {
                     "selections": [
                       (v2/*: any*/),
                       (v3/*: any*/),
-                      (v5/*: any*/),
+                      (v4/*: any*/),
                       (v7/*: any*/),
                       {
                         "kind": "ScalarField",
@@ -1767,7 +1768,7 @@ return {
                                   }
                                 ]
                               },
-                              (v4/*: any*/),
+                              (v5/*: any*/),
                               (v8/*: any*/),
                               {
                                 "kind": "LinkedField",
@@ -1871,8 +1872,8 @@ return {
                                             ]
                                           },
                                           (v7/*: any*/),
-                                          (v4/*: any*/),
-                                          (v5/*: any*/)
+                                          (v5/*: any*/),
+                                          (v4/*: any*/)
                                         ]
                                       }
                                     ]
@@ -1916,7 +1917,6 @@ return {
                 "passingValue": false,
                 "condition": "useNewFairView",
                 "selections": [
-                  (v5/*: any*/),
                   (v12/*: any*/),
                   {
                     "kind": "ScalarField",
@@ -2043,7 +2043,7 @@ return {
                       (v12/*: any*/)
                     ]
                   },
-                  (v4/*: any*/),
+                  (v5/*: any*/),
                   (v47/*: any*/),
                   {
                     "kind": "ScalarField",
@@ -2062,7 +2062,7 @@ return {
                     "plural": false,
                     "selections": [
                       (v3/*: any*/),
-                      (v4/*: any*/),
+                      (v5/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -2307,7 +2307,7 @@ return {
                                         "concreteType": "Artwork",
                                         "plural": false,
                                         "selections": [
-                                          (v5/*: any*/),
+                                          (v4/*: any*/),
                                           (v3/*: any*/),
                                           {
                                             "kind": "LinkedField",
@@ -2332,7 +2332,7 @@ return {
                                           (v7/*: any*/),
                                           (v18/*: any*/),
                                           (v19/*: any*/),
-                                          (v4/*: any*/),
+                                          (v5/*: any*/),
                                           (v20/*: any*/),
                                           (v8/*: any*/),
                                           (v24/*: any*/),
@@ -2344,8 +2344,8 @@ return {
                                   }
                                 ]
                               },
-                              (v5/*: any*/),
                               (v4/*: any*/),
+                              (v5/*: any*/),
                               (v38/*: any*/),
                               {
                                 "kind": "LinkedField",
@@ -2364,8 +2364,8 @@ return {
                                     "selections": [
                                       (v12/*: any*/),
                                       (v8/*: any*/),
-                                      (v5/*: any*/),
                                       (v4/*: any*/),
+                                      (v5/*: any*/),
                                       {
                                         "kind": "LinkedField",
                                         "alias": null,
@@ -2376,8 +2376,8 @@ return {
                                         "plural": false,
                                         "selections": [
                                           (v3/*: any*/),
-                                          (v5/*: any*/),
                                           (v4/*: any*/),
+                                          (v5/*: any*/),
                                           (v49/*: any*/)
                                         ]
                                       }
@@ -2424,8 +2424,8 @@ return {
             "kind": "InlineFragment",
             "type": "Partner",
             "selections": [
-              (v4/*: any*/),
               (v5/*: any*/),
+              (v4/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -2437,7 +2437,7 @@ return {
                 "selections": [
                   (v3/*: any*/),
                   (v49/*: any*/),
-                  (v4/*: any*/),
+                  (v5/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -2516,8 +2516,8 @@ return {
                         "plural": false,
                         "selections": [
                           (v3/*: any*/),
-                          (v4/*: any*/),
                           (v5/*: any*/),
+                          (v4/*: any*/),
                           (v12/*: any*/),
                           {
                             "kind": "ScalarField",
@@ -2677,7 +2677,7 @@ return {
                           (v55/*: any*/),
                           (v3/*: any*/),
                           (v12/*: any*/),
-                          (v5/*: any*/),
+                          (v4/*: any*/),
                           (v42/*: any*/),
                           {
                             "kind": "LinkedField",
@@ -2740,8 +2740,8 @@ return {
                         "selections": [
                           (v55/*: any*/),
                           (v3/*: any*/),
-                          (v4/*: any*/),
                           (v5/*: any*/),
+                          (v4/*: any*/),
                           (v12/*: any*/),
                           (v42/*: any*/),
                           (v23/*: any*/),
@@ -2814,7 +2814,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "VanityURLEntityQuery",
-    "id": "42792766fea80a68a7ffacabd711a024",
+    "id": "1d449eeea44c76dd01dfbeb3783b64d8",
     "text": null,
     "metadata": {}
   }

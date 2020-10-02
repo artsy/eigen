@@ -1,6 +1,7 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 
+
 @interface ARStateKey : NSObject
 + (NSString *)selectedTab;
 + (NSString *)userID;
@@ -15,6 +16,7 @@
 + (NSString *)userAgent;
 + (NSString *)options;
 + (NSString *)legacyFairSlugs;
++ (NSString *)legacyFairProfileSlugs;
 
 + (NSString *)env;
 + (NSString *)deviceId;
@@ -22,6 +24,7 @@
 + (NSString *)stripePublishableKey;
 + (NSString *)sentryDSN;
 @end
+
 
 @interface ARNotificationsManager : RCTEventEmitter <RCTBridgeModule>
 

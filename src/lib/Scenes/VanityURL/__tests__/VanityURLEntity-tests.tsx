@@ -142,9 +142,36 @@ describe("VanityURLEntity", () => {
       expect(fairComponent).toBeDefined()
     })
 
-    it("renders a new fair page fair when a fair is returned and the lab option is enabled", () => {
+    it("renders a webview when an unknown profile type is returned", () => {
+      const tree = renderWithWrappers(<TestRenderer entity="unknown" slugType="profileID" slug="some-unknown-id" />)
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("VanityURLEntityQuery")
+      act(() => {
+        env.mock.resolveMostRecentOperation({
+          errors: [],
+          data: {
+            vanityURLEntity: {
+              __typename: "UnknownType",
+            },
+          },
+        })
+      })
+      const webComponent = tree.root.findByType(VanityURLPossibleRedirect)
+      expect(webComponent).toBeDefined()
+    })
+  })
+
+  describe("rendering a profile with the new fair screen option enabled", () => {
+    beforeEach(() => {
       __appStoreTestUtils__?.injectEmissionOptions({ AROptionsShowNewFairScreen: true })
-      const tree = renderWithWrappers(<TestRenderer entity="fair" slugType="profileID" slug="some-fair" />)
+    })
+
+    afterEach(() => {
+      __appStoreTestUtils__?.reset()
+    })
+    it("renders a new fair page when a fair is returned and the lab option is enabled", () => {
+      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsShowNewFairScreen: true })
+
+      const tree = renderWithWrappers(<TestRenderer entity="fair" slugType="profileID" slug="some-fair-profile" />)
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("VanityURLEntityQuery")
       act(() => {
         env.mock.resolveMostRecentOperation({
@@ -161,21 +188,29 @@ describe("VanityURLEntity", () => {
       expect(fairComponent).toBeDefined()
     })
 
-    it("renders a webview when an unknown profile type is returned", () => {
-      const tree = renderWithWrappers(<TestRenderer entity="unknown" slugType="profileID" slug="some-unknown-id" />)
+    it("renders an old fair page when the lab option is enabled and the slug is configured", () => {
+      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsShowNewFairScreen: true })
+      __appStoreTestUtils__?.injectState({
+        native: { sessionState: { legacyFairSlugs: ["sofa-chicago-2018"] } },
+      })
+      __appStoreTestUtils__?.injectState({
+        native: { sessionState: { legacyFairProfileSlugs: ["old-fair-profile"] } },
+      })
+
+      const tree = renderWithWrappers(<TestRenderer entity="fair" slugType="profileID" slug="old-fair-profile" />)
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("VanityURLEntityQuery")
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
           data: {
             vanityURLEntity: {
-              __typename: "UnknownType",
+              ...fairFixture,
             },
           },
         })
       })
-      const webComponent = tree.root.findByType(VanityURLPossibleRedirect)
-      expect(webComponent).toBeDefined()
+      const fairComponent = tree.root.findByType(FairContainer)
+      expect(fairComponent).toBeDefined()
     })
   })
 })

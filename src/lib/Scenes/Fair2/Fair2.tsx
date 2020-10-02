@@ -40,7 +40,6 @@ const tabs: TabsType = [
 ]
 
 export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
-  console.log("FAIR", fair)
   const hasArticles = !!fair.articles?.edges?.length
   const hasCollections = !!fair.marketingCollections.length
   const hasArtworks = !!(fair.counts?.artworks ?? 0 > 0)

@@ -61,6 +61,7 @@ export interface NativeState {
     AROptionsShowNewFairScreen: boolean
   }
   legacyFairSlugs: string[]
+  legacyFairProfileSlugs: string[]
 }
 
 export type EmissionOptions = NativeState["options"]
