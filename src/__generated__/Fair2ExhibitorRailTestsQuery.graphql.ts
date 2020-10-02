@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 683ec582e0fa744903a1f6301fc86bf1 */
+/* @relayHash e7c657c396abaa77b248efebb1d2b03a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -16,6 +16,7 @@ export type Fair2ExhibitorRailTestsQueryResponse = {
 export type Fair2ExhibitorRailTestsQueryRawResponse = {
     readonly show: ({
         readonly internalID: string;
+        readonly slug: string;
         readonly href: string | null;
         readonly partner: ({
             readonly __typename: "Partner";
@@ -101,6 +102,7 @@ query Fair2ExhibitorRailTestsQuery(
 
 fragment Fair2ExhibitorRail_show on Show {
   internalID
+  slug
   href
   partner {
     __typename
@@ -191,28 +193,28 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "href",
+  "name": "slug",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "href",
   "storageKey": null
 },
 v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "name",
   "storageKey": null
 },
 v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "id",
   "storageKey": null
 },
 v7 = [
@@ -267,6 +269,7 @@ return {
         "selections": [
           (v2/*: any*/),
           (v3/*: any*/),
+          (v4/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -285,7 +288,7 @@ return {
               {
                 "kind": "InlineFragment",
                 "selections": [
-                  (v4/*: any*/)
+                  (v5/*: any*/)
                 ],
                 "type": "Partner",
                 "abstractKey": null
@@ -293,8 +296,8 @@ return {
               {
                 "kind": "InlineFragment",
                 "selections": [
-                  (v4/*: any*/),
-                  (v5/*: any*/)
+                  (v5/*: any*/),
+                  (v6/*: any*/)
                 ],
                 "type": "ExternalPartner",
                 "abstractKey": null
@@ -302,7 +305,7 @@ return {
               {
                 "kind": "InlineFragment",
                 "selections": [
-                  (v5/*: any*/)
+                  (v6/*: any*/)
                 ],
                 "type": "Node",
                 "abstractKey": "__isNode"
@@ -337,8 +340,8 @@ return {
             "plural": false,
             "selections": [
               (v2/*: any*/),
-              (v6/*: any*/),
-              (v5/*: any*/)
+              (v3/*: any*/),
+              (v6/*: any*/)
             ],
             "storageKey": null
           },
@@ -372,7 +375,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v3/*: any*/),
+                      (v4/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -380,7 +383,7 @@ return {
                         "name": "artistNames",
                         "storageKey": null
                       },
-                      (v5/*: any*/),
+                      (v6/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -469,7 +472,7 @@ return {
                             ],
                             "storageKey": null
                           },
-                          (v5/*: any*/)
+                          (v6/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -502,7 +505,7 @@ return {
                             "name": "endAt",
                             "storageKey": null
                           },
-                          (v5/*: any*/)
+                          (v6/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -514,7 +517,7 @@ return {
                         "storageKey": null
                       },
                       (v2/*: any*/),
-                      (v6/*: any*/)
+                      (v3/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -524,14 +527,14 @@ return {
             ],
             "storageKey": "artworksConnection(first:20)"
           },
-          (v5/*: any*/)
+          (v6/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "683ec582e0fa744903a1f6301fc86bf1",
+    "id": "e7c657c396abaa77b248efebb1d2b03a",
     "metadata": {},
     "name": "Fair2ExhibitorRailTestsQuery",
     "operationKind": "query",

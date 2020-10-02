@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 613b95db6d301127c9f39ab9d4119a65 */
+/* @relayHash b35ec6c73fcf870913a8ac4f899b5e8f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -153,6 +153,7 @@ fragment Fair2Editorial_fair on Fair {
 
 fragment Fair2ExhibitorRail_show on Show {
   internalID
+  slug
   href
   partner {
     __typename
@@ -1391,6 +1392,7 @@ return {
                         "storageKey": null
                       },
                       (v2/*: any*/),
+                      (v3/*: any*/),
                       (v7/*: any*/),
                       {
                         "alias": null,
@@ -1540,7 +1542,7 @@ return {
     ]
   },
   "params": {
-    "id": "613b95db6d301127c9f39ab9d4119a65",
+    "id": "b35ec6c73fcf870913a8ac4f899b5e8f",
     "metadata": {},
     "name": "Fair2Query",
     "operationKind": "query",

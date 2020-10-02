@@ -6,6 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Fair2ExhibitorRail_show = {
     readonly internalID: string;
+    readonly slug: string;
     readonly href: string | null;
     readonly partner: {
         readonly name?: string | null;
@@ -75,10 +76,17 @@ v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "href",
   "storageKey": null
 },
-v2 = [
+v3 = [
   {
     "alias": null,
     "args": null,
@@ -87,13 +95,6 @@ v2 = [
     "storageKey": null
   }
 ],
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "slug",
-  "storageKey": null
-},
 v4 = [
   {
     "alias": null,
@@ -111,6 +112,7 @@ return {
   "selections": [
     (v0/*: any*/),
     (v1/*: any*/),
+    (v2/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -121,13 +123,13 @@ return {
       "selections": [
         {
           "kind": "InlineFragment",
-          "selections": (v2/*: any*/),
+          "selections": (v3/*: any*/),
           "type": "Partner",
           "abstractKey": null
         },
         {
           "kind": "InlineFragment",
-          "selections": (v2/*: any*/),
+          "selections": (v3/*: any*/),
           "type": "ExternalPartner",
           "abstractKey": null
         }
@@ -161,7 +163,7 @@ return {
       "plural": false,
       "selections": [
         (v0/*: any*/),
-        (v3/*: any*/)
+        (v1/*: any*/)
       ],
       "storageKey": null
     },
@@ -195,7 +197,7 @@ return {
               "name": "node",
               "plural": false,
               "selections": [
-                (v1/*: any*/),
+                (v2/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -341,7 +343,7 @@ return {
                   "storageKey": null
                 },
                 (v0/*: any*/),
-                (v3/*: any*/)
+                (v1/*: any*/)
               ],
               "storageKey": null
             }
@@ -356,5 +358,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '8bde494551e6706b0f9c2f78eddfea46';
+(node as any).hash = 'adbd5074804a69ed2f73de28bf24774c';
 export default node;

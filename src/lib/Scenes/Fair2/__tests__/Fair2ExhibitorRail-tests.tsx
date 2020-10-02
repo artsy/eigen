@@ -3,6 +3,7 @@ import {
   Fair2ExhibitorRailTestsQueryRawResponse,
 } from "__generated__/Fair2ExhibitorRailTestsQuery.graphql"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -73,11 +74,29 @@ describe("FairExhibitors", () => {
       type: "thumbnail",
     })
   })
+
+  it("tracks taps on the show", () => {
+    const wrapper = getWrapper()
+    const show = wrapper.root.findAllByType(SectionTitle)[0]
+    act(() => show.props.onPress())
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedArtworkGroup",
+      context_module: "galleryBoothRail",
+      context_screen_owner_id: "abc123",
+      context_screen_owner_slug: "some-fair",
+      context_screen_owner_type: "fair",
+      destination_screen_owner_id: "xxx-2",
+      destination_screen_owner_slug: "example-2",
+      destination_screen_owner_type: "show",
+      type: "viewAll",
+    })
+  })
 })
 
 const FAIR_2_EXHIBITOR_RAIL_FIXTURE: Fair2ExhibitorRailTestsQueryRawResponse = {
   show: {
     id: "xxx-2",
+    slug: "example-2",
     internalID: "xxx-2",
     counts: { artworks: 10 },
     href: "/show/example-2",

@@ -38,6 +38,21 @@ const Fair2ExhibitorRail: React.FC<Fair2ExhibitorRailProps> = ({ show }) => {
     tracking.trackEvent(trackTappedArtworkProps)
   }
 
+  const trackTappedShow = (showInternalID: string, showSlug: string) => {
+    const trackTappedShowProps: TappedArtworkGroup = {
+      action: ActionType.tappedArtworkGroup,
+      context_module: ContextModule.galleryBoothRail,
+      context_screen_owner_type: OwnerType.fair,
+      context_screen_owner_id: show.fair?.internalID ?? "",
+      context_screen_owner_slug: show.fair?.slug ?? "",
+      destination_screen_owner_type: OwnerType.show,
+      destination_screen_owner_id: showInternalID,
+      destination_screen_owner_slug: showSlug,
+      type: "viewAll",
+    }
+    tracking.trackEvent(trackTappedShowProps)
+  }
+
   if (count === 0) {
     return null
   }
@@ -52,6 +67,7 @@ const Fair2ExhibitorRail: React.FC<Fair2ExhibitorRailProps> = ({ show }) => {
             if (!viewAllUrl) {
               return
             }
+            trackTappedShow(show.internalID, show.slug)
             navigate(viewAllUrl)
           }}
         />
@@ -91,6 +107,7 @@ export const Fair2ExhibitorRailFragmentContainer = createFragmentContainer(Fair2
   show: graphql`
     fragment Fair2ExhibitorRail_show on Show {
       internalID
+      slug
       href
       partner {
         ... on Partner {
