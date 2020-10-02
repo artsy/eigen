@@ -4,13 +4,15 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { once } from "lodash"
-import { Button, Flex, Sans, Spacer, Text, Theme } from "palette"
+import { Box, Button, Flex, Sans, ShareIcon, Spacer, Text, Theme } from "palette"
 import { _maxWidth as maxWidth } from "palette"
 import React, { useCallback, useRef, useState } from "react"
-import { FlatList, LayoutAnimation, View, ViewToken } from "react-native"
+import { FlatList, LayoutAnimation, Share, TouchableWithoutFeedback, View, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
+import styled from "styled-components/native"
 import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtworkRail"
 import { ViewingRoomHeaderContainer } from "./Components/ViewingRoomHeader"
 import { ViewingRoomSubsectionsContainer } from "./Components/ViewingRoomSubsections"
@@ -64,12 +66,25 @@ export const ClosedNotice: React.FC<{ status: string; navRef: React.RefObject<Vi
 export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
   const viewingRoom = props.viewingRoom
   const navRef = useRef<View>(null)
+  const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
   const tracking = useTracking()
   const trackBodyImpression = useCallback(
     once(() => tracking.trackEvent(tracks.bodyImpression(viewingRoom.internalID, viewingRoom.slug))),
     []
   )
-  const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
+  const trackShare = () => tracking.trackEvent(tracks.share(viewingRoom.internalID, viewingRoom.slug))
+  async function handleViewingRoomShare() {
+    trackShare()
+    try {
+      await Share.share({
+        title: viewingRoom.title,
+        message: `${viewingRoom.title} by ${viewingRoom?.partner?.name} on Artsy`,
+        url: `https://artsy.net/viewing-room/${viewingRoom.slug}`,
+      })
+    } catch (error) {
+      console.error("ViewingRoom.tsx", error)
+    }
+  }
 
   const sections: ViewingRoomSection[] = []
 
@@ -125,10 +140,35 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
     )
   }
 
+  const ButtonBox = styled(Box)`
+    position: absolute;
+    top: ${useScreenDimensions().safeAreaInsets.top + 12};
+    right: 12;
+    height: 20;
+    z-index: 1;
+    background-color: #ffffff;
+    height: 40px;
+    width: 40px;
+    border-radius: 50;
+    align-items: center;
+    justify-content: center;
+  `
+
+  const ShareButton = () => {
+    return (
+      <TouchableWithoutFeedback onPress={() => handleViewingRoomShare()} data-test-id="share-button">
+        <ButtonBox>
+          <ShareIcon fill="black100" height="25px" width="100%" />
+        </ButtonBox>
+      </TouchableWithoutFeedback>
+    )
+  }
+
   return (
     <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
       <Theme>
-        <View style={{ flex: 1 }} ref={navRef}>
+        <View style={{ flex: 1, position: "relative" }} ref={navRef}>
+          <ShareButton />
           <FlatList<ViewingRoomSection>
             onViewableItemsChanged={useCallback(({ viewableItems }) => {
               if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body")) {
@@ -168,20 +208,29 @@ export const tracks = {
     context_screen_owner_id: id,
     context_screen_owner_slug: slug,
   }),
+  share: (id: string, slug: string) => ({
+    action: Schema.ActionNames.Share,
+    action_type: Schema.ActionTypes.Tap,
+    context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+    context_screen_owner_id: id,
+    context_screen_owner_slug: slug,
+  }),
 }
 
 export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom, {
   viewingRoom: graphql`
     fragment ViewingRoom_viewingRoom on ViewingRoom {
       body
-      pullQuote
       introStatement
-      slug
       internalID
-      status
       partner {
         href
+        name
       }
+      pullQuote
+      slug
+      status
+      title
       ...ViewingRoomViewWorksButton_viewingRoom
       ...ViewingRoomSubsections_viewingRoom
       ...ViewingRoomArtworkRail_viewingRoom
