@@ -16,7 +16,7 @@ import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
 import { ArrowRightIcon, Box, Button, CloseIcon, color, FilterIcon, Flex, Sans, Separator } from "palette"
-import React, { useCallback, useContext } from "react"
+import React, { useContext } from "react"
 import { FlatList, TouchableOpacity, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { useTracking } from "react-tracking"
@@ -200,48 +200,11 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
     })
   )
 
-  const staticFilterOptions: FilterDisplayConfig[] = [
-    filterOptionToDisplayConfigMap.sort,
-    filterOptionToDisplayConfigMap.viewAs,
-    filterOptionToDisplayConfigMap.waysToBuy,
-  ]
+  const filterOptions: FilterDisplayConfig[] = getStaticFilterOptionsByMode(mode).concat(aggregateFilterOptions)
 
-  const filterScreenSort = useCallback(
-    (left: FilterDisplayConfig, right: FilterDisplayConfig): number => {
-      let sortOrder: FilterScreen[] = []
-
-      // Filter order is based on frequency of use for a given page
-      switch (mode) {
-        case FilterModalMode.Collection:
-          sortOrder = CollectionFiltersSorted
-          break
-        case FilterModalMode.ArtistArtworks:
-          sortOrder = ArtistArtworksFiltersSorted
-          break
-        case FilterModalMode.ArtistSeries:
-          sortOrder = ArtistSeriesFiltersSorted
-          break
-        case FilterModalMode.Fair:
-          sortOrder = FairFiltersSorted
-          break
-        case FilterModalMode.SaleArtworks:
-          sortOrder = SaleArtworksFiltersSorted
-          break
-      }
-
-      const leftParam = left.filterType
-      const rightParam = right.filterType
-      if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
-        return -1
-      } else {
-        return 1
-      }
-    },
-    [mode]
-  )
-
-  const filterOptions: FilterDisplayConfig[] = staticFilterOptions.concat(aggregateFilterOptions)
-  const sortedFilterOptions = filterOptions.sort(filterScreenSort).filter((filterOption) => filterOption.filterType)
+  const sortedFilterOptions = filterOptions
+    .sort(getFilterScreenSortByMode(mode))
+    .filter((filterOption) => filterOption.filterType)
 
   const clearAllFilters = () => {
     dispatch({ type: "clearAll" })
@@ -327,6 +290,54 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
       />
     </Flex>
   )
+}
+
+const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
+  switch (mode) {
+    case FilterModalMode.SaleArtworks:
+      return [filterOptionToDisplayConfigMap.sort, filterOptionToDisplayConfigMap.viewAs]
+
+    default:
+      return [
+        filterOptionToDisplayConfigMap.sort,
+        filterOptionToDisplayConfigMap.viewAs,
+        filterOptionToDisplayConfigMap.waysToBuy,
+      ]
+  }
+}
+
+const getFilterScreenSortByMode = (mode: FilterModalMode) => (
+  left: FilterDisplayConfig,
+  right: FilterDisplayConfig
+): number => {
+  let sortOrder: FilterScreen[] = []
+
+  // Filter order is based on frequency of use for a given page
+  switch (mode) {
+    case FilterModalMode.Collection:
+      sortOrder = CollectionFiltersSorted
+      break
+    case FilterModalMode.ArtistArtworks:
+      sortOrder = ArtistArtworksFiltersSorted
+      break
+    case FilterModalMode.ArtistSeries:
+      sortOrder = ArtistSeriesFiltersSorted
+      break
+    case FilterModalMode.Fair:
+      sortOrder = FairFiltersSorted
+      break
+    case FilterModalMode.SaleArtworks:
+      sortOrder = SaleArtworksFiltersSorted
+      break
+  }
+
+  const leftParam = left.filterType
+  const rightParam = right.filterType
+  if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
+    return -1
+  } else {
+    return 1
+  }
 }
 
 const OptionDetail: React.FC<{ currentOption: any; filterType: any }> = ({ currentOption, filterType }) => {
