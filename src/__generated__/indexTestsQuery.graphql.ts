@@ -11,198 +11,9 @@ export type indexTestsQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"Show_show">;
     } | null;
 };
-export type indexTestsQueryRawResponse = {
-    readonly show: ({
-        readonly internalID: string;
-        readonly slug: string;
-        readonly description: string | null;
-        readonly id: string;
-        readonly name: string | null;
-        readonly is_followed: boolean | null;
-        readonly end_at: string | null;
-        readonly exhibition_period: string | null;
-        readonly isStubShow: boolean | null;
-        readonly partner: ({
-            readonly __typename: "Partner";
-            readonly __isNode: "Partner";
-            readonly id: string;
-            readonly name: string | null;
-            readonly slug: string;
-            readonly href: string | null;
-            readonly type: string | null;
-        } | {
-            readonly __typename: "ExternalPartner";
-            readonly __isNode: "ExternalPartner";
-            readonly id: string;
-        } | {
-            readonly __typename: string;
-            readonly __isNode: string;
-            readonly id: string;
-        }) | null;
-        readonly coverImage: ({
-            readonly url: string | null;
-            readonly aspect_ratio: number;
-        }) | null;
-        readonly images: ReadonlyArray<({
-            readonly url: string | null;
-            readonly aspect_ratio: number;
-        }) | null> | null;
-        readonly followedArtists: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
-                    readonly artist: ({
-                        readonly name: string | null;
-                        readonly href: string | null;
-                        readonly slug: string;
-                        readonly internalID: string;
-                        readonly id: string;
-                    }) | null;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-        readonly artists: ReadonlyArray<({
-            readonly name: string | null;
-            readonly href: string | null;
-            readonly slug: string;
-            readonly internalID: string;
-            readonly id: string;
-            readonly initials: string | null;
-            readonly is_followed: boolean | null;
-            readonly nationality: string | null;
-            readonly birthday: string | null;
-            readonly deathday: string | null;
-            readonly image: ({
-                readonly url: string | null;
-            }) | null;
-        }) | null> | null;
-        readonly counts: ({
-            readonly artworks: number | null;
-            readonly artists: number | null;
-        }) | null;
-        readonly artworks: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
-                    readonly id: string;
-                    readonly image: ({
-                        readonly aspect_ratio: number;
-                        readonly url: string | null;
-                        readonly aspectRatio: number;
-                    }) | null;
-                    readonly title: string | null;
-                    readonly date: string | null;
-                    readonly saleMessage: string | null;
-                    readonly slug: string;
-                    readonly internalID: string;
-                    readonly artistNames: string | null;
-                    readonly href: string | null;
-                    readonly sale: ({
-                        readonly isAuction: boolean | null;
-                        readonly isClosed: boolean | null;
-                        readonly displayTimelyAt: string | null;
-                        readonly endAt: string | null;
-                        readonly id: string;
-                    }) | null;
-                    readonly saleArtwork: ({
-                        readonly counts: ({
-                            readonly bidderPositions: number | null;
-                        }) | null;
-                        readonly currentBid: ({
-                            readonly display: string | null;
-                        }) | null;
-                        readonly lotLabel: string | null;
-                        readonly id: string;
-                    }) | null;
-                    readonly partner: ({
-                        readonly name: string | null;
-                        readonly id: string;
-                    }) | null;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-        readonly artists_without_artworks: ReadonlyArray<({
-            readonly id: string;
-            readonly internalID: string;
-            readonly slug: string;
-            readonly href: string | null;
-            readonly name: string | null;
-            readonly initials: string | null;
-            readonly is_followed: boolean | null;
-            readonly nationality: string | null;
-            readonly birthday: string | null;
-            readonly deathday: string | null;
-            readonly image: ({
-                readonly url: string | null;
-            }) | null;
-        }) | null> | null;
-        readonly nearbyShows: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
-                    readonly id: string;
-                    readonly name: string | null;
-                    readonly internalID: string;
-                    readonly slug: string;
-                    readonly exhibition_period: string | null;
-                    readonly end_at: string | null;
-                    readonly images: ReadonlyArray<({
-                        readonly url: string | null;
-                    }) | null> | null;
-                    readonly partner: ({
-                        readonly __typename: "Partner";
-                        readonly __isNode: "Partner";
-                        readonly id: string;
-                        readonly name: string | null;
-                    } | {
-                        readonly __typename: "ExternalPartner";
-                        readonly __isNode: "ExternalPartner";
-                        readonly id: string;
-                    } | {
-                        readonly __typename: string;
-                        readonly __isNode: string;
-                        readonly id: string;
-                    }) | null;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-        readonly location: ({
-            readonly id: string;
-            readonly internalID: string;
-            readonly city: string | null;
-            readonly address: string | null;
-            readonly address_2: string | null;
-            readonly postal_code: string | null;
-            readonly summary: string | null;
-            readonly coordinates: ({
-                readonly lat: number | null;
-                readonly lng: number | null;
-            }) | null;
-            readonly day_schedules: ReadonlyArray<({
-                readonly start_time: number | null;
-                readonly end_time: number | null;
-                readonly day_of_week: string | null;
-            }) | null> | null;
-            readonly openingHours: ({
-                readonly __typename: "OpeningHoursArray";
-                readonly schedules: ReadonlyArray<({
-                    readonly days: string | null;
-                    readonly hours: string | null;
-                }) | null> | null;
-            } | {
-                readonly __typename: "OpeningHoursText";
-                readonly text: string | null;
-            } | {
-                readonly __typename: string;
-            }) | null;
-        }) | null;
-        readonly artistsWithoutArtworks: ReadonlyArray<({
-            readonly slug: string;
-            readonly id: string;
-        }) | null> | null;
-    }) | null;
-};
 export type indexTestsQuery = {
     readonly response: indexTestsQueryResponse;
     readonly variables: indexTestsQueryVariables;
-    readonly rawResponse: indexTestsQueryRawResponse;
 };
 
 
@@ -626,6 +437,78 @@ v21 = {
   "plural": false,
   "selections": (v20/*: any*/),
   "storageKey": null
+},
+v22 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Show"
+},
+v23 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": true,
+  "type": "Artist"
+},
+v24 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
+},
+v25 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v26 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Image"
+},
+v27 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Boolean"
+},
+v28 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "Float"
+},
+v29 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Int"
+},
+v30 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": true,
+  "type": "Image"
+},
+v31 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Float"
+},
+v32 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "String"
+},
+v33 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "PartnerTypes"
 };
 return {
   "fragment": {
@@ -1335,12 +1218,253 @@ return {
   },
   "params": {
     "id": "ce0727d7e7a20e9dec933875130cd31d",
-    "metadata": {},
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "show": (v22/*: any*/),
+        "show.artists": (v23/*: any*/),
+        "show.artists.birthday": (v24/*: any*/),
+        "show.artists.deathday": (v24/*: any*/),
+        "show.artists.href": (v24/*: any*/),
+        "show.artists.id": (v25/*: any*/),
+        "show.artists.image": (v26/*: any*/),
+        "show.artists.image.url": (v24/*: any*/),
+        "show.artists.initials": (v24/*: any*/),
+        "show.artists.internalID": (v25/*: any*/),
+        "show.artists.is_followed": (v27/*: any*/),
+        "show.artists.name": (v24/*: any*/),
+        "show.artists.nationality": (v24/*: any*/),
+        "show.artists.slug": (v25/*: any*/),
+        "show.artistsWithoutArtworks": (v23/*: any*/),
+        "show.artistsWithoutArtworks.id": (v25/*: any*/),
+        "show.artistsWithoutArtworks.slug": (v25/*: any*/),
+        "show.artists_without_artworks": (v23/*: any*/),
+        "show.artists_without_artworks.birthday": (v24/*: any*/),
+        "show.artists_without_artworks.deathday": (v24/*: any*/),
+        "show.artists_without_artworks.href": (v24/*: any*/),
+        "show.artists_without_artworks.id": (v25/*: any*/),
+        "show.artists_without_artworks.image": (v26/*: any*/),
+        "show.artists_without_artworks.image.url": (v24/*: any*/),
+        "show.artists_without_artworks.initials": (v24/*: any*/),
+        "show.artists_without_artworks.internalID": (v25/*: any*/),
+        "show.artists_without_artworks.is_followed": (v27/*: any*/),
+        "show.artists_without_artworks.name": (v24/*: any*/),
+        "show.artists_without_artworks.nationality": (v24/*: any*/),
+        "show.artists_without_artworks.slug": (v25/*: any*/),
+        "show.artworks": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ArtworkConnection"
+        },
+        "show.artworks.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "ArtworkEdge"
+        },
+        "show.artworks.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Artwork"
+        },
+        "show.artworks.edges.node.artistNames": (v24/*: any*/),
+        "show.artworks.edges.node.date": (v24/*: any*/),
+        "show.artworks.edges.node.href": (v24/*: any*/),
+        "show.artworks.edges.node.id": (v25/*: any*/),
+        "show.artworks.edges.node.image": (v26/*: any*/),
+        "show.artworks.edges.node.image.aspectRatio": (v28/*: any*/),
+        "show.artworks.edges.node.image.aspect_ratio": (v28/*: any*/),
+        "show.artworks.edges.node.image.url": (v24/*: any*/),
+        "show.artworks.edges.node.internalID": (v25/*: any*/),
+        "show.artworks.edges.node.partner": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Partner"
+        },
+        "show.artworks.edges.node.partner.id": (v25/*: any*/),
+        "show.artworks.edges.node.partner.name": (v24/*: any*/),
+        "show.artworks.edges.node.sale": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Sale"
+        },
+        "show.artworks.edges.node.sale.displayTimelyAt": (v24/*: any*/),
+        "show.artworks.edges.node.sale.endAt": (v24/*: any*/),
+        "show.artworks.edges.node.sale.id": (v25/*: any*/),
+        "show.artworks.edges.node.sale.isAuction": (v27/*: any*/),
+        "show.artworks.edges.node.sale.isClosed": (v27/*: any*/),
+        "show.artworks.edges.node.saleArtwork": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "SaleArtwork"
+        },
+        "show.artworks.edges.node.saleArtwork.counts": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "SaleArtworkCounts"
+        },
+        "show.artworks.edges.node.saleArtwork.counts.bidderPositions": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "FormattedNumber"
+        },
+        "show.artworks.edges.node.saleArtwork.currentBid": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "SaleArtworkCurrentBid"
+        },
+        "show.artworks.edges.node.saleArtwork.currentBid.display": (v24/*: any*/),
+        "show.artworks.edges.node.saleArtwork.id": (v25/*: any*/),
+        "show.artworks.edges.node.saleArtwork.lotLabel": (v24/*: any*/),
+        "show.artworks.edges.node.saleMessage": (v24/*: any*/),
+        "show.artworks.edges.node.slug": (v25/*: any*/),
+        "show.artworks.edges.node.title": (v24/*: any*/),
+        "show.counts": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ShowCounts"
+        },
+        "show.counts.artists": (v29/*: any*/),
+        "show.counts.artworks": (v29/*: any*/),
+        "show.coverImage": (v26/*: any*/),
+        "show.coverImage.aspect_ratio": (v28/*: any*/),
+        "show.coverImage.url": (v24/*: any*/),
+        "show.description": (v24/*: any*/),
+        "show.end_at": (v24/*: any*/),
+        "show.exhibition_period": (v24/*: any*/),
+        "show.followedArtists": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ShowFollowArtistConnection"
+        },
+        "show.followedArtists.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "ShowFollowArtistEdge"
+        },
+        "show.followedArtists.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ShowFollowArtist"
+        },
+        "show.followedArtists.edges.node.artist": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Artist"
+        },
+        "show.followedArtists.edges.node.artist.href": (v24/*: any*/),
+        "show.followedArtists.edges.node.artist.id": (v25/*: any*/),
+        "show.followedArtists.edges.node.artist.internalID": (v25/*: any*/),
+        "show.followedArtists.edges.node.artist.name": (v24/*: any*/),
+        "show.followedArtists.edges.node.artist.slug": (v25/*: any*/),
+        "show.id": (v25/*: any*/),
+        "show.images": (v30/*: any*/),
+        "show.images.aspect_ratio": (v28/*: any*/),
+        "show.images.url": (v24/*: any*/),
+        "show.internalID": (v25/*: any*/),
+        "show.isStubShow": (v27/*: any*/),
+        "show.is_followed": (v27/*: any*/),
+        "show.location": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Location"
+        },
+        "show.location.address": (v24/*: any*/),
+        "show.location.address_2": (v24/*: any*/),
+        "show.location.city": (v24/*: any*/),
+        "show.location.coordinates": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "LatLng"
+        },
+        "show.location.coordinates.lat": (v31/*: any*/),
+        "show.location.coordinates.lng": (v31/*: any*/),
+        "show.location.day_schedules": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "DaySchedule"
+        },
+        "show.location.day_schedules.day_of_week": (v24/*: any*/),
+        "show.location.day_schedules.end_time": (v29/*: any*/),
+        "show.location.day_schedules.start_time": (v29/*: any*/),
+        "show.location.id": (v25/*: any*/),
+        "show.location.internalID": (v25/*: any*/),
+        "show.location.openingHours": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "OpeningHoursUnion"
+        },
+        "show.location.openingHours.__typename": (v32/*: any*/),
+        "show.location.openingHours.schedules": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "FormattedDaySchedules"
+        },
+        "show.location.openingHours.schedules.days": (v24/*: any*/),
+        "show.location.openingHours.schedules.hours": (v24/*: any*/),
+        "show.location.openingHours.text": (v24/*: any*/),
+        "show.location.postal_code": (v24/*: any*/),
+        "show.location.summary": (v24/*: any*/),
+        "show.name": (v24/*: any*/),
+        "show.nearbyShows": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ShowConnection"
+        },
+        "show.nearbyShows.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "ShowEdge"
+        },
+        "show.nearbyShows.edges.node": (v22/*: any*/),
+        "show.nearbyShows.edges.node.end_at": (v24/*: any*/),
+        "show.nearbyShows.edges.node.exhibition_period": (v24/*: any*/),
+        "show.nearbyShows.edges.node.id": (v25/*: any*/),
+        "show.nearbyShows.edges.node.images": (v30/*: any*/),
+        "show.nearbyShows.edges.node.images.url": (v24/*: any*/),
+        "show.nearbyShows.edges.node.internalID": (v25/*: any*/),
+        "show.nearbyShows.edges.node.name": (v24/*: any*/),
+        "show.nearbyShows.edges.node.partner": (v33/*: any*/),
+        "show.nearbyShows.edges.node.partner.__isNode": (v32/*: any*/),
+        "show.nearbyShows.edges.node.partner.__typename": (v32/*: any*/),
+        "show.nearbyShows.edges.node.partner.id": (v25/*: any*/),
+        "show.nearbyShows.edges.node.partner.name": (v24/*: any*/),
+        "show.nearbyShows.edges.node.slug": (v25/*: any*/),
+        "show.partner": (v33/*: any*/),
+        "show.partner.__isNode": (v32/*: any*/),
+        "show.partner.__typename": (v32/*: any*/),
+        "show.partner.href": (v24/*: any*/),
+        "show.partner.id": (v25/*: any*/),
+        "show.partner.name": (v24/*: any*/),
+        "show.partner.slug": (v25/*: any*/),
+        "show.partner.type": (v24/*: any*/),
+        "show.slug": (v25/*: any*/)
+      }
+    },
     "name": "indexTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '4d5caf85a575f4b997a87e1eac05c359';
+(node as any).hash = 'baf5f27641a422a7a115fcbf752997ff';
 export default node;

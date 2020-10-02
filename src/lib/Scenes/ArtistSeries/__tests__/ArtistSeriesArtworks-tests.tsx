@@ -1,7 +1,4 @@
-import {
-  ArtistSeriesArtworksTestsQuery,
-  ArtistSeriesArtworksTestsQueryRawResponse,
-} from "__generated__/ArtistSeriesArtworksTestsQuery.graphql"
+import { ArtistSeriesArtworksTestsQuery } from "__generated__/ArtistSeriesArtworksTestsQuery.graphql"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ArtistSeriesArtworksFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
@@ -11,7 +8,7 @@ import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/Artwo
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 jest.unmock("react-relay")
 
@@ -34,7 +31,7 @@ describe("Artist Series Artworks", () => {
     <QueryRenderer<ArtistSeriesArtworksTestsQuery>
       environment={env}
       query={graphql`
-        query ArtistSeriesArtworksTestsQuery @raw_response_type {
+        query ArtistSeriesArtworksTestsQuery @relay_test_operation {
           artistSeries(id: "pumpkins") {
             ...ArtistSeriesArtworks_artistSeries
           }
@@ -55,146 +52,32 @@ describe("Artist Series Artworks", () => {
     />
   )
 
-  const getWrapper = (artistSeries: ArtistSeriesArtworksTestsQueryRawResponse) => {
+  const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          ...artistSeries,
-        },
-      })
+      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
     })
     return tree
   }
 
   it("renders an artwork grid if artworks", () => {
-    const tree = getWrapper(ArtistSeriesArtworksFixture)
+    const tree = getWrapper()
     expect(tree.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(1)
   })
 
   it("renders a null component if no artworks", () => {
-    const tree = getWrapper(ArtistSeriesZeroArtworksFixture)
+    const tree = getWrapper({
+      ArtistSeries: () => ({
+        artistSeriesArtworks: {
+          counts: {
+            total: 0,
+          },
+        },
+      }),
+    })
 
     expect(tree.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(0)
     expect(tree.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
     expect(extractText(tree.root)).toContain("Unfortunately, there are no works that meet your criteria.")
   })
 })
-
-const ArtistSeriesArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
-  artistSeries: {
-    slug: "a-slug",
-    internalID: "abc",
-    artistSeriesArtworks: {
-      __isArtworkConnectionInterface: "FilterArtworksConnection",
-      aggregations: null,
-      pageInfo: {
-        hasNextPage: false,
-        startCursor: "ajdjabnz81",
-        endCursor: "aknqa9d81",
-      },
-      id: "",
-      counts: { total: 4 },
-      edges: [
-        {
-          node: {
-            id: "12345654321",
-            internalID: "abc",
-            slug: "pumpkins-1",
-            image: null,
-            title: "Pumpkins 1.0",
-            date: null,
-            saleMessage: null,
-            artistNames: null,
-            href: null,
-            sale: null,
-            saleArtwork: null,
-            partner: null,
-            __typename: "Artwork",
-          },
-          cursor: "123456789",
-          id: "#8989141",
-        },
-        {
-          node: {
-            id: "9874491018",
-            internalID: "abc",
-            slug: "pumpkins-2",
-            image: null,
-            title: "Pumpkins 2.0",
-            date: null,
-            saleMessage: null,
-            artistNames: null,
-            href: null,
-            sale: null,
-            saleArtwork: null,
-            partner: null,
-            __typename: "Artwork",
-          },
-          cursor: "98761511",
-          id: "faf91kjg8",
-        },
-        {
-          node: {
-            id: "128163456",
-            internalID: "abc",
-            slug: "pumpkins-3",
-            image: null,
-            title: "Pumpkins 3.0",
-            date: null,
-            saleMessage: null,
-            artistNames: null,
-            href: null,
-            sale: null,
-            saleArtwork: null,
-            partner: null,
-            __typename: "Artwork",
-          },
-          cursor: "19017613",
-          id: "fja91k30v",
-        },
-        {
-          node: {
-            id: "123310456",
-            internalID: "abc",
-            slug: "pumpkins-4",
-            image: null,
-            title: "Pumpkins 4.0",
-            date: null,
-            saleMessage: null,
-            artistNames: null,
-            href: null,
-            sale: null,
-            saleArtwork: null,
-            partner: null,
-            __typename: "Artwork",
-          },
-          cursor: "01827111",
-          id: "afd7a91m1",
-        },
-      ],
-    },
-  },
-}
-
-const ArtistSeriesZeroArtworksFixture: ArtistSeriesArtworksTestsQueryRawResponse = {
-  artistSeries: {
-    slug: "a-slug",
-    internalID: "abc",
-    artistSeriesArtworks: {
-      __isArtworkConnectionInterface: "FilterArtworksConnection",
-      aggregations: null,
-      pageInfo: {
-        hasNextPage: false,
-        startCursor: "ajdjabnz81",
-        endCursor: "aknqa9d81",
-      },
-      id: "",
-      counts: {
-        total: 0,
-      },
-      edges: [],
-    },
-  },
-}

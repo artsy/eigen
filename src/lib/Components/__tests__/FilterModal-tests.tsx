@@ -1,7 +1,7 @@
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graphql"
 // @ts-ignore STRICTNESS_MIGRATION
@@ -525,7 +525,7 @@ describe("Applying filters", () => {
       <QueryRenderer<FilterModalTestsQuery>
         environment={env}
         query={graphql`
-          query FilterModalTestsQuery @raw_response_type {
+          query FilterModalTestsQuery @raw_response_type @relay_test_operation {
             marketingCollection(slug: "street-art-now") {
               ...CollectionArtworks_collection
             }
@@ -555,12 +555,13 @@ describe("Applying filters", () => {
     )
     renderWithWrappers(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          marketingCollection: CollectionFixture,
-        },
-      })
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          MarketingCollection: () => ({
+            slug: "street-art-now",
+          }),
+        })
+      )
     })
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toEqual(
       "CollectionArtworksInfiniteScrollGridQuery"
