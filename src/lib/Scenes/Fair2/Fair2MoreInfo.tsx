@@ -7,6 +7,7 @@ import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { defaultRules } from "lib/utils/renderMarkdown"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Box, Spacer, Text, Theme } from "palette"
 import React from "react"
 import { ScrollView, TouchableOpacity } from "react-native"
@@ -40,93 +41,104 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
   const shouldShowLocationMap = coordinates && coordinates?.lat && coordinates?.lng
 
   return (
-    <ScrollView>
-      <Theme>
-        <Box px={2} pb={2} pt={6}>
-          <Text variant="largeTitle">About</Text>
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.Fair2MoreInfoPage,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
+        context_screen_owner_id: fair.internalID,
+        context_screen_owner_slug: fair.slug,
+      }}
+    >
+      <ScrollView>
+        <Theme>
+          <Box px={2} pb={2} pt={6}>
+            <Text variant="largeTitle">About</Text>
 
-          <Spacer my={1} />
+            <Spacer my={1} />
 
-          {!!fair.summary && (
-            <>
-              <Text variant="text">{fair.summary}</Text>
-              <Spacer my={1} />
-            </>
-          )}
-          {!!fair.about && (
-            <>
-              <Text variant="text">{fair.about}</Text>
-              <Spacer my={1} />
-            </>
-          )}
+            {!!fair.summary && (
+              <>
+                <Text variant="text">{fair.summary}</Text>
+                <Spacer my={1} />
+              </>
+            )}
+            {!!fair.about && (
+              <>
+                <Text variant="text">{fair.about}</Text>
+                <Spacer my={1} />
+              </>
+            )}
 
-          {!!fair.tagline && (
-            <>
-              <Text variant="text">{fair.tagline}</Text>
-              <Spacer my={1} />
-            </>
-          )}
+            {!!fair.tagline && (
+              <>
+                <Text variant="text">{fair.tagline}</Text>
+                <Spacer my={1} />
+              </>
+            )}
 
-          {!!fair.location && (
-            <>
-              <Text variant="mediumText">Location</Text>
-              {!!fair.location?.summary && <Text variant="text">{fair.location?.summary}</Text>}
-              {!!shouldShowLocationMap && (
-                <LocationMapContainer
-                  location={fair.location}
-                  partnerType={PartnerType.fair}
-                  partnerName={fair.profile?.name ?? fair.name}
-                />
-              )}
-              <Spacer my={1} />
-            </>
-          )}
+            {!!fair.location && (
+              <>
+                <Text variant="mediumText">Location</Text>
+                {!!fair.location?.summary && <Text variant="text">{fair.location?.summary}</Text>}
+                {!!shouldShowLocationMap && (
+                  <LocationMapContainer
+                    location={fair.location}
+                    partnerType={PartnerType.fair}
+                    partnerName={fair.profile?.name ?? fair.name}
+                  />
+                )}
+                <Spacer my={1} />
+              </>
+            )}
 
-          {!!fair.hours && (
-            <>
-              <Text variant="mediumText">Hours</Text>
-              <Markdown rules={markdownRules}>{fair.hours}</Markdown>
-              <Spacer my={1} />
-            </>
-          )}
-          {!!fair.tickets && (
-            <>
-              <Text variant="mediumText">Tickets</Text>
-              <Markdown rules={markdownRules}>{fair.tickets}</Markdown>
-              <Spacer my={1} />
-            </>
-          )}
-          {!!fair.ticketsLink && (
-            <>
-              <TouchableOpacity onPress={() => navigate(fair.ticketsLink!)}>
-                <LinkText>Buy Tickets</LinkText>
-              </TouchableOpacity>
-              <Spacer my={1} />
-            </>
-          )}
-          {!!fair.links && (
-            <>
-              <Text variant="mediumText">Links</Text>
-              <Markdown rules={markdownRules}>{fair.links}</Markdown>
-              <Spacer my={1} />
-            </>
-          )}
-          {!!fair.contact && (
-            <>
-              <Text variant="mediumText">Contact</Text>
-              <Markdown rules={markdownRules}>{fair.contact}</Markdown>
-              <Spacer my={1} />
-            </>
-          )}
-        </Box>
-      </Theme>
-    </ScrollView>
+            {!!fair.hours && (
+              <>
+                <Text variant="mediumText">Hours</Text>
+                <Markdown rules={markdownRules}>{fair.hours}</Markdown>
+                <Spacer my={1} />
+              </>
+            )}
+            {!!fair.tickets && (
+              <>
+                <Text variant="mediumText">Tickets</Text>
+                <Markdown rules={markdownRules}>{fair.tickets}</Markdown>
+                <Spacer my={1} />
+              </>
+            )}
+            {!!fair.ticketsLink && (
+              <>
+                <TouchableOpacity onPress={() => navigate(fair.ticketsLink!)}>
+                  <LinkText>Buy Tickets</LinkText>
+                </TouchableOpacity>
+                <Spacer my={1} />
+              </>
+            )}
+            {!!fair.links && (
+              <>
+                <Text variant="mediumText">Links</Text>
+                <Markdown rules={markdownRules}>{fair.links}</Markdown>
+                <Spacer my={1} />
+              </>
+            )}
+            {!!fair.contact && (
+              <>
+                <Text variant="mediumText">Contact</Text>
+                <Markdown rules={markdownRules}>{fair.contact}</Markdown>
+                <Spacer my={1} />
+              </>
+            )}
+          </Box>
+        </Theme>
+      </ScrollView>
+    </ProvideScreenTracking>
   )
 }
 
 export const Fair2MoreInfoFragmentContainer = createFragmentContainer(Fair2MoreInfo, {
   fair: graphql`
     fragment Fair2MoreInfo_fair on Fair {
+      internalID
+      slug
       about
       name
       tagline
