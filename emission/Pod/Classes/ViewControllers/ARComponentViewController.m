@@ -51,8 +51,8 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
 
     self.rootView = [[RCTRootView alloc] initWithBridge:self.emission.bridge
-                                           moduleName:self.moduleName
-                                    initialProperties:self.initialProperties];
+                                             moduleName:self.moduleName
+                                      initialProperties:self.initialProperties];
     [self.view addSubview:self.rootView];
     self.rootView.reactViewController = self;
 
