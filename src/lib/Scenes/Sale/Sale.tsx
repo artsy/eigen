@@ -1,9 +1,11 @@
 import { Sale_me } from "__generated__/Sale_me.graphql"
 import { Sale_sale } from "__generated__/Sale_sale.graphql"
 import { SaleQueryRendererQuery } from "__generated__/SaleQueryRendererQuery.graphql"
+import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import Spinner from "lib/Components/Spinner"
 import { SwitchMenu } from "lib/Components/SwitchMenu"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Flex } from "palette"
@@ -25,8 +27,23 @@ interface SaleSection {
   content: JSX.Element
 }
 
+// Types related to showing filter button on scroll
+export interface ViewableItems {
+  viewableItems?: ViewToken[]
+}
+
+interface ViewToken {
+  item?: SaleSection
+  key?: string
+  index?: number | null
+  isViewable?: boolean
+  section?: any
+}
+
 const Sale: React.FC<Props> = (props) => {
   const [showGrid, setShowGrid] = useState(true)
+  const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
+  const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
   const saleArtworks = extractNodes(props.sale.saleArtworksConnection)
   const scrollAnim = useRef(new Animated.Value(0)).current
@@ -34,6 +51,15 @@ const Sale: React.FC<Props> = (props) => {
   const switchView = (value: boolean) => {
     setShowGrid(value)
   }
+
+  const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 30 })
+
+  const viewableItemsChangedRef = React.useRef(({ viewableItems }: ViewableItems) => {
+    const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
+      return viewableItem?.item?.key === "saleLotsList"
+    })
+    setArtworksGridVisible(artworksItem?.isViewable ?? false)
+  })
 
   const saleSectionsData: SaleSection[] = [
     {
@@ -73,25 +99,49 @@ const Sale: React.FC<Props> = (props) => {
   ]
 
   return (
-    <Animated.FlatList
-      data={saleSectionsData}
-      initialNumToRender={2}
-      renderItem={({ item }: { item: SaleSection }) => item.content}
-      keyExtractor={(item: SaleSection) => item.key}
-      onScroll={Animated.event(
-        [
-          {
-            nativeEvent: {
-              contentOffset: { y: scrollAnim },
-            },
-          },
-        ],
-        {
-          useNativeDriver: true,
-        }
-      )}
-      scrollEventThrottle={16}
-    />
+    <ArtworkFilterGlobalStateProvider>
+      <ArtworkFilterContext.Consumer>
+        {(context) => (
+          <>
+            <Animated.FlatList
+              data={saleSectionsData}
+              initialNumToRender={2}
+              viewabilityConfig={viewConfigRef.current}
+              onViewableItemsChanged={viewableItemsChangedRef.current}
+              renderItem={({ item }: { item: SaleSection }) => item.content}
+              keyExtractor={(item: SaleSection) => item.key}
+              onScroll={Animated.event(
+                [
+                  {
+                    nativeEvent: {
+                      contentOffset: { y: scrollAnim },
+                    },
+                  },
+                ],
+                {
+                  useNativeDriver: true,
+                }
+              )}
+              scrollEventThrottle={16}
+            />
+            <FilterModalNavigator
+              // {...props}
+              isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+              id={props.sale.internalID}
+              slug={props.sale.slug}
+              mode={FilterModalMode.SaleArtworks}
+              exitModal={() => setFilterArtworkModalVisible(false)}
+              closeModal={() => setFilterArtworkModalVisible(false)}
+            />
+            <AnimatedArtworkFilterButton
+              isVisible={isArtworksGridVisible}
+              count={context.state.appliedFilters.length}
+              onPress={() => setFilterArtworkModalVisible(true)}
+            />
+          </>
+        )}
+      </ArtworkFilterContext.Consumer>
+    </ArtworkFilterGlobalStateProvider>
   )
 }
 
@@ -99,6 +149,7 @@ export const SaleContainer = createFragmentContainer(Sale, {
   sale: graphql`
     fragment Sale_sale on Sale {
       internalID
+      slug
       ...SaleHeader_sale
       ...RegisterToBidButton_sale
       ...SaleLotsList_sale

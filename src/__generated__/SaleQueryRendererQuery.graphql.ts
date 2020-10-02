@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 8aebcec774998cb5a0c31b33aecfe70a */
+/* @relayHash b931883ea0c86d395e9f0b2354f040e5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -237,6 +237,7 @@ fragment Sale_me on Me {
 
 fragment Sale_sale on Sale {
   internalID
+  slug
   ...SaleHeader_sale
   ...RegisterToBidButton_sale
   ...SaleLotsList_sale
@@ -277,21 +278,21 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "slug",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "endAt",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
+  "name": "endAt",
   "args": null,
   "storageKey": null
 },
@@ -365,7 +366,7 @@ v12 = {
       "args": null,
       "storageKey": null
     },
-    (v4/*: any*/),
+    (v5/*: any*/),
     (v6/*: any*/)
   ]
 },
@@ -414,7 +415,7 @@ v15 = {
   "concreteType": "Partner",
   "plural": false,
   "selections": [
-    (v3/*: any*/),
+    (v4/*: any*/),
     (v6/*: any*/)
   ]
 },
@@ -501,6 +502,7 @@ return {
         "selections": [
           (v2/*: any*/),
           (v3/*: any*/),
+          (v4/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -508,7 +510,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          (v4/*: any*/),
+          (v5/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -541,7 +543,6 @@ return {
               }
             ]
           },
-          (v5/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -627,7 +628,7 @@ return {
                           (v9/*: any*/),
                           (v10/*: any*/),
                           (v11/*: any*/),
-                          (v5/*: any*/),
+                          (v3/*: any*/),
                           (v2/*: any*/),
                           (v12/*: any*/),
                           {
@@ -710,7 +711,7 @@ return {
                         "storageKey": null
                       },
                       (v6/*: any*/),
-                      (v5/*: any*/),
+                      (v3/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -863,7 +864,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleQueryRendererQuery",
-    "id": "402833d6b1807f1c1672736dba6d2061",
+    "id": "910123cba9df5c1b7af29000ced14e2d",
     "text": null,
     "metadata": {}
   }
