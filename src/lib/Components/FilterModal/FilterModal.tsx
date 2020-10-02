@@ -213,60 +213,19 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
       // Filter order is based on frequency of use for a given page
       switch (mode) {
         case FilterModalMode.Collection:
-          sortOrder = [
-            "sort",
-            "medium",
-            "priceRange",
-            "waysToBuy",
-            "dimensionRange",
-            "majorPeriods",
-            "color",
-            "gallery",
-            "institution",
-          ]
+          sortOrder = CollectionFiltersSorted
           break
         case FilterModalMode.ArtistArtworks:
-          sortOrder = [
-            "sort",
-            "medium",
-            "priceRange",
-            "waysToBuy",
-            "gallery",
-            "institution",
-            "dimensionRange",
-            "majorPeriods",
-            "color",
-          ]
+          sortOrder = ArtistArtworksFiltersSorted
           break
         case FilterModalMode.ArtistSeries:
-          sortOrder = [
-            "sort",
-            "medium",
-            "priceRange",
-            "waysToBuy",
-            "dimensionRange",
-            "majorPeriods",
-            "color",
-            "gallery",
-            "institution",
-          ]
+          sortOrder = ArtistSeriesFiltersSorted
           break
         case FilterModalMode.Fair:
-          sortOrder = [
-            "sort",
-            "artistsIFollow",
-            "medium",
-            "priceRange",
-            "waysToBuy",
-            "dimensionRange",
-            "majorPeriods",
-            "color",
-            "gallery",
-            "institution",
-          ]
+          sortOrder = FairFiltersSorted
           break
         case FilterModalMode.SaleArtworks:
-          sortOrder = ["sort", "viewAs", "priceRange", "artistsIFollow", "medium"]
+          sortOrder = SaleArtworksFiltersSorted
           break
       }
 
@@ -282,7 +241,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
   )
 
   const filterOptions: FilterDisplayConfig[] = staticFilterOptions.concat(aggregateFilterOptions)
-  const sortedFilterOptions = filterOptions.sort(filterScreenSort)
+  const sortedFilterOptions = filterOptions.sort(filterScreenSort).filter((filterOption) => filterOption.filterType)
 
   const clearAllFilters = () => {
     dispatch({ type: "clearAll" })
@@ -548,3 +507,50 @@ const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
     ScreenComponent: WaysToBuyOptionsScreen,
   },
 }
+
+const CollectionFiltersSorted: FilterScreen[] = [
+  "sort",
+  "medium",
+  "priceRange",
+  "waysToBuy",
+  "dimensionRange",
+  "majorPeriods",
+  "color",
+  "gallery",
+  "institution",
+]
+const ArtistArtworksFiltersSorted: FilterScreen[] = [
+  "sort",
+  "medium",
+  "priceRange",
+  "waysToBuy",
+  "gallery",
+  "institution",
+  "dimensionRange",
+  "majorPeriods",
+  "color",
+]
+const ArtistSeriesFiltersSorted: FilterScreen[] = [
+  "sort",
+  "medium",
+  "priceRange",
+  "waysToBuy",
+  "dimensionRange",
+  "majorPeriods",
+  "color",
+  "gallery",
+  "institution",
+]
+const FairFiltersSorted: FilterScreen[] = [
+  "sort",
+  "artistsIFollow",
+  "medium",
+  "priceRange",
+  "waysToBuy",
+  "dimensionRange",
+  "majorPeriods",
+  "color",
+  "gallery",
+  "institution",
+]
+const SaleArtworksFiltersSorted: FilterScreen[] = ["sort", "viewAs", "priceRange", "artistsIFollow", "medium"]
