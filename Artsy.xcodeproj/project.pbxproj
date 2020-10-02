@@ -1367,7 +1367,6 @@
 		7FB8852620A3704700DE5E82 /* checkbox_unselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox_unselected.png; sourceTree = "<group>"; };
 		7FC37D0820A1F0FA0029296A /* ARAcceptConditionsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAcceptConditionsView.h; sourceTree = "<group>"; };
 		7FC37D0920A1F0FA0029296A /* ARAcceptConditionsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAcceptConditionsView.m; sourceTree = "<group>"; };
-		83282D751EB0D9F1006F30C2 /* ARRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRootViewController.h; sourceTree = "<group>"; };
 		837CEC821C876B7C00A7E0E1 /* ArtsyAPI+Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Notifications.h"; sourceTree = "<group>"; };
 		837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Notifications.m"; sourceTree = "<group>"; };
 		83F9D57E1AD6FDE0000BCC77 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
@@ -1620,7 +1619,6 @@
 				603B3AE91774A0FA00BA5BD3 /* ARNavigationController.h */,
 				603B3AEA1774A0FA00BA5BD3 /* ARNavigationController.m */,
 				54AD031F18A4FCCE0055F2D2 /* ARMenuAwareViewController.h */,
-				83282D751EB0D9F1006F30C2 /* ARRootViewController.h */,
 				342F9D63C266DC8B9A46A4F5 /* Emumerations */,
 				342F949FC80594AFFBBE1017 /* Errors */,
 				342F9BBA54BBCF5FE29C8684 /* ARParallaxEffect.h */,
