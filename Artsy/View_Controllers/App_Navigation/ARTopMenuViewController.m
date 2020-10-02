@@ -1,7 +1,5 @@
-#import "ARTopMenuViewController+DeveloperExtras.h"
 #import "ARContentViewControllers.h"
 #import "ARAppStatus.h"
-#import "ArtsyEcho.h"
 
 #import "UIViewController+FullScreenLoading.h"
 #import "ARTabContentView.h"
@@ -40,7 +38,6 @@
 
 @property (readwrite, nonatomic, assign) NSString * currentTab;
 
-@property (readonly, nonatomic, strong) ArtsyEcho *echo;
 
 // we need to wait for the view to load before we push a deep link VC on startup
 @property (readwrite, nonatomic, strong) NSMutableArray<void (^)(void)> *bootstrapQueue;
@@ -79,8 +76,6 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    _echo = [[ArtsyEcho alloc] init];
 
     self.view.backgroundColor = [UIColor whiteColor];
 
@@ -160,18 +155,6 @@ static ARTopMenuViewController *_sharedManager = nil;
         ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
         [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
     }
-
-#ifdef DEBUG
-    if ([ARAppStatus isRunningTests] == NO) {
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appHasBeenInjected:) name:@"INJECTION_BUNDLE_NOTIFICATION" object:nil];
-
-            [self runSwiftDeveloperExtras];
-            [self runDeveloperExtras];
-        });
-    }
-#endif
 }
 
 - (UIViewController *)childViewControllerForStatusBarHidden
