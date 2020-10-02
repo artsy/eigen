@@ -5,6 +5,7 @@ import { Box, ChevronIcon, Flex, Text } from "palette"
 import React from "react"
 import { Dimensions, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { Fair2TimingFragmentContainer as FairTiming } from "./Fair2Timing"
 
 interface Fair2HeaderProps {
   fair: Fair2Header_fair
@@ -53,6 +54,7 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
         <Text variant="largeTitle" py={2}>
           {name}
         </Text>
+        <FairTiming fair={fair} />
         <Text variant="text">{previewText}</Text>
         {!!canShowMoreInfoLink && (
           <TouchableOpacity onPress={() => navigate(`/fair2/${slug}/info`)}>
@@ -93,6 +95,7 @@ export const Fair2HeaderFragmentContainer = createFragmentContainer(Fair2Header,
       links(format: MARKDOWN)
       tickets(format: MARKDOWN)
       contact(format: MARKDOWN)
+      ...Fair2Timing_fair
     }
   `,
 })

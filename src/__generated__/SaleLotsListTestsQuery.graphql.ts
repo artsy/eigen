@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 97f0b6dd0c33cf0c81508031109bc6bb */
+/* @relayHash d20db0375f63413c51bd8a6249a6929c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -133,7 +133,10 @@ fragment SaleArtworkListItem_artwork on Artwork {
     id
   }
   image {
-    square: url(version: "square")
+    small: url(version: "small")
+    aspectRatio
+    height
+    width
   }
 }
 
@@ -243,6 +246,12 @@ v9 = {
 },
 v10 = {
   "type": "Boolean",
+  "enumValues": null,
+  "plural": false,
+  "nullable": true
+},
+v11 = {
+  "type": "Int",
   "enumValues": null,
   "plural": false,
   "nullable": true
@@ -378,16 +387,30 @@ return {
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": "square",
+                            "alias": "small",
                             "name": "url",
                             "args": [
                               {
                                 "kind": "Literal",
                                 "name": "version",
-                                "value": "square"
+                                "value": "small"
                               }
                             ],
-                            "storageKey": "url(version:\"square\")"
+                            "storageKey": "url(version:\"small\")"
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "height",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "width",
+                            "args": null,
+                            "storageKey": null
                           }
                         ]
                       },
@@ -620,7 +643,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleLotsListTestsQuery",
-    "id": "321a653d8bbd3ec2bb002ed9907ffa3a",
+    "id": "91e96a42a0794e7f87d15e27c6adbd08",
     "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
@@ -727,7 +750,9 @@ return {
         },
         "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.lotLabel": (v9/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.id": (v7/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.image.square": (v9/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.image.small": (v9/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.image.height": (v11/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.image.width": (v11/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.partner.name": (v9/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.partner.id": (v7/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.image.url": (v9/*: any*/),

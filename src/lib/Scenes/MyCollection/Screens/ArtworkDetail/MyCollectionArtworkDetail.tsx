@@ -13,9 +13,9 @@ import { Button, Flex, Join, Spacer } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { MyCollectionArtworkInsightsFragmentContainer as ArtworkInsights } from "./Components/ArtworkInsights/MyCollectionArtworkInsights"
-import { MyCollectionArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/MyCollectionArtworkHeader"
-import { MyCollectionArtworkMetaFragmentContainer as ArtworkMeta } from "./Components/MyCollectionArtworkMeta"
+import { MyCollectionArtworkInsightsFragmentContainer } from "./Components/ArtworkInsights/MyCollectionArtworkInsights"
+import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
+import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
 import { WhySell } from "./Components/WhySell"
 
 export interface MyCollectionArtworkDetailProps {
@@ -38,19 +38,30 @@ const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ a
         hideBottomDivider
       />
       <Join separator={<Spacer my={1} />}>
-        <ArtworkHeader artwork={artwork} />
-        <ArtworkMeta artwork={artwork} />
-        <ArtworkInsights artwork={artwork} marketPriceInsights={marketPriceInsights} />
+        <MyCollectionArtworkHeaderFragmentContainer artwork={artwork} />
+        <MyCollectionArtworkMetaFragmentContainer artwork={artwork} />
+        <MyCollectionArtworkInsightsFragmentContainer artwork={artwork} marketPriceInsights={marketPriceInsights} />
         <WhySell />
 
         <ScreenMargin>
-          <Button size="large" block onPress={() => navActions.navigateToConsignSubmission()}>
+          <Button
+            size="large"
+            block
+            onPress={() => navActions.navigateToConsignSubmission()}
+            data-test-id="SubmitButton"
+          >
             Submit this work
           </Button>
 
           <Spacer my={0.5} />
 
-          <Button size="large" variant="secondaryGray" block onPress={() => navActions.navigateToConsignLearnMore()}>
+          <Button
+            size="large"
+            variant="secondaryGray"
+            block
+            onPress={() => navActions.navigateToConsignLearnMore()}
+            data-test-id="LearnMoreButton"
+          >
             Learn more
           </Button>
         </ScreenMargin>
@@ -78,6 +89,8 @@ export const ArtworkMetaProps = graphql`
     costCurrencyCode
     date
     depth
+    editionSize
+    editionNumber
     height
     id
     image {
@@ -186,4 +199,8 @@ const LoadingSkeleton = () => {
       </ScreenMargin>
     </>
   )
+}
+
+export const tests = {
+  MyCollectionArtworkDetail,
 }

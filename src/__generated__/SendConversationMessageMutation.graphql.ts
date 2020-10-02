@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5da3a2ca77efa1bc01906f3422bc2e5f */
+/* @relayHash 97ab9ebf1ebf895d3d1e07a30b9bc270 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -62,14 +62,16 @@ fragment FileDownload_attachment on Attachment {
 }
 
 fragment ImagePreview_attachment on Attachment {
-  download_url: downloadURL
+  downloadURL
   ...AttachmentPreview_attachment
 }
 
 fragment Message_message on Message {
   body
-  created_at: createdAt
-  is_from_user: isFromUser
+  createdAt
+  internalID
+  isFromUser
+  isFirstMessage
   from {
     name
     email
@@ -80,8 +82,8 @@ fragment Message_message on Message {
     contentType
     downloadURL
     fileName
-    ...ImagePreview_attachment
     ...PDFPreview_attachment
+    ...ImagePreview_attachment
     ...FileDownload_attachment
   }
 }
@@ -133,6 +135,13 @@ v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
   "args": null,
   "storageKey": null
 };
@@ -227,8 +236,23 @@ return {
                   (v5/*: any*/),
                   {
                     "kind": "ScalarField",
-                    "alias": "created_at",
+                    "alias": null,
                     "name": "createdAt",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  (v6/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "isFromUser",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "isFirstMessage",
                     "args": null,
                     "storageKey": null
                   },
@@ -267,13 +291,7 @@ return {
                     "plural": true,
                     "selections": [
                       (v5/*: any*/),
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "internalID",
-                        "args": null,
-                        "storageKey": null
-                      },
+                      (v6/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -294,13 +312,6 @@ return {
                         "name": "fileName",
                         "args": null,
                         "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": "download_url",
-                        "name": "downloadURL",
-                        "args": null,
-                        "storageKey": null
                       }
                     ]
                   }
@@ -315,7 +326,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "SendConversationMessageMutation",
-    "id": "d42d84aa40de0e45af9c3ba76c8a2e60",
+    "id": "9ee6bef7b1cff511fc005fce93b875e6",
     "text": null,
     "metadata": {}
   }

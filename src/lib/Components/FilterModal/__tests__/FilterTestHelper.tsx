@@ -1,5 +1,5 @@
-import { InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { ArtworkFilterContext, reducer } from "lib/utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, reducer } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Theme } from "palette"
 import React from "react"
 import { FakeNavigator as MockNavigator } from "../../Bidding/__tests__/Helpers/FakeNavigator"

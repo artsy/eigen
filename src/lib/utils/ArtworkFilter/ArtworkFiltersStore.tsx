@@ -1,4 +1,4 @@
-import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { filter, find, pullAllBy, union, unionBy } from "lodash"
 import React, { createContext, Dispatch, Reducer, useContext, useReducer } from "react"
 
@@ -132,6 +132,7 @@ export const ParamDefaultValues = {
   offerable: false,
   atAuction: false,
   acquireable: false,
+  includeArtworksByFollowedArtists: false,
 }
 
 const defaultFilterOptions: Record<FilterParamName, string | boolean | undefined> = {
@@ -146,6 +147,7 @@ const defaultFilterOptions: Record<FilterParamName, string | boolean | undefined
   offerable: ParamDefaultValues.offerable,
   atAuction: ParamDefaultValues.atAuction,
   acquireable: ParamDefaultValues.acquireable,
+  includeArtworksByFollowedArtists: ParamDefaultValues.includeArtworksByFollowedArtists,
 }
 
 export const useSelectedOptionsDisplay = (): FilterArray => {
@@ -186,6 +188,11 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
       paramName: FilterParamName.waysToBuyBid,
       paramValue: false,
       displayText: "Bid",
+    },
+    {
+      paramName: FilterParamName.artistsIFollow,
+      paramValue: false,
+      displayText: "Artists I follow",
     },
   ]
 
@@ -266,6 +273,7 @@ export type AggregationName =
   | "MAJOR_PERIOD"
   | "MEDIUM"
   | "PRICE_RANGE"
+  | "FOLLOWED_ARTISTS"
 
 export type Aggregations = Array<{
   slice: AggregationName

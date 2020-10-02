@@ -13,12 +13,12 @@ import {
   CollectionFixture,
   ZeroStateCollectionFixture,
 } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import { filterArtworksParams, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { FilterArray } from "lib/utils/ArtworkFiltersStore"
-import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFiltersStore"
+import { FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { filterArtworksParams, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 
 jest.unmock("react-relay")
 

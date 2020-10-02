@@ -3,10 +3,12 @@ import React from "react"
 import { PlaceholderBox, PlaceholderRaggedText, ProvidePlaceholderContext } from "../placeholders"
 
 describe(PlaceholderBox, () => {
-  it(`requires a placeholder context`, async () => {
-    expect(() => {
+  it(`requires a placeholder context`, () => {
+    try {
       renderWithWrappers(<PlaceholderBox width={400} />)
-    }).toThrowErrorMatchingInlineSnapshot(`"You're using a Placeholder outside of a PlaceholderContext"`)
+    } catch (error) {
+      expect(error.message).toContain("Error: You're using a Placeholder outside of a PlaceholderContext")
+    }
 
     renderWithWrappers(
       <ProvidePlaceholderContext>

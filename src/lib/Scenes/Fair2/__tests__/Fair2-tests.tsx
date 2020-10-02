@@ -8,6 +8,7 @@ import { Fair2ArtworksFragmentContainer } from "../Components/Fair2Artworks"
 import { Fair2CollectionsFragmentContainer } from "../Components/Fair2Collections"
 import { Fair2EditorialFragmentContainer } from "../Components/Fair2Editorial"
 import { Fair2ExhibitorsFragmentContainer } from "../Components/Fair2Exhibitors"
+import { Fair2FollowedArtistsFragmentContainer } from "../Components/Fair2FollowedArtists"
 import { Fair2Header, Fair2HeaderFragmentContainer } from "../Components/Fair2Header"
 import { Tabs } from "../Components/SimpleTabs"
 import { Fair2, Fair2FragmentContainer } from "../Fair2"
@@ -56,19 +57,19 @@ describe("Fair2", () => {
   }
 
   it("renders without throwing an error", () => {
-    const wrapper = getWrapper(Fair2Fixture)
+    const wrapper = getWrapper(FAIR_2_FIXTURE)
     expect(wrapper.root.findAllByType(Fair2)).toHaveLength(1)
   })
 
   it("renders the necessary subcomponents", () => {
-    const wrapper = getWrapper(Fair2Fixture)
+    const wrapper = getWrapper(FAIR_2_FIXTURE)
     expect(wrapper.root.findAllByType(Fair2Header)).toHaveLength(1)
   })
 
   it("does not render components when there is no data for them", () => {
     const noDataFixture = {
       fair: {
-        ...Fair2Fixture.fair,
+        ...FAIR_2_FIXTURE.fair,
         articles: {
           edges: [],
         },
@@ -92,7 +93,7 @@ describe("Fair2", () => {
   it("renders the collections component if there are collections", () => {
     const collectionDataFixture = {
       fair: {
-        ...Fair2Fixture.fair,
+        ...FAIR_2_FIXTURE.fair,
         marketingCollections: [
           {
             __typename: "MarketingCollection",
@@ -121,7 +122,7 @@ describe("Fair2", () => {
   it("renders the editorial component if there are articles", () => {
     const editorialDataFixture = {
       fair: {
-        ...Fair2Fixture.fair,
+        ...FAIR_2_FIXTURE.fair,
         articles: {
           edges: [
             {
@@ -145,10 +146,38 @@ describe("Fair2", () => {
     expect(wrapper.root.findAllByType(Fair2EditorialFragmentContainer)).toHaveLength(1)
   })
 
+  it("renders the artists you follow rail if there are any artworks", () => {
+    expect(getWrapper(FAIR_2_FIXTURE).root.findAllByType(Fair2FollowedArtistsFragmentContainer)).toHaveLength(0)
+
+    const data = {
+      fair: {
+        ...FAIR_2_FIXTURE.fair,
+        followedArtistArtworks: {
+          edges: [
+            {
+              __typename: "FilterArtworkEdge",
+              artwork: {
+                id: "xxx",
+                slug: "xxx",
+                internalID: "xxx",
+                href: "xxx",
+                artistNames: "xxx",
+                image: {},
+                saleMessage: "xxx",
+              },
+            },
+          ],
+        },
+      },
+    } as any
+
+    expect(getWrapper(data).root.findAllByType(Fair2FollowedArtistsFragmentContainer)).toHaveLength(1)
+  })
+
   it("renders the artworks/exhibitors component and tabs if there are artworks and exhibitors", () => {
     const artworksDataFixture = {
       fair: {
-        ...Fair2Fixture.fair,
+        ...FAIR_2_FIXTURE.fair,
         counts: {
           artworks: 100,
           partnerShows: 20,
@@ -162,7 +191,7 @@ describe("Fair2", () => {
   })
 })
 
-const Fair2Fixture: Fair2TestsQueryRawResponse = {
+const FAIR_2_FIXTURE: Fair2TestsQueryRawResponse = {
   fair: {
     name: "Art Basel Hong Kong 2020",
     slug: "art-basel-hong-kong-2020",
@@ -199,5 +228,9 @@ const Fair2Fixture: Fair2TestsQueryRawResponse = {
     },
     fairArtworks: null,
     exhibitors: null,
+    exhibitionPeriod: "Aug 19 - Sep 19",
+    startAt: "2020-08-19T08:00:00+00:00",
+    endAt: "2020-09-19T08:00:00+00:00",
+    followedArtistArtworks: null,
   },
 }

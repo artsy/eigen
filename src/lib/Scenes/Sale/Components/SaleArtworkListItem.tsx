@@ -5,7 +5,6 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Flex, Sans } from "palette"
 import { Touchable } from "palette"
 import React, { useRef } from "react"
-import { StyleSheet } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
@@ -22,10 +21,21 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork }) => {
   }
   const saleInfo = saleMessageOrBidInfo({ artwork })
 
+  const imageDimensions = getImageDimensions(artwork.image?.height, artwork.image?.width)
+
   return (
     <Touchable onPress={onPress}>
       <Flex flexDirection="row" alignItems="center" height={CONTAINER_HEIGHT} ref={itemRef}>
-        {!!artwork.image && <OpaqueImageView imageURL={artwork.image?.square} style={styles.artworkImage} />}
+        {!!artwork.image && (
+          <Flex height={CONTAINER_HEIGHT} width={CONTAINER_HEIGHT} alignItems="center" justifyContent="center">
+            <OpaqueImageView
+              imageURL={artwork.image?.small}
+              height={imageDimensions.height}
+              width={imageDimensions.width}
+              aspectRatio={artwork.image?.aspectRatio ?? 1}
+            />
+          </Flex>
+        )}
 
         <Flex ml={2} height={100} flex={1}>
           {!!artwork.saleArtwork?.lotLabel && (
@@ -55,15 +65,25 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork }) => {
   )
 }
 
-const styles = StyleSheet.create({
-  artworkImage: {
-    justifyContent: "flex-end",
-    paddingHorizontal: 5,
-    paddingBottom: 5,
+// Get image accurate square dimensions while keeping the same aspect ratio
+const getImageDimensions = (height?: number | null, width?: number | null) => {
+  if (height && width) {
+    if (height > width) {
+      return {
+        height: CONTAINER_HEIGHT,
+        width: (width * CONTAINER_HEIGHT) / height,
+      }
+    }
+    return {
+      height: (height * CONTAINER_HEIGHT) / width,
+      width: CONTAINER_HEIGHT,
+    }
+  }
+  return {
     height: CONTAINER_HEIGHT,
     width: CONTAINER_HEIGHT,
-  },
-})
+  }
+}
 
 export const SaleArtworkListItemContainer = createFragmentContainer(SaleArtworkListItem, {
   artwork: graphql`
@@ -91,7 +111,10 @@ export const SaleArtworkListItemContainer = createFragmentContainer(SaleArtworkL
         lotLabel
       }
       image {
-        square: url(version: "square")
+        small: url(version: "small")
+        aspectRatio
+        height
+        width
       }
     }
   `,

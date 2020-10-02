@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash f92f3e07540779e4a45c7c483c9758df */
+/* @relayHash 04f9826319ba372b20596d2b9ce4d2bc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MessagesQueryVariables = {
-    conversationID: string;
-    count: number;
+    count?: number | null;
     after?: string | null;
+    conversationID: string;
 };
 export type MessagesQueryResponse = {
     readonly me: {
@@ -25,9 +25,9 @@ export type MessagesQuery = {
 
 /*
 query MessagesQuery(
-  $conversationID: String!
-  $count: Int!
+  $count: Int
   $after: String
+  $conversationID: String!
 ) {
   me {
     conversation(id: $conversationID) {
@@ -42,10 +42,11 @@ fragment ArtworkPreview_artwork on Artwork {
   slug
   internalID
   title
-  artist_names: artistNames
+  artistNames
   date
   image {
     url
+    aspectRatio
   }
 }
 
@@ -60,14 +61,16 @@ fragment FileDownload_attachment on Attachment {
 }
 
 fragment ImagePreview_attachment on Attachment {
-  download_url: downloadURL
+  downloadURL
   ...AttachmentPreview_attachment
 }
 
 fragment Message_message on Message {
   body
-  created_at: createdAt
-  is_from_user: isFromUser
+  createdAt
+  internalID
+  isFromUser
+  isFirstMessage
   from {
     name
     email
@@ -78,8 +81,8 @@ fragment Message_message on Message {
     contentType
     downloadURL
     fileName
-    ...ImagePreview_attachment
     ...PDFPreview_attachment
+    ...ImagePreview_attachment
     ...FileDownload_attachment
   }
 }
@@ -90,16 +93,15 @@ fragment Messages_conversation_2QE1um on Conversation {
   from {
     name
     email
-    initials
     id
   }
   to {
     name
-    initials
     id
   }
-  initial_message: initialMessage
-  messages(first: $count, after: $after, sort: DESC) {
+  initialMessage
+  lastMessageID
+  messagesConnection(first: $count, after: $after, sort: DESC) {
     pageInfo {
       startCursor
       endCursor
@@ -110,12 +112,20 @@ fragment Messages_conversation_2QE1um on Conversation {
       cursor
       node {
         id
-        impulse_id: impulseID
-        is_from_user: isFromUser
+        internalID
+        isFromUser
+        isFirstMessage
         body
+        createdAt
         attachments {
-          internalID
           id
+          internalID
+          contentType
+          downloadURL
+          fileName
+          ...ImagePreview_attachment
+          ...PDFPreview_attachment
+          ...FileDownload_attachment
         }
         ...Message_message
         __typename
@@ -149,8 +159,9 @@ fragment ShowPreview_show on Show {
   slug
   internalID
   name
-  cover_image: coverImage {
+  coverImage {
     url
+    aspectRatio
   }
   fair {
     name
@@ -175,20 +186,20 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "conversationID",
-    "type": "String!",
-    "defaultValue": null
-  },
-  {
-    "kind": "LocalArgument",
     "name": "count",
-    "type": "Int!",
+    "type": "Int",
     "defaultValue": null
   },
   {
     "kind": "LocalArgument",
     "name": "after",
     "type": "String",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "conversationID",
+    "type": "String!",
     "defaultValue": null
   }
 ],
@@ -232,13 +243,10 @@ v6 = {
   "args": null,
   "storageKey": null
 },
-v7 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "initials",
-  "args": null,
-  "storageKey": null
-},
+v7 = [
+  (v5/*: any*/),
+  (v3/*: any*/)
+],
 v8 = [
   (v2/*: any*/),
   {
@@ -278,6 +286,13 @@ v12 = [
     "kind": "ScalarField",
     "alias": null,
     "name": "url",
+    "args": null,
+    "storageKey": null
+  },
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "aspectRatio",
     "args": null,
     "storageKey": null
   }
@@ -363,7 +378,6 @@ return {
                 "selections": [
                   (v5/*: any*/),
                   (v6/*: any*/),
-                  (v7/*: any*/),
                   (v3/*: any*/)
                 ]
               },
@@ -375,23 +389,26 @@ return {
                 "args": null,
                 "concreteType": "ConversationResponder",
                 "plural": false,
-                "selections": [
-                  (v5/*: any*/),
-                  (v7/*: any*/),
-                  (v3/*: any*/)
-                ]
+                "selections": (v7/*: any*/)
               },
               {
                 "kind": "ScalarField",
-                "alias": "initial_message",
+                "alias": null,
                 "name": "initialMessage",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "lastMessageID",
                 "args": null,
                 "storageKey": null
               },
               {
                 "kind": "LinkedField",
                 "alias": null,
-                "name": "messages",
+                "name": "messagesConnection",
                 "storageKey": null,
                 "args": (v8/*: any*/),
                 "concreteType": "MessageConnection",
@@ -462,16 +479,10 @@ return {
                         "plural": false,
                         "selections": [
                           (v3/*: any*/),
+                          (v4/*: any*/),
                           {
                             "kind": "ScalarField",
-                            "alias": "impulse_id",
-                            "name": "impulseID",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": "is_from_user",
+                            "alias": null,
                             "name": "isFromUser",
                             "args": null,
                             "storageKey": null
@@ -479,7 +490,21 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
+                            "name": "isFirstMessage",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
                             "name": "body",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "createdAt",
                             "args": null,
                             "storageKey": null
                           },
@@ -492,8 +517,8 @@ return {
                             "concreteType": "Attachment",
                             "plural": true,
                             "selections": [
-                              (v4/*: any*/),
                               (v3/*: any*/),
+                              (v4/*: any*/),
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -514,22 +539,8 @@ return {
                                 "name": "fileName",
                                 "args": null,
                                 "storageKey": null
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": "download_url",
-                                "name": "downloadURL",
-                                "args": null,
-                                "storageKey": null
                               }
                             ]
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": "created_at",
-                            "name": "createdAt",
-                            "args": null,
-                            "storageKey": null
                           },
                           {
                             "kind": "LinkedField",
@@ -554,10 +565,10 @@ return {
               {
                 "kind": "LinkedHandle",
                 "alias": null,
-                "name": "messages",
+                "name": "messagesConnection",
                 "args": (v8/*: any*/),
                 "handle": "connection",
-                "key": "Messages_messages",
+                "key": "Messages_messagesConnection",
                 "filters": []
               },
               {
@@ -596,7 +607,7 @@ return {
                           },
                           {
                             "kind": "ScalarField",
-                            "alias": "artist_names",
+                            "alias": null,
                             "name": "artistNames",
                             "args": null,
                             "storageKey": null
@@ -630,7 +641,7 @@ return {
                           (v5/*: any*/),
                           {
                             "kind": "LinkedField",
-                            "alias": "cover_image",
+                            "alias": null,
                             "name": "coverImage",
                             "storageKey": null,
                             "args": null,
@@ -646,10 +657,7 @@ return {
                             "args": null,
                             "concreteType": "Fair",
                             "plural": false,
-                            "selections": [
-                              (v5/*: any*/),
-                              (v3/*: any*/)
-                            ]
+                            "selections": (v7/*: any*/)
                           },
                           {
                             "kind": "LinkedField",
@@ -687,11 +695,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MessagesQuery",
-    "id": "3b5ac687f040e2e4f5a6c77b76d25213",
+    "id": "91a6c3363db5a517066b7842607b1a29",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '8a4e8692f76af568a4c8b73c6306c1c0';
+(node as any).hash = 'edb2c4185844659ce4f28ef9880d8c12';
 export default node;

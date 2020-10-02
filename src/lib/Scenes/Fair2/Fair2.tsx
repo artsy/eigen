@@ -1,19 +1,22 @@
 import { Fair2_fair } from "__generated__/Fair2_fair.graphql"
 import { Fair2Query } from "__generated__/Fair2Query.graphql"
-import { AnimatedArtworkFilterButton } from "lib/Components/FilterModal"
+import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFiltersStore"
+import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { Schema } from "lib/utils/track"
 import { Box, Separator, Spacer, Theme } from "palette"
 import React, { useRef, useState } from "react"
 import { FlatList, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { useTracking } from "react-tracking"
 import { Fair2ArtworksFragmentContainer } from "./Components/Fair2Artworks"
 import { Fair2CollectionsFragmentContainer } from "./Components/Fair2Collections"
 import { Fair2EditorialFragmentContainer } from "./Components/Fair2Editorial"
 import { Fair2ExhibitorsFragmentContainer } from "./Components/Fair2Exhibitors"
+import { Fair2FollowedArtistsFragmentContainer as FairFollowedArtists } from "./Components/Fair2FollowedArtists"
 import { Fair2HeaderFragmentContainer } from "./Components/Fair2Header"
-import { TabChildContent, Tabs, TabsType } from "./Components/SimpleTabs"
+import { Tabs, TabsType } from "./Components/SimpleTabs"
 
 interface Fair2QueryRendererProps {
   fairID: string
@@ -27,27 +30,24 @@ interface ViewableItems {
   viewableItems?: ViewToken[]
 }
 
+const tabs: TabsType = [
+  {
+    label: "Exhibitors",
+  },
+  {
+    label: "Artworks",
+  },
+]
+
 export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
   const hasArticles = !!fair.articles?.edges?.length
   const hasCollections = !!fair.marketingCollections.length
   const hasArtworks = !!(fair.counts?.artworks ?? 0 > 0)
   const hasExhibitors = !!(fair.counts?.partnerShows ?? 0 > 0)
+  const hasFollowedArtistArtworks = !!(fair.followedArtistArtworks?.edges?.length ?? 0 > 0)
 
+  const tracking = useTracking()
   const [activeTab, setActiveTab] = useState(0)
-  const tabs: TabsType = [
-    {
-      label: "Exhibitors",
-      component: <Fair2ExhibitorsFragmentContainer fair={fair} />,
-    },
-    {
-      label: "Artworks",
-      component: (
-        <Box px="15px">
-          <Fair2ArtworksFragmentContainer fair={fair} />
-        </Box>
-      ),
-    },
-  ]
 
   const flatListRef = useRef<FlatList>(null)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
@@ -66,10 +66,35 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
   }
 
+  const openFilterArtworksModal = () => {
+    tracking.trackEvent({
+      action_name: "filter",
+      context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
+      context_screen: Schema.PageNames.FairPage,
+      context_screen_owner_id: fair.internalID,
+      context_screen_owner_slug: fair.slug,
+      action_type: Schema.ActionTypes.Tap,
+    })
+    handleFilterArtworksModal()
+  }
+
+  const closeFilterArtworksModal = () => {
+    tracking.trackEvent({
+      action_name: "closeFilterWindow",
+      context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
+      context_screen: Schema.PageNames.FairPage,
+      context_screen_owner_id: fair.internalID,
+      context_screen_owner_slug: fair.slug,
+      action_type: Schema.ActionTypes.Tap,
+    })
+    handleFilterArtworksModal()
+  }
+
   const sections = [
     "fairHeader",
     ...(hasArticles ? ["fairEditorial"] : []),
     ...(hasCollections ? ["fairCollections"] : []),
+    ...(hasFollowedArtistArtworks ? ["fairFollowedArtists"] : []),
     ...(hasArtworks && hasExhibitors ? ["fairTabs", "fairTabChildContent"] : []),
   ]
 
@@ -99,6 +124,9 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
                         </>
                       )
                     }
+                    case "fairFollowedArtists": {
+                      return <FairFollowedArtists fair={fair} />
+                    }
                     case "fairEditorial": {
                       return <Fair2EditorialFragmentContainer fair={fair} />
                     }
@@ -109,7 +137,31 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
                       return <Tabs setActiveTab={setActiveTab} activeTab={activeTab} tabs={tabs} />
                     }
                     case "fairTabChildContent": {
-                      return <TabChildContent activeTab={activeTab} tabs={tabs} />
+                      const tabToShow = tabs ? tabs[activeTab] : null
+
+                      if (!tabToShow) {
+                        return null
+                      }
+
+                      if (tabToShow.label === "Exhibitors") {
+                        return <Fair2ExhibitorsFragmentContainer fair={fair} />
+                      }
+
+                      if (tabToShow.label === "Artworks") {
+                        return (
+                          <Box px="15px">
+                            <Fair2ArtworksFragmentContainer fair={fair} />
+                            <FilterModalNavigator
+                              isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+                              id={fair.internalID}
+                              slug={fair.slug}
+                              mode={FilterModalMode.Fair}
+                              exitModal={handleFilterArtworksModal}
+                              closeModal={closeFilterArtworksModal}
+                            />
+                          </Box>
+                        )
+                      }
                     }
                   }
                 }}
@@ -117,7 +169,7 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
               <AnimatedArtworkFilterButton
                 isVisible={isArtworksGridVisible && tabs[activeTab] && tabs[activeTab].label === "Artworks"}
                 count={context.state.appliedFilters.length}
-                onPress={handleFilterArtworksModal}
+                onPress={openFilterArtworksModal}
               />
             </>
           </Theme>
@@ -130,6 +182,8 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
 export const Fair2FragmentContainer = createFragmentContainer(Fair2, {
   fair: graphql`
     fragment Fair2_fair on Fair {
+      internalID
+      slug
       articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
         edges {
           __typename
@@ -142,11 +196,17 @@ export const Fair2FragmentContainer = createFragmentContainer(Fair2, {
         artworks
         partnerShows
       }
+      followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
+        edges {
+          __typename
+        }
+      }
       ...Fair2Header_fair
       ...Fair2Editorial_fair
       ...Fair2Collections_fair
       ...Fair2Artworks_fair
       ...Fair2Exhibitors_fair
+      ...Fair2FollowedArtists_fair
     }
   `,
 })

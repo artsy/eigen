@@ -570,6 +570,40 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes to About", () => {
+    expect(matchRoute("/about")).toMatchInlineSnapshot(`
+      Object {
+        "module": "About",
+        "params": Object {},
+        "type": "match",
+      }
+    `)
+  })
+
+  it("routes to Terms and Conditions", () => {
+    expect(matchRoute("/terms")).toMatchInlineSnapshot(`
+      Object {
+        "module": "WebView",
+        "params": Object {
+          "url": "/terms",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
+  it("routes to Privacy Policy", () => {
+    expect(matchRoute("/privacy")).toMatchInlineSnapshot(`
+      Object {
+        "module": "WebView",
+        "params": Object {
+          "url": "/privacy",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes to Favorites", () => {
     expect(matchRoute("/favorites")).toMatchInlineSnapshot(`
       Object {

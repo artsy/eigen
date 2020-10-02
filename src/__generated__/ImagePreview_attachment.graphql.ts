@@ -4,7 +4,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ImagePreview_attachment = {
-    readonly download_url: string;
+    readonly downloadURL: string;
     readonly " $fragmentRefs": FragmentRefs<"AttachmentPreview_attachment">;
     readonly " $refType": "ImagePreview_attachment";
 };
@@ -25,7 +25,7 @@ const node: ReaderFragment = {
   "selections": [
     {
       "kind": "ScalarField",
-      "alias": "download_url",
+      "alias": null,
       "name": "downloadURL",
       "args": null,
       "storageKey": null
@@ -37,5 +37,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '110bdc586576e57275188aca67e46613';
+(node as any).hash = '5c3df8a54035cb3f1ae5991df3ffacec';
 export default node;

@@ -29,7 +29,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
       {articleEdges.map(({ thumbnailTitle, slug, publishedAt, internalID, thumbnailImage }) => {
         return (
           <TouchableOpacity onPress={() => navActions.navigateToArticleDetail(slug!)} key={internalID}>
-            <Box my={0.5} key={internalID}>
+            <Box my={0.5}>
               <Flex flexDirection="row" justifyContent="space-between">
                 <Box pr={1} maxWidth="80%">
                   <Flex flexDirection="row">

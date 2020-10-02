@@ -24,7 +24,7 @@ export function sendConversationMessage(
     const newMessageEdge = mutationPayload.getLinkedRecord("messageEdge")
     const conversationStore = store.get(conversation.id)
     // @ts-ignore STRICTNESS_MIGRATION
-    const connection = ConnectionHandler.getConnection(conversationStore, "Messages_messages")
+    const connection = ConnectionHandler.getConnection(conversationStore, "Messages_messagesConnection")
     // @ts-ignore STRICTNESS_MIGRATION
     ConnectionHandler.insertEdgeBefore(connection, newMessageEdge)
   }

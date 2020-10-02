@@ -4,6 +4,8 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Fair2_fair = {
+    readonly internalID: string;
+    readonly slug: string;
     readonly articles: {
         readonly edges: ReadonlyArray<{
             readonly __typename: string;
@@ -16,7 +18,12 @@ export type Fair2_fair = {
         readonly artworks: number | null;
         readonly partnerShows: number | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"Fair2Header_fair" | "Fair2Editorial_fair" | "Fair2Collections_fair" | "Fair2Artworks_fair" | "Fair2Exhibitors_fair">;
+    readonly followedArtistArtworks: {
+        readonly edges: ReadonlyArray<{
+            readonly __typename: string;
+        } | null> | null;
+    } | null;
+    readonly " $fragmentRefs": FragmentRefs<"Fair2Header_fair" | "Fair2Editorial_fair" | "Fair2Collections_fair" | "Fair2Artworks_fair" | "Fair2Exhibitors_fair" | "Fair2FollowedArtists_fair">;
     readonly " $refType": "Fair2_fair";
 };
 export type Fair2_fair$data = Fair2_fair;
@@ -44,6 +51,20 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": "articles",
@@ -118,6 +139,38 @@ return {
       ]
     },
     {
+      "kind": "LinkedField",
+      "alias": "followedArtistArtworks",
+      "name": "filterArtworksConnection",
+      "storageKey": "filterArtworksConnection(first:20,includeArtworksByFollowedArtists:true)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 20
+        },
+        {
+          "kind": "Literal",
+          "name": "includeArtworksByFollowedArtists",
+          "value": true
+        }
+      ],
+      "concreteType": "FilterArtworksConnection",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "FilterArtworksEdge",
+          "plural": true,
+          "selections": (v0/*: any*/)
+        }
+      ]
+    },
+    {
       "kind": "FragmentSpread",
       "name": "Fair2Header_fair",
       "args": null
@@ -141,9 +194,14 @@ return {
       "kind": "FragmentSpread",
       "name": "Fair2Exhibitors_fair",
       "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "Fair2FollowedArtists_fair",
+      "args": null
     }
   ]
 };
 })();
-(node as any).hash = '7b51c9dd38ce8aa614809c2cf6d692b0';
+(node as any).hash = '30fc186373d808a8ba5181c7f91b8f04';
 export default node;

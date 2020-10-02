@@ -1,5 +1,6 @@
 import { MyAccount_me } from "__generated__/MyAccount_me.graphql"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
+import { MenuItem } from "lib/Components/MenuItem"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -10,21 +11,20 @@ import { Flex } from "palette"
 import React, { useRef } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { MyProfileMenuItem } from "../MyProfile/Components/MyProfileMenuItem"
 
 const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
   const navRef = useRef(null)
   return (
     <PageWithSimpleHeader title="Account">
       <ScrollView ref={navRef} contentContainerStyle={{ paddingTop: 10 }}>
-        <MyProfileMenuItem
+        <MenuItem
           title="Full Name"
           value={me.name}
           onPress={() => {
             SwitchBoard.presentNavigationViewController(navRef.current!, "my-account/edit-name")
           }}
         />
-        <MyProfileMenuItem
+        <MenuItem
           title="Email"
           value={me.email}
           ellipsizeMode="middle"
@@ -32,7 +32,7 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
             SwitchBoard.presentNavigationViewController(navRef.current!, "my-account/edit-email")
           }}
         />
-        <MyProfileMenuItem
+        <MenuItem
           title="Phone"
           value={me.phone || "Add phone"}
           onPress={() => {
@@ -40,7 +40,7 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
           }}
         />
         {!!me.hasPassword && (
-          <MyProfileMenuItem
+          <MenuItem
             title="Password"
             value="Change password"
             onPress={() => {
@@ -48,7 +48,7 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
             }}
           />
         )}
-        {!!me.paddleNumber && <MyProfileMenuItem title="Paddle Number" value={me.paddleNumber} />}
+        {!!me.paddleNumber && <MenuItem title="Paddle Number" value={me.paddleNumber} />}
       </ScrollView>
     </PageWithSimpleHeader>
   )

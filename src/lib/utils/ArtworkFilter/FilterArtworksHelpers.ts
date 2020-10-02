@@ -1,4 +1,5 @@
-import { Aggregations, FilterArray } from "lib/utils/ArtworkFiltersStore"
+import { FilterScreen } from "lib/Components/FilterModal"
+import { Aggregations, FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { forOwn } from "lodash"
 
 // General filter types and objects
@@ -15,6 +16,7 @@ export enum FilterParamName {
   waysToBuyBid = "atAuction",
   waysToBuyInquire = "inquireableOnly",
   waysToBuyMakeOffer = "offerable",
+  artistsIFollow = "includeArtworksByFollowedArtists",
 }
 
 // Types for the parameters passed to Relay
@@ -33,6 +35,7 @@ export enum FilterDisplayName {
   timePeriod = "Time period",
   viewAs = "View as",
   waysToBuy = "Ways to buy",
+  artistsIFollow = "Artist",
 }
 
 export interface InitialState {
@@ -96,4 +99,64 @@ export const changedFiltersParams = (currentFilterParams: FilterParams, selected
   })
 
   return changedFilters
+}
+
+export const selectedOption = (selectedOptions: FilterArray, filterType: FilterScreen) => {
+  const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
+
+  if (filterType === "waysToBuy") {
+    const waysToBuyFilterNames = [
+      FilterParamName.waysToBuyBuy,
+      FilterParamName.waysToBuyMakeOffer,
+      FilterParamName.waysToBuyBid,
+      FilterParamName.waysToBuyInquire,
+    ]
+    const waysToBuyOptions = multiSelectedOptions
+      .filter((value) => waysToBuyFilterNames.includes(value.paramName))
+      .map((option) => option.displayText)
+
+    if (waysToBuyOptions.length === 0) {
+      return "All"
+    }
+    return waysToBuyOptions.join(", ")
+  } else if (filterType === "gallery" || filterType === "institution") {
+    const displayText = selectedOptions.find((option) => option.filterKey === filterType)?.displayText
+    if (displayText) {
+      return displayText
+    } else {
+      return "All"
+    }
+  } else if (filterType === "artistsIFollow") {
+    const displayText = multiSelectedOptions.find((option) => option.paramName === "includeArtworksByFollowedArtists")
+      ?.displayText
+    if (displayText) {
+      return displayText
+    } else {
+      return "All"
+    }
+  }
+  return selectedOptions.find((option) => option.paramName === filterType)?.displayText
+}
+
+export type aggregationsType =
+  | ReadonlyArray<{
+      slice: string
+      counts: Array<{ count: number; value: string; name?: string }>
+    }>
+  | []
+
+export const aggregationsWithFollowedArtists = (
+  followedArtistCount: number,
+  artworkAggregations: aggregationsType
+): aggregationsType => {
+  const followedArtistAggregation =
+    followedArtistCount > 0
+      ? [
+          {
+            slice: "FOLLOWED_ARTISTS",
+            counts: [{ count: followedArtistCount, value: "followed_artists" }],
+          },
+        ]
+      : []
+  return [...artworkAggregations, ...followedArtistAggregation]
 }

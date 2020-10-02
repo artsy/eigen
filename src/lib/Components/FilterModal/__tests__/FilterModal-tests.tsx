@@ -7,10 +7,15 @@ import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graph
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import { FilterParamName, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Aggregations, ArtworkFilterContext, ArtworkFilterContextState, reducer } from "lib/utils/ArtworkFiltersStore"
+import {
+  Aggregations,
+  ArtworkFilterContext,
+  ArtworkFilterContextState,
+  reducer,
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Sans, Theme } from "palette"
 import { useTracking } from "react-tracking"
 import { NavigateBackIconContainer } from "../../ArtworkFilterOptions/SingleSelectOption"

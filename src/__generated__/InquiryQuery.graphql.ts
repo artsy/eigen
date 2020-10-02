@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 44e458af06524e6d35f4855dfe5c0311 */
+/* @relayHash 9e2477ca69ca5a843f6d4cf13f27d111 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,10 +33,11 @@ fragment ArtworkPreview_artwork on Artwork {
   slug
   internalID
   title
-  artist_names: artistNames
+  artistNames
   date
   image {
     url
+    aspectRatio
   }
 }
 
@@ -165,7 +166,7 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": "artist_names",
+            "alias": null,
             "name": "artistNames",
             "args": null,
             "storageKey": null
@@ -192,6 +193,13 @@ return {
                 "name": "url",
                 "args": null,
                 "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "aspectRatio",
+                "args": null,
+                "storageKey": null
               }
             ]
           },
@@ -203,7 +211,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "InquiryQuery",
-    "id": "8756ca1278c6602e3d356a54e4e39724",
+    "id": "f3a72a52ed764cb438a911aeb6080bf5",
     "text": null,
     "metadata": {}
   }

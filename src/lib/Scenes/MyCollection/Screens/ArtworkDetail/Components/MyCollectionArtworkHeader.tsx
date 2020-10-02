@@ -10,7 +10,7 @@ interface MyCollectionArtworkHeaderProps {
   artwork: MyCollectionArtworkHeader_artwork
 }
 
-export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (props) => {
+const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (props) => {
   const {
     artwork: { artistNames, date, image, title },
   } = props

@@ -17,7 +17,7 @@ const props = {
     initials: "AG",
   },
   to: { name: "Kimberly Klark", initials: "KK" },
-  initial_message: "Adoro! Por favor envie-me mais informações",
+  initialMessage: "Adoro! Por favor envie-me mais informações",
   messages: {
     pageInfo: {
       startCursor: null,
@@ -32,9 +32,9 @@ const props = {
           gravityID: "unique-id",
           id: 222,
           impulse_id: "impulse:222",
-          is_from_user: true,
+          isFromUser: true,
           body: "Adoro! Por favor envie-me mais informações",
-          from_email_address: "anita@garibaldi.br",
+          fromEmailAddress: "anita@garibaldi.br",
           attachments: [],
           from: {
             name: "Percy",
@@ -51,10 +51,10 @@ const props = {
         href: "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
         title: "The Mythic Being: Sol’s Drawing #1–5",
         date: "1974",
-        artist_names: "Adrian Piper",
+        artistNames: "Adrian Piper",
         image: {
           url: "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
-          image_url: "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
+          imageUrl: "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
         },
       },
     },

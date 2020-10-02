@@ -6,13 +6,10 @@ import React from "react"
 import Artwork from "../ArtworkGridItem"
 
 import { OwnerType } from "@artsy/cohesion"
+import { extractText } from "lib/tests/extractText"
 import { Touchable } from "palette"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
-
-it("renders without throwing an error", () => {
-  renderWithWrappers(<Artwork artwork={artworkProps() as any} />)
-})
 
 describe("tracking", () => {
   const trackEvent = jest.fn()
@@ -72,21 +69,11 @@ describe("in an open sale", () => {
         isClosed: false,
       },
     }
-    renderWithWrappers(
-      <Artwork
-        artwork={
-          artworkProps(
-            // @ts-ignore STRICTNESS_MIGRATION
-            saleArtwork
-          ) as any
-        }
-      />
-    )
+    renderWithWrappers(<Artwork artwork={artworkProps(saleArtwork) as any} />)
   })
 
   it("safely handles a missing sale_artwork", () => {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const props = artworkProps({}) // Passing in empty sale_artwork prop to trigger "sale is live" code in artworkProps()
+    const props = artworkProps(null) // Passing in empty sale_artwork prop to trigger "sale is live" code in artworkProps()
     props.saleArtwork = null
     renderWithWrappers(<Artwork artwork={props as any} />)
   })
@@ -99,16 +86,7 @@ describe("in a closed sale", () => {
         isClosed: true,
       },
     }
-    renderWithWrappers(
-      <Artwork
-        artwork={
-          artworkProps(
-            // @ts-ignore STRICTNESS_MIGRATION
-            saleArtwork
-          ) as any
-        }
-      />
-    )
+    renderWithWrappers(<Artwork artwork={artworkProps(saleArtwork) as any} />)
   })
 
   it("renders without throwing an error when an auction is about to open, but not closed or finished", () => {
@@ -119,20 +97,45 @@ describe("in a closed sale", () => {
         // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
-    renderWithWrappers(
-      <Artwork
-        artwork={
-          artworkProps(
-            // @ts-ignore STRICTNESS_MIGRATION
-            saleArtwork
-          ) as any
-        }
-      />
-    )
+    renderWithWrappers(<Artwork artwork={artworkProps(saleArtwork) as any} />)
+  })
+
+  it("does not show the partner name if hidePartner is set to true", () => {
+    const saleArtwork = {
+      currentBid: { display: "$200" },
+      sale: {
+        isClosed: false,
+        // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
+      },
+    }
+    const tree = renderWithWrappers(<Artwork artwork={artworkProps(saleArtwork) as any} hidePartner />)
+
+    expect(extractText(tree.root)).not.toContain("partner")
+  })
+
+  it("shows the partner name if hidePartner is set to false", () => {
+    const saleArtwork = {
+      currentBid: { display: "$200" },
+      sale: {
+        isClosed: false,
+        // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
+      },
+    }
+    const tree = renderWithWrappers(<Artwork artwork={artworkProps(saleArtwork) as any} hidePartner={false} />)
+
+    expect(extractText(tree.root)).toContain("partner")
   })
 })
 
-const artworkProps = (saleArtwork = null) => {
+const artworkProps = (
+  saleArtwork:
+    | {
+        currentBid?: { display: string }
+        sale?: { isClosed: boolean }
+      }
+    | null
+    | undefined = null
+) => {
   return {
     title: "Some Kind of Dinosaur",
     date: "2015",
@@ -149,6 +152,9 @@ const artworkProps = (saleArtwork = null) => {
       aspectRatio: 0.74,
     },
     artistsNames: "Mikael Olson",
+    partner: {
+      name: "partner",
+    },
     id: "mikael-olson-some-kind-of-dinosaur",
     href: "/artwork/mikael-olson-some-kind-of-dinosaur",
     slug: "cool-artwork",

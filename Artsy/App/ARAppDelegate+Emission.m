@@ -44,21 +44,6 @@
 
 @import Darwin.POSIX.sys.utsname;
 
-static void
-FollowRequestSuccess(RCTResponseSenderBlock block, BOOL following)
-{
-    block(@[ [NSNull null], @(following) ]);
-}
-
-static void
-FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *error)
-{
-    ar_dispatch_main_queue(^{
-        [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to follow artist."];
-    });
-    block(@[ RCTJSErrorFromNSError(error), @(following) ]);
-}
-
 @implementation ARAppDelegate (Emission)
 
 - (void)setupEmission;

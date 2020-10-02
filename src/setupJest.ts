@@ -177,6 +177,7 @@ function getNativeModules(): typeof NativeModules {
       fetchNotificationPermissions: jest.fn(),
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
+      appVersion: "appVersion",
     },
 
     ARSwitchBoardModule: {

@@ -1,5 +1,9 @@
-import { FilterDisplayName, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { ArtworkFilterContext, FilterData, useSelectedOptionsDisplay } from "lib/utils/ArtworkFiltersStore"
+import {
+  ArtworkFilterContext,
+  FilterData,
+  useSelectedOptionsDisplay,
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"

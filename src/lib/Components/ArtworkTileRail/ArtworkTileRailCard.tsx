@@ -1,6 +1,8 @@
+import { ArtworkTileRailCard_artwork } from "__generated__/ArtworkTileRailCard_artwork.graphql"
 import { Box, color, Flex, Sans } from "palette"
 import React from "react"
 import { GestureResponderEvent } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
@@ -102,7 +104,7 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
 
   const lotNumber = lotLabel ? (
     <Sans size="3t" color="black60" numberOfLines={1}>
-      LOT {lotLabel}
+      Lot {lotLabel}
     </Sans>
   ) : null
 
@@ -121,3 +123,36 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
     </ArtworkCard>
   )
 }
+
+const ArtworkTileRailCardContainer: React.FC<
+  Partial<ArtworkTileRailCardProps> & {
+    artwork: ArtworkTileRailCard_artwork
+    onPress: ArtworkTileRailCardProps["onPress"]
+  }
+> = ({ artwork, imageSize = "small", ...rest }) => {
+  return (
+    <ArtworkTileRailCard
+      imageURL={artwork.image?.imageURL}
+      artistNames={artwork.artistNames}
+      saleMessage={artwork.saleMessage}
+      imageSize={imageSize}
+      useSquareAspectRatio
+      {...rest}
+    />
+  )
+}
+
+export const ArtworkTileRailCardFragmentContainer = createFragmentContainer(ArtworkTileRailCardContainer, {
+  artwork: graphql`
+    fragment ArtworkTileRailCard_artwork on Artwork {
+      slug
+      internalID
+      href
+      artistNames
+      image {
+        imageURL
+      }
+      saleMessage
+    }
+  `,
+})

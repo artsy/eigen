@@ -1,10 +1,10 @@
-import { FilterDisplayName, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import {
   ArtworkFilterContext,
   FilterData,
   ParamDefaultValues,
   useSelectedOptionsDisplay,
-} from "lib/utils/ArtworkFiltersStore"
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import _ from "lodash"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"

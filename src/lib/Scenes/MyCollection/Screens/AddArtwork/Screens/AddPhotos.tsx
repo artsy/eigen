@@ -7,7 +7,7 @@ import React from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { Image as ImageProps } from "react-native-image-crop-picker"
 
-export const AddArtworkAddPhotos = () => {
+export const AddPhotos: React.FC = () => {
   const navActions = AppStore.actions.myCollection.navigation
   const formValues = AppStore.useAppState((state) => state.myCollection.artwork.sessionState.formValues)
   const imageSize = useImageSize()
@@ -16,7 +16,7 @@ export const AddArtworkAddPhotos = () => {
   return (
     <ScrollView>
       <FancyModalHeader onLeftButtonPress={() => navActions.goBackInModal()}>
-        Photos {!!photos.length && <>({photos.length})</>}
+        Photos {!!photos.length && `(${photos.length})`}
       </FancyModalHeader>
 
       <Flex mt={2}>
@@ -78,4 +78,9 @@ const useImageSize = () => {
   const dimensions = useScreenDimensions()
   const size = Math.round((dimensions.width / 2) * 0.855)
   return size
+}
+
+export const tests = {
+  AddPhotosButton,
+  DeletePhotoButton,
 }

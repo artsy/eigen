@@ -13,7 +13,7 @@ interface MyCollectionArtworkListItemProps {
   artwork: MyCollectionArtworkListItem_artwork
 }
 
-export const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = ({ artwork }) => {
+const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = ({ artwork }) => {
   const navActions = AppStore.actions.myCollection.navigation
   const imageURL = artwork?.image?.url
   const { width } = useScreenDimensions()
@@ -64,7 +64,7 @@ export const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemPr
         overflow="hidden"
       >
         <Flex flexDirection="row" alignItems="center">
-          <Image />
+          <Image data-test-id="Image" />
           <Box mx={1} maxWidth={width}>
             <Sans size="4">{artistNames}</Sans>
             <Title />
@@ -88,3 +88,7 @@ const TouchElement = styled.TouchableHighlight.attrs({
   underlayColor: color("white100"),
   activeOpacity: 0.8,
 })``
+
+export const tests = {
+  TouchElement,
+}

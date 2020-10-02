@@ -12,11 +12,9 @@ import { MediumPicker } from "./Components/MediumPicker"
 
 export const AddEditArtwork: React.FC = () => {
   const artworkActions = AppStore.actions.myCollection.artwork
-  const navActions = AppStore.actions.myCollection.navigation
   const artworkState = AppStore.useAppState((state) => state.myCollection.artwork)
   const navState = AppStore.useAppState((state) => state.myCollection.navigation)
   const { formik } = useArtworkForm()
-  const photos = artworkState.sessionState.formValues.photos
   const modalType = navState?.sessionState?.modalType
   const addOrEditLabel = modalType ? "Edit" : "Add"
 
@@ -43,50 +41,14 @@ export const AddEditArtwork: React.FC = () => {
 
       <Spacer my={2} />
 
-      <BorderBox px={0} top={-1}>
-        <ScreenMargin>
-          <ArrowButton onPress={() => navActions.navigateToAddArtworkPhotos()}>
-            <Flex flexDirection="row">
-              <Sans size="3" weight="medium">
-                Photos
-              </Sans>
-              <Sans size="3" ml="2px">
-                (optional)
-              </Sans>
-            </Flex>
-            {photos.length > 0 && (
-              <>
-                {photos.length === 1 ? (
-                  <Sans size="3">1 photo added</Sans>
-                ) : (
-                  <Sans size="3">{photos.length} photos added</Sans>
-                )}
-              </>
-            )}
-          </ArrowButton>
-        </ScreenMargin>
-      </BorderBox>
-
-      <BorderBox px={0} position="relative" top={-2}>
-        <ScreenMargin>
-          <ArrowButton onPress={() => navActions.navigateToAddAdditionalDetails()}>
-            <Flex flexDirection="row">
-              <Sans size="3" weight="medium">
-                Additional details
-              </Sans>
-              <Sans size="3" ml="2px">
-                (optional)
-              </Sans>
-            </Flex>
-          </ArrowButton>
-        </ScreenMargin>
-      </BorderBox>
+      <PhotosButton />
+      <AdditionalDetailsButton />
 
       <Spacer my={2} />
 
       <ScreenMargin>
         {/* `handleSubmit` is wired up in <Boot>  */}
-        <Button disabled={!formik.isValid} block onPress={formik.handleSubmit}>
+        <Button disabled={!formik.isValid} block onPress={formik.handleSubmit} data-test-id="CompleteButton">
           Complete
         </Button>
 
@@ -101,6 +63,7 @@ export const AddEditArtwork: React.FC = () => {
                 artworkGlobalId: artworkState.sessionState.artworkGlobalId,
               })
             }
+            data-test-id="DeleteButton"
           >
             Delete
           </Button>
@@ -117,4 +80,67 @@ export const AddEditArtwork: React.FC = () => {
       )}
     </ScrollView>
   )
+}
+
+const PhotosButton: React.FC = () => {
+  const navActions = AppStore.actions.myCollection.navigation
+  const artworkState = AppStore.useAppState((state) => state.myCollection.artwork)
+  const photos = artworkState.sessionState.formValues.photos
+
+  return (
+    <BorderBox px={0} top={-1}>
+      <ScreenMargin>
+        <ArrowButton onPress={() => navActions.navigateToAddArtworkPhotos()}>
+          <Flex flexDirection="row">
+            <Sans size="3" weight="medium">
+              Photos
+            </Sans>
+            <Sans size="3" ml="2px">
+              (optional)
+            </Sans>
+          </Flex>
+          {photos.length > 0 && (
+            <>
+              {photos.length === 1 ? (
+                <Sans size="3" data-test-id="onePhoto">
+                  1 photo added
+                </Sans>
+              ) : (
+                <Sans size="3" data-test-id="multiplePhotos">
+                  {photos.length} photos added
+                </Sans>
+              )}
+            </>
+          )}
+        </ArrowButton>
+      </ScreenMargin>
+    </BorderBox>
+  )
+}
+
+const AdditionalDetailsButton: React.FC = () => {
+  const navActions = AppStore.actions.myCollection.navigation
+
+  return (
+    <BorderBox px={0} position="relative" top={-2}>
+      <ScreenMargin>
+        <ArrowButton onPress={() => navActions.navigateToAddAdditionalDetails()}>
+          <Flex flexDirection="row">
+            <Sans size="3" weight="medium">
+              Additional details
+            </Sans>
+            <Sans size="3" ml="2px">
+              (optional)
+            </Sans>
+          </Flex>
+        </ArrowButton>
+      </ScreenMargin>
+    </BorderBox>
+  )
+}
+
+// Export for tests
+export const tests = {
+  PhotosButton,
+  AdditionalDetailsButton,
 }

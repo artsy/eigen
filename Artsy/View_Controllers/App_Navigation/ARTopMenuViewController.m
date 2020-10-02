@@ -110,7 +110,7 @@ static ARTopMenuViewController *_sharedManager = nil;
             return;
         }
         while (self.bootstrapQueue.count > 0) {
-            void (^completion)() = [self.bootstrapQueue firstObject];
+            void (^completion)(void) = [self.bootstrapQueue firstObject];
             [self.bootstrapQueue removeObjectAtIndex:0];
             completion();
         }
