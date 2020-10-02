@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9f41c43139261dc6052f1ab43a01f785 */
+/* @relayHash 3799e538776e106556a03110661110ff */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -1225,6 +1225,7 @@ return {
         "marketingCollection.collectionArtworks.aggregations.slice": {
           "type": "ArtworkAggregation",
           "enumValues": [
+            "ARTIST",
             "COLOR",
             "DIMENSION_RANGE",
             "FOLLOWED_ARTISTS",
