@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7c7e022bd25094e566a7c827f2f26237 */
+/* @relayHash 00becdb81db40c1c08cf07213461489e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -102,15 +102,17 @@ fragment ViewingRoomViewWorksButton_viewingRoom on ViewingRoom {
 
 fragment ViewingRoom_viewingRoom on ViewingRoom {
   body
-  pullQuote
   introStatement
-  slug
   internalID
-  status
   partner {
     href
+    name
     id
   }
+  pullQuote
+  slug
+  status
+  title
   ...ViewingRoomViewWorksButton_viewingRoom
   ...ViewingRoomSubsections_viewingRoom
   ...ViewingRoomArtworkRail_viewingRoom
@@ -144,42 +146,42 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "internalID",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "internalID",
+  "name": "href",
   "storageKey": null
 },
 v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "href",
+  "name": "id",
   "storageKey": null
 },
 v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "slug",
   "storageKey": null
 },
 v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "totalCount",
+  "name": "title",
   "storageKey": null
 },
 v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "title",
+  "name": "totalCount",
   "storageKey": null
 },
 v9 = {
@@ -246,25 +248,10 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "pullQuote",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
             "name": "introStatement",
             "storageKey": null
           },
           (v3/*: any*/),
-          (v4/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "status",
-            "storageKey": null
-          },
           {
             "alias": null,
             "args": null,
@@ -273,8 +260,7 @@ return {
             "name": "partner",
             "plural": false,
             "selections": [
-              (v5/*: any*/),
-              (v6/*: any*/),
+              (v4/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -282,6 +268,7 @@ return {
                 "name": "name",
                 "storageKey": null
               },
+              (v5/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -314,13 +301,29 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v6/*: any*/)
+                  (v5/*: any*/)
                 ],
                 "storageKey": null
               }
             ],
             "storageKey": null
           },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "pullQuote",
+            "storageKey": null
+          },
+          (v6/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "status",
+            "storageKey": null
+          },
+          (v7/*: any*/),
           {
             "alias": "artworksForCount",
             "args": [
@@ -335,7 +338,7 @@ return {
             "name": "artworksConnection",
             "plural": false,
             "selections": [
-              (v7/*: any*/)
+              (v8/*: any*/)
             ],
             "storageKey": "artworksConnection(first:1)"
           },
@@ -348,7 +351,7 @@ return {
             "plural": true,
             "selections": [
               (v2/*: any*/),
-              (v8/*: any*/),
+              (v7/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -399,7 +402,7 @@ return {
             "name": "artworksConnection",
             "plural": false,
             "selections": [
-              (v7/*: any*/),
+              (v8/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -416,9 +419,9 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
+                      (v6/*: any*/),
                       (v3/*: any*/),
                       (v4/*: any*/),
-                      (v5/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -451,7 +454,7 @@ return {
                         "name": "saleMessage",
                         "storageKey": null
                       },
-                      (v6/*: any*/)
+                      (v5/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -461,7 +464,6 @@ return {
             ],
             "storageKey": "artworksConnection(first:10)"
           },
-          (v8/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -494,7 +496,7 @@ return {
     ]
   },
   "params": {
-    "id": "7c7e022bd25094e566a7c827f2f26237",
+    "id": "00becdb81db40c1c08cf07213461489e",
     "metadata": {},
     "name": "ViewingRoomQuery",
     "operationKind": "query",

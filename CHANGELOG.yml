@@ -19,6 +19,7 @@ upcoming:
     - ConversationDetail component - sepand
     - Adds "Artworks by Artists You Follow" rail (visible only to admins) - damon
     - Upgrade Relay to 10 - chris
+    - Add share button to viewing rooms - mdole
   user_facing:
     - Fix navigation bug on Artwork consign button - david
     - Add auction lots rail to the auctions screen - mounir
