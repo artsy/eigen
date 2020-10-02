@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0b7d528f697edb42ad906eebbec1be50 */
+// @ts-nocheck
+/* @relayHash 32344ad8f7bd88916aefd9e981064720 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -64,92 +65,82 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 },
 v2 = {
-  "type": "ID",
   "enumValues": null,
+  "nullable": true,
   "plural": false,
-  "nullable": true
+  "type": "String"
 },
 v3 = {
-  "type": "ID",
   "enumValues": null,
+  "nullable": false,
   "plural": false,
-  "nullable": false
-},
-v4 = {
-  "type": "String",
-  "enumValues": null,
-  "plural": false,
-  "nullable": true
+  "type": "ID"
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "MyCollectionArtworkArtistAuctionResultsTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "MyCollectionArtworkArtistAuctionResultsTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artwork",
-        "storageKey": "artwork(id:\"some-slug\")",
         "args": (v0/*: any*/),
         "concreteType": "Artwork",
+        "kind": "LinkedField",
+        "name": "artwork",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "MyCollectionArtworkArtistAuctionResults_artwork",
-            "args": null
+            "name": "MyCollectionArtworkArtistAuctionResults_artwork"
           }
-        ]
+        ],
+        "storageKey": "artwork(id:\"some-slug\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "MyCollectionArtworkArtistAuctionResultsTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artwork",
-        "storageKey": "artwork(id:\"some-slug\")",
         "args": (v0/*: any*/),
         "concreteType": "Artwork",
+        "kind": "LinkedField",
+        "name": "artwork",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "artist",
-            "storageKey": null,
             "args": null,
             "concreteType": "Artist",
+            "kind": "LinkedField",
+            "name": "artist",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "slug",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "slug",
                 "storageKey": null
               },
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "auctionResultsConnection",
-                "storageKey": "auctionResultsConnection(first:3,sort:\"DATE_DESC\")",
                 "args": [
                   {
                     "kind": "Literal",
@@ -163,212 +154,217 @@ return {
                   }
                 ],
                 "concreteType": "AuctionResultConnection",
+                "kind": "LinkedField",
+                "name": "auctionResultsConnection",
                 "plural": false,
                 "selections": [
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "edges",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "AuctionResultEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
                     "plural": true,
                     "selections": [
                       {
-                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "node",
-                        "storageKey": null,
                         "args": null,
                         "concreteType": "AuctionResult",
+                        "kind": "LinkedField",
+                        "name": "node",
                         "plural": false,
                         "selections": [
                           {
-                            "kind": "ScalarField",
                             "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "internalID",
-                            "args": null,
                             "storageKey": null
                           },
                           {
-                            "kind": "ScalarField",
                             "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "title",
-                            "args": null,
                             "storageKey": null
                           },
                           {
+                            "alias": null,
+                            "args": null,
                             "kind": "ScalarField",
-                            "alias": null,
                             "name": "dimensionText",
-                            "args": null,
                             "storageKey": null
                           },
                           {
-                            "kind": "LinkedField",
                             "alias": null,
-                            "name": "images",
-                            "storageKey": null,
                             "args": null,
                             "concreteType": "AuctionLotImages",
+                            "kind": "LinkedField",
+                            "name": "images",
                             "plural": false,
                             "selections": [
                               {
-                                "kind": "LinkedField",
                                 "alias": null,
-                                "name": "thumbnail",
-                                "storageKey": null,
                                 "args": null,
                                 "concreteType": "Image",
+                                "kind": "LinkedField",
+                                "name": "thumbnail",
                                 "plural": false,
                                 "selections": [
                                   {
-                                    "kind": "ScalarField",
                                     "alias": null,
-                                    "name": "url",
                                     "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "url",
                                     "storageKey": null
                                   }
-                                ]
+                                ],
+                                "storageKey": null
                               }
-                            ]
+                            ],
+                            "storageKey": null
                           },
                           {
-                            "kind": "ScalarField",
                             "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "description",
-                            "args": null,
                             "storageKey": null
                           },
                           {
-                            "kind": "ScalarField",
                             "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "dateText",
-                            "args": null,
                             "storageKey": null
                           },
                           {
+                            "alias": null,
+                            "args": null,
                             "kind": "ScalarField",
-                            "alias": null,
                             "name": "saleDate",
-                            "args": null,
                             "storageKey": null
                           },
                           {
-                            "kind": "LinkedField",
                             "alias": null,
-                            "name": "priceRealized",
-                            "storageKey": null,
                             "args": null,
                             "concreteType": "AuctionResultPriceRealized",
+                            "kind": "LinkedField",
+                            "name": "priceRealized",
                             "plural": false,
                             "selections": [
                               {
-                                "kind": "ScalarField",
                                 "alias": null,
-                                "name": "display",
                                 "args": null,
+                                "kind": "ScalarField",
+                                "name": "display",
                                 "storageKey": null
                               },
                               {
-                                "kind": "ScalarField",
                                 "alias": null,
-                                "name": "centsUSD",
                                 "args": null,
+                                "kind": "ScalarField",
+                                "name": "centsUSD",
                                 "storageKey": null
                               }
-                            ]
+                            ],
+                            "storageKey": null
                           },
                           (v1/*: any*/)
-                        ]
+                        ],
+                        "storageKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": "auctionResultsConnection(first:3,sort:\"DATE_DESC\")"
               },
               (v1/*: any*/)
-            ]
+            ],
+            "storageKey": null
           },
           (v1/*: any*/)
-        ]
+        ],
+        "storageKey": "artwork(id:\"some-slug\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "MyCollectionArtworkArtistAuctionResultsTestsQuery",
     "id": "32344ad8f7bd88916aefd9e981064720",
-    "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
-          "type": "Artwork",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Artwork"
         },
-        "artwork.id": (v2/*: any*/),
         "artwork.artist": {
-          "type": "Artist",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Artist"
         },
-        "artwork.artist.slug": (v3/*: any*/),
         "artwork.artist.auctionResultsConnection": {
-          "type": "AuctionResultConnection",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "AuctionResultConnection"
         },
-        "artwork.artist.id": (v2/*: any*/),
         "artwork.artist.auctionResultsConnection.edges": {
-          "type": "AuctionResultEdge",
           "enumValues": null,
+          "nullable": true,
           "plural": true,
-          "nullable": true
+          "type": "AuctionResultEdge"
         },
         "artwork.artist.auctionResultsConnection.edges.node": {
-          "type": "AuctionResult",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "AuctionResult"
         },
-        "artwork.artist.auctionResultsConnection.edges.node.internalID": (v3/*: any*/),
-        "artwork.artist.auctionResultsConnection.edges.node.title": (v4/*: any*/),
-        "artwork.artist.auctionResultsConnection.edges.node.dimensionText": (v4/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.dateText": (v2/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.description": (v2/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.dimensionText": (v2/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.id": (v3/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.images": {
-          "type": "AuctionLotImages",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "AuctionLotImages"
         },
-        "artwork.artist.auctionResultsConnection.edges.node.description": (v4/*: any*/),
-        "artwork.artist.auctionResultsConnection.edges.node.dateText": (v4/*: any*/),
-        "artwork.artist.auctionResultsConnection.edges.node.saleDate": (v4/*: any*/),
-        "artwork.artist.auctionResultsConnection.edges.node.priceRealized": {
-          "type": "AuctionResultPriceRealized",
-          "enumValues": null,
-          "plural": false,
-          "nullable": true
-        },
-        "artwork.artist.auctionResultsConnection.edges.node.id": (v2/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.images.thumbnail": {
-          "type": "Image",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Image"
         },
-        "artwork.artist.auctionResultsConnection.edges.node.priceRealized.display": (v4/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.images.thumbnail.url": (v2/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.internalID": (v3/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.priceRealized": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "AuctionResultPriceRealized"
+        },
         "artwork.artist.auctionResultsConnection.edges.node.priceRealized.centsUSD": {
-          "type": "Float",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Float"
         },
-        "artwork.artist.auctionResultsConnection.edges.node.images.thumbnail.url": (v4/*: any*/)
+        "artwork.artist.auctionResultsConnection.edges.node.priceRealized.display": (v2/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.saleDate": (v2/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.title": (v2/*: any*/),
+        "artwork.artist.id": (v3/*: any*/),
+        "artwork.artist.slug": (v3/*: any*/),
+        "artwork.id": (v3/*: any*/)
       }
-    }
+    },
+    "name": "MyCollectionArtworkArtistAuctionResultsTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

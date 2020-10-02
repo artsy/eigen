@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9ca9756defaee625c010333f63f58861 */
+// @ts-nocheck
+/* @relayHash d2759d79e2c03e7a4f20054093419f41 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type getConvectionGeminiKeyQueryVariables = {};
@@ -35,68 +36,69 @@ query getConvectionGeminiKeyQuery {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "system",
-    "storageKey": null,
     "args": null,
     "concreteType": "System",
+    "kind": "LinkedField",
+    "name": "system",
     "plural": false,
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "services",
-        "storageKey": null,
         "args": null,
         "concreteType": "Services",
+        "kind": "LinkedField",
+        "name": "services",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "convection",
-            "storageKey": null,
             "args": null,
             "concreteType": "ConvectionService",
+            "kind": "LinkedField",
+            "name": "convection",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "geminiTemplateKey",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "geminiTemplateKey",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "storageKey": null
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "getConvectionGeminiKeyQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
-    "selections": (v0/*: any*/)
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "getConvectionGeminiKeyQuery",
+    "selections": (v0/*: any*/),
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "getConvectionGeminiKeyQuery",
-    "argumentDefinitions": [],
     "selections": (v0/*: any*/)
   },
   "params": {
-    "operationKind": "query",
-    "name": "getConvectionGeminiKeyQuery",
     "id": "d2759d79e2c03e7a4f20054093419f41",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "getConvectionGeminiKeyQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

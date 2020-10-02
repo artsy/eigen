@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash dc875d96755a1900a8dbc110872aaac2 */
+// @ts-nocheck
+/* @relayHash e18496bd98d305563035ca1ece9d4d22 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type ConsignmentsArtistQueryVariables = {
@@ -42,6 +43,7 @@ query ConsignmentsArtistQuery(
           }
         }
         ... on Node {
+          __isNode: __typename
           id
         }
       }
@@ -53,10 +55,9 @@ query ConsignmentsArtistQuery(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "query",
-    "type": "String!",
-    "defaultValue": null
+    "name": "query"
   }
 ],
 v1 = [
@@ -85,148 +86,157 @@ v1 = [
 ],
 v2 = {
   "kind": "InlineFragment",
-  "type": "Artist",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "internalID",
-      "args": null,
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
-      "alias": null,
       "name": "name",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "image",
-      "storageKey": null,
       "args": null,
       "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "image",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "url",
           "args": null,
+          "kind": "ScalarField",
+          "name": "url",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Artist",
+  "abstractKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ConsignmentsArtistQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ConsignmentsArtistQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "searchConnection",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "SearchableConnection",
+        "kind": "LinkedField",
+        "name": "searchConnection",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "edges",
-            "storageKey": null,
             "args": null,
             "concreteType": "SearchableEdge",
+            "kind": "LinkedField",
+            "name": "edges",
             "plural": true,
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "node",
-                "storageKey": null,
                 "args": null,
                 "concreteType": null,
+                "kind": "LinkedField",
+                "name": "node",
                 "plural": false,
                 "selections": [
                   (v2/*: any*/)
-                ]
+                ],
+                "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "ConsignmentsArtistQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "searchConnection",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "SearchableConnection",
+        "kind": "LinkedField",
+        "name": "searchConnection",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "edges",
-            "storageKey": null,
             "args": null,
             "concreteType": "SearchableEdge",
+            "kind": "LinkedField",
+            "name": "edges",
             "plural": true,
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "node",
-                "storageKey": null,
                 "args": null,
                 "concreteType": null,
+                "kind": "LinkedField",
+                "name": "node",
                 "plural": false,
                 "selections": [
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "__typename",
-                    "args": null,
                     "storageKey": null
                   },
+                  (v2/*: any*/),
                   {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "id",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  (v2/*: any*/)
-                ]
+                    "kind": "InlineFragment",
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "id",
+                        "storageKey": null
+                      }
+                    ],
+                    "type": "Node",
+                    "abstractKey": "__isNode"
+                  }
+                ],
+                "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
+    "id": "e18496bd98d305563035ca1ece9d4d22",
+    "metadata": {},
     "name": "ConsignmentsArtistQuery",
-    "id": "856318eea3bd6ca43b0e7b6e3c4b799c",
-    "text": null,
-    "metadata": {}
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

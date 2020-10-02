@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -20,31 +21,27 @@ export type ViewingRoomViewWorksButton_viewingRoom$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "ViewingRoomViewWorksButton_viewingRoom",
-  "type": "ViewingRoom",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ViewingRoomViewWorksButton_viewingRoom",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "internalID",
       "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": "artworksForCount",
-      "name": "artworksConnection",
-      "storageKey": "artworksConnection(first:1)",
       "args": [
         {
           "kind": "Literal",
@@ -53,18 +50,23 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "ArtworkConnection",
+      "kind": "LinkedField",
+      "name": "artworksConnection",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "totalCount",
           "args": null,
+          "kind": "ScalarField",
+          "name": "totalCount",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": "artworksConnection(first:1)"
     }
-  ]
+  ],
+  "type": "ViewingRoom",
+  "abstractKey": null
 };
 (node as any).hash = '184db16c33d614d3d7d46953422775f7';
 export default node;

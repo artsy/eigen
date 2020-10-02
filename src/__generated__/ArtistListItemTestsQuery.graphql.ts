@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 2acacfedaedee4131abdf953fdc03d3b */
+// @ts-nocheck
+/* @relayHash 1fd08eb4c6fe06451485859f8af8e314 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -69,144 +70,145 @@ var v0 = [
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ArtistListItemTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ArtistListItemTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artist",
-        "storageKey": "artist(id:\"pablo-picasso\")",
         "args": (v0/*: any*/),
         "concreteType": "Artist",
+        "kind": "LinkedField",
+        "name": "artist",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "ArtistListItem_artist",
-            "args": null
+            "name": "ArtistListItem_artist"
           }
-        ]
+        ],
+        "storageKey": "artist(id:\"pablo-picasso\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "ArtistListItemTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artist",
-        "storageKey": "artist(id:\"pablo-picasso\")",
         "args": (v0/*: any*/),
         "concreteType": "Artist",
+        "kind": "LinkedField",
+        "name": "artist",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "id",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "internalID",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "slug",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "name",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "initials",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "href",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": "is_followed",
+            "args": null,
+            "kind": "ScalarField",
             "name": "isFollowed",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "nationality",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "birthday",
-            "args": null,
             "storageKey": null
           },
           {
+            "alias": null,
+            "args": null,
             "kind": "ScalarField",
-            "alias": null,
             "name": "deathday",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "image",
-            "storageKey": null,
             "args": null,
             "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "image",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "url",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "url",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": "artist(id:\"pablo-picasso\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "ArtistListItemTestsQuery",
     "id": "1fd08eb4c6fe06451485859f8af8e314",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "ArtistListItemTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

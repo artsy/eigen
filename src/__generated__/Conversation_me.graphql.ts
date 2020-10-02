@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,23 +29,18 @@ export type Conversation_me$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "Conversation_me",
-  "type": "Me",
-  "metadata": null,
   "argumentDefinitions": [
     {
       "kind": "RootArgument",
-      "name": "conversationID",
-      "type": "String!"
+      "name": "conversationID"
     }
   ],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Conversation_me",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "conversation",
-      "storageKey": null,
       "args": [
         {
           "kind": "Variable",
@@ -53,80 +49,85 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "Conversation",
+      "kind": "LinkedField",
+      "name": "conversation",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "internalID",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "id",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "lastMessageID",
-          "args": null,
           "storageKey": null
         },
         {
+          "alias": null,
+          "args": null,
           "kind": "ScalarField",
-          "alias": null,
           "name": "unread",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "to",
-          "storageKey": null,
           "args": null,
           "concreteType": "ConversationResponder",
+          "kind": "LinkedField",
+          "name": "to",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "name",
               "args": null,
+              "kind": "ScalarField",
+              "name": "name",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "from",
-          "storageKey": null,
           "args": null,
           "concreteType": "ConversationInitiator",
+          "kind": "LinkedField",
+          "name": "from",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "email",
               "args": null,
+              "kind": "ScalarField",
+              "name": "email",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "Messages_conversation",
-          "args": null
+          "name": "Messages_conversation"
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Me",
+  "abstractKey": null
 };
 (node as any).hash = '453817fb6e16a3de8ec1ba95936c0a8a';
 export default node;

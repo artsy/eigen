@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 46daf418b5afed598473061b1d02d522 */
+// @ts-nocheck
+/* @relayHash 81a1728ed5a285d5dccbf781875f2108 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -44,10 +45,9 @@ fragment FairMoreInfo_fair on Fair {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "fairID",
-    "type": "String!",
-    "defaultValue": null
+    "name": "fairID"
   }
 ],
 v1 = [
@@ -58,111 +58,112 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "FairMoreInfoQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "FairMoreInfoQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "FairMoreInfo_fair",
-            "args": null
+            "name": "FairMoreInfo_fair"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "FairMoreInfoQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "organizer",
-            "storageKey": null,
             "args": null,
             "concreteType": "organizer",
+            "kind": "LinkedField",
+            "name": "organizer",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "website",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "website",
                 "storageKey": null
               },
               (v2/*: any*/)
-            ]
+            ],
+            "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "slug",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "internalID",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "about",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "ticketsLink",
             "args": null,
+            "kind": "ScalarField",
+            "name": "ticketsLink",
             "storageKey": null
           },
           (v2/*: any*/)
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "FairMoreInfoQuery",
     "id": "81a1728ed5a285d5dccbf781875f2108",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "FairMoreInfoQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

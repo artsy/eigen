@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash afdc8c803d9fa9ef550b11dd0dd3ee50 */
+// @ts-nocheck
+/* @relayHash 628973ab7893ef6c168d9a16152051e6 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowArtistInput = {
@@ -41,10 +42,9 @@ mutation ArtistSeriesMetaFollowMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "FollowArtistInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
@@ -55,89 +55,90 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "isFollowed",
   "args": null,
+  "kind": "ScalarField",
+  "name": "isFollowed",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ArtistSeriesMetaFollowMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ArtistSeriesMetaFollowMutation",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "followArtist",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "FollowArtistPayload",
+        "kind": "LinkedField",
+        "name": "followArtist",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "artist",
-            "storageKey": null,
             "args": null,
             "concreteType": "Artist",
+            "kind": "LinkedField",
+            "name": "artist",
             "plural": false,
             "selections": [
               (v2/*: any*/)
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "ArtistSeriesMetaFollowMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "followArtist",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "FollowArtistPayload",
+        "kind": "LinkedField",
+        "name": "followArtist",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "artist",
-            "storageKey": null,
             "args": null,
             "concreteType": "Artist",
+            "kind": "LinkedField",
+            "name": "artist",
             "plural": false,
             "selections": [
               (v2/*: any*/),
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "id",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "id",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "ArtistSeriesMetaFollowMutation",
     "id": "628973ab7893ef6c168d9a16152051e6",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "ArtistSeriesMetaFollowMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

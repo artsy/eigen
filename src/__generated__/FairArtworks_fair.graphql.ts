@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -19,52 +20,51 @@ export type FairArtworks_fair$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "FairArtworks_fair",
-  "type": "Fair",
-  "metadata": null,
   "argumentDefinitions": [
     {
+      "defaultValue": "*",
       "kind": "LocalArgument",
-      "name": "medium",
-      "type": "String",
-      "defaultValue": "*"
+      "name": "medium"
     },
     {
+      "defaultValue": "*-*",
       "kind": "LocalArgument",
-      "name": "priceRange",
-      "type": "String",
-      "defaultValue": "*-*"
+      "name": "priceRange"
     }
   ],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "FairArtworks_fair",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "id",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "internalID",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "slug",
       "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
       "storageKey": null
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "FilteredInfiniteScrollGrid_entity",
-      "args": null
+      "name": "FilteredInfiniteScrollGrid_entity"
     }
-  ]
+  ],
+  "type": "Fair",
+  "abstractKey": null
 };
 (node as any).hash = '71c589ff3f298e3fa56d4c9df7a59a5c';
 export default node;

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -17,27 +18,28 @@ export type CollectionArtistSeriesRail_collection$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "CollectionArtistSeriesRail_collection",
-  "type": "MarketingCollection",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "CollectionArtistSeriesRail_collection",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "slug",
       "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "id",
       "args": null,
+      "kind": "ScalarField",
+      "name": "id",
       "storageKey": null
     }
-  ]
+  ],
+  "type": "MarketingCollection",
+  "abstractKey": null
 };
 (node as any).hash = '4fc25d762cedf770e4ec928ee522ea86';
 export default node;

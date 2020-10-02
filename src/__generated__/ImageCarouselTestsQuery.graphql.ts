@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b4e333cfdae93e7d5c4876fa368eaa36 */
+// @ts-nocheck
+/* @relayHash 8792d37017c851a70dfa3671f759a20f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,7 +32,7 @@ export type ImageCarouselTestsQueryRawResponse = {
                 }) | null;
             }) | null;
         }) | null> | null;
-        readonly id: string | null;
+        readonly id: string;
     }) | null;
 };
 export type ImageCarouselTestsQuery = {
@@ -80,181 +81,182 @@ var v0 = [
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ImageCarouselTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ImageCarouselTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artwork",
-        "storageKey": "artwork(id:\"unused\")",
         "args": (v0/*: any*/),
         "concreteType": "Artwork",
+        "kind": "LinkedField",
+        "name": "artwork",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "images",
-            "storageKey": null,
             "args": null,
             "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "images",
             "plural": true,
             "selections": [
               {
+                "args": null,
                 "kind": "FragmentSpread",
-                "name": "ImageCarousel_images",
-                "args": null
+                "name": "ImageCarousel_images"
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": "artwork(id:\"unused\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "ImageCarouselTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artwork",
-        "storageKey": "artwork(id:\"unused\")",
         "args": (v0/*: any*/),
         "concreteType": "Artwork",
+        "kind": "LinkedField",
+        "name": "artwork",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "images",
-            "storageKey": null,
             "args": null,
             "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "images",
             "plural": true,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": "url",
+                "args": null,
+                "kind": "ScalarField",
                 "name": "imageURL",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "width",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "height",
-                "args": null,
                 "storageKey": null
               },
               {
+                "alias": null,
+                "args": null,
                 "kind": "ScalarField",
-                "alias": null,
                 "name": "imageVersions",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "deepZoom",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "DeepZoom",
+                "kind": "LinkedField",
+                "name": "deepZoom",
                 "plural": false,
                 "selections": [
                   {
-                    "kind": "LinkedField",
                     "alias": "image",
-                    "name": "Image",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "DeepZoomImage",
+                    "kind": "LinkedField",
+                    "name": "Image",
                     "plural": false,
                     "selections": [
                       {
-                        "kind": "ScalarField",
                         "alias": "tileSize",
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "TileSize",
-                        "args": null,
                         "storageKey": null
                       },
                       {
-                        "kind": "ScalarField",
                         "alias": "url",
-                        "name": "Url",
                         "args": null,
-                        "storageKey": null
-                      },
-                      {
                         "kind": "ScalarField",
-                        "alias": "format",
-                        "name": "Format",
-                        "args": null,
+                        "name": "Url",
                         "storageKey": null
                       },
                       {
-                        "kind": "LinkedField",
+                        "alias": "format",
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "Format",
+                        "storageKey": null
+                      },
+                      {
                         "alias": "size",
-                        "name": "Size",
-                        "storageKey": null,
                         "args": null,
                         "concreteType": "DeepZoomImageSize",
+                        "kind": "LinkedField",
+                        "name": "Size",
                         "plural": false,
                         "selections": [
                           {
-                            "kind": "ScalarField",
                             "alias": "width",
-                            "name": "Width",
                             "args": null,
+                            "kind": "ScalarField",
+                            "name": "Width",
                             "storageKey": null
                           },
                           {
-                            "kind": "ScalarField",
                             "alias": "height",
-                            "name": "Height",
                             "args": null,
+                            "kind": "ScalarField",
+                            "name": "Height",
                             "storageKey": null
                           }
-                        ]
+                        ],
+                        "storageKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "id",
             "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": "artwork(id:\"unused\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "ImageCarouselTestsQuery",
     "id": "8792d37017c851a70dfa3671f759a20f",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "ImageCarouselTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

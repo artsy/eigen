@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c00c430a6c60731ebb3d37b5312b08d0 */
+// @ts-nocheck
+/* @relayHash e846c58cb9d1c074530adbcf88e11f5d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -61,16 +62,14 @@ fragment FavoriteCategories_me_1G22uz on Me {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "count",
-    "type": "Int!",
-    "defaultValue": null
+    "name": "count"
   },
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "cursor",
-    "type": "String",
-    "defaultValue": null
+    "name": "cursor"
   }
 ],
 v1 = [
@@ -86,33 +85,28 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "FavoriteCategoriesPaginationQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "FavoriteCategoriesPaginationQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "me",
-        "storageKey": null,
         "args": null,
         "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
         "plural": false,
         "selections": [
           {
-            "kind": "FragmentSpread",
-            "name": "FavoriteCategories_me",
             "args": [
               {
                 "kind": "Variable",
@@ -124,174 +118,180 @@ return {
                 "name": "cursor",
                 "variableName": "cursor"
               }
-            ]
+            ],
+            "kind": "FragmentSpread",
+            "name": "FavoriteCategories_me"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "FavoriteCategoriesPaginationQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "me",
-        "storageKey": null,
         "args": null,
         "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "followsAndSaves",
-            "storageKey": null,
             "args": null,
             "concreteType": "FollowsAndSaves",
+            "kind": "LinkedField",
+            "name": "followsAndSaves",
             "plural": false,
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": "genes",
-                "name": "genesConnection",
-                "storageKey": null,
                 "args": (v1/*: any*/),
                 "concreteType": "FollowGeneConnection",
+                "kind": "LinkedField",
+                "name": "genesConnection",
                 "plural": false,
                 "selections": [
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "pageInfo",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "PageInfo",
+                    "kind": "LinkedField",
+                    "name": "pageInfo",
                     "plural": false,
                     "selections": [
                       {
-                        "kind": "ScalarField",
                         "alias": null,
-                        "name": "endCursor",
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "endCursor",
                         "storageKey": null
                       },
                       {
-                        "kind": "ScalarField",
                         "alias": null,
-                        "name": "hasNextPage",
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "hasNextPage",
                         "storageKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   },
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "edges",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "FollowGeneEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
                     "plural": true,
                     "selections": [
                       {
-                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "node",
-                        "storageKey": null,
                         "args": null,
                         "concreteType": "FollowGene",
+                        "kind": "LinkedField",
+                        "name": "node",
                         "plural": false,
                         "selections": [
                           {
-                            "kind": "LinkedField",
                             "alias": null,
-                            "name": "gene",
-                            "storageKey": null,
                             "args": null,
                             "concreteType": "Gene",
+                            "kind": "LinkedField",
+                            "name": "gene",
                             "plural": false,
                             "selections": [
                               (v2/*: any*/),
                               {
-                                "kind": "ScalarField",
                                 "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
                                 "name": "name",
-                                "args": null,
                                 "storageKey": null
                               },
                               {
+                                "alias": null,
+                                "args": null,
                                 "kind": "ScalarField",
-                                "alias": null,
                                 "name": "href",
-                                "args": null,
                                 "storageKey": null
                               },
                               {
-                                "kind": "LinkedField",
                                 "alias": null,
-                                "name": "image",
-                                "storageKey": null,
                                 "args": null,
                                 "concreteType": "Image",
+                                "kind": "LinkedField",
+                                "name": "image",
                                 "plural": false,
                                 "selections": [
                                   {
-                                    "kind": "ScalarField",
                                     "alias": null,
-                                    "name": "url",
                                     "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "url",
                                     "storageKey": null
                                   }
-                                ]
+                                ],
+                                "storageKey": null
                               }
-                            ]
+                            ],
+                            "storageKey": null
                           },
                           (v2/*: any*/),
                           {
-                            "kind": "ScalarField",
                             "alias": null,
-                            "name": "__typename",
                             "args": null,
+                            "kind": "ScalarField",
+                            "name": "__typename",
                             "storageKey": null
                           }
-                        ]
+                        ],
+                        "storageKey": null
                       },
                       {
-                        "kind": "ScalarField",
                         "alias": null,
-                        "name": "cursor",
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "cursor",
                         "storageKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": null
               },
               {
-                "kind": "LinkedHandle",
                 "alias": "genes",
-                "name": "genesConnection",
                 "args": (v1/*: any*/),
+                "filters": null,
                 "handle": "connection",
                 "key": "Categories_followed_genes",
-                "filters": null
+                "kind": "LinkedHandle",
+                "name": "genesConnection"
               }
-            ]
+            ],
+            "storageKey": null
           },
           (v2/*: any*/)
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "FavoriteCategoriesPaginationQuery",
     "id": "e846c58cb9d1c074530adbcf88e11f5d",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "FavoriteCategoriesPaginationQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

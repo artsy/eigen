@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -50,31 +51,31 @@ var v0 = {
 },
 v1 = [
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "edges",
-    "storageKey": null,
     "args": null,
     "concreteType": "ShowEdge",
+    "kind": "LinkedField",
+    "name": "edges",
     "plural": true,
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "node",
-        "storageKey": null,
         "args": null,
         "concreteType": "Show",
+        "kind": "LinkedField",
+        "name": "node",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "VariableSizeShowsList_shows",
-            "args": null
+            "name": "VariableSizeShowsList_shows"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "storageKey": null
   }
 ],
 v2 = [
@@ -90,23 +91,18 @@ v2 = [
   }
 ];
 return {
-  "kind": "Fragment",
-  "name": "ArtistShows_artist",
-  "type": "Artist",
-  "metadata": null,
   "argumentDefinitions": [
     {
       "kind": "RootArgument",
-      "name": "isPad",
-      "type": "Boolean"
+      "name": "isPad"
     }
   ],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ArtistShows_artist",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": "currentShows",
-      "name": "showsConnection",
-      "storageKey": "showsConnection(first:10,status:\"running\")",
       "args": [
         (v0/*: any*/),
         {
@@ -116,14 +112,14 @@ return {
         }
       ],
       "concreteType": "ShowConnection",
+      "kind": "LinkedField",
+      "name": "showsConnection",
       "plural": false,
-      "selections": (v1/*: any*/)
+      "selections": (v1/*: any*/),
+      "storageKey": "showsConnection(first:10,status:\"running\")"
     },
     {
-      "kind": "LinkedField",
       "alias": "upcomingShows",
-      "name": "showsConnection",
-      "storageKey": "showsConnection(first:10,status:\"upcoming\")",
       "args": [
         (v0/*: any*/),
         {
@@ -133,72 +129,77 @@ return {
         }
       ],
       "concreteType": "ShowConnection",
+      "kind": "LinkedField",
+      "name": "showsConnection",
       "plural": false,
-      "selections": (v1/*: any*/)
+      "selections": (v1/*: any*/),
+      "storageKey": "showsConnection(first:10,status:\"upcoming\")"
     },
     {
+      "condition": "isPad",
       "kind": "Condition",
       "passingValue": false,
-      "condition": "isPad",
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": "pastSmallShows",
-          "name": "showsConnection",
-          "storageKey": "showsConnection(first:20,status:\"closed\")",
           "args": (v2/*: any*/),
           "concreteType": "ShowConnection",
+          "kind": "LinkedField",
+          "name": "showsConnection",
           "plural": false,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "edges",
-              "storageKey": null,
               "args": null,
               "concreteType": "ShowEdge",
+              "kind": "LinkedField",
+              "name": "edges",
               "plural": true,
               "selections": [
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "node",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "Show",
+                  "kind": "LinkedField",
+                  "name": "node",
                   "plural": false,
                   "selections": [
                     {
+                      "args": null,
                       "kind": "FragmentSpread",
-                      "name": "SmallList_shows",
-                      "args": null
+                      "name": "SmallList_shows"
                     }
-                  ]
+                  ],
+                  "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": "showsConnection(first:20,status:\"closed\")"
         }
       ]
     },
     {
+      "condition": "isPad",
       "kind": "Condition",
       "passingValue": true,
-      "condition": "isPad",
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": "pastLargeShows",
-          "name": "showsConnection",
-          "storageKey": "showsConnection(first:20,status:\"closed\")",
           "args": (v2/*: any*/),
           "concreteType": "ShowConnection",
+          "kind": "LinkedField",
+          "name": "showsConnection",
           "plural": false,
-          "selections": (v1/*: any*/)
+          "selections": (v1/*: any*/),
+          "storageKey": "showsConnection(first:20,status:\"closed\")"
         }
       ]
     }
-  ]
+  ],
+  "type": "Artist",
+  "abstractKey": null
 };
 })();
 (node as any).hash = 'a035e8faabf7860638dbb32efb5fcbed';

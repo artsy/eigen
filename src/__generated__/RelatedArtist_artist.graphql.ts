@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -24,64 +25,60 @@ export type RelatedArtist_artist$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "RelatedArtist_artist",
-  "type": "Artist",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "RelatedArtist_artist",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "href",
-      "args": null,
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
-      "alias": null,
       "name": "name",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "counts",
-      "storageKey": null,
       "args": null,
       "concreteType": "ArtistCounts",
+      "kind": "LinkedField",
+      "name": "counts",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "forSaleArtworks",
           "args": null,
+          "kind": "ScalarField",
+          "name": "forSaleArtworks",
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "artworks",
           "args": null,
+          "kind": "ScalarField",
+          "name": "artworks",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "image",
-      "storageKey": null,
       "args": null,
       "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "image",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "url",
           "args": [
             {
               "kind": "Literal",
@@ -89,11 +86,16 @@ const node: ReaderFragment = {
               "value": "large"
             }
           ],
+          "kind": "ScalarField",
+          "name": "url",
           "storageKey": "url(version:\"large\")"
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Artist",
+  "abstractKey": null
 };
 (node as any).hash = 'a01ba9e049116bbbbb2881a012289fa8';
 export default node;

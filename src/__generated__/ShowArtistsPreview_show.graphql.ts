@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -32,72 +33,73 @@ export type ShowArtistsPreview_show$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 },
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 },
 v2 = [
   {
-    "kind": "ScalarField",
     "alias": null,
-    "name": "id",
     "args": null,
+    "kind": "ScalarField",
+    "name": "id",
     "storageKey": null
   },
   (v0/*: any*/),
   (v1/*: any*/),
   {
-    "kind": "ScalarField",
     "alias": null,
-    "name": "href",
     "args": null,
+    "kind": "ScalarField",
+    "name": "href",
     "storageKey": null
   },
   {
+    "args": null,
     "kind": "FragmentSpread",
-    "name": "ArtistListItem_artist",
-    "args": null
+    "name": "ArtistListItem_artist"
   }
 ];
 return {
-  "kind": "Fragment",
-  "name": "ShowArtistsPreview_show",
-  "type": "Show",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ShowArtistsPreview_show",
   "selections": [
     (v0/*: any*/),
     (v1/*: any*/),
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "artists",
-      "storageKey": null,
       "args": null,
       "concreteType": "Artist",
+      "kind": "LinkedField",
+      "name": "artists",
       "plural": true,
-      "selections": (v2/*: any*/)
+      "selections": (v2/*: any*/),
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": "artists_without_artworks",
-      "name": "artistsWithoutArtworks",
-      "storageKey": null,
       "args": null,
       "concreteType": "Artist",
+      "kind": "LinkedField",
+      "name": "artistsWithoutArtworks",
       "plural": true,
-      "selections": (v2/*: any*/)
+      "selections": (v2/*: any*/),
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Show",
+  "abstractKey": null
 };
 })();
 (node as any).hash = '8d58d64a33c21a4615c45ad7df960299';

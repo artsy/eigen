@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,56 +24,57 @@ export type Filters_filteredArtworks$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "Filters_filteredArtworks",
-  "type": "FilterArtworksConnection",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Filters_filteredArtworks",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "aggregations",
-      "storageKey": null,
       "args": null,
       "concreteType": "ArtworksAggregationResults",
+      "kind": "LinkedField",
+      "name": "aggregations",
       "plural": true,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "slice",
           "args": null,
+          "kind": "ScalarField",
+          "name": "slice",
           "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "counts",
-          "storageKey": null,
           "args": null,
           "concreteType": "AggregationCount",
+          "kind": "LinkedField",
+          "name": "counts",
           "plural": true,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "name",
               "args": null,
+              "kind": "ScalarField",
+              "name": "name",
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "value",
               "args": null,
+              "kind": "ScalarField",
+              "name": "value",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "FilterArtworksConnection",
+  "abstractKey": null
 };
 (node as any).hash = '91d31761bb4205fec2bf49fa49d6b080';
 export default node;

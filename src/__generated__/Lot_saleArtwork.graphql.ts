@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,55 +24,50 @@ export type Lot_saleArtwork$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "Lot_saleArtwork",
-  "type": "SaleArtwork",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Lot_saleArtwork",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "lotLabel",
       "args": null,
+      "kind": "ScalarField",
+      "name": "lotLabel",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "artwork",
-      "storageKey": null,
       "args": null,
       "concreteType": "Artwork",
+      "kind": "LinkedField",
+      "name": "artwork",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "artistNames",
-          "args": null,
           "storageKey": null
         },
         {
+          "alias": null,
+          "args": null,
           "kind": "ScalarField",
-          "alias": null,
           "name": "href",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "image",
-          "storageKey": null,
           "args": null,
           "concreteType": "Image",
+          "kind": "LinkedField",
+          "name": "image",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "url",
               "args": [
                 {
                   "kind": "Literal",
@@ -79,13 +75,19 @@ const node: ReaderFragment = {
                   "value": "medium"
                 }
               ],
+              "kind": "ScalarField",
+              "name": "url",
               "storageKey": "url(version:\"medium\")"
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "SaleArtwork",
+  "abstractKey": null
 };
 (node as any).hash = '7362f1283efd28a8c41e0cd2bec8909b';
 export default node;

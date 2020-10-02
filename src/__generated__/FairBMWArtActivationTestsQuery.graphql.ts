@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 13f60827d0b1346c0de9a7d254b961f2 */
+// @ts-nocheck
+/* @relayHash d56c9ab97d9553bcc60be71e5bf293c8 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FairBMWArtActivationTestsQueryVariables = {};
@@ -22,7 +23,7 @@ export type FairBMWArtActivationTestsQueryRawResponse = {
             readonly activationText: string | null;
             readonly pressReleaseUrl: string | null;
         }) | null;
-        readonly id: string | null;
+        readonly id: string;
     }) | null;
 };
 export type FairBMWArtActivationTestsQuery = {
@@ -56,103 +57,104 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 },
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 },
 v3 = {
-  "kind": "LinkedField",
   "alias": null,
-  "name": "sponsoredContent",
-  "storageKey": null,
   "args": null,
   "concreteType": "FairSponsoredContent",
+  "kind": "LinkedField",
+  "name": "sponsoredContent",
   "plural": false,
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "activationText",
       "args": null,
+      "kind": "ScalarField",
+      "name": "activationText",
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "pressReleaseUrl",
       "args": null,
+      "kind": "ScalarField",
+      "name": "pressReleaseUrl",
       "storageKey": null
     }
-  ]
+  ],
+  "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "FairBMWArtActivationTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "FairBMWArtActivationTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": "fair(id:\"art-basel-in-miami-beach-2018\")",
         "args": (v0/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           (v1/*: any*/),
           (v2/*: any*/),
           (v3/*: any*/)
-        ]
+        ],
+        "storageKey": "fair(id:\"art-basel-in-miami-beach-2018\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "FairBMWArtActivationTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": "fair(id:\"art-basel-in-miami-beach-2018\")",
         "args": (v0/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           (v1/*: any*/),
           (v2/*: any*/),
           (v3/*: any*/),
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "id",
             "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": "fair(id:\"art-basel-in-miami-beach-2018\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "FairBMWArtActivationTestsQuery",
     "id": "d56c9ab97d9553bcc60be71e5bf293c8",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "FairBMWArtActivationTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

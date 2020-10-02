@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 8b7ecce1be46f506381aa0311de0b598 */
+// @ts-nocheck
+/* @relayHash ad1642dc31d8cc664803d629a050b4e9 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type ConfirmBidRefetchQueryVariables = {
@@ -38,31 +39,27 @@ query ConfirmBidRefetchQuery(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "saleID",
-    "type": "String!",
-    "defaultValue": null
+    "name": "saleID"
   }
 ],
 v1 = {
-  "kind": "ScalarField",
   "alias": "has_qualified_credit_cards",
-  "name": "hasQualifiedCreditCards",
   "args": null,
+  "kind": "ScalarField",
+  "name": "hasQualifiedCreditCards",
   "storageKey": null
 },
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 },
 v3 = {
-  "kind": "LinkedField",
   "alias": null,
-  "name": "bidders",
-  "storageKey": null,
   "args": [
     {
       "kind": "Variable",
@@ -71,62 +68,66 @@ v3 = {
     }
   ],
   "concreteType": "Bidder",
+  "kind": "LinkedField",
+  "name": "bidders",
   "plural": true,
   "selections": [
     (v2/*: any*/)
-  ]
+  ],
+  "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ConfirmBidRefetchQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ConfirmBidRefetchQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "me",
-        "storageKey": null,
         "args": null,
         "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
         "plural": false,
         "selections": [
           (v1/*: any*/),
           (v3/*: any*/)
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "ConfirmBidRefetchQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "me",
-        "storageKey": null,
         "args": null,
         "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
         "plural": false,
         "selections": [
           (v1/*: any*/),
           (v3/*: any*/),
           (v2/*: any*/)
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "ConfirmBidRefetchQuery",
     "id": "ad1642dc31d8cc664803d629a050b4e9",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "ConfirmBidRefetchQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

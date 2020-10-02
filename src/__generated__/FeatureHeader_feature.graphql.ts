@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -20,39 +21,35 @@ export type FeatureHeader_feature$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "FeatureHeader_feature",
-  "type": "Feature",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "FeatureHeader_feature",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "name",
-      "args": null,
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
-      "alias": null,
       "name": "subheadline",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "image",
-      "storageKey": null,
       "args": null,
       "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "image",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "url",
           "args": [
             {
               "kind": "Literal",
@@ -60,11 +57,16 @@ const node: ReaderFragment = {
               "value": "source"
             }
           ],
+          "kind": "ScalarField",
+          "name": "url",
           "storageKey": "url(version:\"source\")"
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Feature",
+  "abstractKey": null
 };
 (node as any).hash = '954e997b8f74ab448312d969a47d54d6';
 export default node;

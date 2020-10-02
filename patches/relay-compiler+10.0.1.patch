@@ -1,8 +1,8 @@
 diff --git a/node_modules/relay-compiler/bin/relay-compiler b/node_modules/relay-compiler/bin/relay-compiler
-index 391ae11..22b4f4a 100755
+index 14d0619..6830169 100755
 --- a/node_modules/relay-compiler/bin/relay-compiler
 +++ b/node_modules/relay-compiler/bin/relay-compiler
-@@ -309,7 +309,7 @@ function highlightSourceAtLocation(source, location) {
+@@ -291,7 +291,7 @@ function highlightSourceAtLocation(source, location) {
    var columnOffset = location.line === 1 ? firstLineColumnOffset : 0;
    var columnNum = location.column + columnOffset;
    var lines = body.split(/\r\n|[\n\r]/g);
@@ -11,21 +11,22 @@ index 391ae11..22b4f4a 100755
    ["".concat(lineNum - 1, ": "), lines[lineIndex - 1]], ["".concat(lineNum, ": "), lines[lineIndex]], ['', whitespace(columnNum - 1) + '^'], ["".concat(lineNum + 1, ": "), lines[lineIndex + 1]]]);
  }
  
-@@ -12402,7 +12402,7 @@ function writeRelayGeneratedFile(_x, _x2, _x3, _x4, _x5, _x6, _x7, _x8, _x9) {
- function _writeRelayGeneratedFile() {
-   _writeRelayGeneratedFile = _asyncToGenerator(function* (schema, codegenDir, definition, _generatedNode, formatModule, typeText, _persistQuery, sourceHash, extension) {
-     var printModuleDependency = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : createPrintRequireModuleDependency(extension);
--    var shouldRepersist = arguments.length > 10 ? arguments[10] : undefined;
+@@ -2374,7 +2374,7 @@ var CodegenDirectory = /*#__PURE__*/function () {
+   _proto.writeFile = function writeFile(filename, content) {
+     var _this2 = this;
+ 
+-    var shouldRepersist = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 +    var shouldRepersist = true
-     var writeQueryParameters = arguments.length > 11 ? arguments[11] : undefined;
-     var languagePlugin = arguments.length > 12 ? arguments[12] : undefined;
-     var generatedNode = _generatedNode; // Copy to const so Flow can refine.
-@@ -17512,10 +17512,10 @@ module.exports = function (tagFinder, getFileFilter) {
+     Profiler.run('CodegenDirectory.writeFile', function () {
+       _this2._addGenerated(filename);
+ 
+@@ -18128,10 +18128,11 @@ module.exports = function (tagFinder, getFileFilter) {
  
      var astDefinitions = [];
      var sources = [];
 -    memoizedTagFinder(text, baseDir, file).forEach(function (template) {
 -      var source = new GraphQL.Source(template, file.relPath);
++
 +    memoizedTagFinder(text, baseDir, file).forEach(function (tag) {
 +      var source = new GraphQL.Source(tag.template, path.join(path.relative(process.cwd(), baseDir), file.relPath), tag.sourceLocationOffset);
        var ast = parseGraphQL(source);
@@ -34,14 +35,14 @@ index 391ae11..22b4f4a 100755
        sources.push(source.body);
        astDefinitions.push.apply(astDefinitions, (0, _toConsumableArray2["default"])(ast.definitions));
      });
-@@ -17600,9 +17600,7 @@ function find(tagFinder, text, absPath) {
+@@ -18216,9 +18217,7 @@ function find(tagFinder, text, absPath) {
    tags.forEach(function (tag) {
      return validateTemplate(tag, moduleName, absPath);
    });
 -  return tags.map(function (tag) {
 -    return tag.template;
 -  });
-+  return tags;
++  return tags
  }
  
  function validateTemplate(_ref, moduleName, filePath) {

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -42,23 +43,33 @@ export type PartnerShowsRail_partner$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 },
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "name",
   "args": null,
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 };
 return {
+  "argumentDefinitions": [
+    {
+      "defaultValue": 6,
+      "kind": "LocalArgument",
+      "name": "count"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "cursor"
+    }
+  ],
   "kind": "Fragment",
-  "name": "PartnerShowsRail_partner",
-  "type": "Partner",
   "metadata": {
     "connection": [
       {
@@ -71,27 +82,11 @@ return {
       }
     ]
   },
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "count",
-      "type": "Int",
-      "defaultValue": 6
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "cursor",
-      "type": "String",
-      "defaultValue": null
-    }
-  ],
+  "name": "PartnerShowsRail_partner",
   "selections": [
     (v0/*: any*/),
     {
-      "kind": "LinkedField",
       "alias": "currentAndUpcomingShows",
-      "name": "__Partner_currentAndUpcomingShows_connection",
-      "storageKey": "__Partner_currentAndUpcomingShows_connection(sort:\"END_AT_ASC\",status:\"CURRENT\")",
       "args": [
         {
           "kind": "Literal",
@@ -105,157 +100,163 @@ return {
         }
       ],
       "concreteType": "ShowConnection",
+      "kind": "LinkedField",
+      "name": "__Partner_currentAndUpcomingShows_connection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "pageInfo",
-          "storageKey": null,
           "args": null,
           "concreteType": "PageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "hasNextPage",
-              "args": null,
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "startCursor",
-              "args": null,
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "endCursor",
               "args": null,
+              "kind": "ScalarField",
+              "name": "endCursor",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "ShowEdge",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "Show",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "isDisplayable",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "isDisplayable",
                   "storageKey": null
                 },
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "id",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "id",
                   "storageKey": null
                 },
                 (v0/*: any*/),
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "slug",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "slug",
                   "storageKey": null
                 },
                 (v1/*: any*/),
                 {
-                  "kind": "ScalarField",
                   "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "exhibitionPeriod",
-                  "args": null,
                   "storageKey": null
                 },
                 {
+                  "alias": null,
+                  "args": null,
                   "kind": "ScalarField",
-                  "alias": null,
                   "name": "endAt",
-                  "args": null,
                   "storageKey": null
                 },
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "images",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "Image",
+                  "kind": "LinkedField",
+                  "name": "images",
                   "plural": true,
                   "selections": [
                     {
-                      "kind": "ScalarField",
                       "alias": null,
-                      "name": "url",
                       "args": null,
+                      "kind": "ScalarField",
+                      "name": "url",
                       "storageKey": null
                     }
-                  ]
+                  ],
+                  "storageKey": null
                 },
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "partner",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": null,
+                  "kind": "LinkedField",
+                  "name": "partner",
                   "plural": false,
                   "selections": [
                     {
                       "kind": "InlineFragment",
-                      "type": "Partner",
                       "selections": [
                         (v1/*: any*/)
-                      ]
+                      ],
+                      "type": "Partner",
+                      "abstractKey": null
                     }
-                  ]
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "__typename",
-                  "args": null,
+                  ],
                   "storageKey": null
                 },
                 {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
+                  "storageKey": null
+                },
+                {
+                  "args": null,
                   "kind": "FragmentSpread",
-                  "name": "PartnerShowRailItem_show",
-                  "args": null
+                  "name": "PartnerShowRailItem_show"
                 }
-              ]
+              ],
+              "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "cursor",
               "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": "__Partner_currentAndUpcomingShows_connection(sort:\"END_AT_ASC\",status:\"CURRENT\")"
     }
-  ]
+  ],
+  "type": "Partner",
+  "abstractKey": null
 };
 })();
 (node as any).hash = 'b007865b35c523c7198f2de659074860';

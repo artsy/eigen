@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 7fad7650d50cc0c1cbb2b18ad49d14f7 */
+// @ts-nocheck
+/* @relayHash ba96e13a2b0672e7b9763c1647dd5c2d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -38,51 +39,48 @@ fragment HomeHero_homePage on HomePage {
 */
 
 const node: ConcreteRequest = {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "HomeHeroTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "HomeHeroTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "homePage",
-        "storageKey": null,
         "args": null,
         "concreteType": "HomePage",
+        "kind": "LinkedField",
+        "name": "homePage",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "HomeHero_homePage",
-            "args": null
+            "name": "HomeHero_homePage"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "HomeHeroTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "homePage",
-        "storageKey": null,
         "args": null,
         "concreteType": "HomePage",
+        "kind": "LinkedField",
+        "name": "homePage",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "heroUnits",
-            "storageKey": "heroUnits(platform:\"MOBILE\")",
             "args": [
               {
                 "kind": "Literal",
@@ -91,69 +89,73 @@ const node: ConcreteRequest = {
               }
             ],
             "concreteType": "HomePageHeroUnit",
+            "kind": "LinkedField",
+            "name": "heroUnits",
             "plural": true,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "title",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "subtitle",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "creditLine",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "linkText",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "href",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "backgroundImageURL",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "id",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "id",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": "heroUnits(platform:\"MOBILE\")"
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "HomeHeroTestsQuery",
     "id": "ba96e13a2b0672e7b9763c1647dd5c2d",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "HomeHeroTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 (node as any).hash = '63c8573155169d6d07b9835a2b086e98';

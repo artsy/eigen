@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 7e27f6d17d90c9052b81e9866aa8673e */
+// @ts-nocheck
+/* @relayHash fd4f1ff25cf937f269558e95330ce314 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type ConsignmentSubmissionCategoryAggregation = "ARCHITECTURE" | "DESIGN_DECORATIVE_ART" | "DRAWING_COLLAGE_OR_OTHER_WORK_ON_PAPER" | "FASHION_DESIGN_AND_WEARABLE_ART" | "INSTALLATION" | "JEWELRY" | "MIXED_MEDIA" | "OTHER" | "PAINTING" | "PERFORMANCE_ART" | "PHOTOGRAPHY" | "PRINT" | "SCULPTURE" | "TEXTILE_ARTS" | "VIDEO_FILM_ANIMATION" | "%future added value";
@@ -64,10 +65,9 @@ mutation createConsignmentSubmissionMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "CreateSubmissionMutationInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
@@ -78,89 +78,90 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "createConsignmentSubmissionMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "createConsignmentSubmissionMutation",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "createConsignmentSubmission",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "CreateSubmissionMutationPayload",
+        "kind": "LinkedField",
+        "name": "createConsignmentSubmission",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "consignmentSubmission",
-            "storageKey": null,
             "args": null,
             "concreteType": "ConsignmentSubmission",
+            "kind": "LinkedField",
+            "name": "consignmentSubmission",
             "plural": false,
             "selections": [
               (v2/*: any*/)
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "createConsignmentSubmissionMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "createConsignmentSubmission",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "CreateSubmissionMutationPayload",
+        "kind": "LinkedField",
+        "name": "createConsignmentSubmission",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "consignmentSubmission",
-            "storageKey": null,
             "args": null,
             "concreteType": "ConsignmentSubmission",
+            "kind": "LinkedField",
+            "name": "consignmentSubmission",
             "plural": false,
             "selections": [
               (v2/*: any*/),
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "id",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "id",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "createConsignmentSubmissionMutation",
     "id": "fd4f1ff25cf937f269558e95330ce314",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "createConsignmentSubmissionMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

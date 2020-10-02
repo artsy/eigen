@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 222ad39909be6cdb8efa259cf49c5712 */
+// @ts-nocheck
+/* @relayHash 108cb9f99476582d09ac4bcc310787c0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -47,162 +48,159 @@ var v0 = [
   }
 ],
 v1 = {
-  "type": "String",
   "enumValues": null,
+  "nullable": true,
   "plural": false,
-  "nullable": true
+  "type": "String"
+},
+v2 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "SaleHeaderTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "SaleHeaderTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "sale",
-        "storageKey": "sale(id:\"the-sale\")",
         "args": (v0/*: any*/),
         "concreteType": "Sale",
+        "kind": "LinkedField",
+        "name": "sale",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "SaleHeader_sale",
-            "args": null
+            "name": "SaleHeader_sale"
           }
-        ]
+        ],
+        "storageKey": "sale(id:\"the-sale\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "SaleHeaderTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "sale",
-        "storageKey": "sale(id:\"the-sale\")",
         "args": (v0/*: any*/),
         "concreteType": "Sale",
+        "kind": "LinkedField",
+        "name": "sale",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "name",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "internalID",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "liveStartAt",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "endAt",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "startAt",
-            "args": null,
             "storageKey": null
           },
           {
+            "alias": null,
+            "args": null,
             "kind": "ScalarField",
-            "alias": null,
             "name": "timeZone",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "coverImage",
-            "storageKey": null,
             "args": null,
             "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "coverImage",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "url",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "url",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "id",
             "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": "sale(id:\"the-sale\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "SaleHeaderTestsQuery",
     "id": "108cb9f99476582d09ac4bcc310787c0",
-    "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "sale": {
-          "type": "Sale",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Sale"
         },
-        "sale.id": {
-          "type": "ID",
-          "enumValues": null,
-          "plural": false,
-          "nullable": true
-        },
-        "sale.name": (v1/*: any*/),
-        "sale.internalID": {
-          "type": "ID",
-          "enumValues": null,
-          "plural": false,
-          "nullable": false
-        },
-        "sale.liveStartAt": (v1/*: any*/),
-        "sale.endAt": (v1/*: any*/),
-        "sale.startAt": (v1/*: any*/),
-        "sale.timeZone": (v1/*: any*/),
         "sale.coverImage": {
-          "type": "Image",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Image"
         },
-        "sale.coverImage.url": (v1/*: any*/)
+        "sale.coverImage.url": (v1/*: any*/),
+        "sale.endAt": (v1/*: any*/),
+        "sale.id": (v2/*: any*/),
+        "sale.internalID": (v2/*: any*/),
+        "sale.liveStartAt": (v1/*: any*/),
+        "sale.name": (v1/*: any*/),
+        "sale.startAt": (v1/*: any*/),
+        "sale.timeZone": (v1/*: any*/)
       }
-    }
+    },
+    "name": "SaleHeaderTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

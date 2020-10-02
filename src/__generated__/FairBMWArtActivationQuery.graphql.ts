@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash de5bbcb4b1e8df27a2619eb7a216bd61 */
+// @ts-nocheck
+/* @relayHash 68cc3854a45b4d6ed04997d8c7e1dc2f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -42,10 +43,9 @@ fragment FairBMWArtActivation_fair on Fair {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "fairID",
-    "type": "String!",
-    "defaultValue": null
+    "name": "fairID"
   }
 ],
 v1 = [
@@ -56,102 +56,103 @@ v1 = [
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "FairBMWArtActivationQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "FairBMWArtActivationQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "FairBMWArtActivation_fair",
-            "args": null
+            "name": "FairBMWArtActivation_fair"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "FairBMWArtActivationQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "slug",
-            "args": null,
             "storageKey": null
           },
           {
+            "alias": null,
+            "args": null,
             "kind": "ScalarField",
-            "alias": null,
             "name": "internalID",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "sponsoredContent",
-            "storageKey": null,
             "args": null,
             "concreteType": "FairSponsoredContent",
+            "kind": "LinkedField",
+            "name": "sponsoredContent",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "activationText",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "activationText",
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "pressReleaseUrl",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "pressReleaseUrl",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "id",
             "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "FairBMWArtActivationQuery",
     "id": "68cc3854a45b4d6ed04997d8c7e1dc2f",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "FairBMWArtActivationQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

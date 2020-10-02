@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -16,20 +17,21 @@ export type Biography_gene$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "Biography_gene",
-  "type": "Gene",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Biography_gene",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "description",
       "args": null,
+      "kind": "ScalarField",
+      "name": "description",
       "storageKey": null
     }
-  ]
+  ],
+  "type": "Gene",
+  "abstractKey": null
 };
 (node as any).hash = '50849d2daf12d006bf14b29f169ebd34';
 export default node;

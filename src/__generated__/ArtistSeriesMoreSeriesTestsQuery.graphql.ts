@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 08445529d790dae8108ad7618184e00a */
+// @ts-nocheck
+/* @relayHash 4a1ea54bc0f5f737f843598f4c936792 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,7 +32,7 @@ export type ArtistSeriesMoreSeriesTestsQueryRawResponse = {
                     }) | null;
                 }) | null> | null;
             }) | null;
-            readonly id: string | null;
+            readonly id: string;
         }) | null> | null;
     }) | null;
 };
@@ -89,79 +90,75 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ArtistSeriesMoreSeriesTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ArtistSeriesMoreSeriesTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artistSeries",
-        "storageKey": "artistSeries(id:\"pumpkins\")",
         "args": (v0/*: any*/),
         "concreteType": "ArtistSeries",
+        "kind": "LinkedField",
+        "name": "artistSeries",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": "artist",
-            "name": "artists",
-            "storageKey": "artists(size:1)",
             "args": (v1/*: any*/),
             "concreteType": "Artist",
+            "kind": "LinkedField",
+            "name": "artists",
             "plural": true,
             "selections": [
               {
+                "args": null,
                 "kind": "FragmentSpread",
-                "name": "ArtistSeriesMoreSeries_artist",
-                "args": null
+                "name": "ArtistSeriesMoreSeries_artist"
               }
-            ]
+            ],
+            "storageKey": "artists(size:1)"
           }
-        ]
+        ],
+        "storageKey": "artistSeries(id:\"pumpkins\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "ArtistSeriesMoreSeriesTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artistSeries",
-        "storageKey": "artistSeries(id:\"pumpkins\")",
         "args": (v0/*: any*/),
         "concreteType": "ArtistSeries",
+        "kind": "LinkedField",
+        "name": "artistSeries",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": "artist",
-            "name": "artists",
-            "storageKey": "artists(size:1)",
             "args": (v1/*: any*/),
             "concreteType": "Artist",
+            "kind": "LinkedField",
+            "name": "artists",
             "plural": true,
             "selections": [
               (v2/*: any*/),
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "artistSeriesConnection",
-                "storageKey": "artistSeriesConnection(first:4)",
                 "args": [
                   {
                     "kind": "Literal",
@@ -170,105 +167,110 @@ return {
                   }
                 ],
                 "concreteType": "ArtistSeriesConnection",
+                "kind": "LinkedField",
+                "name": "artistSeriesConnection",
                 "plural": false,
                 "selections": [
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "totalCount",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "totalCount",
                     "storageKey": null
                   },
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "edges",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "ArtistSeriesEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
                     "plural": true,
                     "selections": [
                       {
-                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "node",
-                        "storageKey": null,
                         "args": null,
                         "concreteType": "ArtistSeries",
+                        "kind": "LinkedField",
+                        "name": "node",
                         "plural": false,
                         "selections": [
                           {
-                            "kind": "ScalarField",
                             "alias": null,
-                            "name": "slug",
                             "args": null,
+                            "kind": "ScalarField",
+                            "name": "slug",
                             "storageKey": null
                           },
                           (v2/*: any*/),
                           {
-                            "kind": "ScalarField",
                             "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "title",
-                            "args": null,
                             "storageKey": null
                           },
                           {
-                            "kind": "ScalarField",
                             "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "featured",
-                            "args": null,
                             "storageKey": null
                           },
                           {
+                            "alias": null,
+                            "args": null,
                             "kind": "ScalarField",
-                            "alias": null,
                             "name": "artworksCountMessage",
-                            "args": null,
                             "storageKey": null
                           },
                           {
-                            "kind": "LinkedField",
                             "alias": null,
-                            "name": "image",
-                            "storageKey": null,
                             "args": null,
                             "concreteType": "Image",
+                            "kind": "LinkedField",
+                            "name": "image",
                             "plural": false,
                             "selections": [
                               {
-                                "kind": "ScalarField",
                                 "alias": null,
-                                "name": "url",
                                 "args": null,
+                                "kind": "ScalarField",
+                                "name": "url",
                                 "storageKey": null
                               }
-                            ]
+                            ],
+                            "storageKey": null
                           }
-                        ]
+                        ],
+                        "storageKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": "artistSeriesConnection(first:4)"
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "id",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "id",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": "artists(size:1)"
           }
-        ]
+        ],
+        "storageKey": "artistSeries(id:\"pumpkins\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "ArtistSeriesMoreSeriesTestsQuery",
     "id": "4a1ea54bc0f5f737f843598f4c936792",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "ArtistSeriesMoreSeriesTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

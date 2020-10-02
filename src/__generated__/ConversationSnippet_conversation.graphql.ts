@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -50,10 +51,10 @@ export type ConversationSnippet_conversation$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "name",
   "args": null,
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 },
 v1 = [
@@ -61,170 +62,173 @@ v1 = [
 ],
 v2 = [
   {
-    "kind": "ScalarField",
     "alias": null,
-    "name": "url",
     "args": null,
+    "kind": "ScalarField",
+    "name": "url",
     "storageKey": null
   }
 ];
 return {
-  "kind": "Fragment",
-  "name": "ConversationSnippet_conversation",
-  "type": "Conversation",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ConversationSnippet_conversation",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "internalID",
       "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "to",
-      "storageKey": null,
       "args": null,
       "concreteType": "ConversationResponder",
-      "plural": false,
-      "selections": (v1/*: any*/)
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "lastMessage",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "lastMessageAt",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "unread",
-      "args": null,
-      "storageKey": null
-    },
-    {
       "kind": "LinkedField",
+      "name": "to",
+      "plural": false,
+      "selections": (v1/*: any*/),
+      "storageKey": null
+    },
+    {
       "alias": null,
-      "name": "items",
-      "storageKey": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "lastMessage",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "lastMessageAt",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "unread",
+      "storageKey": null
+    },
+    {
+      "alias": null,
       "args": null,
       "concreteType": "ConversationItem",
+      "kind": "LinkedField",
+      "name": "items",
       "plural": true,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "item",
-          "storageKey": null,
           "args": null,
           "concreteType": null,
+          "kind": "LinkedField",
+          "name": "item",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "__typename",
               "args": null,
+              "kind": "ScalarField",
+              "name": "__typename",
               "storageKey": null
             },
             {
               "kind": "InlineFragment",
-              "type": "Artwork",
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "date",
-                  "args": null,
                   "storageKey": null
                 },
                 {
-                  "kind": "ScalarField",
                   "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "title",
-                  "args": null,
                   "storageKey": null
                 },
                 {
+                  "alias": null,
+                  "args": null,
                   "kind": "ScalarField",
-                  "alias": null,
                   "name": "artistNames",
-                  "args": null,
                   "storageKey": null
                 },
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "image",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "Image",
+                  "kind": "LinkedField",
+                  "name": "image",
                   "plural": false,
-                  "selections": (v2/*: any*/)
+                  "selections": (v2/*: any*/),
+                  "storageKey": null
                 }
-              ]
+              ],
+              "type": "Artwork",
+              "abstractKey": null
             },
             {
               "kind": "InlineFragment",
-              "type": "Show",
               "selections": [
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "fair",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "Fair",
+                  "kind": "LinkedField",
+                  "name": "fair",
                   "plural": false,
-                  "selections": (v1/*: any*/)
+                  "selections": (v1/*: any*/),
+                  "storageKey": null
                 },
                 (v0/*: any*/),
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "coverImage",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "Image",
+                  "kind": "LinkedField",
+                  "name": "coverImage",
                   "plural": false,
-                  "selections": (v2/*: any*/)
+                  "selections": (v2/*: any*/),
+                  "storageKey": null
                 }
-              ]
+              ],
+              "type": "Show",
+              "abstractKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "messagesConnection",
-      "storageKey": null,
       "args": null,
       "concreteType": "MessageConnection",
+      "kind": "LinkedField",
+      "name": "messagesConnection",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "totalCount",
           "args": null,
+          "kind": "ScalarField",
+          "name": "totalCount",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Conversation",
+  "abstractKey": null
 };
 })();
 (node as any).hash = '7c190393600756ef1792697f632a80cc';
