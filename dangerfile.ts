@@ -81,11 +81,7 @@ const knownDevTools = danger.github.pr.body?.includes("#known") ?? false
 
 // These files are ones we really don't want changes to, except in really occasional
 // cases, so offer a way out.
-const devOnlyFiles = [
-  "Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m",
-  "Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+SwiftDeveloperExtras.swift",
-  "Artsy.xcodeproj/xcshareddata/xcschemes/Artsy.xcscheme",
-]
+const devOnlyFiles = ["Artsy.xcodeproj/xcshareddata/xcschemes/Artsy.xcscheme"]
 for (const file of devOnlyFiles) {
   if (modified.includes(file) && !knownDevTools) {
     fail(

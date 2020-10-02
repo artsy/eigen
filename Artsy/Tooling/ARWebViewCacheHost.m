@@ -70,10 +70,6 @@
     config.allowsInlineMediaPlayback = YES;
     config.mediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypeNone;
 
-    // Allow hooking up to the web inspector
-    if(ARAppStatus.isBetaDevOrAdmin) {
-        [config.preferences setValue:@YES forKey:@"developerExtrasEnabled"];
-    }
     CGRect deviceBounds = [UIScreen mainScreen].bounds;
     WKWebView *webView = [[WKWebView alloc] initWithFrame:deviceBounds configuration:config];
     webView.navigationDelegate = self;
