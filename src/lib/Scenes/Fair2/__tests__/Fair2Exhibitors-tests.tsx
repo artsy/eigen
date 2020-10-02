@@ -4,13 +4,18 @@ import {
 } from "__generated__/Fair2ExhibitorsTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Button } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
+import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { Fair2ExhibitorRailFragmentContainer } from "../Components/Fair2ExhibitorRail"
 import { Fair2ExhibitorsFragmentContainer } from "../Components/Fair2Exhibitors"
 
 jest.unmock("react-relay")
+
+const trackEvent = useTracking().trackEvent
 
 describe("FairExhibitors", () => {
   const getWrapper = (fixture = FAIR_2_EXHIBITORS_FIXTURE) => {
@@ -61,11 +66,26 @@ describe("FairExhibitors", () => {
     const wrapper = getWrapper()
     expect(extractText(wrapper.root)).toContain("Show more")
   })
+
+  it("tracks taps on the show more button", () => {
+    const wrapper = getWrapper()
+    const button = wrapper.root.findAllByType(Button)[0]
+    act(() => button.props.onPress())
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedShowMore",
+      context_module: "exhibitorsTab",
+      context_screen_owner_type: "fair",
+      context_screen_owner_id: "xyz123",
+      context_screen_owner_slug: "xxx",
+      subject: "showMore",
+    })
+  })
 })
 
 const FAIR_2_EXHIBITORS_FIXTURE: Fair2ExhibitorsTestsQueryRawResponse = {
   fair: {
     id: "xxx",
+    internalID: "xyz123",
     slug: "xxx",
     exhibitors: {
       pageInfo: {
