@@ -3,9 +3,10 @@ import { Fair2Query } from "__generated__/Fair2Query.graphql"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Schema } from "lib/utils/track"
-import { Box, Separator, Spacer, Theme } from "palette"
+import { Box, Flex, Separator, Spacer, Theme } from "palette"
 import React, { useRef, useState } from "react"
 import { FlatList, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -39,6 +40,7 @@ const tabs: TabsType = [
 ]
 
 export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
+  console.log("FAIR", fair)
   const hasArticles = !!fair.articles?.edges?.length
   const hasCollections = !!fair.marketingCollections.length
   const hasArtworks = !!(fair.counts?.artworks ?? 0 > 0)
@@ -211,7 +213,31 @@ export const Fair2QueryRenderer: React.FC<Fair2QueryRendererProps> = ({ fairID }
         }
       `}
       variables={{ fairID }}
-      render={renderWithLoadProgress(Fair2FragmentContainer)}
+      render={renderWithPlaceholder({
+        Container: Fair2FragmentContainer,
+        renderPlaceholder: () => <Fair2Placeholder />,
+      })}
     />
   )
 }
+
+export const Fair2Placeholder: React.FC = () => (
+  <Flex>
+    <PlaceholderBox height={400} />
+    <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
+      <Flex>
+        <Spacer mb={2} />
+        {/* Fair name */}
+        <PlaceholderText width={220} />
+        {/* Fair info */}
+        <PlaceholderText width={190} />
+        <PlaceholderText width={190} />
+      </Flex>
+    </Flex>
+    <Spacer mb={2} />
+    <Separator />
+    <Spacer mb={2} />
+    {/* masonry grid */}
+    <PlaceholderGrid />
+  </Flex>
+)

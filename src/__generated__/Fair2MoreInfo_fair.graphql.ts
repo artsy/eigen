@@ -19,11 +19,11 @@ export type Fair2MoreInfo_fair = {
         readonly " $fragmentRefs": FragmentRefs<"LocationMap_location">;
     } | null;
     readonly ticketsLink: string | null;
-    readonly hours: string | null;
-    readonly links: string | null;
-    readonly tickets: string | null;
     readonly summary: string | null;
-    readonly contact: string | null;
+    readonly fairHours: string | null;
+    readonly fairLinks: string | null;
+    readonly fairTickets: string | null;
+    readonly fairContact: string | null;
     readonly " $refType": "Fair2MoreInfo_fair";
 };
 export type Fair2MoreInfo_fair$data = Fair2MoreInfo_fair;
@@ -139,31 +139,31 @@ return {
       "args": null,
       "storageKey": null
     },
+    (v1/*: any*/),
     {
       "kind": "ScalarField",
-      "alias": null,
+      "alias": "fairHours",
       "name": "hours",
       "args": (v2/*: any*/),
       "storageKey": "hours(format:\"MARKDOWN\")"
     },
     {
       "kind": "ScalarField",
-      "alias": null,
+      "alias": "fairLinks",
       "name": "links",
       "args": (v2/*: any*/),
       "storageKey": "links(format:\"MARKDOWN\")"
     },
     {
       "kind": "ScalarField",
-      "alias": null,
+      "alias": "fairTickets",
       "name": "tickets",
       "args": (v2/*: any*/),
       "storageKey": "tickets(format:\"MARKDOWN\")"
     },
-    (v1/*: any*/),
     {
       "kind": "ScalarField",
-      "alias": null,
+      "alias": "fairContact",
       "name": "contact",
       "args": (v2/*: any*/),
       "storageKey": "contact(format:\"MARKDOWN\")"
@@ -171,5 +171,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'e97c82f264b236875fa1acdf28507f9f';
+(node as any).hash = '86c92cffff08a425f860ed78d9a4b6d9';
 export default node;

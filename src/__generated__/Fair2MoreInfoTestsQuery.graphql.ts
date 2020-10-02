@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c13fe0c1f0d6f74dde886c6302078d19 */
+/* @relayHash 0596271048302b74c564b4826df49b34 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -52,11 +52,11 @@ export type Fair2MoreInfoTestsQueryRawResponse = {
             }) | null;
         }) | null;
         readonly ticketsLink: string | null;
-        readonly hours: string | null;
-        readonly links: string | null;
-        readonly tickets: string | null;
         readonly summary: string | null;
-        readonly contact: string | null;
+        readonly fairHours: string | null;
+        readonly fairLinks: string | null;
+        readonly fairTickets: string | null;
+        readonly fairContact: string | null;
         readonly id: string | null;
     }) | null;
 };
@@ -96,11 +96,11 @@ fragment Fair2MoreInfo_fair on Fair {
     id
   }
   ticketsLink
-  hours(format: MARKDOWN)
-  links(format: MARKDOWN)
-  tickets(format: MARKDOWN)
   summary
-  contact(format: MARKDOWN)
+  fairHours: hours(format: MARKDOWN)
+  fairLinks: links(format: MARKDOWN)
+  fairTickets: tickets(format: MARKDOWN)
+  fairContact: contact(format: MARKDOWN)
 }
 
 fragment LocationMap_location on Location {
@@ -422,31 +422,31 @@ return {
             "args": null,
             "storageKey": null
           },
+          (v4/*: any*/),
           {
             "kind": "ScalarField",
-            "alias": null,
+            "alias": "fairHours",
             "name": "hours",
             "args": (v5/*: any*/),
             "storageKey": "hours(format:\"MARKDOWN\")"
           },
           {
             "kind": "ScalarField",
-            "alias": null,
+            "alias": "fairLinks",
             "name": "links",
             "args": (v5/*: any*/),
             "storageKey": "links(format:\"MARKDOWN\")"
           },
           {
             "kind": "ScalarField",
-            "alias": null,
+            "alias": "fairTickets",
             "name": "tickets",
             "args": (v5/*: any*/),
             "storageKey": "tickets(format:\"MARKDOWN\")"
           },
-          (v4/*: any*/),
           {
             "kind": "ScalarField",
-            "alias": null,
+            "alias": "fairContact",
             "name": "contact",
             "args": (v5/*: any*/),
             "storageKey": "contact(format:\"MARKDOWN\")"
@@ -459,7 +459,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "Fair2MoreInfoTestsQuery",
-    "id": "44635ee5734a14f12974fde627e6000d",
+    "id": "bbaa46556c47b0e60e917e6ca648cebe",
     "text": null,
     "metadata": {}
   }

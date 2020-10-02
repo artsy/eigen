@@ -15,6 +15,7 @@ NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
 NSString *const AROptionsArtistSeries = @"AROptionsArtistSeries";
 NSString *const AROptionsNewSalePage = @"AROptionsNewSalePage";
 NSString *const AROptionsNewFirstInquiry = @"AROptionsNewFirstInquiry";
+NSString *const AROptionsShowNewFairScreen = @"AROptionsShowNewFairScreen";
 
 // UX changes
 NSString *const AROptionsDisableNativeLiveAuctions = @"AROptionsDisableNativeLiveAuctions";
@@ -47,6 +48,7 @@ NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebVie
          AROptionsNewSalePage: @"Enable new sale (auction) page",
          AROptionsNewFirstInquiry: @"Enable new first inquiry flow",
          AROptionsUseReactNativeWebView: @"Use react native webviews",
+         AROptionsShowNewFairScreen: @"Use new fair screen",
         };
     });
 }

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ce92ec48331df1395742527ce43a481c */
+/* @relayHash 54edd35978c6049c89d0e19a58e10602 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -231,12 +231,12 @@ fragment Fair2Header_fair on Fair {
   slug
   profile {
     icon {
-      url(version: "untouched-png")
+      profileUrl: url(version: "untouched-png")
     }
     id
   }
   image {
-    url(version: "large_rectangle")
+    imageUrl: url(version: "large_rectangle")
     aspectRatio
   }
   tagline
@@ -245,10 +245,10 @@ fragment Fair2Header_fair on Fair {
     id
   }
   ticketsLink
-  hours(format: MARKDOWN)
-  links(format: MARKDOWN)
-  tickets(format: MARKDOWN)
-  contact(format: MARKDOWN)
+  fairHours: hours(format: MARKDOWN)
+  fairLinks: links(format: MARKDOWN)
+  fairTickets: tickets(format: MARKDOWN)
+  fairContact: contact(format: MARKDOWN)
 }
 
 fragment Fair2_fair on Fair {
@@ -798,7 +798,7 @@ return {
                 "selections": [
                   {
                     "kind": "ScalarField",
-                    "alias": null,
+                    "alias": "profileUrl",
                     "name": "url",
                     "args": [
                       {
@@ -825,7 +825,7 @@ return {
             "selections": [
               {
                 "kind": "ScalarField",
-                "alias": null,
+                "alias": "imageUrl",
                 "name": "url",
                 "args": [
                   {
@@ -868,28 +868,28 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": null,
+            "alias": "fairHours",
             "name": "hours",
             "args": (v12/*: any*/),
             "storageKey": "hours(format:\"MARKDOWN\")"
           },
           {
             "kind": "ScalarField",
-            "alias": null,
+            "alias": "fairLinks",
             "name": "links",
             "args": (v12/*: any*/),
             "storageKey": "links(format:\"MARKDOWN\")"
           },
           {
             "kind": "ScalarField",
-            "alias": null,
+            "alias": "fairTickets",
             "name": "tickets",
             "args": (v12/*: any*/),
             "storageKey": "tickets(format:\"MARKDOWN\")"
           },
           {
             "kind": "ScalarField",
-            "alias": null,
+            "alias": "fairContact",
             "name": "contact",
             "args": (v12/*: any*/),
             "storageKey": "contact(format:\"MARKDOWN\")"
@@ -1353,7 +1353,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "Fair2Query",
-    "id": "c15d20223eeeffe06769d94edd3adcbb",
+    "id": "f8aff261c32a8a604c0a18e6a61d6844",
     "text": null,
     "metadata": {}
   }

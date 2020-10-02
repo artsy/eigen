@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash cdd83a16bdd14d8b76924b6ebbc11d03 */
+/* @relayHash f1f77175bb1645cb9689671ec0a6efee */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -58,12 +58,12 @@ export type Fair2TestsQueryRawResponse = {
         readonly name: string | null;
         readonly profile: ({
             readonly icon: ({
-                readonly url: string | null;
+                readonly profileUrl: string | null;
             }) | null;
             readonly id: string | null;
         }) | null;
         readonly image: ({
-            readonly url: string | null;
+            readonly imageUrl: string | null;
             readonly aspectRatio: number;
         }) | null;
         readonly tagline: string | null;
@@ -72,10 +72,10 @@ export type Fair2TestsQueryRawResponse = {
             readonly id: string | null;
         }) | null;
         readonly ticketsLink: string | null;
-        readonly hours: string | null;
-        readonly links: string | null;
-        readonly tickets: string | null;
-        readonly contact: string | null;
+        readonly fairHours: string | null;
+        readonly fairLinks: string | null;
+        readonly fairTickets: string | null;
+        readonly fairContact: string | null;
         readonly fairArtworks: ({
             readonly aggregations: ReadonlyArray<({
                 readonly slice: ArtworkAggregation | null;
@@ -427,12 +427,12 @@ fragment Fair2Header_fair on Fair {
   slug
   profile {
     icon {
-      url(version: "untouched-png")
+      profileUrl: url(version: "untouched-png")
     }
     id
   }
   image {
-    url(version: "large_rectangle")
+    imageUrl: url(version: "large_rectangle")
     aspectRatio
   }
   tagline
@@ -441,10 +441,10 @@ fragment Fair2Header_fair on Fair {
     id
   }
   ticketsLink
-  hours(format: MARKDOWN)
-  links(format: MARKDOWN)
-  tickets(format: MARKDOWN)
-  contact(format: MARKDOWN)
+  fairHours: hours(format: MARKDOWN)
+  fairLinks: links(format: MARKDOWN)
+  fairTickets: tickets(format: MARKDOWN)
+  fairContact: contact(format: MARKDOWN)
 }
 
 fragment Fair2_fair on Fair {
@@ -994,7 +994,7 @@ return {
                 "selections": [
                   {
                     "kind": "ScalarField",
-                    "alias": null,
+                    "alias": "profileUrl",
                     "name": "url",
                     "args": [
                       {
@@ -1021,7 +1021,7 @@ return {
             "selections": [
               {
                 "kind": "ScalarField",
-                "alias": null,
+                "alias": "imageUrl",
                 "name": "url",
                 "args": [
                   {
@@ -1064,28 +1064,28 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": null,
+            "alias": "fairHours",
             "name": "hours",
             "args": (v12/*: any*/),
             "storageKey": "hours(format:\"MARKDOWN\")"
           },
           {
             "kind": "ScalarField",
-            "alias": null,
+            "alias": "fairLinks",
             "name": "links",
             "args": (v12/*: any*/),
             "storageKey": "links(format:\"MARKDOWN\")"
           },
           {
             "kind": "ScalarField",
-            "alias": null,
+            "alias": "fairTickets",
             "name": "tickets",
             "args": (v12/*: any*/),
             "storageKey": "tickets(format:\"MARKDOWN\")"
           },
           {
             "kind": "ScalarField",
-            "alias": null,
+            "alias": "fairContact",
             "name": "contact",
             "args": (v12/*: any*/),
             "storageKey": "contact(format:\"MARKDOWN\")"
@@ -1549,7 +1549,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "Fair2TestsQuery",
-    "id": "9ececaf96a76b586004a36e549184705",
+    "id": "dad0377fc069e53c8acefbaff62cb987",
     "text": null,
     "metadata": {}
   }

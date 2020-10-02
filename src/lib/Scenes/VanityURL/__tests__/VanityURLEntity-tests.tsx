@@ -2,6 +2,7 @@ import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlacehold
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { fairFixture } from "lib/Scenes/Fair/__fixtures__"
 import { Fair, FairContainer, FairPlaceholder } from "lib/Scenes/Fair/Fair"
+import { Fair2FragmentContainer } from "lib/Scenes/Fair2/Fair2"
 import { PartnerContainer } from "lib/Scenes/Partner"
 import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -141,6 +142,25 @@ describe("VanityURLEntity", () => {
       expect(fairComponent).toBeDefined()
     })
 
+    it("renders a new fair page fair when a fair is returned and the lab option is enabled", () => {
+      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsShowNewFairScreen: true })
+      const tree = renderWithWrappers(<TestRenderer entity="fair" slugType="profileID" slug="some-fair" />)
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("VanityURLEntityQuery")
+      act(() => {
+        env.mock.resolveMostRecentOperation({
+          errors: [],
+          data: {
+            vanityURLEntity: {
+              __typename: "Fair",
+              ...Fair2Fixture.fair,
+            },
+          },
+        })
+      })
+      const fairComponent = tree.root.findByType(Fair2FragmentContainer)
+      expect(fairComponent).toBeDefined()
+    })
+
     it("renders a webview when an unknown profile type is returned", () => {
       const tree = renderWithWrappers(<TestRenderer entity="unknown" slugType="profileID" slug="some-unknown-id" />)
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("VanityURLEntityQuery")
@@ -159,3 +179,43 @@ describe("VanityURLEntity", () => {
     })
   })
 })
+
+const Fair2Fixture = {
+  fair: {
+    name: "Art Basel Hong Kong 2020",
+    slug: "art-basel-hong-kong-2020",
+    internalID: "fair1244",
+    about:
+      "Following the cancelation of Art Basel in Hong Kong, Artsy is providing independent coverage of our partners galleries’ artworks intended for the fair. Available online from March 20th through April 3rd, the online catalogue features premier galleries from Asia and beyond. Concurrent with Artsy’s independent promotion, Art Basel is launching its Online Viewing Rooms, which provide exhibitors with an additional platform to present their program and artists to Art Basel's global network of collectors, buyers, and art enthusiasts.\r\n\r\n",
+    summary: "",
+    id: "xyz123",
+    image: {
+      aspectRatio: 1,
+      imageUrl: "https://testing.artsy.net/art-basel-hong-kong-image",
+    },
+    location: {
+      id: "cde123",
+      summary: null,
+    },
+    profile: {
+      id: "abc123",
+      icon: {
+        profileUrl: "https://testing.artsy.net/art-basel-hong-kong-icon",
+      },
+    },
+    tagline: "",
+    fairLinks: null,
+    fairContact: null,
+    fairHours: null,
+    fairTickets: null,
+    ticketsLink: "",
+    articles: { edges: [] },
+    marketingCollections: [],
+    counts: {
+      artworks: 0,
+      partnerShows: 0,
+    },
+    fairArtworks: null,
+    exhibitors: null,
+  },
+}

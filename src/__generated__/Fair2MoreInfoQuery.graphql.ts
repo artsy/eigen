@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e08eaf8794c32dbeeefa862bce13f179 */
+/* @relayHash 73d224b447b6c50b928e068c6fe52e84 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -47,11 +47,11 @@ fragment Fair2MoreInfo_fair on Fair {
     id
   }
   ticketsLink
-  hours(format: MARKDOWN)
-  links(format: MARKDOWN)
-  tickets(format: MARKDOWN)
   summary
-  contact(format: MARKDOWN)
+  fairHours: hours(format: MARKDOWN)
+  fairLinks: links(format: MARKDOWN)
+  fairTickets: tickets(format: MARKDOWN)
+  fairContact: contact(format: MARKDOWN)
 }
 
 fragment LocationMap_location on Location {
@@ -373,31 +373,31 @@ return {
             "args": null,
             "storageKey": null
           },
+          (v4/*: any*/),
           {
             "kind": "ScalarField",
-            "alias": null,
+            "alias": "fairHours",
             "name": "hours",
             "args": (v5/*: any*/),
             "storageKey": "hours(format:\"MARKDOWN\")"
           },
           {
             "kind": "ScalarField",
-            "alias": null,
+            "alias": "fairLinks",
             "name": "links",
             "args": (v5/*: any*/),
             "storageKey": "links(format:\"MARKDOWN\")"
           },
           {
             "kind": "ScalarField",
-            "alias": null,
+            "alias": "fairTickets",
             "name": "tickets",
             "args": (v5/*: any*/),
             "storageKey": "tickets(format:\"MARKDOWN\")"
           },
-          (v4/*: any*/),
           {
             "kind": "ScalarField",
-            "alias": null,
+            "alias": "fairContact",
             "name": "contact",
             "args": (v5/*: any*/),
             "storageKey": "contact(format:\"MARKDOWN\")"
@@ -410,7 +410,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "Fair2MoreInfoQuery",
-    "id": "d208d155c557ae4aa88edf113c7ddef2",
+    "id": "c94ca86596959a1759a3a657ccd22b2a",
     "text": null,
     "metadata": {}
   }
