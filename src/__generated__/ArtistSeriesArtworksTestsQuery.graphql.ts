@@ -695,6 +695,7 @@ return {
         "artistSeries.artistSeriesArtworks.aggregations.counts.value": (v7/*: any*/),
         "artistSeries.artistSeriesArtworks.aggregations.slice": {
           "enumValues": [
+            "ARTIST",
             "COLOR",
             "DIMENSION_RANGE",
             "FOLLOWED_ARTISTS",

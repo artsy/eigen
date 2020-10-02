@@ -709,6 +709,7 @@ return {
         "marketingCollection.collectionArtworks.aggregations.counts.value": (v6/*: any*/),
         "marketingCollection.collectionArtworks.aggregations.slice": {
           "enumValues": [
+            "ARTIST",
             "COLOR",
             "DIMENSION_RANGE",
             "FOLLOWED_ARTISTS",

@@ -718,6 +718,7 @@ return {
         "fair.fairArtworks.aggregations.counts.value": (v8/*: any*/),
         "fair.fairArtworks.aggregations.slice": {
           "enumValues": [
+            "ARTIST",
             "COLOR",
             "DIMENSION_RANGE",
             "FOLLOWED_ARTISTS",
