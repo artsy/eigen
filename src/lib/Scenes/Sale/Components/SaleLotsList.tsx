@@ -2,6 +2,7 @@ import { SaleLotsList_me } from "__generated__/SaleLotsList_me.graphql"
 import { SaleLotsList_sale } from "__generated__/SaleLotsList_sale.graphql"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import LotsByFollowedArtists from "lib/Scenes/Sales/Components/LotsByFollowedArtists"
+import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Flex } from "palette"
 import React, { useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -18,23 +19,35 @@ export const SaleLotsList: React.FC<Props> = ({ me, showGrid, sale }) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
   return (
-    <Flex my={3}>
-      {showGrid ? <LotsByFollowedArtists title="" me={me} showLotLabel hideUrgencyTags /> : <SaleArtworkList me={me} />}
-      <FilterModalNavigator
-        // {...props}
-        isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-        id={sale.internalID}
-        slug={sale.slug}
-        mode={FilterModalMode.SaleArtworks}
-        exitModal={() => setFilterArtworkModalVisible(false)}
-        closeModal={() => setFilterArtworkModalVisible(false)}
-      />
-      <AnimatedArtworkFilterButton
-        isVisible={isArtworksGridVisible}
-        count={0}
-        onPress={() => setFilterArtworkModalVisible(true)}
-      />
-    </Flex>
+    <ArtworkFilterGlobalStateProvider>
+      <ArtworkFilterContext.Consumer>
+        {(context) => (
+          <Flex flex={1} my={3}>
+            {showGrid ? (
+              <LotsByFollowedArtists title="" me={me} showLotLabel hideUrgencyTags />
+            ) : (
+              <SaleArtworkList me={me} />
+            )}
+            <FilterModalNavigator
+              // {...props}
+              isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+              id={sale.internalID}
+              slug={sale.slug}
+              mode={FilterModalMode.SaleArtworks}
+              exitModal={() => setFilterArtworkModalVisible(false)}
+              closeModal={() => setFilterArtworkModalVisible(false)}
+            />
+            <Flex position="absolute" top={-1000} height={500} width={500}>
+              <AnimatedArtworkFilterButton
+                isVisible={isArtworksGridVisible}
+                count={context.state.appliedFilters.length}
+                onPress={() => setFilterArtworkModalVisible(true)}
+              />
+            </Flex>
+          </Flex>
+        )}
+      </ArtworkFilterContext.Consumer>
+    </ArtworkFilterGlobalStateProvider>
   )
 }
 

@@ -323,7 +323,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
             clearAllFilters()
           }}
         >
-          <Sans size="4" color="black100" pr={2}>
+          <Sans mr={2} mt={2} size="4" color="black100">
             Clear all
           </Sans>
         </ClearAllButton>
@@ -425,9 +425,7 @@ export const AnimatedArtworkFilterButton: React.FC<{ count: number; isVisible: b
 export const TouchableOptionListItemRow = styled(TouchableOpacity)``
 
 export const CloseIconContainer = styled(TouchableOpacity)`
-  flex: 1;
-  align-items: flex-start;
-  justify-content: center;
+  margin: 20px 0px 0px 20px;
 `
 
 export const OptionListItem = styled(Flex)`
@@ -443,11 +441,7 @@ export const OptionListItem = styled(Flex)`
 export const CurrentOption = styled(Sans)`
   color: ${color("black60")};
 `
-export const ClearAllButton = styled(TouchableOpacity)`
-  flex: 1;
-  align-items: flex-end;
-  justify-content: center;
-`
+export const ClearAllButton = styled(TouchableOpacity)``
 export const ApplyButton = styled(Button)``
 export const ApplyButtonContainer = styled(Box)`
   padding: 20px;
