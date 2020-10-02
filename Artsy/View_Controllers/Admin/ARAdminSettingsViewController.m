@@ -124,9 +124,10 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 - (ARCellData *)generateFair2
 {
-    return [self tappableCellDataWithTitle:@"→ Fair2" selection:^{
-        [[ARTopMenuViewController sharedController] pushViewController:[[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Fair2" initialProperties:@{@"fairID": @"art-basel-hong-kong-2019"}] animated:YES];
-    }];
+//    return [self tappableCellDataWithTitle:@"→ Fair2" selection:^{
+//        [[ARTopMenuViewController sharedController] pushViewController:[[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Fair2" initialProperties:@{@"fairID": @"art-basel-hong-kong-2019"}] animated:YES];
+//    }];
+    return nil;
 }
 
 - (ARCellData *)generateRestart

@@ -38,13 +38,13 @@
     if (!cell || !cell.window) {
         return nil;
     }
-
-    // Only show visible content, e.g. cropped images by tabs
-    ARTopMenuViewController *topVC = [ARTopMenuViewController sharedController];
-    UIView *cv = (id)topVC.tabContentView;
-
-    CGRect visible = CGRectIntersection([cell convertRect:cell.bounds toView:nil], [cv convertRect:cv.bounds toView:nil]);
-    previewingContext.sourceRect = visible;
+//
+//    // Only show visible content, e.g. cropped images by tabs
+//    ARTopMenuViewController *topVC = [ARTopMenuViewController sharedController];
+//    UIView *cv = (id)topVC.tabContentView;
+//
+//    CGRect visible = CGRectIntersection([cell convertRect:cell.bounds toView:nil], [cv convertRect:cv.bounds toView:nil]);
+//    previewingContext.sourceRect = visible;
 
     id object = [self.modelVC.items objectAtIndex:index.row];
 

@@ -520,7 +520,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 {
     [ArtsyAPI deleteAPNTokenForCurrentDeviceWithCompletion:^ {
         [[self class] clearUserData];
-        [ARTopMenuViewController teardownSharedInstance];
+//        [ARTopMenuViewController teardownSharedInstance];
     }];
 }
 

@@ -77,15 +77,15 @@ RCT_EXPORT_METHOD(presentNativeScreen:(nonnull NSString *)moduleName props:(nonn
 
 RCT_EXPORT_METHOD(presentReactScreen:(nonnull NSString *)moduleName props:(nonnull NSDictionary *)props modal:(BOOL)modal hidesBackButon:(BOOL)hidesBackButton)
 {
-    UIModalPresentationStyle modalPresentationStyle = modal ? UIModalPresentationPageSheet : -1;
+    UIModalPresentationStyle modalPresentationStyle = modal ? UIModalPresentationPageSheet : UIModalPresentationNone;
 
     if ([UIDevice isPad] && [moduleName isEqualToString:@"BidFlow"]) {
         modalPresentationStyle = UIModalPresentationFormSheet;
     }
 
     ARComponentViewController *vc = [[ARComponentViewController alloc] initWithEmission:nil
-                                                                    moduleName:moduleName
-                                                             initialProperties:props];
+                                                                             moduleName:moduleName
+                                                                      initialProperties:props];
     vc.hidesBackButton = hidesBackButton;
 
     [self presentViewController:vc modalPresentationStyle:modalPresentationStyle];
@@ -93,11 +93,11 @@ RCT_EXPORT_METHOD(presentReactScreen:(nonnull NSString *)moduleName props:(nonnu
 
 - (void)presentViewController:(UIViewController *)vc modalPresentationStyle:(UIModalPresentationStyle)modalPresentationStyle
 {
-    UIViewController *currentVC = [self currentlyPresentedVC];
-    if (![currentVC isKindOfClass:UINavigationController.class]) {
-        modalPresentationStyle = UIModalPresentationFullScreen;
-    }
-    if (modalPresentationStyle != -1) {
+//    UIViewController *currentVC = [self currentlyPresentedVC];
+//    if (![currentVC isKindOfClass:UINavigationController.class]) {
+//        modalPresentationStyle = UIModalPresentationFullScreen;
+//    }
+    if (modalPresentationStyle != UIModalPresentationNone) {
         vc.modalPresentationStyle = modalPresentationStyle;
         UIViewController *presentingVC = [ARTopMenuViewController sharedController];
 
@@ -113,9 +113,10 @@ RCT_EXPORT_METHOD(presentReactScreen:(nonnull NSString *)moduleName props:(nonnu
 // This returns either the topmost modal or the current root navigation controller.
 - (UIViewController *)currentlyPresentedVC
 {
+    
     UIViewController *modalVC = [[ARTopMenuViewController sharedController] presentedViewController];
     if (!modalVC) {
-        return [[ARTopMenuViewController sharedController] rootNavigationController];
+//        return [[ARTopMenuViewController sharedController] rootNavigationController];
     }
 
     while ([modalVC presentedViewController]) {
@@ -143,10 +144,10 @@ RCT_EXPORT_METHOD(goBack)
 // TODO: Delete this when moving tab content presentation to typescript
 RCT_EXPORT_METHOD(switchTab:(nonnull NSString *)tabType props:(nonnull NSDictionary *)props popToRoot:(BOOL)popToRoot)
 {
-    [[ARTopMenuViewController sharedController] presentRootViewControllerInTab:tabType animated:YES props:props];
-    if (popToRoot) {
-        [[[ARTopMenuViewController sharedController] rootNavigationController] popToRootViewControllerAnimated:NO];
-    }
+//    [[ARTopMenuViewController sharedController] presentRootViewControllerInTab:tabType animated:YES props:props];
+//    if (popToRoot) {
+//        [[[ARTopMenuViewController sharedController] rootNavigationController] popToRootViewControllerAnimated:NO];
+//    }
 }
 
 + (UIViewController *)loadAuctionWithID:(NSString *)saleID
@@ -201,13 +202,12 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 
 RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag route:(nonnull NSURL *)route mimeType:(nonnull NSString *)mimeType cacheKey:(nullable NSString *)cacheKey)
 {
-    UIView *originatingView = [self.bridge.uiManager viewForReactTag:reactTag];
-    [[ARMediaPreviewController mediaPreviewControllerWithRemoteURL:route
-                                                          mimeType:mimeType
-                                                          cacheKey:cacheKey
-                                                hostViewController:[[ARTopMenuViewController sharedController] rootNavigationController]
-                                                   originatingView:originatingView] presentPreview];
-
+//    UIView *originatingView = [self.bridge.uiManager viewForReactTag:reactTag];
+//    [[ARMediaPreviewController mediaPreviewControllerWithRemoteURL:route
+//                                                          mimeType:mimeType
+//                                                          cacheKey:cacheKey
+//                                                hostViewController:[[ARTopMenuViewController sharedController] rootNavigationController]
+//                                                   originatingView:originatingView] presentPreview];
 }
 
 RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSString *)toAddress subject:(nonnull NSString *)subject body:(NSString *)body)
@@ -309,8 +309,7 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
 
 RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide)
 {
-
-    [[[ARTopMenuViewController sharedController] rootNavigationController] showBackButton:!shouldHide animated:YES];
+//    [[[ARTopMenuViewController sharedController] rootNavigationController] showBackButton:!shouldHide animated:YES];
 }
 
 

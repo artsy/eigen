@@ -16,6 +16,7 @@ import { InboxQueryRenderer } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowQueryRenderer } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
+import { moduleForTab } from "./navigation/TopMenu"
 import { About } from "./Scenes/About/About"
 import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
@@ -371,7 +372,7 @@ export const modules = defineModules({
   AuctionRegistration: { nativeModuleName: "AuctionRegistration", alwaysPresentModally: true },
   AuctionBidArtwork: { nativeModuleName: "AuctionBidArtwork", alwaysPresentModally: true },
   BidFlow: { Component: BidderFlow },
-  BottomTabs: { Component: BottomTabs, fullBleed: true },
+  BottomTabs: { Component: BottomTabs, fullBleed: true }, //// ?
   City: { Component: CityView, fullBleed: true },
   CityBMWList: { Component: CityBMWListQueryRenderer, fullBleed: true },
   CityFairList: { Component: CityFairListQueryRenderer, fullBleed: true },
@@ -447,6 +448,33 @@ for (const moduleName of Object.keys(modules)) {
   }
 }
 
+const TabContentView: React.FC = () => {
+  //// cache the views
+  //// crossfade between them (duration 0.1, alpha 0->1)
+
+  const tab = useSelectedTab()
+
+  const module = moduleForTab(tab)
+  /// use The modules, not direct, so the extra options are working
+
+  // return NativeModules.ARScreenPresenterModule.presentReactScreen(module, {}, false, false)
+  switch (tab) {
+    case "home":
+      return <HomeQueryRenderer />
+    case "search":
+      return <SearchWithTracking />
+    case "inbox":
+      return <InboxQueryRenderer />
+    case "sell":
+      return <SalesQueryRenderer />
+    case "profile":
+      return <MyProfileQueryRenderer />
+    default:
+      assertNever(tab)
+      return null
+  }
+}
+
 const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = AppStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = AppStore.useAppState((state) => !!state.native.sessionState.userID)
@@ -463,11 +491,11 @@ const Main: React.FC<{}> = track()(({}) => {
   return (
     <View style={{ paddingBottom: screen.safeAreaInsets.bottom, flex: 1 }}>
       <View style={{ flexGrow: 1 }}>
-        <NativeViewController viewName="Main" />
+        <TabContentView />
       </View>
       <BottomTabs />
     </View>
   )
 })
 
-register("WOW", Main, {fullBleed: true})
+register("WOW", Main, { fullBleed: true })

@@ -36,6 +36,7 @@ export const BottomTabsButton: React.FC<{
 
   const onPress = () => {
     AppStore.actions.bottomTabs.setSelectedTab(tab)
+    // NativeModules.ARScreenPresenterModule.switchTab(tab, {}, false) //////
     tracking.trackEvent(tappedTabBar({ tab: bottomTabsConfig[tab].analyticsDescription, badge: badgeCount > 0 }))
   }
 
