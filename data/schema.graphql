@@ -1349,6 +1349,7 @@ type Artwork implements Node & Searchable & Sellable {
 }
 
 enum ArtworkAggregation {
+  ARTIST
   COLOR
   DIMENSION_RANGE
   FOLLOWED_ARTISTS
@@ -5778,7 +5779,7 @@ type FollowProfilePayload {
 
 type FollowsAndSaves {
   # A Connection of followed artists by current user
-  artistsConnection(after: String, before: String, first: Int, last: Int): FollowArtistConnection
+  artistsConnection(after: String, before: String, fairID: String, first: Int, last: Int): FollowArtistConnection
   artworksConnection(
     after: String
     before: String
