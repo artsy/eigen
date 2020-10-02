@@ -7,10 +7,12 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { Schema } from "lib/utils/track"
 import { Flex } from "palette"
 import React, { useRef, useState } from "react"
 import { Animated } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { useTracking } from "react-tracking"
 import { RegisterToBidButton } from "./Components/RegisterToBidButton"
 import { SaleArtworksRailContainer as SaleArtworksRail } from "./Components/SaleArtworksRail"
 import { SaleHeaderContainer as SaleHeader } from "./Components/SaleHeader"
@@ -40,20 +42,45 @@ interface ViewToken {
 }
 
 const Sale: React.FC<Props> = (props) => {
+  const tracking = useTracking()
+
   const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
   const saleArtworks = extractNodes(props.sale.saleArtworksConnection)
+
   const scrollAnim = useRef(new Animated.Value(0)).current
-
-  const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 30 })
-
+  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
   const viewableItemsChangedRef = React.useRef(({ viewableItems }: ViewableItems) => {
     const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
       return viewableItem?.item?.key === "saleLotsList"
     })
     setArtworksGridVisible(artworksItem?.isViewable ?? false)
   })
+
+  const openFilterArtworksModal = () => {
+    tracking.trackEvent({
+      action_name: "filter",
+      context_screen_owner_type: Schema.OwnerEntityTypes.Auction,
+      context_screen: Schema.PageNames.Auction,
+      context_screen_owner_id: props.sale.internalID,
+      context_screen_owner_slug: props.sale.slug,
+      action_type: Schema.ActionTypes.Tap,
+    })
+    setFilterArtworkModalVisible(true)
+  }
+
+  const closeFilterArtworksModal = () => {
+    tracking.trackEvent({
+      action_name: "closeFilterWindow",
+      context_screen_owner_type: Schema.OwnerEntityTypes.Auction,
+      context_screen: Schema.PageNames.Auction,
+      context_screen_owner_id: props.sale.internalID,
+      context_screen_owner_slug: props.sale.slug,
+      action_type: Schema.ActionTypes.Tap,
+    })
+    setFilterArtworkModalVisible(false)
+  }
 
   const saleSectionsData: SaleSection[] = [
     {
@@ -109,13 +136,13 @@ const Sale: React.FC<Props> = (props) => {
               id={props.sale.internalID}
               slug={props.sale.slug}
               mode={FilterModalMode.SaleArtworks}
-              exitModal={() => setFilterArtworkModalVisible(false)}
-              closeModal={() => setFilterArtworkModalVisible(false)}
+              exitModal={closeFilterArtworksModal}
+              closeModal={closeFilterArtworksModal}
             />
             <AnimatedArtworkFilterButton
               isVisible={isArtworksGridVisible}
               count={context.state.appliedFilters.length}
-              onPress={() => setFilterArtworkModalVisible(true)}
+              onPress={openFilterArtworksModal}
             />
           </>
         )}
