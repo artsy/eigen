@@ -13,7 +13,7 @@ export type Sale_sale = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"SaleHeader_sale" | "RegisterToBidButton_sale" | "SaleLotsList_sale">;
+    readonly " $fragmentRefs": FragmentRefs<"SaleHeader_sale" | "RegisterToBidButton_sale">;
     readonly " $refType": "Sale_sale";
 };
 export type Sale_sale$data = Sale_sale;
@@ -98,13 +98,8 @@ const node: ReaderFragment = {
       "kind": "FragmentSpread",
       "name": "RegisterToBidButton_sale",
       "args": null
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "SaleLotsList_sale",
-      "args": null
     }
   ]
 };
-(node as any).hash = 'e89651ec9ea0c14c5b72cb93066abf67';
+(node as any).hash = 'ee2e4c2dd3dbc29be57224cce94697b9';
 export default node;

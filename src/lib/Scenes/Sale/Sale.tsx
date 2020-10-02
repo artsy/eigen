@@ -3,7 +3,6 @@ import { Sale_sale } from "__generated__/Sale_sale.graphql"
 import { SaleQueryRendererQuery } from "__generated__/SaleQueryRendererQuery.graphql"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import Spinner from "lib/Components/Spinner"
-import { SwitchMenu } from "lib/Components/SwitchMenu"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -41,16 +40,11 @@ interface ViewToken {
 }
 
 const Sale: React.FC<Props> = (props) => {
-  const [showGrid, setShowGrid] = useState(true)
   const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
   const saleArtworks = extractNodes(props.sale.saleArtworksConnection)
   const scrollAnim = useRef(new Animated.Value(0)).current
-
-  const switchView = (value: boolean) => {
-    setShowGrid(value)
-  }
 
   const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 30 })
 
@@ -78,23 +72,9 @@ const Sale: React.FC<Props> = (props) => {
       key: "saleArtworksRail",
       content: <SaleArtworksRail saleArtworks={saleArtworks} />,
     },
-    //  TODO: Remove this once the filters are implemented
-    {
-      key: "temporarySwitch",
-      content: (
-        <Flex px={2}>
-          <SwitchMenu
-            title={showGrid ? "Show Grid" : "Show List"}
-            description="Show list of sale artworks"
-            value={showGrid}
-            onChange={(value) => switchView(value)}
-          />
-        </Flex>
-      ),
-    },
     {
       key: "saleLotsList",
-      content: <SaleLotsList me={props.me} showGrid={showGrid} sale={props.sale} />,
+      content: <SaleLotsList me={props.me} />,
     },
   ]
 
@@ -125,7 +105,6 @@ const Sale: React.FC<Props> = (props) => {
               scrollEventThrottle={16}
             />
             <FilterModalNavigator
-              // {...props}
               isFilterArtworksModalVisible={isFilterArtworksModalVisible}
               id={props.sale.internalID}
               slug={props.sale.slug}
@@ -152,7 +131,6 @@ export const SaleContainer = createFragmentContainer(Sale, {
       slug
       ...SaleHeader_sale
       ...RegisterToBidButton_sale
-      ...SaleLotsList_sale
       saleArtworksConnection(first: 10) {
         edges {
           node {

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash b931883ea0c86d395e9f0b2354f040e5 */
+/* @relayHash 3a9a617731e9f41c4a28d2261048bf30 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -226,11 +226,6 @@ fragment SaleLotsList_me on Me {
   ...SaleArtworkList_me
 }
 
-fragment SaleLotsList_sale on Sale {
-  internalID
-  slug
-}
-
 fragment Sale_me on Me {
   ...SaleLotsList_me
 }
@@ -240,7 +235,6 @@ fragment Sale_sale on Sale {
   slug
   ...SaleHeader_sale
   ...RegisterToBidButton_sale
-  ...SaleLotsList_sale
   saleArtworksConnection(first: 10) {
     edges {
       node {
@@ -864,7 +858,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleQueryRendererQuery",
-    "id": "910123cba9df5c1b7af29000ced14e2d",
+    "id": "2786efe9eb004ace77c4ee15484e118e",
     "text": null,
     "metadata": {}
   }

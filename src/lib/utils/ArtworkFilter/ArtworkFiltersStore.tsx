@@ -1,4 +1,4 @@
-import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { FilterParamName, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { filter, find, pullAllBy, union, unionBy } from "lodash"
 import React, { createContext, Dispatch, Reducer, useContext, useReducer } from "react"
 
@@ -121,33 +121,35 @@ export const reducer = (
 }
 
 export const ParamDefaultValues = {
-  sort: "-decayed_merch",
-  medium: "*",
-  priceRange: "*-*",
-  dimensionRange: "*-*",
-  color: undefined,
-  partnerID: undefined,
-  majorPeriods: undefined,
-  inquireableOnly: false,
-  offerable: false,
-  atAuction: false,
   acquireable: false,
+  atAuction: false,
+  color: undefined,
+  dimensionRange: "*-*",
   includeArtworksByFollowedArtists: false,
+  inquireableOnly: false,
+  majorPeriods: undefined,
+  medium: "*",
+  offerable: false,
+  partnerID: undefined,
+  priceRange: "*-*",
+  sort: "-decayed_merch",
+  viewAs: ViewAsValues.Grid,
 }
 
 const defaultFilterOptions: Record<FilterParamName, string | boolean | undefined> = {
-  sort: ParamDefaultValues.sort,
-  medium: ParamDefaultValues.medium,
-  priceRange: ParamDefaultValues.priceRange,
-  dimensionRange: ParamDefaultValues.dimensionRange,
-  color: ParamDefaultValues.color,
-  partnerID: ParamDefaultValues.partnerID,
-  majorPeriods: ParamDefaultValues.majorPeriods,
-  inquireableOnly: ParamDefaultValues.inquireableOnly,
-  offerable: ParamDefaultValues.offerable,
-  atAuction: ParamDefaultValues.atAuction,
   acquireable: ParamDefaultValues.acquireable,
+  atAuction: ParamDefaultValues.atAuction,
+  color: ParamDefaultValues.color,
+  dimensionRange: ParamDefaultValues.dimensionRange,
   includeArtworksByFollowedArtists: ParamDefaultValues.includeArtworksByFollowedArtists,
+  inquireableOnly: ParamDefaultValues.inquireableOnly,
+  majorPeriods: ParamDefaultValues.majorPeriods,
+  medium: ParamDefaultValues.medium,
+  offerable: ParamDefaultValues.offerable,
+  partnerID: ParamDefaultValues.partnerID,
+  priceRange: ParamDefaultValues.priceRange,
+  sort: ParamDefaultValues.sort,
+  viewAs: ParamDefaultValues.viewAs,
 }
 
 export const useSelectedOptionsDisplay = (): FilterArray => {
@@ -193,6 +195,11 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
       paramName: FilterParamName.artistsIFollow,
       paramValue: false,
       displayText: "Artists I follow",
+    },
+    {
+      paramName: FilterParamName.viewAs,
+      paramValue: false,
+      displayText: "Grid",
     },
   ]
 

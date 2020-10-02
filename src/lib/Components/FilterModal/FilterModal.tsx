@@ -22,17 +22,22 @@ import NavigatorIOS from "react-native-navigator-ios"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
-import { ArtistsIFollowOptionsScreen } from "../ArtworkFilterOptions/ArtistsIFollowOptions"
-import { ColorOption, ColorOptionsScreen } from "../ArtworkFilterOptions/ColorOptions"
+import {
+  ArtistsIFollowOptionsScreen,
+  ColorOption,
+  ColorOptionsScreen,
+  GalleryOptionsScreen,
+  InstitutionOptionsScreen,
+  MediumOptionsScreen,
+  PriceRangeOptionsScreen,
+  SizeOptionsScreen,
+  SortOptionsScreen,
+  TimePeriodOptionsScreen,
+  ViewAsOptionsScreen,
+  WaysToBuyOptionsScreen,
+} from "../ArtworkFilterOptions"
+
 import { colorHexMap } from "../ArtworkFilterOptions/ColorSwatch"
-import { GalleryOptionsScreen } from "../ArtworkFilterOptions/GalleryOptions"
-import { InstitutionOptionsScreen } from "../ArtworkFilterOptions/InstitutionOptions"
-import { MediumOptionsScreen } from "../ArtworkFilterOptions/MediumOptions"
-import { PriceRangeOptionsScreen } from "../ArtworkFilterOptions/PriceRangeOptions"
-import { SizeOptionsScreen } from "../ArtworkFilterOptions/SizeOptions"
-import { SortOptionsScreen } from "../ArtworkFilterOptions/SortOptions"
-import { TimePeriodOptionsScreen } from "../ArtworkFilterOptions/TimePeriodOptions"
-import { WaysToBuyOptionsScreen } from "../ArtworkFilterOptions/WaysToBuyOptions"
 import { FancyModal } from "../FancyModal/FancyModal"
 
 interface FilterModalProps extends ViewProperties {
@@ -139,16 +144,17 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
 }
 
 export type FilterScreen =
-  | "sort"
-  | "waysToBuy"
-  | "medium"
-  | "priceRange"
-  | "majorPeriods"
-  | "dimensionRange"
+  | "artistsIFollow"
   | "color"
+  | "dimensionRange"
   | "gallery"
   | "institution"
-  | "artistsIFollow"
+  | "majorPeriods"
+  | "medium"
+  | "priceRange"
+  | "sort"
+  | "viewAs"
+  | "waysToBuy"
 
 export interface FilterDisplayConfig {
   filterType: FilterScreen
@@ -196,6 +202,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
 
   const staticFilterOptions: FilterDisplayConfig[] = [
     filterOptionToDisplayConfigMap.sort,
+    filterOptionToDisplayConfigMap.viewAs,
     filterOptionToDisplayConfigMap.waysToBuy,
   ]
 
@@ -257,6 +264,9 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
             "gallery",
             "institution",
           ]
+          break
+        case FilterModalMode.SaleArtworks:
+          sortOrder = ["sort", "viewAs", "priceRange", "artistsIFollow", "medium"]
           break
       }
 
@@ -482,15 +492,35 @@ export const aggregationForFilter = (filterKey: string, aggregations: Aggregatio
 }
 
 const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
-  sort: {
-    displayText: FilterDisplayName.sort,
-    filterType: "sort",
-    ScreenComponent: SortOptionsScreen,
-  },
   artistsIFollow: {
     displayText: FilterDisplayName.artistsIFollow,
     filterType: "artistsIFollow",
     ScreenComponent: ArtistsIFollowOptionsScreen,
+  },
+  color: {
+    displayText: FilterDisplayName.color,
+    filterType: "color",
+    ScreenComponent: ColorOptionsScreen,
+  },
+  dimensionRange: {
+    displayText: FilterDisplayName.size,
+    filterType: "dimensionRange",
+    ScreenComponent: SizeOptionsScreen,
+  },
+  gallery: {
+    displayText: FilterDisplayName.gallery,
+    filterType: "gallery",
+    ScreenComponent: GalleryOptionsScreen,
+  },
+  institution: {
+    displayText: FilterDisplayName.institution,
+    filterType: "institution",
+    ScreenComponent: InstitutionOptionsScreen,
+  },
+  majorPeriods: {
+    displayText: FilterDisplayName.timePeriod,
+    filterType: "majorPeriods",
+    ScreenComponent: TimePeriodOptionsScreen,
   },
   medium: {
     displayText: FilterDisplayName.medium,
@@ -502,34 +532,19 @@ const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
     filterType: "priceRange",
     ScreenComponent: PriceRangeOptionsScreen,
   },
+  sort: {
+    displayText: FilterDisplayName.sort,
+    filterType: "sort",
+    ScreenComponent: SortOptionsScreen,
+  },
+  viewAs: {
+    displayText: FilterDisplayName.viewAs,
+    filterType: "viewAs",
+    ScreenComponent: ViewAsOptionsScreen,
+  },
   waysToBuy: {
     displayText: FilterDisplayName.waysToBuy,
     filterType: "waysToBuy",
     ScreenComponent: WaysToBuyOptionsScreen,
-  },
-  dimensionRange: {
-    displayText: FilterDisplayName.size,
-    filterType: "dimensionRange",
-    ScreenComponent: SizeOptionsScreen,
-  },
-  color: {
-    displayText: FilterDisplayName.color,
-    filterType: "color",
-    ScreenComponent: ColorOptionsScreen,
-  },
-  majorPeriods: {
-    displayText: FilterDisplayName.timePeriod,
-    filterType: "majorPeriods",
-    ScreenComponent: TimePeriodOptionsScreen,
-  },
-  institution: {
-    displayText: FilterDisplayName.institution,
-    filterType: "institution",
-    ScreenComponent: InstitutionOptionsScreen,
-  },
-  gallery: {
-    displayText: FilterDisplayName.gallery,
-    filterType: "gallery",
-    ScreenComponent: GalleryOptionsScreen,
   },
 }

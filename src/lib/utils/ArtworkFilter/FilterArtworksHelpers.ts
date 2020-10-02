@@ -4,19 +4,20 @@ import { forOwn } from "lodash"
 
 // General filter types and objects
 export enum FilterParamName {
-  sort = "sort",
-  medium = "medium",
-  priceRange = "priceRange",
-  size = "dimensionRange",
+  artistsIFollow = "includeArtworksByFollowedArtists",
   color = "color",
   gallery = "partnerID",
   institution = "partnerID",
+  medium = "medium",
+  priceRange = "priceRange",
+  size = "dimensionRange",
+  sort = "sort",
   timePeriod = "majorPeriods",
-  waysToBuyBuy = "acquireable",
+  viewAs = "viewAs",
   waysToBuyBid = "atAuction",
+  waysToBuyBuy = "acquireable",
   waysToBuyInquire = "inquireableOnly",
   waysToBuyMakeOffer = "offerable",
-  artistsIFollow = "includeArtworksByFollowedArtists",
 }
 
 // Types for the parameters passed to Relay
@@ -36,6 +37,11 @@ export enum FilterDisplayName {
   viewAs = "View as",
   waysToBuy = "Ways to buy",
   artistsIFollow = "Artist",
+}
+
+export enum ViewAsValues {
+  Grid = "grid",
+  List = "list",
 }
 
 export interface InitialState {

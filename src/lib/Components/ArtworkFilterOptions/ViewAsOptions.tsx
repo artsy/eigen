@@ -1,34 +1,32 @@
 import {
   ArtworkFilterContext,
   FilterData,
-  ParamDefaultValues,
   useSelectedOptionsDisplay,
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { AggregateOption, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import {
+  AggregateOption,
+  FilterDisplayName,
+  FilterParamName,
+  ViewAsValues,
+} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
-import { aggregationForFilter } from "../FilterModal/FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface SizeOptionsScreenProps {
+interface Props {
   navigator: NavigatorIOS
 }
 
-export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigator }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
+export const ViewAsOptionsScreen: React.FC<Props> = ({ navigator }) => {
+  const { dispatch } = useContext(ArtworkFilterContext)
 
-  const paramName = FilterParamName.size
-  const aggregation = aggregationForFilter(paramName, state.aggregations)
-  const options = aggregation?.counts.map((aggCount) => {
-    return {
-      displayText: aggCount.name,
-      paramName,
-      paramValue: aggCount.value,
-    }
-  })
+  const paramName = FilterParamName.viewAs
 
-  const allOption: FilterData = { displayText: "All", paramName, paramValue: ParamDefaultValues.dimensionRange }
-  const displayOptions = [allOption].concat(options ?? [])
+  const gridOption: FilterData = { displayText: "Grid", paramName, paramValue: ViewAsValues.Grid }
+  const listOption: FilterData = { displayText: "List", paramName, paramValue: ViewAsValues.List }
+
+  const viewAsOptions = [gridOption, listOption]
+
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
 
@@ -46,8 +44,8 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigator 
   return (
     <SingleSelectOptionScreen
       onSelect={selectOption}
-      filterHeaderText={FilterDisplayName.size}
-      filterOptions={displayOptions}
+      filterHeaderText={FilterDisplayName.viewAs}
+      filterOptions={viewAsOptions}
       selectedOption={selectedOption}
       navigator={navigator}
     />
