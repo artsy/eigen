@@ -39,10 +39,6 @@ function presentPartnerViewController(component: React.Component<any, any>, slug
   presentEntityViewController(component, slug, EntityType.Partner, SlugType.ProfileID)
 }
 
-function presentFairViewController(component: React.Component<any, any>, slug: string, slugType?: SlugType) {
-  presentEntityViewController(component, slug, EntityType.Fair, slugType ?? SlugType.FairID)
-}
-
 function presentModalViewController(_component: React.Component<any, any>, route: string) {
   navigate(route, { modal: true })
 }
@@ -59,7 +55,6 @@ export default {
   presentNavigationViewController,
   presentModalViewController,
   presentPartnerViewController,
-  presentFairViewController,
   dismissModalViewController,
   dismissNavigationViewController,
 }

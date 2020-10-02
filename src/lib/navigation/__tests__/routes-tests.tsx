@@ -861,6 +861,27 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes to Fair", () => {
+    expect(matchRoute("/fair/red")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Fair",
+        "params": Object {
+          "fairID": "red",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("/fair/blue")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Fair",
+        "params": Object {
+          "fairID": "blue",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes to FairArtists", () => {
     expect(matchRoute("/fair/red/artists")).toMatchInlineSnapshot(`
       Object {
