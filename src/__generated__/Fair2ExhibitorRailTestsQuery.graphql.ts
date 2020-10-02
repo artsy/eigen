@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c1941b6a4b9a7e10cb2cfdcf0ebb6dbc */
+/* @relayHash 683ec582e0fa744903a1f6301fc86bf1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,6 +34,11 @@ export type Fair2ExhibitorRailTestsQueryRawResponse = {
         }) | null;
         readonly counts: ({
             readonly artworks: number | null;
+        }) | null;
+        readonly fair: ({
+            readonly internalID: string;
+            readonly slug: string;
+            readonly id: string;
         }) | null;
         readonly artworks: ({
             readonly edges: ReadonlyArray<({
@@ -113,6 +118,11 @@ fragment Fair2ExhibitorRail_show on Show {
   }
   counts {
     artworks
+  }
+  fair {
+    internalID
+    slug
+    id
   }
   artworks: artworksConnection(first: 20) {
     edges {
@@ -198,7 +208,14 @@ v5 = {
   "name": "id",
   "storageKey": null
 },
-v6 = [
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v7 = [
   {
     "alias": null,
     "args": null,
@@ -312,6 +329,20 @@ return {
             "storageKey": null
           },
           {
+            "alias": null,
+            "args": null,
+            "concreteType": "Fair",
+            "kind": "LinkedField",
+            "name": "fair",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v6/*: any*/),
+              (v5/*: any*/)
+            ],
+            "storageKey": null
+          },
+          {
             "alias": "artworks",
             "args": [
               {
@@ -397,7 +428,7 @@ return {
                             "kind": "LinkedField",
                             "name": "openingBid",
                             "plural": false,
-                            "selections": (v6/*: any*/),
+                            "selections": (v7/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -407,7 +438,7 @@ return {
                             "kind": "LinkedField",
                             "name": "highestBid",
                             "plural": false,
-                            "selections": (v6/*: any*/),
+                            "selections": (v7/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -417,7 +448,7 @@ return {
                             "kind": "LinkedField",
                             "name": "currentBid",
                             "plural": false,
-                            "selections": (v6/*: any*/),
+                            "selections": (v7/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -483,13 +514,7 @@ return {
                         "storageKey": null
                       },
                       (v2/*: any*/),
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "slug",
-                        "storageKey": null
-                      }
+                      (v6/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -506,7 +531,7 @@ return {
     ]
   },
   "params": {
-    "id": "c1941b6a4b9a7e10cb2cfdcf0ebb6dbc",
+    "id": "683ec582e0fa744903a1f6301fc86bf1",
     "metadata": {},
     "name": "Fair2ExhibitorRailTestsQuery",
     "operationKind": "query",

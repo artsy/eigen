@@ -69,6 +69,7 @@ export const Fair2ExhibitorsFragmentContainer = createPaginationContainer(
     fair: graphql`
       fragment Fair2Exhibitors_fair on Fair
       @argumentDefinitions(first: { type: "Int", defaultValue: 15 }, after: { type: "String" }) {
+        internalID
         slug
         exhibitors: showsConnection(first: $first, after: $after, sort: FEATURED_ASC)
         @connection(key: "Fair2ExhibitorsQuery_exhibitors") {

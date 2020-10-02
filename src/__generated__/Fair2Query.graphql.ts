@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d8f31396afb240e2de7a2d37c2221262 */
+/* @relayHash 613b95db6d301127c9f39ab9d4119a65 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -171,6 +171,11 @@ fragment Fair2ExhibitorRail_show on Show {
   counts {
     artworks
   }
+  fair {
+    internalID
+    slug
+    id
+  }
   artworks: artworksConnection(first: 20) {
     edges {
       node {
@@ -212,6 +217,7 @@ fragment Fair2ExhibitorRail_show on Show {
 }
 
 fragment Fair2Exhibitors_fair on Fair {
+  internalID
   slug
   exhibitors: showsConnection(first: 15, sort: FEATURED_ASC) {
     edges {
@@ -1387,6 +1393,20 @@ return {
                       (v2/*: any*/),
                       (v7/*: any*/),
                       {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Fair",
+                        "kind": "LinkedField",
+                        "name": "fair",
+                        "plural": false,
+                        "selections": [
+                          (v2/*: any*/),
+                          (v3/*: any*/),
+                          (v5/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
                         "alias": "artworks",
                         "args": [
                           (v9/*: any*/)
@@ -1520,7 +1540,7 @@ return {
     ]
   },
   "params": {
-    "id": "d8f31396afb240e2de7a2d37c2221262",
+    "id": "613b95db6d301127c9f39ab9d4119a65",
     "metadata": {},
     "name": "Fair2Query",
     "operationKind": "query",

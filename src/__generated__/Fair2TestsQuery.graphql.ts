@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a3bd5ac3c6974ed8ef2aa45df0570b40 */
+/* @relayHash 9cb3e0c748efbeba220b2bce10216fdf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -187,6 +187,11 @@ export type Fair2TestsQueryRawResponse = {
                     }) | null;
                     readonly internalID: string;
                     readonly href: string | null;
+                    readonly fair: ({
+                        readonly internalID: string;
+                        readonly slug: string;
+                        readonly id: string;
+                    }) | null;
                     readonly artworks: ({
                         readonly edges: ReadonlyArray<({
                             readonly node: ({
@@ -396,6 +401,11 @@ fragment Fair2ExhibitorRail_show on Show {
   counts {
     artworks
   }
+  fair {
+    internalID
+    slug
+    id
+  }
   artworks: artworksConnection(first: 20) {
     edges {
       node {
@@ -437,6 +447,7 @@ fragment Fair2ExhibitorRail_show on Show {
 }
 
 fragment Fair2Exhibitors_fair on Fair {
+  internalID
   slug
   exhibitors: showsConnection(first: 15, sort: FEATURED_ASC) {
     edges {
@@ -1612,6 +1623,20 @@ return {
                       (v2/*: any*/),
                       (v7/*: any*/),
                       {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Fair",
+                        "kind": "LinkedField",
+                        "name": "fair",
+                        "plural": false,
+                        "selections": [
+                          (v2/*: any*/),
+                          (v3/*: any*/),
+                          (v5/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
                         "alias": "artworks",
                         "args": [
                           (v9/*: any*/)
@@ -1745,7 +1770,7 @@ return {
     ]
   },
   "params": {
-    "id": "a3bd5ac3c6974ed8ef2aa45df0570b40",
+    "id": "9cb3e0c748efbeba220b2bce10216fdf",
     "metadata": {},
     "name": "Fair2TestsQuery",
     "operationKind": "query",
