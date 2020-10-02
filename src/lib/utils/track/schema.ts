@@ -133,7 +133,7 @@ export enum PageNames {
   ViewingRoomArtworks = "ViewingRoomArtworks",
   ViewingRoomArtworkPage = "ViewingRoomArtworkPage",
   ViewingRoomsList = "ViewingRoomsList",
-  Fair2Page = "Fair",
+  Fair2Page = "fair",
   Fair2MoreInfoPage = "moreInfo",
 }
 

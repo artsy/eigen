@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 81f63d9bb2c29a62e0261b9854cc560b */
+/* @relayHash 392a7b5445ffa04f3dc30c30559ddd5c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -62,8 +62,8 @@ export type Fair2TestsQueryRawResponse = {
                 readonly __typename: string;
                 readonly artwork: ({
                     readonly id: string;
-                    readonly slug: string;
                     readonly internalID: string;
+                    readonly slug: string;
                     readonly href: string | null;
                     readonly artistNames: string | null;
                     readonly image: ({
@@ -484,11 +484,13 @@ fragment Fair2Exhibitors_fair on Fair {
 }
 
 fragment Fair2FollowedArtists_fair on Fair {
+  internalID
   slug
   followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
     edges {
       artwork: node {
         id
+        internalID
         slug
         ...ArtworkTileRailCard_artwork
       }
@@ -1120,8 +1122,8 @@ return {
                     "plural": false,
                     "selections": [
                       (v5/*: any*/),
-                      (v3/*: any*/),
                       (v2/*: any*/),
+                      (v3/*: any*/),
                       (v7/*: any*/),
                       (v10/*: any*/),
                       {
@@ -1773,7 +1775,7 @@ return {
     ]
   },
   "params": {
-    "id": "81f63d9bb2c29a62e0261b9854cc560b",
+    "id": "392a7b5445ffa04f3dc30c30559ddd5c",
     "metadata": {},
     "name": "Fair2TestsQuery",
     "operationKind": "query",

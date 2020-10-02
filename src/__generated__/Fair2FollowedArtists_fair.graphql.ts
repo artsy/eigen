@@ -5,11 +5,13 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Fair2FollowedArtists_fair = {
+    readonly internalID: string;
     readonly slug: string;
     readonly followedArtistArtworks: {
         readonly edges: ReadonlyArray<{
             readonly artwork: {
                 readonly id: string;
+                readonly internalID: string;
                 readonly slug: string;
                 readonly " $fragmentRefs": FragmentRefs<"ArtworkTileRailCard_artwork">;
             } | null;
@@ -30,6 +32,13 @@ var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "slug",
   "storageKey": null
 };
@@ -40,6 +49,7 @@ return {
   "name": "Fair2FollowedArtists_fair",
   "selections": [
     (v0/*: any*/),
+    (v1/*: any*/),
     {
       "alias": "followedArtistArtworks",
       "args": [
@@ -83,6 +93,7 @@ return {
                   "storageKey": null
                 },
                 (v0/*: any*/),
+                (v1/*: any*/),
                 {
                   "args": null,
                   "kind": "FragmentSpread",
@@ -102,5 +113,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'b3038830ea337b5e84dc4d2dbedaa623';
+(node as any).hash = '8b3bb8fb838e287b1c1a2d78d4bc34c7';
 export default node;
