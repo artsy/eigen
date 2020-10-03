@@ -48,7 +48,7 @@ describe("ArtworkActions", () => {
     it("displays only the URL if no artists or title", async () => {
       const content = shareContent(null as any /* STRICTNESS_MIGRATION */, "/artwork/title-1", null)
       expect(content).toMatchObject({
-        url: "https://artsy.net/artwork/title-1",
+        url: "https://artsy.net/artwork/title-1?utm_content=artwork-share",
       })
       expect(content.message).not.toBeDefined()
       expect(content.title).not.toBeDefined()
