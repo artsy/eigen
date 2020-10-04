@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 40541e1c454fca572c0e6ba34feb4383 */
+/* @relayHash 00b0c91a4dc1163dc974fb5dc24f7870 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,6 +29,27 @@ query SaleQueryRendererQuery(
   }
 }
 
+fragment InfiniteScrollSaleArtworksGrid_connection on SaleArtworkConnection {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    node {
+      id
+      artwork {
+        slug
+        image {
+          aspectRatio
+        }
+        id
+      }
+      ...SaleArtworkGridItem_saleArtwork
+    }
+  }
+}
+
 fragment RegisterToBidButton_sale on Sale {
   slug
   startAt
@@ -36,6 +57,36 @@ fragment RegisterToBidButton_sale on Sale {
   requireIdentityVerification
   registrationStatus {
     qualifiedForBidding
+    id
+  }
+}
+
+fragment SaleArtworkGridItem_saleArtwork on SaleArtwork {
+  artwork {
+    internalID
+    title
+    date
+    saleMessage
+    slug
+    artistNames
+    href
+    image {
+      url(version: "large")
+      aspectRatio
+    }
+    id
+  }
+  counts {
+    bidderPositions
+  }
+  currentBid {
+    display
+  }
+  lotLabel
+  sale {
+    isAuction
+    isClosed
+    displayTimelyAt
     id
   }
 }
@@ -51,12 +102,12 @@ fragment SaleArtworkListItem_saleArtwork on SaleArtwork {
       height
       width
     }
-    internalID
     saleMessage
     slug
     title
     id
   }
+  internalID
   counts {
     bidderPositions
   }
@@ -107,6 +158,7 @@ fragment SaleLotsList_sale on Sale {
       }
     }
     ...SaleArtworkList_connection
+    ...InfiniteScrollSaleArtworksGrid_connection
     pageInfo {
       endCursor
       hasNextPage
@@ -405,10 +457,22 @@ return {
                                 "name": "width",
                                 "args": null,
                                 "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "url",
+                                "args": [
+                                  {
+                                    "kind": "Literal",
+                                    "name": "version",
+                                    "value": "large"
+                                  }
+                                ],
+                                "storageKey": "url(version:\"large\")"
                               }
                             ]
                           },
-                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -424,9 +488,11 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v5/*: any*/)
+                          (v5/*: any*/),
+                          (v2/*: any*/)
                         ]
                       },
+                      (v2/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -520,14 +586,21 @@ return {
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "endCursor",
+                    "name": "hasNextPage",
                     "args": null,
                     "storageKey": null
                   },
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "hasNextPage",
+                    "name": "startCursor",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "endCursor",
                     "args": null,
                     "storageKey": null
                   }
@@ -551,7 +624,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleQueryRendererQuery",
-    "id": "9abd4854a67b997f89c97a7fea051ea5",
+    "id": "1509095a2bb4edcd6b2d33efaf7e98d2",
     "text": null,
     "metadata": {}
   }

@@ -3,22 +3,20 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SaleArtworkListItem_saleArtwork = {
+export type SaleArtworkGridItem_saleArtwork = {
     readonly artwork: {
-        readonly artistNames: string | null;
+        readonly internalID: string;
+        readonly title: string | null;
         readonly date: string | null;
-        readonly href: string | null;
-        readonly image: {
-            readonly small: string | null;
-            readonly aspectRatio: number;
-            readonly height: number | null;
-            readonly width: number | null;
-        } | null;
         readonly saleMessage: string | null;
         readonly slug: string;
-        readonly title: string | null;
+        readonly artistNames: string | null;
+        readonly href: string | null;
+        readonly image: {
+            readonly url: string | null;
+            readonly aspectRatio: number;
+        } | null;
     } | null;
-    readonly internalID: string;
     readonly counts: {
         readonly bidderPositions: number | null;
     } | null;
@@ -30,21 +28,20 @@ export type SaleArtworkListItem_saleArtwork = {
         readonly isAuction: boolean | null;
         readonly isClosed: boolean | null;
         readonly displayTimelyAt: string | null;
-        readonly endAt: string | null;
     } | null;
-    readonly " $refType": "SaleArtworkListItem_saleArtwork";
+    readonly " $refType": "SaleArtworkGridItem_saleArtwork";
 };
-export type SaleArtworkListItem_saleArtwork$data = SaleArtworkListItem_saleArtwork;
-export type SaleArtworkListItem_saleArtwork$key = {
-    readonly " $data"?: SaleArtworkListItem_saleArtwork$data;
-    readonly " $fragmentRefs": FragmentRefs<"SaleArtworkListItem_saleArtwork">;
+export type SaleArtworkGridItem_saleArtwork$data = SaleArtworkGridItem_saleArtwork;
+export type SaleArtworkGridItem_saleArtwork$key = {
+    readonly " $data"?: SaleArtworkGridItem_saleArtwork$data;
+    readonly " $fragmentRefs": FragmentRefs<"SaleArtworkGridItem_saleArtwork">;
 };
 
 
 
 const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "SaleArtworkListItem_saleArtwork",
+  "name": "SaleArtworkGridItem_saleArtwork",
   "type": "SaleArtwork",
   "metadata": null,
   "argumentDefinitions": [],
@@ -61,7 +58,14 @@ const node: ReaderFragment = {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "artistNames",
+          "name": "internalID",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "title",
           "args": null,
           "storageKey": null
         },
@@ -69,6 +73,27 @@ const node: ReaderFragment = {
           "kind": "ScalarField",
           "alias": null,
           "name": "date",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "saleMessage",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "slug",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "artistNames",
           "args": null,
           "storageKey": null
         },
@@ -90,16 +115,16 @@ const node: ReaderFragment = {
           "selections": [
             {
               "kind": "ScalarField",
-              "alias": "small",
+              "alias": null,
               "name": "url",
               "args": [
                 {
                   "kind": "Literal",
                   "name": "version",
-                  "value": "small"
+                  "value": "large"
                 }
               ],
-              "storageKey": "url(version:\"small\")"
+              "storageKey": "url(version:\"large\")"
             },
             {
               "kind": "ScalarField",
@@ -107,52 +132,10 @@ const node: ReaderFragment = {
               "name": "aspectRatio",
               "args": null,
               "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "height",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "width",
-              "args": null,
-              "storageKey": null
             }
           ]
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "saleMessage",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "slug",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "title",
-          "args": null,
-          "storageKey": null
         }
       ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "internalID",
-      "args": null,
-      "storageKey": null
     },
     {
       "kind": "LinkedField",
@@ -226,17 +209,10 @@ const node: ReaderFragment = {
           "name": "displayTimelyAt",
           "args": null,
           "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "endAt",
-          "args": null,
-          "storageKey": null
         }
       ]
     }
   ]
 };
-(node as any).hash = '273ed2a81661a5c32ed47c29f19e86eb';
+(node as any).hash = 'fc056945899d6b7fcc12119a9ba2b94b';
 export default node;

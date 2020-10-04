@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e72dc0662a5dd41eda0990a6ad4bc28c */
+/* @relayHash 7aa8074d769a5e395078b46238094642 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,6 +33,57 @@ query SaleLotsListQuery(
   }
 }
 
+fragment InfiniteScrollSaleArtworksGrid_connection on SaleArtworkConnection {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    node {
+      id
+      artwork {
+        slug
+        image {
+          aspectRatio
+        }
+        id
+      }
+      ...SaleArtworkGridItem_saleArtwork
+    }
+  }
+}
+
+fragment SaleArtworkGridItem_saleArtwork on SaleArtwork {
+  artwork {
+    internalID
+    title
+    date
+    saleMessage
+    slug
+    artistNames
+    href
+    image {
+      url(version: "large")
+      aspectRatio
+    }
+    id
+  }
+  counts {
+    bidderPositions
+  }
+  currentBid {
+    display
+  }
+  lotLabel
+  sale {
+    isAuction
+    isClosed
+    displayTimelyAt
+    id
+  }
+}
+
 fragment SaleArtworkListItem_saleArtwork on SaleArtwork {
   artwork {
     artistNames
@@ -44,12 +95,12 @@ fragment SaleArtworkListItem_saleArtwork on SaleArtwork {
       height
       width
     }
-    internalID
     saleMessage
     slug
     title
     id
   }
+  internalID
   counts {
     bidderPositions
   }
@@ -88,6 +139,7 @@ fragment SaleLotsList_sale_1G22uz on Sale {
       }
     }
     ...SaleArtworkList_connection
+    ...InfiniteScrollSaleArtworksGrid_connection
     pageInfo {
       endCursor
       hasNextPage
@@ -318,10 +370,22 @@ return {
                                 "name": "width",
                                 "args": null,
                                 "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "url",
+                                "args": [
+                                  {
+                                    "kind": "Literal",
+                                    "name": "version",
+                                    "value": "large"
+                                  }
+                                ],
+                                "storageKey": "url(version:\"large\")"
                               }
                             ]
                           },
-                          (v3/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -343,9 +407,11 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v2/*: any*/)
+                          (v2/*: any*/),
+                          (v3/*: any*/)
                         ]
                       },
+                      (v3/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -445,14 +511,21 @@ return {
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "endCursor",
+                    "name": "hasNextPage",
                     "args": null,
                     "storageKey": null
                   },
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "hasNextPage",
+                    "name": "startCursor",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "endCursor",
                     "args": null,
                     "storageKey": null
                   }
@@ -476,7 +549,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleLotsListQuery",
-    "id": "b89a759471802da1e6e34a1f6b259721",
+    "id": "af175d233033f4c4e3b0cd48aacd5818",
     "text": null,
     "metadata": {}
   }

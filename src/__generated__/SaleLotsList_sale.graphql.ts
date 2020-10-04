@@ -13,7 +13,7 @@ export type SaleLotsList_sale = {
                 readonly id: string;
             } | null;
         } | null> | null;
-        readonly " $fragmentRefs": FragmentRefs<"SaleArtworkList_connection">;
+        readonly " $fragmentRefs": FragmentRefs<"SaleArtworkList_connection" | "InfiniteScrollSaleArtworksGrid_connection">;
     } | null;
     readonly " $refType": "SaleLotsList_sale";
 };
@@ -147,11 +147,16 @@ return {
           "kind": "FragmentSpread",
           "name": "SaleArtworkList_connection",
           "args": null
+        },
+        {
+          "kind": "FragmentSpread",
+          "name": "InfiniteScrollSaleArtworksGrid_connection",
+          "args": null
         }
       ]
     }
   ]
 };
 })();
-(node as any).hash = 'dd1a527572aca73e4c7350fb91c56d8f';
+(node as any).hash = '1dab8e5286de7548038040da5104b392';
 export default node;

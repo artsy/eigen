@@ -1,5 +1,5 @@
 import { SaleLotsList_sale } from "__generated__/SaleLotsList_sale.graphql"
-import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { InfiniteScrollSaleArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollSaleArtworksGrid"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Flex } from "palette"
@@ -18,7 +18,7 @@ export const SaleLotsList: React.FC<Props> = ({ sale, relay }) => {
 
   return (
     <Flex flex={1} my={3}>
-      {!showList ? (
+      {showList ? (
         <SaleArtworkListContainer
           connection={sale.saleArtworksConnection!}
           hasMore={relay.hasMore}
@@ -26,12 +26,14 @@ export const SaleLotsList: React.FC<Props> = ({ sale, relay }) => {
           isLoading={relay.isLoading}
         />
       ) : (
-        <InfiniteScrollArtworksGridContainer
-          // @ts-ignore STRICTNESS_MIGRATION
-          connection={sale.saleArtworksConnection}
-          hasMore={relay.hasMore}
-          loadMore={relay.loadMore}
-        />
+        <Flex px={2}>
+          <InfiniteScrollSaleArtworksGridContainer
+            // @ts-ignore STRICTNESS_MIGRATION
+            connection={sale.saleArtworksConnection}
+            hasMore={relay.hasMore}
+            loadMore={relay.loadMore}
+          />
+        </Flex>
       )}
 
       {/* )} */}
@@ -55,6 +57,7 @@ export const SaleLotsListContainer = createPaginationContainer(
             }
           }
           ...SaleArtworkList_connection
+          ...InfiniteScrollSaleArtworksGrid_connection
         }
       }
     `,

@@ -102,11 +102,11 @@ export const SaleArtworkListItemContainer = createFragmentContainer(SaleArtworkL
           height
           width
         }
-        internalID
         saleMessage
         slug
         title
       }
+      internalID
       counts {
         bidderPositions
       }
