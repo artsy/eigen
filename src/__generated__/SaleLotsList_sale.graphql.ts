@@ -3,30 +3,40 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SaleArtworkList_me = {
-    readonly lotsByFollowedArtistsConnection: {
+export type SaleLotsList_sale = {
+    readonly id: string;
+    readonly internalID: string;
+    readonly saleArtworksConnection: {
         readonly edges: ReadonlyArray<{
-            readonly cursor: string | null;
+            readonly cursor: string;
             readonly node: {
-                readonly internalID: string;
-                readonly " $fragmentRefs": FragmentRefs<"SaleArtworkListItem_artwork">;
+                readonly id: string;
             } | null;
         } | null> | null;
+        readonly " $fragmentRefs": FragmentRefs<"SaleArtworkList_connection">;
     } | null;
-    readonly " $refType": "SaleArtworkList_me";
+    readonly " $refType": "SaleLotsList_sale";
 };
-export type SaleArtworkList_me$data = SaleArtworkList_me;
-export type SaleArtworkList_me$key = {
-    readonly " $data"?: SaleArtworkList_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"SaleArtworkList_me">;
+export type SaleLotsList_sale$data = SaleLotsList_sale;
+export type SaleLotsList_sale$key = {
+    readonly " $data"?: SaleLotsList_sale$data;
+    readonly " $fragmentRefs": FragmentRefs<"SaleLotsList_sale">;
 };
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
-  "name": "SaleArtworkList_me",
-  "type": "Me",
+  "name": "SaleLotsList_sale",
+  "type": "Sale",
   "metadata": {
     "connection": [
       {
@@ -34,7 +44,7 @@ const node: ReaderFragment = {
         "cursor": "cursor",
         "direction": "forward",
         "path": [
-          "lotsByFollowedArtistsConnection"
+          "saleArtworksConnection"
         ]
       }
     ]
@@ -54,24 +64,21 @@ const node: ReaderFragment = {
     }
   ],
   "selections": [
+    (v0/*: any*/),
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
-      "alias": "lotsByFollowedArtistsConnection",
-      "name": "__SaleArtworkList_lotsByFollowedArtistsConnection_connection",
-      "storageKey": "__SaleArtworkList_lotsByFollowedArtistsConnection_connection(isAuction:true,liveSale:true)",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "isAuction",
-          "value": true
-        },
-        {
-          "kind": "Literal",
-          "name": "liveSale",
-          "value": true
-        }
-      ],
-      "concreteType": "SaleArtworksConnection",
+      "alias": "saleArtworksConnection",
+      "name": "__SaleLotsList_saleArtworksConnection_connection",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "SaleArtworkConnection",
       "plural": false,
       "selections": [
         {
@@ -80,7 +87,7 @@ const node: ReaderFragment = {
           "name": "edges",
           "storageKey": null,
           "args": null,
-          "concreteType": "SaleArtwork",
+          "concreteType": "SaleArtworkEdge",
           "plural": true,
           "selections": [
             {
@@ -96,27 +103,16 @@ const node: ReaderFragment = {
               "name": "node",
               "storageKey": null,
               "args": null,
-              "concreteType": "Artwork",
+              "concreteType": "SaleArtwork",
               "plural": false,
               "selections": [
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "internalID",
-                  "args": null,
-                  "storageKey": null
-                },
+                (v0/*: any*/),
                 {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "__typename",
                   "args": null,
                   "storageKey": null
-                },
-                {
-                  "kind": "FragmentSpread",
-                  "name": "SaleArtworkListItem_artwork",
-                  "args": null
                 }
               ]
             }
@@ -146,10 +142,16 @@ const node: ReaderFragment = {
               "storageKey": null
             }
           ]
+        },
+        {
+          "kind": "FragmentSpread",
+          "name": "SaleArtworkList_connection",
+          "args": null
         }
       ]
     }
   ]
 };
-(node as any).hash = '14a9e646933124692394ef1e89772f36';
+})();
+(node as any).hash = 'dd1a527572aca73e4c7350fb91c56d8f';
 export default node;

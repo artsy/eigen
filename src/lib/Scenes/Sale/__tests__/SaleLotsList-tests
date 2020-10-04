@@ -11,19 +11,19 @@ jest.unmock("react-relay")
 describe("SaleLotsList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <QueryRenderer<SaleLotsListTestsQuery>
-      environment={mockEnvironment}
+    environment as QueryRenderer<SaleLotsListTestsQuery>={mockEnvironment}
       query={graphql`
         query SaleLotsListTestsQuery @relay_test_operation {
-          me {
-            ...SaleLotsList_me
+          sale {
+            id
+            ...SaleLotsList_sale
           }
         }
       `}
       variables={{}}
       render={({ props }) => {
-        if (props?.me) {
-          return <SaleLotsList me={props.me} />
+        if (props?.sale) {
+          return sale as SaleLotsList={props.sale} />
         }
         return null
       }}
@@ -35,7 +35,7 @@ describe("SaleLotsList", () => {
   })
 
   it("Renders grid of sale artworks without throwing an error", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappers(/>) as TestRenderer
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -47,8 +47,8 @@ describe("SaleLotsList", () => {
   })
 })
 
-const mockMe = {
-  lotsByFollowedArtistsConnection: {
+const mockSale = {
+  saleArtworksConnection: {
     edges: [
       {
         node: {

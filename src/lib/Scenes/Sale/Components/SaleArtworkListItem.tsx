@@ -1,4 +1,4 @@
-import { SaleArtworkListItem_artwork } from "__generated__/SaleArtworkListItem_artwork.graphql"
+import { SaleArtworkListItem_saleArtwork } from "__generated__/SaleArtworkListItem_saleArtwork.graphql"
 import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -8,18 +8,22 @@ import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  artwork: SaleArtworkListItem_artwork
+  saleArtwork: SaleArtworkListItem_saleArtwork
 }
 
 const CONTAINER_HEIGHT = 100
 
-export const SaleArtworkListItem: React.FC<Props> = ({ artwork }) => {
+export const SaleArtworkListItem: React.FC<Props> = ({ saleArtwork }) => {
   const itemRef = useRef<any>()
+
+  const artwork = saleArtwork.artwork!
 
   const onPress = () => {
     SwitchBoard.presentNavigationViewController(itemRef.current!, artwork.href!)
   }
-  const saleInfo = saleMessageOrBidInfo({ artwork })
+  const saleInfo = saleMessageOrBidInfo({
+    artwork: { saleArtwork, sale: saleArtwork.sale, saleMessage: saleArtwork.artwork?.saleMessage! },
+  })
 
   const imageDimensions = getImageDimensions(artwork.image?.height, artwork.image?.width)
 
@@ -38,9 +42,9 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork }) => {
         )}
 
         <Flex ml={2} height={100} flex={1}>
-          {!!artwork.saleArtwork?.lotLabel && (
+          {!!saleArtwork?.lotLabel && (
             <Sans size="3t" color="black60" numberOfLines={1}>
-              Lot {artwork.saleArtwork.lotLabel}
+              Lot {saleArtwork.lotLabel}
             </Sans>
           )}
           {!!artwork.artistNames && (
@@ -86,35 +90,35 @@ const getImageDimensions = (height?: number | null, width?: number | null) => {
 }
 
 export const SaleArtworkListItemContainer = createFragmentContainer(SaleArtworkListItem, {
-  artwork: graphql`
-    fragment SaleArtworkListItem_artwork on Artwork {
-      title
-      date
-      saleMessage
-      slug
-      internalID
-      artistNames
-      href
+  saleArtwork: graphql`
+    fragment SaleArtworkListItem_saleArtwork on SaleArtwork {
+      artwork {
+        artistNames
+        date
+        href
+        image {
+          small: url(version: "small")
+          aspectRatio
+          height
+          width
+        }
+        internalID
+        saleMessage
+        slug
+        title
+      }
+      counts {
+        bidderPositions
+      }
+      currentBid {
+        display
+      }
+      lotLabel
       sale {
         isAuction
         isClosed
         displayTimelyAt
         endAt
-      }
-      saleArtwork {
-        counts {
-          bidderPositions
-        }
-        currentBid {
-          display
-        }
-        lotLabel
-      }
-      image {
-        small: url(version: "small")
-        aspectRatio
-        height
-        width
       }
     }
   `,
