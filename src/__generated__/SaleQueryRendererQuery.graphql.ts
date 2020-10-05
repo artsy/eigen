@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 469b16140fc9c0a5e6f96dcf46c370d9 */
+/* @relayHash 1fa1c3059ab032d91c3fd3ff14aaad97 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -864,7 +864,8 @@ return {
             "filters": [
               "liveSale",
               "isAuction",
-              "includeArtworksByFollowedArtists"
+              "includeArtworksByFollowedArtists",
+              "saleID"
             ]
           },
           (v6/*: any*/)

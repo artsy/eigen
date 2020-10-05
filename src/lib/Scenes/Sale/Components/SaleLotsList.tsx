@@ -120,13 +120,18 @@ export const SaleLotsListContainer = createPaginationContainer(
   {
     me: graphql`
       fragment SaleLotsList_me on Me
-      @argumentDefinitions(count: { type: "Int", defaultValue: PAGE_SIZE }, cursor: { type: "String" }) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 10 }
+        cursor: { type: "String" }
+        saleID: { type: "ID" }
+      ) {
         lotsByFollowedArtistsConnection(
           first: $count
           after: $cursor
           liveSale: true
           isAuction: true
           includeArtworksByFollowedArtists: false
+          saleID: $saleID
         ) @connection(key: "SaleLotsList_lotsByFollowedArtistsConnection") {
           edges {
             cursor
@@ -139,11 +144,15 @@ export const SaleLotsListContainer = createPaginationContainer(
   },
   {
     getConnectionFromProps: ({ me }) => me && me.lotsByFollowedArtistsConnection,
-    getVariables: (_props, { count, cursor }) => ({ count, cursor }),
+    getVariables: (props, { count, cursor }) => ({
+      count,
+      cursor,
+      saleID: props.saleID,
+    }),
     query: graphql`
-      query SaleLotsListQuery($count: Int!, $cursor: String) {
+      query SaleLotsListQuery($count: Int!, $cursor: String, $saleID: ID) {
         me {
-          ...SaleLotsList_me @arguments(count: $count, cursor: $cursor)
+          ...SaleLotsList_me @arguments(count: $count, cursor: $cursor, saleID: $saleID)
         }
       }
     `,

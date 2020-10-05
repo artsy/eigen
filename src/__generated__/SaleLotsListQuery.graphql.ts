@@ -1,12 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ea54cace4bf93100c38b3407b3158432 */
+/* @relayHash e6cf9f90947a649f0ebfa3a60361c1a1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SaleLotsListQueryVariables = {
     count: number;
     cursor?: string | null;
+    saleID?: string | null;
 };
 export type SaleLotsListQueryResponse = {
     readonly me: {
@@ -24,9 +25,10 @@ export type SaleLotsListQuery = {
 query SaleLotsListQuery(
   $count: Int!
   $cursor: String
+  $saleID: ID
 ) {
   me {
-    ...SaleLotsList_me_1G22uz
+    ...SaleLotsList_me_op7ub
     id
   }
 }
@@ -134,8 +136,8 @@ fragment SaleArtworkList_connection on ArtworkConnectionInterface {
   }
 }
 
-fragment SaleLotsList_me_1G22uz on Me {
-  lotsByFollowedArtistsConnection(first: $count, after: $cursor, liveSale: true, isAuction: true, includeArtworksByFollowedArtists: false) {
+fragment SaleLotsList_me_op7ub on Me {
+  lotsByFollowedArtistsConnection(first: $count, after: $cursor, liveSale: true, isAuction: true, includeArtworksByFollowedArtists: false, saleID: $saleID) {
     edges {
       cursor
       node {
@@ -167,9 +169,20 @@ var v0 = [
     "name": "cursor",
     "type": "String",
     "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "saleID",
+    "type": "ID",
+    "defaultValue": null
   }
 ],
-v1 = [
+v1 = {
+  "kind": "Variable",
+  "name": "saleID",
+  "variableName": "saleID"
+},
+v2 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -194,9 +207,10 @@ v1 = [
     "kind": "Literal",
     "name": "liveSale",
     "value": true
-  }
+  },
+  (v1/*: any*/)
 ],
-v2 = {
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
@@ -234,7 +248,8 @@ return {
                 "kind": "Variable",
                 "name": "cursor",
                 "variableName": "cursor"
-              }
+              },
+              (v1/*: any*/)
             ]
           }
         ]
@@ -260,7 +275,7 @@ return {
             "alias": null,
             "name": "lotsByFollowedArtistsConnection",
             "storageKey": null,
-            "args": (v1/*: any*/),
+            "args": (v2/*: any*/),
             "concreteType": "SaleArtworksConnection",
             "plural": false,
             "selections": [
@@ -296,7 +311,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v2/*: any*/),
+                      (v3/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -441,7 +456,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v2/*: any*/)
+                          (v3/*: any*/)
                         ]
                       },
                       {
@@ -496,7 +511,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v2/*: any*/)
+                          (v3/*: any*/)
                         ]
                       },
                       {
@@ -515,12 +530,12 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v2/*: any*/)
+                          (v3/*: any*/)
                         ]
                       }
                     ]
                   },
-                  (v2/*: any*/)
+                  (v3/*: any*/)
                 ]
               },
               {
@@ -561,16 +576,17 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "lotsByFollowedArtistsConnection",
-            "args": (v1/*: any*/),
+            "args": (v2/*: any*/),
             "handle": "connection",
             "key": "SaleLotsList_lotsByFollowedArtistsConnection",
             "filters": [
               "liveSale",
               "isAuction",
-              "includeArtworksByFollowedArtists"
+              "includeArtworksByFollowedArtists",
+              "saleID"
             ]
           },
-          (v2/*: any*/)
+          (v3/*: any*/)
         ]
       }
     ]
@@ -578,11 +594,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleLotsListQuery",
-    "id": "49e367c9fe12084ff381ef435791bb39",
+    "id": "45cbd41f5617560d0701cd161f35f5e4",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'b2cda86dda1454d5a8f9236449e75527';
+(node as any).hash = 'af33333fa4a9a1683cdef51fc8472c42';
 export default node;
