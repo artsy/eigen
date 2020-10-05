@@ -31,6 +31,7 @@ upcoming:
     - Add auction lots list to the auctions screen - mounir
     - Add LoadFailureView to Viewing Rooms screens for relay errors - pavlos
     - Enable filtering on artist series views - sweir
+    - Fix bug where a gallery can't be followed - pavlos
     - Show up to 50 artist series in the full list of an artist's series - roop
     - Fix layout issue in internal webviews - brian
     - Add about page - mounir
