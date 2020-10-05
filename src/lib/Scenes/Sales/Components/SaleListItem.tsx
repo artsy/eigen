@@ -26,7 +26,7 @@ export class SaleListItem extends React.Component<Props> {
   render() {
     const sale = this.props.sale
     const image = sale.coverImage
-    const timestamp = capitalize(sale.displayTimelyAt?.replace(/M$/, "mo").toLowerCase())
+    const timestamp = capitalize(sale.displayTimelyAt?.replace(/M$/, "mo").replace("\n", " "))
     const containerWidth = this.props.containerWidth
 
     return (
