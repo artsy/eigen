@@ -58,6 +58,7 @@ export interface NativeState {
     AROptionsArtistSeries: boolean
     AROptionsNewFirstInquiry: boolean
     AROptionsUseReactNativeWebView: boolean
+    AROptionsNewShowPage: boolean
   }
 }
 
