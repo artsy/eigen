@@ -175,7 +175,7 @@ const MockFilterModalNavigator = ({ initialState }: InitialState) => {
           closeModal={closeModalMock}
           mode={FilterModalMode.ArtistArtworks}
           id="abc123"
-          slug="some-artwork"
+          slug="some-artist"
           isFilterArtworksModalVisible
         />
       </ArtworkFilterContext.Provider>
@@ -614,7 +614,7 @@ describe("Applying filters", () => {
       },
       context_screen: "Artist",
       context_screen_owner_id: "abc123",
-      context_screen_owner_slug: "some-artwork",
+      context_screen_owner_slug: "some-artist",
       context_screen_owner_type: "Artist",
       current: {
         acquireable: false,
