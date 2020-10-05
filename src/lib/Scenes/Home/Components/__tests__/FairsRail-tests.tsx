@@ -8,6 +8,7 @@ import { extractText } from "lib/tests/extractText"
 import { FairsRailFragmentContainer } from "../FairsRail"
 
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
+import { navigate } from "lib/navigation/navigate"
 import { useTracking } from "react-tracking"
 import HomeAnalytics from "../../homeAnalytics"
 
@@ -101,6 +102,17 @@ describe("location", () => {
     expect(extractText(tree.root.findAllByProps({ "data-test-id": "card-subtitle" })[0])).toMatchInlineSnapshot(
       `"Monday–Friday  •  Canada"`
     )
+  })
+})
+
+describe("navigation", () => {
+  it("navigates to the fair url", () => {
+    const tree = renderWithWrappers(
+      <FairsRailFragmentContainer fairsModule={fairsModule as any} scrollRef={mockScrollRef} />
+    )
+    const cards = tree.root.findAllByType(CardRailCard)
+    cards[0].props.onPress()
+    expect(navigate).toHaveBeenCalledWith("/fair/the-fair")
   })
 })
 

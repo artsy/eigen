@@ -1,4 +1,5 @@
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { AppStore, AppStoreProvider } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -21,6 +22,14 @@ const result = {
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentNavigationViewController: jest.fn(),
+  EntityType: {
+    Partner: "partner",
+    Fair: "fair",
+  },
+  SlugType: {
+    ProfileID: "profileID",
+    FairID: "fairID",
+  },
 }))
 
 let recentSearchesArray: any[] = []
@@ -141,5 +150,24 @@ describe(SearchResult, () => {
     const tree = renderWithWrappers(<TestWrapper result={result} onResultPress={spy} />)
     tree.root.findByType(TouchableOpacity).props.onPress()
     expect(spy).toHaveBeenCalled()
+  })
+
+  it(`navigates correctly when the item is a fair`, async () => {
+    const tree = renderWithWrappers(
+      <TestWrapper
+        result={{
+          displayLabel: "Art Expo 2020",
+          href: "/art-expo-profile-slug",
+          slug: "art-expo-profile-slug",
+          imageUrl: "blah",
+          displayType: "Fair",
+        }}
+      />
+    )
+    act(() => {
+      tree.root.findByType(TouchableOpacity).props.onPress()
+    })
+    await new Promise((r) => setTimeout(r, 50))
+    expect(navigate).toHaveBeenCalledWith("/art-expo-profile-slug?entity=fair&slugType=profileID")
   })
 })

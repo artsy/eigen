@@ -1,6 +1,7 @@
 import GraphemeSplitter from "grapheme-splitter"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard, { SlugType } from "lib/NativeModules/SwitchBoard"
+import SwitchBoard, { EntityType, SlugType } from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { AppStore } from "lib/store/AppStore"
 import { normalizeText } from "lib/utils/normalizeText"
 import { Schema } from "lib/utils/track"
@@ -106,7 +107,8 @@ function navigateToResult(result: AutosuggestResult, navRef: React.MutableRefObj
   if (result.displayType === "Gallery" || result.displayType === "Institution") {
     SwitchBoard.presentPartnerViewController(navRef.current, result.slug!)
   } else if (result.displayType === "Fair") {
-    SwitchBoard.presentFairViewController(navRef.current, result.slug!, SlugType.ProfileID)
+    const fairProfileUrl = `/${result.slug!}?entity=${EntityType.Fair}&slugType=${SlugType.ProfileID}`
+    navigate(fairProfileUrl)
   } else {
     SwitchBoard.presentNavigationViewController(navRef.current, result.href!)
   }

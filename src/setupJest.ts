@@ -213,7 +213,6 @@ jest.mock("lib/NativeModules/SwitchBoard", () => {
     presentMediaPreviewController: jest.fn(),
     presentModalViewController: jest.fn(),
     presentPartnerViewController: jest.fn(),
-    presentFairViewController: jest.fn(),
     dismissModalViewController: jest.fn(),
     dismissNavigationViewController: jest.fn(),
   }
