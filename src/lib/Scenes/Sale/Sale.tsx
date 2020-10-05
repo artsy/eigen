@@ -5,7 +5,6 @@ import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } fr
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Schema } from "lib/utils/track"
 import { Flex } from "palette"
@@ -14,7 +13,7 @@ import { Animated } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RegisterToBidButton } from "./Components/RegisterToBidButton"
-// import { SaleArtworksRailContainer as SaleArtworksRail } from "./Components/SaleArtworksRail"
+import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
 import { SaleHeaderContainer as SaleHeader } from "./Components/SaleHeader"
 import { SaleLotsListContainer as SaleLotsList } from "./Components/SaleLotsList"
 
@@ -46,8 +45,6 @@ const Sale: React.FC<Props> = (props) => {
 
   const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-
-  const saleArtworks = extractNodes(props.sale.saleArtworksConnection)
 
   const scrollAnim = useRef(new Animated.Value(0)).current
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
@@ -95,10 +92,10 @@ const Sale: React.FC<Props> = (props) => {
         </Flex>
       ),
     },
-    // {
-    //   key: "saleArtworksRail",
-    //   content: <SaleArtworksRail saleArtworks={saleArtworks} />,
-    // },
+    {
+      key: "saleArtworksRail",
+      content: <SaleArtworksRailContainer me={props.me} />,
+    },
     {
       key: "saleLotsList",
       content: <SaleLotsList sale={props.sale} />,
@@ -161,6 +158,11 @@ export const SaleContainer = createFragmentContainer(Sale, {
       ...SaleLotsList_sale
     }
   `,
+  me: graphql`
+    fragment Sale_me on Me {
+      ...SaleArtworksRail_me
+    }
+  `,
 })
 
 const Placeholder = () => <Spinner style={{ flex: 1 }} />
@@ -173,6 +175,9 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
         query SaleQueryRendererQuery($saleID: String!) {
           sale(id: $saleID) {
             ...Sale_sale
+          }
+          me {
+            ...Sale_me
           }
         }
       `}

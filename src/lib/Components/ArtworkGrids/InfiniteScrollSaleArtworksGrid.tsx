@@ -69,15 +69,6 @@ export interface Props {
   /** An array of child indices determining which children get docked to the top of the screen when scrolling.  */
   stickyHeaderIndices?: number[]
 
-  // Hide urgency tags (3 Days left, 1 hour left)
-  hideUrgencyTags?: boolean
-
-  // Hide Partner name
-  hidePartner?: boolean
-
-  /** Show Lot Label  */
-  showLotLabel?: boolean
-
   /** Set as true to automatically manage the back button visibility as the user scrolls */
   hideBackButtonOnScroll?: boolean
 }
@@ -213,7 +204,6 @@ class InfiniteScrollSaleArtworksGrid extends React.Component<Props & PrivateProp
     const saleArtworks = extractNodes(this.props.connection)
     const sectionedArtworks = this.sectionedArtworks()
 
-    console.log({ sectionedArtworks })
     const sections: JSX.Element[] = []
     for (let i = 0; i < (this.props.sectionCount ?? 0); i++) {
       const artworkComponents: JSX.Element[] = []
@@ -226,9 +216,6 @@ class InfiniteScrollSaleArtworksGrid extends React.Component<Props & PrivateProp
             contextScreenOwnerSlug={this.props.contextScreenOwnerSlug}
             saleArtwork={saleArtwork}
             key={"sale-artwork-" + j + "-" + saleArtwork.id}
-            hideUrgencyTags={this.props.hideUrgencyTags}
-            hidePartner={this.props.hidePartner}
-            showLotLabel={this.props.showLotLabel}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.

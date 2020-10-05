@@ -35,8 +35,6 @@ export const SaleLotsList: React.FC<Props> = ({ sale, relay }) => {
           />
         </Flex>
       )}
-
-      {/* )} */}
     </Flex>
   )
 }
