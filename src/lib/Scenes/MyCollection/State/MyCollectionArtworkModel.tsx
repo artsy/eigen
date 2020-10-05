@@ -15,6 +15,12 @@ import { MyCollectionArtworkModelUpdateArtworkMutation } from "__generated__/MyC
 import { Metric } from "../Screens/AddArtwork/Components/Dimensions"
 import { cleanArtworkPayload } from "../utils/cleanArtworkPayload"
 
+import {
+  getConvectionGeminiKey,
+  getGeminiCredentialsForEnvironment,
+  uploadFileToS3,
+} from "../../Consignments/Submission/geminiUploadToS3"
+
 export interface ArtworkFormValues {
   artist: string
   artistIds: string[]
@@ -144,6 +150,23 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     const state = getState()
     const input = cleanArtworkPayload(payload) as typeof payload
 
+    const imagePaths = photos.map((photo) => photo.path)
+
+    const convectionKey = await getConvectionGeminiKey()
+    const acl = "private"
+    const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
+    const bucket = assetCredentials.policyDocument.conditions.bucket
+
+    const uploadPromises = imagePaths.map(
+      async (path): Promise<string> => {
+        const s3 = await uploadFileToS3(path, acl, assetCredentials)
+        const url = `https://${bucket}.s3.amazonaws.com/${s3.key}`
+        return url
+      }
+    )
+
+    const externalImageUrls: string[] = await Promise.all(uploadPromises)
+
     try {
       commitMutation<MyCollectionArtworkModelCreateArtworkMutation>(defaultEnvironment, {
         mutation: graphql`
@@ -177,6 +200,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
         variables: {
           input: {
             artistIds: [artistSearchResult!.internalID as string],
+            externalImageUrls,
             ...input,
           },
         },
