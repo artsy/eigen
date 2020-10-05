@@ -24,6 +24,7 @@ upcoming:
   user_facing:
     - Fix navigation bug on Artwork consign button - david
     - Add auction lots rail to the auctions screen - mounir
+    - Fix auction display text formatting - pavlos
     - Enable pagination on My Collection artworks screen - ashley
     - Add long email truncation - pavlos
     - Add auction lots grid to the auctions screen - mounir
