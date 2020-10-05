@@ -3,40 +3,27 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SaleLotsList_sale = {
-    readonly id: string;
-    readonly internalID: string;
-    readonly saleArtworksConnection: {
+export type SaleLotsList_me = {
+    readonly lotsByFollowedArtistsConnection: {
         readonly edges: ReadonlyArray<{
-            readonly cursor: string;
-            readonly node: {
-                readonly id: string;
-            } | null;
+            readonly cursor: string | null;
         } | null> | null;
-        readonly " $fragmentRefs": FragmentRefs<"SaleArtworkList_connection" | "InfiniteScrollSaleArtworksGrid_connection">;
+        readonly " $fragmentRefs": FragmentRefs<"SaleArtworkList_connection" | "InfiniteScrollArtworksGrid_connection">;
     } | null;
-    readonly " $refType": "SaleLotsList_sale";
+    readonly " $refType": "SaleLotsList_me";
 };
-export type SaleLotsList_sale$data = SaleLotsList_sale;
-export type SaleLotsList_sale$key = {
-    readonly " $data"?: SaleLotsList_sale$data;
-    readonly " $fragmentRefs": FragmentRefs<"SaleLotsList_sale">;
+export type SaleLotsList_me$data = SaleLotsList_me;
+export type SaleLotsList_me$key = {
+    readonly " $data"?: SaleLotsList_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"SaleLotsList_me">;
 };
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
-  "name": "SaleLotsList_sale",
-  "type": "Sale",
+  "name": "SaleLotsList_me",
+  "type": "Me",
   "metadata": {
     "connection": [
       {
@@ -44,7 +31,7 @@ return {
         "cursor": "cursor",
         "direction": "forward",
         "path": [
-          "saleArtworksConnection"
+          "lotsByFollowedArtistsConnection"
         ]
       }
     ]
@@ -64,21 +51,29 @@ return {
     }
   ],
   "selections": [
-    (v0/*: any*/),
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "internalID",
-      "args": null,
-      "storageKey": null
-    },
     {
       "kind": "LinkedField",
-      "alias": "saleArtworksConnection",
-      "name": "__SaleLotsList_saleArtworksConnection_connection",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "SaleArtworkConnection",
+      "alias": "lotsByFollowedArtistsConnection",
+      "name": "__SaleLotsList_lotsByFollowedArtistsConnection_connection",
+      "storageKey": "__SaleLotsList_lotsByFollowedArtistsConnection_connection(includeArtworksByFollowedArtists:false,isAuction:true,liveSale:true)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "includeArtworksByFollowedArtists",
+          "value": false
+        },
+        {
+          "kind": "Literal",
+          "name": "isAuction",
+          "value": true
+        },
+        {
+          "kind": "Literal",
+          "name": "liveSale",
+          "value": true
+        }
+      ],
+      "concreteType": "SaleArtworksConnection",
       "plural": false,
       "selections": [
         {
@@ -87,7 +82,7 @@ return {
           "name": "edges",
           "storageKey": null,
           "args": null,
-          "concreteType": "SaleArtworkEdge",
+          "concreteType": "SaleArtwork",
           "plural": true,
           "selections": [
             {
@@ -103,10 +98,9 @@ return {
               "name": "node",
               "storageKey": null,
               "args": null,
-              "concreteType": "SaleArtwork",
+              "concreteType": "Artwork",
               "plural": false,
               "selections": [
-                (v0/*: any*/),
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -150,13 +144,12 @@ return {
         },
         {
           "kind": "FragmentSpread",
-          "name": "InfiniteScrollSaleArtworksGrid_connection",
+          "name": "InfiniteScrollArtworksGrid_connection",
           "args": null
         }
       ]
     }
   ]
 };
-})();
-(node as any).hash = '1dab8e5286de7548038040da5104b392';
+(node as any).hash = '940c69000cd3d48cde0604945598996d';
 export default node;

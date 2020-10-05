@@ -17,7 +17,7 @@ export const INITIAL_NUMBER_TO_RENDER = 4
 export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
   const navRef = useRef<any>(null)
 
-  const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
+  const artworks = extractNodes(me?.saleArtworksRail)
 
   return (
     <Flex mt={3} ref={navRef}>
@@ -52,7 +52,7 @@ export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
 export const SaleArtworksRailContainer = createFragmentContainer(SaleArtworksRail, {
   me: graphql`
     fragment SaleArtworksRail_me on Me {
-      lotsByFollowedArtistsConnection(first: 10, includeArtworksByFollowedArtists: true) {
+      saleArtworksRail: lotsByFollowedArtistsConnection(first: 10, includeArtworksByFollowedArtists: true) {
         edges {
           node {
             id

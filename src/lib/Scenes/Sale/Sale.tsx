@@ -12,16 +12,14 @@ import React, { useRef, useState } from "react"
 import { Animated } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { Sale_saleArtworksConnection } from "../../../__generated__/Sale_saleArtworksConnection.graphql"
 import { RegisterToBidButton } from "./Components/RegisterToBidButton"
 import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
 import { SaleHeaderContainer as SaleHeader } from "./Components/SaleHeader"
-import { SaleLotsListContainer as SaleLotsList } from "./Components/SaleLotsList"
+import { SaleLotsListContainer } from "./Components/SaleLotsList"
 
 interface Props {
   sale: Sale_sale
   me: Sale_me
-  saleArtworksConnection: Sale_saleArtworksConnection
 }
 
 interface SaleSection {
@@ -100,7 +98,7 @@ const Sale: React.FC<Props> = (props) => {
     },
     {
       key: "saleLotsList",
-      content: <SaleLotsList sale={props.sale} saleArtworksConnection={props.saleArtworksConnection} />,
+      content: <SaleLotsListContainer me={props.me} saleID={props.sale.internalID} />,
     },
   ]
 
@@ -157,17 +155,12 @@ export const SaleContainer = createFragmentContainer(Sale, {
       slug
       ...SaleHeader_sale
       ...RegisterToBidButton_sale
-      ...SaleLotsList_sale
     }
   `,
   me: graphql`
     fragment Sale_me on Me {
       ...SaleArtworksRail_me
-    }
-  `,
-  saleArtworksConnection: graphql`
-    fragment Sale_saleArtworksConnection on SaleArtworksConnection {
-      ...SaleLotsList_saleArtworksConnection
+      ...SaleLotsList_me
     }
   `,
 })
@@ -185,9 +178,6 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
           }
           me {
             ...Sale_me
-          }
-          saleArtworksConnection {
-            ...Sale_saleArtworksConnection
           }
         }
       `}

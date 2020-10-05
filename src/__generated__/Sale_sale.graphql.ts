@@ -6,7 +6,7 @@ import { FragmentRefs } from "relay-runtime";
 export type Sale_sale = {
     readonly internalID: string;
     readonly slug: string;
-    readonly " $fragmentRefs": FragmentRefs<"SaleHeader_sale" | "RegisterToBidButton_sale" | "SaleLotsList_sale">;
+    readonly " $fragmentRefs": FragmentRefs<"SaleHeader_sale" | "RegisterToBidButton_sale">;
     readonly " $refType": "Sale_sale";
 };
 export type Sale_sale$data = Sale_sale;
@@ -47,13 +47,8 @@ const node: ReaderFragment = {
       "kind": "FragmentSpread",
       "name": "RegisterToBidButton_sale",
       "args": null
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "SaleLotsList_sale",
-      "args": null
     }
   ]
 };
-(node as any).hash = 'f44562ce5243bacd2c6b47975c53e1a0';
+(node as any).hash = 'fdacbc888bd58dbcde0ee0facb9af06e';
 export default node;

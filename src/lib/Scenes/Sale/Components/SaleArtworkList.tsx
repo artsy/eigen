@@ -40,7 +40,7 @@ export const SaleArtworkList: React.FC<Props> = ({ connection, loadMore, hasMore
       onEndReached={loadMoreArtworks}
       ItemSeparatorComponent={() => <Spacer mb="20px" />}
       ListFooterComponent={loadingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null}
-      renderItem={({ item }) => <SaleArtworkListItem saleArtwork={item} key={item.id} />}
+      renderItem={({ item }) => <SaleArtworkListItem artwork={item} key={item.id} />}
       keyExtractor={(item) => item.id!}
       style={{ paddingHorizontal: 20 }}
       ListEmptyComponent={() => (
@@ -55,12 +55,11 @@ export const SaleArtworkList: React.FC<Props> = ({ connection, loadMore, hasMore
 
 export const SaleArtworkListContainer = createFragmentContainer(SaleArtworkList, {
   connection: graphql`
-    fragment SaleArtworkList_connection on SaleArtworkConnection {
+    fragment SaleArtworkList_connection on ArtworkConnectionInterface {
       edges {
-        cursor
         node {
           id
-          ...SaleArtworkListItem_saleArtwork
+          ...SaleArtworkListItem_artwork
         }
       }
     }
