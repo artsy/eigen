@@ -63,7 +63,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
     } = show
     const { is_followed: partnerFollowed, internalID: profileID } = show.partner?.profile || {}
 
-    if (!profileID || !partnerFollowed) {
+    if (profileID === undefined || partnerFollowed == null) {
       return
     }
 
