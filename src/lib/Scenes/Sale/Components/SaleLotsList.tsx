@@ -1,10 +1,11 @@
 import { SaleLotsList_sale } from "__generated__/SaleLotsList_sale.graphql"
 import { SaleLotsList_saleArtworksConnection } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
 import { InfiniteScrollSaleArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollSaleArtworksGrid"
+import { PAGE_SIZE } from "lib/data/constants"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { filterArtworksParams, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Flex, Sans } from "palette"
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { SaleArtworkListContainer } from "./SaleArtworkList"
 
@@ -16,8 +17,30 @@ interface Props {
 
 export const SaleLotsList: React.FC<Props> = ({ sale, relay, saleArtworksConnection }) => {
   console.log({ saleArtworksConnection })
-  const filters = useContext(ArtworkFilterContext)
-  const showList = filters.state.appliedFilters.find((filter) => filter.paramValue === ViewAsValues.List)
+  const { dispatch, state } = useContext(ArtworkFilterContext)
+  const filterParams = filterArtworksParams(state.appliedFilters)
+  const showList = state.appliedFilters.find((filter) => filter.paramValue === ViewAsValues.List)
+
+  // useEffect(() => {
+  //   if (state.applyFilters) {
+  //     relay.refetchConnection(
+  //       PAGE_SIZE,
+  //       (error) => {
+  //         if (error) {
+  //           throw new Error("Fair/FairArtworks filter error: " + error.message)
+  //         }
+  //       },
+  //       filterParams
+  //     )
+  //   }
+  // }, [state.appliedFilters])
+
+  // useEffect(() => {
+  //   dispatch({
+  //     type: "setAggregations",
+  //     payload: sale.saleArtworksConnection.aggregations,
+  //   })
+  // }, [])
 
   const FiltersResume = () => (
     <Flex px={2} mb={1}>
@@ -59,7 +82,7 @@ export const SaleLotsListContainer = createPaginationContainer(
   {
     sale: graphql`
       fragment SaleLotsList_sale on Sale
-      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: PAGE_SIZE }, cursor: { type: "String" }) {
         id
         internalID
         saleArtworksConnection(first: $count, after: $cursor) @connection(key: "SaleLotsList_saleArtworksConnection") {

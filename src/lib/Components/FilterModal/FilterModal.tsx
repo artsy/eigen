@@ -193,6 +193,8 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
   }
 
   const concreteAggregations = state.aggregations ?? []
+
+  console.log({ concreteAggregations })
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
     concreteAggregations.map((aggregation) => {
       const filterOption = filterKeyFromAggregation[aggregation.slice]
