@@ -10,9 +10,8 @@ import { Fair2FollowedArtistsFragmentContainer } from "../Components/Fair2Follow
 
 jest.unmock("react-relay")
 
-const trackEvent = useTracking().trackEvent
-
 describe("Fair2FollowedArtists", () => {
+  const trackEvent = useTracking().trackEvent
   let env: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {

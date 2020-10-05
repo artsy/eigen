@@ -19,9 +19,8 @@ jest.unmock("react-relay")
 jest.unmock("react-tracking")
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 
-const trackEvent = useTracking().trackEvent
-
 describe("Fair2", () => {
+  const trackEvent = useTracking().trackEvent
   let env: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {

@@ -15,9 +15,8 @@ import { Fair2ExhibitorRailFragmentContainer } from "../Components/Fair2Exhibito
 
 jest.unmock("react-relay")
 
-const trackEvent = useTracking().trackEvent
-
 describe("FairExhibitors", () => {
+  const trackEvent = useTracking().trackEvent
   const getWrapper = (fixture = FAIR_2_EXHIBITOR_RAIL_FIXTURE) => {
     const env = createMockEnvironment()
 

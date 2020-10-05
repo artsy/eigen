@@ -13,8 +13,6 @@ import { createMockEnvironment } from "relay-test-utils"
 
 jest.unmock("react-relay")
 
-const trackEvent = useTracking().trackEvent
-
 const FAIR_2_COLLECTIONS_FIXTURE: Fair2CollectionsTestsQueryRawResponse = {
   fair: {
     id: "art-basel-hong-kong-2020",
@@ -98,6 +96,7 @@ const FAIR_2_COLLECTIONS_FIXTURE: Fair2CollectionsTestsQueryRawResponse = {
 }
 
 describe("Fair2Collections", () => {
+  const trackEvent = useTracking().trackEvent
   const getWrapper = (fixture = FAIR_2_COLLECTIONS_FIXTURE) => {
     const env = createMockEnvironment()
 
