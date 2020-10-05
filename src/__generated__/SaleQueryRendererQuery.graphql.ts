@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 2147300419e091759da96428706444a5 */
+/* @relayHash 025c26e26a7564a8952bddbb545c21c2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -13,6 +13,9 @@ export type SaleQueryRendererQueryResponse = {
     } | null;
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"Sale_me">;
+    } | null;
+    readonly saleArtworksConnection: {
+        readonly " $fragmentRefs": FragmentRefs<"Sale_saleArtworksConnection">;
     } | null;
 };
 export type SaleQueryRendererQuery = {
@@ -33,6 +36,9 @@ query SaleQueryRendererQuery(
   me {
     ...Sale_me
     id
+  }
+  saleArtworksConnection {
+    ...Sale_saleArtworksConnection
   }
 }
 
@@ -219,6 +225,10 @@ fragment SaleLotsList_sale on Sale {
   }
 }
 
+fragment SaleLotsList_saleArtworksConnection on SaleArtworksConnection {
+  totalCount
+}
+
 fragment Sale_me on Me {
   ...SaleArtworksRail_me
 }
@@ -229,6 +239,10 @@ fragment Sale_sale on Sale {
   ...SaleHeader_sale
   ...RegisterToBidButton_sale
   ...SaleLotsList_sale
+}
+
+fragment Sale_saleArtworksConnection on SaleArtworksConnection {
+  ...SaleLotsList_saleArtworksConnection
 }
 */
 
@@ -434,6 +448,22 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "Sale_me",
+            "args": null
+          }
+        ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "saleArtworksConnection",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "SaleArtworksConnection",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "FragmentSpread",
+            "name": "Sale_saleArtworksConnection",
             "args": null
           }
         ]
@@ -828,17 +858,35 @@ return {
           },
           (v5/*: any*/)
         ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "saleArtworksConnection",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "SaleArtworksConnection",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "totalCount",
+            "args": null,
+            "storageKey": null
+          }
+        ]
       }
     ]
   },
   "params": {
     "operationKind": "query",
     "name": "SaleQueryRendererQuery",
-    "id": "6079e960ffd1fca531992bfb8f927c75",
+    "id": "2c41e14cc2d4cac5e2ea404ae6b9779a",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '45feb50365b1b3feb9a27e9ca1ae96ff';
+(node as any).hash = '1f2ed9adb0793d10dc022a3704b328d3';
 export default node;

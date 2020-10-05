@@ -2,7 +2,7 @@ import { SaleLotsList_sale } from "__generated__/SaleLotsList_sale.graphql"
 import { InfiniteScrollSaleArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollSaleArtworksGrid"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import { Flex } from "palette"
+import { Flex, Sans } from "palette"
 import React, { useContext } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { SaleArtworkListContainer } from "./SaleArtworkList"
@@ -10,14 +10,29 @@ import { SaleArtworkListContainer } from "./SaleArtworkList"
 interface Props {
   sale: SaleLotsList_sale
   relay: RelayPaginationProp
+  saleArtworksConnection: SaleLotsList_saleArtworksConnection
 }
 
-export const SaleLotsList: React.FC<Props> = ({ sale, relay }) => {
+export const SaleLotsList: React.FC<Props> = ({ sale, relay, saleArtworksConnection }) => {
+  console.log({ saleArtworksConnection })
   const filters = useContext(ArtworkFilterContext)
   const showList = filters.state.appliedFilters.find((filter) => filter.paramValue === ViewAsValues.List)
 
+  const FiltersResume = () => (
+    <Flex px={2} mb={1}>
+      <Sans size="4" ellipsizeMode="tail" numberOfLines={1} data-test-id="title">
+        Sorted by lot number (ascending)
+      </Sans>
+
+      <Sans size="3t" color="black60" data-test-id="subtitle">
+        Showing 84 of 84 lots
+      </Sans>
+    </Flex>
+  )
+
   return (
-    <Flex flex={1} my={3}>
+    <Flex flex={1} my={4}>
+      <FiltersResume />
       {showList ? (
         <SaleArtworkListContainer
           connection={sale.saleArtworksConnection!}
@@ -59,6 +74,11 @@ export const SaleLotsListContainer = createPaginationContainer(
         }
       }
     `,
+    saleArtworksConnection: graphql`
+      fragment SaleLotsList_saleArtworksConnection on SaleArtworksConnection {
+        totalCount
+      }
+    `,
   },
   {
     getConnectionFromProps: ({ sale }) => sale && sale.saleArtworksConnection,
@@ -67,6 +87,10 @@ export const SaleLotsListContainer = createPaginationContainer(
       query SaleLotsListQuery($id: String!, $count: Int!, $cursor: String) {
         sale(id: $id) {
           ...SaleLotsList_sale @arguments(count: $count, cursor: $cursor)
+        }
+
+        saleArtworksConnection {
+          ...SaleLotsList_saleArtworksConnection
         }
       }
     `,

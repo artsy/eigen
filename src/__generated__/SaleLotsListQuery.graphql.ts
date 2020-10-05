@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 7aa8074d769a5e395078b46238094642 */
+/* @relayHash 720e9b0155db6777fc5e2a9fd31310fb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -12,6 +12,9 @@ export type SaleLotsListQueryVariables = {
 export type SaleLotsListQueryResponse = {
     readonly sale: {
         readonly " $fragmentRefs": FragmentRefs<"SaleLotsList_sale">;
+    } | null;
+    readonly saleArtworksConnection: {
+        readonly " $fragmentRefs": FragmentRefs<"SaleLotsList_saleArtworksConnection">;
     } | null;
 };
 export type SaleLotsListQuery = {
@@ -30,6 +33,9 @@ query SaleLotsListQuery(
   sale(id: $id) {
     ...SaleLotsList_sale_1G22uz
     id
+  }
+  saleArtworksConnection {
+    ...SaleLotsList_saleArtworksConnection
   }
 }
 
@@ -125,6 +131,10 @@ fragment SaleArtworkList_connection on SaleArtworkConnection {
       ...SaleArtworkListItem_saleArtwork
     }
   }
+}
+
+fragment SaleLotsList_saleArtworksConnection on SaleArtworksConnection {
+  totalCount
 }
 
 fragment SaleLotsList_sale_1G22uz on Sale {
@@ -235,6 +245,22 @@ return {
                 "variableName": "cursor"
               }
             ]
+          }
+        ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "saleArtworksConnection",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "SaleArtworksConnection",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "FragmentSpread",
+            "name": "SaleLotsList_saleArtworksConnection",
+            "args": null
           }
         ]
       }
@@ -543,17 +569,35 @@ return {
             "filters": null
           }
         ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "saleArtworksConnection",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "SaleArtworksConnection",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "totalCount",
+            "args": null,
+            "storageKey": null
+          }
+        ]
       }
     ]
   },
   "params": {
     "operationKind": "query",
     "name": "SaleLotsListQuery",
-    "id": "af175d233033f4c4e3b0cd48aacd5818",
+    "id": "fb33c3167b7aa9ab7e1c8920326ee32d",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '8e8c5872dd35a8b3752efe6e902bd87a';
+(node as any).hash = 'd43cf9582cedee03d9c2b94d5481be41';
 export default node;

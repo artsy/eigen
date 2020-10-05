@@ -12,6 +12,7 @@ import React, { useRef, useState } from "react"
 import { Animated } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
+import { Sale_saleArtworksConnection } from "../../../__generated__/Sale_saleArtworksConnection.graphql"
 import { RegisterToBidButton } from "./Components/RegisterToBidButton"
 import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
 import { SaleHeaderContainer as SaleHeader } from "./Components/SaleHeader"
@@ -20,6 +21,7 @@ import { SaleLotsListContainer as SaleLotsList } from "./Components/SaleLotsList
 interface Props {
   sale: Sale_sale
   me: Sale_me
+  saleArtworksConnection: Sale_saleArtworksConnection
 }
 
 interface SaleSection {
@@ -84,21 +86,21 @@ const Sale: React.FC<Props> = (props) => {
       key: "header",
       content: <SaleHeader sale={props.sale} scrollAnim={scrollAnim} />,
     },
-    {
-      key: "registerToBid",
-      content: (
-        <Flex mx="2" mt={2}>
-          <RegisterToBidButton sale={props.sale} />
-        </Flex>
-      ),
-    },
-    {
-      key: "saleArtworksRail",
-      content: <SaleArtworksRailContainer me={props.me} />,
-    },
+    // {
+    //   key: "registerToBid",
+    //   content: (
+    //     <Flex mx="2" mt={2}>
+    //       <RegisterToBidButton sale={props.sale} />
+    //     </Flex>
+    //   ),
+    // },
+    // {
+    //   key: "saleArtworksRail",
+    //   content: <SaleArtworksRailContainer me={props.me} />,
+    // },
     {
       key: "saleLotsList",
-      content: <SaleLotsList sale={props.sale} />,
+      content: <SaleLotsList sale={props.sale} saleArtworksConnection={props.saleArtworksConnection} />,
     },
   ]
 
@@ -163,6 +165,11 @@ export const SaleContainer = createFragmentContainer(Sale, {
       ...SaleArtworksRail_me
     }
   `,
+  saleArtworksConnection: graphql`
+    fragment Sale_saleArtworksConnection on SaleArtworksConnection {
+      ...SaleLotsList_saleArtworksConnection
+    }
+  `,
 })
 
 const Placeholder = () => <Spinner style={{ flex: 1 }} />
@@ -178,6 +185,9 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
           }
           me {
             ...Sale_me
+          }
+          saleArtworksConnection {
+            ...Sale_saleArtworksConnection
           }
         }
       `}
