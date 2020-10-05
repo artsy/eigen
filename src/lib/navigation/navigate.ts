@@ -18,10 +18,10 @@ export function navigate(url: string, options: { modal?: boolean } = {}) {
     NativeModules.ARScreenPresenterModule.presentNativeScreen(result.module, result.params, presentModally)
   } else {
     if (module.isRootViewForTabName && !presentModally) {
-      NativeModules.ARScreenPresenterModule.switchTab(module.isRootViewForTabName, result.params, true)
+      NativeModules.ARScreenPresenterModule.switchTab(module.isRootViewForTabName, result.params, true, "bla")
     } else {
       if (module.onlyShowInTabName) {
-        NativeModules.ARScreenPresenterModule.switchTab(module.onlyShowInTabName, {}, true)
+        NativeModules.ARScreenPresenterModule.switchTab(module.onlyShowInTabName, {}, true, "aha")
       }
       NativeModules.ARScreenPresenterModule.presentReactScreen(
         result.module,

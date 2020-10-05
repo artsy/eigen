@@ -5,6 +5,7 @@
 #import "UIView+HitTestExpansion.h"
 #import "ARMenuAwareViewController.h"
 #import "AROptions.h"
+#import "ARScreenPresenterModule.h"
 #import "ArtsyEcho.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
@@ -16,7 +17,7 @@
 
 @implementation ARTabContentView
 
-- (id)initWithFrame:(CGRect)frame hostViewController:(UIViewController *)controller delegate:(id<ARTabViewDelegate>)delegate dataSource:(ARTopMenuNavigationDataSource *)dataSource
+- (id)initWithFrame:(CGRect)frame hostViewController:(UIViewController *)controller delegate:(id<ARTabViewDelegate>)delegate
 {
     self = [super initWithFrame:frame];
     if (!self) return nil;
@@ -27,7 +28,18 @@
 
     _hostViewController = controller;
     _delegate = delegate;
-    _dataSource = dataSource;
+
+    return self;
+}
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (!self) return nil;
+
+    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.opaque = YES;
+    self.clipsToBounds = YES;
 
     return self;
 }
@@ -65,7 +77,7 @@
     }
 
     // Get the next View Controller, add to self
-    _currentNavigationController = [self.dataSource navigationControllerForTabType:tabType];
+    _currentNavigationController = [ARScreenPresenterModule currentNavController];
     self.currentNavigationController.view.alpha = 0;
 
 
@@ -83,16 +95,9 @@
         oldViewController.view.alpha = 0;
     };
 
-    void (^completionBlock)(BOOL finished);
-    completionBlock = ^(BOOL finished) {
-        if ([self.delegate respondsToSelector:@selector(tabContentView:didChangeToTab:)]) {
-            [self.delegate tabContentView:self didChangeToTab:tabType];
-        }
-    };
-
     ar_dispatch_main_queue(^{
         if (animated && oldViewController && oldViewController.parentViewController) {
-            [self.hostViewController transitionFromViewController:oldViewController toViewController:self.currentNavigationController duration:0.1 options:0 animations:animationBlock completion:completionBlock];
+            [self.hostViewController transitionFromViewController:oldViewController toViewController:self.currentNavigationController duration:0.1 options:0 animations:animationBlock completion:nil];
         } else {
             [oldViewController beginAppearanceTransition:NO animated:NO];
             [oldViewController endAppearanceTransition];
@@ -106,7 +111,6 @@
             }
 
             animationBlock();
-            completionBlock(YES);
         }
     });
 }

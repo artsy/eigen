@@ -28,7 +28,7 @@ declare module "react-native" {
       presentNativeScreen(module: string, props: object, modal: boolean): void
       dismissModal(): void
       goBack(): void
-      switchTab(tabType: string, props: object, popToRoot: boolean): void
+      switchTab(tabType: string, props: object, popToRoot: boolean, moduleName?: string): void
       presentMediaPreviewController(reactTag: number, route: string, mimeType: string, cacheKey: string): void
       presentEmailComposer(to: string, subject: string, body?: string): void
       presentAugmentedRealityVIR(
@@ -38,6 +38,7 @@ declare module "react-native" {
         artworkSlug: string,
         artworkId: string
       ): void
+      presentNavControllerForTab(tab: string, moduleName: string): void
       updateShouldHideBackButton(shouldHideBackButton: boolean): void
     }
   }

@@ -1,12 +1,9 @@
 #import <UIKit/UIKit.h>
-#import "ARTopMenuNavigationDataSource.h"
-#import "ARTabType.h"
+
 
 @class ARTabContentView;
 
 @protocol ARTabViewDelegate <NSObject>
-@optional
-- (void)tabContentView:(ARTabContentView *)tabContentView didChangeToTab:(NSString *)tabType;
 @end
 
 /**
@@ -22,12 +19,12 @@
 
 @interface ARTabContentView : UIView
 
-- (id)initWithFrame:(CGRect)frame hostViewController:(UIViewController *)controller delegate:(id<ARTabViewDelegate>)delegate dataSource:(ARTopMenuNavigationDataSource *)dataSource;
+- (id)initWithFrame:(CGRect)frame hostViewController:(UIViewController *)controller delegate:(id<ARTabViewDelegate>)delegate;
+- (id)initWithFrame:(CGRect)frame;
 
 @property (nonatomic, weak, readonly) UIViewController *hostViewController;
 
 @property (nonatomic, weak) id<ARTabViewDelegate> delegate;
-@property (nonatomic, weak) ARTopMenuNavigationDataSource *dataSource;
 
 @property (nonatomic, strong, readonly) UINavigationController *currentNavigationController;
 

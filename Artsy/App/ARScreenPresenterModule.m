@@ -24,17 +24,30 @@
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
 
+
+NSString *currentTab;
+NSMutableDictionary *cachedNavigationControllers;
+
+
 @interface ARScreenPresenterModule () <MFMailComposeViewControllerDelegate>
 @end
+
 
 @implementation ARScreenPresenterModule
 RCT_EXPORT_MODULE()
 
 @synthesize bridge = _bridge;
 
+
 - (dispatch_queue_t)methodQueue;
 {
   return dispatch_get_main_queue();
+}
+
++ (ARNavigationController *)currentNavController
+{
+    return [cachedNavigationControllers objectForKey:currentTab];
+
 }
 
 RCT_EXPORT_METHOD(presentNativeScreen:(nonnull NSString *)moduleName props:(nonnull NSDictionary *)props  modal:(BOOL)modal)
@@ -91,12 +104,29 @@ RCT_EXPORT_METHOD(presentReactScreen:(nonnull NSString *)moduleName props:(nonnu
     [self presentViewController:vc modalPresentationStyle:modalPresentationStyle];
 }
 
+
+RCT_EXPORT_METHOD(presentNavControllerForTab:(nonnull)tab module:(nonnull NSString *)moduleName)
+{
+
+//
+//    ARNavigationController *navController = [cachedNavigationControllers objectForKey:moduleName];
+//
+//    if (navController == nil) {
+//        UIViewController *vc = [ARComponentViewController module:moduleName withProps:@{}];
+//        navController = [[ARNavigationController alloc] initWithRootViewController:vc];
+//        [self.cachedNavigationControllers setObject:navController forKey:moduleName];
+//    }
+//
+
+    NSLog(@"ok");
+}
+
 - (void)presentViewController:(UIViewController *)vc modalPresentationStyle:(UIModalPresentationStyle)modalPresentationStyle
 {
-//    UIViewController *currentVC = [self currentlyPresentedVC];
-//    if (![currentVC isKindOfClass:UINavigationController.class]) {
-//        modalPresentationStyle = UIModalPresentationFullScreen;
-//    }
+    UIViewController *currentVC = [self currentlyPresentedVC];
+    if (![currentVC isKindOfClass:UINavigationController.class]) {
+        modalPresentationStyle = UIModalPresentationFullScreen;
+    }
     if (modalPresentationStyle != UIModalPresentationNone) {
         vc.modalPresentationStyle = modalPresentationStyle;
         UIViewController *presentingVC = [ARTopMenuViewController sharedController];
@@ -113,10 +143,9 @@ RCT_EXPORT_METHOD(presentReactScreen:(nonnull NSString *)moduleName props:(nonnu
 // This returns either the topmost modal or the current root navigation controller.
 - (UIViewController *)currentlyPresentedVC
 {
-    
-    UIViewController *modalVC = [[ARTopMenuViewController sharedController] presentedViewController];
+    UIViewController *modalVC = [cachedNavigationControllers[currentTab] presentedViewController];
     if (!modalVC) {
-//        return [[ARTopMenuViewController sharedController] rootNavigationController];
+        return cachedNavigationControllers[currentTab];
     }
 
     while ([modalVC presentedViewController]) {
@@ -142,12 +171,26 @@ RCT_EXPORT_METHOD(goBack)
 }
 
 // TODO: Delete this when moving tab content presentation to typescript
-RCT_EXPORT_METHOD(switchTab:(nonnull NSString *)tabType props:(nonnull NSDictionary *)props popToRoot:(BOOL)popToRoot)
+RCT_EXPORT_METHOD(switchTab:(nonnull NSString *)tabType props:(nonnull NSDictionary *)props popToRoot:(BOOL)popToRoot moduleName:(NSString *)moduleName)
 {
-//    [[ARTopMenuViewController sharedController] presentRootViewControllerInTab:tabType animated:YES props:props];
-//    if (popToRoot) {
-//        [[[ARTopMenuViewController sharedController] rootNavigationController] popToRootViewControllerAnimated:NO];
-//    }
+    if (cachedNavigationControllers == nil) cachedNavigationControllers = [NSMutableDictionary new];
+
+    ARNavigationController *navController = [cachedNavigationControllers objectForKey:tabType];
+
+    if (navController == nil) {
+        UIViewController *vc = [ARComponentViewController module:moduleName withProps:@{}];
+        navController = [[ARNavigationController alloc] initWithRootViewController:vc];
+        [cachedNavigationControllers setObject:navController forKey:tabType];
+    }
+    currentTab = tabType;
+
+    NSLog(@"ok");
+
+    [[ARTopMenuViewController sharedController] presentRootViewControllerInTab:tabType animated:YES props:props
+                                                                 navController:navController];
+    if (popToRoot) {
+        [[[ARTopMenuViewController sharedController] rootNavigationController] popToRootViewControllerAnimated:NO];
+    }
 }
 
 + (UIViewController *)loadAuctionWithID:(NSString *)saleID
@@ -202,12 +245,12 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 
 RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag route:(nonnull NSURL *)route mimeType:(nonnull NSString *)mimeType cacheKey:(nullable NSString *)cacheKey)
 {
-//    UIView *originatingView = [self.bridge.uiManager viewForReactTag:reactTag];
-//    [[ARMediaPreviewController mediaPreviewControllerWithRemoteURL:route
-//                                                          mimeType:mimeType
-//                                                          cacheKey:cacheKey
-//                                                hostViewController:[[ARTopMenuViewController sharedController] rootNavigationController]
-//                                                   originatingView:originatingView] presentPreview];
+    UIView *originatingView = [self.bridge.uiManager viewForReactTag:reactTag];
+    [[ARMediaPreviewController mediaPreviewControllerWithRemoteURL:route
+                                                          mimeType:mimeType
+                                                          cacheKey:cacheKey
+                                                hostViewController:[[ARTopMenuViewController sharedController] rootNavigationController]
+                                                   originatingView:originatingView] presentPreview];
 }
 
 RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSString *)toAddress subject:(nonnull NSString *)subject body:(NSString *)body)
@@ -231,7 +274,6 @@ RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSString *)toAddress subject:(no
       [fromViewController presentViewController:alert animated:YES completion:nil];
     }
 }
-
 
 RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)widthIn height:(CGFloat)heightIn artworkSlug:(NSString *)artworkSlug artworkId:(NSString *)artworkId)
 {
@@ -309,8 +351,7 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
 
 RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide)
 {
-//    [[[ARTopMenuViewController sharedController] rootNavigationController] showBackButton:!shouldHide animated:YES];
+    [[[ARTopMenuViewController sharedController] rootNavigationController] showBackButton:!shouldHide animated:YES];
 }
-
 
 @end

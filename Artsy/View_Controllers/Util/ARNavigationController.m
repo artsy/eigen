@@ -50,6 +50,21 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
 
 @implementation ARNavigationController
+RCT_EXPORT_MODULE()
+
+@synthesize bridge = _bridge;
+
+
++ (BOOL)requiresMainQueueSetup
+{
+    return YES;
+}
+
+- (dispatch_queue_t)methodQueue;
+{
+  return dispatch_get_main_queue();
+}
+
 
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController
 {

@@ -34,9 +34,7 @@
 
 @interface ARTopMenuViewController () <ARTabViewDelegate>
 
-@property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
-
-@property (readwrite, nonatomic, assign) NSString * currentTab;
+@property (readwrite, nonatomic, assign) NSString *currentTab;
 
 
 // we need to wait for the view to load before we push a deep link VC on startup
@@ -70,6 +68,8 @@ static ARTopMenuViewController *_sharedManager = nil;
     _didBootstrap = NO;
     _bootstrapQueue = [[NSMutableArray alloc] init];
 
+    _currentTab = @"home";
+
     return self;
 }
 
@@ -79,18 +79,13 @@ static ARTopMenuViewController *_sharedManager = nil;
 
     self.view.backgroundColor = [UIColor whiteColor];
 
-    self.navigationDataSource = _navigationDataSource ?: [[ARTopMenuNavigationDataSource alloc] init];
-
     ARTabContentView *tabContentView = [[ARTabContentView alloc] initWithFrame:CGRectZero
                                                             hostViewController:self
-                                                                      delegate:self
-                                                                    dataSource:self.navigationDataSource];
+                                                                      delegate:self];
 
     _tabContentView = tabContentView;
     [self.view addSubview:tabContentView];
     [tabContentView alignToView:self.view];
-    self.currentTab = [ARTabType home];
-    [self.tabContentView forceSetCurrentTab:[ARTabType home] animated:NO];
 
     // Ensure it's created now and started listening for keyboard changes.
     // TODO Ideally this pod would start listening from launch of the app, so we don't need to rely on this one but can
@@ -126,7 +121,8 @@ static ARTopMenuViewController *_sharedManager = nil;
 
 - (ARNavigationController *)rootNavigationControllerAtTab:(NSString *)tab;
 {
-    return (ARNavigationController *)[self.navigationDataSource navigationControllerForTabType:tab];
+//    return (ARNavigationController *)[self.navigationDataSource navigationControllerForTabType:tab];
+    return nil;
 }
 
 #pragma mark - Buttons
@@ -203,20 +199,21 @@ static ARTopMenuViewController *_sharedManager = nil;
     [self.rootNavigationController pushViewController:viewController animated:animated];
 }
 
-- (void)presentRootViewControllerInTab:(NSString *)tabType animated:(BOOL)animated props:(NSDictionary *)props;
+- (void)presentRootViewControllerInTab:(NSString *)tabType animated:(BOOL)animated props:(NSDictionary *)props
+                         navController:(ARNavigationController *)navController
 {
     __weak typeof(self) wself = self;
     [self afterBootstrap:^{
         __strong typeof(self) sself = wself;
         if (!sself) return;
-        [sself presentRootViewControllerInTabNow:tabType animated:animated props:props];
+        [sself presentRootViewControllerInTabNow:tabType animated:animated props:props navController:navController];
     }];
 }
 
-- (void)presentRootViewControllerInTabNow:(NSString *)tabType animated:(BOOL)animated props:(NSDictionary *)props;
+- (void)presentRootViewControllerInTabNow:(NSString *)tabType animated:(BOOL)animated props:(NSDictionary *)props
+                                      navController:(ARNavigationController *)controller
 {
     BOOL alreadySelectedTab = [self.currentTab isEqual:tabType];
-    ARNavigationController *controller = [self rootNavigationControllerAtTab:tabType];
 
     if (!alreadySelectedTab) {
         [self.tabContentView setCurrentTab:tabType animated:animated];
@@ -259,11 +256,6 @@ static ARTopMenuViewController *_sharedManager = nil;
 }
 
 #pragma mark - ARTabViewDelegate
-
-- (void)tabContentView:(ARTabContentView *)tabContentView didChangeToTab:(NSString *)tabType
-{
-    [[AREmission sharedInstance] updateState:@{[ARStateKey selectedTab]: tabType}];
-}
 
 - (NSObject *_Nullable)firstScrollToTopScrollViewFromRootView:(UIView *)initialView
 {

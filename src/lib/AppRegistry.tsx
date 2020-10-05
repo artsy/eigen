@@ -1,13 +1,15 @@
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import React from "react"
-import { AppRegistry, NativeModules, View, YellowBox } from "react-native"
+import React, { useEffect, useImperativeHandle, useRef } from "react"
+import { Animated, AppRegistry, NativeModules, View, YellowBox } from "react-native"
 import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { Text, Theme } from "palette"
+import { SafeAreaView } from "react-native-safe-area-context"
 import { FadeIn } from "./Components/FadeIn"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { NativeViewController } from "./Components/NativeViewController"
+import { TabContentViewController } from "./Components/TabContentViewController"
 import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowQueryRenderer } from "./Containers/BidFlow"
 import { ConversationQueryRenderer } from "./Containers/Conversation"
@@ -448,34 +450,59 @@ for (const moduleName of Object.keys(modules)) {
   }
 }
 
-const TabContentView: React.FC = () => {
+const TabContentView: React.FC<{ tabContentRef: any }> = ({ tabContentRef }) => {
   //// cache the views
   //// crossfade between them (duration 0.1, alpha 0->1)
 
-  const tab = useSelectedTab()
+  useImperativeHandle(tabContentRef, () => ({
+    test: () => {
+      console.log("wOWOWOWOWOWOWOW")
+    },
+  }))
 
+  const tab = useSelectedTab()
   const module = moduleForTab(tab)
   /// use The modules, not direct, so the extra options are working
 
-  // return NativeModules.ARScreenPresenterModule.presentReactScreen(module, {}, false, false)
+  const color = (() => {
+    switch (tab) {
+      case "home":
+        return "red"
+      case "profile":
+        return "blue"
+      default:
+        return "green"
+    }
+  })()
+
   switch (tab) {
     case "home":
       return <HomeQueryRenderer />
     case "search":
       return <SearchWithTracking />
     case "inbox":
-      return <InboxQueryRenderer />
+      return <Inbox />
     case "sell":
-      return <SalesQueryRenderer />
+      return null
     case "profile":
       return <MyProfileQueryRenderer />
     default:
       assertNever(tab)
       return null
+      return (
+        <View
+          style={{
+            backgroundColor: color,
+            flex: 1,
+          }}
+        />
+      )
   }
 }
 
 const Main: React.FC<{}> = track()(({}) => {
+  const tabContentRef = useRef(null)
+
   const isHydrated = AppStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = AppStore.useAppState((state) => !!state.native.sessionState.userID)
   const onboardingState = AppStore.useAppState((state) => state.native.sessionState.onboardingState)
@@ -491,9 +518,10 @@ const Main: React.FC<{}> = track()(({}) => {
   return (
     <View style={{ paddingBottom: screen.safeAreaInsets.bottom, flex: 1 }}>
       <View style={{ flexGrow: 1 }}>
-        <TabContentView />
+        <TabContentView tabContentRef={tabContentRef} />
+        {/* <NativeViewController viewName="Main" /> */}
       </View>
-      <BottomTabs />
+      <BottomTabs tabContentRef={tabContentRef} />
     </View>
   )
 })

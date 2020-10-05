@@ -5,7 +5,7 @@ import React, { useEffect } from "react"
 import { BottomTabsButton } from "./BottomTabsButton"
 import { ICON_HEIGHT } from "./BottomTabsIcon"
 
-export const BottomTabs: React.FC = () => {
+export const BottomTabs: React.FC = ({ tabContentRef }) => {
   const unreadConversationCount = AppStore.useAppState((state) => state.bottomTabs.sessionState.unreadConversationCount)
 
   useEffect(() => {
@@ -23,11 +23,11 @@ export const BottomTabs: React.FC = () => {
     <Flex>
       <Separator style={{ borderColor: isStaging ? color("purple100") : color("black10") }} />
       <Flex flexDirection="row" height={ICON_HEIGHT} px={1}>
-        <BottomTabsButton tab="home" />
-        <BottomTabsButton tab="search" />
-        <BottomTabsButton tab="inbox" badgeCount={unreadConversationCount} />
-        <BottomTabsButton tab="sell" />
-        <BottomTabsButton tab="profile" />
+        <BottomTabsButton tab="home" tabContentRef={tabContentRef} />
+        <BottomTabsButton tab="search" tabContentRef={tabContentRef} />
+        <BottomTabsButton tab="inbox" badgeCount={unreadConversationCount} tabContentRef={tabContentRef} />
+        <BottomTabsButton tab="sell" tabContentRef={tabContentRef} />
+        <BottomTabsButton tab="profile" tabContentRef={tabContentRef} />
       </Flex>
     </Flex>
   )

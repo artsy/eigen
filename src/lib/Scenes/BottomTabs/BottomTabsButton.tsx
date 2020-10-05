@@ -1,5 +1,6 @@
 import { tappedTabBar } from "@artsy/cohesion"
 import { PopIn } from "lib/Components/PopIn"
+import { moduleForTab } from "lib/navigation/TopMenu"
 import { AppStore, useSelectedTab } from "lib/store/AppStore"
 import { color, Sans } from "palette"
 import React, { useEffect, useRef, useState } from "react"
@@ -12,8 +13,9 @@ import { BottomTabType } from "./BottomTabType"
 
 export const BottomTabsButton: React.FC<{
   tab: BottomTabType
+  tabContentRef: any
   badgeCount?: number
-}> = ({ tab, badgeCount = 0 }) => {
+}> = ({ tab, tabContentRef, badgeCount = 0 }) => {
   const isActive = useSelectedTab() === tab
   const timeout = useRef<ReturnType<typeof setTimeout>>()
   const [isBeingPressed, setIsBeingPressed] = useState(false)
@@ -36,7 +38,8 @@ export const BottomTabsButton: React.FC<{
 
   const onPress = () => {
     AppStore.actions.bottomTabs.setSelectedTab(tab)
-    // NativeModules.ARScreenPresenterModule.switchTab(tab, {}, false) //////
+    // NativeModules.ARScreenPresenterModule.switchTab(tab, {}, false, moduleForTab(tab))
+    tabContentRef.current.test()
     tracking.trackEvent(tappedTabBar({ tab: bottomTabsConfig[tab].analyticsDescription, badge: badgeCount > 0 }))
   }
 
