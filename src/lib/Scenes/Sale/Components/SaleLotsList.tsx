@@ -1,4 +1,5 @@
 import { SaleLotsList_sale } from "__generated__/SaleLotsList_sale.graphql"
+import { SaleLotsList_saleArtworksConnection } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
 import { InfiniteScrollSaleArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollSaleArtworksGrid"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
@@ -43,8 +44,7 @@ export const SaleLotsList: React.FC<Props> = ({ sale, relay, saleArtworksConnect
       ) : (
         <Flex px={2}>
           <InfiniteScrollSaleArtworksGridContainer
-            // @ts-ignore STRICTNESS_MIGRATION
-            connection={sale.saleArtworksConnection}
+            connection={sale.saleArtworksConnection!}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
           />
