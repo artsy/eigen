@@ -17,12 +17,10 @@ import {
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Sans, Theme } from "palette"
-import { array } from "prop-types"
 import { useTracking } from "react-tracking"
 import { NavigateBackIconContainer } from "../../ArtworkFilterOptions/SingleSelectOption"
 import { FakeNavigator as MockNavigator } from "../../Bidding/__tests__/Helpers/FakeNavigator"
 import { closeModalMock, MockFilterScreen } from "../__tests__/FilterTestHelper"
-import { FilterDisplayConfig } from "../FilterModal"
 import {
   ApplyButton,
   ClearAllButton,
@@ -32,7 +30,6 @@ import {
   FilterModalNavigator,
   FilterOptions,
   filterOptionToDisplayConfigMap,
-  getFilterScreenSortByMode,
   getStaticFilterOptionsByMode,
   TouchableOptionListItemRow,
 } from "../FilterModal"
