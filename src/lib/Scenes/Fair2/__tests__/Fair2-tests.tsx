@@ -202,7 +202,7 @@ describe("Fair2", () => {
   })
 
   it("tracks the page load", () => {
-    getWrapper(Fair2Fixture)
+    getWrapper(FAIR_2_FIXTURE)
     expect(postEvent).toHaveBeenCalledWith({
       foo: "bar",
     })
@@ -211,7 +211,7 @@ describe("Fair2", () => {
   it("tracks taps navigating between the artworks tab and exhibitors tab", () => {
     const artworksDataFixture = {
       fair: {
-        ...Fair2Fixture.fair,
+        ...FAIR_2_FIXTURE.fair,
         counts: {
           artworks: 100,
           partnerShows: 20,

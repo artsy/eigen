@@ -174,7 +174,7 @@ describe("Fair2Collections", () => {
         id: "art-basel-hong-kong-2020",
         marketingCollections: [],
       },
-    })
+    } as Fair2CollectionsTestsQueryRawResponse)
 
     expect(wrapper.toJSON()).toBe(null)
   })

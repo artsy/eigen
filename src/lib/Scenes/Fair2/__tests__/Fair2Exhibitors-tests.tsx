@@ -98,6 +98,12 @@ const FAIR_2_EXHIBITORS_FIXTURE: Fair2ExhibitorsTestsQueryRawResponse = {
           node: {
             __typename: "Show",
             id: "xxx-1",
+            fair: {
+              id: "xxyyzz-123",
+              internalID: "aabbcc-123",
+              slug: "art-basel-hong-kong-2019",
+            },
+            slug: "example-1",
             internalID: "xxx-1",
             counts: { artworks: 0 },
             href: "/show/example-1",
@@ -115,6 +121,12 @@ const FAIR_2_EXHIBITORS_FIXTURE: Fair2ExhibitorsTestsQueryRawResponse = {
           node: {
             __typename: "Show",
             id: "xxx-2",
+            fair: {
+              id: "xxyyzz-123",
+              internalID: "aabbcc-123",
+              slug: "art-basel-hong-kong-2019",
+            },
+            slug: "example-2",
             internalID: "xxx-2",
             counts: { artworks: 10 },
             href: "/show/example-2",
@@ -188,6 +200,12 @@ const FAIR_2_EXHIBITORS_FIXTURE: Fair2ExhibitorsTestsQueryRawResponse = {
             id: "xxx-3",
             internalID: "xxx-3",
             counts: { artworks: 10 },
+            fair: {
+              id: "xxyyzz-123",
+              internalID: "aabbcc-123",
+              slug: "art-basel-hong-kong-2019",
+            },
+            slug: "example-3",
             href: "/show/example-3",
             partner: {
               __typename: "ExternalPartner" as "ExternalPartner",
