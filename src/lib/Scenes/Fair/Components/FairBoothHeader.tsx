@@ -34,7 +34,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
   @track((props, _, args) => {
     const partnerSlug = args[0]
     const partnerID = args[1]
-    const partnerFollowed = props.show.partner?.profile?.is_followed
+    const partnerFollowed = props.show.partner?.profile?.is_followed!
     const actionName = partnerFollowed ? Schema.ActionNames.GalleryFollow : Schema.ActionNames.GalleryUnfollow
     return {
       action_name: actionName,
@@ -61,7 +61,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
         id: partnerRelayID,
       },
     } = show
-    const { is_followed: partnerFollowed, internalID: profileID } = show.partner?.profile || {}
+    const { is_followed: partnerFollowed, internalID: profileID } = show.partner?.profile ?? {}
 
     if (profileID === undefined || partnerFollowed == null) {
       return
@@ -129,7 +129,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
       location: { display: boothLocation },
       counts,
     } = show
-    const partnerFollowed = show.partner?.profile?.is_followed
+    const partnerFollowed = show.partner?.profile?.is_followed!
     const { isFollowedChanging } = this.state
 
     return (
