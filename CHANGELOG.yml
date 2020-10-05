@@ -21,6 +21,7 @@ upcoming:
     - Upgrade Relay to 10 - chris
     - Add share button to viewing rooms - mdole
     - Add utms to share buttons - mdole
+    - Add new Show2 view, behind lab option - roop, sarah
   user_facing:
     - Fix navigation bug on Artwork consign button - david
     - Add auction lots rail to the auctions screen - mounir
