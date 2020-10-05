@@ -233,25 +233,32 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to Show", () => {
-    expect(matchRoute("/show/blue")).toMatchInlineSnapshot(`
-      Object {
-        "module": "Show",
-        "params": Object {
-          "showID": "blue",
-        },
-        "type": "match",
-      }
-    `)
-    expect(matchRoute("/show/pop-art")).toMatchInlineSnapshot(`
-      Object {
-        "module": "Show",
-        "params": Object {
-          "showID": "pop-art",
-        },
-        "type": "match",
-      }
-    `)
+  describe("routes to Show, based on lab option", () => {
+    it("routes to the old Show view when the AROptionsNewShowPage option is false", () => {
+      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: false })
+      expect(matchRoute("/show/special-show")).toMatchInlineSnapshot(`
+        Object {
+          "module": "Show",
+          "params": Object {
+            "showID": "special-show",
+          },
+          "type": "match",
+        }
+      `)
+    })
+
+    it("routes to the new Show view when the AROptionsNewShowPage option is true", () => {
+      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: true })
+      expect(matchRoute("/show/special-show")).toMatchInlineSnapshot(`
+        Object {
+          "module": "Show2",
+          "params": Object {
+            "showID": "special-show",
+          },
+          "type": "match",
+        }
+      `)
+    })
   })
 
   it("routes to ShowArtworks", () => {
