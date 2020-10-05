@@ -1,5 +1,4 @@
 import { Fair2TestsQuery, Fair2TestsQueryRawResponse } from "__generated__/Fair2TestsQuery.graphql"
-import { postEvent } from "lib/NativeModules/Events"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -16,8 +15,6 @@ import { Tab, Tabs } from "../Components/SimpleTabs"
 import { Fair2, Fair2FragmentContainer } from "../Fair2"
 
 jest.unmock("react-relay")
-jest.unmock("react-tracking")
-jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 
 describe("Fair2", () => {
   const trackEvent = useTracking().trackEvent
@@ -25,7 +22,6 @@ describe("Fair2", () => {
 
   beforeEach(() => {
     env = createMockEnvironment()
-    jest.resetAllMocks()
   })
 
   const TestRenderer = () => (
@@ -198,13 +194,6 @@ describe("Fair2", () => {
     expect(wrapper.root.findAllByType(Tabs)).toHaveLength(1)
     expect(wrapper.root.findAllByType(Fair2ExhibitorsFragmentContainer)).toHaveLength(1)
     expect(wrapper.root.findAllByType(Fair2ArtworksFragmentContainer)).toHaveLength(0)
-  })
-
-  it("tracks the page load", () => {
-    getWrapper(FAIR_2_FIXTURE)
-    expect(postEvent).toHaveBeenCalledWith({
-      foo: "bar",
-    })
   })
 
   it("tracks taps navigating between the artworks tab and exhibitors tab", () => {
