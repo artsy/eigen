@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7615c6570e2e8293f6995f06909791af */
+/* @relayHash cee7a7554f85cb015157bd11d7465b5d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -109,7 +109,10 @@ fragment Fair2Artworks_fair on Fair {
 }
 
 fragment Fair2Collections_fair on Fair {
+  internalID
+  slug
   marketingCollections(size: 4) {
+    internalID
     slug
     title
     category
@@ -129,10 +132,14 @@ fragment Fair2Collections_fair on Fair {
 }
 
 fragment Fair2Editorial_fair on Fair {
+  internalID
+  slug
   articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
     edges {
       node {
         id
+        internalID
+        slug
         title
         href
         publishedAt(format: "MMM Do, YY")
@@ -146,6 +153,7 @@ fragment Fair2Editorial_fair on Fair {
 
 fragment Fair2ExhibitorRail_show on Show {
   internalID
+  slug
   href
   partner {
     __typename
@@ -163,6 +171,11 @@ fragment Fair2ExhibitorRail_show on Show {
   }
   counts {
     artworks
+  }
+  fair {
+    internalID
+    slug
+    id
   }
   artworks: artworksConnection(first: 20) {
     edges {
@@ -205,6 +218,7 @@ fragment Fair2ExhibitorRail_show on Show {
 }
 
 fragment Fair2Exhibitors_fair on Fair {
+  internalID
   slug
   exhibitors: showsConnection(first: 15, sort: FEATURED_ASC) {
     edges {
@@ -239,11 +253,13 @@ fragment Fair2Exhibitors_fair on Fair {
 }
 
 fragment Fair2FollowedArtists_fair on Fair {
+  internalID
   slug
   followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
     edges {
       artwork: node {
         id
+        internalID
         slug
         ...ArtworkTileRailCard_artwork
       }
@@ -685,6 +701,8 @@ return {
                     "plural": false,
                     "selections": [
                       (v5/*: any*/),
+                      (v2/*: any*/),
+                      (v3/*: any*/),
                       (v6/*: any*/),
                       (v7/*: any*/),
                       {
@@ -743,6 +761,7 @@ return {
             "selections": [
               (v4/*: any*/),
               (v5/*: any*/),
+              (v2/*: any*/),
               (v3/*: any*/),
               (v6/*: any*/),
               {
@@ -872,8 +891,8 @@ return {
                     "plural": false,
                     "selections": [
                       (v5/*: any*/),
-                      (v3/*: any*/),
                       (v2/*: any*/),
+                      (v3/*: any*/),
                       (v7/*: any*/),
                       (v10/*: any*/),
                       {
@@ -1375,7 +1394,22 @@ return {
                         "storageKey": null
                       },
                       (v2/*: any*/),
+                      (v3/*: any*/),
                       (v7/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Fair",
+                        "kind": "LinkedField",
+                        "name": "fair",
+                        "plural": false,
+                        "selections": [
+                          (v2/*: any*/),
+                          (v3/*: any*/),
+                          (v5/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
                       {
                         "alias": "artworks",
                         "args": [
@@ -1510,7 +1544,7 @@ return {
     ]
   },
   "params": {
-    "id": "7615c6570e2e8293f6995f06909791af",
+    "id": "cee7a7554f85cb015157bd11d7465b5d",
     "metadata": {},
     "name": "Fair2Query",
     "operationKind": "query",

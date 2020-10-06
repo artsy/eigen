@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5d5e31905aea7ff7a48966da9af33b44 */
+/* @relayHash 392a7b5445ffa04f3dc30c30559ddd5c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,6 +23,8 @@ export type Fair2TestsQueryRawResponse = {
                 readonly __typename: string;
                 readonly node: ({
                     readonly id: string;
+                    readonly internalID: string;
+                    readonly slug: string | null;
                     readonly title: string | null;
                     readonly href: string | null;
                     readonly publishedAt: string | null;
@@ -35,6 +37,7 @@ export type Fair2TestsQueryRawResponse = {
         readonly marketingCollections: ReadonlyArray<({
             readonly __typename: string;
             readonly id: string;
+            readonly internalID: string;
             readonly slug: string;
             readonly title: string;
             readonly category: string;
@@ -59,8 +62,8 @@ export type Fair2TestsQueryRawResponse = {
                 readonly __typename: string;
                 readonly artwork: ({
                     readonly id: string;
-                    readonly slug: string;
                     readonly internalID: string;
+                    readonly slug: string;
                     readonly href: string | null;
                     readonly artistNames: string | null;
                     readonly image: ({
@@ -183,7 +186,13 @@ export type Fair2TestsQueryRawResponse = {
                         readonly id: string;
                     }) | null;
                     readonly internalID: string;
+                    readonly slug: string;
                     readonly href: string | null;
+                    readonly fair: ({
+                        readonly internalID: string;
+                        readonly slug: string;
+                        readonly id: string;
+                    }) | null;
                     readonly artworks: ({
                         readonly edges: ReadonlyArray<({
                             readonly node: ({
@@ -331,7 +340,10 @@ fragment Fair2Artworks_fair on Fair {
 }
 
 fragment Fair2Collections_fair on Fair {
+  internalID
+  slug
   marketingCollections(size: 4) {
+    internalID
     slug
     title
     category
@@ -351,10 +363,14 @@ fragment Fair2Collections_fair on Fair {
 }
 
 fragment Fair2Editorial_fair on Fair {
+  internalID
+  slug
   articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
     edges {
       node {
         id
+        internalID
+        slug
         title
         href
         publishedAt(format: "MMM Do, YY")
@@ -368,6 +384,7 @@ fragment Fair2Editorial_fair on Fair {
 
 fragment Fair2ExhibitorRail_show on Show {
   internalID
+  slug
   href
   partner {
     __typename
@@ -385,6 +402,11 @@ fragment Fair2ExhibitorRail_show on Show {
   }
   counts {
     artworks
+  }
+  fair {
+    internalID
+    slug
+    id
   }
   artworks: artworksConnection(first: 20) {
     edges {
@@ -427,6 +449,7 @@ fragment Fair2ExhibitorRail_show on Show {
 }
 
 fragment Fair2Exhibitors_fair on Fair {
+  internalID
   slug
   exhibitors: showsConnection(first: 15, sort: FEATURED_ASC) {
     edges {
@@ -461,11 +484,13 @@ fragment Fair2Exhibitors_fair on Fair {
 }
 
 fragment Fair2FollowedArtists_fair on Fair {
+  internalID
   slug
   followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
     edges {
       artwork: node {
         id
+        internalID
         slug
         ...ArtworkTileRailCard_artwork
       }
@@ -907,6 +932,8 @@ return {
                     "plural": false,
                     "selections": [
                       (v5/*: any*/),
+                      (v2/*: any*/),
+                      (v3/*: any*/),
                       (v6/*: any*/),
                       (v7/*: any*/),
                       {
@@ -965,6 +992,7 @@ return {
             "selections": [
               (v4/*: any*/),
               (v5/*: any*/),
+              (v2/*: any*/),
               (v3/*: any*/),
               (v6/*: any*/),
               {
@@ -1094,8 +1122,8 @@ return {
                     "plural": false,
                     "selections": [
                       (v5/*: any*/),
-                      (v3/*: any*/),
                       (v2/*: any*/),
+                      (v3/*: any*/),
                       (v7/*: any*/),
                       (v10/*: any*/),
                       {
@@ -1597,7 +1625,22 @@ return {
                         "storageKey": null
                       },
                       (v2/*: any*/),
+                      (v3/*: any*/),
                       (v7/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Fair",
+                        "kind": "LinkedField",
+                        "name": "fair",
+                        "plural": false,
+                        "selections": [
+                          (v2/*: any*/),
+                          (v3/*: any*/),
+                          (v5/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
                       {
                         "alias": "artworks",
                         "args": [
@@ -1732,7 +1775,7 @@ return {
     ]
   },
   "params": {
-    "id": "5d5e31905aea7ff7a48966da9af33b44",
+    "id": "392a7b5445ffa04f3dc30c30559ddd5c",
     "metadata": {},
     "name": "Fair2TestsQuery",
     "operationKind": "query",

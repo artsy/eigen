@@ -4,8 +4,11 @@ import {
 } from "__generated__/Fair2ExhibitorsTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Button } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
+import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { Fair2ExhibitorRailFragmentContainer } from "../Components/Fair2ExhibitorRail"
 import { Fair2ExhibitorsFragmentContainer } from "../Components/Fair2Exhibitors"
@@ -13,6 +16,7 @@ import { Fair2ExhibitorsFragmentContainer } from "../Components/Fair2Exhibitors"
 jest.unmock("react-relay")
 
 describe("FairExhibitors", () => {
+  const trackEvent = useTracking().trackEvent
   const getWrapper = (fixture = FAIR_2_EXHIBITORS_FIXTURE) => {
     const env = createMockEnvironment()
 
@@ -61,11 +65,26 @@ describe("FairExhibitors", () => {
     const wrapper = getWrapper()
     expect(extractText(wrapper.root)).toContain("Show more")
   })
+
+  it("tracks taps on the show more button", () => {
+    const wrapper = getWrapper()
+    const button = wrapper.root.findAllByType(Button)[0]
+    act(() => button.props.onPress())
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedShowMore",
+      context_module: "exhibitorsTab",
+      context_screen_owner_type: "fair",
+      context_screen_owner_id: "xyz123",
+      context_screen_owner_slug: "xxx",
+      subject: "showMore",
+    })
+  })
 })
 
 const FAIR_2_EXHIBITORS_FIXTURE: Fair2ExhibitorsTestsQueryRawResponse = {
   fair: {
     id: "xxx",
+    internalID: "xyz123",
     slug: "xxx",
     exhibitors: {
       pageInfo: {
@@ -78,6 +97,12 @@ const FAIR_2_EXHIBITORS_FIXTURE: Fair2ExhibitorsTestsQueryRawResponse = {
           node: {
             __typename: "Show",
             id: "xxx-1",
+            fair: {
+              id: "xxyyzz-123",
+              internalID: "aabbcc-123",
+              slug: "art-basel-hong-kong-2019",
+            },
+            slug: "example-1",
             internalID: "xxx-1",
             counts: { artworks: 0 },
             href: "/show/example-1",
@@ -95,6 +120,12 @@ const FAIR_2_EXHIBITORS_FIXTURE: Fair2ExhibitorsTestsQueryRawResponse = {
           node: {
             __typename: "Show",
             id: "xxx-2",
+            fair: {
+              id: "xxyyzz-123",
+              internalID: "aabbcc-123",
+              slug: "art-basel-hong-kong-2019",
+            },
+            slug: "example-2",
             internalID: "xxx-2",
             counts: { artworks: 10 },
             href: "/show/example-2",
@@ -168,6 +199,12 @@ const FAIR_2_EXHIBITORS_FIXTURE: Fair2ExhibitorsTestsQueryRawResponse = {
             id: "xxx-3",
             internalID: "xxx-3",
             counts: { artworks: 10 },
+            fair: {
+              id: "xxyyzz-123",
+              internalID: "aabbcc-123",
+              slug: "art-basel-hong-kong-2019",
+            },
+            slug: "example-3",
             href: "/show/example-3",
             partner: {
               __typename: "ExternalPartner" as "ExternalPartner",

@@ -1,10 +1,11 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Fair2_fair } from "__generated__/Fair2_fair.graphql"
 import { Fair2Query } from "__generated__/Fair2Query.graphql"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Schema } from "lib/utils/track"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Box, Separator, Spacer, Theme } from "palette"
 import React, { useRef, useState } from "react"
 import { FlatList, ViewToken } from "react-native"
@@ -66,6 +67,33 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
   }
 
+  const trackTappedNavigationTab = (destinationTab: number) => {
+    const trackTappedArtworkTabProps = {
+      action: ActionType.tappedNavigationTab,
+      context_screen_owner_type: OwnerType.fair,
+      context_screen_owner_id: fair.internalID,
+      context_screen_owner_slug: fair.slug,
+      context_module: ContextModule.exhibitorsTab,
+      subject: "Artworks",
+    }
+    const trackTappedExhibitorsTabProps = {
+      action: ActionType.tappedNavigationTab,
+      context_screen_owner_type: OwnerType.fair,
+      context_screen_owner_id: fair.internalID,
+      context_screen_owner_slug: fair.slug,
+      context_module: ContextModule.artworksTab,
+      subject: "Exhibitors",
+    }
+
+    if (activeTab !== destinationTab) {
+      if (tabs[destinationTab].label === "Artworks") {
+        tracking.trackEvent(trackTappedArtworkTabProps)
+      } else {
+        tracking.trackEvent(trackTappedExhibitorsTabProps)
+      }
+    }
+  }
+
   const openFilterArtworksModal = () => {
     tracking.trackEvent({
       action_name: "filter",
@@ -101,81 +129,99 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
   const tabIndex = sections.indexOf("fairTabs")
 
   return (
-    <ArtworkFilterGlobalStateProvider>
-      <ArtworkFilterContext.Consumer>
-        {(context) => (
-          <Theme>
-            <>
-              <FlatList
-                data={sections}
-                ref={flatListRef}
-                viewabilityConfig={viewConfigRef.current}
-                onViewableItemsChanged={viewableItemsChangedRef.current}
-                ItemSeparatorComponent={() => <Spacer mb={3} />}
-                keyExtractor={(_item, index) => String(index)}
-                stickyHeaderIndices={[tabIndex]}
-                renderItem={({ item }): null | any => {
-                  switch (item) {
-                    case "fairHeader": {
-                      return (
-                        <>
-                          <Fair2HeaderFragmentContainer fair={fair} />
-                          <Separator mt={3} />
-                        </>
-                      )
-                    }
-                    case "fairFollowedArtists": {
-                      return <FairFollowedArtists fair={fair} />
-                    }
-                    case "fairEditorial": {
-                      return <Fair2EditorialFragmentContainer fair={fair} />
-                    }
-                    case "fairCollections": {
-                      return <Fair2CollectionsFragmentContainer fair={fair} />
-                    }
-                    case "fairTabs": {
-                      return <Tabs setActiveTab={setActiveTab} activeTab={activeTab} tabs={tabs} />
-                    }
-                    case "fairTabChildContent": {
-                      const tabToShow = tabs ? tabs[activeTab] : null
-
-                      if (!tabToShow) {
-                        return null
-                      }
-
-                      if (tabToShow.label === "Exhibitors") {
-                        return <Fair2ExhibitorsFragmentContainer fair={fair} />
-                      }
-
-                      if (tabToShow.label === "Artworks") {
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.Fair2Page,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
+        context_screen_owner_id: fair.internalID,
+        context_screen_owner_slug: fair.slug,
+      }}
+    >
+      <ArtworkFilterGlobalStateProvider>
+        <ArtworkFilterContext.Consumer>
+          {(context) => (
+            <Theme>
+              <>
+                <FlatList
+                  data={sections}
+                  ref={flatListRef}
+                  viewabilityConfig={viewConfigRef.current}
+                  onViewableItemsChanged={viewableItemsChangedRef.current}
+                  ItemSeparatorComponent={() => <Spacer mb={3} />}
+                  keyExtractor={(_item, index) => String(index)}
+                  stickyHeaderIndices={[tabIndex]}
+                  renderItem={({ item }): null | any => {
+                    switch (item) {
+                      case "fairHeader": {
                         return (
-                          <Box px="15px">
-                            <Fair2ArtworksFragmentContainer fair={fair} />
-                            <FilterModalNavigator
-                              isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-                              id={fair.internalID}
-                              slug={fair.slug}
-                              mode={FilterModalMode.Fair}
-                              exitModal={handleFilterArtworksModal}
-                              closeModal={closeFilterArtworksModal}
-                            />
-                          </Box>
+                          <>
+                            <Fair2HeaderFragmentContainer fair={fair} />
+                            <Separator mt={3} />
+                          </>
                         )
                       }
+                      case "fairFollowedArtists": {
+                        return <FairFollowedArtists fair={fair} />
+                      }
+                      case "fairEditorial": {
+                        return <Fair2EditorialFragmentContainer fair={fair} />
+                      }
+                      case "fairCollections": {
+                        return <Fair2CollectionsFragmentContainer fair={fair} />
+                      }
+                      case "fairTabs": {
+                        return (
+                          <Tabs
+                            setActiveTab={(index) => {
+                              trackTappedNavigationTab(index as number)
+                              setActiveTab(index)
+                            }}
+                            activeTab={activeTab}
+                            tabs={tabs}
+                          />
+                        )
+                      }
+                      case "fairTabChildContent": {
+                        const tabToShow = tabs ? tabs[activeTab] : null
+
+                        if (!tabToShow) {
+                          return null
+                        }
+
+                        if (tabToShow.label === "Exhibitors") {
+                          return <Fair2ExhibitorsFragmentContainer fair={fair} />
+                        }
+
+                        if (tabToShow.label === "Artworks") {
+                          return (
+                            <Box px="15px">
+                              <Fair2ArtworksFragmentContainer fair={fair} />
+                              <FilterModalNavigator
+                                isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+                                id={fair.internalID}
+                                slug={fair.slug}
+                                mode={FilterModalMode.Fair}
+                                exitModal={handleFilterArtworksModal}
+                                closeModal={closeFilterArtworksModal}
+                              />
+                            </Box>
+                          )
+                        }
+                      }
                     }
-                  }
-                }}
-              />
-              <AnimatedArtworkFilterButton
-                isVisible={isArtworksGridVisible && tabs[activeTab] && tabs[activeTab].label === "Artworks"}
-                count={context.state.appliedFilters.length}
-                onPress={openFilterArtworksModal}
-              />
-            </>
-          </Theme>
-        )}
-      </ArtworkFilterContext.Consumer>
-    </ArtworkFilterGlobalStateProvider>
+                  }}
+                />
+                <AnimatedArtworkFilterButton
+                  isVisible={isArtworksGridVisible && tabs[activeTab] && tabs[activeTab].label === "Artworks"}
+                  count={context.state.appliedFilters.length}
+                  onPress={openFilterArtworksModal}
+                />
+              </>
+            </Theme>
+          )}
+        </ArtworkFilterContext.Consumer>
+      </ArtworkFilterGlobalStateProvider>
+    </ProvideScreenTracking>
   )
 }
 

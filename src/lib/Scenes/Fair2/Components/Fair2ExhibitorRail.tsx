@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, TappedArtworkGroup } from "@artsy/cohesion"
 import { Fair2ExhibitorRail_show } from "__generated__/Fair2ExhibitorRail_show.graphql"
 import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
@@ -8,16 +9,49 @@ import { Box, Spacer } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface Fair2ExhibitorRailProps {
   show: Fair2ExhibitorRail_show
 }
 
 const Fair2ExhibitorRail: React.FC<Fair2ExhibitorRailProps> = ({ show }) => {
+  const tracking = useTracking()
   const artworks = show?.artworks?.edges!.map((item) => item?.node)
   const count = show?.counts?.artworks ?? 0
   const partnerName = show?.partner?.name ?? ""
   const viewAllUrl = show?.href
+
+  const trackTappedArtwork = (artworkID: string, artworkSlug: string, position: number) => {
+    const trackTappedArtworkProps: TappedArtworkGroup = {
+      action: ActionType.tappedArtworkGroup,
+      context_module: ContextModule.galleryBoothRail,
+      context_screen_owner_type: OwnerType.fair,
+      context_screen_owner_id: show.fair?.internalID ?? "",
+      context_screen_owner_slug: show.fair?.slug ?? "",
+      destination_screen_owner_type: OwnerType.artwork,
+      destination_screen_owner_id: artworkID,
+      destination_screen_owner_slug: artworkSlug,
+      horizontal_slide_position: position,
+      type: "thumbnail",
+    }
+    tracking.trackEvent(trackTappedArtworkProps)
+  }
+
+  const trackTappedShow = (showInternalID: string, showSlug: string) => {
+    const trackTappedShowProps: TappedArtworkGroup = {
+      action: ActionType.tappedArtworkGroup,
+      context_module: ContextModule.galleryBoothRail,
+      context_screen_owner_type: OwnerType.fair,
+      context_screen_owner_id: show.fair?.internalID ?? "",
+      context_screen_owner_slug: show.fair?.slug ?? "",
+      destination_screen_owner_type: OwnerType.show,
+      destination_screen_owner_id: showInternalID,
+      destination_screen_owner_slug: showSlug,
+      type: "viewAll",
+    }
+    tracking.trackEvent(trackTappedShowProps)
+  }
 
   if (count === 0) {
     return null
@@ -33,6 +67,7 @@ const Fair2ExhibitorRail: React.FC<Fair2ExhibitorRailProps> = ({ show }) => {
             if (!viewAllUrl) {
               return
             }
+            trackTappedShow(show.internalID, show.slug)
             navigate(viewAllUrl)
           }}
         />
@@ -46,10 +81,13 @@ const Fair2ExhibitorRail: React.FC<Fair2ExhibitorRailProps> = ({ show }) => {
         data={artworks}
         initialNumToRender={3}
         windowSize={3}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           return (
             <ArtworkTileRailCard
-              onPress={() => navigate(item?.href!)}
+              onPress={() => {
+                trackTappedArtwork(item?.internalID ?? "", item?.slug ?? "", index)
+                navigate(item?.href!)
+              }}
               imageURL={item?.image?.imageURL ?? ""}
               imageSize="small"
               useSquareAspectRatio
@@ -69,6 +107,7 @@ export const Fair2ExhibitorRailFragmentContainer = createFragmentContainer(Fair2
   show: graphql`
     fragment Fair2ExhibitorRail_show on Show {
       internalID
+      slug
       href
       partner {
         ... on Partner {
@@ -80,6 +119,10 @@ export const Fair2ExhibitorRailFragmentContainer = createFragmentContainer(Fair2
       }
       counts {
         artworks
+      }
+      fair {
+        internalID
+        slug
       }
       artworks: artworksConnection(first: 20) {
         edges {

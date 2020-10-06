@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 314bedf405082eb55aedf0e851c527d2 */
+/* @relayHash 063f147fdb25a05d9c333c738fceb310 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -15,7 +15,10 @@ export type Fair2CollectionsTestsQueryResponse = {
 };
 export type Fair2CollectionsTestsQueryRawResponse = {
     readonly fair: ({
+        readonly internalID: string;
+        readonly slug: string;
         readonly marketingCollections: ReadonlyArray<({
+            readonly internalID: string;
             readonly slug: string;
             readonly title: string;
             readonly category: string;
@@ -54,7 +57,10 @@ query Fair2CollectionsTestsQuery(
 }
 
 fragment Fair2Collections_fair on Fair {
+  internalID
+  slug
   marketingCollections(size: 4) {
+    internalID
     slug
     title
     category
@@ -90,6 +96,20 @@ v1 = [
   }
 ],
 v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -137,6 +157,8 @@ return {
         "name": "fair",
         "plural": false,
         "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
           {
             "alias": null,
             "args": [
@@ -151,13 +173,8 @@ return {
             "name": "marketingCollections",
             "plural": true,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "slug",
-                "storageKey": null
-              },
+              (v2/*: any*/),
+              (v3/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -226,29 +243,29 @@ return {
                             ],
                             "storageKey": null
                           },
-                          (v2/*: any*/)
+                          (v4/*: any*/)
                         ],
                         "storageKey": null
                       }
                     ],
                     "storageKey": null
                   },
-                  (v2/*: any*/)
+                  (v4/*: any*/)
                 ],
                 "storageKey": "artworksConnection(first:3)"
               },
-              (v2/*: any*/)
+              (v4/*: any*/)
             ],
             "storageKey": "marketingCollections(size:4)"
           },
-          (v2/*: any*/)
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "314bedf405082eb55aedf0e851c527d2",
+    "id": "063f147fdb25a05d9c333c738fceb310",
     "metadata": {},
     "name": "Fair2CollectionsTestsQuery",
     "operationKind": "query",

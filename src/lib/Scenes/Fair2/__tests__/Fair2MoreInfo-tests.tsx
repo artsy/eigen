@@ -66,6 +66,8 @@ describe("Fair2MoreInfo", () => {
 
 const Fair2MoreInfoFixture: Fair2MoreInfoTestsQueryRawResponse = {
   fair: {
+    internalID: "abc123",
+    slug: "art-basel-hong-kong-2019",
     name: "Art Basel Hong Kong 2019",
     about: "This is the about.",
     summary: "This is the summary.",

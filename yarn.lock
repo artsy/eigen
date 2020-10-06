@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/auto-config/-/auto-config-1.0.2.tgz#b79f6fd0d0bda0c5e0764ced55e014cf58174d6f"
   integrity sha512-mJyuKNDMYZcgc2oLIkvmpVIr1RexklV71JmU+to5qs3Y9pv5dsj4WHl8+wf9g74EQNOyhWH2SYMGBm1JoPYh/Q==
 
-"@artsy/cohesion@1.33.5":
-  version "1.33.5"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.33.5.tgz#769e3cc3155599e4b5946f4be0a2d8d132a7515b"
-  integrity sha512-cFrFwJv4NW9tfXUeMqxHtSHnZwlhPweAVQJttwyL72/gvYtAfMXLztVCjU3oKmB8g6LQHMf6kQavfGE8EktcbQ==
+"@artsy/cohesion@1.40.0":
+  version "1.40.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.40.0.tgz#a7b543d4049f35207da867fc2b562dcd65364b82"
+  integrity sha512-O2AJ6yfTcb/WITDmZWL5vBfF8QT/VNx2AS8pXvtbruuKdybTin0cAG4mWJdRzdv6fEFzbaqjogEYTYq5fq5yKg==
 
 "@artsy/update-repo@0.2.0":
   version "0.2.0"

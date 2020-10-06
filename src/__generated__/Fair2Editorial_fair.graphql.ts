@@ -5,10 +5,14 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Fair2Editorial_fair = {
+    readonly internalID: string;
+    readonly slug: string;
     readonly articles: {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
+                readonly internalID: string;
+                readonly slug: string | null;
                 readonly title: string | null;
                 readonly href: string | null;
                 readonly publishedAt: string | null;
@@ -28,12 +32,29 @@ export type Fair2Editorial_fair$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
   "name": "Fair2Editorial_fair",
   "selections": [
+    (v0/*: any*/),
+    (v1/*: any*/),
     {
       "alias": "articles",
       "args": [
@@ -76,6 +97,8 @@ const node: ReaderFragment = {
                   "name": "id",
                   "storageKey": null
                 },
+                (v0/*: any*/),
+                (v1/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -134,5 +157,6 @@ const node: ReaderFragment = {
   "type": "Fair",
   "abstractKey": null
 };
-(node as any).hash = '2870d47f15f61f4916bde70c1a87acaa';
+})();
+(node as any).hash = '683a5120c185a0328f6bd09ca329d21c';
 export default node;

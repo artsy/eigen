@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, TappedCollectionGroup } from "@artsy/cohesion"
 import { Fair2Collections_fair } from "__generated__/Fair2Collections_fair.graphql"
 import { CARD_WIDTH } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
@@ -6,6 +7,7 @@ import { compact } from "lodash"
 import { Box, BoxProps, SmallCard, Text, TouchableWithScale } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 type Collection = Fair2Collections_fair["marketingCollections"][number]
 
@@ -14,6 +16,23 @@ interface Fair2CollectionsProps extends BoxProps {
 }
 
 export const Fair2Collections: React.FC<Fair2CollectionsProps> = ({ fair, ...rest }) => {
+  const tracking = useTracking()
+
+  const trackTappedCollection = (collectionID: string, collectionSlug: string) => {
+    const trackTappedCollectionProps: TappedCollectionGroup = {
+      action: ActionType.tappedCollectionGroup,
+      context_module: ContextModule.curatedHighlightsRail,
+      context_screen_owner_type: OwnerType.fair,
+      context_screen_owner_id: fair.internalID,
+      context_screen_owner_slug: fair.slug,
+      destination_screen_owner_type: OwnerType.collection,
+      destination_screen_owner_id: collectionID,
+      destination_screen_owner_slug: collectionSlug,
+      type: "thumbnail",
+    }
+    tracking.trackEvent(trackTappedCollectionProps)
+  }
+
   if (fair.marketingCollections.length === 0) {
     return null
   }
@@ -38,6 +57,7 @@ export const Fair2Collections: React.FC<Fair2CollectionsProps> = ({ fair, ...res
             <TouchableWithScale
               key={collection.slug}
               onPress={() => {
+                trackTappedCollection(collection.internalID, collection.slug)
                 navigate(`/collection/${collection.slug}`)
               }}
             >
@@ -53,7 +73,10 @@ export const Fair2Collections: React.FC<Fair2CollectionsProps> = ({ fair, ...res
 export const Fair2CollectionsFragmentContainer = createFragmentContainer(Fair2Collections, {
   fair: graphql`
     fragment Fair2Collections_fair on Fair {
+      internalID
+      slug
       marketingCollections(size: 4) {
+        internalID
         slug
         title
         category

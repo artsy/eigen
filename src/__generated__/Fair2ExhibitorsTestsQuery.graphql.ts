@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d1385bf229b6370232ce5d82b9d2e4cd */
+/* @relayHash 010f82aa845678f76f81ef91615693af */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -15,6 +15,7 @@ export type Fair2ExhibitorsTestsQueryResponse = {
 };
 export type Fair2ExhibitorsTestsQueryRawResponse = {
     readonly fair: ({
+        readonly internalID: string;
         readonly slug: string;
         readonly exhibitors: ({
             readonly edges: ReadonlyArray<({
@@ -39,7 +40,13 @@ export type Fair2ExhibitorsTestsQueryRawResponse = {
                         readonly id: string;
                     }) | null;
                     readonly internalID: string;
+                    readonly slug: string;
                     readonly href: string | null;
+                    readonly fair: ({
+                        readonly internalID: string;
+                        readonly slug: string;
+                        readonly id: string;
+                    }) | null;
                     readonly artworks: ({
                         readonly edges: ReadonlyArray<({
                             readonly node: ({
@@ -110,6 +117,7 @@ query Fair2ExhibitorsTestsQuery(
 
 fragment Fair2ExhibitorRail_show on Show {
   internalID
+  slug
   href
   partner {
     __typename
@@ -127,6 +135,11 @@ fragment Fair2ExhibitorRail_show on Show {
   }
   counts {
     artworks
+  }
+  fair {
+    internalID
+    slug
+    id
   }
   artworks: artworksConnection(first: 20) {
     edges {
@@ -169,6 +182,7 @@ fragment Fair2ExhibitorRail_show on Show {
 }
 
 fragment Fair2Exhibitors_fair on Fair {
+  internalID
   slug
   exhibitors: showsConnection(first: 15, sort: FEATURED_ASC) {
     edges {
@@ -222,10 +236,17 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "slug",
   "storageKey": null
 },
-v3 = [
+v4 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -237,22 +258,22 @@ v3 = [
     "value": "FEATURED_ASC"
   }
 ],
-v4 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v5 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v6 = [
-  (v4/*: any*/),
+v7 = [
+  (v5/*: any*/),
   {
     "alias": null,
     "args": null,
@@ -261,13 +282,6 @@ v6 = [
     "storageKey": null
   }
 ],
-v7 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-},
 v8 = {
   "alias": null,
   "args": null,
@@ -326,9 +340,10 @@ return {
         "plural": false,
         "selections": [
           (v2/*: any*/),
+          (v3/*: any*/),
           {
             "alias": "exhibitors",
-            "args": (v3/*: any*/),
+            "args": (v4/*: any*/),
             "concreteType": "ShowConnection",
             "kind": "LinkedField",
             "name": "showsConnection",
@@ -350,7 +365,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v4/*: any*/),
+                      (v5/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -377,23 +392,23 @@ return {
                         "name": "partner",
                         "plural": false,
                         "selections": [
-                          (v5/*: any*/),
+                          (v6/*: any*/),
                           {
                             "kind": "InlineFragment",
-                            "selections": (v6/*: any*/),
+                            "selections": (v7/*: any*/),
                             "type": "Partner",
                             "abstractKey": null
                           },
                           {
                             "kind": "InlineFragment",
-                            "selections": (v6/*: any*/),
+                            "selections": (v7/*: any*/),
                             "type": "ExternalPartner",
                             "abstractKey": null
                           },
                           {
                             "kind": "InlineFragment",
                             "selections": [
-                              (v4/*: any*/)
+                              (v5/*: any*/)
                             ],
                             "type": "Node",
                             "abstractKey": "__isNode"
@@ -401,8 +416,23 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v7/*: any*/),
+                      (v2/*: any*/),
+                      (v3/*: any*/),
                       (v8/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Fair",
+                        "kind": "LinkedField",
+                        "name": "fair",
+                        "plural": false,
+                        "selections": [
+                          (v2/*: any*/),
+                          (v3/*: any*/),
+                          (v5/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
                       {
                         "alias": "artworks",
                         "args": [
@@ -441,7 +471,7 @@ return {
                                     "name": "artistNames",
                                     "storageKey": null
                                   },
-                                  (v4/*: any*/),
+                                  (v5/*: any*/),
                                   {
                                     "alias": null,
                                     "args": null,
@@ -530,7 +560,7 @@ return {
                                         ],
                                         "storageKey": null
                                       },
-                                      (v4/*: any*/)
+                                      (v5/*: any*/)
                                     ],
                                     "storageKey": null
                                   },
@@ -563,7 +593,7 @@ return {
                                         "name": "endAt",
                                         "storageKey": null
                                       },
-                                      (v4/*: any*/)
+                                      (v5/*: any*/)
                                     ],
                                     "storageKey": null
                                   },
@@ -574,8 +604,8 @@ return {
                                     "name": "title",
                                     "storageKey": null
                                   },
-                                  (v7/*: any*/),
-                                  (v2/*: any*/)
+                                  (v2/*: any*/),
+                                  (v3/*: any*/)
                                 ],
                                 "storageKey": null
                               }
@@ -585,7 +615,7 @@ return {
                         ],
                         "storageKey": "artworksConnection(first:20)"
                       },
-                      (v5/*: any*/)
+                      (v6/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -629,7 +659,7 @@ return {
           },
           {
             "alias": "exhibitors",
-            "args": (v3/*: any*/),
+            "args": (v4/*: any*/),
             "filters": [
               "sort"
             ],
@@ -638,14 +668,14 @@ return {
             "kind": "LinkedHandle",
             "name": "showsConnection"
           },
-          (v4/*: any*/)
+          (v5/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "d1385bf229b6370232ce5d82b9d2e4cd",
+    "id": "010f82aa845678f76f81ef91615693af",
     "metadata": {},
     "name": "Fair2ExhibitorsTestsQuery",
     "operationKind": "query",

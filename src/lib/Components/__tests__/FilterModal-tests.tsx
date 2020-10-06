@@ -173,6 +173,9 @@ const MockFilterModalNavigator = ({ initialState }: InitialState) => {
           collection={CollectionFixture}
           exitModal={exitModalMock}
           closeModal={closeModalMock}
+          mode={FilterModalMode.ArtistArtworks}
+          id="abc123"
+          slug="some-artist"
           isFilterArtworksModalVisible
         />
       </ArtworkFilterContext.Provider>
@@ -584,5 +587,45 @@ describe("Applying filters", () => {
         "sort": null,
       }
     `)
+  })
+  it("tracks changes in the filter state when a filter is applied", () => {
+    state = {
+      selectedFilters: [
+        { displayText: "Works on paper", paramName: FilterParamName.medium, paramValue: "work-on-paper" },
+      ],
+      appliedFilters: [
+        { displayText: "Recently added", paramName: FilterParamName.sort, paramValue: "-decayed_merch" },
+      ],
+      previouslyAppliedFilters: [
+        { displayText: "Recently added", paramName: FilterParamName.sort, paramValue: "-decayed_merch" },
+      ],
+      applyFilters: true,
+      aggregations: mockAggregations,
+    }
+
+    const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
+    const applyButton = filterModal.find(ApplyButton)
+
+    applyButton.props().onPress()
+    expect(trackEvent).toHaveBeenCalledWith({
+      action_type: "commercial_filter_params_changed",
+      changed: {
+        medium: "work-on-paper",
+      },
+      context_screen: "Artist",
+      context_screen_owner_id: "abc123",
+      context_screen_owner_slug: "some-artist",
+      context_screen_owner_type: "Artist",
+      current: {
+        acquireable: false,
+        atAuction: false,
+        dimensionRange: "*-*",
+        inquireableOnly: false,
+        medium: "*",
+        offerable: false,
+        priceRange: "*-*",
+        sort: "-decayed_merch",
+      },
+    })
   })
 })
