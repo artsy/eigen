@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 47071ff412d9d2d1e9adb31d30f7d7d7 */
+/* @relayHash 99865e28ae0f1aea0fa3cbc85c101a4c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -751,6 +751,7 @@ fragment VanityURLEntity_fairOrPartner_18FOGk on VanityURLEntityType {
   __isVanityURLEntityType: __typename
   __typename
   ... on Fair {
+    slug
     ...Fair2_fair @include(if: $useNewFairView)
     ...Fair_fair @skip(if: $useNewFairView)
   }
@@ -791,14 +792,14 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "internalID",
+  "name": "slug",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "internalID",
   "storageKey": null
 },
 v5 = {
@@ -1174,7 +1175,7 @@ v42 = {
           "name": "node",
           "plural": false,
           "selections": [
-            (v4/*: any*/),
+            (v3/*: any*/),
             {
               "alias": null,
               "args": null,
@@ -1191,7 +1192,7 @@ v42 = {
             (v7/*: any*/),
             (v30/*: any*/),
             (v14/*: any*/),
-            (v3/*: any*/),
+            (v4/*: any*/),
             (v12/*: any*/),
             (v8/*: any*/),
             (v33/*: any*/),
@@ -1263,8 +1264,8 @@ v50 = {
 v51 = [
   (v16/*: any*/),
   (v8/*: any*/),
-  (v4/*: any*/),
   (v3/*: any*/),
+  (v4/*: any*/),
   (v6/*: any*/)
 ],
 v52 = {
@@ -1436,12 +1437,12 @@ return {
           {
             "kind": "InlineFragment",
             "selections": [
+              (v3/*: any*/),
               {
                 "condition": "useNewFairView",
                 "kind": "Condition",
                 "passingValue": true,
                 "selections": [
-                  (v3/*: any*/),
                   (v4/*: any*/),
                   {
                     "alias": "articles",
@@ -1476,8 +1477,8 @@ return {
                             "plural": false,
                             "selections": [
                               (v6/*: any*/),
-                              (v3/*: any*/),
                               (v4/*: any*/),
+                              (v3/*: any*/),
                               (v7/*: any*/),
                               (v8/*: any*/),
                               {
@@ -1536,8 +1537,8 @@ return {
                     "selections": [
                       (v2/*: any*/),
                       (v6/*: any*/),
-                      (v3/*: any*/),
                       (v4/*: any*/),
+                      (v3/*: any*/),
                       (v7/*: any*/),
                       {
                         "alias": null,
@@ -1660,8 +1661,8 @@ return {
                             "plural": false,
                             "selections": [
                               (v6/*: any*/),
-                              (v3/*: any*/),
                               (v4/*: any*/),
+                              (v3/*: any*/),
                               (v8/*: any*/),
                               (v12/*: any*/),
                               {
@@ -1982,8 +1983,8 @@ return {
                                 ],
                                 "storageKey": null
                               },
-                              (v3/*: any*/),
                               (v4/*: any*/),
+                              (v3/*: any*/),
                               (v8/*: any*/),
                               {
                                 "alias": null,
@@ -1993,8 +1994,8 @@ return {
                                 "name": "fair",
                                 "plural": false,
                                 "selections": [
-                                  (v3/*: any*/),
                                   (v4/*: any*/),
+                                  (v3/*: any*/),
                                   (v6/*: any*/)
                                 ],
                                 "storageKey": null
@@ -2092,8 +2093,8 @@ return {
                                             "storageKey": null
                                           },
                                           (v7/*: any*/),
-                                          (v3/*: any*/),
-                                          (v4/*: any*/)
+                                          (v4/*: any*/),
+                                          (v3/*: any*/)
                                         ],
                                         "storageKey": null
                                       }
@@ -2132,7 +2133,6 @@ return {
                 "passingValue": false,
                 "selections": [
                   (v6/*: any*/),
-                  (v4/*: any*/),
                   (v16/*: any*/),
                   {
                     "alias": null,
@@ -2253,7 +2253,7 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v3/*: any*/),
+                  (v4/*: any*/),
                   (v52/*: any*/),
                   {
                     "alias": null,
@@ -2271,7 +2271,7 @@ return {
                     "plural": false,
                     "selections": [
                       (v6/*: any*/),
-                      (v3/*: any*/),
+                      (v4/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -2513,7 +2513,7 @@ return {
                                         "name": "node",
                                         "plural": false,
                                         "selections": [
-                                          (v4/*: any*/),
+                                          (v3/*: any*/),
                                           (v6/*: any*/),
                                           {
                                             "alias": null,
@@ -2538,7 +2538,7 @@ return {
                                           (v7/*: any*/),
                                           (v30/*: any*/),
                                           (v14/*: any*/),
-                                          (v3/*: any*/),
+                                          (v4/*: any*/),
                                           (v12/*: any*/),
                                           (v8/*: any*/),
                                           (v33/*: any*/),
@@ -2553,8 +2553,8 @@ return {
                                 ],
                                 "storageKey": "artworksConnection(first:4)"
                               },
-                              (v4/*: any*/),
                               (v3/*: any*/),
+                              (v4/*: any*/),
                               (v45/*: any*/),
                               {
                                 "alias": null,
@@ -2570,8 +2570,8 @@ return {
                                     "selections": [
                                       (v16/*: any*/),
                                       (v8/*: any*/),
-                                      (v4/*: any*/),
                                       (v3/*: any*/),
+                                      (v4/*: any*/),
                                       (v6/*: any*/),
                                       {
                                         "alias": null,
@@ -2582,8 +2582,8 @@ return {
                                         "plural": false,
                                         "selections": [
                                           (v6/*: any*/),
-                                          (v4/*: any*/),
                                           (v3/*: any*/),
+                                          (v4/*: any*/),
                                           (v55/*: any*/)
                                         ],
                                         "storageKey": null
@@ -2641,8 +2641,8 @@ return {
             "kind": "InlineFragment",
             "selections": [
               (v6/*: any*/),
-              (v3/*: any*/),
               (v4/*: any*/),
+              (v3/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -2653,7 +2653,7 @@ return {
                 "selections": [
                   (v6/*: any*/),
                   (v55/*: any*/),
-                  (v3/*: any*/),
+                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -2731,8 +2731,8 @@ return {
                         "plural": false,
                         "selections": [
                           (v6/*: any*/),
-                          (v3/*: any*/),
                           (v4/*: any*/),
+                          (v3/*: any*/),
                           (v16/*: any*/),
                           {
                             "alias": null,
@@ -2892,7 +2892,7 @@ return {
                           (v62/*: any*/),
                           (v6/*: any*/),
                           (v16/*: any*/),
-                          (v4/*: any*/),
+                          (v3/*: any*/),
                           (v19/*: any*/),
                           {
                             "alias": null,
@@ -2955,8 +2955,8 @@ return {
                         "selections": [
                           (v62/*: any*/),
                           (v6/*: any*/),
-                          (v3/*: any*/),
                           (v4/*: any*/),
+                          (v3/*: any*/),
                           (v16/*: any*/),
                           (v19/*: any*/),
                           (v21/*: any*/),
@@ -3042,7 +3042,7 @@ return {
     ]
   },
   "params": {
-    "id": "47071ff412d9d2d1e9adb31d30f7d7d7",
+    "id": "99865e28ae0f1aea0fa3cbc85c101a4c",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",

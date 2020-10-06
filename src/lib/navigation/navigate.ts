@@ -1,13 +1,22 @@
 import { isNativeModule, modules } from "lib/AppRegistry"
 import { Linking, NativeModules } from "react-native"
 import { matchRoute } from "./routes"
+import { handleFairRouting } from "./util"
 
 export function navigate(url: string, options: { modal?: boolean } = {}) {
-  const result = matchRoute(url)
+  let result = matchRoute(url)
 
   if (result.type === "external_url") {
     Linking.openURL(result.url)
     return
+  }
+
+  // Conditional routing for fairs depends on the `:fairID` param,
+  // so pulled that out into a separate method. Can be removed
+  // when the old fair view is fully deprecated.
+  // @ts-ignore
+  if (result.type === "match" && !!result.params.fairID) {
+    result = handleFairRouting(result)
   }
 
   const module = modules[result.module]

@@ -188,6 +188,31 @@ describe("VanityURLEntity", () => {
       expect(fairComponent).toBeDefined()
     })
   })
+
+  it("renders an old fair page when the lab option is enabled and the slug is configured", () => {
+    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFairPage: true })
+    __appStoreTestUtils__?.injectState({
+      native: { sessionState: { legacyFairSlugs: ["sofa-chicago-2018"] } },
+    })
+    __appStoreTestUtils__?.injectState({
+      native: { sessionState: { legacyFairProfileSlugs: ["old-fair-profile"] } },
+    })
+
+    const tree = renderWithWrappers(<TestRenderer entity="fair" slugType="profileID" slug="old-fair-profile" />)
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("VanityURLEntityQuery")
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          vanityURLEntity: {
+            ...fairFixture,
+          },
+        },
+      })
+    })
+    const fairComponent = tree.root.findByType(FairContainer)
+    expect(fairComponent).toBeDefined()
+  })
 })
 
 const Fair2Fixture = {

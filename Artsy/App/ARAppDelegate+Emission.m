@@ -44,6 +44,7 @@
 
 @import Darwin.POSIX.sys.utsname;
 
+
 @implementation ARAppDelegate (Emission)
 
 - (void)setupEmission;
@@ -85,14 +86,14 @@ SOFTWARE.
 */
 - (NSString *)deviceId;
 {
-  struct utsname systemInfo;
-  uname(&systemInfo);
-  NSString* deviceId = [NSString stringWithCString:systemInfo.machine
-                                          encoding:NSUTF8StringEncoding];
-  if ([deviceId isEqualToString:@"i386"] || [deviceId isEqualToString:@"x86_64"] ) {
-    deviceId = [NSString stringWithFormat:@"%s", getenv("SIMULATOR_MODEL_IDENTIFIER")];
-  }
-  return deviceId;
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    NSString *deviceId = [NSString stringWithCString:systemInfo.machine
+                                            encoding:NSUTF8StringEncoding];
+    if ([deviceId isEqualToString:@"i386"] || [deviceId isEqualToString:@"x86_64"]) {
+        deviceId = [NSString stringWithFormat:@"%s", getenv("SIMULATOR_MODEL_IDENTIFIER")];
+    }
+    return deviceId;
 }
 
 - (void)setupSharedEmissionWithPackagerURL:(NSURL *)packagerURL;
@@ -130,26 +131,31 @@ SOFTWARE.
         liveAuctionsURL = @"https://live.artsy.net";
     }
 
+    NSArray *fairSlugs = [aero legacyFairSlugs];
+    NSArray *fairProfileSlugs = [aero legacyFairProfileSlugs];
+
     NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
     AROnboardingUserProgressStage onboardingState = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage];
 
     NSDictionary *options = [self getOptionsForEmission:[aero featuresMap] labOptions:[AROptions labOptionsMap]];
 
-    AREmission *emission = [[AREmission alloc] initWithState: @{
-        [ARStateKey userID]: (userID ?: [NSNull null]),
-        [ARStateKey authenticationToken]: (authenticationToken ?: [NSNull null]),
-        [ARStateKey launchCount]: @(launchCount),
-        [ARStateKey onboardingState]: onboardingState == AROnboardingStageDefault ? @"none" : onboardingState == AROnboardingStageOnboarded ? @"complete" : @"incomplete",
-        [ARStateKey sentryDSN]: (sentryDSN ?: [NSNull null]),
-        [ARStateKey stripePublishableKey]: (stripePublishableKey ?: [NSNull null]),
-        [ARStateKey gravityURL]: gravity,
-        [ARStateKey metaphysicsURL]: metaphysics,
-        [ARStateKey predictionURL]: liveAuctionsURL,
-        [ARStateKey webURL]: [[ARRouter baseWebURL] absoluteString],
-        [ARStateKey userAgent]: ARRouter.userAgent,
-        [ARStateKey env]: env,
-        [ARStateKey options]: options,
-        [ARStateKey deviceId]: self.deviceId
+    AREmission *emission = [[AREmission alloc] initWithState:@{
+                                                                 [ARStateKey userID] : (userID ?: [NSNull null]),
+                                                                 [ARStateKey authenticationToken] : (authenticationToken ?: [NSNull null]),
+                                                                 [ARStateKey launchCount] : @(launchCount),
+                                                                 [ARStateKey onboardingState] : onboardingState == AROnboardingStageDefault ? @"none" : onboardingState == AROnboardingStageOnboarded ? @"complete" : @"incomplete",
+                                                                 [ARStateKey sentryDSN] : (sentryDSN ?: [NSNull null]),
+                                                                 [ARStateKey stripePublishableKey] : (stripePublishableKey ?: [NSNull null]),
+                                                                 [ARStateKey gravityURL] : gravity,
+                                                                 [ARStateKey metaphysicsURL] : metaphysics,
+                                                                 [ARStateKey predictionURL] : liveAuctionsURL,
+                                                                 [ARStateKey webURL] : [[ARRouter baseWebURL] absoluteString],
+                                                                 [ARStateKey userAgent] : ARRouter.userAgent,
+                                                                 [ARStateKey env] : env,
+                                                                 [ARStateKey options] : options,
+                                                                 [ARStateKey legacyFairSlugs] : fairSlugs,
+                                                                 [ARStateKey legacyFairProfileSlugs] : fairProfileSlugs,
+                                                                 [ARStateKey deviceId] : self.deviceId
     } packagerURL:packagerURL];
 
     // Disable default React Native dev menu shake motion handler
@@ -211,14 +217,13 @@ SOFTWARE.
             [ARAnalytics pageView:info[@"context_screen"]  withProperties:[properties copy]];
         }
     };
-
 }
 
 - (void)updateEmissionOptions
 {
     ArtsyEcho *aero = [[ArtsyEcho alloc] init];
     [aero setup];
-    [[AREmission sharedInstance] updateState:@{[ARStateKey options]: [self getOptionsForEmission:[aero featuresMap] labOptions:[AROptions labOptionsMap]]}];
+    [[AREmission sharedInstance] updateState:@{[ARStateKey options] : [self getOptionsForEmission:[aero featuresMap] labOptions:[AROptions labOptionsMap]]}];
 }
 
 - (NSDictionary *)getOptionsForEmission:(NSDictionary *)echoFeatures labOptions:(NSDictionary *)labOptions
