@@ -21,6 +21,10 @@ export type Fair2MoreInfo_fair = {
         readonly summary: string | null;
         readonly " $fragmentRefs": FragmentRefs<"LocationMap_location">;
     } | null;
+    readonly sponsoredContent: {
+        readonly activationText: string | null;
+        readonly pressReleaseUrl: string | null;
+    } | null;
     readonly ticketsLink: string | null;
     readonly fairHours: string | null;
     readonly fairLinks: string | null;
@@ -151,6 +155,31 @@ return {
     {
       "alias": null,
       "args": null,
+      "concreteType": "FairSponsoredContent",
+      "kind": "LinkedField",
+      "name": "sponsoredContent",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "activationText",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "pressReleaseUrl",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
       "name": "ticketsLink",
       "storageKey": null
@@ -189,5 +218,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'f05269d4df2c04c7acfc166f2bbeefad';
+(node as any).hash = '75ab873fcd1b60fc241dc6c2802dcae6';
 export default node;

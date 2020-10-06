@@ -35,6 +35,7 @@ describe("Fair2MoreInfo", () => {
     expect(wrapper.text()).toContain("ContactArt Basel Hong Kong")
     expect(wrapper.text()).toContain("Buy Tickets")
     expect(wrapper.text()).toContain("LinksGoogle it")
+    expect(wrapper.text()).toContain("View BMW art activations")
     expect(wrapper.find(LocationMapContainer).length).toBe(1)
   })
 
@@ -51,6 +52,7 @@ describe("Fair2MoreInfo", () => {
         fairTickets: "",
         fairContact: "",
         summary: "",
+        sponsoredContent: null,
       },
     } as Fair2MoreInfoTestsQueryRawResponse
     const wrapper = await getWrapper(Fair2MoreInfoMissingInfo)
@@ -60,6 +62,7 @@ describe("Fair2MoreInfo", () => {
     expect(wrapper.text()).not.toContain("Links")
     expect(wrapper.text()).not.toContain("Tickets")
     expect(wrapper.text()).not.toContain("Contact")
+    expect(wrapper.text()).not.toContain("View BMW art activations")
     expect(wrapper.find(LocationMapContainer).length).toBe(0)
   })
 })
@@ -89,6 +92,10 @@ const Fair2MoreInfoFixture: Fair2MoreInfoTestsQueryRawResponse = {
         __typename: "OpeningHoursText",
         text: null,
       },
+    },
+    sponsoredContent: {
+      activationText: "Some activation text",
+      pressReleaseUrl: "Some press release text",
     },
     profile: {
       id: "abc123",
