@@ -1,7 +1,9 @@
+import { navigate } from "lib/navigation/navigate"
+import { matchRoute } from "lib/navigation/routes"
 import { getCurrentEmissionState, useIsStaging } from "lib/store/AppStore"
-import React from "react"
+import React, { useState } from "react"
+import { URL } from "react-native-url-polyfill"
 import { WebView } from "react-native-webview"
-import { URL } from "url"
 
 interface Props {
   initialURL: string
@@ -17,16 +19,6 @@ export const ArtsyWebView: React.FC<Props> = ({ initialURL }) => {
       return new URL("https://www.artsy.net")
     }
   }
-
-  const artsyDomains = [
-    "artsy.net",
-    "www.artsy.net",
-    "m.artsy.net",
-    "api.artsy.net",
-    "staging.artsy.net",
-    "m-staging.artsy.net",
-    "stagingapi.artsy.net",
-  ]
 
   const updateURL = (url: string) => {
     const isStaging = useIsStaging()
@@ -51,6 +43,19 @@ export const ArtsyWebView: React.FC<Props> = ({ initialURL }) => {
     }
   }
 
+  const updatedURL = updateURL(initialURL)
+  const [currentURL, setURL] = useState(updatedURL)
+
+  const artsyDomains = [
+    "artsy.net",
+    "www.artsy.net",
+    "m.artsy.net",
+    "api.artsy.net",
+    "staging.artsy.net",
+    "m-staging.artsy.net",
+    "stagingapi.artsy.net",
+  ]
+
   const headersForURL = (url: string) => {
     const { authenticationToken, userAgent } = getCurrentEmissionState()
     const passedURL = new URL(url)
@@ -62,11 +67,36 @@ export const ArtsyWebView: React.FC<Props> = ({ initialURL }) => {
     }
   }
 
+  // A bit of a misnomer because we handle some routes by sending to a webview
+  const nativeComponentExistsForURL = (url: string) => {
+    return matchRoute(url).type === "match"
+  }
+
   // TODO: There is a bug on rn-webview that causes headers to not be passed on subsequent requests
   // The behavior we actually want is to intercept all requests and check if the domain is
   // an artsy domain and if so inject auth headers
   // See this issue: https://github.com/react-native-webview/react-native-webview/issues/4#issuecomment-427671845
   // See this PR: https://github.com/react-native-webview/react-native-webview/pull/181/files
-  const updatedURL = updateURL(initialURL)
-  return <WebView source={{ uri: updatedURL, headers: headersForURL(updatedURL) }} />
+
+  return (
+    <WebView
+      source={{ uri: updatedURL, headers: headersForURL(updatedURL) }}
+      onShouldStartLoadWithRequest={(request) => {
+        console.log(request)
+        if (request.url === currentURL) {
+          return true
+        }
+        console.log("This is where I would call updateURL if I knew how")
+        // setURL(updateURL(request.url));
+        // TODO: Handle sharing links
+        // TODO: Handle follow / non-nav links
+        // TODO: Send headers on subsequent requests
+        // navigate to a native screen if possible
+        if (nativeComponentExistsForURL(request.url)) {
+          navigate(request.url)
+        }
+        return false
+      }}
+    />
+  )
 }

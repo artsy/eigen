@@ -38,8 +38,8 @@ export function matchRoute(
   console.error("Unhandled route", url)
   return {
     type: "match",
-    module: "WebView",
-    params: { url },
+    module: "ArtsyWebView",
+    params: { initialURL: url },
   }
 }
 
@@ -135,7 +135,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/city-bmw-list/:citySlug", "CityBMWList"),
     new RouteMatcher("/:slug", "VanityURLEntity"),
 
-    new RouteMatcher("/*", "WebView", (params) => ({ url: "/" + params["*"] })),
+    new RouteMatcher("/*", "ArtsyWebView", (params) => ({ initialURL: "/" + params["*"] })),
   ])
 
   const routesForDomain = {

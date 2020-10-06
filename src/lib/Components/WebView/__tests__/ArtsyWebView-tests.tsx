@@ -120,7 +120,7 @@ describe("ArtsyWebView", () => {
       })
     })
 
-    it("doesn't leak x-auth-token header to non-artsy domains", () => {
+    it("doesn't leak x-access-token header to non-artsy domains", () => {
       __appStoreTestUtils__?.injectState({
         native: {
           sessionState: {
@@ -134,5 +134,19 @@ describe("ArtsyWebView", () => {
       const webview = tree.root.findAllByType(WebView)[0]
       expect(webview.props.source.headers).toBeUndefined()
     })
+  })
+
+  describe("navigation", () => {
+    it("navigates to native screen when following a link with a native screen", () => {
+      const url = "http://www.artsy.net/foo/bar"
+      const tree = renderWithWrappers(<ArtsyWebView initialURL={url} />)
+      const webview = tree.root.findAllByType(WebView)[0]
+      // TODO: Test this
+      expect(true).toBe(false)
+    })
+  })
+
+  describe("share logic", () => {
+    expect(true).toBe(false)
   })
 })

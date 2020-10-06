@@ -75,6 +75,7 @@ import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryR
 import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
+import { ArtsyWebView } from "./Components/WebView/ArtsyWebView"
 import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
@@ -410,6 +411,7 @@ export const modules = defineModules({
     nativeModuleName: "LocalDiscovery",
   },
   WebView: { nativeModuleName: "WebView" },
+  ArtsyWebView: { Component: ArtsyWebView },
   Map: { Component: MapContainer, fullBleed: true },
   MyAccount: { Component: MyAccountQueryRenderer },
   MyAccountEditEmail: { Component: MyAccountEditEmailQueryRenderer, hidesBackButton: true },
