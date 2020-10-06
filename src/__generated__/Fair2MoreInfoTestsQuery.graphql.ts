@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4c0746f79a0d7b3bf25a3a109e0a5eb2 */
+/* @relayHash 453f736d57b8c8a1640243c2bb6d592c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -55,11 +55,11 @@ export type Fair2MoreInfoTestsQueryRawResponse = {
             }) | null;
         }) | null;
         readonly ticketsLink: string | null;
-        readonly hours: string | null;
-        readonly links: string | null;
-        readonly tickets: string | null;
+        readonly fairHours: string | null;
+        readonly fairLinks: string | null;
+        readonly fairTickets: string | null;
         readonly summary: string | null;
-        readonly contact: string | null;
+        readonly fairContact: string | null;
         readonly id: string;
     }) | null;
 };
@@ -101,11 +101,11 @@ fragment Fair2MoreInfo_fair on Fair {
     id
   }
   ticketsLink
-  hours(format: MARKDOWN)
-  links(format: MARKDOWN)
-  tickets(format: MARKDOWN)
+  fairHours: hours(format: MARKDOWN)
+  fairLinks: links(format: MARKDOWN)
+  fairTickets: tickets(format: MARKDOWN)
   summary
-  contact(format: MARKDOWN)
+  fairContact: contact(format: MARKDOWN)
 }
 
 fragment LocationMap_location on Location {
@@ -438,21 +438,21 @@ return {
             "storageKey": null
           },
           {
-            "alias": null,
+            "alias": "fairHours",
             "args": (v6/*: any*/),
             "kind": "ScalarField",
             "name": "hours",
             "storageKey": "hours(format:\"MARKDOWN\")"
           },
           {
-            "alias": null,
+            "alias": "fairLinks",
             "args": (v6/*: any*/),
             "kind": "ScalarField",
             "name": "links",
             "storageKey": "links(format:\"MARKDOWN\")"
           },
           {
-            "alias": null,
+            "alias": "fairTickets",
             "args": (v6/*: any*/),
             "kind": "ScalarField",
             "name": "tickets",
@@ -460,7 +460,7 @@ return {
           },
           (v5/*: any*/),
           {
-            "alias": null,
+            "alias": "fairContact",
             "args": (v6/*: any*/),
             "kind": "ScalarField",
             "name": "contact",
@@ -473,7 +473,7 @@ return {
     ]
   },
   "params": {
-    "id": "4c0746f79a0d7b3bf25a3a109e0a5eb2",
+    "id": "453f736d57b8c8a1640243c2bb6d592c",
     "metadata": {},
     "name": "Fair2MoreInfoTestsQuery",
     "operationKind": "query",

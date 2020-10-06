@@ -91,7 +91,7 @@ describe("Fair2Header", () => {
   it("navigates to the fair info page on press of More Info", () => {
     const wrapper = getWrapper().root.findByType(TouchableOpacity)
     wrapper.props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/fair2/art-basel-hong-kong-2020/info")
+    expect(navigate).toHaveBeenCalledWith("/fair/art-basel-hong-kong-2020/info")
   })
 
   it("does not show the More Info link if there is no info to show", () => {
@@ -115,7 +115,7 @@ const Fair2HeaderFixture: Fair2HeaderTestsQueryRawResponse = {
     id: "xyz123",
     image: {
       aspectRatio: 1,
-      url: "https://testing.artsy.net/art-basel-hong-kong-image",
+      imageUrl: "https://testing.artsy.net/art-basel-hong-kong-image",
     },
     location: {
       id: "cde123",
@@ -124,14 +124,14 @@ const Fair2HeaderFixture: Fair2HeaderTestsQueryRawResponse = {
     profile: {
       id: "abc123",
       icon: {
-        url: "https://testing.artsy.net/art-basel-hong-kong-icon",
+        imageUrl: "https://testing.artsy.net/art-basel-hong-kong-icon",
       },
     },
     tagline: "",
-    links: null,
-    contact: null,
-    hours: null,
-    tickets: null,
+    fairLinks: null,
+    fairContact: null,
+    fairHours: null,
+    fairTickets: null,
     ticketsLink: "",
     exhibitionPeriod: "Aug 19 - Sep 19",
     startAt: "2020-08-19T08:00:00+00:00",

@@ -91,17 +91,17 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
               </>
             )}
 
-            {!!fair.hours && (
+            {!!fair.fairHours && (
               <>
                 <Text variant="mediumText">Hours</Text>
-                <Markdown rules={markdownRules}>{fair.hours}</Markdown>
+                <Markdown rules={markdownRules}>{fair.fairHours}</Markdown>
                 <Spacer my={1} />
               </>
             )}
-            {!!fair.tickets && (
+            {!!fair.fairTickets && (
               <>
                 <Text variant="mediumText">Tickets</Text>
-                <Markdown rules={markdownRules}>{fair.tickets}</Markdown>
+                <Markdown rules={markdownRules}>{fair.fairTickets}</Markdown>
                 <Spacer my={1} />
               </>
             )}
@@ -113,17 +113,17 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
                 <Spacer my={1} />
               </>
             )}
-            {!!fair.links && (
+            {!!fair.fairLinks && (
               <>
                 <Text variant="mediumText">Links</Text>
-                <Markdown rules={markdownRules}>{fair.links}</Markdown>
+                <Markdown rules={markdownRules}>{fair.fairLinks}</Markdown>
                 <Spacer my={1} />
               </>
             )}
-            {!!fair.contact && (
+            {!!fair.fairContact && (
               <>
                 <Text variant="mediumText">Contact</Text>
-                <Markdown rules={markdownRules}>{fair.contact}</Markdown>
+                <Markdown rules={markdownRules}>{fair.fairContact}</Markdown>
                 <Spacer my={1} />
               </>
             )}
@@ -154,11 +154,11 @@ export const Fair2MoreInfoFragmentContainer = createFragmentContainer(Fair2MoreI
         summary
       }
       ticketsLink
-      hours(format: MARKDOWN)
-      links(format: MARKDOWN)
-      tickets(format: MARKDOWN)
+      fairHours: hours(format: MARKDOWN)
+      fairLinks: links(format: MARKDOWN)
+      fairTickets: tickets(format: MARKDOWN)
       summary
-      contact(format: MARKDOWN)
+      fairContact: contact(format: MARKDOWN)
     }
   `,
 })
