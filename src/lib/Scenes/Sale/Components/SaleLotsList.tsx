@@ -2,7 +2,7 @@ import { SaleLotsList_me } from "__generated__/SaleLotsList_me.graphql"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PAGE_SIZE } from "lib/data/constants"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { filterArtworksParams, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Flex, Sans } from "palette"
 import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -14,29 +14,29 @@ interface Props {
   relay: RelayPaginationProp
 }
 
-export const SaleLotsList: React.FC<Props> = ({ me, saleID, relay }) => {
-  const { state } = useContext(ArtworkFilterContext)
-  // const filterParams = filterArtworksParams(state.appliedFilters)
+export const SaleLotsList: React.FC<Props> = ({ me, relay, saleID }) => {
+  const { state, dispatch } = useContext(ArtworkFilterContext)
+  const filterParams = filterArtworksParams(state.appliedFilters)
   const showList = state.appliedFilters.find((filter) => filter.paramValue === ViewAsValues.List)
 
-  // useEffect(() => {
-  //   if (state.applyFilters) {
-  //     relay.refetchConnection(
-  //       PAGE_SIZE,
-  //       (error) => {
-  //         if (error) {
-  //           throw new Error("Fair/FairArtworks filter error: " + error.message)
-  //         }
-  //       },
-  //       filterParams
-  //     )
-  //   }
-  // }, [state.appliedFilters])
+  useEffect(() => {
+    if (state.applyFilters) {
+      relay.refetchConnection(
+        PAGE_SIZE,
+        (error) => {
+          if (error) {
+            throw new Error("Fair/FairArtworks filter error: " + error.message)
+          }
+        },
+        filterParams
+      )
+    }
+  }, [state.appliedFilters])
 
   // useEffect(() => {
   //   dispatch({
   //     type: "setAggregations",
-  //     payload: sale.saleArtworksConnection.aggregations,
+  //     payload: me.lotsByFollowedArtistsConnection.aggregations,
   //   })
   // }, [])
 
@@ -78,42 +78,6 @@ export const SaleLotsList: React.FC<Props> = ({ me, saleID, relay }) => {
     </Flex>
   )
 }
-
-// export const SaleLotsListContainer = createPaginationContainer(
-//   SaleLotsList,
-//   {
-//     me: graphql`
-//       fragment SaleLotsList_me on Me @argumentDefinitions(cursor: { type: "String" }) {
-//         saleArtworksList: lotsByFollowedArtistsConnection(
-//           after: $cursor
-//           liveSale: true
-//           isAuction: true
-//           first: 10
-//           includeArtworksByFollowedArtists: false
-//         ) @connection(key: "SaleLotsList_saleArtworksList") {
-//           edges {
-//             cursor
-//             node {
-//               title
-//             }
-//           }
-//           # ...InfiniteScrollArtworksGrid_connection
-//         }
-//       }
-//     `,
-//   },
-//   {
-//     getConnectionFromProps: ({ me }) => me && me.saleArtworksList,
-//     getVariables: (_props, { cursor }) => ({ cursor }),
-//     query: graphql`
-//       query SaleLotsListQuery($cursor: String) {
-//         me {
-//           ...SaleLotsList_me @arguments(cursor: $cursor)
-//         }
-//       }
-//     `,
-//   }
-// )
 
 export const SaleLotsListContainer = createPaginationContainer(
   SaleLotsList,

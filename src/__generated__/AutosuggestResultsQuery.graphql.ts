@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9bb6534b2b72fed886ad269c26515d9e */
+/* @relayHash da45826af61ddafe064146e96d04fe7e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -13,37 +13,9 @@ export type AutosuggestResultsQueryVariables = {
 export type AutosuggestResultsQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"AutosuggestResults_results">;
 };
-export type AutosuggestResultsQueryRawResponse = {
-    readonly results: ({
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
-                readonly imageUrl: string | null;
-                readonly href: string | null;
-                readonly displayLabel: string | null;
-                readonly id: string | null;
-                readonly __typename: "SearchableItem";
-                readonly internalID: string;
-                readonly displayType: string | null;
-                readonly slug: string;
-            } | {
-                readonly imageUrl: string | null;
-                readonly href: string | null;
-                readonly displayLabel: string | null;
-                readonly id: string | null;
-                readonly __typename: string;
-            }) | null;
-            readonly cursor: string;
-        }) | null> | null;
-        readonly pageInfo: {
-            readonly endCursor: string | null;
-            readonly hasNextPage: boolean;
-        };
-    }) | null;
-};
 export type AutosuggestResultsQuery = {
     readonly response: AutosuggestResultsQueryResponse;
     readonly variables: AutosuggestResultsQueryVariables;
-    readonly rawResponse: AutosuggestResultsQueryRawResponse;
 };
 
 
@@ -309,5 +281,5 @@ return {
   }
 };
 })();
-(node as any).hash = '4b37a33eeb4f02c7e002245129795ade';
+(node as any).hash = 'b0cfecc2b9235c28824c6ad6aa9d0a17';
 export default node;

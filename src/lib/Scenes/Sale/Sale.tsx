@@ -1,5 +1,6 @@
 import { Sale_me } from "__generated__/Sale_me.graphql"
 import { Sale_sale } from "__generated__/Sale_sale.graphql"
+import { Sale_saleArtworksConnection } from "__generated__/Sale_saleArtworksConnection.graphql"
 import { SaleQueryRendererQuery } from "__generated__/SaleQueryRendererQuery.graphql"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import Spinner from "lib/Components/Spinner"
@@ -15,11 +16,13 @@ import { useTracking } from "react-tracking"
 import { RegisterToBidButton } from "./Components/RegisterToBidButton"
 import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
 import { SaleHeaderContainer as SaleHeader } from "./Components/SaleHeader"
-import { SaleLotsListContainer } from "./Components/SaleLotsList"
+// import { SaleLotsListContainer } from "./Components/SaleLotsList"
+import { SaleLotsList2Container } from "./Components/SaleLotsList2"
 
 interface Props {
   sale: Sale_sale
   me: Sale_me
+  saleArtworksConnection: Sale_saleArtworksConnection
 }
 
 interface SaleSection {
@@ -41,6 +44,8 @@ interface ViewToken {
 }
 
 const Sale: React.FC<Props> = (props) => {
+  console.log("----")
+  console.log(props)
   const tracking = useTracking()
 
   const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
@@ -96,9 +101,13 @@ const Sale: React.FC<Props> = (props) => {
       key: "saleArtworksRail",
       content: <SaleArtworksRailContainer me={props.me} />,
     },
+    // {
+    //   key: "saleLotsList",
+    //   content: <SaleLotsListContainer me={props.me} saleID={props.sale.internalID} />,
+    // },
     {
-      key: "saleLotsList",
-      content: <SaleLotsListContainer me={props.me} saleID={props.sale.internalID} />,
+      key: "saleLotsList2",
+      content: <SaleLotsList2Container saleArtworksConnection={props.saleArtworksConnection} />,
     },
   ]
 
@@ -163,6 +172,12 @@ export const SaleContainer = createFragmentContainer(Sale, {
       ...SaleLotsList_me
     }
   `,
+  saleArtworksConnection: graphql`
+    fragment Sale_saleArtworksConnection on Query
+    @argumentDefinitions(count: { type: "Int!" }, cursor: { type: "String" }) {
+      ...SaleLotsList2_saleArtworksConnection @arguments(count: $count)
+    }
+  `,
 })
 
 const Placeholder = () => <Spinner style={{ flex: 1 }} />
@@ -172,16 +187,22 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
     <QueryRenderer<SaleQueryRendererQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query SaleQueryRendererQuery($saleID: String!) {
+        query SaleQueryRendererQuery($saleID: String!, $count: Int!) {
           sale(id: $saleID) {
             ...Sale_sale
           }
           me {
             ...Sale_me
           }
+
+          # saleArtworksConnection {
+          # ...Sale_saleArtworksConnection @arguments(count: $count)
+          # saleArtworksConnection
+          ...SaleLotsList2_saleArtworksConnection @arguments(count: $count)
+          # }
         }
       `}
-      variables={{ saleID }}
+      variables={{ saleID, count: 10 }}
       render={renderWithPlaceholder({ Container: SaleContainer, renderPlaceholder: Placeholder })}
     />
   )
