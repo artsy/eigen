@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 376558d8d5ac7c511a881ee865c69125 */
+/* @relayHash aa5fef47d013abb8d61acf68a1014119 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -273,7 +273,7 @@ fragment Fair2Exhibitors_fair on Fair {
   }
 }
 
-fragment Fair2FollowedArtists_fair on Fair {
+fragment Fair2FollowedArtistsRail_fair on Fair {
   internalID
   slug
   followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
@@ -350,7 +350,7 @@ fragment Fair2_fair on Fair {
   ...Fair2Collections_fair
   ...Fair2Artworks_fair
   ...Fair2Exhibitors_fair
-  ...Fair2FollowedArtists_fair
+  ...Fair2FollowedArtistsRail_fair
 }
 
 fragment FairBoothPreview_show on Show {
@@ -3044,7 +3044,7 @@ return {
     ]
   },
   "params": {
-    "id": "376558d8d5ac7c511a881ee865c69125",
+    "id": "aa5fef47d013abb8d61acf68a1014119",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",

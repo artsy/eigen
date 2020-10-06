@@ -1,4 +1,4 @@
-import { Fair2FollowedArtistsTestsQuery } from "__generated__/Fair2FollowedArtistsTestsQuery.graphql"
+import { Fair2FollowedArtistsRailTestsQuery } from "__generated__/Fair2FollowedArtistsRailTestsQuery.graphql"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -6,11 +6,11 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { Fair2FollowedArtistsFragmentContainer } from "../Components/Fair2FollowedArtists"
+import { Fair2FollowedArtistsRailFragmentContainer } from "../Components/Fair2FollowedArtistsRail"
 
 jest.unmock("react-relay")
 
-describe("Fair2FollowedArtists", () => {
+describe("Fair2FollowedArtistsRail", () => {
   const trackEvent = useTracking().trackEvent
   let env: ReturnType<typeof createMockEnvironment>
 
@@ -19,12 +19,12 @@ describe("Fair2FollowedArtists", () => {
   })
 
   const TestRenderer = () => (
-    <QueryRenderer<Fair2FollowedArtistsTestsQuery>
+    <QueryRenderer<Fair2FollowedArtistsRailTestsQuery>
       environment={env}
       query={graphql`
-        query Fair2FollowedArtistsTestsQuery($fairID: String!) @raw_response_type @relay_test_operation {
+        query Fair2FollowedArtistsRailTestsQuery($fairID: String!) @raw_response_type @relay_test_operation {
           fair(id: $fairID) {
-            ...Fair2FollowedArtists_fair
+            ...Fair2FollowedArtistsRail_fair
           }
         }
       `}
@@ -39,7 +39,7 @@ describe("Fair2FollowedArtists", () => {
           return null
         }
 
-        return <Fair2FollowedArtistsFragmentContainer fair={props.fair} />
+        return <Fair2FollowedArtistsRailFragmentContainer fair={props.fair} />
       }}
     />
   )

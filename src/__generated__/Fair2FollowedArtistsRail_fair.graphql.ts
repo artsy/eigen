@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Fair2FollowedArtists_fair = {
+export type Fair2FollowedArtistsRail_fair = {
     readonly internalID: string;
     readonly slug: string;
     readonly followedArtistArtworks: {
@@ -17,12 +17,12 @@ export type Fair2FollowedArtists_fair = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "Fair2FollowedArtists_fair";
+    readonly " $refType": "Fair2FollowedArtistsRail_fair";
 };
-export type Fair2FollowedArtists_fair$data = Fair2FollowedArtists_fair;
-export type Fair2FollowedArtists_fair$key = {
-    readonly " $data"?: Fair2FollowedArtists_fair$data;
-    readonly " $fragmentRefs": FragmentRefs<"Fair2FollowedArtists_fair">;
+export type Fair2FollowedArtistsRail_fair$data = Fair2FollowedArtistsRail_fair;
+export type Fair2FollowedArtistsRail_fair$key = {
+    readonly " $data"?: Fair2FollowedArtistsRail_fair$data;
+    readonly " $fragmentRefs": FragmentRefs<"Fair2FollowedArtistsRail_fair">;
 };
 
 
@@ -46,7 +46,7 @@ return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "Fair2FollowedArtists_fair",
+  "name": "Fair2FollowedArtistsRail_fair",
   "selections": [
     (v0/*: any*/),
     (v1/*: any*/),
@@ -113,5 +113,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '8b3bb8fb838e287b1c1a2d78d4bc34c7';
+(node as any).hash = '1224af89eb9db61e933fbfd241ee3e51';
 export default node;
