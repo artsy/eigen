@@ -5,19 +5,22 @@
     "exclude": ["src/palette/**/*test.*"]
   },
   "rules": {
-    "jsx-safe-conditionals": true,
-    "use-wrapped-components": true,
     "arrow-parens": false,
-    "interface-name": [true, "never-prefix"],
     "import-blacklist": [true, { "react-test-renderer": ["create"] }],
+    "interface-name": [true, "never-prefix"],
+    "jsx-safe-conditionals": true,
     "max-classes-per-file": false,
     "member-access": [false, "check-accessor", "check-constructor"],
     "no-console": [true, ["error", ["warn", "error"]]],
     "object-literal-sort-keys": false,
     "ordered-imports": true,
-    "switch-default": false,
     "relay-operation-generics": [true, { "artifactDirectory": "__generated__", "makeRelative": false }],
-    "variable-name": [true, "allow-pascal-case", "allow-leading-underscore"],
-    "strict-boolean-expressions": [true, "ignore-rhs"]
+    "strict-boolean-expressions": {
+      "severity": "warn",
+      "options": [true, "ignore-rhs"]
+    },
+    "switch-default": false,
+    "use-wrapped-components": true,
+    "variable-name": [true, "allow-pascal-case", "allow-leading-underscore"]
   }
 }

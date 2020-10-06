@@ -121,9 +121,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   onAddArtworkComplete: thunkOn(
     (_, storeActions) => storeActions.myCollection.artwork.addArtworkComplete,
     (actions) => {
-      setTimeout(() => {
-        actions.dismissModal()
-      })
+      actions.dismissModal()
     }
   ),
 

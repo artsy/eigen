@@ -177,6 +177,9 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
                   artworkEdge {
                     __id
                     node {
+                      artist {
+                        internalID
+                      }
                       artistNames
                       medium
                       internalID
