@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 61dae8fb35398a15d74734dc9af54e6c */
+/* @relayHash 0e0c3a680a72c2f75ecca7832765bbe5 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionUpdateArtworkInput = {
@@ -28,11 +28,28 @@ export type MyCollectionArtworkModelUpdateArtworkMutationResponse = {
     readonly myCollectionUpdateArtwork: {
         readonly artworkOrError: {
             readonly artwork?: {
-                readonly medium: string | null;
-                readonly id: string;
-                readonly internalID: string;
-                readonly editionNumber: string | null;
+                readonly artist: {
+                    readonly internalID: string;
+                } | null;
+                readonly artistNames: string | null;
+                readonly category: string | null;
+                readonly costMinor: number | null;
+                readonly costCurrencyCode: string | null;
+                readonly date: string | null;
+                readonly depth: string | null;
                 readonly editionSize: string | null;
+                readonly editionNumber: string | null;
+                readonly height: string | null;
+                readonly id: string;
+                readonly image: {
+                    readonly url: string | null;
+                } | null;
+                readonly internalID: string;
+                readonly medium: string | null;
+                readonly metric: string | null;
+                readonly slug: string;
+                readonly title: string | null;
+                readonly width: string | null;
             } | null;
         } | null;
     } | null;
@@ -53,11 +70,29 @@ mutation MyCollectionArtworkModelUpdateArtworkMutation(
       __typename
       ... on MyCollectionArtworkMutationSuccess {
         artwork {
-          medium
-          id
-          internalID
-          editionNumber
+          artist {
+            internalID
+            id
+          }
+          artistNames
+          category
+          costMinor
+          costCurrencyCode
+          date
+          depth
           editionSize
+          editionNumber
+          height
+          id
+          image {
+            url
+          }
+          internalID
+          medium
+          metric
+          slug
+          title
+          width
         }
       }
     }
@@ -81,57 +116,134 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "InlineFragment",
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "artistNames",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "category",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "costMinor",
+  "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "costCurrencyCode",
+  "storageKey": null
+},
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "date",
+  "storageKey": null
+},
+v8 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "depth",
+  "storageKey": null
+},
+v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "editionSize",
+  "storageKey": null
+},
+v10 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "editionNumber",
+  "storageKey": null
+},
+v11 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "height",
+  "storageKey": null
+},
+v12 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v13 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "Image",
+  "kind": "LinkedField",
+  "name": "image",
+  "plural": false,
   "selections": [
     {
       "alias": null,
       "args": null,
-      "concreteType": "Artwork",
-      "kind": "LinkedField",
-      "name": "artwork",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "medium",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "id",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "internalID",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "editionNumber",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "editionSize",
-          "storageKey": null
-        }
-      ],
+      "kind": "ScalarField",
+      "name": "url",
       "storageKey": null
     }
   ],
-  "type": "MyCollectionArtworkMutationSuccess",
-  "abstractKey": null
+  "storageKey": null
+},
+v14 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "medium",
+  "storageKey": null
+},
+v15 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "metric",
+  "storageKey": null
+},
+v16 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v17 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
+  "storageKey": null
+},
+v18 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "width",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -156,7 +268,53 @@ return {
             "name": "artworkOrError",
             "plural": false,
             "selections": [
-              (v2/*: any*/)
+              {
+                "kind": "InlineFragment",
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Artwork",
+                    "kind": "LinkedField",
+                    "name": "artwork",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "artist",
+                        "plural": false,
+                        "selections": [
+                          (v2/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      (v3/*: any*/),
+                      (v4/*: any*/),
+                      (v5/*: any*/),
+                      (v6/*: any*/),
+                      (v7/*: any*/),
+                      (v8/*: any*/),
+                      (v9/*: any*/),
+                      (v10/*: any*/),
+                      (v11/*: any*/),
+                      (v12/*: any*/),
+                      (v13/*: any*/),
+                      (v2/*: any*/),
+                      (v14/*: any*/),
+                      (v15/*: any*/),
+                      (v16/*: any*/),
+                      (v17/*: any*/),
+                      (v18/*: any*/)
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "type": "MyCollectionArtworkMutationSuccess",
+                "abstractKey": null
+              }
             ],
             "storageKey": null
           }
@@ -196,7 +354,54 @@ return {
                 "name": "__typename",
                 "storageKey": null
               },
-              (v2/*: any*/)
+              {
+                "kind": "InlineFragment",
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Artwork",
+                    "kind": "LinkedField",
+                    "name": "artwork",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "artist",
+                        "plural": false,
+                        "selections": [
+                          (v2/*: any*/),
+                          (v12/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      (v3/*: any*/),
+                      (v4/*: any*/),
+                      (v5/*: any*/),
+                      (v6/*: any*/),
+                      (v7/*: any*/),
+                      (v8/*: any*/),
+                      (v9/*: any*/),
+                      (v10/*: any*/),
+                      (v11/*: any*/),
+                      (v12/*: any*/),
+                      (v13/*: any*/),
+                      (v2/*: any*/),
+                      (v14/*: any*/),
+                      (v15/*: any*/),
+                      (v16/*: any*/),
+                      (v17/*: any*/),
+                      (v18/*: any*/)
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "type": "MyCollectionArtworkMutationSuccess",
+                "abstractKey": null
+              }
             ],
             "storageKey": null
           }
@@ -206,7 +411,7 @@ return {
     ]
   },
   "params": {
-    "id": "61dae8fb35398a15d74734dc9af54e6c",
+    "id": "0e0c3a680a72c2f75ecca7832765bbe5",
     "metadata": {},
     "name": "MyCollectionArtworkModelUpdateArtworkMutation",
     "operationKind": "mutation",
@@ -214,5 +419,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'c1a9a05edb35f618d01d3383aac261d4';
+(node as any).hash = '1b765af296c64ca91d4e2619f95ae676';
 export default node;

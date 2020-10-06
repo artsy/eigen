@@ -26,7 +26,7 @@ export interface ArtworkFormValues {
   artistIds: string[]
   artistSearchResult: AutosuggestResult | null
   category: string // this refers to "materials" in UI
-  costMinor: number | null
+  costMinor: string
   costCurrencyCode: string
   date: string
   depth: string
@@ -45,7 +45,7 @@ const initialFormValues: ArtworkFormValues = {
   artistIds: [],
   artistSearchResult: null,
   category: "",
-  costMinor: null, // in cents
+  costMinor: "", // in cents
   costCurrencyCode: "",
   date: "",
   depth: "",
@@ -64,9 +64,11 @@ export interface MyCollectionArtworkModel {
     formValues: ArtworkFormValues
     artworkId: string
     artworkGlobalId: string
+    dirtyFormCheckValues: ArtworkFormValues
     meGlobalId: string
   }
   setFormValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
+  setDirtyFormCheckValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
   resetForm: Action<MyCollectionArtworkModel>
   setArtistSearchResult: Action<MyCollectionArtworkModel, AutosuggestResult | null>
   setArtworkId: Action<MyCollectionArtworkModel, { artworkId: string; artworkGlobalId: string }>
@@ -100,6 +102,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     artworkId: "",
     // The relay global ID of the artwork so that, post-edit, we can update the view
     artworkGlobalId: "",
+    dirtyFormCheckValues: initialFormValues,
     /**
      * The relay global ID of the `me` field, used to insert / delete edge post mutation.
      *
@@ -114,8 +117,13 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     state.sessionState.formValues = input
   }),
 
+  setDirtyFormCheckValues: action((state, values) => {
+    state.sessionState.dirtyFormCheckValues = values
+  }),
+
   resetForm: action((state) => {
     state.sessionState.formValues = initialFormValues
+    state.sessionState.dirtyFormCheckValues = initialFormValues
   }),
 
   setArtworkId: action((state, { artworkId, artworkGlobalId }) => {
@@ -146,97 +154,95 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     )
   }),
 
-  addArtwork: thunk(async (actions, { artistSearchResult, artist, artistIds, photos, ...payload }, { getState }) => {
-    const state = getState()
-    const input = cleanArtworkPayload(payload) as typeof payload
+  addArtwork: thunk(
+    async (actions, { artistSearchResult, artist, artistIds, costMinor, photos, ...payload }, { getState }) => {
+      const state = getState()
+      const input = cleanArtworkPayload(payload) as typeof payload
 
-    const imagePaths = photos.map((photo) => photo.path)
+      const imagePaths = photos.map((photo) => photo.path)
 
-    const convectionKey = await getConvectionGeminiKey()
-    const acl = "private"
-    const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
-    const bucket = assetCredentials.policyDocument.conditions.bucket
+      const convectionKey = await getConvectionGeminiKey()
+      const acl = "private"
+      const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
+      const bucket = assetCredentials.policyDocument.conditions.bucket
 
-    const uploadPromises = imagePaths.map(
-      async (path): Promise<string> => {
-        const s3 = await uploadFileToS3(path, acl, assetCredentials)
-        const url = `https://${bucket}.s3.amazonaws.com/${s3.key}`
-        return url
-      }
-    )
+      const uploadPromises = imagePaths.map(
+        async (path): Promise<string> => {
+          const s3 = await uploadFileToS3(path, acl, assetCredentials)
+          const url = `https://${bucket}.s3.amazonaws.com/${s3.key}`
+          return url
+        }
+      )
 
-    const externalImageUrls: string[] = await Promise.all(uploadPromises)
+      const externalImageUrls: string[] = await Promise.all(uploadPromises)
 
-    try {
-      commitMutation<MyCollectionArtworkModelCreateArtworkMutation>(defaultEnvironment, {
-        mutation: graphql`
-          mutation MyCollectionArtworkModelCreateArtworkMutation($input: MyCollectionCreateArtworkInput!) {
-            myCollectionCreateArtwork(input: $input) {
-              artworkOrError {
-                ... on MyCollectionArtworkMutationSuccess {
-                  artworkEdge {
-                    __id
-                    node {
-                      artist {
-                        internalID
+      try {
+        commitMutation<MyCollectionArtworkModelCreateArtworkMutation>(defaultEnvironment, {
+          mutation: graphql`
+            mutation MyCollectionArtworkModelCreateArtworkMutation($input: MyCollectionCreateArtworkInput!) {
+              myCollectionCreateArtwork(input: $input) {
+                artworkOrError {
+                  ... on MyCollectionArtworkMutationSuccess {
+                    artworkEdge {
+                      __id
+                      node {
+                        ...MyCollectionArtworkDetail_sharedProps @relay(mask: false)
                       }
-                      artistNames
-                      medium
-                      internalID
-                      slug
-                      editionNumber
-                      editionSize
                     }
                   }
-                }
 
-                # TODO: Handle error case
-                ... on MyCollectionArtworkMutationFailure {
-                  mutationError {
-                    message
+                  # TODO: Handle error case
+                  ... on MyCollectionArtworkMutationFailure {
+                    mutationError {
+                      message
+                    }
                   }
                 }
               }
             }
-          }
-        `,
-        variables: {
-          input: {
-            artistIds: [artistSearchResult!.internalID as string],
-            externalImageUrls,
-            ...input,
+          `,
+          variables: {
+            input: {
+              artistIds: [artistSearchResult!.internalID as string],
+              externalImageUrls,
+              costMinor: Number(costMinor),
+              ...input,
+            },
           },
-        },
 
-        // TODO: Relay v10 introduces a new directive-based mechanism for updating post-mutation.
-        // See https://github.com/facebook/relay/releases/tag/v10.0.0.
-        updater: (store) => {
-          const response = store
-            .getRootField("myCollectionCreateArtwork")
-            .getLinkedRecord("artworkOrError")
-            // FIXME: Handle the error ("orError") case. Right now this will fail as the
-            // `artworkEdge` field isn't selectable if an error is returned from MP.
-            .getLinkedRecord("artworkEdge")
+          // TODO: Relay v10 introduces a new directive-based mechanism for updating post-mutation.
+          // See https://github.com/facebook/relay/releases/tag/v10.0.0.
+          updater: (store) => {
+            const response = store
+              .getRootField("myCollectionCreateArtwork")
+              .getLinkedRecord("artworkOrError")
+              // FIXME: Handle the error ("orError") case. Right now this will fail as the
+              // `artworkEdge` field isn't selectable if an error is returned from MP.
+              .getLinkedRecord("artworkEdge")
 
-          // Use me.id's globalID which is the parent to `myCollectionConnection`
-          const meNode = store.get(state.sessionState.meGlobalId)
+            // Use me.id's globalID which is the parent to `myCollectionConnection`
+            const meNode = store.get(state.sessionState.meGlobalId)
 
-          if (meNode) {
-            const connection = ConnectionHandler.getConnection(meNode, "MyCollectionArtworkList_myCollectionConnection")
+            if (meNode) {
+              const connection = ConnectionHandler.getConnection(
+                meNode,
+                "MyCollectionArtworkList_myCollectionConnection"
+              )
 
-            if (connection) {
-              ConnectionHandler.insertEdgeBefore(connection, response)
+              if (connection) {
+                ConnectionHandler.insertEdgeBefore(connection, response)
+              }
             }
-          }
-        },
-        onCompleted: () => actions.addArtworkComplete(),
-        onError: (error) => actions.addArtworkError(error),
-      })
-    } catch (error) {
-      console.error("Error adding artwork", error)
-      actions.addArtworkError(error)
+          },
+          onCompleted: () => actions.addArtworkComplete(),
+          onError: (error) => actions.addArtworkError(error),
+        })
+      } catch (error) {
+        console.error("Error adding artwork", error)
+        actions.addArtworkError(error)
+      }
     }
-  }),
+  ),
 
   addArtworkComplete: thunk((actions) => {
     actions.resetForm()
@@ -284,60 +290,64 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     }
 
     actions.setFormValues(editProps)
+
+    // Baseline to check if we can cancel edit without showing
+    // iOS action sheet confirmation
+    actions.setDirtyFormCheckValues(editProps)
   }),
 
-  editArtwork: thunk(async (actions, { artistSearchResult, artist, artistIds, photos, ...payload }, { getState }) => {
-    try {
-      const { sessionState } = getState()
-      const input = cleanArtworkPayload(payload) as typeof payload
+  editArtwork: thunk(
+    async (actions, { artistSearchResult, artist, artistIds, costMinor, photos, ...payload }, { getState }) => {
+      try {
+        const { sessionState } = getState()
+        const input = cleanArtworkPayload(payload) as typeof payload
 
-      commitMutation<MyCollectionArtworkModelUpdateArtworkMutation>(defaultEnvironment, {
-        mutation: graphql`
-          mutation MyCollectionArtworkModelUpdateArtworkMutation($input: MyCollectionUpdateArtworkInput!) {
-            myCollectionUpdateArtwork(input: $input) {
-              artworkOrError {
-                ... on MyCollectionArtworkMutationSuccess {
-                  artwork {
-                    medium
-                    id
-                    internalID
-                    editionNumber
-                    editionSize
+        commitMutation<MyCollectionArtworkModelUpdateArtworkMutation>(defaultEnvironment, {
+          mutation: graphql`
+            mutation MyCollectionArtworkModelUpdateArtworkMutation($input: MyCollectionUpdateArtworkInput!) {
+              myCollectionUpdateArtwork(input: $input) {
+                artworkOrError {
+                  ... on MyCollectionArtworkMutationSuccess {
+                    artwork {
+                      ...MyCollectionArtworkDetail_sharedProps @relay(mask: false)
+                    }
                   }
-                }
 
-                # TODO: Handle error case
+                  # TODO: Handle error case
+                }
               }
             }
-          }
-        `,
-        variables: {
-          input: {
-            artistIds: [artistSearchResult!.internalID as string],
-            artworkId: sessionState.artworkId,
-            ...input,
+          `,
+          variables: {
+            input: {
+              artistIds: [artistSearchResult!.internalID as string],
+              artworkId: sessionState.artworkId,
+              // Cooerce type for MP
+              costMinor: Number(costMinor),
+              ...input,
+            },
           },
-        },
-        // TODO: Revist this once we update with new Relay v10 mutation API
-        updater: (store) => {
-          const artwork = store.get(sessionState.artworkGlobalId)
-          artwork!.setValue(artistSearchResult?.displayLabel, "artistNames")
+          // TODO: Revist this once we update with new Relay v10 mutation API
+          updater: (store) => {
+            const artwork = store.get(sessionState.artworkGlobalId)
+            artwork!.setValue(artistSearchResult?.displayLabel, "artistNames")
 
-          Object.entries(input).forEach(([key, value]) => {
-            artwork!.setValue(value, key)
-          })
-        },
-        onCompleted: (response) => {
-          actions.editArtworkComplete(response)
-          actions.resetForm()
-        },
-        onError: (error) => actions.editArtworkError(error),
-      })
-    } catch (error) {
-      console.error("Error updating artwork", error)
-      actions.editArtworkError(error)
+            Object.entries(input).forEach(([key, value]) => {
+              artwork!.setValue(value, key)
+            })
+          },
+          onCompleted: (response) => {
+            actions.editArtworkComplete(response)
+            actions.resetForm()
+          },
+          onError: (error) => actions.editArtworkError(error),
+        })
+      } catch (error) {
+        console.error("Error updating artwork", error)
+        actions.editArtworkError(error)
+      }
     }
-  }),
+  ),
 
   editArtworkComplete: action(() => {
     console.log("Edit artwork complete")
@@ -415,7 +425,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
 
   cancelAddEditArtwork: thunk((actions, _payload, { getState, getStoreActions }) => {
     const navigationActions = getStoreActions().myCollection.navigation
-    const formIsDirty = !isEqual(getState().sessionState.formValues, initialFormValues)
+    const formIsDirty = !isEqual(getState().sessionState.formValues, getState().sessionState.dirtyFormCheckValues)
 
     if (formIsDirty) {
       ActionSheetIOS.showActionSheetWithOptions(

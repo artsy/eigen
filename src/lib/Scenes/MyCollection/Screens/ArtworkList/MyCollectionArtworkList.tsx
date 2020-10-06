@@ -1,13 +1,14 @@
 import { MyCollectionArtworkList_me } from "__generated__/MyCollectionArtworkList_me.graphql"
 import { MyCollectionArtworkListQuery } from "__generated__/MyCollectionArtworkListQuery.graphql"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { MyCollectionArtworkListHeader } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListHeader"
 import { MyCollectionArtworkListItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
+import { AppStore } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Box, Flex, Join, Separator, Spacer } from "palette"
+import { Box, Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { FlatList, View } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -20,6 +21,7 @@ interface MyCollectionArtworkListProps {
 const PAGE_SIZE = 20
 
 export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = ({ me, relay }) => {
+  const { navigation: navActions, artwork: artworkActions } = AppStore.actions.myCollection
   const artworks = extractNodes(me?.myCollectionConnection)
   const { hasMore, isLoading, loadMore } = relay
 
@@ -37,7 +39,20 @@ export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = (
 
   return (
     <View style={{ flex: 1 }}>
-      <MyCollectionArtworkListHeader id={me?.id} />
+      <FancyModalHeader
+        rightButtonText="Add artwork"
+        hideBottomDivider
+        onRightButtonPress={() => {
+          // Store the global me.id identifier so that we know where to add / remove
+          // edges after we add / remove artworks.
+          // TODO: This can be removed once we update to relay 10 mutation API
+          artworkActions.setMeGlobalId(me!.id)
+          navActions.navigateToAddArtwork()
+        }}
+      ></FancyModalHeader>
+      <Text variant="largeTitle" ml={2} mb={2}>
+        Artwork Insights
+      </Text>
       <FlatList
         data={artworks}
         showsVerticalScrollIndicator={false}
@@ -117,7 +132,9 @@ export const MyCollectionArtworkListQueryRenderer: React.FC = () => {
 const LoadingSkeleton = () => {
   return (
     <>
-      <MyCollectionArtworkListHeader id={null as any} />
+      <Text variant="largeTitle" ml={2} mb={2}>
+        Artwork Insights
+      </Text>
 
       <Box>
         <Spacer mb={2} />

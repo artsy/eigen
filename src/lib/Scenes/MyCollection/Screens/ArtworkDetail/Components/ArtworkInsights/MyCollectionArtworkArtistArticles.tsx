@@ -8,6 +8,7 @@ import { Box, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { InfoButton } from "./InfoButton"
 
 interface MyCollectionArtworkArtistArticlesProps {
   artwork: MyCollectionArtworkArtistArticles_artwork
@@ -24,13 +25,13 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
 
   return (
     <ScreenMargin>
-      <Text variant="mediumText">Latest Articles</Text>
+      <InfoButton title="Latest Articles" />
 
       {articleEdges.map(({ thumbnailTitle, slug, publishedAt, internalID, thumbnailImage }) => {
         return (
           <TouchableOpacity onPress={() => navActions.navigateToArticleDetail(slug!)} key={internalID}>
             <Box my={0.5}>
-              <Flex flexDirection="row" justifyContent="space-between">
+              <Flex flexDirection="row">
                 <Box pr={1} maxWidth="80%">
                   <Flex flexDirection="row">
                     <Text style={{ flexShrink: 1 }}>{thumbnailTitle}</Text>

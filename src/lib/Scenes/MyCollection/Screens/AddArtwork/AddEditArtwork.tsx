@@ -10,6 +10,9 @@ import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { Dimensions } from "./Components/Dimensions"
 import { MediumPicker } from "./Components/MediumPicker"
 
+// Toggle on and off to display form validation helper
+const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
+
 export const AddEditArtwork: React.FC = () => {
   const artworkActions = AppStore.actions.myCollection.artwork
   const artworkState = AppStore.useAppState((state) => state.myCollection.artwork)
@@ -68,10 +71,11 @@ export const AddEditArtwork: React.FC = () => {
             Delete
           </Button>
         )}
+        <Spacer mt={4} />
       </ScreenMargin>
 
       {/* Show validation errors during development */}
-      {!!(__DEV__ && formik.errors) && (
+      {!!(SHOW_FORM_VALIDATION_ERRORS_IN_DEV && __DEV__ && formik.errors) && (
         <ScreenMargin>
           <Box my={2}>
             <Sans size="3">Errors: {JSON.stringify(formik.errors)}</Sans>

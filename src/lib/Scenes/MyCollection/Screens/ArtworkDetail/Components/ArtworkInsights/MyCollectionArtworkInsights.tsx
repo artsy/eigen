@@ -41,7 +41,10 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
           <ScreenMargin my={3}>
             <Divider />
           </ScreenMargin>
-          <MyCollectionArtworkPriceEstimateFragmentContainer marketPriceInsights={marketPriceInsights} />
+          <MyCollectionArtworkPriceEstimateFragmentContainer
+            artwork={artwork}
+            marketPriceInsights={marketPriceInsights}
+          />
           <ScreenMargin mt={2} mb={3}>
             <Divider />
           </ScreenMargin>
@@ -62,6 +65,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 export const MyCollectionArtworkInsightsFragmentContainer = createFragmentContainer(MyCollectionArtworkInsights, {
   artwork: graphql`
     fragment MyCollectionArtworkInsights_artwork on Artwork {
+      ...MyCollectionArtworkPriceEstimate_artwork
       ...MyCollectionArtworkArtistAuctionResults_artwork
       ...MyCollectionArtworkArtistArticles_artwork
     }

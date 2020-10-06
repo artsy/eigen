@@ -12,7 +12,15 @@ export const ViewAllDetails: React.FC<any /* TODO */> = (props) => {
       <FancyModalHeader
         onLeftButtonPress={() => navActions.goBack()}
         rightButtonText="Edit"
-        onRightButtonPress={() => artworkActions.startEditingArtwork(props.artwork)}
+        onRightButtonPress={() => {
+          artworkActions.startEditingArtwork(props.artwork)
+
+          // Pop back to main details screen on edit
+          // TODO: Figure out how to update nested NavigatorIOS view on mutation complete
+          setTimeout(() => {
+            navActions.goBack()
+          }, 400)
+        }}
       >
         Artwork Details
       </FancyModalHeader>
