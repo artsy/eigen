@@ -59,6 +59,7 @@ export interface NativeState {
     AROptionsNewFirstInquiry: boolean
     AROptionsUseReactNativeWebView: boolean
     AROptionsNewShowPage: boolean
+    AROptionsNewFairPage: boolean
   }
 }
 

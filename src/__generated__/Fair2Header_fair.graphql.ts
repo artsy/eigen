@@ -11,11 +11,11 @@ export type Fair2Header_fair = {
     readonly slug: string;
     readonly profile: {
         readonly icon: {
-            readonly url: string | null;
+            readonly imageUrl: string | null;
         } | null;
     } | null;
     readonly image: {
-        readonly url: string | null;
+        readonly imageUrl: string | null;
         readonly aspectRatio: number;
     } | null;
     readonly tagline: string | null;
@@ -23,10 +23,10 @@ export type Fair2Header_fair = {
         readonly summary: string | null;
     } | null;
     readonly ticketsLink: string | null;
-    readonly hours: string | null;
-    readonly links: string | null;
-    readonly tickets: string | null;
-    readonly contact: string | null;
+    readonly fairHours: string | null;
+    readonly fairLinks: string | null;
+    readonly fairTickets: string | null;
+    readonly fairContact: string | null;
     readonly " $fragmentRefs": FragmentRefs<"Fair2Timing_fair">;
     readonly " $refType": "Fair2Header_fair";
 };
@@ -98,7 +98,7 @@ return {
           "plural": false,
           "selections": [
             {
-              "alias": null,
+              "alias": "imageUrl",
               "args": [
                 {
                   "kind": "Literal",
@@ -125,7 +125,7 @@ return {
       "plural": false,
       "selections": [
         {
-          "alias": null,
+          "alias": "imageUrl",
           "args": [
             {
               "kind": "Literal",
@@ -174,28 +174,28 @@ return {
       "storageKey": null
     },
     {
-      "alias": null,
+      "alias": "fairHours",
       "args": (v1/*: any*/),
       "kind": "ScalarField",
       "name": "hours",
       "storageKey": "hours(format:\"MARKDOWN\")"
     },
     {
-      "alias": null,
+      "alias": "fairLinks",
       "args": (v1/*: any*/),
       "kind": "ScalarField",
       "name": "links",
       "storageKey": "links(format:\"MARKDOWN\")"
     },
     {
-      "alias": null,
+      "alias": "fairTickets",
       "args": (v1/*: any*/),
       "kind": "ScalarField",
       "name": "tickets",
       "storageKey": "tickets(format:\"MARKDOWN\")"
     },
     {
-      "alias": null,
+      "alias": "fairContact",
       "args": (v1/*: any*/),
       "kind": "ScalarField",
       "name": "contact",
@@ -211,5 +211,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'ad3a286d7e637b1383f45fc1f32a86b5';
+(node as any).hash = '7f2cde4276d88cbd8a72bcc1847befbf';
 export default node;

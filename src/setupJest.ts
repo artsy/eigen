@@ -166,6 +166,7 @@ function getNativeModules(): typeof NativeModules {
           AROptionsNewFirstInquiry: false,
           AROptionsUseReactNativeWebView: false,
           AROptionsNewShowPage: false,
+          AROptionsNewFairPage: false,
         },
       },
       postNotificationName: jest.fn(),

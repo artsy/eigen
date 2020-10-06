@@ -244,7 +244,7 @@ const FAIR_2_FIXTURE: Fair2TestsQueryRawResponse = {
     id: "xyz123",
     image: {
       aspectRatio: 1,
-      url: "https://testing.artsy.net/art-basel-hong-kong-image",
+      imageUrl: "https://testing.artsy.net/art-basel-hong-kong-image",
     },
     location: {
       id: "cde123",
@@ -253,14 +253,14 @@ const FAIR_2_FIXTURE: Fair2TestsQueryRawResponse = {
     profile: {
       id: "abc123",
       icon: {
-        url: "https://testing.artsy.net/art-basel-hong-kong-icon",
+        imageUrl: "https://testing.artsy.net/art-basel-hong-kong-icon",
       },
     },
     tagline: "",
-    links: null,
-    contact: null,
-    hours: null,
-    tickets: null,
+    fairLinks: null,
+    fairContact: null,
+    fairHours: null,
+    fairTickets: null,
     ticketsLink: "",
     articles: { edges: [] },
     marketingCollections: [],

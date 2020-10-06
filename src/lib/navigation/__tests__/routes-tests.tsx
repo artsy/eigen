@@ -826,8 +826,13 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to Fair2", () => {
-    expect(matchRoute("/fair2/red")).toMatchInlineSnapshot(`
+  describe("Fair routing", () => {
+    describe("with the new option enabled", () => {
+      beforeEach(() => {
+        __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFairPage: true })
+      })
+      it("routes to Fair2", () => {
+        expect(matchRoute("/fair/red")).toMatchInlineSnapshot(`
       Object {
         "module": "Fair2",
         "params": Object {
@@ -836,7 +841,7 @@ describe("artsy.net routes", () => {
         "type": "match",
       }
     `)
-    expect(matchRoute("/fair2/blue")).toMatchInlineSnapshot(`
+        expect(matchRoute("/fair/blue")).toMatchInlineSnapshot(`
       Object {
         "module": "Fair2",
         "params": Object {
@@ -845,94 +850,73 @@ describe("artsy.net routes", () => {
         "type": "match",
       }
     `)
-  })
+      })
 
-  it("routes to FairArtworks", () => {
-    expect(matchRoute("/fair/red/artworks")).toMatchInlineSnapshot(`
+      it("routes to /fair/:id/artworks", () => {
+        expect(matchRoute("/fair/red/artworks")).toMatchInlineSnapshot(`
       Object {
-        "module": "FairArtworks",
+        "module": "Fair2",
         "params": Object {
           "fairID": "red",
         },
         "type": "match",
       }
     `)
-    expect(matchRoute("/fair/blue/artworks")).toMatchInlineSnapshot(`
+        expect(matchRoute("/fair/blue/artworks")).toMatchInlineSnapshot(`
       Object {
-        "module": "FairArtworks",
+        "module": "Fair2",
         "params": Object {
           "fairID": "blue",
         },
         "type": "match",
       }
     `)
-  })
+      })
 
-  it("routes to Fair", () => {
-    expect(matchRoute("/fair/red")).toMatchInlineSnapshot(`
+      it("routes to /fair/:id/artists", () => {
+        expect(matchRoute("/fair/red/artists")).toMatchInlineSnapshot(`
       Object {
-        "module": "Fair",
+        "module": "Fair2",
         "params": Object {
           "fairID": "red",
         },
         "type": "match",
       }
     `)
-    expect(matchRoute("/fair/blue")).toMatchInlineSnapshot(`
+        expect(matchRoute("/fair/blue/artists")).toMatchInlineSnapshot(`
       Object {
-        "module": "Fair",
+        "module": "Fair2",
         "params": Object {
           "fairID": "blue",
         },
         "type": "match",
       }
     `)
-  })
+      })
 
-  it("routes to FairArtists", () => {
-    expect(matchRoute("/fair/red/artists")).toMatchInlineSnapshot(`
+      it("routes to /fair/:id/exhibitors", () => {
+        expect(matchRoute("/fair/red/exhibitors")).toMatchInlineSnapshot(`
       Object {
-        "module": "FairArtists",
+        "module": "Fair2",
         "params": Object {
           "fairID": "red",
         },
         "type": "match",
       }
     `)
-    expect(matchRoute("/fair/blue/artists")).toMatchInlineSnapshot(`
+        expect(matchRoute("/fair/blue/exhibitors")).toMatchInlineSnapshot(`
       Object {
-        "module": "FairArtists",
+        "module": "Fair2",
         "params": Object {
           "fairID": "blue",
         },
         "type": "match",
       }
     `)
-  })
+      })
 
-  it("routes to FairExhibitors", () => {
-    expect(matchRoute("/fair/red/exhibitors")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairExhibitors",
-        "params": Object {
-          "fairID": "red",
-        },
-        "type": "match",
-      }
-    `)
-    expect(matchRoute("/fair/blue/exhibitors")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairExhibitors",
-        "params": Object {
-          "fairID": "blue",
-        },
-        "type": "match",
-      }
-    `)
-  })
-
-  it("routes to FairBMWArtActivation", () => {
-    expect(matchRoute("/fair/red/bmw-sponsored-content")).toMatchInlineSnapshot(`
+      it("routes to FairBMWArtActivation", () => {
+        expect(matchRoute("/fair/red/bmw-sponsored-content")).toMatchInlineSnapshot(`
       Object {
         "module": "FairBMWArtActivation",
         "params": Object {
@@ -941,7 +925,7 @@ describe("artsy.net routes", () => {
         "type": "match",
       }
     `)
-    expect(matchRoute("/fair/blue/bmw-sponsored-content")).toMatchInlineSnapshot(`
+        expect(matchRoute("/fair/blue/bmw-sponsored-content")).toMatchInlineSnapshot(`
       Object {
         "module": "FairBMWArtActivation",
         "params": Object {
@@ -950,6 +934,136 @@ describe("artsy.net routes", () => {
         "type": "match",
       }
     `)
+      })
+
+      it("routes to Fair2MoreInfo", () => {
+        expect(matchRoute("/fair/red/info")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Fair2MoreInfo",
+        "params": Object {
+          "fairID": "red",
+        },
+        "type": "match",
+      }
+    `)
+        expect(matchRoute("/fair/blue/info")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Fair2MoreInfo",
+        "params": Object {
+          "fairID": "blue",
+        },
+        "type": "match",
+      }
+    `)
+      })
+    })
+
+    describe("without the option enabled", () => {
+      it("routes to FairArtworks", () => {
+        expect(matchRoute("/fair/red/artworks")).toMatchInlineSnapshot(`
+      Object {
+        "module": "FairArtworks",
+        "params": Object {
+          "fairID": "red",
+        },
+        "type": "match",
+      }
+    `)
+        expect(matchRoute("/fair/blue/artworks")).toMatchInlineSnapshot(`
+      Object {
+        "module": "FairArtworks",
+        "params": Object {
+          "fairID": "blue",
+        },
+        "type": "match",
+      }
+    `)
+      })
+
+      it("routes to Fair", () => {
+        expect(matchRoute("/fair/red")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Fair",
+        "params": Object {
+          "fairID": "red",
+        },
+        "type": "match",
+      }
+    `)
+        expect(matchRoute("/fair/blue")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Fair",
+        "params": Object {
+          "fairID": "blue",
+        },
+        "type": "match",
+      }
+    `)
+      })
+
+      it("routes to FairArtists", () => {
+        expect(matchRoute("/fair/red/artists")).toMatchInlineSnapshot(`
+      Object {
+        "module": "FairArtists",
+        "params": Object {
+          "fairID": "red",
+        },
+        "type": "match",
+      }
+    `)
+        expect(matchRoute("/fair/blue/artists")).toMatchInlineSnapshot(`
+      Object {
+        "module": "FairArtists",
+        "params": Object {
+          "fairID": "blue",
+        },
+        "type": "match",
+      }
+    `)
+      })
+
+      it("routes to FairExhibitors", () => {
+        expect(matchRoute("/fair/red/exhibitors")).toMatchInlineSnapshot(`
+      Object {
+        "module": "FairExhibitors",
+        "params": Object {
+          "fairID": "red",
+        },
+        "type": "match",
+      }
+    `)
+        expect(matchRoute("/fair/blue/exhibitors")).toMatchInlineSnapshot(`
+      Object {
+        "module": "FairExhibitors",
+        "params": Object {
+          "fairID": "blue",
+        },
+        "type": "match",
+      }
+    `)
+      })
+
+      it("routes to FairBMWArtActivation", () => {
+        expect(matchRoute("/fair/red/bmw-sponsored-content")).toMatchInlineSnapshot(`
+      Object {
+        "module": "FairBMWArtActivation",
+        "params": Object {
+          "fairID": "red",
+        },
+        "type": "match",
+      }
+    `)
+        expect(matchRoute("/fair/blue/bmw-sponsored-content")).toMatchInlineSnapshot(`
+      Object {
+        "module": "FairBMWArtActivation",
+        "params": Object {
+          "fairID": "blue",
+        },
+        "type": "match",
+      }
+    `)
+      })
+    })
   })
 
   it("routes to CitySectionList", () => {

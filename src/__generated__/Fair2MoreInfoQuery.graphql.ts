@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 699e03b59b22f5112c3cd6e2d8a4f874 */
+/* @relayHash 70828ab286cb639b0e50b903fde130f8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -50,11 +50,11 @@ fragment Fair2MoreInfo_fair on Fair {
     id
   }
   ticketsLink
-  hours(format: MARKDOWN)
-  links(format: MARKDOWN)
-  tickets(format: MARKDOWN)
+  fairHours: hours(format: MARKDOWN)
+  fairLinks: links(format: MARKDOWN)
+  fairTickets: tickets(format: MARKDOWN)
   summary
-  contact(format: MARKDOWN)
+  fairContact: contact(format: MARKDOWN)
 }
 
 fragment LocationMap_location on Location {
@@ -387,21 +387,21 @@ return {
             "storageKey": null
           },
           {
-            "alias": null,
+            "alias": "fairHours",
             "args": (v6/*: any*/),
             "kind": "ScalarField",
             "name": "hours",
             "storageKey": "hours(format:\"MARKDOWN\")"
           },
           {
-            "alias": null,
+            "alias": "fairLinks",
             "args": (v6/*: any*/),
             "kind": "ScalarField",
             "name": "links",
             "storageKey": "links(format:\"MARKDOWN\")"
           },
           {
-            "alias": null,
+            "alias": "fairTickets",
             "args": (v6/*: any*/),
             "kind": "ScalarField",
             "name": "tickets",
@@ -409,7 +409,7 @@ return {
           },
           (v5/*: any*/),
           {
-            "alias": null,
+            "alias": "fairContact",
             "args": (v6/*: any*/),
             "kind": "ScalarField",
             "name": "contact",
@@ -422,7 +422,7 @@ return {
     ]
   },
   "params": {
-    "id": "699e03b59b22f5112c3cd6e2d8a4f874",
+    "id": "70828ab286cb639b0e50b903fde130f8",
     "metadata": {},
     "name": "Fair2MoreInfoQuery",
     "operationKind": "query",

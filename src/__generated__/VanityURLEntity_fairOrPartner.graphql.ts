@@ -6,7 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type VanityURLEntity_fairOrPartner = {
     readonly __typename: "Fair";
-    readonly " $fragmentRefs": FragmentRefs<"Fair_fair">;
+    readonly " $fragmentRefs": FragmentRefs<"Fair2_fair" | "Fair_fair">;
     readonly " $refType": "VanityURLEntity_fairOrPartner";
 } | {
     readonly __typename: "Partner";
@@ -27,7 +27,13 @@ export type VanityURLEntity_fairOrPartner$key = {
 
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": false,
+      "kind": "LocalArgument",
+      "name": "useNewFairView"
+    }
+  ],
   "kind": "Fragment",
   "metadata": null,
   "name": "VanityURLEntity_fairOrPartner",
@@ -43,9 +49,28 @@ const node: ReaderFragment = {
       "kind": "InlineFragment",
       "selections": [
         {
-          "args": null,
-          "kind": "FragmentSpread",
-          "name": "Fair_fair"
+          "condition": "useNewFairView",
+          "kind": "Condition",
+          "passingValue": true,
+          "selections": [
+            {
+              "args": null,
+              "kind": "FragmentSpread",
+              "name": "Fair2_fair"
+            }
+          ]
+        },
+        {
+          "condition": "useNewFairView",
+          "kind": "Condition",
+          "passingValue": false,
+          "selections": [
+            {
+              "args": null,
+              "kind": "FragmentSpread",
+              "name": "Fair_fair"
+            }
+          ]
         }
       ],
       "type": "Fair",
@@ -67,5 +92,5 @@ const node: ReaderFragment = {
   "type": "VanityURLEntityType",
   "abstractKey": "__isVanityURLEntityType"
 };
-(node as any).hash = '2a63752cb302d399d30c3672b4be379e';
+(node as any).hash = 'a45efee3a131453bfba982b2610f0ade';
 export default node;
