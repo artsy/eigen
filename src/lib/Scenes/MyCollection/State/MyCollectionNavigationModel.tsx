@@ -1,5 +1,6 @@
 import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { ConsignmentsHomeQueryRenderer } from "lib/Scenes/MyCollection/Screens/ConsignmentsHome/ConsignmentsHome"
 import { AppStoreModel } from "lib/store/AppStoreModel"
 import { isEmpty } from "lodash"
@@ -94,11 +95,11 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   }),
 
   goBack: action((state) => {
-    getNavigator(state.sessionState, "main").pop()
+    getNavigatorIOS(state.sessionState, "main").pop()
   }),
 
   goBackInModal: action((state) => {
-    getNavigator(state.sessionState, "modal").pop()
+    getNavigatorIOS(state.sessionState, "modal").pop()
   }),
 
   setModalType: action((state, modalType) => {
@@ -164,7 +165,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   }),
 
   navigateToAddArtworkPhotos: thunk((_actions, _payload, { getState, getStoreState, getStoreActions }) => {
-    const navigator = getNavigator(getState().sessionState, "modal")
+    const navigator = getNavigatorIOS(getState().sessionState, "modal")
     const { artwork: artworkState } = getStoreState().myCollection
     const { artwork: artworkActions } = getStoreActions().myCollection
 
@@ -178,13 +179,13 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   }),
 
   navigateToAddAdditionalDetails: action((state) => {
-    getNavigator(state.sessionState, "modal").push({
+    getNavigatorIOS(state.sessionState, "modal").push({
       component: AdditionalDetails,
     })
   }),
 
   navigateToArtworkDetail: action((state, { artistInternalID, medium, artworkSlug }) => {
-    getNavigator(state.sessionState).push({
+    getNavigatorIOS(state.sessionState).push({
       component: MyCollectionArtworkDetailQueryRenderer,
       passProps: {
         artistInternalID,
@@ -200,23 +201,31 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     // )
   }),
 
-  navigateToAllAuctions: action((state, artistID) => {
-    SwitchBoard.presentNavigationViewController(
-      state.sessionState.navViewRef.current,
-      `/artist/${artistID}/auction-results`
-    )
+  navigateToAllAuctions: action((_state, artistID) => {
+    /**
+     * TODO: Investigate the need for setImmediate. Noticing a strange race condition
+     * here where the store reducer updates before the action is done firing. Might
+     * be some kind of issue with new `navigate` function
+     */
+    setImmediate(() => {
+      navigate(`/artist/${artistID}/auction-results`)
+    })
   }),
 
-  navigateToArticleDetail: action((state, slug) => {
-    SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, `/article/${slug}`)
+  navigateToArticleDetail: action((_state, slug) => {
+    setImmediate(() => {
+      navigate(`/article/${slug}`)
+    })
   }),
 
-  navigateToAllArticles: action((state, slug) => {
-    SwitchBoard.presentNavigationViewController(state.sessionState.navViewRef.current, `/artist/${slug}/articles`)
+  navigateToAllArticles: action((_state, slug) => {
+    setImmediate(() => {
+      navigate(`/artist/${slug}/articles`)
+    })
   }),
 
   navigateToViewAllArtworkDetails: action((state, { passProps }) => {
-    getNavigator(state.sessionState).push({
+    getNavigatorIOS(state.sessionState).push({
       component: ViewAllDetails,
       passProps,
     })
@@ -227,7 +236,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
    */
 
   navigateToConsignLearnMore: action((state) => {
-    getNavigator(state.sessionState).push({
+    getNavigatorIOS(state.sessionState).push({
       component: ConsignmentsHomeQueryRenderer,
       passProps: {
         // TODO: Eventually, when consignments submissions and MyCollection are merged,
@@ -238,7 +247,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   }),
 
   navigateToConsignSubmission: action((state) => {
-    getNavigator(state.sessionState).push({
+    getNavigatorIOS(state.sessionState).push({
       component: ConsignmentsSubmissionForm,
       passProps: {
         // TODO: Eventually, when consignments submissions and MyCollection are merged,
@@ -253,7 +262,7 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
  * Finds and returns a NavigatorIOS instance by name. `navigators.main` refers to the main
  * navigator instance; `navigators.modal` refers to the one in the modal -- and so on.
  */
-function getNavigator(
+function getNavigatorIOS(
   state: MyCollectionNavigationModel["sessionState"],
   name: NavigatorTarget = "main"
 ): NavigatorIOS {
