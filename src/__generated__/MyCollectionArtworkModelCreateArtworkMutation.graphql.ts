@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5dc3e97a9d6d9f3aa62ed1112330aedc */
+/* @relayHash 7b44fb0974658650a856dcd83dd59979 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionCreateArtworkInput = {
@@ -30,6 +30,9 @@ export type MyCollectionArtworkModelCreateArtworkMutationResponse = {
             readonly artworkEdge?: {
                 readonly __id: string;
                 readonly node: {
+                    readonly artist: {
+                        readonly internalID: string;
+                    } | null;
                     readonly artistNames: string | null;
                     readonly medium: string | null;
                     readonly internalID: string;
@@ -61,6 +64,10 @@ mutation MyCollectionArtworkModelCreateArtworkMutation(
       ... on MyCollectionArtworkMutationSuccess {
         artworkEdge {
           node {
+            artist {
+              internalID
+              id
+            }
             artistNames
             medium
             internalID
@@ -100,21 +107,21 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "artistNames",
+  "name": "internalID",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "medium",
+  "name": "artistNames",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "internalID",
+  "name": "medium",
   "storageKey": null
 },
 v5 = {
@@ -174,6 +181,13 @@ v9 = {
   ],
   "type": "MyCollectionArtworkMutationFailure",
   "abstractKey": null
+},
+v10 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -217,9 +231,21 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Artist",
+                            "kind": "LinkedField",
+                            "name": "artist",
+                            "plural": false,
+                            "selections": [
+                              (v2/*: any*/)
+                            ],
+                            "storageKey": null
+                          },
                           (v3/*: any*/),
                           (v4/*: any*/),
+                          (v2/*: any*/),
                           (v5/*: any*/),
                           (v6/*: any*/),
                           (v7/*: any*/)
@@ -293,19 +319,26 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/),
-                          (v3/*: any*/),
-                          (v4/*: any*/),
-                          (v5/*: any*/),
-                          (v6/*: any*/),
-                          (v7/*: any*/),
                           {
                             "alias": null,
                             "args": null,
-                            "kind": "ScalarField",
-                            "name": "id",
+                            "concreteType": "Artist",
+                            "kind": "LinkedField",
+                            "name": "artist",
+                            "plural": false,
+                            "selections": [
+                              (v2/*: any*/),
+                              (v10/*: any*/)
+                            ],
                             "storageKey": null
-                          }
+                          },
+                          (v3/*: any*/),
+                          (v4/*: any*/),
+                          (v2/*: any*/),
+                          (v5/*: any*/),
+                          (v6/*: any*/),
+                          (v7/*: any*/),
+                          (v10/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -327,7 +360,7 @@ return {
     ]
   },
   "params": {
-    "id": "5dc3e97a9d6d9f3aa62ed1112330aedc",
+    "id": "7b44fb0974658650a856dcd83dd59979",
     "metadata": {},
     "name": "MyCollectionArtworkModelCreateArtworkMutation",
     "operationKind": "mutation",
@@ -335,5 +368,5 @@ return {
   }
 };
 })();
-(node as any).hash = '2fd85d12e6759b6310fee89658c2b9d1';
+(node as any).hash = 'eff81df94eaf79ca73e164ee86fcbff0';
 export default node;
