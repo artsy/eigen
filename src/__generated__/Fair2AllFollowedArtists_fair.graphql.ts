@@ -5,7 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Fair2AllFollowedArtists_fair = {
-    readonly name: string | null;
+    readonly " $fragmentRefs": FragmentRefs<"Fair2Artworks_fair">;
     readonly " $refType": "Fair2AllFollowedArtists_fair";
 };
 export type Fair2AllFollowedArtists_fair$data = Fair2AllFollowedArtists_fair;
@@ -23,15 +23,19 @@ const node: ReaderFragment = {
   "name": "Fair2AllFollowedArtists_fair",
   "selections": [
     {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "name",
-      "storageKey": null
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "includeArtworksByFollowedArtists",
+          "value": true
+        }
+      ],
+      "kind": "FragmentSpread",
+      "name": "Fair2Artworks_fair"
     }
   ],
   "type": "Fair",
   "abstractKey": null
 };
-(node as any).hash = '31bd26026acd830b1ed26d56e932d122';
+(node as any).hash = '9af8ab417aed01f41fb6c04912e66c88';
 export default node;
