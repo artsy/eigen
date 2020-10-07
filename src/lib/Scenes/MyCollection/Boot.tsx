@@ -1,8 +1,8 @@
 import { FormikProvider, useFormik } from "formik"
+import { AddEditModal } from "lib/Scenes/MyCollection/Screens/AddArtwork/Components/AddEditModal"
 import { AppStore } from "lib/store/AppStore"
 import React, { useEffect, useRef } from "react"
 import { View } from "react-native"
-import { Modal } from "./Components/Modal"
 import { Navigator } from "./Components/Navigator"
 import { artworkSchema, validateArtworkSchema } from "./Screens/AddArtwork/Form/artworkSchema"
 import { ArtworkFormValues } from "./State/MyCollectionArtworkModel"
@@ -43,7 +43,9 @@ const Boot: React.FC<{ Component: React.ComponentType<any>; passProps: any }> = 
         <Navigator name="main">
           <Component {...passProps} />
         </Navigator>
-        <Modal />
+
+        {/* Varous modals used in app go here */}
+        <AddEditModal />
       </FormikProvider>
     </View>
   )

@@ -132,7 +132,7 @@ export const MyCollectionArtworkListQueryRenderer: React.FC = () => {
 const LoadingSkeleton = () => {
   return (
     <>
-      <Text variant="largeTitle" ml={2} mb={2}>
+      <Text variant="largeTitle" ml={2} mb={2} mt={6}>
         Artwork Insights
       </Text>
 

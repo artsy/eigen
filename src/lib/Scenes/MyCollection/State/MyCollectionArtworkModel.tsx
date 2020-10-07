@@ -4,7 +4,7 @@ import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
 import { AppStoreModel } from "lib/store/AppStoreModel"
 import { isEqual } from "lodash"
 import { uniqBy } from "lodash"
-import { ActionSheetIOS } from "react-native"
+import { ActionSheetIOS, Alert } from "react-native"
 import ImagePicker, { Image } from "react-native-image-crop-picker"
 import { commitMutation } from "react-relay"
 import { ConnectionHandler, graphql } from "relay-runtime"
@@ -61,10 +61,11 @@ const initialFormValues: ArtworkFormValues = {
 
 export interface MyCollectionArtworkModel {
   sessionState: {
-    formValues: ArtworkFormValues
     artworkId: string
     artworkGlobalId: string
     dirtyFormCheckValues: ArtworkFormValues
+    formValues: ArtworkFormValues
+    isLoading: boolean
     meGlobalId: string
   }
   setFormValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
@@ -73,12 +74,13 @@ export interface MyCollectionArtworkModel {
   setArtistSearchResult: Action<MyCollectionArtworkModel, AutosuggestResult | null>
   setArtworkId: Action<MyCollectionArtworkModel, { artworkId: string; artworkGlobalId: string }>
   setMeGlobalId: Action<MyCollectionArtworkModel, string>
+  setIsLoading: Action<MyCollectionArtworkModel, boolean>
 
   addPhotos: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"]>
   removePhoto: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"][0]>
 
   // Called from formik `onSubmit` handler
-  addArtwork: Thunk<MyCollectionArtworkModel, ArtworkFormValues>
+  addArtwork: Thunk<MyCollectionArtworkModel, ArtworkFormValues, {}, AppStoreModel>
   addArtworkComplete: Thunk<MyCollectionArtworkModel>
   addArtworkError: Action<MyCollectionArtworkModel, any> // FIXME: any
 
@@ -87,6 +89,12 @@ export interface MyCollectionArtworkModel {
   editArtworkComplete: Action<MyCollectionArtworkModel, any> // FIXME: any
   editArtworkError: Action<MyCollectionArtworkModel, any> // FIXME: any
 
+  confirmDeleteArtwork: Thunk<
+    MyCollectionArtworkModel,
+    // These arguments are passed to the `deleteArtwork` action below
+    { artworkId: string; artworkGlobalId: string },
+    AppStoreModel
+  >
   deleteArtwork: Thunk<MyCollectionArtworkModel, { artworkId: string; artworkGlobalId: string }, {}, AppStoreModel>
   deleteArtworkComplete: Action<MyCollectionArtworkModel, any>
   deleteArtworkError: Action<MyCollectionArtworkModel, any>
@@ -97,12 +105,13 @@ export interface MyCollectionArtworkModel {
 
 export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   sessionState: {
-    formValues: initialFormValues,
     // The internalID of the artwork
     artworkId: "",
     // The relay global ID of the artwork so that, post-edit, we can update the view
     artworkGlobalId: "",
     dirtyFormCheckValues: initialFormValues,
+    formValues: initialFormValues,
+    isLoading: false,
     /**
      * The relay global ID of the `me` field, used to insert / delete edge post mutation.
      *
@@ -144,6 +153,10 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     }
   }),
 
+  setIsLoading: action((state, isLoading) => {
+    state.sessionState.isLoading = isLoading
+  }),
+
   addPhotos: action((state, photos) => {
     state.sessionState.formValues.photos = uniqBy(state.sessionState.formValues.photos.concat(photos), "path")
   }),
@@ -156,27 +169,28 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
 
   addArtwork: thunk(
     async (actions, { artistSearchResult, artist, artistIds, costMinor, photos, ...payload }, { getState }) => {
+      actions.setIsLoading(true)
+
       const state = getState()
       const input = cleanArtworkPayload(payload) as typeof payload
 
-      const imagePaths = photos.map((photo) => photo.path)
-
-      const convectionKey = await getConvectionGeminiKey()
-      const acl = "private"
-      const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
-      const bucket = assetCredentials.policyDocument.conditions.bucket
-
-      const uploadPromises = imagePaths.map(
-        async (path): Promise<string> => {
-          const s3 = await uploadFileToS3(path, acl, assetCredentials)
-          const url = `https://${bucket}.s3.amazonaws.com/${s3.key}`
-          return url
-        }
-      )
-
-      const externalImageUrls: string[] = await Promise.all(uploadPromises)
-
       try {
+        const imagePaths = photos.map((photo) => photo.path)
+        const convectionKey = await getConvectionGeminiKey()
+        const acl = "private"
+        const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
+        const bucket = assetCredentials.policyDocument.conditions.bucket
+
+        const uploadPromises = imagePaths.map(
+          async (path): Promise<string> => {
+            const s3 = await uploadFileToS3(path, acl, assetCredentials)
+            const url = `https://${bucket}.s3.amazonaws.com/${s3.key}`
+            return url
+          }
+        )
+
+        const externalImageUrls: string[] = await Promise.all(uploadPromises)
+
         commitMutation<MyCollectionArtworkModelCreateArtworkMutation>(defaultEnvironment, {
           mutation: graphql`
             mutation MyCollectionArtworkModelCreateArtworkMutation($input: MyCollectionCreateArtworkInput!) {
@@ -245,11 +259,16 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   ),
 
   addArtworkComplete: thunk((actions) => {
+    actions.setIsLoading(false)
     actions.resetForm()
   }),
 
-  addArtworkError: action((_state, error) => {
+  addArtworkError: action((state, error) => {
+    state.sessionState.isLoading = false
+
+    // TODO: Log error to sentry
     console.error("Add artwork error", error)
+    Alert.alert("Error adding artwork", "TODO add better message")
   }),
 
   /**
@@ -298,6 +317,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
 
   editArtwork: thunk(
     async (actions, { artistSearchResult, artist, artistIds, costMinor, photos, ...payload }, { getState }) => {
+      actions.setIsLoading(true)
+
       try {
         const { sessionState } = getState()
         const input = cleanArtworkPayload(payload) as typeof payload
@@ -349,15 +370,20 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     }
   ),
 
-  editArtworkComplete: action(() => {
+  editArtworkComplete: action((state) => {
+    state.sessionState.isLoading = false
     console.log("Edit artwork complete")
   }),
 
-  editArtworkError: action((_state, error) => {
+  editArtworkError: action((state, error) => {
+    state.sessionState.isLoading = false
+
+    // TODO: Log error to sentry
     console.error("Edit artwork error", error)
+    Alert.alert("Error editing artwork", "TODO add better message")
   }),
 
-  deleteArtwork: thunk(async (actions, input) => {
+  confirmDeleteArtwork: thunk((actions, input) => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
         title: "Delete artwork?",
@@ -367,60 +393,71 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       },
       (buttonIndex) => {
         if (buttonIndex === 0) {
-          try {
-            commitMutation<MyCollectionArtworkModelDeleteArtworkMutation>(defaultEnvironment, {
-              mutation: graphql`
-                mutation MyCollectionArtworkModelDeleteArtworkMutation($input: MyCollectionDeleteArtworkInput!) {
-                  myCollectionDeleteArtwork(input: $input) {
-                    artworkOrError {
-                      ... on MyCollectionArtworkMutationDeleteSuccess {
-                        success
-                      }
-                      ... on MyCollectionArtworkMutationFailure {
-                        mutationError {
-                          message
-                        }
-                      }
-                    }
-                  }
-                }
-              `,
-              variables: {
-                input: {
-                  artworkId: input.artworkId,
-                },
-              },
-              updater: (store) => {
-                const parentID = store.get("TWU6NTg4MjhiMWU5YzE4ZGIzMGYzMDAyZmJh") // Use me.id's globalID
-
-                if (parentID) {
-                  const connection = ConnectionHandler.getConnection(
-                    parentID,
-                    "MyCollectionArtworkList_myCollectionConnection"
-                  )
-                  if (connection) {
-                    ConnectionHandler.deleteNode(connection, input.artworkGlobalId)
-                  }
-                }
-              },
-              onCompleted: actions.deleteArtworkComplete,
-              onError: actions.deleteArtworkError,
-            })
-          } catch (error) {
-            console.error("Error updating artwork", error)
-            actions.editArtworkError(error)
-          }
+          actions.deleteArtwork(input)
         }
       }
     )
   }),
 
-  deleteArtworkComplete: action(() => {
-    //
+  deleteArtwork: thunk(async (actions, input) => {
+    actions.setIsLoading(true)
+
+    try {
+      commitMutation<MyCollectionArtworkModelDeleteArtworkMutation>(defaultEnvironment, {
+        mutation: graphql`
+          mutation MyCollectionArtworkModelDeleteArtworkMutation($input: MyCollectionDeleteArtworkInput!) {
+            myCollectionDeleteArtwork(input: $input) {
+              artworkOrError {
+                ... on MyCollectionArtworkMutationDeleteSuccess {
+                  success
+                }
+                ... on MyCollectionArtworkMutationFailure {
+                  mutationError {
+                    message
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+          input: {
+            artworkId: input.artworkId,
+          },
+        },
+        updater: (store) => {
+          // FIXME: This can be replaced when we swap in Relay 10's new mutation ID
+          const parentID = store.get("TWU6NTg4MjhiMWU5YzE4ZGIzMGYzMDAyZmJh") // Use me.id's globalID
+
+          if (parentID) {
+            const connection = ConnectionHandler.getConnection(
+              parentID,
+              "MyCollectionArtworkList_myCollectionConnection"
+            )
+            if (connection) {
+              ConnectionHandler.deleteNode(connection, input.artworkGlobalId)
+            }
+          }
+        },
+        onCompleted: actions.deleteArtworkComplete,
+        onError: actions.deleteArtworkError,
+      })
+    } catch (error) {
+      console.error("Error updating artwork", error)
+      actions.editArtworkError(error)
+    }
   }),
 
-  deleteArtworkError: action((_state, error) => {
+  deleteArtworkComplete: action((state) => {
+    state.sessionState.isLoading = false
+  }),
+
+  deleteArtworkError: action((state, error) => {
+    state.sessionState.isLoading = false
+
+    // TODO: Log error to sentry
     console.error("Error deleting artwork", error)
+    Alert.alert("Error deleting artwork", "TODO add better message")
   }),
 
   cancelAddEditArtwork: thunk((actions, _payload, { getState, getStoreActions }) => {

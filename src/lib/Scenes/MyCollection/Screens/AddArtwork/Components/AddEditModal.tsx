@@ -1,10 +1,10 @@
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
+import { Navigator } from "lib/Scenes/MyCollection/Components/Navigator"
+import { AddEditArtwork } from "lib/Scenes/MyCollection/Screens/AddArtwork/AddEditArtwork"
 import { AppStore } from "lib/store/AppStore"
 import React from "react"
-import { AddEditArtwork } from "../Screens/AddArtwork/AddEditArtwork"
-import { Navigator } from "./Navigator"
 
-export const Modal: React.FC = () => {
+export const AddEditModal: React.FC = () => {
   const modalType = AppStore.useAppState((state) => state.myCollection.navigation.sessionState.modalType)
   const artworkActions = AppStore.actions.myCollection.artwork
 
