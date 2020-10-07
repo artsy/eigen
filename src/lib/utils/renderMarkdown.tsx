@@ -161,7 +161,7 @@ export function defaultRules({
           }
 
           const listItemText = useNewTextStyles ? (
-            <Text variant="text" key={state.key}>
+            <Text variant="text" key={String(state.key) + 1}>
               {output(node.content, state)}
             </Text>
           ) : (
