@@ -22,11 +22,10 @@ interface EntityProps {
 const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug }) => {
   if (fairOrPartner.__typename === "Fair") {
     const showNewFairViewFeatureEnabled = getCurrentEmissionState().options.AROptionsNewFairPage
-    return showNewFairViewFeatureEnabled ? (
-      <Fair2FragmentContainer fair={fairOrPartner} />
-    ) : (
-      <FairContainer fair={fairOrPartner} />
-    )
+    const fairSlugs = getCurrentEmissionState().legacyFairSlugs
+    const useNewFairView = showNewFairViewFeatureEnabled && !fairSlugs?.includes(fairOrPartner.slug)
+
+    return useNewFairView ? <Fair2FragmentContainer fair={fairOrPartner} /> : <FairContainer fair={fairOrPartner} />
   } else if (fairOrPartner.__typename === "Partner") {
     const { safeAreaInsets } = useScreenDimensions()
     return (
@@ -45,6 +44,7 @@ const VanityURLEntityFragmentContainer = createFragmentContainer(VanityURLEntity
     @argumentDefinitions(useNewFairView: { type: "Boolean", defaultValue: false }) {
       __typename
       ... on Fair {
+        slug
         ...Fair2_fair @include(if: $useNewFairView)
         ...Fair_fair @skip(if: $useNewFairView)
       }
@@ -63,6 +63,8 @@ interface RendererProps {
 
 export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugType, slug }) => {
   const showNewFairViewFeatureEnabled = getCurrentEmissionState().options.AROptionsNewFairPage
+  const fairProfileSlugs = getCurrentEmissionState().legacyFairProfileSlugs
+  const useNewFairView = showNewFairViewFeatureEnabled && !fairProfileSlugs?.includes(slug)
 
   if (slugType === "fairID") {
     return <FairQueryRenderer fairID={slug} />
@@ -78,12 +80,12 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
             }
           }
         `}
-        variables={{ id: slug, useNewFairView: showNewFairViewFeatureEnabled }}
+        variables={{ id: slug, useNewFairView }}
         render={renderWithPlaceholder({
           renderPlaceholder: () => {
             switch (entity) {
               case "fair":
-                return showNewFairViewFeatureEnabled ? <Fair2Placeholder /> : <FairPlaceholder />
+                return useNewFairView ? <Fair2Placeholder /> : <FairPlaceholder />
               case "partner":
                 return (
                   <View style={{ flex: 1, top: safeAreaInsets.top ?? 0 }}>

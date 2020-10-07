@@ -168,6 +168,8 @@ function getNativeModules(): typeof NativeModules {
           AROptionsNewShowPage: false,
           AROptionsNewFairPage: false,
         },
+        legacyFairSlugs: ["some-fairs-slug", "some-other-fair-slug"],
+        legacyFairProfileSlugs: [],
       },
       postNotificationName: jest.fn(),
       didFinishBootstrapping: jest.fn(),
