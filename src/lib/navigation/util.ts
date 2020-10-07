@@ -20,7 +20,7 @@ export function handleFairRouting(result: MatchResult): MatchResult {
     FairMoreInfo: "Fair2MoreInfo",
     FairArtists: "Fair2",
     FairExhibitors: "Fair2",
-    FairBMWArtActivation: "Fair2MoreInfo",
+    FairBMWArtActivation: "FairBMWArtActivation",
   }
 
   if (useNewFairView) {
