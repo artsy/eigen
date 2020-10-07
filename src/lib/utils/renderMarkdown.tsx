@@ -1,9 +1,9 @@
 import { LinkText } from "lib/Components/Text/LinkText"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import _ from "lodash"
-import { color, Sans, Separator, Serif, space } from "palette"
+import { color, Sans, Separator, Serif, space, Text } from "palette"
 import React from "react"
-import { Linking, Text, View } from "react-native"
+import { Linking, Text as RNText, View } from "react-native"
 import SimpleMarkdown, { ParserRule, ParserRules, ReactNodeOutput } from "simple-markdown"
 
 interface OurReactRule extends Partial<ParserRule> {
@@ -33,7 +33,15 @@ function createReactRules(rules: MarkdownRules): ParserRules {
 // https://github.com/CharlesMangwa/react-native-simple-markdown/blob/next/src/rules.js for new functionalities.
 //
 // Default rules: https://github.com/Khan/simple-markdown/blob/f1a75785703832bbff146d0b98e76cd7ac74b8e8/simple-markdown.js#L806
-export function defaultRules(modal: boolean = false, roleOverrides: MarkdownRules = {}): ParserRules {
+export function defaultRules({
+  modal = false,
+  ruleOverrides = {},
+  useNewTextStyles = false,
+}: {
+  modal?: boolean
+  ruleOverrides?: MarkdownRules
+  useNewTextStyles?: boolean
+}): ParserRules {
   return createReactRules({
     link: {
       react: (node, output, state) => {
@@ -78,7 +86,11 @@ export function defaultRules(modal: boolean = false, roleOverrides: MarkdownRule
     paragraph: {
       match: SimpleMarkdown.blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
       react: (node, output, state) => {
-        return (
+        return useNewTextStyles ? (
+          <Text variant="text" key={state.key}>
+            {output(node.content, state)}
+          </Text>
+        ) : (
           <Sans size="3t" color="black60" key={state.key} textAlign="center">
             {output(node.content, state)}
           </Sans>
@@ -88,7 +100,11 @@ export function defaultRules(modal: boolean = false, roleOverrides: MarkdownRule
 
     strong: {
       react: (node, output, state) => {
-        return (
+        return useNewTextStyles ? (
+          <Text variant="mediumText" key={state.key}>
+            {output(node.content, state)}
+          </Text>
+        ) : (
           <Serif size="3t" weight="semibold" key={state.key}>
             {output(node.content, state)}
           </Serif>
@@ -98,7 +114,11 @@ export function defaultRules(modal: boolean = false, roleOverrides: MarkdownRule
 
     em: {
       react: (node, output, state) => {
-        return (
+        return useNewTextStyles ? (
+          <Text variant="text" fontStyle="italic" key={state.key}>
+            {output(node.content, state)}
+          </Text>
+        ) : (
           <Serif size="3t" italic key={state.key}>
             {output(node.content, state)}
           </Serif>
@@ -108,13 +128,13 @@ export function defaultRules(modal: boolean = false, roleOverrides: MarkdownRule
 
     br: {
       react: (_node, _output, state) => {
-        return <Text key={state.key} />
+        return <RNText key={state.key} />
       },
     },
 
     newline: {
       react: (_node, _output, state) => {
-        return <Text key={state.key} />
+        return <RNText key={state.key} />
       },
     },
 
@@ -123,25 +143,37 @@ export function defaultRules(modal: boolean = false, roleOverrides: MarkdownRule
         const items = _.map(node.items, (item, i) => {
           let bullet
           if (node.ordered) {
-            bullet = <Serif size="3t" key={state.key}>{`${i + 1} . `}</Serif>
+            bullet = useNewTextStyles ? (
+              <Text variant="text" key={state.key}>{`${i + 1} . `}</Text>
+            ) : (
+              <Serif size="3t" key={state.key}>{`${i + 1} . `}</Serif>
+            )
           } else {
-            bullet = (
+            bullet = useNewTextStyles ? (
+              <Text variant="text" key={state.key}>
+                -{" "}
+              </Text>
+            ) : (
               <Serif size="3t" key={state.key}>
                 -{" "}
               </Serif>
             )
           }
 
-          const listItemText = (
+          const listItemText = useNewTextStyles ? (
+            <Text variant="text" key={state.key}>
+              {output(node.content, state)}
+            </Text>
+          ) : (
             <Serif size="3t" key={String(state.key) + 1}>
               {output(item, state)}
             </Serif>
           )
           return (
             <View key={i} style={{ flexDirection: "row" }}>
-              <Text>
+              <RNText>
                 {bullet} {listItemText}
-              </Text>
+              </RNText>
             </View>
           )
         })
@@ -151,7 +183,11 @@ export function defaultRules(modal: boolean = false, roleOverrides: MarkdownRule
 
     codeBlock: {
       react: (node, _output, state) => {
-        return (
+        return useNewTextStyles ? (
+          <Text variant="text" key={state.key}>
+            {node.content}
+          </Text>
+        ) : (
           <Sans size="3t" key={state.key}>
             {node.content}
           </Sans>
@@ -161,7 +197,11 @@ export function defaultRules(modal: boolean = false, roleOverrides: MarkdownRule
 
     inlineCode: {
       react: (node, _output, state) => {
-        return (
+        return useNewTextStyles ? (
+          <Text variant="text" key={state.key}>
+            {node.content}
+          </Text>
+        ) : (
           <Sans size="3t" key={state.key}>
             {node.content}
           </Sans>
@@ -177,9 +217,20 @@ export function defaultRules(modal: boolean = false, roleOverrides: MarkdownRule
           3: "5t",
           4: "5",
         }
+
+        const newTextMap = {
+          1: "largeTitle",
+          2: "title",
+          3: "subtitle",
+          4: "text",
+        }
         // @ts-ignore STRICTNESS_MIGRATION
-        const size = map[node.level] || "4"
-        return (
+        const size = useNewTextStyles ? newTextMap[node.level] || "subtitle" : map[node.level] || "4"
+        return useNewTextStyles ? (
+          <Text mb="1" variant={size} key={state.key}>
+            {output(node.content, state)}
+          </Text>
+        ) : (
           <Sans mb="1" key={state.key} size={size}>
             {output(node.content, state)}
           </Sans>
@@ -211,11 +262,11 @@ export function defaultRules(modal: boolean = false, roleOverrides: MarkdownRule
     hr: {
       react: () => <Separator mb={2}></Separator>,
     },
-    ...roleOverrides,
+    ...ruleOverrides,
   })
 }
 
-export function renderMarkdown(markdown: string, rules: any = defaultRules(false)): React.ReactElement {
+export function renderMarkdown(markdown: string, rules: any = defaultRules({})): React.ReactElement {
   const parser = SimpleMarkdown.parserFor(rules)
   const writer = SimpleMarkdown.outputFor<any, any>(rules, "react")
 

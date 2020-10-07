@@ -13,7 +13,6 @@ import { Box, ChevronIcon, Flex, Spacer, Text, Theme } from "palette"
 import React from "react"
 import { ScrollView, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { blockRegex } from "simple-markdown"
 
 interface Fair2MoreInfoQueryRendererProps {
   fairID: string
@@ -23,23 +22,11 @@ interface Fair2MoreInfoProps {
   fair: Fair2MoreInfo_fair
 }
 
-// Default markdown rules center align text, which we don't want.
-const markdownRules = defaultRules(false, {
-  paragraph: {
-    match: blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
-    react: (node, output, state) => {
-      return (
-        <Text variant="text" key={state.key} textAlign="left">
-          {output(node.content, state)}
-        </Text>
-      )
-    },
-  },
-})
-
 export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
   const coordinates = fair.location?.coordinates
   const shouldShowLocationMap = coordinates && coordinates?.lat && coordinates?.lng
+
+  const markdownRules = defaultRules({ useNewTextStyles: true })
 
   return (
     <ProvideScreenTracking
@@ -59,13 +46,13 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
 
             {!!fair.summary && (
               <>
-                <Text variant="text">{fair.summary}</Text>
+                <Markdown rules={markdownRules}>{fair.summary}</Markdown>
                 <Spacer my={1} />
               </>
             )}
             {!!fair.about && (
               <>
-                <Text variant="text">{fair.about}</Text>
+                <Markdown rules={markdownRules}>{fair.about}</Markdown>
                 <Spacer my={1} />
               </>
             )}

@@ -32,7 +32,8 @@ export const ReadMore = React.memo(
   ({ content, maxChars, presentLinksModally, color, trackingFlow, contextModule, textStyle = "serif" }: Props) => {
     const [isExpanded, setIsExpanded] = useState(false)
     const tracking = useTracking()
-    const basicRules = defaultRules(presentLinksModally)
+    const useNewTextStyles = textStyle === "new"
+    const basicRules = defaultRules({ modal: presentLinksModally, useNewTextStyles })
     const TextComponent: React.ComponentType<SansProps | SerifProps | PaletteTextProps> = (textStyle === "new"
       ? PaletteText
       : textStyle === "sans"
@@ -55,6 +56,7 @@ export const ReadMore = React.memo(
         },
       },
     }
+
     const root = renderMarkdown(content, rules)
     // Removes the last empty space in the markdown array
     if (Array.isArray(root)) {
