@@ -529,6 +529,8 @@
 		CB6CE8FF24FEAC7500ED2843 /* ARSegmentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8FE24FEAC7500ED2843 /* ARSegmentProvider.m */; };
 		CB73B48B17D2581400891305 /* SiteFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73B48A17D2581400891305 /* SiteFeature.m */; };
 		CB879D0C180746C900E2D8EC /* AuctionLot.m in Sources */ = {isa = PBXBuildFile; fileRef = CB879D0B180746C900E2D8EC /* AuctionLot.m */; };
+		CB8E2CCF2534B3A200CF362B /* ARArtsyWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8E2CCE2534B3A200CF362B /* ARArtsyWebView.m */; };
+		CB8E2CD62534B45300CF362B /* ARArtsyWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8E2CD52534B45300CF362B /* ARArtsyWebViewManager.m */; };
 		CB9E244117CBC36F00773A9A /* ARAuthProviders.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9E244017CBC36F00773A9A /* ARAuthProviders.m */; };
 		CBB469D0181F1F1200B5692B /* Bid.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB469CF181F1F1200B5692B /* Bid.m */; };
 		CBF74085250ACDC5004048D3 /* ARAppDelegate+Echo.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF74084250ACDC5004048D3 /* ARAppDelegate+Echo.m */; };
@@ -1440,6 +1442,10 @@
 		CB73B48A17D2581400891305 /* SiteFeature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteFeature.m; sourceTree = "<group>"; };
 		CB879D0A180746C900E2D8EC /* AuctionLot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuctionLot.h; sourceTree = "<group>"; };
 		CB879D0B180746C900E2D8EC /* AuctionLot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuctionLot.m; sourceTree = "<group>"; };
+		CB8E2CCD2534B3A200CF362B /* ARArtsyWebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARArtsyWebView.h; sourceTree = "<group>"; };
+		CB8E2CCE2534B3A200CF362B /* ARArtsyWebView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARArtsyWebView.m; sourceTree = "<group>"; };
+		CB8E2CD42534B45300CF362B /* ARArtsyWebViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARArtsyWebViewManager.h; sourceTree = "<group>"; };
+		CB8E2CD52534B45300CF362B /* ARArtsyWebViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARArtsyWebViewManager.m; sourceTree = "<group>"; };
 		CB9E243F17CBC36F00773A9A /* ARAuthProviders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuthProviders.h; sourceTree = "<group>"; };
 		CB9E244017CBC36F00773A9A /* ARAuthProviders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuthProviders.m; sourceTree = "<group>"; };
 		CBB469CE181F1F1200B5692B /* Bid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bid.h; sourceTree = "<group>"; };
@@ -3297,6 +3303,10 @@
 				60D90A0A17C218930073D5B9 /* ARInternalMobileWebViewController.m */,
 				60A309A61AC999DE000783C1 /* ARInternalShareValidator.h */,
 				60A309A71AC999DE000783C1 /* ARInternalShareValidator.m */,
+				CB8E2CCD2534B3A200CF362B /* ARArtsyWebView.h */,
+				CB8E2CCE2534B3A200CF362B /* ARArtsyWebView.m */,
+				CB8E2CD42534B45300CF362B /* ARArtsyWebViewManager.h */,
+				CB8E2CD52534B45300CF362B /* ARArtsyWebViewManager.m */,
 			);
 			name = "Web Browsing";
 			path = Web_Browsing;
@@ -4131,6 +4141,7 @@
 				60ED312B1C8F76CB0071DD89 /* LiveAuctionViewModel.swift in Sources */,
 				83FF73B91CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift in Sources */,
 				49A77236165ADB9400BC6FD3 /* ARFollowFairFeedItem.m in Sources */,
+				CB8E2CCF2534B3A200CF362B /* ARArtsyWebView.m in Sources */,
 				49A77237165ADB9400BC6FD3 /* ARPartnerShowFeedItem.m in Sources */,
 				49A77238165ADB9400BC6FD3 /* ARPublishedArtworkSetFeedItem.m in Sources */,
 				49A77239165ADB9400BC6FD3 /* ARRepostFeedItem.m in Sources */,
@@ -4258,6 +4269,7 @@
 				49EF164716C568EA00460BD7 /* Profile.m in Sources */,
 				60EFA6F516CAA8180094AD7C /* ArtsyAPI+Feed.m in Sources */,
 				3C35CC80189FF20D00E3D8DE /* ArtsyAPI+OrderedSets.m in Sources */,
+				CB8E2CD62534B45300CF362B /* ARArtsyWebViewManager.m in Sources */,
 				5E8585F71CF61E8F00B2B487 /* PanDirectionGestureRecognizer.swift in Sources */,
 				516CDA691BB55B54001C02B2 /* UIViewController+WithLoadedData.m in Sources */,
 				5E7081D31E4CFC2800F320C9 /* AuctionLotStandingsNetworkModel.swift in Sources */,

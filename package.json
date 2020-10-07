@@ -102,7 +102,7 @@
     "react-native-scrollable-tab-view": "1.0.0",
     "react-native-svg": "9.13.3",
     "react-native-url-polyfill": "^1.2.0",
-    "react-native-webview": "^10.8.3",
+    "react-native-webview": "^10.9.2",
     "react-relay": "9.1.0",
     "react-spring": "8.0.23",
     "react-tracking": "7.2.1",

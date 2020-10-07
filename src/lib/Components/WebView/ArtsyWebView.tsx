@@ -3,7 +3,7 @@ import { matchRoute } from "lib/navigation/routes"
 import { getCurrentEmissionState, useIsStaging } from "lib/store/AppStore"
 import React, { useState } from "react"
 import { URL } from "react-native-url-polyfill"
-import { WebView } from "react-native-webview"
+import CustomWebView from "./CustomWebView"
 
 interface Props {
   initialURL: string
@@ -79,14 +79,12 @@ export const ArtsyWebView: React.FC<Props> = ({ initialURL }) => {
   // See this PR: https://github.com/react-native-webview/react-native-webview/pull/181/files
 
   return (
-    <WebView
+    <CustomWebView
       source={{ uri: updatedURL, headers: headersForURL(updatedURL) }}
       onShouldStartLoadWithRequest={(request) => {
-        console.log(request)
         if (request.url === currentURL) {
           return true
         }
-        console.log("This is where I would call updateURL if I knew how")
         // setURL(updateURL(request.url));
         // TODO: Handle sharing links
         // TODO: Handle follow / non-nav links
@@ -94,8 +92,15 @@ export const ArtsyWebView: React.FC<Props> = ({ initialURL }) => {
         // navigate to a native screen if possible
         if (nativeComponentExistsForURL(request.url)) {
           navigate(request.url)
+          return false
+          // @ts-ignore
+        } else if (request.requestingNewWindow) {
+          navigate(request.url)
+          return false
+        } else {
+          // other url let the webview handle it
+          return true
         }
-        return false
       }}
     />
   )
