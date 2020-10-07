@@ -89,10 +89,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           })
         }
       </Box>
-      {/*<CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />*/}
-      <Text m={2} variant="title">
-        More here
-      </Text>
+
       <Button
         onPress={() => setShippingModalVisibility(true)}
         size="large"
