@@ -73,8 +73,10 @@ const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ a
 }
 
 /**
+ * * IMPORTANT *
+ *
  * The following shared artwork fields are needed for initializing the edit
- * artwork view.
+ * artwork view. This is also used for handling mutation view updates.
  *
  * When adding new fields this fragment needs to be updated.
  */

@@ -1,5 +1,4 @@
 import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { navigate } from "lib/navigation/navigate"
 import { ConsignmentsHomeQueryRenderer } from "lib/Scenes/MyCollection/Screens/ConsignmentsHome/ConsignmentsHome"
 import { AppStoreModel } from "lib/store/AppStoreModel"
@@ -11,6 +10,7 @@ import { AdditionalDetails } from "../Screens/AddArtwork/Screens/AdditionalDetai
 import { AddPhotos } from "../Screens/AddArtwork/Screens/AddPhotos"
 import { MyCollectionArtworkDetailQueryRenderer } from "../Screens/ArtworkDetail/MyCollectionArtworkDetail"
 import { ViewAllDetails } from "../Screens/ArtworkDetail/Screens/ViewAllDetails"
+import { MyCollectionArtworkListQueryRenderer } from "../Screens/ArtworkList/MyCollectionArtworkList"
 import { ConsignmentsSubmissionForm } from "../Screens/ConsignmentsHome/ConsignmentsSubmissionForm"
 
 type ModalType = "add" | "edit" | null
@@ -50,6 +50,7 @@ export interface MyCollectionNavigationModel {
   onDeleteArtworkComplete: ThunkOn<MyCollectionNavigationModel, {}, AppStoreModel>
 
   // Nav actions
+  navigateToArtworkList: Action<MyCollectionNavigationModel>
   navigateToAddArtwork: Action<MyCollectionNavigationModel>
   navigateToAddArtworkPhotos: Thunk<MyCollectionNavigationModel, any, any, AppStoreModel>
   navigateToAddAdditionalDetails: Action<MyCollectionNavigationModel>
@@ -142,20 +143,21 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
 
   onDeleteArtworkComplete: thunkOn(
     (_, storeActions) => storeActions.myCollection.artwork.deleteArtworkComplete,
-    (actions, {}, { getState }) => {
+    (actions) => {
+      actions.navigateToArtworkList()
       actions.dismissModal()
-
-      // Need to wait a bit, because when we dismiss the VC the modal gets unmounted
-      // leading to a invalid setState error.
-      setTimeout(() => {
-        SwitchBoard.dismissNavigationViewController(getState().sessionState.navViewRef.current)
-      }, 300)
     }
   ),
 
   /**
    * Nav Actions
    */
+
+  navigateToArtworkList: action((state) => {
+    getNavigatorIOS(state.sessionState).push({
+      component: MyCollectionArtworkListQueryRenderer,
+    })
+  }),
 
   navigateToAddArtwork: action((state) => {
     state.sessionState.modalType = "add"

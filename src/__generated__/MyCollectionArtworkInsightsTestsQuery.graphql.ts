@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6653710b13d0141ee6dae59d2c8af249 */
+/* @relayHash 3d60a40260c18190255dd1c3dc8c036c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -101,6 +101,7 @@ fragment MyCollectionArtworkDemandIndex_marketPriceInsights on MarketPriceInsigh
 }
 
 fragment MyCollectionArtworkInsights_artwork on Artwork {
+  ...MyCollectionArtworkPriceEstimate_artwork
   ...MyCollectionArtworkArtistAuctionResults_artwork
   ...MyCollectionArtworkArtistArticles_artwork
 }
@@ -109,6 +110,11 @@ fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights 
   ...MyCollectionArtworkDemandIndex_marketPriceInsights
   ...MyCollectionArtworkPriceEstimate_marketPriceInsights
   ...MyCollectionArtworkArtistMarket_marketPriceInsights
+}
+
+fragment MyCollectionArtworkPriceEstimate_artwork on Artwork {
+  costCurrencyCode
+  costMinor
 }
 
 fragment MyCollectionArtworkPriceEstimate_marketPriceInsights on MarketPriceInsights {
@@ -267,6 +273,20 @@ return {
         "name": "artwork",
         "plural": false,
         "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "costCurrencyCode",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "costMinor",
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": null,
@@ -602,7 +622,7 @@ return {
     ]
   },
   "params": {
-    "id": "6653710b13d0141ee6dae59d2c8af249",
+    "id": "3d60a40260c18190255dd1c3dc8c036c",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -694,6 +714,8 @@ return {
         "artwork.artist.auctionResultsConnection.edges.node.title": (v8/*: any*/),
         "artwork.artist.id": (v7/*: any*/),
         "artwork.artist.slug": (v7/*: any*/),
+        "artwork.costCurrencyCode": (v8/*: any*/),
+        "artwork.costMinor": (v11/*: any*/),
         "artwork.id": (v7/*: any*/),
         "marketPriceInsights": {
           "enumValues": null,

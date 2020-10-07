@@ -5,8 +5,9 @@ import { Select } from "lib/Components/Select"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/AddArtwork/Form/useArtworkForm"
 import { AppStore } from "lib/store/AppStore"
-import { Box, Flex, Join, Sans, space, Spacer } from "palette"
+import { Flex, Join, Sans, space, Spacer } from "palette"
 import React, { useRef, useState } from "react"
+import { ScrollView } from "react-native"
 
 export const AdditionalDetails = () => {
   const { formik } = useArtworkForm()
@@ -17,7 +18,7 @@ export const AdditionalDetails = () => {
   const navActions = AppStore.actions.myCollection.navigation
 
   return (
-    <Box>
+    <ScrollView>
       <FancyModalHeader onLeftButtonPress={() => navActions.goBackInModal()}>Additional Details</FancyModalHeader>
       <Flex mt={2}>
         <ScreenMargin>
@@ -85,7 +86,7 @@ export const AdditionalDetails = () => {
               onChangeText={formik.handleChange("costMinor")}
               onBlur={formik.handleBlur("costMinor")}
               data-test-id="PricePaidInput"
-              defaultValue={String(formikValues.costMinor)}
+              defaultValue={formikValues.costMinor}
             />
 
             <Select
@@ -104,7 +105,7 @@ export const AdditionalDetails = () => {
           </Join>
         </ScreenMargin>
       </Flex>
-    </Box>
+    </ScrollView>
   )
 }
 
