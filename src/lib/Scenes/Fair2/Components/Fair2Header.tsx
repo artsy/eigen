@@ -1,6 +1,8 @@
 import { Fair2Header_fair } from "__generated__/Fair2Header_fair.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { ReadMore } from "lib/Components/ReadMore"
 import { navigate } from "lib/navigation/navigate"
+import { truncatedTextLimit } from "lib/utils/hardware"
 import { Box, ChevronIcon, Flex, Text } from "palette"
 import React from "react"
 import { Dimensions, TouchableOpacity } from "react-native"
@@ -68,7 +70,7 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
           {name}
         </Text>
         <FairTiming fair={fair} />
-        <Text variant="text">{previewText}</Text>
+        {!!previewText && <ReadMore textStyle="new" content={previewText} maxChars={truncatedTextLimit()} />}
         {!!canShowMoreInfoLink && (
           <TouchableOpacity onPress={() => navigate(`/fair/${slug}/info`)}>
             <Flex pt={2} flexDirection="row" justifyContent="flex-start">
