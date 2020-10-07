@@ -1,4 +1,3 @@
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, color, Flex, Text } from "palette"
 import React, { Dispatch, SetStateAction } from "react"
 import { TouchableOpacity, View } from "react-native"
@@ -18,12 +17,10 @@ interface TabProps {
  * active tab.
  */
 export const Tab: React.FC<TabProps> = ({ label, active, onPress }) => {
-  const { safeAreaInsets } = useScreenDimensions()
   return (
     <TouchableOpacity onPress={onPress}>
       <View
         style={{
-          marginTop: safeAreaInsets.top,
           height: 55,
           alignItems: "center",
           justifyContent: "center",
@@ -56,6 +53,7 @@ export const Tabs: React.FC<TabsProps> = ({ setActiveTab, activeTab, tabs }) => 
             width={`${tabWidth}%`}
             borderBottomColor={active ? color("black100") : color("black10")}
             borderBottomWidth="1px"
+            key={label}
           >
             <Tab label={label} onPress={() => setActiveTab(index)} active={active} />
           </Box>

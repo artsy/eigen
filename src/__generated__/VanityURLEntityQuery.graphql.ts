@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 99865e28ae0f1aea0fa3cbc85c101a4c */
+/* @relayHash aad531637f41a78b86b9bd8221ed1804 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -164,7 +164,7 @@ fragment Fair2Editorial_fair on Fair {
         slug
         title
         href
-        publishedAt(format: "MMM Do, YY")
+        publishedAt(format: "MMM Do, YYYY")
         thumbnailImage {
           src: imageURL
         }
@@ -1487,12 +1487,12 @@ return {
                                   {
                                     "kind": "Literal",
                                     "name": "format",
-                                    "value": "MMM Do, YY"
+                                    "value": "MMM Do, YYYY"
                                   }
                                 ],
                                 "kind": "ScalarField",
                                 "name": "publishedAt",
-                                "storageKey": "publishedAt(format:\"MMM Do, YY\")"
+                                "storageKey": "publishedAt(format:\"MMM Do, YYYY\")"
                               },
                               {
                                 "alias": null,
@@ -3042,7 +3042,7 @@ return {
     ]
   },
   "params": {
-    "id": "99865e28ae0f1aea0fa3cbc85c101a4c",
+    "id": "aad531637f41a78b86b9bd8221ed1804",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",

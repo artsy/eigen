@@ -119,12 +119,12 @@ return {
                     {
                       "kind": "Literal",
                       "name": "format",
-                      "value": "MMM Do, YY"
+                      "value": "MMM Do, YYYY"
                     }
                   ],
                   "kind": "ScalarField",
                   "name": "publishedAt",
-                  "storageKey": "publishedAt(format:\"MMM Do, YY\")"
+                  "storageKey": "publishedAt(format:\"MMM Do, YYYY\")"
                 },
                 {
                   "alias": null,
@@ -158,5 +158,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '683a5120c185a0328f6bd09ca329d21c';
+(node as any).hash = 'd47cd5b9abff86ad81dc2d90c8c865fa';
 export default node;
