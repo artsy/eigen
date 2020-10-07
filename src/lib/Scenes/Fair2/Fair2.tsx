@@ -7,9 +7,10 @@ import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/util
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Flex, Separator, Spacer, Theme } from "palette"
-import React, { useRef, useState } from "react"
-import { FlatList, ViewToken } from "react-native"
+import React, { useCallback, useRef, useState } from "react"
+import { FlatList, View, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { Fair2ArtworksFragmentContainer } from "./Components/Fair2Artworks"
@@ -55,6 +56,18 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
 
+  const sections = [
+    "fairHeader",
+    ...(hasArticles ? ["fairEditorial"] : []),
+    ...(hasCollections ? ["fairCollections"] : []),
+    ...(hasFollowedArtistArtworks ? ["fairFollowedArtists"] : []),
+    ...(hasArtworks && hasExhibitors ? ["fairTabs", "fairTabChildContent"] : []),
+  ]
+
+  const tabIndex = sections.indexOf("fairTabs")
+
+  const { safeAreaInsets } = useScreenDimensions()
+
   const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 30 })
 
   const viewableItemsChangedRef = React.useRef(({ viewableItems }: ViewableItems) => {
@@ -63,6 +76,41 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
     })
     setArtworksGridVisible(artworksItem?.isViewable ?? false)
   })
+
+  /*
+  This function is necessary to achieve the effect whereby the sticky tab
+  has the necessary top-padding to avoid the status bar at the top of the screen,
+  BUT does not appear to have that padding when rendered within the list.
+  We achieve that by applying a negative bottom margin to the component
+  directly above the tabs, and applying the same top margin to the tab component.
+
+  The tricky thing is to make sure the top component is on top of the tabs margin!
+  This was only possible by using the `CellRendererComponent` prop on FlatList.
+
+  See https://github.com/facebook/react-native/issues/28751 for more information!
+  */
+  const cellItemRenderer = useCallback(({ index, item, children, ...props }) => {
+    let zIndex
+
+    // These zIndex values are finicky/important. We found that 11 and 20 worked.
+    if (index < tabIndex) {
+      zIndex = 11
+    } else if (index === tabIndex) {
+      zIndex = 20
+    }
+    return (
+      <View
+        {...props}
+        key={`${item}`}
+        style={{
+          zIndex,
+          marginBottom: index === tabIndex - 1 ? -safeAreaInsets.top : undefined,
+        }}
+      >
+        {children}
+      </View>
+    )
+  }, [])
 
   const handleFilterArtworksModal = () => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
@@ -119,16 +167,6 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
     handleFilterArtworksModal()
   }
 
-  const sections = [
-    "fairHeader",
-    ...(hasArticles ? ["fairEditorial"] : []),
-    ...(hasCollections ? ["fairCollections"] : []),
-    ...(hasFollowedArtistArtworks ? ["fairFollowedArtists"] : []),
-    ...(hasArtworks && hasExhibitors ? ["fairTabs", "fairTabChildContent"] : []),
-  ]
-
-  const tabIndex = sections.indexOf("fairTabs")
-
   return (
     <ProvideScreenTracking
       info={{
@@ -151,6 +189,8 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
                   ItemSeparatorComponent={() => <Spacer mb={3} />}
                   keyExtractor={(_item, index) => String(index)}
                   stickyHeaderIndices={[tabIndex]}
+                  // @ts-ignore
+                  CellRendererComponent={cellItemRenderer}
                   renderItem={({ item }): null | any => {
                     switch (item) {
                       case "fairHeader": {
@@ -172,14 +212,16 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
                       }
                       case "fairTabs": {
                         return (
-                          <Tabs
-                            setActiveTab={(index) => {
-                              trackTappedNavigationTab(index as number)
-                              setActiveTab(index)
-                            }}
-                            activeTab={activeTab}
-                            tabs={tabs}
-                          />
+                          <Box paddingTop={safeAreaInsets.top} backgroundColor="white">
+                            <Tabs
+                              setActiveTab={(index) => {
+                                trackTappedNavigationTab(index as number)
+                                setActiveTab(index)
+                              }}
+                              activeTab={activeTab}
+                              tabs={tabs}
+                            />
+                          </Box>
                         )
                       }
                       case "fairTabChildContent": {

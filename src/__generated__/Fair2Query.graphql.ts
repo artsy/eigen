@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 52fa5760842d611294681af039eed0ef */
+/* @relayHash 05617269717f2840213bd93c46cb089b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -142,7 +142,7 @@ fragment Fair2Editorial_fair on Fair {
         slug
         title
         href
-        publishedAt(format: "MMM Do, YY")
+        publishedAt(format: "MMM Do, YYYY")
         thumbnailImage {
           src: imageURL
         }
@@ -711,12 +711,12 @@ return {
                           {
                             "kind": "Literal",
                             "name": "format",
-                            "value": "MMM Do, YY"
+                            "value": "MMM Do, YYYY"
                           }
                         ],
                         "kind": "ScalarField",
                         "name": "publishedAt",
-                        "storageKey": "publishedAt(format:\"MMM Do, YY\")"
+                        "storageKey": "publishedAt(format:\"MMM Do, YYYY\")"
                       },
                       {
                         "alias": null,
@@ -1544,7 +1544,7 @@ return {
     ]
   },
   "params": {
-    "id": "52fa5760842d611294681af039eed0ef",
+    "id": "05617269717f2840213bd93c46cb089b",
     "metadata": {},
     "name": "Fair2Query",
     "operationKind": "query",

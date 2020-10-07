@@ -71,7 +71,7 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
         <Text variant="text">{previewText}</Text>
         {!!canShowMoreInfoLink && (
           <TouchableOpacity onPress={() => navigate(`/fair/${slug}/info`)}>
-            <Flex py={2} flexDirection="row" justifyContent="flex-start">
+            <Flex pt={2} flexDirection="row" justifyContent="flex-start">
               <Text variant="mediumText">More info</Text>
               <ChevronIcon mr="-5px" mt="2px" />
             </Flex>

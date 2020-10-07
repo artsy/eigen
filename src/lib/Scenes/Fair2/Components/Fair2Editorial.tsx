@@ -87,7 +87,7 @@ export const Fair2EditorialFragmentContainer = createFragmentContainer(Fair2Edit
             slug
             title
             href
-            publishedAt(format: "MMM Do, YY")
+            publishedAt(format: "MMM Do, YYYY")
             thumbnailImage {
               src: imageURL
             }

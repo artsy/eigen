@@ -59,7 +59,7 @@ const Fair2ExhibitorRail: React.FC<Fair2ExhibitorRailProps> = ({ show }) => {
 
   return (
     <>
-      <Box px={2} pb={1}>
+      <Box px={2}>
         <SectionTitle
           title={partnerName}
           subtitle={`${count} works`}
