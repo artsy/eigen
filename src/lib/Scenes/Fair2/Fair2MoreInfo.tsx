@@ -5,10 +5,11 @@ import { Markdown } from "lib/Components/Markdown"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { shouldShowFairBMWArtActivationLink } from "lib/Scenes/Fair/Screens/FairBMWArtActivation"
 import { defaultRules } from "lib/utils/renderMarkdown"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { Box, Spacer, Text, Theme } from "palette"
+import { Box, ChevronIcon, Flex, Spacer, Text, Theme } from "palette"
 import React from "react"
 import { ScrollView, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -91,6 +92,15 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
               </>
             )}
 
+            {!!shouldShowFairBMWArtActivationLink(fair) && (
+              <TouchableOpacity onPress={() => navigate(`/fair/${fair.slug}/bmw-sponsored-content`)}>
+                <Flex py={2} flexDirection="row" justifyContent="flex-start">
+                  <Text variant="mediumText">View BMW art activations</Text>
+                  <ChevronIcon mr="-5px" mt="3px" />
+                </Flex>
+              </TouchableOpacity>
+            )}
+
             {!!fair.fairHours && (
               <>
                 <Text variant="mediumText">Hours</Text>
@@ -152,6 +162,10 @@ export const Fair2MoreInfoFragmentContainer = createFragmentContainer(Fair2MoreI
           lng
         }
         summary
+      }
+      sponsoredContent {
+        activationText
+        pressReleaseUrl
       }
       ticketsLink
       fairHours: hours(format: MARKDOWN)

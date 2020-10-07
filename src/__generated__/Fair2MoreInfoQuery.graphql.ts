@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 70828ab286cb639b0e50b903fde130f8 */
+/* @relayHash 4f7f386b4ebb6a0ba60c90f0795f37a6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -48,6 +48,10 @@ fragment Fair2MoreInfo_fair on Fair {
     }
     summary
     id
+  }
+  sponsoredContent {
+    activationText
+    pressReleaseUrl
   }
   ticketsLink
   fairHours: hours(format: MARKDOWN)
@@ -382,6 +386,31 @@ return {
           {
             "alias": null,
             "args": null,
+            "concreteType": "FairSponsoredContent",
+            "kind": "LinkedField",
+            "name": "sponsoredContent",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "activationText",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "pressReleaseUrl",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "kind": "ScalarField",
             "name": "ticketsLink",
             "storageKey": null
@@ -422,7 +451,7 @@ return {
     ]
   },
   "params": {
-    "id": "70828ab286cb639b0e50b903fde130f8",
+    "id": "4f7f386b4ebb6a0ba60c90f0795f37a6",
     "metadata": {},
     "name": "Fair2MoreInfoQuery",
     "operationKind": "query",
