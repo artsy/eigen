@@ -5,13 +5,14 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import { Box, color, Flex, Separator, space, Text } from "palette"
+import { Box, Button, color, Flex, Separator, space, Text } from "palette"
 import React, { useContext, useState } from "react"
 import { LayoutAnimation, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
+import { ShippingModal } from "./ShippingModal"
 
 interface InquiryModalProps {
   artwork: InquiryModal_artwork
@@ -25,7 +26,7 @@ interface InquiryModalProps {
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props }) => {
   const { toggleVisibility, modalIsVisible } = props
   const questions = artwork?.inquiryQuestions!
-  const { state } = useContext(ArtworkInquiryContext)
+  const { state, dispatch } = useContext(ArtworkInquiryContext)
   const [isExpanded, setExpanded] = useState(false)
   const toggleExpanded = () => {
     LayoutAnimation.configureNext({
@@ -34,6 +35,8 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
     })
     setExpanded(!isExpanded)
   }
+  const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
+  const selectShippingLocation = (l: any) => dispatch({ type: "selectShippingLocation", payload: l })
 
   const renderInquiryQuestion = (inquiry: string): JSX.Element => {
     return (
@@ -86,6 +89,24 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           })
         }
       </Box>
+      {/*<CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />*/}
+      <Text m={2} variant="title">
+        More here
+      </Text>
+      <Button
+        onPress={() => setShippingModalVisibility(true)}
+        size="large"
+        block
+        width={100}
+        variant="secondaryOutline"
+      >
+        Open Shipping Modal
+      </Button>
+      <ShippingModal
+        toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
+        modalIsVisible={shippingModalVisibility}
+        setLocation={selectShippingLocation}
+      />
     </FancyModal>
   )
 }

@@ -8,6 +8,7 @@ export const FancyModalHeader: React.FC<{
   leftButtonText?: string
   onLeftButtonPress?: () => void
   rightButtonText?: string
+  rightButtonDisabled?: boolean
   onRightButtonPress?: () => void
 }> = ({
   children,
@@ -15,6 +16,7 @@ export const FancyModalHeader: React.FC<{
   leftButtonText,
   onLeftButtonPress,
   rightButtonText,
+  rightButtonDisabled,
   onRightButtonPress,
 }) => {
   return (
@@ -38,9 +40,9 @@ export const FancyModalHeader: React.FC<{
         {!!onRightButtonPress && (
           <RightButtonContainer
             hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
-            onPress={() => onRightButtonPress()}
+            onPress={() => !rightButtonDisabled && onRightButtonPress()}
           >
-            {rightButtonText ? <Sans size="3">{rightButtonText}</Sans> : <ArrowRightIcon fill="black100" top="2px" />}
+            {rightButtonText ? <Sans size="3" color={`black${rightButtonDisabled ? "30" : "100"}` }>{rightButtonText}</Sans> : <ArrowRightIcon fill="black100" top="2px" />}
           </RightButtonContainer>
         )}
       </Flex>

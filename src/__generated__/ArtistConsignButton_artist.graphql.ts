@@ -14,7 +14,7 @@ export type ArtistConsignButton_artist = {
     readonly name: string | null;
     readonly image: {
         readonly cropped: {
-            readonly url: string;
+            readonly url: string | null;
         } | null;
     } | null;
     readonly " $refType": "ArtistConsignButton_artist";

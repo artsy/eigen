@@ -13,9 +13,9 @@ export type ArtistList_targetSupply = {
             readonly slug: string;
             readonly image: {
                 readonly cropped: {
-                    readonly url: string;
-                    readonly width: number;
-                    readonly height: number;
+                    readonly url: string | null;
+                    readonly width: number | null;
+                    readonly height: number | null;
                 } | null;
             } | null;
         } | null;
