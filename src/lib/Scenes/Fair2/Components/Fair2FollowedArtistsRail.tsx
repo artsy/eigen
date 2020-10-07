@@ -3,9 +3,9 @@ import { Fair2FollowedArtistsRail_fair } from "__generated__/Fair2FollowedArtist
 import { ArtworkTileRailCardFragmentContainer as ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import { navigate } from "lib/navigation/navigate"
 import { compact } from "lodash"
-import { Box, Spacer, Text } from "palette"
+import { Box, ChevronIcon, Spacer, Text } from "palette"
 import React from "react"
-import { FlatList } from "react-native"
+import { FlatList, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -40,10 +40,10 @@ export const Fair2FollowedArtistsRail: React.FC<Fair2FollowedArtistsRailProps> =
       <Box flexDirection="row" justifyContent="space-between" mx={2} mb={2}>
         <Text variant="subtitle">Works by artists you follow</Text>
 
-        {/* TODO: Link to "View all" view */}
-        <Text variant="subtitle" color="black60">
-          View all
-        </Text>
+        <TouchableOpacity onPress={() => navigate(`/fair/${fair.slug}/followedArtists`)}>
+          <Text>View all</Text>
+          <ChevronIcon mr="-5px" mt="2px" />
+        </TouchableOpacity>
       </Box>
 
       <FlatList<typeof artworks[number]>
