@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 148f4d49086b20fa97c70f6f86a957ed */
+/* @relayHash db97eafb0bb6241734e31ac1ebdc56c9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -66,6 +66,8 @@ fragment ArtworkGridItem_artwork on Artwork {
 }
 
 fragment Fair2AllFollowedArtists_fair on Fair {
+  internalID
+  slug
   ...Fair2Artworks_fair_485l1x
 }
 
@@ -145,14 +147,14 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "internalID",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "internalID",
+  "name": "slug",
   "storageKey": null
 },
 v4 = [
@@ -432,7 +434,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/),
+                          (v3/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -485,7 +487,7 @@ return {
                             "name": "saleMessage",
                             "storageKey": null
                           },
-                          (v3/*: any*/),
+                          (v2/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -659,7 +661,7 @@ return {
     ]
   },
   "params": {
-    "id": "148f4d49086b20fa97c70f6f86a957ed",
+    "id": "db97eafb0bb6241734e31ac1ebdc56c9",
     "metadata": {},
     "name": "Fair2AllFollowedArtistsQuery",
     "operationKind": "query",
