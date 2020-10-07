@@ -49,3 +49,7 @@ export function dismissModal() {
 export function goBack() {
   NativeModules.ARScreenPresenterModule.goBack()
 }
+
+export function popParentViewController() {
+  NativeModules.ARScreenPresenterModule.popParentViewController()
+}
