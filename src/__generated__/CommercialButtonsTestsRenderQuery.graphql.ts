@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 26ac16a0618779940695b93d1708a6d3 */
+/* @relayHash 4cf1c43b5c63363377e081d7298dba43 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -73,10 +73,6 @@ export type CommercialButtonsTestsRenderQueryRawResponse = {
             readonly name: string | null;
             readonly id: string;
         }) | null;
-        readonly inquiryQuestions: ReadonlyArray<({
-            readonly question: string;
-            readonly id: string;
-        }) | null> | null;
         readonly id: string;
     }) | null;
 };
@@ -205,10 +201,6 @@ fragment InquiryButtons_artwork on Artwork {
 
 fragment InquiryModal_artwork on Artwork {
   ...CollapsibleArtworkDetails_artwork
-  inquiryQuestions {
-    question
-    id
-  }
 }
 
 fragment MakeOfferButton_artwork on Artwork {
@@ -614,25 +606,6 @@ return {
             ],
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "InquiryQuestion",
-            "kind": "LinkedField",
-            "name": "inquiryQuestions",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "question",
-                "storageKey": null
-              },
-              (v2/*: any*/)
-            ],
-            "storageKey": null
-          },
           (v2/*: any*/)
         ],
         "storageKey": "artwork(id:\"artworkID\")"
@@ -640,7 +613,7 @@ return {
     ]
   },
   "params": {
-    "id": "26ac16a0618779940695b93d1708a6d3",
+    "id": "4cf1c43b5c63363377e081d7298dba43",
     "metadata": {},
     "name": "CommercialButtonsTestsRenderQuery",
     "operationKind": "query",
