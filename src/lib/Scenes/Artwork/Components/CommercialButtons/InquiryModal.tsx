@@ -89,16 +89,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           })
         }
       </Box>
-
-      <Button
-        onPress={() => setShippingModalVisibility(true)}
-        size="large"
-        block
-        width={100}
-        variant="secondaryOutline"
-      >
-        Open Shipping Modal
-      </Button>
       <ShippingModal
         toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
         modalIsVisible={shippingModalVisibility}
