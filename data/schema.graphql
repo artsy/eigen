@@ -7261,6 +7261,7 @@ input MyCollectionUpdateArtworkInput {
   depth: String
   editionNumber: String
   editionSize: String
+  externalImageUrls: [String]
   height: String
   medium: String
   metric: String
