@@ -78,16 +78,29 @@ export interface MyCollectionArtworkModel {
 
   addPhotos: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"]>
   removePhoto: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"][0]>
+  uploadPhotos: Thunk<MyCollectionArtworkModel, ArtworkFormValues["photos"], {}, AppStoreModel>
+  uploadPhotosError: Thunk<MyCollectionArtworkModel, Error, {}, AppStoreModel>
 
   // Called from formik `onSubmit` handler
   addArtwork: Thunk<MyCollectionArtworkModel, ArtworkFormValues, {}, AppStoreModel>
   addArtworkComplete: Thunk<MyCollectionArtworkModel>
-  addArtworkError: Action<MyCollectionArtworkModel, any> // FIXME: any
+  addArtworkError: Action<MyCollectionArtworkModel, Error>
 
-  startEditingArtwork: Thunk<MyCollectionArtworkModel, any, {}, AppStoreModel>
+  startEditingArtwork: Thunk<
+    MyCollectionArtworkModel,
+    Partial<ArtworkFormValues> & {
+      internalID: string
+      id: string
+      artist: { internalID: string }
+      artistNames: string
+      image: { url: string }
+    },
+    {},
+    AppStoreModel
+  >
   editArtwork: Thunk<MyCollectionArtworkModel, ArtworkFormValues>
-  editArtworkComplete: Action<MyCollectionArtworkModel, any> // FIXME: any
-  editArtworkError: Action<MyCollectionArtworkModel, any> // FIXME: any
+  editArtworkComplete: Thunk<MyCollectionArtworkModel, any>
+  editArtworkError: Action<MyCollectionArtworkModel, Error> // FIXME: any
 
   confirmDeleteArtwork: Thunk<
     MyCollectionArtworkModel,
@@ -107,19 +120,22 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   sessionState: {
     // The internalID of the artwork
     artworkId: "",
-    // The relay global ID of the artwork so that, post-edit, we can update the view
-    artworkGlobalId: "",
     dirtyFormCheckValues: initialFormValues,
     formValues: initialFormValues,
     isLoading: false,
+
     /**
-     * The relay global ID of the `me` field, used to insert / delete edge post mutation.
-     *
      * TODO: this will likely be able to go away once we update our mutations to take
      * advantage of the new Relay v10 directive-based update model.
      * See https://github.com/facebook/relay/releases/tag/v10.0.0.
+     *
+     * The relay global ID of the `me` field, used to insert / delete edge post mutation.
      */
     meGlobalId: "",
+
+    // TODO: This can likely go away once we update mutation API to relay 10
+    // The relay global ID of the artwork so that, post-edit, we can update the view
+    artworkGlobalId: "",
   },
 
   setFormValues: action((state, input) => {
@@ -157,6 +173,10 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     state.sessionState.isLoading = isLoading
   }),
 
+  /**
+   * Photos
+   */
+
   addPhotos: action((state, photos) => {
     state.sessionState.formValues.photos = uniqBy(state.sessionState.formValues.photos.concat(photos), "path")
   }),
@@ -167,29 +187,49 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     )
   }),
 
+  uploadPhotos: thunk(async (actions, photos) => {
+    try {
+      const imagePaths = photos.map((photo) => photo.path)
+      const convectionKey = await getConvectionGeminiKey()
+      const acl = "private"
+      const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
+      const bucket = assetCredentials.policyDocument.conditions.bucket
+
+      const uploadPromises = imagePaths.map(
+        async (path): Promise<string> => {
+          const s3 = await uploadFileToS3(path, acl, assetCredentials)
+          const url = `https://${bucket}.s3.amazonaws.com/${s3.key}`
+          return url
+        }
+      )
+
+      const externalImageUrls: string[] = await Promise.all(uploadPromises)
+      return externalImageUrls
+    } catch (error) {
+      actions.uploadPhotosError(error)
+    }
+  }),
+
+  /**
+   * TODO: Log to Sentry
+   */
+  uploadPhotosError: thunk(async (_actions, error) => {
+    console.error("Error uploading photos", error)
+    Alert.alert("Error uploading photos", "TODO better error message")
+  }),
+
+  /**
+   * Add Artwork
+   */
+
   addArtwork: thunk(
     async (actions, { artistSearchResult, artist, artistIds, costMinor, photos, ...payload }, { getState }) => {
       actions.setIsLoading(true)
 
-      const state = getState()
-      const input = cleanArtworkPayload(payload) as typeof payload
-
       try {
-        const imagePaths = photos.map((photo) => photo.path)
-        const convectionKey = await getConvectionGeminiKey()
-        const acl = "private"
-        const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
-        const bucket = assetCredentials.policyDocument.conditions.bucket
-
-        const uploadPromises = imagePaths.map(
-          async (path): Promise<string> => {
-            const s3 = await uploadFileToS3(path, acl, assetCredentials)
-            const url = `https://${bucket}.s3.amazonaws.com/${s3.key}`
-            return url
-          }
-        )
-
-        const externalImageUrls: string[] = await Promise.all(uploadPromises)
+        const state = getState()
+        const input = cleanArtworkPayload(payload) as typeof payload
+        const externalImageUrls = await actions.uploadPhotos(photos)
 
         commitMutation<MyCollectionArtworkModelCreateArtworkMutation>(defaultEnvironment, {
           mutation: graphql`
@@ -263,10 +303,12 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     actions.resetForm()
   }),
 
+  /**
+   * TODO: Log to Sentry
+   */
   addArtworkError: action((state, error) => {
     state.sessionState.isLoading = false
 
-    // TODO: Log error to sentry
     console.error("Add artwork error", error)
     Alert.alert("Error adding artwork", "TODO add better message")
   }),
@@ -286,8 +328,6 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     })
 
     const editProps: any /* FIXME: any */ = {
-      // FIXME: Remove this ts-ignore and type properly
-      // @ts-ignore
       artistSearchResult: {
         internalID: artwork?.artist?.internalID,
         displayLabel: artwork?.artistNames,
@@ -323,6 +363,9 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
         const { sessionState } = getState()
         const input = cleanArtworkPayload(payload) as typeof payload
 
+        // TODO: Uncomment once edit mutation is updated in MP
+        // const externalImageUrls = await actions.uploadPhotos(photos)
+
         commitMutation<MyCollectionArtworkModelUpdateArtworkMutation>(defaultEnvironment, {
           mutation: graphql`
             mutation MyCollectionArtworkModelUpdateArtworkMutation($input: MyCollectionUpdateArtworkInput!) {
@@ -335,6 +378,11 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
                   }
 
                   # TODO: Handle error case
+                  ... on MyCollectionArtworkMutationFailure {
+                    mutationError {
+                      message
+                    }
+                  }
                 }
               }
             }
@@ -345,9 +393,13 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
               artworkId: sessionState.artworkId,
               // Cooerce type for MP
               costMinor: Number(costMinor),
+
+              // TODO: Wire up edit in MP
+              // externalImageUrls,
               ...input,
             },
           },
+
           // TODO: Revist this once we update with new Relay v10 mutation API
           updater: (store) => {
             const artwork = store.get(sessionState.artworkGlobalId)
@@ -357,10 +409,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
               artwork!.setValue(value, key)
             })
           },
-          onCompleted: (response) => {
-            actions.editArtworkComplete(response)
-            actions.resetForm()
-          },
+          onCompleted: () => actions.editArtworkComplete(),
           onError: (error) => actions.editArtworkError(error),
         })
       } catch (error) {
@@ -370,18 +419,23 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     }
   ),
 
-  editArtworkComplete: action((state) => {
-    state.sessionState.isLoading = false
-    console.log("Edit artwork complete")
+  editArtworkComplete: thunk((actions) => {
+    actions.setIsLoading(false)
+    actions.resetForm()
   }),
 
+  /**
+   * TODO: Log error to Sentry
+   */
   editArtworkError: action((state, error) => {
     state.sessionState.isLoading = false
-
-    // TODO: Log error to sentry
     console.error("Edit artwork error", error)
     Alert.alert("Error editing artwork", "TODO add better message")
   }),
+
+  /**
+   * Delete Artwork
+   */
 
   confirmDeleteArtwork: thunk((actions, input) => {
     ActionSheetIOS.showActionSheetWithOptions(
@@ -403,6 +457,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     actions.setIsLoading(true)
 
     try {
+      // TODO: Does deleting an artwork also remove associated artworks?
+
       commitMutation<MyCollectionArtworkModelDeleteArtworkMutation>(defaultEnvironment, {
         mutation: graphql`
           mutation MyCollectionArtworkModelDeleteArtworkMutation($input: MyCollectionDeleteArtworkInput!) {
@@ -411,6 +467,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
                 ... on MyCollectionArtworkMutationDeleteSuccess {
                   success
                 }
+
+                # TODO: Handle error
                 ... on MyCollectionArtworkMutationFailure {
                   mutationError {
                     message
@@ -425,8 +483,9 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
             artworkId: input.artworkId,
           },
         },
+
+        // TODO: Revist this once we update with new Relay v10 mutation API
         updater: (store) => {
-          // FIXME: This can be replaced when we swap in Relay 10's new mutation ID
           const parentID = store.get("TWU6NTg4MjhiMWU5YzE4ZGIzMGYzMDAyZmJh") // Use me.id's globalID
 
           if (parentID) {
@@ -452,10 +511,11 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     state.sessionState.isLoading = false
   }),
 
+  /**
+   * TODO: Log error to Sentry
+   */
   deleteArtworkError: action((state, error) => {
     state.sessionState.isLoading = false
-
-    // TODO: Log error to sentry
     console.error("Error deleting artwork", error)
     Alert.alert("Error deleting artwork", "TODO add better message")
   }),

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0e0c3a680a72c2f75ecca7832765bbe5 */
+/* @relayHash e7dde358f51cb0d458b0608580fc8b46 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionUpdateArtworkInput = {
@@ -51,6 +51,9 @@ export type MyCollectionArtworkModelUpdateArtworkMutationResponse = {
                 readonly title: string | null;
                 readonly width: string | null;
             } | null;
+            readonly mutationError?: {
+                readonly message: string | null;
+            } | null;
         } | null;
     } | null;
 };
@@ -93,6 +96,11 @@ mutation MyCollectionArtworkModelUpdateArtworkMutation(
           slug
           title
           width
+        }
+      }
+      ... on MyCollectionArtworkMutationFailure {
+        mutationError {
+          message
         }
       }
     }
@@ -244,6 +252,31 @@ v18 = {
   "kind": "ScalarField",
   "name": "width",
   "storageKey": null
+},
+v19 = {
+  "kind": "InlineFragment",
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "GravityMutationError",
+      "kind": "LinkedField",
+      "name": "mutationError",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "message",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    }
+  ],
+  "type": "MyCollectionArtworkMutationFailure",
+  "abstractKey": null
 };
 return {
   "fragment": {
@@ -314,7 +347,8 @@ return {
                 ],
                 "type": "MyCollectionArtworkMutationSuccess",
                 "abstractKey": null
-              }
+              },
+              (v19/*: any*/)
             ],
             "storageKey": null
           }
@@ -401,7 +435,8 @@ return {
                 ],
                 "type": "MyCollectionArtworkMutationSuccess",
                 "abstractKey": null
-              }
+              },
+              (v19/*: any*/)
             ],
             "storageKey": null
           }
@@ -411,7 +446,7 @@ return {
     ]
   },
   "params": {
-    "id": "0e0c3a680a72c2f75ecca7832765bbe5",
+    "id": "e7dde358f51cb0d458b0608580fc8b46",
     "metadata": {},
     "name": "MyCollectionArtworkModelUpdateArtworkMutation",
     "operationKind": "mutation",
@@ -419,5 +454,5 @@ return {
   }
 };
 })();
-(node as any).hash = '1b765af296c64ca91d4e2619f95ae676';
+(node as any).hash = 'a5ec4708da17ae5f05ad792a1e16e6ff';
 export default node;
