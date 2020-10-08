@@ -114,7 +114,7 @@ class MyBids extends React.Component<MyBidsProps> {
   }
 }
 
-const MyBidsContainer = createFragmentContainer(MyBids, {
+export const MyBidsContainer = createFragmentContainer(MyBids, {
   me: graphql`
     fragment MyBids_me on Me {
       auctionsLotStandingConnection(first: 25) {
