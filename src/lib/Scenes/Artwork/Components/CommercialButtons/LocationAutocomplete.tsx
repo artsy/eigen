@@ -1,54 +1,21 @@
 import { Input } from "lib/Components/Input/Input"
+import { GMapsLocation, queryLocation } from "lib/utils/googleMaps"
 import { Flex, LocationIcon, Text, Touchable } from "palette"
-import { stringify } from "qs"
 import React, { useState } from "react"
-import Config from "react-native-config"
 import styled from "styled-components/native"
 
 interface Props {
   onChange: any
 }
 
-interface Location {
-  id: string
-  name: string
-}
-
-/** Expected GMaps API prediction shape */
-interface LocationPrediction {
-  place_id: string
-  description: string
-}
-
-// maybe this is overkill, or maybe it would be nice to move so we can mock it out
-class GmapsApi {
-  static async queryLocation(query: string): Promise<Location[]> {
-    const apiKey = Config.GOOGLE_MAPS_API_KEY
-    const queryString = stringify({
-      key: apiKey,
-      language: "en",
-      types: "(cities)",
-      input: query,
-    })
-
-    const response = await fetch("https://maps.googleapis.com/maps/api/place/autocomplete/json?" + queryString)
-    const results = await response.json()
-    return results.predictions.map(this.predictionToResult)
-  }
-
-  private static predictionToResult(prediction: LocationPrediction): Location {
-    return { id: prediction.place_id, name: prediction.description }
-  }
-}
-
 export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
-  const [predictions, setPredictions] = useState<Location[]>([])
+  const [predictions, setPredictions] = useState<GMapsLocation[]>([])
 
   const inputChange = async (str: string): Promise<void> => {
     if (str.length < 3) {
       setPredictions([])
     } else {
-      const googlePredictions = await GmapsApi.queryLocation(str)
+      const googlePredictions = await queryLocation(str)
       setPredictions(googlePredictions)
       onChange(str)
     }
@@ -67,7 +34,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
   )
 }
 
-const LocationPredictions = ({ predictions }: { predictions: Location[] }) => {
+const LocationPredictions = ({ predictions }: { predictions: GMapsLocation[] }) => {
   if (predictions.length === 0) {
     return null
   }
