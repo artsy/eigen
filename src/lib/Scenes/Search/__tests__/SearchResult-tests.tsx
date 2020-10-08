@@ -157,7 +157,7 @@ describe(SearchResult, () => {
       <TestWrapper
         result={{
           displayLabel: "Art Expo 2020",
-          href: "/art-expo-profile-slug",
+          href: "/art-expo-diff-profile-slug",
           slug: "art-expo-profile-slug",
           imageUrl: "blah",
           displayType: "Fair",
@@ -168,6 +168,6 @@ describe(SearchResult, () => {
       tree.root.findByType(TouchableOpacity).props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
-    expect(navigate).toHaveBeenCalledWith("/art-expo-profile-slug?entity=fair&slugType=profileID")
+    expect(navigate).toHaveBeenCalledWith("/art-expo-diff-profile-slug?entity=fair&slugType=profileID")
   })
 })
