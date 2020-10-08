@@ -1,6 +1,6 @@
 import { Input } from "lib/Components/Input/Input"
 import { GMapsLocation, queryLocation } from "lib/utils/googleMaps"
-import { Flex, LocationIcon, Text, Touchable } from "palette"
+import { color, Flex, LocationIcon, Text, Touchable } from "palette"
 import React, { useState } from "react"
 import styled from "styled-components/native"
 
@@ -78,7 +78,7 @@ const LocationPredictions = ({ predictions, query }: { predictions: GMapsLocatio
 
 const Dropdown = styled(Flex)`
   background-color: white;
-  border: solid 1px #e5e5e5;
+  border: solid 1px ${color("black10")};
   z-index: 1;
   position: absolute;
   width: 100%;
