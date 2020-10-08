@@ -24,7 +24,7 @@ const Fair2Exhibitors: React.FC<Fair2ExhibitorsProps> = ({ fair, relay }) => {
       context_screen_owner_type: OwnerType.fair,
       context_screen_owner_id: fair.internalID,
       context_screen_owner_slug: fair.slug,
-      subject: "showMore",
+      subject: "Show More",
     }
     tracking.trackEvent(trackTappedShowMoreProps)
   }

@@ -147,6 +147,7 @@ export enum OwnerEntityTypes {
   Gallery = "Gallery",
   Gene = "Gene",
   Fair = "Fair",
+  Fair2MoreInfo = "moreInfo",
   Partner = "Partner",
   Search = "Search",
   Show = "Show",
