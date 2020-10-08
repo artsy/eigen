@@ -6,6 +6,7 @@ import { Input } from "lib/Components/Input/Input"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { queryLocation } from "lib/utils/googleMaps"
 import { Touchable } from "palette"
 import React from "react"
@@ -15,7 +16,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { InquiryModalFragmentContainer } from "../InquiryModal"
 import { LocationAutocomplete } from "../LocationAutocomplete"
 import { ShippingModal } from "../ShippingModal"
-
 jest.unmock("react-relay")
 
 let env: ReturnType<typeof createMockEnvironment>
@@ -39,7 +39,11 @@ const TestRenderer = () => (
     variables={{}}
     render={({ props, error }) => {
       if (Boolean(props?.artwork)) {
-        return <InquiryModalFragmentContainer artwork={props!.artwork!} {...modalProps} />
+        return (
+          <ArtworkInquiryStateProvider>
+            <InquiryModalFragmentContainer artwork={props!.artwork!} {...modalProps} />
+          </ArtworkInquiryStateProvider>
+        )
       } else if (Boolean(error)) {
         console.log(error)
       }

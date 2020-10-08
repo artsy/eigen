@@ -1,7 +1,7 @@
 import { Input } from "lib/Components/Input/Input"
 import { GMapsLocation, queryLocation } from "lib/utils/googleMaps"
 import { color, Flex, LocationIcon, Text, Touchable } from "palette"
-import React, { useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components/native"
 
 interface Props {
@@ -11,6 +11,12 @@ interface Props {
 export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
   const [predictions, setPredictions] = useState<GMapsLocation[]>([])
   const [query, setQuery] = useState("")
+
+  // Autofocus
+  const input = useRef<Input>(null)
+  useEffect(() => {
+    input.current?.focus()
+  }, [input])
 
   const inputChange = async (str: string): Promise<void> => {
     if (str.length < 3) {
@@ -26,7 +32,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
   return (
     <>
       <Text>Location</Text>
-      <Input placeholder="Add Location" style={{ marginVertical: 10 }} onChangeText={inputChange} />
+      <Input ref={input} placeholder="Add Location" style={{ marginVertical: 10 }} onChangeText={inputChange} />
       <LocationPredictions predictions={predictions} query={query} />
       <Text color="black60">
         Sharing your location with galleries helps them provide fast and accurate shipping quotes. You can always edit
