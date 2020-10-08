@@ -5725,6 +5725,24 @@ type FollowedFairEdge {
 }
 
 # A connection to a list of items.
+type FollowedGalleryConnection {
+  # A list of edges.
+  edges: [FollowedGalleryEdge]
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+}
+
+# An edge in a connection.
+type FollowedGalleryEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Partner
+}
+
+# A connection to a list of items.
 type FollowedShowConnection {
   # A list of edges.
   edges: [FollowedShowEdge]
@@ -5815,6 +5833,9 @@ type FollowsAndSaves {
 
   # A list of the current user’s currently followed fair profiles
   fairsConnection(after: String, before: String, first: Int, last: Int): FollowedFairConnection
+
+  # A list of the current user’s currently followed gallery profiles
+  galleriesConnection(after: String, before: String, first: Int, last: Int): FollowedGalleryConnection
 
   # A list of the current user’s inquiry requests
   genesConnection(after: String, before: String, first: Int, last: Int): FollowGeneConnection
