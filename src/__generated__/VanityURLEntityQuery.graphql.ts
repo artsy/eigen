@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash aad531637f41a78b86b9bd8221ed1804 */
+/* @relayHash 6c3ccd246870f7f6eac8c31a5ddc7eff */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -134,7 +134,6 @@ fragment Fair2Collections_fair on Fair {
   internalID
   slug
   marketingCollections(size: 4) {
-    internalID
     slug
     title
     category
@@ -1537,7 +1536,6 @@ return {
                     "selections": [
                       (v2/*: any*/),
                       (v6/*: any*/),
-                      (v4/*: any*/),
                       (v3/*: any*/),
                       (v7/*: any*/),
                       {
@@ -3042,7 +3040,7 @@ return {
     ]
   },
   "params": {
-    "id": "aad531637f41a78b86b9bd8221ed1804",
+    "id": "6c3ccd246870f7f6eac8c31a5ddc7eff",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",

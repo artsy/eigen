@@ -8,7 +8,6 @@ export type Fair2Collections_fair = {
     readonly internalID: string;
     readonly slug: string;
     readonly marketingCollections: ReadonlyArray<{
-        readonly internalID: string;
         readonly slug: string;
         readonly title: string;
         readonly category: string;
@@ -37,13 +36,6 @@ var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-},
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "slug",
   "storageKey": null
 };
@@ -53,8 +45,14 @@ return {
   "metadata": null,
   "name": "Fair2Collections_fair",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
+      "storageKey": null
+    },
     (v0/*: any*/),
-    (v1/*: any*/),
     {
       "alias": null,
       "args": [
@@ -70,7 +68,6 @@ return {
       "plural": true,
       "selections": [
         (v0/*: any*/),
-        (v1/*: any*/),
         {
           "alias": null,
           "args": null,
@@ -156,5 +153,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '91c37546374dc2695026280876bfb697';
+(node as any).hash = '1c2a4ac29f977c8da57e844650726019';
 export default node;

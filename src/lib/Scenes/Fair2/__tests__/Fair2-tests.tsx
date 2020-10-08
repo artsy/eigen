@@ -99,7 +99,6 @@ describe("Fair2", () => {
         marketingCollections: [
           {
             __typename: "MarketingCollection",
-            internalID: "xyz123",
             id: "1223456",
             slug: "collection-1",
             title: "First collection",
@@ -109,7 +108,6 @@ describe("Fair2", () => {
           {
             __typename: "MarketingCollection",
             id: "1223456",
-            internalID: "abc123",
             slug: "collection-1",
             title: "First collection",
             category: "prints",

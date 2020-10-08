@@ -21,7 +21,6 @@ const FAIR_2_COLLECTIONS_FIXTURE: Fair2CollectionsTestsQueryRawResponse = {
     marketingCollections: [
       {
         id: "xxx",
-        internalID: "xyz123",
         slug: "collectible-sculptures",
         title: "Big Artists, Small Sculptures",
         category: "Collectible Sculptures",
@@ -57,7 +56,6 @@ const FAIR_2_COLLECTIONS_FIXTURE: Fair2CollectionsTestsQueryRawResponse = {
       },
       {
         id: "xxx2",
-        internalID: "xyz234",
         slug: "example-collection-2",
         title: "Example Collection 2",
         category: "Subtitle 2",
@@ -160,7 +158,7 @@ describe("Fair2Collections", () => {
       context_screen_owner_id: "abc123",
       context_screen_owner_slug: "art-basel-hong-kong-2020",
       destination_screen_owner_type: "collection",
-      destination_screen_owner_id: "xyz123",
+      destination_screen_owner_id: "collectible-sculptures",
       destination_screen_owner_slug: "collectible-sculptures",
       type: "thumbnail",
     })

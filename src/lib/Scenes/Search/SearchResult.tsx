@@ -107,7 +107,7 @@ function navigateToResult(result: AutosuggestResult, navRef: React.MutableRefObj
   if (result.displayType === "Gallery" || result.displayType === "Institution") {
     SwitchBoard.presentPartnerViewController(navRef.current, result.slug!)
   } else if (result.displayType === "Fair") {
-    const fairProfileUrl = `/${result.slug!}?entity=${EntityType.Fair}&slugType=${SlugType.ProfileID}`
+    const fairProfileUrl = `${result.href}?entity=${EntityType.Fair}&slugType=${SlugType.ProfileID}`
     navigate(fairProfileUrl)
   } else {
     SwitchBoard.presentNavigationViewController(navRef.current, result.href!)
