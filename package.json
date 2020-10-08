@@ -2,7 +2,7 @@
   "name": "eigen",
   "version": "1.21.52",
   "native-code-version": 44,
-  "description": "Artsy React(Native) components.",
+  "description": "Artsy mobile app.",
   "engines": {
     "node": "12.x",
     "npm": "6.1.x",
