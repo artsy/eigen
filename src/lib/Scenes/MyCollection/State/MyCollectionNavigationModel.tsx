@@ -18,8 +18,8 @@ export type InfoModalType = "demandIndex" | "priceEstimate" | "artistMarket" | "
 
 export interface MyCollectionNavigationModel {
   sessionState: {
-    modalType: ModalType
     infoModalType: InfoModalType
+    modalType: ModalType
     navViewRef: RefObject<any>
     navigators: {
       [key: string]: NavigatorProps
@@ -74,8 +74,8 @@ export interface MyCollectionNavigationModel {
 
 export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   sessionState: {
-    modalType: null,
     infoModalType: null,
+    modalType: null,
     navViewRef: { current: null },
     navigators: {},
   },
@@ -98,6 +98,10 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   goBack: action((state) => {
     getNavigatorIOS(state.sessionState, "main").pop()
   }),
+
+  /**
+   * Modals
+   */
 
   goBackInModal: action((state) => {
     getNavigatorIOS(state.sessionState, "modal").pop()
