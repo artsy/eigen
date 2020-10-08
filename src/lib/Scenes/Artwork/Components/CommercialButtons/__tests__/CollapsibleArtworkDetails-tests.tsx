@@ -1,5 +1,6 @@
 import { CollapsibleArtworkDetailsTestsQuery } from "__generated__/CollapsibleArtworkDetailsTestsQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { ArtworkDetailsRow } from "lib/Scenes/Artwork/Components/ArtworkDetailsRow"
 import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -49,6 +50,7 @@ describe("CollapsibleArtworkDetails", () => {
     resolveData()
     expect(wrapper.root.findAllByType(OpaqueImageView)).toHaveLength(1)
     expect(wrapper.root.findAllByType(Text)).toHaveLength(2)
+    expect(wrapper.root.findAllByType(ArtworkDetailsRow)).toHaveLength(0)
   })
 
   it("renders artist names", () => {
@@ -66,7 +68,7 @@ describe("CollapsibleArtworkDetails", () => {
     resolveData()
     expect(wrapper.root.findAllByType(Text)).toHaveLength(2)
     wrapper.root.findByType(TouchableOpacity).props.onPress()
-    expect(wrapper.root.findAllByType(Text)).toHaveLength(10)
+    expect(wrapper.root.findAllByType(ArtworkDetailsRow)).toHaveLength(11)
   })
 
   it("doesn't render what it doesn't have", () => {
@@ -79,6 +81,6 @@ describe("CollapsibleArtworkDetails", () => {
       }),
     })
     wrapper.root.findByType(TouchableOpacity).props.onPress()
-    expect(wrapper.root.findAllByType(Text)).toHaveLength(8)
+    expect(wrapper.root.findAllByType(ArtworkDetailsRow)).toHaveLength(10)
   })
 })

@@ -1,7 +1,8 @@
 import { CollapsibleArtworkDetails_artwork } from "__generated__/CollapsibleArtworkDetails_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import ChevronIcon from "lib/Icons/ChevronIcon"
-import { Flex, Separator, Text } from "palette"
+import { ArtworkDetailsRow } from "lib/Scenes/Artwork/Components/ArtworkDetailsRow"
+import { Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { LayoutAnimation, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -10,14 +11,23 @@ export interface CollapsibleArtworkDetailsProps {
   artwork: CollapsibleArtworkDetails_artwork
 }
 
-const makeRow = (name: string, value: string) => (
-  <Flex flexDirection="row" mb={1}>
-    <Text style={{ flex: 1 }}>{name}</Text>
-    <Text color="black60" style={{ flex: 1, flexGrow: 3 }}>
-      {value}
-    </Text>
-  </Flex>
-)
+const artworkDetailItems = (artwork: CollapsibleArtworkDetails_artwork) => {
+  const items = [
+    { title: "Price", value: artwork.saleMessage },
+    { title: "Medium", value: artwork.category },
+    { title: "Manufacturer", value: artwork.manufacturer },
+    { title: "Publisher", value: artwork.publisher },
+    { title: "Materials", value: artwork.medium },
+    { title: "Classification", value: artwork.attributionClass?.name },
+    { title: "Dimensions", value: [artwork.dimensions?.in, artwork.dimensions?.cm].filter((d) => d).join("\n") },
+    { title: "Signature", value: artwork.signatureInfo?.details },
+    { title: "Frame", value: artwork.framed?.details },
+    { title: "Certificate of Authenticity", value: artwork.certificateOfAuthenticity?.details },
+    { title: "Condition", value: artwork.conditionDescription?.details },
+  ]
+
+  return items.filter((i) => i.value != null && i.value !== "")
+}
 
 export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps> = ({ artwork }) => {
   const [isExpanded, setExpanded] = useState(false)
@@ -28,6 +38,8 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
     })
     setExpanded(!isExpanded)
   }
+  const detailItems = artworkDetailItems(artwork)
+
   return artwork ? (
     <>
       <TouchableOpacity onPress={() => toggleExpanded()}>
@@ -52,10 +64,11 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
       </TouchableOpacity>
       {isExpanded && (
         <Flex mx={2} mb={1}>
-          {!!artwork.medium && makeRow("Medium", artwork.medium)}
-          {!!artwork.dimensions && makeRow("Size", artwork.dimensions.in + "\n" + artwork.dimensions.cm)}
-          {!!artwork.editionOf && makeRow("Availability", artwork.editionOf)}
-          {!!artwork.signatureInfo?.details && makeRow("Signature", artwork.signatureInfo.details)}
+          <Join separator={<Spacer my={1} />}>
+            {detailItems.map(({ title, value }, index) => (
+              <ArtworkDetailsRow key={index.toString()} title={title} value={value} />
+            ))}
+          </Join>
         </Flex>
       )}
       <Separator />
@@ -74,12 +87,27 @@ export const CollapsibleArtworkDetailsFragmentContainer = createFragmentContaine
       internalID
       title
       date
+      saleMessage
+      attributionClass {
+        name
+      }
+      category
+      manufacturer
+      publisher
       medium
+      conditionDescription {
+        details
+      }
+      certificateOfAuthenticity {
+        details
+      }
+      framed {
+        details
+      }
       dimensions {
         in
         cm
       }
-      editionOf
       signatureInfo {
         details
       }

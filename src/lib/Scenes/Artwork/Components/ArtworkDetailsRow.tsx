@@ -12,7 +12,7 @@ interface Tracking {
 interface ArtworkDetailsRowProps {
   key: string
   title: string
-  value: string | React.ReactElement | null
+  value: string | React.ReactElement | null | undefined
   tracking?: {
     readMore?: Tracking
   }
