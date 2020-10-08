@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c7270b39b10ed7d3885ecd1a35beff2d */
+// @ts-nocheck
+/* @relayHash 63ab8807f748d53c9be859d055422012 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -16,11 +17,11 @@ export type SaleLotsList2QueryRawResponse = {
         readonly edges: ReadonlyArray<({
             readonly node: ({
                 readonly title: string | null;
-                readonly id: string | null;
+                readonly id: string;
                 readonly __typename: "Artwork";
             }) | null;
             readonly cursor: string | null;
-            readonly id: string | null;
+            readonly id: string;
         }) | null> | null;
         readonly totalCount: number | null;
         readonly pageInfo: {
@@ -68,16 +69,14 @@ fragment SaleLotsList2_saleArtworksConnection_1G22uz on Query {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "count",
-    "type": "Int!",
-    "defaultValue": null
+    "name": "count"
   },
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "cursor",
-    "type": "String",
-    "defaultValue": null
+    "name": "cursor"
   }
 ],
 v1 = [
@@ -93,24 +92,20 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "SaleLotsList2Query",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "SaleLotsList2Query",
     "selections": [
       {
-        "kind": "FragmentSpread",
-        "name": "SaleLotsList2_saleArtworksConnection",
         "args": [
           {
             "kind": "Variable",
@@ -122,120 +117,125 @@ return {
             "name": "cursor",
             "variableName": "cursor"
           }
-        ]
+        ],
+        "kind": "FragmentSpread",
+        "name": "SaleLotsList2_saleArtworksConnection"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "SaleLotsList2Query",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "saleArtworksConnection",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "SaleArtworksConnection",
+        "kind": "LinkedField",
+        "name": "saleArtworksConnection",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "edges",
-            "storageKey": null,
             "args": null,
             "concreteType": "SaleArtwork",
+            "kind": "LinkedField",
+            "name": "edges",
             "plural": true,
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "node",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "Artwork",
+                "kind": "LinkedField",
+                "name": "node",
                 "plural": false,
                 "selections": [
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "title",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "title",
                     "storageKey": null
                   },
                   (v2/*: any*/),
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "__typename",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "__typename",
                     "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "cursor",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "cursor",
                 "storageKey": null
               },
               (v2/*: any*/)
-            ]
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "totalCount",
-            "args": null,
+            ],
             "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "pageInfo",
-            "storageKey": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "totalCount",
+            "storageKey": null
+          },
+          {
+            "alias": null,
             "args": null,
             "concreteType": "PageInfo",
+            "kind": "LinkedField",
+            "name": "pageInfo",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "endCursor",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "endCursor",
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "hasNextPage",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "hasNextPage",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       },
       {
-        "kind": "LinkedHandle",
         "alias": null,
-        "name": "saleArtworksConnection",
         "args": (v1/*: any*/),
+        "filters": null,
         "handle": "connection",
         "key": "SaleLotsList2_saleArtworksConnection",
-        "filters": null
+        "kind": "LinkedHandle",
+        "name": "saleArtworksConnection"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "SaleLotsList2Query",
     "id": "63ab8807f748d53c9be859d055422012",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "SaleLotsList2Query",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -22,77 +23,77 @@ export type Collection_collection$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "Collection_collection",
-  "type": "MarketingCollection",
-  "metadata": null,
   "argumentDefinitions": [
     {
+      "defaultValue": 500,
       "kind": "LocalArgument",
-      "name": "screenWidth",
-      "type": "Int",
-      "defaultValue": 500
+      "name": "screenWidth"
     }
   ],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Collection_collection",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "id",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
-      "args": null,
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
-      "alias": null,
       "name": "isDepartment",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "linkedCollections",
-      "storageKey": null,
       "args": null,
       "concreteType": "MarketingCollectionGroup",
+      "kind": "LinkedField",
+      "name": "linkedCollections",
       "plural": true,
       "selections": [
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "CollectionHubsRails_linkedCollections",
-          "args": null
+          "name": "CollectionHubsRails_linkedCollections"
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "CollectionHeader_collection",
-      "args": null
+      "name": "CollectionHeader_collection"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "CollectionArtworks_collection",
-      "args": null
+      "name": "CollectionArtworks_collection"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "FeaturedArtists_collection",
-      "args": null
+      "name": "FeaturedArtists_collection"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "CollectionHubsRails_collection",
-      "args": null
+      "name": "CollectionHubsRails_collection"
     }
-  ]
+  ],
+  "type": "MarketingCollection",
+  "abstractKey": null
 };
 (node as any).hash = '772fca1c6419295f14c6a3689e3e626c';
 export default node;

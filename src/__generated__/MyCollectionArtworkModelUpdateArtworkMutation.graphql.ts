@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e86485b40afeced73875b989210a540f */
+// @ts-nocheck
+/* @relayHash 61dae8fb35398a15d74734dc9af54e6c */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionUpdateArtworkInput = {
@@ -67,10 +68,9 @@ mutation MyCollectionArtworkModelUpdateArtworkMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "MyCollectionUpdateArtworkInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
@@ -82,133 +82,135 @@ v1 = [
 ],
 v2 = {
   "kind": "InlineFragment",
-  "type": "MyCollectionArtworkMutationSuccess",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "artwork",
-      "storageKey": null,
       "args": null,
       "concreteType": "Artwork",
+      "kind": "LinkedField",
+      "name": "artwork",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "medium",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "id",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "internalID",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "editionNumber",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "editionSize",
           "args": null,
+          "kind": "ScalarField",
+          "name": "editionSize",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "MyCollectionArtworkMutationSuccess",
+  "abstractKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "MyCollectionArtworkModelUpdateArtworkMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "MyCollectionArtworkModelUpdateArtworkMutation",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "myCollectionUpdateArtwork",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "MyCollectionUpdateArtworkPayload",
+        "kind": "LinkedField",
+        "name": "myCollectionUpdateArtwork",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "artworkOrError",
-            "storageKey": null,
             "args": null,
             "concreteType": null,
+            "kind": "LinkedField",
+            "name": "artworkOrError",
             "plural": false,
             "selections": [
               (v2/*: any*/)
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "MyCollectionArtworkModelUpdateArtworkMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "myCollectionUpdateArtwork",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "MyCollectionUpdateArtworkPayload",
+        "kind": "LinkedField",
+        "name": "myCollectionUpdateArtwork",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "artworkOrError",
-            "storageKey": null,
             "args": null,
             "concreteType": null,
+            "kind": "LinkedField",
+            "name": "artworkOrError",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "__typename",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "__typename",
                 "storageKey": null
               },
               (v2/*: any*/)
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "MyCollectionArtworkModelUpdateArtworkMutation",
     "id": "61dae8fb35398a15d74734dc9af54e6c",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "MyCollectionArtworkModelUpdateArtworkMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

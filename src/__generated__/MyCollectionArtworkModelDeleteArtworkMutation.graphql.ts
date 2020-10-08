@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 8249159d53b265aabbb9b99009ea6ccc */
+// @ts-nocheck
+/* @relayHash 631f1278ada3ae3314da587d494402ce */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionDeleteArtworkInput = {
@@ -50,10 +51,9 @@ mutation MyCollectionArtworkModelDeleteArtworkMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "MyCollectionDeleteArtworkInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
@@ -65,120 +65,123 @@ v1 = [
 ],
 v2 = {
   "kind": "InlineFragment",
-  "type": "MyCollectionArtworkMutationDeleteSuccess",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "success",
       "args": null,
+      "kind": "ScalarField",
+      "name": "success",
       "storageKey": null
     }
-  ]
+  ],
+  "type": "MyCollectionArtworkMutationDeleteSuccess",
+  "abstractKey": null
 },
 v3 = {
   "kind": "InlineFragment",
-  "type": "MyCollectionArtworkMutationFailure",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "mutationError",
-      "storageKey": null,
       "args": null,
       "concreteType": "GravityMutationError",
+      "kind": "LinkedField",
+      "name": "mutationError",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "message",
           "args": null,
+          "kind": "ScalarField",
+          "name": "message",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "MyCollectionArtworkMutationFailure",
+  "abstractKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "MyCollectionArtworkModelDeleteArtworkMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "MyCollectionArtworkModelDeleteArtworkMutation",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "myCollectionDeleteArtwork",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "MyCollectionDeleteArtworkPayload",
+        "kind": "LinkedField",
+        "name": "myCollectionDeleteArtwork",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "artworkOrError",
-            "storageKey": null,
             "args": null,
             "concreteType": null,
+            "kind": "LinkedField",
+            "name": "artworkOrError",
             "plural": false,
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/)
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "MyCollectionArtworkModelDeleteArtworkMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "myCollectionDeleteArtwork",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "MyCollectionDeleteArtworkPayload",
+        "kind": "LinkedField",
+        "name": "myCollectionDeleteArtwork",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "artworkOrError",
-            "storageKey": null,
             "args": null,
             "concreteType": null,
+            "kind": "LinkedField",
+            "name": "artworkOrError",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "__typename",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "__typename",
                 "storageKey": null
               },
               (v2/*: any*/),
               (v3/*: any*/)
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "MyCollectionArtworkModelDeleteArtworkMutation",
     "id": "631f1278ada3ae3314da587d494402ce",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "MyCollectionArtworkModelDeleteArtworkMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

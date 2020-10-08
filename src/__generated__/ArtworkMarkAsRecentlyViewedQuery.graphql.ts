@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ec07cf72fb2a770e76eb9f414222627e */
+// @ts-nocheck
+/* @relayHash 63194f0a6a98703dcf55c36ca801cf39 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type RecordArtworkViewInput = {
@@ -35,18 +36,14 @@ mutation ArtworkMarkAsRecentlyViewedQuery(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "RecordArtworkViewInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "recordArtworkView",
-    "storageKey": null,
     "args": [
       {
         "kind": "Variable",
@@ -55,40 +52,44 @@ v1 = [
       }
     ],
     "concreteType": "RecordArtworkViewPayload",
+    "kind": "LinkedField",
+    "name": "recordArtworkView",
     "plural": false,
     "selections": [
       {
-        "kind": "ScalarField",
         "alias": null,
-        "name": "artworkId",
         "args": null,
+        "kind": "ScalarField",
+        "name": "artworkId",
         "storageKey": null
       }
-    ]
+    ],
+    "storageKey": null
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ArtworkMarkAsRecentlyViewedQuery",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ArtworkMarkAsRecentlyViewedQuery",
+    "selections": (v1/*: any*/),
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "ArtworkMarkAsRecentlyViewedQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "ArtworkMarkAsRecentlyViewedQuery",
     "id": "63194f0a6a98703dcf55c36ca801cf39",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "ArtworkMarkAsRecentlyViewedQuery",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

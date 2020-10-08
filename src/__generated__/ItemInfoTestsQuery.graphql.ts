@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash de9b5a685f287631cadbaf71fee139c6 */
+// @ts-nocheck
+/* @relayHash 0b1bf56601411fe2a1cf5b1309572bcc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -43,6 +44,7 @@ query ItemInfoTestsQuery(
             ...ItemInfo_item
           }
           ... on Node {
+            __isNode: __typename
             id
           }
         }
@@ -54,6 +56,7 @@ query ItemInfoTestsQuery(
 }
 
 fragment ItemInfo_item on ConversationItemType {
+  __isConversationItemType: __typename
   __typename
   ... on Artwork {
     href
@@ -79,6 +82,7 @@ fragment ItemInfo_item on ConversationItemType {
         name
       }
       ... on Node {
+        __isNode: __typename
         id
       }
       ... on ExternalPartner {
@@ -95,10 +99,9 @@ fragment ItemInfo_item on ConversationItemType {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "conversationID",
-    "type": "String!",
-    "defaultValue": null
+    "name": "conversationID"
   }
 ],
 v1 = [
@@ -109,316 +112,388 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "__typename",
   "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "href",
   "storageKey": null
 },
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
-  "args": null,
-  "storageKey": null
-},
+v4 = [
+  {
+    "alias": "thumbnailUrl",
+    "args": [
+      {
+        "kind": "Literal",
+        "name": "version",
+        "value": "small"
+      }
+    ],
+    "kind": "ScalarField",
+    "name": "url",
+    "storageKey": "url(version:\"small\")"
+  }
+],
 v5 = {
-  "type": "ID",
-  "enumValues": null,
-  "plural": false,
-  "nullable": true
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
 },
 v6 = {
-  "type": "String",
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v7 = [
+  (v6/*: any*/)
+],
+v8 = {
+  "kind": "InlineFragment",
+  "selections": (v7/*: any*/),
+  "type": "Node",
+  "abstractKey": "__isNode"
+},
+v9 = {
   "enumValues": null,
+  "nullable": false,
   "plural": false,
-  "nullable": true
+  "type": "ID"
+},
+v10 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "String"
+},
+v11 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ItemInfoTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ItemInfoTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "me",
-        "storageKey": null,
         "args": null,
         "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "conversation",
-            "storageKey": null,
             "args": (v1/*: any*/),
             "concreteType": "Conversation",
+            "kind": "LinkedField",
+            "name": "conversation",
             "plural": false,
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "items",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "ConversationItem",
+                "kind": "LinkedField",
+                "name": "items",
                 "plural": true,
                 "selections": [
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "item",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": null,
+                    "kind": "LinkedField",
+                    "name": "item",
                     "plural": false,
                     "selections": [
                       (v2/*: any*/),
                       {
                         "kind": "InlineFragment",
-                        "type": "Artwork",
                         "selections": [
                           {
+                            "args": null,
                             "kind": "FragmentSpread",
-                            "name": "ItemInfo_item",
-                            "args": null
+                            "name": "ItemInfo_item"
                           }
-                        ]
+                        ],
+                        "type": "Artwork",
+                        "abstractKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "ItemInfoTestsQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "me",
-        "storageKey": null,
         "args": null,
         "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "conversation",
-            "storageKey": null,
             "args": (v1/*: any*/),
             "concreteType": "Conversation",
+            "kind": "LinkedField",
+            "name": "conversation",
             "plural": false,
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "items",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "ConversationItem",
+                "kind": "LinkedField",
+                "name": "items",
                 "plural": true,
                 "selections": [
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "item",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": null,
+                    "kind": "LinkedField",
+                    "name": "item",
                     "plural": false,
                     "selections": [
                       (v2/*: any*/),
-                      (v3/*: any*/),
                       {
                         "kind": "InlineFragment",
-                        "type": "Artwork",
                         "selections": [
                           {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "href",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "image",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "Image",
-                            "plural": false,
+                            "kind": "InlineFragment",
                             "selections": [
                               {
-                                "kind": "ScalarField",
-                                "alias": "thumbnailUrl",
-                                "name": "url",
-                                "args": [
+                                "kind": "InlineFragment",
+                                "selections": [
+                                  (v3/*: any*/),
                                   {
-                                    "kind": "Literal",
-                                    "name": "version",
-                                    "value": "small"
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Image",
+                                    "kind": "LinkedField",
+                                    "name": "image",
+                                    "plural": false,
+                                    "selections": (v4/*: any*/),
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "title",
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "artistNames",
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "date",
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "saleMessage",
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Partner",
+                                    "kind": "LinkedField",
+                                    "name": "partner",
+                                    "plural": false,
+                                    "selections": [
+                                      (v5/*: any*/),
+                                      (v6/*: any*/)
+                                    ],
+                                    "storageKey": null
                                   }
                                 ],
-                                "storageKey": "url(version:\"small\")"
-                              }
-                            ]
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "title",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "artistNames",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "date",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "saleMessage",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "partner",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "Partner",
-                            "plural": false,
-                            "selections": [
-                              (v4/*: any*/),
-                              (v3/*: any*/)
-                            ]
-                          },
-                          {
-                            "kind": "InlineFragment",
-                            "type": "Show",
-                            "selections": [
-                              (v4/*: any*/),
+                                "type": "Artwork",
+                                "abstractKey": null
+                              },
                               {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "exhibitionPeriod",
-                                "args": null,
-                                "storageKey": null
+                                "kind": "InlineFragment",
+                                "selections": [
+                                  (v5/*: any*/),
+                                  (v3/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "exhibitionPeriod",
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": null,
+                                    "kind": "LinkedField",
+                                    "name": "partner",
+                                    "plural": false,
+                                    "selections": [
+                                      (v2/*: any*/),
+                                      {
+                                        "kind": "InlineFragment",
+                                        "selections": [
+                                          (v5/*: any*/)
+                                        ],
+                                        "type": "Partner",
+                                        "abstractKey": null
+                                      },
+                                      (v8/*: any*/),
+                                      {
+                                        "kind": "InlineFragment",
+                                        "selections": (v7/*: any*/),
+                                        "type": "ExternalPartner",
+                                        "abstractKey": null
+                                      }
+                                    ],
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "alias": "image",
+                                    "args": null,
+                                    "concreteType": "Image",
+                                    "kind": "LinkedField",
+                                    "name": "coverImage",
+                                    "plural": false,
+                                    "selections": (v4/*: any*/),
+                                    "storageKey": null
+                                  }
+                                ],
+                                "type": "Show",
+                                "abstractKey": null
                               }
-                            ]
+                            ],
+                            "type": "ConversationItemType",
+                            "abstractKey": "__isConversationItemType"
                           }
-                        ]
-                      }
-                    ]
+                        ],
+                        "type": "Artwork",
+                        "abstractKey": null
+                      },
+                      (v8/*: any*/)
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": null
               },
-              (v3/*: any*/)
-            ]
+              (v6/*: any*/)
+            ],
+            "storageKey": null
           },
-          (v3/*: any*/)
-        ]
+          (v6/*: any*/)
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "ItemInfoTestsQuery",
-    "id": "705b778f66a50fdd540e4b97c02262ad",
-    "text": null,
+    "id": "0b1bf56601411fe2a1cf5b1309572bcc",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
-          "type": "Me",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Me"
         },
         "me.conversation": {
-          "type": "Conversation",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Conversation"
         },
-        "me.id": (v5/*: any*/),
+        "me.conversation.id": (v9/*: any*/),
         "me.conversation.items": {
-          "type": "ConversationItem",
           "enumValues": null,
+          "nullable": true,
           "plural": true,
-          "nullable": true
+          "type": "ConversationItem"
         },
-        "me.conversation.id": (v5/*: any*/),
         "me.conversation.items.item": {
-          "type": "ConversationItemType",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "ConversationItemType"
         },
-        "me.conversation.items.item.__typename": {
-          "type": "String",
-          "enumValues": null,
-          "plural": false,
-          "nullable": false
-        },
-        "me.conversation.items.item.id": (v5/*: any*/),
-        "me.conversation.items.item.href": (v6/*: any*/),
+        "me.conversation.items.item.__isConversationItemType": (v10/*: any*/),
+        "me.conversation.items.item.__isNode": (v10/*: any*/),
+        "me.conversation.items.item.__typename": (v10/*: any*/),
+        "me.conversation.items.item.artistNames": (v11/*: any*/),
+        "me.conversation.items.item.date": (v11/*: any*/),
+        "me.conversation.items.item.exhibitionPeriod": (v11/*: any*/),
+        "me.conversation.items.item.href": (v11/*: any*/),
+        "me.conversation.items.item.id": (v9/*: any*/),
         "me.conversation.items.item.image": {
-          "type": "Image",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Image"
         },
-        "me.conversation.items.item.title": (v6/*: any*/),
-        "me.conversation.items.item.artistNames": (v6/*: any*/),
-        "me.conversation.items.item.date": (v6/*: any*/),
-        "me.conversation.items.item.saleMessage": (v6/*: any*/),
+        "me.conversation.items.item.image.thumbnailUrl": (v11/*: any*/),
+        "me.conversation.items.item.name": (v11/*: any*/),
         "me.conversation.items.item.partner": {
-          "type": "PartnerTypes",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Partner"
         },
-        "me.conversation.items.item.name": (v6/*: any*/),
-        "me.conversation.items.item.exhibitionPeriod": (v6/*: any*/),
-        "me.conversation.items.item.image.thumbnailUrl": (v6/*: any*/),
-        "me.conversation.items.item.partner.name": (v6/*: any*/),
-        "me.conversation.items.item.partner.id": (v5/*: any*/)
+        "me.conversation.items.item.partner.__isNode": (v10/*: any*/),
+        "me.conversation.items.item.partner.__typename": (v10/*: any*/),
+        "me.conversation.items.item.partner.id": (v9/*: any*/),
+        "me.conversation.items.item.partner.name": (v11/*: any*/),
+        "me.conversation.items.item.saleMessage": (v11/*: any*/),
+        "me.conversation.items.item.title": (v11/*: any*/),
+        "me.id": (v9/*: any*/)
       }
-    }
+    },
+    "name": "ItemInfoTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

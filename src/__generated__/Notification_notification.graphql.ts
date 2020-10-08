@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -32,31 +33,27 @@ export type Notification_notification$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "Notification_notification",
-  "type": "FollowedArtistsArtworksGroup",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Notification_notification",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "summary",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "artists",
       "args": null,
+      "kind": "ScalarField",
+      "name": "artists",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": "artworks",
-      "name": "artworksConnection",
-      "storageKey": "artworksConnection(first:10)",
       "args": [
         {
           "kind": "Literal",
@@ -65,31 +62,28 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "ArtworkConnection",
+      "kind": "LinkedField",
+      "name": "artworksConnection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "ArtworkEdge",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "Artwork",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "artists",
-                  "storageKey": "artists(shallow:true)",
                   "args": [
                     {
                       "kind": "Literal",
@@ -98,42 +92,44 @@ const node: ReaderFragment = {
                     }
                   ],
                   "concreteType": "Artist",
+                  "kind": "LinkedField",
+                  "name": "artists",
                   "plural": true,
                   "selections": [
                     {
-                      "kind": "ScalarField",
                       "alias": null,
-                      "name": "href",
                       "args": null,
+                      "kind": "ScalarField",
+                      "name": "href",
                       "storageKey": null
                     }
-                  ]
+                  ],
+                  "storageKey": "artists(shallow:true)"
                 },
                 {
+                  "args": null,
                   "kind": "FragmentSpread",
-                  "name": "GenericGrid_artworks",
-                  "args": null
+                  "name": "GenericGrid_artworks"
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": "artworksConnection(first:10)"
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "image",
-      "storageKey": null,
       "args": null,
       "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "image",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "resized",
-          "storageKey": "resized(height:80,width:80)",
           "args": [
             {
               "kind": "Literal",
@@ -147,20 +143,26 @@ const node: ReaderFragment = {
             }
           ],
           "concreteType": "ResizedImageUrl",
+          "kind": "LinkedField",
+          "name": "resized",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "url",
               "args": null,
+              "kind": "ScalarField",
+              "name": "url",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": "resized(height:80,width:80)"
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "FollowedArtistsArtworksGroup",
+  "abstractKey": null
 };
 (node as any).hash = '0de17c33986f81a634195f7d3e29d97c';
 export default node;

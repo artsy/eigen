@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -55,46 +56,46 @@ export type ShowHeader_show$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 },
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 },
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "name",
   "args": null,
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "href",
   "args": null,
+  "kind": "ScalarField",
+  "name": "href",
   "storageKey": null
 },
 v4 = [
   {
-    "kind": "ScalarField",
     "alias": null,
-    "name": "url",
     "args": null,
+    "kind": "ScalarField",
+    "name": "url",
     "storageKey": null
   },
   {
-    "kind": "ScalarField",
     "alias": "aspect_ratio",
-    "name": "aspectRatio",
     "args": null,
+    "kind": "ScalarField",
+    "name": "aspectRatio",
     "storageKey": null
   }
 ],
@@ -105,95 +106,92 @@ v5 = [
   (v1/*: any*/)
 ];
 return {
-  "kind": "Fragment",
-  "name": "ShowHeader_show",
-  "type": "Show",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ShowHeader_show",
   "selections": [
     (v0/*: any*/),
     (v1/*: any*/),
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "id",
       "args": null,
+      "kind": "ScalarField",
+      "name": "id",
       "storageKey": null
     },
     (v2/*: any*/),
     {
-      "kind": "ScalarField",
       "alias": "is_followed",
+      "args": null,
+      "kind": "ScalarField",
       "name": "isFollowed",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": "end_at",
+      "args": null,
+      "kind": "ScalarField",
       "name": "endAt",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": "exhibition_period",
-      "name": "exhibitionPeriod",
       "args": null,
-      "storageKey": null
-    },
-    {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "isStubShow",
-      "args": null,
+      "name": "exhibitionPeriod",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "partner",
-      "storageKey": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "isStubShow",
+      "storageKey": null
+    },
+    {
+      "alias": null,
       "args": null,
       "concreteType": null,
+      "kind": "LinkedField",
+      "name": "partner",
       "plural": false,
       "selections": [
         {
           "kind": "InlineFragment",
-          "type": "Partner",
           "selections": [
             (v2/*: any*/),
             (v0/*: any*/),
             (v3/*: any*/)
-          ]
+          ],
+          "type": "Partner",
+          "abstractKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
+      "args": null,
+      "concreteType": "Image",
+      "kind": "LinkedField",
       "name": "coverImage",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Image",
       "plural": false,
-      "selections": (v4/*: any*/)
+      "selections": (v4/*: any*/),
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "images",
-      "storageKey": null,
       "args": null,
       "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "images",
       "plural": true,
-      "selections": (v4/*: any*/)
+      "selections": (v4/*: any*/),
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": "followedArtists",
-      "name": "followedArtistsConnection",
-      "storageKey": "followedArtistsConnection(first:3)",
       "args": [
         {
           "kind": "Literal",
@@ -202,53 +200,58 @@ return {
         }
       ],
       "concreteType": "ShowFollowArtistConnection",
+      "kind": "LinkedField",
+      "name": "followedArtistsConnection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "ShowFollowArtistEdge",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "ShowFollowArtist",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "artist",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "Artist",
+                  "kind": "LinkedField",
+                  "name": "artist",
                   "plural": false,
-                  "selections": (v5/*: any*/)
+                  "selections": (v5/*: any*/),
+                  "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": "followedArtistsConnection(first:3)"
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "artists",
-      "storageKey": null,
       "args": null,
       "concreteType": "Artist",
+      "kind": "LinkedField",
+      "name": "artists",
       "plural": true,
-      "selections": (v5/*: any*/)
+      "selections": (v5/*: any*/),
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Show",
+  "abstractKey": null
 };
 })();
 (node as any).hash = 'fd0f6f7275f3fb70bcbe35ae933fd0f9';

@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 26fa010693fe9a51b0237797e1e5ea2f */
+// @ts-nocheck
+/* @relayHash f135de64aecf1f33218a65b94d43af44 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowProfileInput = {
@@ -46,18 +47,14 @@ mutation FairBoothPreviewMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "FollowProfileInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "followProfile",
-    "storageKey": null,
     "args": [
       {
         "kind": "Variable",
@@ -66,72 +63,76 @@ v1 = [
       }
     ],
     "concreteType": "FollowProfilePayload",
+    "kind": "LinkedField",
+    "name": "followProfile",
     "plural": false,
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "profile",
-        "storageKey": null,
         "args": null,
         "concreteType": "Profile",
+        "kind": "LinkedField",
+        "name": "profile",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "id",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "slug",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "internalID",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "isFollowed",
             "args": null,
+            "kind": "ScalarField",
+            "name": "isFollowed",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "storageKey": null
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "FairBoothPreviewMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "FairBoothPreviewMutation",
+    "selections": (v1/*: any*/),
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "FairBoothPreviewMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "FairBoothPreviewMutation",
     "id": "f135de64aecf1f33218a65b94d43af44",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "FairBoothPreviewMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

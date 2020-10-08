@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 64e3eebd6a8ee3ed3acde1faa50ab6eb */
+// @ts-nocheck
+/* @relayHash 55a8c7797e0ad70ce3351836d4745c74 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type CreateGeminiEntryForAssetInput = {
@@ -42,18 +43,14 @@ mutation createGeminiAssetWithS3CredentialsMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "CreateGeminiEntryForAssetInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "createGeminiEntryForAsset",
-    "storageKey": null,
     "args": [
       {
         "kind": "Variable",
@@ -62,51 +59,55 @@ v1 = [
       }
     ],
     "concreteType": "CreateGeminiEntryForAssetPayload",
+    "kind": "LinkedField",
+    "name": "createGeminiEntryForAsset",
     "plural": false,
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "asset",
-        "storageKey": null,
         "args": null,
         "concreteType": "GeminiEntry",
+        "kind": "LinkedField",
+        "name": "asset",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "token",
             "args": null,
+            "kind": "ScalarField",
+            "name": "token",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "storageKey": null
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "createGeminiAssetWithS3CredentialsMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "createGeminiAssetWithS3CredentialsMutation",
+    "selections": (v1/*: any*/),
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "createGeminiAssetWithS3CredentialsMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "createGeminiAssetWithS3CredentialsMutation",
     "id": "55a8c7797e0ad70ce3351836d4745c74",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "createGeminiAssetWithS3CredentialsMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -18,37 +19,38 @@ export type CollectionHubsRails_linkedCollections$key = ReadonlyArray<{
 
 
 const node: ReaderFragment = {
+  "argumentDefinitions": [],
   "kind": "Fragment",
-  "name": "CollectionHubsRails_linkedCollections",
-  "type": "MarketingCollectionGroup",
   "metadata": {
     "plural": true
   },
-  "argumentDefinitions": [],
+  "name": "CollectionHubsRails_linkedCollections",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "groupType",
       "args": null,
+      "kind": "ScalarField",
+      "name": "groupType",
       "storageKey": null
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "CollectionArtistSeriesRail_collectionGroup",
-      "args": null
+      "name": "CollectionArtistSeriesRail_collectionGroup"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "OtherCollectionsRail_collectionGroup",
-      "args": null
+      "name": "OtherCollectionsRail_collectionGroup"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "FeaturedCollectionsRail_collectionGroup",
-      "args": null
+      "name": "FeaturedCollectionsRail_collectionGroup"
     }
-  ]
+  ],
+  "type": "MarketingCollectionGroup",
+  "abstractKey": null
 };
 (node as any).hash = 'b1abf030c950a4118c69eb2c9e5e5175';
 export default node;

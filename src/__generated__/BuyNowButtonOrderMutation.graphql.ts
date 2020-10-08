@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c1965bbc1443f6034fe8f1a4e4da6ed4 */
+// @ts-nocheck
+/* @relayHash 34ab3ef70b965ef3274c41c840eff5b7 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type CommerceOrderModeEnum = "BUY" | "OFFER" | "%future added value";
@@ -72,10 +73,9 @@ mutation BuyNowButtonOrderMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "CommerceCreateOrderWithArtworkInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
@@ -86,182 +86,186 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "__typename",
   "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 },
 v4 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "mode",
   "args": null,
+  "kind": "ScalarField",
+  "name": "mode",
   "storageKey": null
 },
 v5 = {
   "kind": "InlineFragment",
-  "type": "CommerceOrderWithMutationFailure",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "error",
-      "storageKey": null,
       "args": null,
       "concreteType": "CommerceApplicationError",
+      "kind": "LinkedField",
+      "name": "error",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "type",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "code",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "data",
           "args": null,
+          "kind": "ScalarField",
+          "name": "data",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "CommerceOrderWithMutationFailure",
+  "abstractKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "BuyNowButtonOrderMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "BuyNowButtonOrderMutation",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "commerceCreateOrderWithArtwork",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "CommerceCreateOrderWithArtworkPayload",
+        "kind": "LinkedField",
+        "name": "commerceCreateOrderWithArtwork",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "orderOrError",
-            "storageKey": null,
             "args": null,
             "concreteType": null,
+            "kind": "LinkedField",
+            "name": "orderOrError",
             "plural": false,
             "selections": [
               (v2/*: any*/),
               {
                 "kind": "InlineFragment",
-                "type": "CommerceOrderWithMutationSuccess",
                 "selections": [
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "order",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": null,
+                    "kind": "LinkedField",
+                    "name": "order",
                     "plural": false,
                     "selections": [
                       (v3/*: any*/),
                       (v4/*: any*/)
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "type": "CommerceOrderWithMutationSuccess",
+                "abstractKey": null
               },
               (v5/*: any*/)
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "BuyNowButtonOrderMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "commerceCreateOrderWithArtwork",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "CommerceCreateOrderWithArtworkPayload",
+        "kind": "LinkedField",
+        "name": "commerceCreateOrderWithArtwork",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "orderOrError",
-            "storageKey": null,
             "args": null,
             "concreteType": null,
+            "kind": "LinkedField",
+            "name": "orderOrError",
             "plural": false,
             "selections": [
               (v2/*: any*/),
               {
                 "kind": "InlineFragment",
-                "type": "CommerceOrderWithMutationSuccess",
                 "selections": [
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "order",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": null,
+                    "kind": "LinkedField",
+                    "name": "order",
                     "plural": false,
                     "selections": [
                       (v2/*: any*/),
                       (v3/*: any*/),
                       (v4/*: any*/),
                       {
-                        "kind": "ScalarField",
                         "alias": null,
-                        "name": "id",
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "id",
                         "storageKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "type": "CommerceOrderWithMutationSuccess",
+                "abstractKey": null
               },
               (v5/*: any*/)
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "BuyNowButtonOrderMutation",
     "id": "34ab3ef70b965ef3274c41c840eff5b7",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "BuyNowButtonOrderMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

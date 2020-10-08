@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -21,9 +22,24 @@ export type SaleLotsList_me$key = {
 
 
 const node: ReaderFragment = {
+  "argumentDefinitions": [
+    {
+      "defaultValue": 10,
+      "kind": "LocalArgument",
+      "name": "count"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "cursor"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "saleID"
+    }
+  ],
   "kind": "Fragment",
-  "name": "SaleLotsList_me",
-  "type": "Me",
   "metadata": {
     "connection": [
       {
@@ -36,32 +52,10 @@ const node: ReaderFragment = {
       }
     ]
   },
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "count",
-      "type": "Int",
-      "defaultValue": 10
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "cursor",
-      "type": "String",
-      "defaultValue": null
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "saleID",
-      "type": "ID",
-      "defaultValue": null
-    }
-  ],
+  "name": "SaleLotsList_me",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": "lotsByFollowedArtistsConnection",
-      "name": "__SaleLotsList_lotsByFollowedArtistsConnection_connection",
-      "storageKey": null,
       "args": [
         {
           "kind": "Literal",
@@ -85,82 +79,87 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "SaleArtworksConnection",
+      "kind": "LinkedField",
+      "name": "__SaleLotsList_lotsByFollowedArtistsConnection_connection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "SaleArtwork",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "cursor",
               "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
               "storageKey": null
             },
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "Artwork",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "__typename",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
                   "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "pageInfo",
-          "storageKey": null,
           "args": null,
           "concreteType": "PageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "endCursor",
               "args": null,
+              "kind": "ScalarField",
+              "name": "endCursor",
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "hasNextPage",
               "args": null,
+              "kind": "ScalarField",
+              "name": "hasNextPage",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "SaleArtworkList_connection",
-          "args": null
+          "name": "SaleArtworkList_connection"
         },
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "InfiniteScrollArtworksGrid_connection",
-          "args": null
+          "name": "InfiniteScrollArtworksGrid_connection"
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Me",
+  "abstractKey": null
 };
 (node as any).hash = '1774e0ba00b7e3e87f6deee01861398b';
 export default node;

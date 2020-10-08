@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,9 +31,19 @@ export type PartnerLocations_partner$key = {
 
 
 const node: ReaderFragment = {
+  "argumentDefinitions": [
+    {
+      "defaultValue": 4,
+      "kind": "LocalArgument",
+      "name": "count"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "cursor"
+    }
+  ],
   "kind": "Fragment",
-  "name": "PartnerLocations_partner",
-  "type": "Partner",
   "metadata": {
     "connection": [
       {
@@ -45,127 +56,116 @@ const node: ReaderFragment = {
       }
     ]
   },
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "count",
-      "type": "Int",
-      "defaultValue": 4
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "cursor",
-      "type": "String",
-      "defaultValue": null
-    }
-  ],
+  "name": "PartnerLocations_partner",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "name",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "internalID",
       "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": "locations",
-      "name": "__Partner_locations_connection",
-      "storageKey": null,
       "args": null,
       "concreteType": "LocationConnection",
+      "kind": "LinkedField",
+      "name": "__Partner_locations_connection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "pageInfo",
-          "storageKey": null,
           "args": null,
           "concreteType": "PageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "hasNextPage",
-              "args": null,
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "startCursor",
-              "args": null,
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "endCursor",
               "args": null,
+              "kind": "ScalarField",
+              "name": "endCursor",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "LocationEdge",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "Location",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "id",
-                  "args": null,
                   "storageKey": null
                 },
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "__typename",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
                   "storageKey": null
                 },
                 {
+                  "args": null,
                   "kind": "FragmentSpread",
-                  "name": "PartnerMap_location",
-                  "args": null
+                  "name": "PartnerMap_location"
                 }
-              ]
+              ],
+              "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "cursor",
               "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Partner",
+  "abstractKey": null
 };
 (node as any).hash = 'eac6aef905fc4ad24b28f7354ede2f1d';
 export default node;

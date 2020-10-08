@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash afef109dbff4a2546468396237185fb7 */
+// @ts-nocheck
+/* @relayHash b67ac5eb6cc6d0b2cacab1c7a3f0281b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -13,7 +14,7 @@ export type EmailConfirmationBannerTestsQueryResponse = {
 export type EmailConfirmationBannerTestsQueryRawResponse = {
     readonly me: ({
         readonly canRequestEmailConfirmation: boolean;
-        readonly id: string | null;
+        readonly id: string;
     }) | null;
 };
 export type EmailConfirmationBannerTestsQuery = {
@@ -38,70 +39,71 @@ fragment EmailConfirmationBanner_me on Me {
 */
 
 const node: ConcreteRequest = {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "EmailConfirmationBannerTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "EmailConfirmationBannerTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "me",
-        "storageKey": null,
         "args": null,
         "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "EmailConfirmationBanner_me",
-            "args": null
+            "name": "EmailConfirmationBanner_me"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "EmailConfirmationBannerTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "me",
-        "storageKey": null,
         "args": null,
         "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "canRequestEmailConfirmation",
             "args": null,
+            "kind": "ScalarField",
+            "name": "canRequestEmailConfirmation",
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "id",
             "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "EmailConfirmationBannerTestsQuery",
     "id": "b67ac5eb6cc6d0b2cacab1c7a3f0281b",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "EmailConfirmationBannerTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 (node as any).hash = '9c9ab31576ef9d1a0d9f45c08ae46c3b';

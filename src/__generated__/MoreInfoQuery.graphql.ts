@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 19a331aca40747b5b541a649567338fd */
+// @ts-nocheck
+/* @relayHash 0fff943ed4b8ee4a4856b40c701c5e40 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -41,6 +42,7 @@ fragment MoreInfo_show on Show {
       type
     }
     ... on Node {
+      __isNode: __typename
       id
     }
     ... on ExternalPartner {
@@ -64,10 +66,9 @@ fragment ShowEventSection_event on ShowEventType {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "showID",
-    "type": "String!",
-    "defaultValue": null
+    "name": "showID"
   }
 ],
 v1 = [
@@ -78,177 +79,193 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
-};
+},
+v3 = [
+  (v2/*: any*/)
+];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "MoreInfoQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "MoreInfoQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "show",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Show",
+        "kind": "LinkedField",
+        "name": "show",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "MoreInfo_show",
-            "args": null
+            "name": "MoreInfo_show"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "MoreInfoQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "show",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Show",
+        "kind": "LinkedField",
+        "name": "show",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "internalID",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "slug",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "pressReleaseUrl",
-            "args": null,
             "storageKey": null
           },
           {
+            "alias": null,
+            "args": null,
             "kind": "ScalarField",
-            "alias": null,
             "name": "openingReceptionText",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "partner",
-            "storageKey": null,
             "args": null,
             "concreteType": null,
+            "kind": "LinkedField",
+            "name": "partner",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "__typename",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "__typename",
                 "storageKey": null
               },
-              (v2/*: any*/),
               {
                 "kind": "InlineFragment",
-                "type": "Partner",
                 "selections": [
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "website",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "website",
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "type",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "type",
                     "storageKey": null
                   }
-                ]
+                ],
+                "type": "Partner",
+                "abstractKey": null
+              },
+              {
+                "kind": "InlineFragment",
+                "selections": (v3/*: any*/),
+                "type": "Node",
+                "abstractKey": "__isNode"
+              },
+              {
+                "kind": "InlineFragment",
+                "selections": (v3/*: any*/),
+                "type": "ExternalPartner",
+                "abstractKey": null
               }
-            ]
-          },
-          {
-            "kind": "ScalarField",
-            "alias": "press_release",
-            "name": "pressRelease",
-            "args": null,
+            ],
             "storageKey": null
           },
           {
-            "kind": "LinkedField",
+            "alias": "press_release",
+            "args": null,
+            "kind": "ScalarField",
+            "name": "pressRelease",
+            "storageKey": null
+          },
+          {
             "alias": null,
-            "name": "events",
-            "storageKey": null,
             "args": null,
             "concreteType": "ShowEventType",
+            "kind": "LinkedField",
+            "name": "events",
             "plural": true,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": "event_type",
+                "args": null,
+                "kind": "ScalarField",
                 "name": "eventType",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "description",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": "start_at",
-                "name": "startAt",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "startAt",
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": "end_at",
-                "name": "endAt",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "endAt",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           },
           (v2/*: any*/)
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
+    "id": "0fff943ed4b8ee4a4856b40c701c5e40",
+    "metadata": {},
     "name": "MoreInfoQuery",
-    "id": "042f01be8d485251cc5959b1c5663a5d",
-    "text": null,
-    "metadata": {}
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

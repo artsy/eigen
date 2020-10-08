@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 2b255ad9df2edf04917a922800374ecb */
+// @ts-nocheck
+/* @relayHash eed586db0857ad78b2ab6475e80bc8e2 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type ArtistRailNewSuggestionQueryVariables = {
@@ -94,16 +95,14 @@ query ArtistRailNewSuggestionQuery(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "basedOnArtistId",
-    "type": "String!",
-    "defaultValue": null
+    "name": "basedOnArtistId"
   },
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "excludeArtistIDs",
-    "type": "[String!]!",
-    "defaultValue": null
+    "name": "excludeArtistIDs"
   }
 ],
 v1 = [
@@ -136,60 +135,57 @@ v2 = [
   }
 ],
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 },
 v4 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 },
 v5 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 },
 v6 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "href",
   "args": null,
+  "kind": "ScalarField",
+  "name": "href",
   "storageKey": null
 },
 v7 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "name",
   "args": null,
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 },
 v8 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "formattedNationalityAndBirthday",
   "args": null,
+  "kind": "ScalarField",
+  "name": "formattedNationalityAndBirthday",
   "storageKey": null
 },
 v9 = {
-  "kind": "LinkedField",
   "alias": "avatar",
-  "name": "image",
-  "storageKey": null,
   "args": null,
   "concreteType": "Image",
+  "kind": "LinkedField",
+  "name": "image",
   "plural": false,
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "url",
       "args": [
         {
           "kind": "Literal",
@@ -197,15 +193,18 @@ v9 = {
           "value": "small"
         }
       ],
+      "kind": "ScalarField",
+      "name": "url",
       "storageKey": "url(version:\"small\")"
     }
-  ]
+  ],
+  "storageKey": null
 },
 v10 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "isFollowed",
   "args": null,
+  "kind": "ScalarField",
+  "name": "isFollowed",
   "storageKey": null
 },
 v11 = [
@@ -216,18 +215,15 @@ v11 = [
   }
 ],
 v12 = {
-  "kind": "LinkedField",
   "alias": null,
-  "name": "image",
-  "storageKey": null,
   "args": null,
   "concreteType": "Image",
+  "kind": "LinkedField",
+  "name": "image",
   "plural": false,
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "url",
       "args": [
         {
           "kind": "Literal",
@@ -235,62 +231,58 @@ v12 = {
           "value": "large"
         }
       ],
+      "kind": "ScalarField",
+      "name": "url",
       "storageKey": "url(version:\"large\")"
     }
-  ]
+  ],
+  "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ArtistRailNewSuggestionQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ArtistRailNewSuggestionQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artist",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Artist",
+        "kind": "LinkedField",
+        "name": "artist",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "related",
-            "storageKey": null,
             "args": null,
             "concreteType": "ArtistRelatedData",
+            "kind": "LinkedField",
+            "name": "related",
             "plural": false,
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "suggestedConnection",
-                "storageKey": null,
                 "args": (v2/*: any*/),
                 "concreteType": "ArtistConnection",
+                "kind": "LinkedField",
+                "name": "suggestedConnection",
                 "plural": false,
                 "selections": [
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "edges",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "ArtistEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
                     "plural": true,
                     "selections": [
                       {
-                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "node",
-                        "storageKey": null,
                         "args": null,
                         "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "node",
                         "plural": false,
                         "selections": [
                           (v3/*: any*/),
@@ -301,112 +293,115 @@ return {
                           (v8/*: any*/),
                           (v9/*: any*/),
                           {
-                            "kind": "LinkedField",
                             "alias": null,
-                            "name": "basedOn",
-                            "storageKey": null,
                             "args": null,
                             "concreteType": "Artist",
+                            "kind": "LinkedField",
+                            "name": "basedOn",
                             "plural": false,
                             "selections": [
                               (v7/*: any*/)
-                            ]
+                            ],
+                            "storageKey": null
                           },
                           (v10/*: any*/),
                           {
-                            "kind": "LinkedField",
                             "alias": null,
-                            "name": "artworksConnection",
-                            "storageKey": "artworksConnection(first:3)",
                             "args": (v11/*: any*/),
                             "concreteType": "ArtworkConnection",
+                            "kind": "LinkedField",
+                            "name": "artworksConnection",
                             "plural": false,
                             "selections": [
                               {
-                                "kind": "LinkedField",
                                 "alias": null,
-                                "name": "edges",
-                                "storageKey": null,
                                 "args": null,
                                 "concreteType": "ArtworkEdge",
+                                "kind": "LinkedField",
+                                "name": "edges",
                                 "plural": true,
                                 "selections": [
                                   {
-                                    "kind": "LinkedField",
                                     "alias": null,
-                                    "name": "node",
-                                    "storageKey": null,
                                     "args": null,
                                     "concreteType": "Artwork",
+                                    "kind": "LinkedField",
+                                    "name": "node",
                                     "plural": false,
                                     "selections": [
                                       (v12/*: any*/)
-                                    ]
+                                    ],
+                                    "storageKey": null
                                   }
-                                ]
+                                ],
+                                "storageKey": null
                               }
-                            ]
+                            ],
+                            "storageKey": "artworksConnection(first:3)"
                           }
-                        ]
+                        ],
+                        "storageKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "ArtistRailNewSuggestionQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artist",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Artist",
+        "kind": "LinkedField",
+        "name": "artist",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "related",
-            "storageKey": null,
             "args": null,
             "concreteType": "ArtistRelatedData",
+            "kind": "LinkedField",
+            "name": "related",
             "plural": false,
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "suggestedConnection",
-                "storageKey": null,
                 "args": (v2/*: any*/),
                 "concreteType": "ArtistConnection",
+                "kind": "LinkedField",
+                "name": "suggestedConnection",
                 "plural": false,
                 "selections": [
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "edges",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "ArtistEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
                     "plural": true,
                     "selections": [
                       {
-                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "node",
-                        "storageKey": null,
                         "args": null,
                         "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "node",
                         "plural": false,
                         "selections": [
                           (v3/*: any*/),
@@ -417,73 +412,78 @@ return {
                           (v8/*: any*/),
                           (v9/*: any*/),
                           {
-                            "kind": "LinkedField",
                             "alias": null,
-                            "name": "basedOn",
-                            "storageKey": null,
                             "args": null,
                             "concreteType": "Artist",
+                            "kind": "LinkedField",
+                            "name": "basedOn",
                             "plural": false,
                             "selections": [
                               (v7/*: any*/),
                               (v3/*: any*/)
-                            ]
+                            ],
+                            "storageKey": null
                           },
                           (v10/*: any*/),
                           {
-                            "kind": "LinkedField",
                             "alias": null,
-                            "name": "artworksConnection",
-                            "storageKey": "artworksConnection(first:3)",
                             "args": (v11/*: any*/),
                             "concreteType": "ArtworkConnection",
+                            "kind": "LinkedField",
+                            "name": "artworksConnection",
                             "plural": false,
                             "selections": [
                               {
-                                "kind": "LinkedField",
                                 "alias": null,
-                                "name": "edges",
-                                "storageKey": null,
                                 "args": null,
                                 "concreteType": "ArtworkEdge",
+                                "kind": "LinkedField",
+                                "name": "edges",
                                 "plural": true,
                                 "selections": [
                                   {
-                                    "kind": "LinkedField",
                                     "alias": null,
-                                    "name": "node",
-                                    "storageKey": null,
                                     "args": null,
                                     "concreteType": "Artwork",
+                                    "kind": "LinkedField",
+                                    "name": "node",
                                     "plural": false,
                                     "selections": [
                                       (v12/*: any*/),
                                       (v3/*: any*/)
-                                    ]
+                                    ],
+                                    "storageKey": null
                                   }
-                                ]
+                                ],
+                                "storageKey": null
                               }
-                            ]
+                            ],
+                            "storageKey": "artworksConnection(first:3)"
                           }
-                        ]
+                        ],
+                        "storageKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           },
           (v3/*: any*/)
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "ArtistRailNewSuggestionQuery",
     "id": "eed586db0857ad78b2ab6475e80bc8e2",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "ArtistRailNewSuggestionQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 4cf79e62b6eb4e24eeb8c39111f1858b */
+// @ts-nocheck
+/* @relayHash cbf4686647f004d150e5f1a608cbe861 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,10 +38,9 @@ fragment MockRelayRendererFixtures_artist on Artist {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "id",
-    "type": "String!",
-    "defaultValue": null
+    "name": "id"
   }
 ],
 v1 = [
@@ -51,70 +51,71 @@ v1 = [
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "MockRelayRendererFixturesArtistQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "MockRelayRendererFixturesArtistQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artist",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Artist",
+        "kind": "LinkedField",
+        "name": "artist",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "MockRelayRendererFixtures_artist",
-            "args": null
+            "name": "MockRelayRendererFixtures_artist"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "MockRelayRendererFixturesArtistQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artist",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Artist",
+        "kind": "LinkedField",
+        "name": "artist",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "name",
             "args": null,
+            "kind": "ScalarField",
+            "name": "name",
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "id",
             "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "MockRelayRendererFixturesArtistQuery",
     "id": "cbf4686647f004d150e5f1a608cbe861",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "MockRelayRendererFixturesArtistQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

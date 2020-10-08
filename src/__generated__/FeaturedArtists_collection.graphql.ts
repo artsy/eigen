@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,24 +27,20 @@ export type FeaturedArtists_collection$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "FeaturedArtists_collection",
-  "type": "MarketingCollection",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "FeaturedArtists_collection",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "slug",
       "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "artworksConnection",
-      "storageKey": "artworksConnection(aggregations:[\"MERCHANDISABLE_ARTISTS\"],size:0,sort:\"-decayed_merch\")",
       "args": [
         {
           "kind": "Literal",
@@ -64,13 +61,12 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "FilterArtworksConnection",
+      "kind": "LinkedField",
+      "name": "artworksConnection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "merchandisableArtists",
-          "storageKey": "merchandisableArtists(size:4)",
           "args": [
             {
               "kind": "Literal",
@@ -79,50 +75,56 @@ const node: ReaderFragment = {
             }
           ],
           "concreteType": "Artist",
+          "kind": "LinkedField",
+          "name": "merchandisableArtists",
           "plural": true,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "internalID",
               "args": null,
+              "kind": "ScalarField",
+              "name": "internalID",
               "storageKey": null
             },
             {
+              "args": null,
               "kind": "FragmentSpread",
-              "name": "ArtistListItem_artist",
-              "args": null
+              "name": "ArtistListItem_artist"
             }
-          ]
+          ],
+          "storageKey": "merchandisableArtists(size:4)"
         }
-      ]
+      ],
+      "storageKey": "artworksConnection(aggregations:[\"MERCHANDISABLE_ARTISTS\"],size:0,sort:\"-decayed_merch\")"
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "query",
-      "storageKey": null,
       "args": null,
       "concreteType": "MarketingCollectionQuery",
+      "kind": "LinkedField",
+      "name": "query",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "artistIDs",
           "args": null,
+          "kind": "ScalarField",
+          "name": "artistIDs",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "featuredArtistExclusionIds",
       "args": null,
+      "kind": "ScalarField",
+      "name": "featuredArtistExclusionIds",
       "storageKey": null
     }
-  ]
+  ],
+  "type": "MarketingCollection",
+  "abstractKey": null
 };
 (node as any).hash = 'a7a18e885dd71078dd8c05ac099c50d1';
 export default node;

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,38 +28,34 @@ export type CollectionHeader_collection$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "CollectionHeader_collection",
-  "type": "MarketingCollection",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "CollectionHeader_collection",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "title",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "headerImage",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "descriptionMarkdown",
       "args": null,
+      "kind": "ScalarField",
+      "name": "descriptionMarkdown",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": "image",
-      "name": "artworksConnection",
-      "storageKey": "artworksConnection(first:1,sort:\"-decayed_merch\")",
       "args": [
         {
           "kind": "Literal",
@@ -72,39 +69,36 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "FilterArtworksConnection",
+      "kind": "LinkedField",
+      "name": "artworksConnection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "FilterArtworksEdge",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "Artwork",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "image",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "Image",
+                  "kind": "LinkedField",
+                  "name": "image",
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "ScalarField",
                       "alias": null,
-                      "name": "url",
                       "args": [
                         {
                           "kind": "Literal",
@@ -112,17 +106,25 @@ const node: ReaderFragment = {
                           "value": "larger"
                         }
                       ],
+                      "kind": "ScalarField",
+                      "name": "url",
                       "storageKey": "url(version:\"larger\")"
                     }
-                  ]
+                  ],
+                  "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": "artworksConnection(first:1,sort:\"-decayed_merch\")"
     }
-  ]
+  ],
+  "type": "MarketingCollection",
+  "abstractKey": null
 };
 (node as any).hash = '814dd7a3fa91f84d841c781bd381e556';
 export default node;

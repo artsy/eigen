@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -16,20 +17,21 @@ export type CitySavedList_city$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "CitySavedList_city",
-  "type": "City",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "CitySavedList_city",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "name",
       "args": null,
+      "kind": "ScalarField",
+      "name": "name",
       "storageKey": null
     }
-  ]
+  ],
+  "type": "City",
+  "abstractKey": null
 };
 (node as any).hash = '74c19a1423a2fc69b228a393596a29c9';
 export default node;

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,82 +27,83 @@ export type CommercialEditionSetInformation_artwork$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "CommercialEditionSetInformation_artwork",
-  "type": "Artwork",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "CommercialEditionSetInformation_artwork",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "editionSets",
-      "storageKey": null,
       "args": null,
       "concreteType": "EditionSet",
+      "kind": "LinkedField",
+      "name": "editionSets",
       "plural": true,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "id",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "internalID",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "saleMessage",
-          "args": null,
           "storageKey": null
         },
         {
+          "alias": null,
+          "args": null,
           "kind": "ScalarField",
-          "alias": null,
           "name": "editionOf",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "dimensions",
-          "storageKey": null,
           "args": null,
           "concreteType": "dimensions",
+          "kind": "LinkedField",
+          "name": "dimensions",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "in",
               "args": null,
+              "kind": "ScalarField",
+              "name": "in",
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "cm",
               "args": null,
+              "kind": "ScalarField",
+              "name": "cm",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "CommercialPartnerInformation_artwork",
-      "args": null
+      "name": "CommercialPartnerInformation_artwork"
     }
-  ]
+  ],
+  "type": "Artwork",
+  "abstractKey": null
 };
 (node as any).hash = 'e8a7c66739dcb5af490a7dddbdc52d07';
 export default node;

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,54 +24,55 @@ export type PartnerFollowButton_partner$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 };
 return {
-  "kind": "Fragment",
-  "name": "PartnerFollowButton_partner",
-  "type": "Partner",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "PartnerFollowButton_partner",
   "selections": [
     (v0/*: any*/),
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "slug",
       "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "profile",
-      "storageKey": null,
       "args": null,
       "concreteType": "Profile",
+      "kind": "LinkedField",
+      "name": "profile",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "id",
           "args": null,
+          "kind": "ScalarField",
+          "name": "id",
           "storageKey": null
         },
         (v0/*: any*/),
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "isFollowed",
           "args": null,
+          "kind": "ScalarField",
+          "name": "isFollowed",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Partner",
+  "abstractKey": null
 };
 })();
 (node as any).hash = '0f6992a6d00173390a59c484c352936a';

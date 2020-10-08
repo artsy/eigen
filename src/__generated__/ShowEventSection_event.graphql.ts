@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -19,41 +20,42 @@ export type ShowEventSection_event$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "ShowEventSection_event",
-  "type": "ShowEventType",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ShowEventSection_event",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": "event_type",
+      "args": null,
+      "kind": "ScalarField",
       "name": "eventType",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "description",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": "start_at",
-      "name": "startAt",
       "args": null,
+      "kind": "ScalarField",
+      "name": "startAt",
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": "end_at",
-      "name": "endAt",
       "args": null,
+      "kind": "ScalarField",
+      "name": "endAt",
       "storageKey": null
     }
-  ]
+  ],
+  "type": "ShowEventType",
+  "abstractKey": null
 };
 (node as any).hash = '0b3e65592f0bb739551d5dfb9c3ebf55';
 export default node;

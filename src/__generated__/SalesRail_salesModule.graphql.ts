@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -36,82 +37,77 @@ export type SalesRail_salesModule$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "SalesRail_salesModule",
-  "type": "HomePageSalesModule",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "SalesRail_salesModule",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "results",
-      "storageKey": null,
       "args": null,
       "concreteType": "Sale",
+      "kind": "LinkedField",
+      "name": "results",
       "plural": true,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "id",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "slug",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "internalID",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "href",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "name",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "liveURLIfOpen",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "liveStartAt",
-          "args": null,
           "storageKey": null
         },
         {
+          "alias": null,
+          "args": null,
           "kind": "ScalarField",
-          "alias": null,
           "name": "displayTimelyAt",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "saleArtworksConnection",
-          "storageKey": "saleArtworksConnection(first:3)",
           "args": [
             {
               "kind": "Literal",
@@ -120,48 +116,44 @@ const node: ReaderFragment = {
             }
           ],
           "concreteType": "SaleArtworkConnection",
+          "kind": "LinkedField",
+          "name": "saleArtworksConnection",
           "plural": false,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "edges",
-              "storageKey": null,
               "args": null,
               "concreteType": "SaleArtworkEdge",
+              "kind": "LinkedField",
+              "name": "edges",
               "plural": true,
               "selections": [
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "node",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "SaleArtwork",
+                  "kind": "LinkedField",
+                  "name": "node",
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "LinkedField",
                       "alias": null,
-                      "name": "artwork",
-                      "storageKey": null,
                       "args": null,
                       "concreteType": "Artwork",
+                      "kind": "LinkedField",
+                      "name": "artwork",
                       "plural": false,
                       "selections": [
                         {
-                          "kind": "LinkedField",
                           "alias": null,
-                          "name": "image",
-                          "storageKey": null,
                           "args": null,
                           "concreteType": "Image",
+                          "kind": "LinkedField",
+                          "name": "image",
                           "plural": false,
                           "selections": [
                             {
-                              "kind": "ScalarField",
                               "alias": null,
-                              "name": "url",
                               "args": [
                                 {
                                   "kind": "Literal",
@@ -169,21 +161,31 @@ const node: ReaderFragment = {
                                   "value": "large"
                                 }
                               ],
+                              "kind": "ScalarField",
+                              "name": "url",
                               "storageKey": "url(version:\"large\")"
                             }
-                          ]
+                          ],
+                          "storageKey": null
                         }
-                      ]
+                      ],
+                      "storageKey": null
                     }
-                  ]
+                  ],
+                  "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": "saleArtworksConnection(first:3)"
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "HomePageSalesModule",
+  "abstractKey": null
 };
 (node as any).hash = 'c32cc7b766f8d60ebd680302a5ee3832';
 export default node;

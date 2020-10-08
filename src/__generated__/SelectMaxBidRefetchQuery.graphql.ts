@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ae4eb2f2e5c8f22df74e8e3bde991ed8 */
+// @ts-nocheck
+/* @relayHash 1939fe4a6df3a703a583108eb1a316b7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -80,10 +81,9 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "saleArtworkNodeID",
-    "type": "ID!",
-    "defaultValue": null
+    "name": "saleArtworkNodeID"
   }
 ],
 v1 = [
@@ -94,77 +94,73 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "SelectMaxBidRefetchQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "SelectMaxBidRefetchQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "node",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": null,
+        "kind": "LinkedField",
+        "name": "node",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "SelectMaxBid_sale_artwork",
-            "args": null
+            "name": "SelectMaxBid_sale_artwork"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "SelectMaxBidRefetchQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "node",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": null,
+        "kind": "LinkedField",
+        "name": "node",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "__typename",
             "args": null,
+            "kind": "ScalarField",
+            "name": "__typename",
             "storageKey": null
           },
           (v2/*: any*/),
           {
             "kind": "InlineFragment",
-            "type": "SaleArtwork",
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "increments",
-                "storageKey": "increments(useMyMaxBid:true)",
                 "args": [
                   {
                     "kind": "Literal",
@@ -173,142 +169,141 @@ return {
                   }
                 ],
                 "concreteType": "BidIncrementsFormatted",
+                "kind": "LinkedField",
+                "name": "increments",
                 "plural": true,
                 "selections": [
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "display",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "display",
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "cents",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "cents",
                     "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": "increments(useMyMaxBid:true)"
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "internalID",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "internalID",
                 "storageKey": null
               },
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "sale",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "Sale",
+                "kind": "LinkedField",
+                "name": "sale",
                 "plural": false,
                 "selections": [
                   (v3/*: any*/),
                   {
-                    "kind": "ScalarField",
                     "alias": "live_start_at",
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "liveStartAt",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": "end_at",
-                    "name": "endAt",
                     "args": null,
-                    "storageKey": null
-                  },
-                  {
                     "kind": "ScalarField",
-                    "alias": null,
-                    "name": "isBenefit",
-                    "args": null,
+                    "name": "endAt",
                     "storageKey": null
                   },
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "partner",
-                    "storageKey": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "isBenefit",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
                     "args": null,
                     "concreteType": "Partner",
+                    "kind": "LinkedField",
+                    "name": "partner",
                     "plural": false,
                     "selections": [
                       {
-                        "kind": "ScalarField",
                         "alias": null,
-                        "name": "name",
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "name",
                         "storageKey": null
                       },
                       (v2/*: any*/)
-                    ]
+                    ],
+                    "storageKey": null
                   },
                   (v2/*: any*/),
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "liveStartAt",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "liveStartAt",
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "endAt",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "endAt",
                     "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": null
               },
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "artwork",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "Artwork",
+                "kind": "LinkedField",
+                "name": "artwork",
                 "plural": false,
                 "selections": [
                   (v3/*: any*/),
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "title",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "date",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": "artist_names",
-                    "name": "artistNames",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "artistNames",
                     "storageKey": null
                   },
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "image",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "Image",
+                    "kind": "LinkedField",
+                    "name": "image",
                     "plural": false,
                     "selections": [
                       {
-                        "kind": "ScalarField",
                         "alias": null,
-                        "name": "url",
                         "args": [
                           {
                             "kind": "Literal",
@@ -316,32 +311,39 @@ return {
                             "value": "small"
                           }
                         ],
+                        "kind": "ScalarField",
+                        "name": "url",
                         "storageKey": "url(version:\"small\")"
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   },
                   (v2/*: any*/)
-                ]
+                ],
+                "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": "lot_label",
-                "name": "lotLabel",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "lotLabel",
                 "storageKey": null
               }
-            ]
+            ],
+            "type": "SaleArtwork",
+            "abstractKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "SelectMaxBidRefetchQuery",
     "id": "1939fe4a6df3a703a583108eb1a316b7",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "SelectMaxBidRefetchQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash af4b8cb3b1be08c1929192b5e416b42a */
+// @ts-nocheck
+/* @relayHash 40c9b846079ff55332ad001a346e421a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -46,156 +47,152 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 },
 v2 = {
-  "type": "ID",
   "enumValues": null,
+  "nullable": true,
   "plural": false,
-  "nullable": true
+  "type": "String"
 },
 v3 = {
-  "type": "String",
   "enumValues": null,
+  "nullable": false,
   "plural": false,
-  "nullable": true
+  "type": "ID"
 },
 v4 = {
-  "type": "Boolean",
   "enumValues": null,
+  "nullable": true,
   "plural": false,
-  "nullable": true
+  "type": "Boolean"
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "RegisterToBidButtonTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "RegisterToBidButtonTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "sale",
-        "storageKey": "sale(id:\"the-sale\")",
         "args": (v0/*: any*/),
         "concreteType": "Sale",
+        "kind": "LinkedField",
+        "name": "sale",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "RegisterToBidButton_sale",
-            "args": null
+            "name": "RegisterToBidButton_sale"
           }
-        ]
+        ],
+        "storageKey": "sale(id:\"the-sale\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "RegisterToBidButtonTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "sale",
-        "storageKey": "sale(id:\"the-sale\")",
         "args": (v0/*: any*/),
         "concreteType": "Sale",
+        "kind": "LinkedField",
+        "name": "sale",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "slug",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "startAt",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "endAt",
-            "args": null,
             "storageKey": null
           },
           {
+            "alias": null,
+            "args": null,
             "kind": "ScalarField",
-            "alias": null,
             "name": "requireIdentityVerification",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "registrationStatus",
-            "storageKey": null,
             "args": null,
             "concreteType": "Bidder",
+            "kind": "LinkedField",
+            "name": "registrationStatus",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "qualifiedForBidding",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "qualifiedForBidding",
                 "storageKey": null
               },
               (v1/*: any*/)
-            ]
+            ],
+            "storageKey": null
           },
           (v1/*: any*/)
-        ]
+        ],
+        "storageKey": "sale(id:\"the-sale\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "RegisterToBidButtonTestsQuery",
     "id": "40c9b846079ff55332ad001a346e421a",
-    "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "sale": {
-          "type": "Sale",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Sale"
         },
-        "sale.id": (v2/*: any*/),
-        "sale.slug": {
-          "type": "ID",
-          "enumValues": null,
-          "plural": false,
-          "nullable": false
-        },
-        "sale.startAt": (v3/*: any*/),
-        "sale.endAt": (v3/*: any*/),
-        "sale.requireIdentityVerification": (v4/*: any*/),
+        "sale.endAt": (v2/*: any*/),
+        "sale.id": (v3/*: any*/),
         "sale.registrationStatus": {
-          "type": "Bidder",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Bidder"
         },
+        "sale.registrationStatus.id": (v3/*: any*/),
         "sale.registrationStatus.qualifiedForBidding": (v4/*: any*/),
-        "sale.registrationStatus.id": (v2/*: any*/)
+        "sale.requireIdentityVerification": (v4/*: any*/),
+        "sale.slug": (v3/*: any*/),
+        "sale.startAt": (v2/*: any*/)
       }
-    }
+    },
+    "name": "RegisterToBidButtonTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

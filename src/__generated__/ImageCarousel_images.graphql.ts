@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,111 +31,112 @@ export type ImageCarousel_images$key = ReadonlyArray<{
 
 
 const node: ReaderFragment = {
+  "argumentDefinitions": [],
   "kind": "Fragment",
-  "name": "ImageCarousel_images",
-  "type": "Image",
   "metadata": {
     "plural": true
   },
-  "argumentDefinitions": [],
+  "name": "ImageCarousel_images",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": "url",
+      "args": null,
+      "kind": "ScalarField",
       "name": "imageURL",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "width",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "height",
-      "args": null,
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
-      "alias": null,
       "name": "imageVersions",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "deepZoom",
-      "storageKey": null,
       "args": null,
       "concreteType": "DeepZoom",
+      "kind": "LinkedField",
+      "name": "deepZoom",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": "image",
-          "name": "Image",
-          "storageKey": null,
           "args": null,
           "concreteType": "DeepZoomImage",
+          "kind": "LinkedField",
+          "name": "Image",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": "tileSize",
+              "args": null,
+              "kind": "ScalarField",
               "name": "TileSize",
-              "args": null,
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": "url",
-              "name": "Url",
               "args": null,
-              "storageKey": null
-            },
-            {
               "kind": "ScalarField",
-              "alias": "format",
-              "name": "Format",
-              "args": null,
+              "name": "Url",
               "storageKey": null
             },
             {
-              "kind": "LinkedField",
+              "alias": "format",
+              "args": null,
+              "kind": "ScalarField",
+              "name": "Format",
+              "storageKey": null
+            },
+            {
               "alias": "size",
-              "name": "Size",
-              "storageKey": null,
               "args": null,
               "concreteType": "DeepZoomImageSize",
+              "kind": "LinkedField",
+              "name": "Size",
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": "width",
-                  "name": "Width",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "Width",
                   "storageKey": null
                 },
                 {
-                  "kind": "ScalarField",
                   "alias": "height",
-                  "name": "Height",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "Height",
                   "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Image",
+  "abstractKey": null
 };
 (node as any).hash = 'd476e0fe87d0fa4cede85d40854121ff';
 export default node;

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,17 +27,13 @@ export type SaleArtworksRail_me$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "SaleArtworksRail_me",
-  "type": "Me",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "SaleArtworksRail_me",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": "saleArtworksRail",
-      "name": "lotsByFollowedArtistsConnection",
-      "storageKey": "lotsByFollowedArtistsConnection(first:10,includeArtworksByFollowedArtists:true)",
       "args": [
         {
           "kind": "Literal",
@@ -50,63 +47,68 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "SaleArtworksConnection",
+      "kind": "LinkedField",
+      "name": "lotsByFollowedArtistsConnection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "SaleArtwork",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "Artwork",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "id",
-                  "args": null,
                   "storageKey": null
                 },
                 {
+                  "alias": null,
+                  "args": null,
                   "kind": "ScalarField",
-                  "alias": null,
                   "name": "href",
-                  "args": null,
                   "storageKey": null
                 },
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "saleArtwork",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "SaleArtwork",
+                  "kind": "LinkedField",
+                  "name": "saleArtwork",
                   "plural": false,
                   "selections": [
                     {
+                      "args": null,
                       "kind": "FragmentSpread",
-                      "name": "SaleArtworkTileRailCard_saleArtwork",
-                      "args": null
+                      "name": "SaleArtworkTileRailCard_saleArtwork"
                     }
-                  ]
+                  ],
+                  "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": "lotsByFollowedArtistsConnection(first:10,includeArtworksByFollowedArtists:true)"
     }
-  ]
+  ],
+  "type": "Me",
+  "abstractKey": null
 };
 (node as any).hash = '0801f696db61489d8e728a88edb2a242';
 export default node;

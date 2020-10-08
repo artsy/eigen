@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -36,17 +37,17 @@ export type Fair2MoreInfo_fair$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "name",
   "args": null,
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 },
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "summary",
   "args": null,
+  "kind": "ScalarField",
+  "name": "summary",
   "storageKey": null
 },
 v2 = [
@@ -57,118 +58,119 @@ v2 = [
   }
 ];
 return {
-  "kind": "Fragment",
-  "name": "Fair2MoreInfo_fair",
-  "type": "Fair",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Fair2MoreInfo_fair",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "about",
       "args": null,
+      "kind": "ScalarField",
+      "name": "about",
       "storageKey": null
     },
     (v0/*: any*/),
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "tagline",
       "args": null,
+      "kind": "ScalarField",
+      "name": "tagline",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "profile",
-      "storageKey": null,
       "args": null,
       "concreteType": "Profile",
+      "kind": "LinkedField",
+      "name": "profile",
       "plural": false,
       "selections": [
         (v0/*: any*/)
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "location",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Location",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "coordinates",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "LatLng",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "lat",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "lng",
-              "args": null,
-              "storageKey": null
-            }
-          ]
-        },
-        (v1/*: any*/),
-        {
-          "kind": "FragmentSpread",
-          "name": "LocationMap_location",
-          "args": null
-        }
-      ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "ticketsLink",
-      "args": null,
+      ],
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "hours",
+      "args": null,
+      "concreteType": "Location",
+      "kind": "LinkedField",
+      "name": "location",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "LatLng",
+          "kind": "LinkedField",
+          "name": "coordinates",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "lat",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "lng",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        (v1/*: any*/),
+        {
+          "args": null,
+          "kind": "FragmentSpread",
+          "name": "LocationMap_location"
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "ticketsLink",
+      "storageKey": null
+    },
+    {
+      "alias": null,
       "args": (v2/*: any*/),
+      "kind": "ScalarField",
+      "name": "hours",
       "storageKey": "hours(format:\"MARKDOWN\")"
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "links",
       "args": (v2/*: any*/),
+      "kind": "ScalarField",
+      "name": "links",
       "storageKey": "links(format:\"MARKDOWN\")"
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "tickets",
       "args": (v2/*: any*/),
+      "kind": "ScalarField",
+      "name": "tickets",
       "storageKey": "tickets(format:\"MARKDOWN\")"
     },
     (v1/*: any*/),
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "contact",
       "args": (v2/*: any*/),
+      "kind": "ScalarField",
+      "name": "contact",
       "storageKey": "contact(format:\"MARKDOWN\")"
     }
-  ]
+  ],
+  "type": "Fair",
+  "abstractKey": null
 };
 })();
 (node as any).hash = 'e97c82f264b236875fa1acdf28507f9f';

@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 16b3523b78d832143fd4bd67fbc77353 */
+// @ts-nocheck
+/* @relayHash 4dc5bb7b20b8372673e592dd93fc284c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -44,7 +45,7 @@ export type ShowArtistsPreviewTestsQueryRawResponse = {
                 readonly url: string | null;
             }) | null;
         }) | null> | null;
-        readonly id: string | null;
+        readonly id: string;
     }) | null;
 };
 export type ShowArtistsPreviewTestsQuery = {
@@ -108,24 +109,24 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 },
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 },
 v4 = [
@@ -133,147 +134,148 @@ v4 = [
   (v1/*: any*/),
   (v2/*: any*/),
   {
-    "kind": "ScalarField",
     "alias": null,
+    "args": null,
+    "kind": "ScalarField",
     "name": "href",
-    "args": null,
     "storageKey": null
   },
   {
-    "kind": "ScalarField",
     "alias": null,
+    "args": null,
+    "kind": "ScalarField",
     "name": "name",
-    "args": null,
     "storageKey": null
   },
   {
-    "kind": "ScalarField",
     "alias": null,
+    "args": null,
+    "kind": "ScalarField",
     "name": "initials",
-    "args": null,
     "storageKey": null
   },
   {
-    "kind": "ScalarField",
     "alias": "is_followed",
+    "args": null,
+    "kind": "ScalarField",
     "name": "isFollowed",
-    "args": null,
     "storageKey": null
   },
   {
-    "kind": "ScalarField",
     "alias": null,
+    "args": null,
+    "kind": "ScalarField",
     "name": "nationality",
-    "args": null,
     "storageKey": null
   },
   {
-    "kind": "ScalarField",
     "alias": null,
+    "args": null,
+    "kind": "ScalarField",
     "name": "birthday",
-    "args": null,
     "storageKey": null
   },
   {
+    "alias": null,
+    "args": null,
     "kind": "ScalarField",
-    "alias": null,
     "name": "deathday",
-    "args": null,
     "storageKey": null
   },
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "image",
-    "storageKey": null,
     "args": null,
     "concreteType": "Image",
+    "kind": "LinkedField",
+    "name": "image",
     "plural": false,
     "selections": [
       {
-        "kind": "ScalarField",
         "alias": null,
-        "name": "url",
         "args": null,
+        "kind": "ScalarField",
+        "name": "url",
         "storageKey": null
       }
-    ]
+    ],
+    "storageKey": null
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ShowArtistsPreviewTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ShowArtistsPreviewTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "show",
-        "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
         "args": (v0/*: any*/),
         "concreteType": "Show",
+        "kind": "LinkedField",
+        "name": "show",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "ShowArtistsPreview_show",
-            "args": null
+            "name": "ShowArtistsPreview_show"
           }
-        ]
+        ],
+        "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "ShowArtistsPreviewTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "show",
-        "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
         "args": (v0/*: any*/),
         "concreteType": "Show",
+        "kind": "LinkedField",
+        "name": "show",
         "plural": false,
         "selections": [
           (v1/*: any*/),
           (v2/*: any*/),
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "artists",
-            "storageKey": null,
             "args": null,
             "concreteType": "Artist",
+            "kind": "LinkedField",
+            "name": "artists",
             "plural": true,
-            "selections": (v4/*: any*/)
+            "selections": (v4/*: any*/),
+            "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": "artists_without_artworks",
-            "name": "artistsWithoutArtworks",
-            "storageKey": null,
             "args": null,
             "concreteType": "Artist",
+            "kind": "LinkedField",
+            "name": "artistsWithoutArtworks",
             "plural": true,
-            "selections": (v4/*: any*/)
+            "selections": (v4/*: any*/),
+            "storageKey": null
           },
           (v3/*: any*/)
-        ]
+        ],
+        "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "ShowArtistsPreviewTestsQuery",
     "id": "4dc5bb7b20b8372673e592dd93fc284c",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "ShowArtistsPreviewTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

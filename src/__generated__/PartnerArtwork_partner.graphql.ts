@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -24,9 +25,24 @@ export type PartnerArtwork_partner$key = {
 
 
 const node: ReaderFragment = {
+  "argumentDefinitions": [
+    {
+      "defaultValue": 10,
+      "kind": "LocalArgument",
+      "name": "count"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "cursor"
+    },
+    {
+      "defaultValue": "PARTNER_UPDATED_AT_DESC",
+      "kind": "LocalArgument",
+      "name": "sort"
+    }
+  ],
   "kind": "Fragment",
-  "name": "PartnerArtwork_partner",
-  "type": "Partner",
   "metadata": {
     "connection": [
       {
@@ -39,39 +55,17 @@ const node: ReaderFragment = {
       }
     ]
   },
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "count",
-      "type": "Int",
-      "defaultValue": 10
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "cursor",
-      "type": "String",
-      "defaultValue": null
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "sort",
-      "type": "ArtworkSorts",
-      "defaultValue": "PARTNER_UPDATED_AT_DESC"
-    }
-  ],
+  "name": "PartnerArtwork_partner",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "internalID",
       "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": "artworks",
-      "name": "__Partner_artworks_connection",
-      "storageKey": null,
       "args": [
         {
           "kind": "Variable",
@@ -80,84 +74,89 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "ArtworkConnection",
+      "kind": "LinkedField",
+      "name": "__Partner_artworks_connection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "ArtworkEdge",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "Artwork",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "id",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "id",
                   "storageKey": null
                 },
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "__typename",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
                   "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "cursor",
               "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "pageInfo",
-          "storageKey": null,
           "args": null,
           "concreteType": "PageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "endCursor",
               "args": null,
+              "kind": "ScalarField",
+              "name": "endCursor",
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "hasNextPage",
               "args": null,
+              "kind": "ScalarField",
+              "name": "hasNextPage",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "InfiniteScrollArtworksGrid_connection",
-          "args": null
+          "name": "InfiniteScrollArtworksGrid_connection"
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Partner",
+  "abstractKey": null
 };
 (node as any).hash = 'b27da342175e4f75b7de50768f5da346';
 export default node;

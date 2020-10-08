@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 32b78de0d329bc70c4e5033ba933ab43 */
+// @ts-nocheck
+/* @relayHash 2e4ea89cbe5286eb16a06f7f471945d8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -20,7 +21,7 @@ export type ShowEventSectionTestsQueryRawResponse = {
             readonly start_at: string | null;
             readonly end_at: string | null;
         }) | null> | null;
-        readonly id: string | null;
+        readonly id: string;
     }) | null;
 };
 export type ShowEventSectionTestsQuery = {
@@ -58,113 +59,114 @@ var v0 = [
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
+    "argumentDefinitions": [],
     "kind": "Fragment",
-    "name": "ShowEventSectionTestsQuery",
-    "type": "Query",
     "metadata": null,
-    "argumentDefinitions": [],
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "show",
-        "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": (v0/*: any*/),
-        "concreteType": "Show",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "events",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "ShowEventType",
-            "plural": true,
-            "selections": [
-              {
-                "kind": "FragmentSpread",
-                "name": "ShowEventSection_event",
-                "args": null
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  "operation": {
-    "kind": "Operation",
     "name": "ShowEventSectionTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "show",
-        "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
         "args": (v0/*: any*/),
         "concreteType": "Show",
+        "kind": "LinkedField",
+        "name": "show",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "events",
-            "storageKey": null,
             "args": null,
             "concreteType": "ShowEventType",
+            "kind": "LinkedField",
+            "name": "events",
             "plural": true,
             "selections": [
               {
-                "kind": "ScalarField",
-                "alias": "event_type",
-                "name": "eventType",
                 "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "description",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": "start_at",
-                "name": "startAt",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": "end_at",
-                "name": "endAt",
-                "args": null,
-                "storageKey": null
+                "kind": "FragmentSpread",
+                "name": "ShowEventSection_event"
               }
-            ]
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "id",
-            "args": null,
+            ],
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")"
+      }
+    ],
+    "type": "Query",
+    "abstractKey": null
+  },
+  "kind": "Request",
+  "operation": {
+    "argumentDefinitions": [],
+    "kind": "Operation",
+    "name": "ShowEventSectionTestsQuery",
+    "selections": [
+      {
+        "alias": null,
+        "args": (v0/*: any*/),
+        "concreteType": "Show",
+        "kind": "LinkedField",
+        "name": "show",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ShowEventType",
+            "kind": "LinkedField",
+            "name": "events",
+            "plural": true,
+            "selections": [
+              {
+                "alias": "event_type",
+                "args": null,
+                "kind": "ScalarField",
+                "name": "eventType",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "description",
+                "storageKey": null
+              },
+              {
+                "alias": "start_at",
+                "args": null,
+                "kind": "ScalarField",
+                "name": "startAt",
+                "storageKey": null
+              },
+              {
+                "alias": "end_at",
+                "args": null,
+                "kind": "ScalarField",
+                "name": "endAt",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "id",
+            "storageKey": null
+          }
+        ],
+        "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "ShowEventSectionTestsQuery",
     "id": "2e4ea89cbe5286eb16a06f7f471945d8",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "ShowEventSectionTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,88 +28,89 @@ export type ArtworkTileRail_artworksConnection$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "ArtworkTileRail_artworksConnection",
-  "type": "ArtworkConnection",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ArtworkTileRail_artworksConnection",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "edges",
-      "storageKey": null,
       "args": null,
       "concreteType": "ArtworkEdge",
+      "kind": "LinkedField",
+      "name": "edges",
       "plural": true,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "node",
-          "storageKey": null,
           "args": null,
           "concreteType": "Artwork",
+          "kind": "LinkedField",
+          "name": "node",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "slug",
-              "args": null,
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "internalID",
-              "args": null,
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "href",
-              "args": null,
               "storageKey": null
             },
             {
+              "alias": null,
+              "args": null,
               "kind": "ScalarField",
-              "alias": null,
               "name": "artistNames",
-              "args": null,
               "storageKey": null
             },
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "image",
-              "storageKey": null,
               "args": null,
               "concreteType": "Image",
+              "kind": "LinkedField",
+              "name": "image",
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "imageURL",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "imageURL",
                   "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "saleMessage",
               "args": null,
+              "kind": "ScalarField",
+              "name": "saleMessage",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "ArtworkConnection",
+  "abstractKey": null
 };
 (node as any).hash = '8e817d114e27d6cc5f4df4790d88d310';
 export default node;

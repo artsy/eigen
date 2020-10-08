@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,25 +27,21 @@ export type Fair2FollowedArtists_fair$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 };
 return {
-  "kind": "Fragment",
-  "name": "Fair2FollowedArtists_fair",
-  "type": "Fair",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Fair2FollowedArtists_fair",
   "selections": [
     (v0/*: any*/),
     {
-      "kind": "LinkedField",
       "alias": "followedArtistArtworks",
-      "name": "filterArtworksConnection",
-      "storageKey": "filterArtworksConnection(first:20,includeArtworksByFollowedArtists:true)",
       "args": [
         {
           "kind": "Literal",
@@ -58,46 +55,51 @@ return {
         }
       ],
       "concreteType": "FilterArtworksConnection",
+      "kind": "LinkedField",
+      "name": "filterArtworksConnection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "FilterArtworksEdge",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": "artwork",
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "Artwork",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "id",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "id",
                   "storageKey": null
                 },
                 (v0/*: any*/),
                 {
+                  "args": null,
                   "kind": "FragmentSpread",
-                  "name": "ArtworkTileRailCard_artwork",
-                  "args": null
+                  "name": "ArtworkTileRailCard_artwork"
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": "filterArtworksConnection(first:20,includeArtworksByFollowedArtists:true)"
     }
-  ]
+  ],
+  "type": "Fair",
+  "abstractKey": null
 };
 })();
 (node as any).hash = 'b3038830ea337b5e84dc4d2dbedaa623';

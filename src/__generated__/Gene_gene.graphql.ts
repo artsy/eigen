@@ -1,9 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtworkAggregation = "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
+export type ArtworkAggregation = "ARTIST" | "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 export type Gene_gene = {
     readonly id: string;
     readonly internalID: string;
@@ -39,16 +40,45 @@ export type Gene_gene$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
+  "argumentDefinitions": [
+    {
+      "defaultValue": 10,
+      "kind": "LocalArgument",
+      "name": "count"
+    },
+    {
+      "defaultValue": "",
+      "kind": "LocalArgument",
+      "name": "cursor"
+    },
+    {
+      "defaultValue": "*",
+      "kind": "LocalArgument",
+      "name": "medium"
+    },
+    {
+      "defaultValue": "*-*",
+      "kind": "LocalArgument",
+      "name": "priceRange"
+    },
+    {
+      "kind": "RootArgument",
+      "name": "price_range"
+    },
+    {
+      "defaultValue": "-partner_updated_at",
+      "kind": "LocalArgument",
+      "name": "sort"
+    }
+  ],
   "kind": "Fragment",
-  "name": "Gene_gene",
-  "type": "Gene",
   "metadata": {
     "connection": [
       {
@@ -61,57 +91,18 @@ return {
       }
     ]
   },
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "count",
-      "type": "Int",
-      "defaultValue": 10
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "cursor",
-      "type": "String",
-      "defaultValue": ""
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "sort",
-      "type": "String",
-      "defaultValue": "-partner_updated_at"
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "medium",
-      "type": "String",
-      "defaultValue": "*"
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "priceRange",
-      "type": "String",
-      "defaultValue": "*-*"
-    },
-    {
-      "kind": "RootArgument",
-      "name": "price_range",
-      "type": "String"
-    }
-  ],
+  "name": "Gene_gene",
   "selections": [
     (v0/*: any*/),
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "internalID",
       "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": "artworks",
-      "name": "__Gene_artworks_connection",
-      "storageKey": null,
       "args": [
         {
           "kind": "Literal",
@@ -144,156 +135,161 @@ return {
         }
       ],
       "concreteType": "FilterArtworksConnection",
+      "kind": "LinkedField",
+      "name": "__Gene_artworks_connection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "counts",
-          "storageKey": null,
           "args": null,
           "concreteType": "FilterArtworksCounts",
+          "kind": "LinkedField",
+          "name": "counts",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "total",
               "args": null,
+              "kind": "ScalarField",
+              "name": "total",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "aggregations",
-          "storageKey": null,
           "args": null,
           "concreteType": "ArtworksAggregationResults",
+          "kind": "LinkedField",
+          "name": "aggregations",
           "plural": true,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "slice",
               "args": null,
+              "kind": "ScalarField",
+              "name": "slice",
               "storageKey": null
             },
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "counts",
-              "storageKey": null,
               "args": null,
               "concreteType": "AggregationCount",
+              "kind": "LinkedField",
+              "name": "counts",
               "plural": true,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "value",
-                  "args": null,
                   "storageKey": null
                 },
                 {
-                  "kind": "ScalarField",
                   "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "name",
-                  "args": null,
                   "storageKey": null
                 },
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "count",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "count",
                   "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "FilterArtworksEdge",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "Artwork",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
                 (v0/*: any*/),
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "__typename",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
                   "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "cursor",
               "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "pageInfo",
-          "storageKey": null,
           "args": null,
           "concreteType": "PageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "endCursor",
               "args": null,
+              "kind": "ScalarField",
+              "name": "endCursor",
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "hasNextPage",
               "args": null,
+              "kind": "ScalarField",
+              "name": "hasNextPage",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "InfiniteScrollArtworksGrid_connection",
-          "args": null
+          "name": "InfiniteScrollArtworksGrid_connection"
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "Header_gene",
-      "args": null
+      "name": "Header_gene"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "About_gene",
-      "args": null
+      "name": "About_gene"
     }
-  ]
+  ],
+  "type": "Gene",
+  "abstractKey": null
 };
 })();
 (node as any).hash = 'b65180f716521310a86843895b5fceeb';

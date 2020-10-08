@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 803880a054c9c3f06b15aee11e8e4c6f */
+// @ts-nocheck
+/* @relayHash 6f7779c4698ec556295c193d58013649 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type RequestConditionReportInput = {
@@ -39,18 +40,14 @@ mutation RequestConditionReportMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "RequestConditionReportInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "requestConditionReport",
-    "storageKey": null,
     "args": [
       {
         "kind": "Variable",
@@ -59,51 +56,55 @@ v1 = [
       }
     ],
     "concreteType": "RequestConditionReportPayload",
+    "kind": "LinkedField",
+    "name": "requestConditionReport",
     "plural": false,
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "conditionReportRequest",
-        "storageKey": null,
         "args": null,
         "concreteType": "ConditionReportRequest",
+        "kind": "LinkedField",
+        "name": "conditionReportRequest",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "internalID",
             "args": null,
+            "kind": "ScalarField",
+            "name": "internalID",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "storageKey": null
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "RequestConditionReportMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "RequestConditionReportMutation",
+    "selections": (v1/*: any*/),
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "RequestConditionReportMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "RequestConditionReportMutation",
     "id": "6f7779c4698ec556295c193d58013649",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "RequestConditionReportMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

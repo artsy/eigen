@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -40,55 +41,50 @@ export type SaleArtworkTileRailCard_saleArtwork$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "SaleArtworkTileRailCard_saleArtwork",
-  "type": "SaleArtwork",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "SaleArtworkTileRailCard_saleArtwork",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "artwork",
-      "storageKey": null,
       "args": null,
       "concreteType": "Artwork",
+      "kind": "LinkedField",
+      "name": "artwork",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "artistNames",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "date",
-          "args": null,
           "storageKey": null
         },
         {
+          "alias": null,
+          "args": null,
           "kind": "ScalarField",
-          "alias": null,
           "name": "href",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "image",
-          "storageKey": null,
           "args": null,
           "concreteType": "Image",
+          "kind": "LinkedField",
+          "name": "image",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": "imageURL",
-              "name": "url",
               "args": [
                 {
                   "kind": "Literal",
@@ -96,123 +92,129 @@ const node: ReaderFragment = {
                   "value": "small"
                 }
               ],
+              "kind": "ScalarField",
+              "name": "url",
               "storageKey": "url(version:\"small\")"
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "aspectRatio",
               "args": null,
+              "kind": "ScalarField",
+              "name": "aspectRatio",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "internalID",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "slug",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "saleMessage",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "title",
-          "args": null,
           "storageKey": null
         }
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "counts",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "SaleArtworkCounts",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "bidderPositions",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "currentBid",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "SaleArtworkCurrentBid",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "display",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "lotLabel",
-      "args": null,
+      ],
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "sale",
-      "storageKey": null,
       "args": null,
-      "concreteType": "Sale",
+      "concreteType": "SaleArtworkCounts",
+      "kind": "LinkedField",
+      "name": "counts",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "isAuction",
           "args": null,
-          "storageKey": null
-        },
-        {
           "kind": "ScalarField",
-          "alias": null,
-          "name": "isClosed",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "displayTimelyAt",
-          "args": null,
+          "name": "bidderPositions",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "SaleArtworkCurrentBid",
+      "kind": "LinkedField",
+      "name": "currentBid",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "display",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "lotLabel",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Sale",
+      "kind": "LinkedField",
+      "name": "sale",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "isAuction",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "isClosed",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "displayTimelyAt",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "SaleArtwork",
+  "abstractKey": null
 };
 (node as any).hash = '75d7c8fa320e57fadfef721ee379b5b3';
 export default node;

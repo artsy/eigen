@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,57 +24,53 @@ export type Article_article$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "Article_article",
-  "type": "Article",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Article_article",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": "thumbnail_title",
-      "name": "thumbnailTitle",
       "args": null,
-      "storageKey": null
-    },
-    {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "href",
-      "args": null,
+      "name": "thumbnailTitle",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "author",
-      "storageKey": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "href",
+      "storageKey": null
+    },
+    {
+      "alias": null,
       "args": null,
       "concreteType": "Author",
+      "kind": "LinkedField",
+      "name": "author",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "name",
           "args": null,
+          "kind": "ScalarField",
+          "name": "name",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": "thumbnail_image",
-      "name": "thumbnailImage",
-      "storageKey": null,
       "args": null,
       "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "thumbnailImage",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "url",
           "args": [
             {
               "kind": "Literal",
@@ -81,11 +78,16 @@ const node: ReaderFragment = {
               "value": "large"
             }
           ],
+          "kind": "ScalarField",
+          "name": "url",
           "storageKey": "url(version:\"large\")"
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Article",
+  "abstractKey": null
 };
 (node as any).hash = '8f81ba8bc61dfd95e6f0931566199b1e';
 export default node;

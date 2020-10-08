@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -19,41 +20,42 @@ export type MyCollectionArtworkPriceEstimate_marketPriceInsights$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "MyCollectionArtworkPriceEstimate_marketPriceInsights",
-  "type": "MarketPriceInsights",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "MyCollectionArtworkPriceEstimate_marketPriceInsights",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "lowRangeCents",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "midRangeCents",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "highRangeCents",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "artsyQInventory",
       "args": null,
+      "kind": "ScalarField",
+      "name": "artsyQInventory",
       "storageKey": null
     }
-  ]
+  ],
+  "type": "MarketPriceInsights",
+  "abstractKey": null
 };
 (node as any).hash = 'c4741bd74a0ecbda63e9ed4d64c6524b';
 export default node;

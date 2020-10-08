@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9890f5d315db3b7dca00b32d8a5ed080 */
+// @ts-nocheck
+/* @relayHash 6b058c78a40a534099b28f58ab79db64 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -47,10 +48,9 @@ fragment FairExhibitors_fair on Fair {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "fairID",
-    "type": "String!",
-    "defaultValue": null
+    "name": "fairID"
   }
 ],
 v1 = [
@@ -61,129 +61,130 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "FairExhibitorsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "FairExhibitorsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "FairExhibitors_fair",
-            "args": null
+            "name": "FairExhibitors_fair"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "FairExhibitorsQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           (v2/*: any*/),
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "internalID",
             "args": null,
+            "kind": "ScalarField",
+            "name": "internalID",
             "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "exhibitorsGroupedByName",
-            "storageKey": null,
             "args": null,
             "concreteType": "FairExhibitorsGroup",
+            "kind": "LinkedField",
+            "name": "exhibitorsGroupedByName",
             "plural": true,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "letter",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "letter",
                 "storageKey": null
               },
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "exhibitors",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "FairExhibitor",
+                "kind": "LinkedField",
+                "name": "exhibitors",
                 "plural": true,
                 "selections": [
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "name",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "name",
                     "storageKey": null
                   },
                   (v2/*: any*/),
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "profileID",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "profileID",
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "partnerID",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "partnerID",
                     "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "id",
             "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "FairExhibitorsQuery",
     "id": "6b058c78a40a534099b28f58ab79db64",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "FairExhibitorsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

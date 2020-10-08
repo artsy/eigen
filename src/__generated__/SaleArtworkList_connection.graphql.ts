@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -21,47 +22,48 @@ export type SaleArtworkList_connection$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "SaleArtworkList_connection",
-  "type": "ArtworkConnectionInterface",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "SaleArtworkList_connection",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "edges",
-      "storageKey": null,
       "args": null,
       "concreteType": null,
+      "kind": "LinkedField",
+      "name": "edges",
       "plural": true,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "node",
-          "storageKey": null,
           "args": null,
           "concreteType": "Artwork",
+          "kind": "LinkedField",
+          "name": "node",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "id",
               "args": null,
+              "kind": "ScalarField",
+              "name": "id",
               "storageKey": null
             },
             {
+              "args": null,
               "kind": "FragmentSpread",
-              "name": "SaleArtworkListItem_artwork",
-              "args": null
+              "name": "SaleArtworkListItem_artwork"
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "ArtworkConnectionInterface",
+  "abstractKey": "__isArtworkConnectionInterface"
 };
 (node as any).hash = '1241118cd48310d2d7972bee44ff089a';
 export default node;

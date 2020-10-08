@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 4055a83e4d021800440d99c7ddb6cd93 */
+// @ts-nocheck
+/* @relayHash 2a9481ee99ef977b10d9916f3943a168 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type TimeOffsetProviderQueryVariables = {};
@@ -31,57 +32,58 @@ query TimeOffsetProviderQuery {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "system",
-    "storageKey": null,
     "args": null,
     "concreteType": "System",
+    "kind": "LinkedField",
+    "name": "system",
     "plural": false,
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "time",
-        "storageKey": null,
         "args": null,
         "concreteType": "SystemTime",
+        "kind": "LinkedField",
+        "name": "time",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "unix",
             "args": null,
+            "kind": "ScalarField",
+            "name": "unix",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "storageKey": null
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "TimeOffsetProviderQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
-    "selections": (v0/*: any*/)
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "TimeOffsetProviderQuery",
+    "selections": (v0/*: any*/),
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "TimeOffsetProviderQuery",
-    "argumentDefinitions": [],
     "selections": (v0/*: any*/)
   },
   "params": {
-    "operationKind": "query",
-    "name": "TimeOffsetProviderQuery",
     "id": "2a9481ee99ef977b10d9916f3943a168",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "TimeOffsetProviderQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

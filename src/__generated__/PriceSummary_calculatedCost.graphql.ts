@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,41 +24,42 @@ export type PriceSummary_calculatedCost$key = {
 const node: ReaderFragment = (function(){
 var v0 = [
   {
-    "kind": "ScalarField",
     "alias": null,
-    "name": "display",
     "args": null,
+    "kind": "ScalarField",
+    "name": "display",
     "storageKey": null
   }
 ];
 return {
-  "kind": "Fragment",
-  "name": "PriceSummary_calculatedCost",
-  "type": "CalculatedCost",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "PriceSummary_calculatedCost",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "buyersPremium",
-      "storageKey": null,
       "args": null,
       "concreteType": "Money",
+      "kind": "LinkedField",
+      "name": "buyersPremium",
       "plural": false,
-      "selections": (v0/*: any*/)
+      "selections": (v0/*: any*/),
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "subtotal",
-      "storageKey": null,
       "args": null,
       "concreteType": "Money",
+      "kind": "LinkedField",
+      "name": "subtotal",
       "plural": false,
-      "selections": (v0/*: any*/)
+      "selections": (v0/*: any*/),
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "CalculatedCost",
+  "abstractKey": null
 };
 })();
 (node as any).hash = '9c7744edb1c8e9493c18b47100faee78';
