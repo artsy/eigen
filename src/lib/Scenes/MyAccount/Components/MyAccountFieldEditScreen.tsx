@@ -20,11 +20,16 @@ export const MyAccountFieldEditScreen = React.forwardRef<
   }>
 >(({ children, canSave, onSave, title, contentContainerStyle }, ref) => {
   const [isSaving, setIsSaving] = useState<boolean>(false)
+  const [behindTheModalDismiss, setBehindTheModalDismiss] = useState(false)
   const scrollViewRef = useRef<ScrollView>(null)
   const screen = useScreenDimensions()
 
   const onDismiss = () => {
     SwitchBoard.dismissNavigationViewController(scrollViewRef.current!)
+  }
+
+  const doTheDismiss = () => {
+    setBehindTheModalDismiss(true)
   }
 
   const handleSave = async () => {
@@ -33,7 +38,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
     }
     try {
       setIsSaving(true)
-      await onSave(onDismiss)
+      await onSave(doTheDismiss)
     } catch (e) {
       console.error(e)
     } finally {
@@ -81,7 +86,14 @@ export const MyAccountFieldEditScreen = React.forwardRef<
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
         >
-          <LoadingModal isVisible={isSaving} />
+          <LoadingModal
+            isVisible={isSaving}
+            onDismiss={() => {
+              if (behindTheModalDismiss) {
+                onDismiss()
+              }
+            }}
+          />
           {children}
         </ScrollView>
       </PageWithSimpleHeader>
