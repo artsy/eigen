@@ -1,4 +1,4 @@
-import { SaleLotsList_me } from "__generated__/SaleLotsList_me.graphql"
+import { SaleLotsList_saleArtworksConnection } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PAGE_SIZE } from "lib/data/constants"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
@@ -9,12 +9,14 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 import { SaleArtworkListContainer } from "./SaleArtworkList"
 
 interface Props {
-  saleID: string
-  me: SaleLotsList_me
+  saleArtworksConnection: SaleLotsList_saleArtworksConnection
   relay: RelayPaginationProp
 }
 
-export const SaleLotsList: React.FC<Props> = ({ me, relay, saleID }) => {
+export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay }) => {
+  console.log("==============")
+  console.log({ saleArtworksConnection })
+
   const { state, dispatch } = useContext(ArtworkFilterContext)
   const filterParams = filterArtworksParams(state.appliedFilters)
   const showList = state.appliedFilters.find((filter) => filter.paramValue === ViewAsValues.List)
@@ -54,11 +56,12 @@ export const SaleLotsList: React.FC<Props> = ({ me, relay, saleID }) => {
 
   return (
     <Flex flex={1} my={4}>
+      {/* TODO: NO LOTS */}
       <FiltersResume />
 
       {showList ? (
         <SaleArtworkListContainer
-          connection={me.lotsByFollowedArtistsConnection!}
+          connection={saleArtworksConnection.saleArtworksConnection!}
           hasMore={relay.hasMore}
           loadMore={relay.loadMore}
           isLoading={relay.isLoading}
@@ -66,7 +69,7 @@ export const SaleLotsList: React.FC<Props> = ({ me, relay, saleID }) => {
       ) : (
         <Flex px={2}>
           <InfiniteScrollArtworksGridContainer
-            connection={me.lotsByFollowedArtistsConnection!}
+            connection={saleArtworksConnection.saleArtworksConnection!}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
             showLotLabel
@@ -82,24 +85,16 @@ export const SaleLotsList: React.FC<Props> = ({ me, relay, saleID }) => {
 export const SaleLotsListContainer = createPaginationContainer(
   SaleLotsList,
   {
-    me: graphql`
-      fragment SaleLotsList_me on Me
-      @argumentDefinitions(
-        count: { type: "Int", defaultValue: 10 }
-        cursor: { type: "String" }
-        saleID: { type: "ID" }
-      ) {
-        lotsByFollowedArtistsConnection(
-          first: $count
-          after: $cursor
-          liveSale: true
-          isAuction: true
-          includeArtworksByFollowedArtists: false
-          saleID: $saleID
-        ) @connection(key: "SaleLotsList_lotsByFollowedArtistsConnection") {
+    saleArtworksConnection: graphql`
+      fragment SaleLotsList_saleArtworksConnection on Query
+      @argumentDefinitions(count: { type: "Int!", defaultValue: 10 }, cursor: { type: "String" }) {
+        saleArtworksConnection(first: $count, after: $cursor) @connection(key: "SaleLotsList_saleArtworksConnection") {
           edges {
-            cursor
+            node {
+              id
+            }
           }
+          totalCount
           ...SaleArtworkList_connection
           ...InfiniteScrollArtworksGrid_connection
         }
@@ -107,17 +102,19 @@ export const SaleLotsListContainer = createPaginationContainer(
     `,
   },
   {
-    getConnectionFromProps: ({ me }) => me && me.lotsByFollowedArtistsConnection,
-    getVariables: (props, { count, cursor }) => ({
-      count,
-      cursor,
-      saleID: props.saleID,
-    }),
+    getConnectionFromProps(props) {
+      return props.saleArtworksConnection.saleArtworksConnection
+    },
+    getVariables(_props, { count, cursor }, fragmentVariables) {
+      return {
+        ...fragmentVariables,
+        cursor,
+        count,
+      }
+    },
     query: graphql`
-      query SaleLotsListQuery($count: Int!, $cursor: String, $saleID: ID) {
-        me {
-          ...SaleLotsList_me @arguments(count: $count, cursor: $cursor, saleID: $saleID)
-        }
+      query SaleLotsListQuery($count: Int!, $cursor: String) @raw_response_type {
+        ...SaleLotsList_saleArtworksConnection @arguments(count: $count, cursor: $cursor)
       }
     `,
   }

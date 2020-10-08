@@ -1,28 +1,23 @@
-import { Sale_me } from "__generated__/Sale_me.graphql"
-import { Sale_sale } from "__generated__/Sale_sale.graphql"
-import { Sale_saleArtworksConnection } from "__generated__/Sale_saleArtworksConnection.graphql"
-import { SaleQueryRendererQuery } from "__generated__/SaleQueryRendererQuery.graphql"
+import { captureMessage } from "@sentry/react-native"
+import { SaleQueryRendererQuery, SaleQueryRendererQueryResponse } from "__generated__/SaleQueryRendererQuery.graphql"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
+import LoadFailureView from "lib/Components/LoadFailureView"
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Schema } from "lib/utils/track"
 import { Flex } from "palette"
 import React, { useRef, useState } from "react"
 import { Animated } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RegisterToBidButton } from "./Components/RegisterToBidButton"
 import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
 import { SaleHeaderContainer as SaleHeader } from "./Components/SaleHeader"
-// import { SaleLotsListContainer } from "./Components/SaleLotsList"
-import { SaleLotsList2Container } from "./Components/SaleLotsList2"
+import { SaleLotsListContainer } from "./Components/SaleLotsList"
 
 interface Props {
-  sale: Sale_sale
-  me: Sale_me
-  saleArtworksConnection: Sale_saleArtworksConnection
+  queryRes: SaleQueryRendererQueryResponse
 }
 
 interface SaleSection {
@@ -43,9 +38,10 @@ interface ViewToken {
   section?: any
 }
 
-const Sale: React.FC<Props> = (props) => {
+const Sale: React.FC<Props> = ({ queryRes }) => {
   console.log("----")
-  console.log(props)
+  console.log(queryRes)
+  const { sale, me, saleArtworksConnection } = queryRes
   const tracking = useTracking()
 
   const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
@@ -65,8 +61,8 @@ const Sale: React.FC<Props> = (props) => {
       action_name: "filter",
       context_screen_owner_type: Schema.OwnerEntityTypes.Auction,
       context_screen: Schema.PageNames.Auction,
-      context_screen_owner_id: props.sale.internalID,
-      context_screen_owner_slug: props.sale.slug,
+      context_screen_owner_id: sale.internalID,
+      context_screen_owner_slug: sale.slug,
       action_type: Schema.ActionTypes.Tap,
     })
     setFilterArtworkModalVisible(true)
@@ -77,8 +73,8 @@ const Sale: React.FC<Props> = (props) => {
       action_name: "closeFilterWindow",
       context_screen_owner_type: Schema.OwnerEntityTypes.Auction,
       context_screen: Schema.PageNames.Auction,
-      context_screen_owner_id: props.sale.internalID,
-      context_screen_owner_slug: props.sale.slug,
+      context_screen_owner_id: sale.internalID,
+      context_screen_owner_slug: sale.slug,
       action_type: Schema.ActionTypes.Tap,
     })
     setFilterArtworkModalVisible(false)
@@ -87,28 +83,28 @@ const Sale: React.FC<Props> = (props) => {
   const saleSectionsData: SaleSection[] = [
     {
       key: "header",
-      content: <SaleHeader sale={props.sale} scrollAnim={scrollAnim} />,
+      content: <SaleHeader sale={sale} scrollAnim={scrollAnim} />,
     },
     {
       key: "registerToBid",
       content: (
         <Flex mx="2" mt={2}>
-          <RegisterToBidButton sale={props.sale} />
+          <RegisterToBidButton sale={sale} />
         </Flex>
       ),
     },
     {
       key: "saleArtworksRail",
-      content: <SaleArtworksRailContainer me={props.me} />,
+      content: <SaleArtworksRailContainer me={me} />,
+    },
+    {
+      key: "saleLotsList",
+      content: <SaleLotsListContainer saleArtworksConnection={queryRes} />,
     },
     // {
-    //   key: "saleLotsList",
-    //   content: <SaleLotsListContainer me={props.me} saleID={props.sale.internalID} />,
+    //   key: "saleLotsList2",
+    //   content: <SaleLotsList2Container saleArtworksConnection={saleArtworksConnection} />,
     // },
-    {
-      key: "saleLotsList2",
-      content: <SaleLotsList2Container saleArtworksConnection={props.saleArtworksConnection} />,
-    },
   ]
 
   return (
@@ -139,8 +135,8 @@ const Sale: React.FC<Props> = (props) => {
             />
             <FilterModalNavigator
               isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-              id={props.sale.internalID}
-              slug={props.sale.slug}
+              id={sale.internalID}
+              slug={sale.slug}
               mode={FilterModalMode.SaleArtworks}
               exitModal={closeFilterArtworksModal}
               closeModal={closeFilterArtworksModal}
@@ -157,53 +153,46 @@ const Sale: React.FC<Props> = (props) => {
   )
 }
 
-export const SaleContainer = createFragmentContainer(Sale, {
-  sale: graphql`
-    fragment Sale_sale on Sale {
-      internalID
-      slug
-      ...SaleHeader_sale
-      ...RegisterToBidButton_sale
-    }
-  `,
-  me: graphql`
-    fragment Sale_me on Me {
-      ...SaleArtworksRail_me
-      ...SaleLotsList_me
-    }
-  `,
-  saleArtworksConnection: graphql`
-    fragment Sale_saleArtworksConnection on Query
-    @argumentDefinitions(count: { type: "Int!" }, cursor: { type: "String" }) {
-      ...SaleLotsList2_saleArtworksConnection @arguments(count: $count)
-    }
-  `,
-})
-
-const Placeholder = () => <Spinner style={{ flex: 1 }} />
-
 export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
   return (
     <QueryRenderer<SaleQueryRendererQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query SaleQueryRendererQuery($saleID: String!, $count: Int!) {
+        query SaleQueryRendererQuery($saleID: String!) {
           sale(id: $saleID) {
-            ...Sale_sale
+            internalID
+            slug
+            ...SaleHeader_sale
+            ...RegisterToBidButton_sale
           }
           me {
-            ...Sale_me
+            ...SaleArtworksRail_me
           }
 
-          # saleArtworksConnection {
-          # ...Sale_saleArtworksConnection @arguments(count: $count)
-          # saleArtworksConnection
-          ...SaleLotsList2_saleArtworksConnection @arguments(count: $count)
-          # }
+          ...SaleLotsList_saleArtworksConnection
         }
       `}
-      variables={{ saleID, count: 10 }}
-      render={renderWithPlaceholder({ Container: SaleContainer, renderPlaceholder: Placeholder })}
+      variables={{ saleID }}
+      render={({ props, error }) => {
+        if (error) {
+          if (__DEV__) {
+            console.error(error)
+          } else {
+            captureMessage(error.stack!)
+          }
+          return <LoadFailureView style={{ flex: 1 }} />
+        }
+        if (!props?.me || !props?.sale) {
+          return (
+            <Flex alignItems="center" justifyContent="center" flex={1}>
+              <Spinner />
+            </Flex>
+          )
+        }
+        return <Sale queryRes={props} />
+      }}
+
+      // render={renderWithPlaceholder({ Container: SaleContainer, renderPlaceholder: Placeholder })}
     />
   )
 }
