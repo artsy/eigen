@@ -10,12 +10,14 @@ interface Props {
 
 export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
   const [predictions, setPredictions] = useState<GMapsLocation[]>([])
+  const [query, setQuery] = useState("")
 
   const inputChange = async (str: string): Promise<void> => {
     if (str.length < 3) {
       setPredictions([])
     } else {
       const googlePredictions = await queryLocation(str)
+      setQuery(str)
       setPredictions(googlePredictions)
       onChange(str)
     }
@@ -25,7 +27,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
     <>
       <Text>Location</Text>
       <Input placeholder="Add Location" style={{ marginVertical: 10 }} onChangeText={inputChange} />
-      <LocationPredictions predictions={predictions} />
+      <LocationPredictions predictions={predictions} query={query} />
       <Text color="black60">
         Sharing your location with galleries helps them provide fast and accurate shipping quotes. You can always edit
         this information later in your Collector Profile.
@@ -34,10 +36,26 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
   )
 }
 
-const LocationPredictions = ({ predictions }: { predictions: GMapsLocation[] }) => {
+const LocationPredictions = ({ predictions, query }: { predictions: GMapsLocation[]; query?: string }) => {
+  const highlightedQuery = (entry: string) => {
+    const re = new RegExp(`(${query?.replace(" ", "|")})`, "gi")
+    const brokenEntry = entry.split(re)
+    if (!query || brokenEntry.length === 1) {
+      return entry
+    }
+    const formatted = brokenEntry.map((x) => {
+      if (re.test(x)) {
+        return <Text fontWeight="bold">{x}</Text>
+      }
+      return x
+    })
+    return formatted
+  }
+
   if (predictions.length === 0) {
     return null
   }
+
   return (
     <Dropdown>
       {predictions.map((p) => (
@@ -50,7 +68,7 @@ const LocationPredictions = ({ predictions }: { predictions: GMapsLocation[] }) 
         >
           <Flex flexDirection="row">
             <LocationIcon mr={1} />
-            <Text>{p.name}</Text>
+            <Text>{highlightedQuery(p.name)}</Text>
           </Flex>
         </Touchable>
       ))}
