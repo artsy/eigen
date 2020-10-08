@@ -16,6 +16,11 @@ export const ArtworkFixture = {
   isInquireable: false,
   isInAuction: false,
   isBuyNowable: false,
+  inquiryQuestions: [
+    { question: "Price & Availability" },
+    { question: "Shipping" },
+    { question: "Condition & Provenance" },
+  ],
   editionSets: [],
   saleMessage: null,
   sale: null,
