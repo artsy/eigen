@@ -76,7 +76,7 @@ describe("FairExhibitors", () => {
       context_screen_owner_type: "fair",
       context_screen_owner_id: "xyz123",
       context_screen_owner_slug: "xxx",
-      subject: "showMore",
+      subject: "Show More",
     })
   })
 })
