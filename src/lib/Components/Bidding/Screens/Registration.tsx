@@ -253,6 +253,11 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             bidder {
               internalID
               qualified_for_bidding: qualifiedForBidding
+              sale {
+                registrationStatus {
+                  qualifiedForBidding
+                }
+              }
             }
           }
         }
