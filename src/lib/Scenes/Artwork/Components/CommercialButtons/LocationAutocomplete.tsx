@@ -2,16 +2,18 @@ import { Input } from "lib/Components/Input/Input"
 import { GMapsLocation, queryLocation } from "lib/utils/googleMaps"
 import { color, Flex, LocationIcon, Text, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
+import { View } from "react-native"
 import styled from "styled-components/native"
 
 interface Props {
   onChange: any
+  initialLocation: string
 }
 
-export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
+export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocation }) => {
   const [predictions, setPredictions] = useState<GMapsLocation[]>([])
-  const [query, setQuery] = useState("")
-  const [selectedLocation, setSelectedLocation] = useState("")
+  const [selectedLocation, setSelectedLocation] = useState(Boolean(initialLocation) ? initialLocation : "")
+  const [query, setQuery] = useState(selectedLocation)
 
   // Autofocus
   const input = useRef<Input>(null)
@@ -25,10 +27,14 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
   }, [selectedLocation])
 
   useEffect(() => {
-    if (query.length < 3) {
+    if (query !== selectedLocation) {
+      setSelectedLocation("")
+    }
+
+    if (query.length < 3 || selectedLocation === query) {
       setPredictions([])
     } else {
-      ;(async function getPredictions() {
+      ;(async () => {
         const googlePredictions = await queryLocation(query)
         setPredictions(googlePredictions)
       })()
@@ -36,22 +42,26 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
   }, [query])
 
   const reset = () => {
-    setQuery(selectedLocation)
-    setSelectedLocation("")
+    if (Boolean(selectedLocation)) {
+      setQuery(selectedLocation)
+    }
   }
 
   return (
     <>
       <Text>Location</Text>
+
       <Input
         ref={input}
         placeholder="Add Location"
         style={{ marginVertical: 10 }}
         onChangeText={setQuery}
         onFocus={reset}
-        value={selectedLocation || query}
+        // onBlur={()=>set}
+        value={Boolean(selectedLocation) ? selectedLocation : query}
       />
       <LocationPredictions predictions={predictions} query={query} onSelect={setSelectedLocation} />
+
       <Text color="black60">
         Sharing your location with galleries helps them provide fast and accurate shipping quotes. You can always edit
         this information later in your Collector Profile.

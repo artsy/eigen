@@ -93,6 +93,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
         modalIsVisible={shippingModalVisibility}
         setLocation={selectShippingLocation}
+        location={state.shippingLocation as string}
       />
     </FancyModal>
   )
