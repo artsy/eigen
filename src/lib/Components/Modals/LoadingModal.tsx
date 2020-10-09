@@ -1,3 +1,4 @@
+import { action, Action } from "easy-peasy"
 import { Flex } from "palette"
 import React, { useContext, useState } from "react"
 import { ActivityIndicator } from "react-native"
@@ -39,4 +40,26 @@ export const LoadingBlockProvider: React.FC = ({ children }) => {
 export const useLoadingBlock = () => {
   const { setLoadingBlock } = useContext(LoadingBlockContext)
   return setLoadingBlock
+}
+
+export interface LoadingBlockingViewModel {
+  sessionState: {
+    isShowing: boolean
+  }
+
+  show: Action<LoadingBlockingViewModel, boolean>
+  hide: Action<LoadingBlockingViewModel, boolean>
+}
+
+export const LoadingBlockingViewModel: LoadingBlockingViewModel = {
+  sessionState: {
+    isShowing: false,
+  },
+
+  show: action((state) => {
+    state.sessionState.isShowing = true
+  }),
+  hide: action((state) => {
+    state.sessionState.isShowing = false
+  }),
 }
