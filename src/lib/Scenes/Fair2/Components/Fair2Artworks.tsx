@@ -2,6 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { Fair2Artworks_fair } from "__generated__/Fair2Artworks_fair.graphql"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { FAIR2_ARTWORKS_PAGE_SIZE } from "lib/data/constants"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
   aggregationsType,
@@ -18,8 +19,6 @@ interface Fair2ArtworksProps {
   fair: Fair2Artworks_fair
   relay: RelayPaginationProp
 }
-
-const PAGE_SIZE = 20
 
 export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay }) => {
   const artworks = fair.fairArtworks!
@@ -41,7 +40,7 @@ export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay }) => 
   useEffect(() => {
     if (state.applyFilters) {
       relay.refetchConnection(
-        PAGE_SIZE,
+        FAIR2_ARTWORKS_PAGE_SIZE,
         (error) => {
           if (error) {
             throw new Error("Fair/FairArtworks filter error: " + error.message)
@@ -78,7 +77,7 @@ export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay }) => 
         loadMore={relay.loadMore}
         hasMore={relay.hasMore}
         autoFetch={false}
-        pageSize={20}
+        pageSize={FAIR2_ARTWORKS_PAGE_SIZE}
         contextScreenOwnerType={OwnerType.fair}
         contextScreenOwnerId={fair.internalID}
         contextScreenOwnerSlug={fair.slug}
@@ -93,7 +92,7 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
     fair: graphql`
       fragment Fair2Artworks_fair on Fair
       @argumentDefinitions(
-        count: { type: "Int", defaultValue: 20 }
+        count: { type: "Int", defaultValue: 30 }
         cursor: { type: "String" }
         sort: { type: "String", defaultValue: "-decayed_merch" }
         medium: { type: "String", defaultValue: "*" }
@@ -111,7 +110,7 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
         slug
         internalID
         fairArtworks: filterArtworksConnection(
-          first: 20
+          first: 30
           after: $cursor
           sort: $sort
           medium: $medium
