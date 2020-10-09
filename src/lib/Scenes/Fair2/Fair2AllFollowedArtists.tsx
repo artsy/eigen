@@ -3,10 +3,12 @@ import { Fair2AllFollowedArtistsQuery } from "__generated__/Fair2AllFollowedArti
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Box, Separator, Spacer, Text, Theme } from "palette"
-import React, { useContext, useEffect, useState } from "react"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { Box, Flex, Separator, Spacer, Text, Theme } from "palette"
+import React, { useState } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { Fair2ArtworksFragmentContainer } from "./Components/Fair2Artworks"
@@ -98,7 +100,20 @@ export const Fair2AllFollowedArtistsQueryRenderer: React.FC<{ fairID: string }> 
         }
       `}
       variables={{ fairID }}
-      render={renderWithLoadProgress(Fair2AllFollowedArtistsFragmentContainer)}
+      render={renderWithPlaceholder({
+        Container: Fair2AllFollowedArtistsFragmentContainer,
+        renderPlaceholder: () => <Fair2AllFollowedArtistsPlaceholder />,
+      })}
     />
   )
 }
+
+export const Fair2AllFollowedArtistsPlaceholder: React.FC = () => (
+  <Flex>
+    <Spacer mb={2} />
+    <PlaceholderText width={220} />
+    <Separator my={2} />
+    {/* masonry grid */}
+    <PlaceholderGrid />
+  </Flex>
+)
