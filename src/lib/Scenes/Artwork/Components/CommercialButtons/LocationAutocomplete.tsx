@@ -11,6 +11,7 @@ interface Props {
 export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
   const [predictions, setPredictions] = useState<GMapsLocation[]>([])
   const [query, setQuery] = useState("")
+  const [selectedLocation, setSelectedLocation] = useState("")
 
   // Autofocus
   const input = useRef<Input>(null)
@@ -18,22 +19,39 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
     input.current?.focus()
   }, [input])
 
-  const inputChange = async (str: string): Promise<void> => {
-    if (str.length < 3) {
+  useEffect(() => {
+    setPredictions([])
+    onChange(selectedLocation)
+  }, [selectedLocation])
+
+  useEffect(() => {
+    if (query.length < 3) {
       setPredictions([])
     } else {
-      const googlePredictions = await queryLocation(str)
-      setQuery(str)
-      setPredictions(googlePredictions)
-      onChange(str)
+      ;(async function getPredictions() {
+        const googlePredictions = await queryLocation(query)
+        setPredictions(googlePredictions)
+      })()
     }
+  }, [query])
+
+  const reset = () => {
+    setQuery(selectedLocation)
+    setSelectedLocation("")
   }
 
   return (
     <>
       <Text>Location</Text>
-      <Input ref={input} placeholder="Add Location" style={{ marginVertical: 10 }} onChangeText={inputChange} />
-      <LocationPredictions predictions={predictions} query={query} />
+      <Input
+        ref={input}
+        placeholder="Add Location"
+        style={{ marginVertical: 10 }}
+        onChangeText={setQuery}
+        onFocus={reset}
+        value={selectedLocation || query}
+      />
+      <LocationPredictions predictions={predictions} query={query} onSelect={setSelectedLocation} />
       <Text color="black60">
         Sharing your location with galleries helps them provide fast and accurate shipping quotes. You can always edit
         this information later in your Collector Profile.
@@ -42,7 +60,15 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
   )
 }
 
-const LocationPredictions = ({ predictions, query }: { predictions: GMapsLocation[]; query?: string }) => {
+const LocationPredictions = ({
+  predictions,
+  query,
+  onSelect,
+}: {
+  predictions: GMapsLocation[]
+  query?: string
+  onSelect: (l: string) => void
+}) => {
   const highlightedQuery = (entry: string) => {
     const re = new RegExp(`(${query?.replace(" ", "|")})`, "gi")
     const brokenEntry = entry.split(re)
@@ -68,7 +94,7 @@ const LocationPredictions = ({ predictions, query }: { predictions: GMapsLocatio
         <Touchable
           key={p.id}
           onPress={() => {
-            console.warn(`selected ${p.name}...`)
+            onSelect(p.name)
           }}
           style={{ padding: 10 }}
         >

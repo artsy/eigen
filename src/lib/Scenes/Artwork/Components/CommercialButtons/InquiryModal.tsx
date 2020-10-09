@@ -36,7 +36,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
     setExpanded(!isExpanded)
   }
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
-  const selectShippingLocation = (l: any) => dispatch({ type: "selectShippingLocation", payload: l })
+  const selectShippingLocation = (l: string) => dispatch({ type: "selectShippingLocation", payload: l })
 
   const renderInquiryQuestion = (inquiry: string): JSX.Element => {
     return (

@@ -18,11 +18,20 @@ interface ShippingModalProps {
 export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
   const { toggleVisibility, modalIsVisible, setLocation } = props
 
-  const [ locationInput, setLocationInput ] = useState("")
+  const [locationInput, setLocationInput] = useState("")
 
   return (
     <FancyModal visible={modalIsVisible} onBackgroundPressed={() => toggleVisibility()}>
-      <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => toggleVisibility()} rightButtonText="Apply" onRightButtonPress={() => { console.log("triggered") }} rightButtonDisabled={!locationInput}>
+      <FancyModalHeader
+        leftButtonText="Cancel"
+        onLeftButtonPress={() => toggleVisibility()}
+        rightButtonText="Apply"
+        onRightButtonPress={() => {
+          setLocation(locationInput)
+          toggleVisibility()
+        }}
+        rightButtonDisabled={!locationInput}
+      >
         Add Location
       </FancyModalHeader>
       <Flex m={2}>
