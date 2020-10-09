@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0072095cb9356caab3b2e313fc8af32a */
+// @ts-nocheck
+/* @relayHash 10474bb4dd0289a459d14d24c9336d6a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -61,93 +62,83 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 },
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 },
 v3 = {
-  "type": "ID",
   "enumValues": null,
+  "nullable": false,
   "plural": false,
-  "nullable": true
+  "type": "ID"
 },
 v4 = {
-  "type": "ID",
   "enumValues": null,
+  "nullable": true,
   "plural": false,
-  "nullable": false
-},
-v5 = {
-  "type": "String",
-  "enumValues": null,
-  "plural": false,
-  "nullable": true
+  "type": "String"
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "MyCollectionArtworkArtistArticlesTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "MyCollectionArtworkArtistArticlesTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artwork",
-        "storageKey": "artwork(id:\"some-slug\")",
         "args": (v0/*: any*/),
         "concreteType": "Artwork",
+        "kind": "LinkedField",
+        "name": "artwork",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "MyCollectionArtworkArtistArticles_artwork",
-            "args": null
+            "name": "MyCollectionArtworkArtistArticles_artwork"
           }
-        ]
+        ],
+        "storageKey": "artwork(id:\"some-slug\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "MyCollectionArtworkArtistArticlesTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artwork",
-        "storageKey": "artwork(id:\"some-slug\")",
         "args": (v0/*: any*/),
         "concreteType": "Artwork",
+        "kind": "LinkedField",
+        "name": "artwork",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "artist",
-            "storageKey": null,
             "args": null,
             "concreteType": "Artist",
+            "kind": "LinkedField",
+            "name": "artist",
             "plural": false,
             "selections": [
               (v1/*: any*/),
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "articlesConnection",
-                "storageKey": "articlesConnection(first:3,inEditorialFeed:true,sort:\"PUBLISHED_AT_DESC\")",
                 "args": [
                   {
                     "kind": "Literal",
@@ -166,71 +157,69 @@ return {
                   }
                 ],
                 "concreteType": "ArticleConnection",
+                "kind": "LinkedField",
+                "name": "articlesConnection",
                 "plural": false,
                 "selections": [
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "edges",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "ArticleEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
                     "plural": true,
                     "selections": [
                       {
-                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "node",
-                        "storageKey": null,
                         "args": null,
                         "concreteType": "Article",
+                        "kind": "LinkedField",
+                        "name": "node",
                         "plural": false,
                         "selections": [
                           (v1/*: any*/),
                           {
-                            "kind": "ScalarField",
                             "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "internalID",
-                            "args": null,
                             "storageKey": null
                           },
                           {
-                            "kind": "ScalarField",
                             "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "href",
-                            "args": null,
                             "storageKey": null
                           },
                           {
+                            "alias": null,
+                            "args": null,
                             "kind": "ScalarField",
-                            "alias": null,
                             "name": "thumbnailTitle",
-                            "args": null,
                             "storageKey": null
                           },
                           {
-                            "kind": "LinkedField",
                             "alias": null,
-                            "name": "author",
-                            "storageKey": null,
                             "args": null,
                             "concreteType": "Author",
+                            "kind": "LinkedField",
+                            "name": "author",
                             "plural": false,
                             "selections": [
                               {
-                                "kind": "ScalarField",
                                 "alias": null,
-                                "name": "name",
                                 "args": null,
+                                "kind": "ScalarField",
+                                "name": "name",
                                 "storageKey": null
                               },
                               (v2/*: any*/)
-                            ]
+                            ],
+                            "storageKey": null
                           },
                           {
-                            "kind": "ScalarField",
                             "alias": null,
-                            "name": "publishedAt",
                             "args": [
                               {
                                 "kind": "Literal",
@@ -238,104 +227,111 @@ return {
                                 "value": "MMM Do, YYYY"
                               }
                             ],
+                            "kind": "ScalarField",
+                            "name": "publishedAt",
                             "storageKey": "publishedAt(format:\"MMM Do, YYYY\")"
                           },
                           {
-                            "kind": "LinkedField",
                             "alias": null,
-                            "name": "thumbnailImage",
-                            "storageKey": null,
                             "args": null,
                             "concreteType": "Image",
+                            "kind": "LinkedField",
+                            "name": "thumbnailImage",
                             "plural": false,
                             "selections": [
                               {
-                                "kind": "ScalarField",
                                 "alias": null,
-                                "name": "url",
                                 "args": null,
+                                "kind": "ScalarField",
+                                "name": "url",
                                 "storageKey": null
                               }
-                            ]
+                            ],
+                            "storageKey": null
                           },
                           (v2/*: any*/)
-                        ]
+                        ],
+                        "storageKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": "articlesConnection(first:3,inEditorialFeed:true,sort:\"PUBLISHED_AT_DESC\")"
               },
               (v2/*: any*/)
-            ]
+            ],
+            "storageKey": null
           },
           (v2/*: any*/)
-        ]
+        ],
+        "storageKey": "artwork(id:\"some-slug\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "MyCollectionArtworkArtistArticlesTestsQuery",
     "id": "10474bb4dd0289a459d14d24c9336d6a",
-    "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
-          "type": "Artwork",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Artwork"
         },
-        "artwork.id": (v3/*: any*/),
         "artwork.artist": {
-          "type": "Artist",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Artist"
         },
-        "artwork.artist.slug": (v4/*: any*/),
         "artwork.artist.articlesConnection": {
-          "type": "ArticleConnection",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "ArticleConnection"
         },
-        "artwork.artist.id": (v3/*: any*/),
         "artwork.artist.articlesConnection.edges": {
-          "type": "ArticleEdge",
           "enumValues": null,
+          "nullable": true,
           "plural": true,
-          "nullable": true
+          "type": "ArticleEdge"
         },
         "artwork.artist.articlesConnection.edges.node": {
-          "type": "Article",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Article"
         },
-        "artwork.artist.articlesConnection.edges.node.slug": (v5/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.internalID": (v4/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.href": (v5/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.thumbnailTitle": (v5/*: any*/),
         "artwork.artist.articlesConnection.edges.node.author": {
-          "type": "Author",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Author"
         },
-        "artwork.artist.articlesConnection.edges.node.publishedAt": (v5/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.thumbnailImage": {
-          "type": "Image",
-          "enumValues": null,
-          "plural": false,
-          "nullable": true
-        },
-        "artwork.artist.articlesConnection.edges.node.id": (v3/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.author.name": (v5/*: any*/),
         "artwork.artist.articlesConnection.edges.node.author.id": (v3/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.thumbnailImage.url": (v5/*: any*/)
+        "artwork.artist.articlesConnection.edges.node.author.name": (v4/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.href": (v4/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.id": (v3/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.internalID": (v3/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.publishedAt": (v4/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.slug": (v4/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.thumbnailImage": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Image"
+        },
+        "artwork.artist.articlesConnection.edges.node.thumbnailImage.url": (v4/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.thumbnailTitle": (v4/*: any*/),
+        "artwork.artist.id": (v3/*: any*/),
+        "artwork.artist.slug": (v3/*: any*/),
+        "artwork.id": (v3/*: any*/)
       }
-    }
+    },
+    "name": "MyCollectionArtworkArtistArticlesTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

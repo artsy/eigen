@@ -23,7 +23,7 @@ interface State {
   isExpanded: boolean
 }
 
-const basicRules = defaultRules(true)
+const basicRules = defaultRules({ modal: true })
 const markdownRules = {
   ...basicRules,
   paragraph: {

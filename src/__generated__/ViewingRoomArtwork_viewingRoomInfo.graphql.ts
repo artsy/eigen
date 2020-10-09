@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,102 +30,103 @@ export type ViewingRoomArtwork_viewingRoomInfo$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "ViewingRoomArtwork_viewingRoomInfo",
-  "type": "ViewingRoom",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ViewingRoomArtwork_viewingRoomInfo",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "title",
       "args": null,
+      "kind": "ScalarField",
+      "name": "title",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "partner",
-      "storageKey": null,
       "args": null,
       "concreteType": "Partner",
+      "kind": "LinkedField",
+      "name": "partner",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "name",
           "args": null,
+          "kind": "ScalarField",
+          "name": "name",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": "heroImage",
-      "name": "image",
-      "storageKey": null,
       "args": null,
       "concreteType": "ARImage",
+      "kind": "LinkedField",
+      "name": "image",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "imageURLs",
-          "storageKey": null,
           "args": null,
           "concreteType": "ImageURLs",
+          "kind": "LinkedField",
+          "name": "imageURLs",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "normalized",
               "args": null,
+              "kind": "ScalarField",
+              "name": "normalized",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "status",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "distanceToOpen",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "distanceToClose",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "internalID",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "slug",
       "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
       "storageKey": null
     }
-  ]
+  ],
+  "type": "ViewingRoom",
+  "abstractKey": null
 };
 (node as any).hash = '30e75ea0f2337f01fdde1e4147c17ff2';
 export default node;

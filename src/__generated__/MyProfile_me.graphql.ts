@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,24 +38,20 @@ export type MyProfile_me$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "MyProfile_me",
-  "type": "Me",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "MyProfile_me",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "name",
       "args": null,
+      "kind": "ScalarField",
+      "name": "name",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "auctionsLotStandingConnection",
-      "storageKey": "auctionsLotStandingConnection(first:25)",
       "args": [
         {
           "kind": "Literal",
@@ -63,75 +60,74 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "AuctionsLotStandingConnection",
+      "kind": "LinkedField",
+      "name": "auctionsLotStandingConnection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "AuctionsLotStandingEdge",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "AuctionsLotStanding",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "saleArtwork",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "SaleArtwork",
+                  "kind": "LinkedField",
+                  "name": "saleArtwork",
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "LinkedField",
                       "alias": null,
-                      "name": "sale",
-                      "storageKey": null,
                       "args": null,
                       "concreteType": "Sale",
+                      "kind": "LinkedField",
+                      "name": "sale",
                       "plural": false,
                       "selections": [
                         {
-                          "kind": "ScalarField",
                           "alias": null,
-                          "name": "status",
                           "args": null,
+                          "kind": "ScalarField",
+                          "name": "status",
                           "storageKey": null
                         }
-                      ]
+                      ],
+                      "storageKey": null
                     }
-                  ]
+                  ],
+                  "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": "auctionsLotStandingConnection(first:25)"
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "followsAndSaves",
-      "storageKey": null,
       "args": null,
       "concreteType": "FollowsAndSaves",
+      "kind": "LinkedField",
+      "name": "followsAndSaves",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "artworksConnection",
-          "storageKey": "artworksConnection(first:10,private:true)",
           "args": [
             {
               "kind": "Literal",
@@ -145,47 +141,53 @@ const node: ReaderFragment = {
             }
           ],
           "concreteType": "SavedArtworksConnection",
+          "kind": "LinkedField",
+          "name": "artworksConnection",
           "plural": false,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "edges",
-              "storageKey": null,
               "args": null,
               "concreteType": "SavedArtworksEdge",
+              "kind": "LinkedField",
+              "name": "edges",
               "plural": true,
               "selections": [
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "node",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "Artwork",
+                  "kind": "LinkedField",
+                  "name": "node",
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "ScalarField",
                       "alias": null,
-                      "name": "id",
                       "args": null,
+                      "kind": "ScalarField",
+                      "name": "id",
                       "storageKey": null
                     },
                     {
+                      "args": null,
                       "kind": "FragmentSpread",
-                      "name": "SmallTileRail_artworks",
-                      "args": null
+                      "name": "SmallTileRail_artworks"
                     }
-                  ]
+                  ],
+                  "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": "artworksConnection(first:10,private:true)"
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Me",
+  "abstractKey": null
 };
 (node as any).hash = '2fc2f67bff0f4b8d637c6c768edebe52';
 export default node;

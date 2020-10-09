@@ -1,15 +1,15 @@
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graphql"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import { FilterParamName, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Sans, Theme } from "palette"
 import { useTracking } from "react-tracking"
 import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
@@ -23,7 +23,12 @@ import {
   FilterOptions,
   TouchableOptionListItemRow,
 } from "../../../lib/Components/FilterModal"
-import { Aggregations, ArtworkFilterContext, ArtworkFilterContextState, reducer } from "../../utils/ArtworkFiltersStore"
+import {
+  Aggregations,
+  ArtworkFilterContext,
+  ArtworkFilterContextState,
+  reducer,
+} from "../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { NavigateBackIconContainer } from "../ArtworkFilterOptions/SingleSelectOption"
 import { closeModalMock, MockFilterScreen } from "./FilterTestHelper"
 
@@ -168,6 +173,9 @@ const MockFilterModalNavigator = ({ initialState }: InitialState) => {
           collection={CollectionFixture}
           exitModal={exitModalMock}
           closeModal={closeModalMock}
+          mode={FilterModalMode.ArtistArtworks}
+          id="abc123"
+          slug="some-artist"
           isFilterArtworksModalVisible
         />
       </ArtworkFilterContext.Provider>
@@ -520,7 +528,7 @@ describe("Applying filters", () => {
       <QueryRenderer<FilterModalTestsQuery>
         environment={env}
         query={graphql`
-          query FilterModalTestsQuery @raw_response_type {
+          query FilterModalTestsQuery @raw_response_type @relay_test_operation {
             marketingCollection(slug: "street-art-now") {
               ...CollectionArtworks_collection
             }
@@ -550,12 +558,13 @@ describe("Applying filters", () => {
     )
     renderWithWrappers(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          marketingCollection: CollectionFixture,
-        },
-      })
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          MarketingCollection: () => ({
+            slug: "street-art-now",
+          }),
+        })
+      )
     })
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toEqual(
       "CollectionArtworksInfiniteScrollGridQuery"
@@ -578,5 +587,45 @@ describe("Applying filters", () => {
         "sort": null,
       }
     `)
+  })
+  it("tracks changes in the filter state when a filter is applied", () => {
+    state = {
+      selectedFilters: [
+        { displayText: "Works on paper", paramName: FilterParamName.medium, paramValue: "work-on-paper" },
+      ],
+      appliedFilters: [
+        { displayText: "Recently added", paramName: FilterParamName.sort, paramValue: "-decayed_merch" },
+      ],
+      previouslyAppliedFilters: [
+        { displayText: "Recently added", paramName: FilterParamName.sort, paramValue: "-decayed_merch" },
+      ],
+      applyFilters: true,
+      aggregations: mockAggregations,
+    }
+
+    const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
+    const applyButton = filterModal.find(ApplyButton)
+
+    applyButton.props().onPress()
+    expect(trackEvent).toHaveBeenCalledWith({
+      action_type: "commercial_filter_params_changed",
+      changed: {
+        medium: "work-on-paper",
+      },
+      context_screen: "Artist",
+      context_screen_owner_id: "abc123",
+      context_screen_owner_slug: "some-artist",
+      context_screen_owner_type: "Artist",
+      current: {
+        acquireable: false,
+        atAuction: false,
+        dimensionRange: "*-*",
+        inquireableOnly: false,
+        medium: "*",
+        offerable: false,
+        priceRange: "*-*",
+        sort: "-decayed_merch",
+      },
+    })
   })
 })

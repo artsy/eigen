@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -41,162 +42,163 @@ export type ActiveBid_bid$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "href",
   "args": null,
+  "kind": "ScalarField",
+  "name": "href",
   "storageKey": null
 };
 return {
-  "kind": "Fragment",
-  "name": "ActiveBid_bid",
-  "type": "LotStanding",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ActiveBid_bid",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": "is_leading_bidder",
-      "name": "isLeadingBidder",
       "args": null,
+      "kind": "ScalarField",
+      "name": "isLeadingBidder",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "sale",
-      "storageKey": null,
       "args": null,
       "concreteType": "Sale",
+      "kind": "LinkedField",
+      "name": "sale",
       "plural": false,
       "selections": [
         (v0/*: any*/),
         {
-          "kind": "ScalarField",
           "alias": "is_live_open",
-          "name": "isLiveOpen",
           "args": null,
+          "kind": "ScalarField",
+          "name": "isLiveOpen",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": "most_recent_bid",
-      "name": "mostRecentBid",
-      "storageKey": null,
       "args": null,
       "concreteType": "BidderPosition",
+      "kind": "LinkedField",
+      "name": "mostRecentBid",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "id",
           "args": null,
+          "kind": "ScalarField",
+          "name": "id",
           "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": "sale_artwork",
-          "name": "saleArtwork",
-          "storageKey": null,
           "args": null,
           "concreteType": "SaleArtwork",
+          "kind": "LinkedField",
+          "name": "saleArtwork",
           "plural": false,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "artwork",
-              "storageKey": null,
               "args": null,
               "concreteType": "Artwork",
+              "kind": "LinkedField",
+              "name": "artwork",
               "plural": false,
               "selections": [
                 (v0/*: any*/),
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "image",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "Image",
+                  "kind": "LinkedField",
+                  "name": "image",
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "ScalarField",
                       "alias": null,
-                      "name": "url",
                       "args": null,
+                      "kind": "ScalarField",
+                      "name": "url",
                       "storageKey": null
                     }
-                  ]
+                  ],
+                  "storageKey": null
                 },
                 {
-                  "kind": "ScalarField",
                   "alias": "artist_names",
-                  "name": "artistNames",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "artistNames",
                   "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             },
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "counts",
-              "storageKey": null,
               "args": null,
               "concreteType": "SaleArtworkCounts",
+              "kind": "LinkedField",
+              "name": "counts",
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": "bidder_positions",
-                  "name": "bidderPositions",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "bidderPositions",
                   "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             },
             {
-              "kind": "LinkedField",
               "alias": "highest_bid",
-              "name": "highestBid",
-              "storageKey": null,
               "args": null,
               "concreteType": "SaleArtworkHighestBid",
+              "kind": "LinkedField",
+              "name": "highestBid",
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "display",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "display",
                   "storageKey": null
                 }
-              ]
-            },
-            {
-              "kind": "ScalarField",
-              "alias": "lot_label",
-              "name": "lotLabel",
-              "args": null,
+              ],
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
-              "alias": "reserve_status",
-              "name": "reserveStatus",
+              "alias": "lot_label",
               "args": null,
+              "kind": "ScalarField",
+              "name": "lotLabel",
+              "storageKey": null
+            },
+            {
+              "alias": "reserve_status",
+              "args": null,
+              "kind": "ScalarField",
+              "name": "reserveStatus",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "LotStanding",
+  "abstractKey": null
 };
 })();
 (node as any).hash = 'd32166296aef7a6c6e6c093e04193119';

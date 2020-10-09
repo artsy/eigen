@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -39,39 +40,35 @@ export type Feature_feature$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "description",
   "args": null,
+  "kind": "ScalarField",
+  "name": "description",
   "storageKey": null
 },
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
-  "kind": "Fragment",
-  "name": "Feature_feature",
-  "type": "Feature",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Feature_feature",
   "selections": [
     (v0/*: any*/),
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "callout",
       "args": null,
+      "kind": "ScalarField",
+      "name": "callout",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": "sets",
-      "name": "setsConnection",
-      "storageKey": "setsConnection(first:20)",
       "args": [
         {
           "kind": "Literal",
@@ -80,47 +77,44 @@ return {
         }
       ],
       "concreteType": "OrderedSetConnection",
+      "kind": "LinkedField",
+      "name": "setsConnection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "OrderedSetEdge",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "OrderedSet",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
                 (v1/*: any*/),
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "name",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "name",
                   "storageKey": null
                 },
                 (v0/*: any*/),
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "itemType",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "itemType",
                   "storageKey": null
                 },
                 {
-                  "kind": "LinkedField",
                   "alias": "orderedItems",
-                  "name": "orderedItemsConnection",
-                  "storageKey": "orderedItemsConnection(first:35)",
                   "args": [
                     {
                       "kind": "Literal",
@@ -129,81 +123,91 @@ return {
                     }
                   ],
                   "concreteType": "OrderedSetItemConnection",
+                  "kind": "LinkedField",
+                  "name": "orderedItemsConnection",
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "LinkedField",
                       "alias": null,
-                      "name": "edges",
-                      "storageKey": null,
                       "args": null,
                       "concreteType": "OrderedSetItemEdge",
+                      "kind": "LinkedField",
+                      "name": "edges",
                       "plural": true,
                       "selections": [
                         {
-                          "kind": "LinkedField",
                           "alias": null,
-                          "name": "node",
-                          "storageKey": null,
                           "args": null,
                           "concreteType": null,
+                          "kind": "LinkedField",
+                          "name": "node",
                           "plural": false,
                           "selections": [
                             {
-                              "kind": "ScalarField",
                               "alias": null,
-                              "name": "__typename",
                               "args": null,
+                              "kind": "ScalarField",
+                              "name": "__typename",
                               "storageKey": null
                             },
                             {
                               "kind": "InlineFragment",
-                              "type": "FeaturedLink",
                               "selections": [
                                 (v1/*: any*/),
                                 {
-                                  "kind": "ScalarField",
                                   "alias": null,
-                                  "name": "href",
                                   "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "href",
                                   "storageKey": null
                                 }
-                              ]
+                              ],
+                              "type": "FeaturedLink",
+                              "abstractKey": null
                             },
                             {
                               "kind": "InlineFragment",
-                              "type": "Artwork",
                               "selections": [
                                 {
+                                  "args": null,
                                   "kind": "FragmentSpread",
-                                  "name": "GenericGrid_artworks",
-                                  "args": null
+                                  "name": "GenericGrid_artworks"
                                 }
-                              ]
+                              ],
+                              "type": "Artwork",
+                              "abstractKey": null
                             },
                             {
+                              "args": null,
                               "kind": "FragmentSpread",
-                              "name": "FeatureFeaturedLink_featuredLink",
-                              "args": null
+                              "name": "FeatureFeaturedLink_featuredLink"
                             }
-                          ]
+                          ],
+                          "storageKey": null
                         }
-                      ]
+                      ],
+                      "storageKey": null
                     }
-                  ]
+                  ],
+                  "storageKey": "orderedItemsConnection(first:35)"
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": "setsConnection(first:20)"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "FeatureHeader_feature",
-      "args": null
+      "name": "FeatureHeader_feature"
     }
-  ]
+  ],
+  "type": "Feature",
+  "abstractKey": null
 };
 })();
 (node as any).hash = 'b9c1b7b6e209626ac043f40d8886aeb8';

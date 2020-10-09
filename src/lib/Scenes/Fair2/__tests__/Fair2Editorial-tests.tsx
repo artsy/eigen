@@ -7,18 +7,24 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Text, Touchable } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
+import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.unmock("react-relay")
 
 const FAIR_2_EDITORIAL_FIXTURE: Fair2EditorialTestsQueryRawResponse = {
   fair: {
+    internalID: "def123",
+    slug: "art-basel-hong-kong-2020",
     id: "art-basel-hong-kong-2020",
     articles: {
       edges: [
         {
           node: {
             id: "QXJ0aWNsZTo1ZTdiZDEzM2ZmNTc3NjAwMWYyOTg2YTI=",
+            internalID: "xyz123",
+            slug: "artsy-editorial-sold-art-basel-hong-kongs-online-viewing-rooms",
             title: "What Sold at Art Basel in Hong Kong’s Online Viewing Rooms",
             href: "/article/artsy-editorial-sold-art-basel-hong-kongs-online-viewing-rooms",
             publishedAt: "Mar 26th, 20",
@@ -30,6 +36,8 @@ const FAIR_2_EDITORIAL_FIXTURE: Fair2EditorialTestsQueryRawResponse = {
         {
           node: {
             id: "QXJ0aWNsZTo1ZTZmYTNmMWI3N2Y0NTAwMjA3MzdmNTg=",
+            internalID: "abc123",
+            slug: "artsy-editorial-midst-covid-19-chinese-galleries-adapt-persevere",
             title: "In the Midst of COVID-19, Chinese Galleries Adapt and Persevere",
             href: "/article/artsy-editorial-midst-covid-19-chinese-galleries-adapt-persevere",
             publishedAt: "Mar 17th, 20",
@@ -44,6 +52,7 @@ const FAIR_2_EDITORIAL_FIXTURE: Fair2EditorialTestsQueryRawResponse = {
 }
 
 describe("Fair2Editorial", () => {
+  const trackEvent = useTracking().trackEvent
   const getWrapper = (fixture = FAIR_2_EDITORIAL_FIXTURE) => {
     const env = createMockEnvironment()
 
@@ -94,7 +103,7 @@ describe("Fair2Editorial", () => {
   })
 
   it("renders null if there are no articles", () => {
-    const wrapper = getWrapper({
+    const FAIR_2_EDITORIAL_FIXTURE_NO_ARTICLES = {
       fair: {
         ...FAIR_2_EDITORIAL_FIXTURE.fair,
         id: "art-basel-hong-kong-2020",
@@ -102,8 +111,27 @@ describe("Fair2Editorial", () => {
           edges: [],
         },
       },
-    })
+    } as Fair2EditorialTestsQueryRawResponse
+    const wrapper = getWrapper(FAIR_2_EDITORIAL_FIXTURE_NO_ARTICLES)
 
     expect(wrapper.toJSON()).toBe(null)
+  })
+
+  it("tracks article taps", () => {
+    const wrapper = getWrapper()
+    const article = wrapper.root.findAllByType(Touchable)[0]
+    act(() => article.props.onPress())
+
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedArticleGroup",
+      context_module: "relatedArticles",
+      context_screen_owner_type: "fair",
+      context_screen_owner_id: "def123",
+      context_screen_owner_slug: "art-basel-hong-kong-2020",
+      destination_screen_owner_type: "article",
+      destination_screen_owner_id: "xyz123",
+      destination_screen_owner_slug: "artsy-editorial-sold-art-basel-hong-kongs-online-viewing-rooms",
+      type: "thumbnail",
+    })
   })
 })

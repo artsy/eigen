@@ -7,7 +7,9 @@ import { AttachmentPreview_attachment } from "__generated__/AttachmentPreview_at
 import { color, Touchable } from "palette"
 
 const Container = styled.View`
-  flex-direction: row;
+  flex-direction: column;
+  flex: 1;
+  flex-grow: 1;
 `
 
 export interface AttachmentProps {

@@ -49,6 +49,7 @@ describe("ViewingRoom", () => {
       expect(tree.root.findAllByProps({ "data-test-id": "intro-statement" })).toHaveLength(0)
       expect(tree.root.findAllByProps({ "data-test-id": "pull-quote" })).toHaveLength(0)
       expect(tree.root.findAllByProps({ "data-test-id": "body" })).toHaveLength(0)
+      expect(tree.root.findAllByProps({ "data-test-id": "share-button" })).toHaveLength(1)
       expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(0)
     })
     it("renders an 'opening soon' message", () => {
@@ -69,57 +70,20 @@ describe("ViewingRoom", () => {
     const defaultProps = {
       status: "live",
     }
-    it("renders an intro statement", () => {
+    it("renders all sections", () => {
       const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
-          ViewingRoom: () => ({ introStatement: "Foo", ...defaultProps }),
+          ViewingRoom: () => ({ introStatement: "Foo", pullQuote: "Bar", body: "Baz", ...defaultProps }),
         })
         return result
       })
       expect(extractText(tree.root.findByProps({ "data-test-id": "intro-statement" }))).toEqual("Foo")
-    })
-
-    it("renders an artwork rail", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-        const result = MockPayloadGenerator.generate(operation, {
-          ViewingRoom: () => ({ ...defaultProps }),
-        })
-        return result
-      })
       expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(1)
-    })
-
-    it("renders a pull quote", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-        const result = MockPayloadGenerator.generate(operation, {
-          ViewingRoom: () => ({ pullQuote: "Foo", ...defaultProps }),
-        })
-        return result
-      })
-      expect(extractText(tree.root.findByProps({ "data-test-id": "pull-quote" }))).toEqual("Foo")
-    })
-    it("renders a body", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-        const result = MockPayloadGenerator.generate(operation, {
-          ViewingRoom: () => ({ body: "Foo", ...defaultProps }),
-        })
-        return result
-      })
-      expect(extractText(tree.root.findByProps({ "data-test-id": "body" }))).toEqual("Foo")
-    })
-    it("renders the subsections", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-        const result = MockPayloadGenerator.generate(operation, {
-          ViewingRoom: () => ({ ...defaultProps }),
-        })
-        return result
-      })
+      expect(extractText(tree.root.findByProps({ "data-test-id": "pull-quote" }))).toEqual("Bar")
+      expect(extractText(tree.root.findByProps({ "data-test-id": "body" }))).toEqual("Baz")
       expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(1)
+      expect(tree.root.findAllByProps({ "data-test-id": "share-button" })).toHaveLength(1)
     })
 
     it("renders a button + calls tracking when body enters viewport", () => {
@@ -151,7 +115,7 @@ describe("ViewingRoom", () => {
   })
 
   describe("closed (past end datetime)", () => {
-    it("does not render normal sections", () => {
+    it("renders share button and no subsections", () => {
       const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
@@ -165,6 +129,7 @@ describe("ViewingRoom", () => {
       expect(tree.root.findAllByProps({ "data-test-id": "pull-quote" })).toHaveLength(0)
       expect(tree.root.findAllByProps({ "data-test-id": "body" })).toHaveLength(0)
       expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(0)
+      expect(tree.root.findAllByProps({ "data-test-id": "share-button" })).toHaveLength(1)
     })
 
     it("renders a 'closed' message", () => {

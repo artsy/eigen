@@ -67,15 +67,18 @@ const registrationNetworkErrorMessage = {
   description: "Please\ncheck your internet connection\nand try again.",
 }
 
-const markdownRules = defaultRules(true, {
-  paragraph: {
-    match: blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
-    react: (node, output, state) => {
-      return (
-        <Sans size="4" key={state.key} textAlign="center">
-          {output(node.content, state)}
-        </Sans>
-      )
+const markdownRules = defaultRules({
+  modal: true,
+  ruleOverrides: {
+    paragraph: {
+      match: blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
+      react: (node, output, state) => {
+        return (
+          <Sans size="4" key={state.key} textAlign="center">
+            {output(node.content, state)}
+          </Sans>
+        )
+      },
     },
   },
 })

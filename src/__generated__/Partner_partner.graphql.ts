@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,76 +26,77 @@ export type Partner_partner$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 },
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 };
 return {
-  "kind": "Fragment",
-  "name": "Partner_partner",
-  "type": "Partner",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Partner_partner",
   "selections": [
     (v0/*: any*/),
     (v1/*: any*/),
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "slug",
       "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "profile",
-      "storageKey": null,
       "args": null,
       "concreteType": "Profile",
+      "kind": "LinkedField",
+      "name": "profile",
       "plural": false,
       "selections": [
         (v0/*: any*/),
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "isFollowed",
           "args": null,
+          "kind": "ScalarField",
+          "name": "isFollowed",
           "storageKey": null
         },
         (v1/*: any*/)
-      ]
+      ],
+      "storageKey": null
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "PartnerArtwork_partner",
-      "args": null
+      "name": "PartnerArtwork_partner"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "PartnerOverview_partner",
-      "args": null
+      "name": "PartnerOverview_partner"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "PartnerShows_partner",
-      "args": null
+      "name": "PartnerShows_partner"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "PartnerHeader_partner",
-      "args": null
+      "name": "PartnerHeader_partner"
     }
-  ]
+  ],
+  "type": "Partner",
+  "abstractKey": null
 };
 })();
 (node as any).hash = '1c1790711f9aa1867fea2a077435e852';

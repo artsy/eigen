@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -22,62 +23,63 @@ export type Registration_sale$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "Registration_sale",
-  "type": "Sale",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Registration_sale",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": "end_at",
+      "args": null,
+      "kind": "ScalarField",
       "name": "endAt",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": "is_preview",
+      "args": null,
+      "kind": "ScalarField",
       "name": "isPreview",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": "live_start_at",
+      "args": null,
+      "kind": "ScalarField",
       "name": "liveStartAt",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "name",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": "start_at",
-      "name": "startAt",
       "args": null,
+      "kind": "ScalarField",
+      "name": "startAt",
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "requireIdentityVerification",
       "args": null,
+      "kind": "ScalarField",
+      "name": "requireIdentityVerification",
       "storageKey": null
     }
-  ]
+  ],
+  "type": "Sale",
+  "abstractKey": null
 };
 (node as any).hash = '87d8938cb35a159630b79a4a96417b16';
 export default node;

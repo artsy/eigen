@@ -1,5 +1,5 @@
 import { FilterToggleButton } from "lib/Components/ArtworkFilterOptions/FilterToggleButton"
-import { FilterData } from "lib/utils/ArtworkFiltersStore"
+import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Box, color, Flex, Sans } from "palette"
 import React from "react"
 import { FlatList, TouchableWithoutFeedback } from "react-native"

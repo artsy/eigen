@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash bae8f47ecc68bf27daa40208040af159 */
+// @ts-nocheck
+/* @relayHash fda7b5035d6c0e4097df2e314ee47753 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -18,12 +19,18 @@ export type MoreInfoTestsQueryRawResponse = {
         readonly openingReceptionText: string | null;
         readonly partner: ({
             readonly __typename: "Partner";
-            readonly id: string | null;
+            readonly __isNode: "Partner";
+            readonly id: string;
             readonly website: string | null;
             readonly type: string | null;
         } | {
-            readonly __typename: string | null;
-            readonly id: string | null;
+            readonly __typename: "ExternalPartner";
+            readonly __isNode: "ExternalPartner";
+            readonly id: string;
+        } | {
+            readonly __typename: string;
+            readonly __isNode: string;
+            readonly id: string;
         }) | null;
         readonly press_release: string | null;
         readonly events: ReadonlyArray<({
@@ -32,7 +39,7 @@ export type MoreInfoTestsQueryRawResponse = {
             readonly start_at: string | null;
             readonly end_at: string | null;
         }) | null> | null;
-        readonly id: string | null;
+        readonly id: string;
     }) | null;
 };
 export type MoreInfoTestsQuery = {
@@ -63,6 +70,7 @@ fragment MoreInfo_show on Show {
       type
     }
     ... on Node {
+      __isNode: __typename
       id
     }
     ... on ExternalPartner {
@@ -92,177 +100,193 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
-};
+},
+v2 = [
+  (v1/*: any*/)
+];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "MoreInfoTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "MoreInfoTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "show",
-        "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
         "args": (v0/*: any*/),
         "concreteType": "Show",
+        "kind": "LinkedField",
+        "name": "show",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "MoreInfo_show",
-            "args": null
+            "name": "MoreInfo_show"
           }
-        ]
+        ],
+        "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "MoreInfoTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "show",
-        "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
         "args": (v0/*: any*/),
         "concreteType": "Show",
+        "kind": "LinkedField",
+        "name": "show",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "internalID",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "slug",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "pressReleaseUrl",
-            "args": null,
             "storageKey": null
           },
           {
+            "alias": null,
+            "args": null,
             "kind": "ScalarField",
-            "alias": null,
             "name": "openingReceptionText",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "partner",
-            "storageKey": null,
             "args": null,
             "concreteType": null,
+            "kind": "LinkedField",
+            "name": "partner",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "__typename",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "__typename",
                 "storageKey": null
               },
-              (v1/*: any*/),
               {
                 "kind": "InlineFragment",
-                "type": "Partner",
                 "selections": [
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "website",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "website",
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "type",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "type",
                     "storageKey": null
                   }
-                ]
+                ],
+                "type": "Partner",
+                "abstractKey": null
+              },
+              {
+                "kind": "InlineFragment",
+                "selections": (v2/*: any*/),
+                "type": "Node",
+                "abstractKey": "__isNode"
+              },
+              {
+                "kind": "InlineFragment",
+                "selections": (v2/*: any*/),
+                "type": "ExternalPartner",
+                "abstractKey": null
               }
-            ]
-          },
-          {
-            "kind": "ScalarField",
-            "alias": "press_release",
-            "name": "pressRelease",
-            "args": null,
+            ],
             "storageKey": null
           },
           {
-            "kind": "LinkedField",
+            "alias": "press_release",
+            "args": null,
+            "kind": "ScalarField",
+            "name": "pressRelease",
+            "storageKey": null
+          },
+          {
             "alias": null,
-            "name": "events",
-            "storageKey": null,
             "args": null,
             "concreteType": "ShowEventType",
+            "kind": "LinkedField",
+            "name": "events",
             "plural": true,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": "event_type",
+                "args": null,
+                "kind": "ScalarField",
                 "name": "eventType",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "description",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": "start_at",
-                "name": "startAt",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "startAt",
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": "end_at",
-                "name": "endAt",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "endAt",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           },
           (v1/*: any*/)
-        ]
+        ],
+        "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
+    "id": "fda7b5035d6c0e4097df2e314ee47753",
+    "metadata": {},
     "name": "MoreInfoTestsQuery",
-    "id": "8335a74249c2d3565dc22caa88ba4acd",
-    "text": null,
-    "metadata": {}
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

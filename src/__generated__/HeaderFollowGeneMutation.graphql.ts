@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash a8d74e6e253e849ecf12d44d855adcce */
+// @ts-nocheck
+/* @relayHash 5aa1bfc9148a5b903c0e2955d9bca1e4 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowGeneInput = {
@@ -41,18 +42,14 @@ mutation HeaderFollowGeneMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "FollowGeneInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "followGene",
-    "storageKey": null,
     "args": [
       {
         "kind": "Variable",
@@ -61,58 +58,62 @@ v1 = [
       }
     ],
     "concreteType": "FollowGenePayload",
+    "kind": "LinkedField",
+    "name": "followGene",
     "plural": false,
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "gene",
-        "storageKey": null,
         "args": null,
         "concreteType": "Gene",
+        "kind": "LinkedField",
+        "name": "gene",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "id",
             "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "isFollowed",
             "args": null,
+            "kind": "ScalarField",
+            "name": "isFollowed",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "storageKey": null
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "HeaderFollowGeneMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "HeaderFollowGeneMutation",
+    "selections": (v1/*: any*/),
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "HeaderFollowGeneMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "HeaderFollowGeneMutation",
     "id": "5aa1bfc9148a5b903c0e2955d9bca1e4",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "HeaderFollowGeneMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

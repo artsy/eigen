@@ -453,7 +453,7 @@ PODS:
   - tipsi-stripe (7.5.0):
     - React
     - Stripe (~> 14.0.0)
-  - TOCropViewController (2.5.3)
+  - TOCropViewController (2.5.5)
   - UICKeyChainStore (1.0.5)
   - "UIView+BooleanAnimations (1.0.2)"
   - "XCTest+OHHTTPStubSuiteCleanUp (1.0.0)":
@@ -560,7 +560,6 @@ DEPENDENCIES:
   - SwiftyJSON
   - Then
   - tipsi-stripe (from `node_modules/tipsi-stripe/tipsi-stripe.podspec`)
-  - TOCropViewController (= 2.5.3)
   - UICKeyChainStore
   - "UIView+BooleanAnimations"
   - "XCTest+OHHTTPStubSuiteCleanUp"
@@ -866,12 +865,12 @@ SPEC CHECKSUMS:
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   Then: ee21c97b85ff6062b9b0080c9abb1eea46743345
   tipsi-stripe: 8aaaa6f5e4cfea5c35be3affbb616c4e6cfafa5f
-  TOCropViewController: 20a14b6a7a098308bf369e7c8d700dc983a974e6
+  TOCropViewController: da59f531f8ac8a94ef6d6c0fc34009350f9e8bfe
   UICKeyChainStore: e81dc3b58d56ffaed61ab6669eb97071e53fc377
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 50fb6eb13d2152e7363293ff603385db380815b1
 
-PODFILE CHECKSUM: e69af109eab83a5f06b11b82869aeef694dd6dd0
+PODFILE CHECKSUM: e34c202d938dd8b92cf1ac74abe4749ac9f4a88f
 
 COCOAPODS: 1.7.5

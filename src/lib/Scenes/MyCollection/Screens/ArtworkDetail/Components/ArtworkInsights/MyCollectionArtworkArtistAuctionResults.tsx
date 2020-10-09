@@ -37,22 +37,27 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
 
           return (
             <Box my={0.5} key={internalID}>
-              <Flex flexDirection="row" justifyContent="space-between" width="100%">
+              <Box my={0.5}>
                 <Flex flexDirection="row">
-                  <Box pr={0.5}>
-                    <OpaqueImageView imageURL={images?.thumbnail?.url} width={45} height={45} />
+                  <Box pr={1}>
+                    <OpaqueImageView imageURL={images?.thumbnail?.url} width={80} height={60} />
                   </Box>
-                  <Flex flexDirection="column">
-                    <Text numberOfLines={1}>{title}</Text>
-                    <Text>Sold {dateOfSale}</Text>
-                  </Flex>
+                  <Box pr={1} maxWidth="80%">
+                    <Flex flexDirection="row">
+                      <Text style={{ flexShrink: 1 }}>{title}</Text>
+                    </Flex>
+                    <Text color="black60" my={0.5}>
+                      Sold {dateOfSale}
+                    </Text>
+
+                    {!!salePrice && (
+                      <Box>
+                        <Text>{salePrice}</Text>
+                      </Box>
+                    )}
+                  </Box>
                 </Flex>
-                {!!salePrice && (
-                  <Box>
-                    <Text>{salePrice}</Text>
-                  </Box>
-                )}
-              </Flex>
+              </Box>
             </Box>
           )
         })}

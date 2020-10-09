@@ -1,13 +1,18 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Fair2Editorial_fair = {
+    readonly internalID: string;
+    readonly slug: string;
     readonly articles: {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
+                readonly internalID: string;
+                readonly slug: string | null;
                 readonly title: string | null;
                 readonly href: string | null;
                 readonly publishedAt: string | null;
@@ -27,18 +32,31 @@ export type Fair2Editorial_fair$key = {
 
 
 
-const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "Fair2Editorial_fair",
-  "type": "Fair",
-  "metadata": null,
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Fair2Editorial_fair",
   "selections": [
+    (v0/*: any*/),
+    (v1/*: any*/),
     {
-      "kind": "LinkedField",
       "alias": "articles",
-      "name": "articlesConnection",
-      "storageKey": "articlesConnection(first:5,sort:\"PUBLISHED_AT_DESC\")",
       "args": [
         {
           "kind": "Literal",
@@ -52,85 +70,93 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "ArticleConnection",
+      "kind": "LinkedField",
+      "name": "articlesConnection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "ArticleEdge",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "Article",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "id",
-                  "args": null,
                   "storageKey": null
                 },
+                (v0/*: any*/),
+                (v1/*: any*/),
                 {
-                  "kind": "ScalarField",
                   "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "title",
-                  "args": null,
                   "storageKey": null
                 },
                 {
-                  "kind": "ScalarField",
                   "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "href",
-                  "args": null,
                   "storageKey": null
                 },
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "publishedAt",
                   "args": [
                     {
                       "kind": "Literal",
                       "name": "format",
-                      "value": "MMM Do, YY"
+                      "value": "MMM Do, YYYY"
                     }
                   ],
-                  "storageKey": "publishedAt(format:\"MMM Do, YY\")"
+                  "kind": "ScalarField",
+                  "name": "publishedAt",
+                  "storageKey": "publishedAt(format:\"MMM Do, YYYY\")"
                 },
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "thumbnailImage",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "Image",
+                  "kind": "LinkedField",
+                  "name": "thumbnailImage",
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "ScalarField",
                       "alias": "src",
-                      "name": "imageURL",
                       "args": null,
+                      "kind": "ScalarField",
+                      "name": "imageURL",
                       "storageKey": null
                     }
-                  ]
+                  ],
+                  "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": "articlesConnection(first:5,sort:\"PUBLISHED_AT_DESC\")"
     }
-  ]
+  ],
+  "type": "Fair",
+  "abstractKey": null
 };
-(node as any).hash = '2870d47f15f61f4916bde70c1a87acaa';
+})();
+(node as any).hash = 'd47cd5b9abff86ad81dc2d90c8c865fa';
 export default node;

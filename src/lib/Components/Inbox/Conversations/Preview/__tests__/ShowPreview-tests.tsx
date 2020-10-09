@@ -12,8 +12,9 @@ const show = {
   name: "Catty Show",
   id: "slugID",
   internalID: "mongoID",
-  cover_image: {
+  coverImage: {
     url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
+    aspectRatio: 1,
   },
   partner: {
     name: "Catty Partner",

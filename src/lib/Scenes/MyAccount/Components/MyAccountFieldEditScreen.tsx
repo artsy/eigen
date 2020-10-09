@@ -3,23 +3,42 @@ import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { goBack } from "lib/navigation/navigate"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Sans } from "palette"
-import React, { useImperativeHandle, useRef } from "react"
-import { KeyboardAvoidingView, ScrollView, TouchableOpacity, ViewStyle } from "react-native"
+import React, { useImperativeHandle, useRef, useState } from "react"
+import {
+  AlertButton,
+  AlertOptions,
+  AlertStatic,
+  KeyboardAvoidingView,
+  ScrollView,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native"
 
 export interface MyAccountFieldEditScreen {
   scrollToEnd(): void
   save(): Promise<void>
 }
+
+type AlertArgs =
+  | [string] // title
+  | [string, string] // title, message
+  | [string, string, AlertButton[]] // title, message, buttons
+  | [string, string, AlertButton[], AlertOptions] // title, message, buttons, options
+
+export interface MyAccountFieldEditScreenProps {
+  title: string
+  canSave: boolean
+  contentContainerStyle?: ViewStyle
+  onSave(dismiss: () => void, alert: AlertStatic["alert"]): Promise<any>
+}
+
 export const MyAccountFieldEditScreen = React.forwardRef<
   { scrollToEnd(): void },
-  React.PropsWithChildren<{
-    title: string
-    canSave: boolean
-    contentContainerStyle?: ViewStyle
-    onSave(dismiss: () => void): Promise<any>
-  }>
+  React.PropsWithChildren<MyAccountFieldEditScreenProps>
 >(({ children, canSave, onSave, title, contentContainerStyle }, ref) => {
   const setLoadingBlock = useLoadingBlock()
+  const [behindTheModalDismiss, setBehindTheModalDismiss] = useState(false)
+  const [behindTheModalAlert, setBehindTheModalAlert] = useState<AlertArgs | undefined>(undefined)
   const scrollViewRef = useRef<ScrollView>(null)
   const screen = useScreenDimensions()
 
@@ -28,13 +47,21 @@ export const MyAccountFieldEditScreen = React.forwardRef<
     goBack()
   }
 
+  const doTheDismiss = () => {
+    setBehindTheModalDismiss(true)
+  }
+
+  const doTheAlert = (...args: AlertArgs) => {
+    setBehindTheModalAlert(args)
+  }
+
   const handleSave = async () => {
     if (!canSave) {
       return
     }
     try {
       setLoadingBlock(true)
-      await onSave(onDismiss)
+      await onSave(doTheDismiss, doTheAlert as any)
     } catch (e) {
       console.error(e)
     } finally {
@@ -82,6 +109,17 @@ export const MyAccountFieldEditScreen = React.forwardRef<
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
         >
+          {/* <LoadingModal
+            isVisible={isSaving}
+            onDismiss={() => {
+              if (behindTheModalDismiss) {
+                onDismiss()
+              }
+              if (behindTheModalAlert !== undefined) {
+                Alert.alert(...(behindTheModalAlert as [any]))
+              }
+            }}
+          /> */}
           {children}
         </ScrollView>
       </PageWithSimpleHeader>

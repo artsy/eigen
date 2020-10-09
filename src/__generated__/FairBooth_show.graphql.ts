@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -18,42 +19,43 @@ export type FairBooth_show$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "FairBooth_show",
-  "type": "Show",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "FairBooth_show",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "internalID",
       "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
       "storageKey": null
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "FairBoothHeader_show",
-      "args": null
+      "name": "FairBoothHeader_show"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "ShowArtworksPreview_show",
-      "args": null
+      "name": "ShowArtworksPreview_show"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "ShowArtistsPreview_show",
-      "args": null
+      "name": "ShowArtistsPreview_show"
     }
-  ]
+  ],
+  "type": "Show",
+  "abstractKey": null
 };
 (node as any).hash = '74884b9faeba3e96137a5a96829ee904';
 export default node;

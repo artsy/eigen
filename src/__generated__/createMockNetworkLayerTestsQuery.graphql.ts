@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 8d77d17b72cd364eb93213fd7f4a5b31 */
+// @ts-nocheck
+/* @relayHash 0de7f21178b2e07411e95edac6027432 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type createMockNetworkLayerTestsQueryVariables = {};
@@ -29,10 +30,7 @@ query createMockNetworkLayerTestsQuery {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "artwork",
-    "storageKey": "artwork(id:\"untitled\")",
     "args": [
       {
         "kind": "Literal",
@@ -41,47 +39,51 @@ var v0 = [
       }
     ],
     "concreteType": "Artwork",
+    "kind": "LinkedField",
+    "name": "artwork",
     "plural": false,
     "selections": [
       {
-        "kind": "ScalarField",
         "alias": null,
-        "name": "id",
         "args": null,
+        "kind": "ScalarField",
+        "name": "id",
         "storageKey": null
       },
       {
-        "kind": "ScalarField",
         "alias": null,
-        "name": "title",
         "args": null,
+        "kind": "ScalarField",
+        "name": "title",
         "storageKey": null
       }
-    ]
+    ],
+    "storageKey": "artwork(id:\"untitled\")"
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "createMockNetworkLayerTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
-    "selections": (v0/*: any*/)
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "createMockNetworkLayerTestsQuery",
+    "selections": (v0/*: any*/),
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "createMockNetworkLayerTestsQuery",
-    "argumentDefinitions": [],
     "selections": (v0/*: any*/)
   },
   "params": {
-    "operationKind": "query",
-    "name": "createMockNetworkLayerTestsQuery",
     "id": "0de7f21178b2e07411e95edac6027432",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "createMockNetworkLayerTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -9,14 +10,13 @@ export type Messages_conversation = {
     readonly from: {
         readonly name: string;
         readonly email: string;
-        readonly initials: string | null;
     };
     readonly to: {
         readonly name: string;
-        readonly initials: string | null;
     };
-    readonly initial_message: string;
-    readonly messages: {
+    readonly initialMessage: string;
+    readonly lastMessageID: string | null;
+    readonly messagesConnection: {
         readonly pageInfo: {
             readonly startCursor: string | null;
             readonly endCursor: string | null;
@@ -27,11 +27,18 @@ export type Messages_conversation = {
             readonly cursor: string;
             readonly node: {
                 readonly id: string;
-                readonly impulse_id: string;
-                readonly is_from_user: boolean | null;
+                readonly internalID: string;
+                readonly isFromUser: boolean | null;
+                readonly isFirstMessage: boolean | null;
                 readonly body: string | null;
+                readonly createdAt: string | null;
                 readonly attachments: ReadonlyArray<{
+                    readonly id: string;
                     readonly internalID: string;
+                    readonly contentType: string;
+                    readonly downloadURL: string;
+                    readonly fileName: string;
+                    readonly " $fragmentRefs": FragmentRefs<"ImagePreview_attachment" | "PDFPreview_attachment" | "FileDownload_attachment">;
                 } | null> | null;
                 readonly " $fragmentRefs": FragmentRefs<"Message_message">;
             } | null;
@@ -64,51 +71,54 @@ export type Messages_conversation$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 },
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 },
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "name",
   "args": null,
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "initials",
   "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
   "storageKey": null
 },
 v4 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "__typename",
   "args": null,
-  "storageKey": null
-},
-v5 = {
   "kind": "ScalarField",
-  "alias": null,
   "name": "href",
-  "args": null,
   "storageKey": null
 };
 return {
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "after"
+    },
+    {
+      "defaultValue": 10,
+      "kind": "LocalArgument",
+      "name": "count"
+    }
+  ],
   "kind": "Fragment",
-  "name": "Messages_conversation",
-  "type": "Conversation",
   "metadata": {
     "connection": [
       {
@@ -116,236 +126,277 @@ return {
         "cursor": "after",
         "direction": "forward",
         "path": [
-          "messages"
+          "messagesConnection"
         ]
       }
     ]
   },
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "count",
-      "type": "Int",
-      "defaultValue": 10
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "after",
-      "type": "String",
-      "defaultValue": null
-    }
-  ],
+  "name": "Messages_conversation",
   "selections": [
     (v0/*: any*/),
     (v1/*: any*/),
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "from",
-      "storageKey": null,
       "args": null,
       "concreteType": "ConversationInitiator",
+      "kind": "LinkedField",
+      "name": "from",
       "plural": false,
       "selections": [
         (v2/*: any*/),
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "email",
           "args": null,
+          "kind": "ScalarField",
+          "name": "email",
           "storageKey": null
-        },
-        (v3/*: any*/)
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "to",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "ConversationResponder",
-      "plural": false,
-      "selections": [
-        (v2/*: any*/),
-        (v3/*: any*/)
-      ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": "initial_message",
-      "name": "initialMessage",
-      "args": null,
+        }
+      ],
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
+      "concreteType": "ConversationResponder",
       "kind": "LinkedField",
-      "alias": "messages",
-      "name": "__Messages_messages_connection",
-      "storageKey": null,
+      "name": "to",
+      "plural": false,
+      "selections": [
+        (v2/*: any*/)
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "initialMessage",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "lastMessageID",
+      "storageKey": null
+    },
+    {
+      "alias": "messagesConnection",
       "args": null,
       "concreteType": "MessageConnection",
+      "kind": "LinkedField",
+      "name": "__Messages_messagesConnection_connection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "pageInfo",
-          "storageKey": null,
           "args": null,
           "concreteType": "PageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "startCursor",
-              "args": null,
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "endCursor",
-              "args": null,
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "hasPreviousPage",
-              "args": null,
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "hasNextPage",
               "args": null,
+              "kind": "ScalarField",
+              "name": "hasNextPage",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "MessageEdge",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "cursor",
               "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
               "storageKey": null
             },
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "Message",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
                 (v0/*: any*/),
+                (v1/*: any*/),
                 {
-                  "kind": "ScalarField",
-                  "alias": "impulse_id",
-                  "name": "impulseID",
+                  "alias": null,
                   "args": null,
-                  "storageKey": null
-                },
-                {
                   "kind": "ScalarField",
-                  "alias": "is_from_user",
                   "name": "isFromUser",
-                  "args": null,
                   "storageKey": null
                 },
                 {
+                  "alias": null,
+                  "args": null,
                   "kind": "ScalarField",
-                  "alias": null,
-                  "name": "body",
-                  "args": null,
+                  "name": "isFirstMessage",
                   "storageKey": null
                 },
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "attachments",
-                  "storageKey": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "body",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "createdAt",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
                   "args": null,
                   "concreteType": "Attachment",
+                  "kind": "LinkedField",
+                  "name": "attachments",
                   "plural": true,
                   "selections": [
-                    (v1/*: any*/)
-                  ]
+                    (v0/*: any*/),
+                    (v1/*: any*/),
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "contentType",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "downloadURL",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "fileName",
+                      "storageKey": null
+                    },
+                    {
+                      "args": null,
+                      "kind": "FragmentSpread",
+                      "name": "ImagePreview_attachment"
+                    },
+                    {
+                      "args": null,
+                      "kind": "FragmentSpread",
+                      "name": "PDFPreview_attachment"
+                    },
+                    {
+                      "args": null,
+                      "kind": "FragmentSpread",
+                      "name": "FileDownload_attachment"
+                    }
+                  ],
+                  "storageKey": null
                 },
-                (v4/*: any*/),
+                (v3/*: any*/),
                 {
+                  "args": null,
                   "kind": "FragmentSpread",
-                  "name": "Message_message",
-                  "args": null
+                  "name": "Message_message"
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "items",
-      "storageKey": null,
       "args": null,
       "concreteType": "ConversationItem",
+      "kind": "LinkedField",
+      "name": "items",
       "plural": true,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "item",
-          "storageKey": null,
           "args": null,
           "concreteType": null,
+          "kind": "LinkedField",
+          "name": "item",
           "plural": false,
           "selections": [
-            (v4/*: any*/),
+            (v3/*: any*/),
             {
               "kind": "InlineFragment",
-              "type": "Artwork",
               "selections": [
-                (v5/*: any*/),
+                (v4/*: any*/),
                 {
+                  "args": null,
                   "kind": "FragmentSpread",
-                  "name": "ArtworkPreview_artwork",
-                  "args": null
+                  "name": "ArtworkPreview_artwork"
                 }
-              ]
+              ],
+              "type": "Artwork",
+              "abstractKey": null
             },
             {
               "kind": "InlineFragment",
-              "type": "Show",
               "selections": [
-                (v5/*: any*/),
+                (v4/*: any*/),
                 {
+                  "args": null,
                   "kind": "FragmentSpread",
-                  "name": "ShowPreview_show",
-                  "args": null
+                  "name": "ShowPreview_show"
                 }
-              ]
+              ],
+              "type": "Show",
+              "abstractKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Conversation",
+  "abstractKey": null
 };
 })();
-(node as any).hash = 'c84f9ba53f1b3d4026fdd9826aa695aa';
+(node as any).hash = '8175de5196eb8355c89e6f428a9a3002';
 export default node;

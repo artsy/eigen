@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 9bf3cad772c9cdd9da6db0ddbae6d245 */
+// @ts-nocheck
+/* @relayHash e7f9de7dcd788f850b7cfa7601d233bd */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FairExhibitorsTestsQueryVariables = {};
@@ -26,7 +27,7 @@ export type FairExhibitorsTestsQueryRawResponse = {
                 readonly profile_id: string | null;
             }) | null> | null;
         }) | null> | null;
-        readonly id: string | null;
+        readonly id: string;
     }) | null;
 };
 export type FairExhibitorsTestsQuery = {
@@ -62,110 +63,111 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "LinkedField",
   "alias": "exhibitors_grouped_by_name",
-  "name": "exhibitorsGroupedByName",
-  "storageKey": null,
   "args": null,
   "concreteType": "FairExhibitorsGroup",
+  "kind": "LinkedField",
+  "name": "exhibitorsGroupedByName",
   "plural": true,
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "letter",
       "args": null,
+      "kind": "ScalarField",
+      "name": "letter",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "exhibitors",
-      "storageKey": null,
       "args": null,
       "concreteType": "FairExhibitor",
+      "kind": "LinkedField",
+      "name": "exhibitors",
       "plural": true,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "name",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "slug",
           "args": null,
+          "kind": "ScalarField",
+          "name": "slug",
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": "profile_id",
-          "name": "profileID",
           "args": null,
+          "kind": "ScalarField",
+          "name": "profileID",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "FairExhibitorsTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "FairExhibitorsTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": "fair(id:\"art-basel-in-miami-beach-2018\")",
         "args": (v0/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           (v1/*: any*/)
-        ]
+        ],
+        "storageKey": "fair(id:\"art-basel-in-miami-beach-2018\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "FairExhibitorsTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": "fair(id:\"art-basel-in-miami-beach-2018\")",
         "args": (v0/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           (v1/*: any*/),
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "id",
             "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": "fair(id:\"art-basel-in-miami-beach-2018\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "FairExhibitorsTestsQuery",
     "id": "e7f9de7dcd788f850b7cfa7601d233bd",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "FairExhibitorsTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

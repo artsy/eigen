@@ -1,7 +1,7 @@
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount, shallow } from "enzyme"
 import { LinkText } from "lib/Components/Text/LinkText"
-import { Flex, Sans, Serif, Theme } from "palette"
+import { Flex, Sans, Serif, Text, Theme } from "palette"
 import React from "react"
 import { defaultRules, renderMarkdown } from "../renderMarkdown"
 
@@ -33,6 +33,18 @@ describe("renderMarkdown", () => {
     expect(renderedComponent.find(Sans).at(1).text()).toEqual("This is a second paragraph")
   })
 
+  it("returns markdown with the new style", () => {
+    const componentList = renderMarkdown(
+      "This is a first paragraph\n\nThis is a second paragraph",
+      defaultRules({ useNewTextStyles: true })
+    ) as any
+    expect(componentList.length).toEqual(4)
+
+    const renderedComponent = shallow(<Flex>{componentList}</Flex>)
+    expect(renderedComponent.find(Sans).length).toEqual(0)
+    expect(renderedComponent.find(Text).length).toEqual(2)
+  })
+
   it("returns markdown for multiple paragraphs and links", () => {
     const componentList = renderMarkdown(
       "This is a [first](/artist/first) paragraph\n\nThis is a [second](/gene/second) paragraph"
@@ -53,7 +65,7 @@ describe("renderMarkdown", () => {
   })
 
   it("handles custom rules", () => {
-    const basicRules = defaultRules()
+    const basicRules = defaultRules({})
     const customRules = {
       ...basicRules,
       paragraph: {
@@ -82,7 +94,7 @@ describe("renderMarkdown", () => {
   })
 
   it("opens links modally when specified", () => {
-    const basicRules = defaultRules(true)
+    const basicRules = defaultRules({ modal: true })
     const customRules = {
       ...basicRules,
       paragraph: {
@@ -115,7 +127,7 @@ describe("renderMarkdown", () => {
   })
 
   it("doesn't open links modally when not specified", () => {
-    const basicRules = defaultRules()
+    const basicRules = defaultRules({})
     const customRules = {
       ...basicRules,
       paragraph: {
@@ -148,7 +160,7 @@ describe("renderMarkdown", () => {
   })
 
   it(`renders all the markdown elements`, async () => {
-    const basicRules = defaultRules()
+    const basicRules = defaultRules({})
     const kitchenSink = readFileSync(join(__dirname, "markdown-kitchen-sink.md")).toString()
 
     const tree = renderMarkdown(kitchenSink, basicRules)

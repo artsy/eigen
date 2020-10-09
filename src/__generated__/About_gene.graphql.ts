@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -19,34 +20,35 @@ export type About_gene$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "About_gene",
-  "type": "Gene",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "About_gene",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": "trending_artists",
-      "name": "trendingArtists",
-      "storageKey": null,
       "args": null,
       "concreteType": "Artist",
+      "kind": "LinkedField",
+      "name": "trendingArtists",
       "plural": true,
       "selections": [
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "RelatedArtists_artists",
-          "args": null
+          "name": "RelatedArtists_artists"
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "Biography_gene",
-      "args": null
+      "name": "Biography_gene"
     }
-  ]
+  ],
+  "type": "Gene",
+  "abstractKey": null
 };
 (node as any).hash = '09c3e04568ab6b702258dcaf97a58477';
 export default node;

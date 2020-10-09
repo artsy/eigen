@@ -1,5 +1,5 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Fair } from "lib/Scenes/Map/types"
 import { Box, Flex, Sans, space } from "palette"
 import React from "react"
@@ -12,7 +12,7 @@ export interface Props {
 
 export class TabFairItemRow extends React.Component<Props> {
   handleTap = (item: Fair) => {
-    SwitchBoard.presentFairViewController(this, item.slug)
+    navigate(`/fair/${item.slug}`)
   }
 
   render() {

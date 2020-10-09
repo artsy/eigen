@@ -7,6 +7,7 @@
 // Once this class encompasses as much of the strictly-necessary bridging code as possible we can duplicate it in Java
 // for the android build.
 
+
 @implementation ARStateKey
 // These should match the values in src/lib/store/NativeModel.ts
 + (NSString *)selectedTab { return @"selectedTab"; }
@@ -22,12 +23,16 @@
 + (NSString *)userAgent { return @"userAgent"; }
 + (NSString *)options { return @"options"; }
 
++ (NSString *)legacyFairSlugs { return @"legacyFairSlugs"; }
++ (NSString *)legacyFairProfileSlugs { return @"legacyFairProfileSlugs"; }
+
 + (NSString *)env { return @"env"; }
 + (NSString *)deviceId { return @"deviceId"; }
 
 + (NSString *)stripePublishableKey { return @"stripePublishableKey"; }
 + (NSString *)sentryDSN { return @"sentryDSN"; };
 @end
+
 
 @interface ARNotificationsManager ()
 @property (nonatomic, assign, readwrite) BOOL isBeingObserved;
@@ -43,6 +48,7 @@ static const NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
 static const NSString *stateChanged = @"STATE_CHANGED";
 static const NSString *resetState = @"RESET_APP_STATE";
 static const NSString *requestNavigation = @"REQUEST_NAVIGATION";
+
 
 @implementation ARNotificationsManager
 
@@ -70,12 +76,12 @@ RCT_EXPORT_MODULE();
 
 - (NSDictionary *)constantsToExport
 {
-    return @{@"nativeState": self.state};
+    return @{ @"nativeState" : self.state };
 }
 
 - (NSArray<NSString *> *)supportedEvents
 {
-    return @[@"event"];
+    return @[ @"event" ];
 }
 
 - (void)dispatch:(NSString *)eventName data:(NSDictionary *)data
@@ -92,7 +98,8 @@ RCT_EXPORT_MODULE();
 
 - (void)updateState:(NSDictionary *)state
 {
-    @synchronized (self) {
+    @synchronized(self)
+    {
         NSMutableDictionary *nextState = [[self state] mutableCopy];
         [nextState addEntriesFromDictionary:state];
         _state = [[NSDictionary alloc] initWithDictionary:nextState];
@@ -121,16 +128,19 @@ RCT_EXPORT_MODULE();
 }
 
 // Will be called when this module's first listener is added.
-- (void)startObserving {
+- (void)startObserving
+{
     self.isBeingObserved = true;
 }
 
 // Will be called when this module's last listener is removed, or on dealloc.
-- (void)stopObserving {
+- (void)stopObserving
+{
     self.isBeingObserved = false;
 }
 
-- (void)afterBootstrap:(void (^)())completion {
+- (void)afterBootstrap:(void (^)())completion
+{
     if (self.didBootStrap) {
         completion();
     } else {
@@ -138,7 +148,9 @@ RCT_EXPORT_MODULE();
     }
 }
 
-RCT_EXPORT_METHOD(postNotificationName:(nonnull NSString *)notificationName userInfo:(NSDictionary *)userInfo)
+RCT_EXPORT_METHOD(postNotificationName
+                  : (nonnull NSString *)notificationName userInfo
+                  : (NSDictionary *)userInfo)
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil userInfo:userInfo];
 }
@@ -156,7 +168,7 @@ RCT_EXPORT_METHOD(didFinishBootstrapping)
 // All notification JS methods occur on the main queue/thread.
 - (dispatch_queue_t)methodQueue
 {
-  return dispatch_get_main_queue();
+    return dispatch_get_main_queue();
 }
 
 

@@ -5,7 +5,7 @@ import {
   FilterParamName,
   FilterParams,
   selectedOption,
-} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
@@ -20,7 +20,7 @@ import {
   Aggregations,
   ArtworkFilterContext,
   useSelectedOptionsDisplay,
-} from "../utils/ArtworkFiltersStore"
+} from "../utils/ArtworkFilter/ArtworkFiltersStore"
 import { AnimatedBottomButton } from "./AnimatedBottomButton"
 import { ArtistsIFollowOptionsScreen } from "./ArtworkFilterOptions/ArtistsIFollowOptions"
 import { ColorOption, ColorOptionsScreen } from "./ArtworkFilterOptions/ColorOptions"
@@ -118,6 +118,14 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                   trackChangeFilters(
                     PageNames.ArtistPage,
                     OwnerEntityTypes.Artist,
+                    appliedFiltersParams,
+                    changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+                  )
+                  break
+                case "Fair":
+                  trackChangeFilters(
+                    PageNames.Fair2Page,
+                    OwnerEntityTypes.Fair,
                     appliedFiltersParams,
                     changedFiltersParams(appliedFiltersParams, state.selectedFilters)
                   )
@@ -313,6 +321,9 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
                 break
               case "ArtistSeries":
                 trackClear(PageNames.ArtistSeriesPage, OwnerEntityTypes.ArtistSeries)
+                break
+              case "Fair":
+                trackClear(PageNames.Fair2Page, OwnerEntityTypes.Fair)
                 break
             }
 

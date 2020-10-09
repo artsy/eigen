@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -16,20 +17,21 @@ export type AttachmentPreview_attachment$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "AttachmentPreview_attachment",
-  "type": "Attachment",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "AttachmentPreview_attachment",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "internalID",
       "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
       "storageKey": null
     }
-  ]
+  ],
+  "type": "Attachment",
+  "abstractKey": null
 };
 (node as any).hash = '2217887427ab884a634dd15c4f22d057';
 export default node;

@@ -133,6 +133,8 @@ export enum PageNames {
   ViewingRoomArtworks = "ViewingRoomArtworks",
   ViewingRoomArtworkPage = "ViewingRoomArtworkPage",
   ViewingRoomsList = "ViewingRoomsList",
+  Fair2Page = "fair",
+  Fair2MoreInfoPage = "moreInfo",
 }
 
 export enum OwnerEntityTypes {
@@ -145,6 +147,7 @@ export enum OwnerEntityTypes {
   Gallery = "Gallery",
   Gene = "Gene",
   Fair = "Fair",
+  Fair2MoreInfo = "moreInfo",
   Partner = "Partner",
   Search = "Search",
   Show = "Show",

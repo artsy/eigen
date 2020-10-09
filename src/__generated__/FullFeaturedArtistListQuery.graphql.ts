@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 61649f9c122ee3a7963acb744290647e */
+// @ts-nocheck
+/* @relayHash fd83790930111a8388c3ff3c05d79c44 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -66,16 +67,14 @@ fragment FullFeaturedArtistList_collection_2qE49v on MarketingCollection {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "collectionID",
-    "type": "String!",
-    "defaultValue": null
+    "name": "collectionID"
   },
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "screenWidth",
-    "type": "Int",
-    "defaultValue": null
+    "name": "screenWidth"
   }
 ],
 v1 = [
@@ -86,64 +85,61 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "FullFeaturedArtistListQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "FullFeaturedArtistListQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": "collection",
-        "name": "marketingCollection",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "MarketingCollection",
+        "kind": "LinkedField",
+        "name": "marketingCollection",
         "plural": false,
         "selections": [
           {
-            "kind": "FragmentSpread",
-            "name": "FullFeaturedArtistList_collection",
             "args": [
               {
                 "kind": "Variable",
                 "name": "screenWidth",
                 "variableName": "screenWidth"
               }
-            ]
+            ],
+            "kind": "FragmentSpread",
+            "name": "FullFeaturedArtistList_collection"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "FullFeaturedArtistListQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": "collection",
-        "name": "marketingCollection",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "MarketingCollection",
+        "kind": "LinkedField",
+        "name": "marketingCollection",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "artworksConnection",
-            "storageKey": "artworksConnection(aggregations:[\"MERCHANDISABLE_ARTISTS\"],size:0,sort:\"-decayed_merch\")",
             "args": [
               {
                 "kind": "Literal",
@@ -164,141 +160,145 @@ return {
               }
             ],
             "concreteType": "FilterArtworksConnection",
+            "kind": "LinkedField",
+            "name": "artworksConnection",
             "plural": false,
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "merchandisableArtists",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "Artist",
+                "kind": "LinkedField",
+                "name": "merchandisableArtists",
                 "plural": true,
                 "selections": [
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "internalID",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "internalID",
                     "storageKey": null
                   },
                   (v2/*: any*/),
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "slug",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "name",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "initials",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "href",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": "is_followed",
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "isFollowed",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "nationality",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "birthday",
-                    "args": null,
                     "storageKey": null
                   },
                   {
+                    "alias": null,
+                    "args": null,
                     "kind": "ScalarField",
-                    "alias": null,
                     "name": "deathday",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "image",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "Image",
+                    "kind": "LinkedField",
+                    "name": "image",
                     "plural": false,
                     "selections": [
                       {
-                        "kind": "ScalarField",
                         "alias": null,
-                        "name": "url",
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "url",
                         "storageKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
-              },
-              (v2/*: any*/)
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "query",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "MarketingCollectionQuery",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "artistIDs",
-                "args": null,
+                ],
                 "storageKey": null
               },
               (v2/*: any*/)
-            ]
+            ],
+            "storageKey": "artworksConnection(aggregations:[\"MERCHANDISABLE_ARTISTS\"],size:0,sort:\"-decayed_merch\")"
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "featuredArtistExclusionIds",
             "args": null,
+            "concreteType": "MarketingCollectionQuery",
+            "kind": "LinkedField",
+            "name": "query",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "artistIDs",
+                "storageKey": null
+              },
+              (v2/*: any*/)
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "featuredArtistExclusionIds",
             "storageKey": null
           },
           (v2/*: any*/)
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "FullFeaturedArtistListQuery",
     "id": "fd83790930111a8388c3ff3c05d79c44",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "FullFeaturedArtistListQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash cb8541be360654a1fe723322159e2c5f */
+// @ts-nocheck
+/* @relayHash 21d8ec4ea76fb5e8b71f3045b76905a0 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FairMoreInfoTestsQueryVariables = {};
@@ -16,7 +17,7 @@ export type FairMoreInfoTestsQueryRawResponse = {
         readonly links: string | null;
         readonly about: string | null;
         readonly ticketsLink: string | null;
-        readonly id: string | null;
+        readonly id: string;
     }) | null;
 };
 export type FairMoreInfoTestsQuery = {
@@ -47,85 +48,86 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "links",
   "args": null,
+  "kind": "ScalarField",
+  "name": "links",
   "storageKey": null
 },
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "about",
   "args": null,
+  "kind": "ScalarField",
+  "name": "about",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "ticketsLink",
   "args": null,
+  "kind": "ScalarField",
+  "name": "ticketsLink",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "FairMoreInfoTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "FairMoreInfoTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": "fair(id:\"sofa-chicago-2018\")",
         "args": (v0/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           (v1/*: any*/),
           (v2/*: any*/),
           (v3/*: any*/)
-        ]
+        ],
+        "storageKey": "fair(id:\"sofa-chicago-2018\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "FairMoreInfoTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": "fair(id:\"sofa-chicago-2018\")",
         "args": (v0/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           (v1/*: any*/),
           (v2/*: any*/),
           (v3/*: any*/),
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "id",
             "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": "fair(id:\"sofa-chicago-2018\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "FairMoreInfoTestsQuery",
     "id": "21d8ec4ea76fb5e8b71f3045b76905a0",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "FairMoreInfoTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

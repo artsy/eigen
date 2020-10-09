@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 991e1cbe1c25495119da78bfc91eb515 */
+// @ts-nocheck
+/* @relayHash f5ef215bce437df51c4fb3e13abae0e5 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type createMockNetworkLayerTestsAliasQueryVariables = {};
@@ -60,42 +61,39 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 },
 v2 = [
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "edges",
-    "storageKey": null,
     "args": null,
     "concreteType": "ArtworkEdge",
+    "kind": "LinkedField",
+    "name": "edges",
     "plural": true,
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "node",
-        "storageKey": null,
         "args": null,
         "concreteType": "Artwork",
+        "kind": "LinkedField",
+        "name": "node",
         "plural": false,
         "selections": [
           (v1/*: any*/)
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "storageKey": null
   }
 ],
 v3 = {
-  "kind": "LinkedField",
   "alias": "forSaleArtworks",
-  "name": "artworksConnection",
-  "storageKey": "artworksConnection(filter:\"IS_FOR_SALE\")",
   "args": [
     {
       "kind": "Literal",
@@ -104,14 +102,14 @@ v3 = {
     }
   ],
   "concreteType": "ArtworkConnection",
+  "kind": "LinkedField",
+  "name": "artworksConnection",
   "plural": false,
-  "selections": (v2/*: any*/)
+  "selections": (v2/*: any*/),
+  "storageKey": "artworksConnection(filter:\"IS_FOR_SALE\")"
 },
 v4 = {
-  "kind": "LinkedField",
   "alias": "notForSaleArtworks",
-  "name": "artworksConnection",
-  "storageKey": "artworksConnection(filter:\"IS_NOT_FOR_SALE\")",
   "args": [
     {
       "kind": "Literal",
@@ -120,60 +118,64 @@ v4 = {
     }
   ],
   "concreteType": "ArtworkConnection",
+  "kind": "LinkedField",
+  "name": "artworksConnection",
   "plural": false,
-  "selections": (v2/*: any*/)
+  "selections": (v2/*: any*/),
+  "storageKey": "artworksConnection(filter:\"IS_NOT_FOR_SALE\")"
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "createMockNetworkLayerTestsAliasQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "createMockNetworkLayerTestsAliasQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artist",
-        "storageKey": "artist(id:\"banksy\")",
         "args": (v0/*: any*/),
         "concreteType": "Artist",
+        "kind": "LinkedField",
+        "name": "artist",
         "plural": false,
         "selections": [
           (v3/*: any*/),
           (v4/*: any*/)
-        ]
+        ],
+        "storageKey": "artist(id:\"banksy\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "createMockNetworkLayerTestsAliasQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artist",
-        "storageKey": "artist(id:\"banksy\")",
         "args": (v0/*: any*/),
         "concreteType": "Artist",
+        "kind": "LinkedField",
+        "name": "artist",
         "plural": false,
         "selections": [
           (v3/*: any*/),
           (v4/*: any*/),
           (v1/*: any*/)
-        ]
+        ],
+        "storageKey": "artist(id:\"banksy\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "createMockNetworkLayerTestsAliasQuery",
     "id": "f5ef215bce437df51c4fb3e13abae0e5",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "createMockNetworkLayerTestsAliasQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

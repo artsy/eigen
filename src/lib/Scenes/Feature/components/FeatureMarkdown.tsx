@@ -9,15 +9,18 @@ export const FeatureMarkdown: React.FC<{ content: string; sansProps?: Partial<Re
   sansProps,
 }) => {
   const rendered = renderMarkdown(content, {
-    ...defaultRules(false, {
-      paragraph: {
-        match: SimpleMarkdown.blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
-        react: (node, output, state) => {
-          return (
-            <Sans size="3" key={state.key} {...sansProps}>
-              {output(node.content, state)}
-            </Sans>
-          )
+    ...defaultRules({
+      modal: false,
+      ruleOverrides: {
+        paragraph: {
+          match: SimpleMarkdown.blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
+          react: (node, output, state) => {
+            return (
+              <Sans size="3" key={state.key} {...sansProps}>
+                {output(node.content, state)}
+              </Sans>
+            )
+          },
         },
       },
     }),

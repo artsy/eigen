@@ -8,7 +8,7 @@ import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
 import { ImagePreview_attachment } from "__generated__/ImagePreview_attachment.graphql"
 
 const Image = styled(OpaqueImageView)`
-  height: 150;
+  height: 250;
   flex: 1;
 `
 
@@ -17,15 +17,15 @@ interface Props extends AttachmentProps {
 }
 
 export const ImagePreview: React.FC<Props> = ({ attachment, onSelected }) => (
-  <AttachmentPreview attachment={attachment as any} onSelected={onSelected}>
-    <Image imageURL={attachment.download_url} />
+  <AttachmentPreview attachment={attachment} onSelected={onSelected}>
+    <Image imageURL={attachment.downloadURL} />
   </AttachmentPreview>
 )
 
 export default createFragmentContainer(ImagePreview, {
   attachment: graphql`
     fragment ImagePreview_attachment on Attachment {
-      download_url: downloadURL
+      downloadURL
       ...AttachmentPreview_attachment
     }
   `,

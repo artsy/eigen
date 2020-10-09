@@ -1,7 +1,6 @@
 import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import Switchboard from "lib/NativeModules/SwitchBoard"
 import { Flex, Sans } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
@@ -16,6 +15,7 @@ import {
   CardRailMetadataContainer as MetadataContainer,
 } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { concat, take } from "lodash"
 import HomeAnalytics from "../homeAnalytics"
@@ -64,7 +64,7 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
               onPress={() => {
                 tracking.trackEvent(HomeAnalytics.fairThumbnailTapEvent(result?.internalID, result?.slug, index))
                 if (result?.slug) {
-                  Switchboard.presentFairViewController(navRef.current, result?.slug)
+                  navigate(`/fair/${result?.slug}`)
                 }
               }}
             >

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -168,143 +169,143 @@ export type GlobalMap_viewer$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "name",
   "args": null,
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 },
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 },
 v2 = {
-  "kind": "LinkedField",
   "alias": null,
-  "name": "coordinates",
-  "storageKey": null,
   "args": null,
   "concreteType": "LatLng",
+  "kind": "LinkedField",
+  "name": "coordinates",
   "plural": false,
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "lat",
       "args": null,
+      "kind": "ScalarField",
+      "name": "lat",
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "lng",
       "args": null,
+      "kind": "ScalarField",
+      "name": "lng",
       "storageKey": null
     }
-  ]
+  ],
+  "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 },
 v4 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 },
 v5 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "status",
   "args": null,
+  "kind": "ScalarField",
+  "name": "status",
   "storageKey": null
 },
 v6 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "isStubShow",
   "args": null,
+  "kind": "ScalarField",
+  "name": "isStubShow",
   "storageKey": null
 },
 v7 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "href",
   "args": null,
+  "kind": "ScalarField",
+  "name": "href",
   "storageKey": null
 },
 v8 = {
-  "kind": "ScalarField",
   "alias": "is_followed",
-  "name": "isFollowed",
   "args": null,
+  "kind": "ScalarField",
+  "name": "isFollowed",
   "storageKey": null
 },
 v9 = {
-  "kind": "ScalarField",
   "alias": "exhibition_period",
-  "name": "exhibitionPeriod",
   "args": null,
+  "kind": "ScalarField",
+  "name": "exhibitionPeriod",
   "storageKey": null
 },
 v10 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "url",
   "args": null,
+  "kind": "ScalarField",
+  "name": "url",
   "storageKey": null
 },
 v11 = {
-  "kind": "LinkedField",
   "alias": "cover_image",
-  "name": "coverImage",
-  "storageKey": null,
   "args": null,
   "concreteType": "Image",
+  "kind": "LinkedField",
+  "name": "coverImage",
   "plural": false,
   "selections": [
     (v10/*: any*/)
-  ]
+  ],
+  "storageKey": null
 },
 v12 = {
-  "kind": "LinkedField",
   "alias": null,
-  "name": "location",
-  "storageKey": null,
   "args": null,
   "concreteType": "Location",
+  "kind": "LinkedField",
+  "name": "location",
   "plural": false,
   "selections": [
     (v2/*: any*/)
-  ]
+  ],
+  "storageKey": null
 },
 v13 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "type",
   "args": null,
+  "kind": "ScalarField",
+  "name": "type",
   "storageKey": null
 },
 v14 = {
-  "kind": "ScalarField",
   "alias": "start_at",
-  "name": "startAt",
   "args": null,
+  "kind": "ScalarField",
+  "name": "startAt",
   "storageKey": null
 },
 v15 = {
-  "kind": "ScalarField",
   "alias": "end_at",
-  "name": "endAt",
   "args": null,
+  "kind": "ScalarField",
+  "name": "endAt",
   "storageKey": null
 },
 v16 = {
@@ -324,21 +325,19 @@ v18 = {
 },
 v19 = [
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "edges",
-    "storageKey": null,
     "args": null,
     "concreteType": "ShowEdge",
+    "kind": "LinkedField",
+    "name": "edges",
     "plural": true,
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "node",
-        "storageKey": null,
         "args": null,
         "concreteType": "Show",
+        "kind": "LinkedField",
+        "name": "node",
         "plural": false,
         "selections": [
           (v1/*: any*/),
@@ -356,42 +355,36 @@ v19 = [
           (v14/*: any*/),
           (v15/*: any*/),
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "partner",
-            "storageKey": null,
             "args": null,
             "concreteType": null,
+            "kind": "LinkedField",
+            "name": "partner",
             "plural": false,
             "selections": [
               {
                 "kind": "InlineFragment",
-                "type": "Partner",
                 "selections": [
                   (v0/*: any*/),
                   (v13/*: any*/),
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "profile",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "Profile",
+                    "kind": "LinkedField",
+                    "name": "profile",
                     "plural": false,
                     "selections": [
                       {
-                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "image",
-                        "storageKey": null,
                         "args": null,
                         "concreteType": "Image",
+                        "kind": "LinkedField",
+                        "name": "image",
                         "plural": false,
                         "selections": [
                           {
-                            "kind": "ScalarField",
                             "alias": null,
-                            "name": "url",
                             "args": [
                               {
                                 "kind": "Literal",
@@ -399,46 +392,49 @@ v19 = [
                                 "value": "square"
                               }
                             ],
+                            "kind": "ScalarField",
+                            "name": "url",
                             "storageKey": "url(version:\"square\")"
                           }
-                        ]
+                        ],
+                        "storageKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "type": "Partner",
+                "abstractKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "storageKey": null
   }
 ];
 return {
-  "kind": "Fragment",
-  "name": "GlobalMap_viewer",
-  "type": "Query",
-  "metadata": null,
   "argumentDefinitions": [
     {
+      "defaultValue": null,
       "kind": "LocalArgument",
-      "name": "citySlug",
-      "type": "String!",
-      "defaultValue": null
+      "name": "citySlug"
     },
     {
+      "defaultValue": null,
       "kind": "LocalArgument",
-      "name": "maxInt",
-      "type": "Int!",
-      "defaultValue": null
+      "name": "maxInt"
     }
   ],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "GlobalMap_viewer",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "city",
-      "storageKey": null,
       "args": [
         {
           "kind": "Variable",
@@ -447,41 +443,41 @@ return {
         }
       ],
       "concreteType": "City",
+      "kind": "LinkedField",
+      "name": "city",
       "plural": false,
       "selections": [
         (v0/*: any*/),
         (v1/*: any*/),
         (v2/*: any*/),
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "sponsoredContent",
-          "storageKey": null,
           "args": null,
           "concreteType": "CitySponsoredContent",
+          "kind": "LinkedField",
+          "name": "sponsoredContent",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "introText",
-              "args": null,
               "storageKey": null
             },
             {
+              "alias": null,
+              "args": null,
               "kind": "ScalarField",
-              "alias": null,
               "name": "artGuideUrl",
-              "args": null,
               "storageKey": null
             },
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "featuredShows",
-              "storageKey": null,
               "args": null,
               "concreteType": "Show",
+              "kind": "LinkedField",
+              "name": "featuredShows",
               "plural": true,
               "selections": [
                 (v1/*: any*/),
@@ -499,31 +495,30 @@ return {
                 (v14/*: any*/),
                 (v15/*: any*/),
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "partner",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": null,
+                  "kind": "LinkedField",
+                  "name": "partner",
                   "plural": false,
                   "selections": [
                     {
                       "kind": "InlineFragment",
-                      "type": "Partner",
                       "selections": [
                         (v0/*: any*/),
                         (v13/*: any*/)
-                      ]
+                      ],
+                      "type": "Partner",
+                      "abstractKey": null
                     }
-                  ]
+                  ],
+                  "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             },
             {
-              "kind": "LinkedField",
               "alias": "shows",
-              "name": "showsConnection",
-              "storageKey": "showsConnection(first:1,sort:\"START_AT_ASC\")",
               "args": [
                 {
                   "kind": "Literal",
@@ -533,24 +528,25 @@ return {
                 (v16/*: any*/)
               ],
               "concreteType": "ShowConnection",
+              "kind": "LinkedField",
+              "name": "showsConnection",
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "totalCount",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "totalCount",
                   "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": "showsConnection(first:1,sort:\"START_AT_ASC\")"
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": "upcomingShows",
-          "name": "showsConnection",
-          "storageKey": null,
           "args": [
             {
               "kind": "Literal",
@@ -567,14 +563,14 @@ return {
             }
           ],
           "concreteType": "ShowConnection",
+          "kind": "LinkedField",
+          "name": "showsConnection",
           "plural": false,
-          "selections": (v19/*: any*/)
+          "selections": (v19/*: any*/),
+          "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": "shows",
-          "name": "showsConnection",
-          "storageKey": null,
           "args": [
             (v17/*: any*/),
             (v18/*: any*/),
@@ -590,14 +586,14 @@ return {
             }
           ],
           "concreteType": "ShowConnection",
+          "kind": "LinkedField",
+          "name": "showsConnection",
           "plural": false,
-          "selections": (v19/*: any*/)
+          "selections": (v19/*: any*/),
+          "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": "fairs",
-          "name": "fairsConnection",
-          "storageKey": null,
           "args": [
             (v17/*: any*/),
             (v16/*: any*/),
@@ -608,24 +604,24 @@ return {
             }
           ],
           "concreteType": "FairConnection",
+          "kind": "LinkedField",
+          "name": "fairsConnection",
           "plural": false,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "edges",
-              "storageKey": null,
               "args": null,
               "concreteType": "FairEdge",
+              "kind": "LinkedField",
+              "name": "edges",
               "plural": true,
               "selections": [
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "node",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "Fair",
+                  "kind": "LinkedField",
+                  "name": "node",
                   "plural": false,
                   "selections": [
                     (v4/*: any*/),
@@ -633,88 +629,84 @@ return {
                     (v0/*: any*/),
                     (v9/*: any*/),
                     {
-                      "kind": "LinkedField",
                       "alias": null,
-                      "name": "counts",
-                      "storageKey": null,
                       "args": null,
                       "concreteType": "FairCounts",
+                      "kind": "LinkedField",
+                      "name": "counts",
                       "plural": false,
                       "selections": [
                         {
-                          "kind": "ScalarField",
                           "alias": null,
-                          "name": "partners",
                           "args": null,
+                          "kind": "ScalarField",
+                          "name": "partners",
                           "storageKey": null
                         }
-                      ]
+                      ],
+                      "storageKey": null
                     },
                     (v12/*: any*/),
                     {
-                      "kind": "LinkedField",
                       "alias": null,
-                      "name": "image",
-                      "storageKey": null,
                       "args": null,
                       "concreteType": "Image",
+                      "kind": "LinkedField",
+                      "name": "image",
                       "plural": false,
                       "selections": [
                         {
-                          "kind": "ScalarField",
                           "alias": "image_url",
-                          "name": "imageURL",
                           "args": null,
+                          "kind": "ScalarField",
+                          "name": "imageURL",
                           "storageKey": null
                         },
                         {
-                          "kind": "ScalarField",
                           "alias": "aspect_ratio",
-                          "name": "aspectRatio",
                           "args": null,
+                          "kind": "ScalarField",
+                          "name": "aspectRatio",
                           "storageKey": null
                         },
                         (v10/*: any*/)
-                      ]
+                      ],
+                      "storageKey": null
                     },
                     {
-                      "kind": "LinkedField",
                       "alias": null,
-                      "name": "profile",
-                      "storageKey": null,
                       "args": null,
                       "concreteType": "Profile",
+                      "kind": "LinkedField",
+                      "name": "profile",
                       "plural": false,
                       "selections": [
                         {
-                          "kind": "LinkedField",
                           "alias": null,
-                          "name": "icon",
-                          "storageKey": null,
                           "args": null,
                           "concreteType": "Image",
+                          "kind": "LinkedField",
+                          "name": "icon",
                           "plural": false,
                           "selections": [
                             (v3/*: any*/),
                             (v7/*: any*/),
                             {
-                              "kind": "ScalarField",
                               "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
                               "name": "height",
-                              "args": null,
                               "storageKey": null
                             },
                             {
-                              "kind": "ScalarField",
                               "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
                               "name": "width",
-                              "args": null,
                               "storageKey": null
                             },
                             {
-                              "kind": "ScalarField",
                               "alias": null,
-                              "name": "url",
                               "args": [
                                 {
                                   "kind": "Literal",
@@ -722,26 +714,36 @@ return {
                                   "value": "square140"
                                 }
                               ],
+                              "kind": "ScalarField",
+                              "name": "url",
                               "storageKey": "url(version:\"square140\")"
                             }
-                          ]
+                          ],
+                          "storageKey": null
                         },
                         (v4/*: any*/),
                         (v1/*: any*/),
                         (v0/*: any*/)
-                      ]
+                      ],
+                      "storageKey": null
                     },
                     (v14/*: any*/),
                     (v15/*: any*/)
-                  ]
+                  ],
+                  "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Query",
+  "abstractKey": null
 };
 })();
 (node as any).hash = '53446e45f521a86c17c04ad7873626f4';

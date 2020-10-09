@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,9 +30,24 @@ export type WorksForYou_me$key = {
 
 
 const node: ReaderFragment = {
+  "argumentDefinitions": [
+    {
+      "defaultValue": 10,
+      "kind": "LocalArgument",
+      "name": "count"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "cursor"
+    },
+    {
+      "defaultValue": "PUBLISHED_AT_DESC",
+      "kind": "LocalArgument",
+      "name": "sort"
+    }
+  ],
   "kind": "Fragment",
-  "name": "WorksForYou_me",
-  "type": "Me",
   "metadata": {
     "connection": [
       {
@@ -45,41 +61,18 @@ const node: ReaderFragment = {
       }
     ]
   },
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "count",
-      "type": "Int",
-      "defaultValue": 10
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "cursor",
-      "type": "String",
-      "defaultValue": null
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "sort",
-      "type": "ArtworkSorts",
-      "defaultValue": "PUBLISHED_AT_DESC"
-    }
-  ],
+  "name": "WorksForYou_me",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "followsAndSaves",
-      "storageKey": null,
       "args": null,
       "concreteType": "FollowsAndSaves",
+      "kind": "LinkedField",
+      "name": "followsAndSaves",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": "notifications",
-          "name": "__WorksForYou_notifications_connection",
-          "storageKey": null,
           "args": [
             {
               "kind": "Variable",
@@ -88,86 +81,92 @@ const node: ReaderFragment = {
             }
           ],
           "concreteType": "FollowedArtistsArtworksGroupConnection",
+          "kind": "LinkedField",
+          "name": "__WorksForYou_notifications_connection",
           "plural": false,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "pageInfo",
-              "storageKey": null,
               "args": null,
               "concreteType": "PageInfo",
+              "kind": "LinkedField",
+              "name": "pageInfo",
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "hasNextPage",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "hasNextPage",
                   "storageKey": null
                 },
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "endCursor",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "endCursor",
                   "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             },
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "edges",
-              "storageKey": null,
               "args": null,
               "concreteType": "FollowedArtistsArtworksGroupEdge",
+              "kind": "LinkedField",
+              "name": "edges",
               "plural": true,
               "selections": [
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "node",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "FollowedArtistsArtworksGroup",
+                  "kind": "LinkedField",
+                  "name": "node",
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "ScalarField",
                       "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
                       "name": "id",
-                      "args": null,
                       "storageKey": null
                     },
                     {
-                      "kind": "ScalarField",
                       "alias": null,
-                      "name": "__typename",
                       "args": null,
+                      "kind": "ScalarField",
+                      "name": "__typename",
                       "storageKey": null
                     },
                     {
+                      "args": null,
                       "kind": "FragmentSpread",
-                      "name": "Notification_notification",
-                      "args": null
+                      "name": "Notification_notification"
                     }
-                  ]
+                  ],
+                  "storageKey": null
                 },
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "cursor",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "cursor",
                   "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Me",
+  "abstractKey": null
 };
 (node as any).hash = '84c308b210f3cc201e94b14eacb98b04';
 export default node;

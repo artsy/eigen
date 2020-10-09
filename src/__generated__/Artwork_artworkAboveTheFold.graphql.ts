@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -24,79 +25,80 @@ export type Artwork_artworkAboveTheFold$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "Artwork_artworkAboveTheFold",
-  "type": "Artwork",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Artwork_artworkAboveTheFold",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "internalID",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "id",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": "is_acquireable",
+      "args": null,
+      "kind": "ScalarField",
       "name": "isAcquireable",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": "is_offerable",
+      "args": null,
+      "kind": "ScalarField",
       "name": "isOfferable",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": "is_biddable",
+      "args": null,
+      "kind": "ScalarField",
       "name": "isBiddable",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": "is_inquireable",
-      "name": "isInquireable",
       "args": null,
-      "storageKey": null
-    },
-    {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "availability",
-      "args": null,
+      "name": "isInquireable",
       "storageKey": null
     },
     {
-      "kind": "FragmentSpread",
-      "name": "ArtworkHeader_artwork",
-      "args": null
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "availability",
+      "storageKey": null
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "CommercialInformation_artwork",
-      "args": null
+      "name": "ArtworkHeader_artwork"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "CommercialInformation_artwork"
     }
-  ]
+  ],
+  "type": "Artwork",
+  "abstractKey": null
 };
 (node as any).hash = '09df973254733240758245f8a1ce5857';
 export default node;

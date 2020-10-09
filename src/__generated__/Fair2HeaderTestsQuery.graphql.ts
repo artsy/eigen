@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5b08dd3295760f5d39e310a8a4227f08 */
+// @ts-nocheck
+/* @relayHash cdd95d851e593ab919b430f765303fab */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -20,25 +21,28 @@ export type Fair2HeaderTestsQueryRawResponse = {
         readonly slug: string;
         readonly profile: ({
             readonly icon: ({
-                readonly url: string | null;
+                readonly imageUrl: string | null;
             }) | null;
-            readonly id: string | null;
+            readonly id: string;
         }) | null;
         readonly image: ({
-            readonly url: string | null;
+            readonly imageUrl: string | null;
             readonly aspectRatio: number;
         }) | null;
         readonly tagline: string | null;
         readonly location: ({
             readonly summary: string | null;
-            readonly id: string | null;
+            readonly id: string;
         }) | null;
         readonly ticketsLink: string | null;
-        readonly hours: string | null;
-        readonly links: string | null;
-        readonly tickets: string | null;
-        readonly contact: string | null;
-        readonly id: string | null;
+        readonly fairHours: string | null;
+        readonly fairLinks: string | null;
+        readonly fairTickets: string | null;
+        readonly fairContact: string | null;
+        readonly exhibitionPeriod: string | null;
+        readonly startAt: string | null;
+        readonly endAt: string | null;
+        readonly id: string;
     }) | null;
 };
 export type Fair2HeaderTestsQuery = {
@@ -66,12 +70,12 @@ fragment Fair2Header_fair on Fair {
   slug
   profile {
     icon {
-      url(version: "untouched-png")
+      imageUrl: url(version: "untouched-png")
     }
     id
   }
   image {
-    url(version: "large_rectangle")
+    imageUrl: url(version: "large_rectangle")
     aspectRatio
   }
   tagline
@@ -80,20 +84,26 @@ fragment Fair2Header_fair on Fair {
     id
   }
   ticketsLink
-  hours(format: MARKDOWN)
-  links(format: MARKDOWN)
-  tickets(format: MARKDOWN)
-  contact(format: MARKDOWN)
+  fairHours: hours(format: MARKDOWN)
+  fairLinks: links(format: MARKDOWN)
+  fairTickets: tickets(format: MARKDOWN)
+  fairContact: contact(format: MARKDOWN)
+  ...Fair2Timing_fair
+}
+
+fragment Fair2Timing_fair on Fair {
+  exhibitionPeriod
+  startAt
+  endAt
 }
 */
 
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "fairID",
-    "type": "String!",
-    "defaultValue": null
+    "name": "fairID"
   }
 ],
 v1 = [
@@ -104,17 +114,17 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "summary",
   "args": null,
+  "kind": "ScalarField",
+  "name": "summary",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 },
 v4 = [
@@ -125,90 +135,86 @@ v4 = [
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "Fair2HeaderTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "Fair2HeaderTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "Fair2Header_fair",
-            "args": null
+            "name": "Fair2Header_fair"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "Fair2HeaderTestsQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "about",
             "args": null,
+            "kind": "ScalarField",
+            "name": "about",
             "storageKey": null
           },
           (v2/*: any*/),
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "name",
-            "args": null,
             "storageKey": null
           },
           {
+            "alias": null,
+            "args": null,
             "kind": "ScalarField",
-            "alias": null,
             "name": "slug",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "profile",
-            "storageKey": null,
             "args": null,
             "concreteType": "Profile",
+            "kind": "LinkedField",
+            "name": "profile",
             "plural": false,
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "icon",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "Image",
+                "kind": "LinkedField",
+                "name": "icon",
                 "plural": false,
                 "selections": [
                   {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "url",
+                    "alias": "imageUrl",
                     "args": [
                       {
                         "kind": "Literal",
@@ -216,26 +222,27 @@ return {
                         "value": "untouched-png"
                       }
                     ],
+                    "kind": "ScalarField",
+                    "name": "url",
                     "storageKey": "url(version:\"untouched-png\")"
                   }
-                ]
+                ],
+                "storageKey": null
               },
               (v3/*: any*/)
-            ]
+            ],
+            "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "image",
-            "storageKey": null,
             "args": null,
             "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "image",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "url",
+                "alias": "imageUrl",
                 "args": [
                   {
                     "kind": "Literal",
@@ -243,83 +250,108 @@ return {
                     "value": "large_rectangle"
                   }
                 ],
+                "kind": "ScalarField",
+                "name": "url",
                 "storageKey": "url(version:\"large_rectangle\")"
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "aspectRatio",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "aspectRatio",
                 "storageKey": null
               }
-            ]
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "tagline",
-            "args": null,
+            ],
             "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "location",
-            "storageKey": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "tagline",
+            "storageKey": null
+          },
+          {
+            "alias": null,
             "args": null,
             "concreteType": "Location",
+            "kind": "LinkedField",
+            "name": "location",
             "plural": false,
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/)
-            ]
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "ticketsLink",
-            "args": null,
+            ],
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "hours",
+            "args": null,
+            "kind": "ScalarField",
+            "name": "ticketsLink",
+            "storageKey": null
+          },
+          {
+            "alias": "fairHours",
             "args": (v4/*: any*/),
+            "kind": "ScalarField",
+            "name": "hours",
             "storageKey": "hours(format:\"MARKDOWN\")"
           },
           {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "links",
+            "alias": "fairLinks",
             "args": (v4/*: any*/),
+            "kind": "ScalarField",
+            "name": "links",
             "storageKey": "links(format:\"MARKDOWN\")"
           },
           {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "tickets",
+            "alias": "fairTickets",
             "args": (v4/*: any*/),
+            "kind": "ScalarField",
+            "name": "tickets",
             "storageKey": "tickets(format:\"MARKDOWN\")"
           },
           {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "contact",
+            "alias": "fairContact",
             "args": (v4/*: any*/),
+            "kind": "ScalarField",
+            "name": "contact",
             "storageKey": "contact(format:\"MARKDOWN\")"
           },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "exhibitionPeriod",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "startAt",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "endAt",
+            "storageKey": null
+          },
           (v3/*: any*/)
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
+    "id": "cdd95d851e593ab919b430f765303fab",
+    "metadata": {},
     "name": "Fair2HeaderTestsQuery",
-    "id": "bb7c7c68f5493b1342f22acb61e03dbf",
-    "text": null,
-    "metadata": {}
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

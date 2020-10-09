@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 25ad862e204cd3b9ec7811c7a6d3614c */
+// @ts-nocheck
+/* @relayHash 0760ef06e8a74d12fb6d4cb8871deb41 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateMyProfileInput = {
@@ -81,10 +82,9 @@ mutation updateMyUserProfileMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "UpdateMyProfileInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
@@ -95,100 +95,96 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "email",
   "args": null,
+  "kind": "ScalarField",
+  "name": "email",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "name",
   "args": null,
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 },
 v4 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "phone",
   "args": null,
+  "kind": "ScalarField",
+  "name": "phone",
   "storageKey": null
 },
 v5 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "receiveLotOpeningSoonNotification",
   "args": null,
+  "kind": "ScalarField",
+  "name": "receiveLotOpeningSoonNotification",
   "storageKey": null
 },
 v6 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "receiveNewSalesNotification",
   "args": null,
+  "kind": "ScalarField",
+  "name": "receiveNewSalesNotification",
   "storageKey": null
 },
 v7 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "receiveNewWorksNotification",
   "args": null,
+  "kind": "ScalarField",
+  "name": "receiveNewWorksNotification",
   "storageKey": null
 },
 v8 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "receiveOutbidNotification",
   "args": null,
+  "kind": "ScalarField",
+  "name": "receiveOutbidNotification",
   "storageKey": null
 },
 v9 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "receivePromotionNotification",
   "args": null,
+  "kind": "ScalarField",
+  "name": "receivePromotionNotification",
   "storageKey": null
 },
 v10 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "receivePurchaseNotification",
   "args": null,
+  "kind": "ScalarField",
+  "name": "receivePurchaseNotification",
   "storageKey": null
 },
 v11 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "receiveSaleOpeningClosingNotification",
   "args": null,
+  "kind": "ScalarField",
+  "name": "receiveSaleOpeningClosingNotification",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "updateMyUserProfileMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "updateMyUserProfileMutation",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "updateMyUserProfile",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "UpdateMyProfilePayload",
+        "kind": "LinkedField",
+        "name": "updateMyUserProfile",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "me",
-            "storageKey": null,
             "args": null,
             "concreteType": "Me",
+            "kind": "LinkedField",
+            "name": "me",
             "plural": false,
             "selections": [
               (v2/*: any*/),
@@ -201,33 +197,36 @@ return {
               (v9/*: any*/),
               (v10/*: any*/),
               (v11/*: any*/)
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "updateMyUserProfileMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "updateMyUserProfile",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "UpdateMyProfilePayload",
+        "kind": "LinkedField",
+        "name": "updateMyUserProfile",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "me",
-            "storageKey": null,
             "args": null,
             "concreteType": "Me",
+            "kind": "LinkedField",
+            "name": "me",
             "plural": false,
             "selections": [
               (v2/*: any*/),
@@ -241,24 +240,26 @@ return {
               (v10/*: any*/),
               (v11/*: any*/),
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "id",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "id",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "updateMyUserProfileMutation",
     "id": "0760ef06e8a74d12fb6d4cb8871deb41",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "updateMyUserProfileMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

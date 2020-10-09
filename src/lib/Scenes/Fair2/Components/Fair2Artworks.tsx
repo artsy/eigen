@@ -2,12 +2,12 @@ import { OwnerType } from "@artsy/cohesion"
 import { Fair2Artworks_fair } from "__generated__/Fair2Artworks_fair.graphql"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
   aggregationsType,
   aggregationsWithFollowedArtists,
   filterArtworksParams,
-} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
-import { ArtworkFilterContext } from "lib/utils/ArtworkFiltersStore"
+} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { Box } from "palette"
 import React, { useContext, useEffect } from "react"

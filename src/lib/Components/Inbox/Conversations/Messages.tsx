@@ -1,17 +1,16 @@
-import React from "react"
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { Dimensions, FlatList, RefreshControl, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
-import ARSwitchBoard from "../../../NativeModules/SwitchBoard"
-import Message from "./Message"
-import ArtworkPreview from "./Preview/ArtworkPreview"
-import ShowPreview from "./Preview/ShowPreview"
+import { MessageGroup } from "./MessageGroup"
 
 import { Messages_conversation } from "__generated__/Messages_conversation.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
+
+import { groupMessages, MessageGroup as MessageGroupType } from "./utils/groupMessages"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -21,41 +20,50 @@ interface Props {
   onDataFetching?: (loading: boolean) => void
 }
 
-interface State {
-  fetchingMoreData: boolean
-  reloadingData: boolean
-  shouldStickFirstMessageToTop: boolean
-}
-
 const LoadingIndicator = styled.ActivityIndicator`
   margin-top: 40px;
 `
 
-export class Messages extends React.Component<Props, State> {
-  flatList: FlatList<any> | null = null
+export const Messages: React.FC<Props> = forwardRef((props, ref) => {
+  const { conversation, relay, onDataFetching } = props
 
-  state: State = {
-    fetchingMoreData: false,
-    reloadingData: false,
-    shouldStickFirstMessageToTop: false,
-  }
+  const [fetchingMoreData, setFetchingMoreData] = useState(false)
+  const [reloadingData, setReloadingData] = useState(false)
 
-  flatListHeight = 0
+  const [messages, setMessages] = useState<MessageGroupType[]>()
+  useEffect(() => {
+    const nodes = extractNodes(conversation.messagesConnection)
+      .filter((node) => node.body?.length || node.attachments?.length)
+      .map((node) => {
+        return { key: node.id, ...node }
+      })
+      .reverse()
+    setMessages(groupMessages(nodes))
+  }, [conversation.messagesConnection])
 
-  loadMore() {
-    if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
+  const flatList = useRef<FlatList>(null)
+  const [flatListHeight, setFlatListHeight] = useState(0)
+  const [contentHeight, setContentHeight] = useState(0)
+  const [shouldStickFirstMessageToTop, setShouldStickFirstMessageToTop] = useState(false)
+
+  useEffect(() => {
+    setShouldStickFirstMessageToTop(contentHeight < flatListHeight)
+  }, [contentHeight || flatListHeight])
+
+  const loadMore = () => {
+    if (!relay.hasMore() || relay.isLoading()) {
       return
     }
 
     const updateState = (loading: boolean) => {
-      this.setState({ fetchingMoreData: loading })
-      if (this.props.onDataFetching) {
-        this.props.onDataFetching(loading)
+      setFetchingMoreData(loading)
+      if (onDataFetching) {
+        onDataFetching(loading)
       }
     }
 
     updateState(true)
-    this.props.relay.loadMore(PAGE_SIZE, (error) => {
+    relay.loadMore(PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("Messages.tsx", error.message)
@@ -64,104 +72,71 @@ export class Messages extends React.Component<Props, State> {
     })
   }
 
-  scrollToLastMessage() {
-    // TODO: This will break in the new RN without a viewOffset parameter
-    this.flatList?.scrollToIndex({ animated: true, index: 0 })
-  }
+  // The scrollToLastMessage method is being called from a parent component
+  // TODO: Refactor to not have to use this
+  useImperativeHandle(ref, () => ({
+    scrollToLastMessage() {
+      flatList.current?.scrollToIndex({ animated: true, index: 0 })
+    },
+  }))
 
-  reload() {
-    const count = extractNodes(this.props.conversation.messages).length
-    this.setState({ reloadingData: true })
-    this.props.relay.refetchConnection(count, (error) => {
+  const reload = () => {
+    const count = extractNodes(conversation.messagesConnection).length
+    setReloadingData(true)
+    relay.refetchConnection(count, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("Messages.tsx", error.message)
       }
-      this.setState({ reloadingData: false })
+      setReloadingData(false)
     })
   }
 
-  render() {
-    const messages = extractNodes(this.props.conversation.messages)
-      .filter((node) => {
-        return (node.body && node.body.length) || (node.attachments && node.attachments.length)
-      })
-      .map((node, index, arr) => {
-        const isFirstMessage = this.props.relay && !this.props.relay.hasMore() && index === arr.length - 1
-        return { first_message: isFirstMessage, key: node.id, ...node }
-      })
+  const refreshControl = <RefreshControl refreshing={reloadingData} onRefresh={reload} />
 
-    const refreshControl = <RefreshControl refreshing={this.state.reloadingData} onRefresh={this.reload.bind(this)} />
+  const messagesStyles: Partial<ViewStyle> = isPad
+    ? {
+        width: 708,
+        alignSelf: "center",
+      }
+    : {}
 
-    const messagesStyles: Partial<ViewStyle> = isPad
-      ? {
-          width: 708,
-          alignSelf: "center",
-        }
-      : {}
-
-    return (
-      <FlatList
-        inverted={!this.state.shouldStickFirstMessageToTop}
-        data={this.state.shouldStickFirstMessageToTop ? messages.reverse() : messages}
-        renderItem={({ item, index }) => {
-          const conversation = this.props.conversation
-          const subjectItem = conversation.items?.[0]?.item!
-          const partnerName = conversation.to.name
-          const senderName = item.is_from_user ? conversation.from.name : partnerName
-          const initials = item.is_from_user ? conversation.from.initials : conversation.to.initials
-          return (
-            <Message
-              index={index}
-              firstMessage={item.first_message}
-              initialText={conversation.initial_message}
-              message={item}
-              conversationId={conversation.internalID!}
-              senderName={senderName}
-              initials={initials!}
-              artworkPreview={
-                item.first_message && subjectItem.__typename === "Artwork" ? (
-                  <ArtworkPreview
-                    artwork={subjectItem}
-                    onSelected={() => ARSwitchBoard.presentNavigationViewController(this, subjectItem.href!)}
-                  />
-                ) : undefined
-              }
-              showPreview={
-                item.first_message && subjectItem.__typename === "Show" ? (
-                  <ShowPreview
-                    show={subjectItem}
-                    onSelected={() => ARSwitchBoard.presentNavigationViewController(this, subjectItem.href!)}
-                  />
-                ) : undefined
-              }
-            />
-          )
-        }}
-        ref={(flatList) => (this.flatList = flatList as any)}
-        keyExtractor={({ id }) => id}
-        keyboardShouldPersistTaps="always"
-        onEndReached={this.loadMore.bind(this)}
-        onEndReachedThreshold={0.2}
-        onLayout={({
-          nativeEvent: {
-            layout: { height },
-          },
-        }) => {
-          this.flatListHeight = height
-        }}
-        onContentSizeChange={(_width, height) => {
-          this.setState({
-            shouldStickFirstMessageToTop: height < this.flatListHeight,
-          })
-        }}
-        refreshControl={refreshControl}
-        style={messagesStyles}
-        ListFooterComponent={<LoadingIndicator animating={this.state.fetchingMoreData} hidesWhenStopped />}
-      />
-    )
-  }
-}
+  return (
+    <FlatList
+      key={conversation.internalID!}
+      data={messages}
+      renderItem={({ item, index }) => {
+        return (
+          <MessageGroup
+            group={item}
+            conversationId={conversation.internalID!}
+            subjectItem={conversation.items?.[0]?.item!}
+            key={`group-${index}-${item[0]?.key}`}
+          />
+        )
+      }}
+      inverted={!shouldStickFirstMessageToTop}
+      ref={flatList}
+      keyExtractor={({ id }) => id}
+      keyboardShouldPersistTaps="always"
+      onEndReached={loadMore}
+      onEndReachedThreshold={0.2}
+      onLayout={({
+        nativeEvent: {
+          layout: { height },
+        },
+      }) => {
+        setFlatListHeight(height)
+      }}
+      onContentSizeChange={(_width, height) => {
+        setContentHeight(height)
+      }}
+      refreshControl={refreshControl}
+      style={{ ...messagesStyles, paddingHorizontal: 10 }}
+      ListFooterComponent={<LoadingIndicator animating={fetchingMoreData} hidesWhenStopped />}
+    />
+  )
+})
 
 export default createPaginationContainer(
   Messages,
@@ -174,14 +149,14 @@ export default createPaginationContainer(
         from {
           name
           email
-          initials
         }
         to {
           name
-          initials
         }
-        initial_message: initialMessage
-        messages(first: $count, after: $after, sort: DESC) @connection(key: "Messages_messages", filters: []) {
+        initialMessage
+        lastMessageID
+        messagesConnection(first: $count, after: $after, sort: DESC)
+        @connection(key: "Messages_messagesConnection", filters: []) {
           pageInfo {
             startCursor
             endCursor
@@ -192,11 +167,20 @@ export default createPaginationContainer(
             cursor
             node {
               id
-              impulse_id: impulseID
-              is_from_user: isFromUser
+              internalID
+              isFromUser
+              isFirstMessage
               body
+              createdAt
               attachments {
+                id
                 internalID
+                contentType
+                downloadURL
+                fileName
+                ...ImagePreview_attachment
+                ...PDFPreview_attachment
+                ...FileDownload_attachment
               }
               ...Message_message
             }
@@ -220,17 +204,17 @@ export default createPaginationContainer(
   },
   {
     getConnectionFromProps(props) {
-      return props.conversation && props.conversation.messages
+      return props.conversation?.messagesConnection
     },
-    getVariables(props, paginationInfo, _fragmentVariables) {
+    getVariables(props, { count, cursor: after }, _fragmentVariables) {
       return {
         conversationID: props.conversation.internalID,
-        count: paginationInfo.count,
-        after: paginationInfo.cursor,
+        count,
+        after,
       }
     },
     query: graphql`
-      query MessagesQuery($conversationID: String!, $count: Int!, $after: String) {
+      query MessagesQuery($count: Int, $after: String, $conversationID: String!) {
         me {
           conversation(id: $conversationID) {
             ...Messages_conversation @arguments(count: $count, after: $after)

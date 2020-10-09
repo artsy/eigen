@@ -1,3 +1,4 @@
+import { MyCollectionArtworkPriceEstimate_artwork } from "__generated__/MyCollectionArtworkPriceEstimate_artwork.graphql"
 import { MyCollectionArtworkPriceEstimate_marketPriceInsights } from "__generated__/MyCollectionArtworkPriceEstimate_marketPriceInsights.graphql"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { formatCentsToDollars } from "lib/Scenes/MyCollection/utils/formatCentsToDollars"
@@ -9,10 +10,14 @@ import { Field } from "../Field"
 import { InfoButton } from "./InfoButton"
 
 interface MyCollectionArtworkPriceEstimateProps {
+  artwork: MyCollectionArtworkPriceEstimate_artwork
   marketPriceInsights: MyCollectionArtworkPriceEstimate_marketPriceInsights
 }
 
-const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimateProps> = ({ marketPriceInsights }) => {
+const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimateProps> = ({
+  artwork,
+  marketPriceInsights,
+}) => {
   if (!marketPriceInsights) {
     return null
   }
@@ -22,6 +27,9 @@ const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimat
   const lowRangeDollars = formatCentsToDollars(Number(lowRangeCents))
   const midRangeDollars = formatCentsToDollars(Number(midRangeCents))
   const highRangeDollars = formatCentsToDollars(Number(highRangeCents))
+
+  // TODO: costMinor needs to be converted from cents to dollars
+  const pricePaid = artwork.costCurrencyCode && artwork.costMinor && `${artwork.costCurrencyCode} ${artwork.costMinor}`
 
   return (
     <ScreenMargin>
@@ -45,7 +53,8 @@ const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimat
       <Spacer mt={0.5} />
 
       <Field label="Sold price range" value={`${lowRangeDollars} – ${highRangeDollars}`} />
-      <Field label="Your price paid for this work" value="TODO - €9,900" />
+
+      {!!pricePaid && <Field label="Your price paid for this work" value={pricePaid} />}
     </ScreenMargin>
   )
 }
@@ -53,6 +62,12 @@ const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimat
 export const MyCollectionArtworkPriceEstimateFragmentContainer = createFragmentContainer(
   MyCollectionArtworkPriceEstimate,
   {
+    artwork: graphql`
+      fragment MyCollectionArtworkPriceEstimate_artwork on Artwork {
+        costCurrencyCode
+        costMinor
+      }
+    `,
     marketPriceInsights: graphql`
       fragment MyCollectionArtworkPriceEstimate_marketPriceInsights on MarketPriceInsights {
         # FIXME: These props are coming back from diffusion untyped

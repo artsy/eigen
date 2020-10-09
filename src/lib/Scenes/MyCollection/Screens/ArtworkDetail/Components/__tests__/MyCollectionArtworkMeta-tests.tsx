@@ -45,6 +45,8 @@ describe("MyCollectionArtworkMeta", () => {
     costMinor: 200,
     costCurrencyCode: "USD",
     date: "Jan 20th",
+    editionSize: "10x10x10",
+    editionNumber: "1",
     height: 20,
     width: 30,
     depth: 40,
@@ -78,13 +80,15 @@ describe("MyCollectionArtworkMeta", () => {
         expect(text).toContain("Oil")
         expect(text).toContain("Dimension")
         expect(text).toContain("20 × 30 × 40 in")
-        expect(text).toContain("Edition")
-        expect(text).toContain("TODO")
+        expect(text).toContain("Edition size")
+        expect(text).toContain("10x10x10")
+        expect(text).toContain("Edition number")
+        expect(text).toContain("1")
         expect(text).toContain("Price paid")
         expect(text).toContain("200 USD")
       })
 
-      it("fires the naviggateToViewAllArtworkDetails action on button click", () => {
+      it("fires the navigateToViewAllArtworkDetails action on button click", () => {
         const spy = jest.fn()
         AppStore.actions.myCollection.navigation.navigateToViewAllArtworkDetails = spy as any
         const wrapper = renderWithWrappers(<TestRenderer viewAll={false} />)
@@ -116,8 +120,10 @@ describe("MyCollectionArtworkMeta", () => {
         expect(text).toContain("Painting")
         expect(text).toContain("Dimension")
         expect(text).toContain("20 × 30 × 40 in")
-        expect(text).toContain("Edition")
-        expect(text).toContain("TODO")
+        expect(text).toContain("Edition size")
+        expect(text).toContain("10x10x10")
+        expect(text).toContain("Edition number")
+        expect(text).toContain("1")
         expect(text).toContain("Price paid")
         expect(text).toContain("200 USD")
       })

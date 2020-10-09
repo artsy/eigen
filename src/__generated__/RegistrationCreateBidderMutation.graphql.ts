@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0d687eb16a72bf1f951eb1a34cc88368 */
+// @ts-nocheck
+/* @relayHash 77382fd385a089ff35904fa26513c733 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type CreateBidderInput = {
@@ -42,10 +43,9 @@ mutation RegistrationCreateBidderMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "CreateBidderInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
@@ -56,98 +56,99 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": "qualified_for_bidding",
-  "name": "qualifiedForBidding",
   "args": null,
+  "kind": "ScalarField",
+  "name": "qualifiedForBidding",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "RegistrationCreateBidderMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "RegistrationCreateBidderMutation",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "createBidder",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "CreateBidderPayload",
+        "kind": "LinkedField",
+        "name": "createBidder",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "bidder",
-            "storageKey": null,
             "args": null,
             "concreteType": "Bidder",
+            "kind": "LinkedField",
+            "name": "bidder",
             "plural": false,
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/)
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "RegistrationCreateBidderMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "createBidder",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "CreateBidderPayload",
+        "kind": "LinkedField",
+        "name": "createBidder",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "bidder",
-            "storageKey": null,
             "args": null,
             "concreteType": "Bidder",
+            "kind": "LinkedField",
+            "name": "bidder",
             "plural": false,
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/),
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "id",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "id",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "RegistrationCreateBidderMutation",
     "id": "77382fd385a089ff35904fa26513c733",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "RegistrationCreateBidderMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

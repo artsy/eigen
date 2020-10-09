@@ -21,6 +21,7 @@ const FixturePage1: AutosuggestResultsQueryRawResponse = {
       {
         cursor: "page-1",
         node: {
+          __isNode: "SearchableItem",
           __typename: "SearchableItem",
           internalID: "",
           displayLabel: "Banksy",
@@ -44,6 +45,7 @@ const FixturePage2: AutosuggestResultsPaginationQueryRawResponse = {
       {
         cursor: "page-2",
         node: {
+          __isNode: "SearchableItem",
           __typename: "SearchableItem",
           internalID: "",
           displayLabel: "Andy Warhol",
@@ -68,6 +70,7 @@ const FixturePage3: AutosuggestResultsPaginationQueryRawResponse = {
       {
         cursor: "page-3",
         node: {
+          __isNode: "SearchableItem",
           __typename: "SearchableItem",
           internalID: "",
           displayLabel: "Alex Katz",

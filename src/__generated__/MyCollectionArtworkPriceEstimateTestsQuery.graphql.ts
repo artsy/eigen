@@ -1,11 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 7fc45a3c4b60907b4026035f2b1da5f9 */
+// @ts-nocheck
+/* @relayHash d390f1995bfcadc940cb21f450a58bce */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkPriceEstimateTestsQueryVariables = {};
 export type MyCollectionArtworkPriceEstimateTestsQueryResponse = {
+    readonly artwork: {
+        readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkPriceEstimate_artwork">;
+    } | null;
     readonly marketPriceInsights: {
         readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkPriceEstimate_marketPriceInsights">;
     } | null;
@@ -19,9 +23,18 @@ export type MyCollectionArtworkPriceEstimateTestsQuery = {
 
 /*
 query MyCollectionArtworkPriceEstimateTestsQuery {
+  artwork(id: "foo") {
+    ...MyCollectionArtworkPriceEstimate_artwork
+    id
+  }
   marketPriceInsights(artistId: "some-artist-id", medium: "painting") {
     ...MyCollectionArtworkPriceEstimate_marketPriceInsights
   }
+}
+
+fragment MyCollectionArtworkPriceEstimate_artwork on Artwork {
+  costCurrencyCode
+  costMinor
 }
 
 fragment MyCollectionArtworkPriceEstimate_marketPriceInsights on MarketPriceInsights {
@@ -36,6 +49,13 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "Literal",
+    "name": "id",
+    "value": "foo"
+  }
+],
+v1 = [
+  {
+    "kind": "Literal",
     "name": "artistId",
     "value": "some-artist-id"
   },
@@ -45,111 +65,180 @@ var v0 = [
     "value": "painting"
   }
 ],
-v1 = {
-  "type": "BigInt",
+v2 = {
   "enumValues": null,
+  "nullable": true,
   "plural": false,
-  "nullable": true
+  "type": "Int"
+},
+v3 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "BigInt"
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "MyCollectionArtworkPriceEstimateTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "MyCollectionArtworkPriceEstimateTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "marketPriceInsights",
-        "storageKey": "marketPriceInsights(artistId:\"some-artist-id\",medium:\"painting\")",
         "args": (v0/*: any*/),
-        "concreteType": "MarketPriceInsights",
+        "concreteType": "Artwork",
+        "kind": "LinkedField",
+        "name": "artwork",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "MyCollectionArtworkPriceEstimate_marketPriceInsights",
-            "args": null
+            "name": "MyCollectionArtworkPriceEstimate_artwork"
           }
-        ]
+        ],
+        "storageKey": "artwork(id:\"foo\")"
+      },
+      {
+        "alias": null,
+        "args": (v1/*: any*/),
+        "concreteType": "MarketPriceInsights",
+        "kind": "LinkedField",
+        "name": "marketPriceInsights",
+        "plural": false,
+        "selections": [
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "MyCollectionArtworkPriceEstimate_marketPriceInsights"
+          }
+        ],
+        "storageKey": "marketPriceInsights(artistId:\"some-artist-id\",medium:\"painting\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "MyCollectionArtworkPriceEstimateTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "marketPriceInsights",
-        "storageKey": "marketPriceInsights(artistId:\"some-artist-id\",medium:\"painting\")",
         "args": (v0/*: any*/),
-        "concreteType": "MarketPriceInsights",
+        "concreteType": "Artwork",
+        "kind": "LinkedField",
+        "name": "artwork",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "lowRangeCents",
             "args": null,
+            "kind": "ScalarField",
+            "name": "costCurrencyCode",
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "midRangeCents",
             "args": null,
+            "kind": "ScalarField",
+            "name": "costMinor",
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "highRangeCents",
             "args": null,
-            "storageKey": null
-          },
-          {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "artsyQInventory",
-            "args": null,
+            "name": "id",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": "artwork(id:\"foo\")"
+      },
+      {
+        "alias": null,
+        "args": (v1/*: any*/),
+        "concreteType": "MarketPriceInsights",
+        "kind": "LinkedField",
+        "name": "marketPriceInsights",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "lowRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "midRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "highRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "artsyQInventory",
+            "storageKey": null
+          }
+        ],
+        "storageKey": "marketPriceInsights(artistId:\"some-artist-id\",medium:\"painting\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "MyCollectionArtworkPriceEstimateTestsQuery",
-    "id": "746c594850d73eebbe2a9bc39c815d44",
-    "text": null,
+    "id": "d390f1995bfcadc940cb21f450a58bce",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
-        "marketPriceInsights": {
-          "type": "MarketPriceInsights",
+        "artwork": {
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Artwork"
         },
-        "marketPriceInsights.lowRangeCents": (v1/*: any*/),
-        "marketPriceInsights.midRangeCents": (v1/*: any*/),
-        "marketPriceInsights.highRangeCents": (v1/*: any*/),
-        "marketPriceInsights.artsyQInventory": {
-          "type": "Int",
+        "artwork.costCurrencyCode": {
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
-        }
+          "type": "String"
+        },
+        "artwork.costMinor": (v2/*: any*/),
+        "artwork.id": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "ID"
+        },
+        "marketPriceInsights": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "MarketPriceInsights"
+        },
+        "marketPriceInsights.artsyQInventory": (v2/*: any*/),
+        "marketPriceInsights.highRangeCents": (v3/*: any*/),
+        "marketPriceInsights.lowRangeCents": (v3/*: any*/),
+        "marketPriceInsights.midRangeCents": (v3/*: any*/)
       }
-    }
+    },
+    "name": "MyCollectionArtworkPriceEstimateTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();
-(node as any).hash = 'a3bff129015de8fe1d80cd87f423b736';
+(node as any).hash = '003d92ec79b7c4f5233d1c57ea5b04b7';
 export default node;

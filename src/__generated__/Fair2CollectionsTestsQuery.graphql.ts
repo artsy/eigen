@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 13e16e7f3bf8b68807ac62173f5f926b */
+// @ts-nocheck
+/* @relayHash 446c3f0050d031107564dfd216745399 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -14,6 +15,8 @@ export type Fair2CollectionsTestsQueryResponse = {
 };
 export type Fair2CollectionsTestsQueryRawResponse = {
     readonly fair: ({
+        readonly internalID: string;
+        readonly slug: string;
         readonly marketingCollections: ReadonlyArray<({
             readonly slug: string;
             readonly title: string;
@@ -24,14 +27,14 @@ export type Fair2CollectionsTestsQueryRawResponse = {
                         readonly image: ({
                             readonly url: string | null;
                         }) | null;
-                        readonly id: string | null;
+                        readonly id: string;
                     }) | null;
                 }) | null> | null;
-                readonly id: string | null;
+                readonly id: string;
             }) | null;
-            readonly id: string | null;
+            readonly id: string;
         }) | null>;
-        readonly id: string | null;
+        readonly id: string;
     }) | null;
 };
 export type Fair2CollectionsTestsQuery = {
@@ -53,6 +56,8 @@ query Fair2CollectionsTestsQuery(
 }
 
 fragment Fair2Collections_fair on Fair {
+  internalID
+  slug
   marketingCollections(size: 4) {
     slug
     title
@@ -76,10 +81,9 @@ fragment Fair2Collections_fair on Fair {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "fairID",
-    "type": "String!",
-    "defaultValue": null
+    "name": "fairID"
   }
 ],
 v1 = [
@@ -90,58 +94,70 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "Fair2CollectionsTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "Fair2CollectionsTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "Fair2Collections_fair",
-            "args": null
+            "name": "Fair2Collections_fair"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "Fair2CollectionsTestsQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "marketingCollections",
-            "storageKey": "marketingCollections(size:4)",
+            "args": null,
+            "kind": "ScalarField",
+            "name": "internalID",
+            "storageKey": null
+          },
+          (v2/*: any*/),
+          {
+            "alias": null,
             "args": [
               {
                 "kind": "Literal",
@@ -150,34 +166,27 @@ return {
               }
             ],
             "concreteType": "MarketingCollection",
+            "kind": "LinkedField",
+            "name": "marketingCollections",
             "plural": true,
             "selections": [
+              (v2/*: any*/),
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "slug",
                 "args": null,
-                "storageKey": null
-              },
-              {
                 "kind": "ScalarField",
-                "alias": null,
                 "name": "title",
-                "args": null,
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "category",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "category",
                 "storageKey": null
               },
               {
-                "kind": "LinkedField",
                 "alias": "artworks",
-                "name": "artworksConnection",
-                "storageKey": "artworksConnection(first:3)",
                 "args": [
                   {
                     "kind": "Literal",
@@ -186,39 +195,36 @@ return {
                   }
                 ],
                 "concreteType": "FilterArtworksConnection",
+                "kind": "LinkedField",
+                "name": "artworksConnection",
                 "plural": false,
                 "selections": [
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "edges",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "FilterArtworksEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
                     "plural": true,
                     "selections": [
                       {
-                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "node",
-                        "storageKey": null,
                         "args": null,
                         "concreteType": "Artwork",
+                        "kind": "LinkedField",
+                        "name": "node",
                         "plural": false,
                         "selections": [
                           {
-                            "kind": "LinkedField",
                             "alias": null,
-                            "name": "image",
-                            "storageKey": null,
                             "args": null,
                             "concreteType": "Image",
+                            "kind": "LinkedField",
+                            "name": "image",
                             "plural": false,
                             "selections": [
                               {
-                                "kind": "ScalarField",
                                 "alias": null,
-                                "name": "url",
                                 "args": [
                                   {
                                     "kind": "Literal",
@@ -226,32 +232,40 @@ return {
                                     "value": "larger"
                                   }
                                 ],
+                                "kind": "ScalarField",
+                                "name": "url",
                                 "storageKey": "url(version:\"larger\")"
                               }
-                            ]
+                            ],
+                            "storageKey": null
                           },
-                          (v2/*: any*/)
-                        ]
+                          (v3/*: any*/)
+                        ],
+                        "storageKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   },
-                  (v2/*: any*/)
-                ]
+                  (v3/*: any*/)
+                ],
+                "storageKey": "artworksConnection(first:3)"
               },
-              (v2/*: any*/)
-            ]
+              (v3/*: any*/)
+            ],
+            "storageKey": "marketingCollections(size:4)"
           },
-          (v2/*: any*/)
-        ]
+          (v3/*: any*/)
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
+    "id": "446c3f0050d031107564dfd216745399",
+    "metadata": {},
     "name": "Fair2CollectionsTestsQuery",
-    "id": "314bedf405082eb55aedf0e851c527d2",
-    "text": null,
-    "metadata": {}
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

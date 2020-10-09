@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 1a3cbbc6f322e84eea43022709e6713d */
+// @ts-nocheck
+/* @relayHash dab411c27ae5496a83799e2909ef0d29 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type BidderPositionQueryVariables = {
@@ -55,10 +56,9 @@ query BidderPositionQuery(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "bidderPositionID",
-    "type": "String!",
-    "defaultValue": null
+    "name": "bidderPositionID"
   }
 ],
 v1 = [
@@ -69,167 +69,168 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "status",
   "args": null,
+  "kind": "ScalarField",
+  "name": "status",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": "message_header",
-  "name": "messageHeader",
   "args": null,
+  "kind": "ScalarField",
+  "name": "messageHeader",
   "storageKey": null
 },
 v4 = {
-  "kind": "ScalarField",
   "alias": "message_description_md",
-  "name": "messageDescriptionMD",
   "args": null,
+  "kind": "ScalarField",
+  "name": "messageDescriptionMD",
   "storageKey": null
 },
 v5 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 },
 v6 = {
-  "kind": "LinkedField",
   "alias": "suggested_next_bid",
-  "name": "suggestedNextBid",
-  "storageKey": null,
   "args": null,
   "concreteType": "BidderPositionSuggestedNextBid",
+  "kind": "LinkedField",
+  "name": "suggestedNextBid",
   "plural": false,
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "cents",
       "args": null,
+      "kind": "ScalarField",
+      "name": "cents",
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "display",
       "args": null,
+      "kind": "ScalarField",
+      "name": "display",
       "storageKey": null
     }
-  ]
+  ],
+  "storageKey": null
 },
 v7 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "BidderPositionQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "BidderPositionQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "me",
-        "storageKey": null,
         "args": null,
         "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": "bidder_position",
-            "name": "bidderPosition",
-            "storageKey": null,
             "args": (v1/*: any*/),
             "concreteType": "BidderPositionResult",
+            "kind": "LinkedField",
+            "name": "bidderPosition",
             "plural": false,
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/),
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "position",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "BidderPosition",
+                "kind": "LinkedField",
+                "name": "position",
                 "plural": false,
                 "selections": [
                   (v5/*: any*/),
                   (v6/*: any*/)
-                ]
+                ],
+                "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "BidderPositionQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "me",
-        "storageKey": null,
         "args": null,
         "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": "bidder_position",
-            "name": "bidderPosition",
-            "storageKey": null,
             "args": (v1/*: any*/),
             "concreteType": "BidderPositionResult",
+            "kind": "LinkedField",
+            "name": "bidderPosition",
             "plural": false,
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/),
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "position",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "BidderPosition",
+                "kind": "LinkedField",
+                "name": "position",
                 "plural": false,
                 "selections": [
                   (v5/*: any*/),
                   (v6/*: any*/),
                   (v7/*: any*/)
-                ]
+                ],
+                "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           },
           (v7/*: any*/)
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "BidderPositionQuery",
     "id": "dab411c27ae5496a83799e2909ef0d29",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "BidderPositionQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

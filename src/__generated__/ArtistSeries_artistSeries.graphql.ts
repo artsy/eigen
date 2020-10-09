@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,38 +26,34 @@ export type ArtistSeries_artistSeries$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "ArtistSeries_artistSeries",
-  "type": "ArtistSeries",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ArtistSeries_artistSeries",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "internalID",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "artistIDs",
       "args": null,
+      "kind": "ScalarField",
+      "name": "artistIDs",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": "artist",
-      "name": "artists",
-      "storageKey": "artists(size:1)",
       "args": [
         {
           "kind": "Literal",
@@ -65,13 +62,12 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "Artist",
+      "kind": "LinkedField",
+      "name": "artists",
       "plural": true,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "artistSeriesConnection",
-          "storageKey": "artistSeriesConnection(first:4)",
           "args": [
             {
               "kind": "Literal",
@@ -80,40 +76,46 @@ const node: ReaderFragment = {
             }
           ],
           "concreteType": "ArtistSeriesConnection",
+          "kind": "LinkedField",
+          "name": "artistSeriesConnection",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "totalCount",
               "args": null,
+              "kind": "ScalarField",
+              "name": "totalCount",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": "artistSeriesConnection(first:4)"
         },
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "ArtistSeriesMoreSeries_artist",
-          "args": null
+          "name": "ArtistSeriesMoreSeries_artist"
         }
-      ]
+      ],
+      "storageKey": "artists(size:1)"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "ArtistSeriesHeader_artistSeries",
-      "args": null
+      "name": "ArtistSeriesHeader_artistSeries"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "ArtistSeriesMeta_artistSeries",
-      "args": null
+      "name": "ArtistSeriesMeta_artistSeries"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "ArtistSeriesArtworks_artistSeries",
-      "args": null
+      "name": "ArtistSeriesArtworks_artistSeries"
     }
-  ]
+  ],
+  "type": "ArtistSeries",
+  "abstractKey": null
 };
 (node as any).hash = 'a4b3a5706086f1d6fd73bbe788d2e0e9';
 export default node;

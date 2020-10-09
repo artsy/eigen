@@ -1,24 +1,16 @@
-import React from "react"
-import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
-
-import {
-  CollectionArtworksTestsQuery,
-  CollectionArtworksTestsQueryRawResponse,
-} from "__generated__/CollectionArtworksTestsQuery.graphql"
+import { CollectionArtworksTestsQuery } from "__generated__/CollectionArtworksTestsQuery.graphql"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import {
-  CollectionFixture,
-  ZeroStateCollectionFixture,
-} from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import { filterArtworksParams, FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { FilterArray } from "lib/utils/ArtworkFiltersStore"
-import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFiltersStore"
+import { FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { filterArtworksParams, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import React from "react"
+import { graphql, QueryRenderer } from "react-relay"
+import { act } from "react-test-renderer"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 jest.unmock("react-relay")
 
@@ -30,7 +22,7 @@ describe("CollectionArtworks", () => {
     <QueryRenderer<CollectionArtworksTestsQuery>
       environment={env}
       query={graphql`
-        query CollectionArtworksTestsQuery @raw_response_type {
+        query CollectionArtworksTestsQuery @relay_test_operation {
           marketingCollection(slug: "street-art-now") {
             ...CollectionArtworks_collection
           }
@@ -51,15 +43,10 @@ describe("CollectionArtworks", () => {
     />
   )
 
-  const getWrapper = (marketingCollection: CollectionArtworksTestsQueryRawResponse["marketingCollection"]) => {
+  const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          marketingCollection,
-        },
-      })
+      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
     })
     return tree
   }
@@ -76,16 +63,21 @@ describe("CollectionArtworks", () => {
   })
 
   it("returns zero state component when there are no artworks to display", () => {
-    const tree = getWrapper(ZeroStateCollectionFixture)
+    const tree = getWrapper({
+      MarketingCollection: () => ({
+        collectionArtworks: {
+          edges: [],
+          counts: { total: 0 },
+        },
+      }),
+    })
 
     expect(tree.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
     expect(extractText(tree.root)).toContain("Unfortunately, there are no works that meet your criteria.")
   })
 
   it("returns artworks", () => {
-    // @ts-ignore STRICTNESS_MIGRATION
-    const tree = getWrapper(CollectionFixture)
-
+    const tree = getWrapper()
     expect(tree.root.findAllByType(InfiniteScrollArtworksGrid)).toHaveLength(1)
   })
 })

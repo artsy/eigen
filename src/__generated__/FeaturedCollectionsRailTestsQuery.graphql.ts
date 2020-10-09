@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 17208dcbd926f5f86abc83b45c4b9692 */
+// @ts-nocheck
+/* @relayHash b70a8a8b625b7966275cf1d2ce8ea519 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,10 +35,10 @@ export type FeaturedCollectionsRailTestsQueryRawResponse = {
                             readonly image: ({
                                 readonly url: string | null;
                             }) | null;
-                            readonly id: string | null;
+                            readonly id: string;
                         }) | null;
                     }) | null> | null;
-                    readonly id: string | null;
+                    readonly id: string;
                 }) | null;
             }>;
         }>;
@@ -100,140 +101,135 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "groupType",
   "args": null,
+  "kind": "ScalarField",
+  "name": "groupType",
   "storageKey": null
 },
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "FeaturedCollectionsRailTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "FeaturedCollectionsRailTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "marketingCollection",
-        "storageKey": "marketingCollection(slug:\"post-war\")",
         "args": (v0/*: any*/),
         "concreteType": "MarketingCollection",
+        "kind": "LinkedField",
+        "name": "marketingCollection",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "linkedCollections",
-            "storageKey": null,
             "args": null,
             "concreteType": "MarketingCollectionGroup",
+            "kind": "LinkedField",
+            "name": "linkedCollections",
             "plural": true,
             "selections": [
               (v1/*: any*/),
               {
+                "args": null,
                 "kind": "FragmentSpread",
-                "name": "FeaturedCollectionsRail_collectionGroup",
-                "args": null
+                "name": "FeaturedCollectionsRail_collectionGroup"
               }
-            ]
+            ],
+            "storageKey": null
           },
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "FeaturedCollectionsRail_collection",
-            "args": null
+            "name": "FeaturedCollectionsRail_collection"
           }
-        ]
+        ],
+        "storageKey": "marketingCollection(slug:\"post-war\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "FeaturedCollectionsRailTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "marketingCollection",
-        "storageKey": "marketingCollection(slug:\"post-war\")",
         "args": (v0/*: any*/),
         "concreteType": "MarketingCollection",
+        "kind": "LinkedField",
+        "name": "marketingCollection",
         "plural": false,
         "selections": [
           (v2/*: any*/),
           (v3/*: any*/),
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "linkedCollections",
-            "storageKey": null,
             "args": null,
             "concreteType": "MarketingCollectionGroup",
+            "kind": "LinkedField",
+            "name": "linkedCollections",
             "plural": true,
             "selections": [
               (v1/*: any*/),
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "name",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "name",
                 "storageKey": null
               },
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "members",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "MarketingCollection",
+                "kind": "LinkedField",
+                "name": "members",
                 "plural": true,
                 "selections": [
                   (v2/*: any*/),
                   (v3/*: any*/),
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "title",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "priceGuidance",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "descriptionMarkdown",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "descriptionMarkdown",
                     "storageKey": null
                   },
                   {
-                    "kind": "LinkedField",
                     "alias": "featuredCollectionArtworks",
-                    "name": "artworksConnection",
-                    "storageKey": "artworksConnection(aggregations:[\"TOTAL\"],first:1,sort:\"-decayed_merch\")",
                     "args": [
                       {
                         "kind": "Literal",
@@ -254,66 +250,72 @@ return {
                       }
                     ],
                     "concreteType": "FilterArtworksConnection",
+                    "kind": "LinkedField",
+                    "name": "artworksConnection",
                     "plural": false,
                     "selections": [
                       {
-                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "edges",
-                        "storageKey": null,
                         "args": null,
                         "concreteType": "FilterArtworksEdge",
+                        "kind": "LinkedField",
+                        "name": "edges",
                         "plural": true,
                         "selections": [
                           {
-                            "kind": "LinkedField",
                             "alias": null,
-                            "name": "node",
-                            "storageKey": null,
                             "args": null,
                             "concreteType": "Artwork",
+                            "kind": "LinkedField",
+                            "name": "node",
                             "plural": false,
                             "selections": [
                               {
-                                "kind": "LinkedField",
                                 "alias": null,
-                                "name": "image",
-                                "storageKey": null,
                                 "args": null,
                                 "concreteType": "Image",
+                                "kind": "LinkedField",
+                                "name": "image",
                                 "plural": false,
                                 "selections": [
                                   {
-                                    "kind": "ScalarField",
                                     "alias": null,
-                                    "name": "url",
                                     "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "url",
                                     "storageKey": null
                                   }
-                                ]
+                                ],
+                                "storageKey": null
                               },
                               (v3/*: any*/)
-                            ]
+                            ],
+                            "storageKey": null
                           }
-                        ]
+                        ],
+                        "storageKey": null
                       },
                       (v3/*: any*/)
-                    ]
+                    ],
+                    "storageKey": "artworksConnection(aggregations:[\"TOTAL\"],first:1,sort:\"-decayed_merch\")"
                   }
-                ]
+                ],
+                "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": "marketingCollection(slug:\"post-war\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "FeaturedCollectionsRailTestsQuery",
     "id": "b70a8a8b625b7966275cf1d2ce8ea519",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "FeaturedCollectionsRailTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

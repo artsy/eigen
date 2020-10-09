@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 723a0e790a2e99d32952ce067237c0e3 */
+// @ts-nocheck
+/* @relayHash 3960f85b2ede3eeda1d48fe7915aa558 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -42,65 +43,62 @@ var v0 = [
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ViewingRoomViewWorksButtonTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ViewingRoomViewWorksButtonTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "viewingRoom",
-        "storageKey": "viewingRoom(id:\"unused\")",
         "args": (v0/*: any*/),
         "concreteType": "ViewingRoom",
+        "kind": "LinkedField",
+        "name": "viewingRoom",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "ViewingRoomViewWorksButton_viewingRoom",
-            "args": null
+            "name": "ViewingRoomViewWorksButton_viewingRoom"
           }
-        ]
+        ],
+        "storageKey": "viewingRoom(id:\"unused\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "ViewingRoomViewWorksButtonTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "viewingRoom",
-        "storageKey": "viewingRoom(id:\"unused\")",
         "args": (v0/*: any*/),
         "concreteType": "ViewingRoom",
+        "kind": "LinkedField",
+        "name": "viewingRoom",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "slug",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "internalID",
             "args": null,
+            "kind": "ScalarField",
+            "name": "internalID",
             "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": "artworksForCount",
-            "name": "artworksConnection",
-            "storageKey": "artworksConnection(first:1)",
             "args": [
               {
                 "kind": "Literal",
@@ -109,27 +107,31 @@ return {
               }
             ],
             "concreteType": "ArtworkConnection",
+            "kind": "LinkedField",
+            "name": "artworksConnection",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "totalCount",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "totalCount",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": "artworksConnection(first:1)"
           }
-        ]
+        ],
+        "storageKey": "viewingRoom(id:\"unused\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "ViewingRoomViewWorksButtonTestsQuery",
     "id": "3960f85b2ede3eeda1d48fe7915aa558",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "ViewingRoomViewWorksButtonTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

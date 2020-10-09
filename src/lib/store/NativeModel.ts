@@ -58,7 +58,11 @@ export interface NativeState {
     AROptionsArtistSeries: boolean
     AROptionsNewFirstInquiry: boolean
     AROptionsUseReactNativeWebView: boolean
+    AROptionsNewShowPage: boolean
+    AROptionsNewFairPage: boolean
   }
+  legacyFairSlugs: string[]
+  legacyFairProfileSlugs: string[]
 }
 
 export type EmissionOptions = NativeState["options"]

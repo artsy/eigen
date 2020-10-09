@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 762bebb9dcdd1e88d1b8c9a1ceb56381 */
+// @ts-nocheck
+/* @relayHash 148bd39a2984ef9ef8e2069c0395845b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -45,106 +46,100 @@ fragment ArtistList_targetSupply on TargetSupply {
 */
 
 const node: ConcreteRequest = {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ArtistListTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ArtistListTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "targetSupply",
-        "storageKey": null,
         "args": null,
         "concreteType": "TargetSupply",
+        "kind": "LinkedField",
+        "name": "targetSupply",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "ArtistList_targetSupply",
-            "args": null
+            "name": "ArtistList_targetSupply"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "ArtistListTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "targetSupply",
-        "storageKey": null,
         "args": null,
         "concreteType": "TargetSupply",
+        "kind": "LinkedField",
+        "name": "targetSupply",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "microfunnel",
-            "storageKey": null,
             "args": null,
             "concreteType": "TargetSupplyMicrofunnelItem",
+            "kind": "LinkedField",
+            "name": "microfunnel",
             "plural": true,
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "artist",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "Artist",
+                "kind": "LinkedField",
+                "name": "artist",
                 "plural": false,
                 "selections": [
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "internalID",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "name",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "href",
-                    "args": null,
                     "storageKey": null
                   },
                   {
+                    "alias": null,
+                    "args": null,
                     "kind": "ScalarField",
-                    "alias": null,
                     "name": "slug",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "image",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "Image",
+                    "kind": "LinkedField",
+                    "name": "image",
                     "plural": false,
                     "selections": [
                       {
-                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "cropped",
-                        "storageKey": "cropped(height:70,width:76)",
                         "args": [
                           {
                             "kind": "Literal",
@@ -158,54 +153,61 @@ const node: ConcreteRequest = {
                           }
                         ],
                         "concreteType": "CroppedImageUrl",
+                        "kind": "LinkedField",
+                        "name": "cropped",
                         "plural": false,
                         "selections": [
                           {
-                            "kind": "ScalarField",
                             "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "url",
-                            "args": null,
                             "storageKey": null
                           },
                           {
-                            "kind": "ScalarField",
                             "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "width",
-                            "args": null,
                             "storageKey": null
                           },
                           {
-                            "kind": "ScalarField",
                             "alias": null,
-                            "name": "height",
                             "args": null,
+                            "kind": "ScalarField",
+                            "name": "height",
                             "storageKey": null
                           }
-                        ]
+                        ],
+                        "storageKey": "cropped(height:70,width:76)"
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "id",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "id",
                     "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "ArtistListTestsQuery",
     "id": "148bd39a2984ef9ef8e2069c0395845b",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "ArtistListTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 (node as any).hash = 'f92f17f8dc4dd0197cef5a75b01bc506';

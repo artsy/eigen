@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 14d571d1d761fe430b63403e7a8fe087 */
+// @ts-nocheck
+/* @relayHash be5b942a5a52bc7d8e49bb2dada4ad5f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -65,10 +66,9 @@ fragment Registration_sale on Sale {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "saleID",
-    "type": "String!",
-    "defaultValue": null
+    "name": "saleID"
   }
 ],
 v1 = [
@@ -79,157 +79,158 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "name",
   "args": null,
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "RegistrationFlowQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "RegistrationFlowQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "sale",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Sale",
+        "kind": "LinkedField",
+        "name": "sale",
         "plural": false,
         "selections": [
           (v2/*: any*/),
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "RegistrationFlow_sale",
-            "args": null
+            "name": "RegistrationFlow_sale"
           }
-        ]
+        ],
+        "storageKey": null
       },
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "me",
-        "storageKey": null,
         "args": null,
         "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "RegistrationFlow_me",
-            "args": null
+            "name": "RegistrationFlow_me"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "RegistrationFlowQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "sale",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Sale",
+        "kind": "LinkedField",
+        "name": "sale",
         "plural": false,
         "selections": [
           (v2/*: any*/),
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "slug",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": "end_at",
+            "args": null,
+            "kind": "ScalarField",
             "name": "endAt",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": "is_preview",
+            "args": null,
+            "kind": "ScalarField",
             "name": "isPreview",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": "live_start_at",
+            "args": null,
+            "kind": "ScalarField",
             "name": "liveStartAt",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": "start_at",
-            "name": "startAt",
             "args": null,
+            "kind": "ScalarField",
+            "name": "startAt",
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "requireIdentityVerification",
             "args": null,
+            "kind": "ScalarField",
+            "name": "requireIdentityVerification",
             "storageKey": null
           },
           (v3/*: any*/)
-        ]
+        ],
+        "storageKey": null
       },
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "me",
-        "storageKey": null,
         "args": null,
         "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": "has_credit_cards",
-            "name": "hasCreditCards",
             "args": null,
+            "kind": "ScalarField",
+            "name": "hasCreditCards",
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "identityVerified",
             "args": null,
+            "kind": "ScalarField",
+            "name": "identityVerified",
             "storageKey": null
           },
           (v3/*: any*/)
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "RegistrationFlowQuery",
     "id": "be5b942a5a52bc7d8e49bb2dada4ad5f",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "RegistrationFlowQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

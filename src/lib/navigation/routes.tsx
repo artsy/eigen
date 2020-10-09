@@ -69,7 +69,9 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       : new RouteMatcher("/auction/:id", "Auction"),
     new RouteMatcher("/auction/:id/bid/:artwork_id", "AuctionBidArtwork"),
     new RouteMatcher("/gene/:geneID", "Gene"),
-    new RouteMatcher("/show/:showID", "Show"),
+    getCurrentEmissionState().options.AROptionsNewShowPage
+      ? new RouteMatcher("/show/:showID", "Show2")
+      : new RouteMatcher("/show/:showID", "Show"),
     new RouteMatcher("/show/:showID/artworks", "ShowArtworks"),
     new RouteMatcher("/show/:showID/artists", "ShowArtists"),
     new RouteMatcher("/show/:showID/info", "ShowMoreInfo"),
@@ -114,13 +116,13 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     new RouteMatcher("/partner-locations/:partnerID", "PartnerLocations"),
 
-    new RouteMatcher("/fair2/:fairID", "Fair2"),
-    new RouteMatcher("/fair2/:fairID/info", "Fair2MoreInfo"),
+    new RouteMatcher("/fair/:fairID", "Fair"),
     new RouteMatcher("/fair/:fairID/artworks", "FairArtworks"),
     new RouteMatcher("/fair/:fairID/artists", "FairArtists"),
     new RouteMatcher("/fair/:fairID/exhibitors", "FairExhibitors"),
     new RouteMatcher("/fair/:fairID/info", "FairMoreInfo"),
     new RouteMatcher("/fair/:fairID/bmw-sponsored-content", "FairBMWArtActivation"),
+
     new RouteMatcher("/city/:citySlug/:section", "CitySectionList"),
     new RouteMatcher("/city-fair/:citySlug", "CityFairList"),
     new RouteMatcher("/city-save/:citySlug", "CitySavedList"),

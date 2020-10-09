@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 3b3cefe6556a1a7182e43483152fd31b */
+// @ts-nocheck
+/* @relayHash 9e8a7891114d59f7905a4aa9027e24e0 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateMyProfileInput = {
@@ -65,10 +66,9 @@ mutation RegistrationUpdateUserMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "UpdateMyProfileInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
@@ -79,98 +79,99 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "clientMutationId",
   "args": null,
+  "kind": "ScalarField",
+  "name": "clientMutationId",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "phone",
   "args": null,
+  "kind": "ScalarField",
+  "name": "phone",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "RegistrationUpdateUserMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "RegistrationUpdateUserMutation",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "updateMyUserProfile",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "UpdateMyProfilePayload",
+        "kind": "LinkedField",
+        "name": "updateMyUserProfile",
         "plural": false,
         "selections": [
           (v2/*: any*/),
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "user",
-            "storageKey": null,
             "args": null,
             "concreteType": "User",
+            "kind": "LinkedField",
+            "name": "user",
             "plural": false,
             "selections": [
               (v3/*: any*/)
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "RegistrationUpdateUserMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "updateMyUserProfile",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "UpdateMyProfilePayload",
+        "kind": "LinkedField",
+        "name": "updateMyUserProfile",
         "plural": false,
         "selections": [
           (v2/*: any*/),
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "user",
-            "storageKey": null,
             "args": null,
             "concreteType": "User",
+            "kind": "LinkedField",
+            "name": "user",
             "plural": false,
             "selections": [
               (v3/*: any*/),
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "id",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "id",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "RegistrationUpdateUserMutation",
     "id": "9e8a7891114d59f7905a4aa9027e24e0",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "RegistrationUpdateUserMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash fa82c715ffc5d780dcee281eb4d944f5 */
+// @ts-nocheck
+/* @relayHash 390163a2c0e0d6080e2fc0a6780e2530 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type RequestCredentialsForAssetUploadInput = {
@@ -62,18 +63,14 @@ mutation getGeminiCredentialsForEnvironmentMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "RequestCredentialsForAssetUploadInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "requestCredentialsForAssetUpload",
-    "storageKey": null,
     "args": [
       {
         "kind": "Variable",
@@ -82,122 +79,126 @@ v1 = [
       }
     ],
     "concreteType": "RequestCredentialsForAssetUploadPayload",
+    "kind": "LinkedField",
+    "name": "requestCredentialsForAssetUpload",
     "plural": false,
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "asset",
-        "storageKey": null,
         "args": null,
         "concreteType": "Credentials",
+        "kind": "LinkedField",
+        "name": "asset",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "signature",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "credentials",
-            "args": null,
             "storageKey": null
           },
           {
+            "alias": null,
+            "args": null,
             "kind": "ScalarField",
-            "alias": null,
             "name": "policyEncoded",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "policyDocument",
-            "storageKey": null,
             "args": null,
             "concreteType": "S3PolicyDocumentType",
+            "kind": "LinkedField",
+            "name": "policyDocument",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "expiration",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "expiration",
                 "storageKey": null
               },
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "conditions",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "S3PolicyConditionsType",
+                "kind": "LinkedField",
+                "name": "conditions",
                 "plural": false,
                 "selections": [
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "acl",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "bucket",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "geminiKey",
-                    "args": null,
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "successActionStatus",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "successActionStatus",
                     "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "storageKey": null
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "getGeminiCredentialsForEnvironmentMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "getGeminiCredentialsForEnvironmentMutation",
+    "selections": (v1/*: any*/),
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "getGeminiCredentialsForEnvironmentMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "getGeminiCredentialsForEnvironmentMutation",
     "id": "390163a2c0e0d6080e2fc0a6780e2530",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "getGeminiCredentialsForEnvironmentMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();
