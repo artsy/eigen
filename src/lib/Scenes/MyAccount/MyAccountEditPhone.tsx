@@ -15,6 +15,7 @@ import { updateMyUserProfile } from "./updateMyUserProfile"
 
 const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me }> = ({ me }) => {
   const [phone, setPhone] = useState<string>(me.phone ?? "")
+  const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
   const inputRef = useRef(null)
 
   return (
@@ -26,7 +27,7 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me }> = ({ me }) => 
           await updateMyUserProfile({ phone })
           dismiss()
         } catch (e) {
-          deferredAlert(typeof e === "string" ? e : "Something went wrong.")
+          setReceivedError(e)
         }
       }}
     >
@@ -37,6 +38,7 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me }> = ({ me }) => 
         autoFocus
         keyboardType="phone-pad"
         ref={inputRef}
+        error={receivedError}
       />
     </MyAccountFieldEditScreen>
   )
