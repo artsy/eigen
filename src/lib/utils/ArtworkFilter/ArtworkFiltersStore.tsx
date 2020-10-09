@@ -8,6 +8,7 @@ const filterState: ArtworkFilterContextState = {
   previouslyAppliedFilters: [],
   applyFilters: false,
   aggregations: [],
+  filterType: "artwork",
 }
 
 export const reducer = (
@@ -47,6 +48,7 @@ export const reducer = (
         selectedFilters: [],
         previouslyAppliedFilters: appliedFilters,
         aggregations: artworkFilterState.aggregations,
+        filterType: artworkFilterState.filterType,
       }
 
     // First we update our potential "selectedFilters" based on the option that was selected in the UI
@@ -76,6 +78,7 @@ export const reducer = (
         appliedFilters: artworkFilterState.appliedFilters,
         previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
         aggregations: artworkFilterState.aggregations,
+        filterType: artworkFilterState.filterType,
       }
 
     case "clearAll":
@@ -85,6 +88,7 @@ export const reducer = (
         previouslyAppliedFilters: [],
         applyFilters: false,
         aggregations: artworkFilterState.aggregations,
+        filterType: artworkFilterState.filterType,
       }
 
     case "resetFilters":
@@ -97,6 +101,7 @@ export const reducer = (
         selectedFilters: [],
         previouslyAppliedFilters: artworkFilterState.appliedFilters,
         aggregations: artworkFilterState.aggregations,
+        filterType: artworkFilterState.filterType,
       }
 
     case "clearFiltersZeroState":
@@ -107,6 +112,7 @@ export const reducer = (
         previouslyAppliedFilters: [],
         applyFilters: true,
         aggregations: artworkFilterState.aggregations,
+        filterType: artworkFilterState.filterType,
       }
 
     case "setAggregations":
@@ -116,6 +122,17 @@ export const reducer = (
         selectedFilters: artworkFilterState.selectedFilters,
         previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
         applyFilters: false,
+        filterType: artworkFilterState.filterType,
+      }
+
+    case "setFilterType":
+      return {
+        aggregations: artworkFilterState.aggregations,
+        appliedFilters: artworkFilterState.appliedFilters,
+        selectedFilters: artworkFilterState.selectedFilters,
+        previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
+        applyFilters: false,
+        filterType: action.payload,
       }
   }
 }
@@ -219,6 +236,7 @@ export interface ArtworkFilterContextState {
   readonly previouslyAppliedFilters: FilterArray
   readonly applyFilters: boolean
   readonly aggregations: Aggregations
+  readonly filterType: "artwork" | "saleArtwork"
 }
 
 export interface FilterData {
@@ -256,6 +274,11 @@ interface SetAggregations {
   payload: any
 }
 
+interface SetFilterType {
+  type: "setFilterType"
+  payload: "artwork" | "saleArtwork"
+}
+
 export type FilterActions =
   | ResetFilters
   | ApplyFilters
@@ -263,6 +286,7 @@ export type FilterActions =
   | ClearAllFilters
   | ClearFiltersZeroState
   | SetAggregations
+  | SetFilterType
 
 interface ArtworkFilterContextProps {
   state: ArtworkFilterContextState

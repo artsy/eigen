@@ -41,7 +41,9 @@ interface ViewToken {
 const Sale: React.FC<Props> = ({ queryRes }) => {
   console.log("----")
   console.log(queryRes)
-  const { sale, me, saleArtworksConnection } = queryRes
+  const { saleArtworksConnection } = queryRes
+  const sale = queryRes.sale!
+  const me = queryRes.me!
   const tracking = useTracking()
 
   const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
@@ -99,12 +101,8 @@ const Sale: React.FC<Props> = ({ queryRes }) => {
     },
     {
       key: "saleLotsList",
-      content: <SaleLotsListContainer saleArtworksConnection={queryRes} />,
+      content: <SaleLotsListContainer saleArtworksConnection={queryRes} saleID={sale.slug} />,
     },
-    // {
-    //   key: "saleLotsList2",
-    //   content: <SaleLotsList2Container saleArtworksConnection={saleArtworksConnection} />,
-    // },
   ]
 
   return (

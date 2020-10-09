@@ -4,8 +4,17 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type SaleArtworkAggregation = "ARTIST" | "FOLLOWED_ARTISTS" | "MEDIUM" | "TOTAL" | "%future added value";
 export type SaleLotsList_saleArtworksConnection = {
     readonly saleArtworksConnection: {
+        readonly aggregations: ReadonlyArray<{
+            readonly slice: SaleArtworkAggregation | null;
+            readonly counts: ReadonlyArray<{
+                readonly count: number;
+                readonly name: string;
+                readonly value: string;
+            } | null> | null;
+        } | null> | null;
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
@@ -35,6 +44,16 @@ const node: ReaderFragment = {
       "defaultValue": null,
       "kind": "LocalArgument",
       "name": "cursor"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "saleID"
+    },
+    {
+      "defaultValue": "position",
+      "kind": "LocalArgument",
+      "name": "sort"
     }
   ],
   "kind": "Fragment",
@@ -54,12 +73,73 @@ const node: ReaderFragment = {
   "selections": [
     {
       "alias": "saleArtworksConnection",
-      "args": null,
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "saleID",
+          "variableName": "saleID"
+        },
+        {
+          "kind": "Variable",
+          "name": "sort",
+          "variableName": "sort"
+        }
+      ],
       "concreteType": "SaleArtworksConnection",
       "kind": "LinkedField",
       "name": "__SaleLotsList_saleArtworksConnection_connection",
       "plural": false,
       "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "SaleArtworksAggregationResults",
+          "kind": "LinkedField",
+          "name": "aggregations",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "slice",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "AggregationCount",
+              "kind": "LinkedField",
+              "name": "counts",
+              "plural": true,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "count",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "name",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "value",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
         {
           "alias": null,
           "args": null,
@@ -152,5 +232,5 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = '201445378e1b43c4f9804a919067c2fa';
+(node as any).hash = '1f52bcf45bcd66a9f12190fe920b64ce';
 export default node;

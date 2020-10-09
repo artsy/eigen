@@ -11,12 +11,10 @@ import { SaleArtworkListContainer } from "./SaleArtworkList"
 interface Props {
   saleArtworksConnection: SaleLotsList_saleArtworksConnection
   relay: RelayPaginationProp
+  saleID: string
 }
 
 export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay }) => {
-  console.log("==============")
-  console.log({ saleArtworksConnection })
-
   const { state, dispatch } = useContext(ArtworkFilterContext)
   const filterParams = filterArtworksParams(state.appliedFilters)
   const showList = state.appliedFilters.find((filter) => filter.paramValue === ViewAsValues.List)
@@ -27,7 +25,7 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay })
         PAGE_SIZE,
         (error) => {
           if (error) {
-            throw new Error("Fair/FairArtworks filter error: " + error.message)
+            throw new Error("Sale/SaleLotsList filter error: " + error.message)
           }
         },
         filterParams
@@ -35,12 +33,19 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay })
     }
   }, [state.appliedFilters])
 
-  // useEffect(() => {
-  //   dispatch({
-  //     type: "setAggregations",
-  //     payload: me.lotsByFollowedArtistsConnection.aggregations,
-  //   })
-  // }, [])
+  useEffect(() => {
+    dispatch({
+      type: "setAggregations",
+      payload: saleArtworksConnection.saleArtworksConnection?.aggregations,
+    })
+  }, [])
+
+  useEffect(() => {
+    dispatch({
+      type: "setFilterType",
+      payload: "saleArtwork",
+    })
+  }, [])
 
   const FiltersResume = () => (
     <Flex px={2} mb={1}>
@@ -87,8 +92,23 @@ export const SaleLotsListContainer = createPaginationContainer(
   {
     saleArtworksConnection: graphql`
       fragment SaleLotsList_saleArtworksConnection on Query
-      @argumentDefinitions(count: { type: "Int!", defaultValue: 10 }, cursor: { type: "String" }) {
-        saleArtworksConnection(first: $count, after: $cursor) @connection(key: "SaleLotsList_saleArtworksConnection") {
+      @argumentDefinitions(
+        count: { type: "Int!", defaultValue: 10 }
+        cursor: { type: "String" }
+        saleID: { type: "ID" }
+        sort: { type: "String", defaultValue: "position" }
+      ) {
+        saleArtworksConnection(first: $count, after: $cursor, sort: $sort, saleID: $saleID)
+        # aggregations: [MEDIUM]
+        @connection(key: "SaleLotsList_saleArtworksConnection") {
+          aggregations {
+            slice
+            counts {
+              count
+              name
+              value
+            }
+          }
           edges {
             node {
               id
@@ -110,11 +130,12 @@ export const SaleLotsListContainer = createPaginationContainer(
         ...fragmentVariables,
         cursor,
         count,
+        saleID: _props.saleID,
       }
     },
     query: graphql`
-      query SaleLotsListQuery($count: Int!, $cursor: String) @raw_response_type {
-        ...SaleLotsList_saleArtworksConnection @arguments(count: $count, cursor: $cursor)
+      query SaleLotsListQuery($count: Int!, $cursor: String, $sort: String, $saleID: ID) @raw_response_type {
+        ...SaleLotsList_saleArtworksConnection @arguments(count: $count, cursor: $cursor, saleID: $saleID, sort: $sort)
       }
     `,
   }

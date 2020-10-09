@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 492524b2c7928510622921b8019ced90 */
+/* @relayHash b567fdd888f809d9786f7984b4ad31b8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -221,7 +221,15 @@ fragment SaleHeader_sale on Sale {
 }
 
 fragment SaleLotsList_saleArtworksConnection on Query {
-  saleArtworksConnection(first: 10) {
+  saleArtworksConnection(first: 10, sort: "position") {
+    aggregations {
+      slice
+      counts {
+        count
+        name
+        value
+      }
+    }
     edges {
       node {
         id
@@ -410,7 +418,12 @@ v20 = {
   "storageKey": null
 },
 v21 = [
-  (v7/*: any*/)
+  (v7/*: any*/),
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "position"
+  }
 ],
 v22 = {
   "alias": null,
@@ -695,6 +708,50 @@ return {
           {
             "alias": null,
             "args": null,
+            "concreteType": "SaleArtworksAggregationResults",
+            "kind": "LinkedField",
+            "name": "aggregations",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "slice",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "AggregationCount",
+                "kind": "LinkedField",
+                "name": "counts",
+                "plural": true,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "count",
+                    "storageKey": null
+                  },
+                  (v4/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "value",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": "SaleArtwork",
             "kind": "LinkedField",
             "name": "edges",
@@ -906,12 +963,15 @@ return {
             "abstractKey": "__isArtworkConnectionInterface"
           }
         ],
-        "storageKey": "saleArtworksConnection(first:10)"
+        "storageKey": "saleArtworksConnection(first:10,sort:\"position\")"
       },
       {
         "alias": null,
         "args": (v21/*: any*/),
-        "filters": null,
+        "filters": [
+          "sort",
+          "saleID"
+        ],
         "handle": "connection",
         "key": "SaleLotsList_saleArtworksConnection",
         "kind": "LinkedHandle",
@@ -920,7 +980,7 @@ return {
     ]
   },
   "params": {
-    "id": "492524b2c7928510622921b8019ced90",
+    "id": "b567fdd888f809d9786f7984b4ad31b8",
     "metadata": {},
     "name": "SaleQueryRendererQuery",
     "operationKind": "query",
