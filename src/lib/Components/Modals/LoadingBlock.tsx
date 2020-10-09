@@ -13,14 +13,7 @@ export const LoadingBlock: React.FC = () => {
 
   return (
     <Modal animationType="fade" visible={isShowing} transparent>
-      <Flex
-        position="absolute"
-        width="100%"
-        height="100%"
-        alignItems="center"
-        justifyContent="center"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.15)" }}
-      >
+      <Flex flex={1} alignItems="center" justifyContent="center" style={{ backgroundColor: "rgba(0, 0, 0, 0.15)" }}>
         <ActivityIndicator size="large" />
       </Flex>
     </Modal>
@@ -41,8 +34,6 @@ export const useShowLoadingBlock = () => {
     AppStore.actions.loadingBlock.setIsShowing(value)
   }
 }
-
-///// rename this file
 
 export interface LoadingBlockModel {
   sessionState: {

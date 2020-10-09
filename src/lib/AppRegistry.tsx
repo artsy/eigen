@@ -76,7 +76,7 @@ import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { Show2QueryRenderer } from "./Scenes/Show2/Show2"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
-import { LoadingBlockProvider } from "./Components/Modals/LoadingModal"
+import { LoadingBlockProvider } from "./Components/Modals/LoadingBlock"
 import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"

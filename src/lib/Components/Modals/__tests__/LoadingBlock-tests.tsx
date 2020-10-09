@@ -3,7 +3,7 @@ import React from "react"
 import "react-native"
 import { LoadingBlock } from "../LoadingBlock"
 
-describe("LoadingModal", () => {
+describe(LoadingBlock, () => {
   it("renders without throwing when invisible", () => {
     renderWithWrappers(<LoadingBlock />)
   })

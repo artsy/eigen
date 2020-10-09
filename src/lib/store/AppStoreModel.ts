@@ -1,5 +1,5 @@
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
-import { LoadingBlockModel } from "lib/Components/Modals/LoadingModal"
+import { LoadingBlockModel } from "lib/Components/Modals/LoadingBlock"
 import { BottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
 import { MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
 import { SearchModel } from "lib/Scenes/Search/SearchModel"
