@@ -39,6 +39,7 @@ upcoming:
     - Fix layout issue in internal webviews - brian
     - Add about page - mounir
     - Center filters modal title - mounir
+    - Fix UI not responsive after editing profile settings - mounir
 
 releases:
   - version: 6.6.4

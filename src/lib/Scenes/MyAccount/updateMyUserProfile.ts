@@ -40,6 +40,10 @@ export const updateMyUserProfile = async (input: updateMyUserProfileMutation["va
                 reject(json.error)
                 return
               }
+              if (typeof json?.message === "string") {
+                reject(json.message)
+                return
+              }
             }
           }
         } catch (e) {

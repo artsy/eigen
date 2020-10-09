@@ -1,30 +1,37 @@
 import { Input } from "lib/Components/Input/Input"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 import { Flex, Separator } from "palette"
 
 import { Stack } from "lib/Components/Stack"
 import { getCurrentEmissionState } from "lib/store/AppStore"
-import { Alert, NativeModules } from "react-native"
-import { MyAccountFieldEditScreen } from "./Components/MyAccountFieldEditScreen"
-
-// related to threading, maybe it's UIKit counterpart isn't getting
-// called on the main thread.
-const alert: typeof Alert.alert = (...args) => {
-  requestAnimationFrame(() => {
-    Alert.alert(...args)
-  })
-}
+import { NativeModules } from "react-native"
+import { MyAccountFieldEditScreen, MyAccountFieldEditScreenProps } from "./Components/MyAccountFieldEditScreen"
 
 export const MyAccountEditPassword: React.FC<{}> = ({}) => {
   const [currentPassword, setCurrentPassword] = useState<string>("")
   const [newPassword, setNewPassword] = useState<string>("")
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("")
+  const [receivedErrorCurrent, setReceivedErrorCurrent] = useState<string | undefined>(undefined)
+  const [receivedErrorNew, setReceivedErrorNew] = useState<string | undefined>(undefined)
+  const [receivedErrorConfirm, setReceivedErrorConfirm] = useState<string | undefined>(undefined)
 
-  const onSave = async () => {
+  // resetting the errors when user types
+  useEffect(() => {
+    setReceivedErrorCurrent(undefined)
+  }, [currentPassword])
+  useEffect(() => {
+    setReceivedErrorNew(undefined)
+  }, [newPassword])
+  useEffect(() => {
+    setReceivedErrorConfirm(undefined)
+  }, [passwordConfirmation])
+
+  const onSave: MyAccountFieldEditScreenProps["onSave"] = async (_, alert) => {
     const { gravityURL, authenticationToken, userAgent } = getCurrentEmissionState()
     if (newPassword !== passwordConfirmation) {
-      return alert("Password confirmation does not match")
+      setReceivedErrorConfirm("Password confirmation does not match")
+      return
     }
     try {
       const res = await fetch(gravityURL + "/api/v1/me/password", {
@@ -40,22 +47,38 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
         }),
       })
       const response = await res.json()
-      // The user successfully updated their password
-      if (response.error) {
-        alert(typeof response.error === "string" ? response.error : "Something went wrong.")
-      } else {
-        alert(
-          "Password Changed",
-          "Your password has been changed successfully. Use your new password to log in.",
-          [
-            {
-              text: "OK",
-              onPress: () => NativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
-            },
-          ],
-          { cancelable: false }
-        )
+
+      if (res.status < 200 || res.status > 299 || response.error) {
+        let message: string
+        if (response.type === "param_error") {
+          message = response.message
+        } else if (typeof response.error === "string") {
+          message = response.error
+        } else {
+          message = "Something went wrong."
+        }
+
+        // No way to know where the error is. We try to guess by checking the string.
+        if (message.toLowerCase().match("current")) {
+          setReceivedErrorCurrent(message)
+        } else {
+          setReceivedErrorNew(message)
+        }
+        return
       }
+
+      // The user successfully updated their password
+      return alert(
+        "Password Changed",
+        "Your password has been changed successfully. Use your new password to log in.",
+        [
+          {
+            text: "OK",
+            onPress: () => NativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
+          },
+        ],
+        { cancelable: false }
+      )
     } catch (error) {
       console.log(error)
       alert(typeof error === "string" ? error : "Something went wrong.")
@@ -79,6 +102,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
           enableClearButton
           title="Current password"
           value={currentPassword}
+          error={receivedErrorCurrent}
         />
       </Flex>
       <Separator mb="2" mt="3" />
@@ -91,6 +115,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
           enableClearButton
           title="New password"
           value={newPassword}
+          error={receivedErrorNew}
         />
         <Input
           onChangeText={setPasswordConfirmation}
@@ -99,6 +124,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
           enableClearButton
           title="Confirm new password"
           value={passwordConfirmation}
+          error={receivedErrorConfirm}
         />
       </Stack>
     </MyAccountFieldEditScreen>
