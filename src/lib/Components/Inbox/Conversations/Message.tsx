@@ -20,8 +20,9 @@ import { Schema, Track, track as _track } from "../../../utils/track"
 
 import { compact } from "lodash"
 
-const AttachmentContainer = styled(Flex)`
+const AttachmentContainer = styled(View)`
   border-radius: 15px;
+  padding: 10px;
 `
 
 const linkStyle = {
@@ -39,7 +40,7 @@ const track: Track<Props> = _track
 
 @track()
 export class Message extends React.Component<Props> {
-  renderAttachmentPreviews(attachments: Props["message"]["attachments"], backgroundColor: "black100" | "black10") {
+  renderAttachmentPreviews(attachments: Props["message"]["attachments"], backgroundColor: string) {
     // reactNodeHandle is passed to the native side to decide which UIView to show the
     // download progress bar on.
     const previewAttachment = (reactNodeHandle: number, attachmentID: string) => {
@@ -57,11 +58,13 @@ export class Message extends React.Component<Props> {
       const isPDF = attachment?.contentType === "application/pdf"
       return (
         <AttachmentContainer
-          bg={backgroundColor}
-          width="100%"
-          p={1}
-          flex={1}
-          mb={index === attachments!.length - 1 ? 0 : 0.5}
+          style={{
+            backgroundColor,
+            flex: 1,
+            marginBottom: index === attachments!.length - 1 ? 0 : 5,
+            width: "100%",
+          }}
+          key={attachment.internalID}
         >
           {!!isImage && (
             <View key={attachment.id}>
@@ -94,23 +97,16 @@ export class Message extends React.Component<Props> {
   }
 
   render() {
-    const { message, showTimeSince, ...boxProps } = this.props
+    const { message, showTimeSince } = this.props
     const { isFromUser, body } = message
-    const bgColor = isFromUser ? "black100" : "black10"
+    const backgroundColor = color(isFromUser ? "black100" : "black10")
     const textColor = isFromUser ? "white100" : "black100"
     const alignSelf = isFromUser ? "flex-end" : undefined
     const alignAttachments = isFromUser ? "flex-end" : "flex-start"
     return (
       <>
-        <Flex
-          maxWidth="66.67%"
-          flexDirection="column"
-          alignItems={alignAttachments}
-          flexGrow={1}
-          flex={1}
-          style={{ alignSelf }}
-        >
-          <AttachmentContainer {...boxProps} flex={1} bg={bgColor} p={1}>
+        <Flex maxWidth="66.67%" alignItems={alignAttachments} flexDirection="column" style={{ alignSelf }}>
+          <AttachmentContainer style={{ backgroundColor }}>
             <Hyperlink onPress={this.onLinkPress.bind(this)} linkStyle={linkStyle}>
               <Sans size="4" color={textColor}>
                 {body}
@@ -118,7 +114,7 @@ export class Message extends React.Component<Props> {
             </Hyperlink>
           </AttachmentContainer>
           {!!message.attachments?.length && <Spacer mb={0.5} />}
-          {this.renderAttachmentPreviews(message.attachments, bgColor)}
+          {this.renderAttachmentPreviews(message.attachments, backgroundColor)}
         </Flex>
         {showTimeSince && <TimeSince time={message.createdAt} style={{ alignSelf }} mt={0.5} />}
       </>
