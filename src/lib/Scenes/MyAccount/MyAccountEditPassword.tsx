@@ -5,16 +5,8 @@ import { Flex, Separator } from "palette"
 
 import { Stack } from "lib/Components/Stack"
 import { getCurrentEmissionState } from "lib/store/AppStore"
-import { Alert, NativeModules } from "react-native"
-import { MyAccountFieldEditScreen } from "./Components/MyAccountFieldEditScreen"
-
-// related to threading, maybe it's UIKit counterpart isn't getting
-// called on the main thread.
-const alert: typeof Alert.alert = (...args) => {
-  requestAnimationFrame(() => {
-    Alert.alert(...args)
-  })
-}
+import { NativeModules } from "react-native"
+import { MyAccountFieldEditScreen, MyAccountFieldEditScreenProps } from "./Components/MyAccountFieldEditScreen"
 
 export const MyAccountEditPassword: React.FC<{}> = ({}) => {
   const [currentPassword, setCurrentPassword] = useState<string>("")
@@ -35,7 +27,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
     setReceivedErrorConfirm(undefined)
   }, [passwordConfirmation])
 
-  const onSave = async () => {
+  const onSave: MyAccountFieldEditScreenProps["onSave"] = async (dismiss, alert) => {
     const { gravityURL, authenticationToken, userAgent } = getCurrentEmissionState()
     if (newPassword !== passwordConfirmation) {
       setReceivedErrorConfirm("Password confirmation does not match")
