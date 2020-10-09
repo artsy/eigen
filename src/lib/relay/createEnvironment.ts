@@ -31,9 +31,9 @@ export default function createEnvironment() {
           }
         },
       }),
-      checkAuthenticationMiddleware,
       // @ts-ignore
       principalFieldErrorMiddleware(),
+      checkAuthenticationMiddleware(),
       loggerMiddleware(),
       errorMiddleware({
         disableServerMiddlewareTip: true,
