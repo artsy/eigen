@@ -105,6 +105,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
     <FlatList
       key={conversation.internalID!}
       data={messages}
+      initialNumToRender={messages?.length}
       renderItem={({ item, index }) => {
         return (
           <MessageGroup
@@ -132,7 +133,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
         setContentHeight(height)
       }}
       refreshControl={refreshControl}
-      style={{ ...messagesStyles, paddingHorizontal: 10 }}
+      style={{ ...messagesStyles, paddingHorizontal: 10, flex: 0 }}
       ListFooterComponent={<LoadingIndicator animating={fetchingMoreData} hidesWhenStopped />}
     />
   )
