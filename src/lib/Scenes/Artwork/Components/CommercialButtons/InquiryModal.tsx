@@ -6,7 +6,8 @@ import ChevronIcon from "lib/Icons/ChevronIcon"
 import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Box, color, Flex, Separator, space, Text } from "palette"
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
+import { LayoutAnimation, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
@@ -25,30 +26,47 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const { toggleVisibility, modalIsVisible } = props
   const questions = artwork?.inquiryQuestions!
   const { state } = useContext(ArtworkInquiryContext)
+  const [isExpanded, setExpanded] = useState(false)
+  const toggleExpanded = () => {
+    LayoutAnimation.configureNext({
+      ...LayoutAnimation.Presets.linear,
+      duration: 200,
+    })
+    setExpanded(!isExpanded)
+  }
 
   const renderInquiryQuestion = (inquiry: string): JSX.Element => {
     return (
-      <InfoBox key={inquiry}>
-        <Flex flexDirection="row">
-          <Checkbox
-            checked={state.inquiryType === InquiryOptions.RequestPrice && inquiry === InquiryOptions.PriceAvailability}
-          />
-          <Text variant="text">{inquiry}</Text>
-        </Flex>
-        {inquiry === InquiryOptions.Shipping && (
-          <>
-            <Separator my={2} />
-            <Flex flexDirection="row" justifyContent="space-between">
-              <Text variant="text" color="black60">
-                Add your location
-              </Text>
-              <Box mt={0.5}>
-                <ChevronIcon color="black60" />
-              </Box>
+      <TouchableOpacity onPress={() => toggleExpanded()} key={inquiry}>
+        <InquiryField>
+          <Flex flexDirection="row" justifyContent="space-between">
+            <Flex flexDirection="row">
+              <Checkbox
+                checked={
+                  state.inquiryType === InquiryOptions.RequestPrice && inquiry === InquiryOptions.PriceAvailability
+                }
+              />
+              <Text variant="text">{inquiry}</Text>
             </Flex>
-          </>
-        )}
-      </InfoBox>
+            {inquiry === InquiryOptions.Shipping && (
+              <Flex flexDirection="row" mt={0.5}>
+                <ChevronIcon color="black60" expanded={isExpanded} initialDirection="down" />
+              </Flex>
+            )}
+          </Flex>
+
+          {inquiry === InquiryOptions.Shipping && !!isExpanded && (
+            <>
+              <Separator my={2} />
+              <Flex flexDirection="row" justifyContent="space-between">
+                <Text variant="text" color="black60">
+                  Add your location
+                </Text>
+              </Flex>
+            </>
+          )}
+        </InquiryField>
+      </TouchableOpacity>
     )
   }
 
@@ -72,7 +90,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   )
 }
 
-const InfoBox = styled(Flex)`
+const InquiryField = styled(Flex)`
   border-radius: 5;
   border: solid 1px ${color("black10")};
   flex-direction: column;
