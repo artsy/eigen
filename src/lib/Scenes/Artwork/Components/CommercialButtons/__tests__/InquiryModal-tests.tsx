@@ -10,6 +10,7 @@ import { ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInq
 import { queryLocation } from "lib/utils/googleMaps"
 import { Touchable } from "palette"
 import React from "react"
+import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -71,8 +72,10 @@ beforeEach(() => {
   env = createMockEnvironment()
 })
 
-const press = (ti: ReactTestInstance, text: string) => {
-  const touchable = ti.findAllByType(Touchable).filter((t) => extractText(t) === text)[0]
+const press = (ti: ReactTestInstance, text: string, componentType: React.ComponentType = Touchable) => {
+  const touchable = ti.findAllByType(componentType, { deep: true }).filter((t) => {
+    return extractText(t).match(text)
+  })[0]
   expect(touchable).toBeTruthy()
   act(() => {
     touchable.props.onPress()
@@ -98,7 +101,7 @@ describe("<InquiryModal />", () => {
       expect(extractText(header)).toContain("Add Location")
     })
 
-    it("updates with location search suggestions from google", async () => {
+    it("User adds a location from the shipping modal", async () => {
       ;(queryLocation as jest.Mock).mockResolvedValue([
         { id: "a", name: "Coxsackie, NY, USA" },
         { id: "b", name: "Coxs Creek, KY, USA" },
@@ -112,6 +115,15 @@ describe("<InquiryModal />", () => {
         locationInput.props.onChangeText("Cox")
         await flushPromiseQueue()
       })
+      expect(wrapper.root.findAllByProps({ "data-test-id": "dropdown" }).length).not.toEqual(0)
+      expect(extractText(wrapper.root)).toContain("Coxsackie, NY, USA")
+
+      press(wrapper.root, "Coxsackie, NY, USA")
+      expect(wrapper.root.findByType(Input).props.value).toEqual("Coxsackie, NY, USA")
+      expect(wrapper.root.findAllByProps({ "data-test-id": "dropdown" }).length).toEqual(0)
+
+      press(wrapper.root, "Apply", TouchableOpacity)
+      expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeFalsy()
 
       expect(extractText(wrapper.root)).toContain("Coxsackie, NY, USA")
     })

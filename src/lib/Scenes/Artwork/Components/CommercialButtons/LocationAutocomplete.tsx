@@ -89,7 +89,7 @@ const LocationPredictions = ({
   }
 
   return (
-    <Dropdown>
+    <Dropdown data-test-id="dropdown">
       {predictions.map((p) => (
         <Touchable
           key={p.id}
