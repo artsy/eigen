@@ -2,7 +2,7 @@ import { action, Action } from "easy-peasy"
 import { AppStore } from "lib/store/AppStore"
 import { Flex } from "palette"
 import React from "react"
-import { ActivityIndicator, Modal } from "react-native"
+import { ActivityIndicator } from "react-native"
 
 export const LoadingBlock: React.FC = () => {
   const isShowing = AppStore.useAppState((state) => state.loadingBlock.sessionState.isShowing)
@@ -12,11 +12,16 @@ export const LoadingBlock: React.FC = () => {
   }
 
   return (
-    <Modal animationType="fade" visible={isShowing} transparent>
-      <Flex flex={1} alignItems="center" justifyContent="center" style={{ backgroundColor: "rgba(0, 0, 0, 0.15)" }}>
-        <ActivityIndicator size="large" />
-      </Flex>
-    </Modal>
+    <Flex
+      position="absolute"
+      width="100%"
+      height="100%"
+      alignItems="center"
+      justifyContent="center"
+      style={{ backgroundColor: "rgba(0, 0, 0, 0.15)" }}
+    >
+      <ActivityIndicator size="large" />
+    </Flex>
   )
 }
 
