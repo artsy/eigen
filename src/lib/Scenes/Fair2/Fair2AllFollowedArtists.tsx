@@ -3,9 +3,11 @@ import { Fair2AllFollowedArtistsQuery } from "__generated__/Fair2AllFollowedArti
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Box, Separator, Spacer, Text, Theme } from "palette"
-import React, { useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
+import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { Fair2ArtworksFragmentContainer } from "./Components/Fair2Artworks"
 
@@ -27,36 +29,48 @@ export const Fair2AllFollowedArtists: React.FC<Fair2AllFollowedArtistsProps> = (
     handleFilterArtworksModal()
   }
 
+  const initialFilter = [
+    {
+      displayText: "Artists I follow",
+      paramName: FilterParamName.artistsIFollow,
+      paramValue: true,
+    },
+  ]
+
   return (
     <ArtworkFilterGlobalStateProvider>
       <ArtworkFilterContext.Consumer>
-        {(context) => (
-          <Theme>
-            <>
-              <Text mt={2} mb={1} textAlign="center" variant="mediumText">
-                Artworks
-              </Text>
-              <Separator />
-              <Spacer mb={2} />
-              <Box px="15px">
-                <Fair2ArtworksFragmentContainer fair={fair} />
-                <FilterModalNavigator
-                  isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-                  id={fair.internalID}
-                  slug={fair.slug}
-                  mode={FilterModalMode.Fair}
-                  exitModal={handleFilterArtworksModal}
-                  closeModal={closeFilterArtworksModal}
-                />
+        {(context) => {
+          return (
+            <Theme>
+              <>
+                <ScrollView>
+                  <Text mt={2} mb={1} textAlign="center" variant="mediumText">
+                    Artworks
+                  </Text>
+                  <Separator />
+                  <Spacer mb={2} />
+                  <Box px="15px">
+                    <Fair2ArtworksFragmentContainer fair={fair} initiallyAppliedFilter={initialFilter} />
+                    <FilterModalNavigator
+                      isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+                      id={fair.internalID}
+                      slug={fair.slug}
+                      mode={FilterModalMode.Fair}
+                      exitModal={handleFilterArtworksModal}
+                      closeModal={closeFilterArtworksModal}
+                    />
+                  </Box>
+                </ScrollView>
                 <AnimatedArtworkFilterButton
                   isVisible
                   count={context.state.appliedFilters.length}
                   onPress={openFilterArtworksModal}
                 />
-              </Box>
-            </>
-          </Theme>
-        )}
+              </>
+            </Theme>
+          )
+        }}
       </ArtworkFilterContext.Consumer>
     </ArtworkFilterGlobalStateProvider>
   )

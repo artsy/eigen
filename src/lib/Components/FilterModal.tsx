@@ -39,6 +39,7 @@ interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
   exitModal?: () => void
   navigator?: NavigatorIOS
+  initiallyAppliedFilters?: any
   isFilterArtworksModalVisible: boolean
   id: string
   slug: string

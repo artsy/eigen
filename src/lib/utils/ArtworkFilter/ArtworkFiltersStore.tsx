@@ -1,3 +1,4 @@
+import { AnyNsRecord } from "dns"
 import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { filter, find, pullAllBy, union, unionBy } from "lodash"
 import React, { createContext, Dispatch, Reducer, useContext, useReducer } from "react"
@@ -116,6 +117,15 @@ export const reducer = (
         selectedFilters: artworkFilterState.selectedFilters,
         previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
         applyFilters: false,
+      }
+
+    case "setInitialFilterState":
+      return {
+        appliedFilters: action.payload,
+        selectedFilters: [],
+        previouslyAppliedFilters: action.payload,
+        applyFilters: false,
+        aggregations: artworkFilterState.aggregations,
       }
   }
 }
@@ -249,6 +259,11 @@ interface SetAggregations {
   payload: any
 }
 
+interface SetInitialFilterState {
+  type: "setInitialFilterState"
+  payload: AnyNsRecord
+}
+
 export type FilterActions =
   | ResetFilters
   | ApplyFilters
@@ -256,6 +271,7 @@ export type FilterActions =
   | ClearAllFilters
   | ClearFiltersZeroState
   | SetAggregations
+  | SetInitialFilterState
 
 interface ArtworkFilterContextProps {
   state: ArtworkFilterContextState

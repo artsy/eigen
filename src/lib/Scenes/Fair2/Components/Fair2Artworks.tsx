@@ -18,9 +18,11 @@ import { useTracking } from "react-tracking"
 interface Fair2ArtworksProps {
   fair: Fair2Artworks_fair
   relay: RelayPaginationProp
+  initiallyAppliedFilter?: any
 }
 
-export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay }) => {
+export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay, initiallyAppliedFilter }) => {
+
   const artworks = fair.fairArtworks!
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const tracking = useTracking()
@@ -36,6 +38,12 @@ export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay }) => 
       action_type: Schema.ActionTypes.Tap,
     })
   }
+
+  useEffect(() => {
+    if (initiallyAppliedFilter) {
+      dispatch({ type: "setInitialFilterState", payload: initiallyAppliedFilter })
+    }
+  }, [])
 
   useEffect(() => {
     if (state.applyFilters) {
