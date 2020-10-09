@@ -27,7 +27,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
     setReceivedErrorConfirm(undefined)
   }, [passwordConfirmation])
 
-  const onSave: MyAccountFieldEditScreenProps["onSave"] = async (dismiss, alert) => {
+  const onSave: MyAccountFieldEditScreenProps["onSave"] = async (_, alert) => {
     const { gravityURL, authenticationToken, userAgent } = getCurrentEmissionState()
     if (newPassword !== passwordConfirmation) {
       setReceivedErrorConfirm("Password confirmation does not match")

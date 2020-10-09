@@ -22,7 +22,7 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me }> = ({ me }) => 
     <MyAccountFieldEditScreen
       title={"Phone"}
       canSave={!!phone.trim()}
-      onSave={async (dismiss, alert) => {
+      onSave={async (dismiss) => {
         try {
           await updateMyUserProfile({ phone })
           dismiss()
