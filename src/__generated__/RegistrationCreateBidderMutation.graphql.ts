@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 77382fd385a089ff35904fa26513c733 */
+/* @relayHash ba9c29e5a8a919afab55321318b08233 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type CreateBidderInput = {
@@ -16,6 +16,11 @@ export type RegistrationCreateBidderMutationResponse = {
         readonly bidder: {
             readonly internalID: string;
             readonly qualified_for_bidding: boolean | null;
+            readonly sale: {
+                readonly registrationStatus: {
+                    readonly qualifiedForBidding: boolean | null;
+                } | null;
+            } | null;
         } | null;
     } | null;
 };
@@ -34,6 +39,13 @@ mutation RegistrationCreateBidderMutation(
     bidder {
       internalID
       qualified_for_bidding: qualifiedForBidding
+      sale {
+        registrationStatus {
+          qualifiedForBidding
+          id
+        }
+        id
+      }
       id
     }
   }
@@ -68,6 +80,20 @@ v3 = {
   "kind": "ScalarField",
   "name": "qualifiedForBidding",
   "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "qualifiedForBidding",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -93,7 +119,30 @@ return {
             "plural": false,
             "selections": [
               (v2/*: any*/),
-              (v3/*: any*/)
+              (v3/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Sale",
+                "kind": "LinkedField",
+                "name": "sale",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Bidder",
+                    "kind": "LinkedField",
+                    "name": "registrationStatus",
+                    "plural": false,
+                    "selections": [
+                      (v4/*: any*/)
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
             ],
             "storageKey": null
           }
@@ -131,10 +180,29 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "kind": "ScalarField",
-                "name": "id",
+                "concreteType": "Sale",
+                "kind": "LinkedField",
+                "name": "sale",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Bidder",
+                    "kind": "LinkedField",
+                    "name": "registrationStatus",
+                    "plural": false,
+                    "selections": [
+                      (v4/*: any*/),
+                      (v5/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  (v5/*: any*/)
+                ],
                 "storageKey": null
-              }
+              },
+              (v5/*: any*/)
             ],
             "storageKey": null
           }
@@ -144,7 +212,7 @@ return {
     ]
   },
   "params": {
-    "id": "77382fd385a089ff35904fa26513c733",
+    "id": "ba9c29e5a8a919afab55321318b08233",
     "metadata": {},
     "name": "RegistrationCreateBidderMutation",
     "operationKind": "mutation",
@@ -152,5 +220,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'bcadd34deaab431f3a6f68cd7bac7ecf';
+(node as any).hash = 'cd8998226b1b49e2b9a7e9a497ac1ac8';
 export default node;
