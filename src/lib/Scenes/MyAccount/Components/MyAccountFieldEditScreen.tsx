@@ -4,17 +4,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Sans } from "palette"
 import React, { useImperativeHandle, useRef, useState } from "react"
-import { Alert, KeyboardAvoidingView, ScrollView, TouchableOpacity, ViewStyle } from "react-native"
-
-// The UI will be blocked when showing Alert while closing Modal
-// see https://github.com/facebook/react-native/issues/10471
-export const deferredAlert = (text: string) => {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      Alert.alert(text)
-    })
-  })
-}
+import { KeyboardAvoidingView, ScrollView, TouchableOpacity, ViewStyle } from "react-native"
 
 export interface MyAccountFieldEditScreen {
   scrollToEnd(): void

@@ -3,19 +3,20 @@ import { Input } from "lib/Components/Input/Input"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { MyAccountEditName_me } from "../../../__generated__/MyAccountEditName_me.graphql"
-import {
-  deferredAlert,
-  MyAccountFieldEditScreen,
-  MyAccountFieldEditScreenPlaceholder,
-} from "./Components/MyAccountFieldEditScreen"
+import { MyAccountFieldEditScreen, MyAccountFieldEditScreenPlaceholder } from "./Components/MyAccountFieldEditScreen"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
 const MyAccountEditName: React.FC<{ me: MyAccountEditName_me; relay: RelayProp }> = ({ me }) => {
   const [name, setName] = useState<string>(me.name ?? "")
+  const [receivedErrors, setReceivedErrors] = useState<string | undefined>(undefined)
   const inputRef = useRef(null)
+
+  useEffect(() => {
+    setReceivedErrors(undefined)
+  }, [name])
 
   return (
     <MyAccountFieldEditScreen
@@ -26,11 +27,11 @@ const MyAccountEditName: React.FC<{ me: MyAccountEditName_me; relay: RelayProp }
           await updateMyUserProfile({ name })
           dismiss()
         } catch (e) {
-          deferredAlert(typeof e === "string" ? e : "Something went wrong.")
+          setReceivedErrors(e)
         }
       }}
     >
-      <Input enableClearButton value={name} onChangeText={setName} autoFocus ref={inputRef} />
+      <Input enableClearButton value={name} onChangeText={setName} autoFocus ref={inputRef} error={receivedErrors} />
     </MyAccountFieldEditScreen>
   )
 }

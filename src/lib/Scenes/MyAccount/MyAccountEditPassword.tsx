@@ -1,5 +1,5 @@
 import { Input } from "lib/Components/Input/Input"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 import { Flex, Separator } from "palette"
 
@@ -20,11 +20,26 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
   const [currentPassword, setCurrentPassword] = useState<string>("")
   const [newPassword, setNewPassword] = useState<string>("")
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("")
+  const [receivedErrorCurrent, setReceivedErrorCurrent] = useState<string | undefined>(undefined)
+  const [receivedErrorNew, setReceivedErrorNew] = useState<string | undefined>(undefined)
+  const [receivedErrorConfirm, setReceivedErrorConfirm] = useState<string | undefined>(undefined)
+
+  // resetting the errors when user types
+  useEffect(() => {
+    setReceivedErrorCurrent(undefined)
+  }, [currentPassword])
+  useEffect(() => {
+    setReceivedErrorNew(undefined)
+  }, [newPassword])
+  useEffect(() => {
+    setReceivedErrorConfirm(undefined)
+  }, [passwordConfirmation])
 
   const onSave = async () => {
     const { gravityURL, authenticationToken, userAgent } = getCurrentEmissionState()
     if (newPassword !== passwordConfirmation) {
-      return alert("Password confirmation does not match")
+      setReceivedErrorConfirm("Password confirmation does not match")
+      return
     }
     try {
       const res = await fetch(gravityURL + "/api/v1/me/password", {
@@ -50,7 +65,14 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
         } else {
           message = "Something went wrong."
         }
-        return alert(message)
+
+        // No way to know where the error is. We try to guess by checking the string.
+        if (message.toLowerCase().match("current")) {
+          setReceivedErrorCurrent(message)
+        } else {
+          setReceivedErrorNew(message)
+        }
+        return
       }
 
       // The user successfully updated their password
@@ -88,6 +110,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
           enableClearButton
           title="Current password"
           value={currentPassword}
+          error={receivedErrorCurrent}
         />
       </Flex>
       <Separator mb="2" mt="3" />
@@ -100,6 +123,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
           enableClearButton
           title="New password"
           value={newPassword}
+          error={receivedErrorNew}
         />
         <Input
           onChangeText={setPasswordConfirmation}
@@ -108,6 +132,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
           enableClearButton
           title="Confirm new password"
           value={passwordConfirmation}
+          error={receivedErrorConfirm}
         />
       </Stack>
     </MyAccountFieldEditScreen>
