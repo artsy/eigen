@@ -261,7 +261,7 @@ interface SetAggregations {
 
 interface SetInitialFilterState {
   type: "setInitialFilterState"
-  payload: AnyNsRecord
+  payload: FilterArray
 }
 
 export type FilterActions =

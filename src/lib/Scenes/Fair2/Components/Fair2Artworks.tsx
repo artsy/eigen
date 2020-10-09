@@ -3,7 +3,7 @@ import { Fair2Artworks_fair } from "__generated__/Fair2Artworks_fair.graphql"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FAIR2_ARTWORKS_PAGE_SIZE } from "lib/data/constants"
-import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFilterContext, FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
   aggregationsType,
   aggregationsWithFollowedArtists,
@@ -18,7 +18,7 @@ import { useTracking } from "react-tracking"
 interface Fair2ArtworksProps {
   fair: Fair2Artworks_fair
   relay: RelayPaginationProp
-  initiallyAppliedFilter?: any
+  initiallyAppliedFilter?: FilterArray
 }
 
 export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay, initiallyAppliedFilter }) => {

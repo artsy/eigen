@@ -2,7 +2,11 @@ import { Fair2AllFollowedArtists_fair } from "__generated__/Fair2AllFollowedArti
 import { Fair2AllFollowedArtistsQuery } from "__generated__/Fair2AllFollowedArtistsQuery.graphql"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import {
+  ArtworkFilterContext,
+  ArtworkFilterGlobalStateProvider,
+  FilterArray,
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -22,7 +26,7 @@ export const Fair2AllFollowedArtists: React.FC<Fair2AllFollowedArtistsProps> = (
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
   }
 
-  const initialFilter = [
+  const initialFilter: FilterArray = [
     {
       displayText: "Artists I follow",
       paramName: FilterParamName.artistsIFollow,
