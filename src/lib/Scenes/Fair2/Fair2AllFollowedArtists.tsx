@@ -5,7 +5,6 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Box, Flex, Separator, Spacer, Text, Theme } from "palette"
 import React, { useState } from "react"
@@ -21,14 +20,6 @@ export const Fair2AllFollowedArtists: React.FC<Fair2AllFollowedArtistsProps> = (
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const handleFilterArtworksModal = () => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
-  }
-
-  const openFilterArtworksModal = () => {
-    handleFilterArtworksModal()
-  }
-
-  const closeFilterArtworksModal = () => {
-    handleFilterArtworksModal()
   }
 
   const initialFilter = [
@@ -60,14 +51,14 @@ export const Fair2AllFollowedArtists: React.FC<Fair2AllFollowedArtistsProps> = (
                       slug={fair.slug}
                       mode={FilterModalMode.Fair}
                       exitModal={handleFilterArtworksModal}
-                      closeModal={closeFilterArtworksModal}
+                      closeModal={handleFilterArtworksModal}
                     />
                   </Box>
                 </ScrollView>
                 <AnimatedArtworkFilterButton
                   isVisible
                   count={context.state.appliedFilters.length}
-                  onPress={openFilterArtworksModal}
+                  onPress={handleFilterArtworksModal}
                 />
               </>
             </Theme>
