@@ -57,7 +57,7 @@ export const Fair2Collections: React.FC<Fair2CollectionsProps> = ({ fair, ...res
             <TouchableWithScale
               key={collection.slug}
               onPress={() => {
-                trackTappedCollection(collection.internalID, collection.slug)
+                trackTappedCollection(collection.slug, collection.slug)
                 navigate(`/collection/${collection.slug}`)
               }}
             >
@@ -76,7 +76,6 @@ export const Fair2CollectionsFragmentContainer = createFragmentContainer(Fair2Co
       internalID
       slug
       marketingCollections(size: 4) {
-        internalID
         slug
         title
         category

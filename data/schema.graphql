@@ -6905,7 +6905,7 @@ type Me implements Node {
     mode: CommerceOrderModeEnum
     sellerId: String
     sort: CommerceOrderConnectionSortEnum
-    state: CommerceOrderStateEnum
+    states: [CommerceOrderStateEnum!]
   ): CommerceOrderConnectionWithTotalCount
   paddleNumber: String
 
@@ -7261,6 +7261,7 @@ input MyCollectionUpdateArtworkInput {
   depth: String
   editionNumber: String
   editionSize: String
+  externalImageUrls: [String]
   height: String
   medium: String
   metric: String
@@ -8063,7 +8064,7 @@ type Query {
     mode: CommerceOrderModeEnum
     sellerId: String
     sort: CommerceOrderConnectionSortEnum
-    state: CommerceOrderStateEnum
+    states: [CommerceOrderStateEnum!]
   ): CommerceOrderConnectionWithTotalCount
 
   # Find an order by ID

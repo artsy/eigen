@@ -2,7 +2,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/AddArtwork/Form/useArtworkForm"
 import { AppStore } from "lib/store/AppStore"
-import { BorderBox, Box, Button, Flex, Join, Sans, Spacer } from "palette"
+import { BorderBox, Box, Button, Flex, Join, Sans, Spacer, Text } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { ArrowButton } from "./Components/ArrowButton"
@@ -28,6 +28,9 @@ export const AddEditArtwork: React.FC = () => {
       </FancyModalHeader>
 
       <Spacer my={1} />
+
+      {/* FIXME: Wire up proper loading modal */}
+      {!!artworkState.sessionState.isLoading && <Text variant="title">Loading</Text>}
 
       <Sans size="4" textAlign="center">
         {addOrEditLabel} details about your work for a price {"\n"}
@@ -61,7 +64,7 @@ export const AddEditArtwork: React.FC = () => {
             variant="secondaryGray"
             block
             onPress={() =>
-              artworkActions.deleteArtwork({
+              artworkActions.confirmDeleteArtwork({
                 artworkId: artworkState.sessionState.artworkId,
                 artworkGlobalId: artworkState.sessionState.artworkGlobalId,
               })

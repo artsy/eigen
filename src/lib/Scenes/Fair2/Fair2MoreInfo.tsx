@@ -32,7 +32,7 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
     <ProvideScreenTracking
       info={{
         context_screen: Schema.PageNames.Fair2MoreInfoPage,
-        context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Fair2MoreInfo,
         context_screen_owner_id: fair.internalID,
         context_screen_owner_slug: fair.slug,
       }}

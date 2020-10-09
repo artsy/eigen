@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4f92128db8256de835ae80c4c6d62015 */
+/* @relayHash c418eb2aaff557128c70ebb42420bdaf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,7 +37,6 @@ export type Fair2TestsQueryRawResponse = {
         readonly marketingCollections: ReadonlyArray<({
             readonly __typename: string;
             readonly id: string;
-            readonly internalID: string;
             readonly slug: string;
             readonly title: string;
             readonly category: string;
@@ -343,7 +342,6 @@ fragment Fair2Collections_fair on Fair {
   internalID
   slug
   marketingCollections(size: 4) {
-    internalID
     slug
     title
     category
@@ -992,7 +990,6 @@ return {
             "selections": [
               (v4/*: any*/),
               (v5/*: any*/),
-              (v2/*: any*/),
               (v3/*: any*/),
               (v6/*: any*/),
               {
@@ -1775,7 +1772,7 @@ return {
     ]
   },
   "params": {
-    "id": "4f92128db8256de835ae80c4c6d62015",
+    "id": "c418eb2aaff557128c70ebb42420bdaf",
     "metadata": {},
     "name": "Fair2TestsQuery",
     "operationKind": "query",
