@@ -1,4 +1,4 @@
-import { useLoadingBlock } from "lib/Components/Modals/LoadingModal"
+import { useShowLoadingBlock } from "lib/Components/Modals/LoadingModal"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { goBack } from "lib/navigation/navigate"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -36,14 +36,14 @@ export const MyAccountFieldEditScreen = React.forwardRef<
   { scrollToEnd(): void },
   React.PropsWithChildren<MyAccountFieldEditScreenProps>
 >(({ children, canSave, onSave, title, contentContainerStyle }, ref) => {
-  const setLoadingBlock = useLoadingBlock()
+  const showLoadingBlock = useShowLoadingBlock()
   const [behindTheModalDismiss, setBehindTheModalDismiss] = useState(false)
   const [behindTheModalAlert, setBehindTheModalAlert] = useState<AlertArgs | undefined>(undefined)
   const scrollViewRef = useRef<ScrollView>(null)
   const screen = useScreenDimensions()
 
   const onDismiss = () => {
-    setLoadingBlock(false)
+    showLoadingBlock(false)
     goBack()
   }
 
@@ -60,12 +60,12 @@ export const MyAccountFieldEditScreen = React.forwardRef<
       return
     }
     try {
-      setLoadingBlock(true)
+      showLoadingBlock(true)
       await onSave(doTheDismiss, doTheAlert as any)
     } catch (e) {
       console.error(e)
     } finally {
-      setLoadingBlock(false)
+      showLoadingBlock(false)
     }
   }
 
