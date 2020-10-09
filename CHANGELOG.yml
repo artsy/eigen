@@ -24,6 +24,7 @@ upcoming:
     - Add new Show2 view, behind lab option - roop, sarah
     - Adds tracking for Fair2 - will
     - Adds ability to route to new fair view via option - sweir
+    - Change CheckAuthentication middleware to be called before the principalFieldMiddleware - mounir
   user_facing:
     - Fix navigation bug on Artwork consign button - david
     - Add auction lots rail to the auctions screen - mounir
