@@ -20,11 +20,7 @@ export interface MyAccountFieldEditScreen {
   save(): Promise<void>
 }
 
-type AlertArgs =
-  | [string] // title
-  | [string, string] // title, message
-  | [string, string, AlertButton[]] // title, message, buttons
-  | [string, string, AlertButton[], AlertOptions] // title, message, buttons, options
+export type AlertArgs = [title: string, message?: string, buttons?: AlertButton[], options?: AlertOptions]
 
 export interface MyAccountFieldEditScreenProps {
   title: string
@@ -51,7 +47,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
     setBehindTheModalDismiss(true)
   }
 
-  const doTheAlert = (...args: AlertArgs) => {
+  const doTheAlert: AlertStatic["alert"] = (...args) => {
     setBehindTheModalAlert(args)
   }
 
@@ -61,7 +57,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
     }
     try {
       setIsSaving(true)
-      await onSave(doTheDismiss, doTheAlert as any)
+      await onSave(doTheDismiss, doTheAlert)
     } catch (e) {
       console.error(e)
     } finally {
@@ -116,7 +112,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
                 onDismiss()
               }
               if (behindTheModalAlert !== undefined) {
-                Alert.alert(...(behindTheModalAlert as [any]))
+                Alert.alert(...behindTheModalAlert)
               }
             }}
           />
