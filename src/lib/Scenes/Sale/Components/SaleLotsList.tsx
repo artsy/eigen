@@ -33,12 +33,12 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay })
     }
   }, [state.appliedFilters])
 
-  useEffect(() => {
-    dispatch({
-      type: "setAggregations",
-      payload: saleArtworksConnection.saleArtworksConnection?.aggregations,
-    })
-  }, [])
+  // useEffect(() => {
+  //   dispatch({
+  //     type: "setAggregations",
+  //     payload: saleArtworksConnection.saleArtworksConnection?.aggregations,
+  //   })
+  // }, [])
 
   useEffect(() => {
     dispatch({

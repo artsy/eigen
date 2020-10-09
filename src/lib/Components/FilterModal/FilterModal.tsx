@@ -297,10 +297,10 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
 export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
   switch (mode) {
     case FilterModalMode.SaleArtworks:
-      return [filterOptionToDisplayConfigMap.sort, filterOptionToDisplayConfigMap.viewAs]
+      return [filterOptionToDisplayConfigMap.sortSaleArtworks, filterOptionToDisplayConfigMap.viewAs]
 
     default:
-      return [filterOptionToDisplayConfigMap.sort, filterOptionToDisplayConfigMap.waysToBuy]
+      return [filterOptionToDisplayConfigMap.sortArtworks, filterOptionToDisplayConfigMap.waysToBuy]
   }
 }
 
@@ -500,8 +500,13 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "priceRange",
     ScreenComponent: PriceRangeOptionsScreen,
   },
-  sort: {
-    displayText: FilterDisplayName.sort,
+  sortArtworks: {
+    displayText: FilterDisplayName.sortArtworks,
+    filterType: "sort",
+    ScreenComponent: SortOptionsScreen,
+  },
+  sortSaleArtworks: {
+    displayText: FilterDisplayName.sortSaleArtworks,
     filterType: "sort",
     ScreenComponent: SortOptionsScreen,
   },

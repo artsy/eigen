@@ -149,7 +149,8 @@ export const ParamDefaultValues = {
   offerable: false,
   partnerID: undefined,
   priceRange: "*-*",
-  sort: "-decayed_merch",
+  sortArtworks: "-decayed_merch",
+  sortSaleArtworks: "position",
   viewAs: ViewAsValues.Grid,
 }
 
@@ -165,7 +166,8 @@ const defaultFilterOptions: Record<FilterParamName, string | boolean | undefined
   offerable: ParamDefaultValues.offerable,
   partnerID: ParamDefaultValues.partnerID,
   priceRange: ParamDefaultValues.priceRange,
-  sort: ParamDefaultValues.sort,
+  sortArtworks: ParamDefaultValues.sortArtworks,
+  sortSaleArtworks: ParamDefaultValues.sortSaleArtworks,
   viewAs: ParamDefaultValues.viewAs,
 }
 
@@ -174,8 +176,13 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
 
   const defaultFilters: FilterArray = [
     {
-      paramName: FilterParamName.sort,
+      paramName: FilterParamName.sortArworks,
       paramValue: "-decayed_merch",
+      displayText: "Default",
+    },
+    {
+      paramName: FilterParamName.sortSaleArworks,
+      paramValue: "position",
       displayText: "Default",
     },
     { paramName: FilterParamName.medium, paramValue: "*", displayText: "All" },
@@ -314,3 +321,5 @@ export type Aggregations = Array<{
     name: string
   }>
 }>
+
+export type FilterType = "artwork" | "saleArtwork"

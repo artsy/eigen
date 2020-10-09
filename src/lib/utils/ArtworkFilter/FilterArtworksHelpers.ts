@@ -1,5 +1,5 @@
 import { FilterScreen } from "lib/Components/FilterModal"
-import { Aggregations, FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { Aggregations, FilterArray, FilterType } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { forOwn } from "lodash"
 
 // General filter types and objects
@@ -11,7 +11,8 @@ export enum FilterParamName {
   medium = "medium",
   priceRange = "priceRange",
   size = "dimensionRange",
-  sort = "sort",
+  sortArtworks = "sortArtworks",
+  sortSaleArtworks = "sortSaleArtworks",
   timePeriod = "majorPeriods",
   viewAs = "viewAs",
   waysToBuyBid = "atAuction",
@@ -32,7 +33,8 @@ export enum FilterDisplayName {
   medium = "Medium",
   priceRange = "Price/estimate range",
   size = "Size",
-  sort = "Sort by",
+  sortArtworks = "Sort by",
+  sortSaleArtworks = "Sort by",
   timePeriod = "Time period",
   viewAs = "View as",
   waysToBuy = "Ways to buy",
@@ -51,6 +53,7 @@ export interface InitialState {
     previouslyAppliedFilters: FilterArray
     applyFilters: boolean
     aggregations: Aggregations
+    filterType: FilterType
   }
 }
 
@@ -60,7 +63,8 @@ export interface AggregateOption {
 }
 
 const defaultFilterParams = {
-  sort: "-decayed_merch",
+  sortArtworks: "-decayed_merch",
+  sortSaleArtworks: "position",
   medium: "*",
   priceRange: "*-*",
   dimensionRange: "*-*",
