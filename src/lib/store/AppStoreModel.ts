@@ -1,5 +1,5 @@
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
-import { LoadingBlockingViewModel } from "lib/Components/Modals/LoadingModal"
+import { LoadingBlockModel } from "lib/Components/Modals/LoadingModal"
 import { BottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
 import { MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
 import { SearchModel } from "lib/Scenes/Search/SearchModel"
@@ -19,7 +19,7 @@ interface AppStoreStateModel {
   bottomTabs: BottomTabsModel
   search: SearchModel
   myCollection: MyCollectionModel
-  loadingBlockingView: LoadingBlockingViewModel
+  loadingBlock: LoadingBlockModel
 }
 export interface AppStoreModel extends AppStoreStateModel {
   rehydrate: Action<AppStoreModel, DeepPartial<State<AppStoreStateModel>>>
@@ -61,7 +61,7 @@ export const appStoreModel: AppStoreModel = {
   bottomTabs: BottomTabsModel,
   search: SearchModel,
   myCollection: MyCollectionModel,
-  loadingBlockingView: LoadingBlockingViewModel,
+  loadingBlock: LoadingBlockModel,
 }
 
 export type AppStoreState = State<AppStoreModel>
