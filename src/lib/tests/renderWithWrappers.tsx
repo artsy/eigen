@@ -6,7 +6,6 @@ import { ReactElement } from "simple-markdown"
 
 /**
  * Renders a React Component with our page wrappers
- * only <Theme> for now
  * @param component
  */
 export const renderWithWrappers = (component: ReactElement) => {
@@ -38,7 +37,6 @@ export const renderWithWrappers = (component: ReactElement) => {
 
 /**
  * Returns given component wrapped with our page wrappers
- * only <Theme> for now
  * @param component
  */
 export const componentWithWrappers = (component: ReactElement) => {
