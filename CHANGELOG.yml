@@ -41,6 +41,7 @@ upcoming:
     - Add about page - mounir
     - Center filters modal title - mounir
     - Fix UI not responsive after editing profile settings - mounir
+    - Show 30 artworks at a time in Fair2 artworks grid - roop
 
 releases:
   - version: 6.6.4
