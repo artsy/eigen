@@ -519,3 +519,30 @@ describe("clearFiltersZeroState", () => {
     })
   })
 })
+
+describe("SetInitialFilterState", () => {
+  it("sets the payload to currently applied filters and previously applied filters", () => {
+    filterState = {
+      appliedFilters: [],
+      selectedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: [],
+    }
+
+    filterAction = {
+      type: "setInitialFilterState",
+      payload: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
+    }
+
+    const r = reducer(filterState, filterAction)
+
+    expect(r).toEqual({
+      appliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
+      selectedFilters: [],
+      previouslyAppliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
+      applyFilters: false,
+      aggregations: [],
+    })
+  })
+})

@@ -25,6 +25,7 @@ upcoming:
     - Adds tracking for Fair2 - will
     - Adds ability to route to new fair view via option - sweir
     - Include full artwork details in inquiry modal; improve animation - starsirius
+    - Adds route and view for all artworks by followed artists in a fair - will
   user_facing:
     - Fix navigation bug on Artwork consign button - david
     - Add auction lots rail to the auctions screen - mounir

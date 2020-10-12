@@ -117,6 +117,15 @@ export const reducer = (
         previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
         applyFilters: false,
       }
+
+    case "setInitialFilterState":
+      return {
+        appliedFilters: action.payload,
+        selectedFilters: [],
+        previouslyAppliedFilters: action.payload,
+        applyFilters: false,
+        aggregations: artworkFilterState.aggregations,
+      }
   }
 }
 
@@ -249,6 +258,11 @@ interface SetAggregations {
   payload: any
 }
 
+interface SetInitialFilterState {
+  type: "setInitialFilterState"
+  payload: FilterArray
+}
+
 export type FilterActions =
   | ResetFilters
   | ApplyFilters
@@ -256,6 +270,7 @@ export type FilterActions =
   | ClearAllFilters
   | ClearFiltersZeroState
   | SetAggregations
+  | SetInitialFilterState
 
 interface ArtworkFilterContextProps {
   state: ArtworkFilterContextState

@@ -3,7 +3,7 @@ import { Fair2Artworks_fair } from "__generated__/Fair2Artworks_fair.graphql"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FAIR2_ARTWORKS_PAGE_SIZE } from "lib/data/constants"
-import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFilterContext, FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
   aggregationsType,
   aggregationsWithFollowedArtists,
@@ -18,9 +18,11 @@ import { useTracking } from "react-tracking"
 interface Fair2ArtworksProps {
   fair: Fair2Artworks_fair
   relay: RelayPaginationProp
+  initiallyAppliedFilter?: FilterArray
 }
 
-export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay }) => {
+export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay, initiallyAppliedFilter }) => {
+
   const artworks = fair.fairArtworks!
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const tracking = useTracking()
@@ -36,6 +38,12 @@ export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay }) => 
       action_type: Schema.ActionTypes.Tap,
     })
   }
+
+  useEffect(() => {
+    if (initiallyAppliedFilter) {
+      dispatch({ type: "setInitialFilterState", payload: initiallyAppliedFilter })
+    }
+  }, [])
 
   useEffect(() => {
     if (state.applyFilters) {
