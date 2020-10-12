@@ -19,6 +19,7 @@ import {
   AggregationName,
   Aggregations,
   ArtworkFilterContext,
+  FilterArray,
   useSelectedOptionsDisplay,
 } from "../utils/ArtworkFilter/ArtworkFiltersStore"
 import { AnimatedBottomButton } from "./AnimatedBottomButton"
@@ -39,7 +40,7 @@ interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
   exitModal?: () => void
   navigator?: NavigatorIOS
-  initiallyAppliedFilters?: any
+  initiallyAppliedFilters?: FilterArray
   isFilterArtworksModalVisible: boolean
   id: string
   slug: string
