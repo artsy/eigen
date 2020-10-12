@@ -279,7 +279,6 @@ describe("filterArtworksParams helper", () => {
       medium: "work-on-paper",
       priceRange: "5000-10000",
       dimensionRange: "*-*",
-      includeArtworksByFollowedArtists: false,
       inquireableOnly: true,
       atAuction: false,
       acquireable: true,
