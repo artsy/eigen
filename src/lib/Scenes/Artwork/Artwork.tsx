@@ -10,6 +10,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { getCurrentEmissionState } from "lib/store/AppStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
+import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
@@ -288,17 +289,25 @@ export class Artwork extends React.Component<Props, State> {
 
   render() {
     return (
-      <FlatList<ArtworkPageSection>
-        data={this.sections()}
-        ItemSeparatorComponent={() => (
-          <Box mx={2} my={3}>
-            <Separator />
-          </Box>
-        )}
-        refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
-        contentContainerStyle={{ paddingBottom: 40 }}
-        renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
-      />
+      <ArtworkInquiryStateProvider>
+        <ArtworkInquiryContext.Consumer>
+          {(_context) => {
+            return (
+              <FlatList<ArtworkPageSection>
+                data={this.sections()}
+                ItemSeparatorComponent={() => (
+                  <Box mx={2} my={3}>
+                    <Separator />
+                  </Box>
+                )}
+                refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
+                contentContainerStyle={{ paddingBottom: 40 }}
+                renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
+              />
+            )
+          }}
+        </ArtworkInquiryContext.Consumer>
+      </ArtworkInquiryStateProvider>
     )
   }
 }

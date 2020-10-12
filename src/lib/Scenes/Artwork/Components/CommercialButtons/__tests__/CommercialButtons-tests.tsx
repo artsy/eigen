@@ -7,7 +7,9 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
-import { graphql } from "react-relay"
+import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
+import React from "react"
+import { _FragmentRefs, graphql } from "react-relay"
 import { CommercialButtonsFragmentContainer } from "../CommercialButtons"
 
 jest.unmock("react-relay")
@@ -38,10 +40,27 @@ const componentWithQuery = async ({ mockArtworkData, mockOrderMutationResults, m
   })
 }
 
+const state = {
+  shippingLocation: null,
+  inquiryType: null,
+}
+
+const wrapper = (mockArtwork: _FragmentRefs<"CommercialButtons_artwork">): JSX.Element => (
+  <ArtworkInquiryContext.Provider
+    value={{
+      state,
+      dispatch: jest.fn(),
+    }}
+  >
+    {/* @ts-ignore */}
+    <CommercialButtonsFragmentContainer artwork={mockArtwork} />
+  </ArtworkInquiryContext.Provider>
+)
+
 // @ts-ignore STRICTNESS_MIGRATION
 const relayComponent = async ({ artwork }) => {
   return await renderRelayTree({
-    Component: CommercialButtonsFragmentContainer,
+    Component: () => wrapper(artwork),
     query: graphql`
       query CommercialButtonsTestsRenderQuery @raw_response_type {
         artwork(id: "artworkID") {
@@ -85,18 +104,8 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(
-      commercialButtons
-        .find(Button)
-        .at(0)
-        .text()
-    ).toContain("Inquire to Purchase")
-    expect(
-      commercialButtons
-        .find(Button)
-        .at(1)
-        .text()
-    ).toContain("Contact Gallery")
+    expect(commercialButtons.find(Button).at(0).text()).toContain("Inquire to Purchase")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact Gallery")
   })
 
   it("renders Inquire on Price button if isInquireable, price is hidden, and lab option is true", async () => {
@@ -115,18 +124,8 @@ describe("CommercialButtons", () => {
       artwork,
     })
 
-    expect(
-      commercialButtons
-        .find(Button)
-        .at(0)
-        .text()
-    ).toContain("Request Price")
-    expect(
-      commercialButtons
-        .find(Button)
-        .at(1)
-        .text()
-    ).toContain("Contact Gallery")
+    expect(commercialButtons.find(Button).at(0).text()).toContain("Request Price")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact Gallery")
   })
 
   it("renders Make Offer button if isOfferable", async () => {

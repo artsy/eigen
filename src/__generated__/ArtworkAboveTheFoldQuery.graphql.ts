@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7c7010f22fa8fead5c5fd3c1eaaf70d6 */
+/* @relayHash dce15d4e321e68f7db95f017e4a0462c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -403,6 +403,10 @@ fragment InquiryButtons_artwork on Artwork {
 
 fragment InquiryModal_artwork on Artwork {
   ...CollapsibleArtworkDetails_artwork
+  inquiryQuestions {
+    question
+    id
+  }
 }
 
 fragment MakeOfferButton_artwork on Artwork {
@@ -1252,6 +1256,25 @@ return {
           {
             "alias": null,
             "args": null,
+            "concreteType": "InquiryQuestion",
+            "kind": "LinkedField",
+            "name": "inquiryQuestions",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "question",
+                "storageKey": null
+              },
+              (v2/*: any*/)
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "kind": "ScalarField",
             "name": "shippingOrigin",
             "storageKey": null
@@ -1323,7 +1346,7 @@ return {
     ]
   },
   "params": {
-    "id": "7c7010f22fa8fead5c5fd3c1eaaf70d6",
+    "id": "dce15d4e321e68f7db95f017e4a0462c",
     "metadata": {},
     "name": "ArtworkAboveTheFoldQuery",
     "operationKind": "query",
