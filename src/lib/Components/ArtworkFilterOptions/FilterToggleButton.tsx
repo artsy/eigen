@@ -5,10 +5,11 @@ import { Switch, View } from "react-native"
 interface FilterToggleButtonProps {
   onChange: () => void
   value: boolean
+  disabled: boolean
 }
 
 export const FilterToggleButton: React.FC<FilterToggleButtonProps> = (props) => {
-  const { onChange, value } = props
+  const { onChange, value, disabled } = props
 
   return (
     <View>
@@ -16,6 +17,7 @@ export const FilterToggleButton: React.FC<FilterToggleButtonProps> = (props) => 
         trackColor={{ false: color("black10"), true: color("black100") }}
         onValueChange={onChange}
         value={value}
+        disabled={disabled}
       />
     </View>
   )
