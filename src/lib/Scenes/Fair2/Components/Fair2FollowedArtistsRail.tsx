@@ -3,7 +3,7 @@ import { Fair2FollowedArtistsRail_fair } from "__generated__/Fair2FollowedArtist
 import { ArtworkTileRailCardFragmentContainer as ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import { navigate } from "lib/navigation/navigate"
 import { compact } from "lodash"
-import { Box, ChevronIcon, Spacer, Text } from "palette"
+import { Box, Spacer, Text } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
