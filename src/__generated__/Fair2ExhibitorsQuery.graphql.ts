@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1ae5bee91ddb9193ff15cbaa69e901b8 */
+/* @relayHash a86611b82c1fae5e4c11087f747bdce3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -36,6 +36,7 @@ query Fair2ExhibitorsQuery(
 
 fragment Fair2ExhibitorRail_show on Show {
   internalID
+  slug
   href
   partner {
     __typename
@@ -53,6 +54,11 @@ fragment Fair2ExhibitorRail_show on Show {
   }
   counts {
     artworks
+  }
+  fair {
+    internalID
+    slug
+    id
   }
   artworks: artworksConnection(first: 20) {
     edges {
@@ -95,6 +101,7 @@ fragment Fair2ExhibitorRail_show on Show {
 }
 
 fragment Fair2Exhibitors_fair_2HEEH6 on Fair {
+  internalID
   slug
   exhibitors: showsConnection(first: $first, after: $after, sort: FEATURED_ASC) {
     edges {
@@ -166,10 +173,17 @@ v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "slug",
   "storageKey": null
 },
-v7 = [
+v8 = [
   (v4/*: any*/),
   (v5/*: any*/),
   {
@@ -178,22 +192,22 @@ v7 = [
     "value": "FEATURED_ASC"
   }
 ],
-v8 = {
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v9 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v10 = [
-  (v8/*: any*/),
+v11 = [
+  (v9/*: any*/),
   {
     "alias": null,
     "args": null,
@@ -202,13 +216,6 @@ v10 = [
     "storageKey": null
   }
 ],
-v11 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-},
 v12 = {
   "alias": null,
   "args": null,
@@ -278,9 +285,10 @@ return {
         "plural": false,
         "selections": [
           (v6/*: any*/),
+          (v7/*: any*/),
           {
             "alias": "exhibitors",
-            "args": (v7/*: any*/),
+            "args": (v8/*: any*/),
             "concreteType": "ShowConnection",
             "kind": "LinkedField",
             "name": "showsConnection",
@@ -302,7 +310,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v8/*: any*/),
+                      (v9/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -329,23 +337,23 @@ return {
                         "name": "partner",
                         "plural": false,
                         "selections": [
-                          (v9/*: any*/),
+                          (v10/*: any*/),
                           {
                             "kind": "InlineFragment",
-                            "selections": (v10/*: any*/),
+                            "selections": (v11/*: any*/),
                             "type": "Partner",
                             "abstractKey": null
                           },
                           {
                             "kind": "InlineFragment",
-                            "selections": (v10/*: any*/),
+                            "selections": (v11/*: any*/),
                             "type": "ExternalPartner",
                             "abstractKey": null
                           },
                           {
                             "kind": "InlineFragment",
                             "selections": [
-                              (v8/*: any*/)
+                              (v9/*: any*/)
                             ],
                             "type": "Node",
                             "abstractKey": "__isNode"
@@ -353,8 +361,23 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v11/*: any*/),
+                      (v6/*: any*/),
+                      (v7/*: any*/),
                       (v12/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Fair",
+                        "kind": "LinkedField",
+                        "name": "fair",
+                        "plural": false,
+                        "selections": [
+                          (v6/*: any*/),
+                          (v7/*: any*/),
+                          (v9/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
                       {
                         "alias": "artworks",
                         "args": [
@@ -393,7 +416,7 @@ return {
                                     "name": "artistNames",
                                     "storageKey": null
                                   },
-                                  (v8/*: any*/),
+                                  (v9/*: any*/),
                                   {
                                     "alias": null,
                                     "args": null,
@@ -482,7 +505,7 @@ return {
                                         ],
                                         "storageKey": null
                                       },
-                                      (v8/*: any*/)
+                                      (v9/*: any*/)
                                     ],
                                     "storageKey": null
                                   },
@@ -515,7 +538,7 @@ return {
                                         "name": "endAt",
                                         "storageKey": null
                                       },
-                                      (v8/*: any*/)
+                                      (v9/*: any*/)
                                     ],
                                     "storageKey": null
                                   },
@@ -526,8 +549,8 @@ return {
                                     "name": "title",
                                     "storageKey": null
                                   },
-                                  (v11/*: any*/),
-                                  (v6/*: any*/)
+                                  (v6/*: any*/),
+                                  (v7/*: any*/)
                                 ],
                                 "storageKey": null
                               }
@@ -537,7 +560,7 @@ return {
                         ],
                         "storageKey": "artworksConnection(first:20)"
                       },
-                      (v9/*: any*/)
+                      (v10/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -581,7 +604,7 @@ return {
           },
           {
             "alias": "exhibitors",
-            "args": (v7/*: any*/),
+            "args": (v8/*: any*/),
             "filters": [
               "sort"
             ],
@@ -590,14 +613,14 @@ return {
             "kind": "LinkedHandle",
             "name": "showsConnection"
           },
-          (v8/*: any*/)
+          (v9/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "1ae5bee91ddb9193ff15cbaa69e901b8",
+    "id": "a86611b82c1fae5e4c11087f747bdce3",
     "metadata": {},
     "name": "Fair2ExhibitorsQuery",
     "operationKind": "query",

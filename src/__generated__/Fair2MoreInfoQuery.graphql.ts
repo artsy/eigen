@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d208d155c557ae4aa88edf113c7ddef2 */
+/* @relayHash 4f7f386b4ebb6a0ba60c90f0795f37a6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,6 +31,8 @@ query Fair2MoreInfoQuery(
 }
 
 fragment Fair2MoreInfo_fair on Fair {
+  internalID
+  slug
   about
   name
   tagline
@@ -47,12 +49,16 @@ fragment Fair2MoreInfo_fair on Fair {
     summary
     id
   }
+  sponsoredContent {
+    activationText
+    pressReleaseUrl
+  }
   ticketsLink
-  hours(format: MARKDOWN)
-  links(format: MARKDOWN)
-  tickets(format: MARKDOWN)
+  fairHours: hours(format: MARKDOWN)
+  fairLinks: links(format: MARKDOWN)
+  fairTickets: tickets(format: MARKDOWN)
   summary
-  contact(format: MARKDOWN)
+  fairContact: contact(format: MARKDOWN)
 }
 
 fragment LocationMap_location on Location {
@@ -106,24 +112,31 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "internalID",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "name",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "summary",
   "storageKey": null
 },
-v5 = [
+v6 = [
   {
     "kind": "Literal",
     "name": "format",
@@ -171,6 +184,14 @@ return {
         "name": "fair",
         "plural": false,
         "selections": [
+          (v2/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "slug",
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": null,
@@ -178,7 +199,7 @@ return {
             "name": "about",
             "storageKey": null
           },
-          (v2/*: any*/),
+          (v3/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -194,8 +215,8 @@ return {
             "name": "profile",
             "plural": false,
             "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/)
+              (v3/*: any*/),
+              (v4/*: any*/)
             ],
             "storageKey": null
           },
@@ -207,14 +228,8 @@ return {
             "name": "location",
             "plural": false,
             "selections": [
-              (v3/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "internalID",
-                "storageKey": null
-              },
+              (v4/*: any*/),
+              (v2/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -243,7 +258,7 @@ return {
                 "name": "postalCode",
                 "storageKey": null
               },
-              (v4/*: any*/),
+              (v5/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -371,47 +386,72 @@ return {
           {
             "alias": null,
             "args": null,
+            "concreteType": "FairSponsoredContent",
+            "kind": "LinkedField",
+            "name": "sponsoredContent",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "activationText",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "pressReleaseUrl",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "kind": "ScalarField",
             "name": "ticketsLink",
             "storageKey": null
           },
           {
-            "alias": null,
-            "args": (v5/*: any*/),
+            "alias": "fairHours",
+            "args": (v6/*: any*/),
             "kind": "ScalarField",
             "name": "hours",
             "storageKey": "hours(format:\"MARKDOWN\")"
           },
           {
-            "alias": null,
-            "args": (v5/*: any*/),
+            "alias": "fairLinks",
+            "args": (v6/*: any*/),
             "kind": "ScalarField",
             "name": "links",
             "storageKey": "links(format:\"MARKDOWN\")"
           },
           {
-            "alias": null,
-            "args": (v5/*: any*/),
+            "alias": "fairTickets",
+            "args": (v6/*: any*/),
             "kind": "ScalarField",
             "name": "tickets",
             "storageKey": "tickets(format:\"MARKDOWN\")"
           },
-          (v4/*: any*/),
+          (v5/*: any*/),
           {
-            "alias": null,
-            "args": (v5/*: any*/),
+            "alias": "fairContact",
+            "args": (v6/*: any*/),
             "kind": "ScalarField",
             "name": "contact",
             "storageKey": "contact(format:\"MARKDOWN\")"
           },
-          (v3/*: any*/)
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "d208d155c557ae4aa88edf113c7ddef2",
+    "id": "4f7f386b4ebb6a0ba60c90f0795f37a6",
     "metadata": {},
     "name": "Fair2MoreInfoQuery",
     "operationKind": "query",

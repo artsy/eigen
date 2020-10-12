@@ -5,6 +5,7 @@
 
 #import "ARAppStatus.h"
 
+
 @implementation ArtsyEcho
 
 - (instancetype)init
@@ -41,13 +42,28 @@
     return [mutableOptions copy];
 }
 
-- (BOOL)isFeatureEnabled:(NSString *)featureFlag {
+- (BOOL)isFeatureEnabled:(NSString *)featureFlag
+{
     Feature *currentFeature = self.features[featureFlag];
     if (currentFeature) {
         return currentFeature.state;
     } else {
         return NO;
     }
+}
+
+- (NSArray *)legacyFairSlugs
+{
+    Message *legacyFairMessage = self.messages[@"LegacyFairSlugs"];
+    NSArray *fairSlugs = [legacyFairMessage.content componentsSeparatedByString:@","];
+    return fairSlugs ? fairSlugs : @[];
+}
+
+- (NSArray *)legacyFairProfileSlugs
+{
+    Message *legacyFairProfileSlugsMessage = self.messages[@"LegacyFairProfileSlugs"];
+    NSArray *fairProfileSlugs = [legacyFairProfileSlugsMessage.content componentsSeparatedByString:@","];
+    return fairProfileSlugs ? fairProfileSlugs : @[];
 }
 
 @end

@@ -2,13 +2,16 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/AddArtwork/Form/useArtworkForm"
 import { AppStore } from "lib/store/AppStore"
-import { BorderBox, Box, Button, Flex, Join, Sans, Spacer } from "palette"
+import { BorderBox, Box, Button, Flex, Join, Sans, Spacer, Text } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { ArrowButton } from "./Components/ArrowButton"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { Dimensions } from "./Components/Dimensions"
 import { MediumPicker } from "./Components/MediumPicker"
+
+// Toggle on and off to display form validation helper
+const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 
 export const AddEditArtwork: React.FC = () => {
   const artworkActions = AppStore.actions.myCollection.artwork
@@ -25,6 +28,9 @@ export const AddEditArtwork: React.FC = () => {
       </FancyModalHeader>
 
       <Spacer my={1} />
+
+      {/* FIXME: Wire up proper loading modal */}
+      {!!artworkState.sessionState.isLoading && <Text variant="title">Loading</Text>}
 
       <Sans size="4" textAlign="center">
         {addOrEditLabel} details about your work for a price {"\n"}
@@ -58,7 +64,7 @@ export const AddEditArtwork: React.FC = () => {
             variant="secondaryGray"
             block
             onPress={() =>
-              artworkActions.deleteArtwork({
+              artworkActions.confirmDeleteArtwork({
                 artworkId: artworkState.sessionState.artworkId,
                 artworkGlobalId: artworkState.sessionState.artworkGlobalId,
               })
@@ -68,10 +74,11 @@ export const AddEditArtwork: React.FC = () => {
             Delete
           </Button>
         )}
+        <Spacer mt={4} />
       </ScreenMargin>
 
       {/* Show validation errors during development */}
-      {!!(__DEV__ && formik.errors) && (
+      {!!(SHOW_FORM_VALIDATION_ERRORS_IN_DEV && __DEV__ && formik.errors) && (
         <ScreenMargin>
           <Box my={2}>
             <Sans size="3">Errors: {JSON.stringify(formik.errors)}</Sans>

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4cf1c43b5c63363377e081d7298dba43 */
+/* @relayHash ff1860339be54f65bb2f86d8b3fe8d78 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -73,6 +73,23 @@ export type CommercialButtonsTestsRenderQueryRawResponse = {
             readonly name: string | null;
             readonly id: string;
         }) | null;
+        readonly attributionClass: ({
+            readonly name: string | null;
+            readonly id: string;
+        }) | null;
+        readonly category: string | null;
+        readonly manufacturer: string | null;
+        readonly publisher: string | null;
+        readonly conditionDescription: ({
+            readonly details: string | null;
+        }) | null;
+        readonly certificateOfAuthenticity: ({
+            readonly details: string | null;
+        }) | null;
+        readonly framed: ({
+            readonly details: string | null;
+        }) | null;
+        readonly artistNames: string | null;
         readonly id: string;
     }) | null;
 };
@@ -137,19 +154,32 @@ fragment CollapsibleArtworkDetails_artwork on Artwork {
   internalID
   title
   date
+  saleMessage
+  attributionClass {
+    name
+    id
+  }
+  category
+  manufacturer
+  publisher
   medium
+  conditionDescription {
+    details
+  }
+  certificateOfAuthenticity {
+    details
+  }
+  framed {
+    details
+  }
   dimensions {
     in
     cm
   }
-  editionOf
   signatureInfo {
     details
   }
-  artist {
-    name
-    id
-  }
+  artistNames
 }
 
 fragment CommercialButtons_artwork on Artwork {
@@ -238,6 +268,25 @@ v3 = [
     "name": "cents",
     "storageKey": null
   }
+],
+v4 = [
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "details",
+    "storageKey": null
+  }
+],
+v5 = [
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "name",
+    "storageKey": null
+  },
+  (v2/*: any*/)
 ];
 return {
   "fragment": {
@@ -576,15 +625,7 @@ return {
             "kind": "LinkedField",
             "name": "signatureInfo",
             "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "details",
-                "storageKey": null
-              }
-            ],
+            "selections": (v4/*: any*/),
             "storageKey": null
           },
           {
@@ -594,16 +635,75 @@ return {
             "kind": "LinkedField",
             "name": "artist",
             "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "name",
-                "storageKey": null
-              },
-              (v2/*: any*/)
-            ],
+            "selections": (v5/*: any*/),
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "AttributionClass",
+            "kind": "LinkedField",
+            "name": "attributionClass",
+            "plural": false,
+            "selections": (v5/*: any*/),
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "category",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "manufacturer",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "publisher",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ArtworkInfoRow",
+            "kind": "LinkedField",
+            "name": "conditionDescription",
+            "plural": false,
+            "selections": (v4/*: any*/),
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ArtworkInfoRow",
+            "kind": "LinkedField",
+            "name": "certificateOfAuthenticity",
+            "plural": false,
+            "selections": (v4/*: any*/),
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ArtworkInfoRow",
+            "kind": "LinkedField",
+            "name": "framed",
+            "plural": false,
+            "selections": (v4/*: any*/),
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "artistNames",
             "storageKey": null
           },
           (v2/*: any*/)
@@ -613,7 +713,7 @@ return {
     ]
   },
   "params": {
-    "id": "4cf1c43b5c63363377e081d7298dba43",
+    "id": "ff1860339be54f65bb2f86d8b3fe8d78",
     "metadata": {},
     "name": "CommercialButtonsTestsRenderQuery",
     "operationKind": "query",

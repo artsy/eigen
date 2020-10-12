@@ -41,7 +41,7 @@ export const shareContent = (title: string, href: string, artists: ArtworkAction
     title: computedTitle,
     // @ts-ignore STRICTNESS_MIGRATION
     message: computedTitle,
-    url: `https://artsy.net${href}`,
+    url: `https://artsy.net${href}?utm_content=artwork-share`,
   }
 }
 

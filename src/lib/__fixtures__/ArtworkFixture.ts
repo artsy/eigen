@@ -27,6 +27,9 @@ export const ArtworkFixture = {
   category: "Photography",
   date: "2020",
   medium: "photograph",
+  attributionClass: {
+    name: "Unique",
+  },
   editionOf: "",
   image: {
     url: "",
@@ -74,6 +77,7 @@ export const ArtworkFixture = {
       },
     },
   ],
+  artistNames: "Abbas Kiarostami",
   artists: [
     {
       " $refType": null,

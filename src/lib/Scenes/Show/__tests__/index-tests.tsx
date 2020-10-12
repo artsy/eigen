@@ -1,52 +1,38 @@
-import { renderRelayTree } from "lib/tests/renderRelayTree"
-import { graphql } from "react-relay"
+import { indexTestsQuery } from "__generated__/indexTestsQuery.graphql"
+import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import React from "react"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import Show from "../"
 
 jest.unmock("react-relay")
 
 it("Renders a show", async () => {
-  const tree = await renderRelayTree({
-    Component: Show,
-    query: graphql`
-      query indexTestsQuery @raw_response_type {
-        show(id: "art-gallery-pure-art-of-design-at-art-gallery-pure") {
-          ...Show_show
-        }
-      }
-    `,
-    mockData: {
-      show: {
-        description: "A show description",
-        name: "Show name",
-        is_followed: false,
-        end_at: "2018-10-30T12:00:00+00:00",
-        exhibition_period: "Jul 1 – Oct 30",
-        isStubShow: false,
-        partner: {
-          __typename: "Partner",
-          name: "Two Palms",
-          id: "UGFydG5lcjp0d28tcGFsbXM=",
-          website: "",
-          type: "Partner",
-          href: "shows/two-palms",
-        },
-        coverImage: null,
-        images: [],
-        followedArtist: {
-          edges: [],
-        },
-        artist: [],
-        counts: { artists: 0, artworks: 0 },
-        artists_without_artworks: [],
-        nearbyShows: { edges: [] },
-        location: null,
-        artistsWithoutArtworks: [],
-        followedArtists: { edges: [] },
-        artists: [],
-        artworks: { edges: [] },
-      },
-    },
-  })
+  const env = createMockEnvironment() as ReturnType<typeof createMockEnvironment>
 
-  expect(tree.text()).toContain("Show name")
+  const TestRenderer = () => (
+    <QueryRenderer<indexTestsQuery>
+      environment={env}
+      query={graphql`
+        query indexTestsQuery @relay_test_operation {
+          show(id: "art-gallery-pure-art-of-design-at-art-gallery-pure") {
+            ...Show_show
+          }
+        }
+      `}
+      variables={{}}
+      render={({ props, error }) => {
+        if (props?.show) {
+          return <Show show={props.show} />
+        } else if (error) {
+          console.log(error)
+        }
+      }}
+    />
+  )
+
+  const tree = renderWithWrappers(<TestRenderer />)
+  env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation))
+  expect(extractText(tree.root)).toContain("name")
 })

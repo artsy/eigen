@@ -1,7 +1,7 @@
 import { InquiryModal_artwork } from "__generated__/InquiryModal_artwork.graphql"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { Text } from "palette"
+import { Flex, Text } from "palette"
 import React from "react"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -25,9 +25,11 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         Contact Gallery
       </FancyModalHeader>
       <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
-      <Text m={2} variant="title">
-        More here
-      </Text>
+      <Flex bg="white100" flex={1}>
+        <Text m={2} variant="title">
+          More here
+        </Text>
+      </Flex>
     </FancyModal>
   )
 }

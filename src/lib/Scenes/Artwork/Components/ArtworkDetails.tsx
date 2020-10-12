@@ -1,11 +1,10 @@
 import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
-import { ReadMore } from "lib/Components/ReadMore"
 import { getCurrentEmissionState } from "lib/store/AppStore"
-import { truncatedTextLimit } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { Box, Join, Sans, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { ArtworkDetailsRow } from "./ArtworkDetailsRow"
 import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
 
 interface ArtworkDetailsProps {
@@ -48,23 +47,17 @@ export class ArtworkDetails extends React.Component<ArtworkDetailsProps> {
         <Join separator={<Spacer my={1} />}>
           <Sans size="4t">Artwork details</Sans>
           {displayItems.map(({ title, value }, index) => (
-            <React.Fragment key={index}>
-              <Sans size="3t" weight="regular">
-                {title}
-              </Sans>
-              {React.isValidElement(value) ? (
-                value
-              ) : (
-                <ReadMore
-                  content={value as string}
-                  color="black60"
-                  textStyle="sans"
-                  maxChars={truncatedTextLimit()}
-                  trackingFlow={Schema.Flow.ArtworkDetails}
-                  contextModule={Schema.ContextModules.ArtworkDetails}
-                />
-              )}
-            </React.Fragment>
+            <ArtworkDetailsRow
+              key={index.toString()}
+              title={title}
+              value={value}
+              tracking={{
+                readMore: {
+                  flow: Schema.Flow.ArtworkDetails,
+                  contextModule: Schema.ContextModules.ArtworkDetails,
+                },
+              }}
+            />
           ))}
         </Join>
       </Box>

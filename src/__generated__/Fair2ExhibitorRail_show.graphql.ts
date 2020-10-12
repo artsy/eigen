@@ -6,12 +6,17 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Fair2ExhibitorRail_show = {
     readonly internalID: string;
+    readonly slug: string;
     readonly href: string | null;
     readonly partner: {
         readonly name?: string | null;
     } | null;
     readonly counts: {
         readonly artworks: number | null;
+    } | null;
+    readonly fair: {
+        readonly internalID: string;
+        readonly slug: string;
     } | null;
     readonly artworks: {
         readonly edges: ReadonlyArray<{
@@ -71,10 +76,17 @@ v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "href",
   "storageKey": null
 },
-v2 = [
+v3 = [
   {
     "alias": null,
     "args": null,
@@ -83,7 +95,7 @@ v2 = [
     "storageKey": null
   }
 ],
-v3 = [
+v4 = [
   {
     "alias": null,
     "args": null,
@@ -100,6 +112,7 @@ return {
   "selections": [
     (v0/*: any*/),
     (v1/*: any*/),
+    (v2/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -110,13 +123,13 @@ return {
       "selections": [
         {
           "kind": "InlineFragment",
-          "selections": (v2/*: any*/),
+          "selections": (v3/*: any*/),
           "type": "Partner",
           "abstractKey": null
         },
         {
           "kind": "InlineFragment",
-          "selections": (v2/*: any*/),
+          "selections": (v3/*: any*/),
           "type": "ExternalPartner",
           "abstractKey": null
         }
@@ -138,6 +151,19 @@ return {
           "name": "artworks",
           "storageKey": null
         }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Fair",
+      "kind": "LinkedField",
+      "name": "fair",
+      "plural": false,
+      "selections": [
+        (v0/*: any*/),
+        (v1/*: any*/)
       ],
       "storageKey": null
     },
@@ -171,7 +197,7 @@ return {
               "name": "node",
               "plural": false,
               "selections": [
-                (v1/*: any*/),
+                (v2/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -233,7 +259,7 @@ return {
                       "kind": "LinkedField",
                       "name": "openingBid",
                       "plural": false,
-                      "selections": (v3/*: any*/),
+                      "selections": (v4/*: any*/),
                       "storageKey": null
                     },
                     {
@@ -243,7 +269,7 @@ return {
                       "kind": "LinkedField",
                       "name": "highestBid",
                       "plural": false,
-                      "selections": (v3/*: any*/),
+                      "selections": (v4/*: any*/),
                       "storageKey": null
                     },
                     {
@@ -253,7 +279,7 @@ return {
                       "kind": "LinkedField",
                       "name": "currentBid",
                       "plural": false,
-                      "selections": (v3/*: any*/),
+                      "selections": (v4/*: any*/),
                       "storageKey": null
                     },
                     {
@@ -317,13 +343,7 @@ return {
                   "storageKey": null
                 },
                 (v0/*: any*/),
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "slug",
-                  "storageKey": null
-                }
+                (v1/*: any*/)
               ],
               "storageKey": null
             }
@@ -338,5 +358,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '0706ce7454c0ec85a52f96e1874c00c7';
+(node as any).hash = 'adbd5074804a69ed2f73de28bf24774c';
 export default node;

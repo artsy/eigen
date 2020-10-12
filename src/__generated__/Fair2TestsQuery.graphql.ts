@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5d5e31905aea7ff7a48966da9af33b44 */
+/* @relayHash c418eb2aaff557128c70ebb42420bdaf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,6 +23,8 @@ export type Fair2TestsQueryRawResponse = {
                 readonly __typename: string;
                 readonly node: ({
                     readonly id: string;
+                    readonly internalID: string;
+                    readonly slug: string | null;
                     readonly title: string | null;
                     readonly href: string | null;
                     readonly publishedAt: string | null;
@@ -59,8 +61,8 @@ export type Fair2TestsQueryRawResponse = {
                 readonly __typename: string;
                 readonly artwork: ({
                     readonly id: string;
-                    readonly slug: string;
                     readonly internalID: string;
+                    readonly slug: string;
                     readonly href: string | null;
                     readonly artistNames: string | null;
                     readonly image: ({
@@ -76,12 +78,12 @@ export type Fair2TestsQueryRawResponse = {
         readonly name: string | null;
         readonly profile: ({
             readonly icon: ({
-                readonly url: string | null;
+                readonly imageUrl: string | null;
             }) | null;
             readonly id: string;
         }) | null;
         readonly image: ({
-            readonly url: string | null;
+            readonly imageUrl: string | null;
             readonly aspectRatio: number;
         }) | null;
         readonly tagline: string | null;
@@ -90,10 +92,10 @@ export type Fair2TestsQueryRawResponse = {
             readonly id: string;
         }) | null;
         readonly ticketsLink: string | null;
-        readonly hours: string | null;
-        readonly links: string | null;
-        readonly tickets: string | null;
-        readonly contact: string | null;
+        readonly fairHours: string | null;
+        readonly fairLinks: string | null;
+        readonly fairTickets: string | null;
+        readonly fairContact: string | null;
         readonly exhibitionPeriod: string | null;
         readonly startAt: string | null;
         readonly endAt: string | null;
@@ -183,7 +185,13 @@ export type Fair2TestsQueryRawResponse = {
                         readonly id: string;
                     }) | null;
                     readonly internalID: string;
+                    readonly slug: string;
                     readonly href: string | null;
+                    readonly fair: ({
+                        readonly internalID: string;
+                        readonly slug: string;
+                        readonly id: string;
+                    }) | null;
                     readonly artworks: ({
                         readonly edges: ReadonlyArray<({
                             readonly node: ({
@@ -331,6 +339,8 @@ fragment Fair2Artworks_fair on Fair {
 }
 
 fragment Fair2Collections_fair on Fair {
+  internalID
+  slug
   marketingCollections(size: 4) {
     slug
     title
@@ -351,13 +361,17 @@ fragment Fair2Collections_fair on Fair {
 }
 
 fragment Fair2Editorial_fair on Fair {
+  internalID
+  slug
   articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
     edges {
       node {
         id
+        internalID
+        slug
         title
         href
-        publishedAt(format: "MMM Do, YY")
+        publishedAt(format: "MMM Do, YYYY")
         thumbnailImage {
           src: imageURL
         }
@@ -368,6 +382,7 @@ fragment Fair2Editorial_fair on Fair {
 
 fragment Fair2ExhibitorRail_show on Show {
   internalID
+  slug
   href
   partner {
     __typename
@@ -385,6 +400,11 @@ fragment Fair2ExhibitorRail_show on Show {
   }
   counts {
     artworks
+  }
+  fair {
+    internalID
+    slug
+    id
   }
   artworks: artworksConnection(first: 20) {
     edges {
@@ -427,6 +447,7 @@ fragment Fair2ExhibitorRail_show on Show {
 }
 
 fragment Fair2Exhibitors_fair on Fair {
+  internalID
   slug
   exhibitors: showsConnection(first: 15, sort: FEATURED_ASC) {
     edges {
@@ -461,11 +482,13 @@ fragment Fair2Exhibitors_fair on Fair {
 }
 
 fragment Fair2FollowedArtists_fair on Fair {
+  internalID
   slug
   followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
     edges {
       artwork: node {
         id
+        internalID
         slug
         ...ArtworkTileRailCard_artwork
       }
@@ -481,12 +504,12 @@ fragment Fair2Header_fair on Fair {
   slug
   profile {
     icon {
-      url(version: "untouched-png")
+      imageUrl: url(version: "untouched-png")
     }
     id
   }
   image {
-    url(version: "large_rectangle")
+    imageUrl: url(version: "large_rectangle")
     aspectRatio
   }
   tagline
@@ -495,10 +518,10 @@ fragment Fair2Header_fair on Fair {
     id
   }
   ticketsLink
-  hours(format: MARKDOWN)
-  links(format: MARKDOWN)
-  tickets(format: MARKDOWN)
-  contact(format: MARKDOWN)
+  fairHours: hours(format: MARKDOWN)
+  fairLinks: links(format: MARKDOWN)
+  fairTickets: tickets(format: MARKDOWN)
+  fairContact: contact(format: MARKDOWN)
   ...Fair2Timing_fair
 }
 
@@ -907,6 +930,8 @@ return {
                     "plural": false,
                     "selections": [
                       (v5/*: any*/),
+                      (v2/*: any*/),
+                      (v3/*: any*/),
                       (v6/*: any*/),
                       (v7/*: any*/),
                       {
@@ -915,12 +940,12 @@ return {
                           {
                             "kind": "Literal",
                             "name": "format",
-                            "value": "MMM Do, YY"
+                            "value": "MMM Do, YYYY"
                           }
                         ],
                         "kind": "ScalarField",
                         "name": "publishedAt",
-                        "storageKey": "publishedAt(format:\"MMM Do, YY\")"
+                        "storageKey": "publishedAt(format:\"MMM Do, YYYY\")"
                       },
                       {
                         "alias": null,
@@ -1094,8 +1119,8 @@ return {
                     "plural": false,
                     "selections": [
                       (v5/*: any*/),
-                      (v3/*: any*/),
                       (v2/*: any*/),
+                      (v3/*: any*/),
                       (v7/*: any*/),
                       (v10/*: any*/),
                       {
@@ -1147,7 +1172,7 @@ return {
                 "plural": false,
                 "selections": [
                   {
-                    "alias": null,
+                    "alias": "imageUrl",
                     "args": [
                       {
                         "kind": "Literal",
@@ -1175,7 +1200,7 @@ return {
             "plural": false,
             "selections": [
               {
-                "alias": null,
+                "alias": "imageUrl",
                 "args": [
                   {
                     "kind": "Literal",
@@ -1219,28 +1244,28 @@ return {
             "storageKey": null
           },
           {
-            "alias": null,
+            "alias": "fairHours",
             "args": (v16/*: any*/),
             "kind": "ScalarField",
             "name": "hours",
             "storageKey": "hours(format:\"MARKDOWN\")"
           },
           {
-            "alias": null,
+            "alias": "fairLinks",
             "args": (v16/*: any*/),
             "kind": "ScalarField",
             "name": "links",
             "storageKey": "links(format:\"MARKDOWN\")"
           },
           {
-            "alias": null,
+            "alias": "fairTickets",
             "args": (v16/*: any*/),
             "kind": "ScalarField",
             "name": "tickets",
             "storageKey": "tickets(format:\"MARKDOWN\")"
           },
           {
-            "alias": null,
+            "alias": "fairContact",
             "args": (v16/*: any*/),
             "kind": "ScalarField",
             "name": "contact",
@@ -1597,7 +1622,22 @@ return {
                         "storageKey": null
                       },
                       (v2/*: any*/),
+                      (v3/*: any*/),
                       (v7/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Fair",
+                        "kind": "LinkedField",
+                        "name": "fair",
+                        "plural": false,
+                        "selections": [
+                          (v2/*: any*/),
+                          (v3/*: any*/),
+                          (v5/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
                       {
                         "alias": "artworks",
                         "args": [
@@ -1732,7 +1772,7 @@ return {
     ]
   },
   "params": {
-    "id": "5d5e31905aea7ff7a48966da9af33b44",
+    "id": "c418eb2aaff557128c70ebb42420bdaf",
     "metadata": {},
     "name": "Fair2TestsQuery",
     "operationKind": "query",

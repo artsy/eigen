@@ -5,6 +5,8 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Fair2MoreInfo_fair = {
+    readonly internalID: string;
+    readonly slug: string;
     readonly about: string | null;
     readonly name: string | null;
     readonly tagline: string | null;
@@ -19,12 +21,16 @@ export type Fair2MoreInfo_fair = {
         readonly summary: string | null;
         readonly " $fragmentRefs": FragmentRefs<"LocationMap_location">;
     } | null;
+    readonly sponsoredContent: {
+        readonly activationText: string | null;
+        readonly pressReleaseUrl: string | null;
+    } | null;
     readonly ticketsLink: string | null;
-    readonly hours: string | null;
-    readonly links: string | null;
-    readonly tickets: string | null;
+    readonly fairHours: string | null;
+    readonly fairLinks: string | null;
+    readonly fairTickets: string | null;
     readonly summary: string | null;
-    readonly contact: string | null;
+    readonly fairContact: string | null;
     readonly " $refType": "Fair2MoreInfo_fair";
 };
 export type Fair2MoreInfo_fair$data = Fair2MoreInfo_fair;
@@ -63,6 +69,20 @@ return {
   "metadata": null,
   "name": "Fair2MoreInfo_fair",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": null,
@@ -135,26 +155,51 @@ return {
     {
       "alias": null,
       "args": null,
+      "concreteType": "FairSponsoredContent",
+      "kind": "LinkedField",
+      "name": "sponsoredContent",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "activationText",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "pressReleaseUrl",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
       "name": "ticketsLink",
       "storageKey": null
     },
     {
-      "alias": null,
+      "alias": "fairHours",
       "args": (v2/*: any*/),
       "kind": "ScalarField",
       "name": "hours",
       "storageKey": "hours(format:\"MARKDOWN\")"
     },
     {
-      "alias": null,
+      "alias": "fairLinks",
       "args": (v2/*: any*/),
       "kind": "ScalarField",
       "name": "links",
       "storageKey": "links(format:\"MARKDOWN\")"
     },
     {
-      "alias": null,
+      "alias": "fairTickets",
       "args": (v2/*: any*/),
       "kind": "ScalarField",
       "name": "tickets",
@@ -162,7 +207,7 @@ return {
     },
     (v1/*: any*/),
     {
-      "alias": null,
+      "alias": "fairContact",
       "args": (v2/*: any*/),
       "kind": "ScalarField",
       "name": "contact",
@@ -173,5 +218,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'e97c82f264b236875fa1acdf28507f9f';
+(node as any).hash = '75ab873fcd1b60fc241dc6c2802dcae6';
 export default node;

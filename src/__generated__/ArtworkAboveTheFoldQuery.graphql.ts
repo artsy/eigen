@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2e472e6e43d65c33e8430893fee3a6a8 */
+/* @relayHash 7c7010f22fa8fead5c5fd3c1eaaf70d6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -229,19 +229,32 @@ fragment CollapsibleArtworkDetails_artwork on Artwork {
   internalID
   title
   date
+  saleMessage
+  attributionClass {
+    name
+    id
+  }
+  category
+  manufacturer
+  publisher
   medium
+  conditionDescription {
+    details
+  }
+  certificateOfAuthenticity {
+    details
+  }
+  framed {
+    details
+  }
   dimensions {
     in
     cm
   }
-  editionOf
   signatureInfo {
     details
   }
-  artist {
-    name
-    id
-  }
+  artistNames
 }
 
 fragment CommercialButtons_artwork on Artwork {
@@ -527,7 +540,16 @@ v15 = {
   "kind": "ScalarField",
   "name": "editionOf",
   "storageKey": null
-};
+},
+v16 = [
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "details",
+    "storageKey": null
+  }
+];
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -1146,15 +1168,7 @@ return {
             "kind": "LinkedField",
             "name": "signatureInfo",
             "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "details",
-                "storageKey": null
-              }
-            ],
+            "selections": (v16/*: any*/),
             "storageKey": null
           },
           {
@@ -1165,6 +1179,74 @@ return {
             "name": "artist",
             "plural": false,
             "selections": (v9/*: any*/),
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "AttributionClass",
+            "kind": "LinkedField",
+            "name": "attributionClass",
+            "plural": false,
+            "selections": (v9/*: any*/),
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "category",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "manufacturer",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "publisher",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ArtworkInfoRow",
+            "kind": "LinkedField",
+            "name": "conditionDescription",
+            "plural": false,
+            "selections": (v16/*: any*/),
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ArtworkInfoRow",
+            "kind": "LinkedField",
+            "name": "certificateOfAuthenticity",
+            "plural": false,
+            "selections": (v16/*: any*/),
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ArtworkInfoRow",
+            "kind": "LinkedField",
+            "name": "framed",
+            "plural": false,
+            "selections": (v16/*: any*/),
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "artistNames",
             "storageKey": null
           },
           {
@@ -1241,7 +1323,7 @@ return {
     ]
   },
   "params": {
-    "id": "2e472e6e43d65c33e8430893fee3a6a8",
+    "id": "7c7010f22fa8fead5c5fd3c1eaaf70d6",
     "metadata": {},
     "name": "ArtworkAboveTheFoldQuery",
     "operationKind": "query",

@@ -17,6 +17,9 @@ extern NSString *const AROptionsArtistSeries;
 extern NSString *const AROptionsNewSalePage;
 extern NSString *const AROptionsNewFirstInquiry;
 extern NSString *const AROptionsUseReactNativeWebView;
+extern NSString *const AROptionsNewShowPage;
+extern NSString *const AROptionsNewFairPage;
+
 
 @interface AROptions : NSObject
 
