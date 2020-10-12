@@ -39,12 +39,13 @@ export const Fair2FollowedArtistsRail: React.FC<Fair2FollowedArtistsRailProps> =
     <Box {...rest}>
       <Box flexDirection="row" justifyContent="space-between" mx={2} mb={2}>
         <Text variant="subtitle">Works by artists you follow</Text>
-
-        <TouchableOpacity onPress={() => navigate(`/fair/${fair.slug}/followedArtists`)}>
-          <Text variant="subtitle" color="black60">
-            View all
-          </Text>
-        </TouchableOpacity>
+        {artworks.length > 3 && (
+          <TouchableOpacity onPress={() => navigate(`/fair/${fair.slug}/followedArtists`)}>
+            <Text variant="subtitle" color="black60">
+              View all
+            </Text>
+          </TouchableOpacity>
+        )}
       </Box>
 
       <FlatList<typeof artworks[number]>

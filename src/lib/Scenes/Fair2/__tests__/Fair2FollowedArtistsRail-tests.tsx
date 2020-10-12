@@ -2,6 +2,7 @@ import { Fair2FollowedArtistsRailTestsQuery } from "__generated__/Fair2FollowedA
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
+import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
@@ -83,5 +84,75 @@ describe("Fair2FollowedArtistsRail", () => {
       horizontal_slide_position: 0,
       type: "thumbnail",
     })
+  })
+
+  it("doesn't display the 'View all' button if there are less than 4 artworks to show", () => {
+    const wrapper = getWrapper({
+      Fair: () => ({
+        internalID: "xyz123",
+        slug: "art-basel-hong-kong-2019",
+        followedArtistArtworks: {
+          edges: [
+            {
+              artwork: {
+                internalID: "id-1",
+                slug: "some-artwork-1",
+              },
+            },
+            {
+              artwork: {
+                internalID: "id-2",
+                slug: "some-artwork-2",
+              },
+            },
+            {
+              artwork: {
+                internalID: "id-3",
+                slug: "some-artwork-3",
+              },
+            },
+            {
+              artwork: {
+                internalID: "id-4",
+                slug: "some-artwork-4",
+              },
+            },
+          ],
+        },
+      }),
+    })
+    expect(wrapper.root.findAllByType(TouchableOpacity).length).toBe(1)
+  })
+
+  it("doesn't display the 'View all' button if there are less than 4 artworks to show", () => {
+    const wrapper = getWrapper({
+      Fair: () => ({
+        internalID: "xyz123",
+        slug: "art-basel-hong-kong-2019",
+        followedArtistArtworks: {
+          edges: [
+            {
+              artwork: {
+                internalID: "id-1",
+                slug: "some-artwork-1",
+              },
+            },
+            {
+              artwork: {
+                internalID: "id-2",
+                slug: "some-artwork-2",
+              },
+            },
+            {
+              artwork: {
+                internalID: "id-3",
+                slug: "some-artwork-3",
+              },
+            },
+          ],
+        },
+      }),
+    })
+    expect(wrapper.root.findAllByType(TouchableOpacity).length).toBe(0)
   })
 })
