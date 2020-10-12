@@ -86,7 +86,7 @@ describe("Fair2FollowedArtistsRail", () => {
     })
   })
 
-  it("doesn't display the 'View all' button if there are less than 4 artworks to show", () => {
+  it("displays the 'View all' button if there are 4 or more artworks", () => {
     const wrapper = getWrapper({
       Fair: () => ({
         internalID: "xyz123",
