@@ -56,7 +56,7 @@ const node: ReaderFragment = {
       "name": "color"
     },
     {
-      "defaultValue": 20,
+      "defaultValue": 30,
       "kind": "LocalArgument",
       "name": "count"
     },
@@ -378,5 +378,5 @@ const node: ReaderFragment = {
   "type": "Fair",
   "abstractKey": null
 };
-(node as any).hash = '06024cf92938979a780c90b0f06f4c06';
+(node as any).hash = '1d66448a716f1fa88519e9306d6a7d94';
 export default node;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6c3ccd246870f7f6eac8c31a5ddc7eff */
+/* @relayHash 376558d8d5ac7c511a881ee865c69125 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -101,7 +101,7 @@ fragment ArtworkTileRailCard_artwork on Artwork {
 fragment Fair2Artworks_fair on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS]) {
+  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS]) {
     aggregations {
       slice
       counts {
@@ -936,7 +936,11 @@ v22 = [
     "name": "dimensionRange",
     "value": "*-*"
   },
-  (v11/*: any*/),
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 30
+  },
   {
     "kind": "Literal",
     "name": "medium",
@@ -1905,7 +1909,7 @@ return {
                       (v6/*: any*/),
                       (v42/*: any*/)
                     ],
-                    "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\"],dimensionRange:\"*-*\",first:20,medium:\"*\",sort:\"-decayed_merch\")"
+                    "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\"],dimensionRange:\"*-*\",first:30,medium:\"*\",sort:\"-decayed_merch\")"
                   },
                   {
                     "alias": "fairArtworks",
@@ -3040,7 +3044,7 @@ return {
     ]
   },
   "params": {
-    "id": "6c3ccd246870f7f6eac8c31a5ddc7eff",
+    "id": "376558d8d5ac7c511a881ee865c69125",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",
