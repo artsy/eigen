@@ -41,8 +41,9 @@ export const Fair2FollowedArtistsRail: React.FC<Fair2FollowedArtistsRailProps> =
         <Text variant="subtitle">Works by artists you follow</Text>
 
         <TouchableOpacity onPress={() => navigate(`/fair/${fair.slug}/followedArtists`)}>
-          <Text>View all</Text>
-          <ChevronIcon mr="-5px" mt="2px" />
+          <Text variant="subtitle" color="black60">
+            View all
+          </Text>
         </TouchableOpacity>
       </Box>
 
