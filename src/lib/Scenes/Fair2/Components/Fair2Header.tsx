@@ -2,6 +2,7 @@ import { Fair2Header_fair } from "__generated__/Fair2Header_fair.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "lib/Components/ReadMore"
 import { navigate } from "lib/navigation/navigate"
+import { shouldShowFairBMWArtActivationLink } from "lib/Scenes/Fair/Screens/FairBMWArtActivation"
 import { truncatedTextLimit } from "lib/utils/hardware"
 import { Box, ChevronIcon, Flex, Text } from "palette"
 import React from "react"
@@ -27,6 +28,7 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
     fairContact,
     summary,
     fairTickets,
+    sponsoredContent,
   } = fair
   const screenWidth = Dimensions.get("screen").width
   const profileImageUrl = fair?.profile?.icon?.imageUrl
@@ -41,7 +43,8 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
     !!fairLinks ||
     !!fairContact ||
     !!summary ||
-    !!fairTickets
+    !!fairTickets ||
+    shouldShowFairBMWArtActivationLink({ sponsoredContent })
 
   return (
     <Box>
@@ -106,6 +109,10 @@ export const Fair2HeaderFragmentContainer = createFragmentContainer(Fair2Header,
         summary
       }
       ticketsLink
+      sponsoredContent {
+        activationText
+        pressReleaseUrl
+      }
       fairHours: hours(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer
       fairLinks: links(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer
       fairTickets: tickets(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer

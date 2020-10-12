@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6b019ae560b86063310e1f0165d26af1 */
+/* @relayHash 75c65458868922d23248d867b04e9d5e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -92,6 +92,10 @@ export type Fair2TestsQueryRawResponse = {
             readonly id: string;
         }) | null;
         readonly ticketsLink: string | null;
+        readonly sponsoredContent: ({
+            readonly activationText: string | null;
+            readonly pressReleaseUrl: string | null;
+        }) | null;
         readonly fairHours: string | null;
         readonly fairLinks: string | null;
         readonly fairTickets: string | null;
@@ -518,6 +522,10 @@ fragment Fair2Header_fair on Fair {
     id
   }
   ticketsLink
+  sponsoredContent {
+    activationText
+    pressReleaseUrl
+  }
   fairHours: hours(format: MARKDOWN)
   fairLinks: links(format: MARKDOWN)
   fairTickets: tickets(format: MARKDOWN)
@@ -1249,6 +1257,31 @@ return {
             "storageKey": null
           },
           {
+            "alias": null,
+            "args": null,
+            "concreteType": "FairSponsoredContent",
+            "kind": "LinkedField",
+            "name": "sponsoredContent",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "activationText",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "pressReleaseUrl",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
             "alias": "fairHours",
             "args": (v16/*: any*/),
             "kind": "ScalarField",
@@ -1778,7 +1811,7 @@ return {
     ]
   },
   "params": {
-    "id": "6b019ae560b86063310e1f0165d26af1",
+    "id": "75c65458868922d23248d867b04e9d5e",
     "metadata": {},
     "name": "Fair2TestsQuery",
     "operationKind": "query",

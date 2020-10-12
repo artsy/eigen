@@ -133,6 +133,10 @@ const Fair2HeaderFixture: Fair2HeaderTestsQueryRawResponse = {
     fairHours: null,
     fairTickets: null,
     ticketsLink: "",
+    sponsoredContent: {
+      activationText: "This is some activation text",
+      pressReleaseUrl: "https://testing.artsy.net/press",
+    },
     exhibitionPeriod: "Aug 19 - Sep 19",
     startAt: "2020-08-19T08:00:00+00:00",
     endAt: "2020-09-19T08:00:00+00:00",
@@ -151,5 +155,6 @@ const Fair2HeaderFixtureNoAdditionalInfo = {
     ...Fair2HeaderFixture.fair,
     about: "",
     summary: "",
+    sponsoredContent: null,
   },
 } as Fair2HeaderTestsQueryRawResponse

@@ -23,6 +23,10 @@ export type Fair2Header_fair = {
         readonly summary: string | null;
     } | null;
     readonly ticketsLink: string | null;
+    readonly sponsoredContent: {
+        readonly activationText: string | null;
+        readonly pressReleaseUrl: string | null;
+    } | null;
     readonly fairHours: string | null;
     readonly fairLinks: string | null;
     readonly fairTickets: string | null;
@@ -174,6 +178,31 @@ return {
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
+      "concreteType": "FairSponsoredContent",
+      "kind": "LinkedField",
+      "name": "sponsoredContent",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "activationText",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "pressReleaseUrl",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
       "alias": "fairHours",
       "args": (v1/*: any*/),
       "kind": "ScalarField",
@@ -211,5 +240,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '7f2cde4276d88cbd8a72bcc1847befbf';
+(node as any).hash = '43a39dd38204681e5ec48cf9ca2af289';
 export default node;

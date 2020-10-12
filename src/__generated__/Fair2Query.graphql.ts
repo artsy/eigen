@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e16d44fa0e5414ef33a40152e392d19d */
+/* @relayHash 52b943612bf7a96d86befa5997f0bdb2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -288,6 +288,10 @@ fragment Fair2Header_fair on Fair {
     id
   }
   ticketsLink
+  sponsoredContent {
+    activationText
+    pressReleaseUrl
+  }
   fairHours: hours(format: MARKDOWN)
   fairLinks: links(format: MARKDOWN)
   fairTickets: tickets(format: MARKDOWN)
@@ -1019,6 +1023,31 @@ return {
             "storageKey": null
           },
           {
+            "alias": null,
+            "args": null,
+            "concreteType": "FairSponsoredContent",
+            "kind": "LinkedField",
+            "name": "sponsoredContent",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "activationText",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "pressReleaseUrl",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
             "alias": "fairHours",
             "args": (v16/*: any*/),
             "kind": "ScalarField",
@@ -1548,7 +1577,7 @@ return {
     ]
   },
   "params": {
-    "id": "e16d44fa0e5414ef33a40152e392d19d",
+    "id": "52b943612bf7a96d86befa5997f0bdb2",
     "metadata": {},
     "name": "Fair2Query",
     "operationKind": "query",
