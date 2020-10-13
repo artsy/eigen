@@ -119,7 +119,11 @@ const Fair2HeaderFixture: Fair2HeaderTestsQueryRawResponse = {
     },
     location: {
       id: "cde123",
-      summary: null,
+      summary: "this is a location summary",
+      coordinates: {
+        lat: 1,
+        lng: 1,
+      },
     },
     profile: {
       id: "abc123",
@@ -133,6 +137,10 @@ const Fair2HeaderFixture: Fair2HeaderTestsQueryRawResponse = {
     fairHours: null,
     fairTickets: null,
     ticketsLink: "",
+    sponsoredContent: {
+      activationText: "This is some activation text",
+      pressReleaseUrl: "https://testing.artsy.net/press",
+    },
     exhibitionPeriod: "Aug 19 - Sep 19",
     startAt: "2020-08-19T08:00:00+00:00",
     endAt: "2020-09-19T08:00:00+00:00",
@@ -151,5 +159,7 @@ const Fair2HeaderFixtureNoAdditionalInfo = {
     ...Fair2HeaderFixture.fair,
     about: "",
     summary: "",
+    sponsoredContent: null,
+    location: null,
   },
 } as Fair2HeaderTestsQueryRawResponse

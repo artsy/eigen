@@ -247,6 +247,10 @@ const FAIR_2_FIXTURE: Fair2TestsQueryRawResponse = {
     location: {
       id: "cde123",
       summary: null,
+      coordinates: {
+        lat: 1,
+        lng: 1,
+      },
     },
     profile: {
       id: "abc123",
@@ -272,5 +276,9 @@ const FAIR_2_FIXTURE: Fair2TestsQueryRawResponse = {
     startAt: "2020-08-19T08:00:00+00:00",
     endAt: "2020-09-19T08:00:00+00:00",
     followedArtistArtworks: null,
+    sponsoredContent: {
+      activationText: "This is some activation text",
+      pressReleaseUrl: "https://testing.artsy.net/press",
+    },
   },
 }
