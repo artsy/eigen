@@ -64,7 +64,7 @@ const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketP
     <ScreenMargin>
       <InfoButton
         title="Artist market"
-        subTitle={`Based on ${"TODO"} months of auction data`}
+        subTitle="Based on the last 36 months of auction data"
         onPress={() => navActions.showInfoModal("artistMarket")}
       />
 
