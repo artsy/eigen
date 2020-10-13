@@ -38,7 +38,7 @@ Want to get the app running? Run this in your shell:
 git clone https://github.com/artsy/eigen.git
 cd eigen
 gem install bundler
-bundle install --without development distribution
+bundle install --without development
 
 make oss # or make artsy
 
