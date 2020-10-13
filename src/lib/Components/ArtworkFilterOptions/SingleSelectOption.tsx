@@ -13,6 +13,7 @@ interface SingleSelectOptionScreenProps {
   onSelect: (any: any) => void
   selectedOption: FilterData
   filterOptions: FilterData[]
+  ListHeaderComponent?: JSX.Element
 }
 
 export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> = ({
@@ -21,6 +22,7 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
   onSelect,
   filterOptions,
   navigator,
+  ListHeaderComponent,
 }) => {
   const handleBackNavigation = () => {
     navigator.pop()
@@ -32,6 +34,7 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
       <Flex mb="125px">
         <FlatList<FilterData>
           initialNumToRender={100}
+          ListHeaderComponent={ListHeaderComponent}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
           renderItem={({ item }) => (

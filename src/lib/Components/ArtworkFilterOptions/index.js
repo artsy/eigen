@@ -1,5 +1,7 @@
+
 export * from "./ArtistsIFollowOptions"
 export * from "./ColorOptions"
+export * from "./EstimateRangeOptions"
 export * from "./GalleryOptions"
 export * from "./InstitutionOptions"
 export * from "./MediumOptions"

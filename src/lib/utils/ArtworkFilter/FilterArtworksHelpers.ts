@@ -6,6 +6,7 @@ import { forOwn } from "lodash"
 export enum FilterParamName {
   artistsIFollow = "includeArtworksByFollowedArtists",
   color = "color",
+  estimateRange = "estimateRange",
   gallery = "partnerID",
   institution = "partnerID",
   medium = "medium",
@@ -26,7 +27,9 @@ export type FilterParams = {
 }
 
 export enum FilterDisplayName {
+  artistsIFollow = "Artist",
   color = "Color",
+  estimateRange = "Price/estimate range",
   gallery = "Gallery",
   institution = "Institution",
   medium = "Medium",
@@ -36,7 +39,6 @@ export enum FilterDisplayName {
   timePeriod = "Time period",
   viewAs = "View as",
   waysToBuy = "Ways to buy",
-  artistsIFollow = "Artist",
 }
 
 export enum ViewAsValues {
@@ -64,6 +66,7 @@ const defaultArtworksParams = {
   acquireable: false,
   atAuction: false,
   dimensionRange: "*-*",
+  estimateRange: "",
   inquireableOnly: false,
   medium: "*",
   offerable: false,
@@ -73,6 +76,7 @@ const defaultArtworksParams = {
 
 const defaultSaleArtworksParams = {
   sort: "position",
+  estimateRange: "",
 } as FilterParams
 
 const getDefaultParamsByType = (fitlerType: FilterType) => {

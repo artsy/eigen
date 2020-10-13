@@ -153,6 +153,7 @@ export const ParamDefaultValues = {
   atAuction: false,
   color: undefined,
   dimensionRange: "*-*",
+  estimateRange: "",
   includeArtworksByFollowedArtists: false,
   inquireableOnly: false,
   majorPeriods: undefined,
@@ -170,6 +171,7 @@ const defaultCommonFilterOptions: Record<FilterParamName, string | boolean | und
   atAuction: ParamDefaultValues.atAuction,
   color: ParamDefaultValues.color,
   dimensionRange: ParamDefaultValues.dimensionRange,
+  estimateRange: ParamDefaultValues.estimateRange,
   includeArtworksByFollowedArtists: ParamDefaultValues.includeArtworksByFollowedArtists,
   inquireableOnly: ParamDefaultValues.inquireableOnly,
   majorPeriods: ParamDefaultValues.majorPeriods,
@@ -198,6 +200,7 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
         }
   const defaultFilters: FilterArray = [
     defaultSortFilter,
+    { paramName: FilterParamName.estimateRange, paramValue: "", displayText: "All" },
     { paramName: FilterParamName.medium, paramValue: "*", displayText: "All" },
     { paramName: FilterParamName.priceRange, paramValue: "*-*", displayText: "All" },
     { paramName: FilterParamName.size, paramValue: "*-*", displayText: "All" },

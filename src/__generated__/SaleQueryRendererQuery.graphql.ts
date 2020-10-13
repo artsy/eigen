@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5fb256cd1596e318ee0514fbafe264ec */
+/* @relayHash ca0cc9f4c5b2ef3377c82b36f7f1f7a6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -221,7 +221,7 @@ fragment SaleHeader_sale on Sale {
 }
 
 fragment SaleLotsList_saleArtworksConnection on Query {
-  saleArtworksConnection(first: 10, sort: "position") {
+  saleArtworksConnection(first: 10, sort: "position", estimateRange: "") {
     aggregations {
       slice
       counts {
@@ -417,6 +417,11 @@ v20 = {
   "storageKey": null
 },
 v21 = [
+  {
+    "kind": "Literal",
+    "name": "estimateRange",
+    "value": ""
+  },
   (v7/*: any*/),
   {
     "kind": "Literal",
@@ -955,13 +960,14 @@ return {
             "abstractKey": "__isArtworkConnectionInterface"
           }
         ],
-        "storageKey": "saleArtworksConnection(first:10,sort:\"position\")"
+        "storageKey": "saleArtworksConnection(estimateRange:\"\",first:10,sort:\"position\")"
       },
       {
         "alias": null,
         "args": (v21/*: any*/),
         "filters": [
-          "sort"
+          "sort",
+          "estimateRange"
         ],
         "handle": "connection",
         "key": "SaleLotsList_saleArtworksConnection",
@@ -971,7 +977,7 @@ return {
     ]
   },
   "params": {
-    "id": "5fb256cd1596e318ee0514fbafe264ec",
+    "id": "ca0cc9f4c5b2ef3377c82b36f7f1f7a6",
     "metadata": {},
     "name": "SaleQueryRendererQuery",
     "operationKind": "query",

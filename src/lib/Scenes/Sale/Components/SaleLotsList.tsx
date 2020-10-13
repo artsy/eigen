@@ -1,7 +1,6 @@
 import { SaleLotsList_saleArtworksConnection } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { PAGE_SIZE } from "lib/data/constants"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
@@ -124,8 +123,9 @@ export const SaleLotsListContainer = createPaginationContainer(
         count: { type: "Int!", defaultValue: 10 }
         cursor: { type: "String" }
         sort: { type: "String", defaultValue: "position" }
+        estimateRange: { type: String, defaultValue: "" }
       ) {
-        saleArtworksConnection(first: $count, after: $cursor, sort: $sort)
+        saleArtworksConnection(first: $count, after: $cursor, sort: $sort, estimateRange: $estimateRange)
         # aggregations: [MEDIUM]
         @connection(key: "SaleLotsList_saleArtworksConnection") {
           aggregations {
@@ -166,8 +166,9 @@ export const SaleLotsListContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query SaleLotsListQuery($count: Int!, $cursor: String, $sort: String) @raw_response_type {
-        ...SaleLotsList_saleArtworksConnection @arguments(count: $count, cursor: $cursor, sort: $sort)
+      query SaleLotsListQuery($count: Int!, $cursor: String, $sort: String, $estimateRange: String) @raw_response_type {
+        ...SaleLotsList_saleArtworksConnection
+        @arguments(count: $count, cursor: $cursor, sort: $sort, estimateRange: $estimateRange)
       }
     `,
   }

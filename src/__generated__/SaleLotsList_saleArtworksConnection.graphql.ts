@@ -45,6 +45,11 @@ const node: ReaderFragment = {
       "name": "cursor"
     },
     {
+      "defaultValue": "",
+      "kind": "LocalArgument",
+      "name": "estimateRange"
+    },
+    {
       "defaultValue": "position",
       "kind": "LocalArgument",
       "name": "sort"
@@ -68,6 +73,11 @@ const node: ReaderFragment = {
     {
       "alias": "saleArtworksConnection",
       "args": [
+        {
+          "kind": "Variable",
+          "name": "estimateRange",
+          "variableName": "estimateRange"
+        },
         {
           "kind": "Variable",
           "name": "sort",
@@ -214,5 +224,5 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = 'df8584cb45074fee3971db885514f35d';
+(node as any).hash = 'aa2adc8a677f3bc4d79906710f9fc7a2';
 export default node;

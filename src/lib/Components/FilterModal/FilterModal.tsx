@@ -26,6 +26,7 @@ import {
   ArtistsIFollowOptionsScreen,
   ColorOption,
   ColorOptionsScreen,
+  EstimateRangeOptionsScreen,
   GalleryOptionsScreen,
   InstitutionOptionsScreen,
   MediumOptionsScreen,
@@ -155,6 +156,7 @@ export type FilterScreen =
   | "artistsIFollow"
   | "color"
   | "dimensionRange"
+  | "estimateRange"
   | "gallery"
   | "institution"
   | "majorPeriods"
@@ -202,7 +204,6 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
 
   const concreteAggregations = state.aggregations ?? []
 
-  console.log({ concreteAggregations })
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
     concreteAggregations.map((aggregation) => {
       const filterOption = filterKeyFromAggregation[aggregation.slice]
@@ -308,7 +309,11 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
 export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
   switch (mode) {
     case FilterModalMode.SaleArtworks:
-      return [filterOptionToDisplayConfigMap.sortSaleArtworks, filterOptionToDisplayConfigMap.viewAs]
+      return [
+        filterOptionToDisplayConfigMap.sortSaleArtworks,
+        filterOptionToDisplayConfigMap.viewAs,
+        filterOptionToDisplayConfigMap.estimateRange,
+      ]
 
     default:
       return [filterOptionToDisplayConfigMap.sortArtworks, filterOptionToDisplayConfigMap.waysToBuy]
@@ -486,6 +491,11 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "dimensionRange",
     ScreenComponent: SizeOptionsScreen,
   },
+  estimateRange: {
+    displayText: FilterDisplayName.estimateRange,
+    filterType: "estimateRange",
+    ScreenComponent: EstimateRangeOptionsScreen,
+  },
   gallery: {
     displayText: FilterDisplayName.gallery,
     filterType: "gallery",
@@ -578,4 +588,4 @@ const FairFiltersSorted: FilterScreen[] = [
   "gallery",
   "institution",
 ]
-const SaleArtworksFiltersSorted: FilterScreen[] = ["sort", "viewAs", "priceRange", "artistsIFollow", "medium"]
+const SaleArtworksFiltersSorted: FilterScreen[] = ["sort", "viewAs", "estimateRange", "artistsIFollow", "medium"]
