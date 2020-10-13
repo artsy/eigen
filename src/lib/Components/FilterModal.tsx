@@ -23,7 +23,7 @@ import {
   useSelectedOptionsDisplay,
 } from "../utils/ArtworkFilter/ArtworkFiltersStore"
 import { AnimatedBottomButton } from "./AnimatedBottomButton"
-import { ArtistsIFollowOptionsScreen } from "./ArtworkFilterOptions/ArtistsIFollowOptions"
+import { ArtistOptionsScreen } from "./ArtworkFilterOptions/ArtistOptions"
 import { ColorOption, ColorOptionsScreen } from "./ArtworkFilterOptions/ColorOptions"
 import { colorHexMap } from "./ArtworkFilterOptions/ColorSwatch"
 import { GalleryOptionsScreen } from "./ArtworkFilterOptions/GalleryOptions"
@@ -159,6 +159,7 @@ export type FilterScreen =
   | "gallery"
   | "institution"
   | "artistsIFollow"
+  | "artist"
 
 export interface FilterDisplayConfig {
   filterType: FilterScreen
@@ -255,7 +256,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
       case "Fair":
         sortOrder = [
           "sort",
-          "artistsIFollow",
+          "artist",
           "medium",
           "priceRange",
           "waysToBuy",
@@ -469,6 +470,7 @@ const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string
   MEDIUM: FilterParamName.medium,
   PRICE_RANGE: FilterParamName.priceRange,
   FOLLOWED_ARTISTS: "artistsIFollow",
+  ARTIST: "artist",
 }
 
 // For most cases filter key can simply be FilterParamName, exception
@@ -482,6 +484,7 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   medium: "MEDIUM",
   priceRange: "PRICE_RANGE",
   artistsIFollow: "FOLLOWED_ARTISTS",
+  artist: "ARTIST",
 }
 
 export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {
@@ -495,11 +498,6 @@ const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
     displayText: FilterDisplayName.sort,
     filterType: "sort",
     ScreenComponent: SortOptionsScreen,
-  },
-  artistsIFollow: {
-    displayText: FilterDisplayName.artistsIFollow,
-    filterType: "artistsIFollow",
-    ScreenComponent: ArtistsIFollowOptionsScreen,
   },
   medium: {
     displayText: FilterDisplayName.medium,
@@ -540,5 +538,10 @@ const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
     displayText: FilterDisplayName.gallery,
     filterType: "gallery",
     ScreenComponent: GalleryOptionsScreen,
+  },
+  artist: {
+    displayText: FilterDisplayName.artist,
+    filterType: "artist",
+    ScreenComponent: ArtistOptionsScreen,
   },
 }

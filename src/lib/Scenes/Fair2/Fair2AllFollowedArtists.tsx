@@ -28,7 +28,7 @@ export const Fair2AllFollowedArtists: React.FC<Fair2AllFollowedArtistsProps> = (
 
   const initialFilter: FilterArray = [
     {
-      displayText: "Artists I follow",
+      displayText: "All artists I follow",
       paramName: FilterParamName.artistsIFollow,
       paramValue: true,
     },

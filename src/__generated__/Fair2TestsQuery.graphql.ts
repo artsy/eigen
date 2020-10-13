@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6fe46d6a91398a08a95524ff3814efb4 */
+/* @relayHash 6b019ae560b86063310e1f0165d26af1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -309,7 +309,7 @@ fragment ArtworkTileRailCard_artwork on Artwork {
 fragment Fair2Artworks_fair on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS]) {
+  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
     aggregations {
       slice
       counts {
@@ -723,7 +723,8 @@ v18 = [
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE",
-      "FOLLOWED_ARTISTS"
+      "FOLLOWED_ARTISTS",
+      "ARTIST"
     ]
   },
   {
@@ -1538,7 +1539,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\"],dimensionRange:\"*-*\",first:30,medium:\"*\",sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,medium:\"*\",sort:\"-decayed_merch\")"
           },
           {
             "alias": "fairArtworks",
@@ -1556,6 +1557,7 @@ return {
               "atAuction",
               "offerable",
               "includeArtworksByFollowedArtists",
+              "artistIDs",
               "aggregations"
             ],
             "handle": "connection",
@@ -1776,7 +1778,7 @@ return {
     ]
   },
   "params": {
-    "id": "6fe46d6a91398a08a95524ff3814efb4",
+    "id": "6b019ae560b86063310e1f0165d26af1",
     "metadata": {},
     "name": "Fair2TestsQuery",
     "operationKind": "query",

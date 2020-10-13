@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash aa5fef47d013abb8d61acf68a1014119 */
+/* @relayHash 9a16af9beee1b747292e8275dcc50c3f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -101,7 +101,7 @@ fragment ArtworkTileRailCard_artwork on Artwork {
 fragment Fair2Artworks_fair on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS]) {
+  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
     aggregations {
       slice
       counts {
@@ -928,7 +928,8 @@ v22 = [
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE",
-      "FOLLOWED_ARTISTS"
+      "FOLLOWED_ARTISTS",
+      "ARTIST"
     ]
   },
   {
@@ -1909,7 +1910,7 @@ return {
                       (v6/*: any*/),
                       (v42/*: any*/)
                     ],
-                    "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\"],dimensionRange:\"*-*\",first:30,medium:\"*\",sort:\"-decayed_merch\")"
+                    "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,medium:\"*\",sort:\"-decayed_merch\")"
                   },
                   {
                     "alias": "fairArtworks",
@@ -1927,6 +1928,7 @@ return {
                       "atAuction",
                       "offerable",
                       "includeArtworksByFollowedArtists",
+                      "artistIDs",
                       "aggregations"
                     ],
                     "handle": "connection",
@@ -3044,7 +3046,7 @@ return {
     ]
   },
   "params": {
-    "id": "aa5fef47d013abb8d61acf68a1014119",
+    "id": "9a16af9beee1b747292e8275dcc50c3f",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",

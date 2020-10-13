@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 83827f01d1ca0e6a6865fb339f561491 */
+/* @relayHash 6a8246ecb471e6780d5973f6ab81bfe7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -74,7 +74,7 @@ fragment Fair2AllFollowedArtists_fair on Fair {
 fragment Fair2Artworks_fair_485l1x on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", includeArtworksByFollowedArtists: true, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS]) {
+  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", includeArtworksByFollowedArtists: true, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
     aggregations {
       slice
       counts {
@@ -169,7 +169,8 @@ v4 = [
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE",
-      "FOLLOWED_ARTISTS"
+      "FOLLOWED_ARTISTS",
+      "ARTIST"
     ]
   },
   {
@@ -629,7 +630,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\"],dimensionRange:\"*-*\",first:30,includeArtworksByFollowedArtists:true,medium:\"*\",sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,includeArtworksByFollowedArtists:true,medium:\"*\",sort:\"-decayed_merch\")"
           },
           {
             "alias": "fairArtworks",
@@ -647,6 +648,7 @@ return {
               "atAuction",
               "offerable",
               "includeArtworksByFollowedArtists",
+              "artistIDs",
               "aggregations"
             ],
             "handle": "connection",
@@ -661,7 +663,7 @@ return {
     ]
   },
   "params": {
-    "id": "83827f01d1ca0e6a6865fb339f561491",
+    "id": "6a8246ecb471e6780d5973f6ab81bfe7",
     "metadata": {},
     "name": "Fair2AllFollowedArtistsQuery",
     "operationKind": "query",

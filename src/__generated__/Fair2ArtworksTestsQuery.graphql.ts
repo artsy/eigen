@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3144a75e3cd82bb109dd6e0eea14d6c2 */
+/* @relayHash 8d11899e75851010b7c3e8eaf815ee38 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -68,7 +68,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment Fair2Artworks_fair on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS]) {
+  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
     aggregations {
       slice
       counts {
@@ -163,7 +163,8 @@ v4 = [
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE",
-      "FOLLOWED_ARTISTS"
+      "FOLLOWED_ARTISTS",
+      "ARTIST"
     ]
   },
   {
@@ -648,7 +649,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\"],dimensionRange:\"*-*\",first:30,medium:\"*\",sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,medium:\"*\",sort:\"-decayed_merch\")"
           },
           {
             "alias": "fairArtworks",
@@ -666,6 +667,7 @@ return {
               "atAuction",
               "offerable",
               "includeArtworksByFollowedArtists",
+              "artistIDs",
               "aggregations"
             ],
             "handle": "connection",
@@ -680,7 +682,7 @@ return {
     ]
   },
   "params": {
-    "id": "3144a75e3cd82bb109dd6e0eea14d6c2",
+    "id": "8d11899e75851010b7c3e8eaf815ee38",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": {
