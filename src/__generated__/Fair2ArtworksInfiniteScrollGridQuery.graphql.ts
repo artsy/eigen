@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 93f76084880d4b2e4c47b4ae225d1955 */
+/* @relayHash 6264dcca618cec8a4803b514da0c7ac0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -95,7 +95,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment Fair2Artworks_fair_2dIbwR on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 20, after: $cursor, sort: $sort, medium: $medium, priceRange: $priceRange, color: $color, partnerID: $partnerID, dimensionRange: $dimensionRange, majorPeriods: $majorPeriods, acquireable: $acquireable, inquireableOnly: $inquireableOnly, atAuction: $atAuction, offerable: $offerable, includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS]) {
+  fairArtworks: filterArtworksConnection(first: 30, after: $cursor, sort: $sort, medium: $medium, priceRange: $priceRange, color: $color, partnerID: $partnerID, dimensionRange: $dimensionRange, majorPeriods: $majorPeriods, acquireable: $acquireable, inquireableOnly: $inquireableOnly, atAuction: $atAuction, offerable: $offerable, includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS]) {
     aggregations {
       slice
       counts {
@@ -333,7 +333,7 @@ v30 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 20
+    "value": 30
   },
   (v20/*: any*/),
   (v21/*: any*/),
@@ -862,7 +862,7 @@ return {
     ]
   },
   "params": {
-    "id": "93f76084880d4b2e4c47b4ae225d1955",
+    "id": "6264dcca618cec8a4803b514da0c7ac0",
     "metadata": {},
     "name": "Fair2ArtworksInfiniteScrollGridQuery",
     "operationKind": "query",

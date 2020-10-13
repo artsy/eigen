@@ -1,9 +1,10 @@
 import {
   AggregationName,
+  Aggregations,
   ArtworkFilterContext,
+  FilterArray,
   useSelectedOptionsDisplay,
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { Aggregations } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
   changedFiltersParams,
   filterArtworksParams,
@@ -45,6 +46,7 @@ interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
   exitModal?: () => void
   navigator?: NavigatorIOS
+  initiallyAppliedFilters?: FilterArray
   isFilterArtworksModalVisible: boolean
   id: string
   slug: string

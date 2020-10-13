@@ -622,6 +622,7 @@ describe("Applying filters", () => {
         acquireable: false,
         atAuction: false,
         dimensionRange: "*-*",
+        includeArtworksByFollowedArtists: false,
         inquireableOnly: false,
         medium: "*",
         offerable: false,

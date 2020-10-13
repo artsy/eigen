@@ -1,48 +1,56 @@
 upcoming:
-  version: 6.6.5
+  version: 6.6.6
   date: TBD
   dev:
-    - Add haptic feedback on buttons - pavlos
-    - Use our Touchable instead of TouchableHighlight - pavlos
-    - Move auction CTA button to RN - pavlos
-    - Move artwork categories to a common util file - ashley
-    - Send id token from apple sign in - brian
-    - Rework principalField middleware - david, pavlos, mounir, brian
-    - Add admin-only skeleton view for Fair2 - will
-    - Add header for Fair2 (visible only to admins) - will
-    - Add editorial for Fair2 (visible only to admins) - damon
-    - Add collections rail for Fair2 (visible only to admins) - damon
-    - Add More Info view for Fair2 (visible only to admins) - will
-    - Add Artworks/Exhibitors rails to Fair2 - sweir
-    - Adds ability to filter Fair2 page by artists I follow - sweir
-    - Update timing display on Fair2 - mzikherman
-    - ConversationDetail component - sepand
-    - Adds "Artworks by Artists You Follow" rail (visible only to admins) - damon
-    - Upgrade Relay to 10 - chris
-    - Add share button to viewing rooms - mdole
-    - Add utms to share buttons - mdole
-    - Add new Show2 view, behind lab option - roop, sarah
-    - Adds tracking for Fair2 - will
-    - Adds ability to route to new fair view via option - sweir
-    - Include full artwork details in inquiry modal; improve animation - starsirius
+    -
   user_facing:
-    - Fix navigation bug on Artwork consign button - david
-    - Add auction lots rail to the auctions screen - mounir
-    - Fix auction display text formatting - pavlos
-    - Enable pagination on My Collection artworks screen - ashley
-    - Add long email truncation - pavlos
-    - Add auction lots grid to the auctions screen - mounir
-    - Add auction lots list to the auctions screen - mounir
-    - Add LoadFailureView to Viewing Rooms screens for relay errors - pavlos
-    - Enable filtering on artist series views - sweir
-    - Fix bug where a gallery can't be followed - pavlos
-    - Show up to 50 artist series in the full list of an artist's series - roop
-    - Fix layout issue in internal webviews - brian
-    - Add about page - mounir
-    - Center filters modal title - mounir
-    - Fix UI not responsive after editing profile settings - mounir
+    - Show 30 artworks at a time in Fair2 artworks grid - roop
 
 releases:
+  - version: 6.6.5
+    date: October 13, 2020
+    dev:
+      - Add haptic feedback on buttons - pavlos
+      - Use our Touchable instead of TouchableHighlight - pavlos
+      - Move auction CTA button to RN - pavlos
+      - Move artwork categories to a common util file - ashley
+      - Send id token from apple sign in - brian
+      - Rework principalField middleware - david, pavlos, mounir, brian
+      - Add admin-only skeleton view for Fair2 - will
+      - Add header for Fair2 (visible only to admins) - will
+      - Add editorial for Fair2 (visible only to admins) - damon
+      - Add collections rail for Fair2 (visible only to admins) - damon
+      - Add More Info view for Fair2 (visible only to admins) - will
+      - Add Artworks/Exhibitors rails to Fair2 - sweir
+      - Adds ability to filter Fair2 page by artists I follow - sweir
+      - Update timing display on Fair2 - mzikherman
+      - ConversationDetail component - sepand
+      - Adds "Artworks by Artists You Follow" rail (visible only to admins) - damon
+      - Upgrade Relay to 10 - chris
+      - Add share button to viewing rooms - mdole
+      - Add utms to share buttons - mdole
+      - Add new Show2 view, behind lab option - roop, sarah
+      - Adds tracking for Fair2 - will
+      - Adds ability to route to new fair view via option - sweir
+      - Include full artwork details in inquiry modal; improve animation - starsirius
+      - Adds route and view for all artworks by followed artists in a fair - will
+    user_facing:
+      - Fix navigation bug on Artwork consign button - david
+      - Add auction lots rail to the auctions screen - mounir
+      - Fix auction display text formatting - pavlos
+      - Enable pagination on My Collection artworks screen - ashley
+      - Add long email truncation - pavlos
+      - Add auction lots grid to the auctions screen - mounir
+      - Add auction lots list to the auctions screen - mounir
+      - Add LoadFailureView to Viewing Rooms screens for relay errors - pavlos
+      - Enable filtering on artist series views - sweir
+      - Fix bug where a gallery can't be followed - pavlos
+      - Show up to 50 artist series in the full list of an artist's series - roop
+      - Fix layout issue in internal webviews - brian
+      - Add about page - mounir
+      - Center filters modal title - mounir
+      - Fix UI not responsive after editing profile settings - mounir
+
   - version: 6.6.4
     date: Sept 23, 2020
     dev:

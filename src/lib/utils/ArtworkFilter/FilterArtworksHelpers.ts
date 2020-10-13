@@ -72,6 +72,7 @@ const defaultArtworksParams = {
   offerable: false,
   priceRange: "*-*",
   sort: "-decayed_merch",
+  includeArtworksByFollowedArtists: false,
 } as FilterParams
 
 const defaultSaleArtworksParams = {

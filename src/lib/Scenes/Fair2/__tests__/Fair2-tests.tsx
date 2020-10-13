@@ -9,7 +9,7 @@ import { Fair2ArtworksFragmentContainer } from "../Components/Fair2Artworks"
 import { Fair2CollectionsFragmentContainer } from "../Components/Fair2Collections"
 import { Fair2EditorialFragmentContainer } from "../Components/Fair2Editorial"
 import { Fair2ExhibitorsFragmentContainer } from "../Components/Fair2Exhibitors"
-import { Fair2FollowedArtistsFragmentContainer } from "../Components/Fair2FollowedArtists"
+import { Fair2FollowedArtistsRailFragmentContainer } from "../Components/Fair2FollowedArtistsRail"
 import { Fair2Header, Fair2HeaderFragmentContainer } from "../Components/Fair2Header"
 import { Tab, Tabs } from "../Components/SimpleTabs"
 import { Fair2, Fair2FragmentContainer } from "../Fair2"
@@ -151,7 +151,7 @@ describe("Fair2", () => {
   })
 
   it("renders the artists you follow rail if there are any artworks", () => {
-    expect(getWrapper(FAIR_2_FIXTURE).root.findAllByType(Fair2FollowedArtistsFragmentContainer)).toHaveLength(0)
+    expect(getWrapper(FAIR_2_FIXTURE).root.findAllByType(Fair2FollowedArtistsRailFragmentContainer)).toHaveLength(0)
 
     const data = {
       fair: {
@@ -175,7 +175,7 @@ describe("Fair2", () => {
       },
     } as any
 
-    expect(getWrapper(data).root.findAllByType(Fair2FollowedArtistsFragmentContainer)).toHaveLength(1)
+    expect(getWrapper(data).root.findAllByType(Fair2FollowedArtistsRailFragmentContainer)).toHaveLength(1)
   })
 
   it("renders the artworks/exhibitors component and tabs if there are artworks and exhibitors", () => {

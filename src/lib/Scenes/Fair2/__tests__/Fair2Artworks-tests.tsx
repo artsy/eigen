@@ -66,6 +66,12 @@ describe("Fair2Artworks", () => {
     expect(wrapper.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(1)
   })
 
+  it("requests artworks in batches of 30", () => {
+    const wrapper = getWrapper()
+    const artworksGridContainer = wrapper.root.findByType(InfiniteScrollArtworksGridContainer)
+    expect(artworksGridContainer.props).toMatchObject({ pageSize: 30 })
+  })
+
   it("renders null if there are no artworks", () => {
     const wrapper = getWrapper({
       Fair: () => ({
