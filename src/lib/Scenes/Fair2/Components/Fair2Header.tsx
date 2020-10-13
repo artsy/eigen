@@ -3,6 +3,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "lib/Components/ReadMore"
 import { navigate } from "lib/navigation/navigate"
 import { shouldShowFairBMWArtActivationLink } from "lib/Scenes/Fair/Screens/FairBMWArtActivation"
+import { shouldShowLocationMap } from "lib/Scenes/Fair2/Fair2MoreInfo"
 import { truncatedTextLimit } from "lib/utils/hardware"
 import { Box, ChevronIcon, Flex, Text } from "palette"
 import React from "react"
@@ -38,6 +39,7 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
     !!about ||
     !!tagline ||
     !!location?.summary ||
+    !!shouldShowLocationMap(location?.coordinates) ||
     !!ticketsLink ||
     !!fairHours ||
     !!fairLinks ||
@@ -107,6 +109,10 @@ export const Fair2HeaderFragmentContainer = createFragmentContainer(Fair2Header,
       tagline
       location {
         summary
+        coordinates {
+          lat
+          lng
+        }
       }
       ticketsLink
       sponsoredContent {

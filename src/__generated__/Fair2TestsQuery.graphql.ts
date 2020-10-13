@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 75c65458868922d23248d867b04e9d5e */
+/* @relayHash b64b4c86d524bfefca953cd7458107dd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -89,6 +89,10 @@ export type Fair2TestsQueryRawResponse = {
         readonly tagline: string | null;
         readonly location: ({
             readonly summary: string | null;
+            readonly coordinates: ({
+                readonly lat: number | null;
+                readonly lng: number | null;
+            }) | null;
             readonly id: string;
         }) | null;
         readonly ticketsLink: string | null;
@@ -519,6 +523,10 @@ fragment Fair2Header_fair on Fair {
   tagline
   location {
     summary
+    coordinates {
+      lat
+      lng
+    }
     id
   }
   ticketsLink
@@ -1245,6 +1253,31 @@ return {
             "plural": false,
             "selections": [
               (v13/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "LatLng",
+                "kind": "LinkedField",
+                "name": "coordinates",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "lat",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "lng",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              },
               (v5/*: any*/)
             ],
             "storageKey": null
@@ -1811,7 +1844,7 @@ return {
     ]
   },
   "params": {
-    "id": "75c65458868922d23248d867b04e9d5e",
+    "id": "b64b4c86d524bfefca953cd7458107dd",
     "metadata": {},
     "name": "Fair2TestsQuery",
     "operationKind": "query",

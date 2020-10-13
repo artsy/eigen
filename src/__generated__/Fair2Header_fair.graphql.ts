@@ -21,6 +21,10 @@ export type Fair2Header_fair = {
     readonly tagline: string | null;
     readonly location: {
         readonly summary: string | null;
+        readonly coordinates: {
+            readonly lat: number | null;
+            readonly lng: number | null;
+        } | null;
     } | null;
     readonly ticketsLink: string | null;
     readonly sponsoredContent: {
@@ -166,7 +170,32 @@ return {
       "name": "location",
       "plural": false,
       "selections": [
-        (v0/*: any*/)
+        (v0/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "LatLng",
+          "kind": "LinkedField",
+          "name": "coordinates",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "lat",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "lng",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
       ],
       "storageKey": null
     },
@@ -240,5 +269,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '43a39dd38204681e5ec48cf9ca2af289';
+(node as any).hash = '6b700a54089e662567c4b708ba2d0a1b';
 export default node;

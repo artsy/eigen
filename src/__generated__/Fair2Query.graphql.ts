@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 52b943612bf7a96d86befa5997f0bdb2 */
+/* @relayHash 723d62587941c87a195d18cdc946e373 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -285,6 +285,10 @@ fragment Fair2Header_fair on Fair {
   tagline
   location {
     summary
+    coordinates {
+      lat
+      lng
+    }
     id
   }
   ticketsLink
@@ -1011,6 +1015,31 @@ return {
             "plural": false,
             "selections": [
               (v13/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "LatLng",
+                "kind": "LinkedField",
+                "name": "coordinates",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "lat",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "lng",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              },
               (v5/*: any*/)
             ],
             "storageKey": null
@@ -1577,7 +1606,7 @@ return {
     ]
   },
   "params": {
-    "id": "52b943612bf7a96d86befa5997f0bdb2",
+    "id": "723d62587941c87a195d18cdc946e373",
     "metadata": {},
     "name": "Fair2Query",
     "operationKind": "query",

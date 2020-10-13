@@ -119,7 +119,11 @@ const Fair2HeaderFixture: Fair2HeaderTestsQueryRawResponse = {
     },
     location: {
       id: "cde123",
-      summary: null,
+      summary: "this is a location summary",
+      coordinates: {
+        lat: 1,
+        lng: 1,
+      },
     },
     profile: {
       id: "abc123",
@@ -156,5 +160,6 @@ const Fair2HeaderFixtureNoAdditionalInfo = {
     about: "",
     summary: "",
     sponsoredContent: null,
+    location: null,
   },
 } as Fair2HeaderTestsQueryRawResponse
