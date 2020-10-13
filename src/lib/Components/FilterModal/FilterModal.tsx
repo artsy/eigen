@@ -108,7 +108,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
           <ApplyButton
             disabled={!isApplyButtonEnabled}
             onPress={() => {
-              const appliedFiltersParams = filterArtworksParams(state.appliedFilters)
+              const appliedFiltersParams = filterArtworksParams(state.appliedFilters, state.filterType)
               // TODO: Update to use cohesion
               switch (mode) {
                 case FilterModalMode.Collection:
@@ -512,12 +512,12 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     ScreenComponent: PriceRangeOptionsScreen,
   },
   sortArtworks: {
-    displayText: FilterDisplayName.sortArtworks,
+    displayText: FilterDisplayName.sort,
     filterType: "sort",
     ScreenComponent: SortOptionsScreen,
   },
   sortSaleArtworks: {
-    displayText: FilterDisplayName.sortSaleArtworks,
+    displayText: FilterDisplayName.sort,
     filterType: "sort",
     ScreenComponent: SortOptionsScreen,
   },

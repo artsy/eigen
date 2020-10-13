@@ -363,6 +363,7 @@ export enum ContextModules {
   AboutTheArtist = "AboutTheArtist",
   AboutTheWork = "AboutTheWork",
   AboutTheWorkFromSpecialist = "AboutTheWorkFromSpecialist",
+  Auction = "Auction",
   ArtistBiography = "ArtistBiography",
   ArtistConsignment = "ArtistConsignment",
   ArtistInsights = "ArtistInsights",

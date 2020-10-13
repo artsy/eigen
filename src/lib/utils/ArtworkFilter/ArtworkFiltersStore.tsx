@@ -15,6 +15,10 @@ export const reducer = (
   artworkFilterState: ArtworkFilterContextState,
   action: FilterActions
 ): ArtworkFilterContextState => {
+  const defaultFilterOptions = {
+    ...defaultCommonFilterOptions,
+    sort: getSortDefaultValue(artworkFilterState.filterType),
+  }
   switch (action.type) {
     case "applyFilters":
       let multiOptionFilters = unionBy(
@@ -137,6 +141,13 @@ export const reducer = (
   }
 }
 
+const getSortDefaultValue = (filterType: FilterType) => {
+  if (filterType === "artwork") {
+    return "position"
+  }
+  return "-decayed_merch"
+}
+
 export const ParamDefaultValues = {
   acquireable: false,
   atAuction: false,
@@ -154,7 +165,7 @@ export const ParamDefaultValues = {
   viewAs: ViewAsValues.Grid,
 }
 
-const defaultFilterOptions: Record<FilterParamName, string | boolean | undefined> = {
+const defaultCommonFilterOptions: Record<FilterParamName, string | boolean | undefined> = {
   acquireable: ParamDefaultValues.acquireable,
   atAuction: ParamDefaultValues.atAuction,
   color: ParamDefaultValues.color,
@@ -166,25 +177,27 @@ const defaultFilterOptions: Record<FilterParamName, string | boolean | undefined
   offerable: ParamDefaultValues.offerable,
   partnerID: ParamDefaultValues.partnerID,
   priceRange: ParamDefaultValues.priceRange,
-  sortArtworks: ParamDefaultValues.sortArtworks,
-  sortSaleArtworks: ParamDefaultValues.sortSaleArtworks,
+  sort: ParamDefaultValues.sortArtworks,
   viewAs: ParamDefaultValues.viewAs,
 }
 
 export const useSelectedOptionsDisplay = (): FilterArray => {
   const { state } = useContext(ArtworkFilterContext)
 
+  const defaultSortFilter =
+    state.filterType === "artwork"
+      ? {
+          paramName: FilterParamName.sort,
+          paramValue: "-decayed_merch",
+          displayText: "Default",
+        }
+      : {
+          paramName: FilterParamName.sort,
+          paramValue: "position",
+          displayText: "Default",
+        }
   const defaultFilters: FilterArray = [
-    {
-      paramName: FilterParamName.sortArworks,
-      paramValue: "-decayed_merch",
-      displayText: "Default",
-    },
-    {
-      paramName: FilterParamName.sortSaleArworks,
-      paramValue: "position",
-      displayText: "Default",
-    },
+    defaultSortFilter,
     { paramName: FilterParamName.medium, paramValue: "*", displayText: "All" },
     { paramName: FilterParamName.priceRange, paramValue: "*-*", displayText: "All" },
     { paramName: FilterParamName.size, paramValue: "*-*", displayText: "All" },
@@ -237,13 +250,15 @@ export const ArtworkFilterGlobalStateProvider = ({ children }: any /* STRICTNESS
   return <ArtworkFilterContext.Provider value={{ state, dispatch }}>{children}</ArtworkFilterContext.Provider>
 }
 
+export type FilterType = "artwork" | "saleArtwork"
+
 export interface ArtworkFilterContextState {
   readonly appliedFilters: FilterArray
   readonly selectedFilters: FilterArray
   readonly previouslyAppliedFilters: FilterArray
   readonly applyFilters: boolean
   readonly aggregations: Aggregations
-  readonly filterType: "artwork" | "saleArtwork"
+  readonly filterType: FilterType
 }
 
 export interface FilterData {
@@ -283,7 +298,7 @@ interface SetAggregations {
 
 interface SetFilterType {
   type: "setFilterType"
-  payload: "artwork" | "saleArtwork"
+  payload: FilterType
 }
 
 export type FilterActions =
@@ -321,5 +336,3 @@ export type Aggregations = Array<{
     name: string
   }>
 }>
-
-export type FilterType = "artwork" | "saleArtwork"

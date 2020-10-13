@@ -11,8 +11,7 @@ export enum FilterParamName {
   medium = "medium",
   priceRange = "priceRange",
   size = "dimensionRange",
-  sortArtworks = "sortArtworks",
-  sortSaleArtworks = "sortSaleArtworks",
+  sort = "sort",
   timePeriod = "majorPeriods",
   viewAs = "viewAs",
   waysToBuyBid = "atAuction",
@@ -33,8 +32,7 @@ export enum FilterDisplayName {
   medium = "Medium",
   priceRange = "Price/estimate range",
   size = "Size",
-  sortArtworks = "Sort by",
-  sortSaleArtworks = "Sort by",
+  sort = "Sort by",
   timePeriod = "Time period",
   viewAs = "View as",
   waysToBuy = "Ways to buy",
@@ -62,17 +60,27 @@ export interface AggregateOption {
   paramValue: string
 }
 
-const defaultFilterParams = {
-  sortArtworks: "-decayed_merch",
-  sortSaleArtworks: "position",
-  medium: "*",
-  priceRange: "*-*",
-  dimensionRange: "*-*",
-  atAuction: false,
+const defaultArtworksParams = {
   acquireable: false,
+  atAuction: false,
+  dimensionRange: "*-*",
   inquireableOnly: false,
+  medium: "*",
   offerable: false,
+  priceRange: "*-*",
+  sort: "-decayed_merch",
 } as FilterParams
+
+const defaultSaleArtworksParams = {
+  sort: "position",
+} as FilterParams
+
+const getDefaultParamsByType = (fitlerType: FilterType) => {
+  if (fitlerType === "artwork") {
+    return defaultArtworksParams
+  }
+  return defaultSaleArtworksParams
+}
 
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams) => {
   appliedFilters.forEach((appliedFilterOption) => {
@@ -82,11 +90,13 @@ const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: Fil
   return filterParams
 }
 
-export const filterArtworksParams = (appliedFilters: FilterArray) => {
+export const filterArtworksParams = (appliedFilters: FilterArray, filterType: FilterType = "artwork") => {
+  const defaultFilterParams = getDefaultParamsByType(filterType)
   return paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams })
 }
 
-const getChangedParams = (appliedFilters: FilterArray) => {
+const getChangedParams = (appliedFilters: FilterArray, filterType: FilterType = "artwork") => {
+  const defaultFilterParams = getDefaultParamsByType(filterType)
   const filterParams = paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams })
   // when filters cleared return default params
   return Object.keys(filterParams).length === 0 ? defaultFilterParams : filterParams

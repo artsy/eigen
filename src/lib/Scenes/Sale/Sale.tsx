@@ -101,7 +101,7 @@ const Sale: React.FC<Props> = ({ queryRes }) => {
     },
     {
       key: "saleLotsList",
-      content: <SaleLotsListContainer saleArtworksConnection={queryRes} saleID={sale.slug} />,
+      content: <SaleLotsListContainer saleArtworksConnection={queryRes} saleID={sale.slug} saleSlug={sale.slug} />,
     },
   ]
 

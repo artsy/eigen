@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2a4d3c1e12428c5668011f23330e046f */
+/* @relayHash c3b125c6f61afe5482cd089ef2898e25 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -10,7 +10,6 @@ export type SaleLotsListQueryVariables = {
     count: number;
     cursor?: string | null;
     sort?: string | null;
-    saleID?: string | null;
 };
 export type SaleLotsListQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"SaleLotsList_saleArtworksConnection">;
@@ -70,7 +69,6 @@ export type SaleLotsListQueryRawResponse = {
             readonly __typename?: string;
             readonly __isNode?: string;
         }) | null> | null;
-        readonly totalCount: number | null;
         readonly pageInfo: {
             readonly endCursor: string | null;
             readonly hasNextPage: boolean;
@@ -92,9 +90,8 @@ query SaleLotsListQuery(
   $count: Int!
   $cursor: String
   $sort: String
-  $saleID: ID
 ) {
-  ...SaleLotsList_saleArtworksConnection_2KNBdg
+  ...SaleLotsList_saleArtworksConnection_1RfMLO
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -204,8 +201,8 @@ fragment SaleArtworkList_connection on ArtworkConnectionInterface {
   }
 }
 
-fragment SaleLotsList_saleArtworksConnection_2KNBdg on Query {
-  saleArtworksConnection(first: $count, after: $cursor, sort: $sort, saleID: $saleID) {
+fragment SaleLotsList_saleArtworksConnection_1RfMLO on Query {
+  saleArtworksConnection(first: $count, after: $cursor, sort: $sort) {
     aggregations {
       slice
       counts {
@@ -222,7 +219,6 @@ fragment SaleLotsList_saleArtworksConnection_2KNBdg on Query {
       cursor
       id
     }
-    totalCount
     ...SaleArtworkList_connection
     ...InfiniteScrollArtworksGrid_connection
     pageInfo {
@@ -234,37 +230,29 @@ fragment SaleLotsList_saleArtworksConnection_2KNBdg on Query {
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "count"
-},
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "count"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "cursor"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "sort"
+  }
+],
 v1 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "cursor"
-},
-v2 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "saleID"
-},
-v3 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "sort"
-},
-v4 = {
-  "kind": "Variable",
-  "name": "saleID",
-  "variableName": "saleID"
-},
-v5 = {
   "kind": "Variable",
   "name": "sort",
   "variableName": "sort"
 },
-v6 = [
+v2 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -275,24 +263,23 @@ v6 = [
     "name": "first",
     "variableName": "count"
   },
-  (v4/*: any*/),
-  (v5/*: any*/)
+  (v1/*: any*/)
 ],
-v7 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v8 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v9 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -301,12 +288,7 @@ v9 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": [
-      (v0/*: any*/),
-      (v1/*: any*/),
-      (v2/*: any*/),
-      (v3/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "SaleLotsListQuery",
@@ -323,8 +305,7 @@ return {
             "name": "cursor",
             "variableName": "cursor"
           },
-          (v4/*: any*/),
-          (v5/*: any*/)
+          (v1/*: any*/)
         ],
         "kind": "FragmentSpread",
         "name": "SaleLotsList_saleArtworksConnection"
@@ -335,18 +316,13 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [
-      (v0/*: any*/),
-      (v1/*: any*/),
-      (v3/*: any*/),
-      (v2/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "SaleLotsListQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v6/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "SaleArtworksConnection",
         "kind": "LinkedField",
         "name": "saleArtworksConnection",
@@ -382,7 +358,7 @@ return {
                     "name": "count",
                     "storageKey": null
                   },
-                  (v7/*: any*/),
+                  (v3/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -412,8 +388,8 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v8/*: any*/),
-                  (v9/*: any*/)
+                  (v4/*: any*/),
+                  (v5/*: any*/)
                 ],
                 "storageKey": null
               },
@@ -424,15 +400,8 @@ return {
                 "name": "cursor",
                 "storageKey": null
               },
-              (v8/*: any*/)
+              (v4/*: any*/)
             ],
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "totalCount",
             "storageKey": null
           },
           {
@@ -471,7 +440,7 @@ return {
                 "name": "edges",
                 "plural": true,
                 "selections": [
-                  (v9/*: any*/),
+                  (v5/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -623,7 +592,7 @@ return {
                             "name": "endAt",
                             "storageKey": null
                           },
-                          (v8/*: any*/)
+                          (v4/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -678,7 +647,7 @@ return {
                             "name": "lotLabel",
                             "storageKey": null
                           },
-                          (v8/*: any*/)
+                          (v4/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -690,8 +659,8 @@ return {
                         "name": "partner",
                         "plural": false,
                         "selections": [
-                          (v7/*: any*/),
-                          (v8/*: any*/)
+                          (v3/*: any*/),
+                          (v4/*: any*/)
                         ],
                         "storageKey": null
                       }
@@ -732,10 +701,9 @@ return {
       },
       {
         "alias": null,
-        "args": (v6/*: any*/),
+        "args": (v2/*: any*/),
         "filters": [
-          "sort",
-          "saleID"
+          "sort"
         ],
         "handle": "connection",
         "key": "SaleLotsList_saleArtworksConnection",
@@ -745,7 +713,7 @@ return {
     ]
   },
   "params": {
-    "id": "2a4d3c1e12428c5668011f23330e046f",
+    "id": "c3b125c6f61afe5482cd089ef2898e25",
     "metadata": {},
     "name": "SaleLotsListQuery",
     "operationKind": "query",
@@ -753,5 +721,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'd9f1e725bb8ca968c2555d1418036693';
+(node as any).hash = '0fd3c43814b514a3dfd289eccb2c410c';
 export default node;

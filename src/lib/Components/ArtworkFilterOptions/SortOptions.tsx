@@ -65,6 +65,11 @@ export const OrderedArtworkSorts: FilterData[] = [
 
 export const OrderedSaleArtworkSorts: FilterData[] = [
   {
+    displayText: "Default",
+    paramName: FilterParamName.sort,
+    paramValue: "position",
+  },
+  {
     displayText: "Lot number ascending",
     paramName: FilterParamName.sort,
     paramValue: "position",
@@ -98,17 +103,20 @@ export const OrderedSaleArtworkSorts: FilterData[] = [
 
 export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigator }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
+  const filterType = state.filterType
 
-  const paramName = FilterParamName.sort
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
+  const selectedOption = selectedOptions.find((option) => option.paramName === FilterParamName.sort)!
+  console.log({ selectedOption })
+
+  const filterOptions = filterType === "artwork" ? OrderedArtworkSorts : OrderedSaleArtworkSorts
 
   const selectOption = (option: FilterData) => {
     dispatch({
       type: "selectFilters",
       payload: {
         displayText: option.displayText,
-        paramName,
+        paramName: FilterParamName.sort,
         paramValue: option.paramValue,
       },
     })
@@ -118,7 +126,7 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigator 
     <SingleSelectOptionScreen
       onSelect={selectOption}
       filterHeaderText={FilterDisplayName.sort}
-      filterOptions={state.filterType === "artwork" ? OrderedArtworkSorts : OrderedSaleArtworkSorts}
+      filterOptions={filterOptions}
       selectedOption={selectedOption}
       navigator={navigator}
     />

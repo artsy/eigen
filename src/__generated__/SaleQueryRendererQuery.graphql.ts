@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b567fdd888f809d9786f7984b4ad31b8 */
+/* @relayHash 5fb256cd1596e318ee0514fbafe264ec */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -238,7 +238,6 @@ fragment SaleLotsList_saleArtworksConnection on Query {
       cursor
       id
     }
-    totalCount
     ...SaleArtworkList_connection
     ...InfiniteScrollArtworksGrid_connection
     pageInfo {
@@ -784,13 +783,6 @@ return {
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
-            "name": "totalCount",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
             "concreteType": "PageInfo",
             "kind": "LinkedField",
             "name": "pageInfo",
@@ -969,8 +961,7 @@ return {
         "alias": null,
         "args": (v21/*: any*/),
         "filters": [
-          "sort",
-          "saleID"
+          "sort"
         ],
         "handle": "connection",
         "key": "SaleLotsList_saleArtworksConnection",
@@ -980,7 +971,7 @@ return {
     ]
   },
   "params": {
-    "id": "b567fdd888f809d9786f7984b4ad31b8",
+    "id": "5fb256cd1596e318ee0514fbafe264ec",
     "metadata": {},
     "name": "SaleQueryRendererQuery",
     "operationKind": "query",

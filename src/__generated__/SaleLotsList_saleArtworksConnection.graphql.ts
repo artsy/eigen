@@ -20,7 +20,6 @@ export type SaleLotsList_saleArtworksConnection = {
                 readonly id: string;
             } | null;
         } | null> | null;
-        readonly totalCount: number | null;
         readonly " $fragmentRefs": FragmentRefs<"SaleArtworkList_connection" | "InfiniteScrollArtworksGrid_connection">;
     } | null;
     readonly " $refType": "SaleLotsList_saleArtworksConnection";
@@ -46,11 +45,6 @@ const node: ReaderFragment = {
       "name": "cursor"
     },
     {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "saleID"
-    },
-    {
       "defaultValue": "position",
       "kind": "LocalArgument",
       "name": "sort"
@@ -74,11 +68,6 @@ const node: ReaderFragment = {
     {
       "alias": "saleArtworksConnection",
       "args": [
-        {
-          "kind": "Variable",
-          "name": "saleID",
-          "variableName": "saleID"
-        },
         {
           "kind": "Variable",
           "name": "sort",
@@ -186,13 +175,6 @@ const node: ReaderFragment = {
         {
           "alias": null,
           "args": null,
-          "kind": "ScalarField",
-          "name": "totalCount",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
           "concreteType": "PageInfo",
           "kind": "LinkedField",
           "name": "pageInfo",
@@ -232,5 +214,5 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = '1f52bcf45bcd66a9f12190fe920b64ce';
+(node as any).hash = 'df8584cb45074fee3971db885514f35d';
 export default node;
