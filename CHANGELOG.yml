@@ -2,10 +2,10 @@ upcoming:
   version: 6.6.6
   date: TBD
   dev:
+    - Change CheckAuthentication middleware to be called before the principalFieldMiddleware - mounir
+  user_facing:
     - Adds ability to filter by artist in a fair - sweir
     - Fix environment variable names for Sentry - starsirius
-  user_facing:
-    -
 
 releases:
   - version: 6.6.5
