@@ -1,5 +1,5 @@
 import { SaleTestsQuery } from "__generated__/SaleTestsQuery.graphql"
-import { navigate } from "lib/navigation/navigate"
+import { navigate, popParentViewController } from "lib/navigation/navigate"
 import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -8,6 +8,11 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SaleContainer } from "../Sale"
 
 jest.unmock("react-relay")
+
+jest.mock("lib/navigation/navigate", () => ({
+  popParentViewController: jest.fn(),
+  navigate: jest.fn(),
+}))
 
 describe("Sale", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -36,15 +41,21 @@ describe("Sale", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    jest.useFakeTimers()
   })
 
-  it("switches to live auction view when sale goes live", (done) => {
+  afterEach(() => {
+    jest.clearAllMocks()
+    jest.useRealTimers()
+  })
+
+  it("switches to live auction view when sale goes live", () => {
     renderWithWrappers(<TestRenderer />)
 
     const now = new Date()
 
-    const inHalfSecond = new Date()
-    inHalfSecond.setMilliseconds(now.getMilliseconds() + 500)
+    const halfSecondInPast = new Date()
+    halfSecondInPast.setMilliseconds(now.getMilliseconds() - 500)
 
     const yesterday = new Date()
     yesterday.setHours(yesterday.getHours() - 24)
@@ -53,7 +64,9 @@ describe("Sale", () => {
     tomorrow.setHours(tomorrow.getHours() + 24)
 
     __appStoreTestUtils__?.injectState({
-      native: { sessionState: { predictionURL: "https://live-staging.artsy.net" } },
+      native: {
+        sessionState: { predictionURL: "https://live-staging.artsy.net" },
+      },
     })
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -67,15 +80,15 @@ describe("Sale", () => {
             url: "cover image url",
           },
           name: "sale name",
-          liveStartAt: inHalfSecond.toISOString(),
+          liveStartAt: halfSecondInPast.toISOString(),
           internalID: "the-sale-internal",
         }),
       })
     )
 
-    setTimeout(() => {
-      expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug")
-      done()
-    }, 1000)
+    jest.advanceTimersByTime(1000)
+    expect(setInterval).toHaveBeenCalledTimes(1)
+    expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug")
+    expect(popParentViewController).toHaveBeenCalled()
   })
 })

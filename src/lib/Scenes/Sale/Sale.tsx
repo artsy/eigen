@@ -38,6 +38,7 @@ export const Sale: React.FC<Props> = (props) => {
 
   useEffect(() => {
     if (props.sale.liveStartAt) {
+      // poll every .5 seconds to check if sale has gone live
       intervalId = setInterval(checkIfSaleIsLive, 500)
       return () => {
         clearInterval(intervalId)
@@ -59,15 +60,11 @@ export const Sale: React.FC<Props> = (props) => {
     setShowGrid(value)
   }
 
-  const liveAuctionUrl = (slug: string): string => {
-    const liveURL = getCurrentEmissionState().predictionURL
-    return `${liveURL}/${slug}`
-  }
-
   const switchToLive = () => {
     const { slug } = props.sale
-    const liveURL = liveAuctionUrl(slug)
-    navigate(liveURL)
+    const liveBaseURL = getCurrentEmissionState().predictionURL
+    const liveAuctionURL = `${liveBaseURL}/${slug}`
+    navigate(liveAuctionURL)
     setTimeout(popParentViewController, 500)
   }
 
