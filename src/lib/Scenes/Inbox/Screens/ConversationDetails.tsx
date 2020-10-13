@@ -10,7 +10,7 @@ import { Box, Flex, Join, QuestionCircleIcon, Separator, Text, Touchable } from 
 import React from "react"
 import { useRef } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
-import { track as _track } from "../utils/track"
+import { track as _track } from "../../../utils/track"
 
 interface Props {
   me: ConversationDetails_me
