@@ -39,7 +39,7 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
     !!about ||
     !!tagline ||
     !!location?.summary ||
-    !!shouldShowLocationMap(location?.coordinates) ||
+    shouldShowLocationMap(location?.coordinates) ||
     !!ticketsLink ||
     !!fairHours ||
     !!fairLinks ||
