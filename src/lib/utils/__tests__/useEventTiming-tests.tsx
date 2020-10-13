@@ -1,9 +1,9 @@
+import { extractText } from "lib/tests/extractText"
 import { DateTime } from "luxon"
 import React from "react"
 import { Text } from "react-native"
-import { useEventTiming } from "../useEventTiming"
 import TestRenderer from "react-test-renderer"
-import { extractText } from "lib/tests/extractText"
+import { useEventTiming } from "../useEventTiming"
 
 type Time = Partial<{
   day: number
