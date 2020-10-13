@@ -1,16 +1,16 @@
 import { ConversationDetails_me } from "__generated__/ConversationDetails_me.graphql"
 import { ConversationDetailsQuery } from "__generated__/ConversationDetailsQuery.graphql"
-import { ItemInfoFragmentContainer as ItemInfo } from "lib/Components/Inbox/Conversations/ItemInfo"
-import { AttachmentListFragmentContainer as AttachmentList } from "lib/Components/Inbox/Conversations/Preview/Attachment/AttachmentList"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { ItemInfoFragmentContainer as ItemInfo } from "lib/Scenes/Inbox/Components/Conversations/ItemInfo"
+import { AttachmentListFragmentContainer as AttachmentList } from "lib/Scenes/Inbox/Components/Conversations/Preview/Attachment/AttachmentList"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { track as _track } from "lib/utils/track"
 import { Box, Flex, Join, QuestionCircleIcon, Separator, Text, Touchable } from "palette"
 import React from "react"
 import { useRef } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
-import { track as _track } from "../../../utils/track"
 
 interface Props {
   me: ConversationDetails_me

@@ -3,7 +3,7 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 
 import { ActivityIndicator, FlatList, View } from "react-native"
 
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import ConversationSnippet from "./ConversationSnippet"
 
 import { PAGE_SIZE } from "lib/data/constants"

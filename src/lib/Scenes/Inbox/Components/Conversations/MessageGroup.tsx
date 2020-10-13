@@ -13,7 +13,7 @@ import ArtworkPreview from "./Preview/ArtworkPreview"
 import ShowPreview from "./Preview/ShowPreview"
 import { TimeSince } from "./TimeSince"
 
-import ARSwitchBoard from "../../../NativeModules/SwitchBoard"
+import ARSwitchBoard from "lib/NativeModules/SwitchBoard"
 
 const SubjectContainer = styled(Flex)`
   flex-direction: row;

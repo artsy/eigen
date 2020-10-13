@@ -2,7 +2,7 @@ import moment from "moment"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { Schema, Track, track as _track } from "../../../utils/track"
+import { Schema, Track, track as _track } from "lib/utils/track"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Colors } from "lib/data/colors"

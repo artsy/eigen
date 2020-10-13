@@ -1,5 +1,5 @@
 import ConnectivityBanner from "lib/Components/ConnectivityBanner"
-import Composer from "lib/Components/Inbox/Conversations/Composer"
+import Composer from "lib/Scenes/Inbox/Components/Conversations/Composer"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
