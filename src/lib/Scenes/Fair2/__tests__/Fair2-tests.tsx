@@ -1,4 +1,5 @@
 import { Fair2TestsQuery } from "__generated__/Fair2TestsQuery.graphql"
+import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -10,7 +11,7 @@ import { Fair2CollectionsFragmentContainer } from "../Components/Fair2Collection
 import { Fair2EditorialFragmentContainer } from "../Components/Fair2Editorial"
 import { Fair2ExhibitorsFragmentContainer } from "../Components/Fair2Exhibitors"
 import { Fair2FollowedArtistsRailFragmentContainer } from "../Components/Fair2FollowedArtistsRail"
-import { Fair2Header, Fair2HeaderFragmentContainer } from "../Components/Fair2Header"
+import { Fair2HeaderFragmentContainer } from "../Components/Fair2Header"
 import { Tab, Tabs } from "../Components/SimpleTabs"
 import { Fair2, Fair2FragmentContainer } from "../Fair2"
 
@@ -58,9 +59,40 @@ describe("Fair2", () => {
     expect(wrapper.root.findAllByType(Fair2)).toHaveLength(1)
   })
 
-  it("renders the necessary subcomponents", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(Fair2Header)).toHaveLength(1)
+  it("renders the necessary components when fair is active", () => {
+    const wrapper = getWrapper({
+      Fair: () => ({
+        isActive: true,
+        counts: {
+          artworks: 42,
+          partnerShows: 42,
+        },
+      }),
+    })
+
+    expect(wrapper.root.findAllByType(Fair2HeaderFragmentContainer)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(Fair2EditorialFragmentContainer)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(Fair2CollectionsFragmentContainer)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(Tabs)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(Fair2ExhibitorsFragmentContainer)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(Fair2FollowedArtistsRailFragmentContainer)).toHaveLength(1)
+  })
+
+  it("renders fewer components when fair is inactive", () => {
+    const wrapper = getWrapper({
+      Fair: () => ({
+        isActive: false,
+      }),
+    })
+
+    expect(wrapper.root.findAllByType(Fair2HeaderFragmentContainer)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(Fair2EditorialFragmentContainer)).toHaveLength(1)
+    expect(extractText(wrapper.root)).toMatch("This fair is not open yet")
+
+    expect(wrapper.root.findAllByType(Fair2CollectionsFragmentContainer)).toHaveLength(0)
+    expect(wrapper.root.findAllByType(Tabs)).toHaveLength(0)
+    expect(wrapper.root.findAllByType(Fair2ExhibitorsFragmentContainer)).toHaveLength(0)
+    expect(wrapper.root.findAllByType(Fair2FollowedArtistsRailFragmentContainer)).toHaveLength(0)
   })
 
   it("does not render components when there is no data for them", () => {

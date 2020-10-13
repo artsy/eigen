@@ -5,7 +5,7 @@ import { navigate } from "lib/navigation/navigate"
 import { shouldShowFairBMWArtActivationLink } from "lib/Scenes/Fair/Screens/FairBMWArtActivation"
 import { shouldShowLocationMap } from "lib/Scenes/Fair2/Fair2MoreInfo"
 import { truncatedTextLimit } from "lib/utils/hardware"
-import { Box, ChevronIcon, Flex, Text } from "palette"
+import { Box, ChevronIcon, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { Dimensions, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -50,7 +50,7 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
 
   return (
     <Box>
-      {!!image && (
+      {!!image ? (
         <Flex alignItems="center" justifyContent="center" style={{ position: "relative" }}>
           <OpaqueImageView width={screenWidth} height={screenWidth / image.aspectRatio} imageURL={image.imageUrl} />
           {!!profileImageUrl && (
@@ -69,6 +69,8 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
             </Flex>
           )}
         </Flex>
+      ) : (
+        <SafeTopMargin />
       )}
       <Box px={2}>
         <Text variant="largeTitle" py={2}>
@@ -88,6 +90,8 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
     </Box>
   )
 }
+
+const SafeTopMargin = () => <Spacer mt={6} pt={2} />
 
 export const Fair2HeaderFragmentContainer = createFragmentContainer(Fair2Header, {
   fair: graphql`

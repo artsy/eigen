@@ -4,6 +4,7 @@ import { navigate } from "lib/navigation/navigate"
 import { Fair2Header, Fair2HeaderFragmentContainer } from "lib/Scenes/Fair2/Components/Fair2Header"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Spacer } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -63,7 +64,7 @@ describe("Fair2Header", () => {
     expect(wrapper.root.findByProps({ variant: "largeTitle" }).props.children).toBe("Art Basel Hong Kong 2020")
   })
 
-  it("renders the fair main image", () => {
+  it("renders the fair main image when present", () => {
     const wrapper = getWrapper({
       Fair: () => ({
         image: {
@@ -71,9 +72,20 @@ describe("Fair2Header", () => {
         },
       }),
     })
-    expect(wrapper.root.findAllByType(OpaqueImageView)[0].props.imageURL).toBe(
-      "https://testing.artsy.net/art-basel-hong-kong-image"
-    )
+    const mainImage = wrapper.root.findAllByType(OpaqueImageView)[0]
+    expect(mainImage.props).toMatchObject({
+      imageURL: "https://testing.artsy.net/art-basel-hong-kong-image",
+    })
+  })
+
+  it("renders a spacer instead when the fair main image is absent", () => {
+    const wrapper = getWrapper({
+      Fair: () => ({
+        image: null,
+      }),
+    })
+    expect(wrapper.root.findAllByType(OpaqueImageView)).toHaveLength(0)
+    expect(wrapper.root.findAllByType(Spacer)).not.toHaveLength(0)
   })
 
   it("renders the fair icon", () => {

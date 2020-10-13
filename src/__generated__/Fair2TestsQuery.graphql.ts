@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7888b905e36a492c6b3b9fa51d1fdf3a */
+/* @relayHash 5c7798badce879b2a9e99ea2bb1cffa6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -312,6 +312,7 @@ fragment Fair2Timing_fair on Fair {
 fragment Fair2_fair on Fair {
   internalID
   slug
+  isActive
   articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
     edges {
       __typename
@@ -781,6 +782,13 @@ return {
         "selections": [
           (v2/*: any*/),
           (v3/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "isActive",
+            "storageKey": null
+          },
           {
             "alias": "articles",
             "args": [
@@ -1711,7 +1719,7 @@ return {
     ]
   },
   "params": {
-    "id": "7888b905e36a492c6b3b9fa51d1fdf3a",
+    "id": "5c7798badce879b2a9e99ea2bb1cffa6",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": (v30/*: any*/),
@@ -1975,6 +1983,7 @@ return {
         "fair.image.aspectRatio": (v37/*: any*/),
         "fair.image.imageUrl": (v31/*: any*/),
         "fair.internalID": (v33/*: any*/),
+        "fair.isActive": (v39/*: any*/),
         "fair.location": {
           "enumValues": null,
           "nullable": true,
