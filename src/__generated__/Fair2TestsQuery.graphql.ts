@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c418eb2aaff557128c70ebb42420bdaf */
+/* @relayHash 6b019ae560b86063310e1f0165d26af1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -309,7 +309,7 @@ fragment ArtworkTileRailCard_artwork on Artwork {
 fragment Fair2Artworks_fair on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS]) {
+  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
     aggregations {
       slice
       counts {
@@ -481,7 +481,7 @@ fragment Fair2Exhibitors_fair on Fair {
   }
 }
 
-fragment Fair2FollowedArtists_fair on Fair {
+fragment Fair2FollowedArtistsRail_fair on Fair {
   internalID
   slug
   followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
@@ -558,7 +558,7 @@ fragment Fair2_fair on Fair {
   ...Fair2Collections_fair
   ...Fair2Artworks_fair
   ...Fair2Exhibitors_fair
-  ...Fair2FollowedArtists_fair
+  ...Fair2FollowedArtistsRail_fair
 }
 
 fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
@@ -723,7 +723,8 @@ v18 = [
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE",
-      "FOLLOWED_ARTISTS"
+      "FOLLOWED_ARTISTS",
+      "ARTIST"
     ]
   },
   {
@@ -731,7 +732,11 @@ v18 = [
     "name": "dimensionRange",
     "value": "*-*"
   },
-  (v9/*: any*/),
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 30
+  },
   {
     "kind": "Literal",
     "name": "medium",
@@ -1534,7 +1539,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\"],dimensionRange:\"*-*\",first:20,medium:\"*\",sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,medium:\"*\",sort:\"-decayed_merch\")"
           },
           {
             "alias": "fairArtworks",
@@ -1552,6 +1557,7 @@ return {
               "atAuction",
               "offerable",
               "includeArtworksByFollowedArtists",
+              "artistIDs",
               "aggregations"
             ],
             "handle": "connection",
@@ -1772,7 +1778,7 @@ return {
     ]
   },
   "params": {
-    "id": "c418eb2aaff557128c70ebb42420bdaf",
+    "id": "6b019ae560b86063310e1f0165d26af1",
     "metadata": {},
     "name": "Fair2TestsQuery",
     "operationKind": "query",

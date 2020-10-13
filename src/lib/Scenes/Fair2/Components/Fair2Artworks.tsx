@@ -2,7 +2,8 @@ import { OwnerType } from "@artsy/cohesion"
 import { Fair2Artworks_fair } from "__generated__/Fair2Artworks_fair.graphql"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { FAIR2_ARTWORKS_PAGE_SIZE } from "lib/data/constants"
+import { ArtworkFilterContext, FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
   aggregationsType,
   aggregationsWithFollowedArtists,
@@ -17,11 +18,11 @@ import { useTracking } from "react-tracking"
 interface Fair2ArtworksProps {
   fair: Fair2Artworks_fair
   relay: RelayPaginationProp
+  initiallyAppliedFilter?: FilterArray
 }
 
-const PAGE_SIZE = 20
+export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay, initiallyAppliedFilter }) => {
 
-export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay }) => {
   const artworks = fair.fairArtworks!
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const tracking = useTracking()
@@ -39,9 +40,15 @@ export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay }) => 
   }
 
   useEffect(() => {
+    if (initiallyAppliedFilter) {
+      dispatch({ type: "setInitialFilterState", payload: initiallyAppliedFilter })
+    }
+  }, [])
+
+  useEffect(() => {
     if (state.applyFilters) {
       relay.refetchConnection(
-        PAGE_SIZE,
+        FAIR2_ARTWORKS_PAGE_SIZE,
         (error) => {
           if (error) {
             throw new Error("Fair/FairArtworks filter error: " + error.message)
@@ -78,7 +85,7 @@ export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay }) => 
         loadMore={relay.loadMore}
         hasMore={relay.hasMore}
         autoFetch={false}
-        pageSize={20}
+        pageSize={FAIR2_ARTWORKS_PAGE_SIZE}
         contextScreenOwnerType={OwnerType.fair}
         contextScreenOwnerId={fair.internalID}
         contextScreenOwnerSlug={fair.slug}
@@ -93,7 +100,7 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
     fair: graphql`
       fragment Fair2Artworks_fair on Fair
       @argumentDefinitions(
-        count: { type: "Int", defaultValue: 20 }
+        count: { type: "Int", defaultValue: 30 }
         cursor: { type: "String" }
         sort: { type: "String", defaultValue: "-decayed_merch" }
         medium: { type: "String", defaultValue: "*" }
@@ -107,11 +114,12 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
         atAuction: { type: "Boolean" }
         offerable: { type: "Boolean" }
         includeArtworksByFollowedArtists: { type: "Boolean" }
+        artistIDs: { type: "[String]" }
       ) {
         slug
         internalID
         fairArtworks: filterArtworksConnection(
-          first: 20
+          first: 30
           after: $cursor
           sort: $sort
           medium: $medium
@@ -125,6 +133,7 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
           atAuction: $atAuction
           offerable: $offerable
           includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
+          artistIDs: $artistIDs
           aggregations: [
             COLOR
             DIMENSION_RANGE
@@ -134,6 +143,7 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
             MEDIUM
             PRICE_RANGE
             FOLLOWED_ARTISTS
+            ARTIST
           ]
         ) @connection(key: "Fair_fairArtworks") {
           aggregations {
@@ -195,6 +205,7 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
         $atAuction: Boolean
         $offerable: Boolean
         $includeArtworksByFollowedArtists: Boolean
+        $artistIDs: [String]
       ) {
         fair(id: $id) {
           ...Fair2Artworks_fair
@@ -213,6 +224,7 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
             atAuction: $atAuction
             offerable: $offerable
             includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
+            artistIDs: $artistIDs
           )
         }
       }

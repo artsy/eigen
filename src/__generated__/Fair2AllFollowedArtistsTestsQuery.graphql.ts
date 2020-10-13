@@ -1,31 +1,31 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8d11899e75851010b7c3e8eaf815ee38 */
+/* @relayHash 0a6a300f2f1fb0b6ed5f56725bed601c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Fair2ArtworksTestsQueryVariables = {
+export type Fair2AllFollowedArtistsTestsQueryVariables = {
     fairID: string;
 };
-export type Fair2ArtworksTestsQueryResponse = {
+export type Fair2AllFollowedArtistsTestsQueryResponse = {
     readonly fair: {
-        readonly " $fragmentRefs": FragmentRefs<"Fair2Artworks_fair">;
+        readonly " $fragmentRefs": FragmentRefs<"Fair2AllFollowedArtists_fair">;
     } | null;
 };
-export type Fair2ArtworksTestsQuery = {
-    readonly response: Fair2ArtworksTestsQueryResponse;
-    readonly variables: Fair2ArtworksTestsQueryVariables;
+export type Fair2AllFollowedArtistsTestsQuery = {
+    readonly response: Fair2AllFollowedArtistsTestsQueryResponse;
+    readonly variables: Fair2AllFollowedArtistsTestsQueryVariables;
 };
 
 
 
 /*
-query Fair2ArtworksTestsQuery(
+query Fair2AllFollowedArtistsTestsQuery(
   $fairID: String!
 ) {
   fair(id: $fairID) {
-    ...Fair2Artworks_fair
+    ...Fair2AllFollowedArtists_fair
     id
   }
 }
@@ -65,10 +65,16 @@ fragment ArtworkGridItem_artwork on Artwork {
   }
 }
 
-fragment Fair2Artworks_fair on Fair {
+fragment Fair2AllFollowedArtists_fair on Fair {
+  internalID
+  slug
+  ...Fair2Artworks_fair_485l1x
+}
+
+fragment Fair2Artworks_fair_485l1x on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
+  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", includeArtworksByFollowedArtists: true, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
     aggregations {
       slice
       counts {
@@ -141,14 +147,14 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "internalID",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "internalID",
+  "name": "slug",
   "storageKey": null
 },
 v4 = [
@@ -176,6 +182,11 @@ v4 = [
     "kind": "Literal",
     "name": "first",
     "value": 30
+  },
+  {
+    "kind": "Literal",
+    "name": "includeArtworksByFollowedArtists",
+    "value": true
   },
   {
     "kind": "Literal",
@@ -244,7 +255,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "Fair2ArtworksTestsQuery",
+    "name": "Fair2AllFollowedArtistsTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -257,7 +268,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "Fair2Artworks_fair"
+            "name": "Fair2AllFollowedArtists_fair"
           }
         ],
         "storageKey": null
@@ -270,7 +281,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "Fair2ArtworksTestsQuery",
+    "name": "Fair2AllFollowedArtistsTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -454,7 +465,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/),
+                          (v3/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -507,7 +518,7 @@ return {
                             "name": "saleMessage",
                             "storageKey": null
                           },
-                          (v3/*: any*/),
+                          (v2/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -649,7 +660,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,medium:\"*\",sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,includeArtworksByFollowedArtists:true,medium:\"*\",sort:\"-decayed_merch\")"
           },
           {
             "alias": "fairArtworks",
@@ -682,7 +693,7 @@ return {
     ]
   },
   "params": {
-    "id": "8d11899e75851010b7c3e8eaf815ee38",
+    "id": "0a6a300f2f1fb0b6ed5f56725bed601c",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": {
@@ -845,11 +856,11 @@ return {
         "fair.slug": (v10/*: any*/)
       }
     },
-    "name": "Fair2ArtworksTestsQuery",
+    "name": "Fair2AllFollowedArtistsTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '22b76d166ae5ede2ba15c07c3ffcdb72';
+(node as any).hash = '0b10b1fd7ad663017a8cbc2ef3af966d';
 export default node;

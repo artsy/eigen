@@ -1,3 +1,8 @@
-This update fixes a bug where, in rare circumstances, users would begin to see the app crash on launch.
+This update includes a number of improvements and bug fixes, including:
+
+• Adds filtering to Artist Series.
+• Fixes an issue with submitting consignments from Artwork pages.
+• Fixes an issue with displaying long email addresses in the Profile tab.
+• Handles errors properly in Viewing Rooms.
 
 Have feedback? Email us at support@artsy.net

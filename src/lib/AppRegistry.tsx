@@ -50,6 +50,7 @@ import {
 } from "./Scenes/Fair"
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
 import { Fair2QueryRenderer } from "./Scenes/Fair2/Fair2"
+import { Fair2AllFollowedArtistsQueryRenderer } from "./Scenes/Fair2/Fair2AllFollowedArtists"
 import { Fair2MoreInfoQueryRenderer } from "./Scenes/Fair2/Fair2MoreInfo"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
@@ -389,6 +390,7 @@ export const modules = defineModules({
   Fair: { Component: FairQueryRenderer, fullBleed: true },
   Fair2: { Component: Fair2QueryRenderer, fullBleed: true },
   Fair2MoreInfo: { Component: Fair2MoreInfoQueryRenderer },
+  Fair2AllFollowedArtists: { Component: Fair2AllFollowedArtistsQueryRenderer },
   FairArtists: { Component: FairArtists },
   FairArtworks: { Component: FairArtworks },
   FairBMWArtActivation: { Component: FairBMWArtActivation, fullBleed: true },

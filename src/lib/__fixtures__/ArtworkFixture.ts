@@ -16,6 +16,11 @@ export const ArtworkFixture = {
   isInquireable: false,
   isInAuction: false,
   isBuyNowable: false,
+  inquiryQuestions: [
+    { question: "Price & Availability" },
+    { question: "Shipping" },
+    { question: "Condition & Provenance" },
+  ],
   editionSets: [],
   saleMessage: null,
   sale: null,
@@ -27,6 +32,9 @@ export const ArtworkFixture = {
   category: "Photography",
   date: "2020",
   medium: "photograph",
+  attributionClass: {
+    name: "Unique",
+  },
   editionOf: "",
   image: {
     url: "",
@@ -74,6 +82,7 @@ export const ArtworkFixture = {
       },
     },
   ],
+  artistNames: "Abbas Kiarostami",
   artists: [
     {
       " $refType": null,

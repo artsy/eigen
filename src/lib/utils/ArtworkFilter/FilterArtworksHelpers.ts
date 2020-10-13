@@ -1,6 +1,6 @@
 import { FilterScreen } from "lib/Components/FilterModal"
 import { Aggregations, FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { forOwn } from "lodash"
+import { compact, forOwn, groupBy, sortBy } from "lodash"
 
 // General filter types and objects
 export enum FilterParamName {
@@ -17,11 +17,12 @@ export enum FilterParamName {
   waysToBuyInquire = "inquireableOnly",
   waysToBuyMakeOffer = "offerable",
   artistsIFollow = "includeArtworksByFollowedArtists",
+  artist = "artistIDs",
 }
 
 // Types for the parameters passed to Relay
 export type FilterParams = {
-  [Name in FilterParamName]: string | boolean | undefined
+  [Name in FilterParamName]: string | boolean | undefined | string[]
 }
 
 export enum FilterDisplayName {
@@ -35,6 +36,7 @@ export enum FilterDisplayName {
   timePeriod = "Time period",
   waysToBuy = "Ways to buy",
   artistsIFollow = "Artist",
+  artist = "Artists",
 }
 
 export interface InitialState {
@@ -61,11 +63,21 @@ const defaultFilterParams = {
   acquireable: false,
   inquireableOnly: false,
   offerable: false,
+  includeArtworksByFollowedArtists: false,
 } as FilterParams
 
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams) => {
-  appliedFilters.forEach((appliedFilterOption) => {
-    filterParams[appliedFilterOption.paramName] = appliedFilterOption.paramValue
+  const groupedFilters = groupBy(appliedFilters, "paramName")
+  Object.keys(groupedFilters).forEach((paramName) => {
+    const paramValues = groupedFilters[paramName].map((item) => item.paramValue)
+    // If we add more filter options that can take arrays, we would include them here.
+    if (paramName === FilterParamName.artist) {
+      // For the artistIDs param, we want to return an array
+      filterParams[paramName] = paramValues as string[]
+    } else {
+      // For other params, we just want to return the first value
+      filterParams[paramName as FilterParamName] = paramValues[0]
+    }
   })
 
   return filterParams
@@ -100,6 +112,9 @@ export const changedFiltersParams = (currentFilterParams: FilterParams, selected
   return changedFilters
 }
 
+/**
+ * Formats the display for the Filter Modal "home" screen.
+ */
 export const selectedOption = (selectedOptions: FilterArray, filterType: FilterScreen) => {
   const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
 
@@ -125,11 +140,26 @@ export const selectedOption = (selectedOptions: FilterArray, filterType: FilterS
     } else {
       return "All"
     }
-  } else if (filterType === "artistsIFollow") {
-    const displayText = multiSelectedOptions.find((option) => option.paramName === "includeArtworksByFollowedArtists")
-      ?.displayText
-    if (displayText) {
-      return displayText
+  } else if (filterType === "artist") {
+    const hasArtistsIFollowChecked = !!selectedOptions.find(({ paramName, paramValue }) => {
+      return paramName === FilterParamName.artistsIFollow && paramValue === true
+    })
+
+    const selectedArtistNames = selectedOptions.map(({ paramName, displayText }) => {
+      if (paramName === FilterParamName.artist) {
+        return displayText
+      }
+    })
+    const alphabetizedArtistNames = sortBy(compact(selectedArtistNames), (name) => name)
+    const allArtistDisplayNames = hasArtistsIFollowChecked
+      ? ["All artists I follow", ...alphabetizedArtistNames]
+      : alphabetizedArtistNames
+
+    if (allArtistDisplayNames.length === 1) {
+      return allArtistDisplayNames[0]
+    } else if (allArtistDisplayNames.length > 1) {
+      const numArtistsToDisplay = allArtistDisplayNames.length - 1
+      return `${allArtistDisplayNames[0]}, ${numArtistsToDisplay} more`
     } else {
       return "All"
     }

@@ -1,19 +1,19 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f08fa70f8678f8351b42f7a0696daf44 */
+/* @relayHash aa55a2e7bc75ab89276ca2b9d00c6b4c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Fair2FollowedArtistsTestsQueryVariables = {
+export type Fair2FollowedArtistsRailTestsQueryVariables = {
     fairID: string;
 };
-export type Fair2FollowedArtistsTestsQueryResponse = {
+export type Fair2FollowedArtistsRailTestsQueryResponse = {
     readonly fair: {
-        readonly " $fragmentRefs": FragmentRefs<"Fair2FollowedArtists_fair">;
+        readonly " $fragmentRefs": FragmentRefs<"Fair2FollowedArtistsRail_fair">;
     } | null;
 };
-export type Fair2FollowedArtistsTestsQueryRawResponse = {
+export type Fair2FollowedArtistsRailTestsQueryRawResponse = {
     readonly fair: ({
         readonly internalID: string;
         readonly slug: string;
@@ -36,20 +36,20 @@ export type Fair2FollowedArtistsTestsQueryRawResponse = {
         readonly id: string;
     }) | null;
 };
-export type Fair2FollowedArtistsTestsQuery = {
-    readonly response: Fair2FollowedArtistsTestsQueryResponse;
-    readonly variables: Fair2FollowedArtistsTestsQueryVariables;
-    readonly rawResponse: Fair2FollowedArtistsTestsQueryRawResponse;
+export type Fair2FollowedArtistsRailTestsQuery = {
+    readonly response: Fair2FollowedArtistsRailTestsQueryResponse;
+    readonly variables: Fair2FollowedArtistsRailTestsQueryVariables;
+    readonly rawResponse: Fair2FollowedArtistsRailTestsQueryRawResponse;
 };
 
 
 
 /*
-query Fair2FollowedArtistsTestsQuery(
+query Fair2FollowedArtistsRailTestsQuery(
   $fairID: String!
 ) {
   fair(id: $fairID) {
-    ...Fair2FollowedArtists_fair
+    ...Fair2FollowedArtistsRail_fair
     id
   }
 }
@@ -65,7 +65,7 @@ fragment ArtworkTileRailCard_artwork on Artwork {
   saleMessage
 }
 
-fragment Fair2FollowedArtists_fair on Fair {
+fragment Fair2FollowedArtistsRail_fair on Fair {
   internalID
   slug
   followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
@@ -135,7 +135,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "Fair2FollowedArtistsTestsQuery",
+    "name": "Fair2FollowedArtistsRailTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -148,7 +148,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "Fair2FollowedArtists_fair"
+            "name": "Fair2FollowedArtistsRail_fair"
           }
         ],
         "storageKey": null
@@ -161,7 +161,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "Fair2FollowedArtistsTestsQuery",
+    "name": "Fair2FollowedArtistsRailTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -267,7 +267,7 @@ return {
     ]
   },
   "params": {
-    "id": "f08fa70f8678f8351b42f7a0696daf44",
+    "id": "aa55a2e7bc75ab89276ca2b9d00c6b4c",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": {
@@ -313,11 +313,11 @@ return {
         "fair.slug": (v6/*: any*/)
       }
     },
-    "name": "Fair2FollowedArtistsTestsQuery",
+    "name": "Fair2FollowedArtistsRailTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'ec18f2799e2fc0655846d8ef570fb2d0';
+(node as any).hash = 'c38cde1c2bc9a3a0682292fcd4ef65b1';
 export default node;
