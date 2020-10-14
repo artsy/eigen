@@ -55,6 +55,7 @@ releases:
       - Center filters modal title - mounir
       - Fix UI not responsive after editing profile settings - mounir
       - Show 30 artworks at a time in Fair2 artworks grid - roop
+      - Show zero state for inactive fairs - roop
 
   - version: 6.6.4
     date: Sept 23, 2020
