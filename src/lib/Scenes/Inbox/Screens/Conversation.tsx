@@ -10,10 +10,11 @@ import { updateConversation } from "lib/Scenes/Inbox/Components/Conversations/Up
 import { AppStore } from "lib/store/AppStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { Flex, Text, Touchable } from "palette"
+import { color, Flex, Text, Touchable } from "palette"
 import React from "react"
 import { View } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
+import Svg, { Path } from "react-native-svg"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { ConversationDetailsQueryRenderer } from "./ConversationDetails"
@@ -188,7 +189,13 @@ export class Conversation extends React.Component<Props, State> {
                   })
                 }}
               >
-                <Text variant="mediumText">D</Text>
+                <Svg width={28} height={28} viewBox="0 0 28 28">
+                  <Path
+                    d="M6.5 21.5V6.5H16L16 21.5H6.5ZM17.5 21.5H21.5V6.5H17.5L17.5 21.5ZM5 5.5C5 5.22386 5.22386 5 5.5 5H22.5C22.7761 5 23 5.22386 23 5.5V22.5C23 22.7761 22.7761 23 22.5 23H5.5C5.22386 23 5 22.7761 5 22.5V5.5Z"
+                    fill={color("black100")}
+                    fillRule="evenodd"
+                  />
+                </Svg>
               </Touchable>
             </Flex>
           </Header>
