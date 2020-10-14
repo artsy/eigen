@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 010f82aa845678f76f81ef91615693af */
+/* @relayHash cc376be2bdb80d4add6aa87dfe363b44 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -184,7 +184,7 @@ fragment Fair2ExhibitorRail_show on Show {
 fragment Fair2Exhibitors_fair on Fair {
   internalID
   slug
-  exhibitors: showsConnection(first: 15, sort: FEATURED_ASC) {
+  exhibitors: showsConnection(first: 30, sort: FEATURED_ASC) {
     edges {
       node {
         id
@@ -250,7 +250,7 @@ v4 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 15
+    "value": 30
   },
   {
     "kind": "Literal",
@@ -655,7 +655,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "showsConnection(first:15,sort:\"FEATURED_ASC\")"
+            "storageKey": "showsConnection(first:30,sort:\"FEATURED_ASC\")"
           },
           {
             "alias": "exhibitors",
@@ -675,7 +675,7 @@ return {
     ]
   },
   "params": {
-    "id": "010f82aa845678f76f81ef91615693af",
+    "id": "cc376be2bdb80d4add6aa87dfe363b44",
     "metadata": {},
     "name": "Fair2ExhibitorsTestsQuery",
     "operationKind": "query",
