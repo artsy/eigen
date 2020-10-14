@@ -5,7 +5,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import { Box, Button, color, Flex, Separator, space, Text } from "palette"
+import { Box, color, Flex, Separator, space, Text } from "palette"
 import React, { useContext, useState } from "react"
 import { LayoutAnimation, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
@@ -62,9 +62,25 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
             <>
               <Separator my={2} />
               <Flex flexDirection="row" justifyContent="space-between">
-                <Text variant="text" color="black60">
-                  Add your location
-                </Text>
+                {Boolean(state.shippingLocation) ? (
+                  <>
+                    <Text variant="text" color="black100">
+                      {state.shippingLocation}
+                    </Text>
+                    <Text variant="text" color="purple100">
+                      Edit
+                    </Text>
+                  </>
+                ) : (
+                  <>
+                    <Text variant="text" color="black60">
+                      Add your location
+                    </Text>
+                    <Box mt={0.5}>
+                      <ChevronIcon color="black60" />
+                    </Box>
+                  </>
+                )}
               </Flex>
             </>
           )}

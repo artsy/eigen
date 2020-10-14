@@ -2,7 +2,7 @@ import { Input } from "lib/Components/Input/Input"
 import { GMapsLocation, queryLocation } from "lib/utils/googleMaps"
 import { color, Flex, LocationIcon, Text, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { View } from "react-native"
+import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
 import styled from "styled-components/native"
 
 interface Props {
@@ -46,27 +46,34 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocatio
       setQuery(selectedLocation)
     }
   }
+  const touchOut = () => {
+    if (!!predictions.length) {
+      setPredictions([])
+    }
+  }
 
   return (
-    <>
+    <Flex>
       <Text>Location</Text>
-
       <Input
         ref={input}
         placeholder="Add Location"
         style={{ marginVertical: 10 }}
         onChangeText={setQuery}
         onFocus={reset}
-        // onBlur={()=>set}
         value={Boolean(selectedLocation) ? selectedLocation : query}
       />
-      <LocationPredictions predictions={predictions} query={query} onSelect={setSelectedLocation} />
-
+      <LocationPredictions
+        predictions={predictions}
+        query={query}
+        onSelect={setSelectedLocation}
+        onOutsidePress={touchOut}
+      />
       <Text color="black60">
         Sharing your location with galleries helps them provide fast and accurate shipping quotes. You can always edit
         this information later in your Collector Profile.
       </Text>
-    </>
+    </Flex>
   )
 }
 
@@ -74,11 +81,15 @@ const LocationPredictions = ({
   predictions,
   query,
   onSelect,
+  onOutsidePress,
 }: {
   predictions: GMapsLocation[]
   query?: string
   onSelect: (l: string) => void
+  onOutsidePress: () => void
 }) => {
+  const [height, setHeight] = useState(0)
+
   const highlightedQuery = (entry: string) => {
     const re = new RegExp(`(${query?.replace(" ", "|")})`, "gi")
     const brokenEntry = entry.split(re)
@@ -99,26 +110,31 @@ const LocationPredictions = ({
   }
 
   return (
-    <Dropdown data-test-id="dropdown">
-      {predictions.map((p) => (
-        <Touchable
-          key={p.id}
-          onPress={() => {
-            onSelect(p.name)
-          }}
-          style={{ padding: 10 }}
-        >
-          <Flex flexDirection="row">
-            <LocationIcon mr={1} />
-            <Text>{highlightedQuery(p.name)}</Text>
-          </Flex>
-        </Touchable>
-      ))}
-    </Dropdown>
+    <>
+      <TouchableWithoutFeedback onPress={onOutsidePress}>
+        <Backdrop style={{ height }} onLayout={() => setHeight(Dimensions.get("window").height)} />
+      </TouchableWithoutFeedback>
+      <Dropdown data-test-id="dropdown">
+        {predictions.map((p) => (
+          <Touchable
+            key={p.id}
+            onPress={() => {
+              onSelect(p.name)
+            }}
+            style={{ padding: 10 }}
+          >
+            <Flex flexDirection="row">
+              <LocationIcon mr={1} />
+              <Text>{highlightedQuery(p.name)}</Text>
+            </Flex>
+          </Touchable>
+        ))}
+      </Dropdown>
+    </>
   )
 }
 
-const Dropdown = styled(Flex)`
+const Dropdown = styled(View)`
   background-color: white;
   border: solid 1px ${color("black10")};
   z-index: 1;
@@ -126,4 +142,11 @@ const Dropdown = styled(Flex)`
   width: 100%;
   top: 70;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.12);
+`
+
+const Backdrop = styled(View)`
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
 `

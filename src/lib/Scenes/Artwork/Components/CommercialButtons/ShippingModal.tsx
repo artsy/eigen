@@ -35,7 +35,7 @@ export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
       >
         Add Location
       </FancyModalHeader>
-      <Flex m={2}>
+      <Flex m={2} flex={1}>
         <LocationAutocomplete onChange={setLocationInput} initialLocation={location} />
       </Flex>
     </FancyModal>
