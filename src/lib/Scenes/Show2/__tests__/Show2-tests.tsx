@@ -50,13 +50,27 @@ describe("Show2", () => {
     expect(wrapper.root.findAllByType(Show2)).toHaveLength(1)
   })
 
-  it("renders a title", () => {
+  it("renders the show", () => {
     const wrapper = getWrapper({
       Show: () => ({
         name: "The big show",
+        formattedStartAt: "October 23",
+        formattedEndAt: "October 27, 2000",
+        startAt: "2000-10-23T20:00:00+00:00",
+        endAt: "2000-10-27T00:00:00+00:00",
+        partner: {
+          name: "Example Partner",
+        },
       }),
     })
+
     expect(wrapper.root.findAllByType(Show2)).toHaveLength(1)
-    expect(extractText(wrapper.root)).toContain("The big show")
+
+    const text = extractText(wrapper.root)
+
+    expect(text).toContain("The big show")
+    expect(text).toContain("October 23 – October 27, 2000")
+    expect(text).toContain("Closed")
+    expect(text).toContain("Example Partner")
   })
 })

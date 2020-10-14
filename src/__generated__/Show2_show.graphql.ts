@@ -6,6 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Show2_show = {
     readonly name: string | null;
+    readonly " $fragmentRefs": FragmentRefs<"Show2Header_show">;
     readonly " $refType": "Show2_show";
 };
 export type Show2_show$data = Show2_show;
@@ -28,10 +29,15 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "name": "name",
       "storageKey": null
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "Show2Header_show"
     }
   ],
   "type": "Show",
   "abstractKey": null
 };
-(node as any).hash = 'a1fe9ef4bb3adce2714cc4811f67c1c2';
+(node as any).hash = '29f9042ba713c3c50787df0c89e87468';
 export default node;
