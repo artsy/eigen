@@ -55,7 +55,11 @@ const TestRenderer = () => (
 const getWrapper = (
   mockResolvers = {
     Artwork: () => ({
-      inquiryQuestions: [{ question: "Shipping" }],
+      inquiryQuestions: [
+        { question: "Price & Availability" },
+        { question: "Shipping" },
+        { question: "History & Provenance" },
+      ],
     }),
   }
 ) => {
@@ -77,13 +81,14 @@ const press = (
   { text = "", componentType = TouchableOpacity }: { text?: string | RegExp; componentType?: React.ComponentType }
 ) => {
   const touchables = ti.findAllByType(componentType, { deep: true }).filter((t) => {
-    return t.props.onPress && extractText(t).match(text)
+    return extractText(t).match(text)
   })
   const touchable = touchables[0]
-  expect(touchable).toBeTruthy()
-  act(() => {
-    touchable.props.onPress()
-  })
+  if (Boolean(touchable) && Boolean(touchable.props.onPress)) {
+    act(() => {
+      touchable.props.onPress()
+    })
+  }
 }
 
 describe("<InquiryModal />", () => {
@@ -92,7 +97,33 @@ describe("<InquiryModal />", () => {
     expect(extractText(tree.root)).toContain("What information are you looking for?")
   })
 
-  describe("adding a location", () => {
+  describe("user can select 'Price & Availability'", () => {
+    it("user tapping the inquiry question does not expose the shipping dropdown", () => {
+      const wrapper = getWrapper()
+      press(wrapper.root, { text: "Price & Availability" })
+
+      expect(extractText(wrapper.root)).not.toContain("Add your location")
+    })
+    it.todo("user taps checkbox and option is selected")
+  })
+
+  describe("user can select 'Condition & Provenance'", () => {
+    it("user tapping the inquiry question does not expose the shipping dropdown", () => {
+      const wrapper = getWrapper()
+      press(wrapper.root, { text: "Condition & Provenance" })
+
+      expect(extractText(wrapper.root)).not.toContain("Add your location")
+    })
+    it.todo("user taps checkbox and option is selected")
+  })
+
+  describe("user can select Shipping", () => {
+    it("user tapping the inquiry question exposes the shipping dropdown", () => {
+      const wrapper = getWrapper()
+      press(wrapper.root, { text: "Shipping" })
+
+      expect(extractText(wrapper.root)).toContain("Add your location")
+    })
     it("user can visit shipping modal", async () => {
       const wrapper = getWrapper()
       press(wrapper.root, { text: "Shipping" })
