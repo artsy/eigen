@@ -71,6 +71,21 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
     expect(text).toContain("Explore auction results")
   })
 
+  it("navigates to all auction results when user clicks auctions results items", () => {
+    const spy = jest.fn()
+    AppStore.actions.myCollection.navigation.navigateToAllAuctions = spy as any
+    const wrapper = renderWithWrappers(<TestRenderer />)
+    resolveData({
+      Artwork: () => ({
+        artist: {
+          slug: "artist-slug",
+        },
+      }),
+    })
+    wrapper.root.findByProps({ "data-test-id": "AuctionsResultsButton" }).props.onPress()
+    expect(spy).toHaveBeenCalledWith("artist-slug")
+  })
+
   it("navigates to all auction results on click", () => {
     const spy = jest.fn()
     AppStore.actions.myCollection.navigation.navigateToAllAuctions = spy as any

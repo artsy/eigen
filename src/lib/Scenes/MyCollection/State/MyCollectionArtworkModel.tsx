@@ -109,7 +109,7 @@ export interface MyCollectionArtworkModel {
     AppStoreModel
   >
   deleteArtwork: Thunk<MyCollectionArtworkModel, { artworkId: string; artworkGlobalId: string }, {}, AppStoreModel>
-  deleteArtworkComplete: Action<MyCollectionArtworkModel, any>
+  deleteArtworkComplete: Thunk<MyCollectionArtworkModel>
   deleteArtworkError: Action<MyCollectionArtworkModel, any>
 
   cancelAddEditArtwork: Thunk<MyCollectionArtworkModel, any, {}, AppStoreModel>
@@ -498,7 +498,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
             }
           }
         },
-        onCompleted: actions.deleteArtworkComplete,
+        onCompleted: () => actions.deleteArtworkComplete(),
         onError: actions.deleteArtworkError,
       })
     } catch (error) {
@@ -507,8 +507,9 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     }
   }),
 
-  deleteArtworkComplete: action((state) => {
-    state.sessionState.isLoading = false
+  deleteArtworkComplete: thunk((actions) => {
+    actions.setIsLoading(false)
+    actions.resetForm()
   }),
 
   /**
