@@ -27,20 +27,33 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const { toggleVisibility, modalIsVisible } = props
   const questions = artwork?.inquiryQuestions!
   const { state, dispatch } = useContext(ArtworkInquiryContext)
-  const [isExpanded, setExpanded] = useState(false)
-  const toggleExpanded = () => {
+  const [locationExpanded, setLocationExpanded] = useState(false)
+  const toggleLocationExpanded = () => {
     LayoutAnimation.configureNext({
       ...LayoutAnimation.Presets.linear,
       duration: 200,
     })
-    setExpanded(!isExpanded)
+    setLocationExpanded(!locationExpanded)
   }
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const selectShippingLocation = (l: string) => dispatch({ type: "selectShippingLocation", payload: l })
 
   const renderInquiryQuestion = (inquiry: string): JSX.Element => {
+    // Shipping requires special logic to accomodate dropdown and shipping modal
+    const isShipping = inquiry === InquiryOptions.Shipping
+    const Wrapper: React.ComponentType<{ key: string }> = isShipping
+      ? ({ children, key }) => (
+          <TouchableOpacity
+            data-test-id="expand-shipping"
+            children={children}
+            onPress={() => toggleLocationExpanded()}
+            key={key}
+          />
+        )
+      : React.Fragment
+
     return (
-      <TouchableOpacity onPress={() => toggleExpanded()} key={inquiry}>
+      <Wrapper key={inquiry}>
         <InquiryField>
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex flexDirection="row">
@@ -52,13 +65,13 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
               <Text variant="text">{inquiry}</Text>
             </Flex>
             {inquiry === InquiryOptions.Shipping && (
-              <Flex flexDirection="row" mt={0.5}>
-                <ChevronIcon color="black60" expanded={isExpanded} initialDirection="down" />
+              <Flex data-test-id="expandable" flexDirection="row" mt={0.5}>
+                <ChevronIcon color="black60" expanded={locationExpanded} initialDirection="down" />
               </Flex>
             )}
           </Flex>
 
-          {inquiry === InquiryOptions.Shipping && !!isExpanded && (
+          {!!isShipping && !!locationExpanded && (
             <>
               <Separator my={2} />
               <Flex flexDirection="row" justifyContent="space-between">
@@ -72,20 +85,25 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
                     </Text>
                   </>
                 ) : (
-                  <>
+                  <TouchableOpacity
+                    data-test-id="toggle-shipping-modal"
+                    onPress={() => {
+                      setShippingModalVisibility(true)
+                    }}
+                  >
                     <Text variant="text" color="black60">
                       Add your location
                     </Text>
                     <Box mt={0.5}>
                       <ChevronIcon color="black60" />
                     </Box>
-                  </>
+                  </TouchableOpacity>
                 )}
               </Flex>
             </>
           )}
         </InquiryField>
-      </TouchableOpacity>
+      </Wrapper>
     )
   }
 

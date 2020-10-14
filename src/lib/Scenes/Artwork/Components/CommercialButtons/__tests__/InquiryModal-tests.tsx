@@ -72,10 +72,14 @@ beforeEach(() => {
   env = createMockEnvironment()
 })
 
-const press = (ti: ReactTestInstance, text: string, componentType: React.ComponentType = Touchable) => {
-  const touchable = ti.findAllByType(componentType, { deep: true }).filter((t) => {
-    return extractText(t).match(text)
-  })[0]
+const press = (
+  ti: ReactTestInstance,
+  { text = "", componentType = TouchableOpacity }: { text?: string | RegExp; componentType?: React.ComponentType }
+) => {
+  const touchables = ti.findAllByType(componentType, { deep: true }).filter((t) => {
+    return t.props.onPress && extractText(t).match(text)
+  })
+  const touchable = touchables[0]
   expect(touchable).toBeTruthy()
   act(() => {
     touchable.props.onPress()
@@ -89,12 +93,14 @@ describe("<InquiryModal />", () => {
   })
 
   describe("adding a location", () => {
-    it("user can visit shipping modal", () => {
+    it("user can visit shipping modal", async () => {
       const wrapper = getWrapper()
+      press(wrapper.root, { text: "Shipping" })
+
       expect(extractText(wrapper.root)).toContain("Add your location")
       expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeFalsy()
 
-      press(wrapper.root, "Add your location")
+      press(wrapper.root, { text: /^Add your location/ })
 
       expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeTruthy()
       const header = wrapper.root.findByType(ShippingModal).findByType(FancyModalHeader)
@@ -107,7 +113,8 @@ describe("<InquiryModal />", () => {
         { id: "b", name: "Coxs Creek, KY, USA" },
       ])
       const wrapper = getWrapper()
-      press(wrapper.root, "Add your location")
+      press(wrapper.root, { text: "Shipping" })
+      press(wrapper.root, { text: /^Add your location/ })
 
       const locationModal = wrapper.root.findByType(LocationAutocomplete)
       const locationInput = locationModal.findByType(Input)
@@ -118,11 +125,11 @@ describe("<InquiryModal />", () => {
       expect(wrapper.root.findAllByProps({ "data-test-id": "dropdown" }).length).not.toEqual(0)
       expect(extractText(wrapper.root)).toContain("Coxsackie, NY, USA")
 
-      press(wrapper.root, "Coxsackie, NY, USA")
+      press(wrapper.root, { text: "Coxsackie, NY, USA", componentType: Touchable })
       expect(wrapper.root.findByType(Input).props.value).toEqual("Coxsackie, NY, USA")
       expect(wrapper.root.findAllByProps({ "data-test-id": "dropdown" }).length).toEqual(0)
 
-      press(wrapper.root, "Apply", TouchableOpacity)
+      press(wrapper.root, { text: "Apply" })
       expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeFalsy()
 
       expect(extractText(wrapper.root)).toContain("Coxsackie, NY, USA")
