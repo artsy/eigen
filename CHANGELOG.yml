@@ -9,6 +9,7 @@ upcoming:
     - Fix environment variable names for Sentry - starsirius
     - Adds Show2 header, behind lab option - damon
     - Adds Show2 install shots, behind lab option - damon
+    - Link ConversationDetail screen - sepans
 
 releases:
   - version: 6.6.5

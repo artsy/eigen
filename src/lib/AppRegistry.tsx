@@ -25,7 +25,7 @@ import { CitySavedListQueryRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
-import { ConversationQueryRenderer } from "./Scenes/Inbox/Screens/Conversation"
+import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 
 // Consignments / My Collection
 import { Consignments } from "./Scenes/Consignments"
@@ -178,7 +178,7 @@ const Conversation: React.FC<ConversationProps> = screenTrack<ConversationProps>
     context_screen_owner_id: props.conversationID,
     context_screen_owner_type: Schema.OwnerEntityTypes.Conversation,
   }
-})(ConversationQueryRenderer)
+})(ConversationNavigator)
 
 /*
  * Route bid/register requests coming from the Emission pod to either a BidFlow
