@@ -13,50 +13,9 @@ export type Fair2HeaderTestsQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"Fair2Header_fair">;
     } | null;
 };
-export type Fair2HeaderTestsQueryRawResponse = {
-    readonly fair: ({
-        readonly about: string | null;
-        readonly summary: string | null;
-        readonly name: string | null;
-        readonly slug: string;
-        readonly profile: ({
-            readonly icon: ({
-                readonly imageUrl: string | null;
-            }) | null;
-            readonly id: string;
-        }) | null;
-        readonly image: ({
-            readonly imageUrl: string | null;
-            readonly aspectRatio: number;
-        }) | null;
-        readonly tagline: string | null;
-        readonly location: ({
-            readonly summary: string | null;
-            readonly coordinates: ({
-                readonly lat: number | null;
-                readonly lng: number | null;
-            }) | null;
-            readonly id: string;
-        }) | null;
-        readonly ticketsLink: string | null;
-        readonly sponsoredContent: ({
-            readonly activationText: string | null;
-            readonly pressReleaseUrl: string | null;
-        }) | null;
-        readonly fairHours: string | null;
-        readonly fairLinks: string | null;
-        readonly fairTickets: string | null;
-        readonly fairContact: string | null;
-        readonly exhibitionPeriod: string | null;
-        readonly startAt: string | null;
-        readonly endAt: string | null;
-        readonly id: string;
-    }) | null;
-};
 export type Fair2HeaderTestsQuery = {
     readonly response: Fair2HeaderTestsQueryResponse;
     readonly variables: Fair2HeaderTestsQueryVariables;
-    readonly rawResponse: Fair2HeaderTestsQueryRawResponse;
 };
 
 
@@ -149,7 +108,31 @@ v4 = [
     "name": "format",
     "value": "MARKDOWN"
   }
-];
+],
+v5 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
+},
+v6 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v7 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Image"
+},
+v8 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Float"
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -414,12 +397,76 @@ return {
   },
   "params": {
     "id": "181067c753c0f544f59b76818bdd8abd",
-    "metadata": {},
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "fair": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Fair"
+        },
+        "fair.about": (v5/*: any*/),
+        "fair.endAt": (v5/*: any*/),
+        "fair.exhibitionPeriod": (v5/*: any*/),
+        "fair.fairContact": (v5/*: any*/),
+        "fair.fairHours": (v5/*: any*/),
+        "fair.fairLinks": (v5/*: any*/),
+        "fair.fairTickets": (v5/*: any*/),
+        "fair.id": (v6/*: any*/),
+        "fair.image": (v7/*: any*/),
+        "fair.image.aspectRatio": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "Float"
+        },
+        "fair.image.imageUrl": (v5/*: any*/),
+        "fair.location": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Location"
+        },
+        "fair.location.coordinates": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "LatLng"
+        },
+        "fair.location.coordinates.lat": (v8/*: any*/),
+        "fair.location.coordinates.lng": (v8/*: any*/),
+        "fair.location.id": (v6/*: any*/),
+        "fair.location.summary": (v5/*: any*/),
+        "fair.name": (v5/*: any*/),
+        "fair.profile": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Profile"
+        },
+        "fair.profile.icon": (v7/*: any*/),
+        "fair.profile.icon.imageUrl": (v5/*: any*/),
+        "fair.profile.id": (v6/*: any*/),
+        "fair.slug": (v6/*: any*/),
+        "fair.sponsoredContent": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "FairSponsoredContent"
+        },
+        "fair.sponsoredContent.activationText": (v5/*: any*/),
+        "fair.sponsoredContent.pressReleaseUrl": (v5/*: any*/),
+        "fair.startAt": (v5/*: any*/),
+        "fair.summary": (v5/*: any*/),
+        "fair.tagline": (v5/*: any*/),
+        "fair.ticketsLink": (v5/*: any*/)
+      }
+    },
     "name": "Fair2HeaderTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'd67f7b938f15488dd0d372a50194cc9b';
+(node as any).hash = '35e46afe7acfeaa612671aefa59f56ea';
 export default node;

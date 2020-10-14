@@ -17,7 +17,7 @@ import { Fair2ArtworksFragmentContainer } from "./Components/Fair2Artworks"
 import { Fair2CollectionsFragmentContainer } from "./Components/Fair2Collections"
 import { Fair2EditorialFragmentContainer } from "./Components/Fair2Editorial"
 import { Fair2ExhibitorsFragmentContainer } from "./Components/Fair2Exhibitors"
-import { Fair2FollowedArtistsRailFragmentContainer as FairFollowedArtistsRail } from "./Components/Fair2FollowedArtistsRail"
+import { Fair2FollowedArtistsRailFragmentContainer } from "./Components/Fair2FollowedArtistsRail"
 import { Fair2HeaderFragmentContainer } from "./Components/Fair2Header"
 import { Tabs, TabsType } from "./Components/SimpleTabs"
 
@@ -202,7 +202,7 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
                         )
                       }
                       case "fairFollowedArtistsRail": {
-                        return <FairFollowedArtistsRail fair={fair} />
+                        return <Fair2FollowedArtistsRailFragmentContainer fair={fair} />
                       }
                       case "fairEditorial": {
                         return <Fair2EditorialFragmentContainer fair={fair} />
