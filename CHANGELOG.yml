@@ -2,25 +2,11 @@ upcoming:
   version: 6.6.6
   date: TBD
   dev:
-    -
+    - Change CheckAuthentication middleware to be called before the principalFieldMiddleware - mounir
   user_facing:
-    - Show 30 artworks at a time in Fair2 artworks grid - roop
-    - Fix navigation bug on Artwork consign button - david
-    - Add auction lots rail to the auctions screen - mounir
-    - Fix auction display text formatting - pavlos
-    - Enable pagination on My Collection artworks screen - ashley
-    - Add long email truncation - pavlos
-    - Add auction lots grid to the auctions screen - mounir
-    - Add auction lots list to the auctions screen - mounir
-    - Add LoadFailureView to Viewing Rooms screens for relay errors - pavlos
-    - Enable filtering on artist series views - sweir
-    - Fix bug where a gallery can't be followed - pavlos
-    - Show up to 50 artist series in the full list of an artist's series - roop
-    - Fix layout issue in internal webviews - brian
-    - Add about page - mounir
-    - Center filters modal title - mounir
-    - Fix UI not responsive after editing profile settings - mounir
     - Switch to live auction from new sale page - barry, brian
+    - Adds ability to filter by artist in a fair - sweir
+    - Fix environment variable names for Sentry - starsirius
 
 releases:
   - version: 6.6.5
@@ -66,6 +52,7 @@ releases:
       - Add about page - mounir
       - Center filters modal title - mounir
       - Fix UI not responsive after editing profile settings - mounir
+      - Show 30 artworks at a time in Fair2 artworks grid - roop
 
   - version: 6.6.4
     date: Sept 23, 2020

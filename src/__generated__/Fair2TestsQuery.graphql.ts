@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6fe46d6a91398a08a95524ff3814efb4 */
+/* @relayHash b64b4c86d524bfefca953cd7458107dd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -89,9 +89,17 @@ export type Fair2TestsQueryRawResponse = {
         readonly tagline: string | null;
         readonly location: ({
             readonly summary: string | null;
+            readonly coordinates: ({
+                readonly lat: number | null;
+                readonly lng: number | null;
+            }) | null;
             readonly id: string;
         }) | null;
         readonly ticketsLink: string | null;
+        readonly sponsoredContent: ({
+            readonly activationText: string | null;
+            readonly pressReleaseUrl: string | null;
+        }) | null;
         readonly fairHours: string | null;
         readonly fairLinks: string | null;
         readonly fairTickets: string | null;
@@ -309,7 +317,7 @@ fragment ArtworkTileRailCard_artwork on Artwork {
 fragment Fair2Artworks_fair on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS]) {
+  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
     aggregations {
       slice
       counts {
@@ -515,9 +523,17 @@ fragment Fair2Header_fair on Fair {
   tagline
   location {
     summary
+    coordinates {
+      lat
+      lng
+    }
     id
   }
   ticketsLink
+  sponsoredContent {
+    activationText
+    pressReleaseUrl
+  }
   fairHours: hours(format: MARKDOWN)
   fairLinks: links(format: MARKDOWN)
   fairTickets: tickets(format: MARKDOWN)
@@ -723,7 +739,8 @@ v18 = [
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE",
-      "FOLLOWED_ARTISTS"
+      "FOLLOWED_ARTISTS",
+      "ARTIST"
     ]
   },
   {
@@ -1236,6 +1253,31 @@ return {
             "plural": false,
             "selections": [
               (v13/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "LatLng",
+                "kind": "LinkedField",
+                "name": "coordinates",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "lat",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "lng",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              },
               (v5/*: any*/)
             ],
             "storageKey": null
@@ -1245,6 +1287,31 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "ticketsLink",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "FairSponsoredContent",
+            "kind": "LinkedField",
+            "name": "sponsoredContent",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "activationText",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "pressReleaseUrl",
+                "storageKey": null
+              }
+            ],
             "storageKey": null
           },
           {
@@ -1538,7 +1605,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\"],dimensionRange:\"*-*\",first:30,medium:\"*\",sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,medium:\"*\",sort:\"-decayed_merch\")"
           },
           {
             "alias": "fairArtworks",
@@ -1556,6 +1623,7 @@ return {
               "atAuction",
               "offerable",
               "includeArtworksByFollowedArtists",
+              "artistIDs",
               "aggregations"
             ],
             "handle": "connection",
@@ -1776,7 +1844,7 @@ return {
     ]
   },
   "params": {
-    "id": "6fe46d6a91398a08a95524ff3814efb4",
+    "id": "b64b4c86d524bfefca953cd7458107dd",
     "metadata": {},
     "name": "Fair2TestsQuery",
     "operationKind": "query",

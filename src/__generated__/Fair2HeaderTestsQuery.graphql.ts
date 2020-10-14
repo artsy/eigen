@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash cdd95d851e593ab919b430f765303fab */
+/* @relayHash 181067c753c0f544f59b76818bdd8abd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -32,9 +32,17 @@ export type Fair2HeaderTestsQueryRawResponse = {
         readonly tagline: string | null;
         readonly location: ({
             readonly summary: string | null;
+            readonly coordinates: ({
+                readonly lat: number | null;
+                readonly lng: number | null;
+            }) | null;
             readonly id: string;
         }) | null;
         readonly ticketsLink: string | null;
+        readonly sponsoredContent: ({
+            readonly activationText: string | null;
+            readonly pressReleaseUrl: string | null;
+        }) | null;
         readonly fairHours: string | null;
         readonly fairLinks: string | null;
         readonly fairTickets: string | null;
@@ -81,9 +89,17 @@ fragment Fair2Header_fair on Fair {
   tagline
   location {
     summary
+    coordinates {
+      lat
+      lng
+    }
     id
   }
   ticketsLink
+  sponsoredContent {
+    activationText
+    pressReleaseUrl
+  }
   fairHours: hours(format: MARKDOWN)
   fairLinks: links(format: MARKDOWN)
   fairTickets: tickets(format: MARKDOWN)
@@ -280,6 +296,31 @@ return {
             "plural": false,
             "selections": [
               (v2/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "LatLng",
+                "kind": "LinkedField",
+                "name": "coordinates",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "lat",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "lng",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              },
               (v3/*: any*/)
             ],
             "storageKey": null
@@ -289,6 +330,31 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "ticketsLink",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "FairSponsoredContent",
+            "kind": "LinkedField",
+            "name": "sponsoredContent",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "activationText",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "pressReleaseUrl",
+                "storageKey": null
+              }
+            ],
             "storageKey": null
           },
           {
@@ -347,7 +413,7 @@ return {
     ]
   },
   "params": {
-    "id": "cdd95d851e593ab919b430f765303fab",
+    "id": "181067c753c0f544f59b76818bdd8abd",
     "metadata": {},
     "name": "Fair2HeaderTestsQuery",
     "operationKind": "query",

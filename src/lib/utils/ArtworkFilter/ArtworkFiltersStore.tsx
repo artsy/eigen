@@ -31,13 +31,39 @@ export const reducer = (
           multiOptionFilters,
           "paramValue"
         ),
-        "paramName"
+        ({ paramValue, paramName }) => {
+          // We don't want to union the artistID params, as each entry corresponds to a
+          // different artist that may be selected. Instead we de-dupe based on the paramValue.
+          if (paramName === FilterParamName.artist) {
+            return paramValue
+          } else {
+            return paramName
+          }
+        }
       )
 
       const filtersToApply = union([...singleOptionFilters, ...multiOptionFilters])
 
       // Remove default values as those are accounted for when we make the API request.
       const appliedFilters = filter(filtersToApply, ({ paramName, paramValue }) => {
+        // This logic is specific to filters that allow for multiple options. Right now
+        // it only applies to the artist filter, but this will likely change.
+        if (paramName === FilterParamName.artist) {
+          // See if we have an existing entry in previouslyAppliedFilters
+          const hasExistingPreviouslyAppliedFilter = artworkFilterState.previouslyAppliedFilters.find(
+            (previouslyAppliedFilter) =>
+              paramName === previouslyAppliedFilter.paramName && paramValue === previouslyAppliedFilter.paramValue
+          )
+
+          const hasExistingSelectedAppliedFilter = artworkFilterState.selectedFilters.find(
+            (selectedFilter) => paramName === selectedFilter.paramName && paramValue === selectedFilter.paramValue
+          )
+
+          // If so, it means that this filter had been previously applied and is now being de-selected.
+          // We need it to exist in the "selectedFilters" array so that our counts, etc. are correct,
+          // but it's technically de-selected.
+          return !(hasExistingPreviouslyAppliedFilter && hasExistingSelectedAppliedFilter)
+        }
         return defaultFilterOptions[paramName] !== paramValue
       })
 
@@ -51,7 +77,31 @@ export const reducer = (
 
     // First we update our potential "selectedFilters" based on the option that was selected in the UI
     case "selectFilters":
-      const filtersToSelect = unionBy([action.payload], artworkFilterState.selectedFilters, "paramName")
+      let filtersToSelect
+      let removedOption = false
+
+      // This logic is specific to filters that can have multiple options. Right now it only
+      // applies to the artist filter, but this will likely change in the future.
+      if (action.payload.paramName === FilterParamName.artist) {
+        const filtersWithoutSelectedArtist = artworkFilterState.selectedFilters.filter(({ paramName, paramValue }) => {
+          if (paramName === FilterParamName.artist && paramValue === action.payload.paramValue) {
+            removedOption = true
+            return false
+          }
+          return true
+        })
+
+        if (removedOption) {
+          // An artist is "selected" when it is present in the selectedFilters array. To de-select,
+          // we simply remove it from the array.
+          filtersToSelect = filtersWithoutSelectedArtist
+        } else {
+          // If the artist was not already selected, then we add it to the array like normal.
+          filtersToSelect = [...artworkFilterState.selectedFilters, action.payload]
+        }
+      } else {
+        filtersToSelect = unionBy([action.payload], artworkFilterState.selectedFilters, "paramName")
+      }
 
       // Then we have to remove any "invalid" choices.
       const selectedFilters = filter(filtersToSelect, ({ paramName, paramValue }) => {
@@ -64,7 +114,8 @@ export const reducer = (
         }
 
         if (appliedFilter.paramValue === paramValue) {
-          return false
+          // Ignore this case when it's an artistID.
+          return appliedFilter.paramName === FilterParamName.artist
         }
 
         return true
@@ -142,9 +193,10 @@ export const ParamDefaultValues = {
   atAuction: false,
   acquireable: false,
   includeArtworksByFollowedArtists: false,
+  artistIDs: [],
 }
 
-const defaultFilterOptions: Record<FilterParamName, string | boolean | undefined> = {
+const defaultFilterOptions: Record<FilterParamName, string | boolean | undefined | string[]> = {
   sort: ParamDefaultValues.sort,
   medium: ParamDefaultValues.medium,
   priceRange: ParamDefaultValues.priceRange,
@@ -157,11 +209,16 @@ const defaultFilterOptions: Record<FilterParamName, string | boolean | undefined
   atAuction: ParamDefaultValues.atAuction,
   acquireable: ParamDefaultValues.acquireable,
   includeArtworksByFollowedArtists: ParamDefaultValues.includeArtworksByFollowedArtists,
+  artistIDs: ParamDefaultValues.artistIDs,
 }
 
-export const useSelectedOptionsDisplay = (): FilterArray => {
-  const { state } = useContext(ArtworkFilterContext)
-
+export const selectedOptionsUnion = ({
+  selectedFilters,
+  previouslyAppliedFilters,
+}: {
+  selectedFilters: FilterArray
+  previouslyAppliedFilters: FilterArray
+}): FilterArray => {
   const defaultFilters: FilterArray = [
     {
       paramName: FilterParamName.sort,
@@ -201,11 +258,54 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
     {
       paramName: FilterParamName.artistsIFollow,
       paramValue: false,
-      displayText: "Artists I follow",
+      displayText: "All artists I follow",
     },
   ]
 
-  return unionBy(state.selectedFilters, state.previouslyAppliedFilters, defaultFilters, "paramName")
+  // First, naively attempt to union all of the existing filters. Give selectedFilters
+  // precedence over previouslyAppliedFilters and defaultFilters.
+  const preliminarySelectedFilters = unionBy(
+    selectedFilters,
+    previouslyAppliedFilters,
+    defaultFilters,
+    ({ paramValue, paramName }) => {
+      if (paramName === FilterParamName.artist) {
+        return paramValue
+      } else {
+        return paramName
+      }
+    }
+  )
+
+  // Then, handle the case where a multi-select option is technically de-selected.
+  return preliminarySelectedFilters.filter(({ paramName, paramValue }) => {
+    if (paramName === FilterParamName.artist) {
+      // See if we have an existing entry in previouslyAppliedFilters
+      const hasExistingPreviouslyAppliedFilter = previouslyAppliedFilters.find(
+        (previouslyAppliedFilter) =>
+          paramName === previouslyAppliedFilter.paramName && paramValue === previouslyAppliedFilter.paramValue
+      )
+
+      const hasExistingSelectedAppliedFilter = selectedFilters.find(
+        (selectedFilter) => paramName === selectedFilter.paramName && paramValue === selectedFilter.paramValue
+      )
+
+      // If so, it means that this filter had been previously applied and is now being de-selected.
+      // We need it to exist in the "selectedFilters" array so that our counts, etc. are correct,
+      // but it's technically de-selected.
+      return !(hasExistingPreviouslyAppliedFilter && hasExistingSelectedAppliedFilter)
+    }
+    return true
+  })
+}
+
+export const useSelectedOptionsDisplay = (): FilterArray => {
+  const { state } = useContext(ArtworkFilterContext)
+
+  return selectedOptionsUnion({
+    selectedFilters: state.selectedFilters,
+    previouslyAppliedFilters: state.previouslyAppliedFilters,
+  })
 }
 
 export const ArtworkFilterContext = createContext<ArtworkFilterContextProps>(null as any /* STRICTNESS_MIGRATION */)
@@ -289,6 +389,7 @@ export type AggregationName =
   | "MEDIUM"
   | "PRICE_RANGE"
   | "FOLLOWED_ARTISTS"
+  | "ARTIST"
 
 export type Aggregations = Array<{
   slice: AggregationName

@@ -114,6 +114,7 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
         atAuction: { type: "Boolean" }
         offerable: { type: "Boolean" }
         includeArtworksByFollowedArtists: { type: "Boolean" }
+        artistIDs: { type: "[String]" }
       ) {
         slug
         internalID
@@ -132,6 +133,7 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
           atAuction: $atAuction
           offerable: $offerable
           includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
+          artistIDs: $artistIDs
           aggregations: [
             COLOR
             DIMENSION_RANGE
@@ -141,6 +143,7 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
             MEDIUM
             PRICE_RANGE
             FOLLOWED_ARTISTS
+            ARTIST
           ]
         ) @connection(key: "Fair_fairArtworks") {
           aggregations {
@@ -202,6 +205,7 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
         $atAuction: Boolean
         $offerable: Boolean
         $includeArtworksByFollowedArtists: Boolean
+        $artistIDs: [String]
       ) {
         fair(id: $id) {
           ...Fair2Artworks_fair
@@ -220,6 +224,7 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
             atAuction: $atAuction
             offerable: $offerable
             includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
+            artistIDs: $artistIDs
           )
         }
       }
