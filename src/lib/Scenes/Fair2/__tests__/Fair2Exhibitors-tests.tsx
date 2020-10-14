@@ -1,7 +1,4 @@
-import {
-  Fair2ExhibitorsTestsQuery,
-  Fair2ExhibitorsTestsQueryRawResponse,
-} from "__generated__/Fair2ExhibitorsTestsQuery.graphql"
+import { Fair2ExhibitorsTestsQuery } from "__generated__/Fair2ExhibitorsTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
@@ -9,7 +6,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment } from "relay-test-utils"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { Fair2ExhibitorRailFragmentContainer } from "../Components/Fair2ExhibitorRail"
 import { Fair2ExhibitorsFragmentContainer } from "../Components/Fair2Exhibitors"
 
@@ -17,14 +14,14 @@ jest.unmock("react-relay")
 
 describe("FairExhibitors", () => {
   const trackEvent = useTracking().trackEvent
-  const getWrapper = (fixture = FAIR_2_EXHIBITORS_FIXTURE) => {
+  const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
     const tree = renderWithWrappers(
       <QueryRenderer<Fair2ExhibitorsTestsQuery>
         environment={env}
         query={graphql`
-          query Fair2ExhibitorsTestsQuery($fairID: String!) @raw_response_type {
+          query Fair2ExhibitorsTestsQuery($fairID: String!) @relay_test_operation {
             fair(id: $fairID) {
               ...Fair2Exhibitors_fair
             }
@@ -46,13 +43,37 @@ describe("FairExhibitors", () => {
       />
     )
 
-    env.mock.resolveMostRecentOperation({ errors: [], data: fixture })
+    env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
 
     return tree
   }
 
   it("renders the rails from exhibitors that have artworks", () => {
-    const wrapper = getWrapper()
+    const wrapper = getWrapper({
+      Fair: () => ({
+        exhibitors: {
+          edges: [
+            {
+              node: {
+                slug: "exhibitor-1",
+              },
+            },
+            {
+              node: {
+                slug: "exhibitor-2",
+              },
+            },
+            {
+              node: {
+                slug: "exhibitor-3-no-artworks",
+                counts: { artworks: 0 },
+                artworks: null,
+              },
+            },
+          ],
+        },
+      }),
+    })
     expect(wrapper.root.findAllByType(Fair2ExhibitorRailFragmentContainer)).toHaveLength(2)
   })
 
@@ -67,7 +88,12 @@ describe("FairExhibitors", () => {
   })
 
   it("tracks taps on the show more button", () => {
-    const wrapper = getWrapper()
+    const wrapper = getWrapper({
+      Fair: () => ({
+        internalID: "xyz123",
+        slug: "xxx",
+      }),
+    })
     const button = wrapper.root.findAllByType(Button)[0]
     act(() => button.props.onPress())
     expect(trackEvent).toHaveBeenCalledWith({
@@ -80,196 +106,3 @@ describe("FairExhibitors", () => {
     })
   })
 })
-
-const FAIR_2_EXHIBITORS_FIXTURE: Fair2ExhibitorsTestsQueryRawResponse = {
-  fair: {
-    id: "xxx",
-    internalID: "xyz123",
-    slug: "xxx",
-    exhibitors: {
-      pageInfo: {
-        endCursor: "xxx",
-        hasNextPage: false,
-      },
-      edges: [
-        {
-          cursor: "xxx",
-          node: {
-            __typename: "Show",
-            id: "xxx-1",
-            fair: {
-              id: "xxyyzz-123",
-              internalID: "aabbcc-123",
-              slug: "art-basel-hong-kong-2019",
-            },
-            slug: "example-1",
-            internalID: "xxx-1",
-            counts: { artworks: 0 },
-            href: "/show/example-1",
-            partner: {
-              __typename: "ExternalPartner" as "ExternalPartner",
-              __isNode: "ExternalPartner",
-              id: "example-1",
-              name: "Partner Without Artworks",
-            },
-            artworks: null,
-          },
-        },
-        {
-          cursor: "xxx",
-          node: {
-            __typename: "Show",
-            id: "xxx-2",
-            fair: {
-              id: "xxyyzz-123",
-              internalID: "aabbcc-123",
-              slug: "art-basel-hong-kong-2019",
-            },
-            slug: "example-2",
-            internalID: "xxx-2",
-            counts: { artworks: 10 },
-            href: "/show/example-2",
-            partner: {
-              __typename: "ExternalPartner" as "ExternalPartner",
-              __isNode: "ExternalPartner",
-              id: "example-2",
-              name: "First Partner Has Artworks",
-            },
-            artworks: {
-              edges: [
-                {
-                  node: {
-                    href: "/artwork/cool-artwork-1",
-                    artistNames: "Andy Warhol",
-                    id: "abc124",
-                    saleMessage: "For Sale",
-                    image: {
-                      aspectRatio: 1.2,
-                      imageURL: "image.jpg",
-                    },
-                    saleArtwork: null,
-                    sale: null,
-                    title: "Best Artwork Ever",
-                    internalID: "artwork1234",
-                    slug: "cool-artwork-1",
-                  },
-                },
-                {
-                  node: {
-                    href: "/artwork/cool-artwork-1",
-                    artistNames: "Andy Warhol",
-                    id: "abc125",
-                    saleMessage: "For Sale",
-                    image: {
-                      aspectRatio: 1.2,
-                      imageURL: "image.jpg",
-                    },
-                    saleArtwork: null,
-                    sale: null,
-                    title: "Best Artwork Ever",
-                    internalID: "artwork1234",
-                    slug: "cool-artwork-1",
-                  },
-                },
-                {
-                  node: {
-                    href: "/artwork/cool-artwork-1",
-                    artistNames: "Andy Warhol",
-                    id: "abc126",
-                    saleMessage: "For Sale",
-                    image: {
-                      aspectRatio: 1.2,
-                      imageURL: "image.jpg",
-                    },
-                    saleArtwork: null,
-                    sale: null,
-                    title: "Best Artwork Ever",
-                    internalID: "artwork1234",
-                    slug: "cool-artwork-1",
-                  },
-                },
-              ],
-            },
-          },
-        },
-        {
-          cursor: "xxx",
-          node: {
-            __typename: "Show",
-            id: "xxx-3",
-            internalID: "xxx-3",
-            counts: { artworks: 10 },
-            fair: {
-              id: "xxyyzz-123",
-              internalID: "aabbcc-123",
-              slug: "art-basel-hong-kong-2019",
-            },
-            slug: "example-3",
-            href: "/show/example-3",
-            partner: {
-              __typename: "ExternalPartner" as "ExternalPartner",
-              __isNode: "ExternalPartner",
-              id: "example-3",
-              name: "Second Partner Has Artworks",
-            },
-            artworks: {
-              edges: [
-                {
-                  node: {
-                    href: "/artwork/cool-artwork-1",
-                    artistNames: "Andy Warhol",
-                    id: "abc124",
-                    saleMessage: "For Sale",
-                    image: {
-                      aspectRatio: 1.2,
-                      imageURL: "image.jpg",
-                    },
-                    saleArtwork: null,
-                    sale: null,
-                    title: "Best Artwork Ever",
-                    internalID: "artwork1234",
-                    slug: "cool-artwork-1",
-                  },
-                },
-                {
-                  node: {
-                    href: "/artwork/cool-artwork-1",
-                    artistNames: "Andy Warhol",
-                    id: "abc125",
-                    saleMessage: "For Sale",
-                    image: {
-                      aspectRatio: 1.2,
-                      imageURL: "image.jpg",
-                    },
-                    saleArtwork: null,
-                    sale: null,
-                    title: "Best Artwork Ever",
-                    internalID: "artwork1234",
-                    slug: "cool-artwork-1",
-                  },
-                },
-                {
-                  node: {
-                    href: "/artwork/cool-artwork-1",
-                    artistNames: "Andy Warhol",
-                    id: "abc126",
-                    saleMessage: "For Sale",
-                    image: {
-                      aspectRatio: 1.2,
-                      imageURL: "image.jpg",
-                    },
-                    saleArtwork: null,
-                    sale: null,
-                    title: "Best Artwork Ever",
-                    internalID: "artwork1234",
-                    slug: "cool-artwork-1",
-                  },
-                },
-              ],
-            },
-          },
-        },
-      ],
-    },
-  },
-}
