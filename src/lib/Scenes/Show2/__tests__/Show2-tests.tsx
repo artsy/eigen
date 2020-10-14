@@ -73,4 +73,17 @@ describe("Show2", () => {
     expect(text).toContain("Closed")
     expect(text).toContain("Example Partner")
   })
+
+  it("renders the installation shots", () => {
+    const wrapper = getWrapper({
+      Show: () => ({
+        images: [{ caption: "First install shot" }, { caption: "Second install shot" }],
+      }),
+    })
+
+    const text = extractText(wrapper.root)
+
+    expect(text).toContain("First install shot")
+    expect(text).toContain("Second install shot")
+  })
 })

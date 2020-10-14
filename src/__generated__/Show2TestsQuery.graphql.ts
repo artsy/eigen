@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6b1049723106f34450089c5df8339ada */
+/* @relayHash d6f92ff7b9230df729d4e3bd1270b735 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -52,9 +52,22 @@ fragment Show2Header_show on Show {
   }
 }
 
+fragment Show2InstallShots_show on Show {
+  name
+  images {
+    internalID
+    caption
+    src: url(version: ["larger", "large"])
+    dimensions: resized(height: 300) {
+      width
+      height
+    }
+  }
+}
+
 fragment Show2_show on Show {
   ...Show2Header_show
-  name
+  ...Show2InstallShots_show
 }
 */
 
@@ -100,6 +113,12 @@ v5 = {
   "type": "ID"
 },
 v6 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Int"
+},
+v7 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
@@ -230,6 +249,78 @@ return {
             ],
             "storageKey": null
           },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "images",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "internalID",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "caption",
+                "storageKey": null
+              },
+              {
+                "alias": "src",
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "version",
+                    "value": [
+                      "larger",
+                      "large"
+                    ]
+                  }
+                ],
+                "kind": "ScalarField",
+                "name": "url",
+                "storageKey": "url(version:[\"larger\",\"large\"])"
+              },
+              {
+                "alias": "dimensions",
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "height",
+                    "value": 300
+                  }
+                ],
+                "concreteType": "ResizedImageUrl",
+                "kind": "LinkedField",
+                "name": "resized",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "width",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "height",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": "resized(height:300)"
+              }
+            ],
+            "storageKey": null
+          },
           (v3/*: any*/)
         ],
         "storageKey": null
@@ -237,7 +328,7 @@ return {
     ]
   },
   "params": {
-    "id": "6b1049723106f34450089c5df8339ada",
+    "id": "d6f92ff7b9230df729d4e3bd1270b735",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {
@@ -250,6 +341,28 @@ return {
         "show.formattedEndAt": (v4/*: any*/),
         "show.formattedStartAt": (v4/*: any*/),
         "show.id": (v5/*: any*/),
+        "show.images": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "Image"
+        },
+        "show.images.caption": (v4/*: any*/),
+        "show.images.dimensions": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ResizedImageUrl"
+        },
+        "show.images.dimensions.height": (v6/*: any*/),
+        "show.images.dimensions.width": (v6/*: any*/),
+        "show.images.internalID": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ID"
+        },
+        "show.images.src": (v4/*: any*/),
         "show.name": (v4/*: any*/),
         "show.partner": {
           "enumValues": null,
@@ -257,8 +370,8 @@ return {
           "plural": false,
           "type": "PartnerTypes"
         },
-        "show.partner.__isNode": (v6/*: any*/),
-        "show.partner.__typename": (v6/*: any*/),
+        "show.partner.__isNode": (v7/*: any*/),
+        "show.partner.__typename": (v7/*: any*/),
         "show.partner.id": (v5/*: any*/),
         "show.partner.name": (v4/*: any*/),
         "show.startAt": (v4/*: any*/)
