@@ -202,6 +202,7 @@ function getNativeModules(): typeof NativeModules {
       updateShouldHideBackButton: jest.fn(),
       presentAugmentedRealityVIR: jest.fn(),
       presentEmailComposer: jest.fn(),
+      popParentViewController: jest.fn(),
     },
   }
 }

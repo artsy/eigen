@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Change CheckAuthentication middleware to be called before the principalFieldMiddleware - mounir
   user_facing:
+    - Switch to live auction from new sale page - barry, brian
     - Adds ability to filter by artist in a fair - sweir
     - Fix environment variable names for Sentry - starsirius
 

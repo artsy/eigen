@@ -5,6 +5,8 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Sale_sale = {
+    readonly slug: string;
+    readonly liveStartAt: string | null;
     readonly saleArtworksConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -29,6 +31,20 @@ const node: ReaderFragment = {
   "metadata": null,
   "name": "Sale_sale",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "liveStartAt",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": [
@@ -87,5 +103,5 @@ const node: ReaderFragment = {
   "type": "Sale",
   "abstractKey": null
 };
-(node as any).hash = '8e7755d57dc6b5445507a23eb23c2e0e';
+(node as any).hash = 'be29dd4a743a9e44e481d467f8e0d258';
 export default node;

@@ -28,6 +28,7 @@ declare module "react-native" {
       presentNativeScreen(module: string, props: object, modal: boolean): void
       dismissModal(): void
       goBack(): void
+      popParentViewController(): void
       switchTab(tabType: string, props: object, popToRoot: boolean): void
       presentMediaPreviewController(reactTag: number, route: string, mimeType: string, cacheKey: string): void
       presentEmailComposer(to: string, subject: string, body?: string): void
