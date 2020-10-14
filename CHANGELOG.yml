@@ -8,6 +8,7 @@ upcoming:
     - Adds ability to filter by artist in a fair - sweir
     - Fix environment variable names for Sentry - starsirius
     - Adds Show2 header, behind lab option - damon
+    - Adds Show2 install shots, behind lab option - damon
 
 releases:
   - version: 6.6.5

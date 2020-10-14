@@ -7,6 +7,7 @@ import { Box, Flex, Separator, Spacer, Theme } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { Show2HeaderFragmentContainer as ShowHeader } from "./Components/Show2Header"
+import { Show2InstallShotsFragmentContainer as ShowInstallShots } from "./Components/Show2InstallShots"
 
 interface Show2QueryRendererProps {
   showID: string
@@ -19,8 +20,9 @@ interface Show2Props {
 export const Show2: React.FC<Show2Props> = ({ show }) => {
   return (
     <Theme>
-      <Box mt={6} p={2}>
-        <ShowHeader show={show} />
+      <Box mt={6}>
+        <ShowHeader show={show} mt={2} mx={2} mb={3} />
+        <ShowInstallShots show={show} mb={3} />
       </Box>
     </Theme>
   )
@@ -30,7 +32,7 @@ export const Show2FragmentContainer = createFragmentContainer(Show2, {
   show: graphql`
     fragment Show2_show on Show {
       ...Show2Header_show
-      name
+      ...Show2InstallShots_show
     }
   `,
 })

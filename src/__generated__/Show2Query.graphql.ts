@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 47c88d63a43f2e047a7abf9fe4595b1e */
+/* @relayHash b90553fb102e8384cfe12cc366c83e86 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -52,9 +52,22 @@ fragment Show2Header_show on Show {
   }
 }
 
+fragment Show2InstallShots_show on Show {
+  name
+  images {
+    internalID
+    caption
+    src: url(version: ["larger", "large"])
+    dimensions: resized(height: 300) {
+      width
+      height
+    }
+  }
+}
+
 fragment Show2_show on Show {
   ...Show2Header_show
-  name
+  ...Show2InstallShots_show
 }
 */
 
@@ -212,6 +225,78 @@ return {
             ],
             "storageKey": null
           },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "images",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "internalID",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "caption",
+                "storageKey": null
+              },
+              {
+                "alias": "src",
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "version",
+                    "value": [
+                      "larger",
+                      "large"
+                    ]
+                  }
+                ],
+                "kind": "ScalarField",
+                "name": "url",
+                "storageKey": "url(version:[\"larger\",\"large\"])"
+              },
+              {
+                "alias": "dimensions",
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "height",
+                    "value": 300
+                  }
+                ],
+                "concreteType": "ResizedImageUrl",
+                "kind": "LinkedField",
+                "name": "resized",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "width",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "height",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": "resized(height:300)"
+              }
+            ],
+            "storageKey": null
+          },
           (v3/*: any*/)
         ],
         "storageKey": null
@@ -219,7 +304,7 @@ return {
     ]
   },
   "params": {
-    "id": "47c88d63a43f2e047a7abf9fe4595b1e",
+    "id": "b90553fb102e8384cfe12cc366c83e86",
     "metadata": {},
     "name": "Show2Query",
     "operationKind": "query",
