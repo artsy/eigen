@@ -19,7 +19,7 @@ export type Notification_notification = {
     } | null;
     readonly image: {
         readonly resized: {
-            readonly url: string | null;
+            readonly url: string;
         } | null;
     } | null;
     readonly " $refType": "Notification_notification";
