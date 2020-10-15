@@ -96,9 +96,13 @@ export const LocationPredictions = ({
     if (!query || brokenEntry.length === 1) {
       return entry
     }
-    const formatted = brokenEntry.map((x) => {
+    const formatted = brokenEntry.map((x, i) => {
       if (re.test(x)) {
-        return <Text fontWeight="bold">{x}</Text>
+        return (
+          <Text key={`map-entry-${i}`} fontWeight="bold">
+            {x}
+          </Text>
+        )
       }
       return x
     })
