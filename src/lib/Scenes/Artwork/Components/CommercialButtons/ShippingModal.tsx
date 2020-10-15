@@ -21,7 +21,10 @@ export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
     <FancyModal visible={modalIsVisible} onBackgroundPressed={() => toggleVisibility()}>
       <FancyModalHeader
         leftButtonText="Cancel"
-        onLeftButtonPress={() => toggleVisibility()}
+        onLeftButtonPress={() => {
+          throw new Error("honk")
+          toggleVisibility()
+        }}
         rightButtonText="Apply"
         onRightButtonPress={() => {
           setLocation(locationInput)

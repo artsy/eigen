@@ -81,36 +81,24 @@ describe("<InquiryModal />", () => {
   })
 
   describe("user can select 'Price & Availability'", () => {
-    it("user tapping the inquiry question does not expose the shipping dropdown", () => {
-      const wrapper = getWrapper()
-      press(wrapper.root, { text: "Price & Availability" })
-
-      expect(extractText(wrapper.root)).not.toContain("Add your location")
-    })
     it.todo("user taps checkbox and option is selected")
   })
 
   describe("user can select 'Condition & Provenance'", () => {
-    it("user tapping the inquiry question does not expose the shipping dropdown", () => {
-      const wrapper = getWrapper()
-      press(wrapper.root, { text: "Condition & Provenance" })
-
-      expect(extractText(wrapper.root)).not.toContain("Add your location")
-    })
     it.todo("user taps checkbox and option is selected")
   })
 
   describe("user can select Shipping", () => {
-    it("user tapping the inquiry question exposes the shipping dropdown", () => {
+    it("user selecting shipping exposes the 'Add your location' CTA", () => {
       const wrapper = getWrapper()
-      press(wrapper.root, { text: "Shipping" })
+      wrapper.root.findByProps({ "data-test-id": "checkbox-Shipping" }).props.onPress()
 
       expect(extractText(wrapper.root)).toContain("Add your location")
     })
 
     it("user can visit shipping modal", async () => {
       const wrapper = getWrapper()
-      press(wrapper.root, { text: "Shipping" })
+      wrapper.root.findByProps({ "data-test-id": "checkbox-Shipping" }).props.onPress()
 
       expect(extractText(wrapper.root)).toContain("Add your location")
       expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeFalsy()
@@ -128,7 +116,7 @@ describe("<InquiryModal />", () => {
         { id: "b", name: "Coxs Creek, KY, USA" },
       ])
       const wrapper = getWrapper()
-      await press(wrapper.root, { text: "Shipping" })
+      wrapper.root.findByProps({ "data-test-id": "checkbox-Shipping" }).props.onPress()
       await press(wrapper.root, { text: /^Add your location/ })
 
       await typeInInput(wrapper.root, "Cox")
@@ -149,13 +137,13 @@ describe("<InquiryModal />", () => {
     // TODO: I couldn't get this one to work. It is pretty basic. maybe we don't need it.
     it.skip("user can only exit the shipping modal by pressing cancel if they have not selected a location", async () => {
       const wrapper = getWrapper()
-      await press(wrapper.root, { text: "Shipping" })
+      wrapper.root.findByProps({ "data-test-id": "checkbox-Shipping" }).props.onPress()
       await press(wrapper.root, { text: /^Add your location/ })
-
       await press(wrapper.root, { text: "Apply" })
+
       expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeTruthy()
+
       await press(wrapper.root, { text: "Cancel" })
-      // await press(wrapper.root, { text: "Cancel", componentType: LeftButtonContainer })
       expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeFalsy()
     })
   })
