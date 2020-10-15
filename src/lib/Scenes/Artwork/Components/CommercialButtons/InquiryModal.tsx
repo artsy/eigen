@@ -41,15 +41,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const renderInquiryQuestion = (inquiry: string): JSX.Element => {
     // Shipping requires special logic to accomodate dropdown and shipping modal
     const isShipping = inquiry === InquiryOptions.Shipping
-    const Wrapper: React.ComponentType<{ key: string }> = isShipping
-      ? ({ children }) => (
-          <TouchableOpacity
-            data-test-id="expand-shipping"
-            children={children}
-            onPress={() => toggleLocationExpanded()}
-          />
-        )
-      : React.Fragment
 
     return (
       <React.Fragment key={inquiry}>
