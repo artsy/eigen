@@ -13,32 +13,9 @@ export type Fair2EditorialTestsQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"Fair2Editorial_fair">;
     } | null;
 };
-export type Fair2EditorialTestsQueryRawResponse = {
-    readonly fair: ({
-        readonly internalID: string;
-        readonly slug: string;
-        readonly articles: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
-                    readonly id: string;
-                    readonly internalID: string;
-                    readonly slug: string | null;
-                    readonly title: string | null;
-                    readonly href: string | null;
-                    readonly publishedAt: string | null;
-                    readonly thumbnailImage: ({
-                        readonly src: string | null;
-                    }) | null;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-        readonly id: string;
-    }) | null;
-};
 export type Fair2EditorialTestsQuery = {
     readonly response: Fair2EditorialTestsQueryResponse;
     readonly variables: Fair2EditorialTestsQueryVariables;
-    readonly rawResponse: Fair2EditorialTestsQueryRawResponse;
 };
 
 
@@ -109,6 +86,18 @@ v4 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
+},
+v5 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
+},
+v6 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
 };
 return {
   "fragment": {
@@ -253,12 +242,55 @@ return {
   },
   "params": {
     "id": "39b97b79fdcc32cc24ddeca3599b78e0",
-    "metadata": {},
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "fair": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Fair"
+        },
+        "fair.articles": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ArticleConnection"
+        },
+        "fair.articles.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "ArticleEdge"
+        },
+        "fair.articles.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Article"
+        },
+        "fair.articles.edges.node.href": (v5/*: any*/),
+        "fair.articles.edges.node.id": (v6/*: any*/),
+        "fair.articles.edges.node.internalID": (v6/*: any*/),
+        "fair.articles.edges.node.publishedAt": (v5/*: any*/),
+        "fair.articles.edges.node.slug": (v5/*: any*/),
+        "fair.articles.edges.node.thumbnailImage": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Image"
+        },
+        "fair.articles.edges.node.thumbnailImage.src": (v5/*: any*/),
+        "fair.articles.edges.node.title": (v5/*: any*/),
+        "fair.id": (v6/*: any*/),
+        "fair.internalID": (v6/*: any*/),
+        "fair.slug": (v6/*: any*/)
+      }
+    },
     "name": "Fair2EditorialTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'aa3933d1a72dde11afa4fa0172e32b22';
+(node as any).hash = 'c2cfe7aad8112ff284732d558c803ed4';
 export default node;
