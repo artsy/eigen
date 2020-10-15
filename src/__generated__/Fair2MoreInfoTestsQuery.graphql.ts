@@ -13,64 +13,9 @@ export type Fair2MoreInfoTestsQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"Fair2MoreInfo_fair">;
     } | null;
 };
-export type Fair2MoreInfoTestsQueryRawResponse = {
-    readonly fair: ({
-        readonly internalID: string;
-        readonly slug: string;
-        readonly about: string | null;
-        readonly name: string | null;
-        readonly tagline: string | null;
-        readonly profile: ({
-            readonly name: string | null;
-            readonly id: string;
-        }) | null;
-        readonly location: ({
-            readonly id: string;
-            readonly internalID: string;
-            readonly city: string | null;
-            readonly address: string | null;
-            readonly address_2: string | null;
-            readonly postal_code: string | null;
-            readonly summary: string | null;
-            readonly coordinates: ({
-                readonly lat: number | null;
-                readonly lng: number | null;
-            }) | null;
-            readonly day_schedules: ReadonlyArray<({
-                readonly start_time: number | null;
-                readonly end_time: number | null;
-                readonly day_of_week: string | null;
-            }) | null> | null;
-            readonly openingHours: ({
-                readonly __typename: "OpeningHoursArray";
-                readonly schedules: ReadonlyArray<({
-                    readonly days: string | null;
-                    readonly hours: string | null;
-                }) | null> | null;
-            } | {
-                readonly __typename: "OpeningHoursText";
-                readonly text: string | null;
-            } | {
-                readonly __typename: string;
-            }) | null;
-        }) | null;
-        readonly sponsoredContent: ({
-            readonly activationText: string | null;
-            readonly pressReleaseUrl: string | null;
-        }) | null;
-        readonly ticketsLink: string | null;
-        readonly fairHours: string | null;
-        readonly fairLinks: string | null;
-        readonly fairTickets: string | null;
-        readonly summary: string | null;
-        readonly fairContact: string | null;
-        readonly id: string;
-    }) | null;
-};
 export type Fair2MoreInfoTestsQuery = {
     readonly response: Fair2MoreInfoTestsQueryResponse;
     readonly variables: Fair2MoreInfoTestsQueryVariables;
-    readonly rawResponse: Fair2MoreInfoTestsQueryRawResponse;
 };
 
 
@@ -197,7 +142,31 @@ v6 = [
     "name": "format",
     "value": "MARKDOWN"
   }
-];
+],
+v7 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
+},
+v8 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v9 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Float"
+},
+v10 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Int"
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -507,12 +476,100 @@ return {
   },
   "params": {
     "id": "0eb59dcbabef429d89f7edba3a46a704",
-    "metadata": {},
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "fair": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Fair"
+        },
+        "fair.about": (v7/*: any*/),
+        "fair.fairContact": (v7/*: any*/),
+        "fair.fairHours": (v7/*: any*/),
+        "fair.fairLinks": (v7/*: any*/),
+        "fair.fairTickets": (v7/*: any*/),
+        "fair.id": (v8/*: any*/),
+        "fair.internalID": (v8/*: any*/),
+        "fair.location": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Location"
+        },
+        "fair.location.address": (v7/*: any*/),
+        "fair.location.address_2": (v7/*: any*/),
+        "fair.location.city": (v7/*: any*/),
+        "fair.location.coordinates": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "LatLng"
+        },
+        "fair.location.coordinates.lat": (v9/*: any*/),
+        "fair.location.coordinates.lng": (v9/*: any*/),
+        "fair.location.day_schedules": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "DaySchedule"
+        },
+        "fair.location.day_schedules.day_of_week": (v7/*: any*/),
+        "fair.location.day_schedules.end_time": (v10/*: any*/),
+        "fair.location.day_schedules.start_time": (v10/*: any*/),
+        "fair.location.id": (v8/*: any*/),
+        "fair.location.internalID": (v8/*: any*/),
+        "fair.location.openingHours": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "OpeningHoursUnion"
+        },
+        "fair.location.openingHours.__typename": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "String"
+        },
+        "fair.location.openingHours.schedules": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "FormattedDaySchedules"
+        },
+        "fair.location.openingHours.schedules.days": (v7/*: any*/),
+        "fair.location.openingHours.schedules.hours": (v7/*: any*/),
+        "fair.location.openingHours.text": (v7/*: any*/),
+        "fair.location.postal_code": (v7/*: any*/),
+        "fair.location.summary": (v7/*: any*/),
+        "fair.name": (v7/*: any*/),
+        "fair.profile": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Profile"
+        },
+        "fair.profile.id": (v8/*: any*/),
+        "fair.profile.name": (v7/*: any*/),
+        "fair.slug": (v8/*: any*/),
+        "fair.sponsoredContent": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "FairSponsoredContent"
+        },
+        "fair.sponsoredContent.activationText": (v7/*: any*/),
+        "fair.sponsoredContent.pressReleaseUrl": (v7/*: any*/),
+        "fair.summary": (v7/*: any*/),
+        "fair.tagline": (v7/*: any*/),
+        "fair.ticketsLink": (v7/*: any*/)
+      }
+    },
     "name": "Fair2MoreInfoTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'c75f58ca32cf8f91786e6fcab00ac7f8';
+(node as any).hash = '739610db1f171ad6c5975084d8bac73b';
 export default node;

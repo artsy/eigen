@@ -13,34 +13,9 @@ export type Fair2CollectionsTestsQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"Fair2Collections_fair">;
     } | null;
 };
-export type Fair2CollectionsTestsQueryRawResponse = {
-    readonly fair: ({
-        readonly internalID: string;
-        readonly slug: string;
-        readonly marketingCollections: ReadonlyArray<({
-            readonly slug: string;
-            readonly title: string;
-            readonly category: string;
-            readonly artworks: ({
-                readonly edges: ReadonlyArray<({
-                    readonly node: ({
-                        readonly image: ({
-                            readonly url: string | null;
-                        }) | null;
-                        readonly id: string;
-                    }) | null;
-                }) | null> | null;
-                readonly id: string;
-            }) | null;
-            readonly id: string;
-        }) | null>;
-        readonly id: string;
-    }) | null;
-};
 export type Fair2CollectionsTestsQuery = {
     readonly response: Fair2CollectionsTestsQueryResponse;
     readonly variables: Fair2CollectionsTestsQueryVariables;
-    readonly rawResponse: Fair2CollectionsTestsQueryRawResponse;
 };
 
 
@@ -106,6 +81,18 @@ v3 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
+},
+v4 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v5 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "String"
 };
 return {
   "fragment": {
@@ -262,12 +249,66 @@ return {
   },
   "params": {
     "id": "446c3f0050d031107564dfd216745399",
-    "metadata": {},
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "fair": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Fair"
+        },
+        "fair.id": (v4/*: any*/),
+        "fair.internalID": (v4/*: any*/),
+        "fair.marketingCollections": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": true,
+          "type": "MarketingCollection"
+        },
+        "fair.marketingCollections.artworks": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "FilterArtworksConnection"
+        },
+        "fair.marketingCollections.artworks.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "FilterArtworksEdge"
+        },
+        "fair.marketingCollections.artworks.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Artwork"
+        },
+        "fair.marketingCollections.artworks.edges.node.id": (v4/*: any*/),
+        "fair.marketingCollections.artworks.edges.node.image": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Image"
+        },
+        "fair.marketingCollections.artworks.edges.node.image.url": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "String"
+        },
+        "fair.marketingCollections.artworks.id": (v4/*: any*/),
+        "fair.marketingCollections.category": (v5/*: any*/),
+        "fair.marketingCollections.id": (v4/*: any*/),
+        "fair.marketingCollections.slug": (v5/*: any*/),
+        "fair.marketingCollections.title": (v5/*: any*/),
+        "fair.slug": (v4/*: any*/)
+      }
+    },
     "name": "Fair2CollectionsTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '18573dc5cfd5c35b570611189905aa9c';
+(node as any).hash = '628955856f324724ce9562ba6658457c';
 export default node;
