@@ -42,17 +42,19 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
             throw new Error("Sale/SaleLotsList filter error: " + error.message)
           }
         },
-        filterParams
+        { ...filterParams, saleID: saleSlug }
       )
     }
   }, [state.appliedFilters])
 
-  // useEffect(() => {
-  //   dispatch({
-  //     type: "setAggregations",
-  //     payload: saleArtworksConnection.saleArtworksConnection?.aggregations,
-  //   })
-  // }, [])
+  useEffect(() => {
+    console.log("-------")
+    console.log({ saleArtworksConnection })
+    dispatch({
+      type: "setAggregations",
+      payload: saleArtworksConnection.saleArtworksConnection?.aggregations,
+    })
+  }, [])
 
   // TODO: Discuss tracking
   const trackClear = (id: string, slug: string) => {
@@ -120,14 +122,20 @@ export const SaleLotsListContainer = createPaginationContainer(
     saleArtworksConnection: graphql`
       fragment SaleLotsList_saleArtworksConnection on Query
       @argumentDefinitions(
-        count: { type: "Int!", defaultValue: 10 }
+        count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
+        estimateRange: { type: "String", defaultValue: "" }
         sort: { type: "String", defaultValue: "position" }
-        estimateRange: { type: String, defaultValue: "" }
+        saleID: { type: "ID" }
       ) {
-        saleArtworksConnection(first: $count, after: $cursor, sort: $sort, estimateRange: $estimateRange)
-        # aggregations: [MEDIUM]
-        @connection(key: "SaleLotsList_saleArtworksConnection") {
+        saleArtworksConnection(
+          after: $cursor
+          saleID: $saleID
+          aggregations: [ARTIST, MEDIUM, TOTAL]
+          estimateRange: $estimateRange
+          first: $count
+          sort: $sort
+        ) @connection(key: "SaleLotsList_saleArtworksConnection") {
           aggregations {
             slice
             counts {
@@ -158,17 +166,20 @@ export const SaleLotsListContainer = createPaginationContainer(
     getConnectionFromProps(props) {
       return props?.saleArtworksConnection?.saleArtworksConnection
     },
-    getVariables(_props, { count, cursor }, fragmentVariables) {
+    getVariables(props, { count, cursor }, fragmentVariables) {
       return {
         ...fragmentVariables,
         cursor,
         count,
+        saleID: props.saleSlug,
       }
     },
     query: graphql`
-      query SaleLotsListQuery($count: Int!, $cursor: String, $sort: String, $estimateRange: String) @raw_response_type {
+      query SaleLotsListQuery($count: Int!, $cursor: String, $estimateRange: String, $saleID: ID, $sort: String)
+      # $saleID: ID
+      @raw_response_type {
         ...SaleLotsList_saleArtworksConnection
-        @arguments(count: $count, cursor: $cursor, sort: $sort, estimateRange: $estimateRange)
+        @arguments(count: $count, cursor: $cursor, sort: $sort, estimateRange: $estimateRange, saleID: $saleID)
       }
     `,
   }

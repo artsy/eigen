@@ -39,9 +39,6 @@ interface ViewToken {
 }
 
 const Sale: React.FC<Props> = ({ queryRes }) => {
-  console.log("----")
-  console.log(queryRes)
-  const { saleArtworksConnection } = queryRes
   const sale = queryRes.sale!
   const me = queryRes.me!
   const tracking = useTracking()
@@ -87,18 +84,18 @@ const Sale: React.FC<Props> = ({ queryRes }) => {
       key: "header",
       content: <SaleHeader sale={sale} scrollAnim={scrollAnim} />,
     },
-    {
-      key: "registerToBid",
-      content: (
-        <Flex mx="2" mt={2}>
-          <RegisterToBidButton sale={sale} />
-        </Flex>
-      ),
-    },
-    {
-      key: "saleArtworksRail",
-      content: <SaleArtworksRailContainer me={me} />,
-    },
+    // {
+    //   key: "registerToBid",
+    //   content: (
+    //     <Flex mx="2" mt={2}>
+    //       <RegisterToBidButton sale={sale} />
+    //     </Flex>
+    //   ),
+    // },
+    // {
+    //   key: "saleArtworksRail",
+    //   content: <SaleArtworksRailContainer me={me} />,
+    // },
     {
       key: "saleLotsList",
       content: <SaleLotsListContainer saleArtworksConnection={queryRes} saleID={sale.slug} saleSlug={sale.slug} />,
@@ -156,7 +153,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
     <QueryRenderer<SaleQueryRendererQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query SaleQueryRendererQuery($saleID: String!) {
+        query SaleQueryRendererQuery($saleID: String!, $saleSlug: ID!) {
           sale(id: $saleID) {
             internalID
             slug
@@ -167,10 +164,10 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
             ...SaleArtworksRail_me
           }
 
-          ...SaleLotsList_saleArtworksConnection
+          ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleSlug)
         }
       `}
-      variables={{ saleID }}
+      variables={{ saleID, saleSlug: saleID }}
       render={({ props, error }) => {
         if (error) {
           if (__DEV__) {

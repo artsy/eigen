@@ -50,6 +50,11 @@ const node: ReaderFragment = {
       "name": "estimateRange"
     },
     {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "saleID"
+    },
+    {
       "defaultValue": "position",
       "kind": "LocalArgument",
       "name": "sort"
@@ -74,9 +79,23 @@ const node: ReaderFragment = {
       "alias": "saleArtworksConnection",
       "args": [
         {
+          "kind": "Literal",
+          "name": "aggregations",
+          "value": [
+            "ARTIST",
+            "MEDIUM",
+            "TOTAL"
+          ]
+        },
+        {
           "kind": "Variable",
           "name": "estimateRange",
           "variableName": "estimateRange"
+        },
+        {
+          "kind": "Variable",
+          "name": "saleID",
+          "variableName": "saleID"
         },
         {
           "kind": "Variable",
@@ -224,5 +243,5 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = 'aa2adc8a677f3bc4d79906710f9fc7a2';
+(node as any).hash = '99a2434d2c411452e7387ddbcff0a4ac';
 export default node;

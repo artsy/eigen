@@ -213,6 +213,9 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
     })
   )
 
+  console.log("=========")
+  console.log({ aggregateFilterOptions })
+
   const filterOptions: FilterDisplayConfig[] = getStaticFilterOptionsByMode(mode).concat(aggregateFilterOptions)
 
   const sortedFilterOptions = filterOptions
