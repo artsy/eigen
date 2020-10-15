@@ -77,7 +77,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocatio
   )
 }
 
-const LocationPredictions = ({
+export const LocationPredictions = ({
   predictions,
   query,
   onSelect,

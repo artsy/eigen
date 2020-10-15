@@ -2,15 +2,11 @@ import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Flex } from "palette"
 import React, { useState } from "react"
-import NavigatorIOS from "react-native-navigator-ios"
 
 import { LocationAutocomplete } from "./LocationAutocomplete"
 
 interface ShippingModalProps {
-  closeModal?: () => void
-  exitModal?: () => void
   toggleVisibility: () => void
-  navigator?: NavigatorIOS
   modalIsVisible: boolean
   setLocation: (location: string) => void
   location: string

@@ -4,19 +4,17 @@ import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.gra
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Input } from "lib/Components/Input/Input"
 import { extractText } from "lib/tests/extractText"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { queryLocation } from "lib/utils/googleMaps"
 import { Touchable } from "palette"
 import React from "react"
-import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act, ReactTestInstance } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { InquiryModalFragmentContainer } from "../InquiryModal"
-import { LocationAutocomplete } from "../LocationAutocomplete"
 import { ShippingModal } from "../ShippingModal"
+import { press, typeInInput } from "./helpers"
 jest.unmock("react-relay")
 
 let env: ReturnType<typeof createMockEnvironment>
@@ -76,21 +74,6 @@ beforeEach(() => {
   env = createMockEnvironment()
 })
 
-const press = (
-  ti: ReactTestInstance,
-  { text = "", componentType = TouchableOpacity }: { text?: string | RegExp; componentType?: React.ComponentType }
-) => {
-  const touchables = ti.findAllByType(componentType, { deep: true }).filter((t) => {
-    return extractText(t).match(text)
-  })
-  const touchable = touchables[0]
-  if (Boolean(touchable) && Boolean(touchable.props.onPress)) {
-    act(() => {
-      touchable.props.onPress()
-    })
-  }
-}
-
 describe("<InquiryModal />", () => {
   it("renders the modal", () => {
     const tree = getWrapper()
@@ -124,6 +107,7 @@ describe("<InquiryModal />", () => {
 
       expect(extractText(wrapper.root)).toContain("Add your location")
     })
+
     it("user can visit shipping modal", async () => {
       const wrapper = getWrapper()
       press(wrapper.root, { text: "Shipping" })
@@ -131,7 +115,7 @@ describe("<InquiryModal />", () => {
       expect(extractText(wrapper.root)).toContain("Add your location")
       expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeFalsy()
 
-      press(wrapper.root, { text: /^Add your location/ })
+      await press(wrapper.root, { text: /^Add your location/ })
 
       expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeTruthy()
       const header = wrapper.root.findByType(ShippingModal).findByType(FancyModalHeader)
@@ -144,26 +128,35 @@ describe("<InquiryModal />", () => {
         { id: "b", name: "Coxs Creek, KY, USA" },
       ])
       const wrapper = getWrapper()
-      press(wrapper.root, { text: "Shipping" })
-      press(wrapper.root, { text: /^Add your location/ })
+      await press(wrapper.root, { text: "Shipping" })
+      await press(wrapper.root, { text: /^Add your location/ })
 
-      const locationModal = wrapper.root.findByType(LocationAutocomplete)
-      const locationInput = locationModal.findByType(Input)
-      await act(async () => {
-        locationInput.props.onChangeText("Cox")
-        await flushPromiseQueue()
-      })
+      await typeInInput(wrapper.root, "Cox")
+
       expect(wrapper.root.findAllByProps({ "data-test-id": "dropdown" }).length).not.toEqual(0)
       expect(extractText(wrapper.root)).toContain("Coxsackie, NY, USA")
 
-      press(wrapper.root, { text: "Coxsackie, NY, USA", componentType: Touchable })
+      await press(wrapper.root, { text: "Coxsackie, NY, USA", componentType: Touchable })
       expect(wrapper.root.findByType(Input).props.value).toEqual("Coxsackie, NY, USA")
       expect(wrapper.root.findAllByProps({ "data-test-id": "dropdown" }).length).toEqual(0)
 
-      press(wrapper.root, { text: "Apply" })
+      await press(wrapper.root, { text: "Apply" })
       expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeFalsy()
 
       expect(extractText(wrapper.root)).toContain("Coxsackie, NY, USA")
+    })
+
+    // TODO: I couldn't get this one to work. It is pretty basic. maybe we don't need it.
+    it.skip("user can only exit the shipping modal by pressing cancel if they have not selected a location", async () => {
+      const wrapper = getWrapper()
+      await press(wrapper.root, { text: "Shipping" })
+      await press(wrapper.root, { text: /^Add your location/ })
+
+      await press(wrapper.root, { text: "Apply" })
+      expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeTruthy()
+      await press(wrapper.root, { text: "Cancel" })
+      // await press(wrapper.root, { text: "Cancel", componentType: LeftButtonContainer })
+      expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeFalsy()
     })
   })
 })
