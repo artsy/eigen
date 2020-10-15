@@ -7,7 +7,7 @@ import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquirySt
 import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Box, color, Flex, Separator, space, Text } from "palette"
 import React, { useContext, useState } from "react"
-import { LayoutAnimation, TouchableOpacity, View } from "react-native"
+import { LayoutAnimation, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
