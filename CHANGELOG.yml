@@ -11,6 +11,7 @@ upcoming:
     - Adds Show2 install shots, behind lab option - damon
     - Link ConversationDetail screen - sepans
     - Fix Vanity URL fallbacks - david
+    - Adds Show2 basic more information route, behind lab option - damon
 
 releases:
   - version: 6.6.5
