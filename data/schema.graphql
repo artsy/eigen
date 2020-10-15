@@ -6855,6 +6855,8 @@ type Me implements Node {
   # Sale Artworks search results
   lotsByFollowedArtistsConnection(
     after: String
+
+    # Please make sure to supply the TOTAL aggregation if you will be setting any aggregations
     aggregations: [SaleArtworkAggregation]
     artistIDs: [String]
     before: String
@@ -8276,6 +8278,8 @@ type Query {
   # Sale Artworks search results
   saleArtworksConnection(
     after: String
+
+    # Please make sure to supply the TOTAL aggregation if you will be setting any aggregations
     aggregations: [SaleArtworkAggregation]
     artistIDs: [String]
     before: String
@@ -10298,6 +10302,8 @@ type Viewer {
   # Sale Artworks search results
   saleArtworksConnection(
     after: String
+
+    # Please make sure to supply the TOTAL aggregation if you will be setting any aggregations
     aggregations: [SaleArtworkAggregation]
     artistIDs: [String]
     before: String
