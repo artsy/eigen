@@ -1,5 +1,5 @@
 import { FilterScreen } from "lib/Components/FilterModal"
-import { Aggregations, FilterArray, FilterType } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { AggregationName, Aggregations, FilterArray, FilterType } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { forOwn } from "lodash"
 
 // General filter types and objects
@@ -186,4 +186,24 @@ export const aggregationsWithFollowedArtists = (
         ]
       : []
   return [...artworkAggregations, ...followedArtistAggregation]
+}
+
+// For most cases filter key can simply be FilterParamName, exception
+// is gallery and institution which share a paramName in metaphysics
+export const aggregationNameFromFilter: Record<string, AggregationName | undefined> = {
+  gallery: "GALLERY",
+  institution: "INSTITUTION",
+  color: "COLOR",
+  dimensionRange: "DIMENSION_RANGE",
+  majorPeriods: "MAJOR_PERIOD",
+  medium: "MEDIUM",
+  priceRange: "PRICE_RANGE",
+  artistsIFollow: "FOLLOWED_ARTISTS",
+  artistIDs: "ARTIST",
+}
+
+export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {
+  const aggregationName = aggregationNameFromFilter[filterKey]
+  const aggregation = aggregations!.find((value) => value.slice === aggregationName)
+  return aggregation
 }

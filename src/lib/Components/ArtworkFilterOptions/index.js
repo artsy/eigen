@@ -1,4 +1,4 @@
-
+export * from "./ArtistsOptions"
 export * from "./ArtistsIFollowOptions"
 export * from "./ColorOptions"
 export * from "./EstimateRangeOptions"

@@ -1,8 +1,8 @@
 import { FilterToggleButton } from "lib/Components/ArtworkFilterOptions/FilterToggleButton"
 import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { Box, color, Flex, Sans } from "palette"
+import { Box, CheckIcon, color, Flex, Sans, space } from "palette"
 import React from "react"
-import { FlatList, TouchableWithoutFeedback } from "react-native"
+import { FlatList, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
@@ -12,6 +12,7 @@ interface MultiSelectOptionScreenProps {
   filterHeaderText: string
   onSelect: (filterData: FilterData, updatedValue: boolean) => void
   filterOptions: FilterData[]
+  withCheckMark?: boolean
 }
 
 export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = ({
@@ -19,11 +20,13 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   onSelect,
   filterOptions,
   navigator,
+  withCheckMark = false,
 }) => {
   const handleBackNavigation = () => {
     navigator.pop()
   }
 
+  const ListItem = withCheckMark ? CheckMarkOptionListItem : ToggleOptionListItem
   return (
     <Flex flexGrow={1}>
       <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
@@ -34,24 +37,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
           data={filterOptions}
           renderItem={({ item }) => (
             <Box ml={0.5}>
-              {
-                <OptionListItem>
-                  <Flex mb={0.5}>
-                    <Sans color="black100" size="3t">
-                      {item.displayText}
-                    </Sans>
-                  </Flex>
-                  <TouchableWithoutFeedback>
-                    <FilterToggleButton
-                      onChange={() => {
-                        const currentParamValue = item.paramValue as boolean
-                        onSelect(item, !currentParamValue)
-                      }}
-                      value={item.paramValue as boolean}
-                    />
-                  </TouchableWithoutFeedback>
-                </OptionListItem>
-              }
+              <ListItem item={item} onSelect={onSelect} />
             </Box>
           )}
         />
@@ -71,3 +57,62 @@ export const OptionListItem = styled(Flex)`
   border-left-width: 0;
   border-top-width: 0;
 `
+
+export const InnerOptionListItem = styled(Flex)`
+  flex-direction: row;
+  justify-content: space-between;
+  flex-grow: 1;
+  align-items: flex-end;
+  padding: ${space(2)}px;
+`
+
+export const SingleSelectOptionListItemRow = styled(TouchableOpacity)``
+export const Option = styled(Sans)``
+
+const ToggleOptionListItem = ({
+  item,
+  onSelect,
+}: {
+  item: FilterData
+  onSelect: (filterData: FilterData, updatedValue: boolean) => void
+}) => (
+  <OptionListItem>
+    <Flex mb={0.5}>
+      <Sans color="black100" size="3t">
+        {item.displayText}
+      </Sans>
+    </Flex>
+    <TouchableWithoutFeedback>
+      <FilterToggleButton
+        onChange={() => {
+          const currentParamValue = item.paramValue as boolean
+          onSelect(item, !currentParamValue)
+        }}
+        value={item.paramValue as boolean}
+      />
+    </TouchableWithoutFeedback>
+  </OptionListItem>
+)
+
+export const CheckMarkOptionListItem = ({
+  item,
+  onSelect,
+}: {
+  item: FilterData
+  onSelect: (filterData: FilterData, updatedValue: boolean) => void
+}) => (
+  <SingleSelectOptionListItemRow onPress={() => onSelect(item, !item.paramValue)}>
+    <OptionListItem>
+      <InnerOptionListItem>
+        <Option color="black100" size="3t">
+          {item.displayText}
+        </Option>
+        {!!item.paramValue && (
+          <Box mb={0.1}>
+            <CheckIcon fill="black100" />
+          </Box>
+        )}
+      </InnerOptionListItem>
+    </OptionListItem>
+  </SingleSelectOptionListItemRow>
+)

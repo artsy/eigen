@@ -1,6 +1,5 @@
 import {
   AggregationName,
-  Aggregations,
   ArtworkFilterContext,
   FilterArray,
   useSelectedOptionsDisplay,
@@ -25,6 +24,7 @@ import styled from "styled-components/native"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
 import {
   ArtistsIFollowOptionsScreen,
+  ArtistsOptionsScreen,
   ColorOption,
   ColorOptionsScreen,
   EstimateRangeOptionsScreen,
@@ -462,31 +462,11 @@ const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string
   ARTIST: "artistIDs",
 }
 
-// For most cases filter key can simply be FilterParamName, exception
-// is gallery and institution which share a paramName in metaphysics
-export const aggregationNameFromFilter: Record<string, AggregationName | undefined> = {
-  gallery: "GALLERY",
-  institution: "INSTITUTION",
-  color: "COLOR",
-  dimensionRange: "DIMENSION_RANGE",
-  majorPeriods: "MAJOR_PERIOD",
-  medium: "MEDIUM",
-  priceRange: "PRICE_RANGE",
-  artistsIFollow: "FOLLOWED_ARTISTS",
-  artistIDs: "ARTIST",
-}
-
-export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {
-  const aggregationName = aggregationNameFromFilter[filterKey]
-  const aggregation = aggregations!.find((value) => value.slice === aggregationName)
-  return aggregation
-}
-
 export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
   artistIDs: {
     displayText: FilterDisplayName.artistIDs,
     filterType: "artistIDs",
-    ScreenComponent: ArtistsIFollowOptionsScreen,
+    ScreenComponent: ArtistsOptionsScreen,
   },
   artistsIFollow: {
     displayText: FilterDisplayName.artistsIFollow,

@@ -173,11 +173,19 @@ export const SaleLotsListContainer = createPaginationContainer(
         ...fragmentVariables,
         cursor,
         count,
+        partnerID: fragmentVariables.artistIDs,
         saleID: props.saleSlug,
       }
     },
     query: graphql`
-      query SaleLotsListQuery($count: Int!, $cursor: String, $estimateRange: String, $saleID: ID, $sort: String)
+      query SaleLotsListQuery(
+        $artistIDs: [String]
+        $count: Int!
+        $cursor: String
+        $estimateRange: String
+        $saleID: ID
+        $sort: String
+      )
       # $saleID: ID
       @raw_response_type {
         ...SaleLotsList_saleArtworksConnection
