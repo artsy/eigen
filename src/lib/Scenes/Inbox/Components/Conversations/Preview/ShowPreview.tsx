@@ -1,7 +1,7 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { Schema, Track, track as _track } from "../../../../utils/track"
+import { Schema, Track, track as _track } from "lib/utils/track"
 
 import { color, Flex, Text, Touchable } from "palette"
 

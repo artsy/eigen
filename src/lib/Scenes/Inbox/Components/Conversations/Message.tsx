@@ -15,8 +15,8 @@ import ImagePreview from "./Preview/Attachment/ImagePreview"
 import PDFPreview from "./Preview/Attachment/PDFPreview"
 import { TimeSince } from "./TimeSince"
 
+import { Schema, Track, track as _track } from "lib/utils/track"
 import { graphql } from "relay-runtime"
-import { Schema, Track, track as _track } from "../../../utils/track"
 
 import { compact } from "lodash"
 

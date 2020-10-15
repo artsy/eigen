@@ -9,19 +9,19 @@ export default class ZeroStateInbox extends React.Component {
   render() {
     const rows = [
       {
-        iconHref: require("../../../../../images/find.png"),
+        iconHref: require("../../../../../../images/find.png"),
         text: "Follow artists and find works you love.",
       },
       {
-        iconHref: require("../../../../../images/contact.png"),
+        iconHref: require("../../../../../../images/contact.png"),
         text: "Contact galleries or bid in auctions to purchase the work.",
       },
       {
-        iconHref: require("../../../../../images/message.png"),
+        iconHref: require("../../../../../../images/message.png"),
         text: "Find your ongoing conversations and bidding activity here.",
       },
       {
-        iconHref: require("../../../../../images/pay.png"),
+        iconHref: require("../../../../../../images/pay.png"),
         text: "Easily process payment through our secure platform.",
       },
     ]

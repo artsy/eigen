@@ -7,7 +7,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 
 import { Inbox as ActualInbox, InboxContainer } from "../Inbox"
 
-jest.mock("../../Components/Inbox/Conversations/Conversations", () => ({
+jest.mock("lib/Scenes/Inbox/Components/Conversations/Conversations", () => ({
   ConversationsContainer: () => "Conversations",
 }))
 
