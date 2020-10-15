@@ -35,6 +35,11 @@ export type SaleLotsList_saleArtworksConnection$key = {
 const node: ReaderFragment = {
   "argumentDefinitions": [
     {
+      "defaultValue": [],
+      "kind": "LocalArgument",
+      "name": "artistIDs"
+    },
+    {
       "defaultValue": 10,
       "kind": "LocalArgument",
       "name": "count"
@@ -86,6 +91,11 @@ const node: ReaderFragment = {
             "MEDIUM",
             "TOTAL"
           ]
+        },
+        {
+          "kind": "Variable",
+          "name": "artistIDs",
+          "variableName": "artistIDs"
         },
         {
           "kind": "Variable",
@@ -243,5 +253,5 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = '99a2434d2c411452e7387ddbcff0a4ac';
+(node as any).hash = '5602ada7baeab57b75690ba9ee282676';
 export default node;

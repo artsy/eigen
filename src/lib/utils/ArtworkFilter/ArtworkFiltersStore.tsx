@@ -17,7 +17,7 @@ export const reducer = (
 ): ArtworkFilterContextState => {
   const defaultFilterOptions = {
     ...defaultCommonFilterOptions,
-    sort: getSortDefaultValue(artworkFilterState.filterType),
+    sort: getSortDefaultValueByFilterType(artworkFilterState.filterType),
   }
   switch (action.type) {
     case "applyFilters":
@@ -151,7 +151,7 @@ export const reducer = (
   }
 }
 
-const getSortDefaultValue = (filterType: FilterType) => {
+const getSortDefaultValueByFilterType = (filterType: FilterType) => {
   if (filterType === "artwork") {
     return "position"
   }
@@ -160,6 +160,7 @@ const getSortDefaultValue = (filterType: FilterType) => {
 
 export const ParamDefaultValues = {
   acquireable: false,
+  artistIDs: [],
   atAuction: false,
   color: undefined,
   dimensionRange: "*-*",
@@ -176,8 +177,9 @@ export const ParamDefaultValues = {
   viewAs: ViewAsValues.Grid,
 }
 
-const defaultCommonFilterOptions: Record<FilterParamName, string | boolean | undefined> = {
+const defaultCommonFilterOptions: Record<FilterParamName, string | boolean | undefined | string[]> = {
   acquireable: ParamDefaultValues.acquireable,
+  artistIDs: ParamDefaultValues.artistIDs,
   atAuction: ParamDefaultValues.atAuction,
   color: ParamDefaultValues.color,
   dimensionRange: ParamDefaultValues.dimensionRange,
@@ -247,6 +249,11 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
       displayText: "Artists I follow",
     },
     {
+      paramName: FilterParamName.artistIDs,
+      paramValue: [],
+      displayText: "Artists",
+    },
+    {
       paramName: FilterParamName.viewAs,
       paramValue: false,
       displayText: "Grid",
@@ -277,7 +284,7 @@ export interface ArtworkFilterContextState {
 export interface FilterData {
   readonly displayText: string
   readonly paramName: FilterParamName
-  paramValue?: string | boolean
+  paramValue?: string | boolean | string[]
   filterKey?: string // gallery and institution share a paramName so need to distinguish
 }
 
@@ -345,6 +352,7 @@ export type AggregationName =
   | "MEDIUM"
   | "PRICE_RANGE"
   | "FOLLOWED_ARTISTS"
+  | "ARTIST"
 
 export type Aggregations = Array<{
   slice: AggregationName

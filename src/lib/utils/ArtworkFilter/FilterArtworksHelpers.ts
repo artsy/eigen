@@ -4,6 +4,7 @@ import { forOwn } from "lodash"
 
 // General filter types and objects
 export enum FilterParamName {
+  artistIDs = "artistIDs",
   artistsIFollow = "includeArtworksByFollowedArtists",
   color = "color",
   estimateRange = "estimateRange",
@@ -23,10 +24,11 @@ export enum FilterParamName {
 
 // Types for the parameters passed to Relay
 export type FilterParams = {
-  [Name in FilterParamName]: string | boolean | undefined
+  [Name in FilterParamName]: string | boolean | undefined | string[]
 }
 
 export enum FilterDisplayName {
+  artistIDs = "Artists",
   artistsIFollow = "Artist",
   color = "Color",
   estimateRange = "Price/estimate range",

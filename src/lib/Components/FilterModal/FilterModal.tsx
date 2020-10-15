@@ -155,6 +155,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
 }
 
 export type FilterScreen =
+  | "artistIDs"
   | "artistsIFollow"
   | "color"
   | "dimensionRange"
@@ -213,10 +214,9 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
     })
   )
 
-  console.log("=========")
-  console.log({ aggregateFilterOptions })
-
   const filterOptions: FilterDisplayConfig[] = getStaticFilterOptionsByMode(mode).concat(aggregateFilterOptions)
+  console.log("=========")
+  console.log({ filterOptions })
 
   const sortedFilterOptions = filterOptions
     .sort(getFilterScreenSortByMode(mode))
@@ -459,6 +459,7 @@ const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string
   MEDIUM: FilterParamName.medium,
   PRICE_RANGE: FilterParamName.priceRange,
   FOLLOWED_ARTISTS: "artistsIFollow",
+  ARTIST: "artistIDs",
 }
 
 // For most cases filter key can simply be FilterParamName, exception
@@ -472,6 +473,7 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   medium: "MEDIUM",
   priceRange: "PRICE_RANGE",
   artistsIFollow: "FOLLOWED_ARTISTS",
+  artistIDs: "ARTIST",
 }
 
 export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {
@@ -481,6 +483,11 @@ export const aggregationForFilter = (filterKey: string, aggregations: Aggregatio
 }
 
 export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
+  artistIDs: {
+    displayText: FilterDisplayName.artistIDs,
+    filterType: "artistIDs",
+    ScreenComponent: ArtistsIFollowOptionsScreen,
+  },
   artistsIFollow: {
     displayText: FilterDisplayName.artistsIFollow,
     filterType: "artistsIFollow",
@@ -593,4 +600,4 @@ const FairFiltersSorted: FilterScreen[] = [
   "gallery",
   "institution",
 ]
-const SaleArtworksFiltersSorted: FilterScreen[] = ["sort", "viewAs", "estimateRange", "artistsIFollow", "medium"]
+const SaleArtworksFiltersSorted: FilterScreen[] = ["sort", "viewAs", "estimateRange", "artistIDs", "medium"]

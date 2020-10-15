@@ -124,6 +124,7 @@ export const SaleLotsListContainer = createPaginationContainer(
       @argumentDefinitions(
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
+        artistIDs: { type: "[String]", defaultValue: [] }
         estimateRange: { type: "String", defaultValue: "" }
         sort: { type: "String", defaultValue: "position" }
         saleID: { type: "ID" }
@@ -131,6 +132,7 @@ export const SaleLotsListContainer = createPaginationContainer(
         saleArtworksConnection(
           after: $cursor
           saleID: $saleID
+          artistIDs: $artistIDs
           aggregations: [ARTIST, MEDIUM, TOTAL]
           estimateRange: $estimateRange
           first: $count
@@ -179,7 +181,14 @@ export const SaleLotsListContainer = createPaginationContainer(
       # $saleID: ID
       @raw_response_type {
         ...SaleLotsList_saleArtworksConnection
-        @arguments(count: $count, cursor: $cursor, sort: $sort, estimateRange: $estimateRange, saleID: $saleID)
+        @arguments(
+          artistIDs: $artistIDs
+          count: $count
+          cursor: $cursor
+          sort: $sort
+          estimateRange: $estimateRange
+          saleID: $saleID
+        )
       }
     `,
   }

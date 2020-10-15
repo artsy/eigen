@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9f3a2793ef37a8f6692d02b47dfc0a64 */
+/* @relayHash 09f503437ebadd3e2ad587866867f890 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -206,7 +206,7 @@ fragment SaleArtworkList_connection on ArtworkConnectionInterface {
 }
 
 fragment SaleLotsList_saleArtworksConnection_2JeX41 on Query {
-  saleArtworksConnection(after: $cursor, saleID: $saleID, aggregations: [ARTIST, MEDIUM, TOTAL], estimateRange: $estimateRange, first: $count, sort: $sort) {
+  saleArtworksConnection(after: $cursor, saleID: $saleID, artistIDs: [], aggregations: [ARTIST, MEDIUM, TOTAL], estimateRange: $estimateRange, first: $count, sort: $sort) {
     aggregations {
       slice
       counts {
@@ -290,6 +290,11 @@ v4 = [
       "MEDIUM",
       "TOTAL"
     ]
+  },
+  {
+    "kind": "Literal",
+    "name": "artistIDs",
+    "value": ([]/*: any*/)
   },
   (v1/*: any*/),
   {
@@ -741,6 +746,7 @@ return {
         "args": (v4/*: any*/),
         "filters": [
           "saleID",
+          "artistIDs",
           "aggregations",
           "estimateRange",
           "sort"
@@ -753,7 +759,7 @@ return {
     ]
   },
   "params": {
-    "id": "9f3a2793ef37a8f6692d02b47dfc0a64",
+    "id": "09f503437ebadd3e2ad587866867f890",
     "metadata": {},
     "name": "SaleLotsListQuery",
     "operationKind": "query",
