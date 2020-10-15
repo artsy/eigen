@@ -60,12 +60,6 @@ v2 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
-  "type": "String"
-},
-v3 = {
-  "enumValues": null,
-  "nullable": true,
-  "plural": false,
   "type": "Boolean"
 };
 return {
@@ -230,9 +224,19 @@ return {
           "plural": false,
           "type": "CroppedImageUrl"
         },
-        "artist.image.cropped.url": (v2/*: any*/),
+        "artist.image.cropped.url": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "String"
+        },
         "artist.internalID": (v1/*: any*/),
-        "artist.name": (v2/*: any*/),
+        "artist.name": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "String"
+        },
         "artist.slug": (v1/*: any*/),
         "artist.targetSupply": {
           "enumValues": null,
@@ -240,8 +244,8 @@ return {
           "plural": false,
           "type": "ArtistTargetSupply"
         },
-        "artist.targetSupply.isInMicrofunnel": (v3/*: any*/),
-        "artist.targetSupply.isTargetSupply": (v3/*: any*/)
+        "artist.targetSupply.isInMicrofunnel": (v2/*: any*/),
+        "artist.targetSupply.isTargetSupply": (v2/*: any*/)
       }
     },
     "name": "ArtistConsignButtonTestsQuery",
