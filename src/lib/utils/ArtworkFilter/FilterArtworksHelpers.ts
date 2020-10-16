@@ -20,7 +20,6 @@ export enum FilterParamName {
   waysToBuyBuy = "acquireable",
   waysToBuyInquire = "inquireableOnly",
   waysToBuyMakeOffer = "offerable",
-  artist = "artistIDs",
 }
 
 // Types for the parameters passed to Relay
@@ -91,12 +90,12 @@ const getDefaultParamsByType = (fitlerType: FilterType) => {
   return defaultSaleArtworksParams
 }
 
-const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams) => {
+const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams, filterType: FilterType) => {
   const groupedFilters = groupBy(appliedFilters, "paramName")
   Object.keys(groupedFilters).forEach((paramName) => {
     const paramValues = groupedFilters[paramName].map((item) => item.paramValue)
     // If we add more filter options that can take arrays, we would include them here.
-    if (paramName === FilterParamName.artist) {
+    if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
       // For the artistIDs param, we want to return an array
       filterParams[paramName] = paramValues as string[]
     } else {
@@ -110,12 +109,12 @@ const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: Fil
 
 export const filterArtworksParams = (appliedFilters: FilterArray, filterType: FilterType = "artwork") => {
   const defaultFilterParams = getDefaultParamsByType(filterType)
-  return paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams })
+  return paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams }, filterType)
 }
 
 const getChangedParams = (appliedFilters: FilterArray, filterType: FilterType = "artwork") => {
   const defaultFilterParams = getDefaultParamsByType(filterType)
-  const filterParams = paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams })
+  const filterParams = paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams }, filterType)
   // when filters cleared return default params
   return Object.keys(filterParams).length === 0 ? defaultFilterParams : filterParams
 }
@@ -142,10 +141,14 @@ export const changedFiltersParams = (currentFilterParams: FilterParams, selected
 /**
  * Formats the display for the Filter Modal "home" screen.
  */
-export const selectedOption = (selectedOptions: FilterArray, filterType: FilterScreen) => {
+export const selectedOption = (
+  selectedOptions: FilterArray,
+  filterScreen: FilterScreen,
+  filterType: FilterType = "artwork"
+) => {
   const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
 
-  if (filterType === "waysToBuy") {
+  if (filterScreen === "waysToBuy") {
     const waysToBuyFilterNames = [
       FilterParamName.waysToBuyBuy,
       FilterParamName.waysToBuyMakeOffer,
@@ -160,20 +163,20 @@ export const selectedOption = (selectedOptions: FilterArray, filterType: FilterS
       return "All"
     }
     return waysToBuyOptions.join(", ")
-  } else if (filterType === "gallery" || filterType === "institution") {
-    const displayText = selectedOptions.find((option) => option.filterKey === filterType)?.displayText
+  } else if (filterScreen === "gallery" || filterScreen === "institution") {
+    const displayText = selectedOptions.find((option) => option.filterKey === filterScreen)?.displayText
     if (displayText) {
       return displayText
     } else {
       return "All"
     }
-  } else if (filterType === "artist") {
+  } else if (filterScreen === "artist") {
     const hasArtistsIFollowChecked = !!selectedOptions.find(({ paramName, paramValue }) => {
       return paramName === FilterParamName.artistsIFollow && paramValue === true
     })
 
     const selectedArtistNames = selectedOptions.map(({ paramName, displayText }) => {
-      if (paramName === FilterParamName.artist) {
+      if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
         return displayText
       }
     })
@@ -191,7 +194,7 @@ export const selectedOption = (selectedOptions: FilterArray, filterType: FilterS
       return "All"
     }
   }
-  return selectedOptions.find((option) => option.paramName === filterType)?.displayText
+  return selectedOptions.find((option) => option.paramName === filterScreen)?.displayText
 }
 
 export type aggregationsType =

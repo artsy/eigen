@@ -10,7 +10,7 @@ import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { FakeNavigator as MockNavigator } from "../../Bidding/__tests__/Helpers/FakeNavigator"
-import { ArtistOptionsScreen } from "../ArtistOptions"
+import { ArtistIDsArtworksOptionsScreen } from "../ArtistIDsArtworksOptions"
 import { FilterToggleButton } from "../FilterToggleButton"
 import { OptionListItem } from "../MultiSelectOption"
 
@@ -79,7 +79,7 @@ describe("Artist options screen", () => {
           dispatch,
         }}
       >
-        <ArtistOptionsScreen navigator={navigator} />
+        <ArtistIDsArtworksOptionsScreen navigator={navigator} />
       </ArtworkFilterContext.Provider>
     )
   }
@@ -92,6 +92,7 @@ describe("Artist options screen", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: mockAggregations,
+      filterType: "artwork",
     }
   })
 
@@ -109,7 +110,7 @@ describe("Artist options screen", () => {
       state = {
         selectedFilters: [
           {
-            paramName: FilterParamName.artist,
+            paramName: FilterParamName.artistIDs,
             paramValue: "artist-2",
             displayText: "Artist 2",
           },
@@ -118,6 +119,7 @@ describe("Artist options screen", () => {
         previouslyAppliedFilters: [],
         applyFilters: false,
         aggregations: mockAggregations,
+        filterType: "artwork",
       }
 
       const component = renderWithWrappers(<MockArtistScreen initialState={state} navigator={mockNavigator} />)
@@ -132,6 +134,7 @@ describe("Artist options screen", () => {
         previouslyAppliedFilters: [],
         applyFilters: false,
         aggregations: mockAggregations,
+        filterType: "artwork",
       }
 
       const tree = renderWithWrappers(<MockArtistScreen initialState={state} navigator={mockNavigator} />)
@@ -155,7 +158,7 @@ describe("Artist options screen", () => {
       state = {
         selectedFilters: [
           {
-            paramName: FilterParamName.artist,
+            paramName: FilterParamName.artistIDs,
             paramValue: "artist-2",
             displayText: "Artist 2",
           },
@@ -164,6 +167,7 @@ describe("Artist options screen", () => {
         previouslyAppliedFilters: [],
         applyFilters: false,
         aggregations: mockAggregations,
+        filterType: "artwork",
       }
 
       const tree = renderWithWrappers(<MockArtistScreen initialState={state} navigator={mockNavigator} />)
@@ -209,6 +213,7 @@ describe("Artist options screen", () => {
         previouslyAppliedFilters: [],
         applyFilters: false,
         aggregations: noFollowedArtistsAggregations,
+        filterType: "artwork",
       }
 
       const tree = renderWithWrappers(<MockArtistScreen initialState={state} navigator={mockNavigator} />)

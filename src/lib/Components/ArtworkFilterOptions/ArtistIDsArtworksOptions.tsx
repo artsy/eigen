@@ -4,23 +4,22 @@ import {
   FilterData,
   useSelectedOptionsDisplay,
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { aggregationForFilter, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { sortBy } from "lodash"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
-import { aggregationForFilter } from "../FilterModal"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
-interface ArtistOptionsScreenProps {
+interface ArtistIDsArtworksOptionsScreenProps {
   navigator: NavigatorIOS
 }
 
-export const ArtistOptionsScreen: React.FC<ArtistOptionsScreenProps> = ({ navigator }) => {
+export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsScreenProps> = ({ navigator }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const selectedOptions = useSelectedOptionsDisplay()
 
   const selectedArtistOptions = selectedOptions.filter((value) => {
-    return value.paramName === FilterParamName.artist
+    return value.paramName === FilterParamName.artistIDs
   })
 
   const selectedArtistIFollowOptions = selectedOptions.filter((value) => {
@@ -31,7 +30,7 @@ export const ArtistOptionsScreen: React.FC<ArtistOptionsScreenProps> = ({ naviga
   const artistDisplayOptions = aggregation?.counts.map((aggCount) => {
     return {
       displayText: aggCount.name,
-      paramName: FilterParamName.artist,
+      paramName: FilterParamName.artistIDs,
       paramValue: aggCount.value,
       filterKey: "artist",
     }
@@ -53,7 +52,7 @@ export const ArtistOptionsScreen: React.FC<ArtistOptionsScreenProps> = ({ naviga
     // Send the paramValue directly if we're dealing with an artist filter.
     // If we're selecting the "Artists I Follow" filter, instead
     // send the opposite of the current val.
-    const selectedVal = option.paramName === FilterParamName.artist ? option.paramValue : !option.paramValue
+    const selectedVal = option.paramName === FilterParamName.artistIDs ? option.paramValue : !option.paramValue
 
     dispatch({
       type: "selectFilters",
@@ -68,7 +67,7 @@ export const ArtistOptionsScreen: React.FC<ArtistOptionsScreenProps> = ({ naviga
 
   const selectedValuesForParam = [...selectedArtistOptions, ...selectedArtistIFollowOptions]
   const itemIsSelected = (item: FilterData): boolean => {
-    if (item.paramName === FilterParamName.artist) {
+    if (item.paramName === FilterParamName.artistIDs) {
       return !!(selectedValuesForParam ?? []).find(({ paramValue }) => item.paramValue === paramValue)
     }
     return !!item.paramValue
@@ -85,7 +84,7 @@ export const ArtistOptionsScreen: React.FC<ArtistOptionsScreenProps> = ({ naviga
 
   return (
     <MultiSelectOptionScreen
-      filterHeaderText={FilterDisplayName.artist}
+      filterHeaderText={FilterDisplayName.artistIDs}
       filterOptions={allOptions}
       onSelect={selectOption}
       navigator={navigator}

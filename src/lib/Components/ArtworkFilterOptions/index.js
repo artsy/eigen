@@ -1,5 +1,4 @@
-export * from "./ArtistOptions"
-export * from "./ArtistsOptions"
+export * from "./ArtistIDsOptionsScreen"
 export * from "./ColorOptions"
 export * from "./EstimateRangeOptions"
 export * from "./GalleryOptions"

@@ -5,7 +5,6 @@ import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
-import { OptionListItem } from "../FilterModal/FilterModal"
 
 interface SingleSelectOptionScreenProps {
   navigator: NavigatorIOS
@@ -86,3 +85,13 @@ export const InnerOptionListItem = styled(Flex)`
 
 export const SingleSelectOptionListItemRow = styled(TouchableOpacity)``
 export const Option = styled(Sans)``
+
+export const OptionListItem = styled(Flex)`
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  border: solid 0.5px ${color("black10")};
+  border-right-width: 0;
+  border-top-width: 0;
+  border-left-width: 0;
+`

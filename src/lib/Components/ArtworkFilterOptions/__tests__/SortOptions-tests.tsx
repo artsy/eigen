@@ -5,9 +5,8 @@ import { Box, CheckIcon, Theme } from "palette"
 import React from "react"
 import { ReactTestRenderer } from "react-test-renderer"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
-import { OptionListItem } from "../../../../lib/Components/FilterModal"
 import { ArtworkFilterContext, ArtworkFilterContextState } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
-import { InnerOptionListItem } from "../SingleSelectOption"
+import { InnerOptionListItem, OptionListItem } from "../SingleSelectOption"
 import { SortOptionsScreen } from "../SortOptions"
 
 describe("Sort Options Screen", () => {

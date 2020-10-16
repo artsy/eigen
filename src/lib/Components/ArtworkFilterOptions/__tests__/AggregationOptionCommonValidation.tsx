@@ -7,8 +7,7 @@ import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
-import { OptionListItem } from "../../FilterModal/FilterModal"
-import { InnerOptionListItem, SingleSelectOptionListItemRow } from "../SingleSelectOption"
+import { InnerOptionListItem, OptionListItem, SingleSelectOptionListItemRow } from "../SingleSelectOption"
 
 type MockScreen = (props: { initialState: ArtworkFilterContextState; navigator: MockNavigator }) => ReactElement
 

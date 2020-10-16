@@ -39,7 +39,7 @@ export const reducer = (
         ({ paramValue, paramName }) => {
           // We don't want to union the artistID params, as each entry corresponds to a
           // different artist that may be selected. Instead we de-dupe based on the paramValue.
-          if (paramName === FilterParamName.artist) {
+          if (paramName === FilterParamName.artistIDs && artworkFilterState.filterType === "artwork") {
             return paramValue
           } else {
             return paramName
@@ -53,7 +53,7 @@ export const reducer = (
       const appliedFilters = filter(filtersToApply, ({ paramName, paramValue }) => {
         // This logic is specific to filters that allow for multiple options. Right now
         // it only applies to the artist filter, but this will likely change.
-        if (paramName === FilterParamName.artist) {
+        if (paramName === FilterParamName.artistIDs && artworkFilterState.filterType === "artwork") {
           // See if we have an existing entry in previouslyAppliedFilters
           const hasExistingPreviouslyAppliedFilter = artworkFilterState.previouslyAppliedFilters.find(
             (previouslyAppliedFilter) =>
@@ -88,9 +88,13 @@ export const reducer = (
 
       // This logic is specific to filters that can have multiple options. Right now it only
       // applies to the artist filter, but this will likely change in the future.
-      if (action.payload.paramName === FilterParamName.artist) {
+      if (action.payload.paramName === FilterParamName.artistIDs && artworkFilterState.filterType === "artwork") {
         const filtersWithoutSelectedArtist = artworkFilterState.selectedFilters.filter(({ paramName, paramValue }) => {
-          if (paramName === FilterParamName.artist && paramValue === action.payload.paramValue) {
+          if (
+            paramName === FilterParamName.artistIDs &&
+            artworkFilterState.filterType === "artwork" &&
+            paramValue === action.payload.paramValue
+          ) {
             removedOption = true
             return false
           }
@@ -121,7 +125,7 @@ export const reducer = (
 
         if (appliedFilter.paramValue === paramValue) {
           // Ignore this case when it's an artistID.
-          return appliedFilter.paramName === FilterParamName.artist
+          return appliedFilter.paramName === FilterParamName.artistIDs && artworkFilterState.filterType === "artwork"
         }
 
         return true
@@ -249,9 +253,11 @@ const defaultCommonFilterOptions: Record<FilterParamName, string | boolean | und
 export const selectedOptionsUnion = ({
   selectedFilters,
   previouslyAppliedFilters,
+  filterType = "artwork",
 }: {
   selectedFilters: FilterArray
   previouslyAppliedFilters: FilterArray
+  filterType?: FilterType
 }): FilterArray => {
   const { state } = useContext(ArtworkFilterContext)
 
@@ -324,7 +330,7 @@ export const selectedOptionsUnion = ({
     previouslyAppliedFilters,
     defaultFilters,
     ({ paramValue, paramName }) => {
-      if (paramName === FilterParamName.artist) {
+      if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
         return paramValue
       } else {
         return paramName
@@ -334,7 +340,7 @@ export const selectedOptionsUnion = ({
 
   // Then, handle the case where a multi-select option is technically de-selected.
   return preliminarySelectedFilters.filter(({ paramName, paramValue }) => {
-    if (paramName === FilterParamName.artist) {
+    if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
       // See if we have an existing entry in previouslyAppliedFilters
       const hasExistingPreviouslyAppliedFilter = previouslyAppliedFilters.find(
         (previouslyAppliedFilter) =>
@@ -360,6 +366,7 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
   return selectedOptionsUnion({
     selectedFilters: state.selectedFilters,
     previouslyAppliedFilters: state.previouslyAppliedFilters,
+    filterType: state.filterType,
   })
 }
 

@@ -4,11 +4,13 @@ import React, { useContext, useState } from "react"
 import { NavigatorIOS } from "react-native"
 import { FilterOptionsItem, MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 
-interface WaysToBuyOptionsScreenProps {
+interface ArtistIDsSaleArtworksOptionsScreenProps {
   navigator: NavigatorIOS
 }
 
-export const ArtistsOptionsScreen: React.FC<WaysToBuyOptionsScreenProps> = ({ navigator }) => {
+export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksOptionsScreenProps> = ({
+  navigator,
+}) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const paramName = FilterParamName.artistIDs
   const aggregation = aggregationForFilter(paramName, state.aggregations)

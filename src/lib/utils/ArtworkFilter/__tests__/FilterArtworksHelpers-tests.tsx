@@ -292,7 +292,7 @@ describe("filterArtworksParams helper", () => {
       {
         displayText: "Artist 1",
         paramValue: "artist-1",
-        paramName: FilterParamName.artist,
+        paramName: FilterParamName.artistIDs,
       },
       {
         displayText: "Make Offer",
@@ -319,12 +319,12 @@ describe("filterArtworksParams helper", () => {
       {
         displayText: "Artist 1",
         paramValue: "artist-1",
-        paramName: FilterParamName.artist,
+        paramName: FilterParamName.artistIDs,
       },
       {
         displayText: "Artist 2",
         paramValue: "artist-2",
-        paramName: FilterParamName.artist,
+        paramName: FilterParamName.artistIDs,
       },
     ]
     expect(filterArtworksParams(appliedFilters)).toEqual({
@@ -446,47 +446,47 @@ describe("selectedOption", () => {
     it("returns the correct value in the default case", () => {
       const selectedOptions = [] as FilterArray
 
-      expect(selectedOption(selectedOptions, "artist")).toEqual("All")
+      expect(selectedOption(selectedOptions, "artistIDs")).toEqual("All")
     })
 
     it("returns the correct value when one artist is selected", () => {
       const selectedOptions = [
         {
-          paramName: FilterParamName.artist,
+          paramName: FilterParamName.artistIDs,
           paramValue: "artist-1",
           displayText: "Artist 1",
         },
       ]
 
-      expect(selectedOption(selectedOptions, "artist")).toEqual("Artist 1")
+      expect(selectedOption(selectedOptions, "artistIDs")).toEqual("Artist 1")
     })
 
     it("returns the correct value when multiple artists are selected", () => {
       const selectedOptions = [
         {
-          paramName: FilterParamName.artist,
+          paramName: FilterParamName.artistIDs,
           paramValue: "artist-1",
           displayText: "Z Artist 1",
         },
         {
-          paramName: FilterParamName.artist,
+          paramName: FilterParamName.artistIDs,
           paramValue: "artist-2",
           displayText: "Artist 2",
         },
       ]
 
-      expect(selectedOption(selectedOptions, "artist")).toEqual("Artist 2, 1 more")
+      expect(selectedOption(selectedOptions, "artistIDs")).toEqual("Artist 2, 1 more")
     })
 
     it("returns the correct value when multiple artists and Artist I follow are selected", () => {
       const selectedOptions = [
         {
-          paramName: FilterParamName.artist,
+          paramName: FilterParamName.artistIDs,
           paramValue: "artist-1",
           displayText: "Z Artist 1",
         },
         {
-          paramName: FilterParamName.artist,
+          paramName: FilterParamName.artistIDs,
           paramValue: "artist-2",
           displayText: "Artist 2",
         },
@@ -497,7 +497,7 @@ describe("selectedOption", () => {
         },
       ]
 
-      expect(selectedOption(selectedOptions, "artist")).toEqual("All artists I follow, 2 more")
+      expect(selectedOption(selectedOptions, "artistIDs")).toEqual("All artists I follow, 2 more")
     })
   })
 })
