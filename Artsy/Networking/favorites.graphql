@@ -18,7 +18,7 @@
               id: internalID
               aspect_ratio: aspectRatio
               is_default: isDefault
-              image_versions: imageURL
+              image_versions: imageVersions
               image_url: imageURL
             }
           }
