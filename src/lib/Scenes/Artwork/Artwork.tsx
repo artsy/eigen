@@ -10,6 +10,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { getCurrentEmissionState } from "lib/store/AppStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
+import { getSmallImageVersionForThumbnail } from "lib/utils/artworkImageUtil"
 import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import {
   PlaceholderBox,
@@ -97,7 +98,7 @@ export class Artwork extends React.Component<Props, State> {
 
   componentDidMount() {
     const artwork = this.props.artworkAboveTheFold
-    const defaultArtworkImage = artwork.images?.filter(image => image?.isDefault)[0]
+    const defaultArtworkImage = artwork.images?.filter((image) => image?.isDefault)[0]
     // TODO: Should this be a gemini URL?
     const imageURL = defaultArtworkImage?.imageURL?.replace(
       ":version",
