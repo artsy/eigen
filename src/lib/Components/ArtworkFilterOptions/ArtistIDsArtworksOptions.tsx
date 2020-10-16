@@ -26,7 +26,7 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
     return value.paramName === FilterParamName.artistsIFollow
   })
 
-  const aggregation = aggregationForFilter("artist", state.aggregations)
+  const aggregation = aggregationForFilter(FilterParamName.artistIDs, state.aggregations)
   const artistDisplayOptions = aggregation?.counts.map((aggCount) => {
     return {
       displayText: aggCount.name,
