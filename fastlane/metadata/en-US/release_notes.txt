@@ -1,8 +1,3 @@
-This update includes a number of improvements and bug fixes, including:
-
-• Adds filtering to Artist Series.
-• Fixes an issue with submitting consignments from Artwork pages.
-• Fixes an issue with displaying long email addresses in the Profile tab.
-• Handles errors properly in Viewing Rooms.
+This update fixes a bug that affected deep link handling when the app is closed.
 
 Have feedback? Email us at support@artsy.net
