@@ -155,4 +155,52 @@ describe("Fair2FollowedArtistsRail", () => {
     })
     expect(wrapper.root.findAllByType(TouchableOpacity).length).toBe(0)
   })
+
+  it("tracks taps on the View All button", () => {
+    const wrapper = getWrapper({
+      Fair: () => ({
+        internalID: "xyz123",
+        slug: "art-basel-hong-kong-2019",
+        followedArtistArtworks: {
+          edges: [
+            {
+              artwork: {
+                internalID: "id-1",
+                slug: "some-artwork-1",
+              },
+            },
+            {
+              artwork: {
+                internalID: "id-2",
+                slug: "some-artwork-2",
+              },
+            },
+            {
+              artwork: {
+                internalID: "id-3",
+                slug: "some-artwork-3",
+              },
+            },
+            {
+              artwork: {
+                internalID: "id-4",
+                slug: "some-artwork-4",
+              },
+            },
+          ],
+        },
+      }),
+    })
+    const viewAllButton = wrapper.root.findAllByType(TouchableOpacity)[0]
+    act(() => viewAllButton.props.onPress())
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedArtworkGroup",
+      context_module: "worksByArtistsYouFollowRail",
+      context_screen_owner_id: "xyz123",
+      context_screen_owner_slug: "art-basel-hong-kong-2019",
+      context_screen_owner_type: "fair",
+      destination_screen_owner_type: "fairArtworks",
+      type: "viewAll",
+    })
+  })
 })
