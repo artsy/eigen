@@ -18,7 +18,13 @@ export class Fair extends React.Component<Props> {
   componentDidMount() {
     const handoffFair = {
       entityType: "Fair",
-      slug: this.props.fair.id,
+      fairID: this.props.fair.id,
+      slug: this.props.fair.slug,
+      name: this.props.fair.name,
+      href: this.props.fair.href,
+      exhibitionPeriod: this.props.fair.exhibitionPeriod,
+      imageURL: this.props.fair.image?.imageURL,
+      city: this.props.fair.location?.city,
     }
     NativeModules.ARTemporaryAPIModule.registerForHandoff(handoffFair)
   }
@@ -36,6 +42,16 @@ export const FairContainer = createFragmentContainer(Fair, {
   fair: graphql`
     fragment Fair_fair on Fair {
       id
+      slug
+      name
+      href
+      exhibitionPeriod
+      image {
+        imageURL
+      }
+      location {
+        city
+      }
       ...FairDetail_fair
     }
   `,

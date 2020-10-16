@@ -6,6 +6,16 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Fair_fair = {
     readonly id: string;
+    readonly slug: string;
+    readonly name: string | null;
+    readonly href: string | null;
+    readonly exhibitionPeriod: string | null;
+    readonly image: {
+        readonly imageURL: string | null;
+    } | null;
+    readonly location: {
+        readonly city: string | null;
+    } | null;
     readonly " $fragmentRefs": FragmentRefs<"FairDetail_fair">;
     readonly " $refType": "Fair_fair";
 };
@@ -31,6 +41,70 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "name",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "href",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "exhibitionPeriod",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "image",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "imageURL",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Location",
+      "kind": "LinkedField",
+      "name": "location",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "city",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
       "args": null,
       "kind": "FragmentSpread",
       "name": "FairDetail_fair"
@@ -39,5 +113,5 @@ const node: ReaderFragment = {
   "type": "Fair",
   "abstractKey": null
 };
-(node as any).hash = '76379b672e62b0644edc02b901ea0bee';
+(node as any).hash = 'b88e632ccff251f7cf2a939db0dbfdcc';
 export default node;
