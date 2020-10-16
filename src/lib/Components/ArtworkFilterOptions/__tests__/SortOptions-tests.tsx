@@ -22,6 +22,7 @@ describe("Sort Options Screen", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
     }
   })
 
@@ -80,6 +81,7 @@ describe("Sort Options Screen", () => {
         ],
         applyFilters: false,
         aggregations: [],
+        filterType: "artwork",
       }
 
       const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
@@ -101,6 +103,7 @@ describe("Sort Options Screen", () => {
         previouslyAppliedFilters: [],
         applyFilters: false,
         aggregations: [],
+        filterType: "artwork",
       }
 
       const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
@@ -136,6 +139,7 @@ describe("Sort Options Screen", () => {
         ],
         applyFilters: false,
         aggregations: [],
+        filterType: "artwork",
       }
 
       const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
@@ -164,6 +168,7 @@ describe("Sort Options Screen", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
     }
     const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
     const selectedRow = selectedSortOption(tree)

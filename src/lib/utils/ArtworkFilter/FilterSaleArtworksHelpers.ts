@@ -4,8 +4,10 @@ import { forOwn } from "lodash"
 
 // General filter types and objects
 export enum FilterParamName {
+  artistIDs = "artistIDs",
   artistsIFollow = "includeArtworksByFollowedArtists",
   color = "color",
+  estimateRange = "estimateRange",
   gallery = "partnerID",
   institution = "partnerID",
   medium = "medium",
@@ -22,10 +24,11 @@ export enum FilterParamName {
 
 // Types for the parameters passed to Relay
 export type FilterParams = {
-  [Name in FilterParamName]: string | boolean | undefined
+  [Name in FilterParamName]: string | boolean | string[] | undefined
 }
 
 export enum FilterDisplayName {
+  artistIDs = "Artists",
   color = "Color",
   gallery = "Gallery",
   institution = "Institution",
@@ -60,6 +63,7 @@ export interface AggregateOption {
 }
 
 const defaultFilterParams = {
+  artistIDs: [],
   sort: "-decayed_merch",
   medium: "*",
   priceRange: "*-*",

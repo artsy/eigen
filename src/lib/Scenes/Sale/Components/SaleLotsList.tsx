@@ -34,7 +34,6 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
 
   useEffect(() => {
     if (state.applyFilters) {
-      console.log({ filterParams })
       relay.refetchConnection(
         10,
         (error) => {
@@ -48,8 +47,6 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
   }, [state.appliedFilters])
 
   useEffect(() => {
-    console.log("-------")
-    console.log({ saleArtworksConnection })
     dispatch({
       type: "setAggregations",
       payload: saleArtworksConnection.saleArtworksConnection?.aggregations,

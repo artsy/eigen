@@ -1,8 +1,8 @@
-import { ArtworkFilterContext, FilterData, ParamDefaultValues } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFilterContext, FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { aggregationForFilter, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import { NavigatorIOS } from "react-native"
-import { MultiSelectOptionScreen } from "./MultiSelectOption"
+import { FilterOptionsItem, MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 
 interface WaysToBuyOptionsScreenProps {
   navigator: NavigatorIOS
@@ -10,44 +10,76 @@ interface WaysToBuyOptionsScreenProps {
 
 export const ArtistsOptionsScreen: React.FC<WaysToBuyOptionsScreenProps> = ({ navigator }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
-
   const paramName = FilterParamName.artistIDs
   const aggregation = aggregationForFilter(paramName, state.aggregations)
-  const options = aggregation?.counts.map((aggCount) => {
+
+  const artistIDsFilterData: FilterData | undefined = state.appliedFilters.find(
+    (filter) => filter.paramName === paramName
+  )
+
+  let oldSelectedOptions = artistIDsFilterData?.paramValue
+  // Make sure that the option "All Artist" is selected if the user did not select any artistS
+  if (!oldSelectedOptions || (Array.isArray(oldSelectedOptions) && oldSelectedOptions.length === 0)) {
+    oldSelectedOptions = ["all"]
+  }
+
+  const [selectedOptions, setSelectedOptions] = useState<string[]>(oldSelectedOptions as string[])
+
+  const options: FilterOptionsItem[] | undefined = aggregation?.counts.map((aggCount) => {
     return {
       displayText: aggCount.name,
       paramName,
       paramValue: aggCount.value,
-      filterKey: paramName,
+      count: aggCount.count,
     }
   })
-  const allOption: FilterData = {
+
+  const allOption: FilterOptionsItem = {
     displayText: "All artists",
     paramName,
-    filterKey: paramName,
-    paramValue: ParamDefaultValues.artistIDs,
+    count: null,
+    paramValue: "all",
   }
+
   const displayOptions = [allOption].concat(options ?? [])
 
-  console.log({ displayOptions })
-  const selectOption = (option: FilterData, updatedValue: boolean) => {
+  const selectOption = (option: FilterData) => {
+    let updatedParamValue: string[] = []
+
+    // If the user selected the all option
+    if (option.paramValue !== "all") {
+      // Add/Remove the new artist to the selectedOptions
+      if (selectedOptions.includes(option.paramValue as string)) {
+        updatedParamValue = selectedOptions.filter((paramValue) => paramValue !== option.paramValue)
+      } else {
+        updatedParamValue = [...selectedOptions, option.paramValue as string]
+      }
+      // Remove the all artists filter from the selectedOptions
+      if (updatedParamValue.includes("all")) {
+        updatedParamValue = updatedParamValue.filter((paramValue) => paramValue !== "all")
+      }
+      setSelectedOptions(updatedParamValue)
+    } else {
+      setSelectedOptions(["all"])
+    }
+
     dispatch({
       type: "selectFilters",
       payload: {
         displayText: option.displayText,
-        paramValue: updatedValue,
-        paramName: option.paramName,
+        paramValue: updatedParamValue,
+        paramName,
       },
     })
   }
 
   return (
-    <MultiSelectOptionScreen
+    <MultiSelectCheckOptionScreen
       onSelect={selectOption}
-      filterHeaderText={FilterDisplayName.waysToBuy}
+      filterHeaderText={FilterDisplayName.artistIDs}
       filterOptions={displayOptions}
+      selectedOptions={selectedOptions}
       navigator={navigator}
-      withCheckMark
     />
   )
 }

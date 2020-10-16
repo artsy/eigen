@@ -7,7 +7,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
 import { Flex } from "palette"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Animated } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -47,6 +47,14 @@ const Sale: React.FC<Props> = ({ queryRes }) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
   const scrollAnim = useRef(new Animated.Value(0)).current
+
+  // TODO: Remove this
+  useEffect(() => {
+    setTimeout(() => {
+      setFilterArtworkModalVisible(true)
+    }, 1500)
+  }, [])
+
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
   const viewableItemsChangedRef = React.useRef(({ viewableItems }: ViewableItems) => {
     const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {

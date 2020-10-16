@@ -146,7 +146,7 @@ export const reducer = (
         previouslyAppliedFilters: action.payload,
         applyFilters: false,
         aggregations: artworkFilterState.aggregations,
-        filterType: "artwork",
+        filterType: "artwork", // TODO: Check this again
       }
   }
 }
