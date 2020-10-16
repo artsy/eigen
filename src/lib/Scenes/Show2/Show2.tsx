@@ -7,6 +7,7 @@ import { Flex, Separator, Spacer } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { Show2ContextCardFragmentContainer as ShowContextCard } from "./Components/Show2ContextCard"
 import { Show2HeaderFragmentContainer as ShowHeader } from "./Components/Show2Header"
 import { Show2InfoFragmentContainer as ShowInfo } from "./Components/Show2Info"
 import { Show2InstallShotsFragmentContainer as ShowInstallShots } from "./Components/Show2InstallShots"
@@ -24,6 +25,7 @@ export const Show2: React.FC<Show2Props> = ({ show }) => {
     <ShowHeader show={show} mx={2} />,
     ...(!!show.images?.length ? [<ShowInstallShots show={show} />] : []),
     <ShowInfo show={show} mx={2} />,
+    <ShowContextCard show={show} />,
   ]
 
   return (
@@ -44,6 +46,7 @@ export const Show2FragmentContainer = createFragmentContainer(Show2, {
       ...Show2Header_show
       ...Show2InstallShots_show
       ...Show2Info_show
+      ...Show2ContextCard_show
       images {
         __typename
       }
