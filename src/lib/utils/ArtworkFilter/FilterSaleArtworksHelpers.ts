@@ -30,6 +30,7 @@ export type FilterParams = {
 export enum FilterDisplayName {
   artistIDs = "Artists",
   color = "Color",
+  estimateRange = "Price/estimate range",
   gallery = "Gallery",
   institution = "Institution",
   medium = "Medium",
@@ -63,9 +64,9 @@ export interface AggregateOption {
 }
 
 const defaultFilterParams = {
-  artistIDs: [],
   sort: "-decayed_merch",
   medium: "*",
+  estimateRange: "",
   priceRange: "*-*",
   dimensionRange: "*-*",
   atAuction: false,

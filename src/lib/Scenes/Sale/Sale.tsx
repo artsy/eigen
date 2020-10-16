@@ -92,18 +92,18 @@ const Sale: React.FC<Props> = ({ queryRes }) => {
       key: "header",
       content: <SaleHeader sale={sale} scrollAnim={scrollAnim} />,
     },
-    // {
-    //   key: "registerToBid",
-    //   content: (
-    //     <Flex mx="2" mt={2}>
-    //       <RegisterToBidButton sale={sale} />
-    //     </Flex>
-    //   ),
-    // },
-    // {
-    //   key: "saleArtworksRail",
-    //   content: <SaleArtworksRailContainer me={me} />,
-    // },
+    {
+      key: "registerToBid",
+      content: (
+        <Flex mx="2" mt={2}>
+          <RegisterToBidButton sale={sale} />
+        </Flex>
+      ),
+    },
+    {
+      key: "saleArtworksRail",
+      content: <SaleArtworksRailContainer me={me} />,
+    },
     {
       key: "saleLotsList",
       content: <SaleLotsListContainer saleArtworksConnection={queryRes} saleID={sale.slug} saleSlug={sale.slug} />,

@@ -59,6 +59,7 @@ describe("CollectionArtworks", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
     }
   })
 

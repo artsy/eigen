@@ -12,6 +12,7 @@ describe("Clear All Filters", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
     }
 
     const r = reducer(filterState, {
@@ -24,6 +25,7 @@ describe("Clear All Filters", () => {
       selectedFilters: [],
       previouslyAppliedFilters: [],
       aggregations: [],
+      filterType: "artwork",
     })
   })
 
@@ -34,6 +36,7 @@ describe("Clear All Filters", () => {
       previouslyAppliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
       applyFilters: true,
       aggregations: [],
+      filterType: "artwork",
     }
 
     const r = reducer(filterState, {
@@ -46,6 +49,7 @@ describe("Clear All Filters", () => {
       selectedFilters: [],
       previouslyAppliedFilters: [],
       aggregations: [],
+      filterType: "artwork",
     })
   })
 })
@@ -58,6 +62,7 @@ describe("Reset Filters", () => {
       previouslyAppliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
       applyFilters: true,
       aggregations: [],
+      filterType: "artwork",
     }
 
     const r = reducer(filterState, {
@@ -70,6 +75,7 @@ describe("Reset Filters", () => {
       selectedFilters: [],
       previouslyAppliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
       aggregations: [],
+      filterType: "artwork",
     })
   })
 
@@ -80,6 +86,7 @@ describe("Reset Filters", () => {
       applyFilters: false,
       previouslyAppliedFilters: [{ displayText: "Price (low to high)", paramName: FilterParamName.sort }],
       aggregations: [],
+      filterType: "artwork",
     }
 
     const r = reducer(filterState, {
@@ -92,6 +99,7 @@ describe("Reset Filters", () => {
       selectedFilters: [],
       previouslyAppliedFilters: [{ displayText: "Price (low to high)", paramName: FilterParamName.sort }],
       aggregations: [],
+      filterType: "artwork",
     })
   })
 })
@@ -110,6 +118,7 @@ describe("Select Filters", () => {
         },
       ],
       aggregations: [],
+      filterType: "artwork",
     }
 
     filterAction = {
@@ -129,6 +138,7 @@ describe("Select Filters", () => {
       previouslyAppliedFilters: [],
       selectedFilters: [],
       aggregations: [],
+      filterType: "artwork",
     })
   })
 
@@ -145,6 +155,7 @@ describe("Select Filters", () => {
         },
       ],
       aggregations: [],
+      filterType: "artwork",
     }
 
     filterAction = {
@@ -175,6 +186,7 @@ describe("Select Filters", () => {
         },
       ],
       aggregations: [],
+      filterType: "artwork",
     })
   })
 
@@ -185,6 +197,7 @@ describe("Select Filters", () => {
       previouslyAppliedFilters: [],
       selectedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
       aggregations: [],
+      filterType: "artwork",
     }
 
     filterAction = {
@@ -200,6 +213,7 @@ describe("Select Filters", () => {
       previouslyAppliedFilters: [],
       selectedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
       aggregations: [],
+      filterType: "artwork",
     })
   })
 
@@ -210,6 +224,7 @@ describe("Select Filters", () => {
       previouslyAppliedFilters: [],
       selectedFilters: [],
       aggregations: [],
+      filterType: "artwork",
     }
 
     filterAction = {
@@ -228,6 +243,7 @@ describe("Select Filters", () => {
       previouslyAppliedFilters: [],
       selectedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
       aggregations: [],
+      filterType: "artwork",
     })
   })
 
@@ -238,6 +254,7 @@ describe("Select Filters", () => {
       previouslyAppliedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
       selectedFilters: [],
       aggregations: [],
+      filterType: "artwork",
     }
 
     filterAction = {
@@ -256,6 +273,7 @@ describe("Select Filters", () => {
       previouslyAppliedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
       selectedFilters: [],
       aggregations: [],
+      filterType: "artwork",
     })
   })
 
@@ -266,6 +284,7 @@ describe("Select Filters", () => {
       previouslyAppliedFilters: [],
       selectedFilters: [],
       aggregations: [],
+      filterType: "artwork",
     }
 
     filterAction = {
@@ -285,6 +304,7 @@ describe("Select Filters", () => {
       previouslyAppliedFilters: [],
       selectedFilters: [],
       aggregations: [],
+      filterType: "artwork",
     })
   })
 
@@ -301,6 +321,7 @@ describe("Select Filters", () => {
         },
       ],
       aggregations: [],
+      filterType: "artwork",
     }
 
     filterAction = {
@@ -320,6 +341,7 @@ describe("Select Filters", () => {
       previouslyAppliedFilters: [],
       selectedFilters: [],
       aggregations: [],
+      filterType: "artwork",
     })
   })
 })
@@ -344,6 +366,7 @@ describe("Apply Filters", () => {
         },
       ],
       aggregations: [],
+      filterType: "artwork",
     }
 
     filterAction = {
@@ -358,6 +381,7 @@ describe("Apply Filters", () => {
       previouslyAppliedFilters: [],
       selectedFilters: [],
       aggregations: [],
+      filterType: "artwork",
     })
   })
 
@@ -379,6 +403,7 @@ describe("Apply Filters", () => {
         },
       ],
       aggregations: [],
+      filterType: "artwork",
     }
 
     filterAction = {
@@ -415,6 +440,7 @@ describe("Apply Filters", () => {
       ],
       selectedFilters: [],
       aggregations: [],
+      filterType: "artwork",
     })
   })
 
@@ -425,6 +451,7 @@ describe("Apply Filters", () => {
       previouslyAppliedFilters: [],
       selectedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
       aggregations: [],
+      filterType: "artwork",
     }
 
     filterAction = {
@@ -439,6 +466,7 @@ describe("Apply Filters", () => {
       previouslyAppliedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
       selectedFilters: [],
       aggregations: [],
+      filterType: "artwork",
     })
   })
 
@@ -449,6 +477,7 @@ describe("Apply Filters", () => {
       previouslyAppliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
       selectedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
       aggregations: [],
+      filterType: "artwork",
     }
 
     filterAction = {
@@ -463,6 +492,7 @@ describe("Apply Filters", () => {
       previouslyAppliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
       selectedFilters: [],
       aggregations: [],
+      filterType: "artwork",
     })
   })
 
@@ -473,6 +503,7 @@ describe("Apply Filters", () => {
       previouslyAppliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
       selectedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
       aggregations: [],
+      filterType: "artwork",
     }
 
     filterAction = {
@@ -487,6 +518,7 @@ describe("Apply Filters", () => {
       previouslyAppliedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
       selectedFilters: [],
       aggregations: [],
+      filterType: "artwork",
     })
   })
 })
@@ -502,6 +534,7 @@ describe("clearFiltersZeroState", () => {
       previouslyAppliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
       selectedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
       aggregations: [],
+      filterType: "artwork",
     }
 
     filterAction = {
@@ -516,6 +549,7 @@ describe("clearFiltersZeroState", () => {
       previouslyAppliedFilters: [],
       selectedFilters: [],
       aggregations: [],
+      filterType: "artwork",
     })
   })
 })
@@ -528,6 +562,7 @@ describe("SetInitialFilterState", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
     }
 
     filterAction = {
@@ -543,6 +578,7 @@ describe("SetInitialFilterState", () => {
       previouslyAppliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
     })
   })
 })

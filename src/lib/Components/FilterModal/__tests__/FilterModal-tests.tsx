@@ -54,6 +54,7 @@ beforeEach(() => {
     previouslyAppliedFilters: [],
     applyFilters: false,
     aggregations: mockAggregations,
+    filterType: "artwork",
   }
 })
 
@@ -247,6 +248,8 @@ describe("Filter modal navigation flow", () => {
         value={{
           state,
           aggregations: mockAggregations,
+          filterType: "artwork",
+
           // @ts-ignore STRICTNESS_MIGRATION
           dispatch: null,
         }}
@@ -273,6 +276,8 @@ describe("Filter modal navigation flow", () => {
         value={{
           state,
           aggregations: mockAggregations,
+          filterType: "artwork",
+
           // @ts-ignore STRICTNESS_MIGRATION
           dispatch: null,
         }}
@@ -350,6 +355,7 @@ describe("Filter modal states", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: mockAggregations,
+      filterType: "artwork",
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -363,6 +369,7 @@ describe("Filter modal states", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: mockAggregations,
+      filterType: "artwork",
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -382,6 +389,7 @@ describe("Filter modal states", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: mockAggregations,
+      filterType: "artwork",
     }
 
     const filterScreen = mount(<MockFilterModalNavigator initialState={state} />)
@@ -416,6 +424,7 @@ describe("Filter modal states", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: mockAggregations,
+      filterType: "artwork",
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -453,6 +462,7 @@ describe("Clearing filters", () => {
       previouslyAppliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
       applyFilters: false,
       aggregations: mockAggregations,
+      filterType: "artwork",
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -475,6 +485,7 @@ describe("Clearing filters", () => {
       previouslyAppliedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
       applyFilters: false,
       aggregations: mockAggregations,
+      filterType: "artwork",
     }
 
     const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
@@ -501,6 +512,7 @@ describe("Clearing filters", () => {
       previouslyAppliedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
       applyFilters: true,
       aggregations: mockAggregations,
+      filterType: "artwork",
     }
 
     const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
@@ -523,6 +535,7 @@ describe("Applying filters", () => {
       previouslyAppliedFilters: [{ displayText: "Price (high to low)", paramName: FilterParamName.sort }],
       applyFilters: true,
       aggregations: mockAggregations,
+      filterType: "artwork",
     }
 
     const env = createMockEnvironment()
@@ -603,6 +616,7 @@ describe("Applying filters", () => {
       ],
       applyFilters: true,
       aggregations: mockAggregations,
+      filterType: "artwork",
     }
 
     const filterModal = mount(<MockFilterModalNavigator initialState={state} />)

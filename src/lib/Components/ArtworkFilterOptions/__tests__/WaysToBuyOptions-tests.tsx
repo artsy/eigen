@@ -26,6 +26,7 @@ describe("Ways to Buy Options Screen", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
     }
   })
 
@@ -70,6 +71,7 @@ describe("Ways to Buy Options Screen", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
     }
 
     const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
@@ -101,6 +103,7 @@ describe("Ways to Buy Options Screen", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
     }
 
     const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
@@ -122,6 +125,7 @@ describe("Ways to Buy Options Screen", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
     }
 
     const tree = renderWithWrappers(<MockWaysToBuyScreen initialState={initialState} />)
@@ -155,6 +159,7 @@ describe("Ways to Buy Options Screen", () => {
       ],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
     }
 
     const tree = renderWithWrappers(<MockWaysToBuyScreen initialState={initialState} />)

@@ -24,6 +24,7 @@ describe("Artist Series Artworks", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
     }
   })
 
