@@ -10,6 +10,7 @@ upcoming:
     - Adds Show2 header, behind lab option - damon
     - Adds Show2 install shots, behind lab option - damon
     - Link ConversationDetail screen - sepans
+    - Fix deep link handling when application is closed - david
 
 releases:
   - version: 6.6.5
