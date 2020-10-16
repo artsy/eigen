@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d6f92ff7b9230df729d4e3bd1270b735 */
+/* @relayHash 7825f2d268f1539b9feb28abf705042f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -52,6 +52,11 @@ fragment Show2Header_show on Show {
   }
 }
 
+fragment Show2Info_show on Show {
+  href
+  about: description
+}
+
 fragment Show2InstallShots_show on Show {
   name
   images {
@@ -68,6 +73,10 @@ fragment Show2InstallShots_show on Show {
 fragment Show2_show on Show {
   ...Show2Header_show
   ...Show2InstallShots_show
+  ...Show2Info_show
+  images {
+    __typename
+  }
 }
 */
 
@@ -97,32 +106,39 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "__typename",
   "storageKey": null
 },
 v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v5 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v5 = {
+v6 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
-},
-v6 = {
-  "enumValues": null,
-  "nullable": true,
-  "plural": false,
-  "type": "Int"
 },
 v7 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "String"
+},
+v8 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Int"
 };
 return {
   "fragment": {
@@ -214,13 +230,7 @@ return {
             "name": "partner",
             "plural": false,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "__typename",
-                "storageKey": null
-              },
+              (v3/*: any*/),
               {
                 "kind": "InlineFragment",
                 "selections": [
@@ -233,7 +243,7 @@ return {
                 "kind": "InlineFragment",
                 "selections": [
                   (v2/*: any*/),
-                  (v3/*: any*/)
+                  (v4/*: any*/)
                 ],
                 "type": "ExternalPartner",
                 "abstractKey": null
@@ -241,7 +251,7 @@ return {
               {
                 "kind": "InlineFragment",
                 "selections": [
-                  (v3/*: any*/)
+                  (v4/*: any*/)
                 ],
                 "type": "Node",
                 "abstractKey": "__isNode"
@@ -317,18 +327,33 @@ return {
                   }
                 ],
                 "storageKey": "resized(height:300)"
-              }
+              },
+              (v3/*: any*/)
             ],
             "storageKey": null
           },
-          (v3/*: any*/)
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "href",
+            "storageKey": null
+          },
+          {
+            "alias": "about",
+            "args": null,
+            "kind": "ScalarField",
+            "name": "description",
+            "storageKey": null
+          },
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "d6f92ff7b9230df729d4e3bd1270b735",
+    "id": "7825f2d268f1539b9feb28abf705042f",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {
@@ -337,33 +362,36 @@ return {
           "plural": false,
           "type": "Show"
         },
-        "show.endAt": (v4/*: any*/),
-        "show.formattedEndAt": (v4/*: any*/),
-        "show.formattedStartAt": (v4/*: any*/),
-        "show.id": (v5/*: any*/),
+        "show.about": (v5/*: any*/),
+        "show.endAt": (v5/*: any*/),
+        "show.formattedEndAt": (v5/*: any*/),
+        "show.formattedStartAt": (v5/*: any*/),
+        "show.href": (v5/*: any*/),
+        "show.id": (v6/*: any*/),
         "show.images": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "Image"
         },
-        "show.images.caption": (v4/*: any*/),
+        "show.images.__typename": (v7/*: any*/),
+        "show.images.caption": (v5/*: any*/),
         "show.images.dimensions": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "ResizedImageUrl"
         },
-        "show.images.dimensions.height": (v6/*: any*/),
-        "show.images.dimensions.width": (v6/*: any*/),
+        "show.images.dimensions.height": (v8/*: any*/),
+        "show.images.dimensions.width": (v8/*: any*/),
         "show.images.internalID": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "ID"
         },
-        "show.images.src": (v4/*: any*/),
-        "show.name": (v4/*: any*/),
+        "show.images.src": (v5/*: any*/),
+        "show.name": (v5/*: any*/),
         "show.partner": {
           "enumValues": null,
           "nullable": true,
@@ -372,9 +400,9 @@ return {
         },
         "show.partner.__isNode": (v7/*: any*/),
         "show.partner.__typename": (v7/*: any*/),
-        "show.partner.id": (v5/*: any*/),
-        "show.partner.name": (v4/*: any*/),
-        "show.startAt": (v4/*: any*/)
+        "show.partner.id": (v6/*: any*/),
+        "show.partner.name": (v5/*: any*/),
+        "show.startAt": (v5/*: any*/)
       }
     },
     "name": "Show2TestsQuery",

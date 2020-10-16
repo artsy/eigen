@@ -12,6 +12,7 @@ upcoming:
     - Link ConversationDetail screen - sepans
     - Handle artist page subroutes natively by default - david
     - Fix Vanity URL fallbacks - david
+    - Adds Show2 basic more information route, behind lab option - damon
 
 releases:
   - version: 6.6.5

@@ -74,7 +74,7 @@ import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
 import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryRenderer } from "./Scenes/Show"
 import { ShowQueryRenderer } from "./Scenes/Show/Show"
-import { Show2QueryRenderer } from "./Scenes/Show2/Show2"
+import { Show2MoreInfoQueryRenderer, Show2QueryRenderer } from "./Scenes/Show2"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
@@ -438,6 +438,7 @@ export const modules = defineModules({
   Show2: { Component: Show2QueryRenderer, fullBleed: true },
   ShowArtists: { Component: ShowArtists },
   ShowArtworks: { Component: ShowArtworks },
+  Show2MoreInfo: { Component: Show2MoreInfoQueryRenderer, fullBleed: true },
   ShowMoreInfo: { Component: ShowMoreInfo },
   VanityURLEntity: { Component: VanityURLEntityRenderer, fullBleed: true },
   ViewingRoom: { Component: ViewingRoomQueryRenderer, fullBleed: true },
