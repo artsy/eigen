@@ -11,6 +11,8 @@ upcoming:
     - Adds Show2 install shots, behind lab option - damon
     - Link ConversationDetail screen - sepans
     - Fix deep link handling when application is closed - david
+    - Handle artist page subroutes natively by default - david
+    - Fix Vanity URL fallbacks - david
 
 releases:
   - version: 6.6.5
