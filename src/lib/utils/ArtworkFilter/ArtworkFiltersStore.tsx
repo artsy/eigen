@@ -207,7 +207,7 @@ export const reducer = (
 }
 
 const getSortDefaultValueByFilterType = (filterType: FilterType) => {
-  if (filterType === "artwork") {
+  if (filterType === "saleArtwork") {
     return "position"
   }
   return "-decayed_merch"
@@ -259,10 +259,8 @@ export const selectedOptionsUnion = ({
   previouslyAppliedFilters: FilterArray
   filterType?: FilterType
 }): FilterArray => {
-  const { state } = useContext(ArtworkFilterContext)
-
   const defaultSortFilter =
-    state.filterType === "artwork"
+    filterType === "artwork"
       ? {
           paramName: FilterParamName.sort,
           paramValue: "-decayed_merch",

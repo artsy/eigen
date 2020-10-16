@@ -3,6 +3,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
+import { FilterModalSaleArtworkTestsQuery } from "__generated__/FilterModalSaleArtworkTestsQuery.graphql"
 import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graphql"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
@@ -527,7 +528,7 @@ describe("Clearing filters", () => {
   })
 })
 
-describe("Applying filters", () => {
+describe("Applying filters on Artworks", () => {
   it("calls the relay method to refetch artworks when a filter is applied", async () => {
     state = {
       selectedFilters: [{ displayText: "Price (high to low)", paramName: FilterParamName.sort }],
@@ -636,6 +637,7 @@ describe("Applying filters", () => {
         acquireable: false,
         atAuction: false,
         dimensionRange: "*-*",
+        estimateRange: "",
         includeArtworksByFollowedArtists: false,
         inquireableOnly: false,
         medium: "*",
@@ -644,31 +646,5 @@ describe("Applying filters", () => {
         sort: "-decayed_merch",
       },
     })
-  })
-})
-
-describe(getStaticFilterOptionsByMode, () => {
-  it("returns the right static filters by mode", async () => {
-    expect(getStaticFilterOptionsByMode(FilterModalMode.ArtistArtworks)).toEqual([
-      filterOptionToDisplayConfigMap.sort,
-      filterOptionToDisplayConfigMap.waysToBuy,
-    ])
-    expect(getStaticFilterOptionsByMode(FilterModalMode.ArtistSeries)).toEqual([
-      filterOptionToDisplayConfigMap.sort,
-      filterOptionToDisplayConfigMap.waysToBuy,
-    ])
-
-    expect(getStaticFilterOptionsByMode(FilterModalMode.Collection)).toEqual([
-      filterOptionToDisplayConfigMap.sort,
-      filterOptionToDisplayConfigMap.waysToBuy,
-    ])
-    expect(getStaticFilterOptionsByMode(FilterModalMode.Fair)).toEqual([
-      filterOptionToDisplayConfigMap.sort,
-      filterOptionToDisplayConfigMap.waysToBuy,
-    ])
-    expect(getStaticFilterOptionsByMode(FilterModalMode.SaleArtworks)).toEqual([
-      filterOptionToDisplayConfigMap.sort,
-      filterOptionToDisplayConfigMap.viewAs,
-    ])
   })
 })

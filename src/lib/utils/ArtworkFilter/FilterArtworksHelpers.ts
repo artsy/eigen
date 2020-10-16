@@ -170,14 +170,16 @@ export const selectedOption = (
     } else {
       return "All"
     }
-  } else if (filterScreen === "artist") {
+  } else if (filterScreen === "artistIDs") {
     const hasArtistsIFollowChecked = !!selectedOptions.find(({ paramName, paramValue }) => {
       return paramName === FilterParamName.artistsIFollow && paramValue === true
     })
 
     const selectedArtistNames = selectedOptions.map(({ paramName, displayText }) => {
-      if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
-        return displayText
+      if (paramName === FilterParamName.artistIDs) {
+        if (filterType === "artwork") {
+          return displayText
+        }
       }
     })
     const alphabetizedArtistNames = sortBy(compact(selectedArtistNames), (name) => name)

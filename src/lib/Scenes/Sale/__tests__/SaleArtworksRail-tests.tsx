@@ -25,6 +25,7 @@ describe("SaleArtworksRail", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.me) {
+          console.log(props.me)
           return <SaleArtworksRailContainer me={props.me} />
         }
         return null

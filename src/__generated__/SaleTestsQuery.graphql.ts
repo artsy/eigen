@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b30873f1a1e264e17639c9fd56633115 */
+/* @relayHash 4b4a52b85f27da615b0b2d1137985c57 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -191,7 +191,7 @@ fragment SaleArtworkTileRailCard_saleArtwork on SaleArtwork {
 }
 
 fragment SaleArtworksRail_me on Me {
-  saleArtworksRail: lotsByFollowedArtistsConnection(first: 10, includeArtworksByFollowedArtists: true) {
+  lotsByFollowedArtistsConnection(first: 10, includeArtworksByFollowedArtists: true) {
     edges {
       node {
         id
@@ -686,7 +686,7 @@ return {
         "plural": false,
         "selections": [
           {
-            "alias": "saleArtworksRail",
+            "alias": null,
             "args": [
               (v8/*: any*/),
               {
@@ -1079,7 +1079,7 @@ return {
     ]
   },
   "params": {
-    "id": "b30873f1a1e264e17639c9fd56633115",
+    "id": "4b4a52b85f27da615b0b2d1137985c57",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -1089,41 +1089,41 @@ return {
           "type": "Me"
         },
         "me.id": (v24/*: any*/),
-        "me.saleArtworksRail": (v25/*: any*/),
-        "me.saleArtworksRail.edges": {
+        "me.lotsByFollowedArtistsConnection": (v25/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "SaleArtwork"
         },
-        "me.saleArtworksRail.edges.id": (v24/*: any*/),
-        "me.saleArtworksRail.edges.node": (v26/*: any*/),
-        "me.saleArtworksRail.edges.node.href": (v27/*: any*/),
-        "me.saleArtworksRail.edges.node.id": (v24/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork": (v28/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.artwork": (v26/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.artwork.artistNames": (v27/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.artwork.date": (v27/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.artwork.href": (v27/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.artwork.id": (v24/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.artwork.image": (v29/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.artwork.image.aspectRatio": (v30/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.artwork.image.imageURL": (v27/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.artwork.internalID": (v24/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.artwork.saleMessage": (v27/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.artwork.slug": (v24/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.artwork.title": (v27/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.counts": (v31/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.counts.bidderPositions": (v32/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.currentBid": (v33/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.currentBid.display": (v27/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.id": (v24/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.lotLabel": (v27/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.sale": (v34/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.sale.displayTimelyAt": (v27/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.sale.id": (v24/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.sale.isAuction": (v35/*: any*/),
-        "me.saleArtworksRail.edges.node.saleArtwork.sale.isClosed": (v35/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.id": (v24/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node": (v26/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.href": (v27/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.id": (v24/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork": (v28/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork": (v26/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.artistNames": (v27/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.date": (v27/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.href": (v27/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.id": (v24/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.image": (v29/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.image.aspectRatio": (v30/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.image.imageURL": (v27/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.internalID": (v24/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.saleMessage": (v27/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.slug": (v24/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.title": (v27/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.counts": (v31/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.counts.bidderPositions": (v32/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.currentBid": (v33/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.currentBid.display": (v27/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.id": (v24/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.lotLabel": (v27/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.sale": (v34/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.sale.displayTimelyAt": (v27/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.sale.id": (v24/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.sale.isAuction": (v35/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.sale.isClosed": (v35/*: any*/),
         "sale": (v34/*: any*/),
         "sale.coverImage": (v29/*: any*/),
         "sale.coverImage.url": (v27/*: any*/),

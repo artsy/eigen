@@ -5,7 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SaleArtworksRail_me = {
-    readonly saleArtworksRail: {
+    readonly lotsByFollowedArtistsConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
@@ -33,7 +33,7 @@ const node: ReaderFragment = {
   "name": "SaleArtworksRail_me",
   "selections": [
     {
-      "alias": "saleArtworksRail",
+      "alias": null,
       "args": [
         {
           "kind": "Literal",
@@ -110,5 +110,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '0801f696db61489d8e728a88edb2a242';
+(node as any).hash = '016b519193aa19423f21302ae4173927';
 export default node;

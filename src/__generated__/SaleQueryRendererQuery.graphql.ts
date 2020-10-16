@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0d552f6203a722e94364171fe02e7be9 */
+/* @relayHash f10130ffddc964df6b0434ca53392656 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -197,7 +197,7 @@ fragment SaleArtworkTileRailCard_saleArtwork on SaleArtwork {
 }
 
 fragment SaleArtworksRail_me on Me {
-  saleArtworksRail: lotsByFollowedArtistsConnection(first: 10, includeArtworksByFollowedArtists: true) {
+  lotsByFollowedArtistsConnection(first: 10, includeArtworksByFollowedArtists: true) {
     edges {
       node {
         id
@@ -620,7 +620,7 @@ return {
         "plural": false,
         "selections": [
           {
-            "alias": "saleArtworksRail",
+            "alias": null,
             "args": [
               (v9/*: any*/),
               {
@@ -1013,7 +1013,7 @@ return {
     ]
   },
   "params": {
-    "id": "0d552f6203a722e94364171fe02e7be9",
+    "id": "f10130ffddc964df6b0434ca53392656",
     "metadata": {},
     "name": "SaleQueryRendererQuery",
     "operationKind": "query",
