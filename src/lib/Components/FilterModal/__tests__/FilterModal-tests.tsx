@@ -3,7 +3,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
-import { FilterModalSaleArtworkTestsQuery } from "__generated__/FilterModalSaleArtworkTestsQuery.graphql"
 import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graphql"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
@@ -30,8 +29,6 @@ import {
   FilterModalMode,
   FilterModalNavigator,
   FilterOptions,
-  filterOptionToDisplayConfigMap,
-  getStaticFilterOptionsByMode,
   TouchableOptionListItemRow,
 } from "../FilterModal"
 

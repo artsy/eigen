@@ -2,7 +2,7 @@ import { ArtworkFilterContext, FilterData } from "lib/utils/ArtworkFilter/Artwor
 import { aggregationForFilter, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext, useState } from "react"
 import { NavigatorIOS } from "react-native"
-import { FilterOptionsItem, MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
+import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 
 interface ArtistIDsSaleArtworksOptionsScreenProps {
   navigator: NavigatorIOS
@@ -27,7 +27,7 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksO
 
   const [selectedOptions, setSelectedOptions] = useState<string[]>(oldSelectedOptions as string[])
 
-  const options: FilterOptionsItem[] | undefined = aggregation?.counts.map((aggCount) => {
+  const options: FilterData[] | undefined = aggregation?.counts.map((aggCount) => {
     return {
       displayText: aggCount.name,
       paramName,
@@ -36,10 +36,9 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksO
     }
   })
 
-  const allOption: FilterOptionsItem = {
+  const allOption: FilterData = {
     displayText: "All artists",
     paramName,
-    count: null,
     paramValue: "all",
   }
 

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4b4a52b85f27da615b0b2d1137985c57 */
+/* @relayHash a3422af648b42e3a15a6b48aebf8ef20 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -227,6 +227,9 @@ fragment SaleLotsList_saleArtworksConnection_49HmpD on Query {
         name
         value
       }
+    }
+    counts {
+      total
     }
     edges {
       node {
@@ -855,6 +858,24 @@ return {
           {
             "alias": null,
             "args": null,
+            "concreteType": "FilterSaleArtworksCounts",
+            "kind": "LinkedField",
+            "name": "counts",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "total",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": "SaleArtwork",
             "kind": "LinkedField",
             "name": "edges",
@@ -1079,7 +1100,7 @@ return {
     ]
   },
   "params": {
-    "id": "4b4a52b85f27da615b0b2d1137985c57",
+    "id": "a3422af648b42e3a15a6b48aebf8ef20",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -1177,6 +1198,13 @@ return {
           "plural": false,
           "type": "SaleArtworkAggregation"
         },
+        "saleArtworksConnection.counts": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "FilterSaleArtworksCounts"
+        },
+        "saleArtworksConnection.counts.total": (v32/*: any*/),
         "saleArtworksConnection.edges": {
           "enumValues": null,
           "nullable": true,

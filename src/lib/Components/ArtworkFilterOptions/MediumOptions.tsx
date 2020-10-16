@@ -28,10 +28,15 @@ export const MediumOptionsScreen: React.FC<MediumOptionsScreenProps> = ({ naviga
       displayText: aggCount.name,
       paramValue: aggCount.value,
       paramName,
+      count: aggCount.count,
     }
   })
 
-  const allOption: FilterData = { displayText: "All", paramName, paramValue: ParamDefaultValues.medium }
+  const allOption: FilterData = {
+    displayText: "All",
+    paramName,
+    paramValue: ParamDefaultValues.medium,
+  }
   const displayOptions = [allOption].concat(options ?? [])
 
   const selectedOptions = useSelectedOptionsDisplay()

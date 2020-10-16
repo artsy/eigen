@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f10130ffddc964df6b0434ca53392656 */
+/* @relayHash 644555a88b806802a7102d5399162b1a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -233,6 +233,9 @@ fragment SaleLotsList_saleArtworksConnection_4BVn5U on Query {
         name
         value
       }
+    }
+    counts {
+      total
     }
     edges {
       node {
@@ -789,6 +792,24 @@ return {
           {
             "alias": null,
             "args": null,
+            "concreteType": "FilterSaleArtworksCounts",
+            "kind": "LinkedField",
+            "name": "counts",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "total",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": "SaleArtwork",
             "kind": "LinkedField",
             "name": "edges",
@@ -1013,7 +1034,7 @@ return {
     ]
   },
   "params": {
-    "id": "f10130ffddc964df6b0434ca53392656",
+    "id": "644555a88b806802a7102d5399162b1a",
     "metadata": {},
     "name": "SaleQueryRendererQuery",
     "operationKind": "query",

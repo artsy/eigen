@@ -15,6 +15,9 @@ export type SaleLotsList_saleArtworksConnection = {
                 readonly value: string;
             } | null> | null;
         } | null> | null;
+        readonly counts: {
+            readonly total: number | null;
+        } | null;
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
@@ -171,6 +174,24 @@ const node: ReaderFragment = {
         {
           "alias": null,
           "args": null,
+          "concreteType": "FilterSaleArtworksCounts",
+          "kind": "LinkedField",
+          "name": "counts",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "total",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
           "concreteType": "SaleArtwork",
           "kind": "LinkedField",
           "name": "edges",
@@ -253,5 +274,5 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = '5602ada7baeab57b75690ba9ee282676';
+(node as any).hash = 'f65eb14e041790c30404c0392053aaef';
 export default node;

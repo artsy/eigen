@@ -73,13 +73,6 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
     }
   }
 
-  // TODO: Remove this
-  useEffect(() => {
-    setTimeout(() => {
-      setFilterArtworkModalVisible(true)
-    }, 1500)
-  }, [])
-
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
   const viewableItemsChangedRef = React.useRef(({ viewableItems }: ViewableItems) => {
     const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {

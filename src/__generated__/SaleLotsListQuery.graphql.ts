@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d39bda6217f0752671af75f631a5be02 */
+/* @relayHash 0b6247d44566948704569e63a3914b51 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,6 +27,9 @@ export type SaleLotsListQueryRawResponse = {
                 readonly value: string;
             }) | null> | null;
         }) | null> | null;
+        readonly counts: ({
+            readonly total: number | null;
+        }) | null;
         readonly edges: ReadonlyArray<({
             readonly node: ({
                 readonly id: string;
@@ -216,6 +219,9 @@ fragment SaleLotsList_saleArtworksConnection_VjBnE on Query {
         name
         value
       }
+    }
+    counts {
+      total
     }
     edges {
       node {
@@ -418,6 +424,24 @@ return {
                     "storageKey": null
                   }
                 ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "FilterSaleArtworksCounts",
+            "kind": "LinkedField",
+            "name": "counts",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "total",
                 "storageKey": null
               }
             ],
@@ -768,7 +792,7 @@ return {
     ]
   },
   "params": {
-    "id": "d39bda6217f0752671af75f631a5be02",
+    "id": "0b6247d44566948704569e63a3914b51",
     "metadata": {},
     "name": "SaleLotsListQuery",
     "operationKind": "query",

@@ -1,11 +1,12 @@
 import { SaleLotsList_saleArtworksConnection } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
+import { OrderedSaleArtworkSorts } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { Box, Flex, Sans } from "palette"
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { SaleArtworkListContainer } from "./SaleArtworkList"
@@ -19,17 +20,22 @@ interface Props {
 
 export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, saleID, saleSlug }) => {
   const { state, dispatch } = useContext(ArtworkFilterContext)
-
+  const [totalCount, setTotalCount] = useState<number | null>(null)
   const tracking = useTracking()
 
   const filterParams = filterArtworksParams(state.appliedFilters, state.filterType)
   const showList = state.appliedFilters.find((filter) => filter.paramValue === ViewAsValues.List)
+  const counts = saleArtworksConnection.saleArtworksConnection?.counts
 
   useEffect(() => {
     dispatch({
       type: "setFilterType",
       payload: "saleArtwork",
     })
+  }, [])
+
+  useEffect(() => {
+    setTotalCount(saleArtworksConnection.saleArtworksConnection?.counts?.total || 0)
   }, [])
 
   useEffect(() => {
@@ -65,17 +71,12 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
     })
   }
 
-  const FiltersResume = () => (
-    <Flex px={2} mb={1}>
-      <Sans size="4" ellipsizeMode="tail" numberOfLines={1} data-test-id="title">
-        Sorted by lot number (ascending)
-      </Sans>
-
-      <Sans size="3t" color="black60" data-test-id="subtitle">
-        Showing 84 of 84 lots
-      </Sans>
-    </Flex>
-  )
+  const getSortDescription = () => {
+    const sortMode = OrderedSaleArtworkSorts.find((sort) => sort.paramValue === filterParams?.sort || "position")
+    if (sortMode) {
+      return sortMode.displayText
+    }
+  }
 
   if (!saleArtworksConnection.saleArtworksConnection) {
     return (
@@ -87,8 +88,15 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
 
   return (
     <Flex flex={1} my={4}>
-      {/* TODO: NO LOTS */}
-      <FiltersResume />
+      <Flex px={2} mb={2}>
+        <Sans size="4" ellipsizeMode="tail" numberOfLines={1} data-test-id="title">
+          Sorted by {getSortDescription()?.toLowerCase()}
+        </Sans>
+
+        <Sans size="3t" color="black60" data-test-id="subtitle">
+          {`Showing ${counts?.total} of ${totalCount}`}
+        </Sans>
+      </Flex>
 
       {showList ? (
         <SaleArtworkListContainer
@@ -142,6 +150,9 @@ export const SaleLotsListContainer = createPaginationContainer(
               name
               value
             }
+          }
+          counts {
+            total
           }
           edges {
             node {

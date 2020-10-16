@@ -1,5 +1,5 @@
 import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { Box, CheckIcon, color, Flex, Sans, space } from "palette"
+import { Box, CheckIcon, color, Flex, Sans, Separator, space } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
@@ -31,29 +31,15 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
     <Flex flexGrow={1}>
       <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
       <Flex mb="125px">
-        <FlatList<FilterData>
+        <FlatList
           initialNumToRender={100}
           ListHeaderComponent={ListHeaderComponent}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
+          ItemSeparatorComponent={() => <Separator />}
           renderItem={({ item }) => (
             <Box>
-              {
-                <SingleSelectOptionListItemRow onPress={() => onSelect(item)}>
-                  <OptionListItem>
-                    <InnerOptionListItem>
-                      <Option color="black100" size="3t">
-                        {item.displayText}
-                      </Option>
-                      {item.displayText === selectedOption.displayText && (
-                        <Box mb={0.1}>
-                          <CheckIcon fill="black100" />
-                        </Box>
-                      )}
-                    </InnerOptionListItem>
-                  </OptionListItem>
-                </SingleSelectOptionListItemRow>
-              }
+              <ListItem item={item} selectedOption={selectedOption} onSelect={onSelect} />
             </Box>
           )}
         />
@@ -75,12 +61,42 @@ export const NavigateBackIconContainer = styled(TouchableOpacity)`
   margin: 20px 0px 0px 20px;
 `
 
+const ListItem = ({
+  item,
+  onSelect,
+  selectedOption,
+}: {
+  item: FilterData
+  onSelect: (any: any) => void
+  selectedOption: FilterData
+}) => (
+  <SingleSelectOptionListItemRow onPress={() => onSelect(item)}>
+    <OptionListItem>
+      <InnerOptionListItem px={item.displayText === "All" ? 2 : 3}>
+        <Sans color="black100" size="3t">
+          {item.displayText}{" "}
+          {!!item.count && (
+            <Sans color="black60" size="3t">
+              ({item.count})
+            </Sans>
+          )}
+        </Sans>
+        {item.displayText === selectedOption.displayText && (
+          <Box mb={0.1}>
+            <CheckIcon fill="black100" />
+          </Box>
+        )}
+      </InnerOptionListItem>
+    </OptionListItem>
+  </SingleSelectOptionListItemRow>
+)
+
 export const InnerOptionListItem = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   flex-grow: 1;
-  align-items: flex-end;
-  padding: ${space(2)}px;
+  align-items: center;
+  height: 60px;
 `
 
 export const SingleSelectOptionListItemRow = styled(TouchableOpacity)``

@@ -25,12 +25,13 @@ enum ArtworkSorts {
 
 export type SortOption = keyof typeof ArtworkSorts
 
+const defaulArtworkSort = {
+  displayText: "Default",
+  paramName: FilterParamName.sort,
+  paramValue: "-decayed_merch",
+}
+
 export const OrderedArtworkSorts: FilterData[] = [
-  {
-    displayText: "Default",
-    paramName: FilterParamName.sort,
-    paramValue: "-decayed_merch",
-  },
   {
     displayText: "Price (high to low)",
     paramName: FilterParamName.sort,
@@ -63,12 +64,13 @@ export const OrderedArtworkSorts: FilterData[] = [
   },
 ]
 
+const defaultSaleArtworkSort = {
+  displayText: "Default",
+  paramName: FilterParamName.sort,
+  paramValue: "position",
+}
+
 export const OrderedSaleArtworkSorts: FilterData[] = [
-  {
-    displayText: "Default",
-    paramName: FilterParamName.sort,
-    paramValue: "position",
-  },
   {
     displayText: "Lot number ascending",
     paramName: FilterParamName.sort,
@@ -107,9 +109,11 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigator 
 
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedOption = selectedOptions.find((option) => option.paramName === FilterParamName.sort)!
-  console.log({ selectedOption })
 
-  const filterOptions = filterType === "artwork" ? OrderedArtworkSorts : OrderedSaleArtworkSorts
+  const filterOptions =
+    filterType === "artwork"
+      ? [defaulArtworkSort, ...OrderedArtworkSorts]
+      : [defaultSaleArtworkSort, ...OrderedSaleArtworkSorts]
 
   const selectOption = (option: FilterData) => {
     dispatch({

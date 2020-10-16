@@ -1,5 +1,4 @@
 import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Box, CheckIcon, Flex, Sans, Separator } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
@@ -7,18 +6,11 @@ import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
 
-export interface FilterOptionsItem {
-  readonly displayText: string
-  readonly paramName: FilterParamName
-  paramValue: string
-  count: number | null
-}
-
 interface MultiSelectOptionScreenProps {
   navigator: NavigatorIOS
   filterHeaderText: string
   onSelect: (filterData: FilterData, updatedValue: boolean) => void
-  filterOptions: FilterOptionsItem[]
+  filterOptions: FilterData[]
   selectedOptions: string[] | undefined
 }
 
@@ -33,22 +25,25 @@ export const MultiSelectCheckOptionScreen: React.FC<MultiSelectOptionScreenProps
     navigator.pop()
   }
 
+  const isSelected = (item: FilterData) => {
+    if (typeof item?.paramValue === "string") {
+      return selectedOptions?.includes(item.paramValue)
+    }
+    return false
+  }
+
   return (
     <Flex flexGrow={1}>
       <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
       <Flex mb={120}>
-        <FlatList<FilterOptionsItem>
+        <FlatList
           initialNumToRender={4}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
           ItemSeparatorComponent={() => <Separator />}
           renderItem={({ item }) => (
             <Box ml={0.5}>
-              <CheckMarkOptionListItem
-                item={item}
-                onSelect={onSelect}
-                selected={!!selectedOptions?.includes(item.paramValue)}
-              />
+              <CheckMarkOptionListItem item={item} onSelect={onSelect} selected={isSelected(item) as boolean} />
             </Box>
           )}
         />
@@ -71,7 +66,7 @@ export const CheckMarkOptionListItem = ({
   onSelect,
   selected,
 }: {
-  item: FilterOptionsItem
+  item: FilterData
   onSelect: (filterData: FilterData, updatedValue: boolean) => void
   selected: boolean
 }) => (
@@ -82,7 +77,7 @@ export const CheckMarkOptionListItem = ({
         justifyContent="space-between"
         flexGrow={1}
         alignItems="center"
-        px={item.paramValue === "all" ? 2 : 3}
+        px={item.displayText === "All artists" ? 2 : 3}
         height={60}
       >
         <Sans color="black100" size="3t">

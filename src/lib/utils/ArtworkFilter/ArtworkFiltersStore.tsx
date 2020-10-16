@@ -391,6 +391,7 @@ export interface FilterData {
   readonly paramName: FilterParamName
   paramValue?: string | boolean | string[]
   filterKey?: string // gallery and institution share a paramName so need to distinguish
+  count?: number // aggregations count
 }
 
 export type FilterArray = ReadonlyArray<FilterData>
