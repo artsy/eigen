@@ -8,7 +8,10 @@ Eigen's beta pre-submission checklist has [moved into Notion](https://www.notion
 
 ## Preparing to Ship a Final Version
 
-1. Update [`release_notes.txt`](https://github.com/artsy/eigen/blob/master/fastlane/metadata/en-US/release_notes.txt) with the **user-facing** release notes for this version. Commit the changes.
+1. Update [`release_notes.txt`](https://github.com/artsy/eigen/blob/master/fastlane/metadata/en-US/release_notes.txt) with the **user-facing** release notes for this version. 
+   - See [previous examples](https://github.com/artsy/eigen/commits/master/fastlane/metadata/en-US/release_notes.txt) of release notes.
+   - Share the notes with the #product-collector-experience channel in Slack for feedback. 
+   - Commit & push the changes.
 1. Run `make promote_beta_to_submission`. This will submit the **most recent beta** for App Store review
 
 ### What about IDFA?
