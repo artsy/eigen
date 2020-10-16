@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 010f82aa845678f76f81ef91615693af */
+/* @relayHash cc376be2bdb80d4add6aa87dfe363b44 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -13,94 +13,9 @@ export type Fair2ExhibitorsTestsQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"Fair2Exhibitors_fair">;
     } | null;
 };
-export type Fair2ExhibitorsTestsQueryRawResponse = {
-    readonly fair: ({
-        readonly internalID: string;
-        readonly slug: string;
-        readonly exhibitors: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
-                    readonly id: string;
-                    readonly counts: ({
-                        readonly artworks: number | null;
-                    }) | null;
-                    readonly partner: ({
-                        readonly __typename: "Partner";
-                        readonly __isNode: "Partner";
-                        readonly id: string;
-                        readonly name: string | null;
-                    } | {
-                        readonly __typename: "ExternalPartner";
-                        readonly __isNode: "ExternalPartner";
-                        readonly id: string;
-                        readonly name: string | null;
-                    } | {
-                        readonly __typename: string;
-                        readonly __isNode: string;
-                        readonly id: string;
-                    }) | null;
-                    readonly internalID: string;
-                    readonly slug: string;
-                    readonly href: string | null;
-                    readonly fair: ({
-                        readonly internalID: string;
-                        readonly slug: string;
-                        readonly id: string;
-                    }) | null;
-                    readonly artworks: ({
-                        readonly edges: ReadonlyArray<({
-                            readonly node: ({
-                                readonly href: string | null;
-                                readonly artistNames: string | null;
-                                readonly id: string;
-                                readonly image: ({
-                                    readonly imageURL: string | null;
-                                    readonly aspectRatio: number;
-                                }) | null;
-                                readonly saleMessage: string | null;
-                                readonly saleArtwork: ({
-                                    readonly openingBid: ({
-                                        readonly display: string | null;
-                                    }) | null;
-                                    readonly highestBid: ({
-                                        readonly display: string | null;
-                                    }) | null;
-                                    readonly currentBid: ({
-                                        readonly display: string | null;
-                                    }) | null;
-                                    readonly counts: ({
-                                        readonly bidderPositions: number | null;
-                                    }) | null;
-                                    readonly id: string;
-                                }) | null;
-                                readonly sale: ({
-                                    readonly isClosed: boolean | null;
-                                    readonly isAuction: boolean | null;
-                                    readonly endAt: string | null;
-                                    readonly id: string;
-                                }) | null;
-                                readonly title: string | null;
-                                readonly internalID: string;
-                                readonly slug: string;
-                            }) | null;
-                        }) | null> | null;
-                    }) | null;
-                    readonly __typename: "Show";
-                }) | null;
-                readonly cursor: string;
-            }) | null> | null;
-            readonly pageInfo: {
-                readonly endCursor: string | null;
-                readonly hasNextPage: boolean;
-            };
-        }) | null;
-        readonly id: string;
-    }) | null;
-};
 export type Fair2ExhibitorsTestsQuery = {
     readonly response: Fair2ExhibitorsTestsQueryResponse;
     readonly variables: Fair2ExhibitorsTestsQueryVariables;
-    readonly rawResponse: Fair2ExhibitorsTestsQueryRawResponse;
 };
 
 
@@ -184,7 +99,7 @@ fragment Fair2ExhibitorRail_show on Show {
 fragment Fair2Exhibitors_fair on Fair {
   internalID
   slug
-  exhibitors: showsConnection(first: 15, sort: FEATURED_ASC) {
+  exhibitors: showsConnection(first: 30, sort: FEATURED_ASC) {
     edges {
       node {
         id
@@ -250,7 +165,7 @@ v4 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 15
+    "value": 30
   },
   {
     "kind": "Literal",
@@ -297,7 +212,37 @@ v9 = [
     "name": "display",
     "storageKey": null
   }
-];
+],
+v10 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Fair"
+},
+v11 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "String"
+},
+v12 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
+},
+v13 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v14 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Boolean"
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -655,7 +600,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "showsConnection(first:15,sort:\"FEATURED_ASC\")"
+            "storageKey": "showsConnection(first:30,sort:\"FEATURED_ASC\")"
           },
           {
             "alias": "exhibitors",
@@ -675,13 +620,171 @@ return {
     ]
   },
   "params": {
-    "id": "010f82aa845678f76f81ef91615693af",
-    "metadata": {},
+    "id": "cc376be2bdb80d4add6aa87dfe363b44",
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "fair": (v10/*: any*/),
+        "fair.exhibitors": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ShowConnection"
+        },
+        "fair.exhibitors.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "ShowEdge"
+        },
+        "fair.exhibitors.edges.cursor": (v11/*: any*/),
+        "fair.exhibitors.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Show"
+        },
+        "fair.exhibitors.edges.node.__typename": (v11/*: any*/),
+        "fair.exhibitors.edges.node.artworks": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ArtworkConnection"
+        },
+        "fair.exhibitors.edges.node.artworks.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "ArtworkEdge"
+        },
+        "fair.exhibitors.edges.node.artworks.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Artwork"
+        },
+        "fair.exhibitors.edges.node.artworks.edges.node.artistNames": (v12/*: any*/),
+        "fair.exhibitors.edges.node.artworks.edges.node.href": (v12/*: any*/),
+        "fair.exhibitors.edges.node.artworks.edges.node.id": (v13/*: any*/),
+        "fair.exhibitors.edges.node.artworks.edges.node.image": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Image"
+        },
+        "fair.exhibitors.edges.node.artworks.edges.node.image.aspectRatio": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "Float"
+        },
+        "fair.exhibitors.edges.node.artworks.edges.node.image.imageURL": (v12/*: any*/),
+        "fair.exhibitors.edges.node.artworks.edges.node.internalID": (v13/*: any*/),
+        "fair.exhibitors.edges.node.artworks.edges.node.sale": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Sale"
+        },
+        "fair.exhibitors.edges.node.artworks.edges.node.sale.endAt": (v12/*: any*/),
+        "fair.exhibitors.edges.node.artworks.edges.node.sale.id": (v13/*: any*/),
+        "fair.exhibitors.edges.node.artworks.edges.node.sale.isAuction": (v14/*: any*/),
+        "fair.exhibitors.edges.node.artworks.edges.node.sale.isClosed": (v14/*: any*/),
+        "fair.exhibitors.edges.node.artworks.edges.node.saleArtwork": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "SaleArtwork"
+        },
+        "fair.exhibitors.edges.node.artworks.edges.node.saleArtwork.counts": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "SaleArtworkCounts"
+        },
+        "fair.exhibitors.edges.node.artworks.edges.node.saleArtwork.counts.bidderPositions": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "FormattedNumber"
+        },
+        "fair.exhibitors.edges.node.artworks.edges.node.saleArtwork.currentBid": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "SaleArtworkCurrentBid"
+        },
+        "fair.exhibitors.edges.node.artworks.edges.node.saleArtwork.currentBid.display": (v12/*: any*/),
+        "fair.exhibitors.edges.node.artworks.edges.node.saleArtwork.highestBid": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "SaleArtworkHighestBid"
+        },
+        "fair.exhibitors.edges.node.artworks.edges.node.saleArtwork.highestBid.display": (v12/*: any*/),
+        "fair.exhibitors.edges.node.artworks.edges.node.saleArtwork.id": (v13/*: any*/),
+        "fair.exhibitors.edges.node.artworks.edges.node.saleArtwork.openingBid": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "SaleArtworkOpeningBid"
+        },
+        "fair.exhibitors.edges.node.artworks.edges.node.saleArtwork.openingBid.display": (v12/*: any*/),
+        "fair.exhibitors.edges.node.artworks.edges.node.saleMessage": (v12/*: any*/),
+        "fair.exhibitors.edges.node.artworks.edges.node.slug": (v13/*: any*/),
+        "fair.exhibitors.edges.node.artworks.edges.node.title": (v12/*: any*/),
+        "fair.exhibitors.edges.node.counts": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ShowCounts"
+        },
+        "fair.exhibitors.edges.node.counts.artworks": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Int"
+        },
+        "fair.exhibitors.edges.node.fair": (v10/*: any*/),
+        "fair.exhibitors.edges.node.fair.id": (v13/*: any*/),
+        "fair.exhibitors.edges.node.fair.internalID": (v13/*: any*/),
+        "fair.exhibitors.edges.node.fair.slug": (v13/*: any*/),
+        "fair.exhibitors.edges.node.href": (v12/*: any*/),
+        "fair.exhibitors.edges.node.id": (v13/*: any*/),
+        "fair.exhibitors.edges.node.internalID": (v13/*: any*/),
+        "fair.exhibitors.edges.node.partner": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "PartnerTypes"
+        },
+        "fair.exhibitors.edges.node.partner.__isNode": (v11/*: any*/),
+        "fair.exhibitors.edges.node.partner.__typename": (v11/*: any*/),
+        "fair.exhibitors.edges.node.partner.id": (v13/*: any*/),
+        "fair.exhibitors.edges.node.partner.name": (v12/*: any*/),
+        "fair.exhibitors.edges.node.slug": (v13/*: any*/),
+        "fair.exhibitors.pageInfo": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "PageInfo"
+        },
+        "fair.exhibitors.pageInfo.endCursor": (v12/*: any*/),
+        "fair.exhibitors.pageInfo.hasNextPage": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "Boolean"
+        },
+        "fair.id": (v13/*: any*/),
+        "fair.internalID": (v13/*: any*/),
+        "fair.slug": (v13/*: any*/)
+      }
+    },
     "name": "Fair2ExhibitorsTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '2b9db9ffc7b72e3d1be66a0ccd70eabf';
+(node as any).hash = 'a75bfc1bbe66903e3449675610e34e9f';
 export default node;

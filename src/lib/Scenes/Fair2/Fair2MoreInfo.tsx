@@ -22,10 +22,16 @@ interface Fair2MoreInfoProps {
   fair: Fair2MoreInfo_fair
 }
 
-export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
-  const coordinates = fair.location?.coordinates
-  const shouldShowLocationMap = coordinates && coordinates?.lat && coordinates?.lng
+interface LocationCoordinates {
+  lat: number | null
+  lng: number | null
+}
 
+export const shouldShowLocationMap = (coordinates: LocationCoordinates | null | undefined): boolean => {
+  return !!(coordinates && coordinates?.lat && coordinates?.lng)
+}
+
+export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
   const markdownRules = defaultRules({ useNewTextStyles: true })
 
   return (
@@ -68,7 +74,7 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
               <>
                 <Text variant="mediumText">Location</Text>
                 {!!fair.location?.summary && <Text variant="text">{fair.location?.summary}</Text>}
-                {!!shouldShowLocationMap && (
+                {!!shouldShowLocationMap(fair.location?.coordinates) && (
                   <LocationMapContainer
                     location={fair.location}
                     partnerType={PartnerType.fair}

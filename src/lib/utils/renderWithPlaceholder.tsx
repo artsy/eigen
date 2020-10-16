@@ -6,15 +6,19 @@ import { ProvidePlaceholderContext } from "./placeholders"
 
 type ReadyState = Parameters<React.ComponentProps<typeof QueryRenderer>["render"]>[0]
 
+type FallbackRenderer = (args: { retry: null | (() => void) }) => React.ReactElement | null
+
 export function renderWithPlaceholder<Props>({
   Container,
   render,
   renderPlaceholder,
+  renderFallback,
   initialProps = {},
 }: {
   Container?: React.ComponentType<Props>
   render?: (props: Props) => React.ReactChild
   renderPlaceholder: () => React.ReactChild
+  renderFallback?: FallbackRenderer
   initialProps?: object
 }): (readyState: ReadyState) => React.ReactElement | null {
   if (!Container && !render) {
@@ -29,7 +33,9 @@ export function renderWithPlaceholder<Props>({
     if (error) {
       // In tests we want errors to clearly bubble up.
       if (typeof jest !== "undefined") {
-        throw error
+        if (!__renderWithPlaceholderTestUtils__?.allowFallbacksAtTestTime) {
+          throw error
+        }
       } else {
         console.error(error)
       }
@@ -44,7 +50,9 @@ export function renderWithPlaceholder<Props>({
         console.error("Error data", data)
       }
 
-      if (retrying) {
+      if (renderFallback) {
+        return renderFallback({ retry })
+      } else if (retrying) {
         retrying = false
         // TODO: Even though this code path is reached, the retry button keeps spinning. iirc it _should_ disappear when
         //      `onRetry` on the instance is unset.
@@ -68,4 +76,19 @@ export function renderWithPlaceholder<Props>({
       return <ProvidePlaceholderContext>{renderPlaceholder()}</ProvidePlaceholderContext>
     }
   }
+}
+
+// tslint:disable-next-line:variable-name
+export const __renderWithPlaceholderTestUtils__ = __TEST__
+  ? {
+      allowFallbacksAtTestTime: false,
+    }
+  : undefined
+
+if (__TEST__) {
+  beforeEach(() => {
+    if (__renderWithPlaceholderTestUtils__) {
+      __renderWithPlaceholderTestUtils__.allowFallbacksAtTestTime = false
+    }
+  })
 }

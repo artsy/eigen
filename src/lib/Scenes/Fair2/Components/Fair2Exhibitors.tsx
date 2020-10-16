@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedShowMore } from "@artsy/cohesion"
 import { Fair2Exhibitors_fair } from "__generated__/Fair2Exhibitors_fair.graphql"
 import { Col } from "lib/Components/Bidding/Elements/Grid"
+import { FAIR2_EXHIBITORS_PAGE_SIZE } from "lib/data/constants"
 import { Row } from "lib/Scenes/Consignments/Components/FormElements"
 import { Box, Button } from "palette"
 import React, { useState } from "react"
@@ -37,7 +38,7 @@ const Fair2Exhibitors: React.FC<Fair2ExhibitorsProps> = ({ fair, relay }) => {
 
     setIsLoading(true)
 
-    relay.loadMore(15, (err) => {
+    relay.loadMore(FAIR2_EXHIBITORS_PAGE_SIZE, (err) => {
       setIsLoading(false)
 
       if (err) {
@@ -84,7 +85,7 @@ export const Fair2ExhibitorsFragmentContainer = createPaginationContainer(
   {
     fair: graphql`
       fragment Fair2Exhibitors_fair on Fair
-      @argumentDefinitions(first: { type: "Int", defaultValue: 15 }, after: { type: "String" }) {
+      @argumentDefinitions(first: { type: "Int", defaultValue: 30 }, after: { type: "String" }) {
         internalID
         slug
         exhibitors: showsConnection(first: $first, after: $after, sort: FEATURED_ASC)

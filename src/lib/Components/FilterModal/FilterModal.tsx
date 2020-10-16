@@ -23,7 +23,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
 import {
-  ArtistsIFollowOptionsScreen,
+  ArtistOptionsScreen,
   ArtistsOptionsScreen,
   ColorOption,
   ColorOptionsScreen,
@@ -168,6 +168,7 @@ export type FilterScreen =
   | "sort"
   | "viewAs"
   | "waysToBuy"
+  | "artist"
 
 export interface FilterDisplayConfig {
   filterType: FilterScreen
@@ -215,8 +216,6 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
   )
 
   const filterOptions: FilterDisplayConfig[] = getStaticFilterOptionsByMode(mode).concat(aggregateFilterOptions)
-  console.log("=========")
-  console.log({ filterOptions })
 
   const sortedFilterOptions = filterOptions
     .sort(getFilterScreenSortByMode(mode))
@@ -468,11 +467,6 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "artistIDs",
     ScreenComponent: ArtistsOptionsScreen,
   },
-  artistsIFollow: {
-    displayText: FilterDisplayName.artistsIFollow,
-    filterType: "artistsIFollow",
-    ScreenComponent: ArtistsIFollowOptionsScreen,
-  },
   color: {
     displayText: FilterDisplayName.color,
     filterType: "color",
@@ -533,6 +527,11 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "waysToBuy",
     ScreenComponent: WaysToBuyOptionsScreen,
   },
+  artist: {
+    displayText: FilterDisplayName.artist,
+    filterType: "artist",
+    ScreenComponent: ArtistOptionsScreen,
+  },
 }
 
 const CollectionFiltersSorted: FilterScreen[] = [
@@ -570,6 +569,7 @@ const ArtistSeriesFiltersSorted: FilterScreen[] = [
 ]
 const FairFiltersSorted: FilterScreen[] = [
   "sort",
+  "artist",
   "artistsIFollow",
   "medium",
   "priceRange",

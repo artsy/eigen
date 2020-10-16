@@ -102,9 +102,6 @@ const PhotosButton: React.FC = () => {
             <Sans size="3" weight="medium">
               Photos
             </Sans>
-            <Sans size="3" ml="2px">
-              (optional)
-            </Sans>
           </Flex>
           {photos.length > 0 && (
             <>

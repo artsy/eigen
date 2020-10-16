@@ -15,6 +15,7 @@ import { timingMiddleware } from "./middlewares/timingMiddleware"
 export default function createEnvironment() {
   const network = new RelayNetworkLayer(
     [
+      // The top middlewares run
       // @ts-ignore
       cacheMiddleware(),
       rateLimitMiddleware(),
@@ -31,9 +32,11 @@ export default function createEnvironment() {
           }
         },
       }),
-      checkAuthenticationMiddleware,
       // @ts-ignore
       principalFieldErrorMiddleware(),
+      // We need to run the checkAuthenticationMiddleware as early as possible to make sure that the user
+      // session is still valid. This is why we need to keep it as low as possible in the middlewares array.
+      checkAuthenticationMiddleware(),
       loggerMiddleware(),
       errorMiddleware({
         disableServerMiddlewareTip: true,

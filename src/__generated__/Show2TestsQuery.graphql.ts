@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3aa67395999eac5f8e55a6646e7ee361 */
+/* @relayHash d6f92ff7b9230df729d4e3bd1270b735 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,8 +30,44 @@ query Show2TestsQuery(
   }
 }
 
-fragment Show2_show on Show {
+fragment Show2Header_show on Show {
   name
+  startAt
+  endAt
+  formattedStartAt: startAt(format: "MMMM D")
+  formattedEndAt: endAt(format: "MMMM D, YYYY")
+  partner {
+    __typename
+    ... on Partner {
+      name
+    }
+    ... on ExternalPartner {
+      name
+      id
+    }
+    ... on Node {
+      __isNode: __typename
+      id
+    }
+  }
+}
+
+fragment Show2InstallShots_show on Show {
+  name
+  images {
+    internalID
+    caption
+    src: url(version: ["larger", "large"])
+    dimensions: resized(height: 300) {
+      width
+      height
+    }
+  }
+}
+
+fragment Show2_show on Show {
+  ...Show2Header_show
+  ...Show2InstallShots_show
 }
 */
 
@@ -49,7 +85,45 @@ v1 = [
     "name": "id",
     "variableName": "showID"
   }
-];
+],
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v4 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
+},
+v5 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v6 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Int"
+},
+v7 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "String"
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -91,27 +165,170 @@ return {
         "name": "show",
         "plural": false,
         "selections": [
+          (v2/*: any*/),
           {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "name",
+            "name": "startAt",
             "storageKey": null
           },
           {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "id",
+            "name": "endAt",
             "storageKey": null
-          }
+          },
+          {
+            "alias": "formattedStartAt",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "format",
+                "value": "MMMM D"
+              }
+            ],
+            "kind": "ScalarField",
+            "name": "startAt",
+            "storageKey": "startAt(format:\"MMMM D\")"
+          },
+          {
+            "alias": "formattedEndAt",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "format",
+                "value": "MMMM D, YYYY"
+              }
+            ],
+            "kind": "ScalarField",
+            "name": "endAt",
+            "storageKey": "endAt(format:\"MMMM D, YYYY\")"
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": null,
+            "kind": "LinkedField",
+            "name": "partner",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "__typename",
+                "storageKey": null
+              },
+              {
+                "kind": "InlineFragment",
+                "selections": [
+                  (v2/*: any*/)
+                ],
+                "type": "Partner",
+                "abstractKey": null
+              },
+              {
+                "kind": "InlineFragment",
+                "selections": [
+                  (v2/*: any*/),
+                  (v3/*: any*/)
+                ],
+                "type": "ExternalPartner",
+                "abstractKey": null
+              },
+              {
+                "kind": "InlineFragment",
+                "selections": [
+                  (v3/*: any*/)
+                ],
+                "type": "Node",
+                "abstractKey": "__isNode"
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "images",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "internalID",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "caption",
+                "storageKey": null
+              },
+              {
+                "alias": "src",
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "version",
+                    "value": [
+                      "larger",
+                      "large"
+                    ]
+                  }
+                ],
+                "kind": "ScalarField",
+                "name": "url",
+                "storageKey": "url(version:[\"larger\",\"large\"])"
+              },
+              {
+                "alias": "dimensions",
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "height",
+                    "value": 300
+                  }
+                ],
+                "concreteType": "ResizedImageUrl",
+                "kind": "LinkedField",
+                "name": "resized",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "width",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "height",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": "resized(height:300)"
+              }
+            ],
+            "storageKey": null
+          },
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "3aa67395999eac5f8e55a6646e7ee361",
+    "id": "d6f92ff7b9230df729d4e3bd1270b735",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {
@@ -120,18 +337,44 @@ return {
           "plural": false,
           "type": "Show"
         },
-        "show.id": {
+        "show.endAt": (v4/*: any*/),
+        "show.formattedEndAt": (v4/*: any*/),
+        "show.formattedStartAt": (v4/*: any*/),
+        "show.id": (v5/*: any*/),
+        "show.images": {
           "enumValues": null,
-          "nullable": false,
-          "plural": false,
-          "type": "ID"
+          "nullable": true,
+          "plural": true,
+          "type": "Image"
         },
-        "show.name": {
+        "show.images.caption": (v4/*: any*/),
+        "show.images.dimensions": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
-          "type": "String"
-        }
+          "type": "ResizedImageUrl"
+        },
+        "show.images.dimensions.height": (v6/*: any*/),
+        "show.images.dimensions.width": (v6/*: any*/),
+        "show.images.internalID": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ID"
+        },
+        "show.images.src": (v4/*: any*/),
+        "show.name": (v4/*: any*/),
+        "show.partner": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "PartnerTypes"
+        },
+        "show.partner.__isNode": (v7/*: any*/),
+        "show.partner.__typename": (v7/*: any*/),
+        "show.partner.id": (v5/*: any*/),
+        "show.partner.name": (v4/*: any*/),
+        "show.startAt": (v4/*: any*/)
       }
     },
     "name": "Show2TestsQuery",

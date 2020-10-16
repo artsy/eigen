@@ -3,9 +3,12 @@ import { SaleQueryRendererQuery, SaleQueryRendererQueryResponse } from "__genera
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import LoadFailureView from "lib/Components/LoadFailureView"
 import Spinner from "lib/Components/Spinner"
+import { navigate, popParentViewController } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { getCurrentEmissionState } from "lib/store/AppStore"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
+import moment from "moment"
 import { Flex } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated } from "react-native"
@@ -38,7 +41,7 @@ interface ViewToken {
   section?: any
 }
 
-const Sale: React.FC<Props> = ({ queryRes }) => {
+export const Sale: React.FC<Props> = ({ queryRes }) => {
   const sale = queryRes.sale!
   const me = queryRes.me!
   const tracking = useTracking()
@@ -47,6 +50,28 @@ const Sale: React.FC<Props> = ({ queryRes }) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
   const scrollAnim = useRef(new Animated.Value(0)).current
+
+  let intervalId: NodeJS.Timeout
+
+  useEffect(() => {
+    if (sale.liveStartAt) {
+      // poll every .5 seconds to check if sale has gone live
+      intervalId = setInterval(checkIfSaleIsLive, 500)
+      return () => {
+        clearInterval(intervalId)
+      }
+    }
+  }, [])
+
+  const checkIfSaleIsLive = () => {
+    const liveStartAt = sale.liveStartAt
+    if (liveStartAt) {
+      const isLiveOpen = moment().isAfter(liveStartAt)
+      if (isLiveOpen) {
+        switchToLive()
+      }
+    }
+  }
 
   // TODO: Remove this
   useEffect(() => {
@@ -85,6 +110,13 @@ const Sale: React.FC<Props> = ({ queryRes }) => {
       action_type: Schema.ActionTypes.Tap,
     })
     setFilterArtworkModalVisible(false)
+  }
+
+  const switchToLive = () => {
+    const liveBaseURL = getCurrentEmissionState().predictionURL
+    const liveAuctionURL = `${liveBaseURL}/${sale.slug}`
+    navigate(liveAuctionURL)
+    setTimeout(popParentViewController, 500)
   }
 
   const saleSectionsData: SaleSection[] = [
@@ -165,6 +197,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
           sale(id: $saleID) {
             internalID
             slug
+            liveStartAt
             ...SaleHeader_sale
             ...RegisterToBidButton_sale
           }
@@ -194,8 +227,6 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
         }
         return <Sale queryRes={props} />
       }}
-
-      // render={renderWithPlaceholder({ Container: SaleContainer, renderPlaceholder: Placeholder })}
     />
   )
 }

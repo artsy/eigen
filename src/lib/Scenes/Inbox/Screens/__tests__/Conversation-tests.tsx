@@ -1,11 +1,15 @@
 import ConnectivityBanner from "lib/Components/ConnectivityBanner"
-import Composer from "lib/Components/Inbox/Conversations/Composer"
+import Composer from "lib/Scenes/Inbox/Components/Conversations/Composer"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Touchable } from "palette"
 import React from "react"
 import "react-native"
 import { Conversation, ConversationFragmentContainer } from "../Conversation"
+import { ConversationDetailsQueryRenderer } from "../ConversationDetails"
 
 jest.unmock("react-tracking")
+
+const mockNavigator = { push: jest.fn() }
 
 jest.mock("@react-native-community/netinfo", () => {
   return {
@@ -22,7 +26,9 @@ jest.mock("@react-native-community/netinfo", () => {
 })
 
 it("looks correct when rendered", () => {
-  const conversation = renderWithWrappers(<ConversationFragmentContainer me={props as any} />)
+  const conversation = renderWithWrappers(
+    <ConversationFragmentContainer me={props as any} navigator={mockNavigator as any} />
+  )
   // @ts-ignore
   conversation.root.findByType(Conversation).children[0].instance.handleConnectivityChange(true)
   expect(conversation.root.findByType(Composer).props.disabled).toBeFalsy()
@@ -30,17 +36,33 @@ it("looks correct when rendered", () => {
 })
 
 it("displays a connectivity banner when network is down", () => {
-  const conversation = renderWithWrappers(<ConversationFragmentContainer me={props as any} />)
+  const conversation = renderWithWrappers(
+    <ConversationFragmentContainer me={props as any} navigator={mockNavigator as any} />
+  )
   // @ts-ignore
   conversation.root.findByType(Conversation).children[0].instance.handleConnectivityChange(false)
   expect(conversation.root.findByType(Composer).props.disabled).toBeTruthy()
   expect(conversation.root.findAllByType(ConnectivityBanner)).toHaveLength(1)
 })
 
+it("clicking on detail link opens pushes detail screen into navigator", () => {
+  const conversation = renderWithWrappers(
+    <ConversationFragmentContainer me={props as any} navigator={mockNavigator as any} />
+  )
+  // @ts-ignore
+  conversation.root.findAllByType(Touchable)[0].props.onPress()
+  expect(mockNavigator.push).toHaveBeenCalledWith({
+    component: ConversationDetailsQueryRenderer,
+    passProps: { conversationID: "123" },
+    title: "",
+  })
+})
+
 const props = {
   initials: "JC",
   conversation: {
     gravityID: "conversation-420",
+    internalID: "123",
     id: "420",
     from: {
       name: "Anita Garibaldi",

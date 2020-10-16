@@ -40,7 +40,7 @@ export interface ArtworkFormValues {
   width: string
 }
 
-const initialFormValues: ArtworkFormValues = {
+export const initialFormValues: ArtworkFormValues = {
   artist: "",
   artistIds: [],
   artistSearchResult: null,
@@ -67,6 +67,7 @@ export interface MyCollectionArtworkModel {
     formValues: ArtworkFormValues
     isLoading: boolean
     meGlobalId: string
+    lastUploadedPhoto?: Image
   }
   setFormValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
   setDirtyFormCheckValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
@@ -109,7 +110,7 @@ export interface MyCollectionArtworkModel {
     AppStoreModel
   >
   deleteArtwork: Thunk<MyCollectionArtworkModel, { artworkId: string; artworkGlobalId: string }, {}, AppStoreModel>
-  deleteArtworkComplete: Action<MyCollectionArtworkModel, any>
+  deleteArtworkComplete: Thunk<MyCollectionArtworkModel>
   deleteArtworkError: Action<MyCollectionArtworkModel, any>
 
   cancelAddEditArtwork: Thunk<MyCollectionArtworkModel, any, {}, AppStoreModel>
@@ -187,8 +188,10 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     )
   }),
 
-  uploadPhotos: thunk(async (actions, photos) => {
+  uploadPhotos: thunk(async (actions, photos, { getState }) => {
     try {
+      const state = getState()
+      state.sessionState.lastUploadedPhoto = photos[0]
       const imagePaths = photos.map((photo) => photo.path)
       const convectionKey = await getConvectionGeminiKey()
       const acl = "private"
@@ -210,6 +213,37 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     }
   }),
 
+  takeOrPickPhotos: thunk((actions, _payload) => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ["Photo Library", "Take Photo", "Cancel"],
+        cancelButtonIndex: 2,
+      },
+      async (buttonIndex) => {
+        try {
+          let photos = null
+
+          if (buttonIndex === 0) {
+            photos = await ImagePicker.openPicker({
+              multiple: true,
+            })
+          }
+          if (buttonIndex === 1) {
+            photos = await ImagePicker.openCamera({
+              mediaType: "photo",
+            })
+          }
+
+          if (photos) {
+            actions.addPhotos(photos as any) // FIXME: any
+          }
+        } catch (error) {
+          // Photo picker closes by throwing error that we need to catch
+        }
+      }
+    )
+  }),
+
   /**
    * TODO: Log to Sentry
    */
@@ -229,6 +263,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       try {
         const state = getState()
         const input = cleanArtworkPayload(payload) as typeof payload
+        state.sessionState.lastUploadedPhoto = undefined // reset locally stored photo
         const externalImageUrls = await actions.uploadPhotos(photos)
 
         commitMutation<MyCollectionArtworkModelCreateArtworkMutation>(defaultEnvironment, {
@@ -263,7 +298,6 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
               ...input,
             },
           },
-
           // TODO: Relay v10 introduces a new directive-based mechanism for updating post-mutation.
           // See https://github.com/facebook/relay/releases/tag/v10.0.0.
           updater: (store) => {
@@ -498,7 +532,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
             }
           }
         },
-        onCompleted: actions.deleteArtworkComplete,
+        onCompleted: () => actions.deleteArtworkComplete(),
         onError: actions.deleteArtworkError,
       })
     } catch (error) {
@@ -507,8 +541,9 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     }
   }),
 
-  deleteArtworkComplete: action((state) => {
-    state.sessionState.isLoading = false
+  deleteArtworkComplete: thunk((actions) => {
+    actions.setIsLoading(false)
+    actions.resetForm()
   }),
 
   /**
@@ -542,36 +577,5 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     } else {
       navigationActions.dismissModal()
     }
-  }),
-
-  takeOrPickPhotos: thunk((actions, _payload) => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: ["Photo Library", "Take Photo", "Cancel"],
-        cancelButtonIndex: 2,
-      },
-      async (buttonIndex) => {
-        try {
-          let photos = null
-
-          if (buttonIndex === 0) {
-            photos = await ImagePicker.openPicker({
-              multiple: true,
-            })
-          }
-          if (buttonIndex === 1) {
-            photos = await ImagePicker.openCamera({
-              mediaType: "photo",
-            })
-          }
-
-          if (photos) {
-            actions.addPhotos(photos as any) // FIXME: any
-          }
-        } catch (error) {
-          // Photo picker closes by throwing error that we need to catch
-        }
-      }
-    )
   }),
 }

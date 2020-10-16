@@ -7,7 +7,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Colors } from "lib/data/colors"
 import { color, Flex, Text, Touchable } from "palette"
 
-import { Schema, Track, track as _track } from "../../../../utils/track"
+import { Schema, Track, track as _track } from "lib/utils/track"
 
 const Container = styled.View`
   background-color: ${color("black100")};

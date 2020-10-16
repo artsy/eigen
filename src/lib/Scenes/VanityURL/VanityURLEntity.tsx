@@ -82,6 +82,7 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
         `}
         variables={{ id: slug, useNewFairView }}
         render={renderWithPlaceholder({
+          renderFallback: () => <VanityURLPossibleRedirect slug={slug} />,
           renderPlaceholder: () => {
             switch (entity) {
               case "fair":
@@ -101,11 +102,7 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
             }
           },
           render: (props: any) => {
-            if (props.vanityURLEntity) {
-              return <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} originalSlug={slug} />
-            } else {
-              return <VanityURLPossibleRedirect slug={slug} />
-            }
+            return <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} originalSlug={slug} />
           },
         })}
       />

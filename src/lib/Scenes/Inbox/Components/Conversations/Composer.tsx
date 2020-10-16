@@ -5,8 +5,8 @@ import colors from "lib/data/colors"
 import { Button, color, themeProps } from "palette"
 import styled from "styled-components/native"
 
+import { Schema, Track, track as _track } from "lib/utils/track"
 import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
-import { Schema, Track, track as _track } from "../../../utils/track"
 
 const isPad = Dimensions.get("window").width > 700
 

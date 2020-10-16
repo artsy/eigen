@@ -2,8 +2,10 @@ import { Fair2Header_fair } from "__generated__/Fair2Header_fair.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "lib/Components/ReadMore"
 import { navigate } from "lib/navigation/navigate"
+import { shouldShowFairBMWArtActivationLink } from "lib/Scenes/Fair/Screens/FairBMWArtActivation"
+import { shouldShowLocationMap } from "lib/Scenes/Fair2/Fair2MoreInfo"
 import { truncatedTextLimit } from "lib/utils/hardware"
-import { Box, ChevronIcon, Flex, Text } from "palette"
+import { Box, ChevronIcon, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { Dimensions, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -27,6 +29,7 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
     fairContact,
     summary,
     fairTickets,
+    sponsoredContent,
   } = fair
   const screenWidth = Dimensions.get("screen").width
   const profileImageUrl = fair?.profile?.icon?.imageUrl
@@ -36,16 +39,18 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
     !!about ||
     !!tagline ||
     !!location?.summary ||
+    shouldShowLocationMap(location?.coordinates) ||
     !!ticketsLink ||
     !!fairHours ||
     !!fairLinks ||
     !!fairContact ||
     !!summary ||
-    !!fairTickets
+    !!fairTickets ||
+    shouldShowFairBMWArtActivationLink({ sponsoredContent })
 
   return (
     <Box>
-      {!!image && (
+      {!!image ? (
         <Flex alignItems="center" justifyContent="center" style={{ position: "relative" }}>
           <OpaqueImageView width={screenWidth} height={screenWidth / image.aspectRatio} imageURL={image.imageUrl} />
           {!!profileImageUrl && (
@@ -64,6 +69,8 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
             </Flex>
           )}
         </Flex>
+      ) : (
+        <SafeTopMargin />
       )}
       <Box px={2}>
         <Text variant="largeTitle" py={2}>
@@ -83,6 +90,8 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
     </Box>
   )
 }
+
+const SafeTopMargin = () => <Spacer mt={6} pt={2} />
 
 export const Fair2HeaderFragmentContainer = createFragmentContainer(Fair2Header, {
   fair: graphql`
@@ -104,8 +113,16 @@ export const Fair2HeaderFragmentContainer = createFragmentContainer(Fair2Header,
       tagline
       location {
         summary
+        coordinates {
+          lat
+          lng
+        }
       }
       ticketsLink
+      sponsoredContent {
+        activationText
+        pressReleaseUrl
+      }
       fairHours: hours(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer
       fairLinks: links(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer
       fairTickets: tickets(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer

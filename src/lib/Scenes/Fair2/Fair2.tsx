@@ -8,7 +8,7 @@ import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/plac
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Flex, Separator, Spacer, Theme } from "palette"
+import { Box, Flex, Message, Separator, Spacer, Theme } from "palette"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, View, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -17,7 +17,7 @@ import { Fair2ArtworksFragmentContainer } from "./Components/Fair2Artworks"
 import { Fair2CollectionsFragmentContainer } from "./Components/Fair2Collections"
 import { Fair2EditorialFragmentContainer } from "./Components/Fair2Editorial"
 import { Fair2ExhibitorsFragmentContainer } from "./Components/Fair2Exhibitors"
-import { Fair2FollowedArtistsRailFragmentContainer as FairFollowedArtistsRail } from "./Components/Fair2FollowedArtistsRail"
+import { Fair2FollowedArtistsRailFragmentContainer } from "./Components/Fair2FollowedArtistsRail"
 import { Fair2HeaderFragmentContainer } from "./Components/Fair2Header"
 import { Tabs, TabsType } from "./Components/SimpleTabs"
 
@@ -43,6 +43,7 @@ const tabs: TabsType = [
 ]
 
 export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
+  const { isActive } = fair
   const hasArticles = !!fair.articles?.edges?.length
   const hasCollections = !!fair.marketingCollections.length
   const hasArtworks = !!(fair.counts?.artworks ?? 0 > 0)
@@ -56,13 +57,15 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
 
-  const sections = [
-    "fairHeader",
-    ...(hasArticles ? ["fairEditorial"] : []),
-    ...(hasCollections ? ["fairCollections"] : []),
-    ...(hasFollowedArtistArtworks ? ["fairFollowedArtistsRail"] : []),
-    ...(hasArtworks && hasExhibitors ? ["fairTabs", "fairTabChildContent"] : []),
-  ]
+  const sections = isActive
+    ? [
+        "fairHeader",
+        ...(hasArticles ? ["fairEditorial"] : []),
+        ...(hasCollections ? ["fairCollections"] : []),
+        ...(hasFollowedArtistArtworks ? ["fairFollowedArtistsRail"] : []),
+        ...(hasArtworks && hasExhibitors ? ["fairTabs", "fairTabChildContent"] : []),
+      ]
+    : ["fairHeader", ...(hasArticles ? ["fairEditorial"] : []), "notActive"]
 
   const tabIndex = sections.indexOf("fairTabs")
 
@@ -201,8 +204,15 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
                           </>
                         )
                       }
+                      case "notActive": {
+                        return (
+                          <Message mx={2}>
+                            This fair is not open yet. Please check back closer to the fair for exhibitors and artworks.
+                          </Message>
+                        )
+                      }
                       case "fairFollowedArtistsRail": {
-                        return <FairFollowedArtistsRail fair={fair} />
+                        return <Fair2FollowedArtistsRailFragmentContainer fair={fair} />
                       }
                       case "fairEditorial": {
                         return <Fair2EditorialFragmentContainer fair={fair} />
@@ -273,6 +283,7 @@ export const Fair2FragmentContainer = createFragmentContainer(Fair2, {
     fragment Fair2_fair on Fair {
       internalID
       slug
+      isActive
       articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
         edges {
           __typename

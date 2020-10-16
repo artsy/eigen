@@ -2,9 +2,15 @@ upcoming:
   version: 6.6.6
   date: TBD
   dev:
-    -
+    - Change CheckAuthentication middleware to be called before the principalFieldMiddleware - mounir
   user_facing:
-    - Show 30 artworks at a time in Fair2 artworks grid - roop
+    - Switch to live auction from new sale page - barry, brian
+    - Adds ability to filter by artist in a fair - sweir
+    - Fix environment variable names for Sentry - starsirius
+    - Adds Show2 header, behind lab option - damon
+    - Adds Show2 install shots, behind lab option - damon
+    - Link ConversationDetail screen - sepans
+    - Fix Vanity URL fallbacks - david
 
 releases:
   - version: 6.6.5
@@ -50,6 +56,8 @@ releases:
       - Add about page - mounir
       - Center filters modal title - mounir
       - Fix UI not responsive after editing profile settings - mounir
+      - Show 30 artworks at a time in Fair2 artworks grid - roop
+      - Show zero state for inactive fairs - roop
 
   - version: 6.6.4
     date: Sept 23, 2020

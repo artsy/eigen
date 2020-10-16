@@ -4892,9 +4892,11 @@ type CreditCardPayload {
 }
 
 type CroppedImageUrl {
-  height: Int
-  url: String
-  width: Int
+  height: Int!
+  src: String!
+  srcSet: String!
+  url: String!
+  width: Int!
 }
 
 type CurrentEvent {
@@ -6853,6 +6855,8 @@ type Me implements Node {
   # Sale Artworks search results
   lotsByFollowedArtistsConnection(
     after: String
+
+    # Please make sure to supply the TOTAL aggregation if you will be setting any aggregations
     aggregations: [SaleArtworkAggregation]
     artistIDs: [String]
     before: String
@@ -8274,6 +8278,8 @@ type Query {
   # Sale Artworks search results
   saleArtworksConnection(
     after: String
+
+    # Please make sure to supply the TOTAL aggregation if you will be setting any aggregations
     aggregations: [SaleArtworkAggregation]
     artistIDs: [String]
     before: String
@@ -8505,9 +8511,11 @@ type RequestCredentialsForAssetUploadPayload {
 }
 
 type ResizedImageUrl {
-  factor: Float
+  factor: Float!
   height: Int
-  url: String
+  src: String!
+  srcSet: String!
+  url: String!
   width: Int
 }
 
@@ -10294,6 +10302,8 @@ type Viewer {
   # Sale Artworks search results
   saleArtworksConnection(
     after: String
+
+    # Please make sure to supply the TOTAL aggregation if you will be setting any aggregations
     aggregations: [SaleArtworkAggregation]
     artistIDs: [String]
     before: String

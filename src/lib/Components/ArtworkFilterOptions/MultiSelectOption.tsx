@@ -1,6 +1,6 @@
 import { FilterToggleButton } from "lib/Components/ArtworkFilterOptions/FilterToggleButton"
 import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { Box, CheckIcon, color, Flex, Sans, space } from "palette"
+import { Box, color, Flex, Sans, space } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
@@ -12,7 +12,8 @@ interface MultiSelectOptionScreenProps {
   filterHeaderText: string
   onSelect: (filterData: FilterData, updatedValue: boolean) => void
   filterOptions: FilterData[]
-  withCheckMark?: boolean
+  isSelected?: (item: FilterData) => boolean
+  isDisabled?: (item: FilterData) => boolean
 }
 
 export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = ({
@@ -20,13 +21,29 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   onSelect,
   filterOptions,
   navigator,
-  withCheckMark = false,
+  isSelected,
+  isDisabled,
 }) => {
   const handleBackNavigation = () => {
     navigator.pop()
   }
 
-  const ListItem = withCheckMark ? CheckMarkOptionListItem : ToggleOptionListItem
+  const itemIsSelected = (item: FilterData): boolean => {
+    if (isSelected) {
+      return isSelected(item)
+    } else {
+      return !!item.paramValue
+    }
+  }
+
+  const itemIsDisabled = (item: FilterData): boolean => {
+    if (isDisabled) {
+      return isDisabled(item)
+    } else {
+      return false
+    }
+  }
+
   return (
     <Flex flexGrow={1}>
       <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
@@ -35,11 +52,31 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
           initialNumToRender={4}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
-          renderItem={({ item }) => (
-            <Box ml={0.5}>
-              <ListItem item={item} onSelect={onSelect} />
-            </Box>
-          )}
+          renderItem={({ item }) => {
+            return (
+              <Box ml={0.5}>
+                {
+                  <OptionListItem>
+                    <Flex mb={0.5}>
+                      <Sans color="black100" size="3t">
+                        {item.displayText}
+                      </Sans>
+                    </Flex>
+                    <TouchableWithoutFeedback>
+                      <FilterToggleButton
+                        onChange={() => {
+                          const currentParamValue = item.paramValue as boolean
+                          onSelect(item, !currentParamValue)
+                        }}
+                        value={itemIsSelected(item)}
+                        disabled={itemIsDisabled(item)}
+                      />
+                    </TouchableWithoutFeedback>
+                  </OptionListItem>
+                }
+              </Box>
+            )
+          }}
         />
       </Flex>
     </Flex>
@@ -68,51 +105,3 @@ export const InnerOptionListItem = styled(Flex)`
 
 export const SingleSelectOptionListItemRow = styled(TouchableOpacity)``
 export const Option = styled(Sans)``
-
-const ToggleOptionListItem = ({
-  item,
-  onSelect,
-}: {
-  item: FilterData
-  onSelect: (filterData: FilterData, updatedValue: boolean) => void
-}) => (
-  <OptionListItem>
-    <Flex mb={0.5}>
-      <Sans color="black100" size="3t">
-        {item.displayText}
-      </Sans>
-    </Flex>
-    <TouchableWithoutFeedback>
-      <FilterToggleButton
-        onChange={() => {
-          const currentParamValue = item.paramValue as boolean
-          onSelect(item, !currentParamValue)
-        }}
-        value={item.paramValue as boolean}
-      />
-    </TouchableWithoutFeedback>
-  </OptionListItem>
-)
-
-export const CheckMarkOptionListItem = ({
-  item,
-  onSelect,
-}: {
-  item: FilterData
-  onSelect: (filterData: FilterData, updatedValue: boolean) => void
-}) => (
-  <SingleSelectOptionListItemRow onPress={() => onSelect(item, !item.paramValue)}>
-    <OptionListItem>
-      <InnerOptionListItem>
-        <Option color="black100" size="3t">
-          {item.displayText}
-        </Option>
-        {!!item.paramValue && (
-          <Box mb={0.1}>
-            <CheckIcon fill="black100" />
-          </Box>
-        )}
-      </InnerOptionListItem>
-    </OptionListItem>
-  </SingleSelectOptionListItemRow>
-)

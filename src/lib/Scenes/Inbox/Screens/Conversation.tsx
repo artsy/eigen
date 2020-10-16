@@ -1,20 +1,23 @@
 import NetInfo from "@react-native-community/netinfo"
 import { Conversation_me } from "__generated__/Conversation_me.graphql"
 import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
+import ConnectivityBanner from "lib/Components/ConnectivityBanner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import Composer from "lib/Scenes/Inbox/Components/Conversations/Composer"
+import Messages from "lib/Scenes/Inbox/Components/Conversations/Messages"
+import { sendConversationMessage } from "lib/Scenes/Inbox/Components/Conversations/SendConversationMessage"
+import { updateConversation } from "lib/Scenes/Inbox/Components/Conversations/UpdateConversation"
 import { AppStore } from "lib/store/AppStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { Schema, Track, track as _track } from "lib/utils/track"
+import { color, Flex, Text, Touchable } from "palette"
 import React from "react"
 import { View } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
+import Svg, { Path } from "react-native-svg"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import styled from "styled-components/native"
-import ConnectivityBanner from "../Components/ConnectivityBanner"
-import Composer from "../Components/Inbox/Conversations/Composer"
-import Messages from "../Components/Inbox/Conversations/Messages"
-import { sendConversationMessage } from "../Components/Inbox/Conversations/SendConversationMessage"
-import { updateConversation } from "../Components/Inbox/Conversations/UpdateConversation"
-import { SmallHeadline } from "../Components/Inbox/Typography"
-import { Schema, Track, track as _track } from "../utils/track"
+import { ConversationDetailsQueryRenderer } from "./ConversationDetails"
 
 const Container = styled.View`
   flex: 1;
@@ -33,12 +36,14 @@ const PlaceholderView = View
 const HeaderTextContainer = styled.View`
   flex-direction: row;
   justify-content: center;
+  flex-grow: 1;
 `
 
 interface Props {
   me: Conversation_me
   relay: RelayProp
   onMessageSent?: (text: string) => void
+  navigator: NavigatorIOS
 }
 
 interface State {
@@ -168,10 +173,31 @@ export class Conversation extends React.Component<Props, State> {
       >
         <Container>
           <Header>
-            <HeaderTextContainer>
-              <SmallHeadline style={{ fontSize: 14 }}>{partnerName}</SmallHeadline>
-              <PlaceholderView />
-            </HeaderTextContainer>
+            <Flex flexDirection="row" alignSelf="stretch" mx={2}>
+              <HeaderTextContainer>
+                <Text variant="mediumText">{partnerName}</Text>
+                <PlaceholderView />
+              </HeaderTextContainer>
+              <Touchable
+                onPress={() => {
+                  this.props.navigator.push({
+                    component: ConversationDetailsQueryRenderer,
+                    title: "",
+                    passProps: {
+                      conversationID: this.props.me?.conversation?.internalID,
+                    },
+                  })
+                }}
+              >
+                <Svg width={28} height={28} viewBox="0 0 28 28">
+                  <Path
+                    d="M6.5 21.5V6.5H16L16 21.5H6.5ZM17.5 21.5H21.5V6.5H17.5L17.5 21.5ZM5 5.5C5 5.22386 5.22386 5 5.5 5H22.5C22.7761 5 23 5.22386 23 5.5V22.5C23 22.7761 22.7761 23 22.5 23H5.5C5.22386 23 5 22.7761 5 22.5V5.5Z"
+                    fill={color("black100")}
+                    fillRule="evenodd"
+                  />
+                </Svg>
+              </Touchable>
+            </Flex>
           </Header>
           {!this.state.isConnected && <ConnectivityBanner />}
           <Messages
@@ -209,7 +235,9 @@ export const ConversationFragmentContainer = createFragmentContainer(Conversatio
 
 export const ConversationQueryRenderer: React.FC<{
   conversationID: string
-}> = ({ conversationID }) => {
+  navigator: NavigatorIOS
+}> = (props) => {
+  const { conversationID, navigator } = props
   return (
     <QueryRenderer<ConversationQuery>
       environment={defaultEnvironment}
@@ -223,7 +251,7 @@ export const ConversationQueryRenderer: React.FC<{
       variables={{
         conversationID,
       }}
-      render={renderWithLoadProgress(ConversationFragmentContainer)}
+      render={renderWithLoadProgress(ConversationFragmentContainer, { navigator })}
     />
   )
 }

@@ -28,6 +28,7 @@ declare module "react-native" {
       presentNativeScreen(module: string, props: object, modal: boolean): void
       dismissModal(): void
       goBack(): void
+      popParentViewController(): void
       switchTab(tabType: string, props: object, popToRoot: boolean): void
       presentMediaPreviewController(reactTag: number, route: string, mimeType: string, cacheKey: string): void
       presentEmailComposer(to: string, subject: string, body?: string): void
@@ -51,8 +52,8 @@ declare module "react-native-config" {
     SEGMENT_PRODUCTION_WRITE_KEY: string
     SEGMENT_STAGING_WRITE_KEY: string
     ARTSY_ECHO_PRODUCTION_TOKEN: string
-    SEGMENT_PRODUCTION_DSN: string
-    SEGMENT_STAGING_DSN: string
+    SENTRY_PRODUCTION_DSN: string
+    SENTRY_STAGING_DSN: string
     GOOGLE_MAPS_API_KEY: string
     MAPBOX_API_CLIENT_KEY: string
     SAILTHRU_KEY: string
