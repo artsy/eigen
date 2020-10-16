@@ -10,6 +10,7 @@ upcoming:
     - Adds Show2 header, behind lab option - damon
     - Adds Show2 install shots, behind lab option - damon
     - Link ConversationDetail screen - sepans
+    - Handle artist page subroutes natively by default - david
     - Fix Vanity URL fallbacks - david
 
 releases:
