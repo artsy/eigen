@@ -60,6 +60,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/artist/:id/auction-results", "WebView", ({ id }) => ({
       url: `/artist/${id}/auction-results`,
     })),
+    new RouteMatcher("/artist/:artistID/*", "Artist"),
     // For artists in a gallery context, like https://artsy.net/spruth-magers/artist/astrid-klein . Until we have a native
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
     new RouteMatcher("/:profile_id_ignored/artist/:artistID", "Artist"),
