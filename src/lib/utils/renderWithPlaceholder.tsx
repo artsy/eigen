@@ -6,15 +6,19 @@ import { ProvidePlaceholderContext } from "./placeholders"
 
 type ReadyState = Parameters<React.ComponentProps<typeof QueryRenderer>["render"]>[0]
 
+type FallbackRenderer = (args: { retry: null | (() => void) }) => React.ReactElement | null
+
 export function renderWithPlaceholder<Props>({
   Container,
   render,
   renderPlaceholder,
+  renderFallback,
   initialProps = {},
 }: {
   Container?: React.ComponentType<Props>
   render?: (props: Props) => React.ReactChild
   renderPlaceholder: () => React.ReactChild
+  renderFallback?: FallbackRenderer
   initialProps?: object
 }): (readyState: ReadyState) => React.ReactElement | null {
   if (!Container && !render) {
@@ -44,7 +48,9 @@ export function renderWithPlaceholder<Props>({
         console.error("Error data", data)
       }
 
-      if (retrying) {
+      if (renderFallback) {
+        return renderFallback({ retry })
+      } else if (retrying) {
         retrying = false
         // TODO: Even though this code path is reached, the retry button keeps spinning. iirc it _should_ disappear when
         //      `onRetry` on the instance is unset.
