@@ -33,7 +33,9 @@ export function renderWithPlaceholder<Props>({
     if (error) {
       // In tests we want errors to clearly bubble up.
       if (typeof jest !== "undefined") {
-        throw error
+        if (!__renderWithPlaceholderTestUtils__?.allowFallbacksAtTestTime) {
+          throw error
+        }
       } else {
         console.error(error)
       }
@@ -74,4 +76,19 @@ export function renderWithPlaceholder<Props>({
       return <ProvidePlaceholderContext>{renderPlaceholder()}</ProvidePlaceholderContext>
     }
   }
+}
+
+// tslint:disable-next-line:variable-name
+export const __renderWithPlaceholderTestUtils__ = __TEST__
+  ? {
+      allowFallbacksAtTestTime: false,
+    }
+  : undefined
+
+if (__TEST__) {
+  beforeEach(() => {
+    if (__renderWithPlaceholderTestUtils__) {
+      __renderWithPlaceholderTestUtils__.allowFallbacksAtTestTime = false
+    }
+  })
 }
