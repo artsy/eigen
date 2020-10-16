@@ -6,6 +6,7 @@ import { Fair2FragmentContainer } from "lib/Scenes/Fair2/Fair2"
 import { PartnerContainer } from "lib/Scenes/Partner"
 import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { __renderWithPlaceholderTestUtils__ } from "lib/utils/renderWithPlaceholder"
 import { Spinner } from "palette"
 import React from "react"
 import { act } from "react-test-renderer"
@@ -40,6 +41,16 @@ describe("VanityURLEntity", () => {
 
   beforeEach(() => {
     env.mockClear()
+  })
+
+  it("renders a VanityURLPossibleRedirect when 404", () => {
+    if (__renderWithPlaceholderTestUtils__) {
+      __renderWithPlaceholderTestUtils__.allowFallbacksAtTestTime = true
+    }
+    const tree = renderWithWrappers(<TestRenderer entity="unknown" slug={"some-fair"} />)
+    expect(tree.root.findAllByType(VanityURLPossibleRedirect)).toHaveLength(0)
+    env.mock.resolveMostRecentOperation({ data: undefined, errors: [{ message: "404" }] })
+    expect(tree.root.findAllByType(VanityURLPossibleRedirect)).toHaveLength(1)
   })
 
   it("renders a fairQueryRenderer when given a fair id", () => {
