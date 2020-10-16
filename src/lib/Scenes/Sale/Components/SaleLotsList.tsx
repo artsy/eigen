@@ -40,6 +40,7 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
 
   useEffect(() => {
     if (state.applyFilters) {
+      console.log({ filterParams })
       relay.refetchConnection(
         10,
         (error) => {
@@ -166,13 +167,6 @@ export const SaleLotsListContainer = createPaginationContainer(
     `,
   },
   {
-    getFragmentVariables(previousVariables, count) {
-      // Relay is unable to infer this for this component, I'm not sure why.
-      return {
-        ...previousVariables,
-        count,
-      }
-    },
     getConnectionFromProps(props) {
       return props?.saleArtworksConnection?.saleArtworksConnection
     },
@@ -181,7 +175,6 @@ export const SaleLotsListContainer = createPaginationContainer(
         ...fragmentVariables,
         cursor,
         count,
-        partnerID: fragmentVariables.artistIDs,
         saleID: props.saleSlug,
       }
     },
