@@ -8,6 +8,16 @@ export type ArtworkAggregation = "ARTIST" | "COLOR" | "DIMENSION_RANGE" | "FOLLO
 export type Fair2Artworks_fair = {
     readonly slug: string;
     readonly internalID: string;
+    readonly fairArtworksForAggregation: {
+        readonly aggregations: ReadonlyArray<{
+            readonly slice: ArtworkAggregation | null;
+            readonly counts: ReadonlyArray<{
+                readonly count: number;
+                readonly name: string;
+                readonly value: string;
+            } | null> | null;
+        } | null> | null;
+    } | null;
     readonly fairArtworks: {
         readonly aggregations: ReadonlyArray<{
             readonly slice: ArtworkAggregation | null;
@@ -38,7 +48,73 @@ export type Fair2Artworks_fair$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "kind": "Literal",
+  "name": "aggregations",
+  "value": [
+    "COLOR",
+    "DIMENSION_RANGE",
+    "GALLERY",
+    "INSTITUTION",
+    "MAJOR_PERIOD",
+    "MEDIUM",
+    "PRICE_RANGE",
+    "FOLLOWED_ARTISTS",
+    "ARTIST"
+  ]
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "ArtworksAggregationResults",
+  "kind": "LinkedField",
+  "name": "aggregations",
+  "plural": true,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "slice",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "AggregationCount",
+      "kind": "LinkedField",
+      "name": "counts",
+      "plural": true,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "count",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "name",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "value",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [
     {
       "defaultValue": null,
@@ -146,6 +222,25 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
+      "alias": "fairArtworksForAggregation",
+      "args": [
+        (v0/*: any*/),
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 0
+        }
+      ],
+      "concreteType": "FilterArtworksConnection",
+      "kind": "LinkedField",
+      "name": "filterArtworksConnection",
+      "plural": false,
+      "selections": [
+        (v1/*: any*/)
+      ],
+      "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],first:0)"
+    },
+    {
       "alias": "fairArtworks",
       "args": [
         {
@@ -153,21 +248,7 @@ const node: ReaderFragment = {
           "name": "acquireable",
           "variableName": "acquireable"
         },
-        {
-          "kind": "Literal",
-          "name": "aggregations",
-          "value": [
-            "COLOR",
-            "DIMENSION_RANGE",
-            "GALLERY",
-            "INSTITUTION",
-            "MAJOR_PERIOD",
-            "MEDIUM",
-            "PRICE_RANGE",
-            "FOLLOWED_ARTISTS",
-            "ARTIST"
-          ]
-        },
+        (v0/*: any*/),
         {
           "kind": "Variable",
           "name": "artistIDs",
@@ -234,56 +315,7 @@ const node: ReaderFragment = {
       "name": "__Fair_fairArtworks_connection",
       "plural": false,
       "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "ArtworksAggregationResults",
-          "kind": "LinkedField",
-          "name": "aggregations",
-          "plural": true,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "slice",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "AggregationCount",
-              "kind": "LinkedField",
-              "name": "counts",
-              "plural": true,
-              "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "count",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "name",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "value",
-                  "storageKey": null
-                }
-              ],
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        },
+        (v1/*: any*/),
         {
           "alias": null,
           "args": null,
@@ -389,5 +421,6 @@ const node: ReaderFragment = {
   "type": "Fair",
   "abstractKey": null
 };
-(node as any).hash = '59228d2f0ab1eda622f6cb4228860f18';
+})();
+(node as any).hash = '51e8633daecb312941181893d06d11b5';
 export default node;

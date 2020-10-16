@@ -22,7 +22,6 @@ interface Fair2ArtworksProps {
 }
 
 export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay, initiallyAppliedFilter }) => {
-
   const artworks = fair.fairArtworks!
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const tracking = useTracking()
@@ -60,7 +59,7 @@ export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay, initi
   }, [state.appliedFilters])
 
   const followedArtistCount = artworks?.counts?.followedArtists ?? 0
-  const artworkAggregations = (artworks?.aggregations ?? []) as aggregationsType
+  const artworkAggregations = (fair.fairArtworksForAggregation?.aggregations ?? []) as aggregationsType
   const aggregations = aggregationsWithFollowedArtists(followedArtistCount, artworkAggregations)
 
   useEffect(() => {
@@ -118,6 +117,29 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
       ) {
         slug
         internalID
+        fairArtworksForAggregation: filterArtworksConnection(
+          first: 0
+          aggregations: [
+            COLOR
+            DIMENSION_RANGE
+            GALLERY
+            INSTITUTION
+            MAJOR_PERIOD
+            MEDIUM
+            PRICE_RANGE
+            FOLLOWED_ARTISTS
+            ARTIST
+          ]
+        ) {
+          aggregations {
+            slice
+            counts {
+              count
+              name
+              value
+            }
+          }
+        }
         fairArtworks: filterArtworksConnection(
           first: 30
           after: $cursor
