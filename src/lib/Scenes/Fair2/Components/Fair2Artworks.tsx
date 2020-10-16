@@ -1,14 +1,14 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Fair2Artworks_fair } from "__generated__/Fair2Artworks_fair.graphql"
-import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { FAIR2_ARTWORKS_PAGE_SIZE } from "lib/data/constants"
-import { ArtworkFilterContext, FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFilterContext, FilterArray } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import {
   aggregationsType,
   aggregationsWithFollowedArtists,
   filterArtworksParams,
-} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
+import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { FAIR2_ARTWORKS_PAGE_SIZE } from "lib/data/constants"
 import { Schema } from "lib/utils/track"
 import { Box } from "palette"
 import React, { useContext, useEffect } from "react"
@@ -22,7 +22,6 @@ interface Fair2ArtworksProps {
 }
 
 export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay, initiallyAppliedFilter }) => {
-
   const artworks = fair.fairArtworks!
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const tracking = useTracking()

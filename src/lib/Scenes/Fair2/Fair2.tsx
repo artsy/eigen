@@ -1,9 +1,16 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Fair2_fair } from "__generated__/Fair2_fair.graphql"
 import { Fair2Query } from "__generated__/Fair2Query.graphql"
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
+import {
+  ArtworkFilterContext,
+  ArtworkFilterGlobalStateProvider,
+} from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import {
+  AnimatedArtworkFilterButton,
+  FilterModalMode,
+  FilterModalNavigator,
+} from "lib/Components/ArtworkFilter/FilterModal"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"

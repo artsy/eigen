@@ -6,13 +6,20 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graphql"
 // @ts-ignore STRICTNESS_MIGRATION
 import { mount } from "enzyme"
+import { FilterParamName, InitialState } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Sans, Theme } from "palette"
 import { useTracking } from "react-tracking"
 import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
+import { NavigateBackIconContainer } from "../ArtworkFilter/ArtworkFilterOptions/SingleSelectOption"
+import {
+  Aggregations,
+  ArtworkFilterContext,
+  ArtworkFilterContextState,
+  reducer,
+} from "../ArtworkFilter/ArtworkFiltersStore"
 import {
   ApplyButton,
   ClearAllButton,
@@ -22,14 +29,7 @@ import {
   FilterModalNavigator,
   FilterOptions,
   TouchableOptionListItemRow,
-} from "../../../lib/Components/FilterModal"
-import {
-  Aggregations,
-  ArtworkFilterContext,
-  ArtworkFilterContextState,
-  reducer,
-} from "../../utils/ArtworkFilter/ArtworkFiltersStore"
-import { NavigateBackIconContainer } from "../ArtworkFilterOptions/SingleSelectOption"
+} from "../ArtworkFilter/FilterModal"
 import { closeModalMock, MockFilterScreen } from "./FilterTestHelper"
 
 let mockNavigator: MockNavigator

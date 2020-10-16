@@ -9,8 +9,8 @@ import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { ArtworkFilterContext } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
-import { filterArtworksParams } from "../../../utils/ArtworkFilter/FilterArtworksHelpers"
+import { ArtworkFilterContext } from "../../../Components/ArtworkFilter/ArtworkFiltersStore"
+import { filterArtworksParams } from "../../../Components/ArtworkFilter/FilterArtworksHelpers"
 
 interface CollectionArtworksProps {
   collection: CollectionArtworks_collection

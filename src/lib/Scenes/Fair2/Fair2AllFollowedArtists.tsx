@@ -1,13 +1,17 @@
 import { Fair2AllFollowedArtists_fair } from "__generated__/Fair2AllFollowedArtists_fair.graphql"
 import { Fair2AllFollowedArtistsQuery } from "__generated__/Fair2AllFollowedArtistsQuery.graphql"
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
 import {
   ArtworkFilterContext,
   ArtworkFilterGlobalStateProvider,
   FilterArray,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+} from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import {
+  AnimatedArtworkFilterButton,
+  FilterModalMode,
+  FilterModalNavigator,
+} from "lib/Components/ArtworkFilter/FilterModal"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Box, Flex, Separator, Spacer, Text, Theme } from "palette"

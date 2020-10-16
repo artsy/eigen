@@ -1,18 +1,25 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
+import {
+  ArtworkFilterContext,
+  ArtworkFilterGlobalStateProvider,
+} from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { filterArtworksParams } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import {
+  AnimatedArtworkFilterButton,
+  FilterModalMode,
+  FilterModalNavigator,
+} from "lib/Components/ArtworkFilter/FilterModal"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
 } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { useEmissionOption } from "lib/store/AppStore"
-import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { Box, Separator, Spacer } from "palette"
 import React, { useContext, useEffect, useState } from "react"

@@ -1,4 +1,4 @@
-import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFilterContext } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import { Button, color, Flex, Sans } from "palette"
 import React, { useContext } from "react"
 import styled from "styled-components/native"
