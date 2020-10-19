@@ -5,6 +5,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { Show2ContextCard } from "../Components/Show2ContextCard"
 import { Show2, Show2FragmentContainer } from "../Show2"
 
 jest.unmock("react-relay")
@@ -85,5 +86,11 @@ describe("Show2", () => {
 
     expect(text).toContain("First install shot")
     expect(text).toContain("Second install shot")
+  })
+
+  it("renders the context card", () => {
+    const wrapper = getWrapper()
+
+    expect(wrapper.root.findAllByType(Show2ContextCard)).toHaveLength(1)
   })
 })
