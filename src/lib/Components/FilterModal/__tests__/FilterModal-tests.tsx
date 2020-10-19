@@ -20,6 +20,7 @@ import { Sans, Theme } from "palette"
 import { useTracking } from "react-tracking"
 import { NavigateBackIconContainer } from "../../ArtworkFilterOptions/SingleSelectOption"
 import { FakeNavigator as MockNavigator } from "../../Bidding/__tests__/Helpers/FakeNavigator"
+import { FancyModalHeader } from "../../FancyModal/FancyModalHeader"
 import { closeModalMock, MockFilterScreen } from "../__tests__/FilterTestHelper"
 import {
   ApplyButton,
@@ -235,7 +236,7 @@ describe("Filter modal navigation flow", () => {
     )
 
     // @ts-ignore STRICTNESS_MIGRATION
-    const getNextScreenTitle = (component) => component.root.findByType(Sans).props.children
+    const getNextScreenTitle = (component) => component.root.findByType(FancyModalHeader).props.children
 
     expect(getNextScreenTitle(nextScreen)).toEqual("Sort by")
   })

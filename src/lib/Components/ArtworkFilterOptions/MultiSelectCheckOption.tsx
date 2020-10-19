@@ -81,9 +81,10 @@ export const CheckMarkOptionListItem = ({
         height={60}
       >
         <Sans color="black100" size="3t">
-          {item.displayText}{" "}
+          {item.displayText}
           {!!item.count && (
             <Sans color="black60" size="3t">
+              {" "}
               ({item.count})
             </Sans>
           )}
