@@ -12,7 +12,7 @@ interface Props {
 
 export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocation }) => {
   const [predictions, setPredictions] = useState<GMapsLocation[]>([])
-  const [selectedLocation, setSelectedLocation] = useState(Boolean(initialLocation) ? initialLocation : "")
+  const [selectedLocation, setSelectedLocation] = useState(initialLocation ? initialLocation : "")
   const [query, setQuery] = useState(selectedLocation)
 
   // Autofocus
@@ -42,7 +42,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocatio
   }, [query])
 
   const reset = () => {
-    if (Boolean(selectedLocation)) {
+    if (selectedLocation) {
       setQuery(selectedLocation)
     }
   }
@@ -61,7 +61,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocatio
         style={{ marginVertical: 10 }}
         onChangeText={setQuery}
         onFocus={reset}
-        value={Boolean(selectedLocation) ? selectedLocation : query}
+        value={selectedLocation ? selectedLocation : query}
       />
       <LocationPredictions
         predictions={predictions}

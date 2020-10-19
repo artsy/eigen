@@ -37,13 +37,13 @@ const TestRenderer = () => (
     `}
     variables={{}}
     render={({ props, error }) => {
-      if (Boolean(props?.artwork)) {
+      if (props?.artwork) {
         return (
           <ArtworkInquiryStateProvider>
             <InquiryModalFragmentContainer artwork={props!.artwork!} {...modalProps} />
           </ArtworkInquiryStateProvider>
         )
-      } else if (Boolean(error)) {
+      } else if (error) {
         console.log(error)
       }
     }}

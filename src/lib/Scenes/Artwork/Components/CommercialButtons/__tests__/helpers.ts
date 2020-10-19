@@ -21,7 +21,7 @@ export const press = (
     return extractText(t).match(text)
   })
   const touchable = touchables[0]
-  if (Boolean(touchable) && Boolean(touchable.props.onPress)) {
+  if (touchable && touchable.props.onPress) {
     return act(async () => {
       touchable.props.onPress()
       await flushPromiseQueue()
