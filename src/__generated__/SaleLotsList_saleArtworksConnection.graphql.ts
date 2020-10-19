@@ -58,6 +58,11 @@ const node: ReaderFragment = {
       "name": "estimateRange"
     },
     {
+      "defaultValue": [],
+      "kind": "LocalArgument",
+      "name": "geneIDs"
+    },
+    {
       "defaultValue": null,
       "kind": "LocalArgument",
       "name": "saleID"
@@ -104,6 +109,11 @@ const node: ReaderFragment = {
           "kind": "Variable",
           "name": "estimateRange",
           "variableName": "estimateRange"
+        },
+        {
+          "kind": "Variable",
+          "name": "geneIDs",
+          "variableName": "geneIDs"
         },
         {
           "kind": "Variable",
@@ -274,5 +284,5 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = 'f65eb14e041790c30404c0392053aaef';
+(node as any).hash = '546fa02c7e171e4cc92919fedf9f8c4b';
 export default node;

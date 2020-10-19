@@ -3,12 +3,13 @@ import { OrderedSaleArtworkSorts } from "lib/Components/ArtworkFilterOptions/Sor
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { filterArtworksParams, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { filterArtworksParams, FilterParamName, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
-import { Box, Flex, Sans } from "palette"
+import { Box, color, Flex, Sans } from "palette"
 import React, { useContext, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import styled from "styled-components/native"
 import { SaleArtworkListContainer } from "./SaleArtworkList"
 
 interface Props {
@@ -24,7 +25,7 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
   const tracking = useTracking()
 
   const filterParams = filterArtworksParams(state.appliedFilters, state.filterType)
-  const showList = state.appliedFilters.find((filter) => filter.paramValue === ViewAsValues.List)
+  const viewAsFilter = state.appliedFilters.find((filter) => filter.paramName === FilterParamName.viewAs)
   const counts = saleArtworksConnection.saleArtworksConnection?.counts
 
   useEffect(() => {
@@ -40,7 +41,12 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
 
   useEffect(() => {
     if (state.applyFilters) {
-      console.log({ filterParams })
+      // Add the new medium to geneIDs array
+      const medium: string[] = []
+      if (typeof filterParams.medium === "string") {
+        medium.push(filterParams.medium)
+      }
+
       relay.refetchConnection(
         10,
         (error) => {
@@ -48,7 +54,7 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
             throw new Error("Sale/SaleLotsList filter error: " + error.message)
           }
         },
-        { ...filterParams, saleID: saleSlug }
+        { ...filterParams, saleID: saleSlug, geneIDs: medium }
       )
     }
   }, [state.appliedFilters])
@@ -60,7 +66,6 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
     })
   }, [])
 
-  // TODO: Discuss tracking
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
       action_name: "clearFilters",
@@ -79,7 +84,7 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
     }
   }
 
-  if (!saleArtworksConnection.saleArtworksConnection) {
+  if (!saleArtworksConnection.saleArtworksConnection?.edges?.length) {
     return (
       <Box mb="80px">
         <FilteredArtworkGridZeroState id={saleID} slug={saleSlug} trackClear={trackClear} />
@@ -90,16 +95,16 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
   return (
     <Flex flex={1} my={4}>
       <Flex px={2} mb={2}>
-        <Sans size="4" ellipsizeMode="tail" numberOfLines={1} data-test-id="title">
+        <FilterTitle size="4" ellipsizeMode="tail">
           Sorted by {getSortDescription()?.toLowerCase()}
-        </Sans>
+        </FilterTitle>
 
-        <Sans size="3t" color="black60" data-test-id="subtitle">
-          {`Showing ${counts?.total} of ${totalCount}`}
-        </Sans>
+        {!!counts?.total && !!totalCount && (
+          <FilterDescription size="3t">{`Showing ${counts.total} of ${totalCount}`}</FilterDescription>
+        )}
       </Flex>
 
-      {showList ? (
+      {viewAsFilter?.paramValue === ViewAsValues.List ? (
         <SaleArtworkListContainer
           connection={saleArtworksConnection.saleArtworksConnection!}
           hasMore={relay.hasMore}
@@ -122,6 +127,11 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
   )
 }
 
+export const FilterTitle = styled(Sans)``
+export const FilterDescription = styled(Sans)`
+  color: ${color("black60")};
+`
+
 export const SaleLotsListContainer = createPaginationContainer(
   SaleLotsList,
   {
@@ -131,6 +141,7 @@ export const SaleLotsListContainer = createPaginationContainer(
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
         artistIDs: { type: "[String]", defaultValue: [] }
+        geneIDs: { type: "[String]", defaultValue: [] }
         estimateRange: { type: "String", defaultValue: "" }
         sort: { type: "String", defaultValue: "position" }
         saleID: { type: "ID" }
@@ -139,6 +150,7 @@ export const SaleLotsListContainer = createPaginationContainer(
           after: $cursor
           saleID: $saleID
           artistIDs: $artistIDs
+          geneIDs: $geneIDs
           aggregations: [ARTIST, MEDIUM, TOTAL]
           estimateRange: $estimateRange
           first: $count
@@ -170,16 +182,16 @@ export const SaleLotsListContainer = createPaginationContainer(
     getConnectionFromProps(props) {
       return props?.saleArtworksConnection?.saleArtworksConnection
     },
-    getVariables(props, { count, cursor }, fragmentVariables) {
+    getVariables(_props, { count, cursor }, fragmentVariables) {
       return {
         ...fragmentVariables,
         cursor,
         count,
-        saleID: props.saleSlug,
       }
     },
     query: graphql`
       query SaleLotsListQuery(
+        $geneIDs: [String]
         $artistIDs: [String]
         $count: Int!
         $cursor: String
@@ -191,6 +203,7 @@ export const SaleLotsListContainer = createPaginationContainer(
       @raw_response_type {
         ...SaleLotsList_saleArtworksConnection
         @arguments(
+          geneIDs: $geneIDs
           artistIDs: $artistIDs
           count: $count
           cursor: $cursor

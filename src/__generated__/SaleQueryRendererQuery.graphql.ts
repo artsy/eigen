@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 644555a88b806802a7102d5399162b1a */
+/* @relayHash ed2439f67ddedf9a639b6ea25446037a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -225,7 +225,7 @@ fragment SaleHeader_sale on Sale {
 }
 
 fragment SaleLotsList_saleArtworksConnection_4BVn5U on Query {
-  saleArtworksConnection(saleID: $saleSlug, artistIDs: [], aggregations: [ARTIST, MEDIUM, TOTAL], estimateRange: "", first: 10, sort: "position") {
+  saleArtworksConnection(saleID: $saleSlug, artistIDs: [], geneIDs: [], aggregations: [ARTIST, MEDIUM, TOTAL], estimateRange: "", first: 10, sort: "position") {
     aggregations {
       slice
       counts {
@@ -461,6 +461,11 @@ v23 = [
     "value": ""
   },
   (v9/*: any*/),
+  {
+    "kind": "Literal",
+    "name": "geneIDs",
+    "value": ([]/*: any*/)
+  },
   (v5/*: any*/),
   {
     "kind": "Literal",
@@ -1022,6 +1027,7 @@ return {
         "filters": [
           "saleID",
           "artistIDs",
+          "geneIDs",
           "aggregations",
           "estimateRange",
           "sort"
@@ -1034,7 +1040,7 @@ return {
     ]
   },
   "params": {
-    "id": "644555a88b806802a7102d5399162b1a",
+    "id": "ed2439f67ddedf9a639b6ea25446037a",
     "metadata": {},
     "name": "SaleQueryRendererQuery",
     "operationKind": "query",

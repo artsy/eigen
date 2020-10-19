@@ -11,11 +11,11 @@ interface PriceRangeOptionsScreenProps {
 
 const EstimateRanges = [
   { paramValue: "", paramDisplay: "All" },
-  { paramValue: "*-1000", paramDisplay: "$0-1,000" },
-  { paramValue: "1000-5000", paramDisplay: "$1000-5,000" },
-  { paramValue: "5000-10000", paramDisplay: "$5,000-10,000" },
-  { paramValue: "10000-50000", paramDisplay: "$10,000-50,000" },
-  { paramValue: "50000-*", paramDisplay: "$50,000+" },
+  { paramValue: "*-100000", paramDisplay: "$0-1,000" },
+  { paramValue: "100000-500000", paramDisplay: "$1000-5,000" },
+  { paramValue: "500000-1000000", paramDisplay: "$5,000-10,000" },
+  { paramValue: "1000000-5000000", paramDisplay: "$10,000-50,000" },
+  { paramValue: "5000000-*", paramDisplay: "$50,000+" },
 ]
 
 export const EstimateRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigator }) => {

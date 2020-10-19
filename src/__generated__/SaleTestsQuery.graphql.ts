@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a3422af648b42e3a15a6b48aebf8ef20 */
+/* @relayHash 9bc37783055fdad6b0c29126e114b738 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -219,7 +219,7 @@ fragment SaleHeader_sale on Sale {
 }
 
 fragment SaleLotsList_saleArtworksConnection_49HmpD on Query {
-  saleArtworksConnection(saleID: "sale-slug", artistIDs: [], aggregations: [ARTIST, MEDIUM, TOTAL], estimateRange: "", first: 10, sort: "position") {
+  saleArtworksConnection(saleID: "sale-slug", artistIDs: [], geneIDs: [], aggregations: [ARTIST, MEDIUM, TOTAL], estimateRange: "", first: 10, sort: "position") {
     aggregations {
       slice
       counts {
@@ -443,6 +443,11 @@ v22 = [
     "value": ""
   },
   (v8/*: any*/),
+  {
+    "kind": "Literal",
+    "name": "geneIDs",
+    "value": ([]/*: any*/)
+  },
   (v4/*: any*/),
   {
     "kind": "Literal",
@@ -1080,7 +1085,7 @@ return {
             "abstractKey": "__isArtworkConnectionInterface"
           }
         ],
-        "storageKey": "saleArtworksConnection(aggregations:[\"ARTIST\",\"MEDIUM\",\"TOTAL\"],artistIDs:[],estimateRange:\"\",first:10,saleID:\"sale-slug\",sort:\"position\")"
+        "storageKey": "saleArtworksConnection(aggregations:[\"ARTIST\",\"MEDIUM\",\"TOTAL\"],artistIDs:[],estimateRange:\"\",first:10,geneIDs:[],saleID:\"sale-slug\",sort:\"position\")"
       },
       {
         "alias": null,
@@ -1088,6 +1093,7 @@ return {
         "filters": [
           "saleID",
           "artistIDs",
+          "geneIDs",
           "aggregations",
           "estimateRange",
           "sort"
@@ -1100,7 +1106,7 @@ return {
     ]
   },
   "params": {
-    "id": "a3422af648b42e3a15a6b48aebf8ef20",
+    "id": "9bc37783055fdad6b0c29126e114b738",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
