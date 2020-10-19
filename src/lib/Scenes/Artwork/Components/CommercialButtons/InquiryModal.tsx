@@ -100,7 +100,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   return (
     <FancyModal visible={modalIsVisible} onBackgroundPressed={() => toggleVisibility()}>
       <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => toggleVisibility()}>
-        {modalHeaderText}
+        {modalHeaderText ?? "Contact gallery"}
       </FancyModalHeader>
       <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
       <Box m={2}>
