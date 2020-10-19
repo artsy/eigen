@@ -55,6 +55,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns the root navigation controller for specified tab
 - (ARNavigationController *)rootNavigationControllerAtTab:(NSString *)tab;
 
+- (void)afterBootstrap:(void (^)(void))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END

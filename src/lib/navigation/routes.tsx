@@ -57,9 +57,11 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     new RouteMatcher("/artist/:artistID", "Artist"),
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
-    new RouteMatcher("/artist/:id/auction-results", "WebView", ({ id }) => ({
-      url: `/artist/${id}/auction-results`,
+    new RouteMatcher("/artist/:artistID/auction-results", "WebView", ({ artistID }) => ({
+      url: `/artist/${artistID}/auction-results`,
     })),
+    new RouteMatcher("/artist/:artistID/artist-series", "FullArtistSeriesList"),
+    new RouteMatcher("/artist/:artistID/*", "Artist"),
     // For artists in a gallery context, like https://artsy.net/spruth-magers/artist/astrid-klein . Until we have a native
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
     new RouteMatcher("/:profile_id_ignored/artist/:artistID", "Artist"),
@@ -69,12 +71,12 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       : new RouteMatcher("/auction/:id", "Auction"),
     new RouteMatcher("/auction/:id/bid/:artwork_id", "AuctionBidArtwork"),
     new RouteMatcher("/gene/:geneID", "Gene"),
-    getCurrentEmissionState().options.AROptionsNewShowPage
-      ? new RouteMatcher("/show/:showID", "Show2")
-      : new RouteMatcher("/show/:showID", "Show"),
+    ...(getCurrentEmissionState().options.AROptionsNewShowPage
+      ? [new RouteMatcher("/show/:showID", "Show2"), new RouteMatcher("/show/:showID/info", "Show2MoreInfo")]
+      : [new RouteMatcher("/show/:showID", "Show"), new RouteMatcher("/show/:showID/info", "ShowMoreInfo")]),
     new RouteMatcher("/show/:showID/artworks", "ShowArtworks"),
     new RouteMatcher("/show/:showID/artists", "ShowArtists"),
-    new RouteMatcher("/show/:showID/info", "ShowMoreInfo"),
+
     new RouteMatcher("/inquiry/:artworkID", "Inquiry"),
     new RouteMatcher("/viewing-rooms", "ViewingRooms"),
     new RouteMatcher("/viewing-room/:viewing_room_id", "ViewingRoom"),
@@ -82,7 +84,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/viewing-room/:viewing_room_id/:artwork_id", "ViewingRoomArtwork"),
     new RouteMatcher("/feature/:slug", "Feature"),
     new RouteMatcher("/artist-series/:artistSeriesID", "ArtistSeries"),
-    new RouteMatcher("/artist/:artistID/artist-series", "FullArtistSeriesList"),
     new RouteMatcher("/collection/:collectionID", "Collection"),
     new RouteMatcher("/collection/:collectionID/artists", "FullFeaturedArtistList"),
     new RouteMatcher("/conversation/:conversationID", "Conversation"),

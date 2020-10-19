@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b90553fb102e8384cfe12cc366c83e86 */
+/* @relayHash 9bff5ece03786421250d6fbfa5b6f6fb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -52,6 +52,11 @@ fragment Show2Header_show on Show {
   }
 }
 
+fragment Show2Info_show on Show {
+  href
+  about: description
+}
+
 fragment Show2InstallShots_show on Show {
   name
   images {
@@ -68,6 +73,10 @@ fragment Show2InstallShots_show on Show {
 fragment Show2_show on Show {
   ...Show2Header_show
   ...Show2InstallShots_show
+  ...Show2Info_show
+  images {
+    __typename
+  }
 }
 */
 
@@ -94,6 +103,13 @@ v2 = {
   "storageKey": null
 },
 v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
+  "storageKey": null
+},
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -190,13 +206,7 @@ return {
             "name": "partner",
             "plural": false,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "__typename",
-                "storageKey": null
-              },
+              (v3/*: any*/),
               {
                 "kind": "InlineFragment",
                 "selections": [
@@ -209,7 +219,7 @@ return {
                 "kind": "InlineFragment",
                 "selections": [
                   (v2/*: any*/),
-                  (v3/*: any*/)
+                  (v4/*: any*/)
                 ],
                 "type": "ExternalPartner",
                 "abstractKey": null
@@ -217,7 +227,7 @@ return {
               {
                 "kind": "InlineFragment",
                 "selections": [
-                  (v3/*: any*/)
+                  (v4/*: any*/)
                 ],
                 "type": "Node",
                 "abstractKey": "__isNode"
@@ -293,18 +303,33 @@ return {
                   }
                 ],
                 "storageKey": "resized(height:300)"
-              }
+              },
+              (v3/*: any*/)
             ],
             "storageKey": null
           },
-          (v3/*: any*/)
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "href",
+            "storageKey": null
+          },
+          {
+            "alias": "about",
+            "args": null,
+            "kind": "ScalarField",
+            "name": "description",
+            "storageKey": null
+          },
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "b90553fb102e8384cfe12cc366c83e86",
+    "id": "9bff5ece03786421250d6fbfa5b6f6fb",
     "metadata": {},
     "name": "Show2Query",
     "operationKind": "query",

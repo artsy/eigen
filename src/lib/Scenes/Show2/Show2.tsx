@@ -3,10 +3,12 @@ import { Show2Query } from "__generated__/Show2Query.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Box, Flex, Separator, Spacer, Theme } from "palette"
+import { Flex, Separator, Spacer } from "palette"
 import React from "react"
+import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { Show2HeaderFragmentContainer as ShowHeader } from "./Components/Show2Header"
+import { Show2InfoFragmentContainer as ShowInfo } from "./Components/Show2Info"
 import { Show2InstallShotsFragmentContainer as ShowInstallShots } from "./Components/Show2InstallShots"
 
 interface Show2QueryRendererProps {
@@ -18,13 +20,21 @@ interface Show2Props {
 }
 
 export const Show2: React.FC<Show2Props> = ({ show }) => {
+  const sections = [
+    <ShowHeader show={show} mx={2} />,
+    ...(!!show.images?.length ? [<ShowInstallShots show={show} />] : []),
+    <ShowInfo show={show} mx={2} />,
+  ]
+
   return (
-    <Theme>
-      <Box mt={6}>
-        <ShowHeader show={show} mt={2} mx={2} mb={3} />
-        <ShowInstallShots show={show} mb={3} />
-      </Box>
-    </Theme>
+    <FlatList<typeof sections[number]>
+      data={sections}
+      keyExtractor={(_, i) => String(i)}
+      ListHeaderComponent={<Spacer mt={6} pt={2} />}
+      ListFooterComponent={<Spacer my={2} />}
+      ItemSeparatorComponent={() => <Spacer my={15} />}
+      renderItem={({ item }) => item}
+    />
   )
 }
 
@@ -33,6 +43,10 @@ export const Show2FragmentContainer = createFragmentContainer(Show2, {
     fragment Show2_show on Show {
       ...Show2Header_show
       ...Show2InstallShots_show
+      ...Show2Info_show
+      images {
+        __typename
+      }
     }
   `,
 })
