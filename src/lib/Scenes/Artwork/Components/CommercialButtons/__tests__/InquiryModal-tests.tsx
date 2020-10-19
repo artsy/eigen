@@ -23,6 +23,7 @@ let env: ReturnType<typeof createMockEnvironment>
 const modalProps = {
   modalIsVisible: true,
   toggleVisibility: jest.fn(),
+  modalHeaderText: "Inquire on price",
 }
 
 const TestRenderer = () => (
@@ -75,6 +76,11 @@ beforeEach(() => {
 })
 
 describe("<InquiryModal />", () => {
+  it("renders the correct modal header", () => {
+    const tree = getWrapper()
+    expect(extractText(tree.root)).toContain("Inquire on price")
+  })
+
   it("renders the modal", () => {
     const tree = getWrapper()
     expect(extractText(tree.root)).toContain("What information are you looking for?")
