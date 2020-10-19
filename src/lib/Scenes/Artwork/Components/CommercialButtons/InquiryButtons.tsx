@@ -33,10 +33,6 @@ export const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...prop
     setModalVisibility(true)
   }
 
-  const getModalHeaderText = () => {
-    return modalHeaderText
-  }
-
   return (
     <>
       {!!artwork.isPriceHidden && (
