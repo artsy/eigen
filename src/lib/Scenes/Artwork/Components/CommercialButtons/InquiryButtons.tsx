@@ -20,21 +20,28 @@ export interface InquiryButtonsState {
 
 export const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...props }) => {
   const [modalVisibility, setModalVisibility] = useState(false)
+  const [modalHeaderText, setModalHeaderText] = useState("Contact gallery")
+
   const { dispatch } = useContext(ArtworkInquiryContext)
-  const dispatchAction = (buttonText: string) => {
+  const dispatchAction = (buttonText: string, headerText: string) => {
     dispatch({
       type: "selectInquiryType",
       payload: buttonText as InquiryTypes,
     })
 
+    setModalHeaderText(headerText)
     setModalVisibility(true)
+  }
+
+  const getModalHeaderText = () => {
+    return modalHeaderText
   }
 
   return (
     <>
       {!!artwork.isPriceHidden && (
         <Button
-          onPress={() => dispatchAction(InquiryOptions.RequestPrice)}
+          onPress={() => dispatchAction(InquiryOptions.RequestPrice, "Inquire on price")}
           size="large"
           mb={1}
           block
@@ -46,7 +53,7 @@ export const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...prop
       )}
       {!artwork.isPriceHidden && (
         <Button
-          onPress={() => dispatchAction(InquiryOptions.InquireToPurchase)}
+          onPress={() => dispatchAction(InquiryOptions.InquireToPurchase, "Inquire to purchase")}
           size="large"
           mb={1}
           block
@@ -57,7 +64,7 @@ export const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...prop
         </Button>
       )}
       <Button
-        onPress={() => dispatchAction(InquiryOptions.ContactGallery)}
+        onPress={() => dispatchAction(InquiryOptions.ContactGallery, "Contact gallery")}
         size="large"
         block
         width={100}
@@ -69,6 +76,7 @@ export const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...prop
         artwork={artwork}
         modalIsVisible={modalVisibility}
         toggleVisibility={() => setModalVisibility(!modalVisibility)}
+        modalHeaderText={modalHeaderText}
       />
     </>
   )

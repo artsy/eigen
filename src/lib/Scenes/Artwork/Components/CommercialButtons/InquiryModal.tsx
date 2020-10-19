@@ -21,10 +21,11 @@ interface InquiryModalProps {
   toggleVisibility: () => void
   navigator?: NavigatorIOS
   modalIsVisible: boolean
+  modalHeaderText?: string
 }
 
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props }) => {
-  const { toggleVisibility, modalIsVisible } = props
+  const { toggleVisibility, modalIsVisible, modalHeaderText } = props
   const questions = artwork?.inquiryQuestions!
   const { state, dispatch } = useContext(ArtworkInquiryContext)
   const [locationExpanded, setLocationExpanded] = useState(false)
@@ -99,7 +100,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   return (
     <FancyModal visible={modalIsVisible} onBackgroundPressed={() => toggleVisibility()}>
       <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => toggleVisibility()}>
-        Contact Gallery
+        {modalHeaderText}
       </FancyModalHeader>
       <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
       <Box m={2}>
