@@ -12,6 +12,7 @@ import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
+import { ShippingModal } from "./ShippingModal"
 
 interface InquiryModalProps {
   artwork: InquiryModal_artwork
@@ -25,48 +26,73 @@ interface InquiryModalProps {
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props }) => {
   const { toggleVisibility, modalIsVisible } = props
   const questions = artwork?.inquiryQuestions!
-  const { state } = useContext(ArtworkInquiryContext)
-  const [isExpanded, setExpanded] = useState(false)
-  const toggleExpanded = () => {
+  const { state, dispatch } = useContext(ArtworkInquiryContext)
+  const [locationExpanded, setLocationExpanded] = useState(false)
+  const toggleLocationExpanded = () => {
     LayoutAnimation.configureNext({
       ...LayoutAnimation.Presets.linear,
       duration: 200,
     })
-    setExpanded(!isExpanded)
+    setLocationExpanded(!locationExpanded)
   }
+  const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
+  const selectShippingLocation = (l: string) => dispatch({ type: "selectShippingLocation", payload: l })
 
   const renderInquiryQuestion = (inquiry: string): JSX.Element => {
+    // Shipping requires special logic to accomodate dropdown and shipping modal
+    const isShipping = inquiry === InquiryOptions.Shipping
+
     return (
-      <TouchableOpacity onPress={() => toggleExpanded()} key={inquiry}>
+      <React.Fragment key={inquiry}>
         <InquiryField>
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex flexDirection="row">
               <Checkbox
+                data-test-id={`checkbox-${inquiry}`}
                 checked={
                   state.inquiryType === InquiryOptions.RequestPrice && inquiry === InquiryOptions.PriceAvailability
                 }
+                onPress={() => isShipping && toggleLocationExpanded()}
               />
               <Text variant="text">{inquiry}</Text>
             </Flex>
-            {inquiry === InquiryOptions.Shipping && (
-              <Flex flexDirection="row" mt={0.5}>
-                <ChevronIcon color="black60" expanded={isExpanded} initialDirection="down" />
-              </Flex>
-            )}
           </Flex>
 
-          {inquiry === InquiryOptions.Shipping && !!isExpanded && (
+          {!!isShipping && !!locationExpanded && (
             <>
               <Separator my={2} />
-              <Flex flexDirection="row" justifyContent="space-between">
-                <Text variant="text" color="black60">
-                  Add your location
-                </Text>
-              </Flex>
+              <TouchableOpacity
+                data-test-id="toggle-shipping-modal"
+                onPress={() => {
+                  setShippingModalVisibility(true)
+                }}
+              >
+                <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+                  {!state.shippingLocation ? (
+                    <>
+                      <Text variant="text" color="black60">
+                        Add your location
+                      </Text>
+                      <Box mt={0.5}>
+                        <ChevronIcon color="black60" />
+                      </Box>
+                    </>
+                  ) : (
+                    <>
+                      <Text variant="text" color="black100" style={{ width: "70%" }}>
+                        {state.shippingLocation}
+                      </Text>
+                      <Text variant="text" color="purple100">
+                        Edit
+                      </Text>
+                    </>
+                  )}
+                </Flex>
+              </TouchableOpacity>
             </>
           )}
         </InquiryField>
-      </TouchableOpacity>
+      </React.Fragment>
     )
   }
 
@@ -86,6 +112,12 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           })
         }
       </Box>
+      <ShippingModal
+        toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
+        modalIsVisible={shippingModalVisibility}
+        setLocation={selectShippingLocation}
+        location={state.shippingLocation as string}
+      />
     </FancyModal>
   )
 }
