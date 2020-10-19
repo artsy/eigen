@@ -1,0 +1,48 @@
+diff --git a/node_modules/relay-compiler/bin/relay-compiler b/node_modules/relay-compiler/bin/relay-compiler
+index 14d0619..6830169 100755
+--- a/node_modules/relay-compiler/bin/relay-compiler
++++ b/node_modules/relay-compiler/bin/relay-compiler
+@@ -291,7 +291,7 @@ function highlightSourceAtLocation(source, location) {
+   var columnOffset = location.line === 1 ? firstLineColumnOffset : 0;
+   var columnNum = location.column + columnOffset;
+   var lines = body.split(/\r\n|[\n\r]/g);
+-  return "".concat(source.name, " (").concat(lineNum, ":").concat(columnNum, ")\n") + printPrefixedLines([// Lines specified like this: ["prefix", "string"],
++  return "".concat(source.name, ":").concat(lineNum, ":").concat(columnNum, "\n") + printPrefixedLines([// Lines specified like this: ["prefix", "string"],
+   ["".concat(lineNum - 1, ": "), lines[lineIndex - 1]], ["".concat(lineNum, ": "), lines[lineIndex]], ['', whitespace(columnNum - 1) + '^'], ["".concat(lineNum + 1, ": "), lines[lineIndex + 1]]]);
+ }
+ 
+@@ -2374,7 +2374,7 @@ var CodegenDirectory = /*#__PURE__*/function () {
+   _proto.writeFile = function writeFile(filename, content) {
+     var _this2 = this;
+ 
+-    var shouldRepersist = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
++    var shouldRepersist = true
+     Profiler.run('CodegenDirectory.writeFile', function () {
+       _this2._addGenerated(filename);
+ 
+@@ -18128,10 +18128,11 @@ module.exports = function (tagFinder, getFileFilter) {
+ 
+     var astDefinitions = [];
+     var sources = [];
+-    memoizedTagFinder(text, baseDir, file).forEach(function (template) {
+-      var source = new GraphQL.Source(template, file.relPath);
++
++    memoizedTagFinder(text, baseDir, file).forEach(function (tag) {
++      var source = new GraphQL.Source(tag.template, path.join(path.relative(process.cwd(), baseDir), file.relPath), tag.sourceLocationOffset);
+       var ast = parseGraphQL(source);
+-      !ast.definitions.length ?  true ? invariant(false, 'RelaySourceModuleParser: Expected GraphQL text to contain at least one ' + 'definition (fragment, mutation, query, subscription), got `%s`.', template) : undefined : void 0;
++      !ast.definitions.length ?  true ? invariant(false, 'RelaySourceModuleParser: Expected GraphQL text to contain at least one ' + 'definition (fragment, mutation, query, subscription), got `%s`.', tag.template) : undefined : void 0;
+       sources.push(source.body);
+       astDefinitions.push.apply(astDefinitions, (0, _toConsumableArray2["default"])(ast.definitions));
+     });
+@@ -18216,9 +18217,7 @@ function find(tagFinder, text, absPath) {
+   tags.forEach(function (tag) {
+     return validateTemplate(tag, moduleName, absPath);
+   });
+-  return tags.map(function (tag) {
+-    return tag.template;
+-  });
++  return tags
+ }
+ 
+ function validateTemplate(_ref, moduleName, filePath) {

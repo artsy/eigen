@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash ca2e5dd303afc79926b47ea53d90b19f */
+// @ts-nocheck
+/* @relayHash 7b6a7cadd05092bf22e9f9cba84e0a23 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateConversationMutationInput = {
@@ -43,10 +44,9 @@ mutation UpdateConversationMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "UpdateConversationMutationInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
@@ -57,98 +57,99 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": "from_last_viewed_message_id",
-  "name": "fromLastViewedMessageID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "fromLastViewedMessageID",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "UpdateConversationMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "UpdateConversationMutation",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "updateConversation",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "UpdateConversationMutationPayload",
+        "kind": "LinkedField",
+        "name": "updateConversation",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "conversation",
-            "storageKey": null,
             "args": null,
             "concreteType": "Conversation",
+            "kind": "LinkedField",
+            "name": "conversation",
             "plural": false,
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/)
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "UpdateConversationMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "updateConversation",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "UpdateConversationMutationPayload",
+        "kind": "LinkedField",
+        "name": "updateConversation",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "conversation",
-            "storageKey": null,
             "args": null,
             "concreteType": "Conversation",
+            "kind": "LinkedField",
+            "name": "conversation",
             "plural": false,
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/),
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "id",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "id",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "UpdateConversationMutation",
     "id": "7b6a7cadd05092bf22e9f9cba84e0a23",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "UpdateConversationMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

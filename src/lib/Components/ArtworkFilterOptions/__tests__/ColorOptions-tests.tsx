@@ -1,7 +1,12 @@
 import { aggregationForFilter } from "lib/Components/FilterModal"
-import { FilterParamName } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Aggregations, ArtworkFilterContext, ArtworkFilterContextState, reducer } from "lib/utils/ArtworkFiltersStore"
+import {
+  Aggregations,
+  ArtworkFilterContext,
+  ArtworkFilterContextState,
+  reducer,
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"

@@ -91,23 +91,28 @@ RCT_EXPORT_METHOD(presentReactScreen:(nonnull NSString *)moduleName props:(nonnu
     [self presentViewController:vc modalPresentationStyle:modalPresentationStyle];
 }
 
-- (void)presentViewController:(UIViewController *)vc modalPresentationStyle:(UIModalPresentationStyle)modalPresentationStyle
+- (void)presentViewController:(UIViewController *)vc modalPresentationStyle:( UIModalPresentationStyle)_modalPresentationStyle
 {
-    UIViewController *currentVC = [self currentlyPresentedVC];
-    if (![currentVC isKindOfClass:UINavigationController.class]) {
-        modalPresentationStyle = UIModalPresentationFullScreen;
-    }
-    if (modalPresentationStyle != -1) {
-        vc.modalPresentationStyle = modalPresentationStyle;
-        UIViewController *presentingVC = [ARTopMenuViewController sharedController];
-
-        while ([presentingVC presentedViewController]) {
-            presentingVC = [presentingVC presentedViewController];
+    __weak typeof (self) wself = self;
+    [[ARTopMenuViewController sharedController] afterBootstrap:^() {
+        __strong typeof (wself) sself = wself;
+        UIModalPresentationStyle modalPresentationStyle = _modalPresentationStyle;
+        UIViewController *currentVC = [sself currentlyPresentedVC];
+        if (![currentVC isKindOfClass:UINavigationController.class]) {
+            modalPresentationStyle = UIModalPresentationFullScreen;
         }
-        [presentingVC presentViewController:vc animated:YES completion:nil];
-    } else {
-        [(UINavigationController *)currentVC pushViewController:vc animated:YES];
-    }
+        if (modalPresentationStyle != -1) {
+            vc.modalPresentationStyle = modalPresentationStyle;
+            UIViewController *presentingVC = [ARTopMenuViewController sharedController];
+
+            while ([presentingVC presentedViewController]) {
+                presentingVC = [presentingVC presentedViewController];
+            }
+            [presentingVC presentViewController:vc animated:YES completion:nil];
+        } else {
+            [(UINavigationController *)currentVC pushViewController:vc animated:YES];
+        }
+    }];
 }
 
 // This returns either the topmost modal or the current root navigation controller.
@@ -138,6 +143,12 @@ RCT_EXPORT_METHOD(goBack)
     } else {
         [self dismissModal];
     }
+}
+
+RCT_EXPORT_METHOD(popParentViewController)
+{
+    UINavigationController *navController = [ARTopMenuViewController sharedController].rootNavigationController;
+    [navController popViewControllerAnimated:NO];
 }
 
 // TODO: Delete this when moving tab content presentation to typescript

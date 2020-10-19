@@ -27,7 +27,7 @@ export const Touchable: React.FC<TouchableHighlightProps & ExtraTouchableProps> 
     underlayColor={color("white100")}
     activeOpacity={0.8}
     {...props}
-    onPress={evt => {
+    onPress={(evt) => {
       if (onPress === undefined) {
         return
       }

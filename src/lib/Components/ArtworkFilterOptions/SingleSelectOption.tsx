@@ -1,4 +1,4 @@
-import { FilterData } from "lib/utils/ArtworkFiltersStore"
+import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Box, CheckIcon, color, Flex, Sans, space } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"

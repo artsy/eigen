@@ -3,8 +3,7 @@ import { Input } from "lib/Components/Input/Input"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import React, { useRef, useState } from "react"
-import { Alert } from "react-native"
+import React, { useEffect, useRef, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { string } from "yup"
 import { MyAccountEditEmail_me } from "../../../__generated__/MyAccountEditEmail_me.graphql"
@@ -13,6 +12,11 @@ import { updateMyUserProfile } from "./updateMyUserProfile"
 
 const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp }> = ({ me }) => {
   const [email, setEmail] = useState<string>(me.email ?? "")
+  const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
+
+  useEffect(() => {
+    setReceivedError(undefined)
+  }, [email])
 
   const isEmailValid = Boolean(email && string().email().isValidSync(email))
 
@@ -28,7 +32,7 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
           await updateMyUserProfile({ email })
           dismiss()
         } catch (e) {
-          Alert.alert(typeof e === "string" ? e : "Something went wrong.")
+          setReceivedError(e)
         }
       }}
     >
@@ -45,6 +49,7 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
             editScreenRef.current?.save()
           }
         }}
+        error={receivedError}
       />
     </MyAccountFieldEditScreen>
   )

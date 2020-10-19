@@ -3,13 +3,13 @@ import { ArtistSeriesArtworks_artistSeries } from "__generated__/ArtistSeriesArt
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ARTIST_SERIES_PAGE_SIZE } from "lib/data/constants"
-import { ArtworkFilterContext } from "lib/utils/ArtworkFiltersStore"
+import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
 import { Box, Separator, Spacer } from "palette"
 import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { filterArtworksParams } from "../Collection/Helpers/FilterArtworksHelpers"
+import { filterArtworksParams } from "../../utils/ArtworkFilter/FilterArtworksHelpers"
 
 interface ArtistSeriesArtworksProps {
   artistSeries: ArtistSeriesArtworks_artistSeries

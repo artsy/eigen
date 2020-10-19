@@ -8,7 +8,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { DateTime } from "luxon"
 import { Box, Flex, Spacer, Text } from "palette"
 import React from "react"
-import { View } from "react-native"
+import { TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { InfoButton } from "./InfoButton"
 
@@ -31,31 +31,43 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
 
         <Spacer my={0.5} />
 
-        {results.map(({ title, saleDate, priceRealized, internalID, images }) => {
-          const dateOfSale = DateTime.fromISO(saleDate as string).toLocaleString(DateTime.DATE_MED)
-          const salePrice = priceRealized?.centsUSD === 0 ? null : priceRealized?.display
+        <TouchableWithoutFeedback
+          onPress={() => navActions.navigateToAllAuctions(props?.artwork?.artist?.slug!)}
+          data-test-id="AuctionsResultsButton"
+        >
+          <Box>
+            {results.map(({ title, saleDate, priceRealized, internalID, images }) => {
+              const dateOfSale = DateTime.fromISO(saleDate as string).toLocaleString(DateTime.DATE_MED)
+              const salePrice = priceRealized?.centsUSD === 0 ? null : priceRealized?.display
 
-          return (
-            <Box my={0.5} key={internalID}>
-              <Flex flexDirection="row" justifyContent="space-between" width="100%">
-                <Flex flexDirection="row">
-                  <Box pr={0.5}>
-                    <OpaqueImageView imageURL={images?.thumbnail?.url} width={45} height={45} />
+              return (
+                <Box my={0.5} key={internalID}>
+                  <Box my={0.5}>
+                    <Flex flexDirection="row">
+                      <Box pr={1}>
+                        <OpaqueImageView imageURL={images?.thumbnail?.url} width={80} height={60} />
+                      </Box>
+                      <Box pr={1} maxWidth="80%">
+                        <Flex flexDirection="row">
+                          <Text style={{ flexShrink: 1 }}>{title}</Text>
+                        </Flex>
+                        <Text color="black60" my={0.5}>
+                          Sold {dateOfSale}
+                        </Text>
+
+                        {!!salePrice && (
+                          <Box>
+                            <Text>{salePrice}</Text>
+                          </Box>
+                        )}
+                      </Box>
+                    </Flex>
                   </Box>
-                  <Flex flexDirection="column">
-                    <Text numberOfLines={1}>{title}</Text>
-                    <Text>Sold {dateOfSale}</Text>
-                  </Flex>
-                </Flex>
-                {!!salePrice && (
-                  <Box>
-                    <Text>{salePrice}</Text>
-                  </Box>
-                )}
-              </Flex>
-            </Box>
-          )
-        })}
+                </Box>
+              )
+            })}
+          </Box>
+        </TouchableWithoutFeedback>
 
         <Spacer my={1} />
 

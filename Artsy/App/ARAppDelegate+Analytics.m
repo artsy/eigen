@@ -66,11 +66,11 @@
 - (void)setupAnalytics
 {
     NSString *segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_PRODUCTION_WRITE_KEY"];
-    NSString *sentryEnv = [ReactNativeConfig envFor:@"SEGMENT_PRODUCTION_DSN"];
+    NSString *sentryEnv = [ReactNativeConfig envFor:@"SENTRY_PRODUCTION_DSN"];
 
     if (ARAppStatus.isBetaOrDev) {
         segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_STAGING_WRITE_KEY"];
-        sentryEnv = [ReactNativeConfig envFor:@"SEGMENT_STAGING_DSN"];
+        sentryEnv = [ReactNativeConfig envFor:@"SENTRY_STAGING_DSN"];
     }
 
     if (ARAppStatus.isDev) {

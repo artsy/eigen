@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,24 +24,19 @@ export type HomeHero_homePage$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "HomeHero_homePage",
-  "type": "HomePage",
-  "metadata": null,
   "argumentDefinitions": [
     {
+      "defaultValue": null,
       "kind": "LocalArgument",
-      "name": "heroImageVersion",
-      "type": "HomePageHeroUnitImageVersion",
-      "defaultValue": null
+      "name": "heroImageVersion"
     }
   ],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "HomeHero_homePage",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "heroUnits",
-      "storageKey": "heroUnits(platform:\"MOBILE\")",
       "args": [
         {
           "kind": "Literal",
@@ -49,47 +45,47 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "HomePageHeroUnit",
+      "kind": "LinkedField",
+      "name": "heroUnits",
       "plural": true,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "title",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "subtitle",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "creditLine",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "linkText",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "href",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "backgroundImageURL",
           "args": [
             {
               "kind": "Variable",
@@ -97,11 +93,16 @@ const node: ReaderFragment = {
               "variableName": "heroImageVersion"
             }
           ],
+          "kind": "ScalarField",
+          "name": "backgroundImageURL",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": "heroUnits(platform:\"MOBILE\")"
     }
-  ]
+  ],
+  "type": "HomePage",
+  "abstractKey": null
 };
 (node as any).hash = '8ac1fd8f53214f528b9b93e874a60f65';
 export default node;

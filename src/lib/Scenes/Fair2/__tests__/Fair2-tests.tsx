@@ -1,20 +1,24 @@
-import { Fair2TestsQuery, Fair2TestsQueryRawResponse } from "__generated__/Fair2TestsQuery.graphql"
+import { Fair2TestsQuery } from "__generated__/Fair2TestsQuery.graphql"
+import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
+import { useTracking } from "react-tracking"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { Fair2ArtworksFragmentContainer } from "../Components/Fair2Artworks"
 import { Fair2CollectionsFragmentContainer } from "../Components/Fair2Collections"
 import { Fair2EditorialFragmentContainer } from "../Components/Fair2Editorial"
 import { Fair2ExhibitorsFragmentContainer } from "../Components/Fair2Exhibitors"
-import { Fair2Header, Fair2HeaderFragmentContainer } from "../Components/Fair2Header"
-import { Tabs } from "../Components/SimpleTabs"
+import { Fair2FollowedArtistsRailFragmentContainer } from "../Components/Fair2FollowedArtistsRail"
+import { Fair2HeaderFragmentContainer } from "../Components/Fair2Header"
+import { Tab, Tabs } from "../Components/SimpleTabs"
 import { Fair2, Fair2FragmentContainer } from "../Fair2"
 
 jest.unmock("react-relay")
 
 describe("Fair2", () => {
+  const trackEvent = useTracking().trackEvent
   let env: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
@@ -25,7 +29,7 @@ describe("Fair2", () => {
     <QueryRenderer<Fair2TestsQuery>
       environment={env}
       query={graphql`
-        query Fair2TestsQuery($fairID: String!) @raw_response_type {
+        query Fair2TestsQuery($fairID: String!) @relay_test_operation {
           fair(id: $fairID) {
             ...Fair2_fair
           }
@@ -42,33 +46,58 @@ describe("Fair2", () => {
     />
   )
 
-  const getWrapper = (testFixture: Fair2TestsQueryRawResponse) => {
+  const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          ...testFixture,
-        },
-      })
+      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
     })
     return tree
   }
 
   it("renders without throwing an error", () => {
-    const wrapper = getWrapper(Fair2Fixture)
+    const wrapper = getWrapper()
     expect(wrapper.root.findAllByType(Fair2)).toHaveLength(1)
   })
 
-  it("renders the necessary subcomponents", () => {
-    const wrapper = getWrapper(Fair2Fixture)
-    expect(wrapper.root.findAllByType(Fair2Header)).toHaveLength(1)
+  it("renders the necessary components when fair is active", () => {
+    const wrapper = getWrapper({
+      Fair: () => ({
+        isActive: true,
+        counts: {
+          artworks: 42,
+          partnerShows: 42,
+        },
+      }),
+    })
+
+    expect(wrapper.root.findAllByType(Fair2HeaderFragmentContainer)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(Fair2EditorialFragmentContainer)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(Fair2CollectionsFragmentContainer)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(Tabs)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(Fair2ExhibitorsFragmentContainer)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(Fair2FollowedArtistsRailFragmentContainer)).toHaveLength(1)
+  })
+
+  it("renders fewer components when fair is inactive", () => {
+    const wrapper = getWrapper({
+      Fair: () => ({
+        isActive: false,
+      }),
+    })
+
+    expect(wrapper.root.findAllByType(Fair2HeaderFragmentContainer)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(Fair2EditorialFragmentContainer)).toHaveLength(1)
+    expect(extractText(wrapper.root)).toMatch("This fair is not open yet")
+
+    expect(wrapper.root.findAllByType(Fair2CollectionsFragmentContainer)).toHaveLength(0)
+    expect(wrapper.root.findAllByType(Tabs)).toHaveLength(0)
+    expect(wrapper.root.findAllByType(Fair2ExhibitorsFragmentContainer)).toHaveLength(0)
+    expect(wrapper.root.findAllByType(Fair2FollowedArtistsRailFragmentContainer)).toHaveLength(0)
   })
 
   it("does not render components when there is no data for them", () => {
-    const noDataFixture = {
-      fair: {
-        ...Fair2Fixture.fair,
+    const wrapper = getWrapper({
+      Fair: () => ({
         articles: {
           edges: [],
         },
@@ -77,10 +106,8 @@ describe("Fair2", () => {
           artworks: 0,
           partnerShows: 0,
         },
-      },
-    } as Fair2TestsQueryRawResponse
-
-    const wrapper = getWrapper(noDataFixture)
+      }),
+    })
     expect(wrapper.root.findAllByType(Fair2HeaderFragmentContainer)).toHaveLength(1)
     expect(wrapper.root.findAllByType(Fair2EditorialFragmentContainer)).toHaveLength(0)
     expect(wrapper.root.findAllByType(Fair2CollectionsFragmentContainer)).toHaveLength(0)
@@ -90,114 +117,118 @@ describe("Fair2", () => {
   })
 
   it("renders the collections component if there are collections", () => {
-    const collectionDataFixture = {
-      fair: {
-        ...Fair2Fixture.fair,
+    const wrapper = getWrapper({
+      Fair: () => ({
+        isActive: true,
         marketingCollections: [
           {
-            __typename: "MarketingCollection",
-            id: "1223456",
-            slug: "collection-1",
-            title: "First collection",
-            category: "prints",
-            artworks: null,
-          },
-          {
-            __typename: "MarketingCollection",
-            id: "1223456",
-            slug: "collection-1",
-            title: "First collection",
-            category: "prints",
-            artworks: null,
+            slug: "great-collection",
           },
         ],
-      },
-    } as Fair2TestsQueryRawResponse
-
-    const wrapper = getWrapper(collectionDataFixture)
+      }),
+    })
     expect(wrapper.root.findAllByType(Fair2CollectionsFragmentContainer)).toHaveLength(1)
   })
 
   it("renders the editorial component if there are articles", () => {
-    const editorialDataFixture = {
-      fair: {
-        ...Fair2Fixture.fair,
+    const wrapper = getWrapper({
+      Fair: () => ({
+        isActive: true,
         articles: {
           edges: [
             {
               __typename: "Article",
               node: {
-                id: "sssss",
-                title: "Great Article",
-                href: "/article/great-article",
-                publishedAt: "2020-11-02",
-                thumbnailImage: {
-                  src: "great-image.jpg",
-                },
+                slug: "great-article",
               },
             },
           ],
         },
-      },
-    } as Fair2TestsQueryRawResponse
-
-    const wrapper = getWrapper(editorialDataFixture)
+      }),
+    })
     expect(wrapper.root.findAllByType(Fair2EditorialFragmentContainer)).toHaveLength(1)
   })
 
+  it("renders the artists you follow rail if there are any artworks", () => {
+    let wrapper = getWrapper({
+      Fair: () => ({
+        isActive: true,
+        followedArtistArtworks: {
+          edges: [],
+        },
+      }),
+    })
+
+    expect(wrapper.root.findAllByType(Fair2FollowedArtistsRailFragmentContainer)).toHaveLength(0)
+
+    wrapper = getWrapper({
+      Fair: () => ({
+        isActive: true,
+        followedArtistArtworks: {
+          edges: [
+            {
+              __typename: "FilterArtworkEdge",
+              artwork: {
+                slug: "an-artwork",
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    expect(wrapper.root.findAllByType(Fair2FollowedArtistsRailFragmentContainer)).toHaveLength(1)
+  })
+
   it("renders the artworks/exhibitors component and tabs if there are artworks and exhibitors", () => {
-    const artworksDataFixture = {
-      fair: {
-        ...Fair2Fixture.fair,
+    const wrapper = getWrapper({
+      Fair: () => ({
+        isActive: true,
         counts: {
           artworks: 100,
           partnerShows: 20,
         },
-      },
-    } as Fair2TestsQueryRawResponse
-    const wrapper = getWrapper(artworksDataFixture)
+      }),
+    })
     expect(wrapper.root.findAllByType(Tabs)).toHaveLength(1)
     expect(wrapper.root.findAllByType(Fair2ExhibitorsFragmentContainer)).toHaveLength(1)
     expect(wrapper.root.findAllByType(Fair2ArtworksFragmentContainer)).toHaveLength(0)
   })
-})
 
-const Fair2Fixture: Fair2TestsQueryRawResponse = {
-  fair: {
-    name: "Art Basel Hong Kong 2020",
-    slug: "art-basel-hong-kong-2020",
-    internalID: "fair1244",
-    about:
-      "Following the cancelation of Art Basel in Hong Kong, Artsy is providing independent coverage of our partners galleries’ artworks intended for the fair. Available online from March 20th through April 3rd, the online catalogue features premier galleries from Asia and beyond. Concurrent with Artsy’s independent promotion, Art Basel is launching its Online Viewing Rooms, which provide exhibitors with an additional platform to present their program and artists to Art Basel's global network of collectors, buyers, and art enthusiasts.\r\n\r\n",
-    summary: "",
-    id: "xyz123",
-    image: {
-      aspectRatio: 1,
-      url: "https://testing.artsy.net/art-basel-hong-kong-image",
-    },
-    location: {
-      id: "cde123",
-      summary: null,
-    },
-    profile: {
-      id: "abc123",
-      icon: {
-        url: "https://testing.artsy.net/art-basel-hong-kong-icon",
-      },
-    },
-    tagline: "",
-    links: null,
-    contact: null,
-    hours: null,
-    tickets: null,
-    ticketsLink: "",
-    articles: { edges: [] },
-    marketingCollections: [],
-    counts: {
-      artworks: 0,
-      partnerShows: 0,
-    },
-    fairArtworks: null,
-    exhibitors: null,
-  },
-}
+  it("tracks taps navigating between the artworks tab and exhibitors tab", () => {
+    const wrapper = getWrapper({
+      Fair: () => ({
+        isActive: true,
+        slug: "art-basel-hong-kong-2020",
+        internalID: "fair1244",
+        counts: {
+          artworks: 100,
+          partnerShows: 20,
+        },
+      }),
+    })
+    const tabs = wrapper.root.findAllByType(Tab)
+    const exhibitorsTab = tabs[0]
+    const artworksTab = tabs[1]
+
+    act(() => artworksTab.props.onPress())
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedNavigationTab",
+      context_module: "exhibitorsTab",
+      context_screen_owner_type: "fair",
+      context_screen_owner_slug: "art-basel-hong-kong-2020",
+      context_screen_owner_id: "fair1244",
+      subject: "Artworks",
+    })
+
+    act(() => exhibitorsTab.props.onPress())
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedNavigationTab",
+      context_module: "artworksTab",
+      context_screen_owner_type: "fair",
+      context_screen_owner_slug: "art-basel-hong-kong-2020",
+      context_screen_owner_id: "fair1244",
+      subject: "Exhibitors",
+    })
+  })
+})

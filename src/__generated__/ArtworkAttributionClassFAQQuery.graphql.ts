@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 6b16f7101567bfa532727e821020f989 */
+// @ts-nocheck
+/* @relayHash 09e438feec326b14526de8bd9302e70b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -32,77 +33,78 @@ fragment ArtworkAttributionClassFAQ_artworkAttributionClasses on AttributionClas
 */
 
 const node: ConcreteRequest = {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ArtworkAttributionClassFAQQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ArtworkAttributionClassFAQQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artworkAttributionClasses",
-        "storageKey": null,
         "args": null,
         "concreteType": "AttributionClass",
+        "kind": "LinkedField",
+        "name": "artworkAttributionClasses",
         "plural": true,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "ArtworkAttributionClassFAQ_artworkAttributionClasses",
-            "args": null
+            "name": "ArtworkAttributionClassFAQ_artworkAttributionClasses"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "ArtworkAttributionClassFAQQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artworkAttributionClasses",
-        "storageKey": null,
         "args": null,
         "concreteType": "AttributionClass",
+        "kind": "LinkedField",
+        "name": "artworkAttributionClasses",
         "plural": true,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "name",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "longDescription",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "id",
             "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "ArtworkAttributionClassFAQQuery",
     "id": "09e438feec326b14526de8bd9302e70b",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "ArtworkAttributionClassFAQQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 (node as any).hash = '87f390482264f567dde7a47f2b01a405';

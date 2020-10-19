@@ -1,25 +1,27 @@
-import {
-  Fair2ExhibitorRailTestsQuery,
-  Fair2ExhibitorRailTestsQueryRawResponse,
-} from "__generated__/Fair2ExhibitorRailTestsQuery.graphql"
+import { Fair2ExhibitorRailTestsQuery } from "__generated__/Fair2ExhibitorRailTestsQuery.graphql"
+import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { Fair2ExhibitorRailFragmentContainer } from "../Components/Fair2ExhibitorRail"
 
 jest.unmock("react-relay")
 
 describe("FairExhibitors", () => {
-  const getWrapper = (fixture = FAIR_2_EXHIBITOR_RAIL_FIXTURE) => {
+  const trackEvent = useTracking().trackEvent
+  const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
     const tree = renderWithWrappers(
       <QueryRenderer<Fair2ExhibitorRailTestsQuery>
         environment={env}
         query={graphql`
-          query Fair2ExhibitorRailTestsQuery($showID: String!) @raw_response_type {
+          query Fair2ExhibitorRailTestsQuery($showID: String!) @relay_test_operation {
             show(id: $showID) {
               ...Fair2ExhibitorRail_show
             }
@@ -41,82 +43,80 @@ describe("FairExhibitors", () => {
       />
     )
 
-    env.mock.resolveMostRecentOperation({ errors: [], data: fixture })
+    env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
 
     return tree
   }
 
   it("renders an exhibitor rail", () => {
-    const wrapper = getWrapper()
+    const wrapper = getWrapper({
+      Show: () => ({
+        partner: {
+          name: "First Partner Has Artworks",
+        },
+      }),
+    })
     expect(extractText(wrapper.root)).toContain("First Partner Has Artworks")
   })
-})
 
-const FAIR_2_EXHIBITOR_RAIL_FIXTURE: Fair2ExhibitorRailTestsQueryRawResponse = {
-  show: {
-    id: "xxx-2",
-    internalID: "xxx-2",
-    counts: { artworks: 10 },
-    href: "/show/example-2",
-    partner: {
-      __typename: "Partner",
-      id: "example-2",
-      name: "First Partner Has Artworks",
-    },
-    artworks: {
-      edges: [
-        {
-          node: {
-            href: "/artwork/cool-artwork-1",
-            artistNames: "Andy Warhol",
-            id: "abc124",
-            saleMessage: "For Sale",
-            image: {
-              aspectRatio: 1.2,
-              imageURL: "image.jpg",
-            },
-            saleArtwork: null,
-            sale: null,
-            title: "Best Artwork Ever",
-            internalID: "artwork1234",
-            slug: "cool-artwork-1",
-          },
+  it("tracks taps on artworks in the rail", () => {
+    const wrapper = getWrapper({
+      Show: () => ({
+        fair: {
+          internalID: "abc123",
+          slug: "some-fair",
         },
-        {
-          node: {
-            href: "/artwork/cool-artwork-1",
-            artistNames: "Andy Warhol",
-            id: "abc125",
-            saleMessage: "For Sale",
-            image: {
-              aspectRatio: 1.2,
-              imageURL: "image.jpg",
+        artworks: {
+          edges: [
+            {
+              node: {
+                internalID: "artwork1234",
+                slug: "cool-artwork-1",
+              },
             },
-            saleArtwork: null,
-            sale: null,
-            title: "Best Artwork Ever",
-            internalID: "artwork1234",
-            slug: "cool-artwork-1",
-          },
+          ],
         },
-        {
-          node: {
-            href: "/artwork/cool-artwork-1",
-            artistNames: "Andy Warhol",
-            id: "abc126",
-            saleMessage: "For Sale",
-            image: {
-              aspectRatio: 1.2,
-              imageURL: "image.jpg",
-            },
-            saleArtwork: null,
-            sale: null,
-            title: "Best Artwork Ever",
-            internalID: "artwork1234",
-            slug: "cool-artwork-1",
-          },
+      }),
+    })
+    const artwork = wrapper.root.findAllByType(ArtworkTileRailCard)[0]
+    act(() => artwork.props.onPress())
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedArtworkGroup",
+      context_module: "galleryBoothRail",
+      context_screen_owner_id: "abc123",
+      context_screen_owner_slug: "some-fair",
+      context_screen_owner_type: "fair",
+      destination_screen_owner_id: "artwork1234",
+      destination_screen_owner_slug: "cool-artwork-1",
+      destination_screen_owner_type: "artwork",
+      horizontal_slide_position: 0,
+      type: "thumbnail",
+    })
+  })
+
+  it("tracks taps on the show", () => {
+    const wrapper = getWrapper({
+      Show: () => ({
+        internalID: "xxx-2",
+        slug: "example-2",
+        fair: {
+          internalID: "abc123",
+          slug: "some-fair",
         },
-      ],
-    },
-  },
-}
+      }),
+    })
+    const show = wrapper.root.findAllByType(SectionTitle)[0]
+    act(() => show.props.onPress())
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedArtworkGroup",
+      context_module: "galleryBoothRail",
+      context_screen_owner_id: "abc123",
+      context_screen_owner_slug: "some-fair",
+      context_screen_owner_type: "fair",
+      destination_screen_owner_id: "xxx-2",
+      destination_screen_owner_slug: "example-2",
+      destination_screen_owner_type: "show",
+      type: "viewAll",
+    })
+  })
+})

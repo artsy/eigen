@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -41,194 +42,198 @@ export type Detail_show$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 };
 return {
-  "kind": "Fragment",
-  "name": "Detail_show",
-  "type": "Show",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Detail_show",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "internalID",
       "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
       "storageKey": null
     },
     (v0/*: any*/),
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "description",
       "args": null,
+      "kind": "ScalarField",
+      "name": "description",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "location",
-      "storageKey": null,
       "args": null,
       "concreteType": "Location",
+      "kind": "LinkedField",
+      "name": "location",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "openingHours",
-          "storageKey": null,
           "args": null,
           "concreteType": null,
+          "kind": "LinkedField",
+          "name": "openingHours",
           "plural": false,
           "selections": [
             {
               "kind": "InlineFragment",
-              "type": "OpeningHoursArray",
               "selections": [
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "schedules",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "FormattedDaySchedules",
+                  "kind": "LinkedField",
+                  "name": "schedules",
                   "plural": true,
                   "selections": [
                     {
-                      "kind": "ScalarField",
                       "alias": null,
-                      "name": "days",
                       "args": null,
+                      "kind": "ScalarField",
+                      "name": "days",
                       "storageKey": null
                     },
                     {
-                      "kind": "ScalarField",
                       "alias": null,
-                      "name": "hours",
                       "args": null,
+                      "kind": "ScalarField",
+                      "name": "hours",
                       "storageKey": null
                     }
-                  ]
+                  ],
+                  "storageKey": null
                 }
-              ]
+              ],
+              "type": "OpeningHoursArray",
+              "abstractKey": null
             },
             {
               "kind": "InlineFragment",
-              "type": "OpeningHoursText",
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "text",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "text",
                   "storageKey": null
                 }
-              ]
+              ],
+              "type": "OpeningHoursText",
+              "abstractKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "LocationMap_location",
-          "args": null
+          "name": "LocationMap_location"
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "artistsWithoutArtworks",
-      "storageKey": null,
       "args": null,
       "concreteType": "Artist",
+      "kind": "LinkedField",
+      "name": "artistsWithoutArtworks",
       "plural": true,
       "selections": [
         (v0/*: any*/)
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "counts",
-      "storageKey": null,
       "args": null,
       "concreteType": "ShowCounts",
+      "kind": "LinkedField",
+      "name": "counts",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "artworks",
           "args": null,
+          "kind": "ScalarField",
+          "name": "artworks",
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "artists",
           "args": null,
+          "kind": "ScalarField",
+          "name": "artists",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "partner",
-      "storageKey": null,
       "args": null,
       "concreteType": null,
+      "kind": "LinkedField",
+      "name": "partner",
       "plural": false,
       "selections": [
         {
           "kind": "InlineFragment",
-          "type": "Partner",
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "name",
               "args": null,
+              "kind": "ScalarField",
+              "name": "name",
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "type",
               "args": null,
+              "kind": "ScalarField",
+              "name": "type",
               "storageKey": null
             }
-          ]
+          ],
+          "type": "Partner",
+          "abstractKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "ShowHeader_show",
-      "args": null
+      "name": "ShowHeader_show"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "ShowArtworksPreview_show",
-      "args": null
+      "name": "ShowArtworksPreview_show"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "ShowArtistsPreview_show",
-      "args": null
+      "name": "ShowArtistsPreview_show"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "Shows_show",
-      "args": null
+      "name": "Shows_show"
     }
-  ]
+  ],
+  "type": "Show",
+  "abstractKey": null
 };
 })();
 (node as any).hash = '6b10fecaf389604f1d711c4b5b4bda88';

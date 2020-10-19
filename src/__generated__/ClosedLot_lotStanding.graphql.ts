@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -40,9 +41,7 @@ export type ClosedLot_lotStanding$key = {
 const node: ReaderFragment = (function(){
 var v0 = [
   {
-    "kind": "ScalarField",
     "alias": null,
-    "name": "displayAmount",
     "args": [
       {
         "kind": "Literal",
@@ -50,131 +49,134 @@ var v0 = [
         "value": 0
       }
     ],
+    "kind": "ScalarField",
+    "name": "displayAmount",
     "storageKey": "displayAmount(fractionalDigits:0)"
   }
 ];
 return {
-  "kind": "Fragment",
-  "name": "ClosedLot_lotStanding",
-  "type": "AuctionsLotStanding",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ClosedLot_lotStanding",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "isHighestBidder",
       "args": null,
+      "kind": "ScalarField",
+      "name": "isHighestBidder",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "lotState",
-      "storageKey": null,
       "args": null,
       "concreteType": "AuctionsLotState",
+      "kind": "LinkedField",
+      "name": "lotState",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "internalID",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "saleId",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "bidCount",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "reserveStatus",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "soldStatus",
           "args": null,
+          "kind": "ScalarField",
+          "name": "soldStatus",
           "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": "askingPrice",
-          "name": "onlineAskingPrice",
-          "storageKey": null,
           "args": null,
           "concreteType": "AuctionsMoney",
+          "kind": "LinkedField",
+          "name": "onlineAskingPrice",
           "plural": false,
-          "selections": (v0/*: any*/)
+          "selections": (v0/*: any*/),
+          "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": "sellingPrice",
-          "name": "floorSellingPrice",
-          "storageKey": null,
           "args": null,
           "concreteType": "AuctionsMoney",
+          "kind": "LinkedField",
+          "name": "floorSellingPrice",
           "plural": false,
-          "selections": (v0/*: any*/)
+          "selections": (v0/*: any*/),
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "saleArtwork",
-      "storageKey": null,
       "args": null,
       "concreteType": "SaleArtwork",
+      "kind": "LinkedField",
+      "name": "saleArtwork",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "sale",
-          "storageKey": null,
           "args": null,
           "concreteType": "Sale",
+          "kind": "LinkedField",
+          "name": "sale",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "endAt",
               "args": null,
+              "kind": "ScalarField",
+              "name": "endAt",
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "status",
               "args": null,
+              "kind": "ScalarField",
+              "name": "status",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "Lot_saleArtwork",
-          "args": null
+          "name": "Lot_saleArtwork"
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "AuctionsLotStanding",
+  "abstractKey": null
 };
 })();
 (node as any).hash = 'aaf7e40bab9fb45a1661ad36f5f53b77';

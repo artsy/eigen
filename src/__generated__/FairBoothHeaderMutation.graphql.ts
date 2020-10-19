@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 457fa00e068ef9559c7a6b512453be1b */
+// @ts-nocheck
+/* @relayHash 88ea9bf65ed7340059e0307e6f048f7b */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowProfileInput = {
@@ -45,10 +46,9 @@ mutation FairBoothHeaderMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "FollowProfileInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
@@ -59,107 +59,108 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "slug",
   "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 },
 v4 = {
-  "kind": "ScalarField",
   "alias": "is_followed",
-  "name": "isFollowed",
   "args": null,
+  "kind": "ScalarField",
+  "name": "isFollowed",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "FairBoothHeaderMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "FairBoothHeaderMutation",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "followProfile",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "FollowProfilePayload",
+        "kind": "LinkedField",
+        "name": "followProfile",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "profile",
-            "storageKey": null,
             "args": null,
             "concreteType": "Profile",
+            "kind": "LinkedField",
+            "name": "profile",
             "plural": false,
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/)
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "FairBoothHeaderMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "followProfile",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "FollowProfilePayload",
+        "kind": "LinkedField",
+        "name": "followProfile",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "profile",
-            "storageKey": null,
             "args": null,
             "concreteType": "Profile",
+            "kind": "LinkedField",
+            "name": "profile",
             "plural": false,
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/),
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "id",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "id",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "FairBoothHeaderMutation",
     "id": "88ea9bf65ed7340059e0307e6f048f7b",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "FairBoothHeaderMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

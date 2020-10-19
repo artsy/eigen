@@ -16,6 +16,11 @@ export const ArtworkFixture = {
   isInquireable: false,
   isInAuction: false,
   isBuyNowable: false,
+  inquiryQuestions: [
+    { question: "Price & Availability" },
+    { question: "Shipping" },
+    { question: "Condition & Provenance" },
+  ],
   editionSets: [],
   saleMessage: null,
   sale: null,
@@ -25,6 +30,17 @@ export const ArtworkFixture = {
   href: "/artwork/andreas-rod-prinzknecht",
   availability: "for sale",
   category: "Photography",
+  date: "2020",
+  medium: "photograph",
+  attributionClass: {
+    name: "Unique",
+  },
+  editionOf: "",
+  image: {
+    url: "",
+    width: 1,
+    height: 1,
+  },
   conditionDescription: null,
   signature: "Signed by artist on Back",
   signatureInfo: {
@@ -66,6 +82,7 @@ export const ArtworkFixture = {
       },
     },
   ],
+  artistNames: "Abbas Kiarostami",
   artists: [
     {
       " $refType": null,

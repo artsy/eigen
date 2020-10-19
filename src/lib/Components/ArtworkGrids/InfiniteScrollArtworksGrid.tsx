@@ -72,6 +72,9 @@ export interface Props {
   // Hide urgency tags (3 Days left, 1 hour left)
   hideUrgencyTags?: boolean
 
+  // Hide Partner name
+  hidePartner?: boolean
+
   /** Show Lot Label  */
   showLotLabel?: boolean
 
@@ -99,6 +102,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     shouldAddPadding: false,
     autoFetch: true,
     pageSize: PAGE_SIZE,
+    hidePartner: false,
   }
 
   state = {
@@ -220,6 +224,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             artwork={artwork}
             key={"artwork-" + j + "-" + artwork.id}
             hideUrgencyTags={this.props.hideUrgencyTags}
+            hidePartner={this.props.hidePartner}
             showLotLabel={this.props.showLotLabel}
           />
         )

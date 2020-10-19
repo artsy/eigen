@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,75 +26,76 @@ export type ShowArtists_show$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "ShowArtists_show",
-  "type": "Show",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ShowArtists_show",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "internalID",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "slug",
       "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": "artists_grouped_by_name",
-      "name": "artistsGroupedByName",
-      "storageKey": null,
       "args": null,
       "concreteType": "ArtistGroup",
+      "kind": "LinkedField",
+      "name": "artistsGroupedByName",
       "plural": true,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "letter",
           "args": null,
+          "kind": "ScalarField",
+          "name": "letter",
           "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "items",
-          "storageKey": null,
           "args": null,
           "concreteType": "Artist",
+          "kind": "LinkedField",
+          "name": "items",
           "plural": true,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": "sortable_id",
-              "name": "sortableID",
               "args": null,
-              "storageKey": null
-            },
-            {
               "kind": "ScalarField",
-              "alias": null,
-              "name": "href",
-              "args": null,
+              "name": "sortableID",
               "storageKey": null
             },
             {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "href",
+              "storageKey": null
+            },
+            {
+              "args": null,
               "kind": "FragmentSpread",
-              "name": "ArtistListItem_artist",
-              "args": null
+              "name": "ArtistListItem_artist"
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Show",
+  "abstractKey": null
 };
 (node as any).hash = '62430770dd1bfd850da2d9639f102d4b';
 export default node;

@@ -1,10 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ImagePreview_attachment = {
-    readonly download_url: string;
+    readonly downloadURL: string;
     readonly " $fragmentRefs": FragmentRefs<"AttachmentPreview_attachment">;
     readonly " $refType": "ImagePreview_attachment";
 };
@@ -17,25 +18,26 @@ export type ImagePreview_attachment$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "ImagePreview_attachment",
-  "type": "Attachment",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ImagePreview_attachment",
   "selections": [
     {
-      "kind": "ScalarField",
-      "alias": "download_url",
-      "name": "downloadURL",
+      "alias": null,
       "args": null,
+      "kind": "ScalarField",
+      "name": "downloadURL",
       "storageKey": null
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "AttachmentPreview_attachment",
-      "args": null
+      "name": "AttachmentPreview_attachment"
     }
-  ]
+  ],
+  "type": "Attachment",
+  "abstractKey": null
 };
-(node as any).hash = '110bdc586576e57275188aca67e46613';
+(node as any).hash = '5c3df8a54035cb3f1ae5991df3ffacec';
 export default node;

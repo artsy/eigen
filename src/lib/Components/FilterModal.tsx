@@ -4,7 +4,8 @@ import {
   FilterDisplayName,
   FilterParamName,
   FilterParams,
-} from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
+  selectedOption,
+} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
@@ -18,10 +19,11 @@ import {
   AggregationName,
   Aggregations,
   ArtworkFilterContext,
-  FilterData,
+  FilterArray,
   useSelectedOptionsDisplay,
-} from "../utils/ArtworkFiltersStore"
+} from "../utils/ArtworkFilter/ArtworkFiltersStore"
 import { AnimatedBottomButton } from "./AnimatedBottomButton"
+import { ArtistOptionsScreen } from "./ArtworkFilterOptions/ArtistOptions"
 import { ColorOption, ColorOptionsScreen } from "./ArtworkFilterOptions/ColorOptions"
 import { colorHexMap } from "./ArtworkFilterOptions/ColorSwatch"
 import { GalleryOptionsScreen } from "./ArtworkFilterOptions/GalleryOptions"
@@ -38,6 +40,7 @@ interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
   exitModal?: () => void
   navigator?: NavigatorIOS
+  initiallyAppliedFilters?: FilterArray
   isFilterArtworksModalVisible: boolean
   id: string
   slug: string
@@ -121,6 +124,14 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                     changedFiltersParams(appliedFiltersParams, state.selectedFilters)
                   )
                   break
+                case "Fair":
+                  trackChangeFilters(
+                    PageNames.Fair2Page,
+                    OwnerEntityTypes.Fair,
+                    appliedFiltersParams,
+                    changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+                  )
+                  break
               }
               applyFilters()
             }}
@@ -137,7 +148,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
   )
 }
 
-type FilterScreen =
+export type FilterScreen =
   | "sort"
   | "waysToBuy"
   | "medium"
@@ -147,6 +158,8 @@ type FilterScreen =
   | "color"
   | "gallery"
   | "institution"
+  | "artistsIFollow"
+  | "artist"
 
 export interface FilterDisplayConfig {
   filterType: FilterScreen
@@ -158,6 +171,7 @@ export enum FilterModalMode {
   Collection = "Collection",
   ArtistArtworks = "ArtistArtworks",
   ArtistSeries = "ArtistSeries",
+  Fair = "Fair",
 }
 
 interface FilterOptionsProps {
@@ -173,6 +187,8 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
   const { closeModal, navigator, id, slug, mode } = props
 
   const { dispatch, state } = useContext(ArtworkFilterContext)
+
+  const selectedOptions = useSelectedOptionsDisplay()
 
   const navigateToNextFilterScreen = (NextComponent: any /* STRICTNESS_MIGRATION */) => {
     navigator.push({
@@ -237,6 +253,20 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
           "institution",
         ]
         break
+      case "Fair":
+        sortOrder = [
+          "sort",
+          "artist",
+          "medium",
+          "priceRange",
+          "waysToBuy",
+          "dimensionRange",
+          "majorPeriods",
+          "color",
+          "gallery",
+          "institution",
+        ]
+        break
     }
 
     const leftParam = left.filterType
@@ -270,34 +300,6 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
     closeModal()
   }
 
-  const selectedOptions = useSelectedOptionsDisplay()
-  const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
-
-  const selectedOption = (filterType: FilterScreen) => {
-    if (filterType === "waysToBuy") {
-      if (multiSelectedOptions.length === 0) {
-        return "All"
-      }
-      return multiSelectionDisplay()
-    } else if (filterType === "gallery" || filterType === "institution") {
-      const displayText = selectedOptions.find((option) => option.filterKey === filterType)?.displayText
-      if (displayText) {
-        return displayText
-      } else {
-        return "All"
-      }
-    }
-    return selectedOptions.find((option) => option.paramName === filterType)?.displayText
-  }
-
-  const multiSelectionDisplay = (): string => {
-    const displayTexts: string[] = []
-    multiSelectedOptions.forEach((f: FilterData) => {
-      displayTexts.push(f.displayText)
-    })
-    return displayTexts.join(", ")
-  }
-
   return (
     <Flex style={{ flex: 1 }}>
       <Flex flexGrow={0} flexDirection="row" justifyContent="space-between">
@@ -322,6 +324,9 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
                 break
               case "ArtistSeries":
                 trackClear(PageNames.ArtistSeriesPage, OwnerEntityTypes.ArtistSeries)
+                break
+              case "Fair":
+                trackClear(PageNames.Fair2Page, OwnerEntityTypes.Fair)
                 break
             }
 
@@ -348,7 +353,10 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
                       {item.displayText}
                     </Sans>
                     <Flex flexDirection="row" alignItems="center">
-                      <OptionDetail currentOption={selectedOption(item.filterType)} filterType={item.filterType} />
+                      <OptionDetail
+                        currentOption={selectedOption(selectedOptions, item.filterType)}
+                        filterType={item.filterType}
+                      />
                       <ArrowRightIcon fill="black30" ml="1" />
                     </Flex>
                   </Flex>
@@ -461,6 +469,8 @@ const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string
   MAJOR_PERIOD: FilterParamName.timePeriod,
   MEDIUM: FilterParamName.medium,
   PRICE_RANGE: FilterParamName.priceRange,
+  FOLLOWED_ARTISTS: "artistsIFollow",
+  ARTIST: "artist",
 }
 
 // For most cases filter key can simply be FilterParamName, exception
@@ -473,6 +483,8 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   majorPeriods: "MAJOR_PERIOD",
   medium: "MEDIUM",
   priceRange: "PRICE_RANGE",
+  artistsIFollow: "FOLLOWED_ARTISTS",
+  artist: "ARTIST",
 }
 
 export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {
@@ -526,5 +538,10 @@ const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
     displayText: FilterDisplayName.gallery,
     filterType: "gallery",
     ScreenComponent: GalleryOptionsScreen,
+  },
+  artist: {
+    displayText: FilterDisplayName.artist,
+    filterType: "artist",
+    ScreenComponent: ArtistOptionsScreen,
   },
 }

@@ -1,12 +1,9 @@
 import { Inbox_me } from "__generated__/Inbox_me.graphql"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
-import ActiveBids, { ActiveBids as ActiveBidsRef } from "lib/Components/Inbox/ActiveBids"
-import {
-  Conversations as ConversationsRef,
-  ConversationsContainer,
-} from "lib/Components/Inbox/Conversations/Conversations"
-import ZeroStateInbox from "lib/Components/Inbox/Conversations/ZeroStateInbox"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import ActiveBids, { ActiveBids as ActiveBidsRef } from "lib/Scenes/Inbox/Components/ActiveBids"
+import { ConversationsContainer } from "lib/Scenes/Inbox/Components/Conversations/Conversations"
+import ZeroStateInbox from "lib/Scenes/Inbox/Components/Conversations/ZeroStateInbox"
 import { listenToNativeEvents } from "lib/store/NativeModel"
 import { extractNodes } from "lib/utils/extractNodes"
 import { get } from "lib/utils/get"

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -17,29 +18,30 @@ export type ArtworkAttributionClassFAQ_artworkAttributionClasses$key = ReadonlyA
 
 
 const node: ReaderFragment = {
+  "argumentDefinitions": [],
   "kind": "Fragment",
-  "name": "ArtworkAttributionClassFAQ_artworkAttributionClasses",
-  "type": "AttributionClass",
   "metadata": {
     "plural": true
   },
-  "argumentDefinitions": [],
+  "name": "ArtworkAttributionClassFAQ_artworkAttributionClasses",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "name",
       "args": null,
+      "kind": "ScalarField",
+      "name": "name",
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "longDescription",
       "args": null,
+      "kind": "ScalarField",
+      "name": "longDescription",
       "storageKey": null
     }
-  ]
+  ],
+  "type": "AttributionClass",
+  "abstractKey": null
 };
 (node as any).hash = 'be66fc89c75b13152cafac33cdeadb64';
 export default node;

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -22,46 +23,42 @@ export type ArtistShow_show$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "ArtistShow_show",
-  "type": "Show",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ArtistShow_show",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "href",
       "args": null,
-      "storageKey": null
-    },
-    {
       "kind": "ScalarField",
-      "alias": "is_fair_booth",
-      "name": "isFairBooth",
-      "args": null,
+      "name": "href",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
+      "alias": "is_fair_booth",
+      "args": null,
+      "kind": "ScalarField",
+      "name": "isFairBooth",
+      "storageKey": null
+    },
+    {
       "alias": "cover_image",
-      "name": "coverImage",
-      "storageKey": null,
       "args": null,
       "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "coverImage",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "url",
           "args": [
             {
               "kind": "Literal",
@@ -69,16 +66,21 @@ const node: ReaderFragment = {
               "value": "large"
             }
           ],
+          "kind": "ScalarField",
+          "name": "url",
           "storageKey": "url(version:\"large\")"
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "Metadata_show",
-      "args": null
+      "name": "Metadata_show"
     }
-  ]
+  ],
+  "type": "Show",
+  "abstractKey": null
 };
 (node as any).hash = '2a49838cef4b2200cd2db113bc018c68';
 export default node;

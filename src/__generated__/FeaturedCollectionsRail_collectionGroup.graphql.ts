@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -32,68 +33,63 @@ export type FeaturedCollectionsRail_collectionGroup$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "FeaturedCollectionsRail_collectionGroup",
-  "type": "MarketingCollectionGroup",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "FeaturedCollectionsRail_collectionGroup",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "name",
       "args": null,
+      "kind": "ScalarField",
+      "name": "name",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "members",
-      "storageKey": null,
       "args": null,
       "concreteType": "MarketingCollection",
+      "kind": "LinkedField",
+      "name": "members",
       "plural": true,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "slug",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "id",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "title",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "priceGuidance",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "descriptionMarkdown",
           "args": null,
+          "kind": "ScalarField",
+          "name": "descriptionMarkdown",
           "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": "featuredCollectionArtworks",
-          "name": "artworksConnection",
-          "storageKey": "artworksConnection(aggregations:[\"TOTAL\"],first:1,sort:\"-decayed_merch\")",
           "args": [
             {
               "kind": "Literal",
@@ -114,53 +110,59 @@ const node: ReaderFragment = {
             }
           ],
           "concreteType": "FilterArtworksConnection",
+          "kind": "LinkedField",
+          "name": "artworksConnection",
           "plural": false,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "edges",
-              "storageKey": null,
               "args": null,
               "concreteType": "FilterArtworksEdge",
+              "kind": "LinkedField",
+              "name": "edges",
               "plural": true,
               "selections": [
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "node",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "Artwork",
+                  "kind": "LinkedField",
+                  "name": "node",
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "LinkedField",
                       "alias": null,
-                      "name": "image",
-                      "storageKey": null,
                       "args": null,
                       "concreteType": "Image",
+                      "kind": "LinkedField",
+                      "name": "image",
                       "plural": false,
                       "selections": [
                         {
-                          "kind": "ScalarField",
                           "alias": null,
-                          "name": "url",
                           "args": null,
+                          "kind": "ScalarField",
+                          "name": "url",
                           "storageKey": null
                         }
-                      ]
+                      ],
+                      "storageKey": null
                     }
-                  ]
+                  ],
+                  "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": "artworksConnection(aggregations:[\"TOTAL\"],first:1,sort:\"-decayed_merch\")"
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "MarketingCollectionGroup",
+  "abstractKey": null
 };
 (node as any).hash = 'a9af0951e749e84d2d5f8617ea6f9eb1';
 export default node;

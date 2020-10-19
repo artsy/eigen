@@ -33,7 +33,7 @@ target 'Artsy' do
   # Core
   pod 'ARGenericTableViewController', git: 'https://github.com/orta/ARGenericTableViewController.git'
   pod 'CocoaLumberjack', git: 'https://github.com/CocoaLumberjack/CocoaLumberjack.git' # Unreleased > 2.0.1 version has a CP modulemap fix
-  pod 'FLKAutoLayout', git: 'https://github.com/orta/FLKAutoLayout.git', branch: 'v1'
+  pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
   pod 'FXBlurView'
   pod 'ISO8601DateFormatter', git: 'https://github.com/orta/iso-8601-date-formatter'
   pod 'JLRoutes', git: 'https://github.com/orta/JLRoutes.git'
@@ -117,10 +117,6 @@ target 'Artsy' do
   pod 'react-native-config', path: 'node_modules/react-native-config'
   pod 'RNReactNativeHapticFeedback', path: 'node_modules/react-native-haptic-feedback'
   pod 'react-native-webview', path: 'node_modules/react-native-webview'
-
-  # This is a dependency of RNImageCropPicker but is introducing duplicated UUIDs. We're using a previous
-  # version to avoid warnings in `pod install`. See: https://github.com/TimOliver/TOCropViewController/issues/424
-  pod 'TOCropViewController', '2.5.3'
 
   # For Stripe integration with Emission. Using Ash's fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
   pod 'Pulley', git: 'https://github.com/l2succes/Pulley.git', branch: 'master'

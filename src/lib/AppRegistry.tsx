@@ -7,7 +7,6 @@ import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { Theme } from "palette"
 import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowQueryRenderer } from "./Containers/BidFlow"
-import { ConversationQueryRenderer } from "./Containers/Conversation"
 import { GeneQueryRenderer } from "./Containers/Gene"
 import { InboxQueryRenderer } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
@@ -26,6 +25,7 @@ import { CitySavedListQueryRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
+import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 
 // Consignments / My Collection
 import { Consignments } from "./Scenes/Consignments"
@@ -50,6 +50,7 @@ import {
 } from "./Scenes/Fair"
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
 import { Fair2QueryRenderer } from "./Scenes/Fair2/Fair2"
+import { Fair2AllFollowedArtistsQueryRenderer } from "./Scenes/Fair2/Fair2AllFollowedArtists"
 import { Fair2MoreInfoQueryRenderer } from "./Scenes/Fair2/Fair2MoreInfo"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
@@ -74,6 +75,7 @@ import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
 import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryRenderer } from "./Scenes/Show"
 import { ShowQueryRenderer } from "./Scenes/Show/Show"
+import { Show2MoreInfoQueryRenderer, Show2QueryRenderer } from "./Scenes/Show2"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
@@ -177,7 +179,7 @@ const Conversation: React.FC<ConversationProps> = screenTrack<ConversationProps>
     context_screen_owner_id: props.conversationID,
     context_screen_owner_type: Schema.OwnerEntityTypes.Conversation,
   }
-})(ConversationQueryRenderer)
+})(ConversationNavigator)
 
 /*
  * Route bid/register requests coming from the Emission pod to either a BidFlow
@@ -390,6 +392,7 @@ export const modules = defineModules({
   Fair: { Component: FairQueryRenderer, fullBleed: true },
   Fair2: { Component: Fair2QueryRenderer, fullBleed: true },
   Fair2MoreInfo: { Component: Fair2MoreInfoQueryRenderer },
+  Fair2AllFollowedArtists: { Component: Fair2AllFollowedArtistsQueryRenderer },
   FairArtists: { Component: FairArtists },
   FairArtworks: { Component: FairArtworks },
   FairBMWArtActivation: { Component: FairBMWArtActivation, fullBleed: true },
@@ -434,8 +437,10 @@ export const modules = defineModules({
   Search: { Component: SearchWithTracking, isRootViewForTabName: "search" },
   SellTabApp: { Component: setupMyCollectionScreen(SellTabApp) },
   Show: { Component: ShowQueryRenderer },
+  Show2: { Component: Show2QueryRenderer, fullBleed: true },
   ShowArtists: { Component: ShowArtists },
   ShowArtworks: { Component: ShowArtworks },
+  Show2MoreInfo: { Component: Show2MoreInfoQueryRenderer, fullBleed: true },
   ShowMoreInfo: { Component: ShowMoreInfo },
   VanityURLEntity: { Component: VanityURLEntityRenderer, fullBleed: true },
   ViewingRoom: { Component: ViewingRoomQueryRenderer, fullBleed: true },

@@ -73,7 +73,7 @@ describe("Markdown", () => {
   })
 
   it("accepts a rules prop", () => {
-    const basicRules = defaultRules(true)
+    const basicRules = defaultRules({ modal: true })
     const rules = {
       ...basicRules,
       paragraph: {

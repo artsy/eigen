@@ -2,6 +2,7 @@ import { VanityURLEntity_fairOrPartner } from "__generated__/VanityURLEntity_fai
 import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { getCurrentEmissionState } from "lib/store/AppStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Spinner } from "palette"
@@ -9,6 +10,7 @@ import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { FairContainer, FairPlaceholder, FairQueryRenderer } from "../Fair/Fair"
+import { Fair2FragmentContainer, Fair2Placeholder } from "../Fair2/Fair2"
 import { PartnerContainer } from "../Partner"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
@@ -19,7 +21,11 @@ interface EntityProps {
 
 const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug }) => {
   if (fairOrPartner.__typename === "Fair") {
-    return <FairContainer fair={fairOrPartner} />
+    const showNewFairViewFeatureEnabled = getCurrentEmissionState().options.AROptionsNewFairPage
+    const fairSlugs = getCurrentEmissionState().legacyFairSlugs
+    const useNewFairView = showNewFairViewFeatureEnabled && !fairSlugs?.includes(fairOrPartner.slug)
+
+    return useNewFairView ? <Fair2FragmentContainer fair={fairOrPartner} /> : <FairContainer fair={fairOrPartner} />
   } else if (fairOrPartner.__typename === "Partner") {
     const { safeAreaInsets } = useScreenDimensions()
     return (
@@ -34,10 +40,13 @@ const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug })
 
 const VanityURLEntityFragmentContainer = createFragmentContainer(VanityURLEntity, {
   fairOrPartner: graphql`
-    fragment VanityURLEntity_fairOrPartner on VanityURLEntityType {
+    fragment VanityURLEntity_fairOrPartner on VanityURLEntityType
+    @argumentDefinitions(useNewFairView: { type: "Boolean", defaultValue: false }) {
       __typename
       ... on Fair {
-        ...Fair_fair
+        slug
+        ...Fair2_fair @include(if: $useNewFairView)
+        ...Fair_fair @skip(if: $useNewFairView)
       }
       ... on Partner {
         ...Partner_partner
@@ -53,6 +62,10 @@ interface RendererProps {
 }
 
 export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugType, slug }) => {
+  const showNewFairViewFeatureEnabled = getCurrentEmissionState().options.AROptionsNewFairPage
+  const fairProfileSlugs = getCurrentEmissionState().legacyFairProfileSlugs
+  const useNewFairView = showNewFairViewFeatureEnabled && !fairProfileSlugs?.includes(slug)
+
   if (slugType === "fairID") {
     return <FairQueryRenderer fairID={slug} />
   } else {
@@ -61,18 +74,19 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
       <QueryRenderer<VanityURLEntityQuery>
         environment={defaultEnvironment}
         query={graphql`
-          query VanityURLEntityQuery($id: String!) {
+          query VanityURLEntityQuery($id: String!, $useNewFairView: Boolean!) {
             vanityURLEntity(id: $id) {
-              ...VanityURLEntity_fairOrPartner
+              ...VanityURLEntity_fairOrPartner @arguments(useNewFairView: $useNewFairView)
             }
           }
         `}
-        variables={{ id: slug }}
+        variables={{ id: slug, useNewFairView }}
         render={renderWithPlaceholder({
+          renderFallback: () => <VanityURLPossibleRedirect slug={slug} />,
           renderPlaceholder: () => {
             switch (entity) {
               case "fair":
-                return <FairPlaceholder />
+                return useNewFairView ? <Fair2Placeholder /> : <FairPlaceholder />
               case "partner":
                 return (
                   <View style={{ flex: 1, top: safeAreaInsets.top ?? 0 }}>
@@ -88,11 +102,7 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
             }
           },
           render: (props: any) => {
-            if (props.vanityURLEntity) {
-              return <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} originalSlug={slug} />
-            } else {
-              return <VanityURLPossibleRedirect slug={slug} />
-            }
+            return <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} originalSlug={slug} />
           },
         })}
       />

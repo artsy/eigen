@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -21,24 +22,20 @@ export type SelectMaxBid_sale_artwork$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "SelectMaxBid_sale_artwork",
-  "type": "SaleArtwork",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "SelectMaxBid_sale_artwork",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "id",
       "args": null,
+      "kind": "ScalarField",
+      "name": "id",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "increments",
-      "storageKey": "increments(useMyMaxBid:true)",
       "args": [
         {
           "kind": "Literal",
@@ -47,30 +44,35 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "BidIncrementsFormatted",
+      "kind": "LinkedField",
+      "name": "increments",
       "plural": true,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "display",
           "args": null,
+          "kind": "ScalarField",
+          "name": "display",
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "cents",
           "args": null,
+          "kind": "ScalarField",
+          "name": "cents",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": "increments(useMyMaxBid:true)"
     },
     {
+      "args": null,
       "kind": "FragmentSpread",
-      "name": "ConfirmBid_sale_artwork",
-      "args": null
+      "name": "ConfirmBid_sale_artwork"
     }
-  ]
+  ],
+  "type": "SaleArtwork",
+  "abstractKey": null
 };
 (node as any).hash = 'da3f4c5b318013c4b3203bcd274c23bb';
 export default node;

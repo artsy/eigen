@@ -1,12 +1,16 @@
 import { MockFilterScreen } from "lib/Components/__tests__/FilterTestHelper"
-import { FilterParamName, InitialState } from "lib/Scenes/Collection/Helpers/FilterArtworksHelpers"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { Switch } from "react-native"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { OptionListItem as FilterModalOptionListItem } from "../../../../lib/Components/FilterModal"
-import { ArtworkFilterContext, ArtworkFilterContextState, reducer } from "../../../utils/ArtworkFiltersStore"
+import {
+  ArtworkFilterContext,
+  ArtworkFilterContextState,
+  reducer,
+} from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { OptionListItem } from "../MultiSelectOption"
 import { WaysToBuyOptionsScreen } from "../WaysToBuyOptions"
 

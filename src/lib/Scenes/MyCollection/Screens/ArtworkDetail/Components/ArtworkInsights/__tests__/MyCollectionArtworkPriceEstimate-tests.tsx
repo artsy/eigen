@@ -17,6 +17,9 @@ describe("MyCollectionArtworkPriceEstimate", () => {
       environment={mockEnvironment}
       query={graphql`
         query MyCollectionArtworkPriceEstimateTestsQuery @relay_test_operation {
+          artwork(id: "foo") {
+            ...MyCollectionArtworkPriceEstimate_artwork
+          }
           marketPriceInsights(artistId: "some-artist-id", medium: "painting") {
             ...MyCollectionArtworkPriceEstimate_marketPriceInsights
           }
@@ -24,8 +27,13 @@ describe("MyCollectionArtworkPriceEstimate", () => {
       `}
       variables={{}}
       render={({ props }) => {
-        if (props?.marketPriceInsights) {
-          return <MyCollectionArtworkPriceEstimateFragmentContainer marketPriceInsights={props.marketPriceInsights} />
+        if (props?.artwork && props?.marketPriceInsights) {
+          return (
+            <MyCollectionArtworkPriceEstimateFragmentContainer
+              artwork={props.artwork}
+              marketPriceInsights={props.marketPriceInsights}
+            />
+          )
         }
         return null
       }}
@@ -45,6 +53,10 @@ describe("MyCollectionArtworkPriceEstimate", () => {
   it("renders without throwing an error", () => {
     const wrapper = renderWithWrappers(<TestRenderer />)
     resolveData({
+      Artwork: () => ({
+        costMinor: 2000,
+        costCurrencyCode: "USD",
+      }),
       MarketPriceInsights: () => ({
         artsyQInventory: 20,
         lowRangeCents: 200,
@@ -60,7 +72,7 @@ describe("MyCollectionArtworkPriceEstimate", () => {
     expect(text).toContain("Sold price range")
     expect(text).toContain("$2 – $6")
     expect(text).toContain("Your price paid for this work")
-    expect(text).toContain("TODO - €9,900")
+    expect(text).toContain("USD 2000")
   })
 
   // TODO: Figure out why we can't find InfoButton

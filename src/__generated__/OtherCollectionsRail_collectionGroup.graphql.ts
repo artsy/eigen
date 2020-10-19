@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,59 +24,60 @@ export type OtherCollectionsRail_collectionGroup$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "OtherCollectionsRail_collectionGroup",
-  "type": "MarketingCollectionGroup",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "OtherCollectionsRail_collectionGroup",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "groupType",
-      "args": null,
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
-      "alias": null,
       "name": "name",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "members",
-      "storageKey": null,
       "args": null,
       "concreteType": "MarketingCollection",
+      "kind": "LinkedField",
+      "name": "members",
       "plural": true,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "id",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "slug",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "title",
           "args": null,
+          "kind": "ScalarField",
+          "name": "title",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "MarketingCollectionGroup",
+  "abstractKey": null
 };
 (node as any).hash = '1d3182ac2855507a513189265ece0163';
 export default node;

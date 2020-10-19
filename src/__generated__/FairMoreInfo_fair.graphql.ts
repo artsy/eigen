@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -22,59 +23,60 @@ export type FairMoreInfo_fair$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "FairMoreInfo_fair",
-  "type": "Fair",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "FairMoreInfo_fair",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "organizer",
-      "storageKey": null,
       "args": null,
       "concreteType": "organizer",
+      "kind": "LinkedField",
+      "name": "organizer",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "website",
           "args": null,
+          "kind": "ScalarField",
+          "name": "website",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "internalID",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "about",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "ticketsLink",
       "args": null,
+      "kind": "ScalarField",
+      "name": "ticketsLink",
       "storageKey": null
     }
-  ]
+  ],
+  "type": "Fair",
+  "abstractKey": null
 };
 (node as any).hash = '70077522c1800bfee9ee140deea2aabd';
 export default node;

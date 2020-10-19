@@ -1,5 +1,5 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Fair } from "lib/Scenes/Map/types"
 import { Box, color, Flex, Sans, space } from "palette"
 import React, { Component } from "react"
@@ -12,7 +12,7 @@ interface Props {
 
 export class FairEventSectionCard extends Component<Props> {
   handleTap() {
-    SwitchBoard.presentFairViewController(this, this.props.fair.slug)
+    navigate(`/fair/${this.props.fair.slug}`)
   }
 
   // @TODO: Implement tests for this component https://artsyproduct.atlassian.net/browse/LD-549

@@ -6,6 +6,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { capitalize } from "lodash"
 import { Box, color, Flex, Sans } from "palette"
 import React from "react"
+import { Image as RNImage } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -24,12 +25,16 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
 
   const { artist, artistNames, medium, slug, title } = artwork
 
-  const Image = () =>
-    !!imageURL ? (
-      <OpaqueImageView imageURL={imageURL.replace(":version", "square")} width={90} height={90} />
-    ) : (
-      <Box bg={color("black30")} width={90} height={90} />
-    )
+  const lastUploadedPhoto = AppStore.useAppState((state) => state.myCollection.artwork.sessionState.lastUploadedPhoto)
+  const Image = () => {
+    if (!!imageURL) {
+      return <OpaqueImageView imageURL={imageURL.replace(":version", "square")} width={90} height={90} />
+    } else if (lastUploadedPhoto) {
+      return <RNImage style={{ width: 90, height: 90, resizeMode: "cover" }} source={{ uri: lastUploadedPhoto.path }} />
+    } else {
+      return <Box bg={color("black30")} width={90} height={90} />
+    }
+  }
 
   const Medium = () =>
     !!medium ? (
@@ -47,13 +52,19 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
 
   return (
     <TouchElement
-      onPress={() =>
-        navActions.navigateToArtworkDetail({
-          artistInternalID: artist!.internalID,
-          artworkSlug: slug,
-          medium,
-        })
-      }
+      onPress={() => {
+        if (!!artist) {
+          navActions.navigateToArtworkDetail({
+            artistInternalID: artist.internalID,
+            artworkSlug: slug,
+            medium,
+          })
+          // FIXME: Eventually remove this; an artistID should always be present but
+          // investigating a crash.
+        } else {
+          console.warn("MyCollectionArtworkListItem: Error: Missing artist.artistID")
+        }
+      }}
     >
       <Flex
         m={1}

@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 5c32d20ac8e45831e18f89dd70aa7505 */
+// @ts-nocheck
+/* @relayHash 1bec8afc0eec40c0cd822458a8dcccdd */
 
 import { ConcreteRequest } from "relay-runtime";
 export type PartnerLocationSectionTestsQueryVariables = {};
@@ -20,7 +21,7 @@ export type PartnerLocationSectionTestsQueryRawResponse = {
         readonly locations: ({
             readonly totalCount: number | null;
         }) | null;
-        readonly id: string | null;
+        readonly id: string;
     }) | null;
 };
 export type PartnerLocationSectionTestsQuery = {
@@ -53,24 +54,21 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "name",
   "args": null,
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 },
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "cities",
   "args": null,
+  "kind": "ScalarField",
+  "name": "cities",
   "storageKey": null
 },
 v3 = {
-  "kind": "LinkedField",
   "alias": "locations",
-  "name": "locationsConnection",
-  "storageKey": "locationsConnection(first:0)",
   "args": [
     {
       "kind": "Literal",
@@ -79,76 +77,80 @@ v3 = {
     }
   ],
   "concreteType": "LocationConnection",
+  "kind": "LinkedField",
+  "name": "locationsConnection",
   "plural": false,
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "totalCount",
       "args": null,
+      "kind": "ScalarField",
+      "name": "totalCount",
       "storageKey": null
     }
-  ]
+  ],
+  "storageKey": "locationsConnection(first:0)"
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "PartnerLocationSectionTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "PartnerLocationSectionTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "partner",
-        "storageKey": "partner(id:\"gagosian\")",
         "args": (v0/*: any*/),
         "concreteType": "Partner",
+        "kind": "LinkedField",
+        "name": "partner",
         "plural": false,
         "selections": [
           (v1/*: any*/),
           (v2/*: any*/),
           (v3/*: any*/)
-        ]
+        ],
+        "storageKey": "partner(id:\"gagosian\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "PartnerLocationSectionTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "partner",
-        "storageKey": "partner(id:\"gagosian\")",
         "args": (v0/*: any*/),
         "concreteType": "Partner",
+        "kind": "LinkedField",
+        "name": "partner",
         "plural": false,
         "selections": [
           (v1/*: any*/),
           (v2/*: any*/),
           (v3/*: any*/),
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "id",
             "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": "partner(id:\"gagosian\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "PartnerLocationSectionTestsQuery",
     "id": "1bec8afc0eec40c0cd822458a8dcccdd",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "PartnerLocationSectionTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

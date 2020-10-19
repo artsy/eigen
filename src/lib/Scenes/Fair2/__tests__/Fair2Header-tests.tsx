@@ -1,13 +1,16 @@
-import { Fair2HeaderTestsQuery, Fair2HeaderTestsQueryRawResponse } from "__generated__/Fair2HeaderTestsQuery.graphql"
+import { Fair2HeaderTestsQuery } from "__generated__/Fair2HeaderTestsQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { Fair2Header, Fair2HeaderFragmentContainer } from "lib/Scenes/Fair2/Components/Fair2Header"
+import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Spacer } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { Fair2TimingFragmentContainer } from "../Components/Fair2Timing"
 
 jest.unmock("react-relay")
 
@@ -22,7 +25,7 @@ describe("Fair2Header", () => {
     <QueryRenderer<Fair2HeaderTestsQuery>
       environment={env}
       query={graphql`
-        query Fair2HeaderTestsQuery($fairID: String!) @raw_response_type {
+        query Fair2HeaderTestsQuery($fairID: String!) @relay_test_operation {
           fair(id: $fairID) {
             ...Fair2Header_fair
           }
@@ -39,15 +42,10 @@ describe("Fair2Header", () => {
     />
   )
 
-  const getWrapper = (fixture: Fair2HeaderTestsQueryRawResponse = Fair2HeaderFixture) => {
+  const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          ...fixture,
-        },
-      })
+      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
     })
     return tree
   }
@@ -58,87 +56,110 @@ describe("Fair2Header", () => {
   })
 
   it("renders the fair title", () => {
-    const wrapper = getWrapper()
+    const wrapper = getWrapper({
+      Fair: () => ({
+        name: "Art Basel Hong Kong 2020",
+      }),
+    })
     expect(wrapper.root.findByProps({ variant: "largeTitle" }).props.children).toBe("Art Basel Hong Kong 2020")
   })
 
-  it("renders the fair main image", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(OpaqueImageView)[0].props.imageURL).toBe(
-      "https://testing.artsy.net/art-basel-hong-kong-image"
-    )
+  it("renders the fair main image when present", () => {
+    const wrapper = getWrapper({
+      Fair: () => ({
+        image: {
+          imageUrl: "https://testing.artsy.net/art-basel-hong-kong-image",
+        },
+      }),
+    })
+    const mainImage = wrapper.root.findAllByType(OpaqueImageView)[0]
+    expect(mainImage.props).toMatchObject({
+      imageURL: "https://testing.artsy.net/art-basel-hong-kong-image",
+    })
+  })
+
+  it("renders a spacer instead when the fair main image is absent", () => {
+    const wrapper = getWrapper({
+      Fair: () => ({
+        image: null,
+      }),
+    })
+    expect(wrapper.root.findAllByType(OpaqueImageView)).toHaveLength(0)
+    expect(wrapper.root.findAllByType(Spacer)).not.toHaveLength(0)
   })
 
   it("renders the fair icon", () => {
-    const wrapper = getWrapper()
+    const wrapper = getWrapper({
+      Fair: () => ({
+        profile: {
+          icon: {
+            imageUrl: "https://testing.artsy.net/art-basel-hong-kong-icon",
+          },
+        },
+      }),
+    })
     expect(wrapper.root.findAllByType(OpaqueImageView)[1].props.imageURL).toBe(
       "https://testing.artsy.net/art-basel-hong-kong-icon"
     )
   })
 
   it("renders the fair description", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findByProps({ variant: "text" }).props.children).toBe("The biggest art fair in Hong Kong")
+    const wrapper = getWrapper({
+      Fair: () => ({
+        summary: "The biggest art fair in Hong Kong",
+      }),
+    })
+    expect(extractText(wrapper.root)).toMatch("The biggest art fair in Hong Kong")
   })
 
   it("falls back to About when Summary isn't available", () => {
-    const wrapper = getWrapper(Fair2HeaderFixtureNoSummary)
-    expect(wrapper.root.findByProps({ variant: "text" }).props.children).toBe("A great place to buy art")
+    const wrapper = getWrapper({
+      Fair: () => ({
+        about: "A great place to buy art",
+        summary: "",
+      }),
+    })
+    expect(extractText(wrapper.root)).toMatch("A great place to buy art")
   })
 
   it("navigates to the fair info page on press of More Info", () => {
-    const wrapper = getWrapper().root.findByType(TouchableOpacity)
+    const wrapper = getWrapper({
+      Fair: () => ({
+        slug: "art-basel-hong-kong-2020",
+      }),
+    }).root.findByType(TouchableOpacity)
     wrapper.props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/fair2/art-basel-hong-kong-2020/info")
+    expect(navigate).toHaveBeenCalledWith("/fair/art-basel-hong-kong-2020/info")
   })
 
   it("does not show the More Info link if there is no info to show", () => {
-    const wrapper = getWrapper(Fair2HeaderFixtureNoAdditionalInfo)
+    const wrapper = getWrapper({
+      Fair: () => ({
+        about: "",
+        fairContact: "",
+        fairHours: "",
+        fairLinks: "",
+        fairTickets: "",
+        location: {
+          summary: "",
+          coordinates: null,
+        },
+        summary: "",
+        tagline: "",
+        ticketsLink: "",
+        sponsoredContent: null,
+      }),
+    })
     expect(wrapper.root.findAllByType(TouchableOpacity).length).toBe(0)
   })
+
+  it("displays the timing info", () => {
+    const wrapper = getWrapper({
+      Fair: () => ({
+        endAt: "2020-09-19T08:00:00+00:00",
+      }),
+    })
+    expect(wrapper.root.findAllByType(Fair2TimingFragmentContainer).length).toBe(1)
+    expect(extractText(wrapper.root)).toMatch("Closed")
+  })
 })
-
-const Fair2HeaderFixture: Fair2HeaderTestsQueryRawResponse = {
-  fair: {
-    name: "Art Basel Hong Kong 2020",
-    slug: "art-basel-hong-kong-2020",
-    about: "A great place to buy art",
-    summary: "The biggest art fair in Hong Kong",
-    id: "xyz123",
-    image: {
-      aspectRatio: 1,
-      url: "https://testing.artsy.net/art-basel-hong-kong-image",
-    },
-    location: {
-      id: "cde123",
-      summary: null,
-    },
-    profile: {
-      id: "abc123",
-      icon: {
-        url: "https://testing.artsy.net/art-basel-hong-kong-icon",
-      },
-    },
-    tagline: "",
-    links: null,
-    contact: null,
-    hours: null,
-    tickets: null,
-    ticketsLink: "",
-  },
-}
-
-const Fair2HeaderFixtureNoSummary = {
-  fair: {
-    ...Fair2HeaderFixture.fair,
-    summary: "",
-  },
-} as Fair2HeaderTestsQueryRawResponse
-
-const Fair2HeaderFixtureNoAdditionalInfo = {
-  fair: {
-    ...Fair2HeaderFixture.fair,
-    about: "",
-    summary: "",
-  },
-} as Fair2HeaderTestsQueryRawResponse

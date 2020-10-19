@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -21,38 +22,34 @@ export type PartnerLocationSection_partner$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "PartnerLocationSection_partner",
-  "type": "Partner",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "PartnerLocationSection_partner",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "name",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "cities",
       "args": null,
+      "kind": "ScalarField",
+      "name": "cities",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": "locations",
-      "name": "locationsConnection",
-      "storageKey": "locationsConnection(first:0)",
       "args": [
         {
           "kind": "Literal",
@@ -61,18 +58,23 @@ const node: ReaderFragment = {
         }
       ],
       "concreteType": "LocationConnection",
+      "kind": "LinkedField",
+      "name": "locationsConnection",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "totalCount",
           "args": null,
+          "kind": "ScalarField",
+          "name": "totalCount",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": "locationsConnection(first:0)"
     }
-  ]
+  ],
+  "type": "Partner",
+  "abstractKey": null
 };
 (node as any).hash = '432784fab5ee05283a2555d2b160dff6';
 export default node;

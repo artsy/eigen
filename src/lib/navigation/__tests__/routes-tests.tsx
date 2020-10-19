@@ -119,6 +119,29 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes Artist works-for-you to the artist page", () => {
+    expect(matchRoute("/artist/banksy/works-for-you")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artist",
+        "params": Object {
+          "*": "works-for-you",
+          "artistID": "banksy",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("/artist/josef-albers/works-for-you")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artist",
+        "params": Object {
+          "*": "works-for-you",
+          "artistID": "josef-albers",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes profile artist routes to the Artist native view", () => {
     expect(matchRoute("/alpha-137/artist/banksy")).toMatchInlineSnapshot(`
       Object {
@@ -233,25 +256,32 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to Show", () => {
-    expect(matchRoute("/show/blue")).toMatchInlineSnapshot(`
-      Object {
-        "module": "Show",
-        "params": Object {
-          "showID": "blue",
-        },
-        "type": "match",
-      }
-    `)
-    expect(matchRoute("/show/pop-art")).toMatchInlineSnapshot(`
-      Object {
-        "module": "Show",
-        "params": Object {
-          "showID": "pop-art",
-        },
-        "type": "match",
-      }
-    `)
+  describe("routes to Show, based on lab option", () => {
+    it("routes to the old Show view when the AROptionsNewShowPage option is false", () => {
+      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: false })
+      expect(matchRoute("/show/special-show")).toMatchInlineSnapshot(`
+        Object {
+          "module": "Show",
+          "params": Object {
+            "showID": "special-show",
+          },
+          "type": "match",
+        }
+      `)
+    })
+
+    it("routes to the new Show view when the AROptionsNewShowPage option is true", () => {
+      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: true })
+      expect(matchRoute("/show/special-show")).toMatchInlineSnapshot(`
+        Object {
+          "module": "Show2",
+          "params": Object {
+            "showID": "special-show",
+          },
+          "type": "match",
+        }
+      `)
+    })
   })
 
   it("routes to ShowArtworks", () => {
@@ -819,109 +849,111 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to Fair2", () => {
-    expect(matchRoute("/fair2/red")).toMatchInlineSnapshot(`
-      Object {
-        "module": "Fair2",
-        "params": Object {
-          "fairID": "red",
-        },
-        "type": "match",
-      }
-    `)
-    expect(matchRoute("/fair2/blue")).toMatchInlineSnapshot(`
-      Object {
-        "module": "Fair2",
-        "params": Object {
-          "fairID": "blue",
-        },
-        "type": "match",
-      }
-    `)
-  })
+  describe("Fair routing", () => {
+    it("routes to FairArtworks", () => {
+      expect(matchRoute("/fair/red/artworks")).toMatchInlineSnapshot(`
+              Object {
+                "module": "FairArtworks",
+                "params": Object {
+                  "fairID": "red",
+                },
+                "type": "match",
+              }
+          `)
+      expect(matchRoute("/fair/blue/artworks")).toMatchInlineSnapshot(`
+              Object {
+                "module": "FairArtworks",
+                "params": Object {
+                  "fairID": "blue",
+                },
+                "type": "match",
+              }
+          `)
+    })
 
-  it("routes to FairArtworks", () => {
-    expect(matchRoute("/fair/red/artworks")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairArtworks",
-        "params": Object {
-          "fairID": "red",
-        },
-        "type": "match",
-      }
-    `)
-    expect(matchRoute("/fair/blue/artworks")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairArtworks",
-        "params": Object {
-          "fairID": "blue",
-        },
-        "type": "match",
-      }
-    `)
-  })
+    it("routes to Fair", () => {
+      expect(matchRoute("/fair/red")).toMatchInlineSnapshot(`
+              Object {
+                "module": "Fair",
+                "params": Object {
+                  "fairID": "red",
+                },
+                "type": "match",
+              }
+          `)
+      expect(matchRoute("/fair/blue")).toMatchInlineSnapshot(`
+              Object {
+                "module": "Fair",
+                "params": Object {
+                  "fairID": "blue",
+                },
+                "type": "match",
+              }
+          `)
+    })
 
-  it("routes to FairArtists", () => {
-    expect(matchRoute("/fair/red/artists")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairArtists",
-        "params": Object {
-          "fairID": "red",
-        },
-        "type": "match",
-      }
-    `)
-    expect(matchRoute("/fair/blue/artists")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairArtists",
-        "params": Object {
-          "fairID": "blue",
-        },
-        "type": "match",
-      }
-    `)
-  })
+    it("routes to FairArtists", () => {
+      expect(matchRoute("/fair/red/artists")).toMatchInlineSnapshot(`
+              Object {
+                "module": "FairArtists",
+                "params": Object {
+                  "fairID": "red",
+                },
+                "type": "match",
+              }
+          `)
+      expect(matchRoute("/fair/blue/artists")).toMatchInlineSnapshot(`
+              Object {
+                "module": "FairArtists",
+                "params": Object {
+                  "fairID": "blue",
+                },
+                "type": "match",
+              }
+          `)
+    })
 
-  it("routes to FairExhibitors", () => {
-    expect(matchRoute("/fair/red/exhibitors")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairExhibitors",
-        "params": Object {
-          "fairID": "red",
-        },
-        "type": "match",
-      }
-    `)
-    expect(matchRoute("/fair/blue/exhibitors")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairExhibitors",
-        "params": Object {
-          "fairID": "blue",
-        },
-        "type": "match",
-      }
-    `)
-  })
+    it("routes to FairExhibitors", () => {
+      expect(matchRoute("/fair/red/exhibitors")).toMatchInlineSnapshot(`
+              Object {
+                "module": "FairExhibitors",
+                "params": Object {
+                  "fairID": "red",
+                },
+                "type": "match",
+              }
+          `)
+      expect(matchRoute("/fair/blue/exhibitors")).toMatchInlineSnapshot(`
+              Object {
+                "module": "FairExhibitors",
+                "params": Object {
+                  "fairID": "blue",
+                },
+                "type": "match",
+              }
+          `)
+    })
 
-  it("routes to FairBMWArtActivation", () => {
-    expect(matchRoute("/fair/red/bmw-sponsored-content")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairBMWArtActivation",
-        "params": Object {
-          "fairID": "red",
-        },
-        "type": "match",
-      }
-    `)
-    expect(matchRoute("/fair/blue/bmw-sponsored-content")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairBMWArtActivation",
-        "params": Object {
-          "fairID": "blue",
-        },
-        "type": "match",
-      }
-    `)
+    it("routes to FairBMWArtActivation", () => {
+      expect(matchRoute("/fair/red/bmw-sponsored-content")).toMatchInlineSnapshot(`
+              Object {
+                "module": "FairBMWArtActivation",
+                "params": Object {
+                  "fairID": "red",
+                },
+                "type": "match",
+              }
+          `)
+      expect(matchRoute("/fair/blue/bmw-sponsored-content")).toMatchInlineSnapshot(`
+              Object {
+                "module": "FairBMWArtActivation",
+                "params": Object {
+                  "fairID": "blue",
+                },
+                "type": "match",
+              }
+          `)
+    })
   })
 
   it("routes to CitySectionList", () => {

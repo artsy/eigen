@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -41,124 +42,125 @@ var v0 = [
   }
 ];
 return {
-  "kind": "Fragment",
-  "name": "ViewingRoomsListFeatured_featured",
-  "type": "ViewingRoomConnection",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ViewingRoomsListFeatured_featured",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "edges",
-      "storageKey": null,
       "args": null,
       "concreteType": "ViewingRoomEdge",
+      "kind": "LinkedField",
+      "name": "edges",
       "plural": true,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "node",
-          "storageKey": null,
           "args": null,
           "concreteType": "ViewingRoom",
+          "kind": "LinkedField",
+          "name": "node",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "internalID",
-              "args": null,
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "title",
-              "args": null,
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "slug",
               "args": null,
+              "kind": "ScalarField",
+              "name": "slug",
               "storageKey": null
             },
             {
-              "kind": "LinkedField",
               "alias": "heroImage",
-              "name": "image",
-              "storageKey": null,
               "args": null,
               "concreteType": "ARImage",
+              "kind": "LinkedField",
+              "name": "image",
               "plural": false,
               "selections": [
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "imageURLs",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "ImageURLs",
+                  "kind": "LinkedField",
+                  "name": "imageURLs",
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "ScalarField",
                       "alias": null,
-                      "name": "normalized",
                       "args": null,
+                      "kind": "ScalarField",
+                      "name": "normalized",
                       "storageKey": null
                     }
-                  ]
+                  ],
+                  "storageKey": null
                 }
-              ]
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "status",
-              "args": null,
+              ],
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "distanceToOpen",
+              "args": null,
+              "kind": "ScalarField",
+              "name": "status",
+              "storageKey": null
+            },
+            {
+              "alias": null,
               "args": (v0/*: any*/),
+              "kind": "ScalarField",
+              "name": "distanceToOpen",
               "storageKey": "distanceToOpen(short:true)"
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "distanceToClose",
               "args": (v0/*: any*/),
+              "kind": "ScalarField",
+              "name": "distanceToClose",
               "storageKey": "distanceToClose(short:true)"
             },
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "partner",
-              "storageKey": null,
               "args": null,
               "concreteType": "Partner",
+              "kind": "LinkedField",
+              "name": "partner",
               "plural": false,
               "selections": [
                 {
-                  "kind": "ScalarField",
                   "alias": null,
-                  "name": "name",
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "name",
                   "storageKey": null
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "ViewingRoomConnection",
+  "abstractKey": null
 };
 })();
 (node as any).hash = '407f03ebb8127d9fc8569fa071f99fa7';

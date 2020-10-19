@@ -1,37 +1,58 @@
 import { Fair2Header_fair } from "__generated__/Fair2Header_fair.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { ReadMore } from "lib/Components/ReadMore"
 import { navigate } from "lib/navigation/navigate"
-import { Box, ChevronIcon, Flex, Text } from "palette"
+import { shouldShowFairBMWArtActivationLink } from "lib/Scenes/Fair/Screens/FairBMWArtActivation"
+import { shouldShowLocationMap } from "lib/Scenes/Fair2/Fair2MoreInfo"
+import { truncatedTextLimit } from "lib/utils/hardware"
+import { Box, ChevronIcon, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { Dimensions, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { Fair2TimingFragmentContainer as FairTiming } from "./Fair2Timing"
 
 interface Fair2HeaderProps {
   fair: Fair2Header_fair
 }
 
 export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
-  const { name, slug, about, image, tagline, location, ticketsLink, hours, links, contact, summary, tickets } = fair
+  const {
+    name,
+    slug,
+    about,
+    image,
+    tagline,
+    location,
+    ticketsLink,
+    fairHours,
+    fairLinks,
+    fairContact,
+    summary,
+    fairTickets,
+    sponsoredContent,
+  } = fair
   const screenWidth = Dimensions.get("screen").width
-  const profileImageUrl = fair?.profile?.icon?.url
+  const profileImageUrl = fair?.profile?.icon?.imageUrl
   const previewText = summary || about
 
   const canShowMoreInfoLink =
     !!about ||
     !!tagline ||
     !!location?.summary ||
+    shouldShowLocationMap(location?.coordinates) ||
     !!ticketsLink ||
-    !!hours ||
-    !!links ||
-    !!contact ||
+    !!fairHours ||
+    !!fairLinks ||
+    !!fairContact ||
     !!summary ||
-    !!tickets
+    !!fairTickets ||
+    shouldShowFairBMWArtActivationLink({ sponsoredContent })
 
   return (
     <Box>
-      {!!image && (
+      {!!image ? (
         <Flex alignItems="center" justifyContent="center" style={{ position: "relative" }}>
-          <OpaqueImageView width={screenWidth} height={screenWidth / image.aspectRatio} imageURL={image.url} />
+          <OpaqueImageView width={screenWidth} height={screenWidth / image.aspectRatio} imageURL={image.imageUrl} />
           {!!profileImageUrl && (
             <Flex
               alignItems="center"
@@ -48,15 +69,18 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
             </Flex>
           )}
         </Flex>
+      ) : (
+        <SafeTopMargin />
       )}
       <Box px={2}>
         <Text variant="largeTitle" py={2}>
           {name}
         </Text>
-        <Text variant="text">{previewText}</Text>
+        <FairTiming fair={fair} />
+        {!!previewText && <ReadMore textStyle="new" content={previewText} maxChars={truncatedTextLimit()} />}
         {!!canShowMoreInfoLink && (
-          <TouchableOpacity onPress={() => navigate(`/fair2/${slug}/info`)}>
-            <Flex py={2} flexDirection="row" justifyContent="flex-start">
+          <TouchableOpacity onPress={() => navigate(`/fair/${slug}/info`)}>
+            <Flex pt={2} flexDirection="row" justifyContent="flex-start">
               <Text variant="mediumText">More info</Text>
               <ChevronIcon mr="-5px" mt="2px" />
             </Flex>
@@ -67,6 +91,8 @@ export const Fair2Header: React.FC<Fair2HeaderProps> = ({ fair }) => {
   )
 }
 
+const SafeTopMargin = () => <Spacer mt={6} pt={2} />
+
 export const Fair2HeaderFragmentContainer = createFragmentContainer(Fair2Header, {
   fair: graphql`
     fragment Fair2Header_fair on Fair {
@@ -76,23 +102,32 @@ export const Fair2HeaderFragmentContainer = createFragmentContainer(Fair2Header,
       slug
       profile {
         icon {
-          url(version: "untouched-png")
+          imageUrl: url(version: "untouched-png")
         }
       }
       image {
-        url(version: "large_rectangle")
+        imageUrl: url(version: "large_rectangle")
         aspectRatio
       }
       # Used to figure out if we should render the More info link
       tagline
       location {
         summary
+        coordinates {
+          lat
+          lng
+        }
       }
       ticketsLink
-      hours(format: MARKDOWN)
-      links(format: MARKDOWN)
-      tickets(format: MARKDOWN)
-      contact(format: MARKDOWN)
+      sponsoredContent {
+        activationText
+        pressReleaseUrl
+      }
+      fairHours: hours(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer
+      fairLinks: links(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer
+      fairTickets: tickets(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer
+      fairContact: contact(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer
+      ...Fair2Timing_fair
     }
   `,
 })

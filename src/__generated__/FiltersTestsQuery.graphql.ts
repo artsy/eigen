@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c73e04a1cb0bda51d2d16a506edc96dc */
+// @ts-nocheck
+/* @relayHash 0690e06ee79f5c42829d0b519d4df860 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FiltersTestsQueryVariables = {};
@@ -33,10 +34,7 @@ query FiltersTestsQuery {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "show",
-    "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
     "args": [
       {
         "kind": "Literal",
@@ -45,40 +43,44 @@ var v0 = [
       }
     ],
     "concreteType": "Show",
+    "kind": "LinkedField",
+    "name": "show",
     "plural": false,
     "selections": [
       {
-        "kind": "ScalarField",
         "alias": null,
-        "name": "id",
         "args": null,
+        "kind": "ScalarField",
+        "name": "id",
         "storageKey": null
       }
-    ]
+    ],
+    "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")"
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "FiltersTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
-    "selections": (v0/*: any*/)
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "FiltersTestsQuery",
+    "selections": (v0/*: any*/),
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "FiltersTestsQuery",
-    "argumentDefinitions": [],
     "selections": (v0/*: any*/)
   },
   "params": {
-    "operationKind": "query",
-    "name": "FiltersTestsQuery",
     "id": "0690e06ee79f5c42829d0b519d4df860",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "FiltersTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

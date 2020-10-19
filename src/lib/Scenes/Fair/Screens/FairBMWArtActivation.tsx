@@ -24,11 +24,14 @@ interface State {
 }
 
 interface ShowMoreMetadataForFairs {
-  sponsoredContent?: { pressReleaseUrl?: string; activationText?: string }
+  sponsoredContent:
+    | { pressReleaseUrl: string | undefined | null; activationText?: string | undefined | null }
+    | undefined
+    | null
 }
 
-export const shouldShowFairBMWArtActivationLink = (data: ShowMoreMetadataForFairs) => {
-  return data.sponsoredContent
+export const shouldShowFairBMWArtActivationLink = (data: ShowMoreMetadataForFairs): boolean => {
+  return !!data?.sponsoredContent
 }
 
 const PressReleaseContainer = styled(Flex)`

@@ -120,7 +120,7 @@ describe("AddEditArtwork", () => {
     })
 
     const spy = jest.fn()
-    AppStore.actions.myCollection.artwork.deleteArtwork = spy as any
+    AppStore.actions.myCollection.artwork.confirmDeleteArtwork = spy as any
     const wrapper = renderWithWrappers(<AddEditArtwork />)
     const deleteButton = wrapper.root.findByProps({ "data-test-id": "DeleteButton" })
     deleteButton.props.onPress()

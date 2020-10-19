@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -21,55 +22,56 @@ export type MyCollectionArtworkArtistMarket_marketPriceInsights$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "MyCollectionArtworkArtistMarket_marketPriceInsights",
-  "type": "MarketPriceInsights",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "MyCollectionArtworkArtistMarket_marketPriceInsights",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "annualLotsSold",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "annualValueSoldCents",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "sellThroughRate",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "medianSaleToEstimateRatio",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "liquidityRank",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "demandTrend",
       "args": null,
+      "kind": "ScalarField",
+      "name": "demandTrend",
       "storageKey": null
     }
-  ]
+  ],
+  "type": "MarketPriceInsights",
+  "abstractKey": null
 };
 (node as any).hash = 'f036b357c3389f156357ccb7ca694cf1';
 export default node;

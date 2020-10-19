@@ -5,8 +5,16 @@ import * as Yup from "yup"
 export const artworkSchema = Yup.object().shape({
   artistSearchResult: Yup.object()
     .nullable()
-    .test("artistSearchResult", "Artist search result required", value => value !== null),
-  medium: Yup.string().test("medium", "Medium required", value => value !== ""),
+    .test("artistSearchResult", "Artist search result required", (value) => value !== null),
+  medium: Yup.string().test("medium", "Medium required", (value) => value !== ""),
+  photos: Yup.array().test("photos", "Photos required", (value) => {
+    // Allow us to bypass adding photos in DEV
+    if (__DEV__) {
+      return true
+    }
+
+    return value.length > 0
+  }),
 })
 
 export function validateArtworkSchema(values: ArtworkFormValues) {

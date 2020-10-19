@@ -1,12 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Message_message = {
     readonly body: string | null;
-    readonly created_at: string | null;
-    readonly is_from_user: boolean | null;
+    readonly createdAt: string | null;
+    readonly internalID: string;
+    readonly isFromUser: boolean | null;
+    readonly isFirstMessage: boolean | null;
     readonly from: {
         readonly name: string | null;
         readonly email: string | null;
@@ -17,7 +20,7 @@ export type Message_message = {
         readonly contentType: string;
         readonly downloadURL: string;
         readonly fileName: string;
-        readonly " $fragmentRefs": FragmentRefs<"ImagePreview_attachment" | "PDFPreview_attachment" | "FileDownload_attachment">;
+        readonly " $fragmentRefs": FragmentRefs<"PDFPreview_attachment" | "ImagePreview_attachment" | "FileDownload_attachment">;
     } | null> | null;
     readonly " $refType": "Message_message";
 };
@@ -29,121 +32,133 @@ export type Message_message$key = {
 
 
 
-const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "Message_message",
-  "type": "Message",
-  "metadata": null,
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Message_message",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "body",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
-      "alias": "created_at",
-      "name": "createdAt",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": "is_from_user",
-      "name": "isFromUser",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "from",
-      "storageKey": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "createdAt",
+      "storageKey": null
+    },
+    (v0/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "isFromUser",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "isFirstMessage",
+      "storageKey": null
+    },
+    {
+      "alias": null,
       "args": null,
       "concreteType": "MessageInitiator",
+      "kind": "LinkedField",
+      "name": "from",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "name",
           "args": null,
+          "kind": "ScalarField",
+          "name": "name",
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "email",
           "args": null,
+          "kind": "ScalarField",
+          "name": "email",
           "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "attachments",
-      "storageKey": null,
       "args": null,
       "concreteType": "Attachment",
+      "kind": "LinkedField",
+      "name": "attachments",
       "plural": true,
       "selections": [
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "id",
-          "args": null,
           "storageKey": null
         },
+        (v0/*: any*/),
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "internalID",
           "args": null,
-          "storageKey": null
-        },
-        {
           "kind": "ScalarField",
-          "alias": null,
           "name": "contentType",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "downloadURL",
-          "args": null,
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "fileName",
           "args": null,
+          "kind": "ScalarField",
+          "name": "fileName",
           "storageKey": null
         },
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "ImagePreview_attachment",
-          "args": null
+          "name": "PDFPreview_attachment"
         },
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "PDFPreview_attachment",
-          "args": null
+          "name": "ImagePreview_attachment"
         },
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "FileDownload_attachment",
-          "args": null
+          "name": "FileDownload_attachment"
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "Message",
+  "abstractKey": null
 };
-(node as any).hash = 'ff69fae6b933d05a4c49315b173217a4';
+})();
+(node as any).hash = 'e057ee50789a28c46009ac43c3d57a63';
 export default node;

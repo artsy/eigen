@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash c995a14109543f89912dee3bfa904300 */
+// @ts-nocheck
+/* @relayHash 5177deeca0d7ff411ca8c5807f3e8618 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type SaveArtworkInput = {
@@ -42,18 +43,14 @@ mutation ArtworkActionsSaveMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "SaveArtworkInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "saveArtwork",
-    "storageKey": null,
     "args": [
       {
         "kind": "Variable",
@@ -62,58 +59,62 @@ v1 = [
       }
     ],
     "concreteType": "SaveArtworkPayload",
+    "kind": "LinkedField",
+    "name": "saveArtwork",
     "plural": false,
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artwork",
-        "storageKey": null,
         "args": null,
         "concreteType": "Artwork",
+        "kind": "LinkedField",
+        "name": "artwork",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "id",
             "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": "is_saved",
-            "name": "isSaved",
             "args": null,
+            "kind": "ScalarField",
+            "name": "isSaved",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "storageKey": null
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ArtworkActionsSaveMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ArtworkActionsSaveMutation",
+    "selections": (v1/*: any*/),
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "ArtworkActionsSaveMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "ArtworkActionsSaveMutation",
     "id": "5177deeca0d7ff411ca8c5807f3e8618",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "ArtworkActionsSaveMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

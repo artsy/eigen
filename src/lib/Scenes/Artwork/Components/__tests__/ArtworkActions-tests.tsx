@@ -22,7 +22,7 @@ describe("ArtworkActions", () => {
       ])
       expect(content).toMatchObject({
         title: "Title 1 by Artist 1, Artist 2, Artist 3 on Artsy",
-        url: "https://artsy.net/artwork/title-1",
+        url: "https://artsy.net/artwork/title-1?utm_content=artwork-share",
         message: "Title 1 by Artist 1, Artist 2, Artist 3 on Artsy",
       })
     })
@@ -31,7 +31,7 @@ describe("ArtworkActions", () => {
       const content = shareContent("Title 1", "/artwork/title-1", [{ name: "Artist 1" }])
       expect(content).toMatchObject({
         title: "Title 1 by Artist 1 on Artsy",
-        url: "https://artsy.net/artwork/title-1",
+        url: "https://artsy.net/artwork/title-1?utm_content=artwork-share",
         message: "Title 1 by Artist 1 on Artsy",
       })
     })
@@ -40,7 +40,7 @@ describe("ArtworkActions", () => {
       const content = shareContent("Title 1", "/artwork/title-1", null)
       expect(content).toMatchObject({
         title: "Title 1 on Artsy",
-        url: "https://artsy.net/artwork/title-1",
+        url: "https://artsy.net/artwork/title-1?utm_content=artwork-share",
         message: "Title 1 on Artsy",
       })
     })
@@ -48,7 +48,7 @@ describe("ArtworkActions", () => {
     it("displays only the URL if no artists or title", async () => {
       const content = shareContent(null as any /* STRICTNESS_MIGRATION */, "/artwork/title-1", null)
       expect(content).toMatchObject({
-        url: "https://artsy.net/artwork/title-1",
+        url: "https://artsy.net/artwork/title-1?utm_content=artwork-share",
       })
       expect(content.message).not.toBeDefined()
       expect(content.title).not.toBeDefined()

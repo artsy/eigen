@@ -26,13 +26,16 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
   const collections = collectionGroup?.members ?? []
 
   const handleMarkdown = (markdown: string, titleLength: number) => {
-    const markdownRules = defaultRules(true, {
-      paragraph: {
-        react: (node, output, state) => (
-          <Sans size="3t" color="black100" key={state.key} numberOfLines={titleLength > 32 ? 3 : 4}>
-            {output(node.content, state)}
-          </Sans>
-        ),
+    const markdownRules = defaultRules({
+      modal: true,
+      ruleOverrides: {
+        paragraph: {
+          react: (node, output, state) => (
+            <Sans size="3t" color="black100" key={state.key} numberOfLines={titleLength > 32 ? 3 : 4}>
+              {output(node.content, state)}
+            </Sans>
+          ),
+        },
       },
     })
 

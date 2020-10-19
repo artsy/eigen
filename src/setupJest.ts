@@ -165,7 +165,11 @@ function getNativeModules(): typeof NativeModules {
           AREnableNewPartnerView: false,
           AROptionsNewFirstInquiry: false,
           AROptionsUseReactNativeWebView: false,
+          AROptionsNewShowPage: false,
+          AROptionsNewFairPage: false,
         },
+        legacyFairSlugs: ["some-fairs-slug", "some-other-fair-slug"],
+        legacyFairProfileSlugs: [],
       },
       postNotificationName: jest.fn(),
       didFinishBootstrapping: jest.fn(),
@@ -198,6 +202,7 @@ function getNativeModules(): typeof NativeModules {
       updateShouldHideBackButton: jest.fn(),
       presentAugmentedRealityVIR: jest.fn(),
       presentEmailComposer: jest.fn(),
+      popParentViewController: jest.fn(),
     },
   }
 }
@@ -213,7 +218,6 @@ jest.mock("lib/NativeModules/SwitchBoard", () => {
     presentMediaPreviewController: jest.fn(),
     presentModalViewController: jest.fn(),
     presentPartnerViewController: jest.fn(),
-    presentFairViewController: jest.fn(),
     dismissModalViewController: jest.fn(),
     dismissNavigationViewController: jest.fn(),
   }
@@ -383,8 +387,8 @@ jest.mock("react-native-config", () => ({
   SEGMENT_PRODUCTION_WRITE_KEY: "-",
   SEGMENT_STAGING_WRITE_KEY: "-",
   ARTSY_ECHO_PRODUCTION_TOKEN: "-",
-  SEGMENT_PRODUCTION_DSN: "-",
-  SEGMENT_STAGING_DSN: "-",
+  SENTRY_PRODUCTION_DSN: "-",
+  SENTRY_STAGING_DSN: "-",
   GOOGLE_MAPS_API_KEY: "-",
   MAPBOX_API_CLIENT_KEY: "-",
   SAILTHRU_KEY: "-",

@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash befc9cc935c23a224c5fb918a6b30a0f */
+// @ts-nocheck
+/* @relayHash f4c2974e310ac286342fa182af841885 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowProfileInput = {
@@ -46,18 +47,14 @@ mutation PartnerFollowButtonFollowMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "FollowProfileInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
   {
-    "kind": "LinkedField",
     "alias": null,
-    "name": "followProfile",
-    "storageKey": null,
     "args": [
       {
         "kind": "Variable",
@@ -66,72 +63,76 @@ v1 = [
       }
     ],
     "concreteType": "FollowProfilePayload",
+    "kind": "LinkedField",
+    "name": "followProfile",
     "plural": false,
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "profile",
-        "storageKey": null,
         "args": null,
         "concreteType": "Profile",
+        "kind": "LinkedField",
+        "name": "profile",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "id",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "slug",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "internalID",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "isFollowed",
             "args": null,
+            "kind": "ScalarField",
+            "name": "isFollowed",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "storageKey": null
   }
 ];
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "PartnerFollowButtonFollowMutation",
-    "type": "Mutation",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "PartnerFollowButtonFollowMutation",
+    "selections": (v1/*: any*/),
+    "type": "Mutation",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "PartnerFollowButtonFollowMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
-    "operationKind": "mutation",
-    "name": "PartnerFollowButtonFollowMutation",
     "id": "f4c2974e310ac286342fa182af841885",
-    "text": null,
-    "metadata": {}
+    "metadata": {},
+    "name": "PartnerFollowButtonFollowMutation",
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();

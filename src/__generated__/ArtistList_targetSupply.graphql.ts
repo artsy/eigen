@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -12,9 +13,9 @@ export type ArtistList_targetSupply = {
             readonly slug: string;
             readonly image: {
                 readonly cropped: {
-                    readonly url: string | null;
-                    readonly width: number | null;
-                    readonly height: number | null;
+                    readonly url: string;
+                    readonly width: number;
+                    readonly height: number;
                 } | null;
             } | null;
         } | null;
@@ -30,72 +31,65 @@ export type ArtistList_targetSupply$key = {
 
 
 const node: ReaderFragment = {
-  "kind": "Fragment",
-  "name": "ArtistList_targetSupply",
-  "type": "TargetSupply",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "ArtistList_targetSupply",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "microfunnel",
-      "storageKey": null,
       "args": null,
       "concreteType": "TargetSupplyMicrofunnelItem",
+      "kind": "LinkedField",
+      "name": "microfunnel",
       "plural": true,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "artist",
-          "storageKey": null,
           "args": null,
           "concreteType": "Artist",
+          "kind": "LinkedField",
+          "name": "artist",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "internalID",
-              "args": null,
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "name",
-              "args": null,
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "href",
-              "args": null,
               "storageKey": null
             },
             {
+              "alias": null,
+              "args": null,
               "kind": "ScalarField",
-              "alias": null,
               "name": "slug",
-              "args": null,
               "storageKey": null
             },
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "image",
-              "storageKey": null,
               "args": null,
               "concreteType": "Image",
+              "kind": "LinkedField",
+              "name": "image",
               "plural": false,
               "selections": [
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "cropped",
-                  "storageKey": "cropped(height:70,width:76)",
                   "args": [
                     {
                       "kind": "Literal",
@@ -109,38 +103,46 @@ const node: ReaderFragment = {
                     }
                   ],
                   "concreteType": "CroppedImageUrl",
+                  "kind": "LinkedField",
+                  "name": "cropped",
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "ScalarField",
                       "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
                       "name": "url",
-                      "args": null,
                       "storageKey": null
                     },
                     {
-                      "kind": "ScalarField",
                       "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
                       "name": "width",
-                      "args": null,
                       "storageKey": null
                     },
                     {
-                      "kind": "ScalarField",
                       "alias": null,
-                      "name": "height",
                       "args": null,
+                      "kind": "ScalarField",
+                      "name": "height",
                       "storageKey": null
                     }
-                  ]
+                  ],
+                  "storageKey": "cropped(height:70,width:76)"
                 }
-              ]
+              ],
+              "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     }
-  ]
+  ],
+  "type": "TargetSupply",
+  "abstractKey": null
 };
 (node as any).hash = '8517886177d3d46c42fae10ec7dcb2ef';
 export default node;

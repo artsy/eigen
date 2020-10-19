@@ -42,7 +42,7 @@ const getGravityTimestampInMilliSeconds = async () => {
   return serverTimestampInMilliSeconds
 }
 
-const getOffsetBetweenGravityClock = async () => {
+export const getOffsetBetweenGravityClock = async () => {
   try {
     const gravityClock = await getGravityTimestampInMilliSeconds()
     const localClock = getLocalTimestampInMilliSeconds()

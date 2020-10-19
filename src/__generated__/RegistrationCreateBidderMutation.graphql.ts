@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 0d687eb16a72bf1f951eb1a34cc88368 */
+// @ts-nocheck
+/* @relayHash ba9c29e5a8a919afab55321318b08233 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type CreateBidderInput = {
@@ -15,6 +16,11 @@ export type RegistrationCreateBidderMutationResponse = {
         readonly bidder: {
             readonly internalID: string;
             readonly qualified_for_bidding: boolean | null;
+            readonly sale: {
+                readonly registrationStatus: {
+                    readonly qualifiedForBidding: boolean | null;
+                } | null;
+            } | null;
         } | null;
     } | null;
 };
@@ -33,6 +39,13 @@ mutation RegistrationCreateBidderMutation(
     bidder {
       internalID
       qualified_for_bidding: qualifiedForBidding
+      sale {
+        registrationStatus {
+          qualifiedForBidding
+          id
+        }
+        id
+      }
       id
     }
   }
@@ -42,10 +55,9 @@ mutation RegistrationCreateBidderMutation(
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input",
-    "type": "CreateBidderInput!",
-    "defaultValue": null
+    "name": "input"
   }
 ],
 v1 = [
@@ -56,100 +68,157 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 },
 v3 = {
-  "kind": "ScalarField",
   "alias": "qualified_for_bidding",
-  "name": "qualifiedForBidding",
   "args": null,
+  "kind": "ScalarField",
+  "name": "qualifiedForBidding",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "qualifiedForBidding",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
-  "kind": "Request",
   "fragment": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
-    "name": "RegistrationCreateBidderMutation",
-    "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "createBidder",
-        "storageKey": null,
-        "args": (v1/*: any*/),
-        "concreteType": "CreateBidderPayload",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "bidder",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Bidder",
-            "plural": false,
-            "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/)
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  "operation": {
-    "kind": "Operation",
     "name": "RegistrationCreateBidderMutation",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "createBidder",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "CreateBidderPayload",
+        "kind": "LinkedField",
+        "name": "createBidder",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "bidder",
-            "storageKey": null,
             "args": null,
             "concreteType": "Bidder",
+            "kind": "LinkedField",
+            "name": "bidder",
             "plural": false,
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/),
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "id",
                 "args": null,
+                "concreteType": "Sale",
+                "kind": "LinkedField",
+                "name": "sale",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Bidder",
+                    "kind": "LinkedField",
+                    "name": "registrationStatus",
+                    "plural": false,
+                    "selections": [
+                      (v4/*: any*/)
+                    ],
+                    "storageKey": null
+                  }
+                ],
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
-        ]
+        ],
+        "storageKey": null
+      }
+    ],
+    "type": "Mutation",
+    "abstractKey": null
+  },
+  "kind": "Request",
+  "operation": {
+    "argumentDefinitions": (v0/*: any*/),
+    "kind": "Operation",
+    "name": "RegistrationCreateBidderMutation",
+    "selections": [
+      {
+        "alias": null,
+        "args": (v1/*: any*/),
+        "concreteType": "CreateBidderPayload",
+        "kind": "LinkedField",
+        "name": "createBidder",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Bidder",
+            "kind": "LinkedField",
+            "name": "bidder",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Sale",
+                "kind": "LinkedField",
+                "name": "sale",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Bidder",
+                    "kind": "LinkedField",
+                    "name": "registrationStatus",
+                    "plural": false,
+                    "selections": [
+                      (v4/*: any*/),
+                      (v5/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  (v5/*: any*/)
+                ],
+                "storageKey": null
+              },
+              (v5/*: any*/)
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "mutation",
+    "id": "ba9c29e5a8a919afab55321318b08233",
+    "metadata": {},
     "name": "RegistrationCreateBidderMutation",
-    "id": "77382fd385a089ff35904fa26513c733",
-    "text": null,
-    "metadata": {}
+    "operationKind": "mutation",
+    "text": null
   }
 };
 })();
-(node as any).hash = 'bcadd34deaab431f3a6f68cd7bac7ecf';
+(node as any).hash = 'cd8998226b1b49e2b9a7e9a497ac1ac8';
 export default node;

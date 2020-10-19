@@ -6,16 +6,15 @@ import { getCurrentEmissionState } from "lib/store/AppStore"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { Button, Spacer } from "palette"
 import React from "react"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
-import { BidButtonFragmentContainer as BidButton } from "./BidButton"
-import { BuyNowButtonFragmentContainer as BuyNowButton } from "./BuyNowButton"
-import { InquiryButtonsFragmentContainer as InquiryButtons } from "./InquiryButtons"
-import { MakeOfferButtonFragmentContainer as MakeOfferButton } from "./MakeOfferButton"
+import { createFragmentContainer, graphql } from "react-relay"
+import { BidButtonFragmentContainer } from "./BidButton"
+import { BuyNowButtonFragmentContainer } from "./BuyNowButton"
+import { InquiryButtonsFragmentContainer } from "./InquiryButtons"
+import { MakeOfferButtonFragmentContainer } from "./MakeOfferButton"
 
 export interface CommercialButtonProps {
   artwork: CommercialButtons_artwork
   me: CommercialButtons_me
-  relay: RelayProp
   // EditionSetID is passed down from the edition selected by the user
   editionSetID?: string
   auctionState: AuctionTimerState
@@ -45,9 +44,9 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
         <>
           {isBuyNowable && noEditions ? (
             <>
-              <BidButton artwork={artwork} me={me} auctionState={auctionState} />
+              <BidButtonFragmentContainer artwork={artwork} me={me} auctionState={auctionState} />
               <Spacer mb={1} />
-              <BuyNowButton
+              <BuyNowButtonFragmentContainer
                 variant="secondaryOutline"
                 artwork={artwork}
                 // @ts-ignore STRICTNESS_MIGRATION
@@ -55,20 +54,20 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
               />
             </>
           ) : (
-            <BidButton artwork={artwork} me={me} auctionState={auctionState} />
+            <BidButtonFragmentContainer artwork={artwork} me={me} auctionState={auctionState} />
           )}
         </>
       )
     } else if (isOfferable && isAcquireable) {
       return (
         <>
-          <BuyNowButton
+          <BuyNowButtonFragmentContainer
             artwork={artwork}
             // @ts-ignore STRICTNESS_MIGRATION
             editionSetID={this.props.editionSetID}
           />
           <Spacer mb={1} />
-          <MakeOfferButton
+          <MakeOfferButtonFragmentContainer
             artwork={artwork}
             // @ts-ignore STRICTNESS_MIGRATION
             editionSetID={this.props.editionSetID}
@@ -78,10 +77,10 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
       )
     } else if (isAcquireable) {
       // @ts-ignore STRICTNESS_MIGRATION
-      return <BuyNowButton artwork={artwork} editionSetID={this.props.editionSetID} />
+      return <BuyNowButtonFragmentContainer artwork={artwork} editionSetID={this.props.editionSetID} />
     } else if (isOfferable) {
       // @ts-ignore STRICTNESS_MIGRATION
-      return <MakeOfferButton artwork={artwork} editionSetID={this.props.editionSetID} />
+      return <MakeOfferButtonFragmentContainer artwork={artwork} editionSetID={this.props.editionSetID} />
     } else if (isInquireable && !newFirstInquiry) {
       return (
         <Button onPress={() => this.handleInquiry()} size="large" block width={100}>
@@ -89,7 +88,7 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
         </Button>
       )
     } else if (isInquireable && newFirstInquiry) {
-      return <InquiryButtons editionSetID={this.props.editionSetID} artwork={artwork} />
+      return <InquiryButtonsFragmentContainer artwork={artwork} editionSetID={this.props.editionSetID} />
     } else {
       return <></>
     }

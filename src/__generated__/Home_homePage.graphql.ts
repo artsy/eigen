@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,31 +35,26 @@ export type Home_homePage$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
-  "kind": "Fragment",
-  "name": "Home_homePage",
-  "type": "HomePage",
-  "metadata": null,
   "argumentDefinitions": [
     {
+      "defaultValue": null,
       "kind": "LocalArgument",
-      "name": "heroImageVersion",
-      "type": "HomePageHeroUnitImageVersion",
-      "defaultValue": null
+      "name": "heroImageVersion"
     }
   ],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Home_homePage",
   "selections": [
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "artworkModules",
-      "storageKey": "artworkModules(exclude:[\"GENERIC_GENES\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"RELATED_ARTISTS\",\"FOLLOWED_GENES\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SAVED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_GALLERIES\"])",
       "args": [
         {
           "kind": "Literal",
@@ -95,93 +91,98 @@ return {
         }
       ],
       "concreteType": "HomePageArtworkModule",
+      "kind": "LinkedField",
+      "name": "artworkModules",
       "plural": true,
       "selections": [
         (v0/*: any*/),
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "ArtworkRail_rail",
-          "args": null
+          "name": "ArtworkRail_rail"
         }
-      ]
+      ],
+      "storageKey": "artworkModules(exclude:[\"GENERIC_GENES\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"RELATED_ARTISTS\",\"FOLLOWED_GENES\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SAVED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_GALLERIES\"])"
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "artistModules",
-      "storageKey": null,
       "args": null,
       "concreteType": "HomePageArtistModule",
+      "kind": "LinkedField",
+      "name": "artistModules",
       "plural": true,
       "selections": [
         (v0/*: any*/),
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "ArtistRail_rail",
-          "args": null
+          "name": "ArtistRail_rail"
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "fairsModule",
-      "storageKey": null,
       "args": null,
       "concreteType": "HomePageFairsModule",
+      "kind": "LinkedField",
+      "name": "fairsModule",
       "plural": false,
       "selections": [
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "FairsRail_fairsModule",
-          "args": null
+          "name": "FairsRail_fairsModule"
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "salesModule",
-      "storageKey": null,
       "args": null,
       "concreteType": "HomePageSalesModule",
+      "kind": "LinkedField",
+      "name": "salesModule",
       "plural": false,
       "selections": [
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "SalesRail_salesModule",
-          "args": null
+          "name": "SalesRail_salesModule"
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "marketingCollectionsModule",
-      "storageKey": null,
       "args": null,
       "concreteType": "HomePageMarketingCollectionsModule",
+      "kind": "LinkedField",
+      "name": "marketingCollectionsModule",
       "plural": false,
       "selections": [
         {
+          "args": null,
           "kind": "FragmentSpread",
-          "name": "CollectionsRail_collectionsModule",
-          "args": null
+          "name": "CollectionsRail_collectionsModule"
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "FragmentSpread",
-      "name": "HomeHero_homePage",
       "args": [
         {
           "kind": "Variable",
           "name": "heroImageVersion",
           "variableName": "heroImageVersion"
         }
-      ]
+      ],
+      "kind": "FragmentSpread",
+      "name": "HomeHero_homePage"
     }
-  ]
+  ],
+  "type": "HomePage",
+  "abstractKey": null
 };
 })();
 (node as any).hash = '9db2e8b75668eab29e883f1b71ff16b3';

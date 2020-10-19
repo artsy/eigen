@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash 3383521146f55990db2616e71ac25006 */
+// @ts-nocheck
+/* @relayHash 39b97b79fdcc32cc24ddeca3599b78e0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -12,28 +13,9 @@ export type Fair2EditorialTestsQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"Fair2Editorial_fair">;
     } | null;
 };
-export type Fair2EditorialTestsQueryRawResponse = {
-    readonly fair: ({
-        readonly articles: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
-                    readonly id: string;
-                    readonly title: string | null;
-                    readonly href: string | null;
-                    readonly publishedAt: string | null;
-                    readonly thumbnailImage: ({
-                        readonly src: string | null;
-                    }) | null;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-        readonly id: string | null;
-    }) | null;
-};
 export type Fair2EditorialTestsQuery = {
     readonly response: Fair2EditorialTestsQueryResponse;
     readonly variables: Fair2EditorialTestsQueryVariables;
-    readonly rawResponse: Fair2EditorialTestsQueryRawResponse;
 };
 
 
@@ -49,13 +31,17 @@ query Fair2EditorialTestsQuery(
 }
 
 fragment Fair2Editorial_fair on Fair {
+  internalID
+  slug
   articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
     edges {
       node {
         id
+        internalID
+        slug
         title
         href
-        publishedAt(format: "MMM Do, YY")
+        publishedAt(format: "MMM Do, YYYY")
         thumbnailImage {
           src: imageURL
         }
@@ -68,10 +54,9 @@ fragment Fair2Editorial_fair on Fair {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "fairID",
-    "type": "String!",
-    "defaultValue": null
+    "name": "fairID"
   }
 ],
 v1 = [
@@ -82,58 +67,83 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v5 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
+},
+v6 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "Fair2EditorialTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "Fair2EditorialTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "Fair2Editorial_fair",
-            "args": null
+            "name": "Fair2Editorial_fair"
           }
-        ]
+        ],
+        "storageKey": null
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "Fair2EditorialTestsQuery",
-    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "fair",
-        "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "Fair",
+        "kind": "LinkedField",
+        "name": "fair",
         "plural": false,
         "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
           {
-            "kind": "LinkedField",
             "alias": "articles",
-            "name": "articlesConnection",
-            "storageKey": "articlesConnection(first:5,sort:\"PUBLISHED_AT_DESC\")",
             "args": [
               {
                 "kind": "Literal",
@@ -147,91 +157,140 @@ return {
               }
             ],
             "concreteType": "ArticleConnection",
+            "kind": "LinkedField",
+            "name": "articlesConnection",
             "plural": false,
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "edges",
-                "storageKey": null,
                 "args": null,
                 "concreteType": "ArticleEdge",
+                "kind": "LinkedField",
+                "name": "edges",
                 "plural": true,
                 "selections": [
                   {
-                    "kind": "LinkedField",
                     "alias": null,
-                    "name": "node",
-                    "storageKey": null,
                     "args": null,
                     "concreteType": "Article",
+                    "kind": "LinkedField",
+                    "name": "node",
                     "plural": false,
                     "selections": [
+                      (v4/*: any*/),
                       (v2/*: any*/),
+                      (v3/*: any*/),
                       {
-                        "kind": "ScalarField",
                         "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "title",
-                        "args": null,
                         "storageKey": null
                       },
                       {
-                        "kind": "ScalarField",
                         "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "href",
-                        "args": null,
                         "storageKey": null
                       },
                       {
-                        "kind": "ScalarField",
                         "alias": null,
-                        "name": "publishedAt",
                         "args": [
                           {
                             "kind": "Literal",
                             "name": "format",
-                            "value": "MMM Do, YY"
+                            "value": "MMM Do, YYYY"
                           }
                         ],
-                        "storageKey": "publishedAt(format:\"MMM Do, YY\")"
+                        "kind": "ScalarField",
+                        "name": "publishedAt",
+                        "storageKey": "publishedAt(format:\"MMM Do, YYYY\")"
                       },
                       {
-                        "kind": "LinkedField",
                         "alias": null,
-                        "name": "thumbnailImage",
-                        "storageKey": null,
                         "args": null,
                         "concreteType": "Image",
+                        "kind": "LinkedField",
+                        "name": "thumbnailImage",
                         "plural": false,
                         "selections": [
                           {
-                            "kind": "ScalarField",
                             "alias": "src",
-                            "name": "imageURL",
                             "args": null,
+                            "kind": "ScalarField",
+                            "name": "imageURL",
                             "storageKey": null
                           }
-                        ]
+                        ],
+                        "storageKey": null
                       }
-                    ]
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": null
               }
-            ]
+            ],
+            "storageKey": "articlesConnection(first:5,sort:\"PUBLISHED_AT_DESC\")"
           },
-          (v2/*: any*/)
-        ]
+          (v4/*: any*/)
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "operationKind": "query",
+    "id": "39b97b79fdcc32cc24ddeca3599b78e0",
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "fair": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Fair"
+        },
+        "fair.articles": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ArticleConnection"
+        },
+        "fair.articles.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "ArticleEdge"
+        },
+        "fair.articles.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Article"
+        },
+        "fair.articles.edges.node.href": (v5/*: any*/),
+        "fair.articles.edges.node.id": (v6/*: any*/),
+        "fair.articles.edges.node.internalID": (v6/*: any*/),
+        "fair.articles.edges.node.publishedAt": (v5/*: any*/),
+        "fair.articles.edges.node.slug": (v5/*: any*/),
+        "fair.articles.edges.node.thumbnailImage": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Image"
+        },
+        "fair.articles.edges.node.thumbnailImage.src": (v5/*: any*/),
+        "fair.articles.edges.node.title": (v5/*: any*/),
+        "fair.id": (v6/*: any*/),
+        "fair.internalID": (v6/*: any*/),
+        "fair.slug": (v6/*: any*/)
+      }
+    },
     "name": "Fair2EditorialTestsQuery",
-    "id": "7884d3612557621503fc9585967cfede",
-    "text": null,
-    "metadata": {}
+    "operationKind": "query",
+    "text": null
   }
 };
 })();
-(node as any).hash = 'aa3933d1a72dde11afa4fa0172e32b22';
+(node as any).hash = 'c2cfe7aad8112ff284732d558c803ed4';
 export default node;

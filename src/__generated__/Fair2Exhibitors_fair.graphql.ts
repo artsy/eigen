@@ -1,9 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Fair2Exhibitors_fair = {
+    readonly internalID: string;
     readonly slug: string;
     readonly exhibitors: {
         readonly edges: ReadonlyArray<{
@@ -31,19 +33,29 @@ export type Fair2Exhibitors_fair$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 },
 v1 = [
   (v0/*: any*/)
 ];
 return {
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "after"
+    },
+    {
+      "defaultValue": 30,
+      "kind": "LocalArgument",
+      "name": "first"
+    }
+  ],
   "kind": "Fragment",
-  "name": "Fair2Exhibitors_fair",
-  "type": "Fair",
   "metadata": {
     "connection": [
       {
@@ -56,33 +68,24 @@ return {
       }
     ]
   },
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "first",
-      "type": "Int",
-      "defaultValue": 15
-    },
-    {
-      "kind": "LocalArgument",
-      "name": "after",
-      "type": "String",
-      "defaultValue": null
-    }
-  ],
+  "name": "Fair2Exhibitors_fair",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "slug",
       "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
+      "storageKey": null
+    },
+    {
       "alias": "exhibitors",
-      "name": "__Fair2ExhibitorsQuery_exhibitors_connection",
-      "storageKey": "__Fair2ExhibitorsQuery_exhibitors_connection(sort:\"FEATURED_ASC\")",
       "args": [
         {
           "kind": "Literal",
@@ -91,118 +94,125 @@ return {
         }
       ],
       "concreteType": "ShowConnection",
+      "kind": "LinkedField",
+      "name": "__Fair2ExhibitorsQuery_exhibitors_connection",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "edges",
-          "storageKey": null,
           "args": null,
           "concreteType": "ShowEdge",
+          "kind": "LinkedField",
+          "name": "edges",
           "plural": true,
           "selections": [
             {
-              "kind": "LinkedField",
               "alias": null,
-              "name": "node",
-              "storageKey": null,
               "args": null,
               "concreteType": "Show",
+              "kind": "LinkedField",
+              "name": "node",
               "plural": false,
               "selections": [
                 (v0/*: any*/),
                 {
-                  "kind": "LinkedField",
                   "alias": null,
-                  "name": "counts",
-                  "storageKey": null,
                   "args": null,
                   "concreteType": "ShowCounts",
+                  "kind": "LinkedField",
+                  "name": "counts",
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "ScalarField",
                       "alias": null,
-                      "name": "artworks",
                       "args": null,
+                      "kind": "ScalarField",
+                      "name": "artworks",
                       "storageKey": null
                     }
-                  ]
-                },
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "partner",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": null,
-                  "plural": false,
-                  "selections": [
-                    {
-                      "kind": "InlineFragment",
-                      "type": "Partner",
-                      "selections": (v1/*: any*/)
-                    },
-                    {
-                      "kind": "InlineFragment",
-                      "type": "ExternalPartner",
-                      "selections": (v1/*: any*/)
-                    }
-                  ]
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "__typename",
-                  "args": null,
+                  ],
                   "storageKey": null
                 },
                 {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": null,
+                  "kind": "LinkedField",
+                  "name": "partner",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "InlineFragment",
+                      "selections": (v1/*: any*/),
+                      "type": "Partner",
+                      "abstractKey": null
+                    },
+                    {
+                      "kind": "InlineFragment",
+                      "selections": (v1/*: any*/),
+                      "type": "ExternalPartner",
+                      "abstractKey": null
+                    }
+                  ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
+                  "storageKey": null
+                },
+                {
+                  "args": null,
                   "kind": "FragmentSpread",
-                  "name": "Fair2ExhibitorRail_show",
-                  "args": null
+                  "name": "Fair2ExhibitorRail_show"
                 }
-              ]
+              ],
+              "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "cursor",
               "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         },
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "pageInfo",
-          "storageKey": null,
           "args": null,
           "concreteType": "PageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "endCursor",
               "args": null,
+              "kind": "ScalarField",
+              "name": "endCursor",
               "storageKey": null
             },
             {
-              "kind": "ScalarField",
               "alias": null,
-              "name": "hasNextPage",
               "args": null,
+              "kind": "ScalarField",
+              "name": "hasNextPage",
               "storageKey": null
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": "__Fair2ExhibitorsQuery_exhibitors_connection(sort:\"FEATURED_ASC\")"
     }
-  ]
+  ],
+  "type": "Fair",
+  "abstractKey": null
 };
 })();
-(node as any).hash = 'dadfbbc40228775a328552e17446ba81';
+(node as any).hash = '41646af987ff8e5840fdb94152676184';
 export default node;

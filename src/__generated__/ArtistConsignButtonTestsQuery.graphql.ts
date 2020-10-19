@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash cc9ab7d8f5407011762383bca4717345 */
+// @ts-nocheck
+/* @relayHash 12125805ab6a122d91732b715be527e3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -50,124 +51,114 @@ var v0 = [
   }
 ],
 v1 = {
-  "type": "ID",
   "enumValues": null,
+  "nullable": false,
   "plural": false,
-  "nullable": false
+  "type": "ID"
 },
 v2 = {
-  "type": "String",
   "enumValues": null,
+  "nullable": true,
   "plural": false,
-  "nullable": true
-},
-v3 = {
-  "type": "Boolean",
-  "enumValues": null,
-  "plural": false,
-  "nullable": true
+  "type": "Boolean"
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "ArtistConsignButtonTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ArtistConsignButtonTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artist",
-        "storageKey": "artist(id:\"alex-katz\")",
         "args": (v0/*: any*/),
         "concreteType": "Artist",
+        "kind": "LinkedField",
+        "name": "artist",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "ArtistConsignButton_artist",
-            "args": null
+            "name": "ArtistConsignButton_artist"
           }
-        ]
+        ],
+        "storageKey": "artist(id:\"alex-katz\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "ArtistConsignButtonTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "artist",
-        "storageKey": "artist(id:\"alex-katz\")",
         "args": (v0/*: any*/),
         "concreteType": "Artist",
+        "kind": "LinkedField",
+        "name": "artist",
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "targetSupply",
-            "storageKey": null,
             "args": null,
             "concreteType": "ArtistTargetSupply",
+            "kind": "LinkedField",
+            "name": "targetSupply",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "isInMicrofunnel",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "isInMicrofunnel",
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "isTargetSupply",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "isTargetSupply",
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "internalID",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "slug",
-            "args": null,
             "storageKey": null
           },
           {
+            "alias": null,
+            "args": null,
             "kind": "ScalarField",
-            "alias": null,
             "name": "name",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "image",
-            "storageKey": null,
             "args": null,
             "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "image",
             "plural": false,
             "selections": [
               {
-                "kind": "LinkedField",
                 "alias": null,
-                "name": "cropped",
-                "storageKey": "cropped(height:66,width:66)",
                 "args": [
                   {
                     "kind": "Literal",
@@ -181,75 +172,85 @@ return {
                   }
                 ],
                 "concreteType": "CroppedImageUrl",
+                "kind": "LinkedField",
+                "name": "cropped",
                 "plural": false,
                 "selections": [
                   {
-                    "kind": "ScalarField",
                     "alias": null,
-                    "name": "url",
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "url",
                     "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": "cropped(height:66,width:66)"
               }
-            ]
+            ],
+            "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
-            "name": "id",
             "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           }
-        ]
+        ],
+        "storageKey": "artist(id:\"alex-katz\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "ArtistConsignButtonTestsQuery",
     "id": "12125805ab6a122d91732b715be527e3",
-    "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
-          "type": "Artist",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Artist"
         },
-        "artist.id": {
-          "type": "ID",
+        "artist.id": (v1/*: any*/),
+        "artist.image": {
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Image"
         },
-        "artist.targetSupply": {
-          "type": "ArtistTargetSupply",
+        "artist.image.cropped": {
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "CroppedImageUrl"
+        },
+        "artist.image.cropped.url": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "String"
         },
         "artist.internalID": (v1/*: any*/),
+        "artist.name": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "String"
+        },
         "artist.slug": (v1/*: any*/),
-        "artist.name": (v2/*: any*/),
-        "artist.image": {
-          "type": "Image",
+        "artist.targetSupply": {
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "ArtistTargetSupply"
         },
-        "artist.targetSupply.isInMicrofunnel": (v3/*: any*/),
-        "artist.targetSupply.isTargetSupply": (v3/*: any*/),
-        "artist.image.cropped": {
-          "type": "CroppedImageUrl",
-          "enumValues": null,
-          "plural": false,
-          "nullable": true
-        },
-        "artist.image.cropped.url": (v2/*: any*/)
+        "artist.targetSupply.isInMicrofunnel": (v2/*: any*/),
+        "artist.targetSupply.isTargetSupply": (v2/*: any*/)
       }
-    }
+    },
+    "name": "ArtistConsignButtonTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

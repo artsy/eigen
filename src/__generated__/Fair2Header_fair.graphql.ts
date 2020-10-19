@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -10,22 +11,31 @@ export type Fair2Header_fair = {
     readonly slug: string;
     readonly profile: {
         readonly icon: {
-            readonly url: string | null;
+            readonly imageUrl: string | null;
         } | null;
     } | null;
     readonly image: {
-        readonly url: string | null;
+        readonly imageUrl: string | null;
         readonly aspectRatio: number;
     } | null;
     readonly tagline: string | null;
     readonly location: {
         readonly summary: string | null;
+        readonly coordinates: {
+            readonly lat: number | null;
+            readonly lng: number | null;
+        } | null;
     } | null;
     readonly ticketsLink: string | null;
-    readonly hours: string | null;
-    readonly links: string | null;
-    readonly tickets: string | null;
-    readonly contact: string | null;
+    readonly sponsoredContent: {
+        readonly activationText: string | null;
+        readonly pressReleaseUrl: string | null;
+    } | null;
+    readonly fairHours: string | null;
+    readonly fairLinks: string | null;
+    readonly fairTickets: string | null;
+    readonly fairContact: string | null;
+    readonly " $fragmentRefs": FragmentRefs<"Fair2Timing_fair">;
     readonly " $refType": "Fair2Header_fair";
 };
 export type Fair2Header_fair$data = Fair2Header_fair;
@@ -38,10 +48,10 @@ export type Fair2Header_fair$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "summary",
   "args": null,
+  "kind": "ScalarField",
+  "name": "summary",
   "storageKey": null
 },
 v1 = [
@@ -52,56 +62,51 @@ v1 = [
   }
 ];
 return {
-  "kind": "Fragment",
-  "name": "Fair2Header_fair",
-  "type": "Fair",
-  "metadata": null,
   "argumentDefinitions": [],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "Fair2Header_fair",
   "selections": [
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "about",
       "args": null,
+      "kind": "ScalarField",
+      "name": "about",
       "storageKey": null
     },
     (v0/*: any*/),
     {
-      "kind": "ScalarField",
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "name",
-      "args": null,
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
-      "alias": null,
       "name": "slug",
-      "args": null,
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "profile",
-      "storageKey": null,
       "args": null,
       "concreteType": "Profile",
+      "kind": "LinkedField",
+      "name": "profile",
       "plural": false,
       "selections": [
         {
-          "kind": "LinkedField",
           "alias": null,
-          "name": "icon",
-          "storageKey": null,
           "args": null,
           "concreteType": "Image",
+          "kind": "LinkedField",
+          "name": "icon",
           "plural": false,
           "selections": [
             {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "url",
+              "alias": "imageUrl",
               "args": [
                 {
                   "kind": "Literal",
@@ -109,25 +114,26 @@ return {
                   "value": "untouched-png"
                 }
               ],
+              "kind": "ScalarField",
+              "name": "url",
               "storageKey": "url(version:\"untouched-png\")"
             }
-          ]
+          ],
+          "storageKey": null
         }
-      ]
+      ],
+      "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "image",
-      "storageKey": null,
       "args": null,
       "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "image",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "url",
+          "alias": "imageUrl",
           "args": [
             {
               "kind": "Literal",
@@ -135,73 +141,133 @@ return {
               "value": "large_rectangle"
             }
           ],
+          "kind": "ScalarField",
+          "name": "url",
           "storageKey": "url(version:\"large_rectangle\")"
         },
         {
-          "kind": "ScalarField",
           "alias": null,
-          "name": "aspectRatio",
           "args": null,
+          "kind": "ScalarField",
+          "name": "aspectRatio",
           "storageKey": null
         }
-      ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "tagline",
-      "args": null,
+      ],
       "storageKey": null
     },
     {
-      "kind": "LinkedField",
       "alias": null,
-      "name": "location",
-      "storageKey": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "tagline",
+      "storageKey": null
+    },
+    {
+      "alias": null,
       "args": null,
       "concreteType": "Location",
+      "kind": "LinkedField",
+      "name": "location",
       "plural": false,
       "selections": [
-        (v0/*: any*/)
-      ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "ticketsLink",
-      "args": null,
+        (v0/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "LatLng",
+          "kind": "LinkedField",
+          "name": "coordinates",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "lat",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "lng",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
       "alias": null,
-      "name": "hours",
+      "args": null,
+      "kind": "ScalarField",
+      "name": "ticketsLink",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "FairSponsoredContent",
+      "kind": "LinkedField",
+      "name": "sponsoredContent",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "activationText",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "pressReleaseUrl",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": "fairHours",
       "args": (v1/*: any*/),
+      "kind": "ScalarField",
+      "name": "hours",
       "storageKey": "hours(format:\"MARKDOWN\")"
     },
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "links",
+      "alias": "fairLinks",
       "args": (v1/*: any*/),
+      "kind": "ScalarField",
+      "name": "links",
       "storageKey": "links(format:\"MARKDOWN\")"
     },
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "tickets",
+      "alias": "fairTickets",
       "args": (v1/*: any*/),
+      "kind": "ScalarField",
+      "name": "tickets",
       "storageKey": "tickets(format:\"MARKDOWN\")"
     },
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "contact",
+      "alias": "fairContact",
       "args": (v1/*: any*/),
+      "kind": "ScalarField",
+      "name": "contact",
       "storageKey": "contact(format:\"MARKDOWN\")"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "Fair2Timing_fair"
     }
-  ]
+  ],
+  "type": "Fair",
+  "abstractKey": null
 };
 })();
-(node as any).hash = '45891118801486778b80c302d68fa0c5';
+(node as any).hash = '6b700a54089e662567c4b708ba2d0a1b';
 export default node;

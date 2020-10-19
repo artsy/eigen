@@ -1,5 +1,5 @@
 import { FilterToggleButton } from "lib/Components/ArtworkFilterOptions/FilterToggleButton"
-import { FilterData } from "lib/utils/ArtworkFiltersStore"
+import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Box, color, Flex, Sans } from "palette"
 import React from "react"
 import { FlatList, TouchableWithoutFeedback } from "react-native"
@@ -12,6 +12,8 @@ interface MultiSelectOptionScreenProps {
   filterHeaderText: string
   onSelect: (filterData: FilterData, updatedValue: boolean) => void
   filterOptions: FilterData[]
+  isSelected?: (item: FilterData) => boolean
+  isDisabled?: (item: FilterData) => boolean
 }
 
 export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = ({
@@ -19,9 +21,27 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   onSelect,
   filterOptions,
   navigator,
+  isSelected,
+  isDisabled,
 }) => {
   const handleBackNavigation = () => {
     navigator.pop()
+  }
+
+  const itemIsSelected = (item: FilterData): boolean => {
+    if (isSelected) {
+      return isSelected(item)
+    } else {
+      return !!item.paramValue
+    }
+  }
+
+  const itemIsDisabled = (item: FilterData): boolean => {
+    if (isDisabled) {
+      return isDisabled(item)
+    } else {
+      return false
+    }
   }
 
   return (
@@ -32,28 +52,31 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
           initialNumToRender={4}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
-          renderItem={({ item }) => (
-            <Box ml={0.5}>
-              {
-                <OptionListItem>
-                  <Flex mb={0.5}>
-                    <Sans color="black100" size="3t">
-                      {item.displayText}
-                    </Sans>
-                  </Flex>
-                  <TouchableWithoutFeedback>
-                    <FilterToggleButton
-                      onChange={() => {
-                        const currentParamValue = item.paramValue as boolean
-                        onSelect(item, !currentParamValue)
-                      }}
-                      value={item.paramValue as boolean}
-                    />
-                  </TouchableWithoutFeedback>
-                </OptionListItem>
-              }
-            </Box>
-          )}
+          renderItem={({ item }) => {
+            return (
+              <Box ml={0.5}>
+                {
+                  <OptionListItem>
+                    <Flex mb={0.5}>
+                      <Sans color="black100" size="3t">
+                        {item.displayText}
+                      </Sans>
+                    </Flex>
+                    <TouchableWithoutFeedback>
+                      <FilterToggleButton
+                        onChange={() => {
+                          const currentParamValue = item.paramValue as boolean
+                          onSelect(item, !currentParamValue)
+                        }}
+                        value={itemIsSelected(item)}
+                        disabled={itemIsDisabled(item)}
+                      />
+                    </TouchableWithoutFeedback>
+                  </OptionListItem>
+                }
+              </Box>
+            )
+          }}
         />
       </Flex>
     </Flex>
