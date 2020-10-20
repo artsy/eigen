@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash bb06c8002be38d80856b9eb2f34d17de */
+/* @relayHash 0904c3e6f88e60e9ef528331c7edff22 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -690,8 +690,9 @@ fragment InquiryButtons_artwork on Artwork {
 fragment InquiryModal_artwork on Artwork {
   ...CollapsibleArtworkDetails_artwork
   inquiryQuestions {
-    id
+    internalID
     question
+    id
   }
 }
 
@@ -1848,14 +1849,15 @@ return {
             "name": "inquiryQuestions",
             "plural": true,
             "selections": [
-              (v2/*: any*/),
+              (v3/*: any*/),
               {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
                 "name": "question",
                 "storageKey": null
-              }
+              },
+              (v2/*: any*/)
             ],
             "storageKey": null
           },
@@ -2331,7 +2333,7 @@ return {
     ]
   },
   "params": {
-    "id": "bb06c8002be38d80856b9eb2f34d17de",
+    "id": "0904c3e6f88e60e9ef528331c7edff22",
     "metadata": {},
     "name": "ArtworkRefetchQuery",
     "operationKind": "query",

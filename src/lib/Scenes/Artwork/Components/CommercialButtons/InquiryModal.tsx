@@ -108,7 +108,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           // NOTE: For now the inquiryQuestions field values are always present and therefore never null, so it is safe to destructure them
           questions!.map((inquiryQuestion) => {
             if (!inquiryQuestion) return false
-            const { id, question } = inquiryQuestion
+            const { internalID: id, question } = inquiryQuestion
             return renderInquiryQuestion(id, question)
           })
         }
@@ -136,7 +136,7 @@ export const InquiryModalFragmentContainer = createFragmentContainer(InquiryModa
     fragment InquiryModal_artwork on Artwork {
       ...CollapsibleArtworkDetails_artwork
       inquiryQuestions {
-        id
+        internalID
         question
       }
     }
