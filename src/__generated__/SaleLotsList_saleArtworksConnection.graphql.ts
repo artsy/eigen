@@ -16,6 +16,7 @@ export type SaleLotsList_saleArtworksConnection = {
             } | null> | null;
         } | null> | null;
         readonly counts: {
+            readonly followedArtists: number | null;
             readonly total: number | null;
         } | null;
         readonly edges: ReadonlyArray<{
@@ -194,6 +195,13 @@ const node: ReaderFragment = {
               "alias": null,
               "args": null,
               "kind": "ScalarField",
+              "name": "followedArtists",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "total",
               "storageKey": null
             }
@@ -285,5 +293,5 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = 'e2f9618689232b5ec6693c9da0732223';
+(node as any).hash = '75407593d25727e6afae1a98a2bf0868';
 export default node;

@@ -9,6 +9,10 @@ const filterState: ArtworkFilterContextState = {
   applyFilters: false,
   aggregations: [],
   filterType: "artwork",
+  counts: {
+    total: null,
+    followedArtists: null,
+  },
 }
 
 export const reducer = (
@@ -85,6 +89,7 @@ export const reducer = (
         previouslyAppliedFilters: appliedFilters,
         aggregations: artworkFilterState.aggregations,
         filterType: artworkFilterState.filterType,
+        counts: artworkFilterState.counts,
       }
 
     // First we update our potential "selectedFilters" based on the option that was selected in the UI
@@ -159,6 +164,7 @@ export const reducer = (
         previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
         aggregations: artworkFilterState.aggregations,
         filterType: artworkFilterState.filterType,
+        counts: artworkFilterState.counts,
       }
 
     case "clearAll":
@@ -169,6 +175,7 @@ export const reducer = (
         applyFilters: false,
         aggregations: artworkFilterState.aggregations,
         filterType: artworkFilterState.filterType,
+        counts: artworkFilterState.counts,
       }
 
     case "resetFilters":
@@ -182,6 +189,7 @@ export const reducer = (
         previouslyAppliedFilters: artworkFilterState.appliedFilters,
         aggregations: artworkFilterState.aggregations,
         filterType: artworkFilterState.filterType,
+        counts: artworkFilterState.counts,
       }
 
     case "clearFiltersZeroState":
@@ -193,6 +201,7 @@ export const reducer = (
         applyFilters: true,
         aggregations: artworkFilterState.aggregations,
         filterType: artworkFilterState.filterType,
+        counts: artworkFilterState.counts,
       }
 
     case "setAggregations":
@@ -203,6 +212,18 @@ export const reducer = (
         previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
         applyFilters: false,
         filterType: artworkFilterState.filterType,
+        counts: artworkFilterState.counts,
+      }
+
+    case "setFilterCounts":
+      return {
+        aggregations: artworkFilterState.aggregations,
+        appliedFilters: artworkFilterState.appliedFilters,
+        selectedFilters: artworkFilterState.selectedFilters,
+        previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
+        applyFilters: false,
+        filterType: artworkFilterState.filterType,
+        counts: action.payload,
       }
 
     case "setFilterType":
@@ -213,6 +234,7 @@ export const reducer = (
         previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
         applyFilters: false,
         filterType: action.payload,
+        counts: artworkFilterState.counts,
       }
 
     case "setInitialFilterState":
@@ -222,7 +244,8 @@ export const reducer = (
         previouslyAppliedFilters: action.payload,
         applyFilters: false,
         aggregations: artworkFilterState.aggregations,
-        filterType: "artwork", // TODO: Check this again
+        filterType: "artwork",
+        counts: artworkFilterState.counts,
       }
   }
 }
@@ -398,6 +421,11 @@ export const ArtworkFilterGlobalStateProvider = ({ children }: any /* STRICTNESS
 
 export type FilterType = "artwork" | "saleArtwork"
 
+export interface FilterCounts {
+  total: number | null
+  followedArtists: number | null
+}
+
 export interface ArtworkFilterContextState {
   readonly appliedFilters: FilterArray
   readonly selectedFilters: FilterArray
@@ -405,6 +433,7 @@ export interface ArtworkFilterContextState {
   readonly applyFilters: boolean
   readonly aggregations: Aggregations
   readonly filterType: FilterType
+  readonly counts: FilterCounts
 }
 
 export interface FilterData {
@@ -452,6 +481,11 @@ interface SetInitialFilterState {
   payload: FilterArray
 }
 
+interface SetFilterCounts {
+  type: "setFilterCounts"
+  payload: FilterCounts
+}
+
 export type FilterActions =
   | ResetFilters
   | ApplyFilters
@@ -461,6 +495,7 @@ export type FilterActions =
   | SetAggregations
   | SetFilterType
   | SetInitialFilterState
+  | SetFilterCounts
 
 interface ArtworkFilterContextProps {
   state: ArtworkFilterContextState

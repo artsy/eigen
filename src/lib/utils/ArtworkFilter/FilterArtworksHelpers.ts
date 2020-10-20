@@ -1,5 +1,11 @@
 import { FilterScreen } from "lib/Components/FilterModal"
-import { AggregationName, Aggregations, FilterArray, FilterType } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import {
+  AggregationName,
+  Aggregations,
+  FilterArray,
+  FilterCounts,
+  FilterType,
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { compact, forOwn, groupBy, sortBy } from "lodash"
 
 // General filter types and objects
@@ -57,6 +63,7 @@ export interface InitialState {
     applyFilters: boolean
     aggregations: Aggregations
     filterType: FilterType
+    counts: FilterCounts
   }
 }
 

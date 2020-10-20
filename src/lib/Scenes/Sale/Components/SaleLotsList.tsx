@@ -165,6 +165,7 @@ export const SaleLotsListContainer = createPaginationContainer(
             }
           }
           counts {
+            followedArtists
             total
           }
           edges {

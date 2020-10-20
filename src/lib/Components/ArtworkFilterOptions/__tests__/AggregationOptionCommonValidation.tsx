@@ -39,6 +39,10 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
         applyFilters: false,
         aggregations: params.aggregations,
         filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
     })
 
@@ -77,6 +81,10 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           applyFilters: false,
           aggregations: params.aggregations,
           filterType: "artwork",
+          counts: {
+            total: null,
+            followedArtists: null,
+          },
         }
 
         const component = renderWithWrappers(<params.Screen initialState={state} navigator={mockNavigator} />)

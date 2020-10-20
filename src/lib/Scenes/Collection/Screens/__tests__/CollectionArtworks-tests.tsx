@@ -60,6 +60,10 @@ describe("CollectionArtworks", () => {
       applyFilters: false,
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
   })
 

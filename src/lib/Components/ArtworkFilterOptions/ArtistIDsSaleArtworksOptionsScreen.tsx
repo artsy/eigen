@@ -24,7 +24,6 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksO
   if (!oldSelectedOptions || (Array.isArray(oldSelectedOptions) && oldSelectedOptions.length === 0)) {
     oldSelectedOptions = ["all"]
   }
-
   const [selectedOptions, setSelectedOptions] = useState<string[]>(oldSelectedOptions as string[])
 
   const options: FilterData[] | undefined = aggregation?.counts.map((aggCount) => {

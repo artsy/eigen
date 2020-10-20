@@ -93,6 +93,10 @@ describe("Artist options screen", () => {
       applyFilters: false,
       aggregations: mockAggregations,
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
   })
 
@@ -120,6 +124,10 @@ describe("Artist options screen", () => {
         applyFilters: false,
         aggregations: mockAggregations,
         filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const component = renderWithWrappers(<MockArtistScreen initialState={state} navigator={mockNavigator} />)
@@ -135,6 +143,10 @@ describe("Artist options screen", () => {
         applyFilters: false,
         aggregations: mockAggregations,
         filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const tree = renderWithWrappers(<MockArtistScreen initialState={state} navigator={mockNavigator} />)
@@ -168,6 +180,10 @@ describe("Artist options screen", () => {
         applyFilters: false,
         aggregations: mockAggregations,
         filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const tree = renderWithWrappers(<MockArtistScreen initialState={state} navigator={mockNavigator} />)
@@ -214,6 +230,10 @@ describe("Artist options screen", () => {
         applyFilters: false,
         aggregations: noFollowedArtistsAggregations,
         filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const tree = renderWithWrappers(<MockArtistScreen initialState={state} navigator={mockNavigator} />)

@@ -54,6 +54,10 @@ beforeEach(() => {
     applyFilters: false,
     aggregations: mockAggregations,
     filterType: "artwork",
+    counts: {
+      total: null,
+      followedArtists: null,
+    },
   }
 })
 
@@ -248,6 +252,10 @@ describe("Filter modal navigation flow", () => {
           state,
           aggregations: mockAggregations,
           filterType: "artwork",
+          counts: {
+            total: null,
+            followedArtists: null,
+          },
 
           // @ts-ignore STRICTNESS_MIGRATION
           dispatch: null,
@@ -276,6 +284,10 @@ describe("Filter modal navigation flow", () => {
           state,
           aggregations: mockAggregations,
           filterType: "artwork",
+          counts: {
+            total: null,
+            followedArtists: null,
+          },
 
           // @ts-ignore STRICTNESS_MIGRATION
           dispatch: null,
@@ -355,6 +367,10 @@ describe("Filter modal states", () => {
       applyFilters: false,
       aggregations: mockAggregations,
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -369,6 +385,10 @@ describe("Filter modal states", () => {
       applyFilters: false,
       aggregations: mockAggregations,
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -389,6 +409,10 @@ describe("Filter modal states", () => {
       applyFilters: false,
       aggregations: mockAggregations,
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const filterScreen = mount(<MockFilterModalNavigator initialState={state} />)
@@ -424,6 +448,10 @@ describe("Filter modal states", () => {
       applyFilters: false,
       aggregations: mockAggregations,
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -462,6 +490,10 @@ describe("Clearing filters", () => {
       applyFilters: false,
       aggregations: mockAggregations,
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -485,6 +517,10 @@ describe("Clearing filters", () => {
       applyFilters: false,
       aggregations: mockAggregations,
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
@@ -512,6 +548,10 @@ describe("Clearing filters", () => {
       applyFilters: true,
       aggregations: mockAggregations,
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
@@ -535,6 +575,10 @@ describe("Applying filters on Artworks", () => {
       applyFilters: true,
       aggregations: mockAggregations,
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const env = createMockEnvironment()
@@ -616,6 +660,10 @@ describe("Applying filters on Artworks", () => {
       applyFilters: true,
       aggregations: mockAggregations,
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const filterModal = mount(<MockFilterModalNavigator initialState={state} />)

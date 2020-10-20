@@ -19,6 +19,10 @@ describe("Clear All Filters", () => {
       applyFilters: false,
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const r = reducer(filterState, {
@@ -32,6 +36,10 @@ describe("Clear All Filters", () => {
       previouslyAppliedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -43,6 +51,10 @@ describe("Clear All Filters", () => {
       applyFilters: true,
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const r = reducer(filterState, {
@@ -56,6 +68,10 @@ describe("Clear All Filters", () => {
       previouslyAppliedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 })
@@ -69,6 +85,10 @@ describe("Reset Filters", () => {
       applyFilters: true,
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const r = reducer(filterState, {
@@ -82,6 +102,10 @@ describe("Reset Filters", () => {
       previouslyAppliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -93,6 +117,10 @@ describe("Reset Filters", () => {
       previouslyAppliedFilters: [{ displayText: "Price (low to high)", paramName: FilterParamName.sort }],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const r = reducer(filterState, {
@@ -106,6 +134,10 @@ describe("Reset Filters", () => {
       previouslyAppliedFilters: [{ displayText: "Price (low to high)", paramName: FilterParamName.sort }],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 })
@@ -119,6 +151,10 @@ describe("Select Filters", () => {
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -145,6 +181,10 @@ describe("Select Filters", () => {
       ],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -162,6 +202,10 @@ describe("Select Filters", () => {
       ],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -193,6 +237,10 @@ describe("Select Filters", () => {
       ],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -220,6 +268,10 @@ describe("Select Filters", () => {
       ],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -251,6 +303,10 @@ describe("Select Filters", () => {
       ],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -274,6 +330,10 @@ describe("Select Filters", () => {
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -312,6 +372,10 @@ describe("Select Filters", () => {
       ],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -329,6 +393,10 @@ describe("Select Filters", () => {
       ],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -349,6 +417,10 @@ describe("Select Filters", () => {
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -366,6 +438,10 @@ describe("Select Filters", () => {
       ],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -397,6 +473,10 @@ describe("Select Filters", () => {
       ],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -408,6 +488,10 @@ describe("Select Filters", () => {
       selectedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -424,6 +508,10 @@ describe("Select Filters", () => {
       selectedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -435,6 +523,10 @@ describe("Select Filters", () => {
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -454,6 +546,10 @@ describe("Select Filters", () => {
       selectedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -465,6 +561,10 @@ describe("Select Filters", () => {
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -484,6 +584,10 @@ describe("Select Filters", () => {
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -495,6 +599,10 @@ describe("Select Filters", () => {
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -515,6 +623,10 @@ describe("Select Filters", () => {
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -532,6 +644,10 @@ describe("Select Filters", () => {
       ],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -552,6 +668,10 @@ describe("Select Filters", () => {
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 })
@@ -577,6 +697,10 @@ describe("Apply Filters", () => {
       ],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -592,6 +716,10 @@ describe("Apply Filters", () => {
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -614,6 +742,10 @@ describe("Apply Filters", () => {
       ],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -651,6 +783,10 @@ describe("Apply Filters", () => {
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -662,6 +798,10 @@ describe("Apply Filters", () => {
       selectedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -677,6 +817,10 @@ describe("Apply Filters", () => {
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -688,6 +832,10 @@ describe("Apply Filters", () => {
       selectedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -703,6 +851,10 @@ describe("Apply Filters", () => {
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -714,6 +866,10 @@ describe("Apply Filters", () => {
       selectedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -729,6 +885,10 @@ describe("Apply Filters", () => {
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -746,6 +906,10 @@ describe("Apply Filters", () => {
       ],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const r = reducer(filterState, {
@@ -771,6 +935,10 @@ describe("Apply Filters", () => {
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 
@@ -793,6 +961,10 @@ describe("Apply Filters", () => {
       ],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const r = reducer(filterState, {
@@ -802,6 +974,10 @@ describe("Apply Filters", () => {
     expect(r).toEqual({
       applyFilters: true,
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
       appliedFilters: [
         {
           paramName: FilterParamName.artistIDs,
@@ -856,6 +1032,10 @@ describe("Apply Filters", () => {
       ],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const r = reducer(filterState, {
@@ -865,6 +1045,10 @@ describe("Apply Filters", () => {
     expect(r).toEqual({
       applyFilters: true,
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
       appliedFilters: [
         {
           paramName: FilterParamName.artistIDs,
@@ -897,6 +1081,10 @@ describe("clearFiltersZeroState", () => {
       selectedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -912,6 +1100,10 @@ describe("clearFiltersZeroState", () => {
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 })
@@ -925,6 +1117,10 @@ describe("SetInitialFilterState", () => {
       applyFilters: false,
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     filterAction = {
@@ -941,6 +1137,10 @@ describe("SetInitialFilterState", () => {
       applyFilters: false,
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 })
@@ -1691,6 +1891,44 @@ describe("selectedOptionsUnion", () => {
           paramValue: false,
         },
       ])
+    })
+  })
+})
+
+describe("SetFilterCounts", () => {
+  it("Sets the filter counts", () => {
+    filterState = {
+      appliedFilters: [],
+      selectedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+    }
+
+    const r = reducer(filterState, {
+      type: "setFilterCounts",
+      payload: {
+        total: 1000,
+        followedArtists: 100,
+      },
+    })
+
+    expect(r).toEqual({
+      appliedFilters: [],
+      applyFilters: false,
+      selectedFilters: [],
+      previouslyAppliedFilters: [],
+      aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: 1000,
+        followedArtists: 100,
+      },
     })
   })
 })

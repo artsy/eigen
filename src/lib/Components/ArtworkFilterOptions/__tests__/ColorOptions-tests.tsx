@@ -79,6 +79,10 @@ describe("Color options screen", () => {
       applyFilters: false,
       aggregations: mockAggregations,
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
   })
 
@@ -107,6 +111,10 @@ describe("Color options screen", () => {
         applyFilters: false,
         aggregations: mockAggregations,
         filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const component = renderWithWrappers(<MockColorScreen initialState={state} navigator={mockNavigator} />)
@@ -128,6 +136,10 @@ describe("Color options screen", () => {
         applyFilters: false,
         aggregations: mockAggregations,
         filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const tree = renderWithWrappers(<MockColorScreen initialState={state} navigator={mockNavigator} />)
@@ -153,6 +165,10 @@ describe("Color options screen", () => {
         applyFilters: false,
         aggregations: mockAggregations,
         filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const tree = renderWithWrappers(<MockColorScreen initialState={state} navigator={mockNavigator} />)

@@ -3,7 +3,7 @@ import React from "react"
 import { useContext } from "react"
 import { NavigatorIOS } from "react-native"
 import { ArtistIDsArtworksOptionsScreen } from "./ArtistIDsArtworksOptions"
-import { ArtistIDsSaleArtworksOptionsScreen } from "./ArtistsSaleArtworksOptions"
+import { ArtistIDsSaleArtworksOptionsScreen } from "./ArtistIDsSaleArtworksOptionsScreen"
 
 export const ArtistIDsOptionsScreen = ({ navigator }: { navigator: NavigatorIOS }) => {
   const { state } = useContext(ArtworkFilterContext)

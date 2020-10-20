@@ -55,6 +55,10 @@ describe("SaleLotsListContainer", () => {
       applyFilters: false,
       aggregations: [],
       filterType: "saleArtwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     })
   })
 

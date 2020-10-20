@@ -65,6 +65,10 @@ describe("Price Range Options Screen", () => {
       applyFilters: false,
       aggregations,
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
   })
 
@@ -129,6 +133,10 @@ describe("Price Range Options Screen", () => {
         applyFilters: false,
         aggregations,
         filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
@@ -151,6 +159,10 @@ describe("Price Range Options Screen", () => {
         applyFilters: false,
         aggregations,
         filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const component = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
@@ -187,6 +199,10 @@ describe("Price Range Options Screen", () => {
         applyFilters: false,
         aggregations,
         filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)

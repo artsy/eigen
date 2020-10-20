@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 42ef03448c7c9cd827b508380f8a88ca */
+/* @relayHash f92a0ace00927dec8005a0b08b50a9a9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,6 +29,7 @@ export type SaleLotsListQueryRawResponse = {
             }) | null> | null;
         }) | null> | null;
         readonly counts: ({
+            readonly followedArtists: number | null;
             readonly total: number | null;
         }) | null;
         readonly edges: ReadonlyArray<({
@@ -223,6 +224,7 @@ fragment SaleLotsList_saleArtworksConnection_22q3mC on Query {
       }
     }
     counts {
+      followedArtists
       total
     }
     edges {
@@ -466,6 +468,13 @@ return {
             "name": "counts",
             "plural": false,
             "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "followedArtists",
+                "storageKey": null
+              },
               {
                 "alias": null,
                 "args": null,
@@ -822,7 +831,7 @@ return {
     ]
   },
   "params": {
-    "id": "42ef03448c7c9cd827b508380f8a88ca",
+    "id": "f92a0ace00927dec8005a0b08b50a9a9",
     "metadata": {},
     "name": "SaleLotsListQuery",
     "operationKind": "query",

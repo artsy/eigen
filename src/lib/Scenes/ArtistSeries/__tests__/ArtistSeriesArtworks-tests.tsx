@@ -25,6 +25,10 @@ describe("Artist Series Artworks", () => {
       applyFilters: false,
       aggregations: [],
       filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
   })
 

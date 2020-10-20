@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c0f79d79082409b76369eea078d82aad */
+/* @relayHash 0561f73f6758792fdb97d609941b5a6b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -229,6 +229,7 @@ fragment SaleLotsList_saleArtworksConnection_49HmpD on Query {
       }
     }
     counts {
+      followedArtists
       total
     }
     edges {
@@ -873,6 +874,13 @@ return {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
+                "name": "followedArtists",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "total",
                 "storageKey": null
               }
@@ -1107,7 +1115,7 @@ return {
     ]
   },
   "params": {
-    "id": "c0f79d79082409b76369eea078d82aad",
+    "id": "0561f73f6758792fdb97d609941b5a6b",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -1211,6 +1219,7 @@ return {
           "plural": false,
           "type": "FilterSaleArtworksCounts"
         },
+        "saleArtworksConnection.counts.followedArtists": (v32/*: any*/),
         "saleArtworksConnection.counts.total": (v32/*: any*/),
         "saleArtworksConnection.edges": {
           "enumValues": null,
