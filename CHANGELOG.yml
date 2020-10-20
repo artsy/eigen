@@ -1,5 +1,5 @@
 upcoming:
-  version: 6.6.6
+  version: 6.6.7
   date: TBD
   dev:
     - Change CheckAuthentication middleware to be called before the principalFieldMiddleware - mounir
@@ -10,12 +10,19 @@ upcoming:
     - Adds Show2 header, behind lab option - damon
     - Adds Show2 install shots, behind lab option - damon
     - Link ConversationDetail screen - sepans
-    - Fix deep link handling when application is closed - david
     - Handle artist page subroutes natively by default - david
     - Fix Vanity URL fallbacks - david
     - Adds Show2 basic more information route, behind lab option - damon
+    - Add Show2 context card, linking to Fair or Partner - roop
 
 releases:
+  - version: 6.6.6
+    date: October 19, 2020
+    dev:
+      -
+    user_facing:
+      - Fix deep link handling when application is closed - david
+
   - version: 6.6.5
     date: October 13, 2020
     dev:

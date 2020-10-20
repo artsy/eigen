@@ -1,4 +1,4 @@
-import { ArrowRightIcon, Flex, Sans, space } from "palette"
+import { ArrowRightIcon, Flex, space, Text } from "palette"
 import React from "react"
 import { TouchableOpacity, View } from "react-native"
 
@@ -24,13 +24,13 @@ export const SectionTitle: React.FC<{
     <Wrapper onPress={onPress}>
       <Flex mb="1" flexDirection="row" alignItems="center">
         <View style={{ overflow: "hidden", flex: 1 }}>
-          <Sans size="4" ellipsizeMode="tail" numberOfLines={1} data-test-id="title">
+          <Text variant="subtitle" ellipsizeMode="tail" numberOfLines={1} data-test-id="title">
             {title}
-          </Sans>
+          </Text>
           {Boolean(subtitle) && (
-            <Sans size="3t" color="black60" data-test-id="subtitle">
+            <Text variant="text" color="black60" data-test-id="subtitle">
               {subtitle}
-            </Sans>
+            </Text>
           )}
         </View>
         {!!onPress && (

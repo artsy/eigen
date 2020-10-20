@@ -16,8 +16,6 @@ const CONTAINER_HEIGHT = 100
 export const SaleArtworkListItem: React.FC<Props> = ({ artwork }) => {
   const itemRef = useRef<any>()
 
-  const saleArtwork = artwork.saleArtwork
-
   const onPress = () => {
     SwitchBoard.presentNavigationViewController(itemRef.current!, artwork.href!)
   }
@@ -41,10 +39,10 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork }) => {
           </Flex>
         )}
 
-        <Flex ml={2} height={100} flex={1}>
-          {!!saleArtwork?.lotLabel && (
+        <Flex ml={2} height={100} flex={1} justifyContent="center">
+          {!!artwork.saleArtwork?.lotLabel && (
             <Sans size="3t" color="black60" numberOfLines={1}>
-              Lot {saleArtwork.lotLabel}
+              Lot {artwork.saleArtwork.lotLabel}
             </Sans>
           )}
           {!!artwork.artistNames && (
