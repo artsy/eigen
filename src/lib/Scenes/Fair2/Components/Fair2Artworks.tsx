@@ -19,9 +19,17 @@ interface Fair2ArtworksProps {
   fair: Fair2Artworks_fair
   relay: RelayPaginationProp
   initiallyAppliedFilter?: FilterArray
+  aggregations?: aggregationsType
+  followedArtistCount?: number | null | undefined
 }
 
-export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay, initiallyAppliedFilter }) => {
+export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({
+  fair,
+  relay,
+  initiallyAppliedFilter,
+  aggregations,
+  followedArtistCount,
+}) => {
   const artworks = fair.fairArtworks!
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const tracking = useTracking()
@@ -58,14 +66,14 @@ export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay, initi
     }
   }, [state.appliedFilters])
 
-  const followedArtistCount = artworks?.counts?.followedArtists ?? 0
-  const artworkAggregations = (artworks?.aggregations ?? []) as aggregationsType
-  const aggregations = aggregationsWithFollowedArtists(followedArtistCount, artworkAggregations)
+  const dispatchFollowedArtistCount = (followedArtistCount || artworks?.counts?.followedArtists) ?? 0
+  const artworkAggregations = ((aggregations || artworks?.aggregations) ?? []) as aggregationsType
+  const dispatchAggregations = aggregationsWithFollowedArtists(dispatchFollowedArtistCount, artworkAggregations)
 
   useEffect(() => {
     dispatch({
       type: "setAggregations",
-      payload: aggregations,
+      payload: dispatchAggregations,
     })
   }, [])
 
