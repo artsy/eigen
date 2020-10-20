@@ -1,12 +1,11 @@
 import { InquiryButtons_artwork } from "__generated__/InquiryButtons_artwork.graphql"
-import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
+import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryTypes } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Button, ButtonVariant } from "palette"
 import React, { useContext, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { InquiryModalFragmentContainer } from "./InquiryModal"
-
 export interface InquiryButtonsProps {
   artwork: InquiryButtons_artwork
   // EditionSetID is passed down from the edition selected by the user
@@ -31,7 +30,7 @@ export const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...prop
   }
 
   return (
-    <>
+    <ArtworkInquiryStateProvider>
       {!!artwork.isPriceHidden && (
         <Button
           onPress={() => dispatchAction(InquiryOptions.RequestPrice)}
@@ -70,7 +69,7 @@ export const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...prop
         modalIsVisible={modalVisibility}
         toggleVisibility={() => setModalVisibility(!modalVisibility)}
       />
-    </>
+    </ArtworkInquiryStateProvider>
   )
 }
 
