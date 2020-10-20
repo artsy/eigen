@@ -5,10 +5,15 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Show2_show = {
+    readonly internalID: string;
+    readonly slug: string;
     readonly images: ReadonlyArray<{
         readonly __typename: string;
     } | null> | null;
-    readonly " $fragmentRefs": FragmentRefs<"Show2Header_show" | "Show2InstallShots_show" | "Show2Info_show" | "Show2ContextCard_show">;
+    readonly counts: {
+        readonly eligibleArtworks: number | null;
+    } | null;
+    readonly " $fragmentRefs": FragmentRefs<"Show2Header_show" | "Show2InstallShots_show" | "Show2Info_show" | "Show2ContextCard_show" | "Show2Artworks_show">;
     readonly " $refType": "Show2_show";
 };
 export type Show2_show$data = Show2_show;
@@ -28,6 +33,20 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
       "concreteType": "Image",
       "kind": "LinkedField",
       "name": "images",
@@ -38,6 +57,24 @@ const node: ReaderFragment = {
           "args": null,
           "kind": "ScalarField",
           "name": "__typename",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "ShowCounts",
+      "kind": "LinkedField",
+      "name": "counts",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "eligibleArtworks",
           "storageKey": null
         }
       ],
@@ -62,10 +99,15 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "FragmentSpread",
       "name": "Show2ContextCard_show"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "Show2Artworks_show"
     }
   ],
   "type": "Show",
   "abstractKey": null
 };
-(node as any).hash = '14f259b8b357ed6f9bffe9749f0fa5c6';
+(node as any).hash = '8cea372cdc56bfbc50f8f87b26dd5552';
 export default node;

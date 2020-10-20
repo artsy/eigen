@@ -6,7 +6,7 @@ import styled from "styled-components/native"
 interface ZeroStateProps {
   id: string
   slug: string
-  trackClear: (id: string, slug: string) => void
+  trackClear?: (id: string, slug: string) => void
 }
 
 export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) => {
@@ -25,7 +25,9 @@ export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) =>
           size="medium"
           variant="secondaryGray"
           onPress={() => {
-            trackClear(id, slug)
+            if (trackClear) {
+              trackClear(id, slug)
+            }
             refetchArtworks()
           }}
         >
