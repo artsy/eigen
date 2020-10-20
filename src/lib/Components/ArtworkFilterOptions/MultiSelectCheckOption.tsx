@@ -1,4 +1,5 @@
 import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Box, CheckIcon, Flex, Sans, Separator } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
@@ -77,7 +78,8 @@ export const CheckMarkOptionListItem = ({
         justifyContent="space-between"
         flexGrow={1}
         alignItems="center"
-        px={item.displayText === "All artists" ? 2 : 3}
+        pl={item.paramName === FilterParamName.artistsIFollow || item.paramValue === "all" ? 2 : 3}
+        pr={2}
         height={60}
       >
         <Sans color="black100" size="3t">

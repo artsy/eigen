@@ -64,6 +64,11 @@ const node: ReaderFragment = {
       "name": "geneIDs"
     },
     {
+      "defaultValue": false,
+      "kind": "LocalArgument",
+      "name": "includeArtworksByFollowedArtists"
+    },
+    {
       "defaultValue": null,
       "kind": "LocalArgument",
       "name": "saleID"
@@ -116,6 +121,11 @@ const node: ReaderFragment = {
           "kind": "Variable",
           "name": "geneIDs",
           "variableName": "geneIDs"
+        },
+        {
+          "kind": "Variable",
+          "name": "includeArtworksByFollowedArtists",
+          "variableName": "includeArtworksByFollowedArtists"
         },
         {
           "kind": "Variable",
@@ -293,5 +303,5 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = '75407593d25727e6afae1a98a2bf0868';
+(node as any).hash = '0cb50cbc9480c5ec997a1fcd2d03df13';
 export default node;

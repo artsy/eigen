@@ -138,7 +138,7 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
   return (
     <ArtworkFilterGlobalStateProvider>
       <ArtworkFilterContext.Consumer>
-        {(context) => (
+        {() => (
           <>
             <Animated.FlatList
               data={saleSectionsData}
@@ -169,11 +169,7 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
               exitModal={closeFilterArtworksModal}
               closeModal={closeFilterArtworksModal}
             />
-            <AnimatedArtworkFilterButton
-              isVisible={isArtworksGridVisible}
-              count={context.state.appliedFilters.length}
-              onPress={openFilterArtworksModal}
-            />
+            <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
           </>
         )}
       </ArtworkFilterContext.Consumer>

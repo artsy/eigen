@@ -106,7 +106,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     return (
       <ArtworkFilterGlobalStateProvider>
         <ArtworkFilterContext.Consumer>
-          {(value) => {
+          {() => {
             return (
               <Theme>
                 <View style={{ flex: 1 }}>
@@ -150,7 +150,6 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                   />
                   <AnimatedArtworkFilterButton
                     isVisible={isArtworkGridVisible}
-                    count={value.state.appliedFilters.length}
                     onPress={this.openFilterArtworksModal.bind(this)}
                   />
                 </View>

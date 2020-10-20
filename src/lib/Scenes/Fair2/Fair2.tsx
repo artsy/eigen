@@ -181,7 +181,7 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
     >
       <ArtworkFilterGlobalStateProvider>
         <ArtworkFilterContext.Consumer>
-          {(context) => (
+          {() => (
             <Theme>
               <>
                 <FlatList
@@ -266,7 +266,6 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
                 />
                 <AnimatedArtworkFilterButton
                   isVisible={isArtworksGridVisible && tabs[activeTab] && tabs[activeTab].label === "Artworks"}
-                  count={context.state.appliedFilters.length}
                   onPress={openFilterArtworksModal}
                 />
               </>

@@ -6,7 +6,7 @@ import {
   FilterCounts,
   FilterType,
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { compact, forOwn, groupBy, sortBy } from "lodash"
+import { forOwn, groupBy, sortBy } from "lodash"
 
 // General filter types and objects
 export enum FilterParamName {
@@ -182,14 +182,21 @@ export const selectedOption = (
       return paramName === FilterParamName.artistsIFollow && paramValue === true
     })
 
-    const selectedArtistNames = selectedOptions.map(({ paramName, displayText }) => {
-      if (paramName === FilterParamName.artistIDs) {
-        if (filterType === "artwork") {
-          return displayText
-        }
-      }
-    })
-    const alphabetizedArtistNames = sortBy(compact(selectedArtistNames), (name) => name)
+    let selectedArtistNames: string[]
+
+    if (filterType === "artwork") {
+      selectedArtistNames = selectedOptions
+        .filter((filter) => filter.paramName === FilterParamName.artistIDs)
+        .map(({ displayText }) => displayText)
+    } else {
+      const saleArtworksArtistIDs = selectedOptions.find((filter) => filter.paramName === FilterParamName.artistIDs)
+      selectedArtistNames =
+        saleArtworksArtistIDs && Array.isArray(saleArtworksArtistIDs?.paramValue)
+          ? saleArtworksArtistIDs.paramValue
+          : []
+    }
+
+    const alphabetizedArtistNames = sortBy(selectedArtistNames, (name) => name)
     const allArtistDisplayNames = hasArtistsIFollowChecked
       ? ["All artists I follow", ...alphabetizedArtistNames]
       : alphabetizedArtistNames

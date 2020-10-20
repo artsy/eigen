@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0561f73f6758792fdb97d609941b5a6b */
+/* @relayHash a8c0032787b8d7bb6628b63a3a12b2fb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -219,7 +219,7 @@ fragment SaleHeader_sale on Sale {
 }
 
 fragment SaleLotsList_saleArtworksConnection_49HmpD on Query {
-  saleArtworksConnection(saleID: "sale-slug", artistIDs: [], geneIDs: [], aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL], estimateRange: "", first: 10, sort: "position") {
+  saleArtworksConnection(saleID: "sale-slug", artistIDs: [], geneIDs: [], aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL], estimateRange: "", first: 10, includeArtworksByFollowedArtists: false, sort: "position") {
     aggregations {
       slice
       counts {
@@ -449,6 +449,11 @@ v22 = [
     "kind": "Literal",
     "name": "geneIDs",
     "value": ([]/*: any*/)
+  },
+  {
+    "kind": "Literal",
+    "name": "includeArtworksByFollowedArtists",
+    "value": false
   },
   (v4/*: any*/),
   {
@@ -1094,7 +1099,7 @@ return {
             "abstractKey": "__isArtworkConnectionInterface"
           }
         ],
-        "storageKey": "saleArtworksConnection(aggregations:[\"FOLLOWED_ARTISTS\",\"ARTIST\",\"MEDIUM\",\"TOTAL\"],artistIDs:[],estimateRange:\"\",first:10,geneIDs:[],saleID:\"sale-slug\",sort:\"position\")"
+        "storageKey": "saleArtworksConnection(aggregations:[\"FOLLOWED_ARTISTS\",\"ARTIST\",\"MEDIUM\",\"TOTAL\"],artistIDs:[],estimateRange:\"\",first:10,geneIDs:[],includeArtworksByFollowedArtists:false,saleID:\"sale-slug\",sort:\"position\")"
       },
       {
         "alias": null,
@@ -1105,6 +1110,7 @@ return {
           "geneIDs",
           "aggregations",
           "estimateRange",
+          "includeArtworksByFollowedArtists",
           "sort"
         ],
         "handle": "connection",
@@ -1115,7 +1121,7 @@ return {
     ]
   },
   "params": {
-    "id": "0561f73f6758792fdb97d609941b5a6b",
+    "id": "a8c0032787b8d7bb6628b63a3a12b2fb",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {

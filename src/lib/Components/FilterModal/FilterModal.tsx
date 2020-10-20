@@ -82,8 +82,19 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
   }
 
   const getApplyButtonCount = () => {
-    const selectedFiltersSum = state.selectedFilters.length
+    let selectedFiltersSum = state.selectedFilters.length
 
+    // For Sale Artworks, the artistsIDs and the includeArtworksByFollowedArtists filters behave like one
+    if (state.filterType === "saleArtwork") {
+      const hasArtistsIFollow = !!state.selectedFilters.find(
+        (filter) => filter.paramName === FilterParamName.artistsIFollow
+      )
+      const hasArtistIDs = !!state.selectedFilters.find((filter) => filter.paramName === FilterParamName.artistIDs)
+
+      if (hasArtistIDs && hasArtistsIFollow) {
+        --selectedFiltersSum
+      }
+    }
     return selectedFiltersSum > 0 ? `Apply (${selectedFiltersSum})` : "Apply"
   }
 
@@ -288,7 +299,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
                     </Sans>
                     <Flex flexDirection="row" alignItems="center">
                       <OptionDetail
-                        currentOption={selectedOption(selectedOptions, item.filterType)}
+                        currentOption={selectedOption(selectedOptions, item.filterType, state.filterType)}
                         filterType={item.filterType}
                       />
                       <ArrowRightIcon fill="black30" ml="1" />
@@ -389,30 +400,51 @@ export const FilterArtworkButton = styled(Flex)`
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.12);
 `
 
-export const AnimatedArtworkFilterButton: React.FC<{ count: number; isVisible: boolean; onPress: () => void }> = ({
-  count,
+export const AnimatedArtworkFilterButton: React.FC<{ isVisible: boolean; onPress: () => void }> = ({
   isVisible,
   onPress,
-}) => (
-  <AnimatedBottomButton isVisible={isVisible} onPress={onPress}>
-    <FilterArtworkButton px="2">
-      <FilterIcon fill="white100" />
-      <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
-        Filter
-      </Sans>
-      {count > 0 && (
-        <>
-          <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
-            {"\u2022"}
-          </Sans>
-          <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
-            {count}
-          </Sans>
-        </>
-      )}
-    </FilterArtworkButton>
-  </AnimatedBottomButton>
-)
+}) => {
+  const { state } = useContext(ArtworkFilterContext)
+
+  const getFiltersCount = () => {
+    let selectedFiltersSum = state.appliedFilters.length
+
+    // For Sale Artworks, the artistsIDs and the includeArtworksByFollowedArtists filters behave like one
+    // Therefore we need to decrement the number of filters by one to give the user the impression they are one
+    if (state.filterType === "saleArtwork") {
+      const hasArtistsIFollow = !!state.appliedFilters.find(
+        (filter) => filter.paramName === FilterParamName.artistsIFollow
+      )
+      const hasArtistIDs = !!state.appliedFilters.find((filter) => filter.paramName === FilterParamName.artistIDs)
+
+      if (hasArtistIDs && hasArtistsIFollow) {
+        --selectedFiltersSum
+      }
+    }
+    return selectedFiltersSum
+  }
+
+  return (
+    <AnimatedBottomButton isVisible={isVisible} onPress={onPress}>
+      <FilterArtworkButton px="2">
+        <FilterIcon fill="white100" />
+        <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
+          Filter
+        </Sans>
+        {getFiltersCount() > 0 && (
+          <>
+            <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+              {"\u2022"}
+            </Sans>
+            <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+              {getFiltersCount()}
+            </Sans>
+          </>
+        )}
+      </FilterArtworkButton>
+    </AnimatedBottomButton>
+  )
+}
 
 export const TouchableOptionListItemRow = styled(TouchableOpacity)``
 

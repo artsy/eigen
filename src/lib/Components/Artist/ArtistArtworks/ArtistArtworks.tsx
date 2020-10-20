@@ -75,7 +75,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   return (
     <ArtworkFilterGlobalStateProvider>
       <ArtworkFilterContext.Consumer>
-        {(context) => (
+        {() => (
           <>
             <StickyTabPageScrollView>
               <ArtistArtworksContainer
@@ -95,11 +95,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
                 mode={FilterModalMode.ArtistArtworks}
               />
             </StickyTabPageScrollView>
-            <AnimatedArtworkFilterButton
-              isVisible={isArtworksGridVisible}
-              count={context.state.appliedFilters.length}
-              onPress={openFilterArtworksModal}
-            />
+            <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
           </>
         )}
       </ArtworkFilterContext.Consumer>

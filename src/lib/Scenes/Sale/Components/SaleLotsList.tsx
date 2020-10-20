@@ -54,7 +54,12 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
             throw new Error("Sale/SaleLotsList filter error: " + error.message)
           }
         },
-        { ...filterParams, saleID: saleSlug, geneIDs: medium }
+        {
+          ...filterParams,
+          saleID: saleSlug,
+          geneIDs: medium,
+          includeArtworksByFollowedArtists: !!filterParams.includeArtworksByFollowedArtists,
+        }
       )
     }
   }, [state.appliedFilters])
@@ -64,6 +69,15 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
       type: "setAggregations",
       payload: saleArtworksConnection.saleArtworksConnection?.aggregations,
     })
+  }, [])
+
+  useEffect(() => {
+    if (saleArtworksConnection.saleArtworksConnection?.counts) {
+      dispatch({
+        type: "setFilterCounts",
+        payload: saleArtworksConnection.saleArtworksConnection?.counts,
+      })
+    }
   }, [])
 
   const trackClear = (id: string, slug: string) => {
@@ -86,7 +100,7 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
 
   if (!saleArtworksConnection.saleArtworksConnection?.edges?.length) {
     return (
-      <Box mb="80px">
+      <Box my="80px">
         <FilteredArtworkGridZeroState id={saleID} slug={saleSlug} trackClear={trackClear} />
       </Box>
     )
@@ -144,6 +158,7 @@ export const SaleLotsListContainer = createPaginationContainer(
         geneIDs: { type: "[String]", defaultValue: [] }
         estimateRange: { type: "String", defaultValue: "" }
         sort: { type: "String", defaultValue: "position" }
+        includeArtworksByFollowedArtists: { type: "Boolean", defaultValue: false }
         saleID: { type: "ID" }
       ) {
         saleArtworksConnection(
@@ -154,6 +169,7 @@ export const SaleLotsListContainer = createPaginationContainer(
           aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL]
           estimateRange: $estimateRange
           first: $count
+          includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
           sort: $sort
         ) @connection(key: "SaleLotsList_saleArtworksConnection") {
           aggregations {
@@ -199,6 +215,7 @@ export const SaleLotsListContainer = createPaginationContainer(
         $estimateRange: String
         $saleID: ID
         $sort: String
+        $includeArtworksByFollowedArtists: Boolean
       )
       # $saleID: ID
       @raw_response_type {
@@ -211,6 +228,7 @@ export const SaleLotsListContainer = createPaginationContainer(
           sort: $sort
           estimateRange: $estimateRange
           saleID: $saleID
+          includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
         )
       }
     `,
