@@ -1,14 +1,14 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
 import { SaleArtworkGridItem_saleArtwork } from "__generated__/SaleArtworkGridItem_saleArtwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
 import { Box, Flex, Sans, Spacer } from "palette"
 import { Touchable } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { StyleSheet, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { navigate } from "../../navigation/navigate"
 import { saleMessageOrBidInfo } from "./ArtworkGridItem"
 
 export interface ArtworkProps {
@@ -36,20 +36,13 @@ export const SaleArtworkGridItem: React.FC<ArtworkProps> = ({
   contextScreenOwnerSlug,
   contextScreenOwnerType,
 }) => {
-  const itemRef = useRef<any>()
   const tracking = useTracking()
 
   const artwork = saleArtwork.artwork!
 
   const handleTap = () => {
     trackArtworkTap()
-    onPress && artwork.slug
-      ? onPress(artwork.slug)
-      : SwitchBoard.presentNavigationViewController(
-          itemRef.current!,
-          // @ts-ignore STRICTNESS_MIGRATION
-          artwork.href
-        )
+    onPress && artwork.slug ? onPress(artwork.slug) : navigate(artwork.href!)
   }
 
   const trackArtworkTap = () => {
@@ -74,7 +67,7 @@ export const SaleArtworkGridItem: React.FC<ArtworkProps> = ({
 
   return (
     <Touchable onPress={() => handleTap()}>
-      <View ref={itemRef}>
+      <View>
         {!!artwork.image && (
           <OpaqueImageView
             aspectRatio={artwork.image?.aspectRatio ?? 1}

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9bc37783055fdad6b0c29126e114b738 */
+/* @relayHash c0f79d79082409b76369eea078d82aad */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -219,7 +219,7 @@ fragment SaleHeader_sale on Sale {
 }
 
 fragment SaleLotsList_saleArtworksConnection_49HmpD on Query {
-  saleArtworksConnection(saleID: "sale-slug", artistIDs: [], geneIDs: [], aggregations: [ARTIST, MEDIUM, TOTAL], estimateRange: "", first: 10, sort: "position") {
+  saleArtworksConnection(saleID: "sale-slug", artistIDs: [], geneIDs: [], aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL], estimateRange: "", first: 10, sort: "position") {
     aggregations {
       slice
       counts {
@@ -427,6 +427,7 @@ v22 = [
     "kind": "Literal",
     "name": "aggregations",
     "value": [
+      "FOLLOWED_ARTISTS",
       "ARTIST",
       "MEDIUM",
       "TOTAL"
@@ -1085,7 +1086,7 @@ return {
             "abstractKey": "__isArtworkConnectionInterface"
           }
         ],
-        "storageKey": "saleArtworksConnection(aggregations:[\"ARTIST\",\"MEDIUM\",\"TOTAL\"],artistIDs:[],estimateRange:\"\",first:10,geneIDs:[],saleID:\"sale-slug\",sort:\"position\")"
+        "storageKey": "saleArtworksConnection(aggregations:[\"FOLLOWED_ARTISTS\",\"ARTIST\",\"MEDIUM\",\"TOTAL\"],artistIDs:[],estimateRange:\"\",first:10,geneIDs:[],saleID:\"sale-slug\",sort:\"position\")"
       },
       {
         "alias": null,
@@ -1106,7 +1107,7 @@ return {
     ]
   },
   "params": {
-    "id": "9bc37783055fdad6b0c29126e114b738",
+    "id": "c0f79d79082409b76369eea078d82aad",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {

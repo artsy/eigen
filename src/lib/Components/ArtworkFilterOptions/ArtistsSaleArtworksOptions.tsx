@@ -47,7 +47,7 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksO
   const selectOption = (option: FilterData) => {
     let updatedParamValue: string[] = []
 
-    // If the user selected the all option
+    // If the user did not select the all option
     if (option.paramValue !== "all") {
       // Add/Remove the new artist to the selectedOptions
       if (selectedOptions.includes(option.paramValue as string)) {
@@ -61,6 +61,7 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksO
       }
       setSelectedOptions(updatedParamValue)
     } else {
+      // The user selected the all artists option
       setSelectedOptions(["all"])
     }
 

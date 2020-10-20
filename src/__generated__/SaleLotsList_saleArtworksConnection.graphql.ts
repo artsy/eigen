@@ -95,6 +95,7 @@ const node: ReaderFragment = {
           "kind": "Literal",
           "name": "aggregations",
           "value": [
+            "FOLLOWED_ARTISTS",
             "ARTIST",
             "MEDIUM",
             "TOTAL"
@@ -284,5 +285,5 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = '546fa02c7e171e4cc92919fedf9f8c4b';
+(node as any).hash = 'e2f9618689232b5ec6693c9da0732223';
 export default node;

@@ -22,23 +22,19 @@ import NavigatorIOS from "react-native-navigator-ios"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
-import {
-  ArtistIDsOptionsScreen,
-  ColorOption,
-  ColorOptionsScreen,
-  EstimateRangeOptionsScreen,
-  GalleryOptionsScreen,
-  InstitutionOptionsScreen,
-  MediumOptionsScreen,
-  PriceRangeOptionsScreen,
-  SizeOptionsScreen,
-  SortOptionsScreen,
-  TimePeriodOptionsScreen,
-  ViewAsOptionsScreen,
-  WaysToBuyOptionsScreen,
-} from "../ArtworkFilterOptions"
-
+import { ArtistIDsOptionsScreen } from "../ArtworkFilterOptions/ArtistIDsOptionsScreen"
+import { ColorOption, ColorOptionsScreen } from "../ArtworkFilterOptions/ColorOptions"
 import { colorHexMap } from "../ArtworkFilterOptions/ColorSwatch"
+import { EstimateRangeOptionsScreen } from "../ArtworkFilterOptions/EstimateRangeOptions"
+import { GalleryOptionsScreen } from "../ArtworkFilterOptions/GalleryOptions"
+import { InstitutionOptionsScreen } from "../ArtworkFilterOptions/InstitutionOptions"
+import { MediumOptionsScreen } from "../ArtworkFilterOptions/MediumOptions"
+import { PriceRangeOptionsScreen } from "../ArtworkFilterOptions/PriceRangeOptions"
+import { SizeOptionsScreen } from "../ArtworkFilterOptions/SizeOptions"
+import { SortOptionsScreen } from "../ArtworkFilterOptions/SortOptions"
+import { TimePeriodOptionsScreen } from "../ArtworkFilterOptions/TimePeriodOptions"
+import { ViewAsOptionsScreen } from "../ArtworkFilterOptions/ViewAsOptions"
+import { WaysToBuyOptionsScreen } from "../ArtworkFilterOptions/WaysToBuyOptions"
 import { FancyModal } from "../FancyModal/FancyModal"
 
 interface FilterModalProps extends ViewProperties {

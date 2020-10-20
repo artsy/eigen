@@ -151,7 +151,7 @@ export const SaleLotsListContainer = createPaginationContainer(
           saleID: $saleID
           artistIDs: $artistIDs
           geneIDs: $geneIDs
-          aggregations: [ARTIST, MEDIUM, TOTAL]
+          aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL]
           estimateRange: $estimateRange
           first: $count
           sort: $sort

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4d11ba6edd0caf2af37f7630006fb061 */
+/* @relayHash edcd770cb5c2240096036f838cc37d51 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -133,7 +133,7 @@ fragment SaleArtworkList_connection on ArtworkConnectionInterface {
 }
 
 fragment SaleLotsList_saleArtworksConnection_4BVn5U on Query {
-  saleArtworksConnection(saleID: $saleSlug, artistIDs: [], geneIDs: [], aggregations: [ARTIST, MEDIUM, TOTAL], estimateRange: "", first: 10, sort: "position") {
+  saleArtworksConnection(saleID: $saleSlug, artistIDs: [], geneIDs: [], aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL], estimateRange: "", first: 10, sort: "position") {
     aggregations {
       slice
       counts {
@@ -181,6 +181,7 @@ v2 = [
     "kind": "Literal",
     "name": "aggregations",
     "value": [
+      "FOLLOWED_ARTISTS",
       "ARTIST",
       "MEDIUM",
       "TOTAL"
@@ -710,7 +711,7 @@ return {
     ]
   },
   "params": {
-    "id": "4d11ba6edd0caf2af37f7630006fb061",
+    "id": "edcd770cb5c2240096036f838cc37d51",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "saleArtworksConnection": {

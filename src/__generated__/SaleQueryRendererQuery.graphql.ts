@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ed2439f67ddedf9a639b6ea25446037a */
+/* @relayHash 14c2caff8e4508e217a7347674ad0e1b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -225,7 +225,7 @@ fragment SaleHeader_sale on Sale {
 }
 
 fragment SaleLotsList_saleArtworksConnection_4BVn5U on Query {
-  saleArtworksConnection(saleID: $saleSlug, artistIDs: [], geneIDs: [], aggregations: [ARTIST, MEDIUM, TOTAL], estimateRange: "", first: 10, sort: "position") {
+  saleArtworksConnection(saleID: $saleSlug, artistIDs: [], geneIDs: [], aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL], estimateRange: "", first: 10, sort: "position") {
     aggregations {
       slice
       counts {
@@ -445,6 +445,7 @@ v23 = [
     "kind": "Literal",
     "name": "aggregations",
     "value": [
+      "FOLLOWED_ARTISTS",
       "ARTIST",
       "MEDIUM",
       "TOTAL"
@@ -1040,7 +1041,7 @@ return {
     ]
   },
   "params": {
-    "id": "ed2439f67ddedf9a639b6ea25446037a",
+    "id": "14c2caff8e4508e217a7347674ad0e1b",
     "metadata": {},
     "name": "SaleQueryRendererQuery",
     "operationKind": "query",
