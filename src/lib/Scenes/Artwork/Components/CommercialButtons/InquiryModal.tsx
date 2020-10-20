@@ -107,7 +107,9 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         {
           // NOTE: For now the inquiryQuestions field values are always present and therefore never null, so it is safe to destructure them
           questions!.map((inquiryQuestion) => {
-            if (!inquiryQuestion) return false
+            if (!inquiryQuestion) {
+              return false
+            }
             const { internalID: id, question } = inquiryQuestion
             return renderInquiryQuestion(id, question)
           })
