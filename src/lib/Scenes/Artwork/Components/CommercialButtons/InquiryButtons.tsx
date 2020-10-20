@@ -17,7 +17,7 @@ export interface InquiryButtonsState {
   modalIsVisible: boolean
 }
 
-export const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...props }) => {
+const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...props }) => {
   const [modalVisibility, setModalVisibility] = useState(false)
   const { dispatch } = useContext(ArtworkInquiryContext)
   const dispatchAction = (buttonText: string) => {
@@ -30,7 +30,7 @@ export const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...prop
   }
 
   return (
-    <ArtworkInquiryStateProvider>
+    <>
       {!!artwork.isPriceHidden && (
         <Button
           onPress={() => dispatchAction(InquiryOptions.RequestPrice)}
@@ -69,11 +69,17 @@ export const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...prop
         modalIsVisible={modalVisibility}
         toggleVisibility={() => setModalVisibility(!modalVisibility)}
       />
-    </ArtworkInquiryStateProvider>
+    </>
   )
 }
 
-export const InquiryButtonsFragmentContainer = createFragmentContainer(InquiryButtons, {
+const InquiryButtonsWrapper: React.FC<InquiryButtonsProps> = (props) => (
+  <ArtworkInquiryStateProvider>
+    <InquiryButtons {...props} />
+  </ArtworkInquiryStateProvider>
+)
+
+export const InquiryButtonsFragmentContainer = createFragmentContainer(InquiryButtonsWrapper, {
   artwork: graphql`
     fragment InquiryButtons_artwork on Artwork {
       image {
