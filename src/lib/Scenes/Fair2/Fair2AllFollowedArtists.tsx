@@ -40,7 +40,7 @@ export const Fair2AllFollowedArtists: React.FC<Fair2AllFollowedArtistsProps> = (
   return (
     <ArtworkFilterGlobalStateProvider>
       <ArtworkFilterContext.Consumer>
-        {(context) => {
+        {() => {
           return (
             <Theme>
               <>
@@ -67,11 +67,7 @@ export const Fair2AllFollowedArtists: React.FC<Fair2AllFollowedArtistsProps> = (
                     />
                   </Box>
                 </ScrollView>
-                <AnimatedArtworkFilterButton
-                  isVisible
-                  count={context.state.appliedFilters.length}
-                  onPress={handleFilterArtworksModal}
-                />
+                <AnimatedArtworkFilterButton isVisible onPress={handleFilterArtworksModal} />
               </>
             </Theme>
           )

@@ -25,12 +25,13 @@ enum ArtworkSorts {
 
 export type SortOption = keyof typeof ArtworkSorts
 
+const defaulArtworkSort = {
+  displayText: "Default",
+  paramName: FilterParamName.sort,
+  paramValue: "-decayed_merch",
+}
+
 export const OrderedArtworkSorts: FilterData[] = [
-  {
-    displayText: "Default",
-    paramName: FilterParamName.sort,
-    paramValue: "-decayed_merch",
-  },
   {
     displayText: "Price (high to low)",
     paramName: FilterParamName.sort,
@@ -63,19 +64,63 @@ export const OrderedArtworkSorts: FilterData[] = [
   },
 ]
 
-export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigator }) => {
-  const { dispatch } = useContext(ArtworkFilterContext)
+const defaultSaleArtworkSort = {
+  displayText: "Default",
+  paramName: FilterParamName.sort,
+  paramValue: "position",
+}
 
-  const paramName = FilterParamName.sort
+export const OrderedSaleArtworkSorts: FilterData[] = [
+  {
+    displayText: "Lot number ascending",
+    paramName: FilterParamName.sort,
+    paramValue: "position",
+  },
+  {
+    displayText: "Lot number descending",
+    paramName: FilterParamName.sort,
+    paramValue: "-position",
+  },
+  {
+    displayText: "Most bids",
+    paramName: FilterParamName.sort,
+    paramValue: "bidder_positions_count",
+  },
+  {
+    displayText: "Least bids",
+    paramName: FilterParamName.sort,
+    paramValue: "-bidder_positions_count",
+  },
+  {
+    displayText: "Highest bid",
+    paramName: FilterParamName.sort,
+    paramValue: "searchable_estimate",
+  },
+  {
+    displayText: "Lowest bid",
+    paramName: FilterParamName.sort,
+    paramValue: "-searchable_estimate",
+  },
+]
+
+export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigator }) => {
+  const { dispatch, state } = useContext(ArtworkFilterContext)
+  const filterType = state.filterType
+
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
+  const selectedOption = selectedOptions.find((option) => option.paramName === FilterParamName.sort)!
+
+  const filterOptions =
+    filterType === "artwork"
+      ? [defaulArtworkSort, ...OrderedArtworkSorts]
+      : [defaultSaleArtworkSort, ...OrderedSaleArtworkSorts]
 
   const selectOption = (option: FilterData) => {
     dispatch({
       type: "selectFilters",
       payload: {
         displayText: option.displayText,
-        paramName,
+        paramName: FilterParamName.sort,
         paramValue: option.paramValue,
       },
     })
@@ -85,7 +130,7 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigator 
     <SingleSelectOptionScreen
       onSelect={selectOption}
       filterHeaderText={FilterDisplayName.sort}
-      filterOptions={OrderedArtworkSorts}
+      filterOptions={filterOptions}
       selectedOption={selectedOption}
       navigator={navigator}
     />

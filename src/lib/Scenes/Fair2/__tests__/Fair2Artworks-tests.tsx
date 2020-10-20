@@ -21,6 +21,11 @@ describe("Fair2Artworks", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
   })
 

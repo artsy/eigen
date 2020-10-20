@@ -4,11 +4,10 @@ import {
   ParamDefaultValues,
   useSelectedOptionsDisplay,
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { aggregationForFilter, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import _ from "lodash"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
-import { aggregationForFilter } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface TimePeriodOptionsScreenProps {

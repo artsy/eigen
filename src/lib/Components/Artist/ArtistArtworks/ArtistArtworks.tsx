@@ -6,7 +6,11 @@ import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
 } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
+import {
+  AnimatedArtworkFilterButton,
+  FilterModalMode,
+  FilterModalNavigator,
+} from "lib/Components/FilterModal/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
@@ -71,7 +75,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   return (
     <ArtworkFilterGlobalStateProvider>
       <ArtworkFilterContext.Consumer>
-        {(context) => (
+        {() => (
           <>
             <StickyTabPageScrollView>
               <ArtistArtworksContainer
@@ -91,11 +95,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
                 mode={FilterModalMode.ArtistArtworks}
               />
             </StickyTabPageScrollView>
-            <AnimatedArtworkFilterButton
-              isVisible={isArtworksGridVisible}
-              count={context.state.appliedFilters.length}
-              onPress={openFilterArtworksModal}
-            />
+            <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
           </>
         )}
       </ArtworkFilterContext.Consumer>

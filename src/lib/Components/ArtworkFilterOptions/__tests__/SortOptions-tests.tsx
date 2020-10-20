@@ -5,9 +5,8 @@ import { Box, CheckIcon, Theme } from "palette"
 import React from "react"
 import { ReactTestRenderer } from "react-test-renderer"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
-import { OptionListItem } from "../../../../lib/Components/FilterModal"
 import { ArtworkFilterContext, ArtworkFilterContextState } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
-import { InnerOptionListItem } from "../SingleSelectOption"
+import { InnerOptionListItem, OptionListItem } from "../SingleSelectOption"
 import { SortOptionsScreen } from "../SortOptions"
 
 describe("Sort Options Screen", () => {
@@ -22,6 +21,11 @@ describe("Sort Options Screen", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
   })
 
@@ -80,6 +84,11 @@ describe("Sort Options Screen", () => {
         ],
         applyFilters: false,
         aggregations: [],
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
@@ -101,6 +110,11 @@ describe("Sort Options Screen", () => {
         previouslyAppliedFilters: [],
         applyFilters: false,
         aggregations: [],
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
@@ -136,6 +150,11 @@ describe("Sort Options Screen", () => {
         ],
         applyFilters: false,
         aggregations: [],
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
@@ -164,6 +183,11 @@ describe("Sort Options Screen", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
     const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
     const selectedRow = selectedSortOption(tree)

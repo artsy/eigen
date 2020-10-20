@@ -5,7 +5,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { SaleContainer } from "../Sale"
+import { Sale } from "../Sale"
 
 jest.unmock("react-relay")
 
@@ -22,17 +22,22 @@ describe("Sale", () => {
       query={graphql`
         query SaleTestsQuery @relay_test_operation {
           sale(id: "the-sale") {
-            ...Sale_sale
+            internalID
+            slug
+            liveStartAt
+            ...SaleHeader_sale
+            ...RegisterToBidButton_sale
           }
           me {
-            ...Sale_me
+            ...SaleArtworksRail_me
           }
+          ...SaleLotsList_saleArtworksConnection @arguments(saleID: "sale-slug")
         }
       `}
       variables={{}}
       render={({ props }) => {
-        if (props?.sale && props?.me) {
-          return <SaleContainer sale={props.sale} me={props.me} />
+        if (props) {
+          return <Sale queryRes={props} />
         }
         return null
       }}

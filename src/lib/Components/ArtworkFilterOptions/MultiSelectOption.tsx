@@ -1,8 +1,8 @@
 import { FilterToggleButton } from "lib/Components/ArtworkFilterOptions/FilterToggleButton"
 import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { Box, color, Flex, Sans } from "palette"
+import { Box, color, Flex, Sans, space } from "palette"
 import React from "react"
-import { FlatList, TouchableWithoutFeedback } from "react-native"
+import { FlatList, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
@@ -94,3 +94,14 @@ export const OptionListItem = styled(Flex)`
   border-left-width: 0;
   border-top-width: 0;
 `
+
+export const InnerOptionListItem = styled(Flex)`
+  flex-direction: row;
+  justify-content: space-between;
+  flex-grow: 1;
+  align-items: flex-end;
+  padding: ${space(2)}px;
+`
+
+export const SingleSelectOptionListItemRow = styled(TouchableOpacity)``
+export const Option = styled(Sans)``

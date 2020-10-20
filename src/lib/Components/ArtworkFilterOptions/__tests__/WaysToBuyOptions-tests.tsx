@@ -1,4 +1,4 @@
-import { MockFilterScreen } from "lib/Components/__tests__/FilterTestHelper"
+import { MockFilterScreen } from "lib/Components/FilterModal/__tests__/FilterTestHelper"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
@@ -26,6 +26,11 @@ describe("Ways to Buy Options Screen", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
   })
 
@@ -70,6 +75,11 @@ describe("Ways to Buy Options Screen", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
@@ -101,6 +111,11 @@ describe("Ways to Buy Options Screen", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
@@ -122,6 +137,11 @@ describe("Ways to Buy Options Screen", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const tree = renderWithWrappers(<MockWaysToBuyScreen initialState={initialState} />)
@@ -155,6 +175,11 @@ describe("Ways to Buy Options Screen", () => {
       ],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const tree = renderWithWrappers(<MockWaysToBuyScreen initialState={initialState} />)

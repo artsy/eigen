@@ -42,7 +42,13 @@ export const FancyModalHeader: React.FC<{
             hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
             onPress={() => !rightButtonDisabled && onRightButtonPress()}
           >
-            {rightButtonText ? <Sans size="3" color={`black${rightButtonDisabled ? "30" : "100"}` }>{rightButtonText}</Sans> : <ArrowRightIcon fill="black100" top="2px" />}
+            {rightButtonText ? (
+              <Sans size="3" color={`black${rightButtonDisabled ? "30" : "100"}`}>
+                {rightButtonText}
+              </Sans>
+            ) : (
+              <ArrowRightIcon fill="black100" top="2px" />
+            )}
           </RightButtonContainer>
         )}
       </Flex>
@@ -51,7 +57,7 @@ export const FancyModalHeader: React.FC<{
 }
 
 export const Container = styled(Flex)<{ hideBottomDivider?: boolean }>`
-  border: ${props => (props.hideBottomDivider ? `0` : `solid 0.5px ${color("black10")}`)};
+  border: ${(props) => (props.hideBottomDivider ? `0` : `solid 0.5px ${color("black10")}`)};
   border-left-width: 0;
   border-right-width: 0;
   border-top-width: 0;

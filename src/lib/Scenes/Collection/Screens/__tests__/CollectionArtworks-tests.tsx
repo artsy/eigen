@@ -59,6 +59,11 @@ describe("CollectionArtworks", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
   })
 
@@ -90,6 +95,7 @@ describe("filterArtworksParams", () => {
       medium: "*",
       priceRange: "*-*",
       dimensionRange: "*-*",
+      estimateRange: "",
       includeArtworksByFollowedArtists: false,
       atAuction: false,
       acquireable: false,
@@ -111,6 +117,7 @@ describe("filterArtworksParams", () => {
       medium: "*",
       priceRange: "*-*",
       dimensionRange: "*-*",
+      estimateRange: "",
       includeArtworksByFollowedArtists: false,
       atAuction: false,
       acquireable: false,
