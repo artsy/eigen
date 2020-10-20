@@ -69,6 +69,12 @@ export const reducer = (
           // but it's technically de-selected.
           return !(hasExistingPreviouslyAppliedFilter && hasExistingSelectedAppliedFilter)
         }
+
+        // The default sorting and lot ascending sorting at the saleArtwork filterType has the same paramValue
+        // with a different displayText, we want to make sure that the user can still switch between the two.
+        if (paramName === FilterParamName.sort && artworkFilterState.filterType === "saleArtwork") {
+          return true
+        }
         return defaultFilterOptions[paramName] !== paramValue
       })
 
@@ -117,15 +123,30 @@ export const reducer = (
       const selectedFilters = filter(filtersToSelect, ({ paramName, paramValue }) => {
         const appliedFilter = find(artworkFilterState.appliedFilters, (option) => option.paramName === paramName)
 
-        // Don't re-select options that have already been applied.
+        // Don't re-select options that have already been applied unless it's for the default
         // In the case where the option hasn't been applied, remove the option if it is the default.
         if (!appliedFilter) {
+          // We want to make sure that the selection changes at the sortsOptions screen when the
+          // user changes between two sorting options that has the same paramValue. ie. from the
+          // dafault sorting to the lot ascending sorting (-position)
+          if (
+            paramName === FilterParamName.sort &&
+            artworkFilterState.filterType === "saleArtwork" &&
+            defaultFilterOptions[paramName] === paramValue
+          ) {
+            return true
+          }
           return defaultFilterOptions[paramName] !== paramValue
         }
 
         if (appliedFilter.paramValue === paramValue) {
-          // Ignore this case when it's an artistID.
-          return appliedFilter.paramName === FilterParamName.artistIDs && artworkFilterState.filterType === "artwork"
+          // Ignore this case when it's an artistID or when we are setting back the default sorting for saleArtworks
+          return (
+            (appliedFilter.paramName === FilterParamName.artistIDs && artworkFilterState.filterType === "artwork") ||
+            (defaultFilterOptions[paramName] === appliedFilter.paramValue &&
+              appliedFilter.paramName === FilterParamName.sort &&
+              artworkFilterState.filterType === "saleArtwork")
+          )
         }
 
         return true
