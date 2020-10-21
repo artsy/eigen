@@ -15,6 +15,7 @@ upcoming:
     - Adds Show2 basic more information route, behind lab option - damon
     - Add Show2 context card, linking to Fair or Partner - roop
     - Fix filters on Fair2 Works by Artists I follow artwork grid - devon
+    - Fix blank screen bug in My Collection - brian
 
 releases:
   - version: 6.6.6
