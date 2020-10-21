@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1ba7cda597e4146adb5dbb0b289b1be8 */
+/* @relayHash 466769cbdbef5f65f8ed7df0a6ec8307 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -222,29 +222,12 @@ fragment LocationMap_location on Location {
   internalID
   city
   address
-  address_2: address2
-  postal_code: postalCode
+  address2
+  postalCode
   summary
   coordinates {
     lat
     lng
-  }
-  day_schedules: daySchedules {
-    start_time: startTime
-    end_time: endTime
-    day_of_week: dayOfWeek
-  }
-  openingHours {
-    __typename
-    ... on OpeningHoursArray {
-      schedules {
-        days
-        hours
-      }
-    }
-    ... on OpeningHoursText {
-      text
-    }
   }
 }
 */
@@ -322,35 +305,28 @@ v9 = [
   (v8/*: any*/),
   (v2/*: any*/)
 ],
-v10 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "hours",
-  "storageKey": null
-},
-v11 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "__typename",
-  "storageKey": null
-},
-v12 = [
+v10 = [
   {
     "kind": "Literal",
     "name": "first",
     "value": 5
   }
 ],
-v13 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "display",
   "storageKey": null
 },
-v14 = [
+v12 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
+  "storageKey": null
+},
+v13 = [
   (v2/*: any*/)
 ];
 return {
@@ -544,7 +520,13 @@ return {
             "storageKey": null
           },
           (v8/*: any*/),
-          (v10/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "hours",
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": null,
@@ -577,14 +559,14 @@ return {
                 "storageKey": null
               },
               {
-                "alias": "address_2",
+                "alias": null,
                 "args": null,
                 "kind": "ScalarField",
                 "name": "address2",
                 "storageKey": null
               },
               {
-                "alias": "postal_code",
+                "alias": null,
                 "args": null,
                 "kind": "ScalarField",
                 "name": "postalCode",
@@ -618,90 +600,6 @@ return {
                     "kind": "ScalarField",
                     "name": "lng",
                     "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              },
-              {
-                "alias": "day_schedules",
-                "args": null,
-                "concreteType": "DaySchedule",
-                "kind": "LinkedField",
-                "name": "daySchedules",
-                "plural": true,
-                "selections": [
-                  {
-                    "alias": "start_time",
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "startTime",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": "end_time",
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "endTime",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": "day_of_week",
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "dayOfWeek",
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": null,
-                "kind": "LinkedField",
-                "name": "openingHours",
-                "plural": false,
-                "selections": [
-                  (v11/*: any*/),
-                  {
-                    "kind": "InlineFragment",
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "FormattedDaySchedules",
-                        "kind": "LinkedField",
-                        "name": "schedules",
-                        "plural": true,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "days",
-                            "storageKey": null
-                          },
-                          (v10/*: any*/)
-                        ],
-                        "storageKey": null
-                      }
-                    ],
-                    "type": "OpeningHoursArray",
-                    "abstractKey": null
-                  },
-                  {
-                    "kind": "InlineFragment",
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "text",
-                        "storageKey": null
-                      }
-                    ],
-                    "type": "OpeningHoursText",
-                    "abstractKey": null
                   }
                 ],
                 "storageKey": null
@@ -755,7 +653,7 @@ return {
           },
           {
             "alias": "shows",
-            "args": (v12/*: any*/),
+            "args": (v10/*: any*/),
             "concreteType": "ShowConnection",
             "kind": "LinkedField",
             "name": "showsConnection",
@@ -984,7 +882,7 @@ return {
                                         "name": "currentBid",
                                         "plural": false,
                                         "selections": [
-                                          (v13/*: any*/)
+                                          (v11/*: any*/)
                                         ],
                                         "storageKey": null
                                       },
@@ -1049,7 +947,7 @@ return {
                         "name": "partner",
                         "plural": false,
                         "selections": [
-                          (v11/*: any*/),
+                          (v12/*: any*/),
                           {
                             "kind": "InlineFragment",
                             "selections": [
@@ -1085,13 +983,13 @@ return {
                           },
                           {
                             "kind": "InlineFragment",
-                            "selections": (v14/*: any*/),
+                            "selections": (v13/*: any*/),
                             "type": "Node",
                             "abstractKey": "__isNode"
                           },
                           {
                             "kind": "InlineFragment",
-                            "selections": (v14/*: any*/),
+                            "selections": (v13/*: any*/),
                             "type": "ExternalPartner",
                             "abstractKey": null
                           }
@@ -1116,13 +1014,13 @@ return {
                         "name": "location",
                         "plural": false,
                         "selections": [
-                          (v13/*: any*/),
+                          (v11/*: any*/),
                           (v2/*: any*/)
                         ],
                         "storageKey": null
                       },
                       (v2/*: any*/),
-                      (v11/*: any*/)
+                      (v12/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -1134,7 +1032,7 @@ return {
           },
           {
             "alias": "shows",
-            "args": (v12/*: any*/),
+            "args": (v10/*: any*/),
             "filters": null,
             "handle": "connection",
             "key": "Fair_shows",
@@ -1147,7 +1045,7 @@ return {
     ]
   },
   "params": {
-    "id": "1ba7cda597e4146adb5dbb0b289b1be8",
+    "id": "466769cbdbef5f65f8ed7df0a6ec8307",
     "metadata": {},
     "name": "FairQuery",
     "operationKind": "query",

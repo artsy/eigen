@@ -7,7 +7,7 @@ import { ActivityIndicator, FlatList, ViewProperties } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import { HoursCollapsible } from "lib/Components/HoursCollapsible"
-import { LocationMapContainer as LocationMap, PartnerType } from "lib/Components/LocationMap"
+import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
 import { FAIR_SHOW_PAGE_SIZE } from "lib/data/constants"
 import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import { ArtistsExhibitorsWorksLink } from "../Components/ArtistsExhibitorsWorksLink"
@@ -68,7 +68,6 @@ export class FairDetail extends React.Component<Props, State> {
         data: {
           location: fair.location,
           partnerName: fair.profile ? fair.profile.name : fair.name,
-          partnerType: PartnerType.fair,
         },
       })
     }
@@ -152,7 +151,7 @@ export class FairDetail extends React.Component<Props, State> {
   renderItem = ({ item: { data, type, showIndex } }: any /* STRICTNESS_MIGRATION */) => {
     switch (type) {
       case "location":
-        return <LocationMap partnerType="Fair" {...data} />
+        return <LocationMap {...data} />
       case "hours":
         return (
           <>
