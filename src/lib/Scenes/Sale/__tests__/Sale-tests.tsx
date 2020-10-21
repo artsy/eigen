@@ -2,9 +2,11 @@ import { SaleTestsQuery } from "__generated__/SaleTestsQuery.graphql"
 import { navigate, popParentViewController } from "lib/navigation/navigate"
 import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import moment from "moment"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { RegisterToBidButton } from "../Components/RegisterToBidButton"
 import { Sale } from "../Sale"
 
 jest.unmock("react-relay")
@@ -95,5 +97,23 @@ describe("Sale", () => {
     expect(setInterval).toHaveBeenCalledTimes(1)
     expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug")
     expect(popParentViewController).toHaveBeenCalled()
+  })
+
+  it("doesn't render a Register button when it's closed", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Sale: () => ({
+          slug: "closed-sale-slug",
+          startAt: moment().subtract(3, "days"),
+          liveStartAt: moment().subtract(2, "days"),
+          endAt: moment().subtract(1, "day"),
+          name: "closed sale!",
+        }),
+      })
+    )
+
+    expect(tree.findAllByType(RegisterToBidButton)).toHaveLength(0)
   })
 })

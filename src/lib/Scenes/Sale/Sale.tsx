@@ -8,6 +8,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { getCurrentEmissionState } from "lib/store/AppStore"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
+import _ from "lodash"
 import moment from "moment"
 import { Flex } from "palette"
 import React, { useEffect, useRef, useState } from "react"
@@ -112,12 +113,12 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
     setTimeout(popParentViewController, 500)
   }
 
-  const saleSectionsData: SaleSection[] = [
+  const saleSectionsData: SaleSection[] = _.compact([
     {
       key: "header",
       content: <SaleHeader sale={sale} scrollAnim={scrollAnim} />,
     },
-    {
+    (sale.endAt === null || moment().isBefore(sale.endAt)) && {
       key: "registerToBid",
       content: (
         <Flex mx="2" mt={2}>
@@ -133,7 +134,7 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
       key: "saleLotsList",
       content: <SaleLotsListContainer saleArtworksConnection={queryRes} saleID={sale.slug} saleSlug={sale.slug} />,
     },
-  ]
+  ])
 
   return (
     <ArtworkFilterGlobalStateProvider>
