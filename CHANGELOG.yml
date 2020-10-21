@@ -16,6 +16,7 @@ upcoming:
     - Add Show2 context card, linking to Fair or Partner - roop
     - Fix filters on Fair2 Works by Artists I follow artwork grid - devon
     - Adds Show2 artwork grid + filter - mzikherman
+    - Add active bids to new auction sale page - mounir
 
 releases:
   - version: 6.6.6
