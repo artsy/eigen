@@ -28,6 +28,7 @@ describe("Sale", () => {
             slug
             liveStartAt
             endAt
+            registrationEndsAt
             ...SaleHeader_sale
             ...RegisterToBidButton_sale
           }
@@ -88,6 +89,44 @@ describe("Sale", () => {
     expect(navigate).toHaveBeenCalledTimes(1)
     expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug")
     expect(popParentViewController).toHaveBeenCalledTimes(1)
+  })
+
+  it("renders a Register button when registrations are open", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Sale: () => ({
+          slug: "regular-sale-slug",
+          startAt: moment().add(1, "day").toISOString(),
+          liveStartAt: moment().add(2, "days").toISOString(),
+          endAt: moment().add(3, "days").toISOString(),
+          registrationEndsAt: moment().add(3, "hours").toISOString(),
+          name: "regular sale!",
+        }),
+      })
+    )
+
+    expect(tree.findAllByType(RegisterToBidButton)).toHaveLength(1)
+  })
+
+  it("doesn't render a Register button when registrations ended", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Sale: () => ({
+          slug: "reg-ended-sale-slug",
+          startAt: moment().subtract(3, "days").toISOString(),
+          liveStartAt: moment().subtract(2, "days").toISOString(),
+          endAt: moment().add(3, "days").toISOString(),
+          registrationEndsAt: moment().subtract(3, "hours").toISOString(),
+          name: "reg ended sale!",
+        }),
+      })
+    )
+
+    expect(tree.findAllByType(RegisterToBidButton)).toHaveLength(0)
   })
 
   it("doesn't render a Register button when it's closed", () => {
