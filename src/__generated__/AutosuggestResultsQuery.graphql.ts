@@ -14,39 +14,9 @@ export type AutosuggestResultsQueryVariables = {
 export type AutosuggestResultsQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"AutosuggestResults_results">;
 };
-export type AutosuggestResultsQueryRawResponse = {
-    readonly results: ({
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
-                readonly __typename: "SearchableItem";
-                readonly imageUrl: string | null;
-                readonly href: string | null;
-                readonly displayLabel: string | null;
-                readonly __isNode: "SearchableItem";
-                readonly id: string;
-                readonly internalID: string;
-                readonly displayType: string | null;
-                readonly slug: string;
-            } | {
-                readonly __typename: string;
-                readonly imageUrl: string | null;
-                readonly href: string | null;
-                readonly displayLabel: string | null;
-                readonly __isNode: string;
-                readonly id: string;
-            }) | null;
-            readonly cursor: string;
-        }) | null> | null;
-        readonly pageInfo: {
-            readonly endCursor: string | null;
-            readonly hasNextPage: boolean;
-        };
-    }) | null;
-};
 export type AutosuggestResultsQuery = {
     readonly response: AutosuggestResultsQueryResponse;
     readonly variables: AutosuggestResultsQueryVariables;
-    readonly rawResponse: AutosuggestResultsQueryRawResponse;
 };
 
 
@@ -325,5 +295,5 @@ return {
   }
 };
 })();
-(node as any).hash = '4b37a33eeb4f02c7e002245129795ade';
+(node as any).hash = 'b0cfecc2b9235c28824c6ad6aa9d0a17';
 export default node;

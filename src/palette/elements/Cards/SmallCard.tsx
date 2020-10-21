@@ -7,7 +7,7 @@ import { CardTag, CardTagProps } from "./CardTag"
 
 export interface SmallCardProps extends BoxProps {
   images: string[]
-  title: string
+  title?: string
   subtitle?: string
   tag?: CardTagProps
 }
@@ -49,9 +49,11 @@ export const SmallCard: React.FC<SmallCardProps> = ({ images, title, subtitle, t
         </Box>
       </Box>
 
-      <Text variant="text" mt={1}>
-        {title}
-      </Text>
+      {!!title && (
+        <Text variant="text" mt={1}>
+          {title}
+        </Text>
+      )}
 
       {!!subtitle && (
         <Text variant="text" color="black60">

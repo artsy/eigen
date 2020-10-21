@@ -1,4 +1,3 @@
-import { aggregationForFilter } from "lib/Components/FilterModal"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import {
   Aggregations,
@@ -6,7 +5,7 @@ import {
   ArtworkFilterContextState,
   reducer,
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { aggregationForFilter, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
@@ -79,6 +78,11 @@ describe("Color options screen", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
   })
 
@@ -106,6 +110,11 @@ describe("Color options screen", () => {
         previouslyAppliedFilters: [],
         applyFilters: false,
         aggregations: mockAggregations,
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const component = renderWithWrappers(<MockColorScreen initialState={state} navigator={mockNavigator} />)
@@ -126,6 +135,11 @@ describe("Color options screen", () => {
         previouslyAppliedFilters: [],
         applyFilters: false,
         aggregations: mockAggregations,
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const tree = renderWithWrappers(<MockColorScreen initialState={state} navigator={mockNavigator} />)
@@ -150,6 +164,11 @@ describe("Color options screen", () => {
         previouslyAppliedFilters: [],
         applyFilters: false,
         aggregations: mockAggregations,
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const tree = renderWithWrappers(<MockColorScreen initialState={state} navigator={mockNavigator} />)

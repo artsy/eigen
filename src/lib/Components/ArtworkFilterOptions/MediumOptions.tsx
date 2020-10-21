@@ -4,10 +4,14 @@ import {
   ParamDefaultValues,
   useSelectedOptionsDisplay,
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { AggregateOption, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import {
+  AggregateOption,
+  aggregationForFilter,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext } from "react"
 import { NavigatorIOS } from "react-native"
-import { aggregationForFilter } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface MediumOptionsScreenProps {
@@ -24,10 +28,15 @@ export const MediumOptionsScreen: React.FC<MediumOptionsScreenProps> = ({ naviga
       displayText: aggCount.name,
       paramValue: aggCount.value,
       paramName,
+      count: aggCount.count,
     }
   })
 
-  const allOption: FilterData = { displayText: "All", paramName, paramValue: ParamDefaultValues.medium }
+  const allOption: FilterData = {
+    displayText: "All",
+    paramName,
+    paramValue: ParamDefaultValues.medium,
+  }
   const displayOptions = [allOption].concat(options ?? [])
 
   const selectedOptions = useSelectedOptionsDisplay()

@@ -1,23 +1,31 @@
 import { FilterScreen } from "lib/Components/FilterModal"
-import { Aggregations, FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { compact, forOwn, groupBy, sortBy } from "lodash"
+import {
+  AggregationName,
+  Aggregations,
+  FilterArray,
+  FilterCounts,
+  FilterType,
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { forOwn, groupBy, sortBy } from "lodash"
 
 // General filter types and objects
 export enum FilterParamName {
-  sort = "sort",
+  artistIDs = "artistIDs",
+  artistsIFollow = "includeArtworksByFollowedArtists",
+  color = "color",
+  estimateRange = "estimateRange",
+  gallery = "partnerID",
+  institution = "partnerID",
   medium = "medium",
   priceRange = "priceRange",
   size = "dimensionRange",
-  color = "color",
-  gallery = "partnerID",
-  institution = "partnerID",
+  sort = "sort",
   timePeriod = "majorPeriods",
-  waysToBuyBuy = "acquireable",
+  viewAs = "viewAs",
   waysToBuyBid = "atAuction",
+  waysToBuyBuy = "acquireable",
   waysToBuyInquire = "inquireableOnly",
   waysToBuyMakeOffer = "offerable",
-  artistsIFollow = "includeArtworksByFollowedArtists",
-  artist = "artistIDs",
 }
 
 // Types for the parameters passed to Relay
@@ -26,17 +34,25 @@ export type FilterParams = {
 }
 
 export enum FilterDisplayName {
-  sort = "Sort",
-  medium = "Medium",
-  priceRange = "Price range",
-  size = "Size",
+  // artist = "Artists",
+  artistIDs = "Artists",
+  artistsIFollow = "Artist",
   color = "Color",
+  estimateRange = "Price/estimate range",
   gallery = "Gallery",
   institution = "Institution",
+  medium = "Medium",
+  priceRange = "Price/estimate range",
+  size = "Size",
+  sort = "Sort by",
   timePeriod = "Time period",
+  viewAs = "View as",
   waysToBuy = "Ways to buy",
-  artistsIFollow = "Artist",
-  artist = "Artists",
+}
+
+export enum ViewAsValues {
+  Grid = "grid",
+  List = "list",
 }
 
 export interface InitialState {
@@ -46,6 +62,8 @@ export interface InitialState {
     previouslyAppliedFilters: FilterArray
     applyFilters: boolean
     aggregations: Aggregations
+    filterType: FilterType
+    counts: FilterCounts
   }
 }
 
@@ -54,24 +72,37 @@ export interface AggregateOption {
   paramValue: string
 }
 
-const defaultFilterParams = {
-  sort: "-decayed_merch",
-  medium: "*",
-  priceRange: "*-*",
-  dimensionRange: "*-*",
-  atAuction: false,
+const defaultArtworksParams = {
   acquireable: false,
+  atAuction: false,
+  dimensionRange: "*-*",
+  estimateRange: "",
   inquireableOnly: false,
+  medium: "*",
   offerable: false,
+  priceRange: "*-*",
+  sort: "-decayed_merch",
   includeArtworksByFollowedArtists: false,
 } as FilterParams
 
-const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams) => {
+const defaultSaleArtworksParams = {
+  sort: "position",
+  estimateRange: "",
+} as FilterParams
+
+const getDefaultParamsByType = (fitlerType: FilterType) => {
+  if (fitlerType === "artwork") {
+    return defaultArtworksParams
+  }
+  return defaultSaleArtworksParams
+}
+
+const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams, filterType: FilterType) => {
   const groupedFilters = groupBy(appliedFilters, "paramName")
   Object.keys(groupedFilters).forEach((paramName) => {
     const paramValues = groupedFilters[paramName].map((item) => item.paramValue)
     // If we add more filter options that can take arrays, we would include them here.
-    if (paramName === FilterParamName.artist) {
+    if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
       // For the artistIDs param, we want to return an array
       filterParams[paramName] = paramValues as string[]
     } else {
@@ -83,12 +114,14 @@ const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: Fil
   return filterParams
 }
 
-export const filterArtworksParams = (appliedFilters: FilterArray) => {
-  return paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams })
+export const filterArtworksParams = (appliedFilters: FilterArray, filterType: FilterType = "artwork") => {
+  const defaultFilterParams = getDefaultParamsByType(filterType)
+  return paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams }, filterType)
 }
 
-const getChangedParams = (appliedFilters: FilterArray) => {
-  const filterParams = paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams })
+const getChangedParams = (appliedFilters: FilterArray, filterType: FilterType = "artwork") => {
+  const defaultFilterParams = getDefaultParamsByType(filterType)
+  const filterParams = paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams }, filterType)
   // when filters cleared return default params
   return Object.keys(filterParams).length === 0 ? defaultFilterParams : filterParams
 }
@@ -115,10 +148,14 @@ export const changedFiltersParams = (currentFilterParams: FilterParams, selected
 /**
  * Formats the display for the Filter Modal "home" screen.
  */
-export const selectedOption = (selectedOptions: FilterArray, filterType: FilterScreen) => {
+export const selectedOption = (
+  selectedOptions: FilterArray,
+  filterScreen: FilterScreen,
+  filterType: FilterType = "artwork"
+) => {
   const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
 
-  if (filterType === "waysToBuy") {
+  if (filterScreen === "waysToBuy") {
     const waysToBuyFilterNames = [
       FilterParamName.waysToBuyBuy,
       FilterParamName.waysToBuyMakeOffer,
@@ -133,24 +170,33 @@ export const selectedOption = (selectedOptions: FilterArray, filterType: FilterS
       return "All"
     }
     return waysToBuyOptions.join(", ")
-  } else if (filterType === "gallery" || filterType === "institution") {
-    const displayText = selectedOptions.find((option) => option.filterKey === filterType)?.displayText
+  } else if (filterScreen === "gallery" || filterScreen === "institution") {
+    const displayText = selectedOptions.find((option) => option.filterKey === filterScreen)?.displayText
     if (displayText) {
       return displayText
     } else {
       return "All"
     }
-  } else if (filterType === "artist") {
+  } else if (filterScreen === "artistIDs") {
     const hasArtistsIFollowChecked = !!selectedOptions.find(({ paramName, paramValue }) => {
       return paramName === FilterParamName.artistsIFollow && paramValue === true
     })
 
-    const selectedArtistNames = selectedOptions.map(({ paramName, displayText }) => {
-      if (paramName === FilterParamName.artist) {
-        return displayText
-      }
-    })
-    const alphabetizedArtistNames = sortBy(compact(selectedArtistNames), (name) => name)
+    let selectedArtistNames: string[]
+
+    if (filterType === "artwork") {
+      selectedArtistNames = selectedOptions
+        .filter((filter) => filter.paramName === FilterParamName.artistIDs)
+        .map(({ displayText }) => displayText)
+    } else {
+      const saleArtworksArtistIDs = selectedOptions.find((filter) => filter.paramName === FilterParamName.artistIDs)
+      selectedArtistNames =
+        saleArtworksArtistIDs && Array.isArray(saleArtworksArtistIDs?.paramValue)
+          ? saleArtworksArtistIDs.paramValue
+          : []
+    }
+
+    const alphabetizedArtistNames = sortBy(selectedArtistNames, (name) => name)
     const allArtistDisplayNames = hasArtistsIFollowChecked
       ? ["All artists I follow", ...alphabetizedArtistNames]
       : alphabetizedArtistNames
@@ -164,7 +210,7 @@ export const selectedOption = (selectedOptions: FilterArray, filterType: FilterS
       return "All"
     }
   }
-  return selectedOptions.find((option) => option.paramName === filterType)?.displayText
+  return selectedOptions.find((option) => option.paramName === filterScreen)?.displayText
 }
 
 export type aggregationsType =
@@ -188,4 +234,24 @@ export const aggregationsWithFollowedArtists = (
         ]
       : []
   return [...artworkAggregations, ...followedArtistAggregation]
+}
+
+// For most cases filter key can simply be FilterParamName, exception
+// is gallery and institution which share a paramName in metaphysics
+export const aggregationNameFromFilter: Record<string, AggregationName | undefined> = {
+  gallery: "GALLERY",
+  institution: "INSTITUTION",
+  color: "COLOR",
+  dimensionRange: "DIMENSION_RANGE",
+  majorPeriods: "MAJOR_PERIOD",
+  medium: "MEDIUM",
+  priceRange: "PRICE_RANGE",
+  artistsIFollow: "FOLLOWED_ARTISTS",
+  artistIDs: "ARTIST",
+}
+
+export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {
+  const aggregationName = aggregationNameFromFilter[filterKey]
+  const aggregation = aggregations!.find((value) => value.slice === aggregationName)
+  return aggregation
 }

@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-/* @relayHash e0aa17f7fa25cf79c3de46d2a350becb */
+// @ts-nocheck
+/* @relayHash adb8820966f22b360ca98b4d4030740a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -56,188 +57,184 @@ var v0 = [
   }
 ],
 v1 = {
-  "kind": "ScalarField",
   "alias": null,
-  "name": "id",
   "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 },
 v2 = {
-  "type": "ID",
   "enumValues": null,
+  "nullable": true,
   "plural": false,
-  "nullable": true
+  "type": "String"
 },
 v3 = {
-  "type": "String",
   "enumValues": null,
+  "nullable": false,
   "plural": false,
-  "nullable": true
+  "type": "ID"
 },
 v4 = {
-  "type": "Boolean",
   "enumValues": null,
+  "nullable": true,
   "plural": false,
-  "nullable": true
+  "type": "Boolean"
 };
 return {
-  "kind": "Request",
   "fragment": {
-    "kind": "Fragment",
-    "name": "SaleInfoTestsQuery",
-    "type": "Query",
-    "metadata": null,
     "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "SaleInfoTestsQuery",
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "sale",
-        "storageKey": "sale(id:\"the-sale\")",
         "args": (v0/*: any*/),
         "concreteType": "Sale",
+        "kind": "LinkedField",
+        "name": "sale",
         "plural": false,
         "selections": [
           {
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "SaleInfo_sale",
-            "args": null
+            "name": "SaleInfo_sale"
           }
-        ]
+        ],
+        "storageKey": "sale(id:\"the-sale\")"
       }
-    ]
+    ],
+    "type": "Query",
+    "abstractKey": null
   },
+  "kind": "Request",
   "operation": {
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "SaleInfoTestsQuery",
-    "argumentDefinitions": [],
     "selections": [
       {
-        "kind": "LinkedField",
         "alias": null,
-        "name": "sale",
-        "storageKey": "sale(id:\"the-sale\")",
         "args": (v0/*: any*/),
         "concreteType": "Sale",
+        "kind": "LinkedField",
+        "name": "sale",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "description",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "endAt",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "liveStartAt",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "name",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "startAt",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "timeZone",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "slug",
-            "args": null,
             "storageKey": null
           },
           {
+            "alias": null,
+            "args": null,
             "kind": "ScalarField",
-            "alias": null,
             "name": "requireIdentityVerification",
-            "args": null,
             "storageKey": null
           },
           {
-            "kind": "LinkedField",
             "alias": null,
-            "name": "registrationStatus",
-            "storageKey": null,
             "args": null,
             "concreteType": "Bidder",
+            "kind": "LinkedField",
+            "name": "registrationStatus",
             "plural": false,
             "selections": [
               {
-                "kind": "ScalarField",
                 "alias": null,
-                "name": "qualifiedForBidding",
                 "args": null,
+                "kind": "ScalarField",
+                "name": "qualifiedForBidding",
                 "storageKey": null
               },
               (v1/*: any*/)
-            ]
+            ],
+            "storageKey": null
           },
           (v1/*: any*/)
-        ]
+        ],
+        "storageKey": "sale(id:\"the-sale\")"
       }
     ]
   },
   "params": {
-    "operationKind": "query",
-    "name": "SaleInfoTestsQuery",
     "id": "adb8820966f22b360ca98b4d4030740a",
-    "text": null,
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "sale": {
-          "type": "Sale",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Sale"
         },
-        "sale.id": (v2/*: any*/),
-        "sale.description": (v3/*: any*/),
-        "sale.endAt": (v3/*: any*/),
-        "sale.liveStartAt": (v3/*: any*/),
-        "sale.name": (v3/*: any*/),
-        "sale.startAt": (v3/*: any*/),
-        "sale.timeZone": (v3/*: any*/),
-        "sale.slug": {
-          "type": "ID",
-          "enumValues": null,
-          "plural": false,
-          "nullable": false
-        },
-        "sale.requireIdentityVerification": (v4/*: any*/),
+        "sale.description": (v2/*: any*/),
+        "sale.endAt": (v2/*: any*/),
+        "sale.id": (v3/*: any*/),
+        "sale.liveStartAt": (v2/*: any*/),
+        "sale.name": (v2/*: any*/),
         "sale.registrationStatus": {
-          "type": "Bidder",
           "enumValues": null,
+          "nullable": true,
           "plural": false,
-          "nullable": true
+          "type": "Bidder"
         },
+        "sale.registrationStatus.id": (v3/*: any*/),
         "sale.registrationStatus.qualifiedForBidding": (v4/*: any*/),
-        "sale.registrationStatus.id": (v2/*: any*/)
+        "sale.requireIdentityVerification": (v4/*: any*/),
+        "sale.slug": (v3/*: any*/),
+        "sale.startAt": (v2/*: any*/),
+        "sale.timeZone": (v2/*: any*/)
       }
-    }
+    },
+    "name": "SaleInfoTestsQuery",
+    "operationKind": "query",
+    "text": null
   }
 };
 })();

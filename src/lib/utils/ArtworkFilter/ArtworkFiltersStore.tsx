@@ -1,4 +1,4 @@
-import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { FilterParamName, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { filter, find, pullAllBy, union, unionBy } from "lodash"
 import React, { createContext, Dispatch, Reducer, useContext, useReducer } from "react"
 
@@ -8,12 +8,21 @@ const filterState: ArtworkFilterContextState = {
   previouslyAppliedFilters: [],
   applyFilters: false,
   aggregations: [],
+  filterType: "artwork",
+  counts: {
+    total: null,
+    followedArtists: null,
+  },
 }
 
 export const reducer = (
   artworkFilterState: ArtworkFilterContextState,
   action: FilterActions
 ): ArtworkFilterContextState => {
+  const defaultFilterOptions = {
+    ...defaultCommonFilterOptions,
+    sort: getSortDefaultValueByFilterType(artworkFilterState.filterType),
+  }
   switch (action.type) {
     case "applyFilters":
       let multiOptionFilters = unionBy(
@@ -34,7 +43,7 @@ export const reducer = (
         ({ paramValue, paramName }) => {
           // We don't want to union the artistID params, as each entry corresponds to a
           // different artist that may be selected. Instead we de-dupe based on the paramValue.
-          if (paramName === FilterParamName.artist) {
+          if (paramName === FilterParamName.artistIDs && artworkFilterState.filterType === "artwork") {
             return paramValue
           } else {
             return paramName
@@ -48,7 +57,7 @@ export const reducer = (
       const appliedFilters = filter(filtersToApply, ({ paramName, paramValue }) => {
         // This logic is specific to filters that allow for multiple options. Right now
         // it only applies to the artist filter, but this will likely change.
-        if (paramName === FilterParamName.artist) {
+        if (paramName === FilterParamName.artistIDs && artworkFilterState.filterType === "artwork") {
           // See if we have an existing entry in previouslyAppliedFilters
           const hasExistingPreviouslyAppliedFilter = artworkFilterState.previouslyAppliedFilters.find(
             (previouslyAppliedFilter) =>
@@ -64,6 +73,12 @@ export const reducer = (
           // but it's technically de-selected.
           return !(hasExistingPreviouslyAppliedFilter && hasExistingSelectedAppliedFilter)
         }
+
+        // The default sorting and lot ascending sorting at the saleArtwork filterType has the same paramValue
+        // with a different displayText, we want to make sure that the user can still switch between the two.
+        if (paramName === FilterParamName.sort && artworkFilterState.filterType === "saleArtwork") {
+          return true
+        }
         return defaultFilterOptions[paramName] !== paramValue
       })
 
@@ -73,6 +88,8 @@ export const reducer = (
         selectedFilters: [],
         previouslyAppliedFilters: appliedFilters,
         aggregations: artworkFilterState.aggregations,
+        filterType: artworkFilterState.filterType,
+        counts: artworkFilterState.counts,
       }
 
     // First we update our potential "selectedFilters" based on the option that was selected in the UI
@@ -82,9 +99,13 @@ export const reducer = (
 
       // This logic is specific to filters that can have multiple options. Right now it only
       // applies to the artist filter, but this will likely change in the future.
-      if (action.payload.paramName === FilterParamName.artist) {
+      if (action.payload.paramName === FilterParamName.artistIDs && artworkFilterState.filterType === "artwork") {
         const filtersWithoutSelectedArtist = artworkFilterState.selectedFilters.filter(({ paramName, paramValue }) => {
-          if (paramName === FilterParamName.artist && paramValue === action.payload.paramValue) {
+          if (
+            paramName === FilterParamName.artistIDs &&
+            artworkFilterState.filterType === "artwork" &&
+            paramValue === action.payload.paramValue
+          ) {
             removedOption = true
             return false
           }
@@ -107,15 +128,30 @@ export const reducer = (
       const selectedFilters = filter(filtersToSelect, ({ paramName, paramValue }) => {
         const appliedFilter = find(artworkFilterState.appliedFilters, (option) => option.paramName === paramName)
 
-        // Don't re-select options that have already been applied.
+        // Don't re-select options that have already been applied unless it's for the default
         // In the case where the option hasn't been applied, remove the option if it is the default.
         if (!appliedFilter) {
+          // We want to make sure that the selection changes at the sortsOptions screen when the
+          // user changes between two sorting options that has the same paramValue. ie. from the
+          // dafault sorting to the lot ascending sorting (-position)
+          if (
+            paramName === FilterParamName.sort &&
+            artworkFilterState.filterType === "saleArtwork" &&
+            defaultFilterOptions[paramName] === paramValue
+          ) {
+            return true
+          }
           return defaultFilterOptions[paramName] !== paramValue
         }
 
         if (appliedFilter.paramValue === paramValue) {
-          // Ignore this case when it's an artistID.
-          return appliedFilter.paramName === FilterParamName.artist
+          // Ignore this case when it's an artistID or when we are setting back the default sorting for saleArtworks
+          return (
+            (appliedFilter.paramName === FilterParamName.artistIDs && artworkFilterState.filterType === "artwork") ||
+            (defaultFilterOptions[paramName] === appliedFilter.paramValue &&
+              appliedFilter.paramName === FilterParamName.sort &&
+              artworkFilterState.filterType === "saleArtwork")
+          )
         }
 
         return true
@@ -127,6 +163,8 @@ export const reducer = (
         appliedFilters: artworkFilterState.appliedFilters,
         previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
         aggregations: artworkFilterState.aggregations,
+        filterType: artworkFilterState.filterType,
+        counts: artworkFilterState.counts,
       }
 
     case "clearAll":
@@ -136,6 +174,8 @@ export const reducer = (
         previouslyAppliedFilters: [],
         applyFilters: false,
         aggregations: artworkFilterState.aggregations,
+        filterType: artworkFilterState.filterType,
+        counts: artworkFilterState.counts,
       }
 
     case "resetFilters":
@@ -148,6 +188,8 @@ export const reducer = (
         selectedFilters: [],
         previouslyAppliedFilters: artworkFilterState.appliedFilters,
         aggregations: artworkFilterState.aggregations,
+        filterType: artworkFilterState.filterType,
+        counts: artworkFilterState.counts,
       }
 
     case "clearFiltersZeroState":
@@ -158,6 +200,8 @@ export const reducer = (
         previouslyAppliedFilters: [],
         applyFilters: true,
         aggregations: artworkFilterState.aggregations,
+        filterType: artworkFilterState.filterType,
+        counts: artworkFilterState.counts,
       }
 
     case "setAggregations":
@@ -167,6 +211,30 @@ export const reducer = (
         selectedFilters: artworkFilterState.selectedFilters,
         previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
         applyFilters: false,
+        filterType: artworkFilterState.filterType,
+        counts: artworkFilterState.counts,
+      }
+
+    case "setFilterCounts":
+      return {
+        aggregations: artworkFilterState.aggregations,
+        appliedFilters: artworkFilterState.appliedFilters,
+        selectedFilters: artworkFilterState.selectedFilters,
+        previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
+        applyFilters: false,
+        filterType: artworkFilterState.filterType,
+        counts: action.payload,
+      }
+
+    case "setFilterType":
+      return {
+        aggregations: artworkFilterState.aggregations,
+        appliedFilters: artworkFilterState.appliedFilters,
+        selectedFilters: artworkFilterState.selectedFilters,
+        previouslyAppliedFilters: artworkFilterState.previouslyAppliedFilters,
+        applyFilters: false,
+        filterType: action.payload,
+        counts: artworkFilterState.counts,
       }
 
     case "setInitialFilterState":
@@ -176,55 +244,80 @@ export const reducer = (
         previouslyAppliedFilters: action.payload,
         applyFilters: false,
         aggregations: artworkFilterState.aggregations,
+        filterType: "artwork",
+        counts: artworkFilterState.counts,
       }
   }
 }
 
-export const ParamDefaultValues = {
-  sort: "-decayed_merch",
-  medium: "*",
-  priceRange: "*-*",
-  dimensionRange: "*-*",
-  color: undefined,
-  partnerID: undefined,
-  majorPeriods: undefined,
-  inquireableOnly: false,
-  offerable: false,
-  atAuction: false,
-  acquireable: false,
-  includeArtworksByFollowedArtists: false,
-  artistIDs: [],
+const getSortDefaultValueByFilterType = (filterType: FilterType) => {
+  if (filterType === "saleArtwork") {
+    return "position"
+  }
+  return "-decayed_merch"
 }
 
-const defaultFilterOptions: Record<FilterParamName, string | boolean | undefined | string[]> = {
-  sort: ParamDefaultValues.sort,
-  medium: ParamDefaultValues.medium,
-  priceRange: ParamDefaultValues.priceRange,
-  dimensionRange: ParamDefaultValues.dimensionRange,
-  color: ParamDefaultValues.color,
-  partnerID: ParamDefaultValues.partnerID,
-  majorPeriods: ParamDefaultValues.majorPeriods,
-  inquireableOnly: ParamDefaultValues.inquireableOnly,
-  offerable: ParamDefaultValues.offerable,
-  atAuction: ParamDefaultValues.atAuction,
+export const ParamDefaultValues = {
+  acquireable: false,
+  artistIDs: [],
+  atAuction: false,
+  color: undefined,
+  dimensionRange: "*-*",
+  estimateRange: "",
+  includeArtworksByFollowedArtists: false,
+  inquireableOnly: false,
+  majorPeriods: undefined,
+  medium: "*",
+  offerable: false,
+  partnerID: undefined,
+  priceRange: "*-*",
+  sortArtworks: "-decayed_merch",
+  sortSaleArtworks: "position",
+  viewAs: ViewAsValues.Grid,
+}
+
+const defaultCommonFilterOptions: Record<FilterParamName, string | boolean | undefined | string[]> = {
   acquireable: ParamDefaultValues.acquireable,
-  includeArtworksByFollowedArtists: ParamDefaultValues.includeArtworksByFollowedArtists,
   artistIDs: ParamDefaultValues.artistIDs,
+  atAuction: ParamDefaultValues.atAuction,
+  color: ParamDefaultValues.color,
+  dimensionRange: ParamDefaultValues.dimensionRange,
+  estimateRange: ParamDefaultValues.estimateRange,
+  includeArtworksByFollowedArtists: ParamDefaultValues.includeArtworksByFollowedArtists,
+  inquireableOnly: ParamDefaultValues.inquireableOnly,
+  majorPeriods: ParamDefaultValues.majorPeriods,
+  medium: ParamDefaultValues.medium,
+  offerable: ParamDefaultValues.offerable,
+  partnerID: ParamDefaultValues.partnerID,
+  priceRange: ParamDefaultValues.priceRange,
+  sort: ParamDefaultValues.sortArtworks,
+  viewAs: ParamDefaultValues.viewAs,
 }
 
 export const selectedOptionsUnion = ({
   selectedFilters,
   previouslyAppliedFilters,
+  filterType = "artwork",
 }: {
   selectedFilters: FilterArray
   previouslyAppliedFilters: FilterArray
+  filterType?: FilterType
 }): FilterArray => {
+  const defaultSortFilter =
+    filterType === "artwork"
+      ? {
+          paramName: FilterParamName.sort,
+          paramValue: "-decayed_merch",
+          displayText: "Default",
+        }
+      : {
+          paramName: FilterParamName.sort,
+          paramValue: "position",
+          displayText: "Default",
+        }
   const defaultFilters: FilterArray = [
-    {
-      paramName: FilterParamName.sort,
-      paramValue: "-decayed_merch",
-      displayText: "Default",
-    },
+    defaultSortFilter,
+    { paramName: FilterParamName.estimateRange, paramValue: "", displayText: "All" },
     { paramName: FilterParamName.medium, paramValue: "*", displayText: "All" },
     { paramName: FilterParamName.priceRange, paramValue: "*-*", displayText: "All" },
     { paramName: FilterParamName.size, paramValue: "*-*", displayText: "All" },
@@ -260,6 +353,16 @@ export const selectedOptionsUnion = ({
       paramValue: false,
       displayText: "All artists I follow",
     },
+    {
+      paramName: FilterParamName.artistIDs,
+      paramValue: [],
+      displayText: "Artists",
+    },
+    {
+      paramName: FilterParamName.viewAs,
+      paramValue: false,
+      displayText: "Grid",
+    },
   ]
 
   // First, naively attempt to union all of the existing filters. Give selectedFilters
@@ -269,7 +372,7 @@ export const selectedOptionsUnion = ({
     previouslyAppliedFilters,
     defaultFilters,
     ({ paramValue, paramName }) => {
-      if (paramName === FilterParamName.artist) {
+      if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
         return paramValue
       } else {
         return paramName
@@ -279,7 +382,7 @@ export const selectedOptionsUnion = ({
 
   // Then, handle the case where a multi-select option is technically de-selected.
   return preliminarySelectedFilters.filter(({ paramName, paramValue }) => {
-    if (paramName === FilterParamName.artist) {
+    if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
       // See if we have an existing entry in previouslyAppliedFilters
       const hasExistingPreviouslyAppliedFilter = previouslyAppliedFilters.find(
         (previouslyAppliedFilter) =>
@@ -305,6 +408,7 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
   return selectedOptionsUnion({
     selectedFilters: state.selectedFilters,
     previouslyAppliedFilters: state.previouslyAppliedFilters,
+    filterType: state.filterType,
   })
 }
 
@@ -315,19 +419,29 @@ export const ArtworkFilterGlobalStateProvider = ({ children }: any /* STRICTNESS
   return <ArtworkFilterContext.Provider value={{ state, dispatch }}>{children}</ArtworkFilterContext.Provider>
 }
 
+export type FilterType = "artwork" | "saleArtwork"
+
+export interface FilterCounts {
+  total: number | null
+  followedArtists: number | null
+}
+
 export interface ArtworkFilterContextState {
   readonly appliedFilters: FilterArray
   readonly selectedFilters: FilterArray
   readonly previouslyAppliedFilters: FilterArray
   readonly applyFilters: boolean
   readonly aggregations: Aggregations
+  readonly filterType: FilterType
+  readonly counts: FilterCounts
 }
 
 export interface FilterData {
   readonly displayText: string
   readonly paramName: FilterParamName
-  paramValue?: string | boolean
+  paramValue?: string | boolean | string[]
   filterKey?: string // gallery and institution share a paramName so need to distinguish
+  count?: number | null // aggregations count
 }
 
 export type FilterArray = ReadonlyArray<FilterData>
@@ -358,9 +472,18 @@ interface SetAggregations {
   payload: any
 }
 
+interface SetFilterType {
+  type: "setFilterType"
+  payload: FilterType
+}
 interface SetInitialFilterState {
   type: "setInitialFilterState"
   payload: FilterArray
+}
+
+interface SetFilterCounts {
+  type: "setFilterCounts"
+  payload: FilterCounts
 }
 
 export type FilterActions =
@@ -370,7 +493,9 @@ export type FilterActions =
   | ClearAllFilters
   | ClearFiltersZeroState
   | SetAggregations
+  | SetFilterType
   | SetInitialFilterState
+  | SetFilterCounts
 
 interface ArtworkFilterContextProps {
   state: ArtworkFilterContextState

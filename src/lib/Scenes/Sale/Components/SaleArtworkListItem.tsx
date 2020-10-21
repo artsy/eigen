@@ -19,7 +19,9 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork }) => {
   const onPress = () => {
     SwitchBoard.presentNavigationViewController(itemRef.current!, artwork.href!)
   }
-  const saleInfo = saleMessageOrBidInfo({ artwork })
+  const saleInfo = saleMessageOrBidInfo({
+    artwork,
+  })
 
   const imageDimensions = getImageDimensions(artwork.image?.height, artwork.image?.width)
 
@@ -88,13 +90,19 @@ const getImageDimensions = (height?: number | null, width?: number | null) => {
 export const SaleArtworkListItemContainer = createFragmentContainer(SaleArtworkListItem, {
   artwork: graphql`
     fragment SaleArtworkListItem_artwork on Artwork {
-      title
+      artistNames
       date
+      href
+      image {
+        small: url(version: "small")
+        aspectRatio
+        height
+        width
+      }
       saleMessage
       slug
+      title
       internalID
-      artistNames
-      href
       sale {
         isAuction
         isClosed
@@ -109,12 +117,6 @@ export const SaleArtworkListItemContainer = createFragmentContainer(SaleArtworkL
           display
         }
         lotLabel
-      }
-      image {
-        small: url(version: "small")
-        aspectRatio
-        height
-        width
       }
     }
   `,

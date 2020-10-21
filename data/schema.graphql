@@ -6789,6 +6789,9 @@ type Me implements Node {
 
   # A list of the current user’s bidder registrations
   bidders(
+    # Limit results to bidders in active auctions
+    active: Boolean
+
     # The slug or ID of a Sale
     saleID: String
   ): [Bidder]
