@@ -91,6 +91,28 @@ describe("Sale", () => {
     expect(popParentViewController).toHaveBeenCalledTimes(1)
   })
 
+  it("doesn't switch to live auction view when sale is closed", () => {
+    renderWithWrappers(<TestRenderer />)
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Sale: () => ({
+          slug: "closed-sale-slug",
+          startAt: moment().subtract(2, "days").toISOString(),
+          liveStartAt: moment().subtract(2, "days").toISOString(),
+          endAt: moment().subtract(1, "day").toISOString(),
+          timeZone: "Europe/Berlin",
+          name: "closed!",
+        }),
+      })
+    )
+
+    expect(navigate).toHaveBeenCalledTimes(0)
+    jest.advanceTimersByTime(1000)
+    expect(navigate).toHaveBeenCalledTimes(0)
+    expect(popParentViewController).toHaveBeenCalledTimes(0)
+  })
+
   it("renders a Register button when registrations are open", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
 
