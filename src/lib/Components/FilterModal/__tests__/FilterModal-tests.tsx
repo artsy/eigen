@@ -196,8 +196,7 @@ describe("Filter modal navigation flow", () => {
       <ArtworkFilterContext.Provider
         value={{
           state,
-          // @ts-ignore STRICTNESS_MIGRATION
-          dispatch: null,
+          dispatch: jest.fn(),
         }}
       >
         <FilterOptions
@@ -221,8 +220,7 @@ describe("Filter modal navigation flow", () => {
       <ArtworkFilterContext.Provider
         value={{
           state,
-          // @ts-ignore STRICTNESS_MIGRATION
-          dispatch: null,
+          dispatch: jest.fn(),
         }}
       >
         {React.createElement(
@@ -328,8 +326,7 @@ describe("Filter modal navigation flow", () => {
         <ArtworkFilterContext.Provider
           value={{
             state,
-            // @ts-ignore STRICTNESS_MIGRATION
-            dispatch: null,
+            dispatch: jest.fn(),
           }}
         >
           {React.createElement(
@@ -702,8 +699,7 @@ describe("Filter modal navigation flow", () => {
       <ArtworkFilterContext.Provider
         value={{
           state,
-          // @ts-ignore STRICTNESS_MIGRATION
-          dispatch: null,
+          dispatch: jest.fn(),
         }}
       >
         <AnimatedArtworkFilterButton isVisible onPress={jest.fn()} />
