@@ -27,9 +27,6 @@ const times = {
   future60: "2021-01-02T15:00:00",
 }
 
-// @ts-ignore
-Date.now = jest.fn(() => new Date(times.present + "Z"))
-
 type Sale = Parameters<typeof saleTime>[0]
 
 const liveSaleNY: Sale = {
@@ -144,6 +141,11 @@ const pastNoStartAtSale: Sale = {
   timeZone: timezones.ny,
 }
 
+beforeEach(() => {
+  // @ts-ignore
+  Date.now = jest.fn(() => new Date(times.present + "Z"))
+})
+
 describe("saleTime", () => {
   it("returns null when timezone is missing", () => {
     expect(
@@ -198,6 +200,12 @@ describe("#saleTime.relative", () => {
 
   it("handles timezone differences across midnight", () => {
     expect(saleTime(liveSaleSoonLA).relative).toEqual("Starts in 6 days")
+  })
+
+  it("handles breaks across years", () => {
+    // @ts-ignore
+    Date.now = jest.fn(() => new Date("2020-12-31T19:00:00Z"))
+    expect(saleTime(liveSale2021).relative).toEqual("Starts in 2 days")
   })
 
   it("pluralises correctly", () => {
