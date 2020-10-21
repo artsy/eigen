@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e7eecf92a3e2367056f6635215425215 */
+/* @relayHash d417e161fac7f6825280507b7c27c2cd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,10 +30,75 @@ query Show2MoreInfoTestsQuery(
   }
 }
 
+fragment LocationMap_location on Location {
+  id
+  internalID
+  city
+  address
+  address2
+  postalCode
+  summary
+  coordinates {
+    lat
+    lng
+  }
+}
+
+fragment Show2Location_show on Show {
+  partner {
+    __typename
+    ... on Partner {
+      name
+    }
+    ... on ExternalPartner {
+      name
+      id
+    }
+    ... on Node {
+      __isNode: __typename
+      id
+    }
+  }
+  fair {
+    name
+    location {
+      ...LocationMap_location
+      id
+    }
+    id
+  }
+  location {
+    ...LocationMap_location
+    id
+  }
+}
+
 fragment Show2MoreInfo_show on Show {
+  ...Show2Location_show
   href
   about: description
   pressRelease(format: MARKDOWN)
+  partner {
+    __typename
+    ... on Node {
+      __isNode: __typename
+      id
+    }
+    ... on ExternalPartner {
+      id
+    }
+  }
+  fair {
+    location {
+      __typename
+      id
+    }
+    id
+  }
+  location {
+    __typename
+    id
+  }
 }
 */
 
@@ -53,10 +118,141 @@ v1 = [
   }
 ],
 v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "Location",
+  "kind": "LinkedField",
+  "name": "location",
+  "plural": false,
+  "selections": [
+    (v4/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "city",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "address",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "address2",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "postalCode",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "summary",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "LatLng",
+      "kind": "LinkedField",
+      "name": "coordinates",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "lat",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "lng",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    (v2/*: any*/)
+  ],
+  "storageKey": null
+},
+v6 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
+},
+v7 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v8 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Location"
+},
+v9 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "String"
+},
+v10 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "LatLng"
+},
+v11 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Float"
 };
 return {
   "fragment": {
@@ -102,6 +298,58 @@ return {
           {
             "alias": null,
             "args": null,
+            "concreteType": null,
+            "kind": "LinkedField",
+            "name": "partner",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              {
+                "kind": "InlineFragment",
+                "selections": [
+                  (v3/*: any*/)
+                ],
+                "type": "Partner",
+                "abstractKey": null
+              },
+              {
+                "kind": "InlineFragment",
+                "selections": [
+                  (v3/*: any*/),
+                  (v4/*: any*/)
+                ],
+                "type": "ExternalPartner",
+                "abstractKey": null
+              },
+              {
+                "kind": "InlineFragment",
+                "selections": [
+                  (v4/*: any*/)
+                ],
+                "type": "Node",
+                "abstractKey": "__isNode"
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Fair",
+            "kind": "LinkedField",
+            "name": "fair",
+            "plural": false,
+            "selections": [
+              (v3/*: any*/),
+              (v5/*: any*/),
+              (v4/*: any*/)
+            ],
+            "storageKey": null
+          },
+          (v5/*: any*/),
+          {
+            "alias": null,
+            "args": null,
             "kind": "ScalarField",
             "name": "href",
             "storageKey": null
@@ -126,20 +374,14 @@ return {
             "name": "pressRelease",
             "storageKey": "pressRelease(format:\"MARKDOWN\")"
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "id",
-            "storageKey": null
-          }
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "e7eecf92a3e2367056f6635215425215",
+    "id": "d417e161fac7f6825280507b7c27c2cd",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {
@@ -148,15 +390,52 @@ return {
           "plural": false,
           "type": "Show"
         },
-        "show.about": (v2/*: any*/),
-        "show.href": (v2/*: any*/),
-        "show.id": {
+        "show.about": (v6/*: any*/),
+        "show.fair": {
           "enumValues": null,
-          "nullable": false,
+          "nullable": true,
           "plural": false,
-          "type": "ID"
+          "type": "Fair"
         },
-        "show.pressRelease": (v2/*: any*/)
+        "show.fair.id": (v7/*: any*/),
+        "show.fair.location": (v8/*: any*/),
+        "show.fair.location.__typename": (v9/*: any*/),
+        "show.fair.location.address": (v6/*: any*/),
+        "show.fair.location.address2": (v6/*: any*/),
+        "show.fair.location.city": (v6/*: any*/),
+        "show.fair.location.coordinates": (v10/*: any*/),
+        "show.fair.location.coordinates.lat": (v11/*: any*/),
+        "show.fair.location.coordinates.lng": (v11/*: any*/),
+        "show.fair.location.id": (v7/*: any*/),
+        "show.fair.location.internalID": (v7/*: any*/),
+        "show.fair.location.postalCode": (v6/*: any*/),
+        "show.fair.location.summary": (v6/*: any*/),
+        "show.fair.name": (v6/*: any*/),
+        "show.href": (v6/*: any*/),
+        "show.id": (v7/*: any*/),
+        "show.location": (v8/*: any*/),
+        "show.location.__typename": (v9/*: any*/),
+        "show.location.address": (v6/*: any*/),
+        "show.location.address2": (v6/*: any*/),
+        "show.location.city": (v6/*: any*/),
+        "show.location.coordinates": (v10/*: any*/),
+        "show.location.coordinates.lat": (v11/*: any*/),
+        "show.location.coordinates.lng": (v11/*: any*/),
+        "show.location.id": (v7/*: any*/),
+        "show.location.internalID": (v7/*: any*/),
+        "show.location.postalCode": (v6/*: any*/),
+        "show.location.summary": (v6/*: any*/),
+        "show.partner": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "PartnerTypes"
+        },
+        "show.partner.__isNode": (v9/*: any*/),
+        "show.partner.__typename": (v9/*: any*/),
+        "show.partner.id": (v7/*: any*/),
+        "show.partner.name": (v6/*: any*/),
+        "show.pressRelease": (v6/*: any*/)
       }
     },
     "name": "Show2MoreInfoTestsQuery",

@@ -8,6 +8,18 @@ export type Show2MoreInfo_show = {
     readonly href: string | null;
     readonly about: string | null;
     readonly pressRelease: string | null;
+    readonly partner: {
+        readonly __typename: string;
+    } | null;
+    readonly fair: {
+        readonly location: {
+            readonly __typename: string;
+        } | null;
+    } | null;
+    readonly location: {
+        readonly __typename: string;
+    } | null;
+    readonly " $fragmentRefs": FragmentRefs<"Show2Location_show">;
     readonly " $refType": "Show2MoreInfo_show";
 };
 export type Show2MoreInfo_show$data = Show2MoreInfo_show;
@@ -18,7 +30,27 @@ export type Show2MoreInfo_show$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = [
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "__typename",
+    "storageKey": null
+  }
+],
+v1 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "Location",
+  "kind": "LinkedField",
+  "name": "location",
+  "plural": false,
+  "selections": (v0/*: any*/),
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -50,10 +82,39 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "name": "pressRelease",
       "storageKey": "pressRelease(format:\"MARKDOWN\")"
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": null,
+      "kind": "LinkedField",
+      "name": "partner",
+      "plural": false,
+      "selections": (v0/*: any*/),
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Fair",
+      "kind": "LinkedField",
+      "name": "fair",
+      "plural": false,
+      "selections": [
+        (v1/*: any*/)
+      ],
+      "storageKey": null
+    },
+    (v1/*: any*/),
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "Show2Location_show"
     }
   ],
   "type": "Show",
   "abstractKey": null
 };
-(node as any).hash = 'fe8c08f507737e110f2297f6650520f1';
+})();
+(node as any).hash = '87b5a7404dc16395475d0f2a5a98b7f6';
 export default node;
