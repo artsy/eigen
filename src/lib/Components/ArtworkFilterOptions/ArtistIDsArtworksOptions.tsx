@@ -7,7 +7,7 @@ import {
 import { aggregationForFilter, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { sortBy } from "lodash"
 import React, { useContext } from "react"
-import { NavigatorIOS } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
 interface ArtistIDsArtworksOptionsScreenProps {
