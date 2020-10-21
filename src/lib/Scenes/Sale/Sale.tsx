@@ -122,7 +122,7 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
       key: "registerToBid",
       content: (
         <Flex mx="2" mt={2}>
-          <RegisterToBidButtonContainer sale={sale} />
+          <RegisterToBidButtonContainer sale={sale} me={me} />
         </Flex>
       ),
     },
@@ -198,6 +198,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
           me {
             ...SaleArtworksRail_me
             ...SaleActiveBids_me @arguments(saleID: $saleID)
+            ...RegisterToBidButton_me @arguments(saleID: $saleID)
           }
 
           ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleSlug)

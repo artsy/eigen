@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 211fba4b45eb8ddc055f735e6ebfa1f7 */
+/* @relayHash bec3db87bc02c2659edd9e6ef1e2bea6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -17,7 +17,7 @@ export type SaleQueryRendererQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"SaleHeader_sale" | "RegisterToBidButton_sale">;
     } | null;
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"SaleArtworksRail_me" | "SaleActiveBids_me">;
+        readonly " $fragmentRefs": FragmentRefs<"SaleArtworksRail_me" | "SaleActiveBids_me" | "RegisterToBidButton_me">;
     } | null;
     readonly " $fragmentRefs": FragmentRefs<"SaleLotsList_saleArtworksConnection">;
 };
@@ -44,6 +44,7 @@ query SaleQueryRendererQuery(
   me {
     ...SaleArtworksRail_me
     ...SaleActiveBids_me_nfIph
+    ...RegisterToBidButton_me_nfIph
     id
   }
   ...SaleLotsList_saleArtworksConnection_4BVn5U
@@ -117,6 +118,14 @@ fragment Lot_saleArtwork on SaleArtwork {
       url(version: "medium")
     }
     id
+  }
+}
+
+fragment RegisterToBidButton_me_nfIph on Me {
+  biddedLots: lotStandings(saleID: $saleID) {
+    saleArtwork {
+      id
+    }
   }
 }
 
@@ -594,6 +603,11 @@ return {
             "args": (v5/*: any*/),
             "kind": "FragmentSpread",
             "name": "SaleActiveBids_me"
+          },
+          {
+            "args": (v5/*: any*/),
+            "kind": "FragmentSpread",
+            "name": "RegisterToBidButton_me"
           }
         ],
         "storageKey": null
@@ -935,6 +949,29 @@ return {
             ],
             "storageKey": null
           },
+          {
+            "alias": "biddedLots",
+            "args": (v5/*: any*/),
+            "concreteType": "LotStanding",
+            "kind": "LinkedField",
+            "name": "lotStandings",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "SaleArtwork",
+                "kind": "LinkedField",
+                "name": "saleArtwork",
+                "plural": false,
+                "selections": [
+                  (v9/*: any*/)
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
           (v9/*: any*/)
         ],
         "storageKey": null
@@ -1245,7 +1282,7 @@ return {
     ]
   },
   "params": {
-    "id": "211fba4b45eb8ddc055f735e6ebfa1f7",
+    "id": "bec3db87bc02c2659edd9e6ef1e2bea6",
     "metadata": {},
     "name": "SaleQueryRendererQuery",
     "operationKind": "query",
@@ -1253,5 +1290,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'f28dcd3e5c981ca28eee909a7e648794';
+(node as any).hash = '38596ec2c6b0c9a944b0431378bb5e5b';
 export default node;

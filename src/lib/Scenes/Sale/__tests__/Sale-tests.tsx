@@ -20,8 +20,8 @@ describe("Sale", () => {
     <QueryRenderer<SaleTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query SaleTestsQuery @relay_test_operation {
-          sale(id: "the-sale") {
+        query SaleTestsQuery($saleID: String!) @relay_test_operation {
+          sale(id: $saleID) {
             internalID
             slug
             liveStartAt
@@ -30,11 +30,13 @@ describe("Sale", () => {
           }
           me {
             ...SaleArtworksRail_me
+            ...SaleActiveBids_me @arguments(saleID: $saleID)
+            ...RegisterToBidButton_me @arguments(saleID: $saleID)
           }
           ...SaleLotsList_saleArtworksConnection @arguments(saleID: "sale-slug")
         }
       `}
-      variables={{}}
+      variables={{ saleID: "sale-id" }}
       render={({ props }) => {
         if (props) {
           return <Sale queryRes={props} />

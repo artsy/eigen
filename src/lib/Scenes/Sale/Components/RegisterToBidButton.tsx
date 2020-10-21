@@ -1,3 +1,4 @@
+import { RegisterToBidButton_me } from "__generated__/RegisterToBidButton_me.graphql"
 import { RegisterToBidButton_sale } from "__generated__/RegisterToBidButton_sale.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Box, Button, CheckIcon, Flex, Spacer, Text } from "palette"
@@ -8,10 +9,10 @@ import { saleStatus } from "../helpers"
 
 interface RegisterToBidButtonProps {
   sale: RegisterToBidButton_sale
+  me: RegisterToBidButton_me
 }
 
-const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = (props) => {
-  const { sale } = props
+const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({ me, sale }) => {
   const { trackEvent } = useTracking()
   const navRef = useRef<any>(null)
 
@@ -57,12 +58,17 @@ const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = (props) => {
   }
 
   if (sale.registrationStatus?.qualifiedForBidding) {
-    return (
-      <Flex flexDirection="row">
-        <CheckIcon fill="green100" mr={8} />
-        <Text color="green100">You're approved to bid</Text>
-      </Flex>
-    )
+    // If the user alrady bidded on some lots, we don' have to remind them they are approved to bid
+    if (me?.biddedLots && me.biddedLots.length > 0) {
+      return null
+    } else {
+      return (
+        <Flex flexDirection="row">
+          <CheckIcon fill="green100" mr={8} />
+          <Text color="green100">You're approved to bid</Text>
+        </Flex>
+      )
+    }
   } else {
     return (
       <Button block size="large" disabled>
@@ -81,6 +87,15 @@ export const RegisterToBidButtonContainer = createFragmentContainer(RegisterToBi
       requireIdentityVerification
       registrationStatus {
         qualifiedForBidding
+      }
+    }
+  `,
+  me: graphql`
+    fragment RegisterToBidButton_me on Me @argumentDefinitions(saleID: { type: "String" }) {
+      biddedLots: lotStandings(saleID: $saleID) {
+        saleArtwork {
+          id
+        }
       }
     }
   `,
