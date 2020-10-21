@@ -6855,6 +6855,9 @@ type Me implements Node {
     reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
   )
 
+  # List of lab features for this user
+  labFeatures: [String!]!
+
   # Sale Artworks search results
   lotsByFollowedArtistsConnection(
     after: String
