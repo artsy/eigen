@@ -114,14 +114,16 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
       key: "header",
       content: <SaleHeader sale={sale} scrollAnim={scrollAnim} />,
     },
-    (sale.endAt === null || moment().isBefore(sale.endAt)) && {
-      key: "registerToBid",
-      content: (
-        <Flex mx="2" mt={2}>
-          <RegisterToBidButton sale={sale} />
-        </Flex>
-      ),
-    },
+    (sale.endAt === null || moment().isBefore(sale.endAt)) &&
+      sale.registrationEndsAt !== null &&
+      moment().isBefore(sale.registrationEndsAt) && {
+        key: "registerToBid",
+        content: (
+          <Flex mx="2" mt={2}>
+            <RegisterToBidButton sale={sale} />
+          </Flex>
+        ),
+      },
     {
       key: "saleArtworksRail",
       content: <SaleArtworksRailContainer me={me} />,
@@ -187,6 +189,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
             endAt
             ...SaleHeader_sale
             ...RegisterToBidButton_sale
+            registrationEndsAt
           }
           me {
             ...SaleArtworksRail_me
