@@ -12,13 +12,9 @@ import { navigate } from "../../../navigation/navigate"
 
 export const COVER_IMAGE_HEIGHT = 260
 
-interface AnimatedValue {
-  interpolate({}): {}
-}
-
 interface Props {
   sale: SaleHeader_sale
-  scrollAnim: AnimatedValue
+  scrollAnim: Animated.Value
 }
 
 export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
