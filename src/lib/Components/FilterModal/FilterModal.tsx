@@ -431,7 +431,7 @@ export const AnimatedArtworkFilterButton: React.FC<{ isVisible: boolean; onPress
       <FilterArtworkButton px="2">
         <FilterIcon fill="white100" />
         <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
-          Filter
+          Sort & Filter
         </Sans>
         {getFiltersCount() > 0 && (
           <>

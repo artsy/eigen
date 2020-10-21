@@ -23,6 +23,7 @@ import { FakeNavigator as MockNavigator } from "../../Bidding/__tests__/Helpers/
 import { FancyModalHeader } from "../../FancyModal/FancyModalHeader"
 import { closeModalMock, MockFilterScreen } from "../__tests__/FilterTestHelper"
 import {
+  AnimatedArtworkFilterButton,
   ApplyButton,
   ClearAllButton,
   CloseIconContainer,
@@ -692,5 +693,23 @@ describe("Applying filters on Artworks", () => {
         sort: "-decayed_merch",
       },
     })
+  })
+})
+
+describe("Filter modal navigation flow", () => {
+  it("allows users to navigate forward to sort screen from filter screen", () => {
+    const tree = renderWithWrappers(
+      <ArtworkFilterContext.Provider
+        value={{
+          state,
+          // @ts-ignore STRICTNESS_MIGRATION
+          dispatch: null,
+        }}
+      >
+        <AnimatedArtworkFilterButton isVisible onPress={jest.fn()} />
+      </ArtworkFilterContext.Provider>
+    )
+
+    expect(tree.root.findAllByType(Sans)[0].props.children).toEqual("Sort & Filter")
   })
 })
