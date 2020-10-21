@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a8c0032787b8d7bb6628b63a3a12b2fb */
+/* @relayHash 1598e3c7a3b581583b09f26eae37bb5a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -208,7 +208,7 @@ fragment SaleArtworksRail_me on Me {
 
 fragment SaleHeader_sale on Sale {
   name
-  internalID
+  slug
   liveStartAt
   endAt
   startAt
@@ -1121,7 +1121,7 @@ return {
     ]
   },
   "params": {
-    "id": "a8c0032787b8d7bb6628b63a3a12b2fb",
+    "id": "1598e3c7a3b581583b09f26eae37bb5a",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {

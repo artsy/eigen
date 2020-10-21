@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5487e9e74d4760d636909b88ece8fefc */
+/* @relayHash 7fb7dc30e437859f9fa19f616eccae11 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -42,13 +42,14 @@ fragment RegisterToBidButton_sale on Sale {
 }
 
 fragment SaleInfo_sale on Sale {
+  ...RegisterToBidButton_sale
   description
   endAt
+  isWithBuyersPremium
   liveStartAt
   name
   startAt
   timeZone
-  ...RegisterToBidButton_sale
 }
 */
 
@@ -119,28 +120,7 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "description",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "endAt",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "liveStartAt",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "name",
+            "name": "slug",
             "storageKey": null
           },
           {
@@ -154,14 +134,7 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "timeZone",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "slug",
+            "name": "endAt",
             "storageKey": null
           },
           {
@@ -190,6 +163,41 @@ return {
             ],
             "storageKey": null
           },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "description",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "isWithBuyersPremium",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "liveStartAt",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "name",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "timeZone",
+            "storageKey": null
+          },
           (v2/*: any*/)
         ],
         "storageKey": null
@@ -197,7 +205,7 @@ return {
     ]
   },
   "params": {
-    "id": "5487e9e74d4760d636909b88ece8fefc",
+    "id": "7fb7dc30e437859f9fa19f616eccae11",
     "metadata": {},
     "name": "SaleInfoQueryRendererQuery",
     "operationKind": "query",

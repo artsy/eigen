@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 64489c5de4729bea0401030348bf1437 */
+/* @relayHash 0b50f0a85dfa7b8cf911ed2472645339 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -214,7 +214,7 @@ fragment SaleArtworksRail_me on Me {
 
 fragment SaleHeader_sale on Sale {
   name
-  internalID
+  slug
   liveStartAt
   endAt
   startAt
@@ -1055,7 +1055,7 @@ return {
     ]
   },
   "params": {
-    "id": "64489c5de4729bea0401030348bf1437",
+    "id": "0b50f0a85dfa7b8cf911ed2472645339",
     "metadata": {},
     "name": "SaleQueryRendererQuery",
     "operationKind": "query",

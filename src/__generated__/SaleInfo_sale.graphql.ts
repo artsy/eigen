@@ -7,6 +7,7 @@ import { FragmentRefs } from "relay-runtime";
 export type SaleInfo_sale = {
     readonly description: string | null;
     readonly endAt: string | null;
+    readonly isWithBuyersPremium: boolean | null;
     readonly liveStartAt: string | null;
     readonly name: string | null;
     readonly startAt: string | null;
@@ -46,6 +47,13 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "isWithBuyersPremium",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "liveStartAt",
       "storageKey": null
     },
@@ -79,5 +87,5 @@ const node: ReaderFragment = {
   "type": "Sale",
   "abstractKey": null
 };
-(node as any).hash = '49d90df48b3cc485465b24b02cf6640b';
+(node as any).hash = '679767d95dc09cd34a064e80f503fe90';
 export default node;

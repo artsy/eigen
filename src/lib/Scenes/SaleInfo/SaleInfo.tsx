@@ -19,7 +19,7 @@ interface Props {
 
 export const AuctionSupport = () => {
   return (
-    <Flex>
+    <Flex mt={1}>
       <Sans px={2} size="5t" mb={15}>
         Auction support
       </Sans>
@@ -43,7 +43,9 @@ export const AuctionSupport = () => {
 
 export const AuctionIsLive = () => (
   <Flex px={2} data-test-id="live-auction">
-    <Sans size="5t">This is a live auction</Sans>
+    <Sans size="5t" mb={2} mt={1}>
+      This is a live auction
+    </Sans>
     <Text variant="text" color="black" fontSize="size4">
       Participating in a live auction means you’ll be competing against bidders in real time on an auction room floor.
       You can place max bids which will be represented by Artsy in the auction room or you can bid live when the auction
@@ -52,7 +54,25 @@ export const AuctionIsLive = () => (
   </Flex>
 )
 
+export const AuctionIsBuyersPremium = () => (
+  <Flex px={2} data-test-id="live-auction">
+    <Sans size="5t" mb={2} mt={1}>
+      Buyer’s premium for this auction
+    </Sans>
+    <Text variant="text" color="black" fontSize="size4" mb={1}>
+      On the hammer price up to and including $100,000: 25%
+    </Text>
+    <Text variant="text" color="black" fontSize="size4" mb={1}>
+      On the hammer price in excess of $100,000 up to and including $1,000,000: 20%
+    </Text>
+    <Text variant="text" color="black" fontSize="size4" mb={1}>
+      On the portion of the hammer price in excess of $1,000,000: 12%
+    </Text>
+  </Flex>
+)
+
 export const SaleInfo: React.FC<Props> = ({ sale }) => {
+  console.log({ sale })
   const isLiveBiddingAvailable = () => {
     if (!sale.liveStartAt) {
       return false
@@ -95,6 +115,9 @@ export const SaleInfo: React.FC<Props> = ({ sale }) => {
           {renderLiveBiddingOpening()}
         </Flex>
 
+        {/*  Buyer Premium */}
+        {!!sale.isWithBuyersPremium && <AuctionIsBuyersPremium />}
+
         {/*  Live Auction Notice */}
         {Boolean(sale.liveStartAt) && <AuctionIsLive />}
 
@@ -123,13 +146,14 @@ const SaleInfoPlaceholder = () => (
 export const SaleInfoContainer = createFragmentContainer(SaleInfo, {
   sale: graphql`
     fragment SaleInfo_sale on Sale {
+      ...RegisterToBidButton_sale
       description
       endAt
+      isWithBuyersPremium
       liveStartAt
       name
       startAt
       timeZone
-      ...RegisterToBidButton_sale
     }
   `,
 })

@@ -82,7 +82,7 @@ export const SaleHeader: React.FC<Props> = (props) => {
           <CaretButton
             text="More info about this auction"
             onPress={() => {
-              navigate(`auction/${props.sale.internalID}/info`)
+              navigate(`auction/${props.sale.slug}/info`)
             }}
           />
         </Flex>
@@ -95,7 +95,7 @@ export const SaleHeaderContainer = createFragmentContainer(SaleHeader, {
   sale: graphql`
     fragment SaleHeader_sale on Sale {
       name
-      internalID
+      slug
       liveStartAt
       endAt
       startAt
