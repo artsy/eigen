@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a8c0032787b8d7bb6628b63a3a12b2fb */
+/* @relayHash 83176ef5a55a090f7b8b3aa1e61681ce */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -11,6 +11,7 @@ export type SaleTestsQueryResponse = {
         readonly internalID: string;
         readonly slug: string;
         readonly liveStartAt: string | null;
+        readonly endAt: string | null;
         readonly " $fragmentRefs": FragmentRefs<"SaleHeader_sale" | "RegisterToBidButton_sale">;
     } | null;
     readonly me: {
@@ -31,6 +32,7 @@ query SaleTestsQuery {
     internalID
     slug
     liveStartAt
+    endAt
     ...SaleHeader_sale
     ...RegisterToBidButton_sale
     id
@@ -280,22 +282,22 @@ v3 = {
   "storageKey": null
 },
 v4 = {
-  "kind": "Literal",
-  "name": "saleID",
-  "value": "sale-slug"
-},
-v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "endAt",
   "storageKey": null
+},
+v5 = {
+  "kind": "Literal",
+  "name": "saleID",
+  "value": "sale-slug"
 },
 v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "endAt",
+  "name": "name",
   "storageKey": null
 },
 v7 = {
@@ -455,7 +457,7 @@ v22 = [
     "name": "includeArtworksByFollowedArtists",
     "value": false
   },
-  (v4/*: any*/),
+  (v5/*: any*/),
   {
     "kind": "Literal",
     "name": "sort",
@@ -571,6 +573,7 @@ return {
           (v1/*: any*/),
           (v2/*: any*/),
           (v3/*: any*/),
+          (v4/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
@@ -602,7 +605,7 @@ return {
       },
       {
         "args": [
-          (v4/*: any*/)
+          (v5/*: any*/)
         ],
         "kind": "FragmentSpread",
         "name": "SaleLotsList_saleArtworksConnection"
@@ -628,7 +631,7 @@ return {
           (v1/*: any*/),
           (v2/*: any*/),
           (v3/*: any*/),
-          (v5/*: any*/),
+          (v4/*: any*/),
           (v6/*: any*/),
           {
             "alias": null,
@@ -853,7 +856,7 @@ return {
                     "name": "count",
                     "storageKey": null
                   },
-                  (v5/*: any*/),
+                  (v6/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -1033,7 +1036,7 @@ return {
                           (v19/*: any*/),
                           (v20/*: any*/),
                           (v21/*: any*/),
-                          (v6/*: any*/),
+                          (v4/*: any*/),
                           (v7/*: any*/)
                         ],
                         "storageKey": null
@@ -1061,7 +1064,7 @@ return {
                         "name": "partner",
                         "plural": false,
                         "selections": [
-                          (v5/*: any*/),
+                          (v6/*: any*/),
                           (v7/*: any*/)
                         ],
                         "storageKey": null
@@ -1121,7 +1124,7 @@ return {
     ]
   },
   "params": {
-    "id": "a8c0032787b8d7bb6628b63a3a12b2fb",
+    "id": "83176ef5a55a090f7b8b3aa1e61681ce",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -1296,5 +1299,5 @@ return {
   }
 };
 })();
-(node as any).hash = '1d371bcb17c16ce1704f229296dec6e6';
+(node as any).hash = 'a3bf9f690f542ffc6622932771f9c47b';
 export default node;

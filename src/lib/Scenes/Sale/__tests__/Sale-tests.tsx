@@ -27,6 +27,7 @@ describe("Sale", () => {
             internalID
             slug
             liveStartAt
+            endAt
             ...SaleHeader_sale
             ...RegisterToBidButton_sale
           }
@@ -59,17 +60,6 @@ describe("Sale", () => {
   it("switches to live auction view when sale goes live", () => {
     renderWithWrappers(<TestRenderer />)
 
-    const now = new Date()
-
-    const halfSecondInPast = new Date()
-    halfSecondInPast.setMilliseconds(now.getMilliseconds() - 500)
-
-    const yesterday = new Date()
-    yesterday.setHours(yesterday.getHours() - 24)
-
-    const tomorrow = new Date()
-    tomorrow.setHours(tomorrow.getHours() + 24)
-
     __appStoreTestUtils__?.injectState({
       native: {
         sessionState: { predictionURL: "https://live-staging.artsy.net" },
@@ -80,23 +70,24 @@ describe("Sale", () => {
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
           slug: "live-sale-slug",
-          endAt: tomorrow.toISOString(),
-          startAt: yesterday.toISOString(),
+          startAt: moment().subtract(1, "day").toISOString(),
+          liveStartAt: moment().subtract(1, "second").toISOString(),
+          endAt: moment().add(1, "day").toISOString(),
           timeZone: "Europe/Berlin",
           coverImage: {
             url: "cover image url",
           },
           name: "sale name",
-          liveStartAt: halfSecondInPast.toISOString(),
           internalID: "the-sale-internal",
         }),
       })
     )
 
+    expect(navigate).toHaveBeenCalledTimes(0)
     jest.advanceTimersByTime(1000)
-    expect(setInterval).toHaveBeenCalledTimes(1)
+    expect(navigate).toHaveBeenCalledTimes(1)
     expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug")
-    expect(popParentViewController).toHaveBeenCalled()
+    expect(popParentViewController).toHaveBeenCalledTimes(1)
   })
 
   it("doesn't render a Register button when it's closed", () => {
@@ -106,9 +97,9 @@ describe("Sale", () => {
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
           slug: "closed-sale-slug",
-          startAt: moment().subtract(3, "days"),
-          liveStartAt: moment().subtract(2, "days"),
-          endAt: moment().subtract(1, "day"),
+          startAt: moment().subtract(3, "days").toISOString(),
+          liveStartAt: moment().subtract(2, "days").toISOString(),
+          endAt: moment().subtract(1, "day").toISOString(),
           name: "closed sale!",
         }),
       })

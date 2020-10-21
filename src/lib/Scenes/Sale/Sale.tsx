@@ -8,6 +8,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { getCurrentEmissionState } from "lib/store/AppStore"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
+import { usePrevious } from "lib/utils/usePrevious"
 import _ from "lodash"
 import moment from "moment"
 import { Flex } from "palette"
@@ -49,6 +50,8 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
 
   const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const [isLive, setIsLive] = useState(false)
+  const prevIsLive = usePrevious(isLive, false)
 
   const scrollAnim = useRef(new Animated.Value(0)).current
 
@@ -57,21 +60,27 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
   useEffect(() => {
     if (sale.liveStartAt) {
       // poll every .5 seconds to check if sale has gone live
-      intervalId = setInterval(checkIfSaleIsLive, 500)
-      return () => {
-        clearInterval(intervalId)
-      }
+      intervalId = setInterval(() => {
+        const now = moment()
+        setIsLive(
+          sale.liveStartAt !== null && now.isAfter(sale.liveStartAt) && sale.endAt !== null && now.isBefore(sale.endAt)
+        )
+      }, 500)
+      return () => clearInterval(intervalId)
     }
   }, [])
 
-  const checkIfSaleIsLive = () => {
-    if (sale.liveStartAt) {
-      const now = moment()
-      const isLive = now.isAfter(sale.liveStartAt) && sale.endAt !== null && now.isBefore(sale.endAt)
-      if (isLive) {
-        switchToLive()
-      }
+  useEffect(() => {
+    if (isLive === true && prevIsLive === false) {
+      switchToLive()
     }
+  }, [isLive, prevIsLive])
+
+  const switchToLive = () => {
+    const liveBaseURL = getCurrentEmissionState().predictionURL
+    const liveAuctionURL = `${liveBaseURL}/${sale.slug}`
+    navigate(liveAuctionURL)
+    setTimeout(popParentViewController, 500)
   }
 
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
@@ -104,13 +113,6 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
       action_type: Schema.ActionTypes.Tap,
     })
     setFilterArtworkModalVisible(false)
-  }
-
-  const switchToLive = () => {
-    const liveBaseURL = getCurrentEmissionState().predictionURL
-    const liveAuctionURL = `${liveBaseURL}/${sale.slug}`
-    navigate(liveAuctionURL)
-    setTimeout(popParentViewController, 500)
   }
 
   const saleSectionsData: SaleSection[] = _.compact([
