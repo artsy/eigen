@@ -6,7 +6,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 
 import { SaleListItem_sale } from "__generated__/SaleListItem_sale.graphql"
-import { capitalize } from "lodash"
+import { formatDisplayTimelyAt } from "lib/Scenes/Sale/helpers"
 import { Sans } from "palette"
 
 interface Props {
@@ -26,9 +26,7 @@ export class SaleListItem extends React.Component<Props> {
   render() {
     const sale = this.props.sale
     const image = sale.coverImage
-    const timestamp = capitalize(
-      sale.displayTimelyAt?.replace(/M$/, "mo").replace("\n", " ")
-    ).replace(/(jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)/, (s) => capitalize(s))
+    const timestamp = formatDisplayTimelyAt(sale.displayTimelyAt)
     const containerWidth = this.props.containerWidth
 
     return (
