@@ -4,7 +4,7 @@ import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
-import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
+import { InquiryOptions, InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Box, color, Flex, Separator, space, Text } from "palette"
 import React, { useContext, useState } from "react"
 import { LayoutAnimation, TouchableOpacity } from "react-native"
@@ -38,23 +38,23 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const selectShippingLocation = (l: string) => dispatch({ type: "selectShippingLocation", payload: l })
 
-  const renderInquiryQuestion = (inquiry: string): JSX.Element => {
+  const renderInquiryQuestion = (id: string, inquiryQuestion: string): JSX.Element => {
     // Shipping requires special logic to accomodate dropdown and shipping modal
-    const isShipping = inquiry === InquiryOptions.Shipping
+    const isShipping = id === InquiryQuestionIDs.Shipping
 
     return (
-      <React.Fragment key={inquiry}>
+      <React.Fragment key={inquiryQuestion}>
         <InquiryField>
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex flexDirection="row">
               <Checkbox
-                data-test-id={`checkbox-${inquiry}`}
+                data-test-id={`checkbox-${inquiryQuestion}`}
                 checked={
-                  state.inquiryType === InquiryOptions.RequestPrice && inquiry === InquiryOptions.PriceAvailability
+                  state.inquiryType === InquiryOptions.RequestPrice && id === InquiryQuestionIDs.PriceAndAvailability
                 }
                 onPress={() => isShipping && toggleLocationExpanded()}
               />
-              <Text variant="text">{inquiry}</Text>
+              <Text variant="text">{inquiryQuestion}</Text>
             </Flex>
           </Flex>
 
@@ -105,10 +105,13 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
       <Box m={2}>
         <Text variant="mediumText">What information are you looking for?</Text>
         {
-          // @ts-ignore
           // NOTE: For now the inquiryQuestions field values are always present and therefore never null, so it is safe to destructure them
-          questions!.map(({ question }: string) => {
-            return renderInquiryQuestion(question)
+          questions!.map((inquiryQuestion) => {
+            if (!inquiryQuestion) {
+              return false
+            }
+            const { internalID: id, question } = inquiryQuestion
+            return renderInquiryQuestion(id, question)
           })
         }
       </Box>
@@ -135,6 +138,7 @@ export const InquiryModalFragmentContainer = createFragmentContainer(InquiryModa
     fragment InquiryModal_artwork on Artwork {
       ...CollapsibleArtworkDetails_artwork
       inquiryQuestions {
+        internalID
         question
       }
     }
