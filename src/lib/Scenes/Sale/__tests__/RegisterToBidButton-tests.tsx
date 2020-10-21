@@ -5,7 +5,7 @@ import { Text } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { RegisterToBidButton } from "../Components/RegisterToBidButton"
+import { RegisterToBidButtonContainer } from "../Components/RegisterToBidButton"
 
 jest.unmock("react-relay")
 
@@ -24,7 +24,7 @@ describe("RegisterToBidButton", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.sale) {
-          return <RegisterToBidButton sale={props.sale} />
+          return <RegisterToBidButtonContainer sale={props.sale} />
         }
         return null
       }}

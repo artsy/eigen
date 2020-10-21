@@ -14,7 +14,8 @@ import React, { useEffect, useRef, useState } from "react"
 import { Animated } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { RegisterToBidButton } from "./Components/RegisterToBidButton"
+import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
+import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
 import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
 import { SaleHeaderContainer as SaleHeader } from "./Components/SaleHeader"
 import { SaleLotsListContainer } from "./Components/SaleLotsList"
@@ -121,9 +122,13 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
       key: "registerToBid",
       content: (
         <Flex mx="2" mt={2}>
-          <RegisterToBidButton sale={sale} />
+          <RegisterToBidButtonContainer sale={sale} />
         </Flex>
       ),
+    },
+    {
+      key: "saleActiveBids",
+      content: <SaleActiveBidsContainer me={me} saleID={sale.internalID} />,
     },
     {
       key: "saleArtworksRail",
@@ -142,7 +147,7 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
           <>
             <Animated.FlatList
               data={saleSectionsData}
-              initialNumToRender={2}
+              initialNumToRender={4} // Render the infinite scroll list after the rest of the page
               viewabilityConfig={viewConfigRef.current}
               onViewableItemsChanged={viewableItemsChangedRef.current}
               renderItem={({ item }: { item: SaleSection }) => item.content}
@@ -192,6 +197,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
           }
           me {
             ...SaleArtworksRail_me
+            ...SaleActiveBids_me @arguments(saleID: $saleID)
           }
 
           ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleSlug)

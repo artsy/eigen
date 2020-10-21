@@ -10,7 +10,7 @@ interface RegisterToBidButtonProps {
   sale: RegisterToBidButton_sale
 }
 
-const RegisterToBidButtonComp: React.FC<RegisterToBidButtonProps> = (props) => {
+const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = (props) => {
   const { sale } = props
   const { trackEvent } = useTracking()
   const navRef = useRef<any>(null)
@@ -72,7 +72,7 @@ const RegisterToBidButtonComp: React.FC<RegisterToBidButtonProps> = (props) => {
   }
 }
 
-export const RegisterToBidButton = createFragmentContainer(RegisterToBidButtonComp, {
+export const RegisterToBidButtonContainer = createFragmentContainer(RegisterToBidButton, {
   sale: graphql`
     fragment RegisterToBidButton_sale on Sale {
       slug
