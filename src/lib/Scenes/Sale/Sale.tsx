@@ -64,10 +64,10 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
   }, [])
 
   const checkIfSaleIsLive = () => {
-    const liveStartAt = sale.liveStartAt
-    if (liveStartAt) {
-      const isLiveOpen = moment().isAfter(liveStartAt)
-      if (isLiveOpen) {
+    if (sale.liveStartAt) {
+      const now = moment()
+      const isLive = now.isAfter(sale.liveStartAt) && sale.endAt !== null && now.isBefore(sale.endAt)
+      if (isLive) {
         switchToLive()
       }
     }
@@ -187,6 +187,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
             internalID
             slug
             liveStartAt
+            endAt
             ...SaleHeader_sale
             ...RegisterToBidButton_sale
           }
