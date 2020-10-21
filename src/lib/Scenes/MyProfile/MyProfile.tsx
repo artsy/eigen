@@ -19,6 +19,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
   const listRef = useRef<FlatList<any>>(null)
   const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
   const shouldDisplayMyBids = useEmissionOption("AROptionsBidManagement")
+  const shouldDisplayMyCollection = useEmissionOption("AROptionsEnableMyCollection")
   const [isRefreshing, setIsRefreshing] = useState(false)
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
@@ -40,6 +41,13 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
           title="My Bids"
           onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-bids")}
           chevron={<ChevronIcon direction="right" fill="black60" />}
+        />
+      )}
+      {!!shouldDisplayMyCollection && (
+        <MenuItem
+          isBeta={true}
+          title="Artwork insights"
+          onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-collection/artwork-list")}
         />
       )}
       <MenuItem
@@ -117,7 +125,7 @@ const SectionHeading: React.FC<{ title: string }> = ({ title }) => (
   </Sans>
 )
 
-const MyProfileContainer = createRefetchContainer(
+export const MyProfileContainer = createRefetchContainer(
   MyProfile,
   {
     me: graphql`
