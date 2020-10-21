@@ -1,6 +1,6 @@
 import { Detail_show } from "__generated__/Detail_show.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import { HoursCollapsible } from "lib/Components/HoursCollapsible"
+import { HoursCollapsibleFragmentContainer as HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "lib/Components/Show/ShowArtistsPreview"
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "lib/Components/Show/ShowArtworksPreview"
@@ -215,6 +215,7 @@ export const DetailContainer = createFragmentContainer(Detail, {
       ...Shows_show
       location {
         ...LocationMap_location
+        ...HoursCollapsible_location
         openingHours {
           ... on OpeningHoursArray {
             schedules {

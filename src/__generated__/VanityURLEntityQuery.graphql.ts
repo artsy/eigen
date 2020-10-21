@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 51bb21e5125e43b0f2e33d644ef56d32 */
+/* @relayHash dcb535cde8b03438532e86ba59615795 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -417,6 +417,7 @@ fragment FairDetail_fair on Fair {
   isActive
   location {
     ...LocationMap_location
+    ...HoursCollapsible_location
     coordinates {
       lat
       lng
@@ -512,6 +513,21 @@ fragment GenericGrid_artworks on Artwork {
     aspect_ratio: aspectRatio
   }
   ...ArtworkGridItem_artwork
+}
+
+fragment HoursCollapsible_location on Location {
+  openingHours {
+    __typename
+    ... on OpeningHoursArray {
+      schedules {
+        days
+        hours
+      }
+    }
+    ... on OpeningHoursText {
+      text
+    }
+  }
 }
 
 fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
@@ -1307,10 +1323,17 @@ v56 = [
   (v4/*: any*/),
   (v7/*: any*/)
 ],
-v57 = [
+v57 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "hours",
+  "storageKey": null
+},
+v58 = [
   (v6/*: any*/)
 ],
-v58 = {
+v59 = {
   "alias": null,
   "args": null,
   "concreteType": "PageInfo",
@@ -1324,20 +1347,20 @@ v58 = {
   ],
   "storageKey": null
 },
-v59 = {
+v60 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "isFollowed",
   "storageKey": null
 },
-v60 = {
+v61 = {
   "kind": "InlineFragment",
   "selections": (v45/*: any*/),
   "type": "ExternalPartner",
   "abstractKey": null
 },
-v61 = {
+v62 = {
   "alias": null,
   "args": null,
   "concreteType": "Image",
@@ -1347,40 +1370,40 @@ v61 = {
   "selections": (v54/*: any*/),
   "storageKey": null
 },
-v62 = {
+v63 = {
   "kind": "Literal",
   "name": "first",
   "value": 10
 },
-v63 = [
-  (v62/*: any*/),
+v64 = [
+  (v63/*: any*/),
   {
     "kind": "Literal",
     "name": "sort",
     "value": "PARTNER_UPDATED_AT_DESC"
   }
 ],
-v64 = [
-  (v62/*: any*/),
+v65 = [
+  (v63/*: any*/),
   {
     "kind": "Literal",
     "name": "sort",
     "value": "SORTABLE_ID_ASC"
   }
 ],
-v65 = {
+v66 = {
   "kind": "Literal",
   "name": "status",
   "value": "CURRENT"
 },
-v66 = {
+v67 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "isDisplayable",
   "storageKey": null
 },
-v67 = [
+v68 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -1397,11 +1420,11 @@ v67 = [
     "value": "CLOSED"
   }
 ],
-v68 = [
+v69 = [
   "status",
   "sort"
 ],
-v69 = [
+v70 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -1412,7 +1435,7 @@ v69 = [
     "name": "sort",
     "value": "END_AT_ASC"
   },
-  (v65/*: any*/)
+  (v66/*: any*/)
 ];
 return {
   "fragment": {
@@ -2301,13 +2324,7 @@ return {
                     "storageKey": null
                   },
                   (v4/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "hours",
-                    "storageKey": null
-                  },
+                  (v57/*: any*/),
                   (v5/*: any*/),
                   {
                     "alias": null,
@@ -2348,7 +2365,59 @@ return {
                         "storageKey": null
                       },
                       (v16/*: any*/),
-                      (v19/*: any*/)
+                      (v19/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": null,
+                        "kind": "LinkedField",
+                        "name": "openingHours",
+                        "plural": false,
+                        "selections": [
+                          (v2/*: any*/),
+                          {
+                            "kind": "InlineFragment",
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "FormattedDaySchedules",
+                                "kind": "LinkedField",
+                                "name": "schedules",
+                                "plural": true,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "days",
+                                    "storageKey": null
+                                  },
+                                  (v57/*: any*/)
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "type": "OpeningHoursArray",
+                            "abstractKey": null
+                          },
+                          {
+                            "kind": "InlineFragment",
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "text",
+                                "storageKey": null
+                              }
+                            ],
+                            "type": "OpeningHoursText",
+                            "abstractKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
                     ],
                     "storageKey": null
                   },
@@ -2386,13 +2455,13 @@ return {
                   },
                   {
                     "alias": "shows",
-                    "args": (v57/*: any*/),
+                    "args": (v58/*: any*/),
                     "concreteType": "ShowConnection",
                     "kind": "LinkedField",
                     "name": "showsConnection",
                     "plural": false,
                     "selections": [
-                      (v58/*: any*/),
+                      (v59/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -2511,7 +2580,7 @@ return {
                                           (v7/*: any*/),
                                           (v3/*: any*/),
                                           (v4/*: any*/),
-                                          (v59/*: any*/)
+                                          (v60/*: any*/)
                                         ],
                                         "storageKey": null
                                       }
@@ -2520,11 +2589,11 @@ return {
                                     "abstractKey": null
                                   },
                                   (v46/*: any*/),
-                                  (v60/*: any*/)
+                                  (v61/*: any*/)
                                 ],
                                 "storageKey": null
                               },
-                              (v61/*: any*/),
+                              (v62/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -2551,7 +2620,7 @@ return {
                   },
                   {
                     "alias": "shows",
-                    "args": (v57/*: any*/),
+                    "args": (v58/*: any*/),
                     "filters": null,
                     "handle": "connection",
                     "key": "Fair_shows",
@@ -2579,7 +2648,7 @@ return {
                 "plural": false,
                 "selections": [
                   (v7/*: any*/),
-                  (v59/*: any*/),
+                  (v60/*: any*/),
                   (v4/*: any*/),
                   {
                     "alias": null,
@@ -2594,7 +2663,7 @@ return {
               },
               {
                 "alias": "artworks",
-                "args": (v63/*: any*/),
+                "args": (v64/*: any*/),
                 "concreteType": "ArtworkConnection",
                 "kind": "LinkedField",
                 "name": "artworksConnection",
@@ -2617,7 +2686,7 @@ return {
               },
               {
                 "alias": "artworks",
-                "args": (v63/*: any*/),
+                "args": (v64/*: any*/),
                 "filters": (v52/*: any*/),
                 "handle": "connection",
                 "key": "Partner_artworks",
@@ -2634,13 +2703,13 @@ return {
               },
               {
                 "alias": "artists",
-                "args": (v64/*: any*/),
+                "args": (v65/*: any*/),
                 "concreteType": "ArtistPartnerConnection",
                 "kind": "LinkedField",
                 "name": "artistsConnection",
                 "plural": false,
                 "selections": [
-                  (v58/*: any*/),
+                  (v59/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -2722,7 +2791,7 @@ return {
               },
               {
                 "alias": "artists",
-                "args": (v64/*: any*/),
+                "args": (v65/*: any*/),
                 "filters": (v52/*: any*/),
                 "handle": "connection",
                 "key": "Partner_artists",
@@ -2756,8 +2825,8 @@ return {
               {
                 "alias": "recentShows",
                 "args": [
-                  (v62/*: any*/),
-                  (v65/*: any*/)
+                  (v63/*: any*/),
+                  (v66/*: any*/)
                 ],
                 "concreteType": "ShowConnection",
                 "kind": "LinkedField",
@@ -2781,7 +2850,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v7/*: any*/),
-                          (v66/*: any*/)
+                          (v67/*: any*/)
                         ],
                         "storageKey": null
                       }
@@ -2793,13 +2862,13 @@ return {
               },
               {
                 "alias": "pastShows",
-                "args": (v67/*: any*/),
+                "args": (v68/*: any*/),
                 "concreteType": "ShowConnection",
                 "kind": "LinkedField",
                 "name": "showsConnection",
                 "plural": false,
                 "selections": [
-                  (v58/*: any*/),
+                  (v59/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -2816,7 +2885,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v66/*: any*/),
+                          (v67/*: any*/),
                           (v7/*: any*/),
                           (v17/*: any*/),
                           (v3/*: any*/),
@@ -2848,8 +2917,8 @@ return {
               },
               {
                 "alias": "pastShows",
-                "args": (v67/*: any*/),
-                "filters": (v68/*: any*/),
+                "args": (v68/*: any*/),
+                "filters": (v69/*: any*/),
                 "handle": "connection",
                 "key": "Partner_pastShows",
                 "kind": "LinkedHandle",
@@ -2857,13 +2926,13 @@ return {
               },
               {
                 "alias": "currentAndUpcomingShows",
-                "args": (v69/*: any*/),
+                "args": (v70/*: any*/),
                 "concreteType": "ShowConnection",
                 "kind": "LinkedField",
                 "name": "showsConnection",
                 "plural": false,
                 "selections": [
-                  (v58/*: any*/),
+                  (v59/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -2880,7 +2949,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v66/*: any*/),
+                          (v67/*: any*/),
                           (v7/*: any*/),
                           (v4/*: any*/),
                           (v3/*: any*/),
@@ -2915,11 +2984,11 @@ return {
                                 "abstractKey": null
                               },
                               (v46/*: any*/),
-                              (v60/*: any*/)
+                              (v61/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v61/*: any*/),
+                          (v62/*: any*/),
                           (v2/*: any*/)
                         ],
                         "storageKey": null
@@ -2933,8 +3002,8 @@ return {
               },
               {
                 "alias": "currentAndUpcomingShows",
-                "args": (v69/*: any*/),
-                "filters": (v68/*: any*/),
+                "args": (v70/*: any*/),
+                "filters": (v69/*: any*/),
                 "handle": "connection",
                 "key": "Partner_currentAndUpcomingShows",
                 "kind": "LinkedHandle",
@@ -2969,7 +3038,7 @@ return {
     ]
   },
   "params": {
-    "id": "51bb21e5125e43b0f2e33d644ef56d32",
+    "id": "dcb535cde8b03438532e86ba59615795",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",

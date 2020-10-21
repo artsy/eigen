@@ -6,7 +6,7 @@ import React from "react"
 import { ActivityIndicator, FlatList, ViewProperties } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
-import { HoursCollapsible } from "lib/Components/HoursCollapsible"
+import { HoursCollapsibleFragmentContainer as HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
 import { FAIR_SHOW_PAGE_SIZE } from "lib/data/constants"
 import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
@@ -271,6 +271,7 @@ export const FairDetailContainer = createPaginationContainer(
         isActive
         location {
           ...LocationMap_location
+          ...HoursCollapsible_location
           coordinates {
             lat
             lng

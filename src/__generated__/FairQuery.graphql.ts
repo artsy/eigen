@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 466769cbdbef5f65f8ed7df0a6ec8307 */
+/* @relayHash c1a053100fb7bf586345080fd2a55470 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -120,6 +120,7 @@ fragment FairDetail_fair on Fair {
   isActive
   location {
     ...LocationMap_location
+    ...HoursCollapsible_location
     coordinates {
       lat
       lng
@@ -217,6 +218,21 @@ fragment GenericGrid_artworks on Artwork {
   ...ArtworkGridItem_artwork
 }
 
+fragment HoursCollapsible_location on Location {
+  openingHours {
+    __typename
+    ... on OpeningHoursArray {
+      schedules {
+        days
+        hours
+      }
+    }
+    ... on OpeningHoursText {
+      text
+    }
+  }
+}
+
 fragment LocationMap_location on Location {
   id
   internalID
@@ -305,28 +321,35 @@ v9 = [
   (v8/*: any*/),
   (v2/*: any*/)
 ],
-v10 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 5
-  }
-],
-v11 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "display",
+  "name": "hours",
   "storageKey": null
 },
-v12 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v13 = [
+v12 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 5
+  }
+],
+v13 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "display",
+  "storageKey": null
+},
+v14 = [
   (v2/*: any*/)
 ];
 return {
@@ -520,13 +543,7 @@ return {
             "storageKey": null
           },
           (v8/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "hours",
-            "storageKey": null
-          },
+          (v10/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -603,6 +620,58 @@ return {
                   }
                 ],
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": null,
+                "kind": "LinkedField",
+                "name": "openingHours",
+                "plural": false,
+                "selections": [
+                  (v11/*: any*/),
+                  {
+                    "kind": "InlineFragment",
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "FormattedDaySchedules",
+                        "kind": "LinkedField",
+                        "name": "schedules",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "days",
+                            "storageKey": null
+                          },
+                          (v10/*: any*/)
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "type": "OpeningHoursArray",
+                    "abstractKey": null
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "text",
+                        "storageKey": null
+                      }
+                    ],
+                    "type": "OpeningHoursText",
+                    "abstractKey": null
+                  }
+                ],
+                "storageKey": null
               }
             ],
             "storageKey": null
@@ -653,7 +722,7 @@ return {
           },
           {
             "alias": "shows",
-            "args": (v10/*: any*/),
+            "args": (v12/*: any*/),
             "concreteType": "ShowConnection",
             "kind": "LinkedField",
             "name": "showsConnection",
@@ -882,7 +951,7 @@ return {
                                         "name": "currentBid",
                                         "plural": false,
                                         "selections": [
-                                          (v11/*: any*/)
+                                          (v13/*: any*/)
                                         ],
                                         "storageKey": null
                                       },
@@ -947,7 +1016,7 @@ return {
                         "name": "partner",
                         "plural": false,
                         "selections": [
-                          (v12/*: any*/),
+                          (v11/*: any*/),
                           {
                             "kind": "InlineFragment",
                             "selections": [
@@ -983,13 +1052,13 @@ return {
                           },
                           {
                             "kind": "InlineFragment",
-                            "selections": (v13/*: any*/),
+                            "selections": (v14/*: any*/),
                             "type": "Node",
                             "abstractKey": "__isNode"
                           },
                           {
                             "kind": "InlineFragment",
-                            "selections": (v13/*: any*/),
+                            "selections": (v14/*: any*/),
                             "type": "ExternalPartner",
                             "abstractKey": null
                           }
@@ -1014,13 +1083,13 @@ return {
                         "name": "location",
                         "plural": false,
                         "selections": [
-                          (v11/*: any*/),
+                          (v13/*: any*/),
                           (v2/*: any*/)
                         ],
                         "storageKey": null
                       },
                       (v2/*: any*/),
-                      (v12/*: any*/)
+                      (v11/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -1032,7 +1101,7 @@ return {
           },
           {
             "alias": "shows",
-            "args": (v10/*: any*/),
+            "args": (v12/*: any*/),
             "filters": null,
             "handle": "connection",
             "key": "Fair_shows",
@@ -1045,7 +1114,7 @@ return {
     ]
   },
   "params": {
-    "id": "466769cbdbef5f65f8ed7df0a6ec8307",
+    "id": "c1a053100fb7bf586345080fd2a55470",
     "metadata": {},
     "name": "FairQuery",
     "operationKind": "query",

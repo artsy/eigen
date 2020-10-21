@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a66414e038c704f0cb17b62bcf85508c */
+/* @relayHash 71b867f4378f9adb00393c1cc131db26 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -87,6 +87,7 @@ fragment Detail_show on Show {
   ...Shows_show
   location {
     ...LocationMap_location
+    ...HoursCollapsible_location
     openingHours {
       __typename
       ... on OpeningHoursArray {
@@ -131,6 +132,21 @@ fragment GenericGrid_artworks on Artwork {
     aspect_ratio: aspectRatio
   }
   ...ArtworkGridItem_artwork
+}
+
+fragment HoursCollapsible_location on Location {
+  openingHours {
+    __typename
+    ... on OpeningHoursArray {
+      schedules {
+        days
+        hours
+      }
+    }
+    ... on OpeningHoursText {
+      text
+    }
+  }
 }
 
 fragment LocationMap_location on Location {
@@ -1168,7 +1184,7 @@ return {
     ]
   },
   "params": {
-    "id": "a66414e038c704f0cb17b62bcf85508c",
+    "id": "71b867f4378f9adb00393c1cc131db26",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": (v22/*: any*/),
