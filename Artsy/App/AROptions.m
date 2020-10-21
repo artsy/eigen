@@ -50,7 +50,6 @@ NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebVie
          AROptionsNewFirstInquiry: @"Enable new first inquiry flow",
          AROptionsUseReactNativeWebView: @"Use react native webviews",
          AROptionsNewShowPage: @"Enable new show page",
-         AROptionsNewFairPage: @"Enable new fair page",
         };
     });
 }

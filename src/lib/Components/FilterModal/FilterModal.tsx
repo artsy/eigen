@@ -187,6 +187,7 @@ export enum FilterModalMode {
   Collection = "Collection",
   SaleArtworks = "SaleArtworks",
   Fair = "Fair",
+  Show = "Show",
 }
 
 interface FilterOptionsProps {
@@ -346,6 +347,7 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
     case FilterModalMode.ArtistSeries:
       sortOrder = ArtistSeriesFiltersSorted
       break
+    case FilterModalMode.Show:
     case FilterModalMode.Fair:
       sortOrder = FairFiltersSorted
       break
