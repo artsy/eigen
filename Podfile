@@ -49,7 +49,7 @@ target 'Artsy' do
   # Core owned by Artsy
   pod 'ORStackView', '2.0.3'
   pod 'UIView+BooleanAnimations'
-  pod 'Aerodramus', path: '../Aerodramus'
+  pod 'Aerodramus', '2.0.0'
 
   # Custom CollectionView Layouts
   pod 'ARCollectionViewMasonryLayout', git: 'https://github.com/ashfurrow/ARCollectionViewMasonryLayout'
