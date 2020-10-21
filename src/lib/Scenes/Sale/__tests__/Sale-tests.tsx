@@ -91,6 +91,39 @@ describe("Sale", () => {
     expect(popParentViewController).toHaveBeenCalledTimes(1)
   })
 
+  it("switches to live auction view when sale goes live with no endAt", () => {
+    renderWithWrappers(<TestRenderer />)
+
+    __appStoreTestUtils__?.injectState({
+      native: {
+        sessionState: { predictionURL: "https://live-staging.artsy.net" },
+      },
+    })
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Sale: () => ({
+          slug: "live-sale-slug",
+          startAt: moment().subtract(1, "day").toISOString(),
+          liveStartAt: moment().subtract(1, "second").toISOString(),
+          endAt: null,
+          timeZone: "Europe/Berlin",
+          coverImage: {
+            url: "cover image url",
+          },
+          name: "sale name",
+          internalID: "the-sale-internal",
+        }),
+      })
+    )
+
+    expect(navigate).toHaveBeenCalledTimes(0)
+    jest.advanceTimersByTime(1000)
+    expect(navigate).toHaveBeenCalledTimes(1)
+    expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug")
+    expect(popParentViewController).toHaveBeenCalledTimes(1)
+  })
+
   it("doesn't switch to live auction view when sale is closed", () => {
     renderWithWrappers(<TestRenderer />)
 
