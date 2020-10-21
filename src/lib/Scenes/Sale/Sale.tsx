@@ -8,6 +8,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { getCurrentEmissionState } from "lib/store/AppStore"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
+import { useInterval } from "lib/utils/useInterval"
 import { usePrevious } from "lib/utils/usePrevious"
 import _ from "lodash"
 import moment from "moment"
@@ -55,20 +56,13 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
 
   const scrollAnim = useRef(new Animated.Value(0)).current
 
-  let intervalId: NodeJS.Timeout
-
-  useEffect(() => {
-    if (sale.liveStartAt) {
-      // poll every .5 seconds to check if sale has gone live
-      intervalId = setInterval(() => {
-        const now = moment()
-        setIsLive(
-          sale.liveStartAt !== null && now.isAfter(sale.liveStartAt) && sale.endAt !== null && now.isBefore(sale.endAt)
-        )
-      }, 500)
-      return () => clearInterval(intervalId)
-    }
-  }, [])
+  // poll every .5 seconds to check if sale has gone live
+  useInterval(() => {
+    const now = moment()
+    setIsLive(
+      sale.liveStartAt !== null && now.isAfter(sale.liveStartAt) && sale.endAt !== null && now.isBefore(sale.endAt)
+    )
+  }, 500)
 
   useEffect(() => {
     if (isLive === true && prevIsLive === false) {
