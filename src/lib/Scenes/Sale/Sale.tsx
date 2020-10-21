@@ -145,6 +145,7 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
               initialNumToRender={2}
               viewabilityConfig={viewConfigRef.current}
               onViewableItemsChanged={viewableItemsChangedRef.current}
+              contentContainerStyle={{ paddingBottom: 40 }}
               renderItem={({ item }: { item: SaleSection }) => item.content}
               keyExtractor={(item: SaleSection) => item.key}
               onScroll={Animated.event(
