@@ -1,14 +1,13 @@
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Aggregations, ArtworkFilterContextState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { aggregationForFilter, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { CheckIcon } from "palette"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
-import { aggregationForFilter, OptionListItem } from "../../../../lib/Components/FilterModal"
-import { InnerOptionListItem, SingleSelectOptionListItemRow } from "../SingleSelectOption"
+import { InnerOptionListItem, OptionListItem, SingleSelectOptionListItemRow } from "../SingleSelectOption"
 
 type MockScreen = (props: { initialState: ArtworkFilterContextState; navigator: MockNavigator }) => ReactElement
 
@@ -39,6 +38,11 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
         previouslyAppliedFilters: [],
         applyFilters: false,
         aggregations: params.aggregations,
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
     })
 
@@ -76,6 +80,11 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           previouslyAppliedFilters: [],
           applyFilters: false,
           aggregations: params.aggregations,
+          filterType: "artwork",
+          counts: {
+            total: null,
+            followedArtists: null,
+          },
         }
 
         const component = renderWithWrappers(<params.Screen initialState={state} navigator={mockNavigator} />)

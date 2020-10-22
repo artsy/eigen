@@ -10,8 +10,6 @@ const artworkInquiryState: ArtworkInquiryContextState = {
   inquiryType: null,
 }
 
-// NOTE: We will need to handle clearing the location fields and other CRUD like actions
-// But since we are working this in different streams we'll have to come back to this
 export const reducer = (
   inquiryState: ArtworkInquiryContextState,
   action: ArtworkInquiryActions

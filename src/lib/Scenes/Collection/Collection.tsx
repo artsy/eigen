@@ -1,4 +1,5 @@
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
+import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Box, Spacer, Theme } from "palette"
@@ -6,7 +7,6 @@ import React, { Component, createRef } from "react"
 import { Dimensions, FlatList, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { Collection_collection } from "../../../__generated__/Collection_collection.graphql"
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "../../../lib/Components/FilterModal"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "../../../lib/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "../../../lib/Scenes/Collection/Screens/CollectionHeader"
 import { Schema, screenTrack } from "../../../lib/utils/track"
@@ -106,7 +106,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     return (
       <ArtworkFilterGlobalStateProvider>
         <ArtworkFilterContext.Consumer>
-          {(value) => {
+          {() => {
             return (
               <Theme>
                 <View style={{ flex: 1 }}>
@@ -150,7 +150,6 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                   />
                   <AnimatedArtworkFilterButton
                     isVisible={isArtworkGridVisible}
-                    count={value.state.appliedFilters.length}
                     onPress={this.openFilterArtworksModal.bind(this)}
                   />
                 </View>

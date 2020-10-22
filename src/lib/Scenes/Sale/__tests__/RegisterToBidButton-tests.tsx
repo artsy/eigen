@@ -1,7 +1,6 @@
 import { RegisterToBidButtonTestsQuery } from "__generated__/RegisterToBidButtonTestsQuery.graphql"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Button } from "palette"
-import { Text } from "palette"
+import { Button, Sans } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -74,6 +73,6 @@ describe("RegisterToBidButton", () => {
       })
     )
 
-    expect(tree.root.findAllByType(Text)[0].props.children).toMatch("You're approved to bid")
+    expect(tree.root.findAllByType(Sans)[0].props.children).toMatch("You're approved to bid")
   })
 })

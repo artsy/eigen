@@ -1,6 +1,6 @@
 import { RegisterToBidButton_sale } from "__generated__/RegisterToBidButton_sale.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { Box, Button, CheckIcon, Flex, Spacer, Text } from "palette"
+import { Box, Button, CheckIcon, Flex, Sans, Spacer, Text } from "palette"
 import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -60,7 +60,9 @@ const RegisterToBidButtonComp: React.FC<RegisterToBidButtonProps> = (props) => {
     return (
       <Flex flexDirection="row">
         <CheckIcon fill="green100" mr={8} />
-        <Text color="green100">You're approved to bid</Text>
+        <Sans size="3" weight="medium" color="green100">
+          You're approved to bid
+        </Sans>
       </Flex>
     )
   } else {

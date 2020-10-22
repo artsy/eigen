@@ -84,7 +84,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
     >
       <ArtworkFilterGlobalStateProvider>
         <ArtworkFilterContext.Consumer>
-          {(context) => (
+          {() => (
             <Theme>
               <View style={{ flex: 1 }}>
                 <FlatList
@@ -144,11 +144,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
                     }
                   }}
                 />
-                <AnimatedArtworkFilterButton
-                  isVisible={isArtworksGridVisible}
-                  count={context.state.appliedFilters.length}
-                  onPress={openFilterArtworksModal}
-                />
+                <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
               </View>
             </Theme>
           )}

@@ -9,11 +9,21 @@ import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import {
+  Aggregations,
+  ArtworkFilterContext,
+  ArtworkFilterContextState,
+  reducer,
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Sans, Theme } from "palette"
 import { useTracking } from "react-tracking"
-import { FakeNavigator as MockNavigator } from "../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
+import { NavigateBackIconContainer } from "../../ArtworkFilterOptions/SingleSelectOption"
+import { FakeNavigator as MockNavigator } from "../../Bidding/__tests__/Helpers/FakeNavigator"
+import { FancyModalHeader } from "../../FancyModal/FancyModalHeader"
+import { closeModalMock, MockFilterScreen } from "../__tests__/FilterTestHelper"
 import {
+  AnimatedArtworkFilterButton,
   ApplyButton,
   ClearAllButton,
   CloseIconContainer,
@@ -22,15 +32,7 @@ import {
   FilterModalNavigator,
   FilterOptions,
   TouchableOptionListItemRow,
-} from "../../../lib/Components/FilterModal"
-import {
-  Aggregations,
-  ArtworkFilterContext,
-  ArtworkFilterContextState,
-  reducer,
-} from "../../utils/ArtworkFilter/ArtworkFiltersStore"
-import { NavigateBackIconContainer } from "../ArtworkFilterOptions/SingleSelectOption"
-import { closeModalMock, MockFilterScreen } from "./FilterTestHelper"
+} from "../FilterModal"
 
 let mockNavigator: MockNavigator
 let state: ArtworkFilterContextState
@@ -52,6 +54,11 @@ beforeEach(() => {
     previouslyAppliedFilters: [],
     applyFilters: false,
     aggregations: mockAggregations,
+    filterType: "artwork",
+    counts: {
+      total: null,
+      followedArtists: null,
+    },
   }
 })
 
@@ -189,8 +196,7 @@ describe("Filter modal navigation flow", () => {
       <ArtworkFilterContext.Provider
         value={{
           state,
-          // @ts-ignore STRICTNESS_MIGRATION
-          dispatch: null,
+          dispatch: jest.fn(),
         }}
       >
         <FilterOptions
@@ -214,8 +220,7 @@ describe("Filter modal navigation flow", () => {
       <ArtworkFilterContext.Provider
         value={{
           state,
-          // @ts-ignore STRICTNESS_MIGRATION
-          dispatch: null,
+          dispatch: jest.fn(),
         }}
       >
         {React.createElement(
@@ -234,9 +239,9 @@ describe("Filter modal navigation flow", () => {
     )
 
     // @ts-ignore STRICTNESS_MIGRATION
-    const getNextScreenTitle = (component) => component.root.findByType(Sans).props.children
+    const getNextScreenTitle = (component) => component.root.findByType(FancyModalHeader).props.children
 
-    expect(getNextScreenTitle(nextScreen)).toEqual("Sort")
+    expect(getNextScreenTitle(nextScreen)).toEqual("Sort by")
   })
 
   it("allows users to navigate forward to medium screen from filter screen", () => {
@@ -245,6 +250,12 @@ describe("Filter modal navigation flow", () => {
         value={{
           state,
           aggregations: mockAggregations,
+          filterType: "artwork",
+          counts: {
+            total: null,
+            followedArtists: null,
+          },
+
           // @ts-ignore STRICTNESS_MIGRATION
           dispatch: null,
         }}
@@ -271,6 +282,12 @@ describe("Filter modal navigation flow", () => {
         value={{
           state,
           aggregations: mockAggregations,
+          filterType: "artwork",
+          counts: {
+            total: null,
+            followedArtists: null,
+          },
+
           // @ts-ignore STRICTNESS_MIGRATION
           dispatch: null,
         }}
@@ -309,8 +326,7 @@ describe("Filter modal navigation flow", () => {
         <ArtworkFilterContext.Provider
           value={{
             state,
-            // @ts-ignore STRICTNESS_MIGRATION
-            dispatch: null,
+            dispatch: jest.fn(),
           }}
         >
           {React.createElement(
@@ -348,6 +364,11 @@ describe("Filter modal states", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -361,6 +382,11 @@ describe("Filter modal states", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -380,6 +406,11 @@ describe("Filter modal states", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const filterScreen = mount(<MockFilterModalNavigator initialState={state} />)
@@ -414,6 +445,11 @@ describe("Filter modal states", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -451,6 +487,11 @@ describe("Clearing filters", () => {
       previouslyAppliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
       applyFilters: false,
       aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
@@ -473,6 +514,11 @@ describe("Clearing filters", () => {
       previouslyAppliedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
       applyFilters: false,
       aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
@@ -499,6 +545,11 @@ describe("Clearing filters", () => {
       previouslyAppliedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
       applyFilters: true,
       aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
@@ -513,7 +564,7 @@ describe("Clearing filters", () => {
   })
 })
 
-describe("Applying filters", () => {
+describe("Applying filters on Artworks", () => {
   it("calls the relay method to refetch artworks when a filter is applied", async () => {
     state = {
       selectedFilters: [{ displayText: "Price (high to low)", paramName: FilterParamName.sort }],
@@ -521,6 +572,11 @@ describe("Applying filters", () => {
       previouslyAppliedFilters: [{ displayText: "Price (high to low)", paramName: FilterParamName.sort }],
       applyFilters: true,
       aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const env = createMockEnvironment()
@@ -601,6 +657,11 @@ describe("Applying filters", () => {
       ],
       applyFilters: true,
       aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
 
     const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
@@ -620,6 +681,7 @@ describe("Applying filters", () => {
         acquireable: false,
         atAuction: false,
         dimensionRange: "*-*",
+        estimateRange: "",
         includeArtworksByFollowedArtists: false,
         inquireableOnly: false,
         medium: "*",
@@ -628,5 +690,22 @@ describe("Applying filters", () => {
         sort: "-decayed_merch",
       },
     })
+  })
+})
+
+describe("Filter modal navigation flow", () => {
+  it("allows users to navigate forward to sort screen from filter screen", () => {
+    const tree = renderWithWrappers(
+      <ArtworkFilterContext.Provider
+        value={{
+          state,
+          dispatch: jest.fn(),
+        }}
+      >
+        <AnimatedArtworkFilterButton isVisible onPress={jest.fn()} />
+      </ArtworkFilterContext.Provider>
+    )
+
+    expect(tree.root.findAllByType(Sans)[0].props.children).toEqual("Sort & Filter")
   })
 })
