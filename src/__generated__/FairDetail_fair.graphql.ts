@@ -15,7 +15,7 @@ export type FairDetail_fair = {
             readonly lat: number | null;
             readonly lng: number | null;
         } | null;
-        readonly " $fragmentRefs": FragmentRefs<"LocationMap_location">;
+        readonly " $fragmentRefs": FragmentRefs<"LocationMap_location" | "HoursCollapsible_location">;
     } | null;
     readonly organizer: {
         readonly website: string | null;
@@ -161,6 +161,11 @@ return {
           "args": null,
           "kind": "FragmentSpread",
           "name": "LocationMap_location"
+        },
+        {
+          "args": null,
+          "kind": "FragmentSpread",
+          "name": "HoursCollapsible_location"
         }
       ],
       "storageKey": null
@@ -354,5 +359,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '0985881eb9fd5d43ffd3c108cf272c05';
+(node as any).hash = 'c3eb4d156e2d237917ea0c26b7c9fede';
 export default node;

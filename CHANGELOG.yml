@@ -21,6 +21,7 @@ upcoming:
     - Fix blank screen bug in My Collection - brian
     - Adds Show2 artwork grid + filter - mzikherman
     - Add active bids to new auction sale page - mounir
+    - Adds Show2 location map - damon
 
 releases:
   - version: 6.6.6
