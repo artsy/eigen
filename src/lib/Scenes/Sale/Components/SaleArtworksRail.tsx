@@ -21,7 +21,7 @@ export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
 
   return (
     <Flex mt={3} ref={navRef}>
-      <Flex mx={2}>
+      <Flex mx={2} my={1}>
         <SectionTitle title="Lots by artists you follow" />
       </Flex>
       <AboveTheFoldFlatList
