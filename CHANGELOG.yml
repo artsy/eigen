@@ -2,11 +2,14 @@ upcoming:
   version: 6.6.7
   date: TBD
   dev:
+    - Fix when a closed auction is accessed, don't try to go live anymore - pavlos
+    - Fix when a closed auction is accessed, the register button should not render - pavlos
     - Change CheckAuthentication middleware to be called before the principalFieldMiddleware - mounir
   user_facing:
     - Switch to live auction from new sale page - barry, brian
     - Adds ability to filter by artist in a fair - sweir
     - Fix environment variable names for Sentry - starsirius
+    - Fix capitalization on home auction rail - pavlos
     - Adds Show2 header, behind lab option - damon
     - Adds Show2 install shots, behind lab option - damon
     - Link ConversationDetail screen - sepans

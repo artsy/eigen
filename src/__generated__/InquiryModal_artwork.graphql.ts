@@ -6,6 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type InquiryModal_artwork = {
     readonly inquiryQuestions: ReadonlyArray<{
+        readonly internalID: string;
         readonly question: string;
     } | null> | null;
     readonly " $fragmentRefs": FragmentRefs<"CollapsibleArtworkDetails_artwork">;
@@ -37,6 +38,13 @@ const node: ReaderFragment = {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
+          "name": "internalID",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "question",
           "storageKey": null
         }
@@ -52,5 +60,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = 'c798bd5e61a03573cae3e58f61e162e0';
+(node as any).hash = 'a74c699ef4d8fd8003eaf345730bf557';
 export default node;

@@ -6342,6 +6342,8 @@ type ImageURLs {
   normalized: String
 }
 
+union InquiryItemType = Artwork | Show
+
 type InquiryQuestion {
   # A globally unique ID.
   id: ID!
@@ -6349,6 +6351,24 @@ type InquiryQuestion {
   # A type-specific ID.
   internalID: ID!
   question: String!
+}
+
+input InquiryQuestionInput {
+  details: String
+  questionID: String!
+}
+
+# A request to inquire on an artwork
+type InquiryRequest {
+  # A globally unique ID.
+  id: ID!
+  inquireable: InquiryItemType
+  inquirer: User
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  questions: [String]
+  shippingLocation: Location
 }
 
 enum Intents {
@@ -6855,6 +6875,9 @@ type Me implements Node {
     reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
   )
 
+  # List of lab features for this user
+  labFeatures: [String!]!
+
   # Sale Artworks search results
   lotsByFollowedArtistsConnection(
     after: String
@@ -7156,6 +7179,9 @@ type Mutation {
 
   # Start an identity verification flow for a pending identity verification
   startIdentityVerification(input: startIdentityVerificationMutationInput!): startIdentityVerificationMutationPayload
+
+  # Create an artwork inquiry request
+  submitInquiryRequestMutation(input: SubmitInquiryRequestMutationInput!): SubmitInquiryRequestMutationPayload
   unpublishViewingRoom(input: UnpublishViewingRoomInput!): UnpublishViewingRoomPayload
   updateAppSecondFactor(input: UpdateAppSecondFactorInput!): UpdateAppSecondFactorPayload
 
@@ -7849,6 +7875,7 @@ type Query {
 
     # Returns the first _n_ elements from the list.
     first: Int
+    ids: [ID!]
 
     # Returns the last _n_ elements from the list.
     last: Int
@@ -9399,6 +9426,8 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
 
   # Is it a fair booth or a show?
   type: String
+  viewingRoomIDs: [String!]!
+  viewingRoomsConnection: ViewingRoomsConnection
 }
 
 type ShowArtworkGrid implements ArtworkContextGrid {
@@ -9582,6 +9611,29 @@ type SubmissionEdge {
 
   # The item at the end of the edge.
   node: ConsignmentSubmission
+}
+
+input SubmitInquiryRequestMutationInput {
+  clientMutationId: String
+
+  # The inquireable object id (Artwork ID or Show ID)
+  inquireableID: String!
+
+  # The type of inquireable object (Artwork or Show)
+  inquireableType: String!
+
+  # Optional inquiry message
+  message: String
+
+  # List of structured inquiry questions
+  questions: [InquiryQuestionInput]
+}
+
+type SubmitInquiryRequestMutationPayload {
+  clientMutationId: String
+
+  # Artwork Inquiry request
+  inquiryRequest: InquiryRequest
 }
 
 type System {

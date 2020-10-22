@@ -1,6 +1,6 @@
 import _ from "lodash"
 import React, { useEffect, useMemo } from "react"
-import { Animated, TouchableWithoutFeedback } from "react-native"
+import { Animated, StyleProp, TouchableHighlight, ViewStyle } from "react-native"
 import styled from "styled-components/native"
 
 export const BottomButtonContainer = styled(Animated.View)`
@@ -12,8 +12,15 @@ export const BottomButtonContainer = styled(Animated.View)`
   flex-direction: row;
 `
 
-export const AnimatedBottomButton: React.FC<{ isVisible: boolean; onPress: () => void }> = ({
+interface AnimatedBottomButtonProps {
+  isVisible: boolean
+  onPress: () => void
+  buttonStyles?: StyleProp<ViewStyle>
+}
+
+export const AnimatedBottomButton: React.FC<AnimatedBottomButtonProps> = ({
   isVisible,
+  buttonStyles = {},
   onPress,
   children,
 }) => {
@@ -32,7 +39,9 @@ export const AnimatedBottomButton: React.FC<{ isVisible: boolean; onPress: () =>
 
   return (
     <BottomButtonContainer style={{ transform: [{ translateY: topOffset }] }}>
-      <TouchableWithoutFeedback onPress={onPress}>{children}</TouchableWithoutFeedback>
+      <TouchableHighlight activeOpacity={0.8} onPress={onPress} style={buttonStyles}>
+        {children}
+      </TouchableHighlight>
     </BottomButtonContainer>
   )
 }

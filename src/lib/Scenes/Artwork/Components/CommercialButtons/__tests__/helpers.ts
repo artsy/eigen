@@ -22,12 +22,12 @@ export const press = (
   })
   const touchable = touchables[0]
   if (touchable && touchable.props.onPress) {
-    return act(async () => {
+    act(() => {
       touchable.props.onPress()
-      await flushPromiseQueue()
     })
+    return flushPromiseQueue()
   } else {
-    return Promise.resolve
+    return Promise.resolve()
   }
 }
 

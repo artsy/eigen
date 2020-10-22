@@ -1,7 +1,6 @@
 import { RegisterToBidButtonTestsQuery } from "__generated__/RegisterToBidButtonTestsQuery.graphql"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Button } from "palette"
-import { Text } from "palette"
+import { Button, Text } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"

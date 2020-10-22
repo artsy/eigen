@@ -54,9 +54,9 @@ const getWrapper = (
   mockResolvers = {
     Artwork: () => ({
       inquiryQuestions: [
-        { question: "Price & Availability" },
-        { question: "Shipping" },
-        { question: "History & Provenance" },
+        { internalID: "price_and_availability", question: "Price & Availability" },
+        { internalID: "shipping_quote", question: "Shipping" },
+        { internalID: "question", question: "History & Provenance" },
       ],
     }),
   }

@@ -3,7 +3,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -47,7 +47,7 @@ describe("ViewingRoomViewWorksButton", () => {
       return result
     })
 
-    tree.root.findByType(TouchableWithoutFeedback).props.onPress()
+    tree.root.findByType(TouchableHighlight).props.onPress()
 
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
       expect.anything(),

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 68723710d7c8c3562b336493c10c4657 */
+/* @relayHash 41fd747ba35bd693adfe5fab1520ef05 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -66,6 +66,7 @@ fragment CollapsibleArtworkDetails_artwork on Artwork {
 fragment InquiryModal_artwork on Artwork {
   ...CollapsibleArtworkDetails_artwork
   inquiryQuestions {
+    internalID
     question
     id
   }
@@ -84,10 +85,17 @@ v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v2 = [
+v3 = [
   {
     "alias": null,
     "args": null,
@@ -96,25 +104,25 @@ v2 = [
     "storageKey": null
   }
 ],
-v3 = {
+v4 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v4 = {
+v5 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v5 = {
+v6 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "ArtworkInfoRow"
 },
-v6 = {
+v7 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -193,13 +201,7 @@ return {
             ],
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "internalID",
-            "storageKey": null
-          },
+          (v1/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -236,7 +238,7 @@ return {
                 "name": "name",
                 "storageKey": null
               },
-              (v1/*: any*/)
+              (v2/*: any*/)
             ],
             "storageKey": null
           },
@@ -275,7 +277,7 @@ return {
             "kind": "LinkedField",
             "name": "conditionDescription",
             "plural": false,
-            "selections": (v2/*: any*/),
+            "selections": (v3/*: any*/),
             "storageKey": null
           },
           {
@@ -285,7 +287,7 @@ return {
             "kind": "LinkedField",
             "name": "certificateOfAuthenticity",
             "plural": false,
-            "selections": (v2/*: any*/),
+            "selections": (v3/*: any*/),
             "storageKey": null
           },
           {
@@ -295,7 +297,7 @@ return {
             "kind": "LinkedField",
             "name": "framed",
             "plural": false,
-            "selections": (v2/*: any*/),
+            "selections": (v3/*: any*/),
             "storageKey": null
           },
           {
@@ -330,7 +332,7 @@ return {
             "kind": "LinkedField",
             "name": "signatureInfo",
             "plural": false,
-            "selections": (v2/*: any*/),
+            "selections": (v3/*: any*/),
             "storageKey": null
           },
           {
@@ -348,6 +350,7 @@ return {
             "name": "inquiryQuestions",
             "plural": true,
             "selections": [
+              (v1/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -355,18 +358,18 @@ return {
                 "name": "question",
                 "storageKey": null
               },
-              (v1/*: any*/)
+              (v2/*: any*/)
             ],
             "storageKey": null
           },
-          (v1/*: any*/)
+          (v2/*: any*/)
         ],
         "storageKey": "artwork(id:\"pumpkins\")"
       }
     ]
   },
   "params": {
-    "id": "68723710d7c8c3562b336493c10c4657",
+    "id": "41fd747ba35bd693adfe5fab1520ef05",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -375,62 +378,63 @@ return {
           "plural": false,
           "type": "Artwork"
         },
-        "artwork.artistNames": (v3/*: any*/),
+        "artwork.artistNames": (v4/*: any*/),
         "artwork.attributionClass": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "AttributionClass"
         },
-        "artwork.attributionClass.id": (v4/*: any*/),
-        "artwork.attributionClass.name": (v3/*: any*/),
-        "artwork.category": (v3/*: any*/),
-        "artwork.certificateOfAuthenticity": (v5/*: any*/),
-        "artwork.certificateOfAuthenticity.details": (v3/*: any*/),
-        "artwork.conditionDescription": (v5/*: any*/),
-        "artwork.conditionDescription.details": (v3/*: any*/),
-        "artwork.date": (v3/*: any*/),
+        "artwork.attributionClass.id": (v5/*: any*/),
+        "artwork.attributionClass.name": (v4/*: any*/),
+        "artwork.category": (v4/*: any*/),
+        "artwork.certificateOfAuthenticity": (v6/*: any*/),
+        "artwork.certificateOfAuthenticity.details": (v4/*: any*/),
+        "artwork.conditionDescription": (v6/*: any*/),
+        "artwork.conditionDescription.details": (v4/*: any*/),
+        "artwork.date": (v4/*: any*/),
         "artwork.dimensions": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "dimensions"
         },
-        "artwork.dimensions.cm": (v3/*: any*/),
-        "artwork.dimensions.in": (v3/*: any*/),
-        "artwork.framed": (v5/*: any*/),
-        "artwork.framed.details": (v3/*: any*/),
-        "artwork.id": (v4/*: any*/),
+        "artwork.dimensions.cm": (v4/*: any*/),
+        "artwork.dimensions.in": (v4/*: any*/),
+        "artwork.framed": (v6/*: any*/),
+        "artwork.framed.details": (v4/*: any*/),
+        "artwork.id": (v5/*: any*/),
         "artwork.image": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Image"
         },
-        "artwork.image.height": (v6/*: any*/),
-        "artwork.image.url": (v3/*: any*/),
-        "artwork.image.width": (v6/*: any*/),
+        "artwork.image.height": (v7/*: any*/),
+        "artwork.image.url": (v4/*: any*/),
+        "artwork.image.width": (v7/*: any*/),
         "artwork.inquiryQuestions": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "InquiryQuestion"
         },
-        "artwork.inquiryQuestions.id": (v4/*: any*/),
+        "artwork.inquiryQuestions.id": (v5/*: any*/),
+        "artwork.inquiryQuestions.internalID": (v5/*: any*/),
         "artwork.inquiryQuestions.question": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "String"
         },
-        "artwork.internalID": (v4/*: any*/),
-        "artwork.manufacturer": (v3/*: any*/),
-        "artwork.medium": (v3/*: any*/),
-        "artwork.publisher": (v3/*: any*/),
-        "artwork.saleMessage": (v3/*: any*/),
-        "artwork.signatureInfo": (v5/*: any*/),
-        "artwork.signatureInfo.details": (v3/*: any*/),
-        "artwork.title": (v3/*: any*/)
+        "artwork.internalID": (v5/*: any*/),
+        "artwork.manufacturer": (v4/*: any*/),
+        "artwork.medium": (v4/*: any*/),
+        "artwork.publisher": (v4/*: any*/),
+        "artwork.saleMessage": (v4/*: any*/),
+        "artwork.signatureInfo": (v6/*: any*/),
+        "artwork.signatureInfo.details": (v4/*: any*/),
+        "artwork.title": (v4/*: any*/)
       }
     },
     "name": "InquiryModalTestsQuery",

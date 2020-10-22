@@ -65,7 +65,9 @@ const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({ me, sale }) =
       return (
         <Flex flexDirection="row">
           <CheckIcon fill="green100" mr={8} />
-          <Text color="green100">You're approved to bid</Text>
+          <Text color="green100" fontWeight="500">
+            You're approved to bid
+          </Text>
         </Flex>
       )
     }

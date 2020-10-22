@@ -1,4 +1,3 @@
-import { SaleActiveBidItem_lotStanding } from "__generated__/SaleActiveBidItem_lotStanding.graphql"
 import { SaleActiveBidItemTestsQuery } from "__generated__/SaleActiveBidItemTestsQuery.graphql"
 import { HighestBid, Outbid, ReserveNotMet } from "lib/Scenes/MyBids/Components/BiddingStatuses"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
@@ -35,7 +34,7 @@ describe("SaleActiveBidItem", () => {
     sale: {
       liveStartAt: "2022-01-01T01:03:00+01:00",
     },
-  } as SaleActiveBidItem_lotStanding
+  }
 
   const TestRenderer = () => (
     <QueryRenderer<SaleActiveBidItemTestsQuery>
