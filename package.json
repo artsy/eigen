@@ -139,7 +139,7 @@
     "@types/node": "12.7.5",
     "@types/qs": "6.9.1",
     "@types/query-string": "5.0.1",
-    "@types/react": "16.9.22",
+    "@types/react": "16.9.25",
     "@types/react-native": "0.63.25",
     "@types/react-relay": "7.0.3",
     "@types/react-test-renderer": "^16.9.3",
