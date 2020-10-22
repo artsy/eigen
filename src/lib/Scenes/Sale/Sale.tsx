@@ -8,6 +8,9 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { getCurrentEmissionState } from "lib/store/AppStore"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
+import { useInterval } from "lib/utils/useInterval"
+import { usePrevious } from "lib/utils/usePrevious"
+import _ from "lodash"
 import moment from "moment"
 import { Flex } from "palette"
 import React, { useEffect, useRef, useState } from "react"
@@ -48,29 +51,45 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
 
   const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const [isLive, setIsLive] = useState(false)
+  const prevIsLive = usePrevious(isLive, false)
 
   const scrollAnim = useRef(new Animated.Value(0)).current
 
-  let intervalId: NodeJS.Timeout
+  // poll every .5 seconds to check if sale has gone live
+  useInterval(() => {
+    if (sale.liveStartAt === null) {
+      setIsLive(false)
+      return
+    }
+    const now = moment()
+    if (now.isAfter(sale.liveStartAt)) {
+      if (sale.endAt === null) {
+        setIsLive(true)
+        return
+      }
+      if (now.isBefore(sale.endAt)) {
+        setIsLive(true)
+        return
+      }
+      setIsLive(false)
+      return
+    }
+    setIsLive(false)
+    return
+  }, 500)
 
   useEffect(() => {
-    if (sale.liveStartAt) {
-      // poll every .5 seconds to check if sale has gone live
-      intervalId = setInterval(checkIfSaleIsLive, 500)
-      return () => {
-        clearInterval(intervalId)
-      }
+    if (isLive === true && prevIsLive === false) {
+      switchToLive()
     }
-  }, [])
+  }, [isLive, prevIsLive])
 
-  const checkIfSaleIsLive = () => {
-    const liveStartAt = sale.liveStartAt
-    if (liveStartAt) {
-      const isLiveOpen = moment().isAfter(liveStartAt)
-      if (isLiveOpen) {
-        switchToLive()
-      }
-    }
+  const switchToLive = () => {
+    const liveBaseURL = getCurrentEmissionState().predictionURL
+    const liveAuctionURL = `${liveBaseURL}/${sale.slug}`
+    navigate(liveAuctionURL)
+    setTimeout(popParentViewController, 500)
   }
 
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
@@ -105,26 +124,21 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
     setFilterArtworkModalVisible(false)
   }
 
-  const switchToLive = () => {
-    const liveBaseURL = getCurrentEmissionState().predictionURL
-    const liveAuctionURL = `${liveBaseURL}/${sale.slug}`
-    navigate(liveAuctionURL)
-    setTimeout(popParentViewController, 500)
-  }
-
-  const saleSectionsData: SaleSection[] = [
+  const saleSectionsData: SaleSection[] = _.compact([
     {
       key: "header",
       content: <SaleHeader sale={sale} scrollAnim={scrollAnim} />,
     },
-    {
-      key: "registerToBid",
-      content: (
-        <Flex mx="2" mt={2}>
-          <RegisterToBidButton sale={sale} />
-        </Flex>
-      ),
-    },
+    (sale.endAt === null || moment().isBefore(sale.endAt)) &&
+      sale.registrationEndsAt !== null &&
+      moment().isBefore(sale.registrationEndsAt) && {
+        key: "registerToBid",
+        content: (
+          <Flex mx="2" mt={2}>
+            <RegisterToBidButton sale={sale} />
+          </Flex>
+        ),
+      },
     {
       key: "saleArtworksRail",
       content: <SaleArtworksRailContainer me={me} />,
@@ -133,7 +147,7 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
       key: "saleLotsList",
       content: <SaleLotsListContainer saleArtworksConnection={queryRes} saleID={sale.slug} saleSlug={sale.slug} />,
     },
-  ]
+  ])
 
   return (
     <ArtworkFilterGlobalStateProvider>
@@ -188,8 +202,10 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
             internalID
             slug
             liveStartAt
+            endAt
             ...SaleHeader_sale
             ...RegisterToBidButton_sale
+            registrationEndsAt
           }
           me {
             ...SaleArtworksRail_me
