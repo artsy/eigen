@@ -29,7 +29,10 @@ system 'yarn install --ignore-engines' if installing_pods
 
 target 'Artsy' do
   config = use_native_modules!
-  use_react_native!(:path => './node_modules/react-native')
+  use_react_native!(
+    :path => './node_modules/react-native',
+    :production => ENV['CIRCLE_BUILD_NUM'],
+  )
 
   # Networking
   pod 'AFNetworking', '~> 2.5', subspecs: %w[Reachability Serialization Security NSURLSession NSURLConnection]
