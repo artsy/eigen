@@ -17,7 +17,8 @@ import React, { useEffect, useRef, useState } from "react"
 import { Animated } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { RegisterToBidButton } from "./Components/RegisterToBidButton"
+import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
+import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
 import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
 import { SaleHeaderContainer as SaleHeader } from "./Components/SaleHeader"
 import { SaleLotsListContainer } from "./Components/SaleLotsList"
@@ -135,10 +136,14 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
         key: "registerToBid",
         content: (
           <Flex mx="2" mt={2}>
-            <RegisterToBidButton sale={sale} />
+            <RegisterToBidButtonContainer sale={sale} me={me} />
           </Flex>
         ),
       },
+    {
+      key: "saleActiveBids",
+      content: <SaleActiveBidsContainer me={me} saleID={sale.internalID} />,
+    },
     {
       key: "saleArtworksRail",
       content: <SaleArtworksRailContainer me={me} />,
@@ -156,7 +161,7 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
           <>
             <Animated.FlatList
               data={saleSectionsData}
-              initialNumToRender={2}
+              initialNumToRender={4} // Render the infinite scroll list after the rest of the page
               viewabilityConfig={viewConfigRef.current}
               onViewableItemsChanged={viewableItemsChangedRef.current}
               contentContainerStyle={{ paddingBottom: 40 }}
@@ -209,6 +214,8 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
           }
           me {
             ...SaleArtworksRail_me
+            ...SaleActiveBids_me @arguments(saleID: $saleID)
+            ...RegisterToBidButton_me @arguments(saleID: $saleID)
           }
 
           ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleSlug)

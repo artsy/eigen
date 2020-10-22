@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1cab031fa5464c76cb94cecea0edde3f */
+/* @relayHash 2d0d85d842369c4285163357d1927eda */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -168,18 +168,13 @@ export type ShowTestsQueryRawResponse = {
             readonly internalID: string;
             readonly city: string | null;
             readonly address: string | null;
-            readonly address_2: string | null;
-            readonly postal_code: string | null;
+            readonly address2: string | null;
+            readonly postalCode: string | null;
             readonly summary: string | null;
             readonly coordinates: ({
                 readonly lat: number | null;
                 readonly lng: number | null;
             }) | null;
-            readonly day_schedules: ReadonlyArray<({
-                readonly start_time: number | null;
-                readonly end_time: number | null;
-                readonly day_of_week: string | null;
-            }) | null> | null;
             readonly openingHours: ({
                 readonly __typename: "OpeningHoursArray";
                 readonly schedules: ReadonlyArray<({
@@ -276,6 +271,7 @@ fragment Detail_show on Show {
   ...Shows_show
   location {
     ...LocationMap_location
+    ...HoursCollapsible_location
     openingHours {
       __typename
       ... on OpeningHoursArray {
@@ -322,23 +318,7 @@ fragment GenericGrid_artworks on Artwork {
   ...ArtworkGridItem_artwork
 }
 
-fragment LocationMap_location on Location {
-  id
-  internalID
-  city
-  address
-  address_2: address2
-  postal_code: postalCode
-  summary
-  coordinates {
-    lat
-    lng
-  }
-  day_schedules: daySchedules {
-    start_time: startTime
-    end_time: endTime
-    day_of_week: dayOfWeek
-  }
+fragment HoursCollapsible_location on Location {
   openingHours {
     __typename
     ... on OpeningHoursArray {
@@ -350,6 +330,20 @@ fragment LocationMap_location on Location {
     ... on OpeningHoursText {
       text
     }
+  }
+}
+
+fragment LocationMap_location on Location {
+  id
+  internalID
+  city
+  address
+  address2
+  postalCode
+  summary
+  coordinates {
+    lat
+    lng
   }
 }
 
@@ -1177,14 +1171,14 @@ return {
                 "storageKey": null
               },
               {
-                "alias": "address_2",
+                "alias": null,
                 "args": null,
                 "kind": "ScalarField",
                 "name": "address2",
                 "storageKey": null
               },
               {
-                "alias": "postal_code",
+                "alias": null,
                 "args": null,
                 "kind": "ScalarField",
                 "name": "postalCode",
@@ -1217,38 +1211,6 @@ return {
                     "args": null,
                     "kind": "ScalarField",
                     "name": "lng",
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              },
-              {
-                "alias": "day_schedules",
-                "args": null,
-                "concreteType": "DaySchedule",
-                "kind": "LinkedField",
-                "name": "daySchedules",
-                "plural": true,
-                "selections": [
-                  {
-                    "alias": "start_time",
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "startTime",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": "end_time",
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "endTime",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": "day_of_week",
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "dayOfWeek",
                     "storageKey": null
                   }
                 ],
@@ -1334,7 +1296,7 @@ return {
     ]
   },
   "params": {
-    "id": "1cab031fa5464c76cb94cecea0edde3f",
+    "id": "2d0d85d842369c4285163357d1927eda",
     "metadata": {},
     "name": "ShowTestsQuery",
     "operationKind": "query",

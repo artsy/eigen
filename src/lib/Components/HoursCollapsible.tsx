@@ -1,10 +1,11 @@
-import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
+import { HoursCollapsible_location } from "__generated__/HoursCollapsible_location.graphql"
 import { Markdown } from "lib/Components/Markdown"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { defaultRules } from "lib/utils/renderMarkdown"
 import { Box, Collapse as _Collapse, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 
 /**
  * FIXME: RN Collapse implementation diverges from web and we're using props
@@ -12,7 +13,7 @@ import { TouchableWithoutFeedback } from "react-native"
  */
 const Collapse = _Collapse as React.ComponentClass<any>
 
-type OpeningHours = LocationMap_location["openingHours"]
+type OpeningHours = HoursCollapsible_location["openingHours"]
 
 interface Props {
   openingHours: OpeningHours
@@ -98,3 +99,21 @@ export class HoursCollapsible extends React.Component<Props, State> {
     )
   }
 }
+
+export const HoursCollapsibleFragmentContainer = createFragmentContainer(HoursCollapsible, {
+  location: graphql`
+    fragment HoursCollapsible_location on Location {
+      openingHours {
+        ... on OpeningHoursArray {
+          schedules {
+            days
+            hours
+          }
+        }
+        ... on OpeningHoursText {
+          text
+        }
+      }
+    }
+  `,
+})

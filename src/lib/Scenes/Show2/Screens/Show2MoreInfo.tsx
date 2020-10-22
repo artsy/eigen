@@ -7,6 +7,7 @@ import { Box, Spacer, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { Show2LocationFragmentContainer as Show2Location } from "../Components/Show2Location"
 
 export interface Show2MoreInfoProps {
   show: Show2MoreInfo_show
@@ -23,7 +24,9 @@ export const Show2MoreInfo: React.FC<Show2MoreInfoProps> = ({ show }) => {
     ...(!!show.about
       ? [
           <Box mx={2}>
-            <Text variant="mediumText">Statement</Text>
+            <Text variant="mediumText" mb={0.5}>
+              Statement
+            </Text>
             <Text variant="text">{show.about}</Text>
           </Box>,
         ]
@@ -32,14 +35,26 @@ export const Show2MoreInfo: React.FC<Show2MoreInfoProps> = ({ show }) => {
     ...(!!show.pressRelease
       ? [
           <Box mx={2}>
-            <Text variant="mediumText">Press Release</Text>
+            <Text variant="mediumText" mb={0.5}>
+              Press Release
+            </Text>
             <ReadMore content={show.pressRelease} textStyle="new" maxChars={500} />
           </Box>,
         ]
       : []),
 
     // TODO: Hours
-    // TODO: Location
+
+    ...((!!show.location || !!show.fair?.location) && !!show.partner
+      ? [
+          <Box mx={2}>
+            <Text variant="mediumText" mb={0.5}>
+              Location
+            </Text>
+            <Show2Location show={show} />
+          </Box>,
+        ]
+      : []),
   ]
 
   return (
@@ -57,9 +72,21 @@ export const Show2MoreInfo: React.FC<Show2MoreInfoProps> = ({ show }) => {
 export const Show2MoreInfoFragmentContainer = createFragmentContainer(Show2MoreInfo, {
   show: graphql`
     fragment Show2MoreInfo_show on Show {
+      ...Show2Location_show
       href
       about: description
       pressRelease(format: MARKDOWN)
+      partner {
+        __typename
+      }
+      fair {
+        location {
+          __typename
+        }
+      }
+      location {
+        __typename
+      }
     }
   `,
 })

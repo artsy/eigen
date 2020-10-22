@@ -6,7 +6,7 @@ import moment from "moment"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { RegisterToBidButton } from "../Components/RegisterToBidButton"
+import { RegisterToBidButtonContainer } from "../Components/RegisterToBidButton"
 import { Sale } from "../Sale"
 
 jest.unmock("react-relay")
@@ -22,8 +22,8 @@ describe("Sale", () => {
     <QueryRenderer<SaleTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query SaleTestsQuery @relay_test_operation {
-          sale(id: "the-sale") {
+        query SaleTestsQuery($saleID: String!) @relay_test_operation {
+          sale(id: $saleID) {
             internalID
             slug
             liveStartAt
@@ -34,11 +34,13 @@ describe("Sale", () => {
           }
           me {
             ...SaleArtworksRail_me
+            ...SaleActiveBids_me @arguments(saleID: $saleID)
+            ...RegisterToBidButton_me @arguments(saleID: $saleID)
           }
           ...SaleLotsList_saleArtworksConnection @arguments(saleID: "sale-slug")
         }
       `}
-      variables={{}}
+      variables={{ saleID: "sale-id" }}
       render={({ props }) => {
         if (props) {
           return <Sale queryRes={props} />
@@ -162,7 +164,7 @@ describe("Sale", () => {
       })
     )
 
-    expect(tree.findAllByType(RegisterToBidButton)).toHaveLength(1)
+    expect(tree.findAllByType(RegisterToBidButtonContainer)).toHaveLength(1)
   })
 
   it("doesn't render a Register button when registrations ended", () => {
@@ -181,7 +183,7 @@ describe("Sale", () => {
       })
     )
 
-    expect(tree.findAllByType(RegisterToBidButton)).toHaveLength(0)
+    expect(tree.findAllByType(RegisterToBidButtonContainer)).toHaveLength(0)
   })
 
   it("doesn't render a Register button when it's closed", () => {
@@ -199,6 +201,6 @@ describe("Sale", () => {
       })
     )
 
-    expect(tree.findAllByType(RegisterToBidButton)).toHaveLength(0)
+    expect(tree.findAllByType(RegisterToBidButtonContainer)).toHaveLength(0)
   })
 })
