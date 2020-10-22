@@ -42,7 +42,7 @@ const absolute = (
     return closed(endDateMoment)
   }
 
-  // if we have both start and end and we in the middle
+  // if we have both start and end and we're in between them
   if (
     startDateMoment !== null &&
     now.isAfter(startDateMoment) &&
