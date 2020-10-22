@@ -58,11 +58,11 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
 
   // poll every .5 seconds to check if sale has gone live
   useInterval(() => {
-    const now = moment()
     if (sale.liveStartAt === null) {
       setIsLive(false)
       return
     }
+    const now = moment()
     if (now.isAfter(sale.liveStartAt)) {
       if (sale.endAt === null) {
         setIsLive(true)
