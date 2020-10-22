@@ -7,6 +7,7 @@ import { Box, Spacer, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { Show2HoursFragmentContainer as Show2Hours } from "../Components/Show2Hours"
 import { Show2LocationFragmentContainer as Show2Location } from "../Components/Show2Location"
 
 export interface Show2MoreInfoProps {
@@ -43,7 +44,16 @@ export const Show2MoreInfo: React.FC<Show2MoreInfoProps> = ({ show }) => {
         ]
       : []),
 
-    // TODO: Hours
+    ...(!!show.location?.openingHours || !!show.fair?.location?.openingHours
+      ? [
+          <Box mx={2}>
+            <Text variant="mediumText" mb={0.5}>
+              Hours
+            </Text>
+            <Show2Hours show={show} />
+          </Box>,
+        ]
+      : []),
 
     ...((!!show.location || !!show.fair?.location) && !!show.partner
       ? [
@@ -73,6 +83,7 @@ export const Show2MoreInfoFragmentContainer = createFragmentContainer(Show2MoreI
   show: graphql`
     fragment Show2MoreInfo_show on Show {
       ...Show2Location_show
+      ...Show2Hours_show
       href
       about: description
       pressRelease(format: MARKDOWN)
@@ -82,10 +93,16 @@ export const Show2MoreInfoFragmentContainer = createFragmentContainer(Show2MoreI
       fair {
         location {
           __typename
+          openingHours {
+            __typename
+          }
         }
       }
       location {
         __typename
+        openingHours {
+          __typename
+        }
       }
     }
   `,
