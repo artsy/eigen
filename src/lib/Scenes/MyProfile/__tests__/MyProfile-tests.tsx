@@ -53,14 +53,11 @@ describe(MyProfileQueryRenderer, () => {
   })
 
   it("renders MyCollections app if feature flag is on", () => {
-    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsEnableMyCollection: true })
-    const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Artwork insights")
-  })
-
-  it("renders MyCollections app if feature flag is on", () => {
-    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsEnableMyCollection: true })
-    const tree = getWrapper()
+    const tree = getWrapper({
+      Me: () => ({
+        labFeatures: ["My Collection"],
+      }),
+    })
     expect(extractText(tree.root)).toContain("Artwork insights")
   })
 

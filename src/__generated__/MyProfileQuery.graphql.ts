@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1e30423524fdc3e975fdd15db57d8dc5 */
+/* @relayHash 2fdaba21632b86ab852d1512c1cece51 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,6 +28,7 @@ query MyProfileQuery {
 
 fragment MyProfile_me on Me {
   name
+  labFeatures
   auctionsLotStandingConnection(first: 25) {
     edges {
       node {
@@ -143,6 +144,13 @@ return {
         "plural": false,
         "selections": [
           (v0/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "labFeatures",
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": [
@@ -431,7 +439,7 @@ return {
     ]
   },
   "params": {
-    "id": "1e30423524fdc3e975fdd15db57d8dc5",
+    "id": "2fdaba21632b86ab852d1512c1cece51",
     "metadata": {},
     "name": "MyProfileQuery",
     "operationKind": "query",

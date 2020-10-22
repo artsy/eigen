@@ -19,7 +19,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
   const listRef = useRef<FlatList<any>>(null)
   const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
   const shouldDisplayMyBids = useEmissionOption("AROptionsBidManagement")
-  const shouldDisplayMyCollection = useEmissionOption("AROptionsEnableMyCollection")
+  const shouldDisplayMyCollection = me.labFeatures.indexOf("My Collection") !== -1
   const [isRefreshing, setIsRefreshing] = useState(false)
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
@@ -131,6 +131,7 @@ export const MyProfileContainer = createRefetchContainer(
     me: graphql`
       fragment MyProfile_me on Me {
         name
+        labFeatures
         auctionsLotStandingConnection(first: 25) {
           edges {
             node {
