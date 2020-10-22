@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d417e161fac7f6825280507b7c27c2cd */
+/* @relayHash 2e028a5b1f6991d4b741908b1313283c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -44,6 +44,36 @@ fragment LocationMap_location on Location {
   }
 }
 
+fragment Show2Hours_show on Show {
+  id
+  location {
+    ...Show2LocationHours_location
+    id
+  }
+  fair {
+    location {
+      ...Show2LocationHours_location
+      id
+    }
+    id
+  }
+}
+
+fragment Show2LocationHours_location on Location {
+  openingHours {
+    __typename
+    ... on OpeningHoursArray {
+      schedules {
+        days
+        hours
+      }
+    }
+    ... on OpeningHoursText {
+      text
+    }
+  }
+}
+
 fragment Show2Location_show on Show {
   partner {
     __typename
@@ -75,6 +105,7 @@ fragment Show2Location_show on Show {
 
 fragment Show2MoreInfo_show on Show {
   ...Show2Location_show
+  ...Show2Hours_show
   href
   about: description
   pressRelease(format: MARKDOWN)
@@ -91,12 +122,18 @@ fragment Show2MoreInfo_show on Show {
   fair {
     location {
       __typename
+      openingHours {
+        __typename
+      }
       id
     }
     id
   }
   location {
     __typename
+    openingHours {
+      __typename
+    }
     id
   }
 }
@@ -214,6 +251,64 @@ v5 = {
       ],
       "storageKey": null
     },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": null,
+      "kind": "LinkedField",
+      "name": "openingHours",
+      "plural": false,
+      "selections": [
+        (v2/*: any*/),
+        {
+          "kind": "InlineFragment",
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "FormattedDaySchedules",
+              "kind": "LinkedField",
+              "name": "schedules",
+              "plural": true,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "days",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "hours",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "type": "OpeningHoursArray",
+          "abstractKey": null
+        },
+        {
+          "kind": "InlineFragment",
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "text",
+              "storageKey": null
+            }
+          ],
+          "type": "OpeningHoursText",
+          "abstractKey": null
+        }
+      ],
+      "storageKey": null
+    },
     (v2/*: any*/)
   ],
   "storageKey": null
@@ -253,6 +348,18 @@ v11 = {
   "nullable": true,
   "plural": false,
   "type": "Float"
+},
+v12 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "OpeningHoursUnion"
+},
+v13 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": true,
+  "type": "FormattedDaySchedules"
 };
 return {
   "fragment": {
@@ -347,6 +454,7 @@ return {
             "storageKey": null
           },
           (v5/*: any*/),
+          (v4/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -373,15 +481,14 @@ return {
             "kind": "ScalarField",
             "name": "pressRelease",
             "storageKey": "pressRelease(format:\"MARKDOWN\")"
-          },
-          (v4/*: any*/)
+          }
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "d417e161fac7f6825280507b7c27c2cd",
+    "id": "2e028a5b1f6991d4b741908b1313283c",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {
@@ -408,6 +515,12 @@ return {
         "show.fair.location.coordinates.lng": (v11/*: any*/),
         "show.fair.location.id": (v7/*: any*/),
         "show.fair.location.internalID": (v7/*: any*/),
+        "show.fair.location.openingHours": (v12/*: any*/),
+        "show.fair.location.openingHours.__typename": (v9/*: any*/),
+        "show.fair.location.openingHours.schedules": (v13/*: any*/),
+        "show.fair.location.openingHours.schedules.days": (v6/*: any*/),
+        "show.fair.location.openingHours.schedules.hours": (v6/*: any*/),
+        "show.fair.location.openingHours.text": (v6/*: any*/),
         "show.fair.location.postalCode": (v6/*: any*/),
         "show.fair.location.summary": (v6/*: any*/),
         "show.fair.name": (v6/*: any*/),
@@ -423,6 +536,12 @@ return {
         "show.location.coordinates.lng": (v11/*: any*/),
         "show.location.id": (v7/*: any*/),
         "show.location.internalID": (v7/*: any*/),
+        "show.location.openingHours": (v12/*: any*/),
+        "show.location.openingHours.__typename": (v9/*: any*/),
+        "show.location.openingHours.schedules": (v13/*: any*/),
+        "show.location.openingHours.schedules.days": (v6/*: any*/),
+        "show.location.openingHours.schedules.hours": (v6/*: any*/),
+        "show.location.openingHours.text": (v6/*: any*/),
         "show.location.postalCode": (v6/*: any*/),
         "show.location.summary": (v6/*: any*/),
         "show.partner": {

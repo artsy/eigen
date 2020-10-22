@@ -22,6 +22,7 @@ upcoming:
     - Adds Show2 artwork grid + filter - mzikherman
     - Add active bids to new auction sale page - mounir
     - Adds Show2 location map - damon
+    - Adds Show2 location hours - damon
 
 releases:
   - version: 6.6.6

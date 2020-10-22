@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 20ab1b13600459a17a1c369ff2b4566f */
+/* @relayHash b12b27414a05f7d143c05cc77be1f2e5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -44,6 +44,36 @@ fragment LocationMap_location on Location {
   }
 }
 
+fragment Show2Hours_show on Show {
+  id
+  location {
+    ...Show2LocationHours_location
+    id
+  }
+  fair {
+    location {
+      ...Show2LocationHours_location
+      id
+    }
+    id
+  }
+}
+
+fragment Show2LocationHours_location on Location {
+  openingHours {
+    __typename
+    ... on OpeningHoursArray {
+      schedules {
+        days
+        hours
+      }
+    }
+    ... on OpeningHoursText {
+      text
+    }
+  }
+}
+
 fragment Show2Location_show on Show {
   partner {
     __typename
@@ -75,6 +105,7 @@ fragment Show2Location_show on Show {
 
 fragment Show2MoreInfo_show on Show {
   ...Show2Location_show
+  ...Show2Hours_show
   href
   about: description
   pressRelease(format: MARKDOWN)
@@ -91,12 +122,18 @@ fragment Show2MoreInfo_show on Show {
   fair {
     location {
       __typename
+      openingHours {
+        __typename
+      }
       id
     }
     id
   }
   location {
     __typename
+    openingHours {
+      __typename
+    }
     id
   }
 }
@@ -214,6 +251,64 @@ v5 = {
       ],
       "storageKey": null
     },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": null,
+      "kind": "LinkedField",
+      "name": "openingHours",
+      "plural": false,
+      "selections": [
+        (v2/*: any*/),
+        {
+          "kind": "InlineFragment",
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "FormattedDaySchedules",
+              "kind": "LinkedField",
+              "name": "schedules",
+              "plural": true,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "days",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "hours",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "type": "OpeningHoursArray",
+          "abstractKey": null
+        },
+        {
+          "kind": "InlineFragment",
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "text",
+              "storageKey": null
+            }
+          ],
+          "type": "OpeningHoursText",
+          "abstractKey": null
+        }
+      ],
+      "storageKey": null
+    },
     (v2/*: any*/)
   ],
   "storageKey": null
@@ -311,6 +406,7 @@ return {
             "storageKey": null
           },
           (v5/*: any*/),
+          (v4/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -337,15 +433,14 @@ return {
             "kind": "ScalarField",
             "name": "pressRelease",
             "storageKey": "pressRelease(format:\"MARKDOWN\")"
-          },
-          (v4/*: any*/)
+          }
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "20ab1b13600459a17a1c369ff2b4566f",
+    "id": "b12b27414a05f7d143c05cc77be1f2e5",
     "metadata": {},
     "name": "Show2MoreInfoQuery",
     "operationKind": "query",
