@@ -2,9 +2,7 @@ import { TriangleDown } from "lib/Icons/TriangleDown"
 import { Autocomplete } from "lib/utils/Autocomplete"
 import { CheckIcon, CloseIcon, color, Flex, Sans, Separator, Spacer, Touchable } from "palette"
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
-import { FlatList, TouchableOpacity } from "react-native"
-// @ts-ignore
-import TextInputState from "react-native/Libraries/Components/TextInput/TextInputState"
+import { FlatList, TextInput, TouchableOpacity } from "react-native"
 import { FancyModal } from "./FancyModal/FancyModal"
 import { INPUT_HEIGHT } from "./Input/Input"
 import { InputTitle } from "./Input/InputTitle"
@@ -42,8 +40,9 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
   async open() {
     // tinkering with RN internals here to make sure that when this select is tapped we blur
     // any text input that was focuesd at the time.
-    if (TextInputState.currentlyFocusedField()) {
-      TextInputState.blurTextInput(TextInputState.currentlyFocusedField())
+    const inputRef = TextInput.State.currentlyFocusedInput()
+    if (inputRef) {
+      TextInput.State.blurTextInput(inputRef)
       await new Promise((r) => requestAnimationFrame(r))
     }
     await new Promise((r) => this.setState({ showingModal: true }, r))
