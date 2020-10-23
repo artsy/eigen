@@ -34,7 +34,7 @@ const absolute = (
 ): string | null => {
   // definitely not open yet
   if (startDateMoment !== null && now.isBefore(startDateMoment)) {
-    return absoluteBegins(startDateMoment, userTimeZone, saleType)
+    return begins(startDateMoment, userTimeZone, saleType)
   }
 
   // definitely already closed
@@ -56,7 +56,7 @@ const absolute = (
   return null
 }
 
-const absoluteBegins = (startDate: moment.Moment, userTimeZone: string, saleType: "live" | "timed"): string =>
+const begins = (startDate: moment.Moment, userTimeZone: string, saleType: "live" | "timed"): string =>
   `${saleType === "live" ? "Live bidding" : "Bidding"} ` +
   `begins ${startDate.format("MMM D")} ` +
   `at ${startDate.format("h:mma")} ` +
@@ -78,7 +78,7 @@ const relative = (
 ): string | null => {
   // definitely not open yet
   if (startDateMoment !== null && now.isBefore(startDateMoment)) {
-    return relativeStarts(now, startDateMoment)
+    return starts(now, startDateMoment)
   }
 
   // we are currently open
@@ -88,7 +88,7 @@ const relative = (
     endDateMoment !== null &&
     now.isBefore(endDateMoment)
   ) {
-    return relativeEnds(now, endDateMoment)
+    return ends(now, endDateMoment)
   }
 
   // otherwise don't display anything
@@ -97,7 +97,7 @@ const relative = (
 
 const maybePluralise = (word: string, unit: number) => word + (unit === 1 ? "" : "s")
 
-const relativeStarts = (now: moment.Moment, startDate: moment.Moment): string | null => {
+const starts = (now: moment.Moment, startDate: moment.Moment): string | null => {
   const hours = startDate.diff(now, "hours")
   const days = startDate.startOf("day").diff(now.startOf("day"), "days")
   if (days < 1) {
@@ -109,7 +109,7 @@ const relativeStarts = (now: moment.Moment, startDate: moment.Moment): string | 
   }
 }
 
-const relativeEnds = (now: moment.Moment, endDate: moment.Moment): string | null => {
+const ends = (now: moment.Moment, endDate: moment.Moment): string | null => {
   const hours = endDate.diff(now, "hours")
   const days = endDate.startOf("day").diff(now.startOf("day"), "days")
   if (days < 1) {
