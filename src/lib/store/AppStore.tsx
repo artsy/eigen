@@ -108,6 +108,16 @@ export function getCurrentEmissionState() {
   return appStoreInstance?.getState().native.sessionState ?? NativeModules.ARNotificationsManager.nativeState
 }
 
+/**
+ * This is safe, but is marked unsafe because it should not be used within react components since it does not cause re-renders.
+ * Use `useSelectedTab` in react components, and use this in rare cases where you need to know the current tab outside of
+ * react components.
+ */
+export function unsafe__getSelectedTab() {
+  // on initial load appStoreInstance might be undefined
+  return appStoreInstance?.getState().bottomTabs.selectedTab
+}
+
 export function useIsStaging() {
   return AppStore.useAppState((state) => state.native.sessionState.env === "staging")
 }

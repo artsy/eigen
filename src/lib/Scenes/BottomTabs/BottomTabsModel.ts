@@ -1,8 +1,7 @@
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
-import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy"
+import { Action, action, Thunk, thunk } from "easy-peasy"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AppStore } from "lib/store/AppStore"
-import { AppStoreModel } from "lib/store/AppStoreModel"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
@@ -10,18 +9,20 @@ export interface BottomTabsModel {
   sessionState: {
     unreadConversationCount: number
   }
+  selectedTab: BottomTabType
   unreadConversationCountChanged: Action<BottomTabsModel, number>
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
 
+  switchTab: Action<BottomTabsModel, BottomTabType>
   // TODO: move navigation routing logic to TS so this can be a source of truth rather
   // than derived from the native state
-  selectedTab: Computed<BottomTabsModel, BottomTabType, AppStoreModel>
 }
 
 export const BottomTabsModel: BottomTabsModel = {
   sessionState: {
     unreadConversationCount: 0,
   },
+  selectedTab: "home",
   unreadConversationCountChanged: action((state, unreadConversationCount) => {
     state.sessionState.unreadConversationCount = unreadConversationCount
   }),
@@ -43,6 +44,7 @@ export const BottomTabsModel: BottomTabsModel = {
       AppStore.actions.native.setApplicationIconBadgeNumber(result.me.unreadConversationCount)
     }
   }),
-
-  selectedTab: computed([(_, store) => store.native.sessionState.selectedTab], (selectedTab) => selectedTab),
+  switchTab: action((state, tabType) => {
+    state.selectedTab = tabType
+  }),
 }
