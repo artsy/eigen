@@ -17,7 +17,6 @@
 #import "ARKeychainable.h"
 #import "ARSystemTime.h"
 #import "ARLogger.h"
-#import "ARTopMenuViewController.h"
 #import "ARAppDelegate.h"
 
 #import "MTLModel+JSON.h"
@@ -520,7 +519,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 {
     [ArtsyAPI deleteAPNTokenForCurrentDeviceWithCompletion:^ {
         [[self class] clearUserData];
-        [ARTopMenuViewController teardownSharedInstance];
     }];
 }
 

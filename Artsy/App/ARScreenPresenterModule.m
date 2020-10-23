@@ -1,5 +1,4 @@
 #import "ARScreenPresenterModule.h"
-#import "ARTopMenuViewController.h"
 #import <Emission/ARComponentViewController.h>
 #import "UIDevice-Hardware.h"
 #import "ARAdminSettingsViewController.h"
@@ -68,11 +67,11 @@ RCT_EXPORT_METHOD(pushView:(nonnull NSString *)currentTabStackID viewDescriptor:
 {
     UIViewController *vc = [self getViewControllerForViewDescriptor:viewDescriptor];
     UINavigationController *stack = nil;
-    if ([[self currentlyPresentedVC] presentingViewController] && [[self currentlyPresentedVC] isKindOfClass:UINavigationController.class]) {
+    if ([[self.class currentlyPresentedVC] presentingViewController] && [[self.class currentlyPresentedVC] isKindOfClass:UINavigationController.class]) {
         // we're showing a modal with a view stack, push it there instead
-        stack = (id)[self currentlyPresentedVC];
+        stack = (id)[self.class currentlyPresentedVC];
     } else {
-        stack = [ARScreenPresenterModule getNavigationStack:currentTabStackID];
+        stack = [self.class getNavigationStack:currentTabStackID];
     }
     
     [stack pushViewController:vc animated:YES];
@@ -88,11 +87,11 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
     
     NSString *stackID = [[NSUUID UUID] UUIDString];
     
-    UINavigationController *stack = [ARScreenPresenterModule createModalNavigationStack:stackID rootViewController:vc withBackButton:!hasOwnModalCloseButton];
+    UINavigationController *stack = [self.class createModalNavigationStack:stackID rootViewController:vc withBackButton:!hasOwnModalCloseButton];
     
     stack.modalPresentationStyle = modalPresentationStyle;
     
-    [[self currentlyPresentedVC] presentViewController:stack animated:YES completion:^ {
+    [[self.class currentlyPresentedVC] presentViewController:stack animated:YES completion:^ {
         resolve(stackID);
     }];
 }
@@ -124,13 +123,13 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
     } else if ([moduleName isEqualToString:@"Admin"]) {
         vc = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     } else if ([moduleName isEqualToString:@"Auction"]) {
-        vc = [ARScreenPresenterModule loadAuctionWithID:props[@"id"]];
+        vc = [self.class loadAuctionWithID:props[@"id"]];
     } else if ([moduleName isEqualToString:@"AuctionRegistration"]) {
-        vc = [ARScreenPresenterModule loadAuctionRegistrationWithID:props[@"id"] skipBidFlow:[props[@"skip_bid_flow"] boolValue]];
+        vc = [self.class loadAuctionRegistrationWithID:props[@"id"] skipBidFlow:[props[@"skip_bid_flow"] boolValue]];
     } else if ([moduleName isEqualToString:@"AuctionBidArtwork"]) {
-        vc = [ARScreenPresenterModule loadBidUIForArtwork:props[@"artwork_id"] inSale:props[@"id"]];
+        vc = [self.class loadBidUIForArtwork:props[@"artwork_id"] inSale:props[@"id"]];
     } else if ([moduleName isEqualToString:@"LiveAuction"]) {
-        if ([AROptions boolForOption:AROptionsDisableNativeLiveAuctions] || [ARScreenPresenterModule requiresUpdateForWebSocketVersionUpdate]) {
+        if ([AROptions boolForOption:AROptionsDisableNativeLiveAuctions] || [self.class requiresUpdateForWebSocketVersionUpdate]) {
             NSString *slug = props[@"slug"];
             NSURL *liveAuctionsURL = [[AREmission sharedInstance] liveAuctionsURL];
             NSURL *auctionURL = [NSURL URLWithString:slug relativeToURL:liveAuctionsURL];
@@ -152,8 +151,7 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
     return vc;
 }
 
-// This returns either the topmost modal or the root view controller for the app
-- (UIViewController *)currentlyPresentedVC
++ (UIViewController *)currentlyPresentedVC
 {
     UIViewController *vc = [[ARAppDelegate sharedInstance] window].rootViewController;
    
@@ -166,12 +164,12 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
 
 RCT_EXPORT_METHOD(dismissModal)
 {
-    [[[self currentlyPresentedVC] presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+    [[[self.class currentlyPresentedVC] presentingViewController] dismissViewControllerAnimated:YES completion:nil];
 }
 
 RCT_EXPORT_METHOD(goBack:(nonnull NSString *)currentTabStackID)
 {
-    UINavigationController *vc = (id)[self currentlyPresentedVC];
+    UINavigationController *vc = (id)[self.class currentlyPresentedVC];
     if ([vc presentingViewController]) {
         // it's a modal
         if ([vc isKindOfClass:UINavigationController.class] && vc.viewControllers.count > 1) {
@@ -181,19 +179,19 @@ RCT_EXPORT_METHOD(goBack:(nonnull NSString *)currentTabStackID)
         }
     } else {
         // we're in a root tab stack
-        vc = [ARScreenPresenterModule getNavigationStack:currentTabStackID];
+        vc = [self.class getNavigationStack:currentTabStackID];
         [vc popViewControllerAnimated:YES];
     }
 }
 
 RCT_EXPORT_METHOD(popStack:(nonnull NSString *)stackID)
 {
-    [[ARScreenPresenterModule getNavigationStack:stackID] popViewControllerAnimated:YES];
+    [[self.class getNavigationStack:stackID] popViewControllerAnimated:YES];
 }
 
 RCT_EXPORT_METHOD(popToRootOrScrollToTop:(nonnull NSString *)stackID)
 {
-    UINavigationController *stack = [ARScreenPresenterModule getNavigationStack:stackID];
+    UINavigationController *stack = [self.class getNavigationStack:stackID];
     if (stack.viewControllers.count > 1) {
         [stack popToRootViewControllerAnimated:YES];
     } else {
@@ -205,7 +203,7 @@ RCT_EXPORT_METHOD(popToRootAndScrollToTop:(nonnull NSString *)stackID
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
-    UINavigationController *stack = [ARScreenPresenterModule getNavigationStack:stackID];
+    UINavigationController *stack = [self.class getNavigationStack:stackID];
     [stack popToRootViewControllerAnimated:YES];
     [stack.viewControllers[0].view ar_scrollToTopAnimated:YES];
     resolve(nil);
@@ -265,14 +263,14 @@ RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag rou
     [[ARMediaPreviewController mediaPreviewControllerWithRemoteURL:route
                                                           mimeType:mimeType
                                                           cacheKey:cacheKey
-                                                hostViewController:[[ARTopMenuViewController sharedController] rootNavigationController]
+                                                hostViewController:[self.class currentlyPresentedVC]
                                                    originatingView:originatingView] presentPreview];
 
 }
 
 RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSString *)toAddress subject:(nonnull NSString *)subject body:(NSString *)body)
 {
-    UIViewController *fromViewController = [ARTopMenuViewController sharedController];
+    UIViewController *fromViewController = [self.class currentlyPresentedVC];
     if ([MFMailComposeViewController canSendMail]) {
       MFMailComposeViewController *composer = [[MFMailComposeViewController alloc] init];
       composer.mailComposeDelegate = self;
@@ -317,7 +315,7 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
             if (allowedAccess) {
                 ARAugmentedFloorBasedVIRViewController *viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:config];
                 viewInRoomVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                [[self currentlyPresentedVC] presentViewController:viewInRoomVC animated:YES completion:nil];
+                [[self.class currentlyPresentedVC] presentViewController:viewInRoomVC animated:YES completion:nil];
             } else {
                 ArtsyEcho *echo = [[ArtsyEcho alloc] init];
                 [echo setup];
@@ -327,7 +325,7 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
                 NSURL *movieURL = setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;
                 ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config];
                 setupVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                [[self currentlyPresentedVC] presentViewController:setupVC animated:YES completion:nil];
+                [[self.class currentlyPresentedVC] presentViewController:setupVC animated:YES completion:nil];
             }
         };
 
@@ -352,7 +350,7 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
                     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Failed to Load Image" message:@"We could not download the image to present in View-in-Room." preferredStyle:UIAlertControllerStyleAlert];
                     UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
                     [alert addAction:defaultAction];
-                    [[ARTopMenuViewController sharedController] presentViewController:alert animated:YES completion:nil];
+                    [[self.class currentlyPresentedVC] presentViewController:alert animated:YES completion:nil];
                 }
             }];
         }
@@ -368,7 +366,7 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
 
 RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide stackID:(NSString *)stackID)
 {
-    ARNavigationController *arNav = (id)[ARScreenPresenterModule getNavigationStack:stackID];
+    ARNavigationController *arNav = (id)[self.class getNavigationStack:stackID];
     if ([arNav isKindOfClass:ARNavigationController.class]) {
         [arNav showBackButton:!shouldHide animated:YES];
     }
@@ -387,30 +385,30 @@ RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide stackID:(NSString 
 
 + (ARNavigationController *)getNavigationStack:(NSString *)stackID
 {
-    return (ARNavigationController *)[ARScreenPresenterModule cachedNavigationStacks][stackID];
+    return (ARNavigationController *)[self cachedNavigationStacks][stackID];
 }
 
 + (ARNavigationController *)createNavigationStack:(NSString *)stackID rootViewController:(UIViewController *)rootViewController
 {
     ARNavigationController *stack = [[ARNavigationController alloc] initWithRootViewController:rootViewController];
-    [ARScreenPresenterModule cachedNavigationStacks][stackID] = stack;
+    [self cachedNavigationStacks][stackID] = stack;
     return stack;
 }
 
 + (UINavigationController *)createModalNavigationStack:(NSString *)stackID rootViewController:(UIViewController *)rootViewController withBackButton:(BOOL)withBackButton
 {
     if (!withBackButton) {
-        return [ARScreenPresenterModule createNavigationStack:stackID rootViewController:rootViewController];
+        return [self createNavigationStack:stackID rootViewController:rootViewController];
     }
     
     ARSerifNavigationViewController *stack = [[ARSerifNavigationViewController alloc] initWithRootViewController:rootViewController];
-    [ARScreenPresenterModule cachedNavigationStacks][stackID] = stack;
+    [self cachedNavigationStacks][stackID] = stack;
     return stack;
 }
 
 + (void)removeNavigationStack:(NSString *)stackID
 {
-    [[ARScreenPresenterModule cachedNavigationStacks] removeObjectForKey:stackID];
+    [[self cachedNavigationStacks] removeObjectForKey:stackID];
 }
 
 @end

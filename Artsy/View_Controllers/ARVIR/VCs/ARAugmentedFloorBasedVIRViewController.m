@@ -3,7 +3,6 @@
 
 // This needs to be a top level UIViewController
 // which will have safeAreaInsets that reflect the phone
-#import "ARTopMenuViewController.h"
 
 #import "ARMenuAwareViewController.h"
 #import "ARDispatchManager.h"

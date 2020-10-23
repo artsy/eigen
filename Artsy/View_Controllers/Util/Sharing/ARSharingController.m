@@ -10,7 +10,7 @@
 #import "ARMessageItemProvider.h"
 #import "Gene.h"
 #import "PartnerShow.h"
-#import "ARTopMenuViewController.h"
+#import "ARScreenPresenterModule.h"
 
 
 @interface ARSharingController ()
@@ -62,10 +62,10 @@
     ];
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [[ARTopMenuViewController sharedController] presentViewController:activityVC animated:YES completion:nil];
+        [[ARScreenPresenterModule currentlyPresentedVC] presentViewController:activityVC animated:YES completion:nil];
     } else {
         activityVC.modalPresentationStyle = UIModalPresentationPopover;
-        [[ARTopMenuViewController sharedController] presentViewController:activityVC animated:YES completion:nil];
+        [[ARScreenPresenterModule currentlyPresentedVC] presentViewController:activityVC animated:YES completion:nil];
         UIPopoverPresentationController *popoverController = activityVC.popoverPresentationController;
         popoverController.permittedArrowDirections = UIPopoverArrowDirectionAny;
         popoverController.sourceView = view;

@@ -13,8 +13,7 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import "ARDispatchManager.h"
 
-#import "ARTopMenuViewController.h"
-
+#import "ARAppDelegate.h"
 #import <CoreServices/CoreServices.h>
 
 #import <Emission/AREmission.h>
@@ -229,7 +228,8 @@
     messsage = [messsage stringByReplacingOccurrencesOfString:@"http://" withString:@""];
     messsage = [messsage stringByReplacingOccurrencesOfString:@"https://" withString:@""];
 
-    ARTopMenuViewController *presentationVC = [ARTopMenuViewController sharedController];
+    // TODO: test that this works in a modal
+    UIViewController *presentationVC = [ARAppDelegate sharedInstance].window.rootViewController;
     UIAlertController *controller = [UIAlertController alertControllerWithTitle:title message:messsage preferredStyle:UIAlertControllerStyleAlert];
 
     [controller addAction:[UIAlertAction actionWithTitle:@"Open" style:UIAlertActionStyleDefault handler:^(UIAlertAction *_Nonnull action) {

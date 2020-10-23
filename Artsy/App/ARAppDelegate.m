@@ -18,7 +18,6 @@
 #import "ARFonts.h"
 #import "ARUserManager.h"
 #import "AROptions.h"
-#import "ARTopMenuViewController.h"
 
 #import "UIViewController+InnermostTopViewController.h"
 #import "ARAdminSettingsViewController.h"
@@ -168,7 +167,6 @@ static ARAppDelegate *_sharedInstance = nil;
 /// This is called when the app is almost done launching
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    /// Make sure we set up here so there is an ARTopMenuViewController for routing when launching from a universal link
     [self setupForAppLaunch];
 
     FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
@@ -274,10 +272,6 @@ static ARAppDelegate *_sharedInstance = nil;
     [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORTildeKey:^{
         [self rageShakeNotificationRecieved];
     }];
-
-    [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORDeleteKey:^{
-        [ARTopMenuViewController.sharedController.rootNavigationController popViewControllerAnimated:YES];
-    }];
 }
 
 // For pre-iOS 10
@@ -360,24 +354,18 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)rageShakeNotificationRecieved
 {
-    UINavigationController *navigationController = ARTopMenuViewController.sharedController.rootNavigationController;
-
-    if (![navigationController.topViewController isKindOfClass:ARAdminSettingsViewController.class]) {
-        if (![UIDevice isPad]) {
-            // For some reason the supported orientation isn’t respected when this is pushed on top
-            // of a landscape VIR view.
-            //
-            // Since this is a debug/admin only issue, it’s safe to use private API here.
-            [[UIDevice currentDevice] setValue:@(UIInterfaceOrientationPortrait) forKey:@"orientation"];
-        }
-        ARAdminSettingsViewController *adminSettings = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-
-        SerifModalWebNavigationController *navController = [[SerifModalWebNavigationController alloc] initWithRootViewController:adminSettings];
-
-        [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
-
+    if (![UIDevice isPad]) {
+        // For some reason the supported orientation isn’t respected when this is pushed on top
+        // of a landscape VIR view.
+        //
+        // Since this is a debug/admin only issue, it’s safe to use private API here.
+        [[UIDevice currentDevice] setValue:@(UIInterfaceOrientationPortrait) forKey:@"orientation"];
     }
+    ARAdminSettingsViewController *adminSettings = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 
+    SerifModalWebNavigationController *navController = [[SerifModalWebNavigationController alloc] initWithRootViewController:adminSettings];
+
+    [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)countNumberOfRuns
