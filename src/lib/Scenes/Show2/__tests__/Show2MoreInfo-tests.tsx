@@ -65,4 +65,15 @@ describe("Show2MoreInfo", () => {
     expect(text).toContain("Basic information about the show")
     expect(text).toContain("The press release for the show")
   })
+
+  it("renders the partner type", () => {
+    const wrapper = getWrapper({
+      Partner: () => ({ type: "Institutional Seller" }),
+    })
+
+    const text = extractText(wrapper.root)
+
+    expect(text).toContain("Institution")
+    expect(text).not.toContain("Institutional Seller")
+  })
 })

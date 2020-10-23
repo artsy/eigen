@@ -10,6 +10,8 @@ export type Show2MoreInfo_show = {
     readonly pressRelease: string | null;
     readonly partner: {
         readonly __typename: string;
+        readonly type?: string | null;
+        readonly " $fragmentRefs": FragmentRefs<"PartnerEntityHeader_partner">;
     } | null;
     readonly fair: {
         readonly location: {
@@ -44,10 +46,7 @@ var v0 = {
   "name": "__typename",
   "storageKey": null
 },
-v1 = [
-  (v0/*: any*/)
-],
-v2 = {
+v1 = {
   "alias": null,
   "args": null,
   "concreteType": "Location",
@@ -63,7 +62,9 @@ v2 = {
       "kind": "LinkedField",
       "name": "openingHours",
       "plural": false,
-      "selections": (v1/*: any*/),
+      "selections": [
+        (v0/*: any*/)
+      ],
       "storageKey": null
     }
   ],
@@ -109,7 +110,28 @@ return {
       "kind": "LinkedField",
       "name": "partner",
       "plural": false,
-      "selections": (v1/*: any*/),
+      "selections": [
+        (v0/*: any*/),
+        {
+          "args": null,
+          "kind": "FragmentSpread",
+          "name": "PartnerEntityHeader_partner"
+        },
+        {
+          "kind": "InlineFragment",
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "type",
+              "storageKey": null
+            }
+          ],
+          "type": "Partner",
+          "abstractKey": null
+        }
+      ],
       "storageKey": null
     },
     {
@@ -120,11 +142,11 @@ return {
       "name": "fair",
       "plural": false,
       "selections": [
-        (v2/*: any*/)
+        (v1/*: any*/)
       ],
       "storageKey": null
     },
-    (v2/*: any*/),
+    (v1/*: any*/),
     {
       "args": null,
       "kind": "FragmentSpread",
@@ -140,5 +162,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'b3d678ef8d737808acca51ef725cfc17';
+(node as any).hash = '227f8a4eb40b805cee6d7434f76ea794';
 export default node;

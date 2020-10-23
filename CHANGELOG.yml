@@ -24,6 +24,7 @@ upcoming:
     - Add active bids to new auction sale page - mounir
     - Adds Show2 location map - damon
     - Adds Show2 location hours - damon
+    - Adds Show2 partner entity header - damon
 
 releases:
   - version: 6.6.6
