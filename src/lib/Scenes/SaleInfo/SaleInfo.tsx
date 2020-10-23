@@ -10,6 +10,7 @@ import { Flex, Join, Sans, Separator, Text } from "palette"
 import React from "react"
 import { Linking, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { navigate } from "../../navigation/navigate"
 import { PlaceholderBox } from "../../utils/placeholders"
 import { RegisterToBidButtonContainer } from "../Sale/Components/RegisterToBidButton"
 
@@ -27,7 +28,7 @@ const AuctionSupport = () => {
       <MenuItem
         title="Auction FAQs"
         onPress={() => {
-          console.log("navigate to auctions FAQ")
+          navigate("/auction-faq")
         }}
       />
       <MenuItem
@@ -52,23 +53,6 @@ const AuctionIsLive = () => (
       Participating in a live auction means you’ll be competing against bidders in real time on an auction room floor.
       You can place max bids which will be represented by Artsy in the auction room or you can bid live when the auction
       opens.
-    </Text>
-  </Flex>
-)
-
-const AuctionIsBuyersPremium = () => (
-  <Flex px={2} data-test-id="live-auction">
-    <Sans size="5t" mb={2} mt={1}>
-      Buyer’s premium for this auction
-    </Sans>
-    <Text variant="text" color="black" fontSize="size4" mb={1}>
-      On the hammer price up to and including $100,000: 25%
-    </Text>
-    <Text variant="text" color="black" fontSize="size4" mb={1}>
-      On the hammer price in excess of $100,000 up to and including $1,000,000: 20%
-    </Text>
-    <Text variant="text" color="black" fontSize="size4" mb={1}>
-      On the portion of the hammer price in excess of $1,000,000: 12%
     </Text>
   </Flex>
 )
@@ -109,12 +93,8 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
           {renderLiveBiddingOpening()}
         </Flex>
 
-        {/*  Buyer Premium */}
-        {!!sale.isWithBuyersPremium && <AuctionIsBuyersPremium />}
-
         {/*  Live Auction Notice */}
         {Boolean(sale.liveStartAt) && <AuctionIsLive />}
-
         {/*  Auction Support */}
         <AuctionSupport />
       </Join>
@@ -143,7 +123,6 @@ export const SaleInfoContainer = createFragmentContainer(SaleInfo, {
       ...RegisterToBidButton_sale
       description
       endAt
-      isWithBuyersPremium
       liveStartAt
       name
       startAt
@@ -177,4 +156,4 @@ export const SaleInfoQueryRenderer: React.FC<{ saleID: string }> = ({ saleID: sa
   )
 }
 
-export const tests = { AuctionSupport, AuctionIsLive, AuctionIsBuyersPremium }
+export const tests = { AuctionSupport, AuctionIsLive }
