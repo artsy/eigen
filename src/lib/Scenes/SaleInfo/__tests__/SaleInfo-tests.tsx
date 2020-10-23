@@ -1,10 +1,10 @@
 import { SaleInfoTestsQuery } from "__generated__/SaleInfoTestsQuery.graphql"
-import { RegisterToBidButton } from "lib/Scenes/Sale/Components/RegisterToBidButton"
+import { RegisterToBidButtonContainer } from "lib/Scenes/Sale/Components/RegisterToBidButton"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { AuctionIsLive, SaleInfoContainer as SaleInfo } from "../SaleInfo"
+import { SaleInfoContainer, tests } from "../SaleInfo"
 
 jest.unmock("react-relay")
 
@@ -14,16 +14,19 @@ describe("SaleInfo", () => {
     <QueryRenderer<SaleInfoTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query SaleInfoTestsQuery @relay_test_operation {
-          sale(id: "the-sale") {
+        query SaleInfoTestsQuery($saleID: String!) @relay_test_operation {
+          sale(id: $saleID) {
             ...SaleInfo_sale
+          }
+          me {
+            ...SaleInfo_me
           }
         }
       `}
-      variables={{}}
+      variables={{ saleID: "sale-id" }}
       render={({ props }) => {
-        if (props?.sale) {
-          return <SaleInfo sale={props.sale} />
+        if (props?.sale && props?.me) {
+          return <SaleInfoContainer sale={props.sale} me={props.me} />
         }
         return null
       }}
@@ -43,7 +46,7 @@ describe("SaleInfo", () => {
       })
     )
 
-    expect(tree.root.findAllByType(RegisterToBidButton)).toBeTruthy()
+    expect(tree.root.findAllByType(RegisterToBidButtonContainer)).toBeTruthy()
   })
 
   it("shows Auction is live View shows up when an auction is live", () => {
@@ -55,10 +58,10 @@ describe("SaleInfo", () => {
       })
     )
 
-    expect(tree.root.findAllByType(AuctionIsLive)).toHaveLength(1)
+    expect(tree.root.findAllByType(tests.AuctionIsLive)).toHaveLength(1)
   })
 
-  it("shows Auction is live view is hidden up when an auction is not live", () => {
+  it("doesn't show Auction is live view when an auction is not live", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -67,7 +70,7 @@ describe("SaleInfo", () => {
       })
     )
 
-    expect(tree.root.findAllByType(AuctionIsLive)).toHaveLength(0)
+    expect(tree.root.findAllByType(tests.AuctionIsLive)).toHaveLength(0)
   })
 })
 

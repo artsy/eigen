@@ -394,7 +394,6 @@ export const FilterHeader = styled(Sans)`
 `
 
 export const FilterArtworkButton = styled(Flex)`
-  border-radius: 20;
   background-color: ${color("black100")};
   align-items: center;
   justify-content: center;
@@ -426,12 +425,14 @@ export const AnimatedArtworkFilterButton: React.FC<{ isVisible: boolean; onPress
     return selectedFiltersSum
   }
 
+  const roundedButtonStyle = { borderRadius: 20 }
+
   return (
-    <AnimatedBottomButton isVisible={isVisible} onPress={onPress}>
-      <FilterArtworkButton px="2">
+    <AnimatedBottomButton isVisible={isVisible} onPress={onPress} buttonStyles={roundedButtonStyle}>
+      <FilterArtworkButton px="2" style={roundedButtonStyle}>
         <FilterIcon fill="white100" />
         <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
-          Filter
+          Sort & Filter
         </Sans>
         {getFiltersCount() > 0 && (
           <>

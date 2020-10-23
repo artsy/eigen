@@ -2,6 +2,8 @@ upcoming:
   version: 6.6.7
   date: TBD
   dev:
+    - Fix when a closed auction is accessed, don't try to go live anymore - pavlos
+    - Fix when a closed auction is accessed, the register button should not render - pavlos
     - Change CheckAuthentication middleware to be called before the principalFieldMiddleware - mounir
   user_facing:
     - Fix navigation bug on Artwork consign button - david
@@ -20,6 +22,7 @@ upcoming:
     - Switch to live auction from new sale page - barry, brian
     - Adds ability to filter by artist in a fair - sweir
     - Fix environment variable names for Sentry - starsirius
+    - Fix capitalization on home auction rail - pavlos
     - Adds Show2 header, behind lab option - damon
     - Adds Show2 install shots, behind lab option - damon
     - Link ConversationDetail screen - sepans
@@ -28,7 +31,10 @@ upcoming:
     - Adds Show2 basic more information route, behind lab option - damon
     - Add Show2 context card, linking to Fair or Partner - roop
     - Fix filters on Fair2 Works by Artists I follow artwork grid - devon
+    - Fix blank screen bug in My Collection - brian
     - Adds Show2 artwork grid + filter - mzikherman
+    - Add active bids to new auction sale page - mounir
+    - Adds Show2 location map - damon
 
 releases:
   - version: 6.6.6

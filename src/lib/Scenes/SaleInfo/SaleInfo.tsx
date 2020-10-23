@@ -1,23 +1,24 @@
+import { SaleInfo_me } from "__generated__/SaleInfo_me.graphql"
 import { SaleInfo_sale } from "__generated__/SaleInfo_sale.graphql"
 import { SaleInfoQueryRendererQuery } from "__generated__/SaleInfoQueryRendererQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { saleTime } from "lib/utils/saleTime"
 import moment from "moment"
 import { Flex, Join, Sans, Separator, Text } from "palette"
 import React from "react"
 import { Linking, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { PlaceholderBox } from "../../utils/placeholders"
-import { RegisterToBidButton } from "../Sale/Components/RegisterToBidButton"
+import { RegisterToBidButtonContainer } from "../Sale/Components/RegisterToBidButton"
 
 interface Props {
   sale: SaleInfo_sale
+  me: SaleInfo_me
 }
 
-export const AuctionSupport = () => {
+const AuctionSupport = () => {
   return (
     <Flex mt={1}>
       <Sans px={2} size="5t" mb={15}>
@@ -32,6 +33,7 @@ export const AuctionSupport = () => {
       <MenuItem
         title="Contact us for help"
         onPress={() => {
+          // PS: Opening Using Linking to open mail works only on real device on iOS
           Linking.openURL("mailto:specialist@artsy.net").catch((error) => {
             console.log(error)
           })
@@ -41,7 +43,7 @@ export const AuctionSupport = () => {
   )
 }
 
-export const AuctionIsLive = () => (
+const AuctionIsLive = () => (
   <Flex px={2} data-test-id="live-auction">
     <Sans size="5t" mb={2} mt={1}>
       This is a live auction
@@ -54,7 +56,7 @@ export const AuctionIsLive = () => (
   </Flex>
 )
 
-export const AuctionIsBuyersPremium = () => (
+const AuctionIsBuyersPremium = () => (
   <Flex px={2} data-test-id="live-auction">
     <Sans size="5t" mb={2} mt={1}>
       Buyer’s premium for this auction
@@ -71,29 +73,21 @@ export const AuctionIsBuyersPremium = () => (
   </Flex>
 )
 
-export const SaleInfo: React.FC<Props> = ({ sale }) => {
-  console.log({ sale })
-  const isLiveBiddingAvailable = () => {
-    if (!sale.liveStartAt) {
-      return false
-    }
-    return moment(sale.liveStartAt).isAfter(moment())
-  }
-
-  const saleTimeDetails = saleTime(sale)
-
+export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
   const renderLiveBiddingOpening = () => {
-    if (!isLiveBiddingAvailable()) {
+    if (!sale.liveStartAt || !moment().isSameOrBefore(moment(sale.liveStartAt)) || !sale.timeZone) {
       return null
     }
 
     return (
-      <Flex>
+      <Flex mb={1}>
         <Text variant="text" color="black" fontSize="size4" mt={25} fontWeight="500">
-          {saleTimeDetails?.absolute.headline}
+          Live bidding opens on
         </Text>
         <Text variant="text" color="black" fontSize="size4">
-          {saleTimeDetails?.absolute.date}
+          {`${moment(sale.liveStartAt).format("dddd, MMMM, D, YYYY")} at ${moment(sale.liveStartAt).format(
+            "h:mma"
+          )} ${moment.tz(sale.timeZone).zoneAbbr()}`}
         </Text>
       </Flex>
     )
@@ -108,7 +102,7 @@ export const SaleInfo: React.FC<Props> = ({ sale }) => {
           <Sans size="5" mt={1} mb={3}>
             {sale.name}
           </Sans>
-          <RegisterToBidButton sale={sale} contextType="sale_information" />
+          <RegisterToBidButtonContainer sale={sale} contextType="sale_information" me={me} />
           <Text variant="text" color="black" fontSize="size4" mt={25}>
             {sale.description}
           </Text>
@@ -156,6 +150,11 @@ export const SaleInfoContainer = createFragmentContainer(SaleInfo, {
       timeZone
     }
   `,
+  me: graphql`
+    fragment SaleInfo_me on Me {
+      ...RegisterToBidButton_me @arguments(saleID: $saleID)
+    }
+  `,
 })
 
 export const SaleInfoQueryRenderer: React.FC<{ saleID: string }> = ({ saleID: saleID }) => {
@@ -167,6 +166,9 @@ export const SaleInfoQueryRenderer: React.FC<{ saleID: string }> = ({ saleID: sa
           sale(id: $saleID) {
             ...SaleInfo_sale
           }
+          me {
+            ...SaleInfo_me
+          }
         }
       `}
       variables={{ saleID }}
@@ -174,3 +176,5 @@ export const SaleInfoQueryRenderer: React.FC<{ saleID: string }> = ({ saleID: sa
     />
   )
 }
+
+export const tests = { AuctionSupport, AuctionIsLive, AuctionIsBuyersPremium }

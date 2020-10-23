@@ -1,3 +1,4 @@
+import { RegisterToBidButton_me } from "__generated__/RegisterToBidButton_me.graphql"
 import { RegisterToBidButton_sale } from "__generated__/RegisterToBidButton_sale.graphql"
 import { Box, Button, CheckIcon, Flex, Spacer, Text } from "palette"
 import React from "react"
@@ -8,10 +9,11 @@ import { saleStatus } from "../helpers"
 
 interface RegisterToBidButtonProps {
   sale: RegisterToBidButton_sale
+  me: RegisterToBidButton_me
   contextType: "sale" | "sale_information"
 }
 
-const RegisterToBidButtonComp: React.FC<RegisterToBidButtonProps> = ({ contextType, sale }) => {
+const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({ me, sale, contextType }) => {
   const { trackEvent } = useTracking()
 
   if (sale.registrationStatus === null) {
@@ -59,12 +61,19 @@ const RegisterToBidButtonComp: React.FC<RegisterToBidButtonProps> = ({ contextTy
   }
 
   if (sale.registrationStatus?.qualifiedForBidding) {
-    return (
-      <Flex flexDirection="row">
-        <CheckIcon fill="green100" mr={8} />
-        <Text color="green100">You're approved to bid</Text>
-      </Flex>
-    )
+    // If the user alrady bidded on some lots, we don' have to remind them they are approved to bid
+    if (me?.biddedLots && me.biddedLots.length > 0) {
+      return null
+    } else {
+      return (
+        <Flex flexDirection="row">
+          <CheckIcon fill="green100" mr={8} />
+          <Text color="green100" fontWeight="500">
+            You're approved to bid
+          </Text>
+        </Flex>
+      )
+    }
   } else {
     return (
       <Button block size="large" disabled>
@@ -74,7 +83,7 @@ const RegisterToBidButtonComp: React.FC<RegisterToBidButtonProps> = ({ contextTy
   }
 }
 
-export const RegisterToBidButton = createFragmentContainer(RegisterToBidButtonComp, {
+export const RegisterToBidButtonContainer = createFragmentContainer(RegisterToBidButton, {
   sale: graphql`
     fragment RegisterToBidButton_sale on Sale {
       slug
@@ -83,6 +92,15 @@ export const RegisterToBidButton = createFragmentContainer(RegisterToBidButtonCo
       requireIdentityVerification
       registrationStatus {
         qualifiedForBidding
+      }
+    }
+  `,
+  me: graphql`
+    fragment RegisterToBidButton_me on Me @argumentDefinitions(saleID: { type: "String" }) {
+      biddedLots: lotStandings(saleID: $saleID) {
+        saleArtwork {
+          id
+        }
       }
     }
   `,

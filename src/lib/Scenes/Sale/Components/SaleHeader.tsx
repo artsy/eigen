@@ -70,12 +70,14 @@ export const SaleHeader: React.FC<Props> = (props) => {
             {props.sale.name}
           </Text>
           <Flex my="1">
-            <Text style={{ fontWeight: "bold" }} variant="text">
-              {saleTimeDetails?.absoluteConcatenated}
-            </Text>
-            {!!saleTimeDetails?.relative && (
+            {saleTimeDetails.absolute !== null && (
+              <Text style={{ fontWeight: "bold" }} variant="text">
+                {saleTimeDetails.absolute}
+              </Text>
+            )}
+            {!!saleTimeDetails.relative && (
               <Text variant="text" color="black60">
-                {saleTimeDetails?.relative}
+                {saleTimeDetails.relative}
               </Text>
             )}
           </Flex>

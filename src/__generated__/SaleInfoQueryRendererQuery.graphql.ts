@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7fb7dc30e437859f9fa19f616eccae11 */
+/* @relayHash 4b68db74f45646f016a373bb2d0b4ffa */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -11,6 +11,9 @@ export type SaleInfoQueryRendererQueryVariables = {
 export type SaleInfoQueryRendererQueryResponse = {
     readonly sale: {
         readonly " $fragmentRefs": FragmentRefs<"SaleInfo_sale">;
+    } | null;
+    readonly me: {
+        readonly " $fragmentRefs": FragmentRefs<"SaleInfo_me">;
     } | null;
 };
 export type SaleInfoQueryRendererQuery = {
@@ -28,6 +31,18 @@ query SaleInfoQueryRendererQuery(
     ...SaleInfo_sale
     id
   }
+  me {
+    ...SaleInfo_me
+    id
+  }
+}
+
+fragment RegisterToBidButton_me_nfIph on Me {
+  biddedLots: lotStandings(saleID: $saleID) {
+    saleArtwork {
+      id
+    }
+  }
 }
 
 fragment RegisterToBidButton_sale on Sale {
@@ -39,6 +54,10 @@ fragment RegisterToBidButton_sale on Sale {
     qualifiedForBidding
     id
   }
+}
+
+fragment SaleInfo_me on Me {
+  ...RegisterToBidButton_me_nfIph
 }
 
 fragment SaleInfo_sale on Sale {
@@ -94,6 +113,22 @@ return {
             "args": null,
             "kind": "FragmentSpread",
             "name": "SaleInfo_sale"
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
+        "plural": false,
+        "selections": [
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "SaleInfo_me"
           }
         ],
         "storageKey": null
@@ -201,11 +236,52 @@ return {
           (v2/*: any*/)
         ],
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
+        "plural": false,
+        "selections": [
+          {
+            "alias": "biddedLots",
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "saleID",
+                "variableName": "saleID"
+              }
+            ],
+            "concreteType": "LotStanding",
+            "kind": "LinkedField",
+            "name": "lotStandings",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "SaleArtwork",
+                "kind": "LinkedField",
+                "name": "saleArtwork",
+                "plural": false,
+                "selections": [
+                  (v2/*: any*/)
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          (v2/*: any*/)
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "7fb7dc30e437859f9fa19f616eccae11",
+    "id": "4b68db74f45646f016a373bb2d0b4ffa",
     "metadata": {},
     "name": "SaleInfoQueryRendererQuery",
     "operationKind": "query",
@@ -213,5 +289,5 @@ return {
   }
 };
 })();
-(node as any).hash = '705443c77e0e8bdaf1798681fffa7ba2';
+(node as any).hash = 'be263aae79f20bc38de2bd05f6b0c1c7';
 export default node;

@@ -1,14 +1,19 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8506c73e47280ff41b07eee447ac1b7d */
+/* @relayHash ae36b07beec7c0037e626f760b074e82 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SaleInfoTestsQueryVariables = {};
+export type SaleInfoTestsQueryVariables = {
+    saleID: string;
+};
 export type SaleInfoTestsQueryResponse = {
     readonly sale: {
         readonly " $fragmentRefs": FragmentRefs<"SaleInfo_sale">;
+    } | null;
+    readonly me: {
+        readonly " $fragmentRefs": FragmentRefs<"SaleInfo_me">;
     } | null;
 };
 export type SaleInfoTestsQuery = {
@@ -19,10 +24,24 @@ export type SaleInfoTestsQuery = {
 
 
 /*
-query SaleInfoTestsQuery {
-  sale(id: "the-sale") {
+query SaleInfoTestsQuery(
+  $saleID: String!
+) {
+  sale(id: $saleID) {
     ...SaleInfo_sale
     id
+  }
+  me {
+    ...SaleInfo_me
+    id
+  }
+}
+
+fragment RegisterToBidButton_me_nfIph on Me {
+  biddedLots: lotStandings(saleID: $saleID) {
+    saleArtwork {
+      id
+    }
   }
 }
 
@@ -35,6 +54,10 @@ fragment RegisterToBidButton_sale on Sale {
     qualifiedForBidding
     id
   }
+}
+
+fragment SaleInfo_me on Me {
+  ...RegisterToBidButton_me_nfIph
 }
 
 fragment SaleInfo_sale on Sale {
@@ -52,23 +75,24 @@ fragment SaleInfo_sale on Sale {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "Literal",
-    "name": "id",
-    "value": "the-sale"
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "saleID"
   }
 ],
-v1 = {
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "id",
+    "variableName": "saleID"
+  }
+],
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-},
-v2 = {
-  "enumValues": null,
-  "nullable": true,
-  "plural": false,
-  "type": "String"
 },
 v3 = {
   "enumValues": null,
@@ -80,18 +104,24 @@ v4 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
+  "type": "String"
+},
+v5 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
   "type": "Boolean"
 };
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "SaleInfoTestsQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "Sale",
         "kind": "LinkedField",
         "name": "sale",
@@ -103,7 +133,23 @@ return {
             "name": "SaleInfo_sale"
           }
         ],
-        "storageKey": "sale(id:\"the-sale\")"
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
+        "plural": false,
+        "selections": [
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "SaleInfo_me"
+          }
+        ],
+        "storageKey": null
       }
     ],
     "type": "Query",
@@ -111,13 +157,13 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "SaleInfoTestsQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "Sale",
         "kind": "LinkedField",
         "name": "sale",
@@ -166,7 +212,7 @@ return {
                 "name": "qualifiedForBidding",
                 "storageKey": null
               },
-              (v1/*: any*/)
+              (v2/*: any*/)
             ],
             "storageKey": null
           },
@@ -205,28 +251,89 @@ return {
             "name": "timeZone",
             "storageKey": null
           },
-          (v1/*: any*/)
+          (v2/*: any*/)
         ],
-        "storageKey": "sale(id:\"the-sale\")"
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
+        "plural": false,
+        "selections": [
+          {
+            "alias": "biddedLots",
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "saleID",
+                "variableName": "saleID"
+              }
+            ],
+            "concreteType": "LotStanding",
+            "kind": "LinkedField",
+            "name": "lotStandings",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "SaleArtwork",
+                "kind": "LinkedField",
+                "name": "saleArtwork",
+                "plural": false,
+                "selections": [
+                  (v2/*: any*/)
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          (v2/*: any*/)
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "8506c73e47280ff41b07eee447ac1b7d",
+    "id": "ae36b07beec7c0037e626f760b074e82",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
+        "me": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Me"
+        },
+        "me.biddedLots": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "LotStanding"
+        },
+        "me.biddedLots.saleArtwork": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "SaleArtwork"
+        },
+        "me.biddedLots.saleArtwork.id": (v3/*: any*/),
+        "me.id": (v3/*: any*/),
         "sale": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Sale"
         },
-        "sale.description": (v2/*: any*/),
-        "sale.endAt": (v2/*: any*/),
+        "sale.description": (v4/*: any*/),
+        "sale.endAt": (v4/*: any*/),
         "sale.id": (v3/*: any*/),
-        "sale.isWithBuyersPremium": (v4/*: any*/),
-        "sale.liveStartAt": (v2/*: any*/),
-        "sale.name": (v2/*: any*/),
+        "sale.isWithBuyersPremium": (v5/*: any*/),
+        "sale.liveStartAt": (v4/*: any*/),
+        "sale.name": (v4/*: any*/),
         "sale.registrationStatus": {
           "enumValues": null,
           "nullable": true,
@@ -234,11 +341,11 @@ return {
           "type": "Bidder"
         },
         "sale.registrationStatus.id": (v3/*: any*/),
-        "sale.registrationStatus.qualifiedForBidding": (v4/*: any*/),
-        "sale.requireIdentityVerification": (v4/*: any*/),
+        "sale.registrationStatus.qualifiedForBidding": (v5/*: any*/),
+        "sale.requireIdentityVerification": (v5/*: any*/),
         "sale.slug": (v3/*: any*/),
-        "sale.startAt": (v2/*: any*/),
-        "sale.timeZone": (v2/*: any*/)
+        "sale.startAt": (v4/*: any*/),
+        "sale.timeZone": (v4/*: any*/)
       }
     },
     "name": "SaleInfoTestsQuery",
@@ -247,5 +354,5 @@ return {
   }
 };
 })();
-(node as any).hash = '2b07ca5d4c437c448baa0729d58e157a';
+(node as any).hash = '090b81ce95b6ea2da225c9238019db57';
 export default node;
