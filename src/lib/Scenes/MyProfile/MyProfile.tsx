@@ -2,6 +2,7 @@ import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useEmissionOption } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -19,7 +20,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
   const listRef = useRef<FlatList<any>>(null)
   const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
   const shouldDisplayMyBids = useEmissionOption("AROptionsBidManagement")
-  const shouldDisplayMyCollection = me.labFeatures.indexOf("My Collection") !== -1
+  const shouldDisplayMyCollection = me.labFeatures.includes("My Collection")
   const [isRefreshing, setIsRefreshing] = useState(false)
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
@@ -44,11 +45,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
         />
       )}
       {!!shouldDisplayMyCollection && (
-        <MenuItem
-          isBeta={true}
-          title="Artwork insights"
-          onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-collection/artwork-list")}
-        />
+        <MenuItem isBeta={true} title="Artwork insights" onPress={() => navigate("my-collection/artwork-list")} />
       )}
       <MenuItem
         title="Saves and follows"
