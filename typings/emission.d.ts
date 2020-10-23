@@ -1,5 +1,6 @@
+import type { ViewDescriptor } from "lib/navigation/navigate"
 import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
-import { NativeState } from "lib/store/NativeModel"
+import type { NativeState } from "lib/store/NativeModel"
 import { NativeModulesStatic } from "react-native"
 declare module "react-native" {
   interface NativeModulesStatic {
@@ -24,12 +25,11 @@ declare module "react-native" {
     }
     Emission: never
     ARScreenPresenterModule: {
-      presentReactScreen(module: string, props: object, modal: boolean, hidesBackButton: boolean): void
-      presentNativeScreen(module: string, props: object, modal: boolean): void
+      pushView(currentTabStackID: string, descriptor: ViewDescriptor): void
+      presentModal(descriptor: ViewDescriptor): void
       dismissModal(): void
-      goBack(): void
-      popParentViewController(): void
-      switchTab(tabType: string, props: object, popToRoot: boolean): void
+      goBack(currentTabStackID: string): void
+      popStack(stackID: string): void
       presentMediaPreviewController(reactTag: number, route: string, mimeType: string, cacheKey: string): void
       presentEmailComposer(to: string, subject: string, body?: string): void
       presentAugmentedRealityVIR(
@@ -39,7 +39,7 @@ declare module "react-native" {
         artworkSlug: string,
         artworkId: string
       ): void
-      updateShouldHideBackButton(shouldHideBackButton: boolean): void
+      updateShouldHideBackButton(shouldHideBackButton: boolean, stackID: string): void
     }
   }
 }

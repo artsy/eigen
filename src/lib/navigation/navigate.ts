@@ -1,7 +1,14 @@
-import { isNativeModule, modules } from "lib/AppRegistry"
+import { AppModule, modules, ViewOptions } from "lib/AppRegistry"
+import { AppStore, unsafe__getSelectedTab } from "lib/store/AppStore"
 import { Linking, NativeModules } from "react-native"
 import { matchRoute } from "./routes"
 import { handleFairRouting } from "./util"
+
+export interface ViewDescriptor extends ViewOptions {
+  type: "react" | "native"
+  moduleName: AppModule
+  props: object
+}
 
 export function navigate(url: string, options: { modal?: boolean } = {}) {
   let result = matchRoute(url)
@@ -21,23 +28,32 @@ export function navigate(url: string, options: { modal?: boolean } = {}) {
 
   const module = modules[result.module]
 
-  const presentModally = options.modal ?? module.alwaysPresentModally ?? false
+  const presentModally = options.modal ?? module.options.alwaysPresentModally ?? false
 
-  if (isNativeModule(module)) {
-    NativeModules.ARScreenPresenterModule.presentNativeScreen(result.module, result.params, presentModally)
+  const screenDescriptor: ViewDescriptor = {
+    type: module.type,
+    moduleName: result.module,
+    props: result.params,
+    ...module.options,
+  }
+
+  if (presentModally) {
+    NativeModules.ARScreenPresenterModule.presentModal(screenDescriptor)
   } else {
-    if (module.isRootViewForTabName && !presentModally) {
-      NativeModules.ARScreenPresenterModule.switchTab(module.isRootViewForTabName, result.params, true)
-    } else {
-      if (module.onlyShowInTabName) {
-        NativeModules.ARScreenPresenterModule.switchTab(module.onlyShowInTabName, {}, true)
+    const selectedTab = unsafe__getSelectedTab()
+    if (module.options.isRootViewForTabName) {
+      if (selectedTab === module.options.isRootViewForTabName) {
+        // TODO: this
+        // NativeModules.ARScreenPresenterModule.popToRootOrScrollToTop(selectedTab)
+      } else {
+        AppStore.actions.bottomTabs.switchTab(module.options.isRootViewForTabName)
       }
-      NativeModules.ARScreenPresenterModule.presentReactScreen(
-        result.module,
-        result.params,
-        presentModally,
-        module.hidesBackButton ?? false
-      )
+    } else {
+      if (module.options.onlyShowInTabName && selectedTab !== module.options.onlyShowInTabName) {
+        AppStore.actions.bottomTabs.switchTab(module.options.onlyShowInTabName)
+      }
+
+      NativeModules.ARScreenPresenterModule.pushView(unsafe__getSelectedTab(), screenDescriptor)
     }
   }
 }
@@ -47,9 +63,9 @@ export function dismissModal() {
 }
 
 export function goBack() {
-  NativeModules.ARScreenPresenterModule.goBack()
+  NativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
 }
 
 export function popParentViewController() {
-  NativeModules.ARScreenPresenterModule.popParentViewController()
+  NativeModules.ARScreenPresenterModule.popStack(unsafe__getSelectedTab())
 }
