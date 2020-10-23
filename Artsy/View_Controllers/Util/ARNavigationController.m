@@ -2,6 +2,7 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import "ARDispatchManager.h"
+#import "ARAppDelegate.h"
 
 #import "UIView+HitTestExpansion.h"
 #import "UIViewController+InnermostTopViewController.h"
@@ -211,7 +212,7 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
 - (void)updateBackButtonPositionForViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    CGFloat topInsetMargin = [[ARTopMenuViewController sharedController].view safeAreaInsets].top;
+    CGFloat topInsetMargin = [[[ARAppDelegate sharedInstance] window] safeAreaInsets].top;
     CGFloat topMargin = topInsetMargin + 12;
 
     [UIView animateIf:animated duration:ARAnimationDuration :^{
