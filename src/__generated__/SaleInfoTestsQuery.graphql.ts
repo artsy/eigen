@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ae36b07beec7c0037e626f760b074e82 */
+/* @relayHash ee3b2c8730436830af98d3caa1981e54 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -64,7 +64,6 @@ fragment SaleInfo_sale on Sale {
   ...RegisterToBidButton_sale
   description
   endAt
-  isWithBuyersPremium
   liveStartAt
   name
   startAt
@@ -227,13 +226,6 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "isWithBuyersPremium",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
             "name": "liveStartAt",
             "storageKey": null
           },
@@ -299,7 +291,7 @@ return {
     ]
   },
   "params": {
-    "id": "ae36b07beec7c0037e626f760b074e82",
+    "id": "ee3b2c8730436830af98d3caa1981e54",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -331,7 +323,6 @@ return {
         "sale.description": (v4/*: any*/),
         "sale.endAt": (v4/*: any*/),
         "sale.id": (v3/*: any*/),
-        "sale.isWithBuyersPremium": (v5/*: any*/),
         "sale.liveStartAt": (v4/*: any*/),
         "sale.name": (v4/*: any*/),
         "sale.registrationStatus": {
