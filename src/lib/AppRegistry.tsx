@@ -509,7 +509,7 @@ const BottomTabsNavigator = ({}) => {
   )
 }
 
-export const FadeBetween: React.FC<{ views: JSX.Element[]; activeIndex: number }> = ({ views, activeIndex }) => {
+const FadeBetween: React.FC<{ views: JSX.Element[]; activeIndex: number }> = ({ views, activeIndex }) => {
   const opacities = useRef(views.map((_, index) => new Animated.Value(index === activeIndex ? 1 : 0))).current
   const lastActiveIndex = usePrevious(activeIndex)
   useEffect(() => {

@@ -30,6 +30,30 @@
 
 static NSMutableDictionary *_cachedNavigationStacks = nil;
 
+@interface UIView (ARScrollToTop)
+- (BOOL)ar_scrollToTopAnimated:(BOOL)animated;
+@end
+@implementation UIView (ARScrollToTop)
+
+- (BOOL)ar_scrollToTopAnimated:(BOOL)animated
+{
+    if ([self isKindOfClass:UIScrollView.class] && [(id)self scrollsToTop] && [(UIScrollView *)self contentOffset].y > 0) {
+        UIScrollView *me = (id)self;
+        [me setContentOffset:CGPointMake(me.contentOffset.x, -me.contentInset.top) animated:animated];
+        return YES;
+    }
+
+    for (UIView* childView in self.subviews) {
+        if ([childView ar_scrollToTopAnimated:animated]) {
+            return YES;
+        }
+    }
+
+    return NO;
+}
+
+@end
+
 @implementation ARScreenPresenterModule
 RCT_EXPORT_MODULE()
 
@@ -165,6 +189,26 @@ RCT_EXPORT_METHOD(goBack:(nonnull NSString *)currentTabStackID)
 RCT_EXPORT_METHOD(popStack:(nonnull NSString *)stackID)
 {
     [[ARScreenPresenterModule getNavigationStack:stackID] popViewControllerAnimated:YES];
+}
+
+RCT_EXPORT_METHOD(popToRootOrScrollToTop:(nonnull NSString *)stackID)
+{
+    UINavigationController *stack = [ARScreenPresenterModule getNavigationStack:stackID];
+    if (stack.viewControllers.count > 1) {
+        [stack popToRootViewControllerAnimated:YES];
+    } else {
+        [stack.viewControllers[0].view ar_scrollToTopAnimated:YES];
+    }
+}
+
+RCT_EXPORT_METHOD(popToRootAndScrollToTop:(nonnull NSString *)stackID
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+{
+    UINavigationController *stack = [ARScreenPresenterModule getNavigationStack:stackID];
+    [stack popToRootViewControllerAnimated:YES];
+    [stack.viewControllers[0].view ar_scrollToTopAnimated:YES];
+    resolve(nil);
 }
 
 + (UIViewController *)loadAuctionWithID:(NSString *)saleID
@@ -313,7 +357,6 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
             }];
         }
     }];
-
 }
 
 #pragma mark - MFMailComposeViewControllerDelegate

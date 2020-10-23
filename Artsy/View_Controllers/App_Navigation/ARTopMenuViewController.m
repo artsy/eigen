@@ -244,8 +244,8 @@ static ARTopMenuViewController *_sharedManager = nil;
     // Otherwise find the first scrollview and pop to top
     else {
         UIViewController *currentRootViewController = [controller.childViewControllers first];
-        UIScrollView *rootScrollView = (id)[self firstScrollToTopScrollViewFromRootView:currentRootViewController.view];
-        [rootScrollView setContentOffset:CGPointMake(rootScrollView.contentOffset.x, -rootScrollView.contentInset.top) animated:YES];
+//        UIScrollView *rootScrollView = (id)[self firstScrollToTopScrollViewFromRootView:currentRootViewController.view];
+//        [rootScrollView setContentOffset:CGPointMake(rootScrollView.contentOffset.x, -rootScrollView.contentInset.top) animated:YES];
     }
     if ([controller.rootViewController isKindOfClass:ARComponentViewController.class]) {
         ARComponentViewController *vc = (ARComponentViewController *)controller.rootViewController;
@@ -280,23 +280,6 @@ static ARTopMenuViewController *_sharedManager = nil;
 - (void)tabContentView:(ARTabContentView *)tabContentView didChangeToTab:(NSString *)tabType
 {
     [[AREmission sharedInstance] updateState:@{[ARStateKey selectedTab]: tabType}];
-}
-
-- (NSObject *_Nullable)firstScrollToTopScrollViewFromRootView:(UIView *)initialView
-{
-    UIView *rootView = initialView;
-    if ([rootView isKindOfClass:UIScrollView.class] && [(id)rootView scrollsToTop] && [(UIScrollView *)rootView contentOffset].y > 0) {
-        return rootView;
-    }
-
-    for (UIView* childView in rootView.subviews) {
-        NSObject* result = [self firstScrollToTopScrollViewFromRootView:childView];
-        if (result) {
-            return result;
-        }
-    }
-
-    return nil;
 }
 
 @end
