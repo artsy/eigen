@@ -181,6 +181,8 @@ type AnalyticsPartnerInquiryCountTimeSeriesStats {
 # Inquiry stats of a partner
 type AnalyticsPartnerInquiryStats {
   inquiryCount: Int!
+
+  # Inquiry response time in seconds
   inquiryResponseTime: Int
   partnerId: String!
   period: AnalyticsQueryPeriodEnum!
@@ -192,6 +194,8 @@ type AnalyticsPartnerInquiryStats {
 # Sales stats of a partner
 type AnalyticsPartnerSalesStats {
   orderCount: Int!
+
+  # Order response time in seconds
   orderResponseTime: Int
   partnerId: String!
   period: AnalyticsQueryPeriodEnum!
@@ -226,7 +230,11 @@ type AnalyticsPartnerSalesTimeSeriesStats {
 # Partner Stats
 type AnalyticsPartnerStats {
   # Time series data on number of artworks published
+  artworkPublished(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerStatsArtworksPublished
+
+  # Time series data on number of artworks published
   artworksPublished(period: AnalyticsQueryPeriodEnum!): AnalyticsArtworksPublishedStats
+  @deprecated(reason: "Use artworkPublished for refactored time series bucket code")
 
   # Audience stats
   audience(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerAudienceStats
@@ -253,7 +261,11 @@ type AnalyticsPartnerStats {
   inquiry(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerInquiryStats
 
   # Different types of partner pageviews
+  pageview(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerStatsPageviews
+
+  # Different types of partner pageviews
   pageviews(period: AnalyticsQueryPeriodEnum!): AnalyticsPageviewStats
+  @deprecated(reason: "Use pageview for refactored time series bucket code")
   partnerId: String!
 
   # Artworks, shows, or artists ranked by views. Capped at 20 by the underlying sql query.
@@ -294,6 +306,46 @@ type AnalyticsPartnerStats {
   # Number of unique visitors
   uniqueVisitors(period: AnalyticsQueryPeriodEnum!): Int
   @deprecated(reason: "Use audience() { uniqueVisitors } instead")
+}
+
+# Publish artwork Series Stats
+type AnalyticsPartnerStatsArtworksPublished {
+  partnerId: String!
+  percentageChanged: Int!
+  period: AnalyticsQueryPeriodEnum!
+
+  # Partner artworks published count time series
+  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerStatsArtworksPublishedTimeSeries!]!
+  totalCount: Int!
+}
+
+# Artworks published time series data of a partner
+type AnalyticsPartnerStatsArtworksPublishedTimeSeries {
+  count: Int
+  endTime: AnalyticsDateTime
+  startTime: AnalyticsDateTime
+}
+
+# Stats for pageviews of partner content
+type AnalyticsPartnerStatsPageviews {
+  artworkViews: Int!
+  galleryViews: Int!
+  partnerId: String!
+  percentageChanged: Int!
+  period: AnalyticsQueryPeriodEnum!
+  showViews: Int!
+
+  # Pageviews time series
+  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerStatsPageviewsTimeSeries!]
+  totalCount: Int!
+  uniqueVisitors: Int!
+}
+
+# Pageviews time series data of a partner
+type AnalyticsPartnerStatsPageviewsTimeSeries {
+  count: Int
+  endTime: AnalyticsDateTime
+  startTime: AnalyticsDateTime
 }
 
 # Partner Time Series Stats
@@ -7887,6 +7939,9 @@ type Query {
     # Returns only viewing rooms with these statuses
     statuses: [ViewingRoomStatusEnum!] = [live]
   ): ViewingRoomsConnection
+
+  # Last updated timestamp
+  analyticsLastUpdatedAt: AnalyticsDateTime
 
   # Find PartnerStats
   analyticsPartnerStats(partnerId: String!): AnalyticsPartnerStats
