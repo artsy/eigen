@@ -4,7 +4,7 @@
 #import "Artwork.h"
 #import "AREmbeddedModelsViewController.h"
 #import "AREmbeddedModelPreviewViewController.h"
-#import "ARTopMenuViewController.h"
+#import "ARAppDelegate.h"
 #import "ARSpotlight.h"
 #import "Gene.h"
 
@@ -39,9 +39,10 @@
         return nil;
     }
 
-    // Only show visible content, e.g. cropped images by tabs
-    ARTopMenuViewController *topVC = [ARTopMenuViewController sharedController];
-    UIView *cv = (id)topVC.tabContentView;
+    // Only show visible content
+    
+    // TODO: test this?
+    UIView *cv = [ARAppDelegate sharedInstance].window.rootViewController.view;
 
     CGRect visible = CGRectIntersection([cell convertRect:cell.bounds toView:nil], [cv convertRect:cv.bounds toView:nil]);
     previewingContext.sourceRect = visible;

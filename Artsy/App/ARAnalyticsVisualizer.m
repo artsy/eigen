@@ -2,7 +2,7 @@
 
 #import "ARAnalyticsVisualizer.h"
 #import "ARNotificationView.h"
-#import "ARTopMenuViewController.h"
+#import "ARScreenPresenterModule.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
@@ -29,8 +29,7 @@
             [alert addAction:[UIAlertAction actionWithTitle:@"Great, continue." style:UIAlertActionStyleCancel handler:nil]];
 
             // Sometimes the TopVC is being presented, e.g. for onboarding/ showing login, or the alerts
-            UIViewController *topVC = [ARTopMenuViewController sharedController];
-            topVC = topVC.presentedViewController ?: topVC;
+            UIViewController *topVC = [ARScreenPresenterModule currentlyPresentedVC];
 
             if (alert.popoverPresentationController) {
                 // Being presented on an iPad, so it needs some further configuration.

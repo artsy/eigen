@@ -6,7 +6,7 @@
 #import "ARReusableLoadingView.h"
 #import "AREmbeddedModelsPreviewDelegate.h"
 #import "AREmbeddedModelPreviewViewController.h"
-#import "ARTopMenuViewController.h"
+#import "ARAppDelegate.h"
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
@@ -48,7 +48,7 @@
     if ([self respondsToSelector:@selector(registerForPreviewingWithDelegate:sourceView:)]) {
         self.previewDelegate = [[AREmbeddedModelsPreviewDelegate alloc] initWithModelVC:self];
 
-        UIView *rootView = [ARTopMenuViewController sharedController].view;
+        UIView *rootView = [ARAppDelegate sharedInstance].window.rootViewController.view;
         [self registerForPreviewingWithDelegate:self.previewDelegate sourceView:rootView];
     }
 

@@ -234,8 +234,10 @@ extension MailCompositionCallbacks: MFMailComposeViewControllerDelegate {
 
 extension AuctionInformationViewController: ARTextViewDelegate {
     func textView(_ textView: ARTextView!, shouldOpen viewController: UIViewController!) {
+        var nav = self.navigationController!
         self.dismiss(animated: true, completion: {
-            ARTopMenuViewController.shared().push(viewController)
+            // TODO: TEst this and remove the comment
+            nav.pushViewController(viewController, animated: true)
         })
     }
 }

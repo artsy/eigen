@@ -4,7 +4,6 @@
 #import "UIDevice-Hardware.h"
 #import <Emission/ARComponentViewController.h>
 #import <React/RCTRootView.h>
-#import "ARTopMenuViewController.h"
 #import "ARScreenPresenterModule.h"
 
 @interface ARNativeViewControllerWrapperView : UIView
