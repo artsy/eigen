@@ -6,6 +6,7 @@ upcoming:
     - Fix when a closed auction is accessed, the register button should not render - pavlos
     - Change CheckAuthentication middleware to be called before the principalFieldMiddleware - mounir
   user_facing:
+    - Move My Collection into My Profile - adam
     - Switch to live auction from new sale page - barry, brian
     - Adds ability to filter by artist in a fair - sweir
     - Fix environment variable names for Sentry - starsirius
