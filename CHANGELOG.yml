@@ -6,19 +6,6 @@ upcoming:
     - Fix when a closed auction is accessed, the register button should not render - pavlos
     - Change CheckAuthentication middleware to be called before the principalFieldMiddleware - mounir
   user_facing:
-    - Fix navigation bug on Artwork consign button - david
-    - Add auction lots rail to the auctions screen - mounir
-    - Enable pagination on My Collection artworks screen - ashley
-    - Add long email truncation - pavlos
-    - Add auction lots grid to the auctions screen - mounir
-    - Add auction lots list to the auctions screen - mounir
-    - Add LoadFailureView to Viewing Rooms screens for relay errors - pavlos
-    - Add auction info screen - mounir
-    - Enable filtering on artist series views - sweir
-    - Show up to 50 artist series in the full list of an artist's series - roop
-    - Fix layout issue in internal webviews - brian
-    - Add about page - mounir
-    - Center filters modal title - mounir
     - Switch to live auction from new sale page - barry, brian
     - Adds ability to filter by artist in a fair - sweir
     - Fix environment variable names for Sentry - starsirius
@@ -35,6 +22,7 @@ upcoming:
     - Adds Show2 artwork grid + filter - mzikherman
     - Add active bids to new auction sale page - mounir
     - Adds Show2 location map - damon
+    - Add Auctions Info screen - mounir
 
 releases:
   - version: 6.6.6
