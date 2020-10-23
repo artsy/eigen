@@ -486,16 +486,17 @@ const navStack = (tabName: BottomTabType, rootModuleName: AppModule, rootModuleP
 
 const BottomTabsNavigator = ({}) => {
   const selectedTab = AppStore.useAppState((state) => state.bottomTabs.selectedTab || "home")
+  const tabProps = AppStore.useAppState((state) => state.bottomTabs.sessionState.tabProps)
   const { bottom } = useScreenDimensions().safeAreaInsets
   return (
     <View style={{ flex: 1, paddingBottom: bottom }}>
       <FadeBetween
         views={[
-          navStack("home", "Home", {}),
-          navStack("search", "Search", {}),
-          navStack("inbox", "Inbox", {}),
-          navStack("sell", "SellTabApp", {}),
-          navStack("profile", "MyProfile", {}),
+          navStack("home", "Home", tabProps.home ?? {}),
+          navStack("search", "Search", tabProps.search ?? {}),
+          navStack("inbox", "Inbox", tabProps.inbox ?? {}),
+          navStack("sell", "SellTabApp", tabProps.sell ?? {}),
+          navStack("profile", "MyProfile", tabProps.profile ?? {}),
         ]}
         activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(selectedTab)}
       />

@@ -8,19 +8,20 @@ import { BottomTabType } from "./BottomTabType"
 export interface BottomTabsModel {
   sessionState: {
     unreadConversationCount: number
+    tabProps: Partial<{ [k in BottomTabType]: object }>
   }
   selectedTab: BottomTabType
   unreadConversationCountChanged: Action<BottomTabsModel, number>
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
 
   switchTab: Action<BottomTabsModel, BottomTabType>
-  // TODO: move navigation routing logic to TS so this can be a source of truth rather
-  // than derived from the native state
+  setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
 }
 
 export const BottomTabsModel: BottomTabsModel = {
   sessionState: {
     unreadConversationCount: 0,
+    tabProps: {},
   },
   selectedTab: "home",
   unreadConversationCountChanged: action((state, unreadConversationCount) => {
@@ -43,6 +44,9 @@ export const BottomTabsModel: BottomTabsModel = {
       AppStore.actions.bottomTabs.unreadConversationCountChanged(result.me.unreadConversationCount)
       AppStore.actions.native.setApplicationIconBadgeNumber(result.me.unreadConversationCount)
     }
+  }),
+  setTabProps: action((state, { tab, props }) => {
+    state.sessionState.tabProps[tab] = props
   }),
   switchTab: action((state, tabType) => {
     state.selectedTab = tabType
