@@ -28,7 +28,7 @@
         return;
     }
 
-    if (![[ReactNativeConfig envFor:@"ARTSY_ECHO_PRODUCTION_TOKEN"] isEqualToString:@"-"]) {
+    if ([[ReactNativeConfig envFor:@"_OSS_"] isEqualToString:@"false"]) {
         [super checkForUpdates:updateCheckCompleted];
     }
 }
