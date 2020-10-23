@@ -14,12 +14,18 @@ export type Show2MoreInfo_show = {
     readonly fair: {
         readonly location: {
             readonly __typename: string;
+            readonly openingHours: {
+                readonly __typename: string;
+            } | null;
         } | null;
     } | null;
     readonly location: {
         readonly __typename: string;
+        readonly openingHours: {
+            readonly __typename: string;
+        } | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"Show2Location_show">;
+    readonly " $fragmentRefs": FragmentRefs<"Show2Location_show" | "Show2Hours_show">;
     readonly " $refType": "Show2MoreInfo_show";
 };
 export type Show2MoreInfo_show$data = Show2MoreInfo_show;
@@ -31,23 +37,36 @@ export type Show2MoreInfo_show$key = {
 
 
 const node: ReaderFragment = (function(){
-var v0 = [
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "__typename",
-    "storageKey": null
-  }
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
+  "storageKey": null
+},
+v1 = [
+  (v0/*: any*/)
 ],
-v1 = {
+v2 = {
   "alias": null,
   "args": null,
   "concreteType": "Location",
   "kind": "LinkedField",
   "name": "location",
   "plural": false,
-  "selections": (v0/*: any*/),
+  "selections": [
+    (v0/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": null,
+      "kind": "LinkedField",
+      "name": "openingHours",
+      "plural": false,
+      "selections": (v1/*: any*/),
+      "storageKey": null
+    }
+  ],
   "storageKey": null
 };
 return {
@@ -90,7 +109,7 @@ return {
       "kind": "LinkedField",
       "name": "partner",
       "plural": false,
-      "selections": (v0/*: any*/),
+      "selections": (v1/*: any*/),
       "storageKey": null
     },
     {
@@ -101,20 +120,25 @@ return {
       "name": "fair",
       "plural": false,
       "selections": [
-        (v1/*: any*/)
+        (v2/*: any*/)
       ],
       "storageKey": null
     },
-    (v1/*: any*/),
+    (v2/*: any*/),
     {
       "args": null,
       "kind": "FragmentSpread",
       "name": "Show2Location_show"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "Show2Hours_show"
     }
   ],
   "type": "Show",
   "abstractKey": null
 };
 })();
-(node as any).hash = '87b5a7404dc16395475d0f2a5a98b7f6';
+(node as any).hash = 'b3d678ef8d737808acca51ef725cfc17';
 export default node;

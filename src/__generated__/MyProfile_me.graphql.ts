@@ -6,6 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyProfile_me = {
     readonly name: string | null;
+    readonly labFeatures: ReadonlyArray<string>;
     readonly auctionsLotStandingConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -48,6 +49,13 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "ScalarField",
       "name": "name",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "labFeatures",
       "storageKey": null
     },
     {
@@ -189,5 +197,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '2fc2f67bff0f4b8d637c6c768edebe52';
+(node as any).hash = '8bde13c4e7b6d6fbc4a025e5a64b2272';
 export default node;

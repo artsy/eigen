@@ -7,64 +7,104 @@ import { Box, Spacer, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { Show2HoursFragmentContainer as Show2Hours } from "../Components/Show2Hours"
 import { Show2LocationFragmentContainer as Show2Location } from "../Components/Show2Location"
+
+interface Section {
+  key: string
+  element: JSX.Element
+}
 
 export interface Show2MoreInfoProps {
   show: Show2MoreInfo_show
 }
 
 export const Show2MoreInfo: React.FC<Show2MoreInfoProps> = ({ show }) => {
-  const sections = [
-    <Box mx={2}>
-      <Text variant="largeTitle">About</Text>
-    </Box>,
+  const sections: Section[] = [
+    {
+      key: "title",
+      element: (
+        <Box mx={2}>
+          <Text variant="largeTitle">About</Text>
+        </Box>
+      ),
+    },
 
     // TODO: Partner EntityHeader
 
     ...(!!show.about
       ? [
-          <Box mx={2}>
-            <Text variant="mediumText" mb={0.5}>
-              Statement
-            </Text>
-            <Text variant="text">{show.about}</Text>
-          </Box>,
+          {
+            key: "about",
+            element: (
+              <Box mx={2}>
+                <Text variant="mediumText" mb={0.5}>
+                  Statement
+                </Text>
+                <Text variant="text">{show.about}</Text>
+              </Box>
+            ),
+          },
         ]
       : []),
 
     ...(!!show.pressRelease
       ? [
-          <Box mx={2}>
-            <Text variant="mediumText" mb={0.5}>
-              Press Release
-            </Text>
-            <ReadMore content={show.pressRelease} textStyle="new" maxChars={500} />
-          </Box>,
+          {
+            key: "press-release",
+            element: (
+              <Box mx={2}>
+                <Text variant="mediumText" mb={0.5}>
+                  Press Release
+                </Text>
+                <ReadMore content={show.pressRelease} textStyle="new" maxChars={500} />
+              </Box>
+            ),
+          },
         ]
       : []),
 
-    // TODO: Hours
+    ...(!!show.location?.openingHours || !!show.fair?.location?.openingHours
+      ? [
+          {
+            key: "hours",
+            element: (
+              <Box mx={2}>
+                <Text variant="mediumText" mb={0.5}>
+                  Hours
+                </Text>
+                <Show2Hours show={show} />
+              </Box>
+            ),
+          },
+        ]
+      : []),
 
     ...((!!show.location || !!show.fair?.location) && !!show.partner
       ? [
-          <Box mx={2}>
-            <Text variant="mediumText" mb={0.5}>
-              Location
-            </Text>
-            <Show2Location show={show} />
-          </Box>,
+          {
+            key: "location",
+            element: (
+              <Box mx={2}>
+                <Text variant="mediumText" mb={0.5}>
+                  Location
+                </Text>
+                <Show2Location show={show} />
+              </Box>
+            ),
+          },
         ]
       : []),
   ]
 
   return (
-    <FlatList
+    <FlatList<Section>
       data={sections}
-      keyExtractor={(_, i) => String(i)}
+      keyExtractor={({ key }) => key}
       ListHeaderComponent={<Spacer mt={6} pt={2} />}
       ListFooterComponent={<Spacer my={2} />}
       ItemSeparatorComponent={() => <Spacer my={15} />}
-      renderItem={({ item }) => item}
+      renderItem={({ item: { element } }) => element}
     />
   )
 }
@@ -73,6 +113,7 @@ export const Show2MoreInfoFragmentContainer = createFragmentContainer(Show2MoreI
   show: graphql`
     fragment Show2MoreInfo_show on Show {
       ...Show2Location_show
+      ...Show2Hours_show
       href
       about: description
       pressRelease(format: MARKDOWN)
@@ -82,10 +123,16 @@ export const Show2MoreInfoFragmentContainer = createFragmentContainer(Show2MoreI
       fair {
         location {
           __typename
+          openingHours {
+            __typename
+          }
         }
       }
       location {
         __typename
+        openingHours {
+          __typename
+        }
       }
     }
   `,

@@ -112,16 +112,16 @@ PODS:
     - React-Core (= 0.62.1)
     - React-jsi (= 0.62.1)
     - ReactCommon/turbomodule/core (= 0.62.1)
-  - FBSDKCoreKit (7.1.1):
-    - FBSDKCoreKit/Basics (= 7.1.1)
-    - FBSDKCoreKit/Core (= 7.1.1)
-  - FBSDKCoreKit/Basics (7.1.1)
-  - FBSDKCoreKit/Core (7.1.1):
+  - FBSDKCoreKit (8.0.0):
+    - FBSDKCoreKit/Basics (= 8.0.0)
+    - FBSDKCoreKit/Core (= 8.0.0)
+  - FBSDKCoreKit/Basics (8.0.0)
+  - FBSDKCoreKit/Core (8.0.0):
     - FBSDKCoreKit/Basics
-  - FBSDKLoginKit (7.1.1):
-    - FBSDKLoginKit/Login (= 7.1.1)
-  - FBSDKLoginKit/Login (7.1.1):
-    - FBSDKCoreKit (~> 7.1.1)
+  - FBSDKLoginKit (8.0.0):
+    - FBSDKLoginKit/Login (= 8.0.0)
+  - FBSDKLoginKit/Login (8.0.0):
+    - FBSDKCoreKit (~> 8.0.0)
   - FBSnapshotTestCase (2.1.4):
     - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
   - FBSnapshotTestCase/Core (2.1.4)
@@ -488,8 +488,8 @@ DEPENDENCIES:
   - Extraction
   - FBLazyVector (from `node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `node_modules/react-native/Libraries/FBReactNativeSpec`)
-  - FBSDKCoreKit (~> 7.1.1)
-  - FBSDKLoginKit (~> 7.1.1)
+  - FBSDKCoreKit (~> 8.0.0)
+  - FBSDKLoginKit (~> 8.0.0)
   - FBSnapshotTestCase
   - FLKAutoLayout (from `https://github.com/artsy/FLKAutoLayout.git`, branch `v1`)
   - Folly (from `node_modules/react-native/third-party-podspecs/Folly.podspec`)
@@ -792,8 +792,8 @@ SPEC CHECKSUMS:
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
   FBLazyVector: 95ee3e58937a6052f86b0e32f142388c22fa22c5
   FBReactNativeSpec: 26dd6459299e48cd64eb397c45635e466dba9f45
-  FBSDKCoreKit: b46507dc8b8cefed31d644e74d7cc30e2a715ef8
-  FBSDKLoginKit: 1a61d79e2b25e2fc0d03dccab1e34b38bbdf2546
+  FBSDKCoreKit: 9d27fe97a2fa2abe5eeefea8240e837623ab88e0
+  FBSDKLoginKit: 2cbaf5405379731b22f2ebc224f7c30f62378171
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
@@ -871,6 +871,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 50fb6eb13d2152e7363293ff603385db380815b1
 
-PODFILE CHECKSUM: e34c202d938dd8b92cf1ac74abe4749ac9f4a88f
+PODFILE CHECKSUM: 9bd017612193f49bf6edf5b95c0c8083e39c7491
 
 COCOAPODS: 1.7.5

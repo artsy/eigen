@@ -6,6 +6,7 @@ upcoming:
     - Fix when a closed auction is accessed, the register button should not render - pavlos
     - Change CheckAuthentication middleware to be called before the principalFieldMiddleware - mounir
   user_facing:
+    - Move My Collection into My Profile - adam
     - Switch to live auction from new sale page - barry, brian
     - Adds ability to filter by artist in a fair - sweir
     - Fix environment variable names for Sentry - starsirius
@@ -23,6 +24,7 @@ upcoming:
     - Add active bids to new auction sale page - mounir
     - Adds Show2 location map - damon
     - Add Auctions Info screen - mounir
+    - Adds Show2 location hours - damon
 
 releases:
   - version: 6.6.6
