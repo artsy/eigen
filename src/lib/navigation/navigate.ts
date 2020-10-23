@@ -10,7 +10,7 @@ export interface ViewDescriptor extends ViewOptions {
   props: object
 }
 
-export function navigate(url: string, options: { modal?: boolean } = {}) {
+export async function navigate(url: string, options: { modal?: boolean } = {}) {
   let result = matchRoute(url)
 
   if (result.type === "external_url") {
@@ -39,22 +39,18 @@ export function navigate(url: string, options: { modal?: boolean } = {}) {
 
   if (presentModally) {
     NativeModules.ARScreenPresenterModule.presentModal(screenDescriptor)
+  } else if (module.options.isRootViewForTabName) {
+    // this view is one of our root tab views, e.g. home, search, etc.
+    // switch to the tab, pop the stack, and scroll to the top.
+    await NativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(module.options.isRootViewForTabName)
+    AppStore.actions.bottomTabs.switchTab(module.options.isRootViewForTabName)
   } else {
     const selectedTab = unsafe__getSelectedTab()
-    if (module.options.isRootViewForTabName) {
-      if (selectedTab === module.options.isRootViewForTabName) {
-        // TODO: this
-        // NativeModules.ARScreenPresenterModule.popToRootOrScrollToTop(selectedTab)
-      } else {
-        AppStore.actions.bottomTabs.switchTab(module.options.isRootViewForTabName)
-      }
-    } else {
-      if (module.options.onlyShowInTabName && selectedTab !== module.options.onlyShowInTabName) {
-        AppStore.actions.bottomTabs.switchTab(module.options.onlyShowInTabName)
-      }
-
-      NativeModules.ARScreenPresenterModule.pushView(unsafe__getSelectedTab(), screenDescriptor)
+    if (module.options.onlyShowInTabName) {
+      AppStore.actions.bottomTabs.switchTab(module.options.onlyShowInTabName)
     }
+
+    NativeModules.ARScreenPresenterModule.pushView(module.options.onlyShowInTabName ?? selectedTab, screenDescriptor)
   }
 }
 

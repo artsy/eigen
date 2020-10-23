@@ -30,6 +30,8 @@ declare module "react-native" {
       dismissModal(): void
       goBack(currentTabStackID: string): void
       popStack(stackID: string): void
+      popToRootOrScrollToTop(stackID: string): void
+      popToRootAndScrollToTop(stackID: string): Promise<void>
       presentMediaPreviewController(reactTag: number, route: string, mimeType: string, cacheKey: string): void
       presentEmailComposer(to: string, subject: string, body?: string): void
       presentAugmentedRealityVIR(
