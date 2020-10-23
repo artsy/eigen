@@ -469,7 +469,7 @@ const Main: React.FC<{}> = track()(({}) => {
   return <BottomTabsNavigator />
 })
 
-register("Main", Main)
+register("Main", Main, { fullBleed: true })
 
 const navStack = (tabName: BottomTabType, rootModuleName: AppModule, rootModuleProps: object) => {
   return (
@@ -486,8 +486,9 @@ const navStack = (tabName: BottomTabType, rootModuleName: AppModule, rootModuleP
 
 const BottomTabsNavigator = ({}) => {
   const selectedTab = AppStore.useAppState((state) => state.bottomTabs.selectedTab || "home")
+  const { bottom } = useScreenDimensions().safeAreaInsets
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, paddingBottom: bottom }}>
       <FadeBetween
         views={[
           navStack("home", "Home", {}),
@@ -503,7 +504,7 @@ const BottomTabsNavigator = ({}) => {
   )
 }
 
-const FadeBetween: React.FC<{ views: JSX.Element[]; activeIndex: number }> = ({ views, activeIndex }) => {
+export const FadeBetween: React.FC<{ views: JSX.Element[]; activeIndex: number }> = ({ views, activeIndex }) => {
   const opacities = useRef(views.map((_, index) => new Animated.Value(index === activeIndex ? 1 : 0))).current
   const lastActiveIndex = usePrevious(activeIndex)
   useEffect(() => {
