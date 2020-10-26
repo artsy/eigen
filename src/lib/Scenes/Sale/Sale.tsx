@@ -134,7 +134,7 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
   }
 
   const scrollToTop = () => {
-    const saleLotsListIndex = saleSectionsData.map((section) => section.key).indexOf(SALE_LOTS_LIST) || 0
+    const saleLotsListIndex = saleSectionsData.findIndex((section) => section.key === SALE_LOTS_LIST)
     flatListRef.current?.scrollToIndex({ index: saleLotsListIndex, viewOffset: 50 })
   }
 
