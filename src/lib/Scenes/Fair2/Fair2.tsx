@@ -250,7 +250,7 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
 
                         if (tabToShow.label === "Artworks") {
                           return (
-                            <Box px="15px">
+                            <Box px={2}>
                               <Fair2ArtworksFragmentContainer fair={fair} />
                               <FilterModalNavigator
                                 isFilterArtworksModalVisible={isFilterArtworksModalVisible}
