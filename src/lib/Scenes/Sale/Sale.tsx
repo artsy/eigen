@@ -213,7 +213,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
             registrationEndsAt
           }
           me {
-            ...SaleArtworksRail_me
+            ...SaleArtworksRail_me @arguments(saleID: $saleSlug)
             ...SaleActiveBids_me @arguments(saleID: $saleID)
             ...RegisterToBidButton_me @arguments(saleID: $saleID)
           }

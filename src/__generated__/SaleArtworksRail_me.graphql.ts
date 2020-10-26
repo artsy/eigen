@@ -27,7 +27,13 @@ export type SaleArtworksRail_me$key = {
 
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "saleID"
+    }
+  ],
   "kind": "Fragment",
   "metadata": null,
   "name": "SaleArtworksRail_me",
@@ -44,6 +50,11 @@ const node: ReaderFragment = {
           "kind": "Literal",
           "name": "includeArtworksByFollowedArtists",
           "value": true
+        },
+        {
+          "kind": "Variable",
+          "name": "saleID",
+          "variableName": "saleID"
         }
       ],
       "concreteType": "SaleArtworksConnection",
@@ -104,11 +115,11 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
-      "storageKey": "lotsByFollowedArtistsConnection(first:10,includeArtworksByFollowedArtists:true)"
+      "storageKey": null
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '016b519193aa19423f21302ae4173927';
+(node as any).hash = 'a107b28cfb0671528b038b469c145113';
 export default node;

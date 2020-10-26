@@ -1,11 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9ca3b6c0289981f3ac9e8b5b483411e2 */
+/* @relayHash e4f15be0d39fa5372896f18775584fc4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SaleArtworksRailTestsQueryVariables = {};
+export type SaleArtworksRailTestsQueryVariables = {
+    saleID?: string | null;
+};
 export type SaleArtworksRailTestsQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"SaleArtworksRail_me">;
@@ -19,9 +21,11 @@ export type SaleArtworksRailTestsQuery = {
 
 
 /*
-query SaleArtworksRailTestsQuery {
+query SaleArtworksRailTestsQuery(
+  $saleID: ID
+) {
   me {
-    ...SaleArtworksRail_me
+    ...SaleArtworksRail_me_nfIph
     id
   }
 }
@@ -56,8 +60,8 @@ fragment SaleArtworkTileRailCard_saleArtwork on SaleArtwork {
   }
 }
 
-fragment SaleArtworksRail_me on Me {
-  lotsByFollowedArtistsConnection(first: 10, includeArtworksByFollowedArtists: true) {
+fragment SaleArtworksRail_me_nfIph on Me {
+  lotsByFollowedArtistsConnection(first: 10, includeArtworksByFollowedArtists: true, saleID: $saleID) {
     edges {
       node {
         id
@@ -74,39 +78,51 @@ fragment SaleArtworksRail_me on Me {
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "saleID"
+  }
+],
+v1 = {
+  "kind": "Variable",
+  "name": "saleID",
+  "variableName": "saleID"
+},
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v1 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "href",
   "storageKey": null
 },
-v2 = {
+v4 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v3 = {
+v5 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Artwork"
 },
-v4 = {
+v6 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v5 = {
+v7 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -114,7 +130,7 @@ v5 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "SaleArtworksRailTestsQuery",
@@ -128,7 +144,9 @@ return {
         "plural": false,
         "selections": [
           {
-            "args": null,
+            "args": [
+              (v1/*: any*/)
+            ],
             "kind": "FragmentSpread",
             "name": "SaleArtworksRail_me"
           }
@@ -141,7 +159,7 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "SaleArtworksRailTestsQuery",
     "selections": [
@@ -165,7 +183,8 @@ return {
                 "kind": "Literal",
                 "name": "includeArtworksByFollowedArtists",
                 "value": true
-              }
+              },
+              (v1/*: any*/)
             ],
             "concreteType": "SaleArtworksConnection",
             "kind": "LinkedField",
@@ -188,8 +207,8 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v0/*: any*/),
-                      (v1/*: any*/),
+                      (v2/*: any*/),
+                      (v3/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -220,7 +239,7 @@ return {
                                 "name": "date",
                                 "storageKey": null
                               },
-                              (v1/*: any*/),
+                              (v3/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -280,7 +299,7 @@ return {
                                 "name": "title",
                                 "storageKey": null
                               },
-                              (v0/*: any*/)
+                              (v2/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -356,32 +375,32 @@ return {
                                 "name": "displayTimelyAt",
                                 "storageKey": null
                               },
-                              (v0/*: any*/)
+                              (v2/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v0/*: any*/)
+                          (v2/*: any*/)
                         ],
                         "storageKey": null
                       }
                     ],
                     "storageKey": null
                   },
-                  (v0/*: any*/)
+                  (v2/*: any*/)
                 ],
                 "storageKey": null
               }
             ],
-            "storageKey": "lotsByFollowedArtistsConnection(first:10,includeArtworksByFollowedArtists:true)"
+            "storageKey": null
           },
-          (v0/*: any*/)
+          (v2/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "9ca3b6c0289981f3ac9e8b5b483411e2",
+    "id": "e4f15be0d39fa5372896f18775584fc4",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -390,7 +409,7 @@ return {
           "plural": false,
           "type": "Me"
         },
-        "me.id": (v2/*: any*/),
+        "me.id": (v4/*: any*/),
         "me.lotsByFollowedArtistsConnection": {
           "enumValues": null,
           "nullable": true,
@@ -403,21 +422,21 @@ return {
           "plural": true,
           "type": "SaleArtwork"
         },
-        "me.lotsByFollowedArtistsConnection.edges.id": (v2/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node": (v3/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.href": (v4/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.id": (v2/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.id": (v4/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node": (v5/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.href": (v6/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.id": (v4/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "SaleArtwork"
         },
-        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork": (v3/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.artistNames": (v4/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.date": (v4/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.href": (v4/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.id": (v2/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork": (v5/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.artistNames": (v6/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.date": (v6/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.href": (v6/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.id": (v4/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.image": {
           "enumValues": null,
           "nullable": true,
@@ -430,11 +449,11 @@ return {
           "plural": false,
           "type": "Float"
         },
-        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.image.imageURL": (v4/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.internalID": (v2/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.saleMessage": (v4/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.slug": (v2/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.title": (v4/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.image.imageURL": (v6/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.internalID": (v4/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.saleMessage": (v6/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.slug": (v4/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.title": (v6/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.counts": {
           "enumValues": null,
           "nullable": true,
@@ -453,19 +472,19 @@ return {
           "plural": false,
           "type": "SaleArtworkCurrentBid"
         },
-        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.currentBid.display": (v4/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.id": (v2/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.lotLabel": (v4/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.currentBid.display": (v6/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.id": (v4/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.lotLabel": (v6/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.sale": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Sale"
         },
-        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.sale.displayTimelyAt": (v4/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.sale.id": (v2/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.sale.isAuction": (v5/*: any*/),
-        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.sale.isClosed": (v5/*: any*/)
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.sale.displayTimelyAt": (v6/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.sale.id": (v4/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.sale.isAuction": (v7/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.sale.isClosed": (v7/*: any*/)
       }
     },
     "name": "SaleArtworksRailTestsQuery",
@@ -474,5 +493,5 @@ return {
   }
 };
 })();
-(node as any).hash = '69fd2b75a64fb2957c7369feb2ccacaa';
+(node as any).hash = '89b5df5f731ff60fa7470ca0f2af5291';
 export default node;

@@ -18,13 +18,13 @@ describe("SaleArtworksRail", () => {
     <QueryRenderer<SaleArtworksRailTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query SaleArtworksRailTestsQuery @relay_test_operation {
+        query SaleArtworksRailTestsQuery($saleID: ID) @relay_test_operation {
           me {
-            ...SaleArtworksRail_me
+            ...SaleArtworksRail_me @arguments(saleID: $saleID)
           }
         }
       `}
-      variables={{}}
+      variables={{ saleID: "sale-id" }}
       render={({ props }) => {
         if (props?.me) {
           return <SaleArtworksRailContainer me={props.me} />
