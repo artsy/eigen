@@ -1,15 +1,15 @@
 import { Show2_show } from "__generated__/Show2_show.graphql"
 import { Show2Query } from "__generated__/Show2Query.graphql"
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
+import { AnimatedArtworkFilterButton } from "lib/Components/FilterModal"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Box, Flex, Separator, Spacer } from "palette"
+import { Flex, Separator, Spacer } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { Show2ArtworksPaginationContainer as Show2Artworks } from "./Components/Show2Artworks"
+import { Show2ArtworksWithNavigation as Show2Artworks } from "./Components/Show2Artworks"
 import { Show2ContextCardFragmentContainer as ShowContextCard } from "./Components/Show2ContextCard"
 import { Show2HeaderFragmentContainer as ShowHeader } from "./Components/Show2Header"
 import { Show2InfoFragmentContainer as ShowInfo } from "./Components/Show2Info"
@@ -30,27 +30,13 @@ export const Show2: React.FC<Show2Props> = ({ show }) => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
   }
 
-  const Artworks = () => {
-    return (
-      <Box px={2}>
-        <Show2Artworks show={show} />
-        <FilterModalNavigator
-          isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-          id={show.internalID}
-          slug={show.slug}
-          mode={FilterModalMode.Show}
-          exitModal={toggleFilterArtworksModal}
-          closeModal={toggleFilterArtworksModal}
-        />
-      </Box>
-    )
-  }
+  const artworkProps = { show, isFilterArtworksModalVisible, toggleFilterArtworksModal }
 
   const sections = [
     <ShowHeader show={show} mx={2} />,
     ...(!!show.images?.length ? [<ShowInstallShots show={show} />] : []),
     <ShowInfo show={show} mx={2} />,
-    ...(show.counts?.eligibleArtworks ? [<Artworks />] : []),
+    ...(show.counts?.eligibleArtworks ? [<Show2Artworks {...artworkProps} />] : []),
     <ShowContextCard show={show} />,
   ]
 
