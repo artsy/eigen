@@ -214,6 +214,8 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
 
   const concreteAggregations = state.aggregations ?? []
 
+  const isClearAllButtonEnabled = state.appliedFilters.length > 0
+
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
     concreteAggregations.map((aggregation) => {
       const filterOption = filterKeyFromAggregation[aggregation.slice]
@@ -260,6 +262,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
           </CloseIconContainer>
         </Flex>
         <ClearAllButton
+          disabled={!isClearAllButtonEnabled}
           onPress={() => {
             switch (mode) {
               case FilterModalMode.Collection:
@@ -279,7 +282,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
             clearAllFilters()
           }}
         >
-          <Sans mr={2} mt={2} size="4" color="black100">
+          <Sans mr={2} mt={2} size="4" color={isClearAllButtonEnabled ? "black100" : "black30"}>
             Clear all
           </Sans>
         </ClearAllButton>
