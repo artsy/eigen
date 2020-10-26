@@ -4,22 +4,20 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SaleHeader_sale = {
-    readonly name: string | null;
-    readonly slug: string;
-    readonly liveStartAt: string | null;
+export type SaleInfo_sale = {
+    readonly description: string | null;
     readonly endAt: string | null;
+    readonly liveStartAt: string | null;
+    readonly name: string | null;
     readonly startAt: string | null;
     readonly timeZone: string | null;
-    readonly coverImage: {
-        readonly url: string | null;
-    } | null;
-    readonly " $refType": "SaleHeader_sale";
+    readonly " $fragmentRefs": FragmentRefs<"RegisterToBidButton_sale">;
+    readonly " $refType": "SaleInfo_sale";
 };
-export type SaleHeader_sale$data = SaleHeader_sale;
-export type SaleHeader_sale$key = {
-    readonly " $data"?: SaleHeader_sale$data;
-    readonly " $fragmentRefs": FragmentRefs<"SaleHeader_sale">;
+export type SaleInfo_sale$data = SaleInfo_sale;
+export type SaleInfo_sale$key = {
+    readonly " $data"?: SaleInfo_sale$data;
+    readonly " $fragmentRefs": FragmentRefs<"SaleInfo_sale">;
 };
 
 
@@ -28,20 +26,20 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "SaleHeader_sale",
+  "name": "SaleInfo_sale",
   "selections": [
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "name",
+      "name": "description",
       "storageKey": null
     },
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "slug",
+      "name": "endAt",
       "storageKey": null
     },
     {
@@ -55,7 +53,7 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "endAt",
+      "name": "name",
       "storageKey": null
     },
     {
@@ -73,26 +71,13 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
-      "alias": null,
       "args": null,
-      "concreteType": "Image",
-      "kind": "LinkedField",
-      "name": "coverImage",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "url",
-          "storageKey": null
-        }
-      ],
-      "storageKey": null
+      "kind": "FragmentSpread",
+      "name": "RegisterToBidButton_sale"
     }
   ],
   "type": "Sale",
   "abstractKey": null
 };
-(node as any).hash = 'fc4771b92fc4f9e7edf8fe8befec8c8b';
+(node as any).hash = '1dae841dcb5cb7920bb0a46a767b8a1e';
 export default node;

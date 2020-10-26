@@ -136,7 +136,7 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
         key: "registerToBid",
         content: (
           <Flex mx="2" mt={2}>
-            <RegisterToBidButtonContainer sale={sale} me={me} />
+            <RegisterToBidButtonContainer sale={sale} me={me} contextType="sale" />
           </Flex>
         ),
       },
