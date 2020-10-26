@@ -21,11 +21,11 @@ describe("selectInquiryType", () => {
 
     expect(r).toEqual({
       shippingLocation: null,
-      inquiryType: "Request Price",
+      inquiryType: "Request price",
     })
   })
 
-  it("updates the global state when payload is Contact Gallery", () => {
+  it("updates the global state when payload is Contact gallery", () => {
     inquiryState = {
       shippingLocation: null,
       inquiryType: null,
@@ -40,11 +40,11 @@ describe("selectInquiryType", () => {
 
     expect(r).toEqual({
       shippingLocation: null,
-      inquiryType: "Contact Gallery",
+      inquiryType: "Contact gallery",
     })
   })
 
-  it("updates the global state when payload is Inquire to Purchase", () => {
+  it("updates the global state when payload is Inquire to purchase", () => {
     inquiryState = {
       shippingLocation: null,
       inquiryType: null,
@@ -59,7 +59,7 @@ describe("selectInquiryType", () => {
 
     expect(r).toEqual({
       shippingLocation: null,
-      inquiryType: "Inquire to Purchase",
+      inquiryType: "Inquire to purchase",
     })
   })
 })
