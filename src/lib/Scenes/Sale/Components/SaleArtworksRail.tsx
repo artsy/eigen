@@ -19,6 +19,10 @@ export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
 
   const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
 
+  if (!artworks?.length) {
+    return null
+  }
+
   return (
     <Flex mt={3} ref={navRef}>
       <Flex mx={2} my={1}>
