@@ -6,10 +6,11 @@ import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStor
 import { filterArtworksParams, FilterParamName, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { Box, color, Flex, Sans } from "palette"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useCallback, useContext, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
+import { FilterParams } from "../../../utils/ArtworkFilter/FilterArtworksHelpers"
 import { SaleArtworkListContainer } from "./SaleArtworkList"
 
 interface Props {
@@ -17,6 +18,35 @@ interface Props {
   relay: RelayPaginationProp
   saleID: string
   saleSlug: string
+}
+
+export const SaleLotsListSortMode = ({
+  filterParams,
+  filteredTotal,
+  totalCount,
+}: {
+  filterParams: FilterParams
+  filteredTotal: number | null | undefined
+  totalCount: number | null | undefined
+}) => {
+  const getSortDescription = useCallback(() => {
+    const sortMode = OrderedSaleArtworkSorts.find((sort) => sort.paramValue === filterParams?.sort)
+    if (sortMode) {
+      return sortMode.displayText
+    }
+  }, [filterParams])
+
+  return (
+    <Flex px={2} mb={2}>
+      <FilterTitle size="4" ellipsizeMode="tail">
+        Sorted by {getSortDescription()?.toLowerCase()}
+      </FilterTitle>
+
+      {!!filteredTotal && !!totalCount && (
+        <FilterDescription size="3t">{`Showing ${filteredTotal} of ${totalCount}`}</FilterDescription>
+      )}
+    </Flex>
+  )
 }
 
 export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, saleID, saleSlug }) => {
@@ -91,13 +121,6 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
     })
   }
 
-  const getSortDescription = () => {
-    const sortMode = OrderedSaleArtworkSorts.find((sort) => sort.paramValue === filterParams?.sort || "position")
-    if (sortMode) {
-      return sortMode.displayText
-    }
-  }
-
   if (!saleArtworksConnection.saleArtworksConnection?.edges?.length) {
     return (
       <Box my="80px">
@@ -108,15 +131,7 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
 
   return (
     <Flex flex={1} my={4}>
-      <Flex px={2} mb={2}>
-        <FilterTitle size="4" ellipsizeMode="tail">
-          Sorted by {getSortDescription()?.toLowerCase()}
-        </FilterTitle>
-
-        {!!counts?.total && !!totalCount && (
-          <FilterDescription size="3t">{`Showing ${counts.total} of ${totalCount}`}</FilterDescription>
-        )}
-      </Flex>
+      <SaleLotsListSortMode filterParams={filterParams} filteredTotal={counts?.total} totalCount={totalCount} />
 
       {viewAsFilter?.paramValue === ViewAsValues.List ? (
         <SaleArtworkListContainer
