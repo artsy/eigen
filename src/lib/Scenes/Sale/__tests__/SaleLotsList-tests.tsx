@@ -9,8 +9,9 @@ import { FilterParamName, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArt
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
+import { FilterParams } from "../../../utils/ArtworkFilter/FilterArtworksHelpers"
 import { SaleArtworkListContainer } from "../Components/SaleArtworkList"
-import { FilterTitle, SaleLotsListContainer } from "../Components/SaleLotsList"
+import { FilterDescription, FilterTitle, SaleLotsListContainer, SaleLotsListSortMode } from "../Components/SaleLotsList"
 
 jest.unmock("react-relay")
 
@@ -115,23 +116,20 @@ describe("SaleLotsListContainer", () => {
 
     expect(tree.root.findAllByType(SaleArtworkListContainer)).toHaveLength(1)
   })
+})
 
-  it("Shows the right default sort mode description", () => {
-    const tree = renderWithWrappers(<TestRenderer viewAs={ViewAsValues.List} />)
+describe("SaleLotsListSortMode", () => {
+  it("renders the right sort mode and count", () => {
+    const tree = renderWithWrappers(
+      <SaleLotsListSortMode
+        filterParams={{ sort: "bidder_positions_count" } as FilterParams}
+        filteredTotal={20}
+        totalCount={100}
+      />
+    )
 
-    const mockProps = {
-      SaleArtworksConnection: () => ({
-        aggregations: [],
-        counts: {
-          total: 1231,
-        },
-        edges: saleArtworksConnectionEdges,
-      }),
-    }
-
-    mockEnvironmentPayload(mockEnvironment, mockProps)
-
-    expect(extractText(tree.root.findByType(FilterTitle))).toBe("Sorted by lot number ascending")
+    expect(extractText(tree.root.findByType(FilterTitle))).toBe("Sorted by most bids")
+    expect(extractText(tree.root.findByType(FilterDescription))).toBe("Showing 20 of 100")
   })
 })
 
