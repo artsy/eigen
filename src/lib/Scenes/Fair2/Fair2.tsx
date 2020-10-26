@@ -4,6 +4,7 @@ import { Fair2Query } from "__generated__/Fair2Query.graphql"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { hideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
@@ -192,6 +193,8 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
                   ItemSeparatorComponent={() => <Spacer mb={3} />}
                   keyExtractor={(_item, index) => String(index)}
                   stickyHeaderIndices={[tabIndex]}
+                  onScroll={hideBackButtonOnScroll}
+                  scrollEventThrottle={100}
                   // @ts-ignore
                   CellRendererComponent={cellItemRenderer}
                   renderItem={({ item }): null | any => {
