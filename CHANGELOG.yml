@@ -26,6 +26,7 @@ upcoming:
     - Add Auctions Info screen - mounir
     - Adds Show2 location hours - damon
     - Adds Show2 partner entity header - damon
+    - Fix Fair2 sticky tab UI + interaction - david
 
 releases:
   - version: 6.6.6
