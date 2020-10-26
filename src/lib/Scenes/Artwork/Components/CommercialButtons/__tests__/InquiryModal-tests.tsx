@@ -5,7 +5,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Input } from "lib/Components/Input/Input"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
+import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { queryLocation } from "lib/utils/googleMaps"
 import { Touchable } from "palette"
 import React from "react"
@@ -25,6 +25,11 @@ const modalProps = {
   toggleVisibility: jest.fn(),
 }
 
+const state = {
+  shippingLocation: null,
+  inquiryType: "Inquire to Purchase",
+}
+
 const TestRenderer = () => (
   <QueryRenderer<InquiryModalTestsQuery>
     environment={env}
@@ -39,9 +44,14 @@ const TestRenderer = () => (
     render={({ props, error }) => {
       if (props?.artwork) {
         return (
-          <ArtworkInquiryStateProvider>
+          <ArtworkInquiryContext.Provider
+            value={{
+              state,
+              dispatch: jest.fn(),
+            }}
+          >
             <InquiryModalFragmentContainer artwork={props!.artwork!} {...modalProps} />
-          </ArtworkInquiryStateProvider>
+          </ArtworkInquiryContext.Provider>
         )
       } else if (error) {
         console.log(error)
@@ -61,7 +71,7 @@ const getWrapper = (
     }),
   }
 ) => {
-  const tree = renderWithWrappers(<TestRenderer />)
+  const tree = renderWithWrappers(<TestRenderer state={state} dispatch={jest.fn()} />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) => {
       return MockPayloadGenerator.generate(operation, mockResolvers)
@@ -75,6 +85,12 @@ beforeEach(() => {
 })
 
 describe("<InquiryModal />", () => {
+  it("blahhhhh", () => {
+    const tree = getWrapper()
+    // console.log(tree.root)
+    // expect(extractText(tree.root)).toContain("What information are you looking for?")
+  })
+
   it("renders the modal", () => {
     const tree = getWrapper()
     expect(extractText(tree.root)).toContain("What information are you looking for?")
