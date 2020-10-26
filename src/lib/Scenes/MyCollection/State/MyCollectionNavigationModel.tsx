@@ -272,7 +272,7 @@ function getNavigatorIOS(
   state: MyCollectionNavigationModel["sessionState"],
   name: NavigatorTarget = "main"
 ): NavigatorIOS {
-  const navigator = state.navigators[name].navigator
+  const navigator = state.navigators[name]?.navigator
   if (!navigator) {
     throw new Error("MyCollectionNavigationModel.tsx - Navigator not found")
   }
