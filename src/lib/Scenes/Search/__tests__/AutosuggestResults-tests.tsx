@@ -1,4 +1,5 @@
 import { AutosuggestResultsPaginationQueryRawResponse } from "__generated__/AutosuggestResultsPaginationQuery.graphql"
+import { AutosuggestResultsQueryRawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -14,7 +15,7 @@ import { AutosuggestResults } from "../AutosuggestResults"
 import { SearchContext } from "../SearchContext"
 import { SearchResult } from "../SearchResult"
 
-const FixturePage1 = {
+const FixturePage1: AutosuggestResultsQueryRawResponse = {
   results: {
     edges: [
       {
@@ -88,7 +89,7 @@ const FixturePage3: AutosuggestResultsPaginationQueryRawResponse = {
   },
 }
 
-const FixtureEmpty = {
+const FixtureEmpty: AutosuggestResultsQueryRawResponse = {
   results: {
     edges: [],
     pageInfo: {
