@@ -51,7 +51,7 @@ export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = (
         }}
       ></FancyModalHeader>
       <Text variant="largeTitle" ml={2} mb={2}>
-        Artwork Insights
+        My Collection
       </Text>
       <FlatList
         data={artworks}
@@ -133,7 +133,7 @@ const LoadingSkeleton = () => {
   return (
     <>
       <Text variant="largeTitle" ml={2} mb={2} mt={6}>
-        Artwork Insights
+        My Collection
       </Text>
 
       <Box>
