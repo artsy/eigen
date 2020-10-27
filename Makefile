@@ -37,7 +37,6 @@ next: update_bundle_version
 oss:
 	touch .env.ci
 	cp .env.example .env.shared
-	cp Artsy/App/Echo.json.example Artsy/App/EchoNew.json
 
 artsy:
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
