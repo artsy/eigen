@@ -20,7 +20,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
   const listRef = useRef<FlatList<any>>(null)
   const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
   const shouldDisplayMyBids = useEmissionOption("AROptionsBidManagement")
-  const shouldDisplayMyCollection = me.labFeatures.includes("My Collection")
+  const shouldDisplayMyCollection = me.labFeatures?.includes("My Collection")
   const [isRefreshing, setIsRefreshing] = useState(false)
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)

@@ -106,7 +106,7 @@ export interface MyCollectionArtworkModel {
   confirmDeleteArtwork: Thunk<
     MyCollectionArtworkModel,
     // These arguments are passed to the `deleteArtwork` action below
-    { artworkId: string; artworkGlobalId: string },
+    { artworkId: string; artworkGlobalId: string; startedLoading: () => void },
     AppStoreModel
   >
   deleteArtwork: Thunk<MyCollectionArtworkModel, { artworkId: string; artworkGlobalId: string }, {}, AppStoreModel>
@@ -479,7 +479,11 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       },
       (buttonIndex) => {
         if (buttonIndex === 0) {
-          actions.deleteArtwork(input)
+          actions.deleteArtwork({
+            artworkId: input.artworkId,
+            artworkGlobalId: input.artworkGlobalId,
+          })
+          input.startedLoading()
         }
       }
     )

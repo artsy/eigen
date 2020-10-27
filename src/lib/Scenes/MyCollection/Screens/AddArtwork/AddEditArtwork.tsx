@@ -29,6 +29,10 @@ export const AddEditArtwork: React.FC = () => {
     formik.handleSubmit()
   }
 
+  const deletionStarted = () => {
+    setLoading(true)
+  }
+
   if (loading && !artworkState.sessionState.artworkErrorOccurred) {
     return (
       <Flex flex={1} alignItems="center" justifyContent="center">
@@ -79,6 +83,7 @@ export const AddEditArtwork: React.FC = () => {
               artworkActions.confirmDeleteArtwork({
                 artworkId: artworkState.sessionState.artworkId,
                 artworkGlobalId: artworkState.sessionState.artworkGlobalId,
+                startedLoading: deletionStarted,
               })
             }
             data-test-id="DeleteButton"
