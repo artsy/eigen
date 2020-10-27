@@ -86,6 +86,29 @@ import { AppStore, AppStoreProvider } from "./store/AppStore"
 import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 
+import { NavigationContainer, useNavigation } from "@react-navigation/native"
+import { enableScreens, Screen, ScreenStack } from "react-native-screens"
+import { createNativeStackNavigator } from "react-native-screens/native-stack"
+import { navigationRef } from "./navigation/navigate"
+import { ViewDescriptor } from "./navigation/NavigationModel"
+
+enableScreens()
+const TabStack = createNativeStackNavigator()
+
+function Tab(props: { rootModule: AppModule; name: string }) {
+  return (
+    <TabStack.Navigator screenOptions={{ headerShown: false }} initialRouteName={props.rootModule}>
+      {Object.entries(modules)
+        .map(([name, descriptor]) => {
+          if (descriptor.type === "react") {
+            return <TabStack.Screen key={name} name={name} component={descriptor.Component}></TabStack.Screen>
+          }
+        })
+        .filter(Boolean)}
+    </TabStack.Navigator>
+  )
+}
+
 YellowBox.ignoreWarnings([
   "Calling `getNode()` on the ref of an Animated component is no longer necessary.",
   "RelayResponseNormalizer: Payload did not contain a value for field `id: id`. Check that you are parsing with the same query that was used to fetch the payload.",
@@ -472,15 +495,53 @@ const Main: React.FC<{}> = track()(({}) => {
 register("Main", Main, { fullBleed: true })
 
 const navStack = (tabName: BottomTabType, rootModuleName: AppModule, rootModuleProps: object) => {
+  // return (
+  //   <NativeViewController
+  //     viewName="TabNavigationStack"
+  //     viewProps={{
+  //       tabName,
+  //       rootModuleName,
+  //       rootModuleProps,
+  //     }}
+  //   />
+  // )
+  return <Tab name={tabName} rootModule={rootModuleName}></Tab>
+}
+
+const Stack: React.FC<{ views: ViewDescriptor[] }> = ({ views }) => {
   return (
-    <NativeViewController
-      viewName="TabNavigationStack"
-      viewProps={{
-        tabName,
-        rootModuleName,
-        rootModuleProps,
-      }}
-    />
+    <ScreenStack>
+      {views.map((view, i) => {
+        const Component = modules[view.moduleName].Component
+        return (
+          <Screen key={i} onDismissed={() => AppStore.actions.navigation.pop()} style={{ backgroundColor: "white" }}>
+            <Component {...view.props} />
+          </Screen>
+        )
+      })}
+    </ScreenStack>
+  )
+}
+
+const ScreensTabsNavigator = ({}) => {
+  const navState = AppStore.useAppState((state) => state.navigation)
+  const { bottom } = useScreenDimensions().safeAreaInsets
+  return (
+    <NavigationContainer ref={navigationRef}>
+      <View style={{ flex: 1, paddingBottom: bottom }}>
+        <FadeBetween
+          views={[
+            <Stack views={navState.tabStacks.home} />,
+            <Stack views={navState.tabStacks.search} />,
+            <Stack views={navState.tabStacks.inbox} />,
+            <Stack views={navState.tabStacks.sell} />,
+            <Stack views={navState.tabStacks.profile} />,
+          ]}
+          activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(navState.currentTab)}
+        />
+        <BottomTabs />
+      </View>
+    </NavigationContainer>
   )
 }
 
@@ -489,19 +550,21 @@ const BottomTabsNavigator = ({}) => {
   const tabProps = AppStore.useAppState((state) => state.bottomTabs.sessionState.tabProps)
   const { bottom } = useScreenDimensions().safeAreaInsets
   return (
-    <View style={{ flex: 1, paddingBottom: bottom }}>
-      <FadeBetween
-        views={[
-          navStack("home", "Home", tabProps.home ?? {}),
-          navStack("search", "Search", tabProps.search ?? {}),
-          navStack("inbox", "Inbox", tabProps.inbox ?? {}),
-          navStack("sell", "SellTabApp", tabProps.sell ?? {}),
-          navStack("profile", "MyProfile", tabProps.profile ?? {}),
-        ]}
-        activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(selectedTab)}
-      />
-      <BottomTabs />
-    </View>
+    <NavigationContainer ref={navigationRef}>
+      <View style={{ flex: 1, paddingBottom: bottom }}>
+        <FadeBetween
+          views={[
+            navStack("home", "Home", tabProps.home ?? {}),
+            navStack("search", "Search", tabProps.search ?? {}),
+            navStack("inbox", "Inbox", tabProps.inbox ?? {}),
+            navStack("sell", "SellTabApp", tabProps.sell ?? {}),
+            navStack("profile", "MyProfile", tabProps.profile ?? {}),
+          ]}
+          activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(selectedTab)}
+        />
+        <BottomTabs />
+      </View>
+    </NavigationContainer>
   )
 }
 

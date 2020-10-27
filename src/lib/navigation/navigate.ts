@@ -1,5 +1,6 @@
 import { AppModule, modules, ViewOptions } from "lib/AppRegistry"
 import { AppStore, unsafe__getSelectedTab } from "lib/store/AppStore"
+import { createRef } from "react"
 import { Linking, NativeModules } from "react-native"
 import { matchRoute } from "./routes"
 import { handleFairRouting } from "./util"
@@ -9,6 +10,8 @@ export interface ViewDescriptor extends ViewOptions {
   moduleName: AppModule
   props: object
 }
+
+export const navigationRef = createRef<any>()
 
 export async function navigate(url: string, options: { modal?: boolean } = {}) {
   let result = matchRoute(url)
@@ -51,7 +54,13 @@ export async function navigate(url: string, options: { modal?: boolean } = {}) {
       AppStore.actions.bottomTabs.switchTab(module.options.onlyShowInTabName)
     }
 
-    NativeModules.ARScreenPresenterModule.pushView(module.options.onlyShowInTabName ?? selectedTab, screenDescriptor)
+    navigationRef.current.navigate(result.module, result.params)
+    console.log("navigate", result.params)
+    // AppStore.actions.navigation.push({
+    //   moduleName: result.module,
+    //   props: result.params,
+    // })
+    // NativeModules.ARScreenPresenterModule.pushView(module.options.onlyShowInTabName ?? selectedTab, screenDescriptor)
   }
 }
 

@@ -429,7 +429,9 @@ export const ArtworkQueryRenderer: React.FC<{
   isVisible: boolean
   environment?: RelayModernEnvironment
   tracking?: TrackingProp
-}> = ({ artworkID, environment, ...others }) => {
+}> = ({ environment, ...others }) => {
+  const { artworkID } = others.route.params
+  console.warn({ others })
   return (
     <RetryErrorBoundary
       render={({ isRetry }) => {

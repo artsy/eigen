@@ -109,6 +109,7 @@ target 'Artsy' do
   pod 'react-native-safe-area-context', path: 'node_modules/react-native-safe-area-context'
   pod 'react-native-navigator-ios', path: 'node_modules/react-native-navigator-ios'
   pod 'RNReanimated', path: 'node_modules/react-native-reanimated'
+  pod 'RNGestureHandler', path: 'node_modules/react-native-gesture-handler'
   pod 'RNCAsyncStorage', path: 'node_modules/@react-native-community/async-storage'
   pod 'RNCPicker', path: 'node_modules/@react-native-community/picker'
   pod 'BVLinearGradient', path: './node_modules/react-native-linear-gradient'
@@ -117,6 +118,9 @@ target 'Artsy' do
   pod 'react-native-config', path: 'node_modules/react-native-config'
   pod 'RNReactNativeHapticFeedback', path: 'node_modules/react-native-haptic-feedback'
   pod 'react-native-webview', path: 'node_modules/react-native-webview'
+
+  pod 'RNScreens', path: 'node_modules/react-native-screens'
+  pod 'RNCMaskedView', path: 'node_modules/@react-native-community/masked-view'
 
   # For Stripe integration with Emission. Using Ash's fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
   pod 'Pulley', git: 'https://github.com/l2succes/Pulley.git', branch: 'master'

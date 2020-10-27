@@ -1,4 +1,5 @@
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
+import { NavigationModel } from "lib/navigation/NavigationModel"
 import { BottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
 import { MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
 import { SearchModel } from "lib/Scenes/Search/SearchModel"
@@ -15,6 +16,7 @@ interface AppStoreStateModel {
 
   native: NativeModel
 
+  navigation: NavigationModel
   bottomTabs: BottomTabsModel
   search: SearchModel
   myCollection: MyCollectionModel
@@ -59,6 +61,7 @@ export const appStoreModel: AppStoreModel = {
   native: NativeModel,
 
   // APP MODULE STATE
+  navigation: NavigationModel,
   bottomTabs: BottomTabsModel,
   search: SearchModel,
   myCollection: MyCollectionModel,
