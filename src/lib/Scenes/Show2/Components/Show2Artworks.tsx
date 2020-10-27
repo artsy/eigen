@@ -1,5 +1,8 @@
+import { Show2_show } from "__generated__/Show2_show.graphql"
 import { Show2Artworks_show } from "__generated__/Show2Artworks_show.graphql"
+import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { SHOW2_ARTWORKS_PAGE_SIZE } from "lib/data/constants"
 import { ArtworkFilterContext, FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { aggregationsType, filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
@@ -13,8 +16,32 @@ interface Props {
   initiallyAppliedFilter?: FilterArray
 }
 
-export const Show2Artworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) => {
+interface ArtworkProps {
+  show: Show2_show
+  isFilterArtworksModalVisible: boolean
+  toggleFilterArtworksModal: () => void
+}
+
+export const Show2ArtworksWithNavigation = (props: ArtworkProps) => {
+  const { show, isFilterArtworksModalVisible, toggleFilterArtworksModal } = props
+  return (
+    <Box px={2}>
+      <Show2ArtworksPaginationContainer show={show} />
+      <FilterModalNavigator
+        isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+        id={show.internalID}
+        slug={show.slug}
+        mode={FilterModalMode.Show}
+        exitModal={toggleFilterArtworksModal}
+        closeModal={toggleFilterArtworksModal}
+      />
+    </Box>
+  )
+}
+
+const Show2Artworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) => {
   const artworks = show.showArtworks!
+  const { internalID, slug } = show
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const filterParams = filterArtworksParams(state.appliedFilters)
 
@@ -48,7 +75,7 @@ export const Show2Artworks: React.FC<Props> = ({ show, relay, initiallyAppliedFi
   }, [])
 
   if ((artworks?.counts?.total ?? 0) === 0) {
-    return null
+    return <FilteredArtworkGridZeroState id={internalID} slug={slug} />
   }
 
   return (
