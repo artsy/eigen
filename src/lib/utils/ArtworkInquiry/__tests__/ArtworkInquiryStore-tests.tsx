@@ -21,7 +21,7 @@ describe("selectInquiryType", () => {
 
     expect(r).toEqual({
       shippingLocation: null,
-      inquiryType: "Request price",
+      inquiryType: "Inquire on price",
     })
   })
 

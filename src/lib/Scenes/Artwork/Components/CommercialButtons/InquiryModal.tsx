@@ -37,7 +37,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   }
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const selectShippingLocation = (l: string) => dispatch({ type: "selectShippingLocation", payload: l })
-  console.log("HELLO!", state)
   const renderInquiryQuestion = (id: string, inquiryQuestion: string): JSX.Element => {
     // Shipping requires special logic to accomodate dropdown and shipping modal
     const isShipping = id === InquiryQuestionIDs.Shipping
