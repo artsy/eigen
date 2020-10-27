@@ -15,6 +15,11 @@ import { Show2HeaderFragmentContainer as ShowHeader } from "./Components/Show2He
 import { Show2InfoFragmentContainer as ShowInfo } from "./Components/Show2Info"
 import { Show2InstallShotsFragmentContainer as ShowInstallShots } from "./Components/Show2InstallShots"
 
+interface Section {
+  key: string
+  element: JSX.Element
+}
+
 interface Show2QueryRendererProps {
   showID: string
 }
@@ -32,24 +37,30 @@ export const Show2: React.FC<Show2Props> = ({ show }) => {
 
   const artworkProps = { show, isFilterArtworksModalVisible, toggleFilterArtworksModal }
 
-  const sections = [
-    <ShowHeader show={show} mx={2} />,
-    ...(!!show.images?.length ? [<ShowInstallShots show={show} />] : []),
-    <ShowInfo show={show} mx={2} />,
-    ...(show.counts?.eligibleArtworks ? [<Show2Artworks {...artworkProps} />] : []),
-    <ShowContextCard show={show} />,
+  const sections: Section[] = [
+    { key: "header", element: <ShowHeader show={show} mx={2} /> },
+
+    ...(Boolean(show.images?.length) ? [{ key: "install-shots", element: <ShowInstallShots show={show} /> }] : []),
+
+    { key: "info", element: <ShowInfo show={show} mx={2} /> },
+
+    ...(Boolean(show.counts?.eligibleArtworks)
+      ? [{ key: "artworks", element: <Show2Artworks {...artworkProps} /> }]
+      : []),
+
+    { key: "context", element: <ShowContextCard show={show} /> },
   ]
 
   return (
     <ArtworkFilterGlobalStateProvider>
       <>
-        <FlatList<typeof sections[number]>
+        <FlatList<Section>
           data={sections}
-          keyExtractor={(_, i) => String(i)}
+          keyExtractor={({ key }) => key}
           ListHeaderComponent={<Spacer mt={6} pt={2} />}
           ListFooterComponent={<Spacer my={2} />}
           ItemSeparatorComponent={() => <Spacer my={15} />}
-          renderItem={({ item }) => item}
+          renderItem={({ item: { element } }) => element}
         />
         <AnimatedArtworkFilterButton isVisible onPress={toggleFilterArtworksModal} />
       </>
