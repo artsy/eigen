@@ -14,6 +14,7 @@ import { Show2ContextCardFragmentContainer as ShowContextCard } from "./Componen
 import { Show2HeaderFragmentContainer as ShowHeader } from "./Components/Show2Header"
 import { Show2InfoFragmentContainer as ShowInfo } from "./Components/Show2Info"
 import { Show2InstallShotsFragmentContainer as ShowInstallShots } from "./Components/Show2InstallShots"
+import { Show2ViewingRoomFragmentContainer as ShowViewingRoom } from "./Components/Show2ViewingRoom"
 
 interface Section {
   key: string
@@ -43,6 +44,10 @@ export const Show2: React.FC<Show2Props> = ({ show }) => {
     ...(Boolean(show.images?.length) ? [{ key: "install-shots", element: <ShowInstallShots show={show} /> }] : []),
 
     { key: "info", element: <ShowInfo show={show} mx={2} /> },
+
+    ...(Boolean(show.viewingRoomIDs.length)
+      ? [{ key: "viewing-room", element: <ShowViewingRoom show={show} mx={2} /> }]
+      : []),
 
     ...(Boolean(show.counts?.eligibleArtworks)
       ? [{ key: "artworks", element: <Show2Artworks {...artworkProps} /> }]
@@ -76,7 +81,9 @@ export const Show2FragmentContainer = createFragmentContainer(Show2, {
       ...Show2Header_show
       ...Show2InstallShots_show
       ...Show2Info_show
+      ...Show2ViewingRoom_show
       ...Show2ContextCard_show
+      viewingRoomIDs
       images {
         __typename
       }
