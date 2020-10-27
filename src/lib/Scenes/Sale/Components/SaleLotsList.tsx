@@ -18,6 +18,7 @@ interface Props {
   relay: RelayPaginationProp
   saleID: string
   saleSlug: string
+  scrollToTop: () => void
 }
 
 export const SaleLotsListSortMode = ({
@@ -49,7 +50,7 @@ export const SaleLotsListSortMode = ({
   )
 }
 
-export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, saleID, saleSlug }) => {
+export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, saleID, saleSlug, scrollToTop }) => {
   const { state, dispatch } = useContext(ArtworkFilterContext)
   const [totalCount, setTotalCount] = useState<number | null>(null)
   const tracking = useTracking()
@@ -91,6 +92,7 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
           includeArtworksByFollowedArtists: !!filterParams.includeArtworksByFollowedArtists,
         }
       )
+      scrollToTop()
     }
   }, [state.appliedFilters])
 

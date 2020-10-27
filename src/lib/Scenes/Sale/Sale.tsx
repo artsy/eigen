@@ -14,7 +14,7 @@ import _ from "lodash"
 import moment from "moment"
 import { Flex } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { Animated } from "react-native"
+import { Animated, FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
@@ -32,6 +32,12 @@ interface SaleSection {
   content: JSX.Element
 }
 
+const SALE_HEADER = "header"
+const SALE_REGISTER_TO_BID = "registerToBid"
+const SALE_ACTIVE_BIDS = "saleActiveBids"
+const SALE_ARTWORKS_RAIL = "saleArtworksRail"
+const SALE_LOTS_LIST = "saleLotsList"
+
 // Types related to showing filter button on scroll
 export interface ViewableItems {
   viewableItems?: ViewToken[]
@@ -46,6 +52,8 @@ interface ViewToken {
 }
 
 export const Sale: React.FC<Props> = ({ queryRes }) => {
+  const flatListRef = useRef<FlatList<any>>(null)
+
   const sale = queryRes.sale!
   const me = queryRes.me!
   const tracking = useTracking()
@@ -125,15 +133,20 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
     setFilterArtworkModalVisible(false)
   }
 
+  const scrollToTop = () => {
+    const saleLotsListIndex = saleSectionsData.findIndex((section) => section.key === SALE_LOTS_LIST)
+    flatListRef.current?.scrollToIndex({ index: saleLotsListIndex, viewOffset: 50 })
+  }
+
   const saleSectionsData: SaleSection[] = _.compact([
     {
-      key: "header",
+      key: SALE_HEADER,
       content: <SaleHeader sale={sale} scrollAnim={scrollAnim} />,
     },
     (sale.endAt === null || moment().isBefore(sale.endAt)) &&
       sale.registrationEndsAt !== null &&
       moment().isBefore(sale.registrationEndsAt) && {
-        key: "registerToBid",
+        key: SALE_REGISTER_TO_BID,
         content: (
           <Flex mx="2" mt={2}>
             <RegisterToBidButtonContainer sale={sale} me={me} contextType="sale" />
@@ -141,16 +154,23 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
         ),
       },
     {
-      key: "saleActiveBids",
+      key: SALE_ACTIVE_BIDS,
       content: <SaleActiveBidsContainer me={me} saleID={sale.internalID} />,
     },
     {
-      key: "saleArtworksRail",
+      key: SALE_ARTWORKS_RAIL,
       content: <SaleArtworksRailContainer me={me} />,
     },
     {
-      key: "saleLotsList",
-      content: <SaleLotsListContainer saleArtworksConnection={queryRes} saleID={sale.slug} saleSlug={sale.slug} />,
+      key: SALE_LOTS_LIST,
+      content: (
+        <SaleLotsListContainer
+          saleArtworksConnection={queryRes}
+          saleID={sale.slug}
+          saleSlug={sale.slug}
+          scrollToTop={scrollToTop}
+        />
+      ),
     },
   ])
 
@@ -160,6 +180,7 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
         {() => (
           <>
             <Animated.FlatList
+              ref={flatListRef}
               data={saleSectionsData}
               initialNumToRender={4} // Render the infinite scroll list after the rest of the page
               viewabilityConfig={viewConfigRef.current}

@@ -32,7 +32,12 @@ describe("SaleLotsListContainer", () => {
         if (props) {
           return (
             <ArtworkFilterContext.Provider value={{ state: getState(viewAs), dispatch: jest.fn() }}>
-              <SaleLotsListContainer saleArtworksConnection={props} saleID="sale-id" saleSlug="sale-slug" />
+              <SaleLotsListContainer
+                saleArtworksConnection={props}
+                saleID="sale-id"
+                saleSlug="sale-slug"
+                scrollToTop={jest.fn()}
+              />
             </ArtworkFilterContext.Provider>
           )
         }
