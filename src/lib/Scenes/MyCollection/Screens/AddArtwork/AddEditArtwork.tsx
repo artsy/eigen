@@ -29,80 +29,96 @@ export const AddEditArtwork: React.FC = () => {
     formik.handleSubmit()
   }
 
+  const showLoading = loading && !artworkState.sessionState.artworkErrorOccurred
+
   const deletionStarted = () => {
     setLoading(true)
   }
 
-  if (loading && !artworkState.sessionState.artworkErrorOccurred) {
+  const LoadingIndicator = () => {
     return (
-      <Flex flex={1} alignItems="center" justifyContent="center">
-        <ActivityIndicator size="large" />
-      </Flex>
+      <Box
+        style={{
+          zIndex: 100,
+          height: "100%",
+          width: "100%",
+          position: "absolute",
+          backgroundColor: "rgba(0, 0, 0, 0.15)",
+        }}
+      >
+        <Flex flex={1} alignItems="center" justifyContent="center">
+          <ActivityIndicator size="large" />
+        </Flex>
+      </Box>
     )
   }
 
   return (
-    <ScrollView>
-      <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => artworkActions.cancelAddEditArtwork()}>
-        {addOrEditLabel} artwork
-      </FancyModalHeader>
+    <>
+      {showLoading && <LoadingIndicator />}
+      {/* Disable touch events in form while loading */}
+      <ScrollView pointerEvents={showLoading ? "none" : "auto"}>
+        <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => artworkActions.cancelAddEditArtwork()}>
+          {addOrEditLabel} artwork
+        </FancyModalHeader>
 
-      <Spacer my={1} />
+        <Spacer my={1} />
 
-      <Sans size="4" textAlign="center">
-        {addOrEditLabel} details about your work for a price {"\n"}
-        evaluation and market insights.
-      </Sans>
+        <Sans size="4" textAlign="center">
+          {addOrEditLabel} details about your work for a price {"\n"}
+          evaluation and market insights.
+        </Sans>
 
-      <ScreenMargin>
-        <Join separator={<Spacer my={1} />}>
-          <ArtistAutosuggest />
-          <MediumPicker />
-          <Dimensions />
-        </Join>
-      </ScreenMargin>
-
-      <Spacer my={2} />
-
-      <PhotosButton />
-      <AdditionalDetailsButton />
-
-      <Spacer my={2} />
-
-      <ScreenMargin>
-        <Button disabled={!formik.isValid} block onPress={submitArtwork} data-test-id="CompleteButton">
-          Complete
-        </Button>
-
-        {modalType === "edit" && (
-          <Button
-            mt={2}
-            variant="secondaryGray"
-            block
-            onPress={() =>
-              artworkActions.confirmDeleteArtwork({
-                artworkId: artworkState.sessionState.artworkId,
-                artworkGlobalId: artworkState.sessionState.artworkGlobalId,
-                startedLoading: deletionStarted,
-              })
-            }
-            data-test-id="DeleteButton"
-          >
-            Delete
-          </Button>
-        )}
-        <Spacer mt={4} />
-      </ScreenMargin>
-
-      {/* Show validation errors during development */}
-      {!!(SHOW_FORM_VALIDATION_ERRORS_IN_DEV && __DEV__ && formik.errors) && (
         <ScreenMargin>
-          <Box my={2}>
-            <Sans size="3">Errors: {JSON.stringify(formik.errors)}</Sans>
-          </Box>
+          <Join separator={<Spacer my={1} />}>
+            <ArtistAutosuggest />
+            <MediumPicker />
+            <Dimensions />
+          </Join>
         </ScreenMargin>
-      )}
-    </ScrollView>
+
+        <Spacer my={2} />
+
+        <PhotosButton />
+        <AdditionalDetailsButton />
+
+        <Spacer my={2} />
+
+        <ScreenMargin>
+          <Button disabled={!formik.isValid} block onPress={submitArtwork} data-test-id="CompleteButton">
+            Complete
+          </Button>
+
+          {modalType === "edit" && (
+            <Button
+              mt={2}
+              variant="secondaryGray"
+              block
+              onPress={() =>
+                artworkActions.confirmDeleteArtwork({
+                  artworkId: artworkState.sessionState.artworkId,
+                  artworkGlobalId: artworkState.sessionState.artworkGlobalId,
+                  startedLoading: deletionStarted,
+                })
+              }
+              data-test-id="DeleteButton"
+            >
+              Delete
+            </Button>
+          )}
+          <Spacer mt={4} />
+        </ScreenMargin>
+
+        {/* Show validation errors during development */}
+        {!!(SHOW_FORM_VALIDATION_ERRORS_IN_DEV && __DEV__ && formik.errors) && (
+          <ScreenMargin>
+            <Box my={2}>
+              <Sans size="3">Errors: {JSON.stringify(formik.errors)}</Sans>
+            </Box>
+          </ScreenMargin>
+        )}
+      </ScrollView>
+    </>
   )
 }
 
