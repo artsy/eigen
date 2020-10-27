@@ -19,6 +19,10 @@ export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
 
   const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
 
+  if (!artworks?.length) {
+    return null
+  }
+
   return (
     <Flex mt={3} ref={navRef}>
       <Flex mx={2} my={1}>
@@ -51,8 +55,8 @@ export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
 
 export const SaleArtworksRailContainer = createFragmentContainer(SaleArtworksRail, {
   me: graphql`
-    fragment SaleArtworksRail_me on Me {
-      lotsByFollowedArtistsConnection(first: 10, includeArtworksByFollowedArtists: true) {
+    fragment SaleArtworksRail_me on Me @argumentDefinitions(saleID: { type: "ID" }) {
+      lotsByFollowedArtistsConnection(first: 10, includeArtworksByFollowedArtists: true, saleID: $saleID) {
         edges {
           node {
             id

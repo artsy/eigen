@@ -235,6 +235,16 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes to the old Auction view when the AROptionsNewSalePage option is false", () => {
+    expect(matchRoute("/auction-faq")).toMatchInlineSnapshot(`
+      Object {
+        "module": "AuctionFAQ",
+        "params": Object {},
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes to Gene", () => {
     expect(matchRoute("/gene/blue")).toMatchInlineSnapshot(`
       Object {

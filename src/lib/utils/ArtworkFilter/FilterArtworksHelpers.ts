@@ -6,7 +6,7 @@ import {
   FilterCounts,
   FilterType,
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { forOwn, groupBy, sortBy } from "lodash"
+import { compact, forOwn, groupBy, sortBy } from "lodash"
 
 // General filter types and objects
 export enum FilterParamName {
@@ -148,11 +148,17 @@ export const changedFiltersParams = (currentFilterParams: FilterParams, selected
 /**
  * Formats the display for the Filter Modal "home" screen.
  */
-export const selectedOption = (
-  selectedOptions: FilterArray,
-  filterScreen: FilterScreen,
-  filterType: FilterType = "artwork"
-) => {
+export const selectedOption = ({
+  selectedOptions,
+  filterScreen,
+  filterType = "artwork",
+  aggregations,
+}: {
+  selectedOptions: FilterArray
+  filterScreen: FilterScreen
+  filterType?: FilterType
+  aggregations: Aggregations
+}) => {
   const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
 
   if (filterScreen === "waysToBuy") {
@@ -184,16 +190,24 @@ export const selectedOption = (
 
     let selectedArtistNames: string[]
 
-    if (filterType === "artwork") {
+    if (filterType === "saleArtwork") {
+      const saleArtworksArtistIDs = selectedOptions.find((filter) => filter.paramName === FilterParamName.artistIDs)
+      // The user has selected one or more artist ids
+      if (saleArtworksArtistIDs && Array.isArray(saleArtworksArtistIDs?.paramValue)) {
+        const artistIDsAggregation = aggregationForFilter(FilterParamName.artistIDs, aggregations)
+
+        selectedArtistNames = compact(
+          saleArtworksArtistIDs.paramValue.map((artistID: string) => {
+            return artistIDsAggregation?.counts.find((artistAggregation) => artistAggregation.value === artistID)?.name
+          })
+        )
+      } else {
+        selectedArtistNames = []
+      }
+    } else {
       selectedArtistNames = selectedOptions
         .filter((filter) => filter.paramName === FilterParamName.artistIDs)
         .map(({ displayText }) => displayText)
-    } else {
-      const saleArtworksArtistIDs = selectedOptions.find((filter) => filter.paramName === FilterParamName.artistIDs)
-      selectedArtistNames =
-        saleArtworksArtistIDs && Array.isArray(saleArtworksArtistIDs?.paramValue)
-          ? saleArtworksArtistIDs.paramValue
-          : []
     }
 
     const alphabetizedArtistNames = sortBy(selectedArtistNames, (name) => name)

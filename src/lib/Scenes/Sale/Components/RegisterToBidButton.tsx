@@ -1,31 +1,36 @@
 import { RegisterToBidButton_me } from "__generated__/RegisterToBidButton_me.graphql"
 import { RegisterToBidButton_sale } from "__generated__/RegisterToBidButton_sale.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Box, Button, CheckIcon, Flex, Spacer, Text } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { navigate } from "../../../navigation/navigate"
 import { saleStatus } from "../helpers"
 
 interface RegisterToBidButtonProps {
   sale: RegisterToBidButton_sale
   me: RegisterToBidButton_me
+  contextType: "sale" | "sale_information"
 }
 
-const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({ me, sale }) => {
+const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({ me, sale, contextType }) => {
   const { trackEvent } = useTracking()
-  const navRef = useRef<any>(null)
 
   if (sale.registrationStatus === null) {
     return (
-      <Box ref={navRef}>
+      <Box>
         <Button
           block
           size="large"
           onPress={() => {
-            trackEvent(tracks.auctionBidButtonTapped(sale.slug, saleStatus(sale.startAt, sale.endAt)))
-
-            SwitchBoard.presentNavigationViewController(navRef.current, `/auction-registration/${sale.slug}`)
+            trackEvent(
+              tracks.auctionBidButtonTapped({
+                slug: sale.slug,
+                status: saleStatus(sale.startAt, sale.endAt),
+                contextType,
+              })
+            )
+            navigate(`/auction-registration/${sale.slug}`)
           }}
         >
           Register to bid
@@ -41,9 +46,7 @@ const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({ me, sale }) =
               variant="caption"
               color="black60"
               style={{ textDecorationLine: "underline" }}
-              onPress={() =>
-                void SwitchBoard.presentNavigationViewController(navRef.current, "/identity-verification-faq")
-              }
+              onPress={() => navigate("/identity-verification-faq")}
             >
               Learn more.
             </Text>
@@ -104,16 +107,10 @@ export const RegisterToBidButtonContainer = createFragmentContainer(RegisterToBi
 })
 
 const tracks = {
-  auctionBidButtonTapped: (slug: string, status: string) => ({
+  auctionBidButtonTapped: ({ slug, status, contextType }: { slug: string; status: string; contextType: string }) => ({
     action_name: "Tapped Register To Bid",
     auction_slug: slug,
     auction_state: status,
-
-    // TODO: `context_type` should be something like
-    // self.navigationController.topViewController == self ? "sale" : "sale information"
-    // so that it sends `sale` when we are in the auction page, and `sale information` when we are in the info page of an auction.
-    // We don't have the info page migrated to RN yet. We should fix this when we do.
-    // link: https://artsyproduct.atlassian.net/browse/MX-523
-    context_type: "sale",
+    context_type: contextType,
   }),
 }

@@ -10,6 +10,7 @@ import {
   filterArtworksParams,
 } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box } from "palette"
 import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -77,6 +78,8 @@ export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({
     })
   }, [])
 
+  const screenWidth = useScreenDimensions().width
+
   if ((artworks?.counts?.total ?? 0) === 0) {
     return (
       <Box mb="80px">
@@ -96,6 +99,7 @@ export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({
         contextScreenOwnerType={OwnerType.fair}
         contextScreenOwnerId={fair.internalID}
         contextScreenOwnerSlug={fair.slug}
+        width={screenWidth - 40}
       />
     </Box>
   )
