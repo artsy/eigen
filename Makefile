@@ -133,6 +133,7 @@ update_echo:
 	# The @ prevents the command from being printed to console logs.
 	# Touch both files so dotenv will work.
 	@curl https://echo.artsy.net/Echo.json > Artsy/App/EchoNew.json
+	yarn prettier -w Artsy/App/EchoNew.json
 
 storyboards:
 	swiftgen storyboards Artsy --output Artsy/Tooling/Generated/StoryboardConstants.swift
