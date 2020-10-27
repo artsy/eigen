@@ -223,7 +223,7 @@ export const AutosuggestResults: React.FC<{
           entities,
         }}
         query={graphql`
-          query AutosuggestResultsQuery($query: String!, $count: Int!, $entities: [SearchEntity]) {
+          query AutosuggestResultsQuery($query: String!, $count: Int!, $entities: [SearchEntity]) @raw_response_type {
             ...AutosuggestResults_results @arguments(query: $query, count: $count, entities: $entities)
           }
         `}

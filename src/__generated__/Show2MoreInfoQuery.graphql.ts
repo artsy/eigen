@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b12b27414a05f7d143c05cc77be1f2e5 */
+/* @relayHash 01882d95fee25c87a42be270fe07cf86 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -41,6 +41,31 @@ fragment LocationMap_location on Location {
   coordinates {
     lat
     lng
+  }
+}
+
+fragment PartnerEntityHeader_partner on Partner {
+  ...PartnerFollowButton_partner
+  href
+  name
+  cities
+  isDefaultProfilePublic
+  initials
+  profile {
+    icon {
+      url(version: "square140")
+    }
+    id
+  }
+}
+
+fragment PartnerFollowButton_partner on Partner {
+  internalID
+  slug
+  profile {
+    id
+    internalID
+    isFollowed
   }
 }
 
@@ -110,7 +135,11 @@ fragment Show2MoreInfo_show on Show {
   about: description
   pressRelease(format: MARKDOWN)
   partner {
+    ...PartnerEntityHeader_partner
     __typename
+    ... on Partner {
+      type
+    }
     ... on Node {
       __isNode: __typename
       id
@@ -172,10 +201,24 @@ v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "internalID",
   "storageKey": null
 },
 v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "href",
+  "storageKey": null
+},
+v7 = {
   "alias": null,
   "args": null,
   "concreteType": "Location",
@@ -183,14 +226,8 @@ v5 = {
   "name": "location",
   "plural": false,
   "selections": [
+    (v5/*: any*/),
     (v4/*: any*/),
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "internalID",
-      "storageKey": null
-    },
     {
       "alias": null,
       "args": null,
@@ -366,7 +403,88 @@ return {
               {
                 "kind": "InlineFragment",
                 "selections": [
-                  (v3/*: any*/)
+                  (v3/*: any*/),
+                  (v4/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "slug",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Profile",
+                    "kind": "LinkedField",
+                    "name": "profile",
+                    "plural": false,
+                    "selections": [
+                      (v5/*: any*/),
+                      (v4/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "isFollowed",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "kind": "LinkedField",
+                        "name": "icon",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "version",
+                                "value": "square140"
+                              }
+                            ],
+                            "kind": "ScalarField",
+                            "name": "url",
+                            "storageKey": "url(version:\"square140\")"
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  },
+                  (v6/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "cities",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "isDefaultProfilePublic",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "initials",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "type",
+                    "storageKey": null
+                  }
                 ],
                 "type": "Partner",
                 "abstractKey": null
@@ -375,7 +493,7 @@ return {
                 "kind": "InlineFragment",
                 "selections": [
                   (v3/*: any*/),
-                  (v4/*: any*/)
+                  (v5/*: any*/)
                 ],
                 "type": "ExternalPartner",
                 "abstractKey": null
@@ -383,7 +501,7 @@ return {
               {
                 "kind": "InlineFragment",
                 "selections": [
-                  (v4/*: any*/)
+                  (v5/*: any*/)
                 ],
                 "type": "Node",
                 "abstractKey": "__isNode"
@@ -400,20 +518,14 @@ return {
             "plural": false,
             "selections": [
               (v3/*: any*/),
-              (v5/*: any*/),
-              (v4/*: any*/)
+              (v7/*: any*/),
+              (v5/*: any*/)
             ],
             "storageKey": null
           },
+          (v7/*: any*/),
           (v5/*: any*/),
-          (v4/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "href",
-            "storageKey": null
-          },
+          (v6/*: any*/),
           {
             "alias": "about",
             "args": null,
@@ -440,7 +552,7 @@ return {
     ]
   },
   "params": {
-    "id": "b12b27414a05f7d143c05cc77be1f2e5",
+    "id": "01882d95fee25c87a42be270fe07cf86",
     "metadata": {},
     "name": "Show2MoreInfoQuery",
     "operationKind": "query",
