@@ -1,5 +1,5 @@
 PODS:
-  - Aerodramus (1.1.0):
+  - Aerodramus (2.0.0):
     - ISO8601DateFormatter
   - AFNetworkActivityLogger (2.0.4):
     - AFNetworking/NSURLConnection (~> 2.0)
@@ -461,7 +461,7 @@ PODS:
   - Yoga (1.14.0)
 
 DEPENDENCIES:
-  - Aerodramus
+  - Aerodramus (= 2.0.0)
   - AFNetworkActivityLogger
   - AFNetworking/NSURLConnection (~> 2.5)
   - AFNetworking/NSURLSession (~> 2.5)
@@ -768,7 +768,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/ashfurrow/tipsi-stripe
 
 SPEC CHECKSUMS:
-  Aerodramus: eacb007409baebbdf368afb1ed4927bc7d825d9f
+  Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 8dd5f9b9691e09186393069a12cc3b5ed7c8b511
   AFOAuth1Client: 155a6237e57987cac18dac2ccd17cea5d324ad1a
@@ -784,7 +784,7 @@ SPEC CHECKSUMS:
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
-  DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
+  DoubleConversion: cde416483dac037923206447da6e1454df403714
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
   Emission: f8168fc4326e24e058d1d92338c01d6c4983d56f
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
@@ -799,7 +799,7 @@ SPEC CHECKSUMS:
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
-  glog: 1f3da668190260b06b429bb211bfbee5cd790c28
+  glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
@@ -871,6 +871,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 50fb6eb13d2152e7363293ff603385db380815b1
 
-PODFILE CHECKSUM: 9bd017612193f49bf6edf5b95c0c8083e39c7491
+PODFILE CHECKSUM: b95d0be420f473bf099356f1e80031ead7cbcfcd
 
 COCOAPODS: 1.7.5

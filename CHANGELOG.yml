@@ -2,7 +2,7 @@ upcoming:
   version: 6.7.0
   date: TBD
   dev:
-    -
+    - Update url for echo, now in s3 - ash, pavlos
   user_facing:
     - Add Auctions Info screen - mounir
     - Fix Fair2 sticky tab UI + interaction - david
