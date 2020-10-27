@@ -2,9 +2,9 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/AddArtwork/Form/useArtworkForm"
 import { AppStore } from "lib/store/AppStore"
-import { BorderBox, Box, Button, Flex, Join, Sans, Spacer, Text } from "palette"
-import React from "react"
-import { ScrollView } from "react-native"
+import { BorderBox, Box, Button, Flex, Join, Sans, Spacer } from "palette"
+import React, { useState } from "react"
+import { ActivityIndicator, ScrollView } from "react-native"
 import { ArrowButton } from "./Components/ArrowButton"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { Dimensions } from "./Components/Dimensions"
@@ -16,10 +16,26 @@ const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 export const AddEditArtwork: React.FC = () => {
   const artworkActions = AppStore.actions.myCollection.artwork
   const artworkState = AppStore.useAppState((state) => state.myCollection.artwork)
+  const [loading, setLoading] = useState<boolean>(false)
   const navState = AppStore.useAppState((state) => state.myCollection.navigation)
   const { formik } = useArtworkForm()
   const modalType = navState?.sessionState?.modalType
   const addOrEditLabel = modalType ? "Edit" : "Add"
+
+  /* FIXME: Wire up proper loading modal */
+  const submitArtwork = () => {
+    /* `handleSubmit` is wired up in <Boot>  */
+    setLoading(true)
+    formik.handleSubmit()
+  }
+
+  if (loading && !artworkState.sessionState.artworkErrorOccurred) {
+    return (
+      <Flex flex={1} alignItems="center" justifyContent="center">
+        <ActivityIndicator size="large" />
+      </Flex>
+    )
+  }
 
   return (
     <ScrollView>
@@ -28,9 +44,6 @@ export const AddEditArtwork: React.FC = () => {
       </FancyModalHeader>
 
       <Spacer my={1} />
-
-      {/* FIXME: Wire up proper loading modal */}
-      {!!artworkState.sessionState.isLoading && <Text variant="title">Loading</Text>}
 
       <Sans size="4" textAlign="center">
         {addOrEditLabel} details about your work for a price {"\n"}
@@ -53,8 +66,7 @@ export const AddEditArtwork: React.FC = () => {
       <Spacer my={2} />
 
       <ScreenMargin>
-        {/* `handleSubmit` is wired up in <Boot>  */}
-        <Button disabled={!formik.isValid} block onPress={formik.handleSubmit} data-test-id="CompleteButton">
+        <Button disabled={!formik.isValid} block onPress={submitArtwork} data-test-id="CompleteButton">
           Complete
         </Button>
 

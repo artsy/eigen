@@ -65,9 +65,9 @@ export interface MyCollectionArtworkModel {
     artworkGlobalId: string
     dirtyFormCheckValues: ArtworkFormValues
     formValues: ArtworkFormValues
-    isLoading: boolean
     meGlobalId: string
     lastUploadedPhoto?: Image
+    artworkErrorOccurred: boolean
   }
   setFormValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
   setDirtyFormCheckValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
@@ -75,7 +75,7 @@ export interface MyCollectionArtworkModel {
   setArtistSearchResult: Action<MyCollectionArtworkModel, AutosuggestResult | null>
   setArtworkId: Action<MyCollectionArtworkModel, { artworkId: string; artworkGlobalId: string }>
   setMeGlobalId: Action<MyCollectionArtworkModel, string>
-  setIsLoading: Action<MyCollectionArtworkModel, boolean>
+  setArtworkErrorOccurred: Action<MyCollectionArtworkModel, boolean>
 
   addPhotos: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"]>
   removePhoto: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"][0]>
@@ -123,7 +123,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     artworkId: "",
     dirtyFormCheckValues: initialFormValues,
     formValues: initialFormValues,
-    isLoading: false,
+    artworkErrorOccurred: false,
 
     /**
      * TODO: this will likely be able to go away once we update our mutations to take
@@ -170,8 +170,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     }
   }),
 
-  setIsLoading: action((state, isLoading) => {
-    state.sessionState.isLoading = isLoading
+  setArtworkErrorOccurred: action((state, errorOccurred) => {
+    state.sessionState.artworkErrorOccurred = errorOccurred
   }),
 
   /**
@@ -258,11 +258,10 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
 
   addArtwork: thunk(
     async (actions, { artistSearchResult, artist, artistIds, costMinor, photos, ...payload }, { getState }) => {
-      actions.setIsLoading(true)
-
       try {
         const state = getState()
         const input = cleanArtworkPayload(payload) as typeof payload
+        state.sessionState.artworkErrorOccurred = false
         state.sessionState.lastUploadedPhoto = undefined // reset locally stored photo
         const externalImageUrls = await actions.uploadPhotos(photos)
 
@@ -333,7 +332,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   ),
 
   addArtworkComplete: thunk((actions) => {
-    actions.setIsLoading(false)
+    actions.setArtworkErrorOccurred(false)
     actions.resetForm()
   }),
 
@@ -341,8 +340,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
    * TODO: Log to Sentry
    */
   addArtworkError: action((state, error) => {
-    state.sessionState.isLoading = false
-
+    state.sessionState.artworkErrorOccurred = true
     console.error("Add artwork error", error)
     Alert.alert("Error adding artwork", "TODO add better message")
   }),
@@ -391,7 +389,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
 
   editArtwork: thunk(
     async (actions, { artistSearchResult, artist, artistIds, costMinor, photos, ...payload }, { getState }) => {
-      actions.setIsLoading(true)
+      actions.setArtworkErrorOccurred(false)
 
       try {
         const { sessionState } = getState()
@@ -454,7 +452,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   ),
 
   editArtworkComplete: thunk((actions) => {
-    actions.setIsLoading(false)
+    actions.setArtworkErrorOccurred(false)
     actions.resetForm()
   }),
 
@@ -462,7 +460,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
    * TODO: Log error to Sentry
    */
   editArtworkError: action((state, error) => {
-    state.sessionState.isLoading = false
+    state.sessionState.artworkErrorOccurred = true
     console.error("Edit artwork error", error)
     Alert.alert("Error editing artwork", "TODO add better message")
   }),
@@ -488,8 +486,6 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   }),
 
   deleteArtwork: thunk(async (actions, input) => {
-    actions.setIsLoading(true)
-
     try {
       // TODO: Does deleting an artwork also remove associated artworks?
 
@@ -542,7 +538,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   }),
 
   deleteArtworkComplete: thunk((actions) => {
-    actions.setIsLoading(false)
+    actions.setArtworkErrorOccurred(false)
     actions.resetForm()
   }),
 
@@ -550,7 +546,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
    * TODO: Log error to Sentry
    */
   deleteArtworkError: action((state, error) => {
-    state.sessionState.isLoading = false
+    state.sessionState.artworkErrorOccurred = true
     console.error("Error deleting artwork", error)
     Alert.alert("Error deleting artwork", "TODO add better message")
   }),
