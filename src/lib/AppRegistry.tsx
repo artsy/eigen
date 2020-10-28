@@ -1,6 +1,6 @@
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import React, { useEffect, useRef } from "react"
-import { Animated, AppRegistry, View, YellowBox } from "react-native"
+import React from "react"
+import { AppRegistry, View, YellowBox } from "react-native"
 import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
@@ -80,6 +80,7 @@ import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { Show2MoreInfoQueryRenderer, Show2QueryRenderer } from "./Scenes/Show2"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
+import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
@@ -475,83 +476,3 @@ const Main: React.FC<{}> = track()(({}) => {
 })
 
 register("Main", Main, { fullBleed: true })
-
-const navStack = (tabName: BottomTabType, rootModuleName: AppModule, rootModuleProps: object) => {
-  return (
-    <NativeViewController
-      viewName="TabNavigationStack"
-      viewProps={{
-        tabName,
-        rootModuleName,
-        rootModuleProps,
-      }}
-    />
-  )
-}
-
-const BottomTabsNavigator = ({}) => {
-  const selectedTab = AppStore.useAppState((state) => state.bottomTabs.selectedTab || "home")
-  const tabProps = AppStore.useAppState((state) => state.bottomTabs.sessionState.tabProps)
-  const { bottom } = useScreenDimensions().safeAreaInsets
-  return (
-    <View style={{ flex: 1, paddingBottom: bottom }}>
-      <FadeBetween
-        views={[
-          navStack("home", "Home", tabProps.home ?? {}),
-          navStack("search", "Search", tabProps.search ?? {}),
-          navStack("inbox", "Inbox", tabProps.inbox ?? {}),
-          navStack("sell", "SellTabApp", tabProps.sell ?? {}),
-          navStack("profile", "MyProfile", tabProps.profile ?? {}),
-        ]}
-        activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(selectedTab)}
-      />
-      <BottomTabs />
-    </View>
-  )
-}
-
-const FadeBetween: React.FC<{ views: JSX.Element[]; activeIndex: number }> = ({ views, activeIndex }) => {
-  const opacities = useRef(views.map((_, index) => new Animated.Value(index === activeIndex ? 1 : 0))).current
-  const lastActiveIndex = usePrevious(activeIndex)
-  useEffect(() => {
-    if (lastActiveIndex < activeIndex) {
-      // fade in screen above, then make previous screen transparent
-      Animated.spring(opacities[activeIndex], { toValue: 1, useNativeDriver: true, speed: 100 }).start(() => {
-        opacities[lastActiveIndex].setValue(0)
-      })
-    } else if (lastActiveIndex > activeIndex) {
-      // make next screen opaque, then fade out screen above
-      opacities[activeIndex].setValue(1)
-      requestAnimationFrame(() => {
-        Animated.spring(opacities[lastActiveIndex], { toValue: 0, useNativeDriver: true, speed: 100 }).start()
-      })
-    }
-  }, [activeIndex])
-  return (
-    <View style={{ flex: 1, overflow: "hidden" }}>
-      {views.map((v, index) => {
-        return (
-          (index === activeIndex || index === lastActiveIndex) && (
-            <View
-              key={index}
-              pointerEvents={index === activeIndex ? undefined : "none"}
-              style={{ position: "absolute", width: "100%", height: "100%" }}
-            >
-              <Animated.View style={{ opacity: opacities[index], flex: 1, backgroundColor: "white" }}>
-                {v}
-              </Animated.View>
-            </View>
-          )
-        )
-      })}
-    </View>
-  )
-}
-
-function usePrevious<T>(value: T) {
-  const ref = useRef<T>(value)
-  useEffect(() => {
-    ref.current = value
-  }, [value])
-  return ref.current
-}
