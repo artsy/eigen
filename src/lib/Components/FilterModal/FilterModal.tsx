@@ -214,7 +214,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
 
   const concreteAggregations = state.aggregations ?? []
 
-  const isClearAllButtonEnabled = state.appliedFilters.length > 0
+  const isClearAllButtonEnabled = state.appliedFilters.length > 0 || state.appliedFilters.length > 0
 
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
     concreteAggregations.map((aggregation) => {
