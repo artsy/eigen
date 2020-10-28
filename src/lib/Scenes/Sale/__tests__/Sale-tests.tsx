@@ -7,7 +7,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { RegisterToBidButtonContainer } from "../Components/RegisterToBidButton"
-import { Sale } from "../Sale"
+import { SaleContainer } from "../Sale"
 
 jest.unmock("react-relay")
 
@@ -22,28 +22,21 @@ describe("Sale", () => {
     <QueryRenderer<SaleTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query SaleTestsQuery($saleID: String!) @relay_test_operation {
+        query SaleTestsQuery($saleID: String!, $saleSlug: ID!) {
           sale(id: $saleID) {
-            internalID
-            slug
-            liveStartAt
-            endAt
-            registrationEndsAt
-            ...SaleHeader_sale
-            ...RegisterToBidButton_sale
+            ...Sale_sale
           }
           me {
-            ...SaleArtworksRail_me
-            ...SaleActiveBids_me @arguments(saleID: $saleID)
-            ...RegisterToBidButton_me @arguments(saleID: $saleID)
+            ...Sale_me
           }
-          ...SaleLotsList_saleArtworksConnection @arguments(saleID: "sale-slug")
+
+          ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleSlug)
         }
       `}
-      variables={{ saleID: "sale-id" }}
+      variables={{ saleID: "sale-id", saleSlug: "sale-slug" }}
       render={({ props }) => {
-        if (props) {
-          return <Sale queryRes={props} />
+        if (props?.me && props?.sale) {
+          return <SaleContainer queryRes={props} me={props.me} sale={props.sale} />
         }
         return null
       }}

@@ -1,4 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
+import { Sale_me } from "__generated__/Sale_me.graphql"
+import { Sale_sale } from "__generated__/Sale_sale.graphql"
 import { SaleQueryRendererQuery, SaleQueryRendererQueryResponse } from "__generated__/SaleQueryRendererQuery.graphql"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import LoadFailureView from "lib/Components/LoadFailureView"
@@ -13,9 +15,9 @@ import { usePrevious } from "lib/utils/usePrevious"
 import _ from "lodash"
 import moment from "moment"
 import { Flex } from "palette"
-import React, { useEffect, useRef, useState } from "react"
-import { Animated, FlatList } from "react-native"
-import { graphql, QueryRenderer } from "react-relay"
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import { Animated, FlatList, RefreshControl } from "react-native"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
@@ -25,6 +27,9 @@ import { SaleLotsListContainer } from "./Components/SaleLotsList"
 
 interface Props {
   queryRes: SaleQueryRendererQueryResponse
+  sale: Sale_sale
+  me: Sale_me
+  relay: RelayRefetchProp
 }
 
 interface SaleSection {
@@ -51,19 +56,25 @@ interface ViewToken {
   section?: any
 }
 
-export const Sale: React.FC<Props> = ({ queryRes }) => {
+export const Sale: React.FC<Props> = ({ sale, me, queryRes, relay }) => {
   const flatListRef = useRef<FlatList<any>>(null)
 
-  const sale = queryRes.sale!
-  const me = queryRes.me!
   const tracking = useTracking()
 
+  const [isRefreshing, setIsRefreshing] = useState(false)
   const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const [isLive, setIsLive] = useState(false)
   const prevIsLive = usePrevious(isLive, false)
 
   const scrollAnim = useRef(new Animated.Value(0)).current
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true)
+    relay.refetch(() => {
+      setIsRefreshing(false)
+    })
+  }, [])
 
   // poll every .5 seconds to check if sale has gone live
   useInterval(() => {
@@ -200,6 +211,7 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
                   useNativeDriver: true,
                 }
               )}
+              refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
               scrollEventThrottle={16}
             />
             <FilterModalNavigator
@@ -218,6 +230,40 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
   )
 }
 
+export const SaleContainer = createRefetchContainer(
+  Sale,
+  {
+    me: graphql`
+      fragment Sale_me on Me {
+        ...SaleArtworksRail_me @arguments(saleID: $saleSlug)
+        ...SaleActiveBids_me @arguments(saleID: $saleID)
+        ...RegisterToBidButton_me @arguments(saleID: $saleID)
+      }
+    `,
+    sale: graphql`
+      fragment Sale_sale on Sale {
+        internalID
+        slug
+        liveStartAt
+        endAt
+        ...SaleHeader_sale
+        ...RegisterToBidButton_sale
+        registrationEndsAt
+      }
+    `,
+  },
+  graphql`
+    query SaleRefetchQuery($saleID: String!, $saleSlug: ID!) {
+      me {
+        ...Sale_me
+      }
+      sale(id: $saleID) {
+        ...Sale_sale
+      }
+    }
+  `
+)
+
 export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
   return (
     <QueryRenderer<SaleQueryRendererQuery>
@@ -225,18 +271,10 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
       query={graphql`
         query SaleQueryRendererQuery($saleID: String!, $saleSlug: ID!) {
           sale(id: $saleID) {
-            internalID
-            slug
-            liveStartAt
-            endAt
-            ...SaleHeader_sale
-            ...RegisterToBidButton_sale
-            registrationEndsAt
+            ...Sale_sale
           }
           me {
-            ...SaleArtworksRail_me @arguments(saleID: $saleSlug)
-            ...SaleActiveBids_me @arguments(saleID: $saleID)
-            ...RegisterToBidButton_me @arguments(saleID: $saleID)
+            ...Sale_me
           }
 
           ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleSlug)
@@ -252,6 +290,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
           }
           return <LoadFailureView style={{ flex: 1 }} />
         }
+
         if (!props?.me || !props?.sale) {
           return (
             <Flex alignItems="center" justifyContent="center" flex={1}>
@@ -259,7 +298,8 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
             </Flex>
           )
         }
-        return <Sale queryRes={props} />
+
+        return <SaleContainer queryRes={props} me={props.me} sale={props.sale} />
       }}
     />
   )

@@ -33,20 +33,6 @@ export const SaleHeader: React.FC<Props> = (props) => {
             inputRange: [0, COVER_IMAGE_HEIGHT],
             outputRange: [1, 0],
           }),
-          transform: [
-            {
-              scale: props.scrollAnim.interpolate({
-                inputRange: [-COVER_IMAGE_HEIGHT, 0, 1],
-                outputRange: [2, 1, 1],
-              }),
-            },
-            {
-              translateY: props.scrollAnim.interpolate({
-                inputRange: [-1, 0, 1],
-                outputRange: [-0.5, 0, 0.5],
-              }),
-            },
-          ],
         }}
       >
         {!!props.sale.coverImage?.url && (
