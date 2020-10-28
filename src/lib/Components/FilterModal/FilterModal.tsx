@@ -300,7 +300,12 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
                     </Sans>
                     <Flex flexDirection="row" alignItems="center">
                       <OptionDetail
-                        currentOption={selectedOption(selectedOptions, item.filterType, state.filterType)}
+                        currentOption={selectedOption({
+                          selectedOptions,
+                          filterScreen: item.filterType,
+                          filterType: state.filterType,
+                          aggregations: state.aggregations,
+                        })}
                         filterType={item.filterType}
                       />
                       <ArrowRightIcon fill="black30" ml="1" />

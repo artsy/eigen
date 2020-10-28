@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2e028a5b1f6991d4b741908b1313283c */
+/* @relayHash f840c45eed996cb7e597eb66b9f926d3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -41,6 +41,31 @@ fragment LocationMap_location on Location {
   coordinates {
     lat
     lng
+  }
+}
+
+fragment PartnerEntityHeader_partner on Partner {
+  ...PartnerFollowButton_partner
+  href
+  name
+  cities
+  isDefaultProfilePublic
+  initials
+  profile {
+    icon {
+      url(version: "square140")
+    }
+    id
+  }
+}
+
+fragment PartnerFollowButton_partner on Partner {
+  internalID
+  slug
+  profile {
+    id
+    internalID
+    isFollowed
   }
 }
 
@@ -110,7 +135,11 @@ fragment Show2MoreInfo_show on Show {
   about: description
   pressRelease(format: MARKDOWN)
   partner {
+    ...PartnerEntityHeader_partner
     __typename
+    ... on Partner {
+      type
+    }
     ... on Node {
       __isNode: __typename
       id
@@ -172,10 +201,24 @@ v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "internalID",
   "storageKey": null
 },
 v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "href",
+  "storageKey": null
+},
+v7 = {
   "alias": null,
   "args": null,
   "concreteType": "Location",
@@ -183,14 +226,8 @@ v5 = {
   "name": "location",
   "plural": false,
   "selections": [
+    (v5/*: any*/),
     (v4/*: any*/),
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "internalID",
-      "storageKey": null
-    },
     {
       "alias": null,
       "args": null,
@@ -313,53 +350,59 @@ v5 = {
   ],
   "storageKey": null
 },
-v6 = {
-  "enumValues": null,
-  "nullable": true,
-  "plural": false,
-  "type": "String"
-},
-v7 = {
-  "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "ID"
-},
 v8 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
-  "type": "Location"
+  "type": "String"
 },
 v9 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
-  "type": "String"
+  "type": "ID"
 },
 v10 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
-  "type": "LatLng"
+  "type": "Location"
 },
 v11 = {
   "enumValues": null,
-  "nullable": true,
+  "nullable": false,
   "plural": false,
-  "type": "Float"
+  "type": "String"
 },
 v12 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
-  "type": "OpeningHoursUnion"
+  "type": "LatLng"
 },
 v13 = {
   "enumValues": null,
   "nullable": true,
+  "plural": false,
+  "type": "Float"
+},
+v14 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "OpeningHoursUnion"
+},
+v15 = {
+  "enumValues": null,
+  "nullable": true,
   "plural": true,
   "type": "FormattedDaySchedules"
+},
+v16 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Boolean"
 };
 return {
   "fragment": {
@@ -414,7 +457,88 @@ return {
               {
                 "kind": "InlineFragment",
                 "selections": [
-                  (v3/*: any*/)
+                  (v3/*: any*/),
+                  (v4/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "slug",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Profile",
+                    "kind": "LinkedField",
+                    "name": "profile",
+                    "plural": false,
+                    "selections": [
+                      (v5/*: any*/),
+                      (v4/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "isFollowed",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "kind": "LinkedField",
+                        "name": "icon",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "version",
+                                "value": "square140"
+                              }
+                            ],
+                            "kind": "ScalarField",
+                            "name": "url",
+                            "storageKey": "url(version:\"square140\")"
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  },
+                  (v6/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "cities",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "isDefaultProfilePublic",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "initials",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "type",
+                    "storageKey": null
+                  }
                 ],
                 "type": "Partner",
                 "abstractKey": null
@@ -423,7 +547,7 @@ return {
                 "kind": "InlineFragment",
                 "selections": [
                   (v3/*: any*/),
-                  (v4/*: any*/)
+                  (v5/*: any*/)
                 ],
                 "type": "ExternalPartner",
                 "abstractKey": null
@@ -431,7 +555,7 @@ return {
               {
                 "kind": "InlineFragment",
                 "selections": [
-                  (v4/*: any*/)
+                  (v5/*: any*/)
                 ],
                 "type": "Node",
                 "abstractKey": "__isNode"
@@ -448,20 +572,14 @@ return {
             "plural": false,
             "selections": [
               (v3/*: any*/),
-              (v5/*: any*/),
-              (v4/*: any*/)
+              (v7/*: any*/),
+              (v5/*: any*/)
             ],
             "storageKey": null
           },
+          (v7/*: any*/),
           (v5/*: any*/),
-          (v4/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "href",
-            "storageKey": null
-          },
+          (v6/*: any*/),
           {
             "alias": "about",
             "args": null,
@@ -488,7 +606,7 @@ return {
     ]
   },
   "params": {
-    "id": "2e028a5b1f6991d4b741908b1313283c",
+    "id": "f840c45eed996cb7e597eb66b9f926d3",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {
@@ -497,64 +615,92 @@ return {
           "plural": false,
           "type": "Show"
         },
-        "show.about": (v6/*: any*/),
+        "show.about": (v8/*: any*/),
         "show.fair": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Fair"
         },
-        "show.fair.id": (v7/*: any*/),
-        "show.fair.location": (v8/*: any*/),
-        "show.fair.location.__typename": (v9/*: any*/),
-        "show.fair.location.address": (v6/*: any*/),
-        "show.fair.location.address2": (v6/*: any*/),
-        "show.fair.location.city": (v6/*: any*/),
-        "show.fair.location.coordinates": (v10/*: any*/),
-        "show.fair.location.coordinates.lat": (v11/*: any*/),
-        "show.fair.location.coordinates.lng": (v11/*: any*/),
-        "show.fair.location.id": (v7/*: any*/),
-        "show.fair.location.internalID": (v7/*: any*/),
-        "show.fair.location.openingHours": (v12/*: any*/),
-        "show.fair.location.openingHours.__typename": (v9/*: any*/),
-        "show.fair.location.openingHours.schedules": (v13/*: any*/),
-        "show.fair.location.openingHours.schedules.days": (v6/*: any*/),
-        "show.fair.location.openingHours.schedules.hours": (v6/*: any*/),
-        "show.fair.location.openingHours.text": (v6/*: any*/),
-        "show.fair.location.postalCode": (v6/*: any*/),
-        "show.fair.location.summary": (v6/*: any*/),
-        "show.fair.name": (v6/*: any*/),
-        "show.href": (v6/*: any*/),
-        "show.id": (v7/*: any*/),
-        "show.location": (v8/*: any*/),
-        "show.location.__typename": (v9/*: any*/),
-        "show.location.address": (v6/*: any*/),
-        "show.location.address2": (v6/*: any*/),
-        "show.location.city": (v6/*: any*/),
-        "show.location.coordinates": (v10/*: any*/),
-        "show.location.coordinates.lat": (v11/*: any*/),
-        "show.location.coordinates.lng": (v11/*: any*/),
-        "show.location.id": (v7/*: any*/),
-        "show.location.internalID": (v7/*: any*/),
-        "show.location.openingHours": (v12/*: any*/),
-        "show.location.openingHours.__typename": (v9/*: any*/),
-        "show.location.openingHours.schedules": (v13/*: any*/),
-        "show.location.openingHours.schedules.days": (v6/*: any*/),
-        "show.location.openingHours.schedules.hours": (v6/*: any*/),
-        "show.location.openingHours.text": (v6/*: any*/),
-        "show.location.postalCode": (v6/*: any*/),
-        "show.location.summary": (v6/*: any*/),
+        "show.fair.id": (v9/*: any*/),
+        "show.fair.location": (v10/*: any*/),
+        "show.fair.location.__typename": (v11/*: any*/),
+        "show.fair.location.address": (v8/*: any*/),
+        "show.fair.location.address2": (v8/*: any*/),
+        "show.fair.location.city": (v8/*: any*/),
+        "show.fair.location.coordinates": (v12/*: any*/),
+        "show.fair.location.coordinates.lat": (v13/*: any*/),
+        "show.fair.location.coordinates.lng": (v13/*: any*/),
+        "show.fair.location.id": (v9/*: any*/),
+        "show.fair.location.internalID": (v9/*: any*/),
+        "show.fair.location.openingHours": (v14/*: any*/),
+        "show.fair.location.openingHours.__typename": (v11/*: any*/),
+        "show.fair.location.openingHours.schedules": (v15/*: any*/),
+        "show.fair.location.openingHours.schedules.days": (v8/*: any*/),
+        "show.fair.location.openingHours.schedules.hours": (v8/*: any*/),
+        "show.fair.location.openingHours.text": (v8/*: any*/),
+        "show.fair.location.postalCode": (v8/*: any*/),
+        "show.fair.location.summary": (v8/*: any*/),
+        "show.fair.name": (v8/*: any*/),
+        "show.href": (v8/*: any*/),
+        "show.id": (v9/*: any*/),
+        "show.location": (v10/*: any*/),
+        "show.location.__typename": (v11/*: any*/),
+        "show.location.address": (v8/*: any*/),
+        "show.location.address2": (v8/*: any*/),
+        "show.location.city": (v8/*: any*/),
+        "show.location.coordinates": (v12/*: any*/),
+        "show.location.coordinates.lat": (v13/*: any*/),
+        "show.location.coordinates.lng": (v13/*: any*/),
+        "show.location.id": (v9/*: any*/),
+        "show.location.internalID": (v9/*: any*/),
+        "show.location.openingHours": (v14/*: any*/),
+        "show.location.openingHours.__typename": (v11/*: any*/),
+        "show.location.openingHours.schedules": (v15/*: any*/),
+        "show.location.openingHours.schedules.days": (v8/*: any*/),
+        "show.location.openingHours.schedules.hours": (v8/*: any*/),
+        "show.location.openingHours.text": (v8/*: any*/),
+        "show.location.postalCode": (v8/*: any*/),
+        "show.location.summary": (v8/*: any*/),
         "show.partner": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "PartnerTypes"
         },
-        "show.partner.__isNode": (v9/*: any*/),
-        "show.partner.__typename": (v9/*: any*/),
-        "show.partner.id": (v7/*: any*/),
-        "show.partner.name": (v6/*: any*/),
-        "show.pressRelease": (v6/*: any*/)
+        "show.partner.__isNode": (v11/*: any*/),
+        "show.partner.__typename": (v11/*: any*/),
+        "show.partner.cities": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "String"
+        },
+        "show.partner.href": (v8/*: any*/),
+        "show.partner.id": (v9/*: any*/),
+        "show.partner.initials": (v8/*: any*/),
+        "show.partner.internalID": (v9/*: any*/),
+        "show.partner.isDefaultProfilePublic": (v16/*: any*/),
+        "show.partner.name": (v8/*: any*/),
+        "show.partner.profile": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Profile"
+        },
+        "show.partner.profile.icon": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Image"
+        },
+        "show.partner.profile.icon.url": (v8/*: any*/),
+        "show.partner.profile.id": (v9/*: any*/),
+        "show.partner.profile.internalID": (v9/*: any*/),
+        "show.partner.profile.isFollowed": (v16/*: any*/),
+        "show.partner.slug": (v9/*: any*/),
+        "show.partner.type": (v8/*: any*/),
+        "show.pressRelease": (v8/*: any*/)
       }
     },
     "name": "Show2MoreInfoTestsQuery",

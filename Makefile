@@ -37,7 +37,6 @@ next: update_bundle_version
 oss:
 	touch .env.ci
 	cp .env.example .env.shared
-	cp Artsy/App/Echo.json.example Artsy/App/EchoNew.json
 
 artsy:
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
@@ -51,7 +50,8 @@ certs:
 
 distribute: change_version_to_date set_git_properties setup_fastlane_env
 	brew update
-	brew install getsentry/tools/sentry-cli
+	brew tap getsentry/tools
+	brew install sentry-cli
 	bundle exec fastlane update_plugins
 	bundle exec fastlane ship_beta
 
@@ -133,9 +133,8 @@ set_git_properties:
 update_echo:
 	# The @ prevents the command from being printed to console logs.
 	# Touch both files so dotenv will work.
-	@touch .env.ci
-	@touch .env.shared
-	@curl https://echo-api-production.herokuapp.com/accounts/1 --header "Http-Authorization: $(shell dotenv -f ".env.shared,.env.ci" env | grep ARTSY_ECHO_PRODUCTION_TOKEN | awk -F "=" {'print $$2'})" --header "Accept: application/vnd.echo-v2+json" > Artsy/App/EchoNew.json
+	@curl https://echo.artsy.net/Echo.json > Artsy/App/EchoNew.json
+	yarn prettier -w Artsy/App/EchoNew.json
 
 storyboards:
 	swiftgen storyboards Artsy --output Artsy/Tooling/Generated/StoryboardConstants.swift

@@ -1,5 +1,6 @@
 import { Show2MoreInfo_show } from "__generated__/Show2MoreInfo_show.graphql"
 import { Show2MoreInfoQuery } from "__generated__/Show2MoreInfoQuery.graphql"
+import { PartnerEntityHeaderFragmentContainer as PartnerEntityHeader } from "lib/Components/PartnerEntityHeader"
 import { ReadMore } from "lib/Components/ReadMore"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -9,6 +10,12 @@ import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { Show2HoursFragmentContainer as Show2Hours } from "../Components/Show2Hours"
 import { Show2LocationFragmentContainer as Show2Location } from "../Components/Show2Location"
+
+const DISPLAYABLE_PARTNER_TYPES = {
+  "Institutional Seller": "Institution",
+  Institution: "Institution",
+  Gallery: "Gallery",
+}
 
 interface Section {
   key: string
@@ -20,6 +27,9 @@ export interface Show2MoreInfoProps {
 }
 
 export const Show2MoreInfo: React.FC<Show2MoreInfoProps> = ({ show }) => {
+  const shouldDisplayPartnerType = Object.keys(DISPLAYABLE_PARTNER_TYPES).includes(show.partner?.type!)
+  const displayablePartnerType = DISPLAYABLE_PARTNER_TYPES[show.partner?.type as keyof typeof DISPLAYABLE_PARTNER_TYPES]
+
   const sections: Section[] = [
     {
       key: "title",
@@ -30,7 +40,23 @@ export const Show2MoreInfo: React.FC<Show2MoreInfoProps> = ({ show }) => {
       ),
     },
 
-    // TODO: Partner EntityHeader
+    ...(!!show.partner
+      ? [
+          {
+            key: "partner-entity-header",
+            element: (
+              <Box mx={2}>
+                {!!shouldDisplayPartnerType && (
+                  <Text variant="mediumText" mb={1}>
+                    {displayablePartnerType}
+                  </Text>
+                )}
+                <PartnerEntityHeader partner={show.partner} />
+              </Box>
+            ),
+          },
+        ]
+      : []),
 
     ...(!!show.about
       ? [
@@ -118,7 +144,11 @@ export const Show2MoreInfoFragmentContainer = createFragmentContainer(Show2MoreI
       about: description
       pressRelease(format: MARKDOWN)
       partner {
+        ...PartnerEntityHeader_partner
         __typename
+        ... on Partner {
+          type
+        }
       }
       fair {
         location {
