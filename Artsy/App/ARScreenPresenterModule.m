@@ -74,6 +74,12 @@ RCT_EXPORT_METHOD(pushView:(nonnull NSString *)currentTabStackID viewDescriptor:
         stack = [self.class getNavigationStack:currentTabStackID];
     }
     
+    if (!stack && [self.class cachedNavigationStacks].count == 0) {
+        // to handle deep links that open the app we need to wait a while for the first nav stack to be instantiated
+        deepLinkVC = vc;
+        return;
+    }
+    
     [stack pushViewController:vc animated:YES];
 }
 
@@ -374,6 +380,8 @@ RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide stackID:(NSString 
 
 #pragma mark - Nav stacks
 
+static UIViewController *deepLinkVC = nil;
+
 // TODO: do we need to clear this on logout?
 + (NSMutableDictionary *)cachedNavigationStacks
 {
@@ -392,6 +400,10 @@ RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide stackID:(NSString 
 {
     ARNavigationController *stack = [[ARNavigationController alloc] initWithRootViewController:rootViewController];
     [self cachedNavigationStacks][stackID] = stack;
+    if (deepLinkVC) {
+        [stack pushViewController:deepLinkVC animated:NO];
+        deepLinkVC = nil;
+    }
     return stack;
 }
 
