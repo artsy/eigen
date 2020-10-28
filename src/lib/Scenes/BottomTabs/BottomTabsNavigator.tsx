@@ -1,6 +1,6 @@
 import { AppModule } from "lib/AppRegistry"
 import { NativeViewController } from "lib/Components/NativeViewController"
-import { AppStore } from "lib/store/AppStore"
+import { AppStore, useSelectedTab } from "lib/store/AppStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useEffect, useRef } from "react"
 import { Animated, View } from "react-native"
@@ -29,7 +29,7 @@ const NavStack = ({
 }
 
 export const BottomTabsNavigator = () => {
-  const selectedTab = AppStore.useAppState((state) => state.bottomTabs.selectedTab || "home")
+  const selectedTab = useSelectedTab()
   const tabProps = AppStore.useAppState((state) => state.bottomTabs.sessionState.tabProps)
   const { bottom } = useScreenDimensions().safeAreaInsets
   return (

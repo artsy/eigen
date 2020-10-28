@@ -94,7 +94,7 @@ export const AppStoreProvider: React.FC<{}> = ({ children }) => {
 }
 
 export function useSelectedTab() {
-  return hooks.useStoreState((state) => state.bottomTabs.selectedTab)
+  return hooks.useStoreState((state) => state.bottomTabs.sessionState.selectedTab)
 }
 
 let appStoreInstance = createAppStore()
@@ -115,7 +115,7 @@ export function getCurrentEmissionState() {
  */
 export function unsafe__getSelectedTab() {
   // on initial load appStoreInstance might be undefined
-  return appStoreInstance?.getState().bottomTabs.selectedTab
+  return appStoreInstance?.getState().bottomTabs.sessionState.selectedTab
 }
 
 export function useIsStaging() {
