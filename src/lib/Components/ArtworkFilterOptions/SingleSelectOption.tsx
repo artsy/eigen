@@ -1,5 +1,5 @@
 import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { Box, CheckIcon, color, Flex, Sans, Separator, space } from "palette"
+import { Box, CheckIcon, Flex, Sans, Separator } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
@@ -29,32 +29,21 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
 
   return (
     <Flex flexGrow={1}>
-      <Flex flexGrow={0} height={50}></Flex>
-      <FlatList
-        style={{ flexGrow: 1 }}
-        initialNumToRender={100}
-        ListHeaderComponent={ListHeaderComponent}
-        keyExtractor={(_item, index) => String(index)}
-        data={filterOptions}
-        ItemSeparatorComponent={() => <Separator />}
-        renderItem={({ item }) => (
-          <Box>
-            <ListItem item={item} selectedOption={selectedOption} onSelect={onSelect} />
-          </Box>
-        )}
-      />
+      <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
+      <Flex flexGrow={1}>
+        <FlatList
+          style={{ flex: 1 }}
+          initialNumToRender={100}
+          ListHeaderComponent={ListHeaderComponent}
+          keyExtractor={(_item, index) => String(index)}
+          data={filterOptions}
+          ItemSeparatorComponent={() => <Separator />}
+          renderItem={({ item }) => <ListItem item={item} selectedOption={selectedOption} onSelect={onSelect} />}
+        />
+      </Flex>
     </Flex>
   )
 }
-
-export const FilterHeader = styled(Flex)`
-  flex-direction: row;
-  justify-content: space-between;
-  padding-right: ${space(2)}px;
-`
-export const NavigateBackIconContainer = styled(TouchableOpacity)`
-  margin: 20px 0px 0px 20px;
-`
 
 const ListItem = ({
   item,
@@ -96,7 +85,6 @@ export const InnerOptionListItem = styled(Flex)`
 `
 
 export const SingleSelectOptionListItemRow = styled(TouchableOpacity)``
-export const Option = styled(Sans)``
 
 export const OptionListItem = styled(Flex)`
   flex-direction: row;
