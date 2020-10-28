@@ -258,6 +258,11 @@ static ARAppDelegate *_sharedInstance = nil;
             [ARSpotlight indexAllUsersFavorites];
             [self setupAdminTools];
         }
+        
+        if (!([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding)) {
+            ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+            [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
+        }
     });
 }
 
