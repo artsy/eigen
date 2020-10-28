@@ -24,7 +24,7 @@ describe(MyProfileQueryRenderer, () => {
           }
         }
       `}
-      render={({ props, error }) => {
+      render={({ props }) => {
         if (props?.me) {
           return <MyProfileContainer me={props.me} />
         }
