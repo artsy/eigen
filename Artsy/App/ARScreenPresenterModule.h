@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (ARNavigationController *)createNavigationStack:(NSString *)stackID rootViewController:(UIViewController *)rootViewController;
 + (void)removeNavigationStack:(NSString *)stackID;
 + (UIViewController *)currentlyPresentedVC;
++ (void)clearCachedNavigationStacks;
 
 @end
 

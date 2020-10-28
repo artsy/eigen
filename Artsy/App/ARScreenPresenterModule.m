@@ -382,13 +382,19 @@ RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide stackID:(NSString 
 
 static UIViewController *deepLinkVC = nil;
 
-// TODO: do we need to clear this on logout?
 + (NSMutableDictionary *)cachedNavigationStacks
 {
     if (_cachedNavigationStacks == nil) {
         _cachedNavigationStacks = [[NSMutableDictionary alloc] init];
     }
     return _cachedNavigationStacks;
+}
+
++ (void)clearCachedNavigationStacks
+{
+    @synchronized (self) {
+        _cachedNavigationStacks = [[NSMutableDictionary alloc] init];
+    }
 }
 
 + (ARNavigationController *)getNavigationStack:(NSString *)stackID
@@ -398,29 +404,35 @@ static UIViewController *deepLinkVC = nil;
 
 + (ARNavigationController *)createNavigationStack:(NSString *)stackID rootViewController:(UIViewController *)rootViewController
 {
-    ARNavigationController *stack = [[ARNavigationController alloc] initWithRootViewController:rootViewController];
-    [self cachedNavigationStacks][stackID] = stack;
-    if (deepLinkVC) {
-        [stack pushViewController:deepLinkVC animated:NO];
-        deepLinkVC = nil;
+    @synchronized (self) {
+        ARNavigationController *stack = [[ARNavigationController alloc] initWithRootViewController:rootViewController];
+        [self cachedNavigationStacks][stackID] = stack;
+        if (deepLinkVC) {
+            [stack pushViewController:deepLinkVC animated:NO];
+            deepLinkVC = nil;
+        }
+        return stack;
     }
-    return stack;
 }
 
 + (UINavigationController *)createModalNavigationStack:(NSString *)stackID rootViewController:(UIViewController *)rootViewController withBackButton:(BOOL)withBackButton
 {
-    if (!withBackButton) {
-        return [self createNavigationStack:stackID rootViewController:rootViewController];
+    @synchronized (self) {
+        if (!withBackButton) {
+            return [self createNavigationStack:stackID rootViewController:rootViewController];
+        }
+        
+        ARSerifNavigationViewController *stack = [[ARSerifNavigationViewController alloc] initWithRootViewController:rootViewController];
+        [self cachedNavigationStacks][stackID] = stack;
+        return stack;
     }
-    
-    ARSerifNavigationViewController *stack = [[ARSerifNavigationViewController alloc] initWithRootViewController:rootViewController];
-    [self cachedNavigationStacks][stackID] = stack;
-    return stack;
 }
 
 + (void)removeNavigationStack:(NSString *)stackID
 {
-    [[self cachedNavigationStacks] removeObjectForKey:stackID];
+    @synchronized (self) {
+        [[self cachedNavigationStacks] removeObjectForKey:stackID];
+    }
 }
 
 @end
