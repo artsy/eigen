@@ -290,6 +290,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
         keyExtractor={(_item, index) => String(index)}
         data={sortedFilterOptions}
         style={{ flexGrow: 1 }}
+        ItemSeparatorComponent={() => <Separator />}
         renderItem={({ item }) => {
           return (
             <Box>
