@@ -89,10 +89,6 @@ export const OptionListItem = styled(Flex)`
   flex-grow: 1;
   align-items: flex-end;
   padding: 15px;
-  border: solid 0.5px ${color("black10")};
-  border-right-width: 0;
-  border-left-width: 0;
-  border-top-width: 0;
 `
 
 export const InnerOptionListItem = styled(Flex)`

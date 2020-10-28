@@ -29,21 +29,20 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
 
   return (
     <Flex flexGrow={1}>
-      <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
-      <Flex mb="125px">
-        <FlatList
-          initialNumToRender={100}
-          ListHeaderComponent={ListHeaderComponent}
-          keyExtractor={(_item, index) => String(index)}
-          data={filterOptions}
-          ItemSeparatorComponent={() => <Separator />}
-          renderItem={({ item }) => (
-            <Box>
-              <ListItem item={item} selectedOption={selectedOption} onSelect={onSelect} />
-            </Box>
-          )}
-        />
-      </Flex>
+      <Flex flexGrow={0} height={50}></Flex>
+      <FlatList
+        style={{ flexGrow: 1 }}
+        initialNumToRender={100}
+        ListHeaderComponent={ListHeaderComponent}
+        keyExtractor={(_item, index) => String(index)}
+        data={filterOptions}
+        ItemSeparatorComponent={() => <Separator />}
+        renderItem={({ item }) => (
+          <Box>
+            <ListItem item={item} selectedOption={selectedOption} onSelect={onSelect} />
+          </Box>
+        )}
+      />
     </Flex>
   )
 }
@@ -52,10 +51,6 @@ export const FilterHeader = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   padding-right: ${space(2)}px;
-  border: solid 0.5px ${color("black10")};
-  border-right-width: 0;
-  border-left-width: 0;
-  border-top-width: 0;
 `
 export const NavigateBackIconContainer = styled(TouchableOpacity)`
   margin: 20px 0px 0px 20px;
@@ -107,8 +102,4 @@ export const OptionListItem = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  border: solid 0.5px ${color("black10")};
-  border-right-width: 0;
-  border-top-width: 0;
-  border-left-width: 0;
 `

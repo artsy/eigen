@@ -113,6 +113,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
           }}
           style={{ flex: 1 }}
         />
+        <Separator my={0} />
         <ApplyButtonContainer>
           <ApplyButton
             disabled={!isApplyButtonEnabled}
@@ -464,10 +465,6 @@ export const OptionListItem = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  border: solid 0.5px ${color("black10")};
-  border-right-width: 0;
-  border-top-width: 0;
-  border-left-width: 0;
 `
 
 export const CurrentOption = styled(Sans)`
@@ -478,9 +475,6 @@ export const ApplyButton = styled(Button)``
 export const ApplyButtonContainer = styled(Box)`
   padding: 20px;
   padding-bottom: 30px;
-  border: solid 0.5px ${color("black10")};
-  border-right-width: 0;
-  border-left-width: 0;
 `
 
 const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string | undefined> = {
