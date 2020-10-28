@@ -124,7 +124,7 @@ describe("AddEditArtwork", () => {
     const wrapper = renderWithWrappers(<AddEditArtwork />)
     const deleteButton = wrapper.root.findByProps({ "data-test-id": "DeleteButton" })
     deleteButton.props.onPress()
-    expect(spy).toHaveBeenCalledWith(deleteArgs)
+    expect(spy).toHaveBeenCalledWith(expect.objectContaining(deleteArgs))
   })
 
   it("navigates to additional details on click", () => {

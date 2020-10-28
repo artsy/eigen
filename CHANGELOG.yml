@@ -6,6 +6,7 @@ upcoming:
   user_facing:
     - Add Auctions Info screen - mounir
     - Fix Fair2 sticky tab UI + interaction - david
+    - Loading state for My Collection - brian
 
 releases:
   - version: 6.6.7
