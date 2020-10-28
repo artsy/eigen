@@ -3,6 +3,7 @@ import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import ChevronIcon from "lib/Icons/ChevronIcon"
+import { InquiryNotification } from "lib/Scenes/Artwork/Components/Notifications/InquiryNotification"
 import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryOptions, InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Box, color, Flex, Separator, space, Text } from "palette"
@@ -37,7 +38,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   }
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const selectShippingLocation = (l: string) => dispatch({ type: "selectShippingLocation", payload: l })
-
   const renderInquiryQuestion = (id: string, inquiryQuestion: string): JSX.Element => {
     // Shipping requires special logic to accomodate dropdown and shipping modal
     const isShipping = id === InquiryQuestionIDs.Shipping
@@ -101,6 +101,8 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
       <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => toggleVisibility()}>
         Contact Gallery
       </FancyModalHeader>
+      <InquiryNotification />
+
       <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
       <Box m={2}>
         <Text variant="mediumText">What information are you looking for?</Text>

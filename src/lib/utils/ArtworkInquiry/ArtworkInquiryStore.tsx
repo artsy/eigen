@@ -8,6 +8,7 @@ import React, { createContext, Reducer, useReducer } from "react"
 const artworkInquiryState: ArtworkInquiryContextState = {
   shippingLocation: null,
   inquiryType: null,
+  showMessageSentNotification: false,
 }
 
 export const reducer = (
@@ -15,16 +16,25 @@ export const reducer = (
   action: ArtworkInquiryActions
 ): ArtworkInquiryContextState => {
   switch (action.type) {
+    case "showMessageSentNotification":
+      return {
+        shippingLocation: inquiryState.shippingLocation,
+        inquiryType: inquiryState.inquiryType,
+        showMessageSentNotification: action.payload,
+      }
+
     case "selectInquiryType":
       return {
         shippingLocation: inquiryState.shippingLocation,
         inquiryType: action.payload,
+        showMessageSentNotification: inquiryState.showMessageSentNotification,
       }
 
     case "selectShippingLocation":
       return {
         shippingLocation: action.payload,
         inquiryType: inquiryState.inquiryType,
+        showMessageSentNotification: inquiryState.showMessageSentNotification,
       }
   }
 }

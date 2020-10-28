@@ -1,6 +1,6 @@
 import { Dispatch } from "react"
 
-export type ArtworkInquiryActions = SelectInquiryType | SelectLocation
+export type ArtworkInquiryActions = SelectInquiryType | SelectLocation | HandleSentMessageNotification
 
 export interface ArtworkInquiryContextProps {
   state: ArtworkInquiryContextState
@@ -10,6 +10,7 @@ export interface ArtworkInquiryContextProps {
 export interface ArtworkInquiryContextState {
   readonly inquiryType: InquiryTypes | null
   readonly shippingLocation: string | null
+  readonly showMessageSentNotification: boolean
 }
 
 export type InquiryTypes = "Request Price" | "Contact Gallery" | "Inquire to Purchase"
@@ -22,6 +23,11 @@ interface SelectInquiryType {
 interface SelectLocation {
   type: "selectShippingLocation"
   payload: string
+}
+
+interface HandleSentMessageNotification {
+  type: "showMessageSentNotification"
+  payload: boolean
 }
 
 export enum InquiryOptions {
