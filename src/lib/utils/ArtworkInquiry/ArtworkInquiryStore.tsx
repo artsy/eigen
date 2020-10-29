@@ -2,12 +2,16 @@ import {
   ArtworkInquiryActions,
   ArtworkInquiryContextProps,
   ArtworkInquiryContextState,
+  InquiryOptions,
+  InquiryQuestionIDs,
 } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
+import { remove } from "lodash"
 import React, { createContext, Reducer, useReducer } from "react"
 
 const artworkInquiryState: ArtworkInquiryContextState = {
   shippingLocation: null,
   inquiryType: null,
+  inquiryQuestions: [],
 }
 
 export const reducer = (
@@ -17,14 +21,32 @@ export const reducer = (
   switch (action.type) {
     case "selectInquiryType":
       return {
-        shippingLocation: inquiryState.shippingLocation,
+        ...inquiryState,
         inquiryType: action.payload,
+        inquiryQuestions:
+          action.payload === InquiryOptions.RequestPrice
+            ? [{ questionID: InquiryQuestionIDs.PriceAndAvailability }]
+            : inquiryState.inquiryQuestions,
       }
 
     case "selectShippingLocation":
       return {
+        ...inquiryState,
         shippingLocation: action.payload,
-        inquiryType: inquiryState.inquiryType,
+      }
+
+    case "selectInquiryQuestion":
+      const { checked, ...payloadQuestion } = action.payload
+
+      if (checked) {
+        inquiryState.inquiryQuestions.push(payloadQuestion)
+      } else {
+        remove(inquiryState.inquiryQuestions, (question) => question.questionID === payloadQuestion.questionID)
+      }
+
+      return {
+        ...inquiryState,
+        inquiryQuestions: inquiryState.inquiryQuestions,
       }
   }
 }

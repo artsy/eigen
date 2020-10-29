@@ -52,7 +52,24 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
                 checked={
                   state.inquiryType === InquiryOptions.RequestPrice && id === InquiryQuestionIDs.PriceAndAvailability
                 }
-                onPress={() => isShipping && toggleLocationExpanded()}
+                onPress={() => {
+                  if (isShipping) {
+                    toggleLocationExpanded()
+                  }
+
+                  const shouldBeChecked: boolean = !state.inquiryQuestions.find((question) => {
+                    return question.questionID === id
+                  })
+
+                  dispatch({
+                    type: "selectInquiryQuestion",
+                    payload: {
+                      questionID: id,
+                      details: isShipping ? state.shippingLocation : null,
+                      checked: shouldBeChecked,
+                    },
+                  })
+                }}
               />
               <Text variant="text">{inquiryQuestion}</Text>
             </Flex>
