@@ -1,5 +1,5 @@
 import { groupBy, mapValues, partition, sortBy } from "lodash"
-import { Flex, Join, Separator, Spacer, Text } from "palette"
+import { Button, Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
@@ -68,9 +68,16 @@ class MyBids extends React.Component<MyBidsProps> {
 
                   <Join separator={<Spacer my={1} />}>
                     {!!noActiveBids && (
-                      <Text variant="mediumText" textAlign="center">
-                        No active bids!
-                      </Text>
+                      <Flex>
+                        <Text variant="title" textAlign="center" fontWeight="normal">
+                          You don't have any active bids.
+                        </Text>
+                        <Text variant="text" textAlign="center" fontWeight="normal" color="black60">
+                          Watch a live auction and place bids in advance or in real time, or you can bid in our curated
+                          timed auction
+                        </Text>
+                        <Button variant="primaryBlack">Explore Auctions</Button>
+                      </Flex>
                     )}
                     {sortedSaleIds.map((saleId) => {
                       const activeLotStandings = sortedActiveLots[saleId]
