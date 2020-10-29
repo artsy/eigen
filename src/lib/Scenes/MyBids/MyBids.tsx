@@ -68,15 +68,25 @@ class MyBids extends React.Component<MyBidsProps> {
 
                   <Join separator={<Spacer my={1} />}>
                     {!!noActiveBids && (
-                      <Flex>
+                      <Flex mt={3}>
                         <Text variant="title" textAlign="center" fontWeight="normal">
-                          You don't have any active bids.
+                          You don't have any upcoming bids.
                         </Text>
-                        <Text variant="text" textAlign="center" fontWeight="normal" color="black60">
+                        <Text
+                          mb={2}
+                          mt={1}
+                          mx={4}
+                          variant="text"
+                          textAlign="center"
+                          fontWeight="normal"
+                          color="black60"
+                        >
                           Watch a live auction and place bids in advance or in real time, or you can bid in our curated
                           timed auction
                         </Text>
-                        <Button variant="primaryBlack">Explore Auctions</Button>
+                        <Flex width="100%" justifyContent="center" flexDirection="row">
+                          <Button variant="primaryBlack">Explore Auctions</Button>
+                        </Flex>
                       </Flex>
                     )}
                     {sortedSaleIds.map((saleId) => {
@@ -106,9 +116,26 @@ class MyBids extends React.Component<MyBidsProps> {
                 <StickyTabPageScrollView data-test-id="closed-section">
                   <Flex mt={1}>
                     {!!noClosedBids && (
-                      <Text variant="mediumText" textAlign="center">
-                        No closed bids!
-                      </Text>
+                      <Flex mt={4}>
+                        <Text variant="title" textAlign="center" fontWeight="normal">
+                          No bidding history
+                        </Text>
+                        <Text
+                          mb={2}
+                          mt={1}
+                          mx={4}
+                          variant="text"
+                          textAlign="center"
+                          fontWeight="normal"
+                          color="black60"
+                        >
+                          Watch a live auction and place bids in advance or in real time, or you can bid in our curated
+                          timed auction
+                        </Text>
+                        <Flex width="100%" justifyContent="center" flexDirection="row">
+                          <Button variant="primaryBlack">Explore Auctions</Button>
+                        </Flex>
+                      </Flex>
                     )}
                     {closedStandings?.map((ls) => {
                       return (
