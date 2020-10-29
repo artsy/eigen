@@ -1730,7 +1730,7 @@ describe("selectedOptionsUnion", () => {
           displayText: "Artist 1",
         },
         {
-          displayText: "Default",
+          displayText: "Lot number ascending",
           paramName: "sort",
           paramValue: "position",
         },
@@ -1823,7 +1823,7 @@ describe("selectedOptionsUnion", () => {
           paramValue: ["artist-1", "artist-2"],
         },
         {
-          displayText: "Default",
+          displayText: "Lot number ascending",
           paramName: "sort",
           paramValue: "position",
         },
