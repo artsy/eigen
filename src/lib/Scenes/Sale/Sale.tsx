@@ -268,6 +268,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
   return (
     <QueryRenderer<SaleQueryRendererQuery>
       environment={defaultEnvironment}
+      cacheConfig={{ force: true }}
       query={graphql`
         query SaleQueryRendererQuery($saleID: String!, $saleSlug: ID!) {
           sale(id: $saleID) {
