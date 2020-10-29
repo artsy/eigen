@@ -313,7 +313,7 @@ export const selectedOptionsUnion = ({
       : {
           paramName: FilterParamName.sort,
           paramValue: "position",
-          displayText: "Default",
+          displayText: "Lot number ascending",
         }
   const defaultFilters: FilterArray = [
     defaultSortFilter,
