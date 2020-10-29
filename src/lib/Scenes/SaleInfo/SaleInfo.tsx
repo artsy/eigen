@@ -6,10 +6,13 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import moment from "moment"
-import { Flex, Join, Sans, Separator, Text } from "palette"
+import { color, Flex, Join, Sans, Separator, Spacer, Text } from "palette"
 import React from "react"
-import { Linking, ScrollView } from "react-native"
+import { Linking, ScrollView, StyleSheet } from "react-native"
+import Markdown from "react-native-markdown-display"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+
+import { fontFamily } from "../../../palette/platform/fonts/fontFamily"
 import { navigate } from "../../navigation/navigate"
 import { PlaceholderBox } from "../../utils/placeholders"
 import { RegisterToBidButtonContainer } from "../Sale/Components/RegisterToBidButton"
@@ -87,9 +90,8 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
             {sale.name}
           </Sans>
           <RegisterToBidButtonContainer sale={sale} contextType="sale_information" me={me} />
-          <Text variant="text" color="black" fontSize="size4" mt={25}>
-            {sale.description}
-          </Text>
+          <Spacer mt={25} />
+          <Markdown style={markDownStyles}>{sale.description}</Markdown>
           {renderLiveBiddingOpening()}
         </Flex>
 
@@ -101,6 +103,23 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
     </ScrollView>
   )
 }
+
+const markDownStyles = StyleSheet.create({
+  // Overwrite the default markdown text styling
+  // See https://github.com/iamacup/react-native-markdown-display#how-to-style-stuff
+  body: {
+    fontSize: 15,
+    lineHeight: 22,
+    fontFamily: fontFamily.sans.regular.normal,
+  },
+
+  link: {
+    color: color("black60"),
+    fontSize: 15,
+    lineHeight: 22,
+    fontFamily: fontFamily.sans.regular.normal,
+  },
+})
 
 const SaleInfoPlaceholder = () => (
   <Join separator={<Separator my={2} />}>

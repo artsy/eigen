@@ -1,0 +1,44 @@
+diff --git a/node_modules/react-native-markdown-display/src/lib/renderRules.js b/node_modules/react-native-markdown-display/src/lib/renderRules.js
+index 6f2ed8d..36a083e 100644
+--- a/node_modules/react-native-markdown-display/src/lib/renderRules.js
++++ b/node_modules/react-native-markdown-display/src/lib/renderRules.js
+@@ -1,6 +1,7 @@
+ import React from 'react';
+ import {
+   Text,
++  TextInput,
+   TouchableWithoutFeedback,
+   View,
+   Platform,
+@@ -13,6 +14,7 @@ import hasParents from './util/hasParents';
+ 
+ import textStyleProps from './data/textStyleProps';
+ 
++
+ const renderRules = {
+   // when unknown elements are introduced, so it wont break
+   unknown: (node, children, parent, styles) => null,
+@@ -306,9 +308,9 @@ const renderRules = {
+     </Text>
+   ),
+   textgroup: (node, children, parent, styles) => (
+-    <Text key={node.key} style={styles.textgroup}>
++    <TextInput editable={false} multiline dataDetectorTypes={["all"]} key={node.key} style={styles.textgroup}>
+       {children}
+-    </Text>
++    </TextInput>
+   ),
+   paragraph: (node, children, parent, styles) => (
+     <View key={node.key} style={styles._VIEW_SAFE_paragraph}>
+diff --git a/node_modules/react-native-markdown-display/src/lib/styles.js b/node_modules/react-native-markdown-display/src/lib/styles.js
+index e1b5e39..98da50a 100644
+--- a/node_modules/react-native-markdown-display/src/lib/styles.js
++++ b/node_modules/react-native-markdown-display/src/lib/styles.js
+@@ -154,6 +154,7 @@ export const styles = {
+ 
+   // Links
+   link: {
++    color: "black",
+     textDecorationLine: 'underline',
+   },
+   blocklink: {
