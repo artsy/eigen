@@ -8,6 +8,7 @@ import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -49,6 +50,10 @@ class MyBids extends React.Component<MyBidsProps> {
     const noActiveBids = activeStandings.length === 0
     const noClosedBids = closedStandings.length === 0
 
+    const handleViewAllAuctions = () => {
+      SwitchBoard.presentNavigationViewController(this, `/auctions`)
+    }
+
     return (
       <Flex flex={1}>
         <StickyTabPage
@@ -85,7 +90,9 @@ class MyBids extends React.Component<MyBidsProps> {
                           timed auction
                         </Text>
                         <Flex width="100%" justifyContent="center" flexDirection="row">
-                          <Button variant="primaryBlack">Explore Auctions</Button>
+                          <Button variant="primaryBlack" onPress={() => handleViewAllAuctions()}>
+                            Explore Auctions
+                          </Button>
                         </Flex>
                       </Flex>
                     )}
@@ -133,7 +140,9 @@ class MyBids extends React.Component<MyBidsProps> {
                           timed auction
                         </Text>
                         <Flex width="100%" justifyContent="center" flexDirection="row">
-                          <Button variant="primaryBlack">Explore Auctions</Button>
+                          <Button variant="primaryBlack" onPress={() => handleViewAllAuctions()}>
+                            Explore Auctions
+                          </Button>
                         </Flex>
                       </Flex>
                     )}
