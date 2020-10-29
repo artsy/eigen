@@ -124,8 +124,8 @@ describe("CommercialButtons", () => {
       artwork,
     })
 
-    expect(commercialButtons.find(Button).at(0).text()).toContain("Request Price")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact Gallery")
+    expect(commercialButtons.find(Button).at(0).text()).toContain("Inquire on price")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact gallery")
   })
 
   it("renders Make Offer button if isOfferable", async () => {
