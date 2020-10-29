@@ -7,13 +7,14 @@ import { FragmentRefs } from "relay-runtime";
 export type Show2_show = {
     readonly internalID: string;
     readonly slug: string;
+    readonly viewingRoomIDs: ReadonlyArray<string>;
     readonly images: ReadonlyArray<{
         readonly __typename: string;
     } | null> | null;
     readonly counts: {
         readonly eligibleArtworks: number | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"Show2Header_show" | "Show2InstallShots_show" | "Show2Info_show" | "Show2ContextCard_show" | "Show2Artworks_show">;
+    readonly " $fragmentRefs": FragmentRefs<"Show2Header_show" | "Show2InstallShots_show" | "Show2Info_show" | "Show2ViewingRoom_show" | "Show2ContextCard_show" | "Show2Artworks_show">;
     readonly " $refType": "Show2_show";
 };
 export type Show2_show$data = Show2_show;
@@ -42,6 +43,13 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "ScalarField",
       "name": "slug",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "viewingRoomIDs",
       "storageKey": null
     },
     {
@@ -98,6 +106,11 @@ const node: ReaderFragment = {
     {
       "args": null,
       "kind": "FragmentSpread",
+      "name": "Show2ViewingRoom_show"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
       "name": "Show2ContextCard_show"
     },
     {
@@ -109,5 +122,5 @@ const node: ReaderFragment = {
   "type": "Show",
   "abstractKey": null
 };
-(node as any).hash = '8cea372cdc56bfbc50f8f87b26dd5552';
+(node as any).hash = 'e20bc01376b87d88e49e722dc54c0011';
 export default node;

@@ -1,8 +1,8 @@
 import { FilterToggleButton } from "lib/Components/ArtworkFilterOptions/FilterToggleButton"
 import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { Box, color, Flex, Sans, space } from "palette"
+import { Box, Flex, Sans, Separator } from "palette"
 import React from "react"
-import { FlatList, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
+import { FlatList, TouchableWithoutFeedback } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
@@ -47,11 +47,12 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   return (
     <Flex flexGrow={1}>
       <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
-      <Flex mb={120}>
+      <Flex flexGrow={1}>
         <FlatList<FilterData>
           initialNumToRender={4}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
+          ItemSeparatorComponent={Separator}
           renderItem={({ item }) => {
             return (
               <Box ml={0.5}>
@@ -89,19 +90,4 @@ export const OptionListItem = styled(Flex)`
   flex-grow: 1;
   align-items: flex-end;
   padding: 15px;
-  border: solid 0.5px ${color("black10")};
-  border-right-width: 0;
-  border-left-width: 0;
-  border-top-width: 0;
 `
-
-export const InnerOptionListItem = styled(Flex)`
-  flex-direction: row;
-  justify-content: space-between;
-  flex-grow: 1;
-  align-items: flex-end;
-  padding: ${space(2)}px;
-`
-
-export const SingleSelectOptionListItemRow = styled(TouchableOpacity)``
-export const Option = styled(Sans)``
