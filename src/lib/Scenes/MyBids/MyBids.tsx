@@ -46,6 +46,9 @@ class MyBids extends React.Component<MyBidsProps> {
       return moment(timelySale.relevantEnd).unix()
     })
 
+    const noActiveBids = activeStandings.length === 0
+    const noClosedBids = closedStandings.length === 0
+
     return (
       <Flex flex={1}>
         <StickyTabPage
@@ -64,6 +67,11 @@ class MyBids extends React.Component<MyBidsProps> {
                   <Spacer my={1} />
 
                   <Join separator={<Spacer my={1} />}>
+                    {!!noActiveBids && (
+                      <Text variant="mediumText" textAlign="center">
+                        No active bids!
+                      </Text>
+                    )}
                     {sortedSaleIds.map((saleId) => {
                       const activeLotStandings = sortedActiveLots[saleId]
                       const sale = activeLotStandings[0]?.saleArtwork?.sale!
@@ -90,6 +98,11 @@ class MyBids extends React.Component<MyBidsProps> {
               content: (
                 <StickyTabPageScrollView data-test-id="closed-section">
                   <Flex mt={1}>
+                    {!!noClosedBids && (
+                      <Text variant="mediumText" textAlign="center">
+                        No closed bids!
+                      </Text>
+                    )}
                     {closedStandings?.map((ls) => {
                       return (
                         !!ls && (
