@@ -1,19 +1,25 @@
 import { Show2_show } from "__generated__/Show2_show.graphql"
 import { Show2Query } from "__generated__/Show2Query.graphql"
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
+import { AnimatedArtworkFilterButton } from "lib/Components/FilterModal"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Box, Flex, Separator, Spacer } from "palette"
+import { Flex, Separator, Spacer } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { Show2ArtworksPaginationContainer as Show2Artworks } from "./Components/Show2Artworks"
+import { Show2ArtworksWithNavigation as Show2Artworks } from "./Components/Show2Artworks"
 import { Show2ContextCardFragmentContainer as ShowContextCard } from "./Components/Show2ContextCard"
 import { Show2HeaderFragmentContainer as ShowHeader } from "./Components/Show2Header"
 import { Show2InfoFragmentContainer as ShowInfo } from "./Components/Show2Info"
 import { Show2InstallShotsFragmentContainer as ShowInstallShots } from "./Components/Show2InstallShots"
+import { Show2ViewingRoomFragmentContainer as ShowViewingRoom } from "./Components/Show2ViewingRoom"
+
+interface Section {
+  key: string
+  element: JSX.Element
+}
 
 interface Show2QueryRendererProps {
   showID: string
@@ -30,40 +36,36 @@ export const Show2: React.FC<Show2Props> = ({ show }) => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
   }
 
-  const Artworks = () => {
-    return (
-      <Box px={2}>
-        <Show2Artworks show={show} />
-        <FilterModalNavigator
-          isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-          id={show.internalID}
-          slug={show.slug}
-          mode={FilterModalMode.Show}
-          exitModal={toggleFilterArtworksModal}
-          closeModal={toggleFilterArtworksModal}
-        />
-      </Box>
-    )
-  }
+  const artworkProps = { show, isFilterArtworksModalVisible, toggleFilterArtworksModal }
 
-  const sections = [
-    <ShowHeader show={show} mx={2} />,
-    ...(!!show.images?.length ? [<ShowInstallShots show={show} />] : []),
-    <ShowInfo show={show} mx={2} />,
-    ...(show.counts?.eligibleArtworks ? [<Artworks />] : []),
-    <ShowContextCard show={show} />,
+  const sections: Section[] = [
+    { key: "header", element: <ShowHeader show={show} mx={2} /> },
+
+    ...(Boolean(show.images?.length) ? [{ key: "install-shots", element: <ShowInstallShots show={show} /> }] : []),
+
+    { key: "info", element: <ShowInfo show={show} mx={2} /> },
+
+    ...(Boolean(show.viewingRoomIDs.length)
+      ? [{ key: "viewing-room", element: <ShowViewingRoom show={show} mx={2} /> }]
+      : []),
+
+    ...(Boolean(show.counts?.eligibleArtworks)
+      ? [{ key: "artworks", element: <Show2Artworks {...artworkProps} /> }]
+      : []),
+
+    { key: "context", element: <ShowContextCard show={show} /> },
   ]
 
   return (
     <ArtworkFilterGlobalStateProvider>
       <>
-        <FlatList<typeof sections[number]>
+        <FlatList<Section>
           data={sections}
-          keyExtractor={(_, i) => String(i)}
+          keyExtractor={({ key }) => key}
           ListHeaderComponent={<Spacer mt={6} pt={2} />}
           ListFooterComponent={<Spacer my={2} />}
           ItemSeparatorComponent={() => <Spacer my={15} />}
-          renderItem={({ item }) => item}
+          renderItem={({ item: { element } }) => element}
         />
         <AnimatedArtworkFilterButton isVisible onPress={toggleFilterArtworksModal} />
       </>
@@ -79,7 +81,9 @@ export const Show2FragmentContainer = createFragmentContainer(Show2, {
       ...Show2Header_show
       ...Show2InstallShots_show
       ...Show2Info_show
+      ...Show2ViewingRoom_show
       ...Show2ContextCard_show
+      viewingRoomIDs
       images {
         __typename
       }

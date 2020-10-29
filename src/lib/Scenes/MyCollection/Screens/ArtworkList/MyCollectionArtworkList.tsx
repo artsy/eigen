@@ -1,6 +1,7 @@
 import { MyCollectionArtworkList_me } from "__generated__/MyCollectionArtworkList_me.graphql"
 import { MyCollectionArtworkListQuery } from "__generated__/MyCollectionArtworkListQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { ZeroState } from "lib/Components/States/ZeroState"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { MyCollectionArtworkListItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
 import { AppStore } from "lib/store/AppStore"
@@ -8,7 +9,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Box, Flex, Join, Separator, Spacer, Text } from "palette"
+import { Box, Button, Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { FlatList, View } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -37,32 +38,41 @@ export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = (
     })
   }
 
+  const addArtwork = () => {
+    // Store the global me.id identifier so that we know where to add / remove
+    // edges after we add / remove artworks.
+    // TODO: This can be removed once we update to relay 10 mutation API
+    artworkActions.setMeGlobalId(me!.id)
+    navActions.navigateToAddArtwork()
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <FancyModalHeader
         rightButtonText="Add artwork"
         hideBottomDivider
-        onRightButtonPress={() => {
-          // Store the global me.id identifier so that we know where to add / remove
-          // edges after we add / remove artworks.
-          // TODO: This can be removed once we update to relay 10 mutation API
-          artworkActions.setMeGlobalId(me!.id)
-          navActions.navigateToAddArtwork()
-        }}
+        onRightButtonPress={addArtwork}
       ></FancyModalHeader>
       <Text variant="largeTitle" ml={2} mb={2}>
-        Artwork Insights
+        My Collection
       </Text>
-      <FlatList
-        data={artworks}
-        showsVerticalScrollIndicator={false}
-        ItemSeparatorComponent={() => <Separator />}
-        keyExtractor={(node) => node!.id}
-        onScroll={isCloseToBottom(fetchNextPage)}
-        renderItem={({ item }) => {
-          return <MyCollectionArtworkListItemFragmentContainer artwork={item} />
-        }}
-      />
+      {artworks.length === 0 ? (
+        <ZeroState
+          title="Add a work from your collection to access price and market insights."
+          callToAction={<Button onPress={addArtwork}>Add artwork</Button>}
+        />
+      ) : (
+        <FlatList
+          data={artworks}
+          showsVerticalScrollIndicator={false}
+          ItemSeparatorComponent={() => <Separator />}
+          keyExtractor={(node) => node!.id}
+          onScroll={isCloseToBottom(fetchNextPage)}
+          renderItem={({ item }) => {
+            return <MyCollectionArtworkListItemFragmentContainer artwork={item} />
+          }}
+        />
+      )}
     </View>
   )
 }
@@ -133,7 +143,7 @@ const LoadingSkeleton = () => {
   return (
     <>
       <Text variant="largeTitle" ml={2} mb={2} mt={6}>
-        Artwork Insights
+        My Collection
       </Text>
 
       <Box>

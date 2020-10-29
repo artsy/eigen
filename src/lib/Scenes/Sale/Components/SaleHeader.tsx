@@ -1,12 +1,12 @@
 import { SaleHeader_sale } from "__generated__/SaleHeader_sale.graphql"
+import { saleTime } from "lib/utils/saleTime"
 import { Flex, Text } from "palette"
 import React from "react"
 import { Animated, Dimensions, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CaretButton } from "../../../Components/Buttons/CaretButton"
 import OpaqueImageView from "../../../Components/OpaqueImageView/OpaqueImageView"
-import { saleTime } from "../helpers/saleTime"
-
+import { navigate } from "../../../navigation/navigate"
 const COVER_IMAGE_HEIGHT = 260
 
 interface AnimatedValue {
@@ -81,7 +81,12 @@ export const SaleHeader: React.FC<Props> = (props) => {
               </Text>
             )}
           </Flex>
-          <CaretButton text="More info about this auction" />
+          <CaretButton
+            text="More info about this auction"
+            onPress={() => {
+              navigate(`auction/${props.sale.slug}/info`)
+            }}
+          />
         </Flex>
       </View>
     </>
@@ -92,7 +97,7 @@ export const SaleHeaderContainer = createFragmentContainer(SaleHeader, {
   sale: graphql`
     fragment SaleHeader_sale on Sale {
       name
-      internalID
+      slug
       liveStartAt
       endAt
       startAt

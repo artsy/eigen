@@ -27,7 +27,7 @@ describe("RegisterToBidButton", () => {
       variables={{ saleID: "sale-id" }}
       render={({ props }) => {
         if (props?.sale && props?.me) {
-          return <RegisterToBidButtonContainer sale={props.sale} me={props.me} />
+          return <RegisterToBidButtonContainer sale={props.sale} me={props.me} contextType="sale" />
         }
         return null
       }}

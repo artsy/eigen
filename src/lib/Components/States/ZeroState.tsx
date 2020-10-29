@@ -14,16 +14,16 @@ export const ZeroState = (props: ZeroStateProps) => (
     <Sans size="6" textAlign="center" maxWidth="80%">
       {props.title}
     </Sans>
-    <Spacer mb="3" />
+    <Spacer mb={3} />
 
-    <Sans size="4" textAlign="center">
-      {props.subtitle}
-    </Sans>
-    {!!props.callToAction && (
+    {!!props.subtitle && (
       <>
-        <Spacer mb={4} />
-        {props.callToAction}
+        <Sans size="4" textAlign="center">
+          {props.subtitle}
+        </Sans>
+        <Spacer mb={3} />
       </>
     )}
+    {!!props.callToAction && <>{props.callToAction}</>}
   </Flex>
 )

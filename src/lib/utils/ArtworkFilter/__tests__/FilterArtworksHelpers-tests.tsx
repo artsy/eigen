@@ -1,4 +1,4 @@
-import { FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { Aggregations, FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
   aggregationsWithFollowedArtists,
   changedFiltersParams,
@@ -375,7 +375,7 @@ describe("selectedOption", () => {
         },
       ]
 
-      expect(selectedOption(selectedOptions, "waysToBuy")).toEqual("All")
+      expect(selectedOption({ selectedOptions, filterScreen: "waysToBuy", aggregations: [] })).toEqual("All")
     })
 
     it("returns the correct result when one item is selected", () => {
@@ -403,7 +403,7 @@ describe("selectedOption", () => {
         },
       ]
 
-      expect(selectedOption(selectedOptions, "waysToBuy")).toEqual("Buy now")
+      expect(selectedOption({ selectedOptions, filterScreen: "waysToBuy", aggregations: [] })).toEqual("Buy now")
     })
     it("returns the correct result when multiple items is selected", () => {
       const selectedOptions = [
@@ -430,7 +430,9 @@ describe("selectedOption", () => {
         },
       ]
 
-      expect(selectedOption(selectedOptions, "waysToBuy")).toEqual("Buy now, Make offer")
+      expect(selectedOption({ selectedOptions, filterScreen: "waysToBuy", aggregations: [] })).toEqual(
+        "Buy now, Make offer"
+      )
     })
   })
 
@@ -438,13 +440,13 @@ describe("selectedOption", () => {
     it("returns the correct value in the default case", () => {
       const selectedOptions = [{ paramName: FilterParamName.gallery, displayText: "All" }]
 
-      expect(selectedOption(selectedOptions, "gallery")).toEqual("All")
+      expect(selectedOption({ selectedOptions, filterScreen: "gallery", aggregations: [] })).toEqual("All")
     })
 
     it("returns the correct value when an options is selected", () => {
       const selectedOptions = [{ paramName: FilterParamName.gallery, displayText: "gallery one", filterKey: "gallery" }]
 
-      expect(selectedOption(selectedOptions, "gallery")).toEqual("gallery one")
+      expect(selectedOption({ selectedOptions, filterScreen: "gallery", aggregations: [] })).toEqual("gallery one")
     })
   })
 
@@ -453,7 +455,7 @@ describe("selectedOption", () => {
       it("returns the correct value in the default case", () => {
         const selectedOptions = [] as FilterArray
 
-        expect(selectedOption(selectedOptions, "artistIDs")).toEqual("All")
+        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations: [] })).toEqual("All")
       })
 
       it("returns the correct value when one artist is selected", () => {
@@ -465,7 +467,7 @@ describe("selectedOption", () => {
           },
         ]
 
-        expect(selectedOption(selectedOptions, "artistIDs")).toEqual("Artist 1")
+        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations: [] })).toEqual("Artist 1")
       })
 
       it("returns the correct value when multiple artists are selected", () => {
@@ -482,7 +484,9 @@ describe("selectedOption", () => {
           },
         ]
 
-        expect(selectedOption(selectedOptions, "artistIDs")).toEqual("Artist 2, 1 more")
+        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations: [] })).toEqual(
+          "Artist 2, 1 more"
+        )
       })
 
       it("returns the correct value when multiple artists and Artist I follow are selected", () => {
@@ -504,61 +508,57 @@ describe("selectedOption", () => {
           },
         ]
 
-        expect(selectedOption(selectedOptions, "artistIDs")).toEqual("All artists I follow, 2 more")
+        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations: [] })).toEqual(
+          "All artists I follow, 2 more"
+        )
       })
     })
 
     describe("saleArtworks", () => {
+      const aggregations: Aggregations = [
+        {
+          slice: "ARTIST",
+          counts: [
+            { count: 21, name: "Banksy", value: "banksy" },
+            { count: 21, name: "Andy Warhol", value: "andy-warhol" },
+          ],
+        },
+        { slice: "MEDIUM", counts: [{ count: 21, name: "Prints", value: "prints" }] },
+      ]
       it("returns the correct value in the default case", () => {
         const selectedOptions = [] as FilterArray
 
-        expect(selectedOption(selectedOptions, "artistIDs")).toEqual("All")
+        expect(
+          selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations, filterType: "saleArtwork" })
+        ).toEqual("All")
       })
 
       it("returns the correct value when one artist is selected", () => {
         const selectedOptions = [
           {
             paramName: FilterParamName.artistIDs,
-            paramValue: ["artist-1"],
+            paramValue: ["banksy"],
             displayText: "Artists",
           },
         ]
 
-        expect(selectedOption(selectedOptions, "artistIDs")).toEqual("Artists")
+        expect(
+          selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations, filterType: "saleArtwork" })
+        ).toEqual("Banksy")
       })
 
       it("returns the correct value when multiple artists are selected", () => {
         const selectedOptions = [
           {
             paramName: FilterParamName.artistIDs,
-            paramValue: ["artist-1", "artist-2"],
+            paramValue: ["banksy", "andy-warhol"],
             displayText: "Artists",
           },
         ]
 
-        expect(selectedOption(selectedOptions, "artistIDs")).toEqual("Artists")
-      })
-
-      it("returns the correct value when multiple artists and Artist I follow are selected", () => {
-        const selectedOptions = [
-          {
-            paramName: FilterParamName.artistIDs,
-            paramValue: ["artist-1"],
-            displayText: "Artists",
-          },
-          {
-            paramName: FilterParamName.artistIDs,
-            paramValue: ["artist-2"],
-            displayText: "Artists",
-          },
-          {
-            paramName: FilterParamName.artistsIFollow,
-            paramValue: true,
-            displayText: "Artists",
-          },
-        ]
-
-        expect(selectedOption(selectedOptions, "artistIDs")).toEqual("All artists I follow, 2 more")
+        expect(
+          selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations, filterType: "saleArtwork" })
+        ).toEqual("Andy Warhol, 1 more")
       })
     })
   })

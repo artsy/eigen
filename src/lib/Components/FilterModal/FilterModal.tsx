@@ -113,6 +113,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
           }}
           style={{ flex: 1 }}
         />
+        <Separator my={0} />
         <ApplyButtonContainer>
           <ApplyButton
             disabled={!isApplyButtonEnabled}
@@ -214,6 +215,8 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
 
   const concreteAggregations = state.aggregations ?? []
 
+  const isClearAllButtonEnabled = state.appliedFilters.length > 0 || state.selectedFilters.length > 0
+
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
     concreteAggregations.map((aggregation) => {
       const filterOption = filterKeyFromAggregation[aggregation.slice]
@@ -260,6 +263,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
           </CloseIconContainer>
         </Flex>
         <ClearAllButton
+          disabled={!isClearAllButtonEnabled}
           onPress={() => {
             switch (mode) {
               case FilterModalMode.Collection:
@@ -279,7 +283,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
             clearAllFilters()
           }}
         >
-          <Sans mr={2} mt={2} size="4" color="black100">
+          <Sans mr={2} mt={2} size="4" color={isClearAllButtonEnabled ? "black100" : "black30"}>
             Clear all
           </Sans>
         </ClearAllButton>
@@ -289,6 +293,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
         keyExtractor={(_item, index) => String(index)}
         data={sortedFilterOptions}
         style={{ flexGrow: 1 }}
+        ItemSeparatorComponent={() => <Separator />}
         renderItem={({ item }) => {
           return (
             <Box>
@@ -300,7 +305,12 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
                     </Sans>
                     <Flex flexDirection="row" alignItems="center">
                       <OptionDetail
-                        currentOption={selectedOption(selectedOptions, item.filterType, state.filterType)}
+                        currentOption={selectedOption({
+                          selectedOptions,
+                          filterScreen: item.filterType,
+                          filterType: state.filterType,
+                          aggregations: state.aggregations,
+                        })}
                         filterType={item.filterType}
                       />
                       <ArrowRightIcon fill="black30" ml="1" />
@@ -459,10 +469,6 @@ export const OptionListItem = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  border: solid 0.5px ${color("black10")};
-  border-right-width: 0;
-  border-top-width: 0;
-  border-left-width: 0;
 `
 
 export const CurrentOption = styled(Sans)`
@@ -473,9 +479,6 @@ export const ApplyButton = styled(Button)``
 export const ApplyButtonContainer = styled(Box)`
   padding: 20px;
   padding-bottom: 30px;
-  border: solid 0.5px ${color("black10")};
-  border-right-width: 0;
-  border-left-width: 0;
 `
 
 const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string | undefined> = {

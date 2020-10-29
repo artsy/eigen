@@ -69,6 +69,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     getCurrentEmissionState().options.AROptionsNewSalePage
       ? new RouteMatcher("/auction/:saleID", "Auction2")
       : new RouteMatcher("/auction/:id", "Auction"),
+    getCurrentEmissionState().options.AROptionsNewSalePage
+      ? new RouteMatcher("/auction/:saleID/info", "AuctionInfo")
+      : null,
+    new RouteMatcher("/auction-faq", "AuctionFAQ"),
     new RouteMatcher("/auction/:id/bid/:artwork_id", "AuctionBidArtwork"),
     new RouteMatcher("/gene/:geneID", "Gene"),
     ...(getCurrentEmissionState().options.AROptionsNewShowPage
@@ -132,7 +136,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/works-for-you", "WorksForYou"),
     new RouteMatcher("/categories", "WebView", () => ({ url: "/categories" })),
     new RouteMatcher("/privacy", "WebView", () => ({ url: "/privacy" })),
-    new RouteMatcher("/auction-faq", "WebView", () => ({ url: "/auction-faq" })),
     new RouteMatcher("/identity-verification-faq", "WebView", () => ({ url: "/identity-verification-faq" })),
     new RouteMatcher("/terms", "WebView", () => ({ url: "/terms" })),
 

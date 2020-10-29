@@ -24,11 +24,9 @@ describe(MyProfileQueryRenderer, () => {
           }
         }
       `}
-      render={({ props, error }) => {
+      render={({ props }) => {
         if (props?.me) {
           return <MyProfileContainer me={props.me} />
-        } else if (error) {
-          console.log(error)
         }
       }}
       variables={{}}
@@ -58,11 +56,11 @@ describe(MyProfileQueryRenderer, () => {
         labFeatures: ["My Collection"],
       }),
     })
-    expect(extractText(tree.root)).toContain("Artwork insights")
+    expect(extractText(tree.root)).toContain("My Collection")
   })
 
   it("doesn't render MyCollections app if feature flag is not on", () => {
     const tree = getWrapper()
-    expect(extractText(tree.root)).not.toContain("Artwork insights")
+    expect(extractText(tree.root)).not.toContain("My Collection")
   })
 })
