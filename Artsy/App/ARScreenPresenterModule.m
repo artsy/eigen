@@ -93,7 +93,14 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
     
     NSString *stackID = [[NSUUID UUID] UUIDString];
     
-    UINavigationController *stack = [self.class createModalNavigationStack:stackID rootViewController:vc withBackButton:!hasOwnModalCloseButton];
+    UINavigationController *stack = nil;
+
+    if ([vc isKindOfClass:UINavigationController.class]) {
+        stack = (id)vc;
+        [self.class cachedNavigationStacks][stackID] = stack;
+    } else {
+        stack = [self.class createModalNavigationStack:stackID rootViewController:vc withBackButton:!hasOwnModalCloseButton];
+    }
     
     stack.modalPresentationStyle = modalPresentationStyle;
     
