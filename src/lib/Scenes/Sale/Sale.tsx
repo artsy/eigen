@@ -1,13 +1,16 @@
 import { captureMessage } from "@sentry/react-native"
 import { Sale_me } from "__generated__/Sale_me.graphql"
 import { Sale_sale } from "__generated__/Sale_sale.graphql"
-import { SaleQueryRendererQuery, SaleQueryRendererQueryResponse } from "__generated__/SaleQueryRendererQuery.graphql"
+import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
+import { SaleBelowTheFoldQuery } from "__generated__/SaleBelowTheFoldQuery.graphql"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import LoadFailureView from "lib/Components/LoadFailureView"
+import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import Spinner from "lib/Components/Spinner"
 import { navigate, popParentViewController } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { getCurrentEmissionState } from "lib/store/AppStore"
+import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
 import { useInterval } from "lib/utils/useInterval"
@@ -17,8 +20,10 @@ import moment from "moment"
 import { Flex } from "palette"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Animated, FlatList, RefreshControl } from "react-native"
-import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import { SaleBelowTheFoldQueryResponse } from "../../../__generated__/SaleBelowTheFoldQuery.graphql"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
 import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
@@ -26,10 +31,10 @@ import { SaleHeaderContainer as SaleHeader } from "./Components/SaleHeader"
 import { SaleLotsListContainer } from "./Components/SaleLotsList"
 
 interface Props {
-  queryRes: SaleQueryRendererQueryResponse
-  sale: Sale_sale
-  me: Sale_me
   relay: RelayRefetchProp
+  me: Sale_me
+  sale: Sale_sale
+  below: SaleBelowTheFoldQueryResponse
 }
 
 interface SaleSection {
@@ -56,11 +61,12 @@ interface ViewToken {
   section?: any
 }
 
-export const Sale: React.FC<Props> = ({ sale, me, queryRes, relay }) => {
-  const flatListRef = useRef<FlatList<any>>(null)
-
+export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
+  // const sale = above.sale!
+  // const me = above.me!
   const tracking = useTracking()
 
+  const flatListRef = useRef<FlatList<any>>(null)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
@@ -174,13 +180,19 @@ export const Sale: React.FC<Props> = ({ sale, me, queryRes, relay }) => {
     },
     {
       key: SALE_LOTS_LIST,
-      content: (
+      content: below ? (
         <SaleLotsListContainer
-          saleArtworksConnection={queryRes}
+          saleArtworksConnection={below}
           saleID={sale.slug}
           saleSlug={sale.slug}
           scrollToTop={scrollToTop}
         />
+      ) : (
+        // Since most likely this part of the screen will be already loaded when the user
+        // reaches it, there is no need to create the fancy placeholders here
+        <Flex justifyContent="center" alignItems="center" height={200}>
+          <Spinner />
+        </Flex>
       ),
     },
   ])
@@ -193,7 +205,6 @@ export const Sale: React.FC<Props> = ({ sale, me, queryRes, relay }) => {
             <Animated.FlatList
               ref={flatListRef}
               data={saleSectionsData}
-              initialNumToRender={4} // Render the infinite scroll list after the rest of the page
               viewabilityConfig={viewConfigRef.current}
               onViewableItemsChanged={viewableItemsChangedRef.current}
               contentContainerStyle={{ paddingBottom: 40 }}
@@ -242,13 +253,13 @@ export const SaleContainer = createRefetchContainer(
     `,
     sale: graphql`
       fragment Sale_sale on Sale {
-        internalID
-        slug
-        liveStartAt
-        endAt
         ...SaleHeader_sale
         ...RegisterToBidButton_sale
+        endAt
+        internalID
+        liveStartAt
         registrationEndsAt
+        slug
       }
     `,
   },
@@ -264,43 +275,63 @@ export const SaleContainer = createRefetchContainer(
   `
 )
 
-export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
+export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayModernEnvironment }> = ({
+  saleID,
+  environment,
+}) => {
   return (
-    <QueryRenderer<SaleQueryRendererQuery>
-      environment={defaultEnvironment}
-      cacheConfig={{ force: true }}
-      query={graphql`
-        query SaleQueryRendererQuery($saleID: String!, $saleSlug: ID!) {
-          sale(id: $saleID) {
-            ...Sale_sale
-          }
-          me {
-            ...Sale_me
-          }
+    <RetryErrorBoundary
+      render={({ isRetry }) => {
+        return (
+          <AboveTheFoldQueryRenderer<SaleAboveTheFoldQuery, SaleBelowTheFoldQuery>
+            environment={environment || defaultEnvironment}
+            above={{
+              query: graphql`
+                query SaleAboveTheFoldQuery($saleID: String!, $saleSlug: ID!) {
+                  sale(id: $saleID) {
+                    ...Sale_sale
+                  }
+                  me {
+                    ...Sale_me
+                  }
+                }
+              `,
+              variables: { saleID, saleSlug: saleID },
+            }}
+            below={{
+              query: graphql`
+                # query SaleBelowTheFoldQuery($saleID: String!, $saleSlug: ID!) {
+                query SaleBelowTheFoldQuery($saleID: ID) {
+                  ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleID)
+                }
+              `,
+              variables: { saleID },
+            }}
+            render={({ props, error }) => {
+              if (error) {
+                if (__DEV__) {
+                  console.error(error)
+                } else {
+                  captureMessage(error.stack!)
+                }
+                return <LoadFailureView style={{ flex: 1 }} />
+              }
+              if (!props?.above.me || !props.above.sale) {
+                return (
+                  <Flex alignItems="center" justifyContent="center" flex={1}>
+                    <Spinner />
+                  </Flex>
+                )
+              }
 
-          ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleSlug)
-        }
-      `}
-      variables={{ saleID, saleSlug: saleID }}
-      render={({ props, error }) => {
-        if (error) {
-          if (__DEV__) {
-            console.error(error)
-          } else {
-            captureMessage(error.stack!)
-          }
-          return <LoadFailureView style={{ flex: 1 }} />
-        }
-
-        if (!props?.me || !props?.sale) {
-          return (
-            <Flex alignItems="center" justifyContent="center" flex={1}>
-              <Spinner />
-            </Flex>
-          )
-        }
-
-        return <SaleContainer queryRes={props} me={props.me} sale={props.sale} />
+              return <SaleContainer me={props.above.me} sale={props.above.sale} below={props?.below} />
+            }}
+            cacheConfig={{
+              // Bypass Relay cache on retries.
+              ...(isRetry && { force: true }),
+            }}
+          />
+        )
       }}
     />
   )
