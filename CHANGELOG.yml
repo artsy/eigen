@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - Update url for echo, now in s3 - ash, pavlos
+    - Add tracking to new auction screen - mounir
   user_facing:
     - Add Auctions Info screen - mounir
     - Fix Fair2 sticky tab UI + interaction - david
