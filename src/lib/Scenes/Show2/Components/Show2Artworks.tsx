@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Show2_show } from "__generated__/Show2_show.graphql"
 import { Show2Artworks_show } from "__generated__/Show2Artworks_show.graphql"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -86,6 +87,9 @@ const Show2Artworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter })
         hasMore={relay.hasMore}
         autoFetch={false}
         pageSize={SHOW2_ARTWORKS_PAGE_SIZE}
+        contextScreenOwnerType={OwnerType.show}
+        contextScreenOwnerId={show.internalID}
+        contextScreenOwnerSlug={show.slug}
       />
     </Box>
   )
