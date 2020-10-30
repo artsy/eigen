@@ -24,6 +24,37 @@
 #import "ARAugmentedFloorBasedVIRViewController.h"
 #import "ARSerifNavigationViewController.h"
 
+@interface ARModalWithBottomSafeArea : UIViewController
+-(instancetype)initWithStack:(UINavigationController *)stack;
+@property (nonatomic, assign) UINavigationController *stack;
+@end
+@implementation ARModalWithBottomSafeArea
+
+- (instancetype)initWithStack:(UINavigationController *)stack
+{
+    self = [super init];
+    _stack = stack;
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self addChildViewController:self.stack];
+    [self.view addSubview:self.stack.view];
+}
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    [self.stack.view alignTopEdgeWithView:self.flk_topLayoutGuide predicate:@"0"];
+    [self.stack.view alignLeading:@"0" trailing:@"0" toView:self.view];
+    CGFloat bottomInset = [UIApplication sharedApplication].keyWindow.safeAreaInsets.bottom;
+    [self.stack.view alignBottomEdgeWithView:self.view predicate:[[NSNumber numberWithFloat:-bottomInset] stringValue]];
+    self.view.backgroundColor = [UIColor whiteColor];
+}
+
+@end
+
 @interface ARScreenPresenterModule () <MFMailComposeViewControllerDelegate>
 @end
 
@@ -67,19 +98,20 @@ RCT_EXPORT_METHOD(pushView:(nonnull NSString *)currentTabStackID viewDescriptor:
 {
     UIViewController *vc = [self getViewControllerForViewDescriptor:viewDescriptor];
     UINavigationController *stack = nil;
-    if ([[self.class currentlyPresentedVC] presentingViewController] && [[self.class currentlyPresentedVC] isKindOfClass:UINavigationController.class]) {
+    ARModalWithBottomSafeArea *currentlyPresentedVC = (id)[self.class currentlyPresentedVC];
+    if ([currentlyPresentedVC isKindOfClass:ARModalWithBottomSafeArea.class]) {
         // we're showing a modal with a view stack, push it there instead
-        stack = (id)[self.class currentlyPresentedVC];
+        stack = currentlyPresentedVC.stack;
     } else {
         stack = [self.class getNavigationStack:currentTabStackID];
     }
-    
+
     if (!stack && [self.class cachedNavigationStacks].count == 0) {
         // to handle deep links that open the app we need to wait a while for the first nav stack to be instantiated
         deepLinkVC = vc;
         return;
     }
-    
+
     [stack pushViewController:vc animated:YES];
 }
 
@@ -88,11 +120,11 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
 {
     UIModalPresentationStyle modalPresentationStyle = [self getModalPresentationStyle:viewDescriptor[@"modalPresentationStyle"]];
     UIViewController *vc = [self getViewControllerForViewDescriptor:viewDescriptor];
-    
+
     BOOL hasOwnModalCloseButton = viewDescriptor[@"hasOwnModalCloseButton"];
-    
+
     NSString *stackID = [[NSUUID UUID] UUIDString];
-    
+
     UINavigationController *stack = nil;
 
     if ([vc isKindOfClass:UINavigationController.class]) {
@@ -101,10 +133,11 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
     } else {
         stack = [self.class createModalNavigationStack:stackID rootViewController:vc withBackButton:!hasOwnModalCloseButton];
     }
-    
-    stack.modalPresentationStyle = modalPresentationStyle;
-    
-    [[self.class currentlyPresentedVC] presentViewController:stack animated:YES completion:^ {
+
+    ARModalWithBottomSafeArea *modal = [[ARModalWithBottomSafeArea alloc] initWithStack:stack];
+    modal.modalPresentationStyle = modalPresentationStyle;
+
+    [[self.class currentlyPresentedVC] presentViewController:modal animated:YES completion:^ {
         resolve(stackID);
     }];
 }
@@ -160,14 +193,14 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
     } else {
         NSAssert(false, @"Unrecognized native module name", moduleName);
     }
-    
+
     return vc;
 }
 
 + (UIViewController *)currentlyPresentedVC
 {
     UIViewController *vc = [[ARAppDelegate sharedInstance] window].rootViewController;
-   
+
     while ([vc presentedViewController]) {
         vc = [vc presentedViewController];
     }
@@ -428,7 +461,7 @@ static UIViewController *deepLinkVC = nil;
         if (!withBackButton) {
             return [self createNavigationStack:stackID rootViewController:rootViewController];
         }
-        
+
         ARSerifNavigationViewController *stack = [[ARSerifNavigationViewController alloc] initWithRootViewController:rootViewController];
         [self cachedNavigationStacks][stackID] = stack;
         return stack;
