@@ -64,12 +64,6 @@ export const OrderedArtworkSorts: FilterData[] = [
   },
 ]
 
-const defaultSaleArtworkSort = {
-  displayText: "Default",
-  paramName: FilterParamName.sort,
-  paramValue: "position",
-}
-
 export const OrderedSaleArtworkSorts: FilterData[] = [
   {
     displayText: "Lot number ascending",
@@ -111,9 +105,7 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigator 
   const selectedOption = selectedOptions.find((option) => option.paramName === FilterParamName.sort)!
 
   const filterOptions =
-    filterType === "artwork"
-      ? [defaulArtworkSort, ...OrderedArtworkSorts]
-      : [defaultSaleArtworkSort, ...OrderedSaleArtworkSorts]
+    filterType === "artwork" ? [defaulArtworkSort, ...OrderedArtworkSorts] : [...OrderedSaleArtworkSorts]
 
   const selectOption = (option: FilterData) => {
     dispatch({
