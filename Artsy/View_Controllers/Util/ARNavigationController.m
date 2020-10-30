@@ -413,11 +413,13 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     if (self.isAnimatingTransition) return;
 
     UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;
-    if (navigationController.viewControllers.count > 1) {
+    if (navigationController.viewControllers.count > 1 && [navigationController isKindOfClass:ARNavigationController.class]) {
         [navigationController popViewControllerAnimated:YES];
     } else {
         [navigationController.navigationController popViewControllerAnimated:YES];
     }
 }
+
+
 
 @end

@@ -1,6 +1,5 @@
 import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy"
 import { navigate } from "lib/navigation/navigate"
-import { ConsignmentsHomeQueryRenderer } from "lib/Scenes/MyCollection/Screens/ConsignmentsHome/ConsignmentsHome"
 import { AppStoreModel } from "lib/store/AppStoreModel"
 import { isEmpty } from "lodash"
 import { RefObject } from "react"
@@ -241,15 +240,19 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
    * Pages outside of MyCollection
    */
 
-  navigateToConsignLearnMore: action((state) => {
-    getNavigatorIOS(state.sessionState).push({
-      component: ConsignmentsHomeQueryRenderer,
-      passProps: {
-        // TODO: Eventually, when consignments submissions and MyCollection are merged,
-        // these flags can go away
-        isArrivingFromMyCollection: true,
-      },
+  navigateToConsignLearnMore: action((_) => {
+    setImmediate(() => {
+      navigate("/collections/my-collection/marketing-landing")
     })
+
+    // getNavigatorIOS(state.sessionState).push({
+    //   component: ConsignmentsHomeQueryRenderer,
+    //   passProps: {
+    //     // TODO: Eventually, when consignments submissions and MyCollection are merged,
+    //     // these flags can go away
+    //     isArrivingFromMyCollection: true,
+    //   },
+    // })
   }),
 
   navigateToConsignSubmission: action((state) => {

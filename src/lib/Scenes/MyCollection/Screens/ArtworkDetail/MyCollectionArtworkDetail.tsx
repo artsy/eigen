@@ -10,8 +10,8 @@ import { AppStore } from "lib/store/AppStore"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Button, Flex, Join, Spacer } from "palette"
-import React from "react"
-import { ScrollView } from "react-native"
+import React, { useEffect } from "react"
+import { NativeModules, ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { MyCollectionArtworkInsightsFragmentContainer } from "./Components/ArtworkInsights/MyCollectionArtworkInsights"
 import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
@@ -26,6 +26,10 @@ export interface MyCollectionArtworkDetailProps {
 const MyCollectionArtworkDetail: React.FC<MyCollectionArtworkDetailProps> = ({ artwork, marketPriceInsights }) => {
   const navActions = AppStore.actions.myCollection.navigation
   const artworkActions = AppStore.actions.myCollection.artwork
+
+  useEffect(() => {
+    NativeModules.ARScreenPresenterModule.updateShouldHideBackButton(true)
+  }, [])
 
   return (
     <ScrollView>
