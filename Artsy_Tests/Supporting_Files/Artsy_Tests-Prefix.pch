@@ -48,7 +48,6 @@
     #import "StyledSubclasses.h"
     #import "AROptions.h"
     #import "ARNetworkErrorManager.h"
-    #import "ARTopMenuViewController.h"
     #import "ARScrollNavigationChief.h"
     #import "ARSystemTime.h"
     #import "ARDispatchManager.h"
