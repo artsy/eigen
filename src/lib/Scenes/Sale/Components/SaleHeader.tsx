@@ -35,6 +35,14 @@ export const SaleHeader: React.FC<Props> = (props) => {
               inputRange: [0, COVER_IMAGE_HEIGHT],
               outputRange: [1, 0],
             }),
+            transform: [
+              {
+                translateY: props.scrollAnim.interpolate({
+                  inputRange: [-1, 0, 1],
+                  outputRange: [0, 0, 0.5],
+                }),
+              },
+            ],
           }}
         >
           <OpaqueImageView
