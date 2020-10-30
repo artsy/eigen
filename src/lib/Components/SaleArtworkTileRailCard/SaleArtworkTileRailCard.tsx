@@ -1,8 +1,10 @@
+import { ScreenOwnerType } from "@artsy/cohesion"
 import { SaleArtworkTileRailCard_saleArtwork } from "__generated__/SaleArtworkTileRailCard_saleArtwork.graphql"
+import { Schema } from "lib/utils/track"
 import { Box, color, Flex, Sans } from "palette"
 import React from "react"
-import { GestureResponderEvent } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { saleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
@@ -12,10 +14,11 @@ export const CONTAINER_HEIGHT = 120
 const SaleArtworkCard = styled.TouchableHighlight.attrs({ underlayColor: color("white100"), activeOpacity: 0.8 })``
 
 export interface SaleArtworkTileRailCardProps {
-  onPress: ((event: GestureResponderEvent) => void) | null | undefined
+  onPress: () => void
   saleArtwork: SaleArtworkTileRailCard_saleArtwork
   useCustomSaleMessage?: boolean
   useSquareAspectRatio?: boolean
+  contextScreenOwnerType?: ScreenOwnerType
 }
 
 export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = ({
@@ -23,8 +26,17 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   saleArtwork,
   useCustomSaleMessage = false,
   useSquareAspectRatio = false,
+  contextScreenOwnerType,
 }) => {
+  const tracking = useTracking()
   const artwork = saleArtwork.artwork!
+
+  const handleTap = () => {
+    if (contextScreenOwnerType) {
+      tracking.trackEvent(tappedArtworkGroupThumbnail(contextScreenOwnerType, artwork.internalID, artwork.slug))
+    }
+    onPress()
+  }
 
   if (!!artwork.image?.imageURL && !artwork.image?.aspectRatio && !useSquareAspectRatio) {
     throw new Error("imageAspectRatio is required for non-square images")
@@ -90,7 +102,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   ) : null
 
   return (
-    <SaleArtworkCard onPress={onPress || undefined}>
+    <SaleArtworkCard onPress={handleTap}>
       <Flex>
         {imageDisplay}
         <Box mt={1} width={CONTAINER_HEIGHT}>
@@ -102,6 +114,23 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
       </Flex>
     </SaleArtworkCard>
   )
+}
+
+export const tappedArtworkGroupThumbnail = (
+  contextScreenOwnerType: ScreenOwnerType,
+  internalID: string,
+  slug: string
+) => {
+  return {
+    action_name: Schema.ActionNames.TappedArtworkGroup,
+    action_type: Schema.ActionTypes.Tap,
+    context_screen_owner_type: contextScreenOwnerType,
+    destination_screen: Schema.PageNames.ArtworkPage,
+    destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+    destination_screen_owner_id: internalID,
+    destination_screen_owner_slug: slug,
+    type: "thumbnail",
+  }
 }
 
 export const SaleArtworkTileRailCardContainer = createFragmentContainer(SaleArtworkTileRailCard, {

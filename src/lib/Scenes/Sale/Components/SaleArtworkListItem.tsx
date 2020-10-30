@@ -1,24 +1,55 @@
+import { ActionType, ScreenOwnerType } from "@artsy/cohesion"
 import { SaleArtworkListItem_artwork } from "__generated__/SaleArtworkListItem_artwork.graphql"
 import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema } from "lib/utils/track"
 import { Flex, Sans } from "palette"
 import { Touchable } from "palette"
 import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface Props {
   artwork: SaleArtworkListItem_artwork
+  contextScreenOwnerType?: ScreenOwnerType
+  contextScreenOwnerId?: string
+  contextScreenOwnerSlug?: string
 }
 
 const CONTAINER_HEIGHT = 100
 
-export const SaleArtworkListItem: React.FC<Props> = ({ artwork }) => {
+export const SaleArtworkListItem: React.FC<Props> = ({
+  artwork,
+  contextScreenOwnerType,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
+}) => {
   const itemRef = useRef<any>()
+  const tracking = useTracking()
 
   const onPress = () => {
+    trackArtworkTap()
     SwitchBoard.presentNavigationViewController(itemRef.current!, artwork.href!)
   }
+
+  const trackArtworkTap = () => {
+    if (contextScreenOwnerType) {
+      const genericTapEvent = {
+        action: ActionType.tappedArtworkGroup,
+        context_module: Schema.ContextModules.Auction,
+        context_screen_owner_type: contextScreenOwnerType,
+        context_screen_owner_id: contextScreenOwnerId,
+        context_screen_owner_slug: contextScreenOwnerSlug,
+        destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+        destination_screen_owner_id: artwork.internalID,
+        destination_screen_owner_slug: artwork.slug,
+        type: "thumbnail",
+      }
+      tracking.trackEvent(genericTapEvent)
+    }
+  }
+
   const saleInfo = saleMessageOrBidInfo({
     artwork,
   })
