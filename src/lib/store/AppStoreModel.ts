@@ -35,9 +35,6 @@ export const appStoreModel: AppStoreModel = {
     }
     assignDeep(state, unpersistedState)
     state.sessionState.isHydrated = true
-    if (!__DEV__) {
-      state.bottomTabs.selectedTab = "home"
-    }
   }),
   reset: action(() => {
     const result = createStore(appStoreModel).getState()
