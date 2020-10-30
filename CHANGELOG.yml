@@ -8,6 +8,7 @@ upcoming:
     - Fix Fair2 sticky tab UI + interaction - david
     - Loading state for My Collection - brian
     - Adds Show2 viewing room - damon
+    - Adds auction closed banner - mounir
 
 releases:
   - version: 6.6.7

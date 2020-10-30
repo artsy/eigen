@@ -1,5 +1,6 @@
 import { SaleHeaderTestsQuery } from "__generated__/SaleHeaderTestsQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -57,5 +58,27 @@ describe("SaleHeader", () => {
 
     expect(extractText(tree.root.findByProps({ testID: "saleName" }))).toBe("sale name")
     expect(tree.root.findAllByType(CaretButton)).toHaveLength(1)
+  })
+
+  it("renders auction is closed", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Sale: () => ({
+          endAt: "2020-10-01T15:00:00",
+          startAt: "2020-09-01T15:00:00",
+          timeZone: "Europe/Berlin",
+          coverImage: {
+            url: "cover image url",
+          },
+          name: "sale name",
+          liveStartAt: "2020-09-01T15:00:00",
+          internalID: "the-sale-internal",
+        }),
+      })
+    )
+
+    expect(extractText(tree.root.findAllByType(OpaqueImageView)[0])).toBe("Auction closed")
   })
 })
