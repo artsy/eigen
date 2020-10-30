@@ -277,6 +277,27 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                   cents
                   display
                 }
+                saleArtwork {
+                  reserveMessage
+                  currentBid {
+                    display
+                  }
+                  counts {
+                    bidderPositions
+                  }
+                  artwork {
+                    myLotStanding(live: true) {
+                      activeBid {
+                        isWinning
+                      }
+                      mostRecentBid {
+                        maxBid {
+                          display
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
