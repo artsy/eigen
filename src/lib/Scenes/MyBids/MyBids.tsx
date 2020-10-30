@@ -19,6 +19,7 @@ import {
   MyBidsPlaceholder,
   SaleCardFragmentContainer,
 } from "./Components"
+import { NoBids } from "./Components/NoBids"
 import { isLotStandingComplete, TimelySale } from "./helpers/timely"
 
 export interface MyBidsProps {
@@ -72,30 +73,7 @@ class MyBids extends React.Component<MyBidsProps> {
                   <Spacer my={1} />
 
                   <Join separator={<Spacer my={1} />}>
-                    {!!noActiveBids && (
-                      <Flex mt={3}>
-                        <Text variant="title" textAlign="center" fontWeight="normal">
-                          You don't have any upcoming bids.
-                        </Text>
-                        <Text
-                          mb={2}
-                          mt={1}
-                          mx={4}
-                          variant="text"
-                          textAlign="center"
-                          fontWeight="normal"
-                          color="black60"
-                        >
-                          Watch a live auction and place bids in advance or in real time, or you can bid in our curated
-                          timed auction
-                        </Text>
-                        <Flex width="100%" justifyContent="center" flexDirection="row">
-                          <Button variant="primaryBlack" onPress={() => handleViewAllAuctions()}>
-                            Explore Auctions
-                          </Button>
-                        </Flex>
-                      </Flex>
-                    )}
+                    {!!noActiveBids && <NoBids headerText="You don't have any upcoming bids." />}
                     {sortedSaleIds.map((saleId) => {
                       const activeLotStandings = sortedActiveLots[saleId]
                       const sale = activeLotStandings[0]?.saleArtwork?.sale!
@@ -122,30 +100,7 @@ class MyBids extends React.Component<MyBidsProps> {
               content: (
                 <StickyTabPageScrollView data-test-id="closed-section">
                   <Flex mt={1}>
-                    {!!noClosedBids && (
-                      <Flex mt={4}>
-                        <Text variant="title" textAlign="center" fontWeight="normal">
-                          No bidding history
-                        </Text>
-                        <Text
-                          mb={2}
-                          mt={1}
-                          mx={4}
-                          variant="text"
-                          textAlign="center"
-                          fontWeight="normal"
-                          color="black60"
-                        >
-                          Watch a live auction and place bids in advance or in real time, or you can bid in our curated
-                          timed auction
-                        </Text>
-                        <Flex width="100%" justifyContent="center" flexDirection="row">
-                          <Button variant="primaryBlack" onPress={() => handleViewAllAuctions()}>
-                            Explore Auctions
-                          </Button>
-                        </Flex>
-                      </Flex>
-                    )}
+                    {!!noClosedBids && <NoBids headerText="No bidding history" />}
                     {closedStandings?.map((ls) => {
                       return (
                         !!ls && (
