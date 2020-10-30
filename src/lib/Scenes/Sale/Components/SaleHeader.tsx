@@ -56,7 +56,21 @@ export const SaleHeader: React.FC<Props> = (props) => {
               width: Dimensions.get("window").width,
               height: COVER_IMAGE_HEIGHT,
             }}
-          />
+          >
+            <Flex
+              style={{
+                backgroundColor: "rgba(0,0,0,0.5)",
+                width: Dimensions.get("window").width,
+                height: COVER_IMAGE_HEIGHT,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text variant="subtitle" fontWeight="500" color="white">
+                Auction closed
+              </Text>
+            </Flex>
+          </OpaqueImageView>
         )}
       </Animated.View>
       <View
