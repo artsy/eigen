@@ -1,5 +1,6 @@
 import { SaleHeader_sale } from "__generated__/SaleHeader_sale.graphql"
 import { saleTime } from "lib/utils/saleTime"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Text } from "palette"
 import React from "react"
 import { Animated, Dimensions, View } from "react-native"
@@ -22,34 +23,28 @@ export const SaleHeader: React.FC<Props> = (props) => {
   const saleTimeDetails = saleTime(props.sale)
   return (
     <>
-      <Animated.View
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          height: COVER_IMAGE_HEIGHT,
-          width: "100%",
-          opacity: props.scrollAnim.interpolate({
-            inputRange: [0, COVER_IMAGE_HEIGHT],
-            outputRange: [1, 0],
-          }),
-          transform: [
-            {
-              scale: props.scrollAnim.interpolate({
-                inputRange: [-COVER_IMAGE_HEIGHT, 0, 1],
-                outputRange: [2, 1, 1],
-              }),
-            },
-            {
-              translateY: props.scrollAnim.interpolate({
-                inputRange: [-1, 0, 1],
-                outputRange: [-0.5, 0, 0.5],
-              }),
-            },
-          ],
-        }}
-      >
-        {!!props.sale.coverImage?.url && (
+      {!!props.sale.coverImage?.url && (
+        <Animated.View
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            height: COVER_IMAGE_HEIGHT,
+            width: "100%",
+            opacity: props.scrollAnim.interpolate({
+              inputRange: [0, COVER_IMAGE_HEIGHT],
+              outputRange: [1, 0],
+            }),
+            transform: [
+              {
+                translateY: props.scrollAnim.interpolate({
+                  inputRange: [-1, 0, 1],
+                  outputRange: [0, 0, 0.5],
+                }),
+              },
+            ],
+          }}
+        >
           <OpaqueImageView
             imageURL={props.sale.coverImage.url}
             style={{
@@ -71,12 +66,12 @@ export const SaleHeader: React.FC<Props> = (props) => {
               </Text>
             </Flex>
           </OpaqueImageView>
-        )}
-      </Animated.View>
+        </Animated.View>
+      )}
       <View
         style={{
           backgroundColor: "white",
-          marginTop: COVER_IMAGE_HEIGHT,
+          marginTop: !!props.sale.coverImage?.url ? COVER_IMAGE_HEIGHT : useScreenDimensions().safeAreaInsets.top + 40,
         }}
       >
         <Flex mx="2" mt="2">
