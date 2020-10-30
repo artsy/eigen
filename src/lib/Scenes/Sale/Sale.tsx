@@ -2,17 +2,17 @@ import { captureMessage } from "@sentry/react-native"
 import { SaleQueryRendererQuery, SaleQueryRendererQueryResponse } from "__generated__/SaleQueryRendererQuery.graphql"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import LoadFailureView from "lib/Components/LoadFailureView"
-import Spinner from "lib/Components/Spinner"
 import { navigate, popParentViewController } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { getCurrentEmissionState } from "lib/store/AppStore"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
 import { useInterval } from "lib/utils/useInterval"
 import { usePrevious } from "lib/utils/usePrevious"
-import _ from "lodash"
+import _, { times } from "lodash"
 import moment from "moment"
-import { Flex } from "palette"
+import { Box, Flex, Join, Spacer } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -20,7 +20,7 @@ import { useTracking } from "react-tracking"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
 import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
-import { SaleHeaderContainer as SaleHeader } from "./Components/SaleHeader"
+import { COVER_IMAGE_HEIGHT, SaleHeaderContainer as SaleHeader } from "./Components/SaleHeader"
 import { SaleLotsListContainer } from "./Components/SaleLotsList"
 
 interface Props {
@@ -218,6 +218,36 @@ export const Sale: React.FC<Props> = ({ queryRes }) => {
   )
 }
 
+export const SalePlaceholder: React.FC<{}> = () => (
+  <ProvidePlaceholderContext>
+    <PlaceholderBox height={COVER_IMAGE_HEIGHT} width="100%" />
+    <Flex px={2}>
+      <Join separator={<Spacer my={2} />}>
+        <Box>
+          <PlaceholderText width={200 + Math.random() * 100} marginTop={20} />
+          <PlaceholderText width={200 + Math.random() * 100} marginTop={20} />
+          <PlaceholderText width={100 + Math.random() * 100} marginTop={5} />
+        </Box>
+        <Box>
+          <PlaceholderText height={20} width={100 + Math.random() * 100} marginBottom={20} />
+          <PlaceholderBox height={50} width="100%" />
+        </Box>
+        <Box>
+          <PlaceholderText height={20} width={100 + Math.random() * 100} marginBottom={5} />
+          <Flex flexDirection="row" py={2}>
+            {times(3).map((index: number) => (
+              <Flex key={index} marginRight={1}>
+                <PlaceholderBox height={120} width={120} />
+                <PlaceholderText marginTop={20} key={index} width={40 + Math.random() * 80} />
+              </Flex>
+            ))}
+          </Flex>
+        </Box>
+      </Join>
+    </Flex>
+  </ProvidePlaceholderContext>
+)
+
 export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
   return (
     <QueryRenderer<SaleQueryRendererQuery>
@@ -253,11 +283,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
           return <LoadFailureView style={{ flex: 1 }} />
         }
         if (!props?.me || !props?.sale) {
-          return (
-            <Flex alignItems="center" justifyContent="center" flex={1}>
-              <Spinner />
-            </Flex>
-          )
+          return <SalePlaceholder />
         }
         return <Sale queryRes={props} />
       }}
