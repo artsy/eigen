@@ -214,12 +214,12 @@ describe("MyCollectionArtworkModel", () => {
     })
   })
 
-  it("stops loading on edit error", () => {
+  it("set error occurred on edit error", () => {
     __appStoreTestUtils__?.injectState({
       myCollection: {
         artwork: {
           sessionState: {
-            isLoading: true,
+            artworkErrorOccurred: false,
           },
         },
       },
@@ -227,6 +227,6 @@ describe("MyCollectionArtworkModel", () => {
     const artworkActions = AppStore.actions.myCollection.artwork
     artworkActions.editArtworkError(Error("some error"))
     const artworkState = __appStoreTestUtils__?.getCurrentState().myCollection.artwork
-    expect(artworkState?.sessionState.isLoading).toBe(false)
+    expect(artworkState?.sessionState.artworkErrorOccurred).toBe(true)
   })
 })

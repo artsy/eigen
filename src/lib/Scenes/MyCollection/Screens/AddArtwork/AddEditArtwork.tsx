@@ -2,9 +2,9 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/AddArtwork/Form/useArtworkForm"
 import { AppStore } from "lib/store/AppStore"
-import { BorderBox, Box, Button, Flex, Join, Sans, Spacer, Text } from "palette"
-import React from "react"
-import { ScrollView } from "react-native"
+import { BorderBox, Box, Button, Flex, Join, Sans, Spacer } from "palette"
+import React, { useState } from "react"
+import { ActivityIndicator, ScrollView } from "react-native"
 import { ArrowButton } from "./Components/ArrowButton"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { Dimensions } from "./Components/Dimensions"
@@ -16,76 +16,109 @@ const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 export const AddEditArtwork: React.FC = () => {
   const artworkActions = AppStore.actions.myCollection.artwork
   const artworkState = AppStore.useAppState((state) => state.myCollection.artwork)
+  const [loading, setLoading] = useState<boolean>(false)
   const navState = AppStore.useAppState((state) => state.myCollection.navigation)
   const { formik } = useArtworkForm()
   const modalType = navState?.sessionState?.modalType
   const addOrEditLabel = modalType ? "Edit" : "Add"
 
+  /* FIXME: Wire up proper loading modal */
+  const submitArtwork = () => {
+    /* `handleSubmit` is wired up in <Boot>  */
+    setLoading(true)
+    formik.handleSubmit()
+  }
+
+  const showLoading = loading && !artworkState.sessionState.artworkErrorOccurred
+
+  const deletionStarted = () => {
+    setLoading(true)
+  }
+
+  const LoadingIndicator = () => {
+    return (
+      <Box
+        style={{
+          zIndex: 100,
+          height: "100%",
+          width: "100%",
+          position: "absolute",
+          backgroundColor: "rgba(0, 0, 0, 0.15)",
+        }}
+      >
+        <Flex flex={1} alignItems="center" justifyContent="center">
+          <ActivityIndicator size="large" />
+        </Flex>
+      </Box>
+    )
+  }
+
   return (
-    <ScrollView>
-      <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => artworkActions.cancelAddEditArtwork()}>
-        {addOrEditLabel} artwork
-      </FancyModalHeader>
+    <>
+      {showLoading && <LoadingIndicator />}
+      {/* Disable touch events in form while loading */}
+      <ScrollView pointerEvents={showLoading ? "none" : "auto"}>
+        <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => artworkActions.cancelAddEditArtwork()}>
+          {addOrEditLabel} artwork
+        </FancyModalHeader>
 
-      <Spacer my={1} />
+        <Spacer my={1} />
 
-      {/* FIXME: Wire up proper loading modal */}
-      {!!artworkState.sessionState.isLoading && <Text variant="title">Loading</Text>}
+        <Sans size="4" textAlign="center">
+          {addOrEditLabel} details about your work for a price {"\n"}
+          evaluation and market insights.
+        </Sans>
 
-      <Sans size="4" textAlign="center">
-        {addOrEditLabel} details about your work for a price {"\n"}
-        evaluation and market insights.
-      </Sans>
-
-      <ScreenMargin>
-        <Join separator={<Spacer my={1} />}>
-          <ArtistAutosuggest />
-          <MediumPicker />
-          <Dimensions />
-        </Join>
-      </ScreenMargin>
-
-      <Spacer my={2} />
-
-      <PhotosButton />
-      <AdditionalDetailsButton />
-
-      <Spacer my={2} />
-
-      <ScreenMargin>
-        {/* `handleSubmit` is wired up in <Boot>  */}
-        <Button disabled={!formik.isValid} block onPress={formik.handleSubmit} data-test-id="CompleteButton">
-          Complete
-        </Button>
-
-        {modalType === "edit" && (
-          <Button
-            mt={2}
-            variant="secondaryGray"
-            block
-            onPress={() =>
-              artworkActions.confirmDeleteArtwork({
-                artworkId: artworkState.sessionState.artworkId,
-                artworkGlobalId: artworkState.sessionState.artworkGlobalId,
-              })
-            }
-            data-test-id="DeleteButton"
-          >
-            Delete
-          </Button>
-        )}
-        <Spacer mt={4} />
-      </ScreenMargin>
-
-      {/* Show validation errors during development */}
-      {!!(SHOW_FORM_VALIDATION_ERRORS_IN_DEV && __DEV__ && formik.errors) && (
         <ScreenMargin>
-          <Box my={2}>
-            <Sans size="3">Errors: {JSON.stringify(formik.errors)}</Sans>
-          </Box>
+          <Join separator={<Spacer my={1} />}>
+            <ArtistAutosuggest />
+            <MediumPicker />
+            <Dimensions />
+          </Join>
         </ScreenMargin>
-      )}
-    </ScrollView>
+
+        <Spacer my={2} />
+
+        <PhotosButton />
+        <AdditionalDetailsButton />
+
+        <Spacer my={2} />
+
+        <ScreenMargin>
+          <Button disabled={!formik.isValid} block onPress={submitArtwork} data-test-id="CompleteButton">
+            Complete
+          </Button>
+
+          {modalType === "edit" && (
+            <Button
+              mt={2}
+              variant="secondaryGray"
+              block
+              onPress={() =>
+                artworkActions.confirmDeleteArtwork({
+                  artworkId: artworkState.sessionState.artworkId,
+                  artworkGlobalId: artworkState.sessionState.artworkGlobalId,
+                  startedLoading: deletionStarted,
+                })
+              }
+              data-test-id="DeleteButton"
+            >
+              Delete
+            </Button>
+          )}
+          <Spacer mt={4} />
+        </ScreenMargin>
+
+        {/* Show validation errors during development */}
+        {!!(SHOW_FORM_VALIDATION_ERRORS_IN_DEV && __DEV__ && formik.errors) && (
+          <ScreenMargin>
+            <Box my={2}>
+              <Sans size="3">Errors: {JSON.stringify(formik.errors)}</Sans>
+            </Box>
+          </ScreenMargin>
+        )}
+      </ScrollView>
+    </>
   )
 }
 

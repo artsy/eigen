@@ -18,7 +18,6 @@ import {
 import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Sans, Theme } from "palette"
 import { useTracking } from "react-tracking"
-import { NavigateBackIconContainer } from "../../ArtworkFilterOptions/SingleSelectOption"
 import { FakeNavigator as MockNavigator } from "../../Bidding/__tests__/Helpers/FakeNavigator"
 import { FancyModalHeader } from "../../FancyModal/FancyModalHeader"
 import { closeModalMock, MockFilterScreen } from "../__tests__/FilterTestHelper"
@@ -310,42 +309,6 @@ describe("Filter modal navigation flow", () => {
     // @ts-ignore STRICTNESS_MIGRATION
     const getNextScreenTitle = (component) => component.root.findAllByType(Sans)[0].props.children
     expect(getNextScreenTitle(nextScreen)).toEqual("Medium")
-  })
-
-  xit("allows users to navigate back to filter screen from sort screen ", () => {
-    const filterScreen = mount(<MockFilterScreen initialState={state} />)
-
-    filterScreen.find(TouchableOptionListItemRow).at(0).props().onPress()
-
-    expect(mockNavigator.nextRoute())
-    const nextRoute = mockNavigator.nextRoute()
-    mockNavigator.pop()
-
-    const sortScreen = mount(
-      <Theme>
-        <ArtworkFilterContext.Provider
-          value={{
-            state,
-            dispatch: jest.fn(),
-          }}
-        >
-          {React.createElement(
-            // @ts-ignore STRICTNESS_MIGRATION
-            nextRoute.component,
-            {
-              ...nextRoute.passProps,
-              nextScreen: true,
-              navigator: MockNavigator,
-              relay: {
-                environment: null,
-              },
-            }
-          )}
-        </ArtworkFilterContext.Provider>
-      </Theme>
-    )
-
-    sortScreen.find(NavigateBackIconContainer).props().onPress()
   })
 
   it("allows users to exit filter modal screen when selecting close icon", () => {

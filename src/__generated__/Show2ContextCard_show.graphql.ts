@@ -5,10 +5,13 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Show2ContextCard_show = {
+    readonly internalID: string;
+    readonly slug: string;
     readonly isFairBooth: boolean | null;
     readonly fair: {
-        readonly name: string | null;
+        readonly internalID: string;
         readonly slug: string;
+        readonly name: string | null;
         readonly exhibitionPeriod: string | null;
         readonly profile: {
             readonly icon: {
@@ -20,6 +23,8 @@ export type Show2ContextCard_show = {
         } | null;
     } | null;
     readonly partner: {
+        readonly internalID?: string;
+        readonly slug?: string;
         readonly name?: string | null;
         readonly profile?: {
             readonly slug: string;
@@ -50,7 +55,7 @@ var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "internalID",
   "storageKey": null
 },
 v1 = {
@@ -59,6 +64,13 @@ v1 = {
   "kind": "ScalarField",
   "name": "slug",
   "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
 };
 return {
   "argumentDefinitions": [],
@@ -66,6 +78,8 @@ return {
   "metadata": null,
   "name": "Show2ContextCard_show",
   "selections": [
+    (v0/*: any*/),
+    (v1/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -83,6 +97,7 @@ return {
       "selections": [
         (v0/*: any*/),
         (v1/*: any*/),
+        (v2/*: any*/),
         {
           "alias": null,
           "args": null,
@@ -164,6 +179,8 @@ return {
           "kind": "InlineFragment",
           "selections": [
             (v0/*: any*/),
+            (v1/*: any*/),
+            (v2/*: any*/),
             {
               "alias": null,
               "args": null,
@@ -263,5 +280,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '1926f53f7384ab6a139a0f64910d22b0';
+(node as any).hash = 'd1ca1fc057012a70f203e1cbd2678b41';
 export default node;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3f4d676f04c04afbe26c0f8c07487811 */
+/* @relayHash d5bd7ff636284feb7f461b4855114929 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,10 +31,13 @@ query Show2ContextCardTestsQuery(
 }
 
 fragment Show2ContextCard_show on Show {
+  internalID
+  slug
   isFairBooth
   fair {
-    name
+    internalID
     slug
+    name
     exhibitionPeriod
     profile {
       icon {
@@ -50,6 +53,8 @@ fragment Show2ContextCard_show on Show {
   partner {
     __typename
     ... on Partner {
+      internalID
+      slug
       name
       profile {
         slug
@@ -97,7 +102,7 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "internalID",
   "storageKey": null
 },
 v3 = {
@@ -111,37 +116,44 @@ v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v5 = [
-  (v4/*: any*/)
+v6 = [
+  (v5/*: any*/)
 ],
-v6 = {
+v7 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v7 = {
+v8 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v8 = {
+v9 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Image"
 },
-v9 = {
+v10 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Profile"
 },
-v10 = {
+v11 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
@@ -188,6 +200,8 @@ return {
         "name": "show",
         "plural": false,
         "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -205,6 +219,7 @@ return {
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/),
+              (v4/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -244,7 +259,7 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v4/*: any*/)
+                  (v5/*: any*/)
                 ],
                 "storageKey": null
               },
@@ -272,7 +287,7 @@ return {
                 ],
                 "storageKey": null
               },
-              (v4/*: any*/)
+              (v5/*: any*/)
             ],
             "storageKey": null
           },
@@ -295,6 +310,8 @@ return {
                 "kind": "InlineFragment",
                 "selections": [
                   (v2/*: any*/),
+                  (v3/*: any*/),
+                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -304,7 +321,7 @@ return {
                     "plural": false,
                     "selections": [
                       (v3/*: any*/),
-                      (v4/*: any*/)
+                      (v5/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -374,7 +391,7 @@ return {
                                 ],
                                 "storageKey": null
                               },
-                              (v4/*: any*/)
+                              (v5/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -390,27 +407,27 @@ return {
               },
               {
                 "kind": "InlineFragment",
-                "selections": (v5/*: any*/),
+                "selections": (v6/*: any*/),
                 "type": "Node",
                 "abstractKey": "__isNode"
               },
               {
                 "kind": "InlineFragment",
-                "selections": (v5/*: any*/),
+                "selections": (v6/*: any*/),
                 "type": "ExternalPartner",
                 "abstractKey": null
               }
             ],
             "storageKey": null
           },
-          (v4/*: any*/)
+          (v5/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "3f4d676f04c04afbe26c0f8c07487811",
+    "id": "d5bd7ff636284feb7f461b4855114929",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {
@@ -425,17 +442,19 @@ return {
           "plural": false,
           "type": "Fair"
         },
-        "show.fair.exhibitionPeriod": (v6/*: any*/),
-        "show.fair.id": (v7/*: any*/),
-        "show.fair.image": (v8/*: any*/),
-        "show.fair.image.imageUrl": (v6/*: any*/),
-        "show.fair.name": (v6/*: any*/),
-        "show.fair.profile": (v9/*: any*/),
-        "show.fair.profile.icon": (v8/*: any*/),
-        "show.fair.profile.icon.imageUrl": (v6/*: any*/),
-        "show.fair.profile.id": (v7/*: any*/),
-        "show.fair.slug": (v7/*: any*/),
-        "show.id": (v7/*: any*/),
+        "show.fair.exhibitionPeriod": (v7/*: any*/),
+        "show.fair.id": (v8/*: any*/),
+        "show.fair.image": (v9/*: any*/),
+        "show.fair.image.imageUrl": (v7/*: any*/),
+        "show.fair.internalID": (v8/*: any*/),
+        "show.fair.name": (v7/*: any*/),
+        "show.fair.profile": (v10/*: any*/),
+        "show.fair.profile.icon": (v9/*: any*/),
+        "show.fair.profile.icon.imageUrl": (v7/*: any*/),
+        "show.fair.profile.id": (v8/*: any*/),
+        "show.fair.slug": (v8/*: any*/),
+        "show.id": (v8/*: any*/),
+        "show.internalID": (v8/*: any*/),
         "show.isFairBooth": {
           "enumValues": null,
           "nullable": true,
@@ -448,8 +467,8 @@ return {
           "plural": false,
           "type": "PartnerTypes"
         },
-        "show.partner.__isNode": (v10/*: any*/),
-        "show.partner.__typename": (v10/*: any*/),
+        "show.partner.__isNode": (v11/*: any*/),
+        "show.partner.__typename": (v11/*: any*/),
         "show.partner.artworksConnection": {
           "enumValues": null,
           "nullable": true,
@@ -468,20 +487,23 @@ return {
           "plural": false,
           "type": "Artwork"
         },
-        "show.partner.artworksConnection.edges.node.id": (v7/*: any*/),
-        "show.partner.artworksConnection.edges.node.image": (v8/*: any*/),
-        "show.partner.artworksConnection.edges.node.image.url": (v6/*: any*/),
+        "show.partner.artworksConnection.edges.node.id": (v8/*: any*/),
+        "show.partner.artworksConnection.edges.node.image": (v9/*: any*/),
+        "show.partner.artworksConnection.edges.node.image.url": (v7/*: any*/),
         "show.partner.cities": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "String"
         },
-        "show.partner.id": (v7/*: any*/),
-        "show.partner.name": (v6/*: any*/),
-        "show.partner.profile": (v9/*: any*/),
-        "show.partner.profile.id": (v7/*: any*/),
-        "show.partner.profile.slug": (v7/*: any*/)
+        "show.partner.id": (v8/*: any*/),
+        "show.partner.internalID": (v8/*: any*/),
+        "show.partner.name": (v7/*: any*/),
+        "show.partner.profile": (v10/*: any*/),
+        "show.partner.profile.id": (v8/*: any*/),
+        "show.partner.profile.slug": (v8/*: any*/),
+        "show.partner.slug": (v8/*: any*/),
+        "show.slug": (v8/*: any*/)
       }
     },
     "name": "Show2ContextCardTestsQuery",
