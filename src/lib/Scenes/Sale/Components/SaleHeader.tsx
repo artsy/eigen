@@ -8,7 +8,8 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { CaretButton } from "../../../Components/Buttons/CaretButton"
 import OpaqueImageView from "../../../Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "../../../navigation/navigate"
-const COVER_IMAGE_HEIGHT = 260
+
+export const COVER_IMAGE_HEIGHT = 260
 
 interface AnimatedValue {
   interpolate({}): {}
