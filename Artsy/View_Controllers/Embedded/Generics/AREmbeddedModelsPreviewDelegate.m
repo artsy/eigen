@@ -40,8 +40,7 @@
     }
 
     // Only show visible content
-    
-    // TODO: test this?
+
     UIView *cv = [ARAppDelegate sharedInstance].window.rootViewController.view;
 
     CGRect visible = CGRectIntersection([cell convertRect:cell.bounds toView:nil], [cv convertRect:cv.bounds toView:nil]);
@@ -64,7 +63,7 @@
 - (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(AREmbeddedModelPreviewViewController *)viewControllerToCommit
 {
     id object = viewControllerToCommit.object;
-    
+
     if ([object respondsToSelector:@selector(publicArtsyPath)]) {
         [[AREmission sharedInstance] navigate:[object publicArtsyPath]];
     }
