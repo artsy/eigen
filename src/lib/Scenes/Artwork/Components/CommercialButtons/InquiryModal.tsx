@@ -50,7 +50,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex flexDirection="row">
               <Checkbox
-                data-test-id={`checkbox-${inquiryQuestion}`}
+                data-test-id={`checkbox-${id}`}
                 checked={
                   state.inquiryType === InquiryOptions.RequestPrice && id === InquiryQuestionIDs.PriceAndAvailability
                 }
@@ -120,7 +120,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
       <FancyModalHeader
         leftButtonText="Cancel"
         onLeftButtonPress={() => toggleVisibility()}
-        rightButtonText="send"
+        rightButtonText="Send"
         rightButtonDisabled={state.inquiryQuestions.length === 0}
         onRightButtonPress={() => {
           SubmitInquiryRequest(relay.environment, artwork, state)
