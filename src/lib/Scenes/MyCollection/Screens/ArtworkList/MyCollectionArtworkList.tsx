@@ -11,7 +11,7 @@ import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/util
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Box, Button, Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
-import { FlatList, View } from "react-native"
+import { FlatList, NativeModules, View } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 interface MyCollectionArtworkListProps {
@@ -51,6 +51,7 @@ export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = (
       <FancyModalHeader
         rightButtonText="Add artwork"
         hideBottomDivider
+        onLeftButtonPress={() => NativeModules.ARScreenPresenterModule.goBack()}
         onRightButtonPress={addArtwork}
       ></FancyModalHeader>
       <Text variant="largeTitle" ml={2} mb={2}>

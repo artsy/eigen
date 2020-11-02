@@ -427,7 +427,7 @@ export const modules = defineModules({
   MyBids: { Component: MyBidsQueryRenderer },
   AddEditArtwork: { Component: setupMyCollectionScreen(AddEditArtwork) },
   MyCollectionArtworkDetail: { Component: setupMyCollectionScreen(MyCollectionArtworkDetail) },
-  MyCollectionArtworkList: { Component: setupMyCollectionScreen(MyCollectionArtworkList) },
+  MyCollectionArtworkList: { Component: setupMyCollectionScreen(MyCollectionArtworkList), hidesBackButton: true },
   MyProfile: { Component: MyProfileQueryRenderer, isRootViewForTabName: "profile" },
   MyProfilePayment: { Component: MyProfilePaymentQueryRenderer },
   MyProfilePaymentNewCreditCard: { Component: MyProfilePaymentNewCreditCard, hidesBackButton: true },
