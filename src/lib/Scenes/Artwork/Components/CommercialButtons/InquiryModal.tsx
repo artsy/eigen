@@ -68,7 +68,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
                     payload: {
                       questionID: id,
                       details: isShipping ? state.shippingLocation : null,
-                      checked: shouldBeChecked,
+                      isChecked: shouldBeChecked,
                     },
                   })
                 }}

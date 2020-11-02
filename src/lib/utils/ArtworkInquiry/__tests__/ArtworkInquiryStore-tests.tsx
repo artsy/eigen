@@ -86,7 +86,7 @@ describe("selectInquiryQuestion", () => {
       payload: {
         questionID: "condition_and_provenance",
         details: null,
-        checked: true,
+        isChecked: true,
       },
     }
 
@@ -120,7 +120,7 @@ describe("selectInquiryQuestion", () => {
       payload: {
         questionID: "condition_and_provenance",
         details: null,
-        checked: false,
+        isChecked: false,
       },
     }
 

@@ -36,9 +36,9 @@ export const reducer = (
       }
 
     case "selectInquiryQuestion":
-      const { checked, ...payloadQuestion } = action.payload
+      const { isChecked, ...payloadQuestion } = action.payload
 
-      if (checked) {
+      if (isChecked) {
         inquiryState.inquiryQuestions.push(payloadQuestion)
       } else {
         remove(inquiryState.inquiryQuestions, (question) => question.questionID === payloadQuestion.questionID)

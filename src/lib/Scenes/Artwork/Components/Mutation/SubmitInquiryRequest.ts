@@ -3,12 +3,10 @@ import { commitMutation, Environment, graphql } from "relay-runtime"
 
 export const SubmitInquiryRequest = (environment: Environment, inquireable: any, payload: any) => {
   return commitMutation<SubmitInquiryRequestMutation>(environment, {
-    onError: (err) => {
-      console.log("There was an error: " + err)
+    onError: () => {
       // Show error state
     },
-    onCompleted: (response) => {
-      console.log("Inquiry Submitted: " + response)
+    onCompleted: () => {
       // Show delayed comfirmation notification
     },
     variables: {

@@ -28,7 +28,7 @@ interface SelectLocation {
 
 interface SelectInquiryQuestion {
   type: "selectInquiryQuestion"
-  payload: InquiryQuestionInput & { checked: boolean }
+  payload: InquiryQuestionInput & { isChecked: boolean }
 }
 
 export enum InquiryOptions {
