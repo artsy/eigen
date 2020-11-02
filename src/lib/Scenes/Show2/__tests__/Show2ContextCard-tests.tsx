@@ -5,8 +5,10 @@ import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
+import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { Show2ContextCard, Show2ContextCardFragmentContainer } from "../Components/Show2ContextCard"
 
@@ -14,9 +16,15 @@ jest.unmock("react-relay")
 
 describe("Show2ContextCard", () => {
   let env: ReturnType<typeof createMockEnvironment>
+  const trackEvent = jest.fn()
 
   beforeEach(() => {
     env = createMockEnvironment()
+    ;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent }))
+  })
+
+  afterEach(() => {
+    trackEvent.mockClear()
   })
 
   const TestRenderer = () => (
@@ -94,6 +102,36 @@ describe("Show2ContextCard", () => {
       title.props.onPress()
       expect(navigate).toHaveBeenCalledWith("fair/ifpda-2020")
     })
+
+    it("tracks taps", () => {
+      const wrapper = getWrapper({
+        Show: () => ({
+          isFairBooth: true,
+          internalID: "example-show-id",
+          slug: "example-show-slug",
+        }),
+        Fair: () => ({
+          internalID: "example-fair-id",
+          slug: "example-fair-slug",
+        }),
+      })
+
+      act(() => {
+        wrapper.root.findAllByType(TouchableOpacity)[0].props.onPress()
+      })
+
+      expect(trackEvent).toBeCalledWith({
+        action: "tappedFairCard",
+        context_module: "presentingFair",
+        context_screen_owner_id: "example-show-id",
+        context_screen_owner_slug: "example-show-slug",
+        context_screen_owner_type: "show",
+        destination_screen_owner_id: "example-fair-id",
+        destination_screen_owner_slug: "example-fair-slug",
+        destination_screen_owner_type: "fair",
+        type: "thumbnail",
+      })
+    })
   })
 
   describe("when show is not a fair booth", () => {
@@ -140,6 +178,36 @@ describe("Show2ContextCard", () => {
       const title = wrapper.root.findByType(SectionTitle)
       title.props.onPress()
       expect(navigate).toHaveBeenCalledWith("pace-prints")
+    })
+
+    it("tracks taps", () => {
+      const wrapper = getWrapper({
+        Show: () => ({
+          isFairBooth: false,
+          internalID: "example-show-id",
+          slug: "example-show-slug",
+        }),
+        Partner: () => ({
+          internalID: "example-partner-id",
+          slug: "example-partner-slug",
+        }),
+      })
+
+      act(() => {
+        wrapper.root.findAllByType(TouchableOpacity)[0].props.onPress()
+      })
+
+      expect(trackEvent).toBeCalledWith({
+        action: "tappedPartnerCard",
+        context_module: "presentingPartner",
+        context_screen_owner_id: "example-show-id",
+        context_screen_owner_slug: "example-show-slug",
+        context_screen_owner_type: "show",
+        destination_screen_owner_id: "example-partner-id",
+        destination_screen_owner_slug: "example-partner-slug",
+        destination_screen_owner_type: "partner",
+        type: "thumbnail",
+      })
     })
   })
 })

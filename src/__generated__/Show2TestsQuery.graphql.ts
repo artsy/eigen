@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1ac397337ac1b9ebfd51a9d9ebb29777 */
+/* @relayHash 35b4829a1d0d3239f07e5056df79f84d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -121,10 +121,13 @@ fragment Show2Artworks_show on Show {
 }
 
 fragment Show2ContextCard_show on Show {
+  internalID
+  slug
   isFairBooth
   fair {
-    name
+    internalID
     slug
+    name
     exhibitionPeriod
     profile {
       icon {
@@ -140,6 +143,8 @@ fragment Show2ContextCard_show on Show {
   partner {
     __typename
     ... on Partner {
+      internalID
+      slug
       name
       profile {
         slug
@@ -208,6 +213,8 @@ fragment Show2InstallShots_show on Show {
 }
 
 fragment Show2ViewingRoom_show on Show {
+  internalID
+  slug
   partner {
     __typename
     ... on Partner {
@@ -225,6 +232,8 @@ fragment Show2ViewingRoom_show on Show {
   viewingRoomsConnection {
     edges {
       node {
+        internalID
+        slug
         title
         status
         distanceToOpen(short: true)
@@ -527,6 +536,8 @@ return {
                 "kind": "InlineFragment",
                 "selections": [
                   (v4/*: any*/),
+                  (v2/*: any*/),
+                  (v3/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -729,6 +740,8 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
+                      (v2/*: any*/),
+                      (v3/*: any*/),
                       (v11/*: any*/),
                       {
                         "alias": null,
@@ -805,8 +818,9 @@ return {
             "name": "fair",
             "plural": false,
             "selections": [
-              (v4/*: any*/),
+              (v2/*: any*/),
               (v3/*: any*/),
+              (v4/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -1265,7 +1279,7 @@ return {
     ]
   },
   "params": {
-    "id": "1ac397337ac1b9ebfd51a9d9ebb29777",
+    "id": "35b4829a1d0d3239f07e5056df79f84d",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {
@@ -1293,6 +1307,7 @@ return {
         "show.fair.id": (v16/*: any*/),
         "show.fair.image": (v17/*: any*/),
         "show.fair.image.imageUrl": (v14/*: any*/),
+        "show.fair.internalID": (v16/*: any*/),
         "show.fair.name": (v14/*: any*/),
         "show.fair.profile": (v18/*: any*/),
         "show.fair.profile.icon": (v17/*: any*/),
@@ -1360,10 +1375,12 @@ return {
           "type": "String"
         },
         "show.partner.id": (v16/*: any*/),
+        "show.partner.internalID": (v16/*: any*/),
         "show.partner.name": (v14/*: any*/),
         "show.partner.profile": (v18/*: any*/),
         "show.partner.profile.id": (v16/*: any*/),
         "show.partner.profile.slug": (v16/*: any*/),
+        "show.partner.slug": (v16/*: any*/),
         "show.showArtworks": {
           "enumValues": null,
           "nullable": true,
@@ -1544,6 +1561,8 @@ return {
           "type": "ImageURLs"
         },
         "show.viewingRoomsConnection.edges.node.image.imageURLs.normalized": (v14/*: any*/),
+        "show.viewingRoomsConnection.edges.node.internalID": (v16/*: any*/),
+        "show.viewingRoomsConnection.edges.node.slug": (v19/*: any*/),
         "show.viewingRoomsConnection.edges.node.status": (v19/*: any*/),
         "show.viewingRoomsConnection.edges.node.title": (v19/*: any*/)
       }

@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Show2ContextCard_show } from "__generated__/Show2ContextCard_show.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
@@ -6,6 +7,7 @@ import { Box, BoxProps, Flex, SmallCard, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 export interface Show2ContextCardProps extends BoxProps {
   show: Show2ContextCard_show
@@ -14,7 +16,47 @@ export interface Show2ContextCardProps extends BoxProps {
 export const Show2ContextCard: React.FC<Show2ContextCardProps> = ({ show }) => {
   const { isFairBooth, fair, partner } = show
 
-  const props: ContextCardProps = isFairBooth ? extractPropsFromFair(fair) : extractPropsFromPartner(partner)
+  const { onPress, ...rest } = isFairBooth ? extractPropsFromFair(fair) : extractPropsFromPartner(partner)
+
+  const tracking = useTracking()
+
+  const props = {
+    onPress: () => {
+      onPress()
+
+      const context = {
+        type: "thumbnail",
+        context_screen_owner_type: OwnerType.show,
+        context_screen_owner_id: show.internalID,
+        context_screen_owner_slug: show.slug,
+      }
+
+      if (isFairBooth) {
+        const data = {
+          ...context,
+          action: ActionType.tappedFairCard,
+          context_module: ContextModule.presentingFair,
+          destination_screen_owner_type: OwnerType.fair,
+          destination_screen_owner_id: fair!.internalID,
+          destination_screen_owner_slug: fair!.slug,
+        }
+
+        tracking.trackEvent(data)
+      } else {
+        const data = {
+          ...context,
+          action: ActionType.tappedPartnerCard,
+          context_module: ContextModule.presentingPartner,
+          destination_screen_owner_type: OwnerType.partner,
+          destination_screen_owner_id: partner!.internalID,
+          destination_screen_owner_slug: partner!.slug,
+        }
+
+        tracking.trackEvent(data)
+      }
+    },
+    ...rest,
+  }
 
   return <ContextCard {...props} />
 }
@@ -56,9 +98,11 @@ const ContextCard: React.FC<ContextCardProps> = ({ sectionTitle, imageUrls, icon
     <>
       <Box m={2}>
         <SectionTitle title={sectionTitle} onPress={onPress} />
+
         <TouchableOpacity onPress={onPress}>
-          <Box style={{ position: "relative" }}>
+          <Box position="relative">
             {imageElement}
+
             {!!iconUrl && (
               <Flex
                 alignItems="center"
@@ -75,9 +119,11 @@ const ContextCard: React.FC<ContextCardProps> = ({ sectionTitle, imageUrls, icon
               </Flex>
             )}
           </Box>
+
           <Text variant="mediumText" mt={0.5}>
             {title}
           </Text>
+
           {!!subtitle && (
             <Text variant="caption" color="black60">
               {subtitle}
@@ -92,10 +138,13 @@ const ContextCard: React.FC<ContextCardProps> = ({ sectionTitle, imageUrls, icon
 export const Show2ContextCardFragmentContainer = createFragmentContainer(Show2ContextCard, {
   show: graphql`
     fragment Show2ContextCard_show on Show {
+      internalID
+      slug
       isFairBooth
       fair {
-        name
+        internalID
         slug
+        name
         exhibitionPeriod
         profile {
           icon {
@@ -108,6 +157,8 @@ export const Show2ContextCardFragmentContainer = createFragmentContainer(Show2Co
       }
       partner {
         ... on Partner {
+          internalID
+          slug
           name
           profile {
             slug

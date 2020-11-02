@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash afdff93cec27900c6fd92709e8126332 */
+/* @relayHash 70959e4ab1f58f7f2e45e3dc221753a6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -121,10 +121,13 @@ fragment Show2Artworks_show on Show {
 }
 
 fragment Show2ContextCard_show on Show {
+  internalID
+  slug
   isFairBooth
   fair {
-    name
+    internalID
     slug
+    name
     exhibitionPeriod
     profile {
       icon {
@@ -140,6 +143,8 @@ fragment Show2ContextCard_show on Show {
   partner {
     __typename
     ... on Partner {
+      internalID
+      slug
       name
       profile {
         slug
@@ -208,6 +213,8 @@ fragment Show2InstallShots_show on Show {
 }
 
 fragment Show2ViewingRoom_show on Show {
+  internalID
+  slug
   partner {
     __typename
     ... on Partner {
@@ -225,6 +232,8 @@ fragment Show2ViewingRoom_show on Show {
   viewingRoomsConnection {
     edges {
       node {
+        internalID
+        slug
         title
         status
         distanceToOpen(short: true)
@@ -473,6 +482,8 @@ return {
                 "kind": "InlineFragment",
                 "selections": [
                   (v4/*: any*/),
+                  (v2/*: any*/),
+                  (v3/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -675,6 +686,8 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
+                      (v2/*: any*/),
+                      (v3/*: any*/),
                       (v11/*: any*/),
                       {
                         "alias": null,
@@ -751,8 +764,9 @@ return {
             "name": "fair",
             "plural": false,
             "selections": [
-              (v4/*: any*/),
+              (v2/*: any*/),
               (v3/*: any*/),
+              (v4/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -1211,7 +1225,7 @@ return {
     ]
   },
   "params": {
-    "id": "afdff93cec27900c6fd92709e8126332",
+    "id": "70959e4ab1f58f7f2e45e3dc221753a6",
     "metadata": {},
     "name": "Show2Query",
     "operationKind": "query",
