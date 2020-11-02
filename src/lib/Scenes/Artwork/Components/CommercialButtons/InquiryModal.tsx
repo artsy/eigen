@@ -50,7 +50,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex flexDirection="row">
               <Checkbox
-                data-test-id={`checkbox-${id}`}
+                data-test-id={`checkbox-${inquiryQuestion}`}
                 checked={
                   state.inquiryType === InquiryOptions.RequestPrice && id === InquiryQuestionIDs.PriceAndAvailability
                 }
