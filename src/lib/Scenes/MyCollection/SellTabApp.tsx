@@ -2,7 +2,11 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import React from "react"
 import { ConsignmentsHomeQueryRenderer } from "./Screens/ConsignmentsHome/ConsignmentsHome"
 
-export const SellTabApp: React.FC = () => {
+interface SellTabAppProps {
+  isArrivingFromMyCollection?: boolean
+}
+
+export const SellTabApp: React.FC<SellTabAppProps> = (props) => {
   return (
     <ProvideScreenTracking
       info={{
@@ -10,7 +14,7 @@ export const SellTabApp: React.FC = () => {
         context_screen_owner_type: null,
       }}
     >
-      <ConsignmentsHomeQueryRenderer />
+      <ConsignmentsHomeQueryRenderer isArrivingFromMyCollection={props.isArrivingFromMyCollection} />
     </ProvideScreenTracking>
   )
 }

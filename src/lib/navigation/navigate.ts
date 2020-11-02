@@ -3,7 +3,7 @@ import { Linking, NativeModules } from "react-native"
 import { matchRoute } from "./routes"
 import { handleFairRouting } from "./util"
 
-export function navigate(url: string, options: { modal?: boolean } = {}) {
+export function navigate(url: string, options: { modal?: boolean; passProps?: object } = {}) {
   let result = matchRoute(url)
 
   if (result.type === "external_url") {
@@ -23,18 +23,26 @@ export function navigate(url: string, options: { modal?: boolean } = {}) {
 
   const presentModally = options.modal ?? module.alwaysPresentModally ?? false
 
+  let params = result.params
+  if (options.passProps) {
+    params = {
+      ...options.passProps,
+      ...result.params,
+    }
+  }
+
   if (isNativeModule(module)) {
-    NativeModules.ARScreenPresenterModule.presentNativeScreen(result.module, result.params, presentModally)
+    NativeModules.ARScreenPresenterModule.presentNativeScreen(result.module, params, presentModally)
   } else {
     if (module.isRootViewForTabName && !presentModally) {
-      NativeModules.ARScreenPresenterModule.switchTab(module.isRootViewForTabName, result.params, true)
+      NativeModules.ARScreenPresenterModule.switchTab(module.isRootViewForTabName, params, true)
     } else {
       if (module.onlyShowInTabName) {
         NativeModules.ARScreenPresenterModule.switchTab(module.onlyShowInTabName, {}, true)
       }
       NativeModules.ARScreenPresenterModule.presentReactScreen(
         result.module,
-        result.params,
+        params,
         presentModally,
         module.hidesBackButton ?? false
       )

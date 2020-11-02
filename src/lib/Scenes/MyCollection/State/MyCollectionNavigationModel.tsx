@@ -10,7 +10,6 @@ import { AddPhotos } from "../Screens/AddArtwork/Screens/AddPhotos"
 import { MyCollectionArtworkDetailQueryRenderer } from "../Screens/ArtworkDetail/MyCollectionArtworkDetail"
 import { ViewAllDetails } from "../Screens/ArtworkDetail/Screens/ViewAllDetails"
 import { MyCollectionArtworkListQueryRenderer } from "../Screens/ArtworkList/MyCollectionArtworkList"
-import { ConsignmentsSubmissionForm } from "../Screens/ConsignmentsHome/ConsignmentsSubmissionForm"
 
 type ModalType = "add" | "edit" | null
 export type InfoModalType = "demandIndex" | "priceEstimate" | "artistMarket" | "auctionResults" | null
@@ -252,18 +251,25 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
 
   navigateToConsignLearnMore: action((_) => {
     setImmediate(() => {
-      navigate("/collections/my-collection/marketing-landing")
+      navigate("/collections/my-collection/marketing-landing", {
+        passProps: {
+          // TODO: Eventually, when consignments submissions and MyCollection are merged,
+          // these flags can go away
+          isArrivingFromMyCollection: true,
+        },
+      })
     })
   }),
 
-  navigateToConsignSubmission: action((state) => {
-    getNavigatorIOS(state.sessionState).push({
-      component: ConsignmentsSubmissionForm,
-      passProps: {
-        // TODO: Eventually, when consignments submissions and MyCollection are merged,
-        // these flags can go away
-        isArrivingFromMyCollection: true,
-      },
+  navigateToConsignSubmission: action((_) => {
+    setImmediate(() => {
+      navigate("/collections/my-collection/artworks/new/submissions/new", {
+        passProps: {
+          // TODO: Eventually, when consignments submissions and MyCollection are merged,
+          // these flags can go away
+          isArrivingFromMyCollection: true,
+        },
+      })
     })
   }),
 }
