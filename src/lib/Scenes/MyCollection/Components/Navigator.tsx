@@ -29,6 +29,17 @@ export const Navigator: React.FC<NavigatorProps> = ({ children, name, title = ""
 
           useEffect(() => {
             navActions.addNavigator({ navigator, name })
+
+            return function cleanup() {
+              /*
+               * Unmounting the main nav stack
+               * clean up references so they can
+               * be recreated
+               */
+              if (name === "main") {
+                navActions.resetNavigation()
+              }
+            }
           }, [])
 
           return <>{children}</>

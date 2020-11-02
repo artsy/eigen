@@ -51,7 +51,9 @@ export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = (
       <FancyModalHeader
         rightButtonText="Add artwork"
         hideBottomDivider
-        onLeftButtonPress={() => NativeModules.ARScreenPresenterModule.goBack()}
+        onLeftButtonPress={() => {
+          NativeModules.ARScreenPresenterModule.goBack()
+        }}
         onRightButtonPress={addArtwork}
       ></FancyModalHeader>
       <Text variant="largeTitle" ml={2} mb={2}>

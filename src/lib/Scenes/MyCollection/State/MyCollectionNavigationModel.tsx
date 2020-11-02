@@ -2,7 +2,7 @@ import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy"
 import { navigate } from "lib/navigation/navigate"
 import { AppStoreModel } from "lib/store/AppStoreModel"
 import { isEmpty } from "lodash"
-import { RefObject } from "react"
+import { MutableRefObject, RefObject } from "react"
 import NavigatorIOS from "react-native-navigator-ios"
 import { NavigatorProps, NavigatorTarget } from "../Components/Navigator"
 import { AdditionalDetails } from "../Screens/AddArtwork/Screens/AdditionalDetails"
@@ -19,9 +19,9 @@ export interface MyCollectionNavigationModel {
   sessionState: {
     infoModalType: InfoModalType
     modalType: ModalType
-    navViewRef: RefObject<any>
+    navViewRef: MutableRefObject<any>
     navigators: {
-      [key: string]: NavigatorProps
+      [key: string]: NavigatorProps | null
     }
   }
 
@@ -31,6 +31,7 @@ export interface MyCollectionNavigationModel {
       navViewRef: RefObject<any>
     }
   >
+  resetNavigation: Action<MyCollectionNavigationModel>
 
   addNavigator: Action<MyCollectionNavigationModel, NavigatorProps>
 
@@ -83,6 +84,12 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     if (!state.sessionState.navViewRef.current) {
       state.sessionState.navViewRef = navViewRef
     }
+  }),
+
+  resetNavigation: action((state) => {
+    state.sessionState.navViewRef.current = null
+    state.sessionState.navigators.main = null
+    state.sessionState.navigators.modal = null
   }),
 
   /**
@@ -247,15 +254,6 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     setImmediate(() => {
       navigate("/collections/my-collection/marketing-landing")
     })
-
-    // getNavigatorIOS(state.sessionState).push({
-    //   component: ConsignmentsHomeQueryRenderer,
-    //   passProps: {
-    //     // TODO: Eventually, when consignments submissions and MyCollection are merged,
-    //     // these flags can go away
-    //     isArrivingFromMyCollection: true,
-    //   },
-    // })
   }),
 
   navigateToConsignSubmission: action((state) => {
