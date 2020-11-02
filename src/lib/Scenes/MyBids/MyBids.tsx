@@ -1,5 +1,5 @@
 import { groupBy, mapValues, partition, sortBy } from "lodash"
-import { Button, Flex, Join, Separator, Spacer, Text } from "palette"
+import { Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
@@ -8,7 +8,6 @@ import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -50,10 +49,6 @@ class MyBids extends React.Component<MyBidsProps> {
 
     const noActiveBids = activeStandings.length === 0
     const noClosedBids = closedStandings.length === 0
-
-    const handleViewAllAuctions = () => {
-      SwitchBoard.presentNavigationViewController(this, `/auctions`)
-    }
 
     return (
       <Flex flex={1}>
