@@ -91,7 +91,10 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
    * need to know which navigator to use at any given time.
    */
   addNavigator: action((state, navigator) => {
-    state.sessionState.navigators[navigator.name] = navigator
+    const currentNavigator = state.sessionState.navigators[navigator.name]?.navigator
+    if (!currentNavigator) {
+      state.sessionState.navigators[navigator.name] = navigator
+    }
   }),
 
   goBack: action((state) => {
