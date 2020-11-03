@@ -218,8 +218,8 @@ RCT_EXPORT_METHOD(goBack:(nonnull NSString *)currentTabStackID)
     UINavigationController *vc = (id)[self.class currentlyPresentedVC];
     if ([vc presentingViewController]) {
         // it's a modal
-        if ([vc isKindOfClass:UINavigationController.class] && vc.viewControllers.count > 1) {
-            [((UINavigationController *)vc) popViewControllerAnimated:YES];
+        if ([vc isKindOfClass:ARModalWithBottomSafeArea.class] && ((ARModalWithBottomSafeArea *)vc).stack.viewControllers.count > 1) {
+            [((ARModalWithBottomSafeArea *)vc).stack popViewControllerAnimated:YES];
         } else {
             [self dismissModal];
         }
