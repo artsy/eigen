@@ -2,8 +2,10 @@ import { Show2ViewingRoomTestsQuery } from "__generated__/Show2ViewingRoomTestsQ
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
+import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { Show2ViewingRoomFragmentContainer } from "../Components/Show2ViewingRoom"
 
@@ -11,9 +13,15 @@ jest.unmock("react-relay")
 
 describe("Show2ViewingRoom", () => {
   let env: ReturnType<typeof createMockEnvironment>
+  const trackEvent = jest.fn()
 
   beforeEach(() => {
     env = createMockEnvironment()
+    ;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent }))
+  })
+
+  afterEach(() => {
+    trackEvent.mockClear()
   })
 
   const TestRenderer = () => (
@@ -55,5 +63,28 @@ describe("Show2ViewingRoom", () => {
 
     expect(text).toContain("Example Partner")
     expect(text).toContain("Example Viewing Room")
+  })
+
+  it("tracks taps", () => {
+    const wrapper = getWrapper({
+      Show: () => ({ internalID: "example-show-id", slug: "example-slug" }),
+      ViewingRoom: () => ({ internalID: "example-viewing-room-id", slug: "example-viewing-room-slug" }),
+    })
+
+    act(() => {
+      wrapper.root.findAllByType(TouchableOpacity)[0].props.onPress()
+    })
+
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedViewingRoomCard",
+      context_module: "associatedViewingRoom",
+      context_screen_owner_id: "example-show-id",
+      context_screen_owner_slug: "example-slug",
+      context_screen_owner_type: "show",
+      destination_screen_owner_id: "example-viewing-room-id",
+      destination_screen_owner_slug: "example-viewing-room-slug",
+      destination_screen_owner_type: "viewingRoom",
+      type: "thumbnail",
+    })
   })
 })
