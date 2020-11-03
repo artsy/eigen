@@ -410,11 +410,20 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
   [controller.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide stackID:(NSString *)stackID)
+RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide currentTabStackID:(NSString *)currentTabStackID)
 {
-    ARNavigationController *arNav = (id)[self.class getNavigationStack:stackID];
-    if ([arNav isKindOfClass:ARNavigationController.class]) {
-        [arNav showBackButton:!shouldHide animated:YES];
+    ARModalWithBottomSafeArea *vc = (id)[self.class currentlyPresentedVC];
+    ARNavigationController *stack = nil;
+    
+    if ([vc isKindOfClass:ARModalWithBottomSafeArea.class]) {
+        // we're presenting a modal, update its back button
+        stack = (id)vc.stack;
+    } else {
+        stack = (id)[self.class getNavigationStack:currentTabStackID];
+    }
+
+    if ([stack isKindOfClass:ARNavigationController.class]) {
+        [stack showBackButton:!shouldHide animated:YES];
     }
 }
 

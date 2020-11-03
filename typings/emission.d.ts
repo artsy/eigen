@@ -41,7 +41,7 @@ declare module "react-native" {
         artworkSlug: string,
         artworkId: string
       ): void
-      updateShouldHideBackButton(shouldHideBackButton: boolean, stackID: string): void
+      updateShouldHideBackButton(shouldHideBackButton: boolean, currentTabStackID: string): void
     }
   }
 }
