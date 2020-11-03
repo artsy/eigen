@@ -56,7 +56,7 @@ export const Show2InstallShotsFragmentContainer = createFragmentContainer(Show2I
   show: graphql`
     fragment Show2InstallShots_show on Show {
       name
-      images {
+      images(default: false) {
         internalID
         caption
         src: url(version: ["larger", "large"])

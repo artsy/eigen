@@ -84,7 +84,7 @@ export const Show2FragmentContainer = createFragmentContainer(Show2, {
       ...Show2ViewingRoom_show
       ...Show2ContextCard_show
       viewingRoomIDs
-      images {
+      images(default: false) {
         __typename
       }
       counts {
