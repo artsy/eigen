@@ -8,7 +8,7 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import moment from "moment"
 import { Flex, Join, Sans, Separator, Text } from "palette"
 import React from "react"
-import { Linking, ScrollView, TextInput } from "react-native"
+import { FlatList, Linking, ScrollView, TextInput } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 import { Markdown } from "lib/Components/Markdown"
@@ -50,9 +50,9 @@ const markdownRules = {
 const AuctionSupport = () => {
   return (
     <Flex mt={1}>
-      <Sans px={2} size="5t" mb={15}>
+      <Text variant="subtitle" px={2} mb={15}>
         Auction support
-      </Sans>
+      </Text>
       <MenuItem
         title="Auction FAQs"
         onPress={() => {
@@ -93,9 +93,7 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
 
     return (
       <Flex mb={1}>
-        <Text variant="text" color="black" fontSize="size4" mt={25} fontWeight="500">
-          Live bidding opens on
-        </Text>
+        <Text variant="text">Live bidding opens on</Text>
         <Text variant="text" color="black" fontSize="size4">
           {`${moment(sale.liveStartAt).format("dddd, MMMM, D, YYYY")} at ${moment(sale.liveStartAt).format(
             "h:mma"
@@ -123,12 +121,79 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
           {renderLiveBiddingOpening()}
         </Flex>
 
-        {/*  Live Auction Notice */}
         {Boolean(sale.liveStartAt) && <AuctionIsLive />}
-        {/*  Auction Support */}
+        {!!sale.isWithBuyersPremium && <BuyersPremium sale={sale} />}
         <AuctionSupport />
       </Join>
     </ScrollView>
+  )
+}
+
+const createPremiumDisplay = (props: { sale: SaleInfo_sale }) => {
+  return (
+    <FlatList
+      data={props.sale.buyersPremium}
+      renderItem={({ item, index }) => {
+        return <BuyersPremiumItem sale={props.sale} currentValue={item} index={index} />
+      }}
+      keyExtractor={(item, _index) => item?.amount || "0"}
+    />
+  )
+}
+
+interface BuyersPremiumItemProps {
+  sale: SaleInfo_sale
+  currentValue: {
+    amount: string | null
+    percent: number | null
+  } | null
+  index: number
+}
+
+const BuyersPremiumItem: React.FC<BuyersPremiumItemProps> = (props) => {
+  let premiumText
+
+  const buyersPremium = props.sale.buyersPremium
+  const amount = props.currentValue?.amount
+  const percent = (props.currentValue?.percent || 0) * 100 + "%"
+  const listLength = props.sale.buyersPremium?.length || 0
+
+  const nextValue = !!buyersPremium ? buyersPremium[props.index + 1] : null
+
+  if (props.index === 0) {
+    premiumText = `On the hammer price up to and including ${nextValue?.amount}: ${percent}`
+  } else if (props.index === listLength - 1) {
+    premiumText = `On the portion of the hammer price in excess of ${amount}: ${percent}`
+  } else {
+    premiumText = `On the hammer price in excess of ${amount} up to and including ${nextValue?.amount}: ${percent}`
+  }
+  return (
+    <Text variant="text" mb={1}>
+      {premiumText}
+    </Text>
+  )
+}
+
+const BuyersPremium: React.FC<{ sale: SaleInfo_sale }> = (props) => {
+  let premiumDisplay
+
+  const buyersPremium = props.sale.buyersPremium
+  if (!buyersPremium || buyersPremium?.length === 0) {
+    return null
+  }
+
+  if (buyersPremium.length === 1) {
+    premiumDisplay = <Text variant="text">{(buyersPremium[0]?.percent || 0) * 100}% on the hammer price</Text>
+  } else {
+    premiumDisplay = createPremiumDisplay(props)
+  }
+  return (
+    <Flex px={2}>
+      <Text variant="subtitle" mb={2}>
+        Buyer's Premium for this Auction
+      </Text>
+      {premiumDisplay}
+    </Flex>
   )
 }
 
@@ -157,6 +222,11 @@ export const SaleInfoContainer = createFragmentContainer(SaleInfo, {
       name
       startAt
       timeZone
+      isWithBuyersPremium
+      buyersPremium {
+        amount
+        percent
+      }
     }
   `,
   me: graphql`

@@ -11,6 +11,11 @@ export type SaleInfo_sale = {
     readonly name: string | null;
     readonly startAt: string | null;
     readonly timeZone: string | null;
+    readonly isWithBuyersPremium: boolean | null;
+    readonly buyersPremium: ReadonlyArray<{
+        readonly amount: string | null;
+        readonly percent: number | null;
+    } | null> | null;
     readonly " $fragmentRefs": FragmentRefs<"RegisterToBidButton_sale">;
     readonly " $refType": "SaleInfo_sale";
 };
@@ -71,6 +76,38 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "isWithBuyersPremium",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "BuyersPremium",
+      "kind": "LinkedField",
+      "name": "buyersPremium",
+      "plural": true,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "amount",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "percent",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
       "args": null,
       "kind": "FragmentSpread",
       "name": "RegisterToBidButton_sale"
@@ -79,5 +116,5 @@ const node: ReaderFragment = {
   "type": "Sale",
   "abstractKey": null
 };
-(node as any).hash = '1dae841dcb5cb7920bb0a46a767b8a1e';
+(node as any).hash = '945d2921b4be6b6b0e641004da8003c8';
 export default node;
