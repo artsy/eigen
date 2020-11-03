@@ -15,7 +15,6 @@ type NativeViewProps =
       viewProps: {
         tabName: BottomTabType
         rootModuleName: AppModule
-        rootModuleProps: object
       }
     }
 

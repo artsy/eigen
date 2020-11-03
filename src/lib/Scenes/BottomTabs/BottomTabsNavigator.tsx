@@ -1,28 +1,19 @@
 import { AppModule } from "lib/AppRegistry"
 import { NativeViewController } from "lib/Components/NativeViewController"
-import { AppStore, useSelectedTab } from "lib/store/AppStore"
+import { useSelectedTab } from "lib/store/AppStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useEffect, useRef } from "react"
 import { Animated, View } from "react-native"
 import { BottomTabs } from "./BottomTabs"
 import { BottomTabType } from "./BottomTabType"
 
-const NavStack = ({
-  tabName,
-  rootModuleName,
-  rootModuleProps,
-}: {
-  tabName: BottomTabType
-  rootModuleName: AppModule
-  rootModuleProps: object
-}) => {
+const NavStack = ({ tabName, rootModuleName }: { tabName: BottomTabType; rootModuleName: AppModule }) => {
   return (
     <NativeViewController
       viewName="TabNavigationStack"
       viewProps={{
         tabName,
         rootModuleName,
-        rootModuleProps,
       }}
     />
   )
@@ -30,17 +21,16 @@ const NavStack = ({
 
 export const BottomTabsNavigator = () => {
   const selectedTab = useSelectedTab()
-  const tabProps = AppStore.useAppState((state) => state.bottomTabs.sessionState.tabProps)
   const { bottom } = useScreenDimensions().safeAreaInsets
   return (
     <View style={{ flex: 1, paddingBottom: bottom }}>
       <FadeBetween
         views={[
-          <NavStack tabName="home" rootModuleName="Home" rootModuleProps={tabProps.home ?? {}} />,
-          <NavStack tabName="search" rootModuleName="Search" rootModuleProps={tabProps.search ?? {}} />,
-          <NavStack tabName="inbox" rootModuleName="Inbox" rootModuleProps={tabProps.inbox ?? {}} />,
-          <NavStack tabName="sell" rootModuleName="SellTabApp" rootModuleProps={tabProps.sell ?? {}} />,
-          <NavStack tabName="profile" rootModuleName="MyProfile" rootModuleProps={tabProps.profile ?? {}} />,
+          <NavStack tabName="home" rootModuleName="Home" />,
+          <NavStack tabName="search" rootModuleName="Search" />,
+          <NavStack tabName="inbox" rootModuleName="Inbox" />,
+          <NavStack tabName="sell" rootModuleName="SellTabApp" />,
+          <NavStack tabName="profile" rootModuleName="MyProfile" />,
         ]}
         activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(selectedTab)}
       />

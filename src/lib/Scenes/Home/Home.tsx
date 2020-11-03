@@ -334,7 +334,10 @@ const messages = {
   },
 }
 
-export const HomeQueryRenderer: React.FC<{ flash_message?: string }> = ({ flash_message }) => {
+export const HomeQueryRenderer: React.FC = () => {
+  const { flash_message } = AppStore.useAppState((state) => state.bottomTabs.sessionState.tabProps.home ?? {}) as {
+    flash_message?: string
+  }
   useEffect(() => {
     if (flash_message) {
       const message = messages[flash_message as keyof typeof messages]

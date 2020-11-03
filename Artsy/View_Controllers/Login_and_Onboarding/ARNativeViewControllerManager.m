@@ -36,20 +36,6 @@
     self.wrappedViewController.view.frame = self.bounds;
 }
 
-- (void)setViewProps:(NSDictionary *)viewProps
-{
-    _viewProps = viewProps;
-    if ([self.viewName isEqualToString:@"TabNavigationStack"]) {
-        ARNavigationController *nav = [ARScreenPresenterModule getNavigationStack:viewProps[@"tabName"]];
-        
-        ARComponentViewController *rootVC = (id)nav.rootViewController;
-        
-        if ([rootVC isKindOfClass:ARComponentViewController.class]) {
-            rootVC.rootView.appProperties = viewProps[@"rootModuleProps"];
-        }
-    }
-}
-
 - (UIViewController *)getWrappedViewController {
     if ([self.viewName isEqualToString:@"Onboarding"]) {
         return [[AROnboardingViewController alloc] init];
@@ -60,8 +46,7 @@
             NSLog(@"ARNativeViewControllerManager->TabNavigationStack requires both tabName and moduleName");
             return nil;
         }
-        NSDictionary *props = self.viewProps[@"rootModuleProps"];
-        return [self getOrCreateNavStackForModule:tabName module:moduleName withProps:props];
+        return [self getOrCreateNavStackForModule:tabName module:moduleName withProps:@{}];
     } else {
         return nil;
     }
