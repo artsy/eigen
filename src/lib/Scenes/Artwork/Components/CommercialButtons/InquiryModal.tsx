@@ -42,14 +42,13 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const renderInquiryQuestion = (id: string, inquiryQuestion: string): JSX.Element => {
     // Shipping requires special logic to accomodate dropdown and shipping modal
     const isShipping = id === InquiryQuestionIDs.Shipping
-
     return (
       <React.Fragment key={inquiryQuestion}>
         <InquiryField>
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex flexDirection="row">
               <Checkbox
-                data-test-id={`checkbox-${inquiryQuestion}`}
+                data-test-id={`checkbox-${id}`}
                 checked={
                   state.inquiryType === InquiryOptions.RequestPrice && id === InquiryQuestionIDs.PriceAndAvailability
                 }
