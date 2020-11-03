@@ -185,7 +185,6 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
             NSString *slug = props[@"slug"];
             vc = [[LiveAuctionViewController alloc] initWithSaleSlugOrID:slug];
         }
-        // TODO: modalPresentationStyle = UIModalPresentationFullScreen;
     } else if ([moduleName isEqualToString:@"LocalDiscovery"]) {
         vc = [[AREigenMapContainerViewController alloc] init];
     } else if ([moduleName isEqualToString:@"WebView"]) {
