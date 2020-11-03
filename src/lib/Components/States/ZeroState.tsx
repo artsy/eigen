@@ -3,7 +3,7 @@ import React from "react"
 import { Flex, Sans, Spacer } from "palette"
 
 interface ZeroStateProps {
-  title: string
+  title?: string
   subtitle?: string
   separators?: boolean
   callToAction?: JSX.Element
@@ -18,7 +18,7 @@ export const ZeroState = (props: ZeroStateProps) => (
 
     {!!props.subtitle && (
       <>
-        <Sans size="4" textAlign="center">
+        <Sans size="4" textAlign="center" maxWidth={!!props.title ? "100%" : "80%"}>
           {props.subtitle}
         </Sans>
         <Spacer mb={3} />
