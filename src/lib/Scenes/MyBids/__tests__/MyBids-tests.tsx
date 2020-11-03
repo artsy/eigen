@@ -132,4 +132,54 @@ describe(MyBidsQueryRenderer, () => {
 
     expect(tree).toMatchInlineSnapshot(`null`)
   })
+
+  it("renders the no upcoming bids view when there are no active bids", () => {
+    const me = {
+      auctionsLotStandingConnection: {
+        edges: [],
+      },
+    }
+
+    const tree = renderWithWrappers(<MyBidsQueryRenderer />)
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("MyBidsQuery")
+
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          me,
+        },
+      })
+    })
+
+    expect(extractText(tree.root)).toContain("You don't have any upcoming bids.")
+    expect(extractText(tree.root)).toContain(
+      "Watch a live auction and place bids in advance or in real time, or you can bid in our curated timed auction"
+    )
+  })
+
+  it("renders the no bidding history view when there are no closed bids", () => {
+    const me = {
+      auctionsLotStandingConnection: {
+        edges: [],
+      },
+    }
+
+    const tree = renderWithWrappers(<MyBidsQueryRenderer />)
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("MyBidsQuery")
+
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          me,
+        },
+      })
+    })
+
+    expect(extractText(tree.root)).toContain("No bidding history")
+    expect(extractText(tree.root)).toContain(
+      "Watch a live auction and place bids in advance or in real time, or you can bid in our curated timed auction"
+    )
+  })
 })
