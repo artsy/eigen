@@ -10,7 +10,9 @@ export const Field: React.FC<{ label: string; value: string | null }> = ({ label
       <Sans size="4" color="black60" pr={1}>
         {label}
       </Sans>
-      <Sans size="4">{value}</Sans>
+      <Sans size="4" style={{ flex: 1, maxWidth: 200 }} textAlign={"right"}>
+        {value}
+      </Sans>
     </Flex>
   )
 }
