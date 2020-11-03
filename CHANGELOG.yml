@@ -29,6 +29,7 @@ upcoming:
     - Adds Show2 location map - damon
     - Adds Show2 location hours - damon
     - Add inquiry questions state to reducer + wire up mutation - christina
+    - Fix keyboard touch intercept (my collection) - brian
 
 releases:
   - version: 6.6.7
