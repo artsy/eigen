@@ -54,8 +54,8 @@ describe("MyCollectionArtworkDemandIndex", () => {
     expect(wrapper.root.findByType(tests.DemandRankDetails)).toBeDefined()
     const text = extractText(wrapper.root)
     expect(text).toContain("Demand index")
-    expect(text).toContain("800.080")
-    expect(text).toContain("Very Strong Demand (> 0.9)")
+    expect(text).toContain("800.010.0")
+    expect(text).toContain("Very Strong Demand (> 9.0)")
   })
 
   // TODO: Figure out why it can't find InfoButton

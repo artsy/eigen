@@ -44,7 +44,7 @@ const DemandRankDetails: React.FC<{ demandRank: number }> = ({ demandRank }) => 
       case demandRank >= 9: {
         return (
           <Bubble
-            title="Very Strong Demand (> 0.9)"
+            title="Very Strong Demand (> 9.0)"
             subTitle="This is a great time to sell. Works like these are [the most popular] [highly sought after]"
           />
         )
@@ -52,18 +52,18 @@ const DemandRankDetails: React.FC<{ demandRank: number }> = ({ demandRank }) => 
       case demandRank >= 7 && demandRank < 9: {
         return (
           <Bubble
-            title="Strong Demand (0.7 – 0.9)"
+            title="Strong Demand (7.0 – 9.0)"
             subTitle="There are more collectors looking to buy works like these than [there are for sale] [works available]"
           />
         )
       }
       case demandRank >= 4 && demandRank < 7: {
-        return <Bubble title="Stable Market (0.4 – 0.7)" subTitle="The market is neutral for buying and selling." />
+        return <Bubble title="Stable Market (4.0 – 7.0)" subTitle="The market is neutral for buying and selling." />
       }
       case demandRank < 4: {
         return (
           <Bubble
-            title="Less Active Market  (<0.4)"
+            title="Less Active Market  (<4.0)"
             subTitle="The market for selling isn’t very active yet. We will notify you when the market changes"
           />
         )
