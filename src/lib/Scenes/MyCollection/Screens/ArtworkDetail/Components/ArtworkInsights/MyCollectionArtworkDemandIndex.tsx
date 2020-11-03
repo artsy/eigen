@@ -91,7 +91,7 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
       <Spacer my={0.3} />
       <Flex flexDirection="row" justifyContent="space-between">
         <Text>0.0</Text>
-        <Text>{demandRank}</Text>
+        <Text>10.0</Text>
       </Flex>
     </>
   )
