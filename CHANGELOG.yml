@@ -11,6 +11,24 @@ upcoming:
     - Adds Show2 viewing room - damon
     - Adds auction closed banner - mounir
     - Fix add artwork modal title (my collection) - brian
+    - Switch to live auction from new sale page - barry, brian
+    - Adds ability to filter by artist in a fair - sweir
+    - Fix environment variable names for Sentry - starsirius
+    - Fix capitalization on home auction rail - pavlos
+    - Adds Show2 header, behind lab option - damon
+    - Adds Show2 install shots, behind lab option - damon
+    - Link ConversationDetail screen - sepans
+    - Handle artist page subroutes natively by default - david
+    - Fix Vanity URL fallbacks - david
+    - Adds Show2 basic more information route, behind lab option - damon
+    - Add Show2 context card, linking to Fair or Partner - roop
+    - Fix filters on Fair2 Works by Artists I follow artwork grid - devon
+    - Fix blank screen bug in My Collection - brian
+    - Adds Show2 artwork grid + filter - mzikherman
+    - Add active bids to new auction sale page - mounir
+    - Adds Show2 location map - damon
+    - Adds Show2 location hours - damon
+    - Add inquiry questions state to reducer + wire up mutation - christina
 
 releases:
   - version: 6.6.7

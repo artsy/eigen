@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b16883b65b407e69fcde97861cf721cd */
+/* @relayHash ce6d1d29ff6251c9724c008e721c0fb7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -236,6 +236,7 @@ fragment InquiryButtons_artwork on Artwork {
 
 fragment InquiryModal_artwork on Artwork {
   ...CollapsibleArtworkDetails_artwork
+  internalID
   inquiryQuestions {
     internalID
     question
@@ -744,7 +745,7 @@ return {
     ]
   },
   "params": {
-    "id": "b16883b65b407e69fcde97861cf721cd",
+    "id": "ce6d1d29ff6251c9724c008e721c0fb7",
     "metadata": {},
     "name": "CommercialButtonsTestsMutationQuery",
     "operationKind": "query",

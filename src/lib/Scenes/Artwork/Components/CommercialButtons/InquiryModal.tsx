@@ -9,8 +9,9 @@ import { Box, color, Flex, Separator, space, Text } from "palette"
 import React, { useContext, useState } from "react"
 import { LayoutAnimation, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
+import { SubmitInquiryRequest } from "../Mutation/SubmitInquiryRequest"
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
 import { ShippingModal } from "./ShippingModal"
 
@@ -21,10 +22,11 @@ interface InquiryModalProps {
   toggleVisibility: () => void
   navigator?: NavigatorIOS
   modalIsVisible: boolean
+  relay: RelayProp
 }
 
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props }) => {
-  const { toggleVisibility, modalIsVisible } = props
+  const { toggleVisibility, modalIsVisible, relay } = props
   const questions = artwork?.inquiryQuestions!
   const { state, dispatch } = useContext(ArtworkInquiryContext)
   const [locationExpanded, setLocationExpanded] = useState(false)
@@ -52,7 +54,24 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
                 checked={
                   state.inquiryType === InquiryOptions.RequestPrice && id === InquiryQuestionIDs.PriceAndAvailability
                 }
-                onPress={() => isShipping && toggleLocationExpanded()}
+                onPress={() => {
+                  if (isShipping) {
+                    toggleLocationExpanded()
+                  }
+
+                  const shouldBeChecked: boolean = !state.inquiryQuestions.find((question) => {
+                    return question.questionID === id
+                  })
+
+                  dispatch({
+                    type: "selectInquiryQuestion",
+                    payload: {
+                      questionID: id,
+                      details: isShipping ? state.shippingLocation : null,
+                      isChecked: shouldBeChecked,
+                    },
+                  })
+                }}
               />
               <Text variant="text">{inquiryQuestion}</Text>
             </Flex>
@@ -98,7 +117,15 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
 
   return (
     <FancyModal visible={modalIsVisible} onBackgroundPressed={() => toggleVisibility()}>
-      <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => toggleVisibility()}>
+      <FancyModalHeader
+        leftButtonText="Cancel"
+        onLeftButtonPress={() => toggleVisibility()}
+        rightButtonText="Send"
+        rightButtonDisabled={state.inquiryQuestions.length === 0}
+        onRightButtonPress={() => {
+          SubmitInquiryRequest(relay.environment, artwork, state)
+        }}
+      >
         Contact Gallery
       </FancyModalHeader>
       <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
@@ -137,6 +164,7 @@ export const InquiryModalFragmentContainer = createFragmentContainer(InquiryModa
   artwork: graphql`
     fragment InquiryModal_artwork on Artwork {
       ...CollapsibleArtworkDetails_artwork
+      internalID
       inquiryQuestions {
         internalID
         question
