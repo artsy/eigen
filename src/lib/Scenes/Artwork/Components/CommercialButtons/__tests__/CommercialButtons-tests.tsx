@@ -106,11 +106,11 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(commercialButtons.find(Button).at(0).text()).toContain("Inquire to Purchase")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact Gallery")
+    expect(commercialButtons.find(Button).at(0).text()).toContain("Inquire to purchase")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact gallery")
   })
 
-  it("renders Inquire on Price button if isInquireable, price is hidden, and lab option is true", async () => {
+  it("renders Inquire on price button if isInquireable, price is hidden, and lab option is true", async () => {
     __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFirstInquiry: true })
 
     const artwork = {
@@ -126,8 +126,8 @@ describe("CommercialButtons", () => {
       artwork,
     })
 
-    expect(commercialButtons.find(Button).at(0).text()).toContain("Request Price")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact Gallery")
+    expect(commercialButtons.find(Button).at(0).text()).toContain("Inquire on price")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact gallery")
   })
 
   it("renders Make Offer button if isOfferable", async () => {

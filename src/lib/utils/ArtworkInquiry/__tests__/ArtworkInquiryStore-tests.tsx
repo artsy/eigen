@@ -22,12 +22,12 @@ describe("selectInquiryType", () => {
 
     expect(r).toEqual({
       shippingLocation: null,
-      inquiryType: "Request Price",
+      inquiryType: "Inquire on price",
       inquiryQuestions: [{ questionID: "price_and_availability" }],
     })
   })
 
-  it("updates the global state when payload is Contact Gallery", () => {
+  it("updates the global state when payload is Contact gallery", () => {
     inquiryState = {
       shippingLocation: null,
       inquiryType: null,
@@ -43,12 +43,12 @@ describe("selectInquiryType", () => {
 
     expect(r).toEqual({
       shippingLocation: null,
-      inquiryType: "Contact Gallery",
+      inquiryType: "Contact gallery",
       inquiryQuestions: [],
     })
   })
 
-  it("updates the global state when payload is Inquire to Purchase", () => {
+  it("updates the global state when payload is Inquire to purchase", () => {
     inquiryState = {
       shippingLocation: null,
       inquiryType: null,
@@ -64,7 +64,7 @@ describe("selectInquiryType", () => {
 
     expect(r).toEqual({
       shippingLocation: null,
-      inquiryType: "Inquire to Purchase",
+      inquiryType: "Inquire to purchase",
       inquiryQuestions: [],
     })
   })
@@ -102,7 +102,7 @@ describe("selectInquiryQuestion", () => {
   it("when a question is deselected it gets removed from the inquiryQuestions array", () => {
     inquiryState = {
       shippingLocation: null,
-      inquiryType: "Inquire to Purchase",
+      inquiryType: "Inquire to purchase",
       inquiryQuestions: [
         {
           questionID: "shipping_quote",
@@ -128,7 +128,7 @@ describe("selectInquiryQuestion", () => {
 
     expect(r).toEqual({
       shippingLocation: null,
-      inquiryType: "Inquire to Purchase",
+      inquiryType: "Inquire to purchase",
       inquiryQuestions: [{ questionID: "shipping_quote", details: null }],
     })
   })

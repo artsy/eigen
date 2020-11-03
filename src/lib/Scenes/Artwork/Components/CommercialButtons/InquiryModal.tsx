@@ -39,7 +39,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   }
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const selectShippingLocation = (l: string) => dispatch({ type: "selectShippingLocation", payload: l })
-
   const renderInquiryQuestion = (id: string, inquiryQuestion: string): JSX.Element => {
     // Shipping requires special logic to accomodate dropdown and shipping modal
     const isShipping = id === InquiryQuestionIDs.Shipping
@@ -126,7 +125,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           SubmitInquiryRequest(relay.environment, artwork, state)
         }}
       >
-        Contact Gallery
+        {state.inquiryType}
       </FancyModalHeader>
       <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
       <Box m={2}>
