@@ -59,7 +59,7 @@ export const BottomTabsModel: BottomTabsModel = {
 }
 
 // We want the selected tab state to persist across dev reloads, but not across app launches.
-// So every time we switch tab we'll also save the number of launces + the newly selected tab
+// So every time we switch tab we'll also save the number of launches + the newly selected tab
 // and every time the store rehydrates we'll check whether the number of launches is the same as the last
 // time the app switched tab. if so, we reinstate the last selected tab.
 const reloadStateKey = "__dev__reloadState"
