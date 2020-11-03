@@ -114,7 +114,6 @@ export function getCurrentEmissionState() {
  * react components.
  */
 export function unsafe__getSelectedTab() {
-  // on initial load appStoreInstance might be undefined
   return appStoreInstance?.getState().bottomTabs.sessionState.selectedTab
 }
 
