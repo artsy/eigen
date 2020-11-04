@@ -55,7 +55,7 @@ export const AddEditArtwork: React.FC = () => {
 
   const isFormDirty = () => {
     // if you fill an empty field then delete it again, it changes from null to ""
-    const replacer = (_, value: any) => (value === "" ? null : value)
+    const replacer = (_: any, value: any) => (value === "" ? null : value)
     return (
       JSON.stringify(artworkState.sessionState.dirtyFormCheckValues, replacer) !==
       JSON.stringify(artworkState.sessionState.formValues, replacer)
