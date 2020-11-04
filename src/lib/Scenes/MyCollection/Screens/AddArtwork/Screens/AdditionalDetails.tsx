@@ -32,9 +32,9 @@ export const AdditionalDetails = () => {
               defaultValue={formikValues.title}
             />
             <Input
-              title="Date"
-              keyboardType="numbers-and-punctuation"
-              placeholder="Date"
+              title="Year"
+              keyboardType="number-pad"
+              placeholder="Year"
               onChangeText={formik.handleChange("date")}
               onBlur={formik.handleBlur("date")}
               data-test-id="DateInput"
