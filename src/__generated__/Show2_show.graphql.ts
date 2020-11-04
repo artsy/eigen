@@ -54,7 +54,13 @@ const node: ReaderFragment = {
     },
     {
       "alias": null,
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "default",
+          "value": false
+        }
+      ],
       "concreteType": "Image",
       "kind": "LinkedField",
       "name": "images",
@@ -68,7 +74,7 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
-      "storageKey": null
+      "storageKey": "images(default:false)"
     },
     {
       "alias": null,
@@ -122,5 +128,5 @@ const node: ReaderFragment = {
   "type": "Show",
   "abstractKey": null
 };
-(node as any).hash = 'e20bc01376b87d88e49e722dc54c0011';
+(node as any).hash = '742e452e7539388cc883730cb12e96aa';
 export default node;

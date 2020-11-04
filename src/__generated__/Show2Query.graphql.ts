@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 70959e4ab1f58f7f2e45e3dc221753a6 */
+/* @relayHash 37574088e4833d9e0b0bc4269d06bda1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -201,7 +201,7 @@ fragment Show2Info_show on Show {
 
 fragment Show2InstallShots_show on Show {
   name
-  images {
+  images(default: false) {
     internalID
     caption
     src: url(version: ["larger", "large"])
@@ -258,7 +258,7 @@ fragment Show2_show on Show {
   ...Show2ViewingRoom_show
   ...Show2ContextCard_show
   viewingRoomIDs
-  images {
+  images(default: false) {
     __typename
   }
   counts {
@@ -589,7 +589,13 @@ return {
           },
           {
             "alias": null,
-            "args": null,
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "default",
+                "value": false
+              }
+            ],
             "concreteType": "Image",
             "kind": "LinkedField",
             "name": "images",
@@ -652,7 +658,7 @@ return {
               },
               (v6/*: any*/)
             ],
-            "storageKey": null
+            "storageKey": "images(default:false)"
           },
           (v10/*: any*/),
           {
@@ -1225,7 +1231,7 @@ return {
     ]
   },
   "params": {
-    "id": "70959e4ab1f58f7f2e45e3dc221753a6",
+    "id": "37574088e4833d9e0b0bc4269d06bda1",
     "metadata": {},
     "name": "Show2Query",
     "operationKind": "query",

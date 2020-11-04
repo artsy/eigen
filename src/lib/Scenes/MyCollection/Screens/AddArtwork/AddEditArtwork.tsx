@@ -20,7 +20,7 @@ export const AddEditArtwork: React.FC = () => {
   const navState = AppStore.useAppState((state) => state.myCollection.navigation)
   const { formik } = useArtworkForm()
   const modalType = navState?.sessionState?.modalType
-  const addOrEditLabel = modalType ? "Edit" : "Add"
+  const addOrEditLabel = modalType === "edit" ? "Edit" : "Add"
 
   /* FIXME: Wire up proper loading modal */
   const submitArtwork = () => {
