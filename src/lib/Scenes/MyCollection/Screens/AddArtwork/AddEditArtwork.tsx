@@ -53,6 +53,15 @@ export const AddEditArtwork: React.FC = () => {
     )
   }
 
+  const isFormDirty = () => {
+    // if you fill an empty field then delete it again, it changes from null to ""
+    const replacer = (_, value: any) => (value === "" ? null : value)
+    return (
+      JSON.stringify(artworkState.sessionState.dirtyFormCheckValues, replacer) !==
+      JSON.stringify(artworkState.sessionState.formValues, replacer)
+    )
+  }
+
   return (
     <>
       {showLoading && <LoadingIndicator />}
@@ -86,17 +95,22 @@ export const AddEditArtwork: React.FC = () => {
         <PhotosButton />
         <AdditionalDetailsButton />
 
-        <Spacer my={2} />
+        <Spacer mt={2} mb={1} />
 
         <ScreenMargin>
-          <Button disabled={!formik.isValid} block onPress={submitArtwork} data-test-id="CompleteButton">
-            Complete
+          <Button
+            disabled={!formik.isValid || !isFormDirty()}
+            block
+            onPress={submitArtwork}
+            data-test-id="CompleteButton"
+          >
+            {modalType === "edit" ? "Save changes" : "Complete"}
           </Button>
 
           {modalType === "edit" && (
             <Button
-              mt={2}
-              variant="secondaryGray"
+              mt={1}
+              variant="secondaryOutlineWarning"
               block
               onPress={() =>
                 artworkActions.confirmDeleteArtwork({
@@ -107,7 +121,7 @@ export const AddEditArtwork: React.FC = () => {
               }
               data-test-id="DeleteButton"
             >
-              Delete
+              Delete artwork
             </Button>
           )}
           <Spacer mt={4} />
