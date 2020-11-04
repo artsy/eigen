@@ -555,7 +555,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     Alert.alert("Error deleting artwork", "TODO add better message")
   }),
 
-  cancelAddEditArtwork: thunk((actions, _payload, { getState, getStoreActions }) => {
+  cancelAddEditArtwork: thunk((actions, _payload, { getState, getStoreActions, getStoreState }) => {
+    const modalType = getStoreState().myCollection.navigation.sessionState.modalType
     const navigationActions = getStoreActions().myCollection.navigation
     const formIsDirty = !isEqual(getState().sessionState.formValues, getState().sessionState.dirtyFormCheckValues)
 
@@ -575,6 +576,10 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
         }
       )
     } else {
+      // avoid edit form values leaking into add artwork forms
+      if (modalType === "edit") {
+        actions.resetForm()
+      }
       navigationActions.dismissModal()
     }
   }),

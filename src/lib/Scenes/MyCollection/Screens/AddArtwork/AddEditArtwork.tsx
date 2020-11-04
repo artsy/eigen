@@ -57,7 +57,11 @@ export const AddEditArtwork: React.FC = () => {
     <>
       {showLoading && <LoadingIndicator />}
       {/* Disable touch events in form while loading */}
-      <ScrollView pointerEvents={showLoading ? "none" : "auto"}>
+      <ScrollView
+        pointerEvents={showLoading ? "none" : "auto"}
+        keyboardDismissMode={"on-drag"}
+        keyboardShouldPersistTaps={"handled"}
+      >
         <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => artworkActions.cancelAddEditArtwork()}>
           {addOrEditLabel} artwork
         </FancyModalHeader>
