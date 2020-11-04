@@ -52,6 +52,7 @@ upcoming:
     - Fix keyboard touch intercept (my collection) - brian
     - Fix persisting edit form values (my collection) - brian
     - Fix artist name truncation on add/edit artwork page (my collection) - david
+    - Fix photo layout in add/edit artwork page (my collection) - adam
 
 releases:
   - version: 6.6.7
