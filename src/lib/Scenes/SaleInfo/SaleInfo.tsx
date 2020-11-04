@@ -13,6 +13,7 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { navigate } from "../../navigation/navigate"
 import { PlaceholderBox } from "../../utils/placeholders"
 import { RegisterToBidButtonContainer } from "../Sale/Components/RegisterToBidButton"
+import { saleStatus } from "../Sale/helpers"
 
 interface Props {
   sale: SaleInfo_sale
@@ -86,8 +87,12 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
           <Sans size="5" mt={1} mb={3}>
             {sale.name}
           </Sans>
-          <RegisterToBidButtonContainer sale={sale} contextType="sale_information" me={me} />
-          <Text variant="text" color="black" fontSize="size4" mt={25}>
+          {saleStatus(sale.startAt, sale.endAt) === "closed" || (
+            <Flex mb={4}>
+              <RegisterToBidButtonContainer sale={sale} contextType="sale_information" me={me} />
+            </Flex>
+          )}
+          <Text variant="text" color="black" fontSize="size4">
             {sale.description}
           </Text>
           {renderLiveBiddingOpening()}
