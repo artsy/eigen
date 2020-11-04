@@ -18,6 +18,7 @@ import {
   MyBidsPlaceholder,
   SaleCardFragmentContainer,
 } from "./Components"
+import { NoBids } from "./Components/NoBids"
 import { isLotStandingComplete, TimelySale } from "./helpers/timely"
 
 export interface MyBidsProps {
@@ -46,6 +47,9 @@ class MyBids extends React.Component<MyBidsProps> {
       return moment(timelySale.relevantEnd).unix()
     })
 
+    const noActiveBids = activeStandings.length === 0
+    const noClosedBids = closedStandings.length === 0
+
     return (
       <Flex flex={1}>
         <StickyTabPage
@@ -64,6 +68,7 @@ class MyBids extends React.Component<MyBidsProps> {
                   <Spacer my={1} />
 
                   <Join separator={<Spacer my={1} />}>
+                    {!!noActiveBids && <NoBids headerText="You don't have any upcoming bids." />}
                     {sortedSaleIds.map((saleId) => {
                       const activeLotStandings = sortedActiveLots[saleId]
                       const sale = activeLotStandings[0]?.saleArtwork?.sale!
@@ -90,6 +95,7 @@ class MyBids extends React.Component<MyBidsProps> {
               content: (
                 <StickyTabPageScrollView data-test-id="closed-section">
                   <Flex mt={1}>
+                    {!!noClosedBids && <NoBids headerText="No bidding history" />}
                     {closedStandings?.map((ls) => {
                       return (
                         !!ls && (

@@ -1,6 +1,7 @@
+import { InquiryQuestionInput } from "__generated__/SubmitInquiryRequestMutation.graphql"
 import { Dispatch } from "react"
 
-export type ArtworkInquiryActions = SelectInquiryType | SelectLocation
+export type ArtworkInquiryActions = SelectInquiryType | SelectLocation | SelectInquiryQuestion
 
 export interface ArtworkInquiryContextProps {
   state: ArtworkInquiryContextState
@@ -10,9 +11,10 @@ export interface ArtworkInquiryContextProps {
 export interface ArtworkInquiryContextState {
   readonly inquiryType: InquiryTypes | null
   readonly shippingLocation: string | null
+  readonly inquiryQuestions: InquiryQuestionInput[]
 }
 
-export type InquiryTypes = "Request Price" | "Contact Gallery" | "Inquire to Purchase"
+export type InquiryTypes = "Inquire on price" | "Contact gallery" | "Inquire to purchase"
 
 interface SelectInquiryType {
   type: "selectInquiryType"
@@ -24,10 +26,15 @@ interface SelectLocation {
   payload: string
 }
 
+interface SelectInquiryQuestion {
+  type: "selectInquiryQuestion"
+  payload: InquiryQuestionInput & { isChecked: boolean }
+}
+
 export enum InquiryOptions {
-  RequestPrice = "Request Price",
-  ContactGallery = "Contact Gallery",
-  InquireToPurchase = "Inquire to Purchase",
+  RequestPrice = "Inquire on price",
+  ContactGallery = "Contact gallery",
+  InquireToPurchase = "Inquire to purchase",
 }
 
 /**
@@ -37,4 +44,8 @@ export enum InquiryOptions {
 export enum InquiryQuestionIDs {
   Shipping = "shipping_quote",
   PriceAndAvailability = "price_and_availability",
+  ConditionAndProvance = "condition_and_provenance",
+  SimilarWork = "similar_work",
+  ArtistInformation = "artist_information",
+  ArtworkInformation = "artwork_information",
 }
