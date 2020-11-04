@@ -1,6 +1,7 @@
 import { SaleHeader_sale } from "__generated__/SaleHeader_sale.graphql"
 import { saleTime } from "lib/utils/saleTime"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import moment from "moment"
 import { Flex, Text } from "palette"
 import React from "react"
 import { Animated, Dimensions, View } from "react-native"
@@ -20,11 +21,12 @@ interface Props {
   scrollAnim: AnimatedValue
 }
 
-export const SaleHeader: React.FC<Props> = (props) => {
-  const saleTimeDetails = saleTime(props.sale)
+export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
+  const saleTimeDetails = saleTime(sale)
+
   return (
     <>
-      {!!props.sale.coverImage?.url && (
+      {!!sale.coverImage?.url && (
         <Animated.View
           style={{
             position: "absolute",
@@ -32,13 +34,13 @@ export const SaleHeader: React.FC<Props> = (props) => {
             left: 0,
             height: COVER_IMAGE_HEIGHT,
             width: "100%",
-            opacity: props.scrollAnim.interpolate({
+            opacity: scrollAnim.interpolate({
               inputRange: [0, COVER_IMAGE_HEIGHT],
               outputRange: [1, 0],
             }),
             transform: [
               {
-                translateY: props.scrollAnim.interpolate({
+                translateY: scrollAnim.interpolate({
                   inputRange: [-1, 0, 1],
                   outputRange: [0, 0, 0.5],
                 }),
@@ -47,37 +49,39 @@ export const SaleHeader: React.FC<Props> = (props) => {
           }}
         >
           <OpaqueImageView
-            imageURL={props.sale.coverImage.url}
+            imageURL={sale.coverImage.url}
             style={{
               width: Dimensions.get("window").width,
               height: COVER_IMAGE_HEIGHT,
             }}
           >
-            <Flex
-              style={{
-                backgroundColor: "rgba(0,0,0,0.5)",
-                width: Dimensions.get("window").width,
-                height: COVER_IMAGE_HEIGHT,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text variant="subtitle" fontWeight="500" color="white">
-                Auction closed
-              </Text>
-            </Flex>
+            {!!sale.endAt && !!moment().isAfter(sale.endAt) && (
+              <Flex
+                style={{
+                  backgroundColor: "rgba(0,0,0,0.5)",
+                  width: Dimensions.get("window").width,
+                  height: COVER_IMAGE_HEIGHT,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text variant="subtitle" fontWeight="500" color="white">
+                  Auction closed
+                </Text>
+              </Flex>
+            )}
           </OpaqueImageView>
         </Animated.View>
       )}
       <View
         style={{
           backgroundColor: "white",
-          marginTop: !!props.sale.coverImage?.url ? COVER_IMAGE_HEIGHT : useScreenDimensions().safeAreaInsets.top + 40,
+          marginTop: !!sale.coverImage?.url ? COVER_IMAGE_HEIGHT : useScreenDimensions().safeAreaInsets.top + 40,
         }}
       >
         <Flex mx="2" mt="2">
           <Text variant="largeTitle" testID="saleName">
-            {props.sale.name}
+            {sale.name}
           </Text>
           <Flex my="1">
             {saleTimeDetails.absolute !== null && (
@@ -94,7 +98,7 @@ export const SaleHeader: React.FC<Props> = (props) => {
           <CaretButton
             text="More info about this auction"
             onPress={() => {
-              navigate(`auction/${props.sale.slug}/info`)
+              navigate(`auction/${sale.slug}/info`)
             }}
           />
         </Flex>

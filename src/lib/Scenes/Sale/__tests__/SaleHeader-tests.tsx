@@ -3,6 +3,7 @@ import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import moment from "moment"
 import React from "react"
 import { Animated } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -60,13 +61,13 @@ describe("SaleHeader", () => {
     expect(tree.root.findAllByType(CaretButton)).toHaveLength(1)
   })
 
-  it("renders auction is closed", () => {
+  it("renders auction is closed when an auction has passed", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
-          endAt: "2020-10-01T15:00:00",
+          endAt: moment().subtract(1, "day").toISOString(),
           startAt: "2020-09-01T15:00:00",
           timeZone: "Europe/Berlin",
           coverImage: {
@@ -80,5 +81,27 @@ describe("SaleHeader", () => {
     )
 
     expect(extractText(tree.root.findAllByType(OpaqueImageView)[0])).toBe("Auction closed")
+  })
+
+  it("does not render auction is closed when an auction is still active", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Sale: () => ({
+          endAt: moment().add(1, "day").toISOString(),
+          startAt: "2020-09-01T15:00:00",
+          timeZone: "Europe/Berlin",
+          coverImage: {
+            url: "cover image url",
+          },
+          name: "sale name",
+          liveStartAt: "2020-09-01T15:00:00",
+          internalID: "the-sale-internal",
+        }),
+      })
+    )
+
+    expect(extractText(tree.root.findAllByType(OpaqueImageView)[0])).not.toContain("Auction closed")
   })
 })
