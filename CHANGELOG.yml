@@ -49,6 +49,7 @@ upcoming:
     - Adds Show2 location map - damon
     - Adds Show2 location hours - damon
     - Add inquiry questions state to reducer + wire up mutation - christina
+    - Fix persisting edit form values (my collection) - brian
 
 releases:
   - version: 6.6.7
