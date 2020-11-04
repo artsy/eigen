@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 35b4829a1d0d3239f07e5056df79f84d */
+/* @relayHash 99e96fed6be5bcfcbb6ee373bbac2f3b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -201,7 +201,7 @@ fragment Show2Info_show on Show {
 
 fragment Show2InstallShots_show on Show {
   name
-  images {
+  images(default: false) {
     internalID
     caption
     src: url(version: ["larger", "large"])
@@ -258,7 +258,7 @@ fragment Show2_show on Show {
   ...Show2ViewingRoom_show
   ...Show2ContextCard_show
   viewingRoomIDs
-  images {
+  images(default: false) {
     __typename
   }
   counts {
@@ -643,7 +643,13 @@ return {
           },
           {
             "alias": null,
-            "args": null,
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "default",
+                "value": false
+              }
+            ],
             "concreteType": "Image",
             "kind": "LinkedField",
             "name": "images",
@@ -706,7 +712,7 @@ return {
               },
               (v6/*: any*/)
             ],
-            "storageKey": null
+            "storageKey": "images(default:false)"
           },
           (v10/*: any*/),
           {
@@ -1279,7 +1285,7 @@ return {
     ]
   },
   "params": {
-    "id": "35b4829a1d0d3239f07e5056df79f84d",
+    "id": "99e96fed6be5bcfcbb6ee373bbac2f3b",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {

@@ -14,7 +14,7 @@ export interface ArtworkInquiryContextState {
   readonly inquiryQuestions: InquiryQuestionInput[]
 }
 
-export type InquiryTypes = "Request Price" | "Contact Gallery" | "Inquire to Purchase"
+export type InquiryTypes = "Inquire on price" | "Contact gallery" | "Inquire to purchase"
 
 interface SelectInquiryType {
   type: "selectInquiryType"
@@ -32,9 +32,9 @@ interface SelectInquiryQuestion {
 }
 
 export enum InquiryOptions {
-  RequestPrice = "Request Price",
-  ContactGallery = "Contact Gallery",
-  InquireToPurchase = "Inquire to Purchase",
+  RequestPrice = "Inquire on price",
+  ContactGallery = "Contact gallery",
+  InquireToPurchase = "Inquire to purchase",
 }
 
 /**
