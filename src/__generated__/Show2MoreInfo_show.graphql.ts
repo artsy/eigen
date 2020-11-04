@@ -16,15 +16,43 @@ export type Show2MoreInfo_show = {
     readonly fair: {
         readonly location: {
             readonly __typename: string;
-            readonly openingHours: {
-                readonly __typename: string;
+            readonly openingHours: ({
+                readonly __typename: "OpeningHoursArray";
+                readonly schedules: ReadonlyArray<{
+                    readonly __typename: string;
+                } | null> | null;
+            } | {
+                readonly __typename: "OpeningHoursText";
+                readonly text: string | null;
+            } | {
+                /*This will never be '%other', but we need some
+                value in case none of the concrete values match.*/
+                readonly __typename: "%other";
+            }) | null;
+            readonly coordinates: {
+                readonly lat: number | null;
+                readonly lng: number | null;
             } | null;
         } | null;
     } | null;
     readonly location: {
         readonly __typename: string;
-        readonly openingHours: {
-            readonly __typename: string;
+        readonly openingHours: ({
+            readonly __typename: "OpeningHoursArray";
+            readonly schedules: ReadonlyArray<{
+                readonly __typename: string;
+            } | null> | null;
+        } | {
+            readonly __typename: "OpeningHoursText";
+            readonly text: string | null;
+        } | {
+            /*This will never be '%other', but we need some
+            value in case none of the concrete values match.*/
+            readonly __typename: "%other";
+        }) | null;
+        readonly coordinates: {
+            readonly lat: number | null;
+            readonly lng: number | null;
         } | null;
     } | null;
     readonly " $fragmentRefs": FragmentRefs<"Show2Location_show" | "Show2Hours_show">;
@@ -63,7 +91,65 @@ v1 = {
       "name": "openingHours",
       "plural": false,
       "selections": [
-        (v0/*: any*/)
+        (v0/*: any*/),
+        {
+          "kind": "InlineFragment",
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "FormattedDaySchedules",
+              "kind": "LinkedField",
+              "name": "schedules",
+              "plural": true,
+              "selections": [
+                (v0/*: any*/)
+              ],
+              "storageKey": null
+            }
+          ],
+          "type": "OpeningHoursArray",
+          "abstractKey": null
+        },
+        {
+          "kind": "InlineFragment",
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "text",
+              "storageKey": null
+            }
+          ],
+          "type": "OpeningHoursText",
+          "abstractKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "LatLng",
+      "kind": "LinkedField",
+      "name": "coordinates",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "lat",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "lng",
+          "storageKey": null
+        }
       ],
       "storageKey": null
     }
@@ -162,5 +248,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '227f8a4eb40b805cee6d7434f76ea794';
+(node as any).hash = '6a62162619be68eadd94c7f7853682a5';
 export default node;
