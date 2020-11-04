@@ -9,21 +9,23 @@ export interface Show2LocationProps extends BoxProps {
 }
 
 export const Show2Location: React.FC<Show2LocationProps> = ({ show, ...rest }) => {
-  if (!(!!show.location || !!show.fair?.location) || !show.partner) {
+  const location = show.location ?? show.fair?.location
+
+  if (!show.partner || !location) {
     return null
   }
 
   return (
     <Box {...rest}>
       <LocationMap
-        {...(!!show.fair?.location
+        {...(!!show.fair
           ? {
               partnerName: `${show.partner.name} at ${show.fair!.name}`,
-              location: show.fair!.location!,
+              location,
             }
           : {
               partnerName: show.partner.name!,
-              location: show.location!,
+              location,
             })}
       />
     </Box>

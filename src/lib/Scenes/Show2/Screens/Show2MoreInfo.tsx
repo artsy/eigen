@@ -27,8 +27,13 @@ export interface Show2MoreInfoProps {
 }
 
 export const Show2MoreInfo: React.FC<Show2MoreInfoProps> = ({ show }) => {
-  const shouldDisplayPartnerType = Object.keys(DISPLAYABLE_PARTNER_TYPES).includes(show.partner?.type!)
   const displayablePartnerType = DISPLAYABLE_PARTNER_TYPES[show.partner?.type as keyof typeof DISPLAYABLE_PARTNER_TYPES]
+  const location = show.location ?? show.fair?.location
+  const shouldDisplayPartnerType = Object.keys(DISPLAYABLE_PARTNER_TYPES).includes(show.partner?.type!)
+  const shouldDisplayHours =
+    (location?.openingHours?.__typename === "OpeningHoursArray" && !!location.openingHours.schedules) ||
+    (location?.openingHours?.__typename === "OpeningHoursText" && !!location.openingHours.text)
+  const shouldDisplayLocation = !!show.partner && !!location?.coordinates?.lat && !!location?.coordinates?.lng
 
   const sections: Section[] = [
     {
@@ -90,7 +95,7 @@ export const Show2MoreInfo: React.FC<Show2MoreInfoProps> = ({ show }) => {
         ]
       : []),
 
-    ...(!!show.location?.openingHours || !!show.fair?.location?.openingHours
+    ...(shouldDisplayHours
       ? [
           {
             key: "hours",
@@ -106,7 +111,7 @@ export const Show2MoreInfo: React.FC<Show2MoreInfoProps> = ({ show }) => {
         ]
       : []),
 
-    ...((!!show.location || !!show.fair?.location) && !!show.partner
+    ...(shouldDisplayLocation
       ? [
           {
             key: "location",
@@ -155,6 +160,18 @@ export const Show2MoreInfoFragmentContainer = createFragmentContainer(Show2MoreI
           __typename
           openingHours {
             __typename
+            ... on OpeningHoursArray {
+              schedules {
+                __typename
+              }
+            }
+            ... on OpeningHoursText {
+              text
+            }
+          }
+          coordinates {
+            lat
+            lng
           }
         }
       }
@@ -162,6 +179,18 @@ export const Show2MoreInfoFragmentContainer = createFragmentContainer(Show2MoreI
         __typename
         openingHours {
           __typename
+          ... on OpeningHoursArray {
+            schedules {
+              __typename
+            }
+          }
+          ... on OpeningHoursText {
+            text
+          }
+        }
+        coordinates {
+          lat
+          lng
         }
       }
     }

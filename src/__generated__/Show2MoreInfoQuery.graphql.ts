@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 01882d95fee25c87a42be270fe07cf86 */
+/* @relayHash e462c2b42e7c1db520d3ac534a753d6b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -153,6 +153,18 @@ fragment Show2MoreInfo_show on Show {
       __typename
       openingHours {
         __typename
+        ... on OpeningHoursArray {
+          schedules {
+            __typename
+          }
+        }
+        ... on OpeningHoursText {
+          text
+        }
+      }
+      coordinates {
+        lat
+        lng
       }
       id
     }
@@ -162,6 +174,18 @@ fragment Show2MoreInfo_show on Show {
     __typename
     openingHours {
       __typename
+      ... on OpeningHoursArray {
+        schedules {
+          __typename
+        }
+      }
+      ... on OpeningHoursText {
+        text
+      }
+    }
+    coordinates {
+      lat
+      lng
     }
     id
   }
@@ -321,7 +345,8 @@ v7 = {
                   "kind": "ScalarField",
                   "name": "hours",
                   "storageKey": null
-                }
+                },
+                (v2/*: any*/)
               ],
               "storageKey": null
             }
@@ -552,7 +577,7 @@ return {
     ]
   },
   "params": {
-    "id": "01882d95fee25c87a42be270fe07cf86",
+    "id": "e462c2b42e7c1db520d3ac534a753d6b",
     "metadata": {},
     "name": "Show2MoreInfoQuery",
     "operationKind": "query",
