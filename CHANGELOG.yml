@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - Update url for echo, now in s3 - ash, pavlos
+    - Move bottom tabs navigator to TS - david
   user_facing:
     - Move My Collection into My Profile - adam
     - Switch to live auction from new sale page - barry, brian

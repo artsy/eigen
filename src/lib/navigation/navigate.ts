@@ -1,9 +1,16 @@
-import { isNativeModule, modules } from "lib/AppRegistry"
+import { AppModule, modules, ViewOptions } from "lib/AppRegistry"
+import { AppStore, unsafe__getSelectedTab } from "lib/store/AppStore"
 import { Linking, NativeModules } from "react-native"
 import { matchRoute } from "./routes"
 import { handleFairRouting } from "./util"
 
-export function navigate(url: string, options: { modal?: boolean } = {}) {
+export interface ViewDescriptor extends ViewOptions {
+  type: "react" | "native"
+  moduleName: AppModule
+  props: object
+}
+
+export async function navigate(url: string, options: { modal?: boolean } = {}) {
   let result = matchRoute(url)
 
   if (result.type === "external_url") {
@@ -21,24 +28,30 @@ export function navigate(url: string, options: { modal?: boolean } = {}) {
 
   const module = modules[result.module]
 
-  const presentModally = options.modal ?? module.alwaysPresentModally ?? false
+  const presentModally = options.modal ?? module.options.alwaysPresentModally ?? false
 
-  if (isNativeModule(module)) {
-    NativeModules.ARScreenPresenterModule.presentNativeScreen(result.module, result.params, presentModally)
+  const screenDescriptor: ViewDescriptor = {
+    type: module.type,
+    moduleName: result.module,
+    props: result.params,
+    ...module.options,
+  }
+
+  if (presentModally) {
+    NativeModules.ARScreenPresenterModule.presentModal(screenDescriptor)
+  } else if (module.options.isRootViewForTabName) {
+    // this view is one of our root tab views, e.g. home, search, etc.
+    // switch to the tab, pop the stack, and scroll to the top.
+    await NativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(module.options.isRootViewForTabName)
+    AppStore.actions.bottomTabs.setTabProps({ tab: module.options.isRootViewForTabName, props: result.params })
+    AppStore.actions.bottomTabs.switchTab(module.options.isRootViewForTabName)
   } else {
-    if (module.isRootViewForTabName && !presentModally) {
-      NativeModules.ARScreenPresenterModule.switchTab(module.isRootViewForTabName, result.params, true)
-    } else {
-      if (module.onlyShowInTabName) {
-        NativeModules.ARScreenPresenterModule.switchTab(module.onlyShowInTabName, {}, true)
-      }
-      NativeModules.ARScreenPresenterModule.presentReactScreen(
-        result.module,
-        result.params,
-        presentModally,
-        module.hidesBackButton ?? false
-      )
+    const selectedTab = unsafe__getSelectedTab()
+    if (module.options.onlyShowInTabName) {
+      AppStore.actions.bottomTabs.switchTab(module.options.onlyShowInTabName)
     }
+
+    NativeModules.ARScreenPresenterModule.pushView(module.options.onlyShowInTabName ?? selectedTab, screenDescriptor)
   }
 }
 
@@ -47,9 +60,9 @@ export function dismissModal() {
 }
 
 export function goBack() {
-  NativeModules.ARScreenPresenterModule.goBack()
+  NativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
 }
 
 export function popParentViewController() {
-  NativeModules.ARScreenPresenterModule.popParentViewController()
+  NativeModules.ARScreenPresenterModule.popStack(unsafe__getSelectedTab())
 }

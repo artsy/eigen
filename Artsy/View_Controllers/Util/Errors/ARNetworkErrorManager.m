@@ -1,6 +1,6 @@
 #import "ARNetworkErrorManager.h"
 #import "ARCustomEigenLabels.h"
-#import "ARTopMenuViewController.h"
+#import "ARScreenPresenterModule.h"
 
 #import <ARAnalytics/ARAnalytics.h>
 #import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
@@ -40,20 +40,11 @@
 
 - (void)presentActiveError:(NSError *)error withMessage:(NSString *)message;
 {
-    ARTopMenuViewController *topMenu = [ARTopMenuViewController sharedController];
-    UIViewController *hostVC = topMenu.visibleViewController;
-    BOOL showOnTopMenu = topMenu.presentedViewController == nil;
-    UIView *hostView = showOnTopMenu ? (UIView *)topMenu.tabContentView : hostVC.view;
+    UIView *hostView = [ARScreenPresenterModule currentlyPresentedVC].view;
 
     // This happens when there’s no network on app launch and onboarding will be shown.
     if (hostView.superview == nil) {
         return;
-    }
-
-    if ([hostVC respondsToSelector:@selector(shouldShowActiveNetworkError)]) {
-        if (![(id<ARNetworkErrorAwareViewController>)hostVC shouldShowActiveNetworkError]) {
-            return;
-        }
     }
 
     self.activeModalView = [[ARWarningView alloc] initWithFrame:CGRectZero];
@@ -66,17 +57,7 @@
     [self.activeModalView constrainWidthToView:hostView predicate:@"0"];
 
     // Show banner above bottom of modal view, above tab bar of top menu, or above the keyboard.
-    if (showOnTopMenu) {
-        [self.activeModalView alignBottomEdgeWithView:hostView predicate:@"0"];
-    } else {
-        // Basically onboarding VCs. Still use the top menu's keyboardLayoutGuide, because it has already been loaded
-        // and thus will do the correct thing when the keyboard is already shown before calling this on the VC for the
-        // first time.
-        [self.activeModalView alignAttribute:NSLayoutAttributeBottom
-                                 toAttribute:NSLayoutAttributeTop
-                                      ofView:topMenu.keyboardLayoutGuide
-                                   predicate:@"0"];
-    }
+    [self.activeModalView alignBottomEdgeWithView:hostView predicate:@"0"];
 
     UITapGestureRecognizer *removeTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeActiveError)];
     [self.activeModalView addGestureRecognizer:removeTapGesture];

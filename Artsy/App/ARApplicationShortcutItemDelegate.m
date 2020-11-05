@@ -1,7 +1,6 @@
 #import "ARApplicationShortcutItemDelegate.h"
 
 #import "ARAppConstants.h"
-#import "ARTopMenuViewController.h"
 #import "ARNavigationController.h"
 #import "User.h"
 #import <Emission/AREmission.h>

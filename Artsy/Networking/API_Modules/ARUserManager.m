@@ -17,12 +17,12 @@
 #import "ARKeychainable.h"
 #import "ARSystemTime.h"
 #import "ARLogger.h"
-#import "ARTopMenuViewController.h"
 #import "ARAppDelegate.h"
 
 #import "MTLModel+JSON.h"
 #import "AFHTTPRequestOperation+JSON.h"
 #import "ARDispatchManager.h"
+#import "ARScreenPresenterModule.h"
 
 #import <ARAnalytics/ARAnalytics.h>
 #import <Emission/AREmission.h>
@@ -520,7 +520,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 {
     [ArtsyAPI deleteAPNTokenForCurrentDeviceWithCompletion:^ {
         [[self class] clearUserData];
-        [ARTopMenuViewController teardownSharedInstance];
     }];
 }
 
@@ -573,6 +572,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     manager.currentUser = nil;
 
     [[[AREmission sharedInstance] graphQLQueryCacheModule] clearAll];
+    [ARScreenPresenterModule clearCachedNavigationStacks];
 
     RNCAsyncStorage *asyncStorage = [[[AREmission sharedInstance] bridge] moduleForName:@"RNCAsyncStorage"];
     [asyncStorage clearAllData];

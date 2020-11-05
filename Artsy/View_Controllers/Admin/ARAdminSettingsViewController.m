@@ -125,7 +125,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 - (ARCellData *)generateFair2
 {
     return [self tappableCellDataWithTitle:@"→ Fair2" selection:^{
-        [[ARTopMenuViewController sharedController] pushViewController:[[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Fair2" initialProperties:@{@"fairID": @"art-basel-hong-kong-2019"}] animated:YES];
+        [[AREmission sharedInstance] navigate:@"/fair2/art-basel-hong-kong-2019"];
     }];
 }
 

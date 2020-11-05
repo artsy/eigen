@@ -3,7 +3,8 @@
 #import "ARSlideshowViewController.h"
 #import "UIDevice-Hardware.h"
 #import <Emission/ARComponentViewController.h>
-#import "ARTopMenuViewController.h"
+#import <React/RCTRootView.h>
+#import "ARScreenPresenterModule.h"
 
 @interface ARNativeViewControllerWrapperView : UIView
 
@@ -12,7 +13,7 @@
 - (UIViewController *)myParentViewController;
 
 @property (nonatomic, readwrite) NSString* viewName;
-@property (nonatomic, assign) NSDictionary* viewProps;
+@property (nonatomic, readwrite) NSDictionary* viewProps;
 
 @end
 
@@ -38,11 +39,22 @@
 - (UIViewController *)getWrappedViewController {
     if ([self.viewName isEqualToString:@"Onboarding"]) {
         return [[AROnboardingViewController alloc] init];
-    } else if ([self.viewName isEqualToString:@"Main"]) {
-        return [ARTopMenuViewController sharedController];
+    } else if ([self.viewName isEqualToString:@"TabNavigationStack"]) {
+        NSString *tabName = self.viewProps[@"tabName"];
+        NSString *moduleName = self.viewProps[@"rootModuleName"];
+        if (!moduleName || !tabName) {
+            NSAssert(NO, @"ARNativeViewControllerManager->TabNavigationStack requires both tabName and moduleName");
+            return nil;
+        }
+        return [self getOrCreateNavStackForModule:tabName module:moduleName withProps:@{}];
     } else {
         return nil;
     }
+}
+
+- (ARNavigationController *)getOrCreateNavStackForModule:(NSString *)tabName module:(NSString *)moduleName withProps:(NSDictionary *)props
+{
+    return [ARScreenPresenterModule getNavigationStack:tabName] ?: [ARScreenPresenterModule createNavigationStack:tabName rootViewController:[ARComponentViewController module:moduleName withProps:props]];
 }
 
 - (UIViewController *)myParentViewController {

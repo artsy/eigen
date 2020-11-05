@@ -80,6 +80,7 @@ import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { Show2MoreInfoQueryRenderer, Show2QueryRenderer } from "./Scenes/Show2"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
+import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
@@ -329,32 +330,36 @@ function register(screenName: string, Component: React.ComponentType<any>, optio
   AppRegistry.registerComponent(screenName, () => WrappedComponent)
 }
 
-interface ReactModuleDescriptor {
-  hidesBackButton?: boolean
+export interface ViewOptions {
+  modalPresentationStyle?: "fullScreen" | "pageSheet" | "formSheet"
+  hasOwnModalCloseButton?: boolean
   alwaysPresentModally?: boolean
+  hidesBackButton?: boolean
   fullBleed?: boolean
-  Component: React.ComponentType<any>
   // If this module is the root view of a particular tab, name it here
   isRootViewForTabName?: BottomTabType
   // If this module should only be shown in one particular tab, name it here
   onlyShowInTabName?: BottomTabType
 }
 
-type NativeModuleName =
-  | "Admin"
-  | "Auction"
-  | "AuctionRegistration"
-  | "AuctionBidArtwork"
-  | "LiveAuction"
-  | "LocalDiscovery"
-  | "WebView"
+type ModuleDescriptor =
+  | {
+      type: "react"
+      Component: React.ComponentType<any>
+      options: ViewOptions
+    }
+  | {
+      type: "native"
+      options: ViewOptions
+    }
 
-interface NativeModuleDescriptor {
-  nativeModuleName: NativeModuleName
-  alwaysPresentModally?: boolean
+function reactModule(Component: React.ComponentType<any>, options: ViewOptions = {}): ModuleDescriptor {
+  return { type: "react", options, Component }
 }
 
-type ModuleDescriptor = ReactModuleDescriptor | NativeModuleDescriptor
+function nativeModule(options: ViewOptions = {}): ModuleDescriptor {
+  return { type: "native", options }
+}
 
 // little helper function to make sure we get both intellisense and good type information on the result
 function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
@@ -363,101 +368,96 @@ function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
 
 export type AppModule = keyof typeof modules
 
-export function isNativeModule(moduleDescriptor: ModuleDescriptor): moduleDescriptor is NativeModuleDescriptor {
-  return "nativeModuleName" in moduleDescriptor
-}
-
 export const modules = defineModules({
-  Admin: { nativeModuleName: "Admin" },
-  About: { Component: About },
-  Artist: { Component: ArtistQueryRenderer },
-  ArtistSeries: { Component: ArtistSeriesQueryRenderer },
-  Artwork: { Component: Artwork },
-  ArtworkAttributionClassFAQ: { Component: ArtworkAttributionClassFAQQueryRenderer },
-  Auction: { nativeModuleName: "Auction" },
-  Auction2: { Component: SaleQueryRenderer, fullBleed: true },
-  Auctions: { Component: SalesQueryRenderer },
-  AuctionInfo: { Component: SaleInfoQueryRenderer },
-  AuctionFAQ: { Component: SaleFAQ },
-  AuctionRegistration: { nativeModuleName: "AuctionRegistration", alwaysPresentModally: true },
-  AuctionBidArtwork: { nativeModuleName: "AuctionBidArtwork", alwaysPresentModally: true },
-  BidFlow: { Component: BidderFlow },
-  BottomTabs: { Component: BottomTabs, fullBleed: true },
-  City: { Component: CityView, fullBleed: true },
-  CityBMWList: { Component: CityBMWListQueryRenderer, fullBleed: true },
-  CityFairList: { Component: CityFairListQueryRenderer, fullBleed: true },
-  CityPicker: { Component: CityPicker, fullBleed: true },
-  CitySavedList: { Component: CitySavedListQueryRenderer },
-  CitySectionList: { Component: CitySectionListQueryRenderer },
-  Collection: { Component: CollectionQueryRenderer, fullBleed: true },
-  ConsignmentsSubmissionForm: { Component: ConsignmentsSubmissionForm, alwaysPresentModally: true },
-  Conversation: { Component: Conversation, onlyShowInTabName: "inbox" },
-  Fair: { Component: FairQueryRenderer, fullBleed: true },
-  Fair2: { Component: Fair2QueryRenderer, fullBleed: true },
-  Fair2MoreInfo: { Component: Fair2MoreInfoQueryRenderer },
-  Fair2AllFollowedArtists: { Component: Fair2AllFollowedArtistsQueryRenderer },
-  FairArtists: { Component: FairArtists },
-  FairArtworks: { Component: FairArtworks },
-  FairBMWArtActivation: { Component: FairBMWArtActivation, fullBleed: true },
-  FairBooth: { Component: FairBooth },
-  FairExhibitors: { Component: FairExhibitors },
-  FairMoreInfo: { Component: FairMoreInfoQueryRenderer },
-  Favorites: { Component: Favorites },
-  Feature: { Component: FeatureQueryRenderer, fullBleed: true },
-  FullArtistSeriesList: { Component: ArtistSeriesFullArtistSeriesListQueryRenderer },
-  FullFeaturedArtistList: { Component: CollectionFullFeaturedArtistListQueryRenderer },
-  Gene: { Component: Gene },
-  Home: { Component: HomeQueryRenderer, isRootViewForTabName: "home" },
-  Inbox: { Component: Inbox, isRootViewForTabName: "inbox" },
-  Inquiry: { Component: Inquiry, alwaysPresentModally: true },
-  LiveAuction: {
-    nativeModuleName: "LiveAuction",
+  Admin: nativeModule(),
+  About: reactModule(About),
+  Artist: reactModule(ArtistQueryRenderer),
+  ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
+  Artwork: reactModule(Artwork),
+  ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
+  Auction: nativeModule(),
+  Auction2: reactModule(SaleQueryRenderer, { fullBleed: true }),
+  Auctions: reactModule(SalesQueryRenderer),
+  AuctionInfo: reactModule(SaleInfoQueryRenderer),
+  AuctionFAQ: reactModule(SaleFAQ),
+  AuctionRegistration: nativeModule({ alwaysPresentModally: true }),
+  AuctionBidArtwork: nativeModule({ alwaysPresentModally: true }),
+  BidFlow: reactModule(BidderFlow),
+  BottomTabs: reactModule(BottomTabs, { fullBleed: true }),
+  City: reactModule(CityView, { fullBleed: true }),
+  CityBMWList: reactModule(CityBMWListQueryRenderer, { fullBleed: true }),
+  CityFairList: reactModule(CityFairListQueryRenderer, { fullBleed: true }),
+  CityPicker: reactModule(CityPicker, { fullBleed: true }),
+  CitySavedList: reactModule(CitySavedListQueryRenderer),
+  CitySectionList: reactModule(CitySectionListQueryRenderer),
+  Collection: reactModule(CollectionQueryRenderer, { fullBleed: true }),
+  ConsignmentsSubmissionForm: reactModule(ConsignmentsSubmissionForm, { alwaysPresentModally: true }),
+  Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
+  Fair: reactModule(FairQueryRenderer, { fullBleed: true }),
+  Fair2: reactModule(Fair2QueryRenderer, { fullBleed: true }),
+  Fair2MoreInfo: reactModule(Fair2MoreInfoQueryRenderer),
+  Fair2AllFollowedArtists: reactModule(Fair2AllFollowedArtistsQueryRenderer),
+  FairArtists: reactModule(FairArtists),
+  FairArtworks: reactModule(FairArtworks),
+  FairBMWArtActivation: reactModule(FairBMWArtActivation, { fullBleed: true }),
+  FairBooth: reactModule(FairBooth),
+  FairExhibitors: reactModule(FairExhibitors),
+  FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
+  Favorites: reactModule(Favorites),
+  Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
+  FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
+  FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
+  Gene: reactModule(Gene),
+  Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
+  Inbox: reactModule(Inbox, { isRootViewForTabName: "inbox" }),
+  Inquiry: reactModule(Inquiry, { alwaysPresentModally: true }),
+  LiveAuction: nativeModule({
     alwaysPresentModally: true,
-  },
-  LocalDiscovery: {
-    nativeModuleName: "LocalDiscovery",
-  },
-  WebView: { nativeModuleName: "WebView" },
-  Map: { Component: MapContainer, fullBleed: true },
-  MyAccount: { Component: MyAccountQueryRenderer },
-  MyAccountEditEmail: { Component: MyAccountEditEmailQueryRenderer, hidesBackButton: true },
-  MyAccountEditName: { Component: MyAccountEditNameQueryRenderer, hidesBackButton: true },
-  MyAccountEditPassword: { Component: MyAccountEditPassword, hidesBackButton: true },
-  MyAccountEditPhone: { Component: MyAccountEditPhoneQueryRenderer, hidesBackButton: true },
-  MyBids: { Component: MyBidsQueryRenderer },
-  AddEditArtwork: { Component: setupMyCollectionScreen(AddEditArtwork) },
-  MyCollectionArtworkDetail: { Component: setupMyCollectionScreen(MyCollectionArtworkDetail) },
-  MyCollectionArtworkList: { Component: setupMyCollectionScreen(MyCollectionArtworkList) },
-  MyProfile: { Component: MyProfileQueryRenderer, isRootViewForTabName: "profile" },
-  MyProfilePayment: { Component: MyProfilePaymentQueryRenderer },
-  MyProfilePaymentNewCreditCard: { Component: MyProfilePaymentNewCreditCard, hidesBackButton: true },
-  MyProfilePushNotifications: { Component: MyProfilePushNotificationsQueryRenderer },
-  MySellingProfile: { Component: View },
-  Partner: { Component: Partner, fullBleed: true },
-  PartnerLocations: { Component: PartnerLocations },
-  PrivacyRequest: { Component: PrivacyRequest },
-  Sales: { Component: setupMyCollectionScreen(Consignments), isRootViewForTabName: "sell" },
-  Search: { Component: SearchWithTracking, isRootViewForTabName: "search" },
-  SellTabApp: { Component: setupMyCollectionScreen(SellTabApp) },
-  Show: { Component: ShowQueryRenderer },
-  Show2: { Component: Show2QueryRenderer, fullBleed: true },
-  ShowArtists: { Component: ShowArtists },
-  ShowArtworks: { Component: ShowArtworks },
-  Show2MoreInfo: { Component: Show2MoreInfoQueryRenderer, fullBleed: true },
-  ShowMoreInfo: { Component: ShowMoreInfo },
-  VanityURLEntity: { Component: VanityURLEntityRenderer, fullBleed: true },
-  ViewingRoom: { Component: ViewingRoomQueryRenderer, fullBleed: true },
-  ViewingRoomArtwork: { Component: ViewingRoomArtworkQueryRenderer },
-  ViewingRoomArtworks: { Component: ViewingRoomArtworksQueryRenderer },
-  ViewingRooms: { Component: ViewingRoomsListQueryRenderer },
-  WorksForYou: { Component: WorksForYouQueryRenderer },
+    hasOwnModalCloseButton: true,
+    modalPresentationStyle: "fullScreen",
+  }),
+  LocalDiscovery: nativeModule(),
+  WebView: nativeModule(),
+  Map: reactModule(MapContainer, { fullBleed: true }),
+  MyAccount: reactModule(MyAccountQueryRenderer),
+  MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, { hidesBackButton: true }),
+  MyAccountEditName: reactModule(MyAccountEditNameQueryRenderer, { hidesBackButton: true }),
+  MyAccountEditPassword: reactModule(MyAccountEditPassword, { hidesBackButton: true }),
+  MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, { hidesBackButton: true }),
+  MyBids: reactModule(MyBidsQueryRenderer),
+  AddEditArtwork: reactModule(setupMyCollectionScreen(AddEditArtwork)),
+  MyCollectionArtworkDetail: reactModule(setupMyCollectionScreen(MyCollectionArtworkDetail)),
+  MyCollectionArtworkList: reactModule(setupMyCollectionScreen(MyCollectionArtworkList)),
+  MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }),
+  MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
+  MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, { hidesBackButton: true }),
+  MyProfilePushNotifications: reactModule(MyProfilePushNotificationsQueryRenderer),
+  MySellingProfile: reactModule(View),
+  Partner: reactModule(Partner, { fullBleed: true }),
+  PartnerLocations: reactModule(PartnerLocations),
+  PrivacyRequest: reactModule(PrivacyRequest),
+  Sales: reactModule(setupMyCollectionScreen(Consignments), { isRootViewForTabName: "sell" }),
+  Search: reactModule(SearchWithTracking, { isRootViewForTabName: "search" }),
+  SellTabApp: reactModule(setupMyCollectionScreen(SellTabApp)),
+  Show: reactModule(ShowQueryRenderer),
+  Show2: reactModule(Show2QueryRenderer, { fullBleed: true }),
+  ShowArtists: reactModule(ShowArtists),
+  ShowArtworks: reactModule(ShowArtworks),
+  Show2MoreInfo: reactModule(Show2MoreInfoQueryRenderer, { fullBleed: true }),
+  ShowMoreInfo: reactModule(ShowMoreInfo),
+  VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
+  ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
+  ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),
+  ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
+  ViewingRooms: reactModule(ViewingRoomsListQueryRenderer),
+  WorksForYou: reactModule(WorksForYouQueryRenderer),
 })
 
 // Register react modules with the app registry
 for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
   if ("Component" in descriptor) {
-    register(moduleName, descriptor.Component, { fullBleed: descriptor.fullBleed })
+    register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed })
   }
 }
 
@@ -466,29 +466,13 @@ const Main: React.FC<{}> = track()(({}) => {
   const isLoggedIn = AppStore.useAppState((state) => !!state.native.sessionState.userID)
   const onboardingState = AppStore.useAppState((state) => state.native.sessionState.onboardingState)
 
-  const screen = useScreenDimensions()
   if (!isHydrated) {
     return <View></View>
   }
   if (!isLoggedIn || onboardingState === "incomplete") {
     return <NativeViewController viewName="Onboarding" />
   }
-  return (
-    <View style={{ paddingBottom: screen.safeAreaInsets.bottom, flex: 1 }}>
-      <View style={{ flexGrow: 1 }}>
-        <NativeViewController viewName="Main" />
-      </View>
-      <BottomTabs />
-    </View>
-  )
+  return <BottomTabsNavigator />
 })
 
-AppRegistry.registerComponent("Main", () => () => {
-  return (
-    <AppStoreProvider>
-      <ProvideScreenDimensions>
-        <Main />
-      </ProvideScreenDimensions>
-    </AppStoreProvider>
-  )
-})
+register("Main", Main, { fullBleed: true })
