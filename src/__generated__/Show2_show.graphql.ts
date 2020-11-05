@@ -7,13 +7,14 @@ import { FragmentRefs } from "relay-runtime";
 export type Show2_show = {
     readonly internalID: string;
     readonly slug: string;
+    readonly viewingRoomIDs: ReadonlyArray<string>;
     readonly images: ReadonlyArray<{
         readonly __typename: string;
     } | null> | null;
     readonly counts: {
         readonly eligibleArtworks: number | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"Show2Header_show" | "Show2InstallShots_show" | "Show2Info_show" | "Show2ContextCard_show" | "Show2Artworks_show">;
+    readonly " $fragmentRefs": FragmentRefs<"Show2Header_show" | "Show2InstallShots_show" | "Show2Info_show" | "Show2ViewingRoom_show" | "Show2ContextCard_show" | "Show2Artworks_show">;
     readonly " $refType": "Show2_show";
 };
 export type Show2_show$data = Show2_show;
@@ -47,6 +48,19 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
+      "kind": "ScalarField",
+      "name": "viewingRoomIDs",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "default",
+          "value": false
+        }
+      ],
       "concreteType": "Image",
       "kind": "LinkedField",
       "name": "images",
@@ -60,7 +74,7 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
-      "storageKey": null
+      "storageKey": "images(default:false)"
     },
     {
       "alias": null,
@@ -98,6 +112,11 @@ const node: ReaderFragment = {
     {
       "args": null,
       "kind": "FragmentSpread",
+      "name": "Show2ViewingRoom_show"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
       "name": "Show2ContextCard_show"
     },
     {
@@ -109,5 +128,5 @@ const node: ReaderFragment = {
   "type": "Show",
   "abstractKey": null
 };
-(node as any).hash = '8cea372cdc56bfbc50f8f87b26dd5552';
+(node as any).hash = '742e452e7539388cc883730cb12e96aa';
 export default node;

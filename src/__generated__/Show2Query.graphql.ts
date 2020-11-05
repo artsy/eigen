@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 82442bb5617d3aa8dd9d0f69e0075247 */
+/* @relayHash 37574088e4833d9e0b0bc4269d06bda1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -121,10 +121,13 @@ fragment Show2Artworks_show on Show {
 }
 
 fragment Show2ContextCard_show on Show {
+  internalID
+  slug
   isFairBooth
   fair {
-    name
+    internalID
     slug
+    name
     exhibitionPeriod
     profile {
       icon {
@@ -140,6 +143,8 @@ fragment Show2ContextCard_show on Show {
   partner {
     __typename
     ... on Partner {
+      internalID
+      slug
       name
       profile {
         slug
@@ -196,7 +201,7 @@ fragment Show2Info_show on Show {
 
 fragment Show2InstallShots_show on Show {
   name
-  images {
+  images(default: false) {
     internalID
     caption
     src: url(version: ["larger", "large"])
@@ -207,14 +212,53 @@ fragment Show2InstallShots_show on Show {
   }
 }
 
+fragment Show2ViewingRoom_show on Show {
+  internalID
+  slug
+  partner {
+    __typename
+    ... on Partner {
+      name
+    }
+    ... on ExternalPartner {
+      name
+      id
+    }
+    ... on Node {
+      __isNode: __typename
+      id
+    }
+  }
+  viewingRoomsConnection {
+    edges {
+      node {
+        internalID
+        slug
+        title
+        status
+        distanceToOpen(short: true)
+        distanceToClose(short: true)
+        href
+        image {
+          imageURLs {
+            normalized
+          }
+        }
+      }
+    }
+  }
+}
+
 fragment Show2_show on Show {
   internalID
   slug
   ...Show2Header_show
   ...Show2InstallShots_show
   ...Show2Info_show
+  ...Show2ViewingRoom_show
   ...Show2ContextCard_show
-  images {
+  viewingRoomIDs
+  images(default: false) {
     __typename
   }
   counts {
@@ -300,7 +344,21 @@ v10 = {
   "name": "href",
   "storageKey": null
 },
-v11 = [
+v11 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
+  "storageKey": null
+},
+v12 = [
+  {
+    "kind": "Literal",
+    "name": "short",
+    "value": true
+  }
+],
+v13 = [
   {
     "kind": "Literal",
     "name": "aggregations",
@@ -424,6 +482,8 @@ return {
                 "kind": "InlineFragment",
                 "selections": [
                   (v4/*: any*/),
+                  (v2/*: any*/),
+                  (v3/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -529,7 +589,13 @@ return {
           },
           {
             "alias": null,
-            "args": null,
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "default",
+                "value": false
+              }
+            ],
             "concreteType": "Image",
             "kind": "LinkedField",
             "name": "images",
@@ -592,7 +658,7 @@ return {
               },
               (v6/*: any*/)
             ],
-            "storageKey": null
+            "storageKey": "images(default:false)"
           },
           (v10/*: any*/),
           {
@@ -600,6 +666,93 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "description",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ViewingRoomsConnection",
+            "kind": "LinkedField",
+            "name": "viewingRoomsConnection",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "ViewingRoomsEdge",
+                "kind": "LinkedField",
+                "name": "edges",
+                "plural": true,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "ViewingRoom",
+                    "kind": "LinkedField",
+                    "name": "node",
+                    "plural": false,
+                    "selections": [
+                      (v2/*: any*/),
+                      (v3/*: any*/),
+                      (v11/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "status",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": (v12/*: any*/),
+                        "kind": "ScalarField",
+                        "name": "distanceToOpen",
+                        "storageKey": "distanceToOpen(short:true)"
+                      },
+                      {
+                        "alias": null,
+                        "args": (v12/*: any*/),
+                        "kind": "ScalarField",
+                        "name": "distanceToClose",
+                        "storageKey": "distanceToClose(short:true)"
+                      },
+                      (v10/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "ARImage",
+                        "kind": "LinkedField",
+                        "name": "image",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "ImageURLs",
+                            "kind": "LinkedField",
+                            "name": "imageURLs",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "normalized",
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
             "storageKey": null
           },
           {
@@ -617,8 +770,9 @@ return {
             "name": "fair",
             "plural": false,
             "selections": [
-              (v4/*: any*/),
+              (v2/*: any*/),
               (v3/*: any*/),
+              (v4/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -693,6 +847,13 @@ return {
           {
             "alias": null,
             "args": null,
+            "kind": "ScalarField",
+            "name": "viewingRoomIDs",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": "ShowCounts",
             "kind": "LinkedField",
             "name": "counts",
@@ -710,7 +871,7 @@ return {
           },
           {
             "alias": "showArtworks",
-            "args": (v11/*: any*/),
+            "args": (v13/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "kind": "LinkedField",
             "name": "filterArtworksConnection",
@@ -905,13 +1066,7 @@ return {
                             ],
                             "storageKey": null
                           },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "title",
-                            "storageKey": null
-                          },
+                          (v11/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -1050,7 +1205,7 @@ return {
           },
           {
             "alias": "showArtworks",
-            "args": (v11/*: any*/),
+            "args": (v13/*: any*/),
             "filters": [
               "sort",
               "medium",
@@ -1076,7 +1231,7 @@ return {
     ]
   },
   "params": {
-    "id": "82442bb5617d3aa8dd9d0f69e0075247",
+    "id": "37574088e4833d9e0b0bc4269d06bda1",
     "metadata": {},
     "name": "Show2Query",
     "operationKind": "query",

@@ -6,20 +6,45 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import moment from "moment"
-import { color, Flex, Join, Sans, Separator, Spacer, Text } from "palette"
+import { Flex, Join, Sans, Separator, Text } from "palette"
 import React from "react"
-import { Linking, ScrollView, StyleSheet } from "react-native"
-import Markdown from "react-native-markdown-display"
+import { Linking, ScrollView, TextInput } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
-import { fontFamily } from "../../../palette/platform/fonts/fontFamily"
+import { Markdown } from "lib/Components/Markdown"
+import { defaultRules } from "lib/utils/renderMarkdown"
+import { fontFamily } from "palette/platform/fonts/fontFamily"
 import { navigate } from "../../navigation/navigate"
 import { PlaceholderBox } from "../../utils/placeholders"
 import { RegisterToBidButtonContainer } from "../Sale/Components/RegisterToBidButton"
+import { saleStatus } from "../Sale/helpers"
 
 interface Props {
   sale: SaleInfo_sale
   me: SaleInfo_me
+}
+
+const basicRules = defaultRules({
+  modal: true,
+  useNewTextStyles: true,
+})
+
+const markdownRules = {
+  ...basicRules,
+  paragraph: {
+    ...basicRules.paragraph,
+    // @ts-ignore STRICTNESS_MIGRATION
+    react: (node, output, state) => (
+      // We are using <TextInput /> instead of <Text /> to allow the user to hover to select
+      <TextInput
+        editable={false}
+        multiline
+        style={{ fontWeight: "400", fontFamily: fontFamily.sans.regular.normal, fontSize: 15, lineHeight: 22 }}
+      >
+        {output(node.content, state)}
+      </TextInput>
+    ),
+  },
 }
 
 const AuctionSupport = () => {
@@ -89,9 +114,12 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
           <Sans size="5" mt={1} mb={3}>
             {sale.name}
           </Sans>
-          <RegisterToBidButtonContainer sale={sale} contextType="sale_information" me={me} />
-          <Spacer mt={25} />
-          <Markdown style={markDownStyles}>{sale.description}</Markdown>
+          {saleStatus(sale.startAt, sale.endAt) === "closed" || (
+            <Flex mb={4}>
+              <RegisterToBidButtonContainer sale={sale} contextType="sale_information" me={me} />
+            </Flex>
+          )}
+          <Markdown rules={markdownRules}>{sale.description || ""}</Markdown>
           {renderLiveBiddingOpening()}
         </Flex>
 
@@ -103,23 +131,6 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
     </ScrollView>
   )
 }
-
-const markDownStyles = StyleSheet.create({
-  // Overwrite the default markdown text styling
-  // See https://github.com/iamacup/react-native-markdown-display#how-to-style-stuff
-  body: {
-    fontSize: 15,
-    lineHeight: 22,
-    fontFamily: fontFamily.sans.regular.normal,
-  },
-
-  link: {
-    color: color("black60"),
-    fontSize: 15,
-    lineHeight: 22,
-    fontFamily: fontFamily.sans.regular.normal,
-  },
-})
 
 const SaleInfoPlaceholder = () => (
   <Join separator={<Separator my={2} />}>

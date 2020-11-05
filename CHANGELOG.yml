@@ -4,9 +4,55 @@ upcoming:
   dev:
     - Update url for echo, now in s3 - ash, pavlos
   user_facing:
+    - Move My Collection into My Profile - adam
+    - Switch to live auction from new sale page - barry, brian
+    - Adds ability to filter by artist in a fair - sweir
+    - Fix environment variable names for Sentry - starsirius
+    - Fix capitalization on home auction rail - pavlos
+    - Adds Show2 header, behind lab option - damon
+    - Adds Show2 install shots, behind lab option - damon
+    - Link ConversationDetail screen - sepans
+    - Handle artist page subroutes natively by default - david
+    - Fix Vanity URL fallbacks - david
+    - Adds Show2 basic more information route, behind lab option - damon
+    - Add Show2 context card, linking to Fair or Partner - roop
+    - Fix filters on Fair2 Works by Artists I follow artwork grid - devon
+    - Fix blank screen bug in My Collection - brian
+    - Adds Show2 artwork grid + filter - mzikherman
+    - Add active bids to new auction sale page - mounir
+    - Adds Show2 location map - damon
+    - Adds Show2 location hours - damon
+    - Adds header text to new inquiry modal - lily
     - Add Auctions Info screen - mounir
     - Fix Fair2 sticky tab UI + interaction - david
     - Loading state for My Collection - brian
+    - Adds no bids view to bid management - lily
+    - Loading plcaeholders on new auction screen - mounir
+    - Adds Show2 viewing room - damon
+    - Adds auction closed banner - mounir
+    - Fix add artwork modal title (my collection) - brian
+    - Switch to live auction from new sale page - barry, brian
+    - Adds ability to filter by artist in a fair - sweir
+    - Fix environment variable names for Sentry - starsirius
+    - Fix capitalization on home auction rail - pavlos
+    - Adds Show2 header, behind lab option - damon
+    - Adds Show2 install shots, behind lab option - damon
+    - Link ConversationDetail screen - sepans
+    - Handle artist page subroutes natively by default - david
+    - Fix Vanity URL fallbacks - david
+    - Adds Show2 basic more information route, behind lab option - damon
+    - Add Show2 context card, linking to Fair or Partner - roop
+    - Fix filters on Fair2 Works by Artists I follow artwork grid - devon
+    - Fix blank screen bug in My Collection - brian
+    - Adds Show2 artwork grid + filter - mzikherman
+    - Add active bids to new auction sale page - mounir
+    - Adds Show2 location map - damon
+    - Adds Show2 location hours - damon
+    - Add inquiry questions state to reducer + wire up mutation - christina
+    - Fix keyboard touch intercept (my collection) - brian
+    - Fix persisting edit form values (my collection) - brian
+    - Fix artist name truncation on add/edit artwork page (my collection) - david
+    - Fix photo layout in add/edit artwork page (my collection) - adam
 
 releases:
   - version: 6.6.7

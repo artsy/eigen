@@ -49,6 +49,21 @@ describe("SaleInfo", () => {
     expect(tree.root.findAllByType(RegisterToBidButtonContainer)).toBeTruthy()
   })
 
+  it("hides register to bid button if auction is over", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Sale: () => ({
+          ...mockSale,
+          endAt: "2020-08-01T15:00:00",
+        }),
+      })
+    )
+
+    expect(tree.root.findAllByType(RegisterToBidButtonContainer)).toEqual([])
+  })
+
   it("shows Auction is live View shows up when an auction is live", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 

@@ -1,13 +1,11 @@
-import { SaleTestsQuery } from "__generated__/SaleTestsQuery.graphql"
 import { navigate, popParentViewController } from "lib/navigation/navigate"
 import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import moment from "moment"
-import React from "react"
-import { graphql, QueryRenderer } from "react-relay"
+import React, { Suspense } from "react"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { RegisterToBidButtonContainer } from "../Components/RegisterToBidButton"
-import { Sale } from "../Sale"
+import { SaleQueryRenderer } from "../Sale"
 
 jest.unmock("react-relay")
 
@@ -16,38 +14,20 @@ jest.mock("lib/navigation/navigate", () => ({
   navigate: jest.fn(),
 }))
 
+jest.mock("lib/relay/createEnvironment", () => ({
+  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
+  reset(this: { defaultEnvironment: any }) {
+    this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
+  },
+}))
+
 describe("Sale", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
   const TestRenderer = () => (
-    <QueryRenderer<SaleTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query SaleTestsQuery($saleID: String!) @relay_test_operation {
-          sale(id: $saleID) {
-            internalID
-            slug
-            liveStartAt
-            endAt
-            registrationEndsAt
-            ...SaleHeader_sale
-            ...RegisterToBidButton_sale
-          }
-          me {
-            ...SaleArtworksRail_me
-            ...SaleActiveBids_me @arguments(saleID: $saleID)
-            ...RegisterToBidButton_me @arguments(saleID: $saleID)
-          }
-          ...SaleLotsList_saleArtworksConnection @arguments(saleID: "sale-slug")
-        }
-      `}
-      variables={{ saleID: "sale-id" }}
-      render={({ props }) => {
-        if (props) {
-          return <Sale queryRes={props} />
-        }
-        return null
-      }}
-    />
+    <Suspense fallback={() => null}>
+      <SaleQueryRenderer saleID="sale-id" environment={mockEnvironment} />
+    </Suspense>
   )
 
   beforeEach(() => {
@@ -62,7 +42,6 @@ describe("Sale", () => {
 
   it("switches to live auction view when sale goes live", () => {
     renderWithWrappers(<TestRenderer />)
-
     __appStoreTestUtils__?.injectState({
       native: {
         sessionState: { predictionURL: "https://live-staging.artsy.net" },

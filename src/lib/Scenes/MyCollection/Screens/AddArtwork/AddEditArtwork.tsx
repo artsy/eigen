@@ -20,7 +20,7 @@ export const AddEditArtwork: React.FC = () => {
   const navState = AppStore.useAppState((state) => state.myCollection.navigation)
   const { formik } = useArtworkForm()
   const modalType = navState?.sessionState?.modalType
-  const addOrEditLabel = modalType ? "Edit" : "Add"
+  const addOrEditLabel = modalType === "edit" ? "Edit" : "Add"
 
   /* FIXME: Wire up proper loading modal */
   const submitArtwork = () => {
@@ -57,7 +57,11 @@ export const AddEditArtwork: React.FC = () => {
     <>
       {showLoading && <LoadingIndicator />}
       {/* Disable touch events in form while loading */}
-      <ScrollView pointerEvents={showLoading ? "none" : "auto"}>
+      <ScrollView
+        pointerEvents={showLoading ? "none" : "auto"}
+        keyboardDismissMode={"on-drag"}
+        keyboardShouldPersistTaps={"handled"}
+      >
         <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => artworkActions.cancelAddEditArtwork()}>
           {addOrEditLabel} artwork
         </FancyModalHeader>
