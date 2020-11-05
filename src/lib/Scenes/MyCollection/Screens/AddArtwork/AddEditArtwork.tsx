@@ -2,6 +2,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/AddArtwork/Form/useArtworkForm"
 import { AppStore } from "lib/store/AppStore"
+import { isEqualWith } from "lodash"
 import { BorderBox, Box, Button, Flex, Join, Sans, Spacer } from "palette"
 import React, { useState } from "react"
 import { ActivityIndicator, ScrollView } from "react-native"
@@ -55,10 +56,12 @@ export const AddEditArtwork: React.FC = () => {
 
   const isFormDirty = () => {
     // if you fill an empty field then delete it again, it changes from null to ""
-    const replacer = (_: any, value: any) => (value === "" ? null : value)
-    return (
-      JSON.stringify(artworkState.sessionState.dirtyFormCheckValues, replacer) !==
-      JSON.stringify(artworkState.sessionState.formValues, replacer)
+    const customizer = (aVal: any, bVal: any) =>
+      (aVal === "" || aVal === null) && (bVal === "" || bVal === null) ? true : undefined
+    return !isEqualWith(
+      artworkState.sessionState.dirtyFormCheckValues,
+      artworkState.sessionState.formValues,
+      customizer
     )
   }
 
