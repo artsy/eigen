@@ -24,11 +24,11 @@
 #import "ARAugmentedFloorBasedVIRViewController.h"
 #import "ARSerifNavigationViewController.h"
 
-@interface ARModalWithBottomSafeArea : UIViewController
+@interface ARModalWithBottomSafeAreaViewController : UIViewController
 -(instancetype)initWithStack:(UINavigationController *)stack;
 @property (nonatomic, assign) UINavigationController *stack;
 @end
-@implementation ARModalWithBottomSafeArea
+@implementation ARModalWithBottomSafeAreaViewController
 
 - (instancetype)initWithStack:(UINavigationController *)stack
 {
@@ -98,8 +98,8 @@ RCT_EXPORT_METHOD(pushView:(nonnull NSString *)currentTabStackID viewDescriptor:
 {
     UIViewController *vc = [self getViewControllerForViewDescriptor:viewDescriptor];
     UINavigationController *stack = nil;
-    ARModalWithBottomSafeArea *currentlyPresentedVC = (id)[self.class currentlyPresentedVC];
-    if ([currentlyPresentedVC isKindOfClass:ARModalWithBottomSafeArea.class]) {
+    ARModalWithBottomSafeAreaViewController *currentlyPresentedVC = (id)[self.class currentlyPresentedVC];
+    if ([currentlyPresentedVC isKindOfClass:ARModalWithBottomSafeAreaViewController.class]) {
         // we're showing a modal with a view stack, push it there instead
         stack = currentlyPresentedVC.stack;
     } else {
@@ -134,7 +134,7 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
         stack = [self.class createModalNavigationStack:stackID rootViewController:vc withBackButton:!hasOwnModalCloseButton];
     }
 
-    ARModalWithBottomSafeArea *modal = [[ARModalWithBottomSafeArea alloc] initWithStack:stack];
+    ARModalWithBottomSafeAreaViewController *modal = [[ARModalWithBottomSafeAreaViewController alloc] initWithStack:stack];
     modal.modalPresentationStyle = modalPresentationStyle;
 
     [[self.class currentlyPresentedVC] presentViewController:modal animated:YES completion:^ {
@@ -217,8 +217,8 @@ RCT_EXPORT_METHOD(goBack:(nonnull NSString *)currentTabStackID)
     UINavigationController *vc = (id)[self.class currentlyPresentedVC];
     if ([vc presentingViewController]) {
         // it's a modal
-        if ([vc isKindOfClass:ARModalWithBottomSafeArea.class] && ((ARModalWithBottomSafeArea *)vc).stack.viewControllers.count > 1) {
-            [((ARModalWithBottomSafeArea *)vc).stack popViewControllerAnimated:YES];
+        if ([vc isKindOfClass:ARModalWithBottomSafeAreaViewController.class] && ((ARModalWithBottomSafeAreaViewController *)vc).stack.viewControllers.count > 1) {
+            [((ARModalWithBottomSafeAreaViewController *)vc).stack popViewControllerAnimated:YES];
         } else {
             [self dismissModal];
         }
@@ -411,10 +411,10 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
 
 RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide currentTabStackID:(NSString *)currentTabStackID)
 {
-    ARModalWithBottomSafeArea *vc = (id)[self.class currentlyPresentedVC];
+    ARModalWithBottomSafeAreaViewController *vc = (id)[self.class currentlyPresentedVC];
     ARNavigationController *stack = nil;
-    
-    if ([vc isKindOfClass:ARModalWithBottomSafeArea.class]) {
+
+    if ([vc isKindOfClass:ARModalWithBottomSafeAreaViewController.class]) {
         // we're presenting a modal, update its back button
         stack = (id)vc.stack;
     } else {
