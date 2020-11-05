@@ -1,5 +1,6 @@
 import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "lib/navigation/navigate"
 import { AppStore } from "lib/store/AppStore"
 import { artworkMediumCategories } from "lib/utils/artworkMediumCategories"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -15,7 +16,6 @@ interface MyCollectionArtworkListItemProps {
 }
 
 const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = ({ artwork }) => {
-  const navActions = AppStore.actions.myCollection.navigation
   const imageURL = artwork?.image?.url
   const { width } = useScreenDimensions()
   const mediums: { [medium: string]: string } = artworkMediumCategories.reduce(
@@ -54,11 +54,12 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
     <TouchElement
       onPress={() => {
         if (!!artist) {
-          navActions.navigateToArtworkDetail({
-            artistInternalID: artist.internalID,
-            artworkSlug: slug,
-            medium,
-          })
+          navigate("/my-collection/artwork/" + slug)
+          // navActions.navigateToArtworkDetail({
+          //   artistInternalID: artist.internalID,
+          //   artworkSlug: slug,
+          //   medium,
+          // })
           // FIXME: Eventually remove this; an artistID should always be present but
           // investigating a crash.
         } else {
