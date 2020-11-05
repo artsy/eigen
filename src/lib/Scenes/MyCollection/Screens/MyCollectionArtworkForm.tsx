@@ -1,24 +1,20 @@
-import { Button, Flex, Text } from "palette"
+import { StackScreenProps } from "@react-navigation/stack"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { Button, Flex } from "palette"
 import React from "react"
-import NavigatorIOS from "react-native-navigator-ios"
-import { AdditionalDetailsForm } from "./MyCollectionAdditionalDetailsForm"
-import { ArtworkFormMode } from "./MyCollectionArtworkFormModal"
 
-export const MyCollectionArtworkForm: React.FC<{ navigator: NavigatorIOS; mode: ArtworkFormMode }> = ({
-  navigator,
-  mode,
-}) => {
+export const MyCollectionArtworkForm: React.FC<StackScreenProps<any>> = ({ navigation, route }) => {
   return (
     <Flex>
-      <Text>form</Text>
+      <FancyModalHeader>Form {(route.params as any).mode}</FancyModalHeader>
       <Button
         onPress={() => {
-          navigator.push({ component: AdditionalDetailsForm, title: "Additional details form" })
+          navigation.navigate("ArtworkDetailsForm")
         }}
       >
         Additional details
       </Button>
-      <Button>{mode === "add" ? "Submit" : "Update"}</Button>
+      <Button>{(route.params as any).mode === "add" ? "Submit" : "Update"}</Button>
     </Flex>
   )
 }

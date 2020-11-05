@@ -1,16 +1,18 @@
-import { Button } from "palette"
+import { NavigationProp } from "@react-navigation/native"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { Flex } from "palette"
 import React from "react"
-import NavigatorIOS from "react-native-navigator-ios"
 
-export const AdditionalDetailsForm: React.FC<{ navigator: NavigatorIOS }> = ({ navigator }) => {
+export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: NavigationProp<any> }> = ({ navigation }) => {
   return (
-    <Button
-      onPress={() => {
-        navigator.pop()
-      }}
-      mt="2"
-    >
-      back
-    </Button>
+    <Flex>
+      <FancyModalHeader
+        onLeftButtonPress={() => {
+          navigation.goBack()
+        }}
+      >
+        Form
+      </FancyModalHeader>
+    </Flex>
   )
 }
