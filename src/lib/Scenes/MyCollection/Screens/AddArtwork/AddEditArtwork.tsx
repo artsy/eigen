@@ -139,6 +139,7 @@ export const AddEditArtwork: React.FC = () => {
           </ScreenMargin>
         )}
       </ScrollView>
+      {showLoading && <LoadingIndicator />}
     </>
   )
 }
