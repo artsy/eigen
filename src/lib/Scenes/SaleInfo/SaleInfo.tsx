@@ -14,6 +14,7 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { Markdown } from "lib/Components/Markdown"
 import { defaultRules } from "lib/utils/renderMarkdown"
 import { fontFamily } from "palette/platform/fonts/fontFamily"
+import { Output, SingleASTNode, State } from "simple-markdown"
 import { navigate } from "../../navigation/navigate"
 import { PlaceholderBox } from "../../utils/placeholders"
 import { RegisterToBidButtonContainer } from "../Sale/Components/RegisterToBidButton"
@@ -33,8 +34,7 @@ const markdownRules = {
   ...basicRules,
   paragraph: {
     ...basicRules.paragraph,
-    // @ts-ignore STRICTNESS_MIGRATION
-    react: (node, output, state) => (
+    react: (node: SingleASTNode, output: Output<React.ReactNode>, state: State) => (
       // We are using <TextInput /> instead of <Text /> to allow the user to hover to select
       <TextInput
         editable={false}
