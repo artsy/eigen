@@ -32,8 +32,9 @@ export const AdditionalDetails = () => {
               defaultValue={formikValues.title}
             />
             <Input
-              title="Date"
-              placeholder="Date"
+              title="Year"
+              keyboardType="number-pad"
+              placeholder="Year"
               onChangeText={formik.handleChange("date")}
               onBlur={formik.handleBlur("date")}
               data-test-id="DateInput"
@@ -55,6 +56,7 @@ export const AdditionalDetails = () => {
               <Flex flexDirection="row">
                 <Input
                   placeholder="Edition number"
+                  keyboardType="number-pad"
                   onChangeText={formik.handleChange("editionNumber")}
                   onBlur={formik.handleBlur("editionNumber")}
                   defaultValue={formikValues.editionNumber!}
@@ -63,6 +65,7 @@ export const AdditionalDetails = () => {
                 />
                 <Input
                   placeholder="Edition size"
+                  keyboardType="number-pad"
                   onChangeText={formik.handleChange("editionSize")}
                   onBlur={formik.handleBlur("editionSize")}
                   data-test-id="EditionSizeInput"
@@ -83,6 +86,7 @@ export const AdditionalDetails = () => {
             <Input
               title="Price paid"
               placeholder="Price paid"
+              keyboardType="decimal-pad"
               onChangeText={formik.handleChange("costMinor")}
               onBlur={formik.handleBlur("costMinor")}
               data-test-id="PricePaidInput"
