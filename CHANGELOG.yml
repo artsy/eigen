@@ -53,6 +53,7 @@ upcoming:
     - Fix persisting edit form values (my collection) - brian
     - Fix artist name truncation on add/edit artwork page (my collection) - david
     - Fix photo layout in add/edit artwork page (my collection) - adam
+    - Improve buttons in edit artwork page (my collection) - adam
 
 releases:
   - version: 6.6.7
