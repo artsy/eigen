@@ -63,8 +63,6 @@ interface ViewToken {
 }
 
 export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
-  // const sale = above.sale!
-  // const me = above.me!
   const tracking = useTracking()
 
   const flatListRef = useRef<FlatList<any>>(null)
