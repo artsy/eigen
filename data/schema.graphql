@@ -5417,6 +5417,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
 
     # Sorts for shows in a fair
     sort: ShowSorts
+    totalCount: Boolean = false
   ): ShowConnection
 
   # A slug ID.
