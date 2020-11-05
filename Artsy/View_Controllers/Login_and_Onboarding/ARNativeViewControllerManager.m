@@ -43,7 +43,7 @@
         NSString *tabName = self.viewProps[@"tabName"];
         NSString *moduleName = self.viewProps[@"rootModuleName"];
         if (!moduleName || !tabName) {
-            NSLog(@"ARNativeViewControllerManager->TabNavigationStack requires both tabName and moduleName");
+            NSAssert(NO, @"ARNativeViewControllerManager->TabNavigationStack requires both tabName and moduleName");
             return nil;
         }
         return [self getOrCreateNavStackForModule:tabName module:moduleName withProps:@{}];
