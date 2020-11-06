@@ -13,6 +13,21 @@ import { MyCollectionArtworkForm } from "./MyCollectionArtworkForm"
 
 export type ArtworkFormMode = "add" | "edit"
 
+// This needs to be a `type` rather than an `interface` because there's
+// a long-standing thing where a typescript `interface` will be treated a bit more strictly
+// than the equivalent `type` in some situations.
+// https://github.com/microsoft/TypeScript/issues/15300
+// The react-navigation folks have written code that relies on the more permissive `type` behaviour.
+// tslint:disable-next-line:interface-over-type-literal
+export type ArtworkFormModalScreen = {
+  ArtworkForm: {
+    mode: ArtworkFormMode
+    onDismiss(): void
+  }
+  AdditionalDetails: undefined
+  AddPhotos: undefined
+}
+
 export const MyCollectionArtworkFormModal: React.FC<{
   mode: ArtworkFormMode
   visible: boolean
@@ -43,7 +58,7 @@ export const MyCollectionArtworkFormModal: React.FC<{
             }}
           >
             <Stack.Screen name="ArtworkForm" component={MyCollectionArtworkForm} initialParams={{ mode, onDismiss }} />
-            <Stack.Screen name="ArtworkDetailsForm" component={MyCollectionAdditionalDetailsForm} />
+            <Stack.Screen name="AdditionalDetails" component={MyCollectionAdditionalDetailsForm} />
             <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
           </Stack.Navigator>
         </FancyModal>
@@ -52,4 +67,4 @@ export const MyCollectionArtworkFormModal: React.FC<{
   )
 }
 
-const Stack = createStackNavigator()
+const Stack = createStackNavigator<ArtworkFormModalScreen>()

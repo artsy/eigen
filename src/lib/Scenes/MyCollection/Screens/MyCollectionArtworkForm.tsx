@@ -11,16 +11,19 @@ import { ArtistAutosuggest } from "./AddArtwork/Components/ArtistAutosuggest"
 import { Dimensions } from "./AddArtwork/Components/Dimensions"
 import { MediumPicker } from "./AddArtwork/Components/MediumPicker"
 import { useArtworkForm } from "./AddArtwork/Form/useArtworkForm"
+import { ArtworkFormModalScreen } from "./MyCollectionArtworkFormModal"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 
-export const MyCollectionArtworkForm: React.FC<StackScreenProps<any>> = ({ navigation, route }) => {
+export const MyCollectionArtworkForm: React.FC<StackScreenProps<ArtworkFormModalScreen, "ArtworkForm">> = ({
+  navigation,
+  route,
+}) => {
   const artworkActions = AppStore.actions.myCollection.artwork
   const artworkState = AppStore.useAppState((state) => state.myCollection.artwork)
   const [loading, setLoading] = useState<boolean>(false)
-  const navState = AppStore.useAppState((state) => state.myCollection.navigation)
   const { formik } = useArtworkForm()
-  const modalType = navState?.sessionState?.modalType
+  const modalType = route.params.mode
   const addOrEditLabel = modalType === "edit" ? "Edit" : "Add"
 
   /* FIXME: Wire up proper loading modal */
@@ -37,23 +40,12 @@ export const MyCollectionArtworkForm: React.FC<StackScreenProps<any>> = ({ navig
   }
 
   return (
-    // <Flex>
-    //   <FancyModalHeader>Form {(route.params as any).mode}</FancyModalHeader>
-    //   <Button
-    //     onPress={() => {
-    //       navigation.navigate("ArtworkDetailsForm")
-    //     }}
-    //   >
-    //     Additional details
-    //   </Button>
-    //   <Button>{(route.params as any).mode === "add" ? "Submit" : "Update"}</Button>
-    // </Flex>
     <>
-      {/* Disable touch events in form while loading */}
-      <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => (route.params as any).onDismiss()}>
+      <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => route.params.onDismiss()}>
         {addOrEditLabel} artwork
       </FancyModalHeader>
       <ScrollView
+        /* Disable touch events in form while loading */
         pointerEvents={showLoading ? "none" : "auto"}
         keyboardDismissMode={"on-drag"}
         keyboardShouldPersistTaps={"handled"}
@@ -86,7 +78,7 @@ export const MyCollectionArtworkForm: React.FC<StackScreenProps<any>> = ({ navig
         />
         <AdditionalDetailsButton
           onPress={() => {
-            navigation.navigate("ArtworkDetailsForm")
+            navigation.navigate("AdditionalDetails")
           }}
         />
 
