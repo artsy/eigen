@@ -297,6 +297,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 {...this.defaultPropsForInput("phoneNumber")}
                 label="Phone"
                 placeholder="Add your phone number"
+                keyboardType="phone-pad"
                 textContentType="telephoneNumber"
                 onSubmitEditing={() => this.presentSelectCountry()}
                 onLayout={({ nativeEvent }) => (this.phoneNumberLayout = nativeEvent.layout)}
