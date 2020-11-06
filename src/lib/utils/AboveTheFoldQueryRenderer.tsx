@@ -94,6 +94,7 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
               })
             : null
         }}
+        cacheConfig={props.cacheConfig || null}
       />
       {aboveArgs?.props && (
         <QueryRenderer
@@ -105,6 +106,7 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
             setBelowArgs(args)
             return null
           }}
+          cacheConfig={props.cacheConfig || null}
         />
       )}
     </>
