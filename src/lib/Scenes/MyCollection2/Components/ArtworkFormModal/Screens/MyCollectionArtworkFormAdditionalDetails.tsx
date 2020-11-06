@@ -6,9 +6,9 @@ import { Select } from "lib/Components/Select"
 import { Flex, Join, Sans, space, Spacer } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native-gesture-handler"
-import { ScreenMargin } from "../Components/ScreenMargin"
-import { useArtworkForm } from "./AddArtwork/Form/useArtworkForm"
-import { ArtworkFormModalScreen } from "./MyCollectionArtworkFormModal"
+import { ScreenMargin } from "../../../../MyCollection/Components/ScreenMargin"
+import { useArtworkForm } from "../../../../MyCollection/Screens/AddArtwork/Form/useArtworkForm"
+import { ArtworkFormModalScreen } from "../MyCollectionArtworkFormModal"
 
 export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: NavigationProp<ArtworkFormModalScreen> }> = ({
   navigation,

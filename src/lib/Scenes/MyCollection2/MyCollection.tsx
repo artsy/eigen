@@ -13,8 +13,8 @@ import React, { useState } from "react"
 import { View } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { MyCollectionArtworkListItemFragmentContainer } from "./Screens/ArtworkList/MyCollectionArtworkListItem"
-import { MyCollectionArtworkFormModal } from "./Screens/MyCollectionArtworkFormModal"
+import { MyCollectionArtworkListItemFragmentContainer } from "../MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
+import { MyCollectionArtworkFormModal } from "./Components/ArtworkFormModal/MyCollectionArtworkFormModal"
 
 const MyCollection: React.FC<{
   relay: RelayPaginationProp

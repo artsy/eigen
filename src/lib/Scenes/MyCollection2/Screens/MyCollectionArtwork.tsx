@@ -1,7 +1,7 @@
 import { navigate } from "lib/navigation/navigate"
 import { Button, Flex, Text } from "palette"
 import React, { useState } from "react"
-import { MyCollectionArtworkFormModal } from "./MyCollectionArtworkFormModal"
+import { MyCollectionArtworkFormModal } from "../Components/ArtworkFormModal/MyCollectionArtworkFormModal"
 
 export const MyCollectionArtwork: React.FC<{ artworkID: string }> = ({ artworkID }) => {
   const [showModal, setShowModal] = useState(false)

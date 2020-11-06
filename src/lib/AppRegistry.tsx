@@ -82,9 +82,9 @@ import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
-import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
-import { MyCollectionArtwork } from "./Scenes/MyCollection/Screens/MyCollectionArtwork"
-import { MyCollectionArtworkDetails } from "./Scenes/MyCollection/Screens/MyCollectionArtworkDetails"
+import { MyCollectionQueryRenderer } from "./Scenes/MyCollection2/MyCollection"
+import { MyCollectionArtwork } from "./Scenes/MyCollection2/Screens/MyCollectionArtwork"
+import { MyCollectionArtworkDetails } from "./Scenes/MyCollection2/Screens/MyCollectionArtworkDetails"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
@@ -94,6 +94,7 @@ import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 
 YellowBox.ignoreWarnings([
+  "Non-serializable values were found in the navigation state",
   "Calling `getNode()` on the ref of an Animated component is no longer necessary.",
   "RelayResponseNormalizer: Payload did not contain a value for field `id: id`. Check that you are parsing with the same query that was used to fetch the payload.",
   // Deprecated, we'll transition when it's removed.

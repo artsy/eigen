@@ -4,12 +4,12 @@ import { FormikProvider, useFormik } from "formik"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { AppStore } from "lib/store/AppStore"
 import React from "react"
-import { ArtworkFormValues } from "../State/MyCollectionArtworkModel"
-import { artworkSchema, validateArtworkSchema } from "./AddArtwork/Form/artworkSchema"
-import { MyCollectionAdditionalDetailsForm } from "./MyCollectionAdditionalDetailsForm"
-import { MyCollectionAddPhotos } from "./MyCollectionAddPhotos"
+import { artworkSchema, validateArtworkSchema } from "../../../MyCollection/Screens/AddArtwork/Form/artworkSchema"
+import { ArtworkFormValues } from "../../../MyCollection/State/MyCollectionArtworkModel"
 
-import { MyCollectionArtworkForm } from "./MyCollectionArtworkForm"
+import { MyCollectionAdditionalDetailsForm } from "./Screens/MyCollectionArtworkFormAdditionalDetails"
+import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
+import { MyCollectionArtworkForm } from "./Screens/MyCollectionArtworkFormMain"
 
 export type ArtworkFormMode = "add" | "edit"
 

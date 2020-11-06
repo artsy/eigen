@@ -7,7 +7,7 @@ import { AddIcon, BorderBox, Box, color, Flex, XCircleIcon } from "palette"
 import React from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { Image as ImageProps } from "react-native-image-crop-picker"
-import { ArtworkFormModalScreen } from "./MyCollectionArtworkFormModal"
+import { ArtworkFormModalScreen } from "../MyCollectionArtworkFormModal"
 
 export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormModalScreen, "AddPhotos">> = ({
   navigation,
