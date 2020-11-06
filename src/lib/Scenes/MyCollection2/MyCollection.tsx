@@ -38,7 +38,12 @@ const MyCollection: React.FC<{
 
   return (
     <View style={{ flex: 1 }}>
-      <MyCollectionArtworkFormModal mode="add" visible={showModal} onDismiss={() => setShowModal(false)} />
+      <MyCollectionArtworkFormModal
+        mode="add"
+        visible={showModal}
+        onDismiss={() => setShowModal(false)}
+        onSuccess={() => setShowModal(false)}
+      />
       <FancyModalHeader
         rightButtonText="Add artwork"
         hideBottomDivider

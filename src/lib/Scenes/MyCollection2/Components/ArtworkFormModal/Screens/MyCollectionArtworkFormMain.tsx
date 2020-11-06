@@ -21,23 +21,9 @@ export const MyCollectionArtworkForm: React.FC<StackScreenProps<ArtworkFormModal
 }) => {
   const artworkActions = AppStore.actions.myCollection.artwork
   const artworkState = AppStore.useAppState((state) => state.myCollection.artwork)
-  const [loading, setLoading] = useState<boolean>(false)
   const { formik } = useArtworkForm()
   const modalType = route.params.mode
   const addOrEditLabel = modalType === "edit" ? "Edit" : "Add"
-
-  /* FIXME: Wire up proper loading modal */
-  const submitArtwork = () => {
-    /* `handleSubmit` is wired up in <Boot>  */
-    setLoading(true)
-    formik.handleSubmit()
-  }
-
-  const showLoading = loading && !artworkState.sessionState.artworkErrorOccurred
-
-  const deletionStarted = () => {
-    setLoading(true)
-  }
 
   return (
     <>
@@ -46,7 +32,6 @@ export const MyCollectionArtworkForm: React.FC<StackScreenProps<ArtworkFormModal
       </FancyModalHeader>
       <ScrollView
         /* Disable touch events in form while loading */
-        pointerEvents={showLoading ? "none" : "auto"}
         keyboardDismissMode={"on-drag"}
         keyboardShouldPersistTaps={"handled"}
       >
@@ -85,7 +70,7 @@ export const MyCollectionArtworkForm: React.FC<StackScreenProps<ArtworkFormModal
         <Spacer my={2} />
 
         <ScreenMargin>
-          <Button disabled={!formik.isValid} block onPress={submitArtwork} data-test-id="CompleteButton">
+          <Button disabled={!formik.isValid} block onPress={formik.handleSubmit} data-test-id="CompleteButton">
             Complete
           </Button>
 
@@ -94,12 +79,13 @@ export const MyCollectionArtworkForm: React.FC<StackScreenProps<ArtworkFormModal
               mt={2}
               variant="secondaryGray"
               block
-              onPress={() =>
-                artworkActions.confirmDeleteArtwork({
-                  artworkId: artworkState.sessionState.artworkId,
-                  artworkGlobalId: artworkState.sessionState.artworkGlobalId,
-                  startedLoading: deletionStarted,
-                })
+              onPress={
+                () => void 0
+                // artworkActions.confirmDeleteArtwork({
+                //   artworkId: artworkState.sessionState.artworkId,
+                //   artworkGlobalId: artworkState.sessionState.artworkGlobalId,
+                //   startedLoading: deletionStarted,
+                // })
               }
               data-test-id="DeleteButton"
             >
@@ -118,26 +104,7 @@ export const MyCollectionArtworkForm: React.FC<StackScreenProps<ArtworkFormModal
           </ScreenMargin>
         )}
       </ScrollView>
-      {showLoading && <LoadingIndicator />}
     </>
-  )
-}
-
-const LoadingIndicator = () => {
-  return (
-    <Box
-      style={{
-        zIndex: 100,
-        height: "100%",
-        width: "100%",
-        position: "absolute",
-        backgroundColor: "rgba(0, 0, 0, 0.15)",
-      }}
-    >
-      <Flex flex={1} alignItems="center" justifyContent="center">
-        <ActivityIndicator size="large" />
-      </Flex>
-    </Box>
   )
 }
 

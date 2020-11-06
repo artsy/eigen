@@ -1,11 +1,23 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
+import { captureException } from "@sentry/react-native"
 import { FormikProvider, useFormik } from "formik"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
+import {
+  getConvectionGeminiKey,
+  getGeminiCredentialsForEnvironment,
+  uploadFileToS3,
+} from "lib/Scenes/Consignments/Submission/geminiUploadToS3"
+import { cleanArtworkPayload } from "lib/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { AppStore } from "lib/store/AppStore"
-import React from "react"
+import { Box, Flex } from "palette"
+import React, { useState } from "react"
+import { ActivityIndicator, Alert } from "react-native"
 import { artworkSchema, validateArtworkSchema } from "../../../MyCollection/Screens/AddArtwork/Form/artworkSchema"
 import { ArtworkFormValues } from "../../../MyCollection/State/MyCollectionArtworkModel"
+import { myCollectionAddArtwork } from "../../mutations/myCollectionAddArtwork"
+import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
+import { myCollectionEditArtwork } from "../../mutations/myCollectionEditArtwork"
 
 import { MyCollectionAdditionalDetailsForm } from "./Screens/MyCollectionArtworkFormAdditionalDetails"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
@@ -23,33 +35,78 @@ export type ArtworkFormModalScreen = {
   ArtworkForm: {
     mode: ArtworkFormMode
     onDismiss(): void
+    onDelete?(): void
   }
   AdditionalDetails: undefined
   AddPhotos: undefined
 }
 
 export const MyCollectionArtworkFormModal: React.FC<{
-  mode: ArtworkFormMode
   visible: boolean
   onDismiss: () => void
-}> = ({ mode, visible, onDismiss }) => {
+  onSuccess: () => void
+  mode: ArtworkFormMode
+  onDelete?: () => void
+}> = (props) => {
   const initialFormValues = AppStore.useAppState((state) => state.myCollection.artwork.sessionState.formValues)
-  const artworkActions = AppStore.actions.myCollection.artwork
-  const handleSubmit = mode === "add" ? artworkActions.addArtwork : artworkActions.editArtwork
+  const [loading, setLoading] = useState<boolean>(false)
 
-  // TODO: Don't initialize form for every collection screen; move this to another component
   const initialForm = useFormik<ArtworkFormValues>({
     enableReinitialize: true,
     initialValues: initialFormValues,
     initialErrors: validateArtworkSchema(initialFormValues),
-    onSubmit: handleSubmit,
+    onSubmit: async ({ photos, artistSearchResult, costMinor, artist, artistIds, ...others }) => {
+      setLoading(true)
+      try {
+        const externalImageUrls = await uploadPhotos(photos)
+        if (props.mode === "add") {
+          await myCollectionAddArtwork({
+            artistIds: [artistSearchResult!.internalID as string],
+            externalImageUrls,
+            costMinor: Number(costMinor),
+            ...cleanArtworkPayload(others),
+          })
+        } else {
+          await myCollectionEditArtwork({} as any)
+        }
+        props.onSuccess()
+        setTimeout(() => {
+          AppStore.actions.myCollection.artwork.resetForm()
+        }, 500)
+      } catch (e) {
+        if (__DEV__) {
+          console.error(e)
+        } else {
+          captureException(e)
+        }
+        Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
+      } finally {
+        setLoading(false)
+      }
+    },
     validationSchema: artworkSchema,
   })
+
+  const onDelete =
+    props.onDelete &&
+    (async () => {
+      setLoading(true)
+      try {
+        await myCollectionDeleteArtwork("not an artwork id")
+      } catch (e) {
+        if (__DEV__) {
+          console.error(e)
+        } else {
+          captureException(e)
+        }
+        Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
+      }
+    })
 
   return (
     <NavigationContainer>
       <FormikProvider value={initialForm}>
-        <FancyModal visible={visible} onBackgroundPressed={() => onDismiss()}>
+        <FancyModal visible={props.visible} onBackgroundPressed={() => props.onDismiss()}>
           <Stack.Navigator
             screenOptions={{
               headerShown: false,
@@ -57,10 +114,15 @@ export const MyCollectionArtworkFormModal: React.FC<{
               cardStyle: { backgroundColor: "white" },
             }}
           >
-            <Stack.Screen name="ArtworkForm" component={MyCollectionArtworkForm} initialParams={{ mode, onDismiss }} />
+            <Stack.Screen
+              name="ArtworkForm"
+              component={MyCollectionArtworkForm}
+              initialParams={{ onDelete, onDismiss: props.onDismiss }}
+            />
             <Stack.Screen name="AdditionalDetails" component={MyCollectionAdditionalDetailsForm} />
             <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
           </Stack.Navigator>
+          {!!loading && <LoadingIndicator />}
         </FancyModal>
       </FormikProvider>
     </NavigationContainer>
@@ -68,3 +130,39 @@ export const MyCollectionArtworkFormModal: React.FC<{
 }
 
 const Stack = createStackNavigator<ArtworkFormModalScreen>()
+
+const LoadingIndicator = () => {
+  return (
+    <Box
+      style={{
+        height: "100%",
+        width: "100%",
+        position: "absolute",
+        backgroundColor: "rgba(0, 0, 0, 0.15)",
+      }}
+    >
+      <Flex flex={1} alignItems="center" justifyContent="center">
+        <ActivityIndicator size="large" />
+      </Flex>
+    </Box>
+  )
+}
+
+async function uploadPhotos(photos: ArtworkFormValues["photos"]) {
+  const imagePaths = photos.map((photo) => photo.path)
+  const convectionKey = await getConvectionGeminiKey()
+  const acl = "private"
+  const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
+  const bucket = assetCredentials.policyDocument.conditions.bucket
+
+  const uploadPromises = imagePaths.map(
+    async (path): Promise<string> => {
+      const s3 = await uploadFileToS3(path, acl, assetCredentials)
+      const url = `https://${bucket}.s3.amazonaws.com/${s3.key}`
+      return url
+    }
+  )
+
+  const externalImageUrls: string[] = await Promise.all(uploadPromises)
+  return externalImageUrls
+}
