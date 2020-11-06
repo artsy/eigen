@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 37574088e4833d9e0b0bc4269d06bda1 */
+/* @relayHash 36bc08c680ce6d14036c06a08cec5dfe */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -87,6 +87,11 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
       id
     }
   }
+}
+
+fragment Show2ArtworksEmptyState_show on Show {
+  isFairBooth
+  status
 }
 
 fragment Show2Artworks_show on Show {
@@ -257,6 +262,8 @@ fragment Show2_show on Show {
   ...Show2Info_show
   ...Show2ViewingRoom_show
   ...Show2ContextCard_show
+  ...Show2Artworks_show
+  ...Show2ArtworksEmptyState_show
   viewingRoomIDs
   images(default: false) {
     __typename
@@ -264,7 +271,6 @@ fragment Show2_show on Show {
   counts {
     eligibleArtworks
   }
-  ...Show2Artworks_show
 }
 */
 
@@ -351,14 +357,21 @@ v11 = {
   "name": "title",
   "storageKey": null
 },
-v12 = [
+v12 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "status",
+  "storageKey": null
+},
+v13 = [
   {
     "kind": "Literal",
     "name": "short",
     "value": true
   }
 ],
-v13 = [
+v14 = [
   {
     "kind": "Literal",
     "name": "aggregations",
@@ -695,23 +708,17 @@ return {
                       (v2/*: any*/),
                       (v3/*: any*/),
                       (v11/*: any*/),
+                      (v12/*: any*/),
                       {
                         "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "status",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": (v12/*: any*/),
+                        "args": (v13/*: any*/),
                         "kind": "ScalarField",
                         "name": "distanceToOpen",
                         "storageKey": "distanceToOpen(short:true)"
                       },
                       {
                         "alias": null,
-                        "args": (v12/*: any*/),
+                        "args": (v13/*: any*/),
                         "kind": "ScalarField",
                         "name": "distanceToClose",
                         "storageKey": "distanceToClose(short:true)"
@@ -845,33 +852,8 @@ return {
             "storageKey": null
           },
           {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "viewingRoomIDs",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "ShowCounts",
-            "kind": "LinkedField",
-            "name": "counts",
-            "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "eligibleArtworks",
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          },
-          {
             "alias": "showArtworks",
-            "args": (v13/*: any*/),
+            "args": (v14/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "kind": "LinkedField",
             "name": "filterArtworksConnection",
@@ -1205,7 +1187,7 @@ return {
           },
           {
             "alias": "showArtworks",
-            "args": (v13/*: any*/),
+            "args": (v14/*: any*/),
             "filters": [
               "sort",
               "medium",
@@ -1224,6 +1206,32 @@ return {
             "kind": "LinkedHandle",
             "name": "filterArtworksConnection"
           },
+          (v12/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "viewingRoomIDs",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ShowCounts",
+            "kind": "LinkedField",
+            "name": "counts",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "eligibleArtworks",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
           (v7/*: any*/)
         ],
         "storageKey": null
@@ -1231,7 +1239,7 @@ return {
     ]
   },
   "params": {
-    "id": "37574088e4833d9e0b0bc4269d06bda1",
+    "id": "36bc08c680ce6d14036c06a08cec5dfe",
     "metadata": {},
     "name": "Show2Query",
     "operationKind": "query",
