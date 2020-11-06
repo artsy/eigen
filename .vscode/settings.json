@@ -59,5 +59,8 @@
   "[json]": {
     "editor.formatOnSave": false
   },
-  "javascript.validate.enable": true
+  "javascript.validate.enable": true,
+  "files.watcherExclude": {
+    "**/target": true
+  }
 }
