@@ -100,7 +100,6 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
             onPress={() => {
               navigate(`auction/${sale.slug}/info`)
             }}
-            withFeedback
           />
         </Flex>
       </View>
