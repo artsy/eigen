@@ -19,6 +19,8 @@ export const reducer = (
   action: ArtworkInquiryActions
 ): ArtworkInquiryContextState => {
   switch (action.type) {
+    case "resetForm":
+      return artworkInquiryState
     case "selectInquiryType":
       return {
         ...inquiryState,

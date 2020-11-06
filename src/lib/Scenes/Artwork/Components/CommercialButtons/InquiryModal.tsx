@@ -114,11 +114,18 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
     )
   }
 
+  const resetForm = () => {
+    setLocationExpanded(false)
+    dispatch({ type: "resetForm", payload: null })
+  }
   return (
     <FancyModal visible={modalIsVisible} onBackgroundPressed={() => toggleVisibility()}>
       <FancyModalHeader
         leftButtonText="Cancel"
-        onLeftButtonPress={() => toggleVisibility()}
+        onLeftButtonPress={() => {
+          resetForm()
+          toggleVisibility()
+        }}
         rightButtonText="Send"
         rightButtonDisabled={state.inquiryQuestions.length === 0}
         onRightButtonPress={() => {

@@ -1,7 +1,7 @@
 import { InquiryQuestionInput } from "__generated__/SubmitInquiryRequestMutation.graphql"
 import { Dispatch } from "react"
 
-export type ArtworkInquiryActions = SelectInquiryType | SelectLocation | SelectInquiryQuestion
+export type ArtworkInquiryActions = SelectInquiryType | SelectLocation | SelectInquiryQuestion | ResetForm
 
 export interface ArtworkInquiryContextProps {
   state: ArtworkInquiryContextState
@@ -16,6 +16,10 @@ export interface ArtworkInquiryContextState {
 
 export type InquiryTypes = "Inquire on price" | "Contact gallery" | "Inquire to purchase"
 
+interface ResetForm {
+  type: "resetForm"
+  payload: null
+}
 interface SelectInquiryType {
   type: "selectInquiryType"
   payload: InquiryTypes
