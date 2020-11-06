@@ -13,7 +13,7 @@ import { getCurrentEmissionState } from "lib/store/AppStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
-import { Schema } from "lib/utils/track"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useInterval } from "lib/utils/useInterval"
 import { usePrevious } from "lib/utils/usePrevious"
 import _, { times } from "lodash"
@@ -126,26 +126,12 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   })
 
   const openFilterArtworksModal = () => {
-    tracking.trackEvent({
-      action_name: "filter",
-      context_screen_owner_type: Schema.OwnerEntityTypes.Auction,
-      context_screen: Schema.PageNames.Auction,
-      context_screen_owner_id: sale.internalID,
-      context_screen_owner_slug: sale.slug,
-      action_type: Schema.ActionTypes.Tap,
-    })
+    tracking.trackEvent(tracks.openFilter(sale.internalID, sale.slug))
     setFilterArtworkModalVisible(true)
   }
 
   const closeFilterArtworksModal = () => {
-    tracking.trackEvent({
-      action_name: "closeFilterWindow",
-      context_screen_owner_type: Schema.OwnerEntityTypes.Auction,
-      context_screen: Schema.PageNames.Auction,
-      context_screen_owner_id: sale.internalID,
-      context_screen_owner_slug: sale.slug,
-      action_type: Schema.ActionTypes.Tap,
-    })
+    tracking.trackEvent(tracks.closeFilter(sale.internalID, sale.slug))
     setFilterArtworkModalVisible(false)
   }
 
@@ -200,7 +186,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     <ArtworkFilterGlobalStateProvider>
       <ArtworkFilterContext.Consumer>
         {() => (
-          <>
+          <ProvideScreenTracking info={tracks.screen(sale.internalID, sale.slug)}>
             <Animated.FlatList
               ref={flatListRef}
               data={saleSectionsData}
@@ -233,11 +219,42 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
               closeModal={closeFilterArtworksModal}
             />
             <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
-          </>
+          </ProvideScreenTracking>
         )}
       </ArtworkFilterContext.Consumer>
     </ArtworkFilterGlobalStateProvider>
   )
+}
+
+export const tracks = {
+  screen: (id: string, slug: string) => {
+    return {
+      context_screen: Schema.PageNames.Auction,
+      context_screen_owner_type: Schema.OwnerEntityTypes.Auction,
+      context_screen_owner_id: id,
+      context_screen_owner_slug: slug,
+    }
+  },
+  openFilter: (id: string, slug: string) => {
+    return {
+      action_name: "filter",
+      context_screen_owner_type: Schema.OwnerEntityTypes.Auction,
+      context_screen: Schema.PageNames.Auction,
+      context_screen_owner_id: id,
+      context_screen_owner_slug: slug,
+      action_type: Schema.ActionTypes.Tap,
+    }
+  },
+  closeFilter: (id: string, slug: string) => {
+    return {
+      action_name: "closeFilterWindow",
+      context_screen_owner_type: Schema.OwnerEntityTypes.Auction,
+      context_screen: Schema.PageNames.Auction,
+      context_screen_owner_id: id,
+      context_screen_owner_slug: slug,
+      action_type: Schema.ActionTypes.Tap,
+    }
+  },
 }
 
 export const SalePlaceholder: React.FC<{}> = () => (
