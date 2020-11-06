@@ -84,14 +84,14 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
     <>
       <Box>
         <Text variant="largeTitle" color="purple100">
-          {demandRank}
+          {demandRank.toFixed(1)}
         </Text>
       </Box>
       <ProgressBar width={width} />
       <Spacer my={0.3} />
       <Flex flexDirection="row" justifyContent="space-between">
-        <Text>0.0</Text>
-        <Text>10.0</Text>
+        <Text>0</Text>
+        <Text>10</Text>
       </Flex>
     </>
   )
