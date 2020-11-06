@@ -1,3 +1,4 @@
+import { InquiryQuestionInput } from "__generated__/SubmitInquiryRequestMutation.graphql"
 import {
   ArtworkInquiryActions,
   ArtworkInquiryContextProps,
@@ -5,10 +6,9 @@ import {
   InquiryOptions,
   InquiryQuestionIDs,
 } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import { remove } from "lodash"
 import React, { createContext, Reducer, useReducer } from "react"
 
-const artworkInquiryState: ArtworkInquiryContextState = {
+const initialArtworkInquiryState: ArtworkInquiryContextState = {
   shippingLocation: null,
   inquiryType: null,
   inquiryQuestions: [],
@@ -19,6 +19,8 @@ export const reducer = (
   action: ArtworkInquiryActions
 ): ArtworkInquiryContextState => {
   switch (action.type) {
+    case "resetForm":
+      return initialArtworkInquiryState
     case "selectInquiryType":
       return {
         ...inquiryState,
@@ -37,16 +39,14 @@ export const reducer = (
 
     case "selectInquiryQuestion":
       const { isChecked, ...payloadQuestion } = action.payload
-
-      if (isChecked) {
-        inquiryState.inquiryQuestions.push(payloadQuestion)
-      } else {
-        remove(inquiryState.inquiryQuestions, (question) => question.questionID === payloadQuestion.questionID)
-      }
+      const { inquiryQuestions } = inquiryState
+      const newSelection: InquiryQuestionInput[] = isChecked
+        ? [...inquiryQuestions, payloadQuestion]
+        : inquiryQuestions.filter((q) => q.questionID !== payloadQuestion.questionID)
 
       return {
         ...inquiryState,
-        inquiryQuestions: inquiryState.inquiryQuestions,
+        inquiryQuestions: newSelection,
       }
   }
 }
@@ -54,9 +54,8 @@ export const reducer = (
 export const ArtworkInquiryContext = createContext<ArtworkInquiryContextProps>(null as any)
 
 export const ArtworkInquiryStateProvider = ({ children }: any) => {
-  const [state, dispatch] = useReducer<Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>>(
-    reducer,
-    artworkInquiryState
-  )
+  const [state, dispatch] = useReducer<Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>>(reducer, {
+    ...initialArtworkInquiryState,
+  })
   return <ArtworkInquiryContext.Provider value={{ state, dispatch }}>{children}</ArtworkInquiryContext.Provider>
 }

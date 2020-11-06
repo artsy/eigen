@@ -4,6 +4,7 @@ import { InquiryModalTestsQuery, InquiryModalTestsQueryResponse } from "__genera
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Input } from "lib/Components/Input/Input"
 import { extractText } from "lib/tests/extractText"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { queryLocation } from "lib/utils/googleMaps"
@@ -109,6 +110,20 @@ describe("<InquiryModal />", () => {
   it("renders the modal", () => {
     const tree = getWrapper()
     expect(extractText(tree.root)).toContain("What information are you looking for?")
+  })
+
+  it("state resets when exiting and re-entering the modal", async () => {
+    const wrapper = getWrapper()
+    expect(wrapper.root.findByType(InquiryModalFragmentContainer).props.modalIsVisible).toBeTruthy()
+    const checkBox = wrapper.root.findByProps({ "data-test-id": "checkbox-shipping_quote" })
+    checkBox.props.onPress()
+    await flushPromiseQueue()
+    expect(checkBox.props.checked).toBeTruthy()
+    wrapper.root.findByProps({ "data-test-id": "checkbox-shipping_quote" }).props.onPress()
+    await press(wrapper.root, { text: "Cancel" })
+
+    expect(wrapper.root.findByType(InquiryModalFragmentContainer).props.modalIsVisible).toBeFalsy()
+    expect(checkBox.props.checked).toBeFalsy()
   })
 
   describe("user can select 'Price & Availability'", () => {
