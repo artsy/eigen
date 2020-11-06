@@ -78,22 +78,22 @@ export const OrderedSaleArtworkSorts: FilterData[] = [
   {
     displayText: "Most bids",
     paramName: FilterParamName.sort,
-    paramValue: "bidder_positions_count",
+    paramValue: "-bidder_positions_count",
   },
   {
     displayText: "Least bids",
     paramName: FilterParamName.sort,
-    paramValue: "-bidder_positions_count",
+    paramValue: "bidder_positions_count",
   },
   {
     displayText: "Highest bid",
     paramName: FilterParamName.sort,
-    paramValue: "searchable_estimate",
+    paramValue: "-searchable_estimate",
   },
   {
     displayText: "Lowest bid",
     paramName: FilterParamName.sort,
-    paramValue: "-searchable_estimate",
+    paramValue: "searchable_estimate",
   },
 ]
 
