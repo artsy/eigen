@@ -133,7 +133,7 @@ describe("SaleLotsListSortMode", () => {
       />
     )
 
-    expect(extractText(tree.root.findByType(FilterTitle))).toBe("Sorted by most bids")
+    expect(extractText(tree.root.findByType(FilterTitle))).toBe("Sorted by least bids")
     expect(extractText(tree.root.findByType(FilterDescription))).toBe("Showing 20 of 100")
   })
 })
