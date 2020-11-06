@@ -1,10 +1,16 @@
 import { SubmitInquiryRequestMutation } from "__generated__/SubmitInquiryRequestMutation.graphql"
 import { commitMutation, Environment, graphql } from "relay-runtime"
 
-export const SubmitInquiryRequest = (environment: Environment, inquireable: any, payload: any) => {
+export const SubmitInquiryRequest = (
+  environment: Environment,
+  inquireable: any,
+  payload: any,
+  showErrorMessage?: any
+) => {
   return commitMutation<SubmitInquiryRequestMutation>(environment, {
     onError: () => {
       // Show error state
+      showErrorMessage(true)
     },
     onCompleted: () => {
       // Show delayed comfirmation notification
