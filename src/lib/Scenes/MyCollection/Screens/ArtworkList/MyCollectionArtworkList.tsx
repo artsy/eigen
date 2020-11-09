@@ -57,10 +57,12 @@ export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = (
         My Collection
       </Text>
       {artworks.length === 0 ? (
-        <ZeroState
-          title="Add a work from your collection to access price and market insights."
-          callToAction={<Button onPress={addArtwork}>Add artwork</Button>}
-        />
+        <Flex pb="200">
+          <ZeroState
+            subtitle="Add a work from your collection to access price and market insights."
+            callToAction={<Button onPress={addArtwork}>Add artwork</Button>}
+          />
+        </Flex>
       ) : (
         <FlatList
           data={artworks}

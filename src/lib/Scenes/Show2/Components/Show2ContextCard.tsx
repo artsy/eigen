@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Show2ContextCard_show } from "__generated__/Show2ContextCard_show.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
@@ -6,15 +7,57 @@ import { Box, BoxProps, Flex, SmallCard, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 export interface Show2ContextCardProps extends BoxProps {
   show: Show2ContextCard_show
 }
 
-export const Show2ContextCard: React.FC<Show2ContextCardProps> = ({ show }) => {
+export const Show2ContextCard: React.FC<Show2ContextCardProps> = ({ show, ...rest }) => {
   const { isFairBooth, fair, partner } = show
 
-  const props: ContextCardProps = isFairBooth ? extractPropsFromFair(fair) : extractPropsFromPartner(partner)
+  const { onPress, ...card } = isFairBooth ? extractPropsFromFair(fair) : extractPropsFromPartner(partner)
+
+  const tracking = useTracking()
+
+  const props = {
+    onPress: () => {
+      onPress()
+
+      const context = {
+        type: "thumbnail",
+        context_screen_owner_type: OwnerType.show,
+        context_screen_owner_id: show.internalID,
+        context_screen_owner_slug: show.slug,
+      }
+
+      if (isFairBooth) {
+        const data = {
+          ...context,
+          action: ActionType.tappedFairCard,
+          context_module: ContextModule.presentingFair,
+          destination_screen_owner_type: OwnerType.fair,
+          destination_screen_owner_id: fair!.internalID,
+          destination_screen_owner_slug: fair!.slug,
+        }
+
+        tracking.trackEvent(data)
+      } else {
+        const data = {
+          ...context,
+          action: ActionType.tappedPartnerCard,
+          context_module: ContextModule.presentingPartner,
+          destination_screen_owner_type: OwnerType.partner,
+          destination_screen_owner_id: partner!.internalID,
+          destination_screen_owner_slug: partner!.slug,
+        }
+
+        tracking.trackEvent(data)
+      }
+    },
+    ...card,
+    ...rest,
+  }
 
   return <ContextCard {...props} />
 }
@@ -39,7 +82,15 @@ interface ContextCardProps {
   onPress: () => void
 }
 
-const ContextCard: React.FC<ContextCardProps> = ({ sectionTitle, imageUrls, iconUrl, title, subtitle, onPress }) => {
+const ContextCard: React.FC<ContextCardProps> = ({
+  sectionTitle,
+  imageUrls,
+  iconUrl,
+  title,
+  subtitle,
+  onPress,
+  ...rest
+}) => {
   const hasMultipleImages = imageUrls.length > 1
 
   const imageElement = hasMultipleImages ? (
@@ -53,49 +104,54 @@ const ContextCard: React.FC<ContextCardProps> = ({ sectionTitle, imageUrls, icon
   )
 
   return (
-    <>
-      <Box m={2}>
-        <SectionTitle title={sectionTitle} onPress={onPress} />
-        <TouchableOpacity onPress={onPress}>
-          <Box style={{ position: "relative" }}>
-            {imageElement}
-            {!!iconUrl && (
-              <Flex
-                alignItems="center"
-                justifyContent="center"
-                bg="white100"
-                width={80}
-                height={60}
-                px={1}
-                position="absolute"
-                bottom={0}
-                left={2}
-              >
-                <OpaqueImageView width={60} height={40} imageURL={iconUrl} placeholderBackgroundColor="white" />
-              </Flex>
-            )}
-          </Box>
-          <Text variant="mediumText" mt={0.5}>
-            {title}
-          </Text>
-          {!!subtitle && (
-            <Text variant="caption" color="black60">
-              {subtitle}
-            </Text>
+    <Box {...rest}>
+      <SectionTitle title={sectionTitle} onPress={onPress} />
+
+      <TouchableOpacity onPress={onPress}>
+        <Box position="relative">
+          {imageElement}
+
+          {!!iconUrl && (
+            <Flex
+              alignItems="center"
+              justifyContent="center"
+              bg="white100"
+              width={80}
+              height={60}
+              px={1}
+              position="absolute"
+              bottom={0}
+              left={2}
+            >
+              <OpaqueImageView width={60} height={40} imageURL={iconUrl} placeholderBackgroundColor="white" />
+            </Flex>
           )}
-        </TouchableOpacity>
-      </Box>
-    </>
+        </Box>
+
+        <Text variant="mediumText" mt={0.5}>
+          {title}
+        </Text>
+
+        {!!subtitle && (
+          <Text variant="caption" color="black60">
+            {subtitle}
+          </Text>
+        )}
+      </TouchableOpacity>
+    </Box>
   )
 }
 
 export const Show2ContextCardFragmentContainer = createFragmentContainer(Show2ContextCard, {
   show: graphql`
     fragment Show2ContextCard_show on Show {
+      internalID
+      slug
       isFairBooth
       fair {
-        name
+        internalID
         slug
+        name
         exhibitionPeriod
         profile {
           icon {
@@ -108,6 +164,8 @@ export const Show2ContextCardFragmentContainer = createFragmentContainer(Show2Co
       }
       partner {
         ... on Partner {
+          internalID
+          slug
           name
           profile {
             slug

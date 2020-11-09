@@ -5,11 +5,12 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Flex, Separator, Spacer } from "palette"
+import { Box, Flex, Separator, Spacer } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { Show2ArtworksWithNavigation as Show2Artworks } from "./Components/Show2Artworks"
+import { Show2ArtworksEmptyStateFragmentContainer } from "./Components/Show2ArtworksEmptyState"
 import { Show2ContextCardFragmentContainer as ShowContextCard } from "./Components/Show2ContextCard"
 import { Show2HeaderFragmentContainer as ShowHeader } from "./Components/Show2Header"
 import { Show2InfoFragmentContainer as ShowInfo } from "./Components/Show2Info"
@@ -49,11 +50,29 @@ export const Show2: React.FC<Show2Props> = ({ show }) => {
       ? [{ key: "viewing-room", element: <ShowViewingRoom show={show} mx={2} /> }]
       : []),
 
+    {
+      key: "separator-top",
+      element: (
+        <Box mx={2}>
+          <Separator />
+        </Box>
+      ),
+    },
+
     ...(Boolean(show.counts?.eligibleArtworks)
       ? [{ key: "artworks", element: <Show2Artworks {...artworkProps} /> }]
-      : []),
+      : [{ key: "artworks-empty-state", element: <Show2ArtworksEmptyStateFragmentContainer show={show} mx={2} /> }]),
 
-    { key: "context", element: <ShowContextCard show={show} /> },
+    {
+      key: "separator-bottom",
+      element: (
+        <Box mx={2}>
+          <Separator />
+        </Box>
+      ),
+    },
+
+    { key: "context", element: <ShowContextCard show={show} mx={2} /> },
   ]
 
   return (
@@ -83,14 +102,15 @@ export const Show2FragmentContainer = createFragmentContainer(Show2, {
       ...Show2Info_show
       ...Show2ViewingRoom_show
       ...Show2ContextCard_show
+      ...Show2Artworks_show
+      ...Show2ArtworksEmptyState_show
       viewingRoomIDs
-      images {
+      images(default: false) {
         __typename
       }
       counts {
         eligibleArtworks
       }
-      ...Show2Artworks_show
     }
   `,
 })

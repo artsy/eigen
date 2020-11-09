@@ -7,16 +7,44 @@ import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import moment from "moment"
 import { Flex, Join, Sans, Separator, Text } from "palette"
-import React from "react"
-import { Linking, ScrollView } from "react-native"
+import React, { useEffect, useRef } from "react"
+import { Linking, PanResponder, ScrollView, TextInput, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+
+import { Markdown } from "lib/Components/Markdown"
+import { defaultRules } from "lib/utils/renderMarkdown"
+import { fontFamily } from "palette/platform/fonts/fontFamily"
+import { Output, SingleASTNode, State } from "simple-markdown"
 import { navigate } from "../../navigation/navigate"
 import { PlaceholderBox } from "../../utils/placeholders"
 import { RegisterToBidButtonContainer } from "../Sale/Components/RegisterToBidButton"
+import { saleStatus } from "../Sale/helpers"
 
 interface Props {
   sale: SaleInfo_sale
   me: SaleInfo_me
+}
+
+const basicRules = defaultRules({
+  modal: true,
+  useNewTextStyles: true,
+})
+
+const markdownRules = {
+  ...basicRules,
+  paragraph: {
+    ...basicRules.paragraph,
+    react: (node: SingleASTNode, output: Output<React.ReactNode>, state: State) => (
+      // We are using <TextInput /> instead of <Text /> to allow the user to hover to select
+      <TextInput
+        editable={false}
+        multiline
+        style={{ fontWeight: "400", fontFamily: fontFamily.sans.regular.normal, fontSize: 15, lineHeight: 22 }}
+      >
+        {output(node.content, state)}
+      </TextInput>
+    ),
+  },
 }
 
 const AuctionSupport = () => {
@@ -58,6 +86,13 @@ const AuctionIsLive = () => (
 )
 
 export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
+  const panResponder = useRef<any>(null)
+  useEffect(() => {
+    panResponder.current = PanResponder.create({
+      onStartShouldSetPanResponderCapture: () => true,
+    })
+  }, [])
+
   const renderLiveBiddingOpening = () => {
     if (!sale.liveStartAt || !moment().isSameOrBefore(moment(sale.liveStartAt)) || !sale.timeZone) {
       return null
@@ -78,7 +113,7 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{ paddingBottom: 30 }}>
       <Join separator={<Separator my={2} />}>
         {/*  About Auction */}
         <Flex px={2} mt={70}>
@@ -86,10 +121,14 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
           <Sans size="5" mt={1} mb={3}>
             {sale.name}
           </Sans>
-          <RegisterToBidButtonContainer sale={sale} contextType="sale_information" me={me} />
-          <Text variant="text" color="black" fontSize="size4" mt={25}>
-            {sale.description}
-          </Text>
+          {saleStatus(sale.startAt, sale.endAt) === "closed" || (
+            <Flex mb={4}>
+              <RegisterToBidButtonContainer sale={sale} contextType="sale_information" me={me} />
+            </Flex>
+          )}
+          <View {...(panResponder.current?.panHandlers || {})}>
+            <Markdown rules={markdownRules}>{sale.description || ""}</Markdown>
+          </View>
           {renderLiveBiddingOpening()}
         </Flex>
 

@@ -9,15 +9,13 @@ export interface Show2HoursProps extends BoxProps {
 }
 
 export const Show2Hours: React.FC<Show2HoursProps> = ({ show, ...rest }) => {
-  if (!!show.fair?.location) {
-    return <Show2LocationHours location={show.fair.location} {...rest} />
+  const location = show.location ?? show.fair?.location
+
+  if (!location) {
+    return null
   }
 
-  if (show.location) {
-    return <Show2LocationHours location={show.location} {...rest} />
-  }
-
-  return null
+  return <Show2LocationHours location={location} {...rest} />
 }
 
 export const Show2HoursFragmentContainer = createFragmentContainer(Show2Hours, {

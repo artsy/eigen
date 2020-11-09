@@ -133,7 +133,7 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
   }
 
   return (
-    <Flex flex={1} my={4}>
+    <Flex flex={0} my={4}>
       <SaleLotsListSortMode filterParams={filterParams} filteredTotal={counts?.total} totalCount={totalCount} />
 
       {viewAsFilter?.paramValue === ViewAsValues.List ? (

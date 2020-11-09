@@ -212,7 +212,7 @@ describe("ArtistConsignButton", () => {
 
     it("sends user to sales tab if not already there", () => {
       __appStoreTestUtils__?.injectState({
-        native: { sessionState: { selectedTab: "home" } },
+        bottomTabs: { sessionState: { selectedTab: "home" } },
       })
 
       const tree = renderWithWrappers(<TestRenderer />)
@@ -229,7 +229,7 @@ describe("ArtistConsignButton", () => {
 
     it("sends user to a new instance of landing page if user is already in sales tab", () => {
       __appStoreTestUtils__?.injectState({
-        native: { sessionState: { selectedTab: "sell" } },
+        bottomTabs: { sessionState: { selectedTab: "sell" } },
       })
 
       const tree = renderWithWrappers(<TestRenderer />)

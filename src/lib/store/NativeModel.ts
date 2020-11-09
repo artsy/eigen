@@ -1,7 +1,6 @@
 import { Action, action, Thunk, thunk } from "easy-peasy"
 import { NotificationsManager } from "lib/NativeModules/NotificationsManager"
 import { navigate } from "lib/navigation/navigate"
-import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import { NativeModules } from "react-native"
 import { AppStore } from "./AppStore"
 
@@ -25,7 +24,6 @@ export type NativeEvent =
     }
 
 export interface NativeState {
-  selectedTab: BottomTabType
   userID: string
   authenticationToken: string
   launchCount: number

@@ -18,7 +18,7 @@ import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "palette"
 
 import { Home_featured } from "__generated__/Home_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import { useEmissionOption } from "lib/store/AppStore"
+import { AppStore, useEmissionOption } from "lib/store/AppStore"
 import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -334,7 +334,10 @@ const messages = {
   },
 }
 
-export const HomeQueryRenderer: React.FC<{ flash_message?: string }> = ({ flash_message }) => {
+export const HomeQueryRenderer: React.FC = () => {
+  const { flash_message } = AppStore.useAppState((state) => state.bottomTabs.sessionState.tabProps.home ?? {}) as {
+    flash_message?: string
+  }
   useEffect(() => {
     if (flash_message) {
       const message = messages[flash_message as keyof typeof messages]
@@ -345,6 +348,9 @@ export const HomeQueryRenderer: React.FC<{ flash_message?: string }> = ({ flash_
       }
 
       Alert.alert(message.title, message.message, [{ text: "Ok" }])
+      // reset the tab props because we don't want this message to show again
+      // if the home screen remounts for whatever reason.
+      AppStore.actions.bottomTabs.setTabProps({ tab: "home", props: {} })
     }
   }, [flash_message])
   return (

@@ -1,17 +1,34 @@
 import { SaleActiveBids_me } from "__generated__/SaleActiveBids_me.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
+import { useInterval } from "lib/utils/useInterval"
 import { Flex, Separator } from "palette"
 import React from "react"
-import { FlatList } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { FlatList, LayoutAnimation } from "react-native"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { SaleActiveBidItemContainer } from "./SaleActiveBidItem"
 
 interface SaleActiveBidsProps {
   me: SaleActiveBids_me
   saleID: string
+  relay: RelayRefetchProp
 }
 
-export const SaleActiveBids: React.FC<SaleActiveBidsProps> = ({ me }) => {
+export const SaleActiveBids: React.FC<SaleActiveBidsProps> = ({ me, relay, saleID }) => {
+  // Constantly update the list of lots standing every 5 seconds
+  useInterval(() => {
+    // Animate the way new lots show up
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+
+    relay.refetch(
+      { saleID },
+      null,
+      () => {
+        // Do nothing
+      },
+      { force: true }
+    )
+  }, 5000)
+
   if (!me.lotStandings?.length) {
     return null
   }
@@ -29,15 +46,25 @@ export const SaleActiveBids: React.FC<SaleActiveBidsProps> = ({ me }) => {
   )
 }
 
-export const SaleActiveBidsContainer = createFragmentContainer(SaleActiveBids, {
-  me: graphql`
-    fragment SaleActiveBids_me on Me @argumentDefinitions(saleID: { type: "String" }) {
-      lotStandings(saleID: $saleID) {
-        ...SaleActiveBidItem_lotStanding
-        saleArtwork {
-          slug
+export const SaleActiveBidsContainer = createRefetchContainer(
+  SaleActiveBids,
+  {
+    me: graphql`
+      fragment SaleActiveBids_me on Me @argumentDefinitions(saleID: { type: "String" }) {
+        lotStandings(saleID: $saleID) {
+          ...SaleActiveBidItem_lotStanding
+          saleArtwork {
+            slug
+          }
         }
       }
+    `,
+  },
+  graphql`
+    query SaleActiveBidsRefetchQuery($saleID: String!) {
+      me {
+        ...SaleActiveBids_me @arguments(saleID: $saleID)
+      }
     }
-  `,
-})
+  `
+)

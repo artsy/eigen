@@ -1,7 +1,11 @@
-import { ArtsyWebView } from "lib/Components/ArtsyWebView"
 import { getCurrentEmissionState } from "lib/store/AppStore"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
+import WebView from "react-native-webview"
 
 export const SaleFAQ: React.FC<{}> = () => {
-  return <ArtsyWebView url={`${getCurrentEmissionState().webURL}/auction-faq`} />
+  const saleFAQUrl = `${getCurrentEmissionState().webURL}/auction-faq`
+  const paddingTop = useScreenDimensions().safeAreaInsets.top
+
+  return <WebView source={{ uri: saleFAQUrl }} style={{ marginTop: paddingTop, flex: 1 }} />
 }

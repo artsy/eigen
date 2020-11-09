@@ -22,6 +22,7 @@ export const Dimensions: React.FC = () => {
       <Flex flexDirection="row">
         <Input
           placeholder="Height"
+          keyboardType="decimal-pad"
           onChangeText={formik.handleChange("height")}
           onBlur={formik.handleBlur("height")}
           defaultValue={formik.values.height}
@@ -29,6 +30,7 @@ export const Dimensions: React.FC = () => {
         />
         <Input
           placeholder="Width"
+          keyboardType="decimal-pad"
           onChangeText={formik.handleChange("width")}
           onBlur={formik.handleBlur("width")}
           defaultValue={formik.values.width}
@@ -36,6 +38,7 @@ export const Dimensions: React.FC = () => {
         />
         <Input
           placeholder="Depth"
+          keyboardType="decimal-pad"
           onChangeText={formik.handleChange("depth")}
           onBlur={formik.handleBlur("depth")}
           defaultValue={formik.values.depth}

@@ -75,7 +75,7 @@ export const Fair2CollectionsFragmentContainer = createFragmentContainer(Fair2Co
     fragment Fair2Collections_fair on Fair {
       internalID
       slug
-      marketingCollections(size: 4) {
+      marketingCollections(size: 5) {
         slug
         title
         category

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5f83a293e2149669ee69cff774a0dca8 */
+/* @relayHash f13a1e3f9edab81a2e15f0b2e09aa384 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type BidderPositionInput = {
@@ -24,6 +24,27 @@ export type ConfirmBidCreateBidderPositionMutationResponse = {
                 readonly suggested_next_bid: {
                     readonly cents: number | null;
                     readonly display: string | null;
+                } | null;
+                readonly saleArtwork: {
+                    readonly reserveMessage: string | null;
+                    readonly currentBid: {
+                        readonly display: string | null;
+                    } | null;
+                    readonly counts: {
+                        readonly bidderPositions: number | null;
+                    } | null;
+                    readonly artwork: {
+                        readonly myLotStanding: ReadonlyArray<{
+                            readonly activeBid: {
+                                readonly isWinning: boolean | null;
+                            } | null;
+                            readonly mostRecentBid: {
+                                readonly maxBid: {
+                                    readonly display: string | null;
+                                } | null;
+                            } | null;
+                        }> | null;
+                    } | null;
                 } | null;
             } | null;
         } | null;
@@ -50,6 +71,31 @@ mutation ConfirmBidCreateBidderPositionMutation(
         suggested_next_bid: suggestedNextBid {
           cents
           display
+        }
+        saleArtwork {
+          reserveMessage
+          currentBid {
+            display
+          }
+          counts {
+            bidderPositions
+          }
+          artwork {
+            myLotStanding(live: true) {
+              activeBid {
+                isWinning
+                id
+              }
+              mostRecentBid {
+                maxBid {
+                  display
+                }
+                id
+              }
+            }
+            id
+          }
+          id
         }
         id
       }
@@ -102,6 +148,13 @@ v5 = {
   "storageKey": null
 },
 v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "display",
+  "storageKey": null
+},
+v7 = {
   "alias": "suggested_next_bid",
   "args": null,
   "concreteType": "BidderPositionSuggestedNextBid",
@@ -116,14 +169,77 @@ v6 = {
       "name": "cents",
       "storageKey": null
     },
+    (v6/*: any*/)
+  ],
+  "storageKey": null
+},
+v8 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "reserveMessage",
+  "storageKey": null
+},
+v9 = [
+  (v6/*: any*/)
+],
+v10 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "SaleArtworkCurrentBid",
+  "kind": "LinkedField",
+  "name": "currentBid",
+  "plural": false,
+  "selections": (v9/*: any*/),
+  "storageKey": null
+},
+v11 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "SaleArtworkCounts",
+  "kind": "LinkedField",
+  "name": "counts",
+  "plural": false,
+  "selections": [
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "display",
+      "name": "bidderPositions",
       "storageKey": null
     }
   ],
+  "storageKey": null
+},
+v12 = [
+  {
+    "kind": "Literal",
+    "name": "live",
+    "value": true
+  }
+],
+v13 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "isWinning",
+  "storageKey": null
+},
+v14 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "BidderPositionMaxBid",
+  "kind": "LinkedField",
+  "name": "maxBid",
+  "plural": false,
+  "selections": (v9/*: any*/),
+  "storageKey": null
+},
+v15 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
@@ -161,7 +277,67 @@ return {
                 "plural": false,
                 "selections": [
                   (v5/*: any*/),
-                  (v6/*: any*/)
+                  (v7/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "SaleArtwork",
+                    "kind": "LinkedField",
+                    "name": "saleArtwork",
+                    "plural": false,
+                    "selections": [
+                      (v8/*: any*/),
+                      (v10/*: any*/),
+                      (v11/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Artwork",
+                        "kind": "LinkedField",
+                        "name": "artwork",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": (v12/*: any*/),
+                            "concreteType": "LotStanding",
+                            "kind": "LinkedField",
+                            "name": "myLotStanding",
+                            "plural": true,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "BidderPosition",
+                                "kind": "LinkedField",
+                                "name": "activeBid",
+                                "plural": false,
+                                "selections": [
+                                  (v13/*: any*/)
+                                ],
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "BidderPosition",
+                                "kind": "LinkedField",
+                                "name": "mostRecentBid",
+                                "plural": false,
+                                "selections": [
+                                  (v14/*: any*/)
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": "myLotStanding(live:true)"
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
                 ],
                 "storageKey": null
               }
@@ -209,14 +385,72 @@ return {
                 "plural": false,
                 "selections": [
                   (v5/*: any*/),
-                  (v6/*: any*/),
+                  (v7/*: any*/),
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "id",
+                    "concreteType": "SaleArtwork",
+                    "kind": "LinkedField",
+                    "name": "saleArtwork",
+                    "plural": false,
+                    "selections": [
+                      (v8/*: any*/),
+                      (v10/*: any*/),
+                      (v11/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Artwork",
+                        "kind": "LinkedField",
+                        "name": "artwork",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": (v12/*: any*/),
+                            "concreteType": "LotStanding",
+                            "kind": "LinkedField",
+                            "name": "myLotStanding",
+                            "plural": true,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "BidderPosition",
+                                "kind": "LinkedField",
+                                "name": "activeBid",
+                                "plural": false,
+                                "selections": [
+                                  (v13/*: any*/),
+                                  (v15/*: any*/)
+                                ],
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "BidderPosition",
+                                "kind": "LinkedField",
+                                "name": "mostRecentBid",
+                                "plural": false,
+                                "selections": [
+                                  (v14/*: any*/),
+                                  (v15/*: any*/)
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": "myLotStanding(live:true)"
+                          },
+                          (v15/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      (v15/*: any*/)
+                    ],
                     "storageKey": null
-                  }
+                  },
+                  (v15/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -229,7 +463,7 @@ return {
     ]
   },
   "params": {
-    "id": "5f83a293e2149669ee69cff774a0dca8",
+    "id": "f13a1e3f9edab81a2e15f0b2e09aa384",
     "metadata": {},
     "name": "ConfirmBidCreateBidderPositionMutation",
     "operationKind": "mutation",
@@ -237,5 +471,5 @@ return {
   }
 };
 })();
-(node as any).hash = '003cf3f6fb78a218c5e89f8dc099a4ab';
+(node as any).hash = 'ea8fe1b16086285f4e116fe45d482dd2';
 export default node;

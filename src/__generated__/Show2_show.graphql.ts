@@ -14,7 +14,7 @@ export type Show2_show = {
     readonly counts: {
         readonly eligibleArtworks: number | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"Show2Header_show" | "Show2InstallShots_show" | "Show2Info_show" | "Show2ViewingRoom_show" | "Show2ContextCard_show" | "Show2Artworks_show">;
+    readonly " $fragmentRefs": FragmentRefs<"Show2Header_show" | "Show2InstallShots_show" | "Show2Info_show" | "Show2ViewingRoom_show" | "Show2ContextCard_show" | "Show2Artworks_show" | "Show2ArtworksEmptyState_show">;
     readonly " $refType": "Show2_show";
 };
 export type Show2_show$data = Show2_show;
@@ -54,7 +54,13 @@ const node: ReaderFragment = {
     },
     {
       "alias": null,
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "default",
+          "value": false
+        }
+      ],
       "concreteType": "Image",
       "kind": "LinkedField",
       "name": "images",
@@ -68,7 +74,7 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
-      "storageKey": null
+      "storageKey": "images(default:false)"
     },
     {
       "alias": null,
@@ -117,10 +123,15 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "FragmentSpread",
       "name": "Show2Artworks_show"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "Show2ArtworksEmptyState_show"
     }
   ],
   "type": "Show",
   "abstractKey": null
 };
-(node as any).hash = 'e20bc01376b87d88e49e722dc54c0011';
+(node as any).hash = '61dcfb33719aabba11fa1ffec11ce03a';
 export default node;

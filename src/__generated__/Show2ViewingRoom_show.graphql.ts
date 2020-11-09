@@ -5,12 +5,16 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Show2ViewingRoom_show = {
+    readonly internalID: string;
+    readonly slug: string;
     readonly partner: {
         readonly name?: string | null;
     } | null;
     readonly viewingRoomsConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
+                readonly internalID: string;
+                readonly slug: string;
                 readonly title: string;
                 readonly status: string;
                 readonly distanceToOpen: string | null;
@@ -35,7 +39,21 @@ export type Show2ViewingRoom_show$key = {
 
 
 const node: ReaderFragment = (function(){
-var v0 = [
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v2 = [
   {
     "alias": null,
     "args": null,
@@ -44,7 +62,7 @@ var v0 = [
     "storageKey": null
   }
 ],
-v1 = [
+v3 = [
   {
     "kind": "Literal",
     "name": "short",
@@ -57,6 +75,8 @@ return {
   "metadata": null,
   "name": "Show2ViewingRoom_show",
   "selections": [
+    (v0/*: any*/),
+    (v1/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -67,13 +87,13 @@ return {
       "selections": [
         {
           "kind": "InlineFragment",
-          "selections": (v0/*: any*/),
+          "selections": (v2/*: any*/),
           "type": "Partner",
           "abstractKey": null
         },
         {
           "kind": "InlineFragment",
-          "selections": (v0/*: any*/),
+          "selections": (v2/*: any*/),
           "type": "ExternalPartner",
           "abstractKey": null
         }
@@ -104,6 +124,8 @@ return {
               "name": "node",
               "plural": false,
               "selections": [
+                (v0/*: any*/),
+                (v1/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -120,14 +142,14 @@ return {
                 },
                 {
                   "alias": null,
-                  "args": (v1/*: any*/),
+                  "args": (v3/*: any*/),
                   "kind": "ScalarField",
                   "name": "distanceToOpen",
                   "storageKey": "distanceToOpen(short:true)"
                 },
                 {
                   "alias": null,
-                  "args": (v1/*: any*/),
+                  "args": (v3/*: any*/),
                   "kind": "ScalarField",
                   "name": "distanceToClose",
                   "storageKey": "distanceToClose(short:true)"
@@ -182,5 +204,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '7fd949967599c9c69d10ac884229aa53';
+(node as any).hash = '760fe123f544d461ebc35f443c790c13';
 export default node;

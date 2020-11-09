@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9f4bb99a693f864b561e9fbf93b48e31 */
+/* @relayHash 817dfd31494e9a31d9241db776fef3b4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -111,7 +111,7 @@ fragment Fair2Artworks_fair on Fair {
 fragment Fair2Collections_fair on Fair {
   internalID
   slug
-  marketingCollections(size: 4) {
+  marketingCollections(size: 5) {
     slug
     title
     category
@@ -318,7 +318,7 @@ fragment Fair2_fair on Fair {
       __typename
     }
   }
-  marketingCollections(size: 4) {
+  marketingCollections(size: 5) {
     __typename
     id
   }
@@ -768,7 +768,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "size",
-                "value": 4
+                "value": 5
               }
             ],
             "concreteType": "MarketingCollection",
@@ -853,7 +853,7 @@ return {
                 "storageKey": "artworksConnection(first:3)"
               }
             ],
-            "storageKey": "marketingCollections(size:4)"
+            "storageKey": "marketingCollections(size:5)"
           },
           {
             "alias": null,
@@ -1611,7 +1611,7 @@ return {
     ]
   },
   "params": {
-    "id": "9f4bb99a693f864b561e9fbf93b48e31",
+    "id": "817dfd31494e9a31d9241db776fef3b4",
     "metadata": {},
     "name": "Fair2Query",
     "operationKind": "query",
