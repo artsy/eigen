@@ -4,6 +4,7 @@ import { PartnerEntityHeaderFragmentContainer as PartnerEntityHeader } from "lib
 import { ReadMore } from "lib/Components/ReadMore"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Box, Spacer, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
@@ -129,14 +130,23 @@ export const Show2MoreInfo: React.FC<Show2MoreInfoProps> = ({ show }) => {
   ]
 
   return (
-    <FlatList<Section>
-      data={sections}
-      keyExtractor={({ key }) => key}
-      ListHeaderComponent={<Spacer mt={6} pt={2} />}
-      ListFooterComponent={<Spacer my={2} />}
-      ItemSeparatorComponent={() => <Spacer my={15} />}
-      renderItem={({ item: { element } }) => element}
-    />
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.Show2MoreInfoPage,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Show,
+        context_screen_owner_id: show.internalID,
+        context_screen_owner_slug: show.slug,
+      }}
+    >
+      <FlatList<Section>
+        data={sections}
+        keyExtractor={({ key }) => key}
+        ListHeaderComponent={<Spacer mt={6} pt={2} />}
+        ListFooterComponent={<Spacer my={2} />}
+        ItemSeparatorComponent={() => <Spacer my={15} />}
+        renderItem={({ item: { element } }) => element}
+      />
+    </ProvideScreenTracking>
   )
 }
 
@@ -145,6 +155,8 @@ export const Show2MoreInfoFragmentContainer = createFragmentContainer(Show2MoreI
     fragment Show2MoreInfo_show on Show {
       ...Show2Location_show
       ...Show2Hours_show
+      internalID
+      slug
       href
       about: description
       pressRelease(format: MARKDOWN)

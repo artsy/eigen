@@ -5,6 +5,8 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Show2MoreInfo_show = {
+    readonly internalID: string;
+    readonly slug: string;
     readonly href: string | null;
     readonly about: string | null;
     readonly pressRelease: string | null;
@@ -166,6 +168,20 @@ return {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "internalID",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "href",
       "storageKey": null
     },
@@ -248,5 +264,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '6a62162619be68eadd94c7f7853682a5';
+(node as any).hash = '737fbe96b3f35234ac699fb82b662bd7';
 export default node;

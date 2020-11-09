@@ -5,6 +5,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Box, Flex, Separator, Spacer } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
@@ -76,8 +77,15 @@ export const Show2: React.FC<Show2Props> = ({ show }) => {
   ]
 
   return (
-    <ArtworkFilterGlobalStateProvider>
-      <>
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.Show2Page,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Show,
+        context_screen_owner_id: show.internalID,
+        context_screen_owner_slug: show.slug,
+      }}
+    >
+      <ArtworkFilterGlobalStateProvider>
         <FlatList<Section>
           data={sections}
           keyExtractor={({ key }) => key}
@@ -87,8 +95,8 @@ export const Show2: React.FC<Show2Props> = ({ show }) => {
           renderItem={({ item: { element } }) => element}
         />
         <AnimatedArtworkFilterButton isVisible onPress={toggleFilterArtworksModal} />
-      </>
-    </ArtworkFilterGlobalStateProvider>
+      </ArtworkFilterGlobalStateProvider>
+    </ProvideScreenTracking>
   )
 }
 
