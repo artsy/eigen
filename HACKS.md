@@ -35,6 +35,6 @@
 
 - react-native-haptic-feedback
 
-  When this is merged: https://github.com/junina-de/react-native-haptic-feedback/pull/60
+  When this is merged: https://github.com/junina-de/react-native-haptic-feedback/pull/60.
 
   We use this type in our code, so we need it exported.
