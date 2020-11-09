@@ -6,7 +6,7 @@ import ChevronIcon from "lib/Icons/ChevronIcon"
 import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryOptions, InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Box, color, Flex, Separator, space, Text } from "palette"
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { LayoutAnimation, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -22,11 +22,14 @@ interface InquiryModalProps {
   toggleVisibility: () => void
   navigator?: NavigatorIOS
   modalIsVisible: boolean
+  notificationVisible: boolean
   relay: RelayProp
+  toggleNotification: (state: boolean) => void
 }
 
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props }) => {
-  const { toggleVisibility, modalIsVisible, relay } = props
+  let delayNotification: NodeJS.Timeout | any
+  const { toggleVisibility, modalIsVisible, relay, toggleNotification } = props
   const questions = artwork?.inquiryQuestions!
   const { state, dispatch } = useContext(ArtworkInquiryContext)
   const [locationExpanded, setLocationExpanded] = useState(false)
@@ -39,6 +42,22 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   }
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const selectShippingLocation = (l: string) => dispatch({ type: "selectShippingLocation", payload: l })
+  const [mutationSuccessful, setMutationSuccessful] = useState(false)
+
+  useEffect(() => {
+    if (mutationSuccessful) {
+      toggleVisibility()
+
+      delayNotification = setTimeout(() => {
+        toggleNotification(true)
+        setMutationSuccessful(false)
+      }, 500)
+      return () => {
+        clearTimeout(delayNotification)
+      }
+    }
+  }, [mutationSuccessful])
+
   const renderInquiryQuestion = (id: string, inquiryQuestion: string): JSX.Element => {
     // Shipping requires special logic to accomodate dropdown and shipping modal
     const isShipping = id === InquiryQuestionIDs.Shipping
@@ -121,11 +140,12 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         rightButtonText="Send"
         rightButtonDisabled={state.inquiryQuestions.length === 0}
         onRightButtonPress={() => {
-          SubmitInquiryRequest(relay.environment, artwork, state)
+          SubmitInquiryRequest(relay.environment, artwork, state, setMutationSuccessful)
         }}
       >
         {state.inquiryType}
       </FancyModalHeader>
+
       <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
       <Box m={2}>
         <Text variant="mediumText">What information are you looking for?</Text>

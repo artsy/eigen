@@ -1,6 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon, Flex, Sans, Separator, space } from "palette"
-import React from "react"
+import React, { RefObject } from "react"
 import { TouchableOpacity } from "react-native"
+import { RefNode } from "simple-markdown"
 import styled from "styled-components/native"
 
 export const FancyModalHeader: React.FC<{
@@ -10,6 +11,7 @@ export const FancyModalHeader: React.FC<{
   rightButtonText?: string
   rightButtonDisabled?: boolean
   onRightButtonPress?: () => void
+  ref?: RefObject<null>
 }> = ({
   children,
   hideBottomDivider = false,

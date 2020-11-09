@@ -1,4 +1,5 @@
 import { InquiryButtons_artwork } from "__generated__/InquiryButtons_artwork.graphql"
+import { InquirySuccessNotification } from "lib/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
 import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryTypes } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
@@ -6,6 +7,7 @@ import { Button, ButtonVariant } from "palette"
 import React, { useContext, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { InquiryModalFragmentContainer } from "./InquiryModal"
+
 export interface InquiryButtonsProps {
   artwork: InquiryButtons_artwork
   // EditionSetID is passed down from the edition selected by the user
@@ -19,6 +21,7 @@ export interface InquiryButtonsState {
 
 const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...props }) => {
   const [modalVisibility, setModalVisibility] = useState(false)
+  const [notificationVisibility, setNotificationVisibility] = useState(false)
   const { dispatch } = useContext(ArtworkInquiryContext)
   const dispatchAction = (buttonText: string) => {
     dispatch({
@@ -31,6 +34,10 @@ const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...props }) =>
 
   return (
     <>
+      <InquirySuccessNotification
+        modalVisible={notificationVisibility}
+        toggleNotification={(state: boolean) => setNotificationVisibility(state)}
+      />
       {!!artwork.isPriceHidden && (
         <Button
           onPress={() => dispatchAction(InquiryOptions.RequestPrice)}
@@ -68,6 +75,8 @@ const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...props }) =>
         artwork={artwork}
         modalIsVisible={modalVisibility}
         toggleVisibility={() => setModalVisibility(!modalVisibility)}
+        toggleNotification={(state: boolean) => setNotificationVisibility(state)}
+        notificationVisible={notificationVisibility}
       />
     </>
   )
