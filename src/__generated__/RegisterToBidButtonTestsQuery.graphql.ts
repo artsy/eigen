@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 302f1d024a54c7ea6ba8d4f2b5237699 */
+/* @relayHash dae8b80658e6a94fcfcd8033eafe1dbe */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -49,6 +49,7 @@ fragment RegisterToBidButton_sale on Sale {
   slug
   startAt
   endAt
+  id
   requireIdentityVerification
   registrationStatus {
     qualifiedForBidding
@@ -182,6 +183,7 @@ return {
             "name": "endAt",
             "storageKey": null
           },
+          (v3/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -207,8 +209,7 @@ return {
               (v3/*: any*/)
             ],
             "storageKey": null
-          },
-          (v3/*: any*/)
+          }
         ],
         "storageKey": "sale(id:\"the-sale\")"
       },
@@ -250,7 +251,7 @@ return {
     ]
   },
   "params": {
-    "id": "302f1d024a54c7ea6ba8d4f2b5237699",
+    "id": "dae8b80658e6a94fcfcd8033eafe1dbe",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
