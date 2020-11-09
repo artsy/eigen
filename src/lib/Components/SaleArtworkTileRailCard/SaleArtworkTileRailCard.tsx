@@ -1,8 +1,9 @@
+import { ContextModule, OwnerType, ScreenOwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
 import { SaleArtworkTileRailCard_saleArtwork } from "__generated__/SaleArtworkTileRailCard_saleArtwork.graphql"
 import { Box, color, Flex, Sans } from "palette"
 import React from "react"
-import { GestureResponderEvent } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { saleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
@@ -12,10 +13,11 @@ export const CONTAINER_HEIGHT = 120
 const SaleArtworkCard = styled.TouchableHighlight.attrs({ underlayColor: color("white100"), activeOpacity: 0.8 })``
 
 export interface SaleArtworkTileRailCardProps {
-  onPress: ((event: GestureResponderEvent) => void) | null | undefined
+  onPress: () => void
   saleArtwork: SaleArtworkTileRailCard_saleArtwork
   useCustomSaleMessage?: boolean
   useSquareAspectRatio?: boolean
+  contextScreenOwnerType?: ScreenOwnerType
 }
 
 export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = ({
@@ -23,8 +25,26 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   saleArtwork,
   useCustomSaleMessage = false,
   useSquareAspectRatio = false,
+  contextScreenOwnerType,
 }) => {
+  const tracking = useTracking()
   const artwork = saleArtwork.artwork!
+
+  const handleTap = () => {
+    if (contextScreenOwnerType) {
+      const trackingArgs: TappedEntityGroupArgs = {
+        contextModule: ContextModule.auctionRail,
+        contextScreenOwnerType: OwnerType.sale,
+        contextScreenOwnerId: artwork.internalID,
+        contextScreenOwnerSlug: artwork.slug,
+        destinationScreenOwnerType: OwnerType.artwork,
+        type: "thumbnail",
+      }
+
+      tracking.trackEvent(tappedEntityGroup(trackingArgs))
+    }
+    onPress()
+  }
 
   if (!!artwork.image?.imageURL && !artwork.image?.aspectRatio && !useSquareAspectRatio) {
     throw new Error("imageAspectRatio is required for non-square images")
@@ -90,7 +110,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   ) : null
 
   return (
-    <SaleArtworkCard onPress={onPress || undefined}>
+    <SaleArtworkCard onPress={handleTap}>
       <Flex>
         {imageDisplay}
         <Box mt={1} width={CONTAINER_HEIGHT}>

@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { SaleLotsList_saleArtworksConnection } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
 import { OrderedSaleArtworkSorts } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -141,11 +142,17 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
           hasMore={relay.hasMore}
           loadMore={relay.loadMore}
           isLoading={relay.isLoading}
+          contextScreenOwnerType={OwnerType.sale}
+          contextScreenOwnerId={saleID}
+          contextScreenOwnerSlug={saleSlug}
         />
       ) : (
         <Flex px={2}>
           <InfiniteScrollArtworksGridContainer
             connection={saleArtworksConnection.saleArtworksConnection!}
+            contextScreenOwnerType={OwnerType.sale}
+            contextScreenOwnerId={saleID}
+            contextScreenOwnerSlug={saleSlug}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
             showLotLabel

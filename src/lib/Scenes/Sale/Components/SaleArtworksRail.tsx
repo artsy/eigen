@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { SaleArtworksRail_me } from "__generated__/SaleArtworksRail_me.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { SaleArtworkTileRailCardContainer } from "lib/Components/SaleArtworkTileRailCard"
@@ -45,6 +46,7 @@ export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
             saleArtwork={artwork.saleArtwork!}
             useSquareAspectRatio
             useCustomSaleMessage
+            contextScreenOwnerType={OwnerType.sale}
           />
         )}
         keyExtractor={(item) => item.id}

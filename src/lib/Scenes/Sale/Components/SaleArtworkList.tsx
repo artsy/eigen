@@ -1,3 +1,4 @@
+import { ScreenOwnerType } from "@artsy/cohesion"
 import { SaleArtworkList_connection } from "__generated__/SaleArtworkList_connection.graphql"
 import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
@@ -14,9 +15,18 @@ interface Props {
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]
   isLoading: RelayPaginationProp["isLoading"]
+  contextScreenOwnerType?: ScreenOwnerType
+  contextScreenOwnerId?: string
+  contextScreenOwnerSlug?: string
 }
 
-export const SaleArtworkList: React.FC<Props> = ({ connection, loadMore, hasMore, isLoading }) => {
+export const SaleArtworkList: React.FC<Props> = ({
+  connection,
+  loadMore,
+  hasMore,
+  isLoading,
+  contextScreenOwnerType,
+}) => {
   const [loadingMoreData, setLoadingMoreData] = useState(false)
 
   const loadMoreArtworks = () => {
@@ -40,7 +50,9 @@ export const SaleArtworkList: React.FC<Props> = ({ connection, loadMore, hasMore
       onEndReached={loadMoreArtworks}
       ItemSeparatorComponent={() => <Spacer mb="20px" />}
       ListFooterComponent={loadingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null}
-      renderItem={({ item }) => <SaleArtworkListItem artwork={item} key={item.id} />}
+      renderItem={({ item }) => (
+        <SaleArtworkListItem artwork={item} key={item.id} contextScreenOwnerType={contextScreenOwnerType} />
+      )}
       keyExtractor={(item) => item.id!}
       style={{ paddingHorizontal: 20 }}
       ListEmptyComponent={() => (
