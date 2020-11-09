@@ -58,7 +58,7 @@ const MyCollection: React.FC<{
           <Button
             onPress={() =>
               navigate(
-                "/my-collection/artwork/5fa90913f44976000ebbf6e6?artistInternalID=4dd1584de0091e000100207c&medium=painting"
+                "/my-collection/artwork/5fa97009e4dd7b0012eeb40b?artistInternalID=4dd1584de0091e000100207c&medium=painting"
               )
             }
           >

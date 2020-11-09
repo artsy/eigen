@@ -37,7 +37,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwork, mark
         onSuccess={() => setShowModal(false)}
         onDelete={() => {
           setShowModal(false)
-          setTimeout(popParentViewController, 120)
+          setTimeout(popParentViewController, 50)
         }}
         artwork={artwork}
       />

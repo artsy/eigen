@@ -1,7 +1,7 @@
 import { MyCollectionArtworkFullDetails_artwork } from "__generated__/MyCollectionArtworkFullDetails_artwork.graphql"
 import { MyCollectionArtworkFullDetailsQuery } from "__generated__/MyCollectionArtworkFullDetailsQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { goBack } from "lib/navigation/navigate"
+import { popParentViewController } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AppStore } from "lib/store/AppStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -29,11 +29,17 @@ const MyCollectionArtworkFullDetails: React.FC<{ artwork: MyCollectionArtworkFul
 
       <MyCollectionArtworkFormModal
         onDelete={() => {
-          goBack()
-          goBack()
+          setShowModal(false)
+          // pop twice to take user back to my collection list
+          setTimeout(() => {
+            popParentViewController()
+            popParentViewController()
+          }, 50)
         }}
         onSuccess={() => {
           setShowModal(false)
+          // pop once to take user back to main details page
+          setTimeout(popParentViewController, 50)
         }}
         artwork={props.artwork}
         mode="edit"
