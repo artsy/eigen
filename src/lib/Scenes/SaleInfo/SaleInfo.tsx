@@ -102,17 +102,6 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
             </Flex>
           )}
           <View {...(panResponder.current?.panHandlers || {})}>
-            {/* <Markdown rules={markdownRules}>{sale.description || ""}</Markdown> */}
-            {/* <TextInput
-              editable={false}
-              multiline
-              dataDetectorTypes={["all"]}
-              style={{ fontWeight: "400", fontFamily: fontFamily.sans.regular.normal, fontSize: 15, lineHeight: 22 }}
-            >
-              {sale.description}
-            </TextInput> */}
-
-            {/* <Markdown rules={markdownRules}>{sale.description || ""}</Markdown> */}
             <StyledWebView body={sale.description || ""} />
           </View>
           {renderLiveBiddingOpening()}
