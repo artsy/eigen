@@ -8,14 +8,10 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import moment from "moment"
 import { Flex, Join, Sans, Separator, Text } from "palette"
 import React, { useEffect, useRef } from "react"
-import { Linking, PanResponder, ScrollView, TextInput, View } from "react-native"
+import { Linking, PanResponder, ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
-import { Markdown } from "lib/Components/Markdown"
-import { defaultRules } from "lib/utils/renderMarkdown"
-import { fontFamily } from "palette/platform/fonts/fontFamily"
-import WebView from "react-native-webview"
-import SimpleMarkdown, { Output, SingleASTNode, State } from "simple-markdown"
+import { StyledWebView } from "lib/Components/StyledWebView"
 import { navigate } from "../../navigation/navigate"
 import { PlaceholderBox } from "../../utils/placeholders"
 import { RegisterToBidButtonContainer } from "../Sale/Components/RegisterToBidButton"
@@ -24,29 +20,6 @@ import { saleStatus } from "../Sale/helpers"
 interface Props {
   sale: SaleInfo_sale
   me: SaleInfo_me
-}
-
-const basicRules = defaultRules({
-  modal: true,
-  useNewTextStyles: true,
-})
-
-const markdownRules = {
-  ...basicRules,
-  paragraph: {
-    ...basicRules.paragraph,
-    react: (node: SingleASTNode, output: Output<React.ReactNode>, state: State) => (
-      // We are using <TextInput /> instead of <Text /> to allow the user to hover to select
-      <TextInput
-        editable={false}
-        multiline
-        dataDetectorTypes={["all"]}
-        style={{ fontWeight: "400", fontFamily: fontFamily.sans.regular.normal, fontSize: 15, lineHeight: 22 }}
-      >
-        {output(node.content, state)}
-      </TextInput>
-    ),
-  },
 }
 
 const AuctionSupport = () => {
@@ -86,34 +59,6 @@ const AuctionIsLive = () => (
     </Text>
   </Flex>
 )
-
-const StyledWebView = ({ body }) => {
-  const styles = `"
-      font-size: 55px;
-      font-family: "Helvetica";
-  "`
-
-  const parser = SimpleMarkdown.parserFor(SimpleMarkdown.defaultRules)
-
-  const parseTree = parser(body)
-  const htmlOutput = SimpleMarkdown.htmlFor(SimpleMarkdown.ruleOutput(SimpleMarkdown.defaultRules, "html"))
-
-  console.log({ output: htmlOutput(parseTree) })
-
-  const html = `
-  <html>
-    <head>
-      <style>${styles}</style>
-    </head>
-    <body style=${styles}>
-      <h1>helloo</h1>
-      ${htmlOutput(parseTree)}
-    </body>
-  </html>
-  `
-
-  return <WebView source={{ html }} style={{ height: 500 }} scrollEnabled={false} />
-}
 
 export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
   const panResponder = useRef<any>(null)
