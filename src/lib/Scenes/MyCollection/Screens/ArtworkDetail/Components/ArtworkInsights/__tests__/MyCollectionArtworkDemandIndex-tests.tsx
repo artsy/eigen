@@ -54,7 +54,7 @@ describe("MyCollectionArtworkDemandIndex", () => {
     expect(wrapper.root.findByType(tests.DemandRankDetails)).toBeDefined()
     const text = extractText(wrapper.root)
     expect(text).toContain("Demand index")
-    expect(text).toContain("80.0010")
+    expect(text).toContain("80010")
     expect(text).toContain("Very Strong Demand (> 9.0)")
   })
 

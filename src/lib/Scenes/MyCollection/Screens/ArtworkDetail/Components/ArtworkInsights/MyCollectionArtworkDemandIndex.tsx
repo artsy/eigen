@@ -84,7 +84,7 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
     <>
       <Box>
         <Text variant="largeTitle" color="purple100">
-          {demandRank.toFixed(1)}
+          {Math.floor(demandRank * 10) / 10}
         </Text>
       </Box>
       <ProgressBar width={width} />
