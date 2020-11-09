@@ -1,5 +1,4 @@
 import { MyCollectionArtworkPriceEstimateTestsQuery } from "__generated__/MyCollectionArtworkPriceEstimateTestsQuery.graphql"
-import { AppStore } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -73,14 +72,5 @@ describe("MyCollectionArtworkPriceEstimate", () => {
     expect(text).toContain("$2 – $6")
     expect(text).toContain("Your price paid for this work")
     expect(text).toContain("USD 2000")
-  })
-
-  // TODO: Figure out why we can't find InfoButton
-  it.skip("shows the artist market info modal on press", () => {
-    const spy = jest.fn()
-    AppStore.actions.myCollection.navigation.showInfoModal = spy as any
-    const wrapper = renderWithWrappers(<TestRenderer />)
-    wrapper.root.findByType(InfoButton).props.onPress()
-    expect(spy).toHaveBeenCalledWith("priceEstimate")
   })
 })

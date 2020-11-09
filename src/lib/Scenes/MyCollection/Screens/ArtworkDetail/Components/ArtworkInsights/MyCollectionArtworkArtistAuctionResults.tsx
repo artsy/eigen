@@ -2,8 +2,8 @@ import { MyCollectionArtworkArtistAuctionResults_artwork } from "__generated__/M
 import { Divider } from "lib/Components/Bidding/Components/Divider"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "lib/navigation/navigate"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { AppStore } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { DateTime } from "luxon"
 import { Box, Flex, Spacer, Text } from "palette"
@@ -18,7 +18,6 @@ interface MyCollectionArtworkArtistAuctionResultsProps {
 
 const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtistAuctionResultsProps> = (props) => {
   const results = extractNodes(props?.artwork?.artist?.auctionResultsConnection)
-  const navActions = AppStore.actions.myCollection.navigation
 
   if (!results.length) {
     return null
@@ -27,12 +26,24 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
   return (
     <View>
       <ScreenMargin>
-        <InfoButton title="Recent auction results" onPress={() => navActions.showInfoModal("auctionResults")} />
+        <InfoButton
+          title="Auction Data"
+          modalContent={
+            <>
+              <Text>
+                This data set includes 36 months of auction results from top commercial auction houses and sales hosted
+                on Artsy.
+              </Text>
+              <Spacer my={1} />
+              <Text>Last updated Aug 30, 2020.</Text>
+            </>
+          }
+        />
 
         <Spacer my={0.5} />
 
         <TouchableWithoutFeedback
-          onPress={() => navActions.navigateToAllAuctions(props?.artwork?.artist?.slug!)}
+          onPress={() => navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-results`)}
           data-test-id="AuctionsResultsButton"
         >
           <Box>
@@ -73,7 +84,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
 
         <Box>
           <CaretButton
-            onPress={() => navActions.navigateToAllAuctions(props?.artwork?.artist?.slug!)}
+            onPress={() => navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-results`)}
             text="Explore auction results"
           />
         </Box>

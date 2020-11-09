@@ -1,5 +1,4 @@
 import { MyCollectionArtworkDemandIndexTestsQuery } from "__generated__/MyCollectionArtworkDemandIndexTestsQuery.graphql"
-import { AppStore } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -56,14 +55,5 @@ describe("MyCollectionArtworkDemandIndex", () => {
     expect(text).toContain("Demand index")
     expect(text).toContain("80.0010")
     expect(text).toContain("Very Strong Demand (> 9.0)")
-  })
-
-  // TODO: Figure out why it can't find InfoButton
-  it.skip("shows the demand index info modal on press", () => {
-    const spy = jest.fn()
-    AppStore.actions.myCollection.navigation.showInfoModal = spy as any
-    const wrapper = renderWithWrappers(<TestRenderer />)
-    wrapper.root.findByType(InfoButton).props.onPress()
-    expect(spy).toHaveBeenCalledWith("demandIndex")
   })
 })

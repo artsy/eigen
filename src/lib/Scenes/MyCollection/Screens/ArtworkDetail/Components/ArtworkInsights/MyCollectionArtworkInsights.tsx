@@ -5,7 +5,6 @@ import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Separator, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { InfoModal } from "./InfoModal"
 import { MyCollectionArtworkArtistArticlesFragmentContainer } from "./MyCollectionArtworkArtistArticles"
 import { MyCollectionArtworkArtistAuctionResultsFragmentContainer } from "./MyCollectionArtworkArtistAuctionResults"
 import { MyCollectionArtworkArtistMarketFragmentContainer } from "./MyCollectionArtworkArtistMarket"
@@ -57,7 +56,6 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
       <MyCollectionArtworkArtistAuctionResultsFragmentContainer artwork={artwork} />
       <MyCollectionArtworkArtistArticlesFragmentContainer artwork={artwork} />
-      <InfoModal />
     </>
   )
 }

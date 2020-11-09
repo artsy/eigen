@@ -1,5 +1,4 @@
 import { MyCollectionArtworkArtistMarketTestsQuery } from "__generated__/MyCollectionArtworkArtistMarketTestsQuery.graphql"
-import { AppStore } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -70,14 +69,5 @@ describe("MyCollectionArtworkArtistMarket", () => {
     expect(text).toContain("Very High")
     expect(text).toContain("1-Year Trend")
     expect(text).toContain("Flat")
-  })
-
-  // TODO: Figure out why it can't find InfoButton
-  it.skip("shows the artist market info modal on press", () => {
-    const spy = jest.fn()
-    AppStore.actions.myCollection.navigation.showInfoModal = spy as any
-    const wrapper = renderWithWrappers(<TestRenderer />)
-    wrapper.root.findByType(InfoButton).props.onPress()
-    expect(spy).toHaveBeenCalledWith("artistMarket")
   })
 })

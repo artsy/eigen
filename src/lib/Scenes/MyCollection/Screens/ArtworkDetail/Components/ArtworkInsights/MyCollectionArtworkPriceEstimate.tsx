@@ -2,7 +2,6 @@ import { MyCollectionArtworkPriceEstimate_artwork } from "__generated__/MyCollec
 import { MyCollectionArtworkPriceEstimate_marketPriceInsights } from "__generated__/MyCollectionArtworkPriceEstimate_marketPriceInsights.graphql"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { formatCentsToDollars } from "lib/Scenes/MyCollection/utils/formatCentsToDollars"
-import { AppStore } from "lib/store/AppStore"
 import { Flex, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -22,7 +21,6 @@ const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimat
     return null
   }
 
-  const navActions = AppStore.actions.myCollection.navigation
   const { lowRangeCents, midRangeCents, highRangeCents, artsyQInventory } = marketPriceInsights
   const lowRangeDollars = formatCentsToDollars(Number(lowRangeCents))
   const midRangeDollars = formatCentsToDollars(Number(midRangeCents))
@@ -35,10 +33,19 @@ const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimat
     <ScreenMargin>
       <InfoButton
         title="Price estimate"
+        modalTitle="Estimated Price Range"
         subTitle={`Based on ${artsyQInventory} comparable works`}
-        onPress={() => navActions.showInfoModal("priceEstimate")}
+        modalContent={
+          <>
+            <Text>
+              This is an estimated range based on artist, medium, and size, and is not an official valuation for your
+              exact artwork. This is based on 36 months of auction result data.
+            </Text>
+            <Spacer my={1} />
+            <Text>Last updated Aug 30, 2020.</Text>
+          </>
+        }
       />
-
       <Spacer my={0.5} />
 
       <Flex flexDirection="row" alignItems="flex-end">

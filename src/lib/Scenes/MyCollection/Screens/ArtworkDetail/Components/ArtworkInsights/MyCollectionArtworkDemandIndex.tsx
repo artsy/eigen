@@ -1,7 +1,6 @@
 import { MyCollectionArtworkDemandIndex_marketPriceInsights } from "__generated__/MyCollectionArtworkDemandIndex_marketPriceInsights.graphql"
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { AppStore } from "lib/store/AppStore"
 import { Box, Flex, Spacer, Text } from "palette"
 import React from "react"
 import LinearGradient from "react-native-linear-gradient"
@@ -17,12 +16,24 @@ const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexPro
     return null
   }
 
-  const navActions = AppStore.actions.myCollection.navigation
   const demandRank = Number((marketPriceInsights.demandRank! * 10).toFixed(2))
 
   return (
     <ScreenMargin>
-      <InfoButton title="Demand index" onPress={() => navActions.showInfoModal("demandIndex")} />
+      <InfoButton
+        title="Demand index"
+        modalContent={
+          <>
+            <Text>
+              Overall strength of demand for this artist and medium combination in the art market. Based on 36 months of
+              auction result data including liquidity, sell-through rate, data 3, data 4. 2020.
+            </Text>
+            <Spacer my={1} />
+            <Text>Last updated Aug 30, 2020.</Text>
+          </>
+        }
+      />
+
       <Spacer my={0.5} />
       <DemandRankScale demandRank={demandRank} />
       <Spacer my={1} />

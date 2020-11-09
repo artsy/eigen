@@ -1,8 +1,7 @@
 import { MyCollectionArtworkArtistMarket_marketPriceInsights } from "__generated__/MyCollectionArtworkArtistMarket_marketPriceInsights.graphql"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { formatCentsToDollars } from "lib/Scenes/MyCollection/utils/formatCentsToDollars"
-import { AppStore } from "lib/store/AppStore"
-import { Spacer } from "palette"
+import { Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { Field } from "../Field"
@@ -25,8 +24,6 @@ const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketP
     liquidityRank: _liquidityRate,
     demandTrend: _demandTrend,
   } = marketPriceInsights
-
-  const navActions = AppStore.actions.myCollection.navigation
 
   const getFormattedDemandTrend = () => {
     const demandTrend = _demandTrend!
@@ -65,7 +62,17 @@ const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketP
       <InfoButton
         title="Artist market"
         subTitle="Based on the last 36 months of auction data"
-        onPress={() => navActions.showInfoModal("artistMarket")}
+        modalTitle="Artist Market Insights"
+        modalContent={
+          <>
+            <Text>
+              This data set includes 36 months of auction results from top commercial auction houses and sales hosted on
+              Artsy.
+            </Text>
+            <Spacer my={1} />
+            <Text>Last updated Aug 30, 2020.</Text>
+          </>
+        }
       />
 
       <Spacer my={0.5} />

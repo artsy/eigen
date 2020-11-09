@@ -14,11 +14,9 @@ import { MyCollectionArtworkListQueryRenderer } from "../Screens/ArtworkList/MyC
 import { ConsignmentsSubmissionForm } from "../Screens/ConsignmentsHome/ConsignmentsSubmissionForm"
 
 type ModalType = "add" | "edit" | null
-export type InfoModalType = "demandIndex" | "priceEstimate" | "artistMarket" | "auctionResults" | null
 
 export interface MyCollectionNavigationModel {
   sessionState: {
-    infoModalType: InfoModalType
     modalType: ModalType
     navViewRef: RefObject<any>
     navigators: {
@@ -40,7 +38,6 @@ export interface MyCollectionNavigationModel {
 
   // Modals
   setModalType: Action<MyCollectionNavigationModel, ModalType>
-  showInfoModal: Action<MyCollectionNavigationModel, InfoModalType>
   dismissModal: Action<MyCollectionNavigationModel>
 
   // Listeners
@@ -74,7 +71,6 @@ export interface MyCollectionNavigationModel {
 
 export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   sessionState: {
-    infoModalType: null,
     modalType: null,
     navViewRef: { current: null },
     navigators: {},
@@ -111,13 +107,8 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
     state.sessionState.modalType = modalType
   }),
 
-  showInfoModal: action((state, infoModalType) => {
-    state.sessionState.infoModalType = infoModalType
-  }),
-
   dismissModal: action((state) => {
     state.sessionState.modalType = null
-    state.sessionState.infoModalType = null
   }),
 
   /**

@@ -7,6 +7,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { goBack, navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
+import { MyCollectionArtworkInsightsFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkDetail/Components/ArtworkInsights/MyCollectionArtworkInsights"
 import { WhySell } from "lib/Scenes/MyCollection/Screens/ArtworkDetail/Components/WhySell"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -23,7 +24,7 @@ export interface MyCollectionArtworkProps {
   marketPriceInsights: NonNullable<MyCollectionArtworkQueryResponse["marketPriceInsights"]>
 }
 
-const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwork }) => {
+const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwork, marketPriceInsights }) => {
   const [showModal, setShowModal] = useState(false)
 
   return (
@@ -46,6 +47,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwork }) =>
       <Join separator={<Spacer my={1} />}>
         <MyCollectionArtworkHeaderFragmentContainer artwork={artwork} />
         <MyCollectionArtworkMetaFragmentContainer artwork={artwork} />
+        <MyCollectionArtworkInsightsFragmentContainer artwork={artwork} marketPriceInsights={marketPriceInsights} />
         <WhySell />
 
         <ScreenMargin>
