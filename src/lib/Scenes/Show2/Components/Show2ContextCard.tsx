@@ -13,10 +13,10 @@ export interface Show2ContextCardProps extends BoxProps {
   show: Show2ContextCard_show
 }
 
-export const Show2ContextCard: React.FC<Show2ContextCardProps> = ({ show }) => {
+export const Show2ContextCard: React.FC<Show2ContextCardProps> = ({ show, ...rest }) => {
   const { isFairBooth, fair, partner } = show
 
-  const { onPress, ...rest } = isFairBooth ? extractPropsFromFair(fair) : extractPropsFromPartner(partner)
+  const { onPress, ...card } = isFairBooth ? extractPropsFromFair(fair) : extractPropsFromPartner(partner)
 
   const tracking = useTracking()
 
@@ -55,6 +55,7 @@ export const Show2ContextCard: React.FC<Show2ContextCardProps> = ({ show }) => {
         tracking.trackEvent(data)
       }
     },
+    ...card,
     ...rest,
   }
 
@@ -81,7 +82,15 @@ interface ContextCardProps {
   onPress: () => void
 }
 
-const ContextCard: React.FC<ContextCardProps> = ({ sectionTitle, imageUrls, iconUrl, title, subtitle, onPress }) => {
+const ContextCard: React.FC<ContextCardProps> = ({
+  sectionTitle,
+  imageUrls,
+  iconUrl,
+  title,
+  subtitle,
+  onPress,
+  ...rest
+}) => {
   const hasMultipleImages = imageUrls.length > 1
 
   const imageElement = hasMultipleImages ? (
@@ -95,43 +104,41 @@ const ContextCard: React.FC<ContextCardProps> = ({ sectionTitle, imageUrls, icon
   )
 
   return (
-    <>
-      <Box m={2}>
-        <SectionTitle title={sectionTitle} onPress={onPress} />
+    <Box {...rest}>
+      <SectionTitle title={sectionTitle} onPress={onPress} />
 
-        <TouchableOpacity onPress={onPress}>
-          <Box position="relative">
-            {imageElement}
+      <TouchableOpacity onPress={onPress}>
+        <Box position="relative">
+          {imageElement}
 
-            {!!iconUrl && (
-              <Flex
-                alignItems="center"
-                justifyContent="center"
-                bg="white100"
-                width={80}
-                height={60}
-                px={1}
-                position="absolute"
-                bottom={0}
-                left={2}
-              >
-                <OpaqueImageView width={60} height={40} imageURL={iconUrl} placeholderBackgroundColor="white" />
-              </Flex>
-            )}
-          </Box>
-
-          <Text variant="mediumText" mt={0.5}>
-            {title}
-          </Text>
-
-          {!!subtitle && (
-            <Text variant="caption" color="black60">
-              {subtitle}
-            </Text>
+          {!!iconUrl && (
+            <Flex
+              alignItems="center"
+              justifyContent="center"
+              bg="white100"
+              width={80}
+              height={60}
+              px={1}
+              position="absolute"
+              bottom={0}
+              left={2}
+            >
+              <OpaqueImageView width={60} height={40} imageURL={iconUrl} placeholderBackgroundColor="white" />
+            </Flex>
           )}
-        </TouchableOpacity>
-      </Box>
-    </>
+        </Box>
+
+        <Text variant="mediumText" mt={0.5}>
+          {title}
+        </Text>
+
+        {!!subtitle && (
+          <Text variant="caption" color="black60">
+            {subtitle}
+          </Text>
+        )}
+      </TouchableOpacity>
+    </Box>
   )
 }
 
