@@ -4,6 +4,7 @@ import { InquiryModalTestsQuery, InquiryModalTestsQueryResponse } from "__genera
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Input } from "lib/Components/Input/Input"
 import { extractText } from "lib/tests/extractText"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { queryLocation } from "lib/utils/googleMaps"
@@ -19,10 +20,24 @@ jest.unmock("react-relay")
 
 let env: ReturnType<typeof createMockEnvironment>
 
-// TODO: add the other modal props
-const modalProps = {
-  modalIsVisible: true,
-  toggleVisibility: jest.fn(),
+const toggleVisibility = jest.fn()
+
+// An app shell that holds modal visibility properties
+const FakeApp = (props: InquiryModalTestsQueryResponse) => {
+  const [modalIsVisible, setModalIsVisible] = React.useState(true)
+  toggleVisibility.mockImplementation(() => setModalIsVisible(!modalIsVisible))
+  const modalProps = {
+    modalIsVisible,
+    toggleVisibility,
+  }
+
+  return (
+    <InquiryModalFragmentContainer
+      artwork={props!.artwork!}
+      modalIsVisible={modalProps.modalIsVisible}
+      toggleVisibility={modalProps.toggleVisibility}
+    />
+  )
 }
 
 interface RenderComponentProps {
@@ -34,7 +49,7 @@ const renderComponent = ({ props, error }: RenderComponentProps) => {
   if (props?.artwork) {
     return (
       <ArtworkInquiryStateProvider>
-        <InquiryModalFragmentContainer artwork={props!.artwork!} {...modalProps} />
+        <FakeApp {...props} />
       </ArtworkInquiryStateProvider>
     )
   } else if (error) {
@@ -50,11 +65,11 @@ const initialState = {
 
 const mockDispatch = jest.fn()
 
-const renderComponentWithDispatch = ({ props, error }: RenderComponentProps) => {
+const renderComponentWithMockDispatch = ({ props, error }: RenderComponentProps) => {
   if (props?.artwork) {
     return (
       <ArtworkInquiryContext.Provider value={{ state: initialState, dispatch: mockDispatch }}>
-        <InquiryModalFragmentContainer artwork={props!.artwork!} {...modalProps} />
+        <FakeApp {...props} />
       </ArtworkInquiryContext.Provider>
     )
   } else if (error) {
@@ -66,20 +81,22 @@ interface TestRenderProps {
   renderer: (props: RenderComponentProps) => JSX.Element | undefined
 }
 
-const TestRenderer = ({ renderer }: TestRenderProps) => (
-  <QueryRenderer<InquiryModalTestsQuery>
-    environment={env}
-    query={graphql`
-      query InquiryModalTestsQuery @relay_test_operation {
-        artwork(id: "pumpkins") {
-          ...InquiryModal_artwork
+const TestRenderer = ({ renderer }: TestRenderProps) => {
+  return (
+    <QueryRenderer<InquiryModalTestsQuery>
+      environment={env}
+      query={graphql`
+        query InquiryModalTestsQuery @relay_test_operation {
+          artwork(id: "pumpkins") {
+            ...InquiryModal_artwork
+          }
         }
-      }
-    `}
-    variables={{}}
-    render={renderer}
-  />
-)
+      `}
+      variables={{}}
+      render={renderer}
+    />
+  )
+}
 
 const mockResolver = {
   Artwork: () => ({
@@ -111,13 +128,27 @@ describe("<InquiryModal />", () => {
     expect(extractText(tree.root)).toContain("What information are you looking for?")
   })
 
+  it("state resets when exiting and re-entering the modal", async () => {
+    const wrapper = getWrapper(mockResolver, renderComponent)
+    expect(wrapper.root.findByType(InquiryModalFragmentContainer).props.modalIsVisible).toBeTruthy()
+    const checkBox = wrapper.root.findByProps({ "data-test-id": "checkbox-shipping_quote" })
+    checkBox.props.onPress()
+    await flushPromiseQueue()
+    expect(checkBox.props.checked).toBeTruthy()
+    wrapper.root.findByProps({ "data-test-id": "checkbox-shipping_quote" }).props.onPress()
+    await press(wrapper.root, { text: "Cancel" })
+
+    expect(wrapper.root.findByType(InquiryModalFragmentContainer).props.modalIsVisible).toBeFalsy()
+    expect(checkBox.props.checked).toBeFalsy()
+  })
+
   describe("user can select 'Price & Availability'", () => {
     it.todo("user taps checkbox and option is selected")
   })
 
   describe("user can select 'Condition & Provenance'", () => {
     it("user taps checkbox and option is selected", () => {
-      const wrapper = getWrapper(mockResolver, renderComponentWithDispatch)
+      const wrapper = getWrapper(mockResolver, renderComponentWithMockDispatch)
       wrapper.root.findByProps({ "data-test-id": "checkbox-condition_and_provenance" }).props.onPress()
 
       expect(mockDispatch).toBeCalledWith({
