@@ -291,7 +291,7 @@ export const Fair2FragmentContainer = createFragmentContainer(Fair2, {
           __typename
         }
       }
-      marketingCollections(size: 4) {
+      marketingCollections(size: 5) {
         __typename
       }
       counts {
