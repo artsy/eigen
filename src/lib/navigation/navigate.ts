@@ -10,7 +10,7 @@ export interface ViewDescriptor extends ViewOptions {
   props: object
 }
 
-export async function navigate(url: string, options: { modal?: boolean } = {}) {
+export async function navigate(url: string, options: { modal?: boolean; passProps?: object } = {}) {
   let result = matchRoute(url)
 
   if (result.type === "external_url") {
@@ -33,7 +33,10 @@ export async function navigate(url: string, options: { modal?: boolean } = {}) {
   const screenDescriptor: ViewDescriptor = {
     type: module.type,
     moduleName: result.module,
-    props: result.params,
+    props: {
+      ...result.params,
+      ...options.passProps,
+    },
     ...module.options,
   }
 

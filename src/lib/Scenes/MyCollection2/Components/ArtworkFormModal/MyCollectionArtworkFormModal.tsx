@@ -126,7 +126,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
             <Stack.Screen
               name="ArtworkForm"
               component={MyCollectionArtworkForm}
-              initialParams={{ onDelete, onDismiss: props.onDismiss }}
+              initialParams={{ onDelete, onDismiss: props.onDismiss, mode: props.mode }}
             />
             <Stack.Screen name="AdditionalDetails" component={MyCollectionAdditionalDetailsForm} />
             <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />

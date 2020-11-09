@@ -1,8 +1,8 @@
 import { MyCollectionArtworkMeta2_artwork } from "__generated__/MyCollectionArtworkMeta2_artwork.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
+import { navigate } from "lib/navigation/navigate"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { formatArtworkDimensions } from "lib/Scenes/MyCollection/utils/formatArtworkDimensions"
-import { AppStore } from "lib/store/AppStore"
 import { capitalize } from "lodash"
 import { Spacer } from "palette"
 import React from "react"
@@ -32,7 +32,6 @@ export const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = (
   } = artwork
 
   const dimensions = formatArtworkDimensions({ height, width, depth, metric })
-  const navActions = AppStore.actions.myCollection.navigation
 
   if (viewAll) {
     return (
@@ -71,13 +70,7 @@ export const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = (
         <Spacer my={0.5} />
 
         <CaretButton
-          onPress={() =>
-            navActions.navigateToViewAllArtworkDetails({
-              passProps: {
-                artwork,
-              },
-            })
-          }
+          onPress={() => navigate(`/my-collection/artwork-details/${artwork.internalID}`, { passProps: { artwork } })}
           text="View more"
         />
       </ScreenMargin>

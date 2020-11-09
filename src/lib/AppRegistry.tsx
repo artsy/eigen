@@ -84,7 +84,7 @@ import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection2/MyCollection"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection2/Screens/Artwork/MyCollectionArtwork"
-import { MyCollectionArtworkDetails } from "./Scenes/MyCollection2/Screens/ArtworkDetails/MyCollectionArtworkDetails"
+import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection2/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
@@ -434,7 +434,7 @@ export const modules = defineModules({
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
   MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),
-  MyCollectionArtworkDetails: reactModule(MyCollectionArtworkDetails),
+  MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
   AddEditArtwork: reactModule(setupMyCollectionScreen(AddEditArtwork)),
   MyCollectionArtworkDetail: reactModule(setupMyCollectionScreen(MyCollectionArtworkDetail)),
   MyCollectionArtworkList: reactModule(setupMyCollectionScreen(MyCollectionArtworkList)),

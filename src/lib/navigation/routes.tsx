@@ -109,7 +109,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     new RouteMatcher("/my-collection", "MyCollection"),
     new RouteMatcher("/my-collection/artwork/:artworkSlug", "MyCollectionArtwork"),
-    new RouteMatcher("/my-collection/artwork-details/:artworkSlug", "MyCollectionArtworkDetails"),
+    new RouteMatcher("/my-collection/artwork-details/:artworkSlug", "MyCollectionArtworkFullDetails"),
 
     new RouteMatcher("/my-collection/add-artwork", "AddEditArtwork"),
     new RouteMatcher("/my-collection/artwork-detail/:artworkID", "MyCollectionArtworkDetail"),
