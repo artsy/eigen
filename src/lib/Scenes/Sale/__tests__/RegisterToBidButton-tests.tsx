@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { RegisterToBidButtonTestsQuery } from "__generated__/RegisterToBidButtonTestsQuery.graphql"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button, Text } from "palette"
@@ -27,7 +28,7 @@ describe("RegisterToBidButton", () => {
       variables={{ saleID: "sale-id" }}
       render={({ props }) => {
         if (props?.sale && props?.me) {
-          return <RegisterToBidButtonContainer sale={props.sale} me={props.me} contextType="sale" />
+          return <RegisterToBidButtonContainer sale={props.sale} me={props.me} contextType={OwnerType.sale} />
         }
         return null
       }}
