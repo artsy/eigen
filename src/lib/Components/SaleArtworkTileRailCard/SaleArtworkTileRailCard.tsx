@@ -1,6 +1,5 @@
-import { ScreenOwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType, ScreenOwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
 import { SaleArtworkTileRailCard_saleArtwork } from "__generated__/SaleArtworkTileRailCard_saleArtwork.graphql"
-import { Schema } from "lib/utils/track"
 import { Box, color, Flex, Sans } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -33,7 +32,16 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
 
   const handleTap = () => {
     if (contextScreenOwnerType) {
-      tracking.trackEvent(tappedArtworkGroupThumbnail(contextScreenOwnerType, artwork.internalID, artwork.slug))
+      const trackingArgs: TappedEntityGroupArgs = {
+        contextModule: ContextModule.auctionRail,
+        contextScreenOwnerType: OwnerType.sale,
+        contextScreenOwnerId: artwork.internalID,
+        contextScreenOwnerSlug: artwork.slug,
+        destinationScreenOwnerType: OwnerType.artwork,
+        type: "thumbnail",
+      }
+
+      tracking.trackEvent(tappedEntityGroup(trackingArgs))
     }
     onPress()
   }
@@ -114,23 +122,6 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
       </Flex>
     </SaleArtworkCard>
   )
-}
-
-export const tappedArtworkGroupThumbnail = (
-  contextScreenOwnerType: ScreenOwnerType,
-  internalID: string,
-  slug: string
-) => {
-  return {
-    action_name: Schema.ActionNames.TappedArtworkGroup,
-    action_type: Schema.ActionTypes.Tap,
-    context_screen_owner_type: contextScreenOwnerType,
-    destination_screen: Schema.PageNames.ArtworkPage,
-    destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
-    destination_screen_owner_id: internalID,
-    destination_screen_owner_slug: slug,
-    type: "thumbnail",
-  }
 }
 
 export const SaleArtworkTileRailCardContainer = createFragmentContainer(SaleArtworkTileRailCard, {

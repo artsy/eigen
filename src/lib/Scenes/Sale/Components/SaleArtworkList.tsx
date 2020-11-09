@@ -26,8 +26,6 @@ export const SaleArtworkList: React.FC<Props> = ({
   hasMore,
   isLoading,
   contextScreenOwnerType,
-  contextScreenOwnerId,
-  contextScreenOwnerSlug,
 }) => {
   const [loadingMoreData, setLoadingMoreData] = useState(false)
 
@@ -53,13 +51,7 @@ export const SaleArtworkList: React.FC<Props> = ({
       ItemSeparatorComponent={() => <Spacer mb="20px" />}
       ListFooterComponent={loadingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null}
       renderItem={({ item }) => (
-        <SaleArtworkListItem
-          artwork={item}
-          key={item.id}
-          contextScreenOwnerType={contextScreenOwnerType}
-          contextScreenOwnerId={contextScreenOwnerId}
-          contextScreenOwnerSlug={contextScreenOwnerSlug}
-        />
+        <SaleArtworkListItem artwork={item} key={item.id} contextScreenOwnerType={contextScreenOwnerType} />
       )}
       keyExtractor={(item) => item.id!}
       style={{ paddingHorizontal: 20 }}

@@ -1,9 +1,8 @@
-import { ActionType, ScreenOwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType, ScreenOwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
 import { SaleArtworkListItem_artwork } from "__generated__/SaleArtworkListItem_artwork.graphql"
 import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { Schema } from "lib/utils/track"
 import { Flex, Sans } from "palette"
 import { Touchable } from "palette"
 import React, { useRef } from "react"
@@ -19,12 +18,7 @@ interface Props {
 
 const CONTAINER_HEIGHT = 100
 
-export const SaleArtworkListItem: React.FC<Props> = ({
-  artwork,
-  contextScreenOwnerType,
-  contextScreenOwnerId,
-  contextScreenOwnerSlug,
-}) => {
+export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwnerType }) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
 
@@ -35,18 +29,16 @@ export const SaleArtworkListItem: React.FC<Props> = ({
 
   const trackArtworkTap = () => {
     if (contextScreenOwnerType) {
-      const genericTapEvent = {
-        action: ActionType.tappedArtworkGroup,
-        context_module: Schema.ContextModules.Auction,
-        context_screen_owner_type: contextScreenOwnerType,
-        context_screen_owner_id: contextScreenOwnerId,
-        context_screen_owner_slug: contextScreenOwnerSlug,
-        destination_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
-        destination_screen_owner_id: artwork.internalID,
-        destination_screen_owner_slug: artwork.slug,
+      const trackingArgs: TappedEntityGroupArgs = {
+        contextModule: ContextModule.artworkGrid,
+        contextScreenOwnerType: OwnerType.sale,
+        contextScreenOwnerId: artwork.internalID,
+        contextScreenOwnerSlug: artwork.slug,
+        destinationScreenOwnerType: OwnerType.artwork,
         type: "thumbnail",
       }
-      tracking.trackEvent(genericTapEvent)
+
+      tracking.trackEvent(tappedEntityGroup(trackingArgs))
     }
   }
 
