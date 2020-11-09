@@ -14,7 +14,8 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { Markdown } from "lib/Components/Markdown"
 import { defaultRules } from "lib/utils/renderMarkdown"
 import { fontFamily } from "palette/platform/fonts/fontFamily"
-import { Output, SingleASTNode, State } from "simple-markdown"
+import WebView from "react-native-webview"
+import SimpleMarkdown, { Output, SingleASTNode, State } from "simple-markdown"
 import { navigate } from "../../navigation/navigate"
 import { PlaceholderBox } from "../../utils/placeholders"
 import { RegisterToBidButtonContainer } from "../Sale/Components/RegisterToBidButton"
@@ -39,6 +40,7 @@ const markdownRules = {
       <TextInput
         editable={false}
         multiline
+        dataDetectorTypes={["all"]}
         style={{ fontWeight: "400", fontFamily: fontFamily.sans.regular.normal, fontSize: 15, lineHeight: 22 }}
       >
         {output(node.content, state)}
@@ -85,6 +87,34 @@ const AuctionIsLive = () => (
   </Flex>
 )
 
+const StyledWebView = ({ body }) => {
+  const styles = `"
+      font-size: 55px;
+      font-family: "Helvetica";
+  "`
+
+  const parser = SimpleMarkdown.parserFor(SimpleMarkdown.defaultRules)
+
+  const parseTree = parser(body)
+  const htmlOutput = SimpleMarkdown.htmlFor(SimpleMarkdown.ruleOutput(SimpleMarkdown.defaultRules, "html"))
+
+  console.log({ output: htmlOutput(parseTree) })
+
+  const html = `
+  <html>
+    <head>
+      <style>${styles}</style>
+    </head>
+    <body style=${styles}>
+      <h1>helloo</h1>
+      ${htmlOutput(parseTree)}
+    </body>
+  </html>
+  `
+
+  return <WebView source={{ html }} style={{ height: 500 }} scrollEnabled={false} />
+}
+
 export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
   const panResponder = useRef<any>(null)
   useEffect(() => {
@@ -127,7 +157,18 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
             </Flex>
           )}
           <View {...(panResponder.current?.panHandlers || {})}>
-            <Markdown rules={markdownRules}>{sale.description || ""}</Markdown>
+            {/* <Markdown rules={markdownRules}>{sale.description || ""}</Markdown> */}
+            {/* <TextInput
+              editable={false}
+              multiline
+              dataDetectorTypes={["all"]}
+              style={{ fontWeight: "400", fontFamily: fontFamily.sans.regular.normal, fontSize: 15, lineHeight: 22 }}
+            >
+              {sale.description}
+            </TextInput> */}
+
+            {/* <Markdown rules={markdownRules}>{sale.description || ""}</Markdown> */}
+            <StyledWebView body={sale.description} />
           </View>
           {renderLiveBiddingOpening()}
         </Flex>
