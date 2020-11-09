@@ -68,7 +68,8 @@
   ],
   "resolutions": {
     "//": "don't forget to document the resolutions in HACKS.md",
-    "cheerio": "0.22.0"
+    "cheerio": "0.22.0",
+    "stacktrace-parser": "0.1.10"
   },
   "dependencies": {
     "@artsy/cohesion": "^1.53.0",
