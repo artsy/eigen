@@ -181,7 +181,7 @@ jobs:
   update-metaphysics:
     executor:
       name: node/default
-      tag: "12.16.2"
+      tag: "14.13.1"
     steps:
       - checkout
       - generate-checksums
@@ -194,7 +194,7 @@ jobs:
   check-pr:
     executor:
       name: node/default
-      tag: "12.13.1"
+      tag: "14.13.1"
     steps:
       - checkout
       - generate-checksums
@@ -209,7 +209,7 @@ jobs:
   build-test-js:
     executor:
       name: node/default
-      tag: "12.16.2"
+      tag: "14.13.1"
     steps:
       - checkout
       - generate-checksums
