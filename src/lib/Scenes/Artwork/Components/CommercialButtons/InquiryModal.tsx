@@ -48,9 +48,7 @@ const InquiryQuestionOption: React.FC<{
     }
   }
 
-  React.useLayoutEffect(() => {
-    maybeRegisterAnimation()
-  }, [questionSelected])
+  React.useLayoutEffect(maybeRegisterAnimation, [questionSelected])
 
   return (
     <React.Fragment>

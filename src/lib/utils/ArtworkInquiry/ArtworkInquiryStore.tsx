@@ -54,8 +54,9 @@ export const reducer = (
 export const ArtworkInquiryContext = createContext<ArtworkInquiryContextProps>(null as any)
 
 export const ArtworkInquiryStateProvider = ({ children }: any) => {
-  const [state, dispatch] = useReducer<Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>>(reducer, {
-    ...initialArtworkInquiryState,
-  })
+  const [state, dispatch] = useReducer<Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>>(
+    reducer,
+    initialArtworkInquiryState
+  )
   return <ArtworkInquiryContext.Provider value={{ state, dispatch }}>{children}</ArtworkInquiryContext.Provider>
 }
