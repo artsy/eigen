@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ee3b2c8730436830af98d3caa1981e54 */
+/* @relayHash 72ef4e40c781200fd68c3e03bfdd354a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -68,6 +68,11 @@ fragment SaleInfo_sale on Sale {
   name
   startAt
   timeZone
+  isWithBuyersPremium
+  buyersPremium {
+    amount
+    percent
+  }
 }
 */
 
@@ -243,6 +248,38 @@ return {
             "name": "timeZone",
             "storageKey": null
           },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "isWithBuyersPremium",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "BuyersPremium",
+            "kind": "LinkedField",
+            "name": "buyersPremium",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "amount",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "percent",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
           (v2/*: any*/)
         ],
         "storageKey": null
@@ -291,7 +328,7 @@ return {
     ]
   },
   "params": {
-    "id": "ee3b2c8730436830af98d3caa1981e54",
+    "id": "72ef4e40c781200fd68c3e03bfdd354a",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -320,9 +357,23 @@ return {
           "plural": false,
           "type": "Sale"
         },
+        "sale.buyersPremium": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "BuyersPremium"
+        },
+        "sale.buyersPremium.amount": (v4/*: any*/),
+        "sale.buyersPremium.percent": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Float"
+        },
         "sale.description": (v4/*: any*/),
         "sale.endAt": (v4/*: any*/),
         "sale.id": (v3/*: any*/),
+        "sale.isWithBuyersPremium": (v5/*: any*/),
         "sale.liveStartAt": (v4/*: any*/),
         "sale.name": (v4/*: any*/),
         "sale.registrationStatus": {

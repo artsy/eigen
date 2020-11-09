@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 240cadce1c05e09fe535a0afef0feca6 */
+/* @relayHash 56fbfc422572d2dfb672ff442468355c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -68,6 +68,11 @@ fragment SaleInfo_sale on Sale {
   name
   startAt
   timeZone
+  isWithBuyersPremium
+  buyersPremium {
+    amount
+    percent
+  }
 }
 */
 
@@ -225,6 +230,38 @@ return {
             "name": "timeZone",
             "storageKey": null
           },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "isWithBuyersPremium",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "BuyersPremium",
+            "kind": "LinkedField",
+            "name": "buyersPremium",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "amount",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "percent",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
           (v2/*: any*/)
         ],
         "storageKey": null
@@ -273,7 +310,7 @@ return {
     ]
   },
   "params": {
-    "id": "240cadce1c05e09fe535a0afef0feca6",
+    "id": "56fbfc422572d2dfb672ff442468355c",
     "metadata": {},
     "name": "SaleInfoQueryRendererQuery",
     "operationKind": "query",

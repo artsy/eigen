@@ -1,5 +1,6 @@
 import { SaleInfoTestsQuery } from "__generated__/SaleInfoTestsQuery.graphql"
 import { RegisterToBidButtonContainer } from "lib/Scenes/Sale/Components/RegisterToBidButton"
+import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -87,6 +88,52 @@ describe("SaleInfo", () => {
 
     expect(tree.root.findAllByType(tests.AuctionIsLive)).toHaveLength(0)
   })
+
+  it("shows the buyers premium correctly for a single percentage", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Sale: () => mockSale,
+      })
+    )
+
+    expect(extractText(tree.root)).toContain("20% on the hammer price")
+  })
+
+  it("shows the buyers premium correctly for range of percentages", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+    const sale = {
+      ...mockSale,
+      isWithBuyersPremium: true,
+      buyersPremium: [
+        {
+          amount: "$0",
+          percent: 0.25,
+        },
+        {
+          amount: "$150,000",
+          percent: 0.2,
+        },
+        {
+          amount: "$3,000,000",
+          percent: 0.12,
+        },
+      ],
+    }
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Sale: () => sale,
+      })
+    )
+
+    expect(extractText(tree.root)).toContain("On the hammer price up to and including $150,000: 25%")
+    expect(extractText(tree.root)).toContain(
+      "On the hammer price in excess of $150,000 up to and including $3,000,000: 20%"
+    )
+    expect(extractText(tree.root)).toContain("On the portion of the hammer price in excess of $3,000,000: 12%")
+  })
 })
 
 const mockSale = {
@@ -100,6 +147,8 @@ const mockSale = {
   timeZone: "Europe/Berlin",
   requireIdentityVerification: false,
   registrationStatus: null,
+  isWithBuyersPremium: true,
+  buyersPremium: [{ amount: "CHF0", percent: 0.2 }],
 }
 
 const liveMockSale = {
