@@ -49,7 +49,6 @@ NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebVie
          AROptionsNewSalePage: @"Enable new sale (auction) page",
          AROptionsNewFirstInquiry: @"Enable new first inquiry flow",
          AROptionsUseReactNativeWebView: @"Use react native webviews",
-         AROptionsNewShowPage: @"Enable new show page",
         };
     });
 }
