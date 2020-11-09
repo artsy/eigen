@@ -7,8 +7,8 @@ import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import moment from "moment"
 import { Flex, Join, Sans, Separator, Text } from "palette"
-import React from "react"
-import { FlatList, Linking, ScrollView, TextInput } from "react-native"
+import React, { useEffect, useRef } from "react"
+import { Linking, PanResponder, ScrollView, TextInput, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 import { Markdown } from "lib/Components/Markdown"
@@ -86,6 +86,13 @@ const AuctionIsLive = () => (
 )
 
 export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
+  const panResponder = useRef<any>(null)
+  useEffect(() => {
+    panResponder.current = PanResponder.create({
+      onStartShouldSetPanResponderCapture: () => true,
+    })
+  }, [])
+
   const renderLiveBiddingOpening = () => {
     if (!sale.liveStartAt || !moment().isSameOrBefore(moment(sale.liveStartAt)) || !sale.timeZone) {
       return null
@@ -93,7 +100,9 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
 
     return (
       <Flex mb={1}>
-        <Text variant="text">Live bidding opens on</Text>
+        <Text variant="text" color="black" fontSize="size4" mt={25} fontWeight="500">
+          Live bidding opens on
+        </Text>
         <Text variant="text" color="black" fontSize="size4">
           {`${moment(sale.liveStartAt).format("dddd, MMMM, D, YYYY")} at ${moment(sale.liveStartAt).format(
             "h:mma"
@@ -104,7 +113,7 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{ paddingBottom: 30 }}>
       <Join separator={<Separator my={2} />}>
         {/*  About Auction */}
         <Flex px={2} mt={70}>
@@ -117,7 +126,9 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
               <RegisterToBidButtonContainer sale={sale} contextType="sale_information" me={me} />
             </Flex>
           )}
-          <Markdown rules={markdownRules}>{sale.description || ""}</Markdown>
+          <View {...(panResponder.current?.panHandlers || {})}>
+            <Markdown rules={markdownRules}>{sale.description || ""}</Markdown>
+          </View>
           {renderLiveBiddingOpening()}
         </Flex>
 
@@ -130,15 +141,9 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
 }
 
 const createPremiumDisplay = (props: { sale: SaleInfo_sale }) => {
-  return (
-    <FlatList
-      data={props.sale.buyersPremium}
-      renderItem={({ item, index }) => {
-        return <BuyersPremiumItem sale={props.sale} currentValue={item} index={index} />
-      }}
-      keyExtractor={(item, _index) => item?.amount || "0"}
-    />
-  )
+  return props.sale.buyersPremium?.map((item, index) => (
+    <BuyersPremiumItem sale={props.sale} currentValue={item} index={index} key={index} />
+  ))
 }
 
 interface BuyersPremiumItemProps {
@@ -189,7 +194,7 @@ const BuyersPremium: React.FC<{ sale: SaleInfo_sale }> = (props) => {
   }
   return (
     <Flex px={2}>
-      <Text variant="subtitle" mb={2}>
+      <Text variant="subtitle" mb={2} mt={1}>
         Buyer's Premium for this Auction
       </Text>
       {premiumDisplay}
