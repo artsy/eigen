@@ -7,8 +7,8 @@ import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import moment from "moment"
 import { Flex, Join, Sans, Separator, Text } from "palette"
-import React from "react"
-import { Linking, ScrollView, TextInput } from "react-native"
+import React, { useEffect, useRef } from "react"
+import { Linking, PanResponder, ScrollView, TextInput, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 import { Markdown } from "lib/Components/Markdown"
@@ -86,6 +86,13 @@ const AuctionIsLive = () => (
 )
 
 export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
+  const panResponder = useRef<any>(null)
+  useEffect(() => {
+    panResponder.current = PanResponder.create({
+      onStartShouldSetPanResponderCapture: () => true,
+    })
+  }, [])
+
   const renderLiveBiddingOpening = () => {
     if (!sale.liveStartAt || !moment().isSameOrBefore(moment(sale.liveStartAt)) || !sale.timeZone) {
       return null
@@ -106,7 +113,7 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{ paddingBottom: 30 }}>
       <Join separator={<Separator my={2} />}>
         {/*  About Auction */}
         <Flex px={2} mt={70}>
@@ -119,7 +126,9 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
               <RegisterToBidButtonContainer sale={sale} contextType="sale_information" me={me} />
             </Flex>
           )}
-          <Markdown rules={markdownRules}>{sale.description || ""}</Markdown>
+          <View {...(panResponder.current?.panHandlers || {})}>
+            <Markdown rules={markdownRules}>{sale.description || ""}</Markdown>
+          </View>
           {renderLiveBiddingOpening()}
         </Flex>
 

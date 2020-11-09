@@ -1,5 +1,5 @@
-import { ArtsyWebView } from "lib/Components/ArtsyWebView"
 import React from "react"
+import WebView from "react-native-webview"
 import { renderWithWrappers } from "../../../tests/renderWithWrappers"
 import { SaleFAQ } from "../SaleFAQ"
 
@@ -7,6 +7,6 @@ describe("SaleFAQ", () => {
   it("returns a webview", () => {
     const tree = renderWithWrappers(<SaleFAQ />)
 
-    expect(tree.root.findAllByType(ArtsyWebView).length).toEqual(1)
+    expect(tree.root.findAllByType(WebView).length).toEqual(1)
   })
 })
