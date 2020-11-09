@@ -2152,16 +2152,7 @@ type BuyersPremium {
     thousand: String = ","
   ): String
   cents: Int
-
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
   percent: Float
-
-  # A slug ID.
-  slug: ID!
 }
 
 type CalculatedCost {
@@ -5426,6 +5417,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
 
     # Sorts for shows in a fair
     sort: ShowSorts
+    totalCount: Boolean = false
   ): ShowConnection
 
   # A slug ID.

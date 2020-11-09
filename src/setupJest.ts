@@ -149,7 +149,6 @@ function getNativeModules(): typeof NativeModules {
         sentryDSN: "sentryDSN",
         stripePublishableKey: "stripePublishableKey",
         userID: "userID",
-        selectedTab: "home",
         options: {
           AROptionsBidManagement: false,
           AROptionsEnableMyCollection: false,
@@ -195,14 +194,15 @@ function getNativeModules(): typeof NativeModules {
     ARScreenPresenterModule: {
       presentMediaPreviewController: jest.fn(),
       dismissModal: jest.fn(),
-      presentReactScreen: jest.fn(),
+      pushView: jest.fn(),
       goBack: jest.fn(),
-      presentNativeScreen: jest.fn(),
-      switchTab: jest.fn(),
       updateShouldHideBackButton: jest.fn(),
       presentAugmentedRealityVIR: jest.fn(),
       presentEmailComposer: jest.fn(),
-      popParentViewController: jest.fn(),
+      popStack: jest.fn(),
+      popToRootAndScrollToTop: jest.fn(),
+      popToRootOrScrollToTop: jest.fn(),
+      presentModal: jest.fn(),
     },
   }
 }

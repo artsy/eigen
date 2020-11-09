@@ -27,7 +27,7 @@ export const AddPhotos: React.FC = () => {
             {photos.map((photo, index) => {
               return (
                 <Box key={index}>
-                  <Box m={0.5}>
+                  <Box ml={index % 2 === 0 ? 1 : 0} mb={1}>
                     <Image
                       style={{ width: imageSize, height: imageSize, resizeMode: "cover" }}
                       source={{ uri: photo.path }}
@@ -50,7 +50,7 @@ const AddPhotosButton: React.FC = () => {
 
   return (
     <TouchableOpacity onPress={() => artworkActions.takeOrPickPhotos()}>
-      <BorderBox m={0.5} p={0} bg={color("white100")} width={imageSize} height={imageSize} key="addMorePhotos">
+      <BorderBox mb={1} p={0} bg={color("white100")} width={imageSize} height={imageSize} key="addMorePhotos">
         <Flex flex={1} flexDirection="row" justifyContent="center" alignItems="center">
           <AddIcon width={30} height={30} />
         </Flex>
@@ -76,7 +76,8 @@ const DeletePhotoButton: React.FC<{ photo: ImageProps }> = ({ photo }) => {
 
 const useImageSize = () => {
   const dimensions = useScreenDimensions()
-  const size = Math.round((dimensions.width / 2) * 0.855)
+  const margins = 2 * 20 + 10
+  const size = Math.round((dimensions.width - margins) / 2)
   return size
 }
 

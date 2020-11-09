@@ -74,7 +74,7 @@ describe("ArtworkExtraLinks", () => {
       ],
     }
 
-    __appStoreTestUtils__?.injectState({ native: { sessionState: { selectedTab: "sell" } } })
+    __appStoreTestUtils__?.injectState({ bottomTabs: { sessionState: { selectedTab: "sell" } } })
     const component = getWrapper({ artwork })
     const consignmentsLink = component.find(Text).at(1)
 

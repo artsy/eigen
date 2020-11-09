@@ -94,7 +94,7 @@ export const AppStoreProvider: React.FC<{}> = ({ children }) => {
 }
 
 export function useSelectedTab() {
-  return hooks.useStoreState((state) => state.native.sessionState.selectedTab)
+  return hooks.useStoreState((state) => state.bottomTabs.sessionState.selectedTab)
 }
 
 let appStoreInstance = createAppStore()
@@ -106,6 +106,15 @@ export function useEmissionOption(key: keyof EmissionOptions) {
 export function getCurrentEmissionState() {
   // on initial load appStoreInstance might be undefined
   return appStoreInstance?.getState().native.sessionState ?? NativeModules.ARNotificationsManager.nativeState
+}
+
+/**
+ * This is safe, but is marked unsafe because it should not be used within react components since it does not cause re-renders.
+ * Use `useSelectedTab` in react components, and use this in rare cases where you need to know the current tab outside of
+ * react components.
+ */
+export function unsafe__getSelectedTab() {
+  return appStoreInstance?.getState().bottomTabs.sessionState.selectedTab
 }
 
 export function useIsStaging() {

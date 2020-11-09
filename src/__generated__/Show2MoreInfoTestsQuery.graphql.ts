@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f840c45eed996cb7e597eb66b9f926d3 */
+/* @relayHash ed1a6f581100566d78e93c4b0fcd3193 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -153,6 +153,18 @@ fragment Show2MoreInfo_show on Show {
       __typename
       openingHours {
         __typename
+        ... on OpeningHoursArray {
+          schedules {
+            __typename
+          }
+        }
+        ... on OpeningHoursText {
+          text
+        }
+      }
+      coordinates {
+        lat
+        lng
       }
       id
     }
@@ -162,6 +174,18 @@ fragment Show2MoreInfo_show on Show {
     __typename
     openingHours {
       __typename
+      ... on OpeningHoursArray {
+        schedules {
+          __typename
+        }
+      }
+      ... on OpeningHoursText {
+        text
+      }
+    }
+    coordinates {
+      lat
+      lng
     }
     id
   }
@@ -321,7 +345,8 @@ v7 = {
                   "kind": "ScalarField",
                   "name": "hours",
                   "storageKey": null
-                }
+                },
+                (v2/*: any*/)
               ],
               "storageKey": null
             }
@@ -606,7 +631,7 @@ return {
     ]
   },
   "params": {
-    "id": "f840c45eed996cb7e597eb66b9f926d3",
+    "id": "ed1a6f581100566d78e93c4b0fcd3193",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {
@@ -636,6 +661,7 @@ return {
         "show.fair.location.openingHours": (v14/*: any*/),
         "show.fair.location.openingHours.__typename": (v11/*: any*/),
         "show.fair.location.openingHours.schedules": (v15/*: any*/),
+        "show.fair.location.openingHours.schedules.__typename": (v11/*: any*/),
         "show.fair.location.openingHours.schedules.days": (v8/*: any*/),
         "show.fair.location.openingHours.schedules.hours": (v8/*: any*/),
         "show.fair.location.openingHours.text": (v8/*: any*/),
@@ -657,6 +683,7 @@ return {
         "show.location.openingHours": (v14/*: any*/),
         "show.location.openingHours.__typename": (v11/*: any*/),
         "show.location.openingHours.schedules": (v15/*: any*/),
+        "show.location.openingHours.schedules.__typename": (v11/*: any*/),
         "show.location.openingHours.schedules.days": (v8/*: any*/),
         "show.location.openingHours.schedules.hours": (v8/*: any*/),
         "show.location.openingHours.text": (v8/*: any*/),

@@ -13,6 +13,7 @@ interface SingleSelectOptionScreenProps {
   selectedOption: FilterData
   filterOptions: FilterData[]
   ListHeaderComponent?: JSX.Element
+  withExtraPadding?: boolean
 }
 
 export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> = ({
@@ -22,6 +23,7 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
   filterOptions,
   navigator,
   ListHeaderComponent,
+  withExtraPadding = false,
 }) => {
   const handleBackNavigation = () => {
     navigator.pop()
@@ -38,7 +40,14 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
           ItemSeparatorComponent={() => <Separator />}
-          renderItem={({ item }) => <ListItem item={item} selectedOption={selectedOption} onSelect={onSelect} />}
+          renderItem={({ item }) => (
+            <ListItem
+              item={item}
+              selectedOption={selectedOption}
+              onSelect={onSelect}
+              withExtraPadding={withExtraPadding}
+            />
+          )}
         />
       </Flex>
     </Flex>
@@ -49,14 +58,16 @@ const ListItem = ({
   item,
   onSelect,
   selectedOption,
+  withExtraPadding,
 }: {
   item: FilterData
   onSelect: (any: any) => void
   selectedOption: FilterData
+  withExtraPadding: boolean
 }) => (
   <SingleSelectOptionListItemRow onPress={() => onSelect(item)}>
     <OptionListItem>
-      <InnerOptionListItem px={item.displayText === "All" ? 2 : 3}>
+      <InnerOptionListItem px={withExtraPadding && item.displayText !== "All" ? 3 : 2}>
         <Sans color="black100" size="3t">
           {item.displayText}
           {!!item.count && (

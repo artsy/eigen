@@ -38,14 +38,14 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
 
   const Medium = () =>
     !!medium ? (
-      <Sans size="3t" color="black60" numberOfLines={1}>
+      <Sans size="3t" color="black60" numberOfLines={2} style={{ flex: 1 }}>
         {mediums[medium] || capitalize(medium)}
       </Sans>
     ) : null
 
   const Title = () =>
     !!title ? (
-      <Sans size="3t" color="black60" numberOfLines={1}>
+      <Sans size="3t" color="black60" numberOfLines={2} style={{ flex: 1 }}>
         {title}
       </Sans>
     ) : null
@@ -76,7 +76,7 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
       >
         <Flex flexDirection="row" alignItems="center">
           <Image data-test-id="Image" />
-          <Box mx={1} maxWidth={width}>
+          <Box m={1} maxWidth={width} style={{ flex: 1 }}>
             <Sans size="4">{artistNames}</Sans>
             <Title />
             <Medium />

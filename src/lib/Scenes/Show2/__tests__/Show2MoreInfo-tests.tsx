@@ -5,6 +5,8 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { Show2HoursFragmentContainer } from "../Components/Show2Hours"
+import { Show2LocationFragmentContainer } from "../Components/Show2Location"
 import { Show2MoreInfo, Show2MoreInfoFragmentContainer } from "../Screens/Show2MoreInfo"
 
 jest.unmock("react-relay")
@@ -75,5 +77,25 @@ describe("Show2MoreInfo", () => {
 
     expect(text).toContain("Institution")
     expect(text).not.toContain("Institutional Seller")
+  })
+
+  it("renders the hours", () => {
+    const wrapper = getWrapper()
+    expect(wrapper.root.findAllByType(Show2HoursFragmentContainer)).toHaveLength(1)
+  })
+
+  it("does not render the hours if they are missing from the location", () => {
+    const wrapper = getWrapper({ Location: () => ({ openingHours: null }) })
+    expect(wrapper.root.findAllByType(Show2HoursFragmentContainer)).toHaveLength(0)
+  })
+
+  it("renders the location", () => {
+    const wrapper = getWrapper()
+    expect(wrapper.root.findAllByType(Show2LocationFragmentContainer)).toHaveLength(1)
+  })
+
+  it("does not render the location if the coordinates are missing", () => {
+    const wrapper = getWrapper({ LatLng: () => ({ lat: null }) })
+    expect(wrapper.root.findAllByType(Show2LocationFragmentContainer)).toHaveLength(0)
   })
 })

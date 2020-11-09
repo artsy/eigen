@@ -60,6 +60,7 @@ export const MediumOptionsScreen: React.FC<MediumOptionsScreenProps> = ({ naviga
       filterOptions={displayOptions}
       selectedOption={selectedOption}
       navigator={navigator}
+      withExtraPadding
     />
   )
 }

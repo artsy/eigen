@@ -1,6 +1,7 @@
 #import "ARExternalWebBrowserViewController.h"
 #import "ARScrollNavigationChief.h"
 #import "ARWebViewCacheHost.h"
+#import "ARNavigationController.h"
 #import <WebKit/WKUIDelegate.h>
 
 SpecBegin(ARExternalWebBrowserViewController);

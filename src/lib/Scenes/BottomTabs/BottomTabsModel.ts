@@ -1,26 +1,31 @@
+import AsyncStorage from "@react-native-community/async-storage"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
-import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy"
+import { Action, action, Thunk, thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { AppStore } from "lib/store/AppStore"
-import { AppStoreModel } from "lib/store/AppStoreModel"
+import { AppStore, getCurrentEmissionState } from "lib/store/AppStore"
+import type { AppStoreModel } from "lib/store/AppStoreModel"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
 export interface BottomTabsModel {
   sessionState: {
     unreadConversationCount: number
+    tabProps: Partial<{ [k in BottomTabType]: object }>
+    selectedTab: BottomTabType
   }
   unreadConversationCountChanged: Action<BottomTabsModel, number>
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
 
-  // TODO: move navigation routing logic to TS so this can be a source of truth rather
-  // than derived from the native state
-  selectedTab: Computed<BottomTabsModel, BottomTabType, AppStoreModel>
+  switchTab: Action<BottomTabsModel, BottomTabType>
+  setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
+  __dev__didRehydrate: ThunkOn<BottomTabsModel, {}, AppStoreModel>
 }
 
 export const BottomTabsModel: BottomTabsModel = {
   sessionState: {
     unreadConversationCount: 0,
+    tabProps: {},
+    selectedTab: "home",
   },
   unreadConversationCountChanged: action((state, unreadConversationCount) => {
     state.sessionState.unreadConversationCount = unreadConversationCount
@@ -43,6 +48,51 @@ export const BottomTabsModel: BottomTabsModel = {
       AppStore.actions.native.setApplicationIconBadgeNumber(result.me.unreadConversationCount)
     }
   }),
+  setTabProps: action((state, { tab, props }) => {
+    state.sessionState.tabProps[tab] = props
+  }),
+  switchTab: action((state, tabType) => {
+    state.sessionState.selectedTab = tabType
+    persistDevReloadState(tabType)
+  }),
+  __dev__didRehydrate: thunkOn((_, storeActions) => storeActions.rehydrate, maybeHandleDevReload),
+}
 
-  selectedTab: computed([(_, store) => store.native.sessionState.selectedTab], (selectedTab) => selectedTab),
+// We want the selected tab state to persist across dev reloads, but not across app launches.
+// So every time we switch tab we'll also save the number of launches + the newly selected tab
+// and every time the store rehydrates we'll check whether the number of launches is the same as the last
+// time the app switched tab. if so, we reinstate the last selected tab.
+const reloadStateKey = "__dev__reloadState"
+
+function persistDevReloadState(tabType: BottomTabType) {
+  if (!__DEV__) {
+    return
+  }
+  setImmediate(() => {
+    AsyncStorage.setItem(
+      reloadStateKey,
+      JSON.stringify({
+        launchCount: getCurrentEmissionState().launchCount,
+        selectedTab: tabType,
+      })
+    )
+  })
+}
+
+async function maybeHandleDevReload() {
+  if (!__DEV__) {
+    return
+  }
+  const json = await AsyncStorage.getItem(reloadStateKey)
+  if (!json) {
+    return
+  }
+  try {
+    const { launchCount, selectedTab } = JSON.parse(json)
+    if (launchCount === getCurrentEmissionState().launchCount) {
+      AppStore.actions.bottomTabs.switchTab(selectedTab)
+    }
+  } catch (e) {
+    console.error("failed to handle dev reload state")
+  }
 }

@@ -1,7 +1,8 @@
 import { Show2Header_show } from "__generated__/Show2Header_show.graphql"
 import { useEventTiming } from "lib/utils/useEventTiming"
+import { DateTime } from "luxon"
 import { Box, BoxProps, Text } from "palette"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export interface Show2HeaderProps extends BoxProps {
@@ -9,7 +10,23 @@ export interface Show2HeaderProps extends BoxProps {
 }
 
 export const Show2Header: React.FC<Show2HeaderProps> = ({ show, ...rest }) => {
-  const { formattedTime } = useEventTiming({ startAt: show.startAt ?? undefined, endAt: show.endAt ?? undefined })
+  const [currentTime, setCurrentTime] = useState(DateTime.local().toString())
+
+  const { formattedTime } = useEventTiming({
+    currentTime,
+    startAt: show.startAt ?? undefined,
+    endAt: show.endAt ?? undefined,
+  })
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(DateTime.local().toString())
+    }, 1000)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
 
   return (
     <Box {...rest}>
