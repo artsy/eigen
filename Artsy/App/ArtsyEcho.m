@@ -28,7 +28,7 @@
         return;
     }
 
-    if ([[ReactNativeConfig envFor:@"_OSS_"] isEqualToString:@"false"]) {
+    if (![[ReactNativeConfig envFor:@"_OSS_"] isEqualToString:@"true"]) {
         [super checkForUpdates:updateCheckCompleted];
     }
 }
