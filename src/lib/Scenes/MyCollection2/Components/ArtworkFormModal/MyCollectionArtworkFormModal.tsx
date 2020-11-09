@@ -105,6 +105,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
           setLoading(true)
           try {
             await myCollectionDeleteArtwork(props.artwork.id)
+            props.onDelete()
           } catch (e) {
             if (__DEV__) {
               console.error(e)

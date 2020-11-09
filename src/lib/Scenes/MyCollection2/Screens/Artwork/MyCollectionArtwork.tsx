@@ -4,7 +4,7 @@ import {
 } from "__generated__/MyCollectionArtworkQuery.graphql"
 import { Divider } from "lib/Components/Bidding/Components/Divider"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { goBack, navigate } from "lib/navigation/navigate"
+import { navigate, popParentViewController } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { MyCollectionArtworkInsightsFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkDetail/Components/ArtworkInsights/MyCollectionArtworkInsights"
@@ -35,7 +35,10 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwork, mark
         visible={showModal}
         onDismiss={() => setShowModal(false)}
         onSuccess={() => setShowModal(false)}
-        onDelete={() => goBack()}
+        onDelete={() => {
+          setShowModal(false)
+          setTimeout(popParentViewController, 120)
+        }}
         artwork={artwork}
       />
       <FancyModalHeader

@@ -4,7 +4,7 @@ import { AppStore } from "lib/store/AppStore"
 import { isEmpty } from "lodash"
 import { BorderBox, Box, Button, Flex, Join, Sans, Spacer } from "palette"
 import React from "react"
-import { ScrollView } from "react-native"
+import { ActionSheetIOS, ScrollView } from "react-native"
 import { ScreenMargin } from "../../../../MyCollection/Components/ScreenMargin"
 import { ArrowButton } from "../../../../MyCollection/Screens/AddArtwork/Components/ArrowButton"
 import { ArtistAutosuggest } from "../../../../MyCollection/Screens/AddArtwork/Components/ArtistAutosuggest"
@@ -79,14 +79,21 @@ export const MyCollectionArtworkForm: React.FC<StackScreenProps<ArtworkFormModal
               mt={2}
               variant="secondaryGray"
               block
-              onPress={
-                () => void 0
-                // artworkActions.confirmDeleteArtwork({
-                //   artworkId: artworkState.sessionState.artworkId,
-                //   artworkGlobalId: artworkState.sessionState.artworkGlobalId,
-                //   startedLoading: deletionStarted,
-                // })
-              }
+              onPress={() => {
+                ActionSheetIOS.showActionSheetWithOptions(
+                  {
+                    title: "Delete artwork?",
+                    options: ["Delete", "Cancel"],
+                    destructiveButtonIndex: 0,
+                    cancelButtonIndex: 1,
+                  },
+                  (buttonIndex) => {
+                    if (buttonIndex === 0) {
+                      route.params.onDelete?.()
+                    }
+                  }
+                )
+              }}
               data-test-id="DeleteButton"
             >
               Delete
