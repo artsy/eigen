@@ -40,12 +40,6 @@ extension Optional: Occupiable {
     }
 }
 
-// Required for Xcode 8/9 compatibility. Can be dropped when we move to Swift 4.
-extension String: Occupiable {
-    var isNotEmpty: Bool {
-        return !isEmpty
-    }
-}
 
 extension Array {
     mutating func remove(matching closure: @escaping ((Element) -> Bool)) -> Element? {
@@ -67,14 +61,3 @@ extension Array {
         return reversed().first(closure)
     }
 }
-
-// TODO: Remove this when we have standardized on Xcode 9.3.
-#if swift(>=4.1)
-#else
-    /// Extension for adding Swift 4.1 methods to our runtime, to support Swift 4.0 concurrently.
-    extension Sequence {
-        func compactMap<ElementOfResult>(_ transform: (Self.Element) throws -> ElementOfResult?) rethrows -> [ElementOfResult] {
-            return try flatMap(transform)
-        }
-    }
-#endif
