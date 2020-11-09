@@ -104,7 +104,12 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
       ? async () => {
           setLoading(true)
           try {
-            await myCollectionDeleteArtwork(props.artwork.id)
+            const result = await myCollectionDeleteArtwork(props.artwork.internalID)
+            if (result.myCollectionDeleteArtwork?.artworkOrError?.mutationError) {
+              throw new Error(
+                `Mutation failed: ${result.myCollectionDeleteArtwork?.artworkOrError?.mutationError.message}`
+              )
+            }
             props.onDelete()
           } catch (e) {
             if (__DEV__) {
