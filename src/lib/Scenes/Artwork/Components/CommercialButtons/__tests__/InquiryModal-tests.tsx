@@ -1,11 +1,11 @@
 jest.mock("../../../../../utils/googleMaps", () => ({ queryLocation: jest.fn() }))
 
-import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.graphql"
+import { InquiryModalTestsQuery, InquiryModalTestsQueryResponse } from "__generated__/InquiryModalTestsQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Input } from "lib/Components/Input/Input"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
+import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { queryLocation } from "lib/utils/googleMaps"
 import { Touchable } from "palette"
 import React from "react"
@@ -25,7 +25,48 @@ const modalProps = {
   toggleVisibility: jest.fn(),
 }
 
-const TestRenderer = () => (
+interface RenderComponentProps {
+  props: InquiryModalTestsQueryResponse | null
+  error: Error | null
+}
+
+const renderComponent = ({ props, error }: RenderComponentProps) => {
+  if (props?.artwork) {
+    return (
+      <ArtworkInquiryStateProvider>
+        <InquiryModalFragmentContainer artwork={props!.artwork!} {...modalProps} />
+      </ArtworkInquiryStateProvider>
+    )
+  } else if (error) {
+    console.log(error)
+  }
+}
+
+const initialState = {
+  shippingLocation: null,
+  inquiryType: null,
+  inquiryQuestions: [],
+}
+
+const mockDispatch = jest.fn()
+
+const renderComponentWithDispatch = ({ props, error }: RenderComponentProps) => {
+  if (props?.artwork) {
+    return (
+      <ArtworkInquiryContext.Provider value={{ state: initialState, dispatch: mockDispatch }}>
+        <InquiryModalFragmentContainer artwork={props!.artwork!} {...modalProps} />
+      </ArtworkInquiryContext.Provider>
+    )
+  } else if (error) {
+    console.log(error)
+  }
+}
+
+interface TestRenderProps {
+  renderer: (props: RenderComponentProps) => JSX.Element | undefined
+}
+
+const TestRenderer = ({ renderer }: TestRenderProps) => (
   <QueryRenderer<InquiryModalTestsQuery>
     environment={env}
     query={graphql`
@@ -36,32 +77,22 @@ const TestRenderer = () => (
       }
     `}
     variables={{}}
-    render={({ props, error }) => {
-      if (props?.artwork) {
-        return (
-          <ArtworkInquiryStateProvider>
-            <InquiryModalFragmentContainer artwork={props!.artwork!} {...modalProps} />
-          </ArtworkInquiryStateProvider>
-        )
-      } else if (error) {
-        console.log(error)
-      }
-    }}
+    render={renderer}
   />
 )
 
-const getWrapper = (
-  mockResolvers = {
-    Artwork: () => ({
-      inquiryQuestions: [
-        { internalID: "price_and_availability", question: "Price & Availability" },
-        { internalID: "shipping_quote", question: "Shipping" },
-        { internalID: "question", question: "History & Provenance" },
-      ],
-    }),
-  }
-) => {
-  const tree = renderWithWrappers(<TestRenderer />)
+const mockResolver = {
+  Artwork: () => ({
+    inquiryQuestions: [
+      { internalID: "price_and_availability", question: "Price & Availability" },
+      { internalID: "shipping_quote", question: "Shipping" },
+      { internalID: "condition_and_provenance", question: "Condition & Provance" },
+    ],
+  }),
+}
+
+const getWrapper = (mockResolvers = mockResolver, renderer = renderComponent) => {
+  const tree = renderWithWrappers(<TestRenderer renderer={renderer} />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) => {
       return MockPayloadGenerator.generate(operation, mockResolvers)
@@ -85,20 +116,32 @@ describe("<InquiryModal />", () => {
   })
 
   describe("user can select 'Condition & Provenance'", () => {
-    it.todo("user taps checkbox and option is selected")
+    it("user taps checkbox and option is selected", () => {
+      const wrapper = getWrapper(mockResolver, renderComponentWithDispatch)
+      wrapper.root.findByProps({ "data-test-id": "checkbox-condition_and_provenance" }).props.onPress()
+
+      expect(mockDispatch).toBeCalledWith({
+        payload: {
+          details: null,
+          isChecked: true,
+          questionID: "condition_and_provenance",
+        },
+        type: "selectInquiryQuestion",
+      })
+    })
   })
 
   describe("user can select Shipping", () => {
     it("user selecting shipping exposes the 'Add your location' CTA", () => {
       const wrapper = getWrapper()
-      wrapper.root.findByProps({ "data-test-id": "checkbox-Shipping" }).props.onPress()
+      wrapper.root.findByProps({ "data-test-id": "checkbox-shipping_quote" }).props.onPress()
 
       expect(extractText(wrapper.root)).toContain("Add your location")
     })
 
     it("user can visit shipping modal", async () => {
       const wrapper = getWrapper()
-      wrapper.root.findByProps({ "data-test-id": "checkbox-Shipping" }).props.onPress()
+      wrapper.root.findByProps({ "data-test-id": "checkbox-shipping_quote" }).props.onPress()
 
       expect(extractText(wrapper.root)).toContain("Add your location")
       expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeFalsy()
@@ -116,7 +159,7 @@ describe("<InquiryModal />", () => {
         { id: "b", name: "Coxs Creek, KY, USA" },
       ])
       const wrapper = getWrapper()
-      wrapper.root.findByProps({ "data-test-id": "checkbox-Shipping" }).props.onPress()
+      wrapper.root.findByProps({ "data-test-id": "checkbox-shipping_quote" }).props.onPress()
       await press(wrapper.root, { text: /^Add your location/ })
 
       await typeInInput(wrapper.root, "Cox")
@@ -137,7 +180,7 @@ describe("<InquiryModal />", () => {
     // TODO: I couldn't get this one to work. It is pretty basic. maybe we don't need it.
     it.skip("user can only exit the shipping modal by pressing cancel if they have not selected a location", async () => {
       const wrapper = getWrapper()
-      wrapper.root.findByProps({ "data-test-id": "checkbox-Shipping" }).props.onPress()
+      wrapper.root.findByProps({ "data-test-id": "checkbox-shipping_quote" }).props.onPress()
       await press(wrapper.root, { text: /^Add your location/ })
       await press(wrapper.root, { text: "Apply" })
 
