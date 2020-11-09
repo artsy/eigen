@@ -9,6 +9,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { MyCollectionArtworkInsightsFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkDetail/Components/ArtworkInsights/MyCollectionArtworkInsights"
 import { WhySell } from "lib/Scenes/MyCollection/Screens/ArtworkDetail/Components/WhySell"
+import { AppStore } from "lib/store/AppStore"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Button, Flex, Join, Spacer } from "palette"
@@ -40,6 +41,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwork, mark
       <FancyModalHeader
         rightButtonText="Edit"
         onRightButtonPress={() => {
+          AppStore.actions.myCollection.artwork.startEditingArtwork(artwork as any)
           setShowModal(true)
         }}
         hideBottomDivider
