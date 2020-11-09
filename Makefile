@@ -5,7 +5,7 @@ CONFIGURATION = Beta
 APP_PLIST = Artsy/App_Resources/Artsy-Info.plist
 STICKER_PLIST = Artsy\ Stickers/Info.plist
 PLIST_BUDDY = /usr/libexec/PlistBuddy
-DEVICE_HOST = platform='iOS Simulator',OS='12.4',name='iPhone X'
+DEVICE_HOST = platform='iOS Simulator',OS='14.1',name='iPhone 12 Pro'
 # Disable warnings as errors for now, because we’re currently not getting the same errors during dev as deploy.
 # OTHER_CFLAGS = OTHER_CFLAGS="\$$(inherited) -Werror"
 
