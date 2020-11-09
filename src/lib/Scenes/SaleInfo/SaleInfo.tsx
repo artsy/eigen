@@ -113,7 +113,7 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
             </TextInput> */}
 
             {/* <Markdown rules={markdownRules}>{sale.description || ""}</Markdown> */}
-            <StyledWebView body={sale.description} />
+            <StyledWebView body={sale.description || ""} />
           </View>
           {renderLiveBiddingOpening()}
         </Flex>

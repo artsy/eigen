@@ -7,7 +7,6 @@ export const StyledWebView: React.FC<{ body: string }> = ({ body }) => {
   const [webViewHeight, setWebViewHeight] = useState(100)
 
   const parser = SimpleMarkdown.parserFor(SimpleMarkdown.defaultRules)
-
   const parseTree = parser(body)
 
   // @ts-ignore
