@@ -3,12 +3,14 @@ import { Linking } from "react-native"
 import WebView from "react-native-webview"
 import SimpleMarkdown from "simple-markdown"
 
-export const StyledWebView = ({ body }) => {
+export const StyledWebView: React.FC<{ body: string }> = ({ body }) => {
   const [webViewHeight, setWebViewHeight] = useState(100)
 
   const parser = SimpleMarkdown.parserFor(SimpleMarkdown.defaultRules)
 
   const parseTree = parser(body)
+
+  // @ts-ignore
   const htmlOutput = SimpleMarkdown.htmlFor(SimpleMarkdown.ruleOutput(SimpleMarkdown.defaultRules, "html"))
 
   const html = `
