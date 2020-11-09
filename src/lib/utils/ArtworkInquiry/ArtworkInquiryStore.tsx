@@ -39,7 +39,7 @@ export const reducer = (
 
     case "selectInquiryQuestion":
       const { isChecked, ...payloadQuestion } = action.payload
-      const { inquiryQuestions } = inquiryState
+      const { inquiryQuestions = [] } = inquiryState
       const newSelection: InquiryQuestionInput[] = isChecked
         ? [...inquiryQuestions, payloadQuestion]
         : inquiryQuestions.filter((q) => q.questionID !== payloadQuestion.questionID)
