@@ -3,6 +3,7 @@ import { MyCollectionArtworkFullDetailsQuery } from "__generated__/MyCollectionA
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { goBack } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { AppStore } from "lib/store/AppStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Flex, Spacer, Text } from "palette"
 import React, { useState } from "react"
@@ -17,6 +18,7 @@ const MyCollectionArtworkFullDetails: React.FC<{ artwork: MyCollectionArtworkFul
       <FancyModalHeader
         rightButtonText="Edit"
         onRightButtonPress={() => {
+          AppStore.actions.myCollection.artwork.startEditingArtwork(props.artwork as any)
           setShowModal(true)
         }}
       >
@@ -33,7 +35,7 @@ const MyCollectionArtworkFullDetails: React.FC<{ artwork: MyCollectionArtworkFul
         onSuccess={() => {
           setShowModal(false)
         }}
-        artwork={null as any}
+        artwork={props.artwork}
         mode="edit"
         visible={showModal}
         onDismiss={() => setShowModal(false)}
@@ -45,6 +47,7 @@ const MyCollectionArtworkFullDetails: React.FC<{ artwork: MyCollectionArtworkFul
 export const MyCollectionArtworkFullDetailsContainer = createFragmentContainer(MyCollectionArtworkFullDetails, {
   artwork: graphql`
     fragment MyCollectionArtworkFullDetails_artwork on Artwork {
+      ...MyCollectionArtwork_sharedProps @relay(mask: false)
       ...MyCollectionArtworkMeta2_artwork
     }
   `,

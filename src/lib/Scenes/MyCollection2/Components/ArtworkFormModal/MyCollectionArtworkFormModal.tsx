@@ -73,7 +73,13 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
             ...cleanArtworkPayload(others),
           })
         } else {
-          await myCollectionEditArtwork({} as any)
+          await myCollectionEditArtwork({
+            artistIds: [artistSearchResult!.internalID as string],
+            artworkId: props.artwork.internalID,
+            externalImageUrls,
+            costMinor: Number(costMinor),
+            ...cleanArtworkPayload(others),
+          })
         }
         props.onSuccess()
         setTimeout(() => {
