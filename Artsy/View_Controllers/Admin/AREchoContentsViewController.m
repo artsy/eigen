@@ -43,8 +43,8 @@ static NSString *CellIdentifier = @"Cell";
 
     self.echo = [[ARAppDelegate sharedInstance] echo];
     self.messages = self.echo.messages.allValues;
-    self.routeKeys = self.echo.routes.allKeys;
-    self.featureKeys = self.echo.features.allKeys;
+    self.routeKeys = [self.echo.routes.allKeys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+    self.featureKeys = [self.echo.features.allKeys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -64,9 +64,9 @@ static NSString *CellIdentifier = @"Cell";
 {
     switch (section) {
         case Routes:
-            return self.echo.routes.count;
+            return self.routeKeys.count;
         case Features:
-            return self.echo.features.count;
+            return self.featureKeys.count;
         case Messages:
             return self.messages.count;
     }
