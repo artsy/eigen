@@ -106,6 +106,8 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
               captureException(e)
             }
             Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
+          } finally {
+            setLoading(false)
           }
         }
       : undefined
