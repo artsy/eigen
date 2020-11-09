@@ -8,15 +8,12 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import moment from "moment"
 import { Flex, Join, Sans, Separator, Text } from "palette"
 import React, { useEffect, useRef } from "react"
-import { Linking, PanResponder, ScrollView, TextInput, View } from "react-native"
+import { Linking, PanResponder, ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 import { OwnerType } from "@artsy/cohesion"
-import { Markdown } from "lib/Components/Markdown"
-import { defaultRules } from "lib/utils/renderMarkdown"
+import { StyledWebView } from "lib/Components/StyledWebView"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { fontFamily } from "palette/platform/fonts/fontFamily"
-import { Output, SingleASTNode, State } from "simple-markdown"
 import { navigate } from "../../navigation/navigate"
 import { PlaceholderBox } from "../../utils/placeholders"
 import { RegisterToBidButtonContainer } from "../Sale/Components/RegisterToBidButton"
@@ -25,28 +22,6 @@ import { saleStatus } from "../Sale/helpers"
 interface Props {
   sale: SaleInfo_sale
   me: SaleInfo_me
-}
-
-const basicRules = defaultRules({
-  modal: true,
-  useNewTextStyles: true,
-})
-
-const markdownRules = {
-  ...basicRules,
-  paragraph: {
-    ...basicRules.paragraph,
-    react: (node: SingleASTNode, output: Output<React.ReactNode>, state: State) => (
-      // We are using <TextInput /> instead of <Text /> to allow the user to hover to select
-      <TextInput
-        editable={false}
-        multiline
-        style={{ fontWeight: "400", fontFamily: fontFamily.sans.regular.normal, fontSize: 15, lineHeight: 22 }}
-      >
-        {output(node.content, state)}
-      </TextInput>
-    ),
-  },
 }
 
 const AuctionSupport = () => {
@@ -130,7 +105,7 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
               </Flex>
             )}
             <View {...(panResponder.current?.panHandlers || {})}>
-              <Markdown rules={markdownRules}>{sale.description || ""}</Markdown>
+              <StyledWebView body={sale.description || ""} />
             </View>
             {renderLiveBiddingOpening()}
           </Flex>
