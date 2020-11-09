@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 446c3f0050d031107564dfd216745399 */
+/* @relayHash 0049b3e34d0d66e84ae049ddf8dc44bd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,7 +33,7 @@ query Fair2CollectionsTestsQuery(
 fragment Fair2Collections_fair on Fair {
   internalID
   slug
-  marketingCollections(size: 4) {
+  marketingCollections(size: 5) {
     slug
     title
     category
@@ -149,7 +149,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "size",
-                "value": 4
+                "value": 5
               }
             ],
             "concreteType": "MarketingCollection",
@@ -239,7 +239,7 @@ return {
               },
               (v3/*: any*/)
             ],
-            "storageKey": "marketingCollections(size:4)"
+            "storageKey": "marketingCollections(size:5)"
           },
           (v3/*: any*/)
         ],
@@ -248,7 +248,7 @@ return {
     ]
   },
   "params": {
-    "id": "446c3f0050d031107564dfd216745399",
+    "id": "0049b3e34d0d66e84ae049ddf8dc44bd",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": {
