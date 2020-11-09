@@ -3,6 +3,7 @@ import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
@@ -54,6 +55,16 @@ const MyCollection: React.FC<{
       </Text>
       {artworks.length === 0 ? (
         <Flex pb="200">
+          <Button
+            onPress={() =>
+              navigate(
+                "/my-collection/artwork/5fa40336c2e78d0010a850c6?artistInternalID=4dd1584de0091e000100207c&medium=painting"
+              )
+            }
+          >
+            {" "}
+            go to artwork{" "}
+          </Button>
           <ZeroState
             subtitle="Add a work from your collection to access price and market insights."
             callToAction={<Button onPress={() => setShowModal(true)}>Add artwork</Button>}

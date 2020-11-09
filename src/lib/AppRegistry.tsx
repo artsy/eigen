@@ -83,8 +83,8 @@ import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection2/MyCollection"
-import { MyCollectionArtwork } from "./Scenes/MyCollection2/Screens/MyCollectionArtwork"
-import { MyCollectionArtworkDetails } from "./Scenes/MyCollection2/Screens/MyCollectionArtworkDetails"
+import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection2/Screens/Artwork/MyCollectionArtwork"
+import { MyCollectionArtworkDetails } from "./Scenes/MyCollection2/Screens/ArtworkDetails/MyCollectionArtworkDetails"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
@@ -433,7 +433,7 @@ export const modules = defineModules({
   MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, { hidesBackButton: true }),
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
-  MyCollectionArtwork: reactModule(MyCollectionArtwork),
+  MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),
   MyCollectionArtworkDetails: reactModule(MyCollectionArtworkDetails),
   AddEditArtwork: reactModule(setupMyCollectionScreen(AddEditArtwork)),
   MyCollectionArtworkDetail: reactModule(setupMyCollectionScreen(MyCollectionArtworkDetail)),

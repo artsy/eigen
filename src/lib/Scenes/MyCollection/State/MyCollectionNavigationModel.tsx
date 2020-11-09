@@ -244,22 +244,12 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   navigateToConsignLearnMore: action((state) => {
     getNavigatorIOS(state.sessionState).push({
       component: ConsignmentsHomeQueryRenderer,
-      passProps: {
-        // TODO: Eventually, when consignments submissions and MyCollection are merged,
-        // these flags can go away
-        isArrivingFromMyCollection: true,
-      },
     })
   }),
 
   navigateToConsignSubmission: action((state) => {
     getNavigatorIOS(state.sessionState).push({
       component: ConsignmentsSubmissionForm,
-      passProps: {
-        // TODO: Eventually, when consignments submissions and MyCollection are merged,
-        // these flags can go away
-        isArrivingFromMyCollection: true,
-      },
     })
   }),
 }

@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
+import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { FormikProvider, useFormik } from "formik"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import {
@@ -41,13 +42,18 @@ export type ArtworkFormModalScreen = {
   AddPhotos: undefined
 }
 
-export const MyCollectionArtworkFormModal: React.FC<{
-  visible: boolean
-  onDismiss: () => void
-  onSuccess: () => void
-  mode: ArtworkFormMode
-  onDelete?: () => void
-}> = (props) => {
+type MyCollectionArtworkFormModalProps = { visible: boolean; onDismiss: () => void; onSuccess: () => void } & (
+  | {
+      mode: "add"
+    }
+  | {
+      mode: "edit"
+      onDelete: () => void
+      artwork: Omit<MyCollectionArtwork_sharedProps, " $refType">
+    }
+)
+
+export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModalProps> = (props) => {
   const initialFormValues = AppStore.useAppState((state) => state.myCollection.artwork.sessionState.formValues)
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -88,20 +94,21 @@ export const MyCollectionArtworkFormModal: React.FC<{
   })
 
   const onDelete =
-    props.onDelete &&
-    (async () => {
-      setLoading(true)
-      try {
-        await myCollectionDeleteArtwork("not an artwork id")
-      } catch (e) {
-        if (__DEV__) {
-          console.error(e)
-        } else {
-          captureException(e)
+    props.mode === "edit" && props.onDelete
+      ? async () => {
+          setLoading(true)
+          try {
+            await myCollectionDeleteArtwork(props.artwork.id)
+          } catch (e) {
+            if (__DEV__) {
+              console.error(e)
+            } else {
+              captureException(e)
+            }
+            Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
+          }
         }
-        Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
-      }
-    })
+      : undefined
 
   return (
     <NavigationContainer>

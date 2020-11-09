@@ -1,13 +1,11 @@
 import { tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
 import { ConsignmentsHome_targetSupply } from "__generated__/ConsignmentsHome_targetSupply.graphql"
 import { ConsignmentsHomeQuery } from "__generated__/ConsignmentsHomeQuery.graphql"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { AppStore } from "lib/store/AppStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Join, Separator } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -21,30 +19,19 @@ import { RecentlySoldFragmentContainer as RecentlySold } from "./Components/Rece
 interface Props {
   targetSupply: ConsignmentsHome_targetSupply
   isLoading?: boolean
-  isArrivingFromMyCollection?: boolean
 }
 
-export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading, isArrivingFromMyCollection }) => {
-  const navRef = useRef<ScrollView>(null)
+export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading }) => {
   const tracking = useTracking()
-  const navActions = AppStore.actions.myCollection.navigation
-
   const handleConsignPress = (tappedConsignArgs: TappedConsignArgs) => {
-    if (isArrivingFromMyCollection) {
-      navActions.navigateToConsignSubmission()
-    } else if (navRef.current) {
-      tracking.trackEvent(tappedConsign(tappedConsignArgs))
-      const route = "/collections/my-collection/artworks/new/submissions/new"
-      SwitchBoard.presentModalViewController(navRef.current, route)
-    }
+    tracking.trackEvent(tappedConsign(tappedConsignArgs))
+    const route = "/collections/my-collection/artworks/new/submissions/new"
+    navigate(route)
   }
 
   return (
     <>
-      <ScrollView ref={navRef}>
-        {!!isArrivingFromMyCollection && (
-          <FancyModalHeader onLeftButtonPress={() => navActions.goBack()} hideBottomDivider />
-        )}
+      <ScrollView>
         <Join separator={<Separator my={3} />}>
           <Header onConsignPress={handleConsignPress} />
           <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
@@ -68,13 +55,9 @@ const ConsignmentsHomeContainer = createFragmentContainer(ConsignmentsHome, {
 
 interface ConsignmentsHomeQueryRendererProps {
   environment?: RelayModernEnvironment
-  isArrivingFromMyCollection?: boolean
 }
 
-export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRendererProps> = ({
-  environment,
-  isArrivingFromMyCollection,
-}) => {
+export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRendererProps> = ({ environment }) => {
   return (
     <QueryRenderer<ConsignmentsHomeQuery>
       environment={environment || defaultEnvironment}
@@ -87,15 +70,8 @@ export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRender
         }
       `}
       render={renderWithPlaceholder({
-        initialProps: { isArrivingFromMyCollection },
         Container: ConsignmentsHomeContainer,
-        renderPlaceholder: () => (
-          <ConsignmentsHome
-            isArrivingFromMyCollection={isArrivingFromMyCollection}
-            isLoading={true}
-            targetSupply={null as any}
-          />
-        ),
+        renderPlaceholder: () => <ConsignmentsHome isLoading={true} targetSupply={null as any} />,
       })}
     />
   )
