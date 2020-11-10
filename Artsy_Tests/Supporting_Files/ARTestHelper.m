@@ -53,7 +53,7 @@
     SDImageCache *imageCache = [[SDImageCache alloc] initWithNamespace:@"Testing" diskCacheDirectory:NSTemporaryDirectory()];
     [[SDWebImageManager sharedManager] setValue:imageCache forKey:@"_imageCache"];
 
-
+    // You might need to run `yarn bundle` or `yarn bundle-for-native-ci` to generate the jsbundle needed for emission
     AREmission *emission = [[AREmission alloc] initWithState:@{} packagerURL:nil];
     [AREmission setSharedInstance:emission];
 
