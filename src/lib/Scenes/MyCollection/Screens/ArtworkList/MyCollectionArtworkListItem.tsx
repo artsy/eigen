@@ -54,14 +54,12 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
     <TouchElement
       onPress={() => {
         if (!!artist) {
-          navigate("/my-collection/artwork/" + slug)
-          // navActions.navigateToArtworkDetail({
-          //   artistInternalID: artist.internalID,
-          //   artworkSlug: slug,
-          //   medium,
-          // })
-          // FIXME: Eventually remove this; an artistID should always be present but
-          // investigating a crash.
+          navigate("/my-collection/artwork/" + slug, {
+            passProps: {
+              medium,
+              artistInternalID: artist.internalID,
+            },
+          })
         } else {
           console.warn("MyCollectionArtworkListItem: Error: Missing artist.artistID")
         }
