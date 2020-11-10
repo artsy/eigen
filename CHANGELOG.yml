@@ -59,6 +59,7 @@ upcoming:
     - Fix photo layout in add/edit artwork page (my collection) - adam
     - Improve buttons in edit artwork page (my collection) - adam
     - Link sort and filter button to scroll position on new show screen - mounir
+    - Fix modal buttons behind keyboard (consignments, inquiry) - brian, steve, david
 
 releases:
   - version: 6.6.7
