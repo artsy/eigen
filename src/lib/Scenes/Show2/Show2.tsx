@@ -94,7 +94,10 @@ export const Show2: React.FC<Show2Props> = ({ show }) => {
           ItemSeparatorComponent={() => <Spacer my={15} />}
           renderItem={({ item: { element } }) => element}
         />
-        <AnimatedArtworkFilterButton isVisible onPress={toggleFilterArtworksModal} />
+        <AnimatedArtworkFilterButton
+          isVisible={Boolean(show.counts?.eligibleArtworks)}
+          onPress={toggleFilterArtworksModal}
+        />
       </ArtworkFilterGlobalStateProvider>
     </ProvideScreenTracking>
   )
