@@ -39,8 +39,6 @@ oss:
 	cp .env.example .env.shared
 
 artsy:
-	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
-	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+SwiftDeveloperExtras.swift
 	touch .env.ci
 	aws s3 cp s3://artsy-citadel/dev/.env.eigen .env.shared
 

@@ -53,17 +53,3 @@ Xcode will prompt you to join a team, then to enable the device for development.
 ### Reading more
 
 Learn about what things are architecturally [here](https://github.com/artsy/eigen/blob/master/docs/overview.md), then move [to the blog.](http://artsy.github.io/blog/categories/eigen/) for more in-depth discussions on Eigen.
-
-## Use the developer springboard function
-
-Edit `Artsy/Classes/View Controllers/ARTopMenuViewController+DeveloperExtras.m` with any custom code that you would like to run on application startup. For example, you may want to load a specific Fair with the following code.
-
-```objc
-- (void)runDeveloperExtras
-{
-    UIViewController *controller = [ARSwitchBoard loadFairWithID:@"the-armory-show-2014"];
-    [self.navigationViewController pushViewController:controller animated:YES];
-}
-```
-
-Run `git update-index --assume-unchanged "Artsy/Classes/View Controllers/ARTopMenuViewController+DeveloperExtras.m"` to ignore changes on this file.
