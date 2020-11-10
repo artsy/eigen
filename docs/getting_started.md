@@ -35,15 +35,9 @@ these screenshots are checked in to the source control. When you change e.g. the
 button, it calculates the diff between two screenshots and makes the test fail if the delta is above a certain
 threshold.
 
-In order to update existing screenshots, replace individual calls to `haveValidSnapshot()` with `recordSnapshot()`,
-or you can change `switchChecksWithRecords` to `true` in `HaveValidSnapshot.swift` (this is a CocoaPod, Xcode will
-warn you about changing a locked file). The location of the file could be looked up by:
+In order to update existing screenshots, run './scripts/record-snapshots-enable.sh`. This will do some small edits in the `Pods/`directory. After that you can run the tests again, using`cmd+u`. They will fail again but they will generate the new snapshots. Now run the second script `./scripts/record-snapshots-disable.sh`, which will revert the changes. Now run the tests again using `cmd+u` and tests should pass.
 
-```
-tree -f Pods | grep HaveValidSnapshot
-```
-
-For updating Objective-C snapshots, you'll need to do the same work but on a file named `EXPMatchers+FBSnapshotTest.m`.
+If you are still having some tests failing, try commenting out the failing line, run the test, and comment in the line again and run again. If that still fails, then try replacing `haveValidSnapshot` with `recordSnapshot`, run test, go back to `haveValidSnapshot`, run test again. Hopefully that would fix all your failing tests.
 
 ### Certificates
 
