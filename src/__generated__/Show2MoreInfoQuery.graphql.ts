@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e462c2b42e7c1db520d3ac534a753d6b */
+/* @relayHash a23318a0b028769f2178dc73a5ec8c6c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -131,6 +131,8 @@ fragment Show2Location_show on Show {
 fragment Show2MoreInfo_show on Show {
   ...Show2Location_show
   ...Show2Hours_show
+  internalID
+  slug
   href
   about: description
   pressRelease(format: MARKDOWN)
@@ -232,17 +234,24 @@ v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "slug",
   "storageKey": null
 },
 v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "href",
+  "name": "id",
   "storageKey": null
 },
 v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "href",
+  "storageKey": null
+},
+v8 = {
   "alias": null,
   "args": null,
   "concreteType": "Location",
@@ -250,7 +259,7 @@ v7 = {
   "name": "location",
   "plural": false,
   "selections": [
-    (v5/*: any*/),
+    (v6/*: any*/),
     (v4/*: any*/),
     {
       "alias": null,
@@ -430,13 +439,7 @@ return {
                 "selections": [
                   (v3/*: any*/),
                   (v4/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "slug",
-                    "storageKey": null
-                  },
+                  (v5/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -445,7 +448,7 @@ return {
                     "name": "profile",
                     "plural": false,
                     "selections": [
-                      (v5/*: any*/),
+                      (v6/*: any*/),
                       (v4/*: any*/),
                       {
                         "alias": null,
@@ -481,7 +484,7 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v6/*: any*/),
+                  (v7/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -518,7 +521,7 @@ return {
                 "kind": "InlineFragment",
                 "selections": [
                   (v3/*: any*/),
-                  (v5/*: any*/)
+                  (v6/*: any*/)
                 ],
                 "type": "ExternalPartner",
                 "abstractKey": null
@@ -526,7 +529,7 @@ return {
               {
                 "kind": "InlineFragment",
                 "selections": [
-                  (v5/*: any*/)
+                  (v6/*: any*/)
                 ],
                 "type": "Node",
                 "abstractKey": "__isNode"
@@ -543,14 +546,16 @@ return {
             "plural": false,
             "selections": [
               (v3/*: any*/),
-              (v7/*: any*/),
-              (v5/*: any*/)
+              (v8/*: any*/),
+              (v6/*: any*/)
             ],
             "storageKey": null
           },
-          (v7/*: any*/),
-          (v5/*: any*/),
+          (v8/*: any*/),
           (v6/*: any*/),
+          (v4/*: any*/),
+          (v5/*: any*/),
+          (v7/*: any*/),
           {
             "alias": "about",
             "args": null,
@@ -577,7 +582,7 @@ return {
     ]
   },
   "params": {
-    "id": "e462c2b42e7c1db520d3ac534a753d6b",
+    "id": "a23318a0b028769f2178dc73a5ec8c6c",
     "metadata": {},
     "name": "Show2MoreInfoQuery",
     "operationKind": "query",

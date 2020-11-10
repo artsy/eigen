@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ed1a6f581100566d78e93c4b0fcd3193 */
+/* @relayHash c5ef3b96621788e80c45e788d5c92cb2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -131,6 +131,8 @@ fragment Show2Location_show on Show {
 fragment Show2MoreInfo_show on Show {
   ...Show2Location_show
   ...Show2Hours_show
+  internalID
+  slug
   href
   about: description
   pressRelease(format: MARKDOWN)
@@ -232,17 +234,24 @@ v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "slug",
   "storageKey": null
 },
 v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "href",
+  "name": "id",
   "storageKey": null
 },
 v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "href",
+  "storageKey": null
+},
+v8 = {
   "alias": null,
   "args": null,
   "concreteType": "Location",
@@ -250,7 +259,7 @@ v7 = {
   "name": "location",
   "plural": false,
   "selections": [
-    (v5/*: any*/),
+    (v6/*: any*/),
     (v4/*: any*/),
     {
       "alias": null,
@@ -375,55 +384,55 @@ v7 = {
   ],
   "storageKey": null
 },
-v8 = {
+v9 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v9 = {
+v10 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v10 = {
+v11 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Location"
 },
-v11 = {
+v12 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "String"
 },
-v12 = {
+v13 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "LatLng"
 },
-v13 = {
+v14 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Float"
 },
-v14 = {
+v15 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "OpeningHoursUnion"
 },
-v15 = {
+v16 = {
   "enumValues": null,
   "nullable": true,
   "plural": true,
   "type": "FormattedDaySchedules"
 },
-v16 = {
+v17 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -484,13 +493,7 @@ return {
                 "selections": [
                   (v3/*: any*/),
                   (v4/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "slug",
-                    "storageKey": null
-                  },
+                  (v5/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -499,7 +502,7 @@ return {
                     "name": "profile",
                     "plural": false,
                     "selections": [
-                      (v5/*: any*/),
+                      (v6/*: any*/),
                       (v4/*: any*/),
                       {
                         "alias": null,
@@ -535,7 +538,7 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v6/*: any*/),
+                  (v7/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -572,7 +575,7 @@ return {
                 "kind": "InlineFragment",
                 "selections": [
                   (v3/*: any*/),
-                  (v5/*: any*/)
+                  (v6/*: any*/)
                 ],
                 "type": "ExternalPartner",
                 "abstractKey": null
@@ -580,7 +583,7 @@ return {
               {
                 "kind": "InlineFragment",
                 "selections": [
-                  (v5/*: any*/)
+                  (v6/*: any*/)
                 ],
                 "type": "Node",
                 "abstractKey": "__isNode"
@@ -597,14 +600,16 @@ return {
             "plural": false,
             "selections": [
               (v3/*: any*/),
-              (v7/*: any*/),
-              (v5/*: any*/)
+              (v8/*: any*/),
+              (v6/*: any*/)
             ],
             "storageKey": null
           },
-          (v7/*: any*/),
-          (v5/*: any*/),
+          (v8/*: any*/),
           (v6/*: any*/),
+          (v4/*: any*/),
+          (v5/*: any*/),
+          (v7/*: any*/),
           {
             "alias": "about",
             "args": null,
@@ -631,7 +636,7 @@ return {
     ]
   },
   "params": {
-    "id": "ed1a6f581100566d78e93c4b0fcd3193",
+    "id": "c5ef3b96621788e80c45e788d5c92cb2",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {
@@ -640,75 +645,76 @@ return {
           "plural": false,
           "type": "Show"
         },
-        "show.about": (v8/*: any*/),
+        "show.about": (v9/*: any*/),
         "show.fair": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Fair"
         },
-        "show.fair.id": (v9/*: any*/),
-        "show.fair.location": (v10/*: any*/),
-        "show.fair.location.__typename": (v11/*: any*/),
-        "show.fair.location.address": (v8/*: any*/),
-        "show.fair.location.address2": (v8/*: any*/),
-        "show.fair.location.city": (v8/*: any*/),
-        "show.fair.location.coordinates": (v12/*: any*/),
-        "show.fair.location.coordinates.lat": (v13/*: any*/),
-        "show.fair.location.coordinates.lng": (v13/*: any*/),
-        "show.fair.location.id": (v9/*: any*/),
-        "show.fair.location.internalID": (v9/*: any*/),
-        "show.fair.location.openingHours": (v14/*: any*/),
-        "show.fair.location.openingHours.__typename": (v11/*: any*/),
-        "show.fair.location.openingHours.schedules": (v15/*: any*/),
-        "show.fair.location.openingHours.schedules.__typename": (v11/*: any*/),
-        "show.fair.location.openingHours.schedules.days": (v8/*: any*/),
-        "show.fair.location.openingHours.schedules.hours": (v8/*: any*/),
-        "show.fair.location.openingHours.text": (v8/*: any*/),
-        "show.fair.location.postalCode": (v8/*: any*/),
-        "show.fair.location.summary": (v8/*: any*/),
-        "show.fair.name": (v8/*: any*/),
-        "show.href": (v8/*: any*/),
-        "show.id": (v9/*: any*/),
-        "show.location": (v10/*: any*/),
-        "show.location.__typename": (v11/*: any*/),
-        "show.location.address": (v8/*: any*/),
-        "show.location.address2": (v8/*: any*/),
-        "show.location.city": (v8/*: any*/),
-        "show.location.coordinates": (v12/*: any*/),
-        "show.location.coordinates.lat": (v13/*: any*/),
-        "show.location.coordinates.lng": (v13/*: any*/),
-        "show.location.id": (v9/*: any*/),
-        "show.location.internalID": (v9/*: any*/),
-        "show.location.openingHours": (v14/*: any*/),
-        "show.location.openingHours.__typename": (v11/*: any*/),
-        "show.location.openingHours.schedules": (v15/*: any*/),
-        "show.location.openingHours.schedules.__typename": (v11/*: any*/),
-        "show.location.openingHours.schedules.days": (v8/*: any*/),
-        "show.location.openingHours.schedules.hours": (v8/*: any*/),
-        "show.location.openingHours.text": (v8/*: any*/),
-        "show.location.postalCode": (v8/*: any*/),
-        "show.location.summary": (v8/*: any*/),
+        "show.fair.id": (v10/*: any*/),
+        "show.fair.location": (v11/*: any*/),
+        "show.fair.location.__typename": (v12/*: any*/),
+        "show.fair.location.address": (v9/*: any*/),
+        "show.fair.location.address2": (v9/*: any*/),
+        "show.fair.location.city": (v9/*: any*/),
+        "show.fair.location.coordinates": (v13/*: any*/),
+        "show.fair.location.coordinates.lat": (v14/*: any*/),
+        "show.fair.location.coordinates.lng": (v14/*: any*/),
+        "show.fair.location.id": (v10/*: any*/),
+        "show.fair.location.internalID": (v10/*: any*/),
+        "show.fair.location.openingHours": (v15/*: any*/),
+        "show.fair.location.openingHours.__typename": (v12/*: any*/),
+        "show.fair.location.openingHours.schedules": (v16/*: any*/),
+        "show.fair.location.openingHours.schedules.__typename": (v12/*: any*/),
+        "show.fair.location.openingHours.schedules.days": (v9/*: any*/),
+        "show.fair.location.openingHours.schedules.hours": (v9/*: any*/),
+        "show.fair.location.openingHours.text": (v9/*: any*/),
+        "show.fair.location.postalCode": (v9/*: any*/),
+        "show.fair.location.summary": (v9/*: any*/),
+        "show.fair.name": (v9/*: any*/),
+        "show.href": (v9/*: any*/),
+        "show.id": (v10/*: any*/),
+        "show.internalID": (v10/*: any*/),
+        "show.location": (v11/*: any*/),
+        "show.location.__typename": (v12/*: any*/),
+        "show.location.address": (v9/*: any*/),
+        "show.location.address2": (v9/*: any*/),
+        "show.location.city": (v9/*: any*/),
+        "show.location.coordinates": (v13/*: any*/),
+        "show.location.coordinates.lat": (v14/*: any*/),
+        "show.location.coordinates.lng": (v14/*: any*/),
+        "show.location.id": (v10/*: any*/),
+        "show.location.internalID": (v10/*: any*/),
+        "show.location.openingHours": (v15/*: any*/),
+        "show.location.openingHours.__typename": (v12/*: any*/),
+        "show.location.openingHours.schedules": (v16/*: any*/),
+        "show.location.openingHours.schedules.__typename": (v12/*: any*/),
+        "show.location.openingHours.schedules.days": (v9/*: any*/),
+        "show.location.openingHours.schedules.hours": (v9/*: any*/),
+        "show.location.openingHours.text": (v9/*: any*/),
+        "show.location.postalCode": (v9/*: any*/),
+        "show.location.summary": (v9/*: any*/),
         "show.partner": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "PartnerTypes"
         },
-        "show.partner.__isNode": (v11/*: any*/),
-        "show.partner.__typename": (v11/*: any*/),
+        "show.partner.__isNode": (v12/*: any*/),
+        "show.partner.__typename": (v12/*: any*/),
         "show.partner.cities": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "String"
         },
-        "show.partner.href": (v8/*: any*/),
-        "show.partner.id": (v9/*: any*/),
-        "show.partner.initials": (v8/*: any*/),
-        "show.partner.internalID": (v9/*: any*/),
-        "show.partner.isDefaultProfilePublic": (v16/*: any*/),
-        "show.partner.name": (v8/*: any*/),
+        "show.partner.href": (v9/*: any*/),
+        "show.partner.id": (v10/*: any*/),
+        "show.partner.initials": (v9/*: any*/),
+        "show.partner.internalID": (v10/*: any*/),
+        "show.partner.isDefaultProfilePublic": (v17/*: any*/),
+        "show.partner.name": (v9/*: any*/),
         "show.partner.profile": {
           "enumValues": null,
           "nullable": true,
@@ -721,13 +727,14 @@ return {
           "plural": false,
           "type": "Image"
         },
-        "show.partner.profile.icon.url": (v8/*: any*/),
-        "show.partner.profile.id": (v9/*: any*/),
-        "show.partner.profile.internalID": (v9/*: any*/),
-        "show.partner.profile.isFollowed": (v16/*: any*/),
-        "show.partner.slug": (v9/*: any*/),
-        "show.partner.type": (v8/*: any*/),
-        "show.pressRelease": (v8/*: any*/)
+        "show.partner.profile.icon.url": (v9/*: any*/),
+        "show.partner.profile.id": (v10/*: any*/),
+        "show.partner.profile.internalID": (v10/*: any*/),
+        "show.partner.profile.isFollowed": (v17/*: any*/),
+        "show.partner.slug": (v10/*: any*/),
+        "show.partner.type": (v9/*: any*/),
+        "show.pressRelease": (v9/*: any*/),
+        "show.slug": (v10/*: any*/)
       }
     },
     "name": "Show2MoreInfoTestsQuery",
