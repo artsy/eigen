@@ -97,7 +97,10 @@ export const Show2: React.FC<Show2Props> = ({ show }) => {
           contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top }}
           renderItem={({ item: { element } }) => element}
         />
-        <AnimatedArtworkFilterButton isVisible onPress={toggleFilterArtworksModal} />
+        <AnimatedArtworkFilterButton
+          isVisible={Boolean(show.counts?.eligibleArtworks)}
+          onPress={toggleFilterArtworksModal}
+        />
       </ArtworkFilterGlobalStateProvider>
     </ProvideScreenTracking>
   )
