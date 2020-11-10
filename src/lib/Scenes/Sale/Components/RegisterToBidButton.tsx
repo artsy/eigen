@@ -1,3 +1,4 @@
+import { ContextModule, ScreenOwnerType, tappedRegisterToBid, TappedRegisterToBidArgs } from "@artsy/cohesion"
 import { RegisterToBidButton_me } from "__generated__/RegisterToBidButton_me.graphql"
 import { RegisterToBidButton_sale } from "__generated__/RegisterToBidButton_sale.graphql"
 import { Box, Button, CheckIcon, Flex, Spacer, Text } from "palette"
@@ -5,15 +6,15 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { navigate } from "../../../navigation/navigate"
-import { saleStatus } from "../helpers"
 
 interface RegisterToBidButtonProps {
   sale: RegisterToBidButton_sale
   me: RegisterToBidButton_me
-  contextType: "sale" | "sale_information"
+  contextType: ScreenOwnerType
+  contextModule: ContextModule
 }
 
-const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({ me, sale, contextType }) => {
+const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({ me, sale, contextType, contextModule }) => {
   const { trackEvent } = useTracking()
 
   if (sale.registrationStatus === null) {
@@ -25,8 +26,9 @@ const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({ me, sale, con
           onPress={() => {
             trackEvent(
               tracks.auctionBidButtonTapped({
-                slug: sale.slug,
-                status: saleStatus(sale.startAt, sale.endAt, sale.registrationEndsAt),
+                contextModule,
+                contextScreenOwnerSlug: sale.slug,
+                contextScreenOwnerId: sale.internalID,
                 contextType,
               })
             )
@@ -89,7 +91,7 @@ export const RegisterToBidButtonContainer = createFragmentContainer(RegisterToBi
       slug
       startAt
       endAt
-      registrationEndsAt
+      internalID
       requireIdentityVerification
       registrationStatus {
         qualifiedForBidding
@@ -108,10 +110,23 @@ export const RegisterToBidButtonContainer = createFragmentContainer(RegisterToBi
 })
 
 const tracks = {
-  auctionBidButtonTapped: ({ slug, status, contextType }: { slug: string; status: string; contextType: string }) => ({
-    action_name: "Tapped Register To Bid",
-    auction_slug: slug,
-    auction_state: status,
-    context_type: contextType,
-  }),
+  auctionBidButtonTapped: ({
+    contextModule,
+    contextScreenOwnerId,
+    contextScreenOwnerSlug,
+    contextType,
+  }: {
+    contextModule: ContextModule
+    contextScreenOwnerId: string
+    contextScreenOwnerSlug: string
+    contextType: ScreenOwnerType
+  }) => {
+    const trackArgs: TappedRegisterToBidArgs = {
+      contextModule,
+      contextScreenOwnerType: contextType,
+      contextScreenOwnerId,
+      contextScreenOwnerSlug,
+    }
+    return tappedRegisterToBid(trackArgs)
+  },
 }

@@ -8,7 +8,7 @@ export type RegisterToBidButton_sale = {
     readonly slug: string;
     readonly startAt: string | null;
     readonly endAt: string | null;
-    readonly registrationEndsAt: string | null;
+    readonly internalID: string;
     readonly requireIdentityVerification: boolean | null;
     readonly registrationStatus: {
         readonly qualifiedForBidding: boolean | null;
@@ -54,7 +54,7 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "registrationEndsAt",
+      "name": "internalID",
       "storageKey": null
     },
     {
@@ -86,5 +86,5 @@ const node: ReaderFragment = {
   "type": "Sale",
   "abstractKey": null
 };
-(node as any).hash = '36f963419a66c0583b0ac0af4ef1677b';
+(node as any).hash = 'a6061cc19d9a172e454f3f219d9c952a';
 export default node;

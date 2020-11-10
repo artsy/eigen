@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4a045f09001010e3d2f4d03cc08539bb */
+/* @relayHash 093b574fc805af0ad7d076c8ad5c8bcf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -49,7 +49,7 @@ fragment RegisterToBidButton_sale on Sale {
   slug
   startAt
   endAt
-  registrationEndsAt
+  internalID
   requireIdentityVerification
   registrationStatus {
     qualifiedForBidding
@@ -64,6 +64,8 @@ fragment SaleInfo_me on Me {
 fragment SaleInfo_sale on Sale {
   ...RegisterToBidButton_sale
   description
+  slug
+  internalID
   endAt
   liveStartAt
   name
@@ -200,7 +202,7 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "registrationEndsAt",
+            "name": "internalID",
             "storageKey": null
           },
           {
@@ -248,6 +250,13 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "name",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "registrationEndsAt",
             "storageKey": null
           },
           {
@@ -337,7 +346,7 @@ return {
     ]
   },
   "params": {
-    "id": "4a045f09001010e3d2f4d03cc08539bb",
+    "id": "093b574fc805af0ad7d076c8ad5c8bcf",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -382,6 +391,7 @@ return {
         "sale.description": (v4/*: any*/),
         "sale.endAt": (v4/*: any*/),
         "sale.id": (v3/*: any*/),
+        "sale.internalID": (v3/*: any*/),
         "sale.isWithBuyersPremium": (v5/*: any*/),
         "sale.liveStartAt": (v4/*: any*/),
         "sale.name": (v4/*: any*/),

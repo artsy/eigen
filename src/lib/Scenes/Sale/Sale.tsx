@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { captureMessage } from "@sentry/react-native"
 import { Sale_me } from "__generated__/Sale_me.graphql"
 import { Sale_sale } from "__generated__/Sale_sale.graphql"
@@ -150,7 +151,12 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
       key: SALE_REGISTER_TO_BID,
       content: (
         <Flex mx="2" mt={2}>
-          <RegisterToBidButtonContainer sale={sale} me={me} contextType="sale" />
+          <RegisterToBidButtonContainer
+            sale={sale}
+            me={me}
+            contextType={OwnerType.sale}
+            contextModule={ContextModule.auctionHome}
+          />
         </Flex>
       ),
     },

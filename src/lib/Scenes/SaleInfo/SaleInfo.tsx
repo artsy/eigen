@@ -11,7 +11,9 @@ import React, { useEffect, useRef } from "react"
 import { Linking, PanResponder, ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { StyledWebView } from "lib/Components/StyledWebView"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { navigate } from "../../navigation/navigate"
 import { PlaceholderBox } from "../../utils/placeholders"
 import { RegisterToBidButtonContainer } from "../Sale/Components/RegisterToBidButton"
@@ -88,30 +90,37 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
   }
 
   return (
-    <ScrollView contentContainerStyle={{ paddingBottom: 30 }}>
-      <Join separator={<Separator my={2} />}>
-        {/*  About Auction */}
-        <Flex px={2} mt={70}>
-          <Sans size="8">About this auction</Sans>
-          <Sans size="5" mt={1} mb={3}>
-            {sale.name}
-          </Sans>
-          {saleStatus(sale.startAt, sale.endAt, sale.registrationEndsAt) === "closed" || (
-            <Flex mb={4}>
-              <RegisterToBidButtonContainer sale={sale} contextType="sale_information" me={me} />
-            </Flex>
-          )}
-          <View {...(panResponder.current?.panHandlers || {})}>
-            <StyledWebView body={sale.description || ""} />
-          </View>
-          {renderLiveBiddingOpening()}
-        </Flex>
+    <ProvideScreenTracking info={tracks.screen(sale.internalID, sale.slug)}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 30 }}>
+        <Join separator={<Separator my={2} />}>
+          {/*  About Auction */}
+          <Flex px={2} mt={70}>
+            <Sans size="8">About this auction</Sans>
+            <Sans size="5" mt={1} mb={3}>
+              {sale.name}
+            </Sans>
+            {saleStatus(sale.startAt, sale.endAt, sale.registrationEndsAt) === "closed" || (
+              <Flex mb={4}>
+                <RegisterToBidButtonContainer
+                  sale={sale}
+                  contextType={OwnerType.saleInformation}
+                  me={me}
+                  contextModule={ContextModule.aboutThisAuction}
+                />
+              </Flex>
+            )}
+            <View {...(panResponder.current?.panHandlers || {})}>
+              <StyledWebView body={sale.description || ""} />
+            </View>
+            {renderLiveBiddingOpening()}
+          </Flex>
 
-        {Boolean(sale.liveStartAt) && <AuctionIsLive />}
-        {!!sale.isWithBuyersPremium && <BuyersPremium sale={sale} />}
-        <AuctionSupport />
-      </Join>
-    </ScrollView>
+          {Boolean(sale.liveStartAt) && <AuctionIsLive />}
+          {!!sale.isWithBuyersPremium && <BuyersPremium sale={sale} />}
+          <AuctionSupport />
+        </Join>
+      </ScrollView>
+    </ProvideScreenTracking>
   )
 }
 
@@ -192,11 +201,24 @@ const SaleInfoPlaceholder = () => (
   </Join>
 )
 
+export const tracks = {
+  screen: (id: string, slug: string) => {
+    return {
+      context_screen: Schema.PageNames.AuctionInfo,
+      context_screen_owner_type: Schema.OwnerEntityTypes.AuctionInfo,
+      context_screen_owner_id: id,
+      context_screen_owner_slug: slug,
+    }
+  },
+}
+
 export const SaleInfoContainer = createFragmentContainer(SaleInfo, {
   sale: graphql`
     fragment SaleInfo_sale on Sale {
       ...RegisterToBidButton_sale
       description
+      slug
+      internalID
       endAt
       liveStartAt
       name
