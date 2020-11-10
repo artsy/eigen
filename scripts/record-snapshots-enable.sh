@@ -3,6 +3,8 @@ SWIFT_FILE=Pods/Nimble-Snapshots/HaveValidSnapshot.swift
 OBJ_H_FILE=Pods/Expecta+Snapshots/EXPMatchers+FBSnapshotTest.h
 OBJ_M_FILE=Pods/Expecta+Snapshots/EXPMatchers+FBSnapshotTest.m
 
+OUR_FILE=Artsy_Tests/Extensions/ARExpectaExtensions.m
+
 TEMP_FILE=.recordingSnapshots
 
 
@@ -23,5 +25,6 @@ perl -pi -e 's/haveValidSnapshotNamed,/oldHaveValidSnapshotNamed,/' $OBJ_M_FILE
 perl -pi -e 's/recordSnapshot,/haveValidSnapshot,/' $OBJ_M_FILE
 perl -pi -e 's/recordSnapshotNamed,/haveValidSnapshotNamed,/' $OBJ_M_FILE
 
+perl -pi -e 's/(expectation\.recordSnapshot)/\/\/$1/g' $OUR_FILE
 
 touch $TEMP_FILE
