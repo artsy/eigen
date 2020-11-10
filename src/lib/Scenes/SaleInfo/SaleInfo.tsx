@@ -11,7 +11,7 @@ import React, { useEffect, useRef } from "react"
 import { Linking, PanResponder, ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
-import { OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { StyledWebView } from "lib/Components/StyledWebView"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { navigate } from "../../navigation/navigate"
@@ -101,7 +101,12 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
             </Sans>
             {saleStatus(sale.startAt, sale.endAt) === "closed" || (
               <Flex mb={4}>
-                <RegisterToBidButtonContainer sale={sale} contextType={OwnerType.saleInformation} me={me} />
+                <RegisterToBidButtonContainer
+                  sale={sale}
+                  contextType={OwnerType.saleInformation}
+                  me={me}
+                  contextModule={ContextModule.aboutThisAuction}
+                />
               </Flex>
             )}
             <View {...(panResponder.current?.panHandlers || {})}>

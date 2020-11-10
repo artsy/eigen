@@ -11,9 +11,10 @@ interface RegisterToBidButtonProps {
   sale: RegisterToBidButton_sale
   me: RegisterToBidButton_me
   contextType: ScreenOwnerType
+  contextModule: ContextModule
 }
 
-const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({ me, sale, contextType }) => {
+const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({ me, sale, contextType, contextModule }) => {
   const { trackEvent } = useTracking()
 
   if (sale.registrationStatus === null) {
@@ -25,6 +26,7 @@ const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({ me, sale, con
           onPress={() => {
             trackEvent(
               tracks.auctionBidButtonTapped({
+                contextModule,
                 contextScreenOwnerSlug: sale.slug,
                 contextScreenOwnerId: sale.id,
                 contextType,
@@ -109,16 +111,18 @@ export const RegisterToBidButtonContainer = createFragmentContainer(RegisterToBi
 
 const tracks = {
   auctionBidButtonTapped: ({
+    contextModule,
     contextScreenOwnerId,
     contextScreenOwnerSlug,
     contextType,
   }: {
+    contextModule: ContextModule
     contextScreenOwnerId: string
     contextScreenOwnerSlug: string
     contextType: ScreenOwnerType
   }) => {
     const trackArgs: TappedRegisterToBidArgs = {
-      contextModule: contextType === "sale" ? ContextModule.auctionHome : ContextModule.auctionsInfo,
+      contextModule,
       contextScreenOwnerType: contextType,
       contextScreenOwnerId,
       contextScreenOwnerSlug,
