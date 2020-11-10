@@ -1,5 +1,6 @@
 import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
+import { EventEmitter } from "events"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
@@ -9,20 +10,38 @@ import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Box, Button, Flex, Join, Separator, Spacer, Text } from "palette"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { View } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { MyCollectionArtworkListItemFragmentContainer } from "../MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
 import { MyCollectionArtworkFormModal } from "./Components/ArtworkFormModal/MyCollectionArtworkFormModal"
 
+const RefreshEvents = new EventEmitter()
+const REFRESH_KEY = "refresh"
+
+export function refreshMyCollection() {
+  RefreshEvents.emit(REFRESH_KEY)
+}
+
 const MyCollection: React.FC<{
   relay: RelayPaginationProp
   me: MyCollection_me
 }> = ({ relay, me }) => {
   const [showModal, setShowModal] = useState(false)
-  const artworks = extractNodes(me?.myCollectionConnection)
+  // TODO: remove compact once https://github.com/artsy/gravity/pull/13633 is merged
+  const artworks = extractNodes(me?.myCollectionConnection).filter(Boolean)
   const { hasMore, isLoading, loadMore } = relay
+
+  useEffect(() => {
+    const refetch = () => {
+      relay.refetchConnection(PAGE_SIZE)
+    }
+    RefreshEvents.addListener(REFRESH_KEY, refetch)
+    return () => {
+      RefreshEvents.removeListener(REFRESH_KEY, refetch)
+    }
+  }, [])
 
   const fetchNextPage = () => {
     if (!hasMore() || isLoading()) {
@@ -64,7 +83,7 @@ const MyCollection: React.FC<{
           data={artworks}
           showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => <Separator />}
-          keyExtractor={(node) => node!.id}
+          keyExtractor={(node) => node.id}
           onScroll={isCloseToBottom(fetchNextPage)}
           renderItem={({ item }) => {
             return <MyCollectionArtworkListItemFragmentContainer artwork={item} />
@@ -129,6 +148,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
         }
       `}
       variables={{}}
+      cacheConfig={{ force: true }}
       render={renderWithPlaceholder({
         Container: MyCollectionContainer,
         renderPlaceholder: LoadingSkeleton,

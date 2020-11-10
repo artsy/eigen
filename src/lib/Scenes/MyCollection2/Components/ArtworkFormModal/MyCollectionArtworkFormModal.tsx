@@ -20,6 +20,7 @@ import { myCollectionAddArtwork } from "../../mutations/myCollectionAddArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
 import { myCollectionEditArtwork } from "../../mutations/myCollectionEditArtwork"
 
+import { refreshMyCollection } from "../../MyCollection"
 import { MyCollectionAdditionalDetailsForm } from "./Screens/MyCollectionArtworkFormAdditionalDetails"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
 import { MyCollectionArtworkForm } from "./Screens/MyCollectionArtworkFormMain"
@@ -81,6 +82,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
             ...cleanArtworkPayload(others),
           })
         }
+        refreshMyCollection()
         props.onSuccess()
         setTimeout(() => {
           AppStore.actions.myCollection.artwork.resetForm()
@@ -110,6 +112,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
                 `Mutation failed: ${result.myCollectionDeleteArtwork?.artworkOrError?.mutationError.message}`
               )
             }
+            refreshMyCollection()
             props.onDelete()
           } catch (e) {
             if (__DEV__) {
