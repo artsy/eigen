@@ -111,14 +111,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-collection/artwork/:artworkSlug", "MyCollectionArtwork"),
     new RouteMatcher("/my-collection/artwork-details/:artworkSlug", "MyCollectionArtworkFullDetails"),
 
-    new RouteMatcher("/my-collection/add-artwork", "AddEditArtwork"),
-    new RouteMatcher("/my-collection/artwork-detail/:artworkID", "MyCollectionArtworkDetail"),
-    new RouteMatcher("/my-collection/artwork-list", "MyCollectionArtworkList"),
-
     // TODO: Follow-up about below route names
     new RouteMatcher("/collections/my-collection/artworks/new/submissions/new", "ConsignmentsSubmissionForm"),
     new RouteMatcher("/consign/submission", "ConsignmentsSubmissionForm"),
-    new RouteMatcher("/collections/my-collection/marketing-landing", "SellTabApp"),
+    new RouteMatcher("/collections/my-collection/marketing-landing", "SalesNotRootTabView"),
 
     new RouteMatcher("/conditions-of-sale", "WebView", () => ({ url: "/conditions-of-sale" })),
     new RouteMatcher("/artwork-classifications", "ArtworkAttributionClassFAQ"),

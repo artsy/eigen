@@ -1,14 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3acb5a54bc244a009c083d151774aa65 */
+/* @relayHash 2988bde57090721fed041e36c91713da */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkListTestsQueryVariables = {};
 export type MyCollectionArtworkListTestsQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkList_me">;
+        readonly " $fragmentRefs": FragmentRefs<"MyCollection_me">;
     } | null;
 };
 export type MyCollectionArtworkListTestsQuery = {
@@ -21,7 +21,7 @@ export type MyCollectionArtworkListTestsQuery = {
 /*
 query MyCollectionArtworkListTestsQuery {
   me {
-    ...MyCollectionArtworkList_me
+    ...MyCollection_me
     id
   }
 }
@@ -52,7 +52,7 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
   width
 }
 
-fragment MyCollectionArtworkList_me on Me {
+fragment MyCollection_me on Me {
   id
   myCollectionConnection(first: 20, sort: CREATED_AT_DESC) {
     pageInfo {
@@ -135,7 +135,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "MyCollectionArtworkList_me"
+            "name": "MyCollection_me"
           }
         ],
         "storageKey": null
@@ -367,7 +367,7 @@ return {
             "args": (v1/*: any*/),
             "filters": [],
             "handle": "connection",
-            "key": "MyCollectionArtworkList_myCollectionConnection",
+            "key": "MyCollection_myCollectionConnection",
             "kind": "LinkedHandle",
             "name": "myCollectionConnection"
           }
@@ -377,7 +377,7 @@ return {
     ]
   },
   "params": {
-    "id": "3acb5a54bc244a009c083d151774aa65",
+    "id": "2988bde57090721fed041e36c91713da",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -464,5 +464,5 @@ return {
   }
 };
 })();
-(node as any).hash = '7e4a91294c292a8fc730d4e466ccec68';
+(node as any).hash = '4f2252479605b68b30547d3853cf7dd1';
 export default node;

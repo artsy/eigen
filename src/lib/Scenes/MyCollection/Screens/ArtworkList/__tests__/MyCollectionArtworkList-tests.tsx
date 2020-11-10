@@ -22,7 +22,7 @@ describe("MyCollectionArtworkList", () => {
       query={graphql`
         query MyCollectionArtworkListTestsQuery @relay_test_operation {
           me {
-            ...MyCollectionArtworkList_me
+            ...MyCollection_me
           }
         }
       `}

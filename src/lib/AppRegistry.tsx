@@ -29,12 +29,7 @@ import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 
 // Consignments / My Collection
 import { Consignments } from "./Scenes/Consignments"
-import { setupMyCollectionScreen } from "./Scenes/MyCollection/Boot"
-import { AddEditArtwork } from "./Scenes/MyCollection/Screens/AddArtwork/AddEditArtwork"
-import { MyCollectionArtworkDetailQueryRenderer as MyCollectionArtworkDetail } from "./Scenes/MyCollection/Screens/ArtworkDetail/MyCollectionArtworkDetail"
-import { MyCollectionArtworkListQueryRenderer as MyCollectionArtworkList } from "./Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkList"
-import { ConsignmentsSubmissionForm } from "./Scenes/MyCollection/Screens/ConsignmentsHome/ConsignmentsSubmissionForm"
-import { SellTabApp } from "./Scenes/MyCollection/SellTabApp"
+import { ConsignmentsSubmissionForm } from "./Scenes/Consignments/ConsignmentsHome/ConsignmentsSubmissionForm"
 
 import { FadeIn } from "./Components/FadeIn"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
@@ -82,9 +77,9 @@ import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
-import { MyCollectionQueryRenderer } from "./Scenes/MyCollection2/MyCollection"
-import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection2/Screens/Artwork/MyCollectionArtwork"
-import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection2/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
+import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
+import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
+import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
@@ -435,9 +430,6 @@ export const modules = defineModules({
   MyCollection: reactModule(MyCollectionQueryRenderer),
   MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),
   MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
-  AddEditArtwork: reactModule(setupMyCollectionScreen(AddEditArtwork)),
-  MyCollectionArtworkDetail: reactModule(setupMyCollectionScreen(MyCollectionArtworkDetail)),
-  MyCollectionArtworkList: reactModule(setupMyCollectionScreen(MyCollectionArtworkList)),
   MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, { hidesBackButton: true }),
@@ -446,9 +438,9 @@ export const modules = defineModules({
   Partner: reactModule(Partner, { fullBleed: true }),
   PartnerLocations: reactModule(PartnerLocations),
   PrivacyRequest: reactModule(PrivacyRequest),
-  Sales: reactModule(setupMyCollectionScreen(Consignments), { isRootViewForTabName: "sell" }),
+  Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }),
+  SalesNotRootTabView: reactModule(Consignments),
   Search: reactModule(SearchWithTracking, { isRootViewForTabName: "search" }),
-  SellTabApp: reactModule(setupMyCollectionScreen(SellTabApp)),
   Show: reactModule(ShowQueryRenderer),
   Show2: reactModule(Show2QueryRenderer, { fullBleed: true }),
   ShowArtists: reactModule(ShowArtists),

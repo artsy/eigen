@@ -19,7 +19,7 @@ describe("MyCollectionArtworkListItem", () => {
       query={graphql`
         query MyCollectionArtworkListItemTestsQuery @relay_test_operation {
           artwork(id: "some-slug") {
-            ...MyCollectionArtworkDetail_sharedProps @relay(mask: false)
+            ...MyCollectionArtwork_sharedProps @relay(mask: false)
           }
         }
       `}

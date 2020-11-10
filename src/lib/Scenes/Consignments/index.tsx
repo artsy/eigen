@@ -1,5 +1,5 @@
-import { SellTabApp } from "lib/Scenes/MyCollection/SellTabApp"
 import React from "react"
+import { ConsignmentsHomeQueryRenderer } from "./ConsignmentsHome/ConsignmentsHome"
 
 /** The metadata for a consigned work */
 export interface ConsignmentMetadata {
@@ -58,5 +58,5 @@ export interface ConsignmentSetup {
 }
 
 export const Consignments: React.FC = () => {
-  return <SellTabApp />
+  return <ConsignmentsHomeQueryRenderer />
 }

@@ -27,7 +27,7 @@ export type MyCollectionArtworkFullDetails_artwork = {
     readonly slug: string;
     readonly title: string | null;
     readonly width: string | null;
-    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkMeta2_artwork">;
+    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkMeta_artwork">;
     readonly " $refType": "MyCollectionArtworkFullDetails_artwork";
 };
 export type MyCollectionArtworkFullDetails_artwork$data = MyCollectionArtworkFullDetails_artwork;
@@ -191,12 +191,12 @@ return {
     {
       "args": null,
       "kind": "FragmentSpread",
-      "name": "MyCollectionArtworkMeta2_artwork"
+      "name": "MyCollectionArtworkMeta_artwork"
     }
   ],
   "type": "Artwork",
   "abstractKey": null
 };
 })();
-(node as any).hash = '34cc0e479e47b3a573f1a459e02364d7';
+(node as any).hash = '39fc7dade46bc975e7699b8279b79b9a';
 export default node;

@@ -17,7 +17,7 @@ function createAppStore() {
   // At dev time but not test time, let's log out each action that is dispatched
   if (__DEV__ && !__TEST__) {
     middleware.push((_api) => (next) => (_action) => {
-      console.log(_action)
+      console.log(`ACTION ${_action.type}`, _action)
       next(_action)
     })
   }

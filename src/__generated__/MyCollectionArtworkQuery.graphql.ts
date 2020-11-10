@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e70216986c84e666df848e1f2320a244 */
+/* @relayHash cbf4b51a869d6369b9a5eab85cd7828e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,7 +34,7 @@ export type MyCollectionArtworkQueryResponse = {
         readonly slug: string;
         readonly title: string | null;
         readonly width: string | null;
-        readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkHeader2_artwork" | "MyCollectionArtworkMeta2_artwork" | "MyCollectionArtworkInsights_artwork">;
+        readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkHeader_artwork" | "MyCollectionArtworkMeta_artwork" | "MyCollectionArtworkInsights_artwork">;
     } | null;
     readonly marketPriceInsights: {
         readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkInsights_marketPriceInsights">;
@@ -77,8 +77,8 @@ query MyCollectionArtworkQuery(
     slug
     title
     width
-    ...MyCollectionArtworkHeader2_artwork
-    ...MyCollectionArtworkMeta2_artwork
+    ...MyCollectionArtworkHeader_artwork
+    ...MyCollectionArtworkMeta_artwork
     ...MyCollectionArtworkInsights_artwork
   }
   marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
@@ -154,7 +154,7 @@ fragment MyCollectionArtworkDemandIndex_marketPriceInsights on MarketPriceInsigh
   demandRank
 }
 
-fragment MyCollectionArtworkHeader2_artwork on Artwork {
+fragment MyCollectionArtworkHeader_artwork on Artwork {
   artistNames
   date
   image {
@@ -175,7 +175,7 @@ fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights 
   ...MyCollectionArtworkArtistMarket_marketPriceInsights
 }
 
-fragment MyCollectionArtworkMeta2_artwork on Artwork {
+fragment MyCollectionArtworkMeta_artwork on Artwork {
   artist {
     internalID
     id
@@ -436,12 +436,12 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "MyCollectionArtworkHeader2_artwork"
+            "name": "MyCollectionArtworkHeader_artwork"
           },
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "MyCollectionArtworkMeta2_artwork"
+            "name": "MyCollectionArtworkMeta_artwork"
           },
           {
             "args": null,
@@ -835,7 +835,7 @@ return {
     ]
   },
   "params": {
-    "id": "e70216986c84e666df848e1f2320a244",
+    "id": "cbf4b51a869d6369b9a5eab85cd7828e",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",
@@ -843,5 +843,5 @@ return {
   }
 };
 })();
-(node as any).hash = '48d985a1abb15c0ae85855c6b14e1b67';
+(node as any).hash = 'ff48730bc0fe2c28a7e2ccd715f72842';
 export default node;
