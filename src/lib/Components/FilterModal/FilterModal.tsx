@@ -145,6 +145,14 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                     changedFiltersParams(appliedFiltersParams, state.selectedFilters)
                   )
                   break
+                case FilterModalMode.SaleArtworks:
+                  trackChangeFilters(
+                    PageNames.Auction,
+                    OwnerEntityTypes.Auction,
+                    appliedFiltersParams,
+                    changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+                  )
+                  break
                 case FilterModalMode.Show:
                   trackChangeFilters(
                     PageNames.Show2Page,
