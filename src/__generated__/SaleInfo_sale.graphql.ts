@@ -6,10 +6,13 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SaleInfo_sale = {
     readonly description: string | null;
+    readonly slug: string;
+    readonly internalID: string;
     readonly endAt: string | null;
     readonly liveStartAt: string | null;
     readonly name: string | null;
     readonly startAt: string | null;
+    readonly registrationEndsAt: string | null;
     readonly timeZone: string | null;
     readonly isWithBuyersPremium: boolean | null;
     readonly buyersPremium: ReadonlyArray<{
@@ -44,6 +47,20 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "slug",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "endAt",
       "storageKey": null
     },
@@ -66,6 +83,13 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "ScalarField",
       "name": "startAt",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "registrationEndsAt",
       "storageKey": null
     },
     {
@@ -116,5 +140,5 @@ const node: ReaderFragment = {
   "type": "Sale",
   "abstractKey": null
 };
-(node as any).hash = '945d2921b4be6b6b0e641004da8003c8';
+(node as any).hash = 'cfdad82aa72dea8ea33c489659e22efa';
 export default node;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d6d48d604e923a9c652494c4ee40e9c5 */
+/* @relayHash 0b3f57dd7b39f6f0542ee5864825379e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -63,6 +63,7 @@ fragment RegisterToBidButton_sale on Sale {
   slug
   startAt
   endAt
+  internalID
   requireIdentityVerification
   registrationStatus {
     qualifiedForBidding
@@ -178,6 +179,7 @@ fragment Sale_sale on Sale {
   endAt
   internalID
   liveStartAt
+  startAt
   registrationEndsAt
   slug
 }
@@ -221,14 +223,14 @@ v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "internalID",
   "storageKey": null
 },
 v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "internalID",
+  "name": "id",
   "storageKey": null
 },
 v6 = {
@@ -401,6 +403,7 @@ return {
             ],
             "storageKey": null
           },
+          (v4/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -423,11 +426,10 @@ return {
                 "name": "qualifiedForBidding",
                 "storageKey": null
               },
-              (v4/*: any*/)
+              (v5/*: any*/)
             ],
             "storageKey": null
           },
-          (v5/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -435,7 +437,7 @@ return {
             "name": "registrationEndsAt",
             "storageKey": null
           },
-          (v4/*: any*/)
+          (v5/*: any*/)
         ],
         "storageKey": null
       },
@@ -487,7 +489,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v4/*: any*/),
+                      (v5/*: any*/),
                       (v6/*: any*/),
                       {
                         "alias": null,
@@ -545,7 +547,7 @@ return {
                                 ],
                                 "storageKey": null
                               },
-                              (v5/*: any*/),
+                              (v4/*: any*/),
                               (v2/*: any*/),
                               {
                                 "alias": null,
@@ -561,7 +563,7 @@ return {
                                 "name": "title",
                                 "storageKey": null
                               },
-                              (v4/*: any*/)
+                              (v5/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -597,18 +599,18 @@ return {
                                 "name": "displayTimelyAt",
                                 "storageKey": null
                               },
-                              (v4/*: any*/)
+                              (v5/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v4/*: any*/)
+                          (v5/*: any*/)
                         ],
                         "storageKey": null
                       }
                     ],
                     "storageKey": null
                   },
-                  (v4/*: any*/)
+                  (v5/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -638,7 +640,7 @@ return {
                     "name": "isWinning",
                     "storageKey": null
                   },
-                  (v4/*: any*/)
+                  (v5/*: any*/)
                 ],
                 "storageKey": null
               },
@@ -660,7 +662,7 @@ return {
                     "selections": (v9/*: any*/),
                     "storageKey": null
                   },
-                  (v4/*: any*/)
+                  (v5/*: any*/)
                 ],
                 "storageKey": null
               },
@@ -716,11 +718,11 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v4/*: any*/)
+                      (v5/*: any*/)
                     ],
                     "storageKey": null
                   },
-                  (v4/*: any*/),
+                  (v5/*: any*/),
                   (v2/*: any*/)
                 ],
                 "storageKey": null
@@ -734,7 +736,7 @@ return {
                 "plural": false,
                 "selections": [
                   (v3/*: any*/),
-                  (v4/*: any*/)
+                  (v5/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -757,21 +759,21 @@ return {
                 "name": "saleArtwork",
                 "plural": false,
                 "selections": [
-                  (v4/*: any*/)
+                  (v5/*: any*/)
                 ],
                 "storageKey": null
               }
             ],
             "storageKey": null
           },
-          (v4/*: any*/)
+          (v5/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "d6d48d604e923a9c652494c4ee40e9c5",
+    "id": "0b3f57dd7b39f6f0542ee5864825379e",
     "metadata": {},
     "name": "SaleAboveTheFoldQuery",
     "operationKind": "query",
