@@ -96,7 +96,7 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
           <Sans size="5" mt={1} mb={3}>
             {sale.name}
           </Sans>
-          {saleStatus(sale.startAt, sale.endAt) === "closed" || (
+          {saleStatus(sale.startAt, sale.endAt, sale.registrationEndsAt) === "closed" || (
             <Flex mb={4}>
               <RegisterToBidButtonContainer sale={sale} contextType="sale_information" me={me} />
             </Flex>
@@ -201,6 +201,7 @@ export const SaleInfoContainer = createFragmentContainer(SaleInfo, {
       liveStartAt
       name
       startAt
+      registrationEndsAt
       timeZone
       isWithBuyersPremium
       buyersPremium {

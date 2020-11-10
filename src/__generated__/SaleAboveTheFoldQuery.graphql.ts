@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d6d48d604e923a9c652494c4ee40e9c5 */
+/* @relayHash dfa7f8ec52ffb022c9c8e326c61063ef */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -63,6 +63,7 @@ fragment RegisterToBidButton_sale on Sale {
   slug
   startAt
   endAt
+  registrationEndsAt
   requireIdentityVerification
   registrationStatus {
     qualifiedForBidding
@@ -178,6 +179,7 @@ fragment Sale_sale on Sale {
   endAt
   internalID
   liveStartAt
+  startAt
   registrationEndsAt
   slug
 }
@@ -405,6 +407,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "registrationEndsAt",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "requireIdentityVerification",
             "storageKey": null
           },
@@ -428,13 +437,6 @@ return {
             "storageKey": null
           },
           (v5/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "registrationEndsAt",
-            "storageKey": null
-          },
           (v4/*: any*/)
         ],
         "storageKey": null
@@ -771,7 +773,7 @@ return {
     ]
   },
   "params": {
-    "id": "d6d48d604e923a9c652494c4ee40e9c5",
+    "id": "dfa7f8ec52ffb022c9c8e326c61063ef",
     "metadata": {},
     "name": "SaleAboveTheFoldQuery",
     "operationKind": "query",

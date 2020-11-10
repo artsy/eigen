@@ -30,6 +30,7 @@ import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
 import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
 import { COVER_IMAGE_HEIGHT, SaleHeaderContainer as SaleHeader } from "./Components/SaleHeader"
 import { SaleLotsListContainer } from "./Components/SaleLotsList"
+import { saleStatus } from "./helpers"
 
 interface Props {
   relay: RelayRefetchProp
@@ -145,16 +146,14 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
       key: SALE_HEADER,
       content: <SaleHeader sale={sale} scrollAnim={scrollAnim} />,
     },
-    (sale.endAt === null || moment().isBefore(sale.endAt)) &&
-      sale.registrationEndsAt !== null &&
-      moment().isBefore(sale.registrationEndsAt) && {
-        key: SALE_REGISTER_TO_BID,
-        content: (
-          <Flex mx="2" mt={2}>
-            <RegisterToBidButtonContainer sale={sale} me={me} contextType="sale" />
-          </Flex>
-        ),
-      },
+    saleStatus(sale.startAt, sale.endAt, sale.registrationEndsAt) !== "closed" && {
+      key: SALE_REGISTER_TO_BID,
+      content: (
+        <Flex mx="2" mt={2}>
+          <RegisterToBidButtonContainer sale={sale} me={me} contextType="sale" />
+        </Flex>
+      ),
+    },
     {
       key: SALE_ACTIVE_BIDS,
       content: <SaleActiveBidsContainer me={me} saleID={sale.internalID} />,
@@ -304,6 +303,7 @@ export const SaleContainer = createRefetchContainer(
         endAt
         internalID
         liveStartAt
+        startAt
         registrationEndsAt
         slug
       }
