@@ -14,19 +14,7 @@ Follow the instructions in [the README](https://github.com/artsy/eigen).
 
 ### Running Tests
 
-We can only run tests in one specific environment, today that is iPhone X with the iOS 12.4 Simulator. This is because we use visual snapshots for UI regressions.
-
-You can install the iOS 12 SDK by opening Xcode's preferences, going to "Components" then downloading "12.4".
-
-<p align="center">
-  <img src="screenshots/install-ios-12.png" />
-</p>
-
-Once it's all downloaded, it will show up in the dropdown in the top left corner.
-
-<p align="center">
-  <img src="screenshots/simulator-window.png" />
-</p>
+We can only run tests in one specific environment, today that is iPhone 12 Pro with the iOS 14.1 Simulator. This is because we use visual snapshots for UI regressions.
 
 #### To run test in Xcode
 
