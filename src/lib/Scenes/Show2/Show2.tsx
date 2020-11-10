@@ -6,6 +6,8 @@ import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/Artwor
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { times } from "lodash"
 import { Box, Flex, Separator, Spacer } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
@@ -92,10 +94,13 @@ export const Show2: React.FC<Show2Props> = ({ show }) => {
           ListHeaderComponent={<Spacer mt={6} pt={2} />}
           ListFooterComponent={<Spacer my={2} />}
           ItemSeparatorComponent={() => <Spacer my={15} />}
-          contentContainerStyle={{ paddingBottom: 40 }}
+          contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top, paddingBottom: 40 }}
           renderItem={({ item: { element } }) => element}
         />
-        <AnimatedArtworkFilterButton isVisible onPress={toggleFilterArtworksModal} />
+        <AnimatedArtworkFilterButton
+          isVisible={Boolean(show.counts?.eligibleArtworks)}
+          onPress={toggleFilterArtworksModal}
+        />
       </ArtworkFilterGlobalStateProvider>
     </ProvideScreenTracking>
   )
@@ -145,21 +150,32 @@ export const Show2QueryRenderer: React.FC<Show2QueryRendererProps> = ({ showID }
 }
 
 export const Show2Placeholder: React.FC = () => (
-  <Flex>
-    <PlaceholderBox height={400} />
-    <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
-      <Flex>
-        <Spacer mb={2} />
-        {/* Show name */}
-        <PlaceholderText width={220} />
-        {/* Show info */}
-        <PlaceholderText width={190} />
-        <PlaceholderText width={190} />
-      </Flex>
+  <Flex px={2} pt={useScreenDimensions().safeAreaInsets.top + 80}>
+    {/* Title */}
+    <PlaceholderText height={25} width={200 + Math.random() * 100} />
+    <PlaceholderText height={25} width={100 + Math.random() * 100} />
+    <Spacer mb={15} />
+    <PlaceholderText width={220} />
+    <Spacer mb={20} />
+    {/* Owner */}
+    <PlaceholderText width={70} />
+    <Spacer mb={15} />
+    {/* Images */}
+    <Flex flexDirection="row" py={2}>
+      {times(3).map((index: number) => (
+        <Flex key={index} marginRight={1}>
+          <PlaceholderBox height={300} width={250} />
+        </Flex>
+      ))}
     </Flex>
-    <Spacer mb={2} />
-    <Separator />
-    <Spacer mb={2} />
+    <Spacer mb={15} />
+    <PlaceholderText width="100%" />
+    <PlaceholderText width="100%" />
+    <PlaceholderText width="100%" />
+    <PlaceholderText width="100%" />
+    <PlaceholderText width="100%" />
+    <Spacer mb={15} />
+
     {/* masonry grid */}
     <PlaceholderGrid />
   </Flex>

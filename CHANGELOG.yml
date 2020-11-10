@@ -59,6 +59,10 @@ upcoming:
     - Fix photo layout in add/edit artwork page (my collection) - adam
     - Improve buttons in edit artwork page (my collection) - adam
     - Fix padding issue on new show screen - mounir
+    - Add feedback to More info about this auction button - mounir
+    - Fix title hidden by back button on Show2 - mounir
+    - Fix modal buttons behind keyboard (consignments, inquiry) - brian, steve, david
+    - Fix visibility of sort/filter control for shows with no eligible artworks - devon
 
 releases:
   - version: 6.6.7
