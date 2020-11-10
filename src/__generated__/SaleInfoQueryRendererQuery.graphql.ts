@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 56fbfc422572d2dfb672ff442468355c */
+/* @relayHash bf7d00792c75277643b0b2ab344160ba */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -49,6 +49,7 @@ fragment RegisterToBidButton_sale on Sale {
   slug
   startAt
   endAt
+  registrationEndsAt
   requireIdentityVerification
   registrationStatus {
     qualifiedForBidding
@@ -67,6 +68,7 @@ fragment SaleInfo_sale on Sale {
   liveStartAt
   name
   startAt
+  registrationEndsAt
   timeZone
   isWithBuyersPremium
   buyersPremium {
@@ -174,6 +176,13 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "endAt",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "registrationEndsAt",
             "storageKey": null
           },
           {
@@ -310,7 +319,7 @@ return {
     ]
   },
   "params": {
-    "id": "56fbfc422572d2dfb672ff442468355c",
+    "id": "bf7d00792c75277643b0b2ab344160ba",
     "metadata": {},
     "name": "SaleInfoQueryRendererQuery",
     "operationKind": "query",
