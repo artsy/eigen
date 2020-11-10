@@ -59,6 +59,7 @@ upcoming:
     - Fix photo layout in add/edit artwork page (my collection) - adam
     - Improve buttons in edit artwork page (my collection) - adam
     - Add feedback to More info about this auction button - mounir
+    - Fix modal buttons behind keyboard (consignments, inquiry) - brian, steve, david
 
 releases:
   - version: 6.6.7

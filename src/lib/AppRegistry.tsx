@@ -391,7 +391,10 @@ export const modules = defineModules({
   CitySavedList: reactModule(CitySavedListQueryRenderer),
   CitySectionList: reactModule(CitySectionListQueryRenderer),
   Collection: reactModule(CollectionQueryRenderer, { fullBleed: true }),
-  ConsignmentsSubmissionForm: reactModule(ConsignmentsSubmissionForm, { alwaysPresentModally: true }),
+  ConsignmentsSubmissionForm: reactModule(ConsignmentsSubmissionForm, {
+    alwaysPresentModally: true,
+    hasOwnModalCloseButton: true,
+  }),
   Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
   Fair: reactModule(FairQueryRenderer, { fullBleed: true }),
   Fair2: reactModule(Fair2QueryRenderer, { fullBleed: true }),
@@ -410,7 +413,7 @@ export const modules = defineModules({
   Gene: reactModule(Gene),
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
   Inbox: reactModule(Inbox, { isRootViewForTabName: "inbox" }),
-  Inquiry: reactModule(Inquiry, { alwaysPresentModally: true }),
+  Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   LiveAuction: nativeModule({
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
