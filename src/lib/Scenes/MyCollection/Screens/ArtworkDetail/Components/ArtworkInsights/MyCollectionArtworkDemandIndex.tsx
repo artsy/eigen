@@ -80,11 +80,16 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
     width = 100
   }
 
+  let adjustedDemandRank = demandRank.toFixed(1)
+  if (adjustedDemandRank === "10.0") {
+    adjustedDemandRank = "9.9"
+  }
+
   return (
     <>
       <Box>
         <Text variant="largeTitle" color="purple100">
-          {Math.floor(demandRank * 10) / 10}
+          {adjustedDemandRank}
         </Text>
       </Box>
       <ProgressBar width={width} />
