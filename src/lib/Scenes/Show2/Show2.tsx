@@ -7,7 +7,7 @@ import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/plac
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Box, Flex, Separator, Spacer } from "palette"
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { Show2ArtworksWithNavigation as Show2Artworks } from "./Components/Show2Artworks"
@@ -31,8 +31,29 @@ interface Show2Props {
   show: Show2_show
 }
 
+export interface ViewableItems {
+  viewableItems?: ViewToken[]
+}
+
+interface ViewToken {
+  item?: Section
+  key?: string
+  index?: number | null
+  isViewable?: boolean
+  section?: any
+}
+
 export const Show2: React.FC<Show2Props> = ({ show }) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const [isFilterButtonVisible, setisFilterButtonVisible] = useState(false)
+
+  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
+  const viewableItemsChangedRef = useRef(({ viewableItems }: ViewableItems) => {
+    const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
+      return viewableItem?.item?.key === "artworks"
+    })
+    setisFilterButtonVisible(artworksItem?.isViewable ?? false)
+  })
 
   const toggleFilterArtworksModal = () => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
@@ -60,9 +81,14 @@ export const Show2: React.FC<Show2Props> = ({ show }) => {
       ),
     },
 
-    ...(Boolean(show.counts?.eligibleArtworks)
-      ? [{ key: "artworks", element: <Show2Artworks {...artworkProps} /> }]
-      : [{ key: "artworks-empty-state", element: <Show2ArtworksEmptyStateFragmentContainer show={show} mx={2} /> }]),
+    {
+      key: "artworks",
+      element: Boolean(show.counts?.eligibleArtworks) ? (
+        <Show2Artworks {...artworkProps} />
+      ) : (
+        <Show2ArtworksEmptyStateFragmentContainer show={show} mx={2} />
+      ),
+    },
 
     {
       key: "separator-bottom",
@@ -89,12 +115,14 @@ export const Show2: React.FC<Show2Props> = ({ show }) => {
         <FlatList<Section>
           data={sections}
           keyExtractor={({ key }) => key}
+          viewabilityConfig={viewConfigRef.current}
+          onViewableItemsChanged={viewableItemsChangedRef.current}
           ListHeaderComponent={<Spacer mt={6} pt={2} />}
           ListFooterComponent={<Spacer my={2} />}
           ItemSeparatorComponent={() => <Spacer my={15} />}
           renderItem={({ item: { element } }) => element}
         />
-        <AnimatedArtworkFilterButton isVisible onPress={toggleFilterArtworksModal} />
+        <AnimatedArtworkFilterButton isVisible={isFilterButtonVisible} onPress={toggleFilterArtworksModal} />
       </ArtworkFilterGlobalStateProvider>
     </ProvideScreenTracking>
   )
