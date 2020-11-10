@@ -8,6 +8,7 @@ export type Sale_sale = {
     readonly endAt: string | null;
     readonly internalID: string;
     readonly liveStartAt: string | null;
+    readonly startAt: string | null;
     readonly registrationEndsAt: string | null;
     readonly slug: string;
     readonly " $fragmentRefs": FragmentRefs<"SaleHeader_sale" | "RegisterToBidButton_sale">;
@@ -52,6 +53,13 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "startAt",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "registrationEndsAt",
       "storageKey": null
     },
@@ -76,5 +84,5 @@ const node: ReaderFragment = {
   "type": "Sale",
   "abstractKey": null
 };
-(node as any).hash = '79fd5c387af68b369d10fc458ae5f8ae';
+(node as any).hash = 'f143025f2fb4cd547c1dbf266edc8f8b';
 export default node;

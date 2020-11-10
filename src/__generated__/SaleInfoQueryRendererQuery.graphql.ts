@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash db8c964c18bacf3a070839d1cd41aaca */
+/* @relayHash 545e763cc8095d32e90a2241d3de783d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -49,7 +49,7 @@ fragment RegisterToBidButton_sale on Sale {
   slug
   startAt
   endAt
-  id
+  internalID
   requireIdentityVerification
   registrationStatus {
     qualifiedForBidding
@@ -70,6 +70,7 @@ fragment SaleInfo_sale on Sale {
   liveStartAt
   name
   startAt
+  registrationEndsAt
   timeZone
   isWithBuyersPremium
   buyersPremium {
@@ -179,7 +180,13 @@ return {
             "name": "endAt",
             "storageKey": null
           },
-          (v2/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "internalID",
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": null,
@@ -217,13 +224,6 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "internalID",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
             "name": "liveStartAt",
             "storageKey": null
           },
@@ -232,6 +232,13 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "name",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "registrationEndsAt",
             "storageKey": null
           },
           {
@@ -272,7 +279,8 @@ return {
               }
             ],
             "storageKey": null
-          }
+          },
+          (v2/*: any*/)
         ],
         "storageKey": null
       },
@@ -320,7 +328,7 @@ return {
     ]
   },
   "params": {
-    "id": "db8c964c18bacf3a070839d1cd41aaca",
+    "id": "545e763cc8095d32e90a2241d3de783d",
     "metadata": {},
     "name": "SaleInfoQueryRendererQuery",
     "operationKind": "query",

@@ -4,7 +4,7 @@ import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
-import { InquiryOptions, InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
+import { InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Box, color, Flex, Separator, space, Text } from "palette"
 import React, { useContext, useState } from "react"
 import { LayoutAnimation, TouchableOpacity } from "react-native"
@@ -25,100 +25,113 @@ interface InquiryModalProps {
   relay: RelayProp
 }
 
+const InquiryQuestionOption: React.FC<{
+  id: string
+  question: string
+  setShippingModalVisibility?: (isVisible: boolean) => void
+}> = ({ id, question, setShippingModalVisibility }) => {
+  const { state, dispatch } = useContext(ArtworkInquiryContext)
+  const isShipping = id === InquiryQuestionIDs.Shipping
+
+  const questionSelected = Boolean(
+    state.inquiryQuestions.find((iq) => {
+      return iq.questionID === id
+    })
+  )
+
+  const maybeRegisterAnimation = () => {
+    if (isShipping) {
+      LayoutAnimation.configureNext({
+        ...LayoutAnimation.Presets.linear,
+        duration: 200,
+      })
+    }
+  }
+
+  React.useLayoutEffect(maybeRegisterAnimation, [questionSelected])
+
+  return (
+    <React.Fragment>
+      <InquiryField>
+        <Flex flexDirection="row" justifyContent="space-between">
+          <Flex flexDirection="row">
+            <Checkbox
+              data-test-id={`checkbox-${id}`}
+              checked={questionSelected}
+              onPress={() => {
+                dispatch({
+                  type: "selectInquiryQuestion",
+                  payload: {
+                    questionID: id,
+                    details: isShipping ? state.shippingLocation : null,
+                    isChecked: !questionSelected,
+                  },
+                })
+              }}
+            />
+            <Text variant="text">{question}</Text>
+          </Flex>
+        </Flex>
+
+        {!!isShipping && !!questionSelected && (
+          <>
+            <Separator my={2} />
+            <TouchableOpacity
+              data-test-id="toggle-shipping-modal"
+              onPress={() => {
+                if (typeof setShippingModalVisibility === "function") {
+                  setShippingModalVisibility(true)
+                }
+              }}
+            >
+              <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+                {!state.shippingLocation ? (
+                  <>
+                    <Text variant="text" color="black60">
+                      Add your location
+                    </Text>
+                    <Box mt={0.5}>
+                      <ChevronIcon color="black60" />
+                    </Box>
+                  </>
+                ) : (
+                  <>
+                    <Text variant="text" color="black100" style={{ width: "70%" }}>
+                      {state.shippingLocation}
+                    </Text>
+                    <Text variant="text" color="purple100">
+                      Edit
+                    </Text>
+                  </>
+                )}
+              </Flex>
+            </TouchableOpacity>
+          </>
+        )}
+      </InquiryField>
+    </React.Fragment>
+  )
+}
+
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props }) => {
   const { toggleVisibility, modalIsVisible, relay } = props
   const questions = artwork?.inquiryQuestions!
   const { state, dispatch } = useContext(ArtworkInquiryContext)
-  const [locationExpanded, setLocationExpanded] = useState(false)
-  const toggleLocationExpanded = () => {
-    LayoutAnimation.configureNext({
-      ...LayoutAnimation.Presets.linear,
-      duration: 200,
-    })
-    setLocationExpanded(!locationExpanded)
-  }
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
+
   const selectShippingLocation = (l: string) => dispatch({ type: "selectShippingLocation", payload: l })
-  const renderInquiryQuestion = (id: string, inquiryQuestion: string): JSX.Element => {
-    // Shipping requires special logic to accomodate dropdown and shipping modal
-    const isShipping = id === InquiryQuestionIDs.Shipping
 
-    return (
-      <React.Fragment key={inquiryQuestion}>
-        <InquiryField>
-          <Flex flexDirection="row" justifyContent="space-between">
-            <Flex flexDirection="row">
-              <Checkbox
-                data-test-id={`checkbox-${inquiryQuestion}`}
-                checked={
-                  state.inquiryType === InquiryOptions.RequestPrice && id === InquiryQuestionIDs.PriceAndAvailability
-                }
-                onPress={() => {
-                  if (isShipping) {
-                    toggleLocationExpanded()
-                  }
-
-                  const shouldBeChecked: boolean = !state.inquiryQuestions.find((question) => {
-                    return question.questionID === id
-                  })
-
-                  dispatch({
-                    type: "selectInquiryQuestion",
-                    payload: {
-                      questionID: id,
-                      details: isShipping ? state.shippingLocation : null,
-                      isChecked: shouldBeChecked,
-                    },
-                  })
-                }}
-              />
-              <Text variant="text">{inquiryQuestion}</Text>
-            </Flex>
-          </Flex>
-
-          {!!isShipping && !!locationExpanded && (
-            <>
-              <Separator my={2} />
-              <TouchableOpacity
-                data-test-id="toggle-shipping-modal"
-                onPress={() => {
-                  setShippingModalVisibility(true)
-                }}
-              >
-                <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                  {!state.shippingLocation ? (
-                    <>
-                      <Text variant="text" color="black60">
-                        Add your location
-                      </Text>
-                      <Box mt={0.5}>
-                        <ChevronIcon color="black60" />
-                      </Box>
-                    </>
-                  ) : (
-                    <>
-                      <Text variant="text" color="black100" style={{ width: "70%" }}>
-                        {state.shippingLocation}
-                      </Text>
-                      <Text variant="text" color="purple100">
-                        Edit
-                      </Text>
-                    </>
-                  )}
-                </Flex>
-              </TouchableOpacity>
-            </>
-          )}
-        </InquiryField>
-      </React.Fragment>
-    )
+  const resetAndExit = () => {
+    dispatch({ type: "resetForm", payload: null })
+    toggleVisibility()
   }
-
   return (
-    <FancyModal visible={modalIsVisible} onBackgroundPressed={() => toggleVisibility()}>
+    <FancyModal visible={modalIsVisible} onBackgroundPressed={() => resetAndExit()}>
       <FancyModalHeader
         leftButtonText="Cancel"
-        onLeftButtonPress={() => toggleVisibility()}
+        onLeftButtonPress={() => {
+          resetAndExit()
+        }}
         rightButtonText="Send"
         rightButtonDisabled={state.inquiryQuestions.length === 0}
         onRightButtonPress={() => {
@@ -137,7 +150,16 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
               return false
             }
             const { internalID: id, question } = inquiryQuestion
-            return renderInquiryQuestion(id, question)
+            return id === InquiryQuestionIDs.Shipping ? (
+              <InquiryQuestionOption
+                key={id}
+                id={id}
+                question={question}
+                setShippingModalVisibility={setShippingModalVisibility}
+              />
+            ) : (
+              <InquiryQuestionOption key={id} id={id} question={question} />
+            )
           })
         }
       </Box>

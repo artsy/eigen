@@ -28,7 +28,7 @@ const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({ me, sale, con
               tracks.auctionBidButtonTapped({
                 contextModule,
                 contextScreenOwnerSlug: sale.slug,
-                contextScreenOwnerId: sale.id,
+                contextScreenOwnerId: sale.internalID,
                 contextType,
               })
             )
@@ -91,7 +91,7 @@ export const RegisterToBidButtonContainer = createFragmentContainer(RegisterToBi
       slug
       startAt
       endAt
-      id
+      internalID
       requireIdentityVerification
       registrationStatus {
         qualifiedForBidding

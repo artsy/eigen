@@ -12,6 +12,7 @@ export type SaleInfo_sale = {
     readonly liveStartAt: string | null;
     readonly name: string | null;
     readonly startAt: string | null;
+    readonly registrationEndsAt: string | null;
     readonly timeZone: string | null;
     readonly isWithBuyersPremium: boolean | null;
     readonly buyersPremium: ReadonlyArray<{
@@ -88,6 +89,13 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "registrationEndsAt",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "timeZone",
       "storageKey": null
     },
@@ -132,5 +140,5 @@ const node: ReaderFragment = {
   "type": "Sale",
   "abstractKey": null
 };
-(node as any).hash = '2eb27a9fb77e50684a3ec26dc69e3dc2';
+(node as any).hash = 'cfdad82aa72dea8ea33c489659e22efa';
 export default node;

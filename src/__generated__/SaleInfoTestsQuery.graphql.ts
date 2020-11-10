@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash af25530eb7fe1d3a6d1d4e73fd458893 */
+/* @relayHash 093b574fc805af0ad7d076c8ad5c8bcf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -49,7 +49,7 @@ fragment RegisterToBidButton_sale on Sale {
   slug
   startAt
   endAt
-  id
+  internalID
   requireIdentityVerification
   registrationStatus {
     qualifiedForBidding
@@ -70,6 +70,7 @@ fragment SaleInfo_sale on Sale {
   liveStartAt
   name
   startAt
+  registrationEndsAt
   timeZone
   isWithBuyersPremium
   buyersPremium {
@@ -197,7 +198,13 @@ return {
             "name": "endAt",
             "storageKey": null
           },
-          (v2/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "internalID",
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": null,
@@ -235,13 +242,6 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "internalID",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
             "name": "liveStartAt",
             "storageKey": null
           },
@@ -250,6 +250,13 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "name",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "registrationEndsAt",
             "storageKey": null
           },
           {
@@ -290,7 +297,8 @@ return {
               }
             ],
             "storageKey": null
-          }
+          },
+          (v2/*: any*/)
         ],
         "storageKey": null
       },
@@ -338,7 +346,7 @@ return {
     ]
   },
   "params": {
-    "id": "af25530eb7fe1d3a6d1d4e73fd458893",
+    "id": "093b574fc805af0ad7d076c8ad5c8bcf",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -387,6 +395,7 @@ return {
         "sale.isWithBuyersPremium": (v5/*: any*/),
         "sale.liveStartAt": (v4/*: any*/),
         "sale.name": (v4/*: any*/),
+        "sale.registrationEndsAt": (v4/*: any*/),
         "sale.registrationStatus": {
           "enumValues": null,
           "nullable": true,
