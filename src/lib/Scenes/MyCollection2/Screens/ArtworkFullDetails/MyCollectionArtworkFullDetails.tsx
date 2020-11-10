@@ -5,8 +5,9 @@ import { popParentViewController } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AppStore } from "lib/store/AppStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Flex, Spacer, Text } from "palette"
+import { Flex, Spacer } from "palette"
 import React, { useState } from "react"
+import { ActivityIndicator } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { MyCollectionArtworkFormModal } from "../../Components/ArtworkFormModal/MyCollectionArtworkFormModal"
 import { MyCollectionArtworkMetaFragmentContainer } from "../Artwork/Components/MyCollectionArtworkMeta2"
@@ -77,7 +78,14 @@ export const MyCollectionArtworkFullDetailsQueryRenderer: React.FC<{
       }}
       render={renderWithPlaceholder({
         Container: MyCollectionArtworkFullDetailsContainer,
-        renderPlaceholder: () => <Text mt="6">TODO</Text>,
+        renderPlaceholder: () => (
+          <Flex flexGrow={1}>
+            <FancyModalHeader>Artwork Details</FancyModalHeader>
+            <Flex alignItems="center" justifyContent="center" flexGrow={1}>
+              <ActivityIndicator />
+            </Flex>
+          </Flex>
+        ),
       })}
     />
   )
