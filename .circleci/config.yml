@@ -150,12 +150,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v8-app_build-{{ checksum ".manifests/app_build" }}
+            - v9-app_build-{{ checksum ".manifests/app_build" }}
       - run:
           name: Build App
           command: ls derived_data || make ci
       - save_cache:
-          key: v8-app_build-{{ checksum ".manifests/app_build" }}
+          key: v9-app_build-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
