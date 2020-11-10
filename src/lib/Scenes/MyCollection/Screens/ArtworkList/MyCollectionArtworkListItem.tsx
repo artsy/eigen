@@ -66,7 +66,8 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
       }}
     >
       <Flex
-        m={1}
+        my={1}
+        mx={2}
         flexDirection="row"
         alignItems="center"
         justifyContent="space-between"
