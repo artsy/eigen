@@ -92,6 +92,7 @@ export const Show2: React.FC<Show2Props> = ({ show }) => {
           ListHeaderComponent={<Spacer mt={6} pt={2} />}
           ListFooterComponent={<Spacer my={2} />}
           ItemSeparatorComponent={() => <Spacer my={15} />}
+          contentContainerStyle={{ paddingBottom: 40 }}
           renderItem={({ item: { element } }) => element}
         />
         <AnimatedArtworkFilterButton isVisible onPress={toggleFilterArtworksModal} />
