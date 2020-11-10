@@ -1,4 +1,5 @@
 import { Show2TestsQuery } from "__generated__/Show2TestsQuery.graphql"
+import { AnimatedArtworkFilterButton } from "lib/Components/FilterModal"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -92,5 +93,17 @@ describe("Show2", () => {
     const wrapper = getWrapper()
 
     expect(wrapper.root.findAllByType(Show2ContextCard)).toHaveLength(1)
+  })
+
+  it("does not render the sort/filter control if there are no eligible artworks", () => {
+    const wrapper = getWrapper({
+      Show: () => ({
+        counts: {
+          eligibleArtworks: 0,
+        },
+      }),
+    })
+
+    expect(wrapper.root.findByType(AnimatedArtworkFilterButton).props.isVisible).toEqual(false)
   })
 })
