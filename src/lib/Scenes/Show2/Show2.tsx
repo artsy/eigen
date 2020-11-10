@@ -6,6 +6,7 @@ import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/Artwor
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Flex, Separator, Spacer } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
@@ -92,6 +93,7 @@ export const Show2: React.FC<Show2Props> = ({ show }) => {
           ListHeaderComponent={<Spacer mt={6} pt={2} />}
           ListFooterComponent={<Spacer my={2} />}
           ItemSeparatorComponent={() => <Spacer my={15} />}
+          contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top }}
           renderItem={({ item: { element } }) => element}
         />
         <AnimatedArtworkFilterButton isVisible onPress={toggleFilterArtworksModal} />
