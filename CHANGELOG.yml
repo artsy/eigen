@@ -6,6 +6,7 @@ upcoming:
     - Add tracking to new auction screen - mounir
     - Fix echo not being checked for updated when _OSS_ flag is missing - pavlos
     - Move bottom tabs navigator to TS - david
+    - Pass correct arguments to auction artwork grid tracking - pepopowitz
   user_facing:
     - Move My Collection into My Profile - adam
     - Switch to live auction from new sale page - barry, brian

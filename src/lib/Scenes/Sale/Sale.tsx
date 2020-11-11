@@ -173,7 +173,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
       content: below ? (
         <SaleLotsListContainer
           saleArtworksConnection={below}
-          saleID={sale.slug}
+          saleID={sale.internalID}
           saleSlug={sale.slug}
           scrollToTop={scrollToTop}
         />
