@@ -11,7 +11,7 @@ import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/util
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Box, Button, Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
-import { View } from "react-native"
+import { RefreshControl, View } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { MyCollectionArtworkFormModal } from "./Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
@@ -32,10 +32,17 @@ const MyCollection: React.FC<{
   // TODO: remove compact once https://github.com/artsy/gravity/pull/13633 is merged
   const artworks = extractNodes(me?.myCollectionConnection).filter(Boolean)
   const { hasMore, isLoading, loadMore } = relay
+  const [isRefrehsing, setIsRefreshing] = useState(false)
 
   useEffect(() => {
     const refetch = () => {
-      relay.refetchConnection(PAGE_SIZE)
+      setIsRefreshing(true)
+      relay.refetchConnection(PAGE_SIZE, (err) => {
+        setIsRefreshing(false)
+        if (err && __DEV__) {
+          console.error(err)
+        }
+      })
     }
     RefreshEvents.addListener(REFRESH_KEY, refetch)
     return () => {
@@ -80,6 +87,14 @@ const MyCollection: React.FC<{
         </Flex>
       ) : (
         <FlatList
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefrehsing}
+              onRefresh={() => {
+                refreshMyCollection()
+              }}
+            />
+          }
           data={artworks}
           showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => <Separator />}
