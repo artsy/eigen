@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2988bde57090721fed041e36c91713da */
+/* @relayHash 35154aec1f4c1d0ab5e224ef7421d082 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,25 +31,13 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
     internalID
     id
   }
-  artistNames
-  category
-  costMinor
-  costCurrencyCode
-  date
-  depth
-  editionSize
-  editionNumber
-  height
-  id
   image {
     url
   }
-  internalID
+  artistNames
   medium
-  metric
   slug
   title
-  width
 }
 
 fragment MyCollection_me on Me {
@@ -93,25 +81,18 @@ v1 = [
   }
 ],
 v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-},
-v3 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v4 = {
+v3 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "String"
 },
-v5 = {
+v4 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -224,72 +205,15 @@ return {
                         "name": "artist",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "internalID",
+                            "storageKey": null
+                          },
                           (v0/*: any*/)
                         ],
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "artistNames",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "category",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "costMinor",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "costCurrencyCode",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "date",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "depth",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "editionSize",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "editionNumber",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "height",
                         "storageKey": null
                       },
                       {
@@ -310,7 +234,13 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v2/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "artistNames",
+                        "storageKey": null
+                      },
                       {
                         "alias": null,
                         "args": null,
@@ -322,21 +252,7 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "metric",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
                         "name": "title",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "width",
                         "storageKey": null
                       },
                       {
@@ -377,7 +293,7 @@ return {
     ]
   },
   "params": {
-    "id": "2988bde57090721fed041e36c91713da",
+    "id": "35154aec1f4c1d0ab5e224ef7421d082",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -386,7 +302,7 @@ return {
           "plural": false,
           "type": "Me"
         },
-        "me.id": (v3/*: any*/),
+        "me.id": (v2/*: any*/),
         "me.myCollectionConnection": {
           "enumValues": null,
           "nullable": true,
@@ -399,57 +315,41 @@ return {
           "plural": true,
           "type": "MyCollectionEdge"
         },
-        "me.myCollectionConnection.edges.cursor": (v4/*: any*/),
+        "me.myCollectionConnection.edges.cursor": (v3/*: any*/),
         "me.myCollectionConnection.edges.node": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Artwork"
         },
-        "me.myCollectionConnection.edges.node.__typename": (v4/*: any*/),
+        "me.myCollectionConnection.edges.node.__typename": (v3/*: any*/),
         "me.myCollectionConnection.edges.node.artist": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Artist"
         },
-        "me.myCollectionConnection.edges.node.artist.id": (v3/*: any*/),
-        "me.myCollectionConnection.edges.node.artist.internalID": (v3/*: any*/),
-        "me.myCollectionConnection.edges.node.artistNames": (v5/*: any*/),
-        "me.myCollectionConnection.edges.node.category": (v5/*: any*/),
-        "me.myCollectionConnection.edges.node.costCurrencyCode": (v5/*: any*/),
-        "me.myCollectionConnection.edges.node.costMinor": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Int"
-        },
-        "me.myCollectionConnection.edges.node.date": (v5/*: any*/),
-        "me.myCollectionConnection.edges.node.depth": (v5/*: any*/),
-        "me.myCollectionConnection.edges.node.editionNumber": (v5/*: any*/),
-        "me.myCollectionConnection.edges.node.editionSize": (v5/*: any*/),
-        "me.myCollectionConnection.edges.node.height": (v5/*: any*/),
-        "me.myCollectionConnection.edges.node.id": (v3/*: any*/),
+        "me.myCollectionConnection.edges.node.artist.id": (v2/*: any*/),
+        "me.myCollectionConnection.edges.node.artist.internalID": (v2/*: any*/),
+        "me.myCollectionConnection.edges.node.artistNames": (v4/*: any*/),
+        "me.myCollectionConnection.edges.node.id": (v2/*: any*/),
         "me.myCollectionConnection.edges.node.image": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Image"
         },
-        "me.myCollectionConnection.edges.node.image.url": (v5/*: any*/),
-        "me.myCollectionConnection.edges.node.internalID": (v3/*: any*/),
-        "me.myCollectionConnection.edges.node.medium": (v5/*: any*/),
-        "me.myCollectionConnection.edges.node.metric": (v5/*: any*/),
-        "me.myCollectionConnection.edges.node.slug": (v3/*: any*/),
-        "me.myCollectionConnection.edges.node.title": (v5/*: any*/),
-        "me.myCollectionConnection.edges.node.width": (v5/*: any*/),
+        "me.myCollectionConnection.edges.node.image.url": (v4/*: any*/),
+        "me.myCollectionConnection.edges.node.medium": (v4/*: any*/),
+        "me.myCollectionConnection.edges.node.slug": (v2/*: any*/),
+        "me.myCollectionConnection.edges.node.title": (v4/*: any*/),
         "me.myCollectionConnection.pageInfo": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "PageInfo"
         },
-        "me.myCollectionConnection.pageInfo.endCursor": (v5/*: any*/),
+        "me.myCollectionConnection.pageInfo.endCursor": (v4/*: any*/),
         "me.myCollectionConnection.pageInfo.hasNextPage": {
           "enumValues": null,
           "nullable": false,

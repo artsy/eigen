@@ -90,7 +90,16 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
 export const MyCollectionArtworkListItemFragmentContainer = createFragmentContainer(MyCollectionArtworkListItem, {
   artwork: graphql`
     fragment MyCollectionArtworkListItem_artwork on Artwork {
-      ...MyCollectionArtwork_sharedProps @relay(mask: false)
+      artist {
+        internalID
+      }
+      image {
+        url
+      }
+      artistNames
+      medium
+      slug
+      title
     }
   `,
 })

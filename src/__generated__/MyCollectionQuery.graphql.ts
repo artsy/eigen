@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d88ec1533f5bba2b4244b555fd3936f8 */
+/* @relayHash 4aa3c03777a1d7a9e871f6bf61cb6a52 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,25 +31,13 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
     internalID
     id
   }
-  artistNames
-  category
-  costMinor
-  costCurrencyCode
-  date
-  depth
-  editionSize
-  editionNumber
-  height
-  id
   image {
     url
   }
-  internalID
+  artistNames
   medium
-  metric
   slug
   title
-  width
 }
 
 fragment MyCollection_me on Me {
@@ -91,14 +79,7 @@ v1 = [
     "name": "sort",
     "value": "CREATED_AT_DESC"
   }
-],
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-};
+];
 return {
   "fragment": {
     "argumentDefinitions": [],
@@ -206,72 +187,15 @@ return {
                         "name": "artist",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "internalID",
+                            "storageKey": null
+                          },
                           (v0/*: any*/)
                         ],
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "artistNames",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "category",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "costMinor",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "costCurrencyCode",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "date",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "depth",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "editionSize",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "editionNumber",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "height",
                         "storageKey": null
                       },
                       {
@@ -292,7 +216,13 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v2/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "artistNames",
+                        "storageKey": null
+                      },
                       {
                         "alias": null,
                         "args": null,
@@ -304,21 +234,7 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "metric",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
                         "name": "title",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "width",
                         "storageKey": null
                       },
                       {
@@ -359,7 +275,7 @@ return {
     ]
   },
   "params": {
-    "id": "d88ec1533f5bba2b4244b555fd3936f8",
+    "id": "4aa3c03777a1d7a9e871f6bf61cb6a52",
     "metadata": {},
     "name": "MyCollectionQuery",
     "operationKind": "query",
