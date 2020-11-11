@@ -498,7 +498,7 @@ class AuctionViewControllerTests: QuickSpec {
                     subject.allowAnimations = false
                     subject.networkModel = Test_AuctionNetworkModel(sale:sale, saleViewModel: saleViewModel, lotStandings: lotStandings)
 
-                    expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
+                    expect(subject).to(haveValidSnapshot(usesDrawRect: true))
                 }
             }
         }
