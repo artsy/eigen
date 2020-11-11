@@ -15,8 +15,6 @@ export function myCollectionDeleteArtwork(artworkId: string) {
               ... on MyCollectionArtworkMutationDeleteSuccess {
                 success
               }
-
-              # TODO: Handle error
               ... on MyCollectionArtworkMutationFailure {
                 mutationError {
                   message
@@ -34,6 +32,8 @@ export function myCollectionDeleteArtwork(artworkId: string) {
       onCompleted: (response, errors) => {
         if (errors?.length) {
           reject(errors)
+        } else if (response.myCollectionDeleteArtwork?.artworkOrError?.mutationError) {
+          reject(response.myCollectionDeleteArtwork?.artworkOrError?.mutationError.message)
         } else {
           resolve(response)
         }

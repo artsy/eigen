@@ -17,7 +17,7 @@ export function myCollectionAddArtwork(input: myCollectionAddArtworkMutationVari
                 artworkEdge {
                   __id
                   node {
-                    ...MyCollectionArtwork_sharedProps @relay(mask: false)
+                    ...MyCollectionArtwork_sharedProps
                   }
                 }
               }
@@ -37,6 +37,8 @@ export function myCollectionAddArtwork(input: myCollectionAddArtworkMutationVari
       onCompleted: (response, errors) => {
         if (errors?.length) {
           reject(errors)
+        } else if (response.myCollectionCreateArtwork?.artworkOrError?.mutationError) {
+          reject(response.myCollectionCreateArtwork?.artworkOrError?.mutationError.message)
         } else {
           resolve(response)
         }

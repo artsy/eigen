@@ -15,11 +15,9 @@ export function myCollectionEditArtwork(input: myCollectionEditArtworkMutationVa
             artworkOrError {
               ... on MyCollectionArtworkMutationSuccess {
                 artwork {
-                  ...MyCollectionArtwork_sharedProps @relay(mask: false)
+                  ...MyCollectionArtwork_sharedProps
                 }
               }
-
-              # TODO: Handle error case
               ... on MyCollectionArtworkMutationFailure {
                 mutationError {
                   message
@@ -36,6 +34,8 @@ export function myCollectionEditArtwork(input: myCollectionEditArtworkMutationVa
       onCompleted: (response, errors) => {
         if (errors?.length) {
           reject(errors)
+        } else if (response.myCollectionUpdateArtwork?.artworkOrError?.mutationError) {
+          reject(response.myCollectionUpdateArtwork?.artworkOrError?.mutationError.message)
         } else {
           resolve(response)
         }

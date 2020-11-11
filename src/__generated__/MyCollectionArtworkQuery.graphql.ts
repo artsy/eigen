@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash cbf4b51a869d6369b9a5eab85cd7828e */
+/* @relayHash 01eb3dfb3f30d65bbb348e58f9bb7dec */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -176,27 +176,18 @@ fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights 
 }
 
 fragment MyCollectionArtworkMeta_artwork on Artwork {
-  artist {
-    internalID
-    id
-  }
+  internalID
   artistNames
   category
   costMinor
   costCurrencyCode
   date
   depth
-  editionSize
   editionNumber
+  editionSize
   height
-  id
-  image {
-    url
-  }
-  internalID
   medium
   metric
-  slug
   title
   width
 }
@@ -835,7 +826,7 @@ return {
     ]
   },
   "params": {
-    "id": "cbf4b51a869d6369b9a5eab85cd7828e",
+    "id": "01eb3dfb3f30d65bbb348e58f9bb7dec",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",

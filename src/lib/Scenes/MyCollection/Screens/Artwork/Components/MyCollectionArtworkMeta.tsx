@@ -14,7 +14,7 @@ interface MyCollectionArtworkMetaProps {
   viewAll?: boolean
 }
 
-export const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwork, viewAll = false }) => {
+const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwork, viewAll = false }) => {
   const {
     artistNames,
     category,
@@ -43,8 +43,8 @@ export const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = (
           NOTE: `medium` prop is correct; catergory is the label. `materials` field
           corresponds to `category` prop. It's a mess :/
         */}
-        <Field label="Category" value={capitalize(medium as string)} />
-        <Field label="Materials" value={capitalize(category as string)} />
+        <Field label="Category" value={capitalize(medium!)} />
+        <Field label="Materials" value={capitalize(category!)} />
         <Field label="Dimensions" value={dimensions} />
         <Field label="Edition number" value={editionNumber} />
         <Field label="Edition size" value={editionSize} />
@@ -57,7 +57,7 @@ export const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = (
   } else {
     return (
       <ScreenMargin>
-        <Field label="Category" value={capitalize(medium as string)} />
+        <Field label="Category" value={capitalize(medium!)} />
         <Field label="Dimensions" value={dimensions} />
         <Field label="Edition number" value={editionNumber} />
         <Field label="Edition size" value={editionSize} />
@@ -81,7 +81,20 @@ export const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = (
 export const MyCollectionArtworkMetaFragmentContainer = createFragmentContainer(MyCollectionArtworkMeta, {
   artwork: graphql`
     fragment MyCollectionArtworkMeta_artwork on Artwork {
-      ...MyCollectionArtwork_sharedProps @relay(mask: false)
+      internalID
+      artistNames
+      category
+      costMinor
+      costCurrencyCode
+      date
+      depth
+      editionNumber
+      editionSize
+      height
+      medium
+      metric
+      title
+      width
     }
   `,
 })
