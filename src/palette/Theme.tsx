@@ -1,4 +1,10 @@
-import React from "react"
+import { collectFields } from "graphql/execution/execute"
+import { AppStore } from "lib/store/AppStore"
+import useAppState from "lib/utils/useAppState"
+import React, { useEffect, useState } from "react"
+import { useColorScheme } from "react-native"
+import { Appearance } from "react-native-appearance"
+import { Flex } from "./elements/Flex"
 import { TEXT_FONT_SIZES, TEXT_FONTS, TEXT_LETTER_SPACING, TEXT_LINE_HEIGHTS } from "./elements/Text"
 import { fontFamily } from "./platform/fonts/fontFamily"
 import { ThemeProvider } from "./platform/primitives"
@@ -48,56 +54,143 @@ export const unitlessBreakpoints = {
  */
 const BREAKPOINTS_SCALE = Object.assign([breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl], breakpoints)
 
+/** Border variations */
+const borders = ["1px solid", "2px solid"]
+
+/**
+ * Artsy's color schemes:
+ * https://www.notion.so/artsy/Color-a0c24896daf8433d9409aee2146ac267
+ */
+// First layer
+interface PaletteColors {
+  /** Full black, primary brand color  */
+  black100: string
+  /** 80% black  */
+  black80: string
+  /** 60% black, bold copy, lower in hierarchy  */
+  black60: string
+  /** 30 black (dark grey), placeholder text only  */
+  black30: string
+  /** 10 black (grey), borders, divider lines, and grey button only */
+  black10: string
+  /** 5 black (light grey), backgrounds only */
+  black5: string
+  /** Full purple, secondary brand color. Should only used in time/transitions (on hover, active state), for highlighting vital text, and links.   */
+  purple100: string
+  /** 30 purple (light purple), avoid usage  */
+  purple30: string
+  /* 5 purple, highlight, accent */
+  purple5: string
+  /** Full green, success */
+  green100: string
+  /** Full red, error */
+  red100: string
+  /** Full yellow, warn */
+  yellow100: string
+  /** 30 yellow (light yellow), avoid future use */
+  yellow30: string
+  /** 10 yellow (lightest yellow), avoid future use */
+  yellow10: string
+  /** Full white */
+  white100: string
+}
+
+// Second layer
+interface UsageColors {
+  /** Background */
+  background: string
+  primaryText: string
+  secondaryText: string
+}
+
+const artsyColors = {
+  black100: "#000",
+  black80: "#333",
+  black60: "#666",
+  black30: "#C2C2C2",
+  black10: "#E5E5E5",
+  black5: "#F8F8F8",
+  purple100: "#6E1EFF",
+  purple30: "#D3BBFF",
+  purple5: "#F8F3FF",
+  green100: "#0EDA83",
+  red100: "#F7625A",
+  yellow100: "#F1AF1B",
+  yellow30: "#FAE7BA",
+  yellow10: "#FDF7E8",
+  white100: "#FFF",
+}
+
+type ThemeColors = PaletteColors & UsageColors
+
+const lightModeColors: ThemeColors = {
+  ...artsyColors,
+
+  get background() {
+    return this.white100
+  },
+  get primaryText() {
+    return this.black100
+  },
+  get secondaryText() {
+    return this.black60
+  },
+}
+
+const darkModeColors: ThemeColors = {
+  ...artsyColors,
+
+  background: "#1D1D1D",
+  get primaryText() {
+    return this.white100
+  },
+  get secondaryText() {
+    return this.black30
+  },
+}
+
+/**
+ * The spacing system is based on
+ * https://www.notion.so/artsy/Spacing-93eeaed9fdf9480099fec7094fd1b9f3
+ */
+const space = {
+  // unit: px value
+  /** Equivalent to 3px  */
+  0.3: "3px",
+  /** Equivalent to 5px  */
+  0.5: "5px",
+  /** Equivalent to 10px  */
+  1: "10px",
+  /** Equivalent to 20px  */
+  2: "20px",
+  /** Equivalent to 30px  */
+  3: "30px",
+  /** Equivalent to 40px  */
+  4: "40px",
+  /** Equivalent to 50px  */
+  6: "60px",
+  /** Equivalent to 90px  */
+  9: "90px",
+  /** Equivalent to 120px  */
+  12: "120px",
+  /** Equivalent to 180px  */
+  18: "180px",
+}
+
 /**
  * All of the config for the Artsy theming system, based on the
  * design system from our design team:
  * https://www.notion.so/artsy/Master-Library-810612339f474d0997fe359af4285c56
  */
-export const themeProps = {
-  /** Border variations */
-  borders: ["1px solid", "2px solid"],
+export let themeProps = {
+  borders,
 
   /**
    *  This allows styled-system to hook into our breakpoints
    */
   breakpoints: BREAKPOINTS_SCALE,
 
-  /**
-   * Artsy's color schemes:
-   * https://www.notion.so/artsy/Color-a0c24896daf8433d9409aee2146ac267
-   */
-  colors: {
-    /** Full black, primary brand color  */
-    black100: "#000",
-    /** 80% black  */
-    black80: "#333",
-    /** 60% black, bold copy, lower in hierarchy  */
-    black60: "#666",
-    /** 30 black (dark grey), placeholder text only  */
-    black30: "#C2C2C2",
-    /** 10 black (grey), borders, divider lines, and grey button only */
-    black10: "#E5E5E5",
-    /** 5 black (light grey), backgrounds only */
-    black5: "#F8F8F8",
-    /** Full purple, secondary brand color. Should only used in time/transitions (on hover, active state), for highlighting vital text, and links.   */
-    purple100: "#6E1EFF",
-    /** 30 purple (light purple), avoid usage  */
-    purple30: "#D3BBFF",
-    /* 5 purple, highlight, accent */
-    purple5: "#F8F3FF",
-    /** Full green, success */
-    green100: "#0EDA83",
-    /** Full red, error */
-    red100: "#F7625A",
-    /** Full yellow, warn */
-    yellow100: "#F1AF1B",
-    /** 30 yellow (light yellow), avoid future use */
-    yellow30: "#FAE7BA",
-    /** 10 yellow (lightest yellow), avoid future use */
-    yellow10: "#FDF7E8",
-    /** Full white */
-    white100: "#FFF",
-  },
+  colors: lightModeColors,
 
   fontFamily,
 
@@ -127,33 +220,7 @@ export const themeProps = {
     },
   },
 
-  /**
-   * The spacing system is based on
-   * https://www.notion.so/artsy/Spacing-93eeaed9fdf9480099fec7094fd1b9f3
-   */
-  space: {
-    // unit: px value
-    /** Equivalent to 3px  */
-    0.3: "3px",
-    /** Equivalent to 5px  */
-    0.5: "5px",
-    /** Equivalent to 10px  */
-    1: "10px",
-    /** Equivalent to 20px  */
-    2: "20px",
-    /** Equivalent to 30px  */
-    3: "30px",
-    /** Equivalent to 40px  */
-    4: "40px",
-    /** Equivalent to 50px  */
-    6: "60px",
-    /** Equivalent to 90px  */
-    9: "90px",
-    /** Equivalent to 120px  */
-    12: "120px",
-    /** Equivalent to 180px  */
-    18: "180px",
-  },
+  space,
 
   /**
    * Our type system is based on:
@@ -311,8 +378,45 @@ export const themeProps = {
 /**
  * A wrapper component for passing down the Artsy theme context
  */
-export const Theme: React.FC<{}> = (props) => {
-  return <ThemeProvider theme={themeProps}>{props.children}</ThemeProvider>
+export const Theme: React.FC = (props) => {
+  const darkMode = AppStore.useAppState((state) => state.settings.darkMode)
+  const systemColorScheme = useColorScheme() // TODO: This doesnt work well in the simulator. Try on device.
+  const [colors, setColors] = useState(lightModeColors)
+
+  const updateDarkMode = () => {
+    const isDarkModeOn = (() => {
+      if (darkMode === "dark") {
+        return true
+      }
+      if (darkMode === "light") {
+        return false
+      }
+      if (darkMode === "system") {
+        if (systemColorScheme === "dark") {
+          return true
+        }
+        if (systemColorScheme === "light") {
+          return false
+        }
+        // in any other case, default to false
+      }
+      return false
+    })()
+
+    themeProps.colors = isDarkModeOn ? darkModeColors : lightModeColors
+    setColors(isDarkModeOn ? darkModeColors : lightModeColors)
+  }
+
+  useEffect(() => {
+    updateDarkMode()
+  }, [darkMode])
+
+  useAppState({ onForeground: () => updateDarkMode() })
+
+  return (
+    <ThemeProvider theme={{ ...themeProps, colors }}>
+    </ThemeProvider>
+  )
 }
 
 /** All available px spacing maps */
