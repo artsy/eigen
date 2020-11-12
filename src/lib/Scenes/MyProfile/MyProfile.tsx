@@ -65,6 +65,10 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
         onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-profile/payment")}
       />
       <MenuItem
+        title="Dark mode settings"
+        onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "settings/dark-mode")}
+      />
+      <MenuItem
         title="Push notifications"
         onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-profile/push-notifications")}
       />

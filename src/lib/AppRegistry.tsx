@@ -82,6 +82,7 @@ import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
+import { DarkModeSettings } from "./Scenes/MyProfile/DarkModeSettings"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
@@ -435,6 +436,7 @@ export const modules = defineModules({
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, { hidesBackButton: true }),
   MyProfilePushNotifications: reactModule(MyProfilePushNotificationsQueryRenderer),
+  DarkModeSettings: reactModule(DarkModeSettings),
   MySellingProfile: reactModule(View),
   Partner: reactModule(Partner, { fullBleed: true }),
   PartnerLocations: reactModule(PartnerLocations),

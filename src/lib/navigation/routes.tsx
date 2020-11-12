@@ -104,6 +104,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-profile/payment", "MyProfilePayment"),
     new RouteMatcher("/my-profile/payment/new-card", "MyProfilePaymentNewCreditCard"),
     new RouteMatcher("/my-profile/push-notifications", "MyProfilePushNotifications"),
+    new RouteMatcher("/settings/dark-mode", "DarkModeSettings"),
     new RouteMatcher("/local-discovery", "LocalDiscovery"),
     new RouteMatcher("/privacy-request", "PrivacyRequest"),
 

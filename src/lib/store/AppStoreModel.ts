@@ -1,6 +1,7 @@
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
 import { BottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
 import { MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
+import { SettingsModel } from "lib/Scenes/MyProfile/SettingsModel"
 import { SearchModel } from "lib/Scenes/Search/SearchModel"
 import { NativeModules } from "react-native"
 import { CURRENT_APP_VERSION } from "./migration"
@@ -18,6 +19,7 @@ interface AppStoreStateModel {
   bottomTabs: BottomTabsModel
   search: SearchModel
   myCollection: MyCollectionModel
+  settings: SettingsModel
 }
 export interface AppStoreModel extends AppStoreStateModel {
   rehydrate: Action<AppStoreModel, DeepPartial<State<AppStoreStateModel>>>
