@@ -1,10 +1,10 @@
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import React from "react"
+import React, { useState } from "react"
 import { AppRegistry, LogBox, View } from "react-native"
 import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
-import { Theme } from "palette"
+import { Button, Flex, Spacer, Text, Theme } from "palette"
 import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowQueryRenderer } from "./Containers/BidFlow"
 import { GeneQueryRenderer } from "./Containers/Gene"
@@ -80,6 +80,7 @@ import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { Show2MoreInfoQueryRenderer, Show2QueryRenderer } from "./Scenes/Show2"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
+import { Button2 } from "palette/Button2"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
@@ -453,6 +454,92 @@ for (const moduleName of Object.keys(modules)) {
 }
 
 const Main: React.FC<{}> = track()(({}) => {
+  const [{ loading, loading2, followState }, update] = useState({
+    loading: false,
+    loading2: false,
+    followState: "notFollowing",
+  })
+  return (
+    <Flex pt="6" px="4">
+      <Text mb="2">Old School</Text>
+      <Button
+        loading={loading}
+        onPress={() => {
+          update((vals) => ({ ...vals, loading: true }))
+          setTimeout(() => {
+            update((vals) => ({ ...vals, loading: false }))
+          }, 2000)
+        }}
+        block
+        style={{ width: "100%" }}
+      >
+        Submit
+      </Button>
+      <Spacer mb="2"></Spacer>
+      <Button
+        loading={loading2}
+        variant={followState === "following" ? "secondaryOutline" : "primaryBlack"}
+        block
+        onPress={() => {
+          update((vals) => ({ ...vals, loading2: true }))
+          setTimeout(() => {
+            update((vals) => ({
+              ...vals,
+              loading2: false,
+              followState: vals.followState === "following" ? "notFollowing" : "following",
+            }))
+          }, 2000)
+        }}
+      >
+        {followState === "following" ? "Following" : "Follow"}
+      </Button>
+
+      <Text mt="4" mb="2">
+        New School
+      </Text>
+      <Button2
+        states={{
+          normal: {
+            variant: "primary",
+            label: "Submit",
+          },
+        }}
+        currentState="normal"
+        loading={loading}
+        onPress={() => {
+          update((vals) => ({ ...vals, loading: true }))
+          setTimeout(() => {
+            update((vals) => ({ ...vals, loading: false }))
+          }, 2000)
+        }}
+      ></Button2>
+      <Spacer mb="2"></Spacer>
+      <Button2
+        states={{
+          following: {
+            variant: "secondary",
+            label: "Following",
+          },
+          notFollowing: {
+            variant: "primary",
+            label: "Follow",
+          },
+        }}
+        currentState={followState}
+        loading={loading2}
+        onPress={() => {
+          update((vals) => ({ ...vals, loading2: true }))
+          setTimeout(() => {
+            update((vals) => ({
+              ...vals,
+              loading2: false,
+              followState: vals.followState === "following" ? "notFollowing" : "following",
+            }))
+          }, 2000)
+        }}
+      ></Button2>
+    </Flex>
+  )
   const isHydrated = AppStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = AppStore.useAppState((state) => !!state.native.sessionState.userID)
   const onboardingState = AppStore.useAppState((state) => state.native.sessionState.onboardingState)
