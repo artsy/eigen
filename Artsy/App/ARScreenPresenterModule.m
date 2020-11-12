@@ -117,7 +117,7 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
     } else if ([moduleName isEqualToString:@"Admin"]) {
         vc = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     } else if ([moduleName isEqualToString:@"Auction"]) {
-        vc = [self.class loadAuctionWithID:props[@"id"]];
+        vc = [self.class loadLegacyAuctionWithID:props[@"id"]];
     } else if ([moduleName isEqualToString:@"AuctionRegistration"]) {
         vc = [self.class loadAuctionRegistrationWithID:props[@"id"] skipBidFlow:[props[@"skip_bid_flow"] boolValue]];
     } else if ([moduleName isEqualToString:@"AuctionBidArtwork"]) {
@@ -202,18 +202,14 @@ RCT_EXPORT_METHOD(popToRootAndScrollToTop:(nonnull NSString *)stackID
     resolve(nil);
 }
 
-+ (UIViewController *)loadAuctionWithID:(NSString *)saleID
++ (UIViewController *)loadLegacyAuctionWithID:(NSString *)saleID
 {
     if ([[[ARAppDelegate sharedInstance] echo] isFeatureEnabled:@"DisableNativeAuctions"] == YES) {
         NSString *path = [NSString stringWithFormat:@"/auction/%@", saleID];
         NSURL *URL = [ARRouter resolveRelativeUrl:path];
         return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:nil];
     } else {
-        if ([[[ARAppDelegate sharedInstance] echo] isFeatureEnabled:AROptionsNewSalePage] == YES) {
-            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Auction2" initialProperties:@{ @"saleID": saleID }];
-        } else {
-            return [[AuctionViewController alloc] initWithSaleID:saleID];
-        }
+        return [[AuctionViewController alloc] initWithSaleID:saleID];
     }
 }
 
