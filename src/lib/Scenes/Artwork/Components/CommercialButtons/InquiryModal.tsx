@@ -25,6 +25,13 @@ interface InquiryModalProps {
   relay: RelayProp
 }
 
+const ErrorMessageFlex = styled(Flex)`
+  position: absolute;
+  top: 60px;
+  width: 100%;
+  z-index: 5;
+`
+
 const InquiryQuestionOption: React.FC<{
   id: string
   question: string
@@ -118,7 +125,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const questions = artwork?.inquiryQuestions!
   const { state, dispatch } = useContext(ArtworkInquiryContext)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
-
+  const [errorMessageVisibility, setErrorMessageVisibility] = useState(false)
   const selectShippingLocation = (l: string) => dispatch({ type: "selectShippingLocation", payload: l })
 
   const resetAndExit = () => {
@@ -135,11 +142,18 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         rightButtonText="Send"
         rightButtonDisabled={state.inquiryQuestions.length === 0}
         onRightButtonPress={() => {
-          SubmitInquiryRequest(relay.environment, artwork, state)
+          SubmitInquiryRequest(relay.environment, artwork, state, setErrorMessageVisibility)
         }}
       >
         {state.inquiryType}
       </FancyModalHeader>
+      {!!errorMessageVisibility && (
+        <ErrorMessageFlex bg="red100" py={1} alignItems="center">
+          <Text variant="small" color="white">
+            Sorry, we were unable to send this message. Please try again.
+          </Text>
+        </ErrorMessageFlex>
+      )}
       <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
       <Box m={2}>
         <Text variant="mediumText">What information are you looking for?</Text>
