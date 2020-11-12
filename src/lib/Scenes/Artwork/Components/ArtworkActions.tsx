@@ -18,13 +18,15 @@ import {
   Touchable,
 } from "palette"
 import React from "react"
-import { NativeModules, Share, TouchableWithoutFeedback, View } from "react-native"
+import { NativeModules, TouchableWithoutFeedback, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
 interface ArtworkActionsProps {
   artwork: ArtworkActions_artwork
   relay?: RelayProp
+
+  shareOnPress: () => void
 }
 
 export const shareContent = (title: string, href: string, artists: ArtworkActions_artwork["artists"]) => {
@@ -72,21 +74,6 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
       optimisticResponse: { saveArtwork: { artwork: { id: artwork.id, is_saved: !artwork.is_saved } } },
       onCompleted: () => userHadMeaningfulInteraction(),
     })
-  }
-
-  @track(() => ({
-    action_name: Schema.ActionNames.Share,
-    action_type: Schema.ActionTypes.Tap,
-    context_module: Schema.ContextModules.ArtworkActions,
-  }))
-  async handleArtworkShare() {
-    const { title, href, artists } = this.props.artwork
-    try {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      await Share.share(shareContent(title, href, artists))
-    } catch (error) {
-      console.error("ArtworkActions.tsx", error)
-    }
   }
 
   @track(() => ({
@@ -144,7 +131,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
               </UtilButton>
             </TouchableWithoutFeedback>
           )}
-          <TouchableWithoutFeedback onPress={() => this.handleArtworkShare()}>
+          <TouchableWithoutFeedback onPress={() => this.props.shareOnPress()}>
             <UtilButton>
               <Box mr={0.5}>
                 <ShareIcon />
