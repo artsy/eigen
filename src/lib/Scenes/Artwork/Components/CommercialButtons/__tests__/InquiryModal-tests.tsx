@@ -165,7 +165,7 @@ describe("<InquiryModal />", () => {
   describe("when submiting an inquiry", () => {
     it("it shows error message on failed inquiry", async () => {
       const wrapper = getWrapper()
-      wrapper.root.findByProps({ "data-test-id": "checkbox-Shipping" }).props.onPress()
+      wrapper.root.findByProps({ "data-test-id": "checkbox-shipping_quote" }).props.onPress()
       press(wrapper.root, { text: "Send" })
       env.mock.rejectMostRecentOperation(new Error())
       await flushPromiseQueue()
