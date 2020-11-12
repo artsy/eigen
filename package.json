@@ -90,6 +90,7 @@
     "query-string": "4.3.4",
     "react": "16.11.0",
     "react-native": "0.62.1",
+    "react-native-appearance": "0.3.4",
     "react-native-config": "https://github.com/artsy/react-native-config.git",
     "react-native-haptic-feedback": "1.10.0",
     "react-native-hyperlink": "0.0.11",

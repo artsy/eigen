@@ -112,6 +112,7 @@ target 'Artsy' do
   pod 'RNCAsyncStorage', path: 'node_modules/@react-native-community/async-storage'
   pod 'RNCPicker', path: 'node_modules/@react-native-community/picker'
   pod 'BVLinearGradient', path: './node_modules/react-native-linear-gradient'
+  pod 'react-native-appearance', path: 'node_modules/react-native-appearance'
   pod 'RNImageCropPicker', path: './node_modules/react-native-image-crop-picker/RNImageCropPicker.podspec'
   # TODO: Remove the `.podspec` files from these paths
   pod 'react-native-config', path: 'node_modules/react-native-config'
