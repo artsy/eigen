@@ -103,7 +103,9 @@ interface UsageColors {
   secondaryText: string
 }
 
-const artsyColors = {
+type ThemeColors = PaletteColors & UsageColors
+
+const lightModeColors: ThemeColors = {
   black100: "#000",
   black80: "#333",
   black60: "#666",
@@ -119,12 +121,6 @@ const artsyColors = {
   yellow30: "#FAE7BA",
   yellow10: "#FDF7E8",
   white100: "#FFF",
-}
-
-type ThemeColors = PaletteColors & UsageColors
-
-const lightModeColors: ThemeColors = {
-  ...artsyColors,
 
   get background() {
     return this.white100
@@ -138,7 +134,21 @@ const lightModeColors: ThemeColors = {
 }
 
 const darkModeColors: ThemeColors = {
-  ...artsyColors,
+  black100: "#000",
+  black80: "#333",
+  black60: "#666",
+  black30: "#C2C2C2",
+  black10: "#E5E5E5",
+  black5: "#F8F8F8",
+  purple100: "#6E1EFF",
+  purple30: "#D3BBFF",
+  purple5: "#F8F3FF",
+  green100: "#0EDA83",
+  red100: "#F7625A",
+  yellow100: "#F1AF1B",
+  yellow30: "#FAE7BA",
+  yellow10: "#FDF7E8",
+  white100: "#FFF",
 
   background: "#1D1D1D",
   get primaryText() {
@@ -415,6 +425,9 @@ export const Theme: React.FC = (props) => {
 
   return (
     <ThemeProvider theme={{ ...themeProps, colors }}>
+      <Flex flex={1} backgroundColor="background">
+        {props.children}
+      </Flex>
     </ThemeProvider>
   )
 }
