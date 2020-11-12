@@ -12,7 +12,6 @@ export const SettingsModel: SettingsModel = {
   darkMode: "light",
 
   setDarkMode: action((state, option) => {
-    console.log({ option })
     state.darkMode = option
   }),
 }

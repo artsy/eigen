@@ -10,7 +10,6 @@ const values: DarkModeOption[] = ["light", "dark", "system"]
 export const DarkModeSettings: React.FC = () => {
   const value = AppStore.useAppState((state) => state.settings.darkMode)
   const setValue = (option: DarkModeOption) => {
-    console.log({ ooption: option })
     AppStore.actions.settings.setDarkMode(option)
   }
 

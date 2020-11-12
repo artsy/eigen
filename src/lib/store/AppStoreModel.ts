@@ -61,6 +61,7 @@ export const appStoreModel: AppStoreModel = {
   bottomTabs: BottomTabsModel,
   search: SearchModel,
   myCollection: MyCollectionModel,
+  settings: SettingsModel,
 }
 
 export type AppStoreState = State<AppStoreModel>
