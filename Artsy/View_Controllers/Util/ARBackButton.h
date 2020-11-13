@@ -4,7 +4,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ARBackButton: ARMenuButton
 
-- (void)updateForDarkMode;
+- (void)updateForDarkMode:(BOOL)turnOn;
 
 @end
 

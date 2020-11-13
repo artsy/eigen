@@ -79,7 +79,7 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     _animatesLayoverChanges = YES;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateForDarkMode)
+                                             selector:@selector(updateForDarkMode:)
                                                  name:@"darkModeNotif"
                                                object:nil];
 
@@ -119,7 +119,7 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     _backButton = [[ARBackButton alloc] init];
     [_backButton ar_extendHitTestSizeByWidth:10 andHeight:10];
 
-    [_backButton setImage:[UIImage imageNamed:@"BackChevron"] forState:UIControlStateNormal];
+    [_backButton setImage:[[UIImage imageNamed:@"BackChevron"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     [_backButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
     _backButton.adjustsImageWhenDisabled = NO;
 
@@ -131,9 +131,9 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     _backButton.alpha = 0;
 }
 
-- (void)updateForDarkMode
+- (void)updateForDarkMode:(NSNotification *)notif
 {
-    [_backButton updateForDarkMode];
+    [_backButton updateForDarkMode:[notif.object boolValue]];
 }
 
 // Handle modal changes to status bars

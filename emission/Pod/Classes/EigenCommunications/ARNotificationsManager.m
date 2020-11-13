@@ -170,7 +170,7 @@ RCT_EXPORT_METHOD(didFinishBootstrapping)
 RCT_EXPORT_METHOD(setDarkMode
                   : (BOOL)value)
 {
-    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"darkModeNotif" object:nil]];
+    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"darkModeNotif" object:@(value)]];
 }
 
 // All notification JS methods occur on the main queue/thread.
