@@ -3,7 +3,7 @@ import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql
 import { createGeminiUrl } from "lib/Components/OpaqueImageView/createGeminiUrl"
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Spacer } from "palette"
+import { color, Flex, Spacer } from "palette"
 import React, { useContext, useMemo } from "react"
 import { Animated, PixelRatio } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -118,7 +118,7 @@ export const PaginationDot = ({ diameter, index }: { diameter: number; index: nu
         borderRadius: diameter / 2,
         width: diameter,
         height: diameter,
-        backgroundColor: "black",
+        backgroundColor: color("primaryText"),
         opacity,
       }}
     />

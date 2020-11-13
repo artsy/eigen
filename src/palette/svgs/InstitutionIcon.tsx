@@ -6,7 +6,7 @@ import { G, Icon, IconProps, Path } from "./Icon"
 export const InstitutionIcon: React.FC<IconProps> = (props) => {
   return (
     <Icon {...props} viewBox="0 0 18 18">
-      <G fill={color(props.fill)} fillRule="evenodd">
+      <G fill={color(props.fill ?? "primaryText")} fillRule="evenodd">
         <Path d="M4.381 6.686h1v7.378h-1z" />
         <Path d="M3 14h12v1H3z" />
         <Path d="M6.388 6.686h1v7.378h-1zM8.385 6.686h1v7.378h-1zM10.377 6.686h1v7.378h-1zM12.385 6.686h1v7.378h-1z" />
