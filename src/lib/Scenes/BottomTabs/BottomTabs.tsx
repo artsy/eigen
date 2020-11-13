@@ -21,7 +21,7 @@ export const BottomTabs: React.FC = () => {
 
   return (
     <Flex>
-      <Separator style={{ borderColor: isStaging ? color("purple100") : color("black10") }} />
+      <Separator style={{ borderColor: isStaging ? color("purple100") : color("separator") }} />
       <Flex flexDirection="row" height={ICON_HEIGHT} px={1}>
         <BottomTabsButton tab="home" />
         <BottomTabsButton tab="search" />

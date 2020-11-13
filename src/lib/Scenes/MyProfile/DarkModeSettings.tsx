@@ -23,6 +23,7 @@ export const DarkModeSettings: React.FC = () => {
           values={values}
           selectedIndex={values.indexOf(value)}
           onValueChange={(v) => setValue(v as DarkModeOption)}
+          tintColor="purple"
         />
       </Flex>
     </PageWithSimpleHeader>

@@ -386,16 +386,16 @@ export let themeProps = {
   },
 }
 
-/**
- * A wrapper component for passing down the Artsy theme context
- */
-export const Theme: React.FC = (props) => {
+export let isDarkModeOn = false
+export let themeColors = lightModeColors
+
+export const useColors = () => {
+  const [colors, setColors] = useState(lightModeColors)
   const darkMode = AppStore.useAppState((state) => state.settings.darkMode)
   const systemColorScheme = useColorScheme() // TODO: This doesnt work well in the simulator. Try on device.
-  const [colors, setColors] = useState(lightModeColors)
 
   const updateDarkMode = () => {
-    const isDarkModeOn = (() => {
+    const calculateIsDarkModeOn = () => {
       if (darkMode === "dark") {
         return true
       }
@@ -412,10 +412,13 @@ export const Theme: React.FC = (props) => {
         // in any other case, default to false
       }
       return false
-    })()
+    }
+    isDarkModeOn = calculateIsDarkModeOn()
 
     themeProps.colors = isDarkModeOn ? darkModeColors : lightModeColors
+    themeColors = isDarkModeOn ? darkModeColors : lightModeColors
     setColors(isDarkModeOn ? darkModeColors : lightModeColors)
+    AppStore.actions.native.setDarkMode(isDarkModeOn ? "true" : "false")
   }
 
   useEffect(() => {
@@ -424,6 +427,14 @@ export const Theme: React.FC = (props) => {
 
   useAppState({ onForeground: () => updateDarkMode() })
 
+  return colors
+}
+
+/**
+ * A wrapper component for passing down the Artsy theme context
+ */
+export const Theme: React.FC = (props) => {
+  const colors = useColors()
   return <ThemeProvider theme={{ ...themeProps, colors }}>{props.children}</ThemeProvider>
 }
 

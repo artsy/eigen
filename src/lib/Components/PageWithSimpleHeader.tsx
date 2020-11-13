@@ -9,7 +9,7 @@ export const PageWithSimpleHeader: React.FC<{
   noSeparator?: boolean
 }> = ({ title, left, right, children, noSeparator }) => {
   return (
-    <Flex flex={1} backgroundColor="background">
+    <>
       <Flex px="2" pb="1" pt="2" flexDirection="row" alignItems="center">
         <Flex flex={1} alignItems="flex-start">
           {left}
@@ -26,6 +26,6 @@ export const PageWithSimpleHeader: React.FC<{
       </Flex>
       {!noSeparator && <Separator />}
       <View style={{ flex: 1 }}>{children}</View>
-    </Flex>
+    </>
   )
 }

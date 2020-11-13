@@ -31,6 +31,8 @@
 
 + (NSString *)stripePublishableKey { return @"stripePublishableKey"; }
 + (NSString *)sentryDSN { return @"sentryDSN"; };
+
++ (NSString *)isDarkModeOn { return @"isDarkModeOn"; }
 @end
 
 

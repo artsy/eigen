@@ -2,6 +2,7 @@ import { AppModule } from "lib/AppRegistry"
 import { NativeViewController } from "lib/Components/NativeViewController"
 import { useSelectedTab } from "lib/store/AppStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { color } from "palette"
 import React, { useEffect, useRef } from "react"
 import { Animated, View } from "react-native"
 import { BottomTabs } from "./BottomTabs"
@@ -23,7 +24,7 @@ export const BottomTabsNavigator = () => {
   const selectedTab = useSelectedTab()
   const { bottom } = useScreenDimensions().safeAreaInsets
   return (
-    <View style={{ flex: 1, paddingBottom: bottom }}>
+    <View style={{ flex: 1, paddingBottom: bottom, backgroundColor: color("background") }}>
       <FadeBetween
         views={[
           <NavStack tabName="home" rootModuleName="Home" />,

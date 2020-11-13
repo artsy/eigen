@@ -4,7 +4,7 @@ import { AppRegistry, View, YellowBox } from "react-native"
 import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
-import { Theme } from "palette"
+import { color, Theme } from "palette"
 import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowQueryRenderer } from "./Containers/BidFlow"
 import { GeneQueryRenderer } from "./Containers/Gene"
@@ -292,7 +292,7 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) =
   const paddingBottom = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.bottom
   const isHydrated = AppStore.useAppState((state) => state.sessionState.isHydrated)
   return (
-    <View style={{ flex: 1, paddingTop, paddingBottom }}>
+    <View style={{ flex: 1, paddingTop, paddingBottom, backgroundColor: color("background") }}>
       {isHydrated ? (
         <FadeIn style={{ flex: 1 }} slide={false}>
           {children}
@@ -472,7 +472,7 @@ const Main: React.FC<{}> = track()(({}) => {
   const onboardingState = AppStore.useAppState((state) => state.native.sessionState.onboardingState)
 
   if (!isHydrated) {
-    return <View></View>
+    return <View />
   }
   if (!isLoggedIn || onboardingState === "incomplete") {
     return <NativeViewController viewName="Onboarding" />

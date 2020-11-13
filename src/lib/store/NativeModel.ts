@@ -41,6 +41,9 @@ export interface NativeState {
   // Empty is falsy in JS, so these are fine too.
   stripePublishableKey: string
   sentryDSN: string
+
+  isDarkModeOn: string
+
   options: {
     AROptionsBidManagement: boolean
     AROptionsEnableMyCollection: boolean
@@ -69,6 +72,7 @@ export interface NativeModel {
   sessionState: NativeState
   setLocalState: Action<NativeModel, Partial<NativeState>>
   setApplicationIconBadgeNumber: Thunk<NativeModel, number>
+  setDarkMode: Action<NativeModel, string>
 }
 
 export const NativeModel: NativeModel = {
@@ -78,6 +82,9 @@ export const NativeModel: NativeModel = {
   }),
   setApplicationIconBadgeNumber: thunk((_actions, count) => {
     NativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber(count)
+  }),
+  setDarkMode: action((state, value) => {
+    state.sessionState.isDarkModeOn = value
   }),
 }
 

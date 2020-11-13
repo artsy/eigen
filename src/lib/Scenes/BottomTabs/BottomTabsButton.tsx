@@ -67,7 +67,6 @@ export const BottomTabsButton: React.FC<{
           <Animated.View
             style={{
               opacity: activeProgress,
-              backgroundColor: "white",
               width: ICON_WIDTH,
               height: ICON_HEIGHT,
             }}

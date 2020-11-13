@@ -1,4 +1,4 @@
-import { Color, themeProps } from "../Theme"
+import { Color, themeColors } from "../Theme"
 
 /**
  * A helper to easily access colors when not in a styled-components or
@@ -12,5 +12,5 @@ export function color(colorKey: any) {
     return undefined
   }
 
-  return themeProps.colors[colorKey as Color]
+  return themeColors[colorKey as Color]
 }

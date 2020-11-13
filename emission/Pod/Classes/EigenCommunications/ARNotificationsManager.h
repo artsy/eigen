@@ -24,6 +24,8 @@
 
 + (NSString *)stripePublishableKey;
 + (NSString *)sentryDSN;
+
++ (NSString *)isDarkModeOn;
 @end
 
 

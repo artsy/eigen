@@ -153,7 +153,8 @@ SOFTWARE.
                                                                  [ARStateKey options] : options,
                                                                  [ARStateKey legacyFairSlugs] : fairSlugs,
                                                                  [ARStateKey legacyFairProfileSlugs] : fairProfileSlugs,
-                                                                 [ARStateKey deviceId] : self.deviceId
+                                                                 [ARStateKey deviceId] : self.deviceId,
+                                                                 [ARStateKey isDarkModeOn] : @"false",
     } packagerURL:packagerURL];
 
     // Disable default React Native dev menu shake motion handler
