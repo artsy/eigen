@@ -1,10 +1,10 @@
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
-import { AppRegistry, View, YellowBox } from "react-native"
+import { AppRegistry, StatusBar, View, YellowBox } from "react-native"
 import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
-import { color, Theme } from "palette"
+import { color, Theme, useColors, useIsDarkModeOn } from "palette"
 import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowQueryRenderer } from "./Containers/BidFlow"
 import { GeneQueryRenderer } from "./Containers/Gene"
@@ -291,8 +291,11 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) =
   const paddingTop = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.top
   const paddingBottom = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.bottom
   const isHydrated = AppStore.useAppState((state) => state.sessionState.isHydrated)
+  const isDarkModeOn = useIsDarkModeOn()
+
   return (
     <View style={{ flex: 1, paddingTop, paddingBottom, backgroundColor: color("background") }}>
+      <StatusBar barStyle={isDarkModeOn ? "light-content" : "dark-content"} />
       {isHydrated ? (
         <FadeIn style={{ flex: 1 }} slide={false}>
           {children}

@@ -1,5 +1,6 @@
 import { AppStore } from "lib/store/AppStore"
 import useAppState from "lib/utils/useAppState"
+import { isObject } from "lodash"
 import React, { useEffect, useState } from "react"
 import { useColorScheme } from "react-native"
 import { TEXT_FONT_SIZES, TEXT_FONTS, TEXT_LETTER_SPACING, TEXT_LINE_HEIGHTS } from "./elements/Text"
@@ -388,6 +389,47 @@ export let themeProps = {
 
 export let isDarkModeOn = false
 export let themeColors = lightModeColors
+
+export const useIsDarkModeOn = () => {
+  const [isOn, setIsOn] = useState(false)
+  const darkMode = AppStore.useAppState((state) => state.settings.darkMode)
+  const systemColorScheme = useColorScheme() // TODO: This doesnt work well in the simulator. Try on device.
+
+  const updateDarkMode = () => {
+    const calculateIsDarkModeOn = () => {
+      if (darkMode === "dark") {
+        return true
+      }
+      if (darkMode === "light") {
+        return false
+      }
+      if (darkMode === "system") {
+        if (systemColorScheme === "dark") {
+          return true
+        }
+        if (systemColorScheme === "light") {
+          return false
+        }
+        // in any other case, default to false
+      }
+      return false
+    }
+    isDarkModeOn = calculateIsDarkModeOn()
+
+    themeProps.colors = isDarkModeOn ? darkModeColors : lightModeColors
+    themeColors = isDarkModeOn ? darkModeColors : lightModeColors
+    setIsOn(isDarkModeOn)
+    AppStore.actions.native.setDarkMode(isDarkModeOn ? "true" : "false")
+  }
+
+  useEffect(() => {
+    updateDarkMode()
+  }, [darkMode])
+
+  useAppState({ onForeground: () => updateDarkMode() })
+
+  return isOn
+}
 
 export const useColors = () => {
   const [colors, setColors] = useState(lightModeColors)
