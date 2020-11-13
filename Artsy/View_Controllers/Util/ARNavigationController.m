@@ -78,6 +78,11 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
     _animatesLayoverChanges = YES;
 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateForDarkMode)
+                                                 name:@"darkModeNotif"
+                                               object:nil];
+
     return self;
 }
 
@@ -85,6 +90,7 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 {
     [ARScrollNavigationChief.chief removeObserver:self forKeyPath:ar_keypath(ARScrollNavigationChief.chief, allowsMenuButtons) context:ARNavigationControllerScrollingChiefContext];
     [self observeViewController:NO];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Properties
@@ -123,6 +129,11 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     self.backButtonTopConstraint = [_backButton alignTopEdgeWithView:self.view predicate:@"12"];
     _backButton.accessibilityIdentifier = @"Back";
     _backButton.alpha = 0;
+}
+
+- (void)updateForDarkMode
+{
+    [_backButton updateForDarkMode];
 }
 
 // Handle modal changes to status bars

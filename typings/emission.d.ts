@@ -16,6 +16,7 @@ declare module "react-native" {
       nativeState: NativeState
       postNotificationName(type: string, data: object): void
       didFinishBootstrapping(): void
+      setDarkMode(value: boolean)
     }
     ARCocoaConstantsModule: {
       AREnabled: boolean

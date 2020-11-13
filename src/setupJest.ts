@@ -172,6 +172,7 @@ function getNativeModules(): typeof NativeModules {
       },
       postNotificationName: jest.fn(),
       didFinishBootstrapping: jest.fn(),
+      setDarkMode: jest.fn(),
     },
 
     ARTemporaryAPIModule: {

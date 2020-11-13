@@ -1,8 +1,7 @@
 import { AppStore } from "lib/store/AppStore"
 import useAppState from "lib/utils/useAppState"
-import { isObject } from "lodash"
 import React, { useEffect, useState } from "react"
-import { useColorScheme } from "react-native"
+import { NativeModules, useColorScheme } from "react-native"
 import { TEXT_FONT_SIZES, TEXT_FONTS, TEXT_LETTER_SPACING, TEXT_LINE_HEIGHTS } from "./elements/Text"
 import { fontFamily } from "./platform/fonts/fontFamily"
 import { ThemeProvider } from "./platform/primitives"
@@ -427,6 +426,7 @@ export const useIsDarkModeOn = () => {
     themeColors = isDarkModeOn ? darkModeColors : lightModeColors
     setIsOn(isDarkModeOn)
     AppStore.actions.native.setDarkMode(isDarkModeOn ? "true" : "false")
+    NativeModules.ARNotificationsManager.setDarkMode(isDarkModeOn)
   }
 
   useEffect(() => {
@@ -468,6 +468,7 @@ export const useColors = () => {
     themeColors = isDarkModeOn ? darkModeColors : lightModeColors
     setColors(isDarkModeOn ? darkModeColors : lightModeColors)
     AppStore.actions.native.setDarkMode(isDarkModeOn ? "true" : "false")
+    NativeModules.ARNotificationsManager.setDarkMode(isDarkModeOn)
   }
 
   useEffect(() => {

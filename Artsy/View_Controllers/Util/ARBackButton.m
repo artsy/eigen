@@ -18,4 +18,15 @@
     [self setBackgroundColor:backgroundColor forState:UIControlStateNormal animated:NO];
 }
 
+- (void)updateForDarkMode
+{
+    UIColor *backgroundColor = [[[AREmission sharedInstance] stateStringForKey:[ARStateKey isDarkModeOn]] isEqualToString:@"true"]
+        ? [UIColor redColor]
+        : [UIColor blueColor];
+
+    [self setBackgroundColor:backgroundColor forState:UIControlStateNormal animated:NO];
+    [self setNeedsLayout];
+    [self setNeedsDisplay];
+}
+
 @end
