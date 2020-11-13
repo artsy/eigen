@@ -1,12 +1,18 @@
 upcoming:
-  version: 6.7.1
+  version: 6.7.2
   date: TBD
   dev:
     - Pass correct arguments to auction artwork grid tracking - pepopowitz
   user_facing:
     -
-
 releases:
+  - version: 6.7.1
+    date: November 13, 2020
+    dev:
+      -
+    user_facing:
+      - Fix a bug with unregistered auction screen being loaded from push - david
+
   - version: 6.7.0
     date: November 11, 2020
     dev:
