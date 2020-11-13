@@ -4,8 +4,8 @@ import { saleTime } from "lib/utils/saleTime"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import moment from "moment"
 import { Flex, Text } from "palette"
-import React from "react"
-import { Animated, Dimensions, Image, TouchableOpacity, View } from "react-native"
+import React, { useRef, useState } from "react"
+import { Animated, Dimensions, Easing, Image, Modal, TouchableOpacity, View } from "react-native"
 import * as AddCalendarEvent from "react-native-add-calendar-event"
 import { CreateOptions } from "react-native-add-calendar-event"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -27,6 +27,8 @@ interface Props {
 
 export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
   const saleTimeDetails = saleTime(sale)
+  const animatedValue = useRef(new Animated.Value(0))
+  const [isEventSavedModalVisible, setIsEventSavedModalVisible] = useState(false)
 
   const saveCalendarEvent = async () => {
     try {
@@ -41,7 +43,38 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
         notes: RemoveMarkDown(sale.description || ""),
       }
 
-      await AddCalendarEvent.presentEventCreatingDialog(eventConfig)
+      const event = await AddCalendarEvent.presentEventCreatingDialog(eventConfig)
+      // The user saved the event successfully
+      if (event.action === "SAVED") {
+        setIsEventSavedModalVisible(true)
+        const shakeSequence = [
+          // start rotation in one direction (only half the time is needed)
+          Animated.timing(animatedValue.current, {
+            toValue: 1.0,
+            duration: 200,
+            easing: Easing.linear,
+            useNativeDriver: true,
+          }),
+          // rotate in other direction, to minimum value (= twice the duration of above)
+          Animated.timing(animatedValue.current, {
+            toValue: -1.0,
+            duration: 400,
+            easing: Easing.linear,
+            useNativeDriver: true,
+          }),
+          // return to begin position
+          Animated.timing(animatedValue.current, {
+            toValue: 0.0,
+            duration: 200,
+            easing: Easing.linear,
+            useNativeDriver: true,
+          }),
+        ]
+        Animated.sequence([...shakeSequence, ...shakeSequence]).start()
+        setTimeout(() => {
+          setIsEventSavedModalVisible(false)
+        }, 2000)
+      }
     } catch (error) {
       console.log(error)
     }
@@ -49,6 +82,42 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
 
   return (
     <>
+      <Modal
+        visible={isEventSavedModalVisible}
+        animationType="slide"
+        transparent
+        onRequestClose={() => setIsEventSavedModalVisible(false)}
+      >
+        <Flex
+          mx={1}
+          p={2}
+          backgroundColor="white"
+          mt={useScreenDimensions().safeAreaInsets.top}
+          borderRadius={3}
+          flexDirection="row"
+          alignItems="center"
+        >
+          <Animated.Image
+            source={require("@images/bell.png")}
+            resizeMode="contain"
+            style={{
+              height: 20,
+              width: 20,
+              transform: [
+                {
+                  rotate: animatedValue.current.interpolate({
+                    inputRange: [-1, 1],
+                    outputRange: ["-0.5rad", "0.5rad"],
+                  }),
+                },
+              ],
+            }}
+          />
+          <Text variant="mediumText" ml={1}>
+            Event saved successfully
+          </Text>
+        </Flex>
+      </Modal>
       {!!sale.coverImage?.url && (
         <Animated.View
           style={{
