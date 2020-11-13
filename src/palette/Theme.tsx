@@ -99,6 +99,7 @@ interface UsageColors {
   primaryText: string
   secondaryText: string
   separator: string
+  underlay: string
 }
 
 type ThemeColors = PaletteColors & UsageColors
@@ -132,6 +133,9 @@ const lightModeColors: ThemeColors = {
   get separator() {
     return this.black10
   },
+  get underlay() {
+    return this.black5
+  },
 }
 
 const darkModeColors: ThemeColors = {
@@ -159,6 +163,9 @@ const darkModeColors: ThemeColors = {
     return this.black30
   },
   separator: "#333333",
+  get underlay() {
+    return this.black80
+  },
 }
 
 /**

@@ -24,7 +24,7 @@ export const Touchable: React.FC<TouchableHighlightProps & ExtraTouchableProps> 
   ...props
 }) => (
   <TouchableHighlight
-    underlayColor={color("white100")}
+    underlayColor={color("underlay")}
     activeOpacity={0.8}
     {...props}
     onPress={(evt) => {

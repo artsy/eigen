@@ -21,7 +21,7 @@ export const MenuItem: React.FC<{
   ellipsizeMode,
 }) => {
   return (
-    <Touchable onPress={onPress} underlayColor={color("black5")} disabled={disabled}>
+    <Touchable onPress={onPress} disabled={disabled}>
       <Flex flexDirection="row" alignItems="center" justifyContent="space-between" py={7.5} px="2" pr="15px">
         <Flex flexDirection="row" mr="2">
           <Sans size="4">{title}</Sans>
