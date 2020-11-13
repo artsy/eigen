@@ -98,7 +98,10 @@ interface UsageColors {
   primaryText: string
   secondaryText: string
   separator: string
+  /** used in Touchable */
   underlay: string
+  /** used in places like the RefreshControl */
+  highlight: string
 }
 
 type ThemeColors = PaletteColors & UsageColors
@@ -135,6 +138,9 @@ const lightModeColors: ThemeColors = {
   get underlay() {
     return this.black5
   },
+  get highlight() {
+    return this.black60
+  },
 }
 
 const darkModeColors: ThemeColors = {
@@ -164,6 +170,9 @@ const darkModeColors: ThemeColors = {
   separator: "#333333",
   get underlay() {
     return this.black80
+  },
+  get highlight() {
+    return this.black5
   },
 }
 
