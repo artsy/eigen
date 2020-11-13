@@ -117,6 +117,10 @@
 	<string>Camera access is needed to submit consignments.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photos will be used to gauge the quality of the work you are submitting.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Used to get reminders about auctions</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Test string</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AGaramondPro-BoldItalic.otf</string>

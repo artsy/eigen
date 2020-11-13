@@ -1,11 +1,15 @@
 import { SaleHeader_sale } from "__generated__/SaleHeader_sale.graphql"
+import { getCurrentEmissionState } from "lib/store/AppStore"
 import { saleTime } from "lib/utils/saleTime"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import moment from "moment"
 import { Flex, Text } from "palette"
 import React from "react"
-import { Animated, Dimensions, View } from "react-native"
+import { Animated, Dimensions, Image, TouchableOpacity, View } from "react-native"
+import * as AddCalendarEvent from "react-native-add-calendar-event"
+import { CreateOptions } from "react-native-add-calendar-event"
 import { createFragmentContainer, graphql } from "react-relay"
+import RemoveMarkDown from "remove-markdown"
 import { CaretButton } from "../../../Components/Buttons/CaretButton"
 import OpaqueImageView from "../../../Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "../../../navigation/navigate"
@@ -23,6 +27,25 @@ interface Props {
 
 export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
   const saleTimeDetails = saleTime(sale)
+
+  const saveCalendarEvent = async () => {
+    try {
+      // See https://github.com/vonovak/react-native-add-calendar-event#creating-an-event
+      const eventConfig: CreateOptions = {
+        title: sale.name!,
+        startDate: moment(sale.startAt!).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
+        endDate: sale.endAt
+          ? moment(sale.endAt).add(1, "hour").format("YYYY-MM-DDTHH:mm:ss.SSS[Z]")
+          : moment(sale.startAt!).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
+        url: `${getCurrentEmissionState().webURL}${sale.href!}`,
+        notes: RemoveMarkDown(sale.description || ""),
+      }
+
+      await AddCalendarEvent.presentEventCreatingDialog(eventConfig)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <>
@@ -89,11 +112,21 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
                 {saleTimeDetails.absolute}
               </Text>
             )}
-            {!!saleTimeDetails.relative && (
-              <Text variant="text" color="black60">
-                {saleTimeDetails.relative}
-              </Text>
-            )}
+            <Flex flexDirection="row" alignItems="flex-end">
+              {!!saleTimeDetails.relative && (
+                <Text variant="text" color="black60">
+                  {saleTimeDetails.relative}
+                </Text>
+              )}
+              <TouchableOpacity onPress={saveCalendarEvent}>
+                <Flex flexDirection="row" ml={1}>
+                  <Image source={require("@images/calendar.png")} style={{ height: 17, width: 17 }} />
+                  <Text variant="text" fontWeight="500" ml={0.5}>
+                    Add to calendar
+                  </Text>
+                </Flex>
+              </TouchableOpacity>
+            </Flex>
           </Flex>
           <CaretButton
             text="More info about this auction"
@@ -112,8 +145,11 @@ export const SaleHeaderContainer = createFragmentContainer(SaleHeader, {
     fragment SaleHeader_sale on Sale {
       name
       slug
+      internalID
       liveStartAt
       endAt
+      href
+      description
       startAt
       timeZone
       coverImage {

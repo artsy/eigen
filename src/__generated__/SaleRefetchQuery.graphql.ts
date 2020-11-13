@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 628809bb81723520a686e9be1e823054 */
+/* @relayHash f6e58b3c4a239f127e3e65f15f0cdb1d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -158,8 +158,11 @@ fragment SaleArtworksRail_me_4BVn5U on Me {
 fragment SaleHeader_sale on Sale {
   name
   slug
+  internalID
   liveStartAt
   endAt
+  href
+  description
   startAt
   timeZone
   coverImage {
@@ -692,12 +695,21 @@ return {
             "storageKey": null
           },
           (v6/*: any*/),
+          (v5/*: any*/),
           (v12/*: any*/),
           {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "endAt",
+            "storageKey": null
+          },
+          (v3/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "description",
             "storageKey": null
           },
           {
@@ -732,7 +744,6 @@ return {
             ],
             "storageKey": null
           },
-          (v5/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -773,7 +784,7 @@ return {
     ]
   },
   "params": {
-    "id": "628809bb81723520a686e9be1e823054",
+    "id": "f6e58b3c4a239f127e3e65f15f0cdb1d",
     "metadata": {},
     "name": "SaleRefetchQuery",
     "operationKind": "query",

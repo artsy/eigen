@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash faf5ffa6c0fd866c4c321e2767a36810 */
+/* @relayHash c4d0518374eb10a090c45f86b420661b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,8 +29,11 @@ query SaleHeaderTestsQuery {
 fragment SaleHeader_sale on Sale {
   name
   slug
+  internalID
   liveStartAt
   endAt
+  href
+  description
   startAt
   timeZone
   coverImage {
@@ -118,6 +121,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "internalID",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "liveStartAt",
             "storageKey": null
           },
@@ -126,6 +136,20 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "endAt",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "href",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "description",
             "storageKey": null
           },
           {
@@ -173,7 +197,7 @@ return {
     ]
   },
   "params": {
-    "id": "faf5ffa6c0fd866c4c321e2767a36810",
+    "id": "c4d0518374eb10a090c45f86b420661b",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "sale": {
@@ -189,8 +213,11 @@ return {
           "type": "Image"
         },
         "sale.coverImage.url": (v1/*: any*/),
+        "sale.description": (v1/*: any*/),
         "sale.endAt": (v1/*: any*/),
+        "sale.href": (v1/*: any*/),
         "sale.id": (v2/*: any*/),
+        "sale.internalID": (v2/*: any*/),
         "sale.liveStartAt": (v1/*: any*/),
         "sale.name": (v1/*: any*/),
         "sale.slug": (v2/*: any*/),

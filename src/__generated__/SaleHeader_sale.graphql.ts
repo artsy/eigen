@@ -7,8 +7,11 @@ import { FragmentRefs } from "relay-runtime";
 export type SaleHeader_sale = {
     readonly name: string | null;
     readonly slug: string;
+    readonly internalID: string;
     readonly liveStartAt: string | null;
     readonly endAt: string | null;
+    readonly href: string | null;
+    readonly description: string | null;
     readonly startAt: string | null;
     readonly timeZone: string | null;
     readonly coverImage: {
@@ -48,6 +51,13 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "internalID",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "liveStartAt",
       "storageKey": null
     },
@@ -56,6 +66,20 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "ScalarField",
       "name": "endAt",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "href",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "description",
       "storageKey": null
     },
     {
@@ -94,5 +118,5 @@ const node: ReaderFragment = {
   "type": "Sale",
   "abstractKey": null
 };
-(node as any).hash = 'fc4771b92fc4f9e7edf8fe8befec8c8b';
+(node as any).hash = '6c5424e835c2bcf70a81e13014f19cc3';
 export default node;
