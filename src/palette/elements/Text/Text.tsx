@@ -11,6 +11,7 @@ import {
   TypographyProps,
   variant as systemVariant,
 } from "styled-system"
+import { color as pcolor } from "../../helpers/color"
 import { styled as primitives } from "../../platform/primitives"
 import {
   calculateLetterSpacing,
@@ -49,6 +50,8 @@ const InnerText = primitives.Text<TextProps>`
 /** Text */
 export const Text: React.FC<TextProps> = ({ children, variant, fontSize, letterSpacing, lineHeight, ...rest }) => {
   const props = {
+    // add some defaults and then they can be overridden
+    color: pcolor("primaryText"),
     variant,
     fontSize,
     ...(!variant && letterSpacing && fontSize

@@ -24,6 +24,7 @@ import {
 
 import { FontFamily, fontFamily } from "palette/platform/fonts/fontFamily"
 import { TextProps } from "react-native"
+import { color as pcolor } from "../../helpers/color"
 
 /**
  * Spec: https://www.notion.so/artsy/Typography-d1f9f6731f3d47c78003d6d016c30221
@@ -102,7 +103,12 @@ function createStyledText<P extends StyledTextProps>(fontType: keyof FontFamily)
         throw new Error(`"${size}" is not a valid size for ${fontType}`)
       }
 
-      return <BaseText style={[_style, { fontFamily: fontFamilyString, ...fontMetrics }]} {...textProps} />
+      return (
+        <BaseText
+          style={[_style, { color: pcolor("primaryText") }, { fontFamily: fontFamilyString, ...fontMetrics }]}
+          {...textProps}
+        />
+      )
     }
   )``
 }

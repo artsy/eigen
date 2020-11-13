@@ -6,7 +6,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { AppStore } from "lib/store/AppStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Join, Separator } from "palette"
+import { Flex, Join, Separator } from "palette"
 import React, { useRef } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -40,20 +40,18 @@ export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading, isA
   }
 
   return (
-    <>
-      <ScrollView ref={navRef}>
-        {!!isArrivingFromMyCollection && (
-          <FancyModalHeader onLeftButtonPress={() => navActions.goBack()} hideBottomDivider />
-        )}
-        <Join separator={<Separator my={3} />}>
-          <Header onConsignPress={handleConsignPress} />
-          <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
-          <HowItWorks />
-          <ArtistList targetSupply={targetSupply} isLoading={isLoading} />
-          <Footer onConsignPress={handleConsignPress} />
-        </Join>
-      </ScrollView>
-    </>
+    <ScrollView ref={navRef}>
+      {!!isArrivingFromMyCollection && (
+        <FancyModalHeader onLeftButtonPress={() => navActions.goBack()} hideBottomDivider />
+      )}
+      <Join separator={<Separator my={3} />}>
+        <Header onConsignPress={handleConsignPress} />
+        <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
+        <HowItWorks />
+        <ArtistList targetSupply={targetSupply} isLoading={isLoading} />
+        <Footer onConsignPress={handleConsignPress} />
+      </Join>
+    </ScrollView>
   )
 }
 

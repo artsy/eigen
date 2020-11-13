@@ -1,3 +1,4 @@
+import {color} from "palette"
 import React from "react"
 import Svg, { Path } from "react-native-svg"
 import { BottomTabType } from "./BottomTabType"

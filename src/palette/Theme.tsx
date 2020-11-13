@@ -1,10 +1,7 @@
-import { collectFields } from "graphql/execution/execute"
 import { AppStore } from "lib/store/AppStore"
 import useAppState from "lib/utils/useAppState"
 import React, { useEffect, useState } from "react"
 import { useColorScheme } from "react-native"
-import { Appearance } from "react-native-appearance"
-import { Flex } from "./elements/Flex"
 import { TEXT_FONT_SIZES, TEXT_FONTS, TEXT_LETTER_SPACING, TEXT_LINE_HEIGHTS } from "./elements/Text"
 import { fontFamily } from "./platform/fonts/fontFamily"
 import { ThemeProvider } from "./platform/primitives"
@@ -97,10 +94,10 @@ interface PaletteColors {
 
 // Second layer
 interface UsageColors {
-  /** Background */
   background: string
   primaryText: string
   secondaryText: string
+  separator: string
 }
 
 type ThemeColors = PaletteColors & UsageColors
@@ -131,6 +128,9 @@ const lightModeColors: ThemeColors = {
   get secondaryText() {
     return this.black60
   },
+  get separator() {
+    return this.black10
+  },
 }
 
 const darkModeColors: ThemeColors = {
@@ -157,6 +157,7 @@ const darkModeColors: ThemeColors = {
   get secondaryText() {
     return this.black30
   },
+  separator: "#333333",
 }
 
 /**
@@ -423,13 +424,7 @@ export const Theme: React.FC = (props) => {
 
   useAppState({ onForeground: () => updateDarkMode() })
 
-  return (
-    <ThemeProvider theme={{ ...themeProps, colors }}>
-      <Flex flex={1} backgroundColor="background">
-        {props.children}
-      </Flex>
-    </ThemeProvider>
-  )
+  return <ThemeProvider theme={{ ...themeProps, colors }}>{props.children}</ThemeProvider>
 }
 
 /** All available px spacing maps */

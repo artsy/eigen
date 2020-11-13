@@ -1,4 +1,4 @@
-import { Flex, Sans, Separator } from "palette"
+import { Flex, Separator, Text } from "palette"
 import React from "react"
 import { View } from "react-native"
 
@@ -9,16 +9,16 @@ export const PageWithSimpleHeader: React.FC<{
   noSeparator?: boolean
 }> = ({ title, left, right, children, noSeparator }) => {
   return (
-    <View style={{ flex: 1 }}>
+    <Flex flex={1} backgroundColor="background">
       <Flex px="2" pb="1" pt="2" flexDirection="row" alignItems="center">
         <Flex flex={1} alignItems="flex-start">
           {left}
         </Flex>
         {/* TODO: figure out how to make this stretch dynamically */}
         <Flex flex={2.5}>
-          <Sans size="4" weight="medium" textAlign="center">
+          <Text variant="title" fontWeight="500" textAlign="center">
             {title}
-          </Sans>
+          </Text>
         </Flex>
         <Flex flex={1} alignItems="flex-end">
           {right}
@@ -26,6 +26,6 @@ export const PageWithSimpleHeader: React.FC<{
       </Flex>
       {!noSeparator && <Separator />}
       <View style={{ flex: 1 }}>{children}</View>
-    </View>
+    </Flex>
   )
 }
