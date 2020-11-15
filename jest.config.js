@@ -19,5 +19,5 @@ module.exports = {
     ".*(ts|tsx|js|jsx)$": "babel-jest",
     "\\.graphql$": "jest-raw-loader",
   },
-  transformIgnorePatterns: ["node_modules/(?!(react-native(-.*)?|(@react-native-community/.*))?/)"],
+  transformIgnorePatterns: ["node_modules/(?!(react-native(-.*)?/(@react-native-community/.*))?|react-navigation|@react-navigation/.*)"],
 }

@@ -25,7 +25,7 @@ export interface MyCollectionArtworkProps {
   marketPriceInsights: NonNullable<MyCollectionArtworkQueryResponse["marketPriceInsights"]>
 }
 
-const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwork, marketPriceInsights }) => {
+export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwork, marketPriceInsights }) => {
   const [showModal, setShowModal] = useState(false)
 
   return (

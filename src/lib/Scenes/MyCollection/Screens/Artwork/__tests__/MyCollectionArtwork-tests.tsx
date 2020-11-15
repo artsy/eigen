@@ -1,11 +1,12 @@
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { navigate } from "lib/navigation/navigate"
 import { AppStore } from "lib/store/AppStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { MyCollectionArtworkInsightsFragmentContainer } from "../../Artwork/Components/ArtworkInsights/MyCollectionArtworkInsights"
+import { MyCollectionArtworkInsightsFragmentContainer } from "../Components/ArtworkInsights/MyCollectionArtworkInsights"
 import { MyCollectionArtworkHeaderFragmentContainer } from "../Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "../Components/MyCollectionArtworkMeta"
-import { tests } from "../MyCollectionArtworkDetail"
+import { tests } from "../MyCollectionArtwork"
 
 jest.mock("../Components/MyCollectionArtworkHeader", () => ({
   MyCollectionArtworkHeaderFragmentContainer: () => null,
@@ -21,7 +22,7 @@ jest.mock("../Components/ArtworkInsights/MyCollectionArtworkInsights", () => ({
 
 describe("MyCollectionArtworkDetail", () => {
   const getWrapper = (props?: any) => {
-    return renderWithWrappers(<tests.MyCollectionArtworkDetail {...props} />)
+    return renderWithWrappers(<tests.MyCollectionArtwork {...props} />)
   }
 
   describe("artwork detail behavior", () => {
@@ -30,14 +31,6 @@ describe("MyCollectionArtworkDetail", () => {
       expect(wrapper.root.findByType(MyCollectionArtworkHeaderFragmentContainer)).toBeDefined()
       expect(wrapper.root.findByType(MyCollectionArtworkMetaFragmentContainer)).toBeDefined()
       expect(wrapper.root.findByType(MyCollectionArtworkInsightsFragmentContainer)).toBeDefined()
-    })
-
-    it("calls goBack function when header back button is pressed", () => {
-      const spy = jest.fn()
-      AppStore.actions.myCollection.navigation.goBack = spy as any
-      const wrapper = getWrapper()
-      wrapper.root.findByType(FancyModalHeader).props.onLeftButtonPress()
-      expect(spy).toHaveBeenCalled()
     })
 
     it("calls startEditingArtworkAction when header edit button is pressed", () => {
@@ -49,20 +42,16 @@ describe("MyCollectionArtworkDetail", () => {
       expect(spy).toHaveBeenCalledWith(artworkProps.artwork)
     })
 
-    it("calls navigateToConsignSubmission action when submit button is pressed", () => {
-      const spy = jest.fn()
-      AppStore.actions.myCollection.navigation.navigateToConsignSubmission = spy as any
+    it("navigates to consign submission when submit button is pressed", () => {
       const wrapper = getWrapper()
       wrapper.root.findByProps({ "data-test-id": "SubmitButton" }).props.onPress()
-      expect(spy).toHaveBeenCalled()
+      expect(navigate).toHaveBeenCalledWith("/consign/submission")
     })
 
-    it("calls navigateToConsignLearnMore action when submit button is pressed", () => {
-      const spy = jest.fn()
-      AppStore.actions.myCollection.navigation.navigateToConsignLearnMore = spy as any
+    it("navigates to sales page when learn more button is pressed", () => {
       const wrapper = getWrapper()
       wrapper.root.findByProps({ "data-test-id": "LearnMoreButton" }).props.onPress()
-      expect(spy).toHaveBeenCalled()
+      expect(navigate).toHaveBeenCalledWith("/sales")
     })
   })
 })
