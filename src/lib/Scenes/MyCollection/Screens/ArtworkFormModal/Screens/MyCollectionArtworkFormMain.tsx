@@ -15,7 +15,7 @@ import { ArtworkFormModalScreen } from "../MyCollectionArtworkFormModal"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 
-export const MyCollectionArtworkForm: React.FC<StackScreenProps<ArtworkFormModalScreen, "ArtworkForm">> = ({
+export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormModalScreen, "ArtworkForm">> = ({
   navigation,
   route,
 }) => {
@@ -53,6 +53,7 @@ export const MyCollectionArtworkForm: React.FC<StackScreenProps<ArtworkFormModal
         <Spacer my={2} />
 
         <PhotosButton
+          data-test-id="PhotosButton"
           onPress={() => {
             if (isEmpty(artworkState.sessionState.formValues.photos)) {
               artworkActions.takeOrPickPhotos()
@@ -62,6 +63,7 @@ export const MyCollectionArtworkForm: React.FC<StackScreenProps<ArtworkFormModal
           }}
         />
         <AdditionalDetailsButton
+          data-test-id="AdditionalDetailsButton"
           onPress={() => {
             navigation.navigate("AdditionalDetails")
           }}

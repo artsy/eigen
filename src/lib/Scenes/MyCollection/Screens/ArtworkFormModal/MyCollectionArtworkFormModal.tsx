@@ -24,7 +24,7 @@ import { isEqual } from "lodash"
 import { refreshMyCollection } from "../../MyCollection"
 import { MyCollectionAdditionalDetailsForm } from "./Screens/MyCollectionArtworkFormAdditionalDetails"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
-import { MyCollectionArtworkForm } from "./Screens/MyCollectionArtworkFormMain"
+import { MyCollectionArtworkFormMain } from "./Screens/MyCollectionArtworkFormMain"
 
 export type ArtworkFormMode = "add" | "edit"
 
@@ -171,7 +171,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
           >
             <Stack.Screen
               name="ArtworkForm"
-              component={MyCollectionArtworkForm}
+              component={MyCollectionArtworkFormMain}
               initialParams={{ onDelete, onDismiss, mode: props.mode }}
             />
             <Stack.Screen name="AdditionalDetails" component={MyCollectionAdditionalDetailsForm} />
