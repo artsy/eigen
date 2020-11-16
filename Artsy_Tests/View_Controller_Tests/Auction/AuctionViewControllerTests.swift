@@ -45,6 +45,10 @@ class AuctionViewControllerTests: QuickSpec {
             window?.makeKeyAndVisible()
         }
 
+        beforeEach {
+            setNimbleTolerance(0.1)
+        }
+
         sharedExamples("auctions view controller registration status") { (context: @escaping SharedExampleContext) in
             var horizontalSizeClass: UIUserInterfaceSizeClass!
             var device: ARDeviceType!
