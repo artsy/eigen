@@ -63,11 +63,11 @@ class SaleOnHoldOverlayViewTests: QuickSpec {
             }
 
             it("handles subsequent message updates") {
-                expect(containerView).to( haveValidSnapshot(named: "initial message") )
+                setNimbleTolerance(0.1)
+                expect(containerView).to(haveValidSnapshot(named: "initial message"))
 
                 messages.update("subsequently updated message")
                 // This expectation uses drawRect to delay the snapshot until after a subsequent render pass (for Autolayout to do its thing).
-                setNimbleTolerance(0.1)
                 expect(containerView).to(haveValidSnapshot(named: "updated message", usesDrawRect: true))
             }
         }
