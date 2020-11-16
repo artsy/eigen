@@ -14,7 +14,7 @@ Follow the instructions in [the README](https://github.com/artsy/eigen).
 
 ### Running Tests
 
-We can only run tests in one specific environment, today that is iPhone 12 Pro with the iOS 14.1 Simulator. This is because we use visual snapshots for UI regressions.
+We can only run tests in one specific environment, today that is iPhone 12 Pro with the iOS 14.2 Simulator. This is because we use visual snapshots for UI regressions.
 
 #### To run test in Xcode
 

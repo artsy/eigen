@@ -51,6 +51,7 @@ class SaleOnHoldOverlayViewTests: QuickSpec {
             var containerView: UIView!
             var messages: Observable<String?>!
             beforeEach {
+                setNimbleTolerance(0.1)
                 containerView = UIView().then {
                     $0.backgroundColor = .gray
                     $0.frame = UIScreen.main.bounds
