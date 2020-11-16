@@ -1,5 +1,5 @@
 import { MyCollectionArtworkListItemTestsQuery } from "__generated__/MyCollectionArtworkListItemTestsQuery.graphql"
-import { AppStore } from "lib/store/AppStore"
+import { navigate } from "lib/navigation/navigate"
 import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -53,15 +53,14 @@ describe("MyCollectionArtworkListItem", () => {
   })
 
   it("navigates to artwork detail on click", () => {
-    const spy = jest.fn()
-    AppStore.actions.myCollection.navigation.navigateToArtworkDetail = spy as any
     const wrapper = renderWithWrappers(<TestRenderer />)
     resolveData()
     wrapper.root.findByType(tests.TouchElement).props.onPress()
-    expect(spy).toHaveBeenCalledWith({
-      artistInternalID: "<Artist-mock-id-1>",
-      artworkSlug: "<Artwork-mock-id-5>",
-      medium: '<mock-value-for-field-"medium">',
+    expect(navigate).toHaveBeenCalledWith("/my-collection/artwork/<Artwork-mock-id-5>", {
+      passProps: {
+        artistInternalID: "<Artist-mock-id-1>",
+        medium: '<mock-value-for-field-"medium">',
+      },
     })
   })
 

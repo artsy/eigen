@@ -1,5 +1,6 @@
 import { MyCollectionArtworkMetaTestsQuery } from "__generated__/MyCollectionArtworkMetaTestsQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
+import { navigate } from "lib/navigation/navigate"
 import { AppStore } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -88,13 +89,11 @@ describe("MyCollectionArtworkMeta", () => {
         expect(text).toContain("200 USD")
       })
 
-      it("fires the navigateToViewAllArtworkDetails action on button click", () => {
-        const spy = jest.fn()
-        AppStore.actions.myCollection.navigation.navigateToViewAllArtworkDetails = spy as any
+      it("navigates to artwork details and passes props on button click", () => {
         const wrapper = renderWithWrappers(<TestRenderer viewAll={false} />)
         resolveData()
         wrapper.root.findByType(CaretButton).props.onPress()
-        expect(spy).toHaveBeenCalledWith({
+        expect(navigate).toHaveBeenCalledWith("/my-collection/artwork-details/some-internal-id", {
           passProps: {
             artwork: sharedArtworkProps,
           },
