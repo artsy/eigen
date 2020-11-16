@@ -6,7 +6,7 @@ You'll need [Node](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/) i
 
 ### Xcode Version
 
-Currently we require developers to use Xcode 12, with the latest version (12.1.0) recommended. You can find all versions of Xcode from [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
+Currently we require developers to use Xcode 12, with the latest version (12.2.0) recommended. You can find all versions of Xcode from [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
 
 ### Clone
 
