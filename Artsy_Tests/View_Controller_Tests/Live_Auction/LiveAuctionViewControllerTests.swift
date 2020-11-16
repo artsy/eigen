@@ -48,7 +48,7 @@ class LiveAuctionViewControllerTests: QuickSpec {
 
         it("looks good by default") {
             setupViewControllerForPhone(true)
-            expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
+            expect(subject).to(haveValidSnapshot(named: nil, usesDrawRect: true))
         }
 
         it("handles splitting in an iPad") {
@@ -56,7 +56,7 @@ class LiveAuctionViewControllerTests: QuickSpec {
             ARTestContext.use(.pad) {
                 subject.view.frame = CGRect(x: 0, y: 0, width: 1024, height: 768)
 
-                expect(subject).to (haveValidSnapshot(usesDrawRect: true))
+                expect(subject).to(haveValidSnapshot(usesDrawRect: true))
             }
         }
 

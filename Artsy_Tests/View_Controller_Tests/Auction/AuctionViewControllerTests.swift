@@ -315,7 +315,7 @@ class AuctionViewControllerTests: QuickSpec {
                 return ["horizontalSizeClass": UIUserInterfaceSizeClass.regular.rawValue, "device": ARDeviceType.pad.rawValue]
             }
         }
-        
+
         // TODO: These are failing only on Circle CI. Investigate why.
         xdescribe("compact horizontal size class") {
             itBehavesLike("auctions view controller registration status") {
@@ -360,7 +360,7 @@ class AuctionViewControllerTests: QuickSpec {
                 subject.allowAnimations = false
                 subject.networkModel = Test_AuctionNetworkModel(sale:sale, saleViewModel: saleViewModel)
 
-                expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
+                expect(subject).to(haveValidSnapshot(usesDrawRect: true))
             }
         }
 
