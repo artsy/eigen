@@ -27,7 +27,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
     <View>
       <ScreenMargin>
         <InfoButton
-          title="Auction Data"
+          title="Auction Results"
           modalContent={
             <>
               <Text>

@@ -1,6 +1,7 @@
 import { MyCollectionArtworkArtistAuctionResultsTestsQuery } from "__generated__/MyCollectionArtworkArtistAuctionResultsTestsQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "lib/navigation/navigate"
 import { AppStore } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -64,7 +65,7 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
     })
     expect(wrapper.root.findByType(OpaqueImageView)).toBeDefined()
     const text = extractText(wrapper.root)
-    expect(text).toContain("Recent auction results")
+    expect(text).toContain("Auction Results")
     expect(text).toContain("title")
     expect(text).toContain(`Sold`)
     expect(text).toContain("4.00")
@@ -72,8 +73,6 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
   })
 
   it("navigates to all auction results when user clicks auctions results items", () => {
-    const spy = jest.fn()
-    AppStore.actions.myCollection.navigation.navigateToAllAuctions = spy as any
     const wrapper = renderWithWrappers(<TestRenderer />)
     resolveData({
       Artwork: () => ({
@@ -83,12 +82,10 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
       }),
     })
     wrapper.root.findByProps({ "data-test-id": "AuctionsResultsButton" }).props.onPress()
-    expect(spy).toHaveBeenCalledWith("artist-slug")
+    expect(navigate).toHaveBeenCalledWith("/artist/artist-slug/auction-results")
   })
 
   it("navigates to all auction results on click", () => {
-    const spy = jest.fn()
-    AppStore.actions.myCollection.navigation.navigateToAllAuctions = spy as any
     const wrapper = renderWithWrappers(<TestRenderer />)
     resolveData({
       Artwork: () => ({
@@ -98,6 +95,6 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
       }),
     })
     wrapper.root.findAllByType(CaretButton)[0].props.onPress()
-    expect(spy).toHaveBeenCalledWith("artist-slug")
+    expect(navigate).toHaveBeenCalledWith("/artist/artist-slug/auction-results")
   })
 })
