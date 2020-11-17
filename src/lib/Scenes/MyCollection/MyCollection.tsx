@@ -11,7 +11,7 @@ import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/util
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Box, Button, Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
-import { RefreshControl, View } from "react-native"
+import { RefreshControl, ScrollView, View } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { MyCollectionArtworkFormModal } from "./Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
@@ -79,12 +79,24 @@ const MyCollection: React.FC<{
         My Collection
       </Text>
       {artworks.length === 0 ? (
-        <Flex pb="200">
-          <ZeroState
-            subtitle="Add a work from your collection to access price and market insights."
-            callToAction={<Button onPress={() => setShowModal(true)}>Add artwork</Button>}
-          />
-        </Flex>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefrehsing}
+              onRefresh={() => {
+                refreshMyCollection()
+              }}
+            />
+          }
+          contentContainerStyle={{ flex: 1 }}
+        >
+          <Flex pb="200">
+            <ZeroState
+              subtitle="Add a work from your collection to access price and market insights."
+              callToAction={<Button onPress={() => setShowModal(true)}>Add artwork</Button>}
+            />
+          </Flex>
+        </ScrollView>
       ) : (
         <FlatList
           refreshControl={
