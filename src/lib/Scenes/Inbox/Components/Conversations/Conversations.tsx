@@ -9,8 +9,9 @@ import ConversationSnippet from "./ConversationSnippet"
 import { PAGE_SIZE } from "lib/data/constants"
 
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
+import { useEmissionOption } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Flex, Separator } from "palette"
+import { Flex, Sans, Separator } from "palette"
 
 interface Props {
   me: Conversations_me
@@ -77,11 +78,20 @@ export class Conversations extends Component<Props, State> {
     }
 
     const unreadCount = this.props.me.conversations?.totalUnreadCount
-    const unredCounter = unreadCount ? `(${unreadCount})` : null
+    const unreadCounter = unreadCount ? `(${unreadCount})` : null
+    const shouldDisplayMyBids = useEmissionOption("AROptionsBidManagement")
 
     return (
       <View>
-        <Separator />
+        {!!shouldDisplayMyBids ? (
+          <Separator />
+        ) : (
+          <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
+            <Sans mx={2} mt={1} size="8" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
+              Inbox {unreadCounter}
+            </Sans>
+          </Flex>
+        )}
         <FlatList
           data={conversations}
           keyExtractor={(item) => item.internalID!}

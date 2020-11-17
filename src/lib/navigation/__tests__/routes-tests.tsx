@@ -704,16 +704,6 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to MyBids", () => {
-    expect(matchRoute("/my-bids")).toMatchInlineSnapshot(`
-      Object {
-        "module": "MyBids",
-        "params": Object {},
-        "type": "match",
-      }
-    `)
-  })
-
   it("routes to MyProfilePayment", () => {
     expect(matchRoute("/my-profile/payment")).toMatchInlineSnapshot(`
       Object {
