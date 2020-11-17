@@ -30,12 +30,15 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
           <Separator />
           <Spacer my={1} />
 
-          <ScreenMargin>
-            <Text variant="title">Price and market insights</Text>
-            <Text variant="small" color="black60">
-              For this artist, category, and size combination
-            </Text>
-          </ScreenMargin>
+          {artwork.pricingContext?.appliedFiltersDisplay && (
+            <ScreenMargin>
+              <Text variant="title">Price and market insights</Text>
+              <Text variant="small" color="black60">
+                {artwork.pricingContext.appliedFiltersDisplay}
+              </Text>
+            </ScreenMargin>
+          )}
+
           <Spacer mt={3} />
           <MyCollectionArtworkDemandIndexFragmentContainer marketPriceInsights={marketPriceInsights} />
           <ScreenMargin my={3}>
@@ -68,6 +71,9 @@ export const MyCollectionArtworkInsightsFragmentContainer = createFragmentContai
       ...MyCollectionArtworkPriceEstimate_artwork
       ...MyCollectionArtworkArtistAuctionResults_artwork
       ...MyCollectionArtworkArtistArticles_artwork
+      pricingContext {
+        appliedFiltersDisplay
+      }
     }
   `,
   marketPriceInsights: graphql`

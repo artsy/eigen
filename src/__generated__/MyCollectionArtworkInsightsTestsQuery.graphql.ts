@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3d60a40260c18190255dd1c3dc8c036c */
+/* @relayHash f67495a03ffb194da11411b6e794394d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -104,6 +104,9 @@ fragment MyCollectionArtworkInsights_artwork on Artwork {
   ...MyCollectionArtworkPriceEstimate_artwork
   ...MyCollectionArtworkArtistAuctionResults_artwork
   ...MyCollectionArtworkArtistArticles_artwork
+  pricingContext {
+    appliedFiltersDisplay
+  }
 }
 
 fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights {
@@ -527,6 +530,24 @@ return {
             ],
             "storageKey": null
           },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "AnalyticsPricingContext",
+            "kind": "LinkedField",
+            "name": "pricingContext",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "appliedFiltersDisplay",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
           (v6/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-artwork-id\")"
@@ -622,7 +643,7 @@ return {
     ]
   },
   "params": {
-    "id": "3d60a40260c18190255dd1c3dc8c036c",
+    "id": "f67495a03ffb194da11411b6e794394d",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -717,6 +738,13 @@ return {
         "artwork.costCurrencyCode": (v8/*: any*/),
         "artwork.costMinor": (v11/*: any*/),
         "artwork.id": (v7/*: any*/),
+        "artwork.pricingContext": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "AnalyticsPricingContext"
+        },
+        "artwork.pricingContext.appliedFiltersDisplay": (v8/*: any*/),
         "marketPriceInsights": {
           "enumValues": null,
           "nullable": true,

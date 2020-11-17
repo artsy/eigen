@@ -59,7 +59,6 @@ describe("MyCollectionArtworkInsights", () => {
     resolveData()
     const text = extractText(wrapper.root)
     expect(text).toContain("Price and market insights")
-    expect(text).toContain("For this artist, category, and size combination")
     expect(wrapper.root.findByType(MyCollectionArtworkDemandIndexFragmentContainer)).toBeDefined()
     expect(wrapper.root.findByType(MyCollectionArtworkPriceEstimateFragmentContainer)).toBeDefined()
     expect(wrapper.root.findByType(MyCollectionArtworkArtistMarketFragmentContainer)).toBeDefined()

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0ca01dacd1e9709d87555b0ba676b6de */
+/* @relayHash 4f8e395a8462f3166b2c891e4e0796ec */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -167,6 +167,9 @@ fragment MyCollectionArtworkInsights_artwork on Artwork {
   ...MyCollectionArtworkPriceEstimate_artwork
   ...MyCollectionArtworkArtistAuctionResults_artwork
   ...MyCollectionArtworkArtistArticles_artwork
+  pricingContext {
+    appliedFiltersDisplay
+  }
 }
 
 fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights {
@@ -740,7 +743,25 @@ return {
           (v18/*: any*/),
           (v19/*: any*/),
           (v20/*: any*/),
-          (v21/*: any*/)
+          (v21/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "AnalyticsPricingContext",
+            "kind": "LinkedField",
+            "name": "pricingContext",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "appliedFiltersDisplay",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
         ],
         "storageKey": null
       },
@@ -835,7 +856,7 @@ return {
     ]
   },
   "params": {
-    "id": "0ca01dacd1e9709d87555b0ba676b6de",
+    "id": "4f8e395a8462f3166b2c891e4e0796ec",
     "metadata": {},
     "name": "MyCollectionArtworkDetailQuery",
     "operationKind": "query",
