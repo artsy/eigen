@@ -53,6 +53,7 @@ class MyBids extends React.Component<MyBidsProps> {
     return (
       <Flex flex={1}>
         <StickyTabPage
+          staticHeaderContent={<></>}
           tabs={[
             {
               title: `Active`,

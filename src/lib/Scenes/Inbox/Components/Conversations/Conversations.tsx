@@ -10,7 +10,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
-import { color, Flex, Sans, Separator, Spacer } from "palette"
+import { Flex, Separator } from "palette"
 
 interface Props {
   me: Conversations_me
@@ -81,12 +81,7 @@ export class Conversations extends Component<Props, State> {
 
     return (
       <View>
-        <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
-          <Sans mx={2} mt={1} size="8" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
-            Inbox {unredCounter}
-          </Sans>
-        </Flex>
-        <Spacer style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }} />
+        <Separator />
         <FlatList
           data={conversations}
           keyExtractor={(item) => item.internalID!}
