@@ -32,14 +32,14 @@ target 'Artsy' do
 
   # Core
   pod 'ARGenericTableViewController', git: 'https://github.com/orta/ARGenericTableViewController.git'
-  pod 'CocoaLumberjack', git: 'https://github.com/CocoaLumberjack/CocoaLumberjack.git' # Unreleased > 2.0.1 version has a CP modulemap fix
+  pod 'CocoaLumberjack', '2.4.0'
   pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
   pod 'FXBlurView'
   pod 'ISO8601DateFormatter', git: 'https://github.com/orta/iso-8601-date-formatter'
   pod 'JLRoutes', git: 'https://github.com/orta/JLRoutes.git'
   pod 'JSDecoupledAppDelegate'
-  pod 'Mantle', '~> 1.5.6'
-  pod 'MMMarkdown'
+  pod 'Mantle', '1.5.6'
+  pod 'MMMarkdown', '0.4'
   pod 'NPKeyboardLayoutGuide'
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
@@ -146,19 +146,18 @@ target 'Artsy' do
   target 'Artsy Tests' do
     inherit! :search_paths
 
-    pod 'FBSnapshotTestCase'
-    pod 'Expecta+Snapshots'
     pod 'OHHTTPStubs'
     pod 'XCTest+OHHTTPStubSuiteCleanUp'
     pod 'Specta'
-    pod 'Expecta'
+    pod 'Expecta', '1.0.6'
+    pod 'Expecta+Snapshots', '3.1.1'
     pod 'OCMock'
     pod 'Forgeries/Mocks'
 
     # Swift pods 🎉
-    pod 'Quick'
-    pod 'Nimble'
-    pod 'Nimble-Snapshots'
+    pod 'Quick', '2.0.0'
+    pod 'Nimble', '7.3.4'
+    pod 'Nimble-Snapshots', '6.3.0'
   end
 end
 
