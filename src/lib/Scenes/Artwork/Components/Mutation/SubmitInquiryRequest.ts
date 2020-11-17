@@ -1,12 +1,32 @@
 import { SubmitInquiryRequestMutation } from "__generated__/SubmitInquiryRequestMutation.graphql"
+import { InquiryQuestionInput } from "__generated__/SubmitInquiryRequestMutation.graphql"
+import { ArtworkInquiryContextState } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { commitMutation, Environment, graphql } from "relay-runtime"
 
 export const SubmitInquiryRequest = (
   environment: Environment,
   inquireable: any,
-  payload: any,
+  inquiryState: ArtworkInquiryContextState,
   showErrorMessage?: any
 ) => {
+  let inquiryQuestions
+
+  inquiryQuestions = inquiryState.inquiryQuestions.map((q: InquiryQuestionInput) => {
+    if (q.questionID === "shipping_quote" && inquiryState.shippingLocation) {
+      const { city, coordinates, country, postalCode, state, stateCode } = inquiryState.shippingLocation
+      const locationInput = {
+        city,
+        coordinates,
+        country,
+        postal_code: postalCode,
+        state,
+        state_code: stateCode,
+      }
+      q.details = JSON.stringify(locationInput)
+    }
+    return q
+  })
+
   return commitMutation<SubmitInquiryRequestMutation>(environment, {
     onError: () => {
       // Show error state
@@ -19,8 +39,8 @@ export const SubmitInquiryRequest = (
       input: {
         inquireableID: inquireable.internalID,
         inquireableType: "Artwork",
-        message: payload.message,
-        questions: payload.inquiryQuestions,
+        // message: inquiryState.message,
+        questions: inquiryState.inquiryQuestions,
       },
     },
     mutation: graphql`

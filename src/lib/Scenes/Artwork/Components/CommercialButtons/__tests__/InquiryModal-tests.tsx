@@ -7,7 +7,7 @@ import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
-import { queryLocation } from "lib/utils/googleMaps"
+import { autocompleteLocation } from "lib/utils/googleMaps"
 import { Touchable } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -196,7 +196,7 @@ describe("<InquiryModal />", () => {
     })
 
     it("User adds a location from the shipping modal", async () => {
-      ;(queryLocation as jest.Mock).mockResolvedValue([
+      ;(autocompleteLocation as jest.Mock).mockResolvedValue([
         { id: "a", name: "Coxsackie, NY, USA" },
         { id: "b", name: "Coxs Creek, KY, USA" },
       ])

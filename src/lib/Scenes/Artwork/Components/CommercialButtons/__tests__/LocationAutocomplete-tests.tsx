@@ -3,11 +3,11 @@ import { Input } from "lib/Components/Input/Input"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { queryLocation } from "lib/utils/googleMaps"
+import { autocompleteLocation } from "lib/utils/googleMaps"
 import { Touchable } from "palette"
 import React from "react"
 import { ReactTestRenderer } from "react-test-renderer"
-import { LocationAutocomplete, LocationPredictions } from "../LocationAutocomplete"
+import { LocationPredictions, SimpleLocationAutocomplete } from "../LocationAutocomplete"
 import { press, typeInInput } from "./helpers"
 
 const mockOnChange = jest.fn()
@@ -29,24 +29,24 @@ describe("<LocationAutocomplete/>", () => {
 
   describe("no preselected location", () => {
     beforeEach(() => {
-      ;(queryLocation as jest.Mock).mockResolvedValue(locationQueryResult)
+      ;(autocompleteLocation as jest.Mock).mockResolvedValue(locationQueryResult)
       wrapper = getWrapper()
     })
 
     it("queries google when the user types 3 or more characters", async () => {
       await typeInInput(wrapper.root, "h")
 
-      expect(queryLocation).not.toHaveBeenCalled()
+      expect(autocompleteLocation).not.toHaveBeenCalled()
       expect(wrapper.root.findAllByProps({ "data-test-id": "dropdown" }).length).toEqual(0)
 
       await typeInInput(wrapper.root, "he")
 
-      expect(queryLocation).not.toHaveBeenCalled()
+      expect(autocompleteLocation).not.toHaveBeenCalled()
       expect(wrapper.root.findAllByProps({ "data-test-id": "dropdown" }).length).toEqual(0)
 
       await typeInInput(wrapper.root, "hel")
 
-      expect(queryLocation).toHaveBeenCalled()
+      expect(autocompleteLocation).toHaveBeenCalled()
       expect(wrapper.root.findAllByProps({ "data-test-id": "dropdown" }).length).not.toEqual(0)
       const text = extractText(wrapper.root)
       expect(text).toContain("Busytown, USA")
@@ -77,7 +77,7 @@ describe("<LocationAutocomplete/>", () => {
   })
 
   it("Highlights matched text in the autocomplete", async () => {
-    ;(queryLocation as jest.Mock).mockResolvedValue([{ id: "x", name: "Hello, World" }])
+    ;(autocompleteLocation as jest.Mock).mockResolvedValue([{ id: "x", name: "Hello, World" }])
     await typeInInput(wrapper.root, "hell World")
 
     expect(extractText(wrapper.root)).toContain("Hello, World")
