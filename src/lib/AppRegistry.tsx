@@ -1,6 +1,6 @@
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
-import { AppRegistry, View, YellowBox } from "react-native"
+import { AppRegistry, LogBox, View } from "react-native"
 import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
@@ -90,23 +90,15 @@ import { AppStore, AppStoreProvider } from "./store/AppStore"
 import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 
-YellowBox.ignoreWarnings([
+LogBox.ignoreLogs([
   "Calling `getNode()` on the ref of an Animated component is no longer necessary.",
   "RelayResponseNormalizer: Payload did not contain a value for field `id: id`. Check that you are parsing with the same query that was used to fetch the payload.",
-  // Deprecated, we'll transition when it's removed.
-  "Warning: ListView is deprecated and will be removed in a future release. See https://fb.me/nolistview for more information",
-
-  // RN 0.59.0 ships with RNCameraRoll with this issue: https://github.com/facebook/react-native/issues/23755
-  // We can remove this once this PR gets shipped and we update: https://github.com/facebook/react-native/pull/24314
-  "Module RCTImagePickerManager requires main queue setup since it overrides `init`",
 
   // RN 0.59.0 ships with this bug, see: https://github.com/facebook/react-native/issues/16376
   "RCTBridge required dispatch_sync to load RCTDevLoadingView. This may lead to deadlocks",
 
-  // The following two items exist in node_modules. Once this PR is merged, to make warnings opt-in, we can ignore: https://github.com/facebook/metro/issues/287
+  // The following item exist in node_modules. Once this PR is merged, to make warnings opt-in, we can ignore: https://github.com/facebook/metro/issues/287
 
-  // react-native-sentry ships with this error, tracked here: https://github.com/getsentry/react-native-sentry/issues/479
-  "Require cycle: node_modules/react-native-sentry/lib/Sentry.js -> node_modules/react-native-sentry/lib/RavenClient.js -> node_modules/react-native-sentry/lib/Sentry.js",
   // RN 0.59.0 ships with this issue, which has been effectively marked as #wontfix: https://github.com/facebook/react-native/issues/23130
   "Require cycle: node_modules/react-native/Libraries/Network/fetch.js -> node_modules/react-native/Libraries/vendor/core/whatwg-fetch.js -> node_modules/react-native/Libraries/Network/fetch.js",
 
@@ -138,13 +130,9 @@ interface PartnerLocationsProps {
 }
 const PartnerLocations: React.FC<PartnerLocationsProps> = (props) => <PartnerLocationsQueryRenderer {...props} />
 
-const Inbox: React.FC<{}> = screenTrack<{}>(
-  // @ts-ignore STRICTNESS_MIGRATION
-  () => {
-    return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
-  }
-  // @ts-ignore STRICTNESS_MIGRATION
-)((props) => <InboxQueryRenderer {...props} />)
+const Inbox: React.FC<{}> = screenTrack<{}>(() => {
+  return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
+})((props) => <InboxQueryRenderer {...props} />)
 
 interface GeneProps {
   geneID: string
