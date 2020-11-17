@@ -94,7 +94,7 @@ interface State {
   /** The users's location from core location */
   userLocation?: { lat: number; lng: number }
   /** A set of GeoJSON features, which right now is our show clusters */
-  featureCollections: { [key in BucketKey]?: FilterData }
+  featureCollections: { [key in BucketKey]: FilterData } | {}
   /** Has the map fully rendered? */
   mapLoaded: boolean
   /** In the process of saving a show */

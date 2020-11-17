@@ -5,7 +5,7 @@ import {
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext } from "react"
-import { NavigatorIOS } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
 interface WaysToBuyOptionsScreenProps {

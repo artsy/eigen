@@ -45,6 +45,10 @@ class AuctionViewControllerTests: QuickSpec {
             window?.makeKeyAndVisible()
         }
 
+        beforeEach {
+            setNimbleTolerance(0.1)
+        }
+
         sharedExamples("auctions view controller registration status") { (context: @escaping SharedExampleContext) in
             var horizontalSizeClass: UIUserInterfaceSizeClass!
             var device: ARDeviceType!
@@ -315,7 +319,7 @@ class AuctionViewControllerTests: QuickSpec {
                 return ["horizontalSizeClass": UIUserInterfaceSizeClass.regular.rawValue, "device": ARDeviceType.pad.rawValue]
             }
         }
-        
+
         // TODO: These are failing only on Circle CI. Investigate why.
         xdescribe("compact horizontal size class") {
             itBehavesLike("auctions view controller registration status") {
@@ -360,7 +364,7 @@ class AuctionViewControllerTests: QuickSpec {
                 subject.allowAnimations = false
                 subject.networkModel = Test_AuctionNetworkModel(sale:sale, saleViewModel: saleViewModel)
 
-                expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
+                expect(subject).to(haveValidSnapshot(usesDrawRect: true))
             }
         }
 
@@ -498,7 +502,8 @@ class AuctionViewControllerTests: QuickSpec {
                     subject.allowAnimations = false
                     subject.networkModel = Test_AuctionNetworkModel(sale:sale, saleViewModel: saleViewModel, lotStandings: lotStandings)
 
-                    expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
+                    setNimbleTolerance(0.1)
+                    expect(subject).to(haveValidSnapshot(usesDrawRect: true))
                 }
             }
         }

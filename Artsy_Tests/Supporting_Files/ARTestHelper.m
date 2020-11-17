@@ -16,12 +16,12 @@
 {
     NSOperatingSystemVersion version = [NSProcessInfo processInfo].operatingSystemVersion;
 
-    NSAssert(version.majorVersion == 12 && version.minorVersion == 4,
-             @"The tests should be run on iOS 12.4, not %ld.%ld", version.majorVersion, version.minorVersion);
+    NSAssert(version.majorVersion == 14 && version.minorVersion == 2,
+             @"The tests should be run on iOS 14.2, not %ld.%ld", version.majorVersion, version.minorVersion);
 
     CGSize nativeResolution = [UIScreen mainScreen].nativeBounds.size;
-    NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && CGSizeEqualToSize(nativeResolution, CGSizeMake(1125, 2436)),
-             @"The tests should be run on an iPhone X, not a device with native resolution %@",
+    NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && CGSizeEqualToSize(nativeResolution, CGSizeMake(1170, 2532)),
+             @"The tests should be run on an iPhone 12 Pro, not a device with native resolution %@",
              NSStringFromCGSize(nativeResolution));
 
     ARPerformWorkAsynchronously = NO;
@@ -53,7 +53,7 @@
     SDImageCache *imageCache = [[SDImageCache alloc] initWithNamespace:@"Testing" diskCacheDirectory:NSTemporaryDirectory()];
     [[SDWebImageManager sharedManager] setValue:imageCache forKey:@"_imageCache"];
 
-
+    // You might need to run `yarn bundle` or `yarn bundle-for-native-ci` to generate the jsbundle needed for emission
     AREmission *emission = [[AREmission alloc] initWithState:@{} packagerURL:nil];
     [AREmission setSharedInstance:emission];
 

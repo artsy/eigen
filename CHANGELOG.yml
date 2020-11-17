@@ -3,6 +3,10 @@ upcoming:
   date: TBD
   dev:
     - Pass correct arguments to auction artwork grid tracking - pepopowitz
+    - Upgrade CI to Xcode 12 - pavlos
+    - Update url for echo, now in s3 - ash, pavlos
+    - Move bottom tabs navigator to TS - david
+    - Fix city guide CTA images not showing when running using Xcode 12 - pavlos
   user_facing:
     -
 releases:

@@ -44,8 +44,6 @@ Preview.html
 fastlane/report.xml
 fastlane/Preview.html
 
-Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
-Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+SwiftDeveloperExtras.swift
 Artsy/Eigen.playground/
 
 iOSInjectionProject/
@@ -116,3 +114,5 @@ test-results.json
 # Ignore test artefacts
 test-results.xml
 xcode_test_raw.log
+
+.recordingSnapshots
