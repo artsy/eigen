@@ -55,7 +55,7 @@ interface TabProps {
  */
 export const StickyTabPage: React.FC<{
   tabs: TabProps[]
-  staticHeaderContent: JSX.Element
+  staticHeaderContent?: JSX.Element
   stickyHeaderContent?: JSX.Element
 }> = ({ tabs, staticHeaderContent, stickyHeaderContent = <StickyTabPageTabBar /> }) => {
   const { width } = useScreenDimensions()
