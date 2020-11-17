@@ -5,14 +5,14 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { AppStore } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Box, Button, Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
-import { RefreshControl, ScrollView, View } from "react-native"
-import { FlatList } from "react-native-gesture-handler"
+import { FlatList, RefreshControl, ScrollView, View } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { MyCollectionArtworkFormModal } from "./Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
 import { MyCollectionArtworkListItemFragmentContainer } from "./Screens/ArtworkList/MyCollectionArtworkListItem"
@@ -29,10 +29,12 @@ const MyCollection: React.FC<{
   me: MyCollection_me
 }> = ({ relay, me }) => {
   const [showModal, setShowModal] = useState(false)
+  const { setMeGlobalId } = AppStore.actions.myCollection.artwork
+
   // TODO: remove compact once https://github.com/artsy/gravity/pull/13633 is merged
   const artworks = extractNodes(me?.myCollectionConnection).filter(Boolean)
   const { hasMore, isLoading, loadMore } = relay
-  const [isRefrehsing, setIsRefreshing] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   useEffect(() => {
     const refetch = () => {
@@ -62,6 +64,14 @@ const MyCollection: React.FC<{
     })
   }
 
+  const showAddArtwork = () => {
+    // Store the global me.id identifier so that we know where to add / remove
+    // edges after we add / remove artworks.
+    // TODO: This can be removed once we update to relay 10 mutation API
+    setMeGlobalId(me.id)
+    setShowModal(true)
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <MyCollectionArtworkFormModal
@@ -73,7 +83,7 @@ const MyCollection: React.FC<{
       <FancyModalHeader
         rightButtonText="Add artwork"
         hideBottomDivider
-        onRightButtonPress={() => setShowModal(true)}
+        onRightButtonPress={() => showAddArtwork()}
       ></FancyModalHeader>
       <Text variant="largeTitle" ml={2} mb={2}>
         My Collection
@@ -82,7 +92,7 @@ const MyCollection: React.FC<{
         <ScrollView
           refreshControl={
             <RefreshControl
-              refreshing={isRefrehsing}
+              refreshing={isRefreshing}
               onRefresh={() => {
                 refreshMyCollection()
               }}
@@ -101,7 +111,7 @@ const MyCollection: React.FC<{
         <FlatList
           refreshControl={
             <RefreshControl
-              refreshing={isRefrehsing}
+              refreshing={isRefreshing}
               onRefresh={() => {
                 refreshMyCollection()
               }}
