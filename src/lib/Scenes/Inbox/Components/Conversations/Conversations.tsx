@@ -9,9 +9,9 @@ import ConversationSnippet from "./ConversationSnippet"
 import { PAGE_SIZE } from "lib/data/constants"
 
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
-import { useEmissionOption } from "lib/store/AppStore"
+import { getCurrentEmissionState, useEmissionOption } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Flex, Sans, Separator } from "palette"
+import { color, Flex, Sans, Separator } from "palette"
 
 interface Props {
   me: Conversations_me
@@ -79,7 +79,7 @@ export class Conversations extends Component<Props, State> {
 
     const unreadCount = this.props.me.conversations?.totalUnreadCount
     const unreadCounter = unreadCount ? `(${unreadCount})` : null
-    const shouldDisplayMyBids = useEmissionOption("AROptionsBidManagement")
+    const shouldDisplayMyBids = getCurrentEmissionState().options.AROptionsBidManagement
 
     return (
       <View>

@@ -5,7 +5,7 @@ import ActiveBids, { ActiveBids as ActiveBidsRef } from "lib/Scenes/Inbox/Compon
 import { ConversationsContainer } from "lib/Scenes/Inbox/Components/Conversations/Conversations"
 import ZeroStateInbox from "lib/Scenes/Inbox/Components/Conversations/ZeroStateInbox"
 import { MyBidsQueryRenderer as MyBids } from "lib/Scenes/MyBids/MyBids.tsx"
-import { useEmissionOption } from "lib/store/AppStore"
+import { getCurrentEmissionState, useEmissionOption } from "lib/store/AppStore"
 import { listenToNativeEvents } from "lib/store/NativeModel"
 import { extractNodes } from "lib/utils/extractNodes"
 import { get } from "lib/utils/get"
@@ -92,7 +92,7 @@ export class Inbox extends React.Component<Props, State> {
     const conversationsExistenceCheck = extractNodes(this.props.me.conversations_existence_check)
     const hasBids = !!lotStanding && lotStanding.length > 0
     const hasConversations = !!conversationsExistenceCheck && conversationsExistenceCheck.length > 0
-    const shouldDisplayMyBids = useEmissionOption("AROptionsBidManagement")
+    const shouldDisplayMyBids = getCurrentEmissionState().options.AROptionsBidManagement
 
     return hasBids || hasConversations ? (
       <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
