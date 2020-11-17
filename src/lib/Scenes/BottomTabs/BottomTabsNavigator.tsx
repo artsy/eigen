@@ -29,7 +29,7 @@ export const BottomTabsNavigator = () => {
           <NavStack tabName="home" rootModuleName="Home" />,
           <NavStack tabName="search" rootModuleName="Search" />,
           <NavStack tabName="inbox" rootModuleName="Inbox" />,
-          <NavStack tabName="sell" rootModuleName="SellTabApp" />,
+          <NavStack tabName="sell" rootModuleName="Sales" />,
           <NavStack tabName="profile" rootModuleName="MyProfile" />,
         ]}
         activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(selectedTab)}
