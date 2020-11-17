@@ -815,10 +815,10 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to SellTabApp", () => {
+  it("routes to Sales", () => {
     expect(matchRoute("/collections/my-collection/marketing-landing")).toMatchInlineSnapshot(`
       Object {
-        "module": "SellTabApp",
+        "module": "Sales",
         "params": Object {},
         "type": "match",
       }
