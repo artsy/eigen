@@ -368,9 +368,9 @@ workflows:
             branches:
               ignore:
                 - app_store_submission
-          requires:
-            - build-test-js
-            - horizon/block
+          # requires:
+          # - build-test-js
+          # - horizon/block
       - update-metaphysics:
           filters:
             branches:
