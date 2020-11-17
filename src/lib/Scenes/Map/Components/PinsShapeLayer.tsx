@@ -7,7 +7,7 @@ import { BucketKey } from "../bucketCityResults"
 import { FilterData, MapGeoFeatureCollection } from "../types"
 
 interface Props {
-  featureCollections: { [key in BucketKey]: FilterData }
+  featureCollections: { [key in BucketKey]: FilterData } | {}
   // @ts-ignore STRICTNESS_MIGRATION
   onPress?: (nativeEvent) => void
   duration?: number

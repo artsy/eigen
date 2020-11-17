@@ -80,14 +80,14 @@ class AuctionSaleArtworksNetworkModelSpec: QuickSpec {
             OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/sale/\(saleID)/sale_artworks", withResponse: saleArtworksJSON)
             
             var saleArtworks: [SaleArtwork]?
-            waitUntil { done in
+            waitUntil(timeout: 10) { done in
                 subject.fetchSaleArtworks(saleID).subscribe { result in
                     if case .success(let a) = result { saleArtworks = a }
                     done()
                 }
             }
             
-            expect(saleArtworks).to( beEmpty() )
+            expect(saleArtworks).to(beEmpty())
         }
     }
 }

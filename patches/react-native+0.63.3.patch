@@ -1,5 +1,25 @@
+diff --git a/node_modules/react-native/Libraries/Core/Devtools/parseErrorStack.js b/node_modules/react-native/Libraries/Core/Devtools/parseErrorStack.js
+index ec69f3f..f1fa6ed 100644
+--- a/node_modules/react-native/Libraries/Core/Devtools/parseErrorStack.js
++++ b/node_modules/react-native/Libraries/Core/Devtools/parseErrorStack.js
+@@ -13,6 +13,7 @@
+ import type {StackFrame} from '../NativeExceptionsManager';
+ import type {HermesParsedStack} from './parseHermesStack';
+ 
++const stacktraceParser = require('stacktrace-parser');
+ const parseHermesStack = require('./parseHermesStack');
+ 
+ export type ExtendedError = Error & {
+@@ -52,7 +53,6 @@ function parseErrorStack(e: ExtendedError): Array<StackFrame> {
+     return [];
+   }
+ 
+-  const stacktraceParser = require('stacktrace-parser');
+   const stack = Array.isArray(e.stack)
+     ? e.stack
+     : global.HermesInternal
 diff --git a/node_modules/react-native/React/Base/RCTTouchHandler.m b/node_modules/react-native/React/Base/RCTTouchHandler.m
-index 9d38dbb..ae36555 100644
+index 9d38dbb..dbb60aa 100644
 --- a/node_modules/react-native/React/Base/RCTTouchHandler.m
 +++ b/node_modules/react-native/React/Base/RCTTouchHandler.m
 @@ -13,6 +13,7 @@
@@ -13,7 +33,7 @@ index 9d38dbb..ae36555 100644
 @@ -107,6 +108,16 @@ - (void)_recordNewTouches:(NSSet<UITouch *> *)touches
        continue;
      }
-       
+ 
 +      UIView *touchRootView = touch.view;
 +      while (touchRootView && ![touchRootView isKindOfClass:RCTRootContentView.class]) {
 +          touchRootView = touchRootView.superview;

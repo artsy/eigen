@@ -22,6 +22,7 @@ class LiveAuctionViewControllerTests: QuickSpec {
         }
 
         beforeEach {
+            setNimbleTolerance(0.1)
             OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/sale/los-angeles-modern-auctions-march-2015", withResponse:[
                 ["id": "1234"]
             ])
@@ -48,7 +49,7 @@ class LiveAuctionViewControllerTests: QuickSpec {
 
         it("looks good by default") {
             setupViewControllerForPhone(true)
-            expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
+            expect(subject).to(haveValidSnapshot(named: nil, usesDrawRect: true))
         }
 
         it("handles splitting in an iPad") {
@@ -56,7 +57,7 @@ class LiveAuctionViewControllerTests: QuickSpec {
             ARTestContext.use(.pad) {
                 subject.view.frame = CGRect(x: 0, y: 0, width: 1024, height: 768)
 
-                expect(subject).to (haveValidSnapshot(usesDrawRect: true))
+                expect(subject).to(haveValidSnapshot(usesDrawRect: true))
             }
         }
 

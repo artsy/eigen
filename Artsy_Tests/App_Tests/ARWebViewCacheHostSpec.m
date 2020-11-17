@@ -42,8 +42,7 @@ it(@"it autoplays HTML5 content (used in super-posts)", ^{
     WKWebView *webView = [sut dequeueWebView];
     [webView stopLoading];
 
-    expect(webView.configuration.requiresUserActionForMediaPlayback).to.equal(NO);
+    expect(webView.configuration.mediaTypesRequiringUserActionForPlayback).to.equal(WKAudiovisualMediaTypeNone);
 });
-
 
 SpecEnd
