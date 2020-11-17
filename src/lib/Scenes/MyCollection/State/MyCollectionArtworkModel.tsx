@@ -62,6 +62,7 @@ export interface MyCollectionArtworkModel {
   setArtworkId: Action<MyCollectionArtworkModel, { artworkId: string; artworkGlobalId: string }>
   setMeGlobalId: Action<MyCollectionArtworkModel, string>
   setArtworkErrorOccurred: Action<MyCollectionArtworkModel, boolean>
+  setLastUploadedPhoto: Action<MyCollectionArtworkModel, Image>
 
   addPhotos: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"]>
   removePhoto: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"][0]>
@@ -151,6 +152,10 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     state.sessionState.formValues.photos = state.sessionState.formValues.photos.filter(
       (photo) => photo.path !== photoToRemove.path
     )
+  }),
+
+  setLastUploadedPhoto: action((state, photo) => {
+    state.sessionState.lastUploadedPhoto = photo
   }),
 
   takeOrPickPhotos: thunk((actions, _payload) => {

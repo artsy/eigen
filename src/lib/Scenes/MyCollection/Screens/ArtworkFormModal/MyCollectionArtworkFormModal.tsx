@@ -198,7 +198,8 @@ const LoadingIndicator = () => {
   )
 }
 
-async function uploadPhotos(photos: ArtworkFormValues["photos"]) {
+export async function uploadPhotos(photos: ArtworkFormValues["photos"]) {
+  AppStore.actions.myCollection.artwork.setLastUploadedPhoto(photos[0])
   const imagePaths = photos.map((photo) => photo.path)
   const convectionKey = await getConvectionGeminiKey()
   const acl = "private"
