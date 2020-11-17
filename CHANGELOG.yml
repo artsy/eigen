@@ -3,9 +3,6 @@ upcoming:
   date: TBD
   dev:
     - Pass correct arguments to auction artwork grid tracking - pepopowitz
-    - Update url for echo, now in s3 - ash, pavlos
-    - Move bottom tabs navigator to TS - david
-    - Change CheckAuthentication middleware to be called before the principalFieldMiddleware - mounir
     - Upgrade CI to Xcode 12 - pavlos
   user_facing:
     -
