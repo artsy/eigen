@@ -1,3 +1,4 @@
+import { MyCollectionArtworkMeta_artwork } from "__generated__/MyCollectionArtworkMeta_artwork.graphql"
 import { MyCollectionArtworkMetaTestsQuery } from "__generated__/MyCollectionArtworkMetaTestsQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { navigate } from "lib/navigation/navigate"
@@ -37,10 +38,7 @@ describe("MyCollectionArtworkMeta", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  const sharedArtworkProps = {
-    artist: {
-      internalID: "foo",
-    },
+  const sharedArtworkProps: Omit<MyCollectionArtworkMeta_artwork, " $refType"> = {
     artistNames: "some artist name",
     category: "Painting",
     costMinor: 200,
@@ -48,17 +46,12 @@ describe("MyCollectionArtworkMeta", () => {
     date: "Jan 20th",
     editionSize: "10x10x10",
     editionNumber: "1",
-    height: 20,
-    width: 30,
-    depth: 40,
-    id: "some-id",
-    image: {
-      url: "some-image-url",
-    },
+    height: "20",
+    width: "30",
+    depth: "40",
     internalID: "some-internal-id",
     medium: "oil",
     metric: "in",
-    slug: "some-slug",
     title: "some title",
   }
 
