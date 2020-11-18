@@ -9,9 +9,7 @@ export const SubmitInquiryRequest = (
   inquiryState: ArtworkInquiryContextState,
   showErrorMessage?: any
 ) => {
-  let inquiryQuestions
-
-  inquiryQuestions = inquiryState.inquiryQuestions.map((q: InquiryQuestionInput) => {
+  const formattedQuestions = inquiryState.inquiryQuestions.map((q: InquiryQuestionInput) => {
     if (q.questionID === "shipping_quote" && inquiryState.shippingLocation) {
       const { city, coordinates, country, postalCode, state, stateCode } = inquiryState.shippingLocation
       const locationInput = {
@@ -22,9 +20,11 @@ export const SubmitInquiryRequest = (
         state,
         state_code: stateCode,
       }
-      q.details = JSON.stringify(locationInput)
+      const details = JSON.stringify(locationInput)
+      return { ...q, details }
+    } else {
+      return q
     }
-    return q
   })
 
   return commitMutation<SubmitInquiryRequestMutation>(environment, {
@@ -40,7 +40,7 @@ export const SubmitInquiryRequest = (
         inquireableID: inquireable.internalID,
         inquireableType: "Artwork",
         // message: inquiryState.message,
-        questions: inquiryState.inquiryQuestions,
+        questions: formattedQuestions,
       },
     },
     mutation: graphql`
