@@ -26,29 +26,28 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
   const { artist, artistNames, medium, slug, title } = artwork
 
   const lastUploadedPhoto = AppStore.useAppState((state) => state.myCollection.artwork.sessionState.lastUploadedPhoto)
-  const Image = () => {
+  const renderImage = () => {
     if (!!imageURL) {
-      return <OpaqueImageView imageURL={imageURL.replace(":version", "square")} width={90} height={90} />
+      return (
+        <OpaqueImageView
+          data-test-id="Image"
+          imageURL={imageURL.replace(":version", "square")}
+          width={90}
+          height={90}
+        />
+      )
     } else if (lastUploadedPhoto) {
-      return <RNImage style={{ width: 90, height: 90, resizeMode: "cover" }} source={{ uri: lastUploadedPhoto.path }} />
+      return (
+        <RNImage
+          data-test-id="Image"
+          style={{ width: 90, height: 90, resizeMode: "cover" }}
+          source={{ uri: lastUploadedPhoto.path }}
+        />
+      )
     } else {
-      return <Box bg={color("black30")} width={90} height={90} />
+      return <Box data-test-id="Image" bg={color("black30")} width={90} height={90} />
     }
   }
-
-  const Medium = () =>
-    !!medium ? (
-      <Sans size="3t" color="black60" numberOfLines={2} style={{ flex: 1 }}>
-        {mediums[medium] || capitalize(medium)}
-      </Sans>
-    ) : null
-
-  const Title = () =>
-    !!title ? (
-      <Sans size="3t" color="black60" numberOfLines={2} style={{ flex: 1 }}>
-        {title}
-      </Sans>
-    ) : null
 
   return (
     <TouchElement
@@ -75,11 +74,19 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
         overflow="hidden"
       >
         <Flex flexDirection="row" alignItems="center">
-          <Image data-test-id="Image" />
+          {renderImage()}
           <Box m={1} maxWidth={width} style={{ flex: 1 }}>
             <Sans size="4">{artistNames}</Sans>
-            <Title />
-            <Medium />
+            {!!title ? (
+              <Sans size="3t" color="black60" numberOfLines={2} style={{ flex: 1 }}>
+                {title}
+              </Sans>
+            ) : null}
+            {!!medium ? (
+              <Sans size="3t" color="black60" numberOfLines={2} style={{ flex: 1 }}>
+                {mediums[medium] || capitalize(medium)}
+              </Sans>
+            ) : null}
           </Box>
         </Flex>
       </Flex>
