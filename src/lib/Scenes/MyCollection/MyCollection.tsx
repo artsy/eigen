@@ -5,7 +5,6 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { AppStore } from "lib/store/AppStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/utils/placeholders"
@@ -29,7 +28,6 @@ const MyCollection: React.FC<{
   me: MyCollection_me
 }> = ({ relay, me }) => {
   const [showModal, setShowModal] = useState(false)
-  const { setMeGlobalId } = AppStore.actions.myCollection.artwork
 
   // TODO: remove compact once https://github.com/artsy/gravity/pull/13633 is merged
   const artworks = extractNodes(me?.myCollectionConnection).filter(Boolean)
@@ -64,14 +62,6 @@ const MyCollection: React.FC<{
     })
   }
 
-  const showAddArtwork = () => {
-    // Store the global me.id identifier so that we know where to add / remove
-    // edges after we add / remove artworks.
-    // TODO: This can be removed once we update to relay 10 mutation API
-    setMeGlobalId(me.id)
-    setShowModal(true)
-  }
-
   return (
     <View style={{ flex: 1 }}>
       <MyCollectionArtworkFormModal
@@ -83,7 +73,7 @@ const MyCollection: React.FC<{
       <FancyModalHeader
         rightButtonText="Add artwork"
         hideBottomDivider
-        onRightButtonPress={() => showAddArtwork()}
+        onRightButtonPress={() => setShowModal(true)}
       ></FancyModalHeader>
       <Text variant="largeTitle" ml={2} mb={2}>
         My Collection

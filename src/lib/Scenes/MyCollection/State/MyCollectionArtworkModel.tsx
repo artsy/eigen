@@ -48,10 +48,8 @@ export const initialFormValues: ArtworkFormValues = {
 export interface MyCollectionArtworkModel {
   sessionState: {
     artworkId: string
-    artworkGlobalId: string
     dirtyFormCheckValues: ArtworkFormValues
     formValues: ArtworkFormValues
-    meGlobalId: string
     lastUploadedPhoto?: Image
     artworkErrorOccurred: boolean
   }
@@ -59,8 +57,7 @@ export interface MyCollectionArtworkModel {
   setDirtyFormCheckValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
   resetForm: Action<MyCollectionArtworkModel>
   setArtistSearchResult: Action<MyCollectionArtworkModel, AutosuggestResult | null>
-  setArtworkId: Action<MyCollectionArtworkModel, { artworkId: string; artworkGlobalId: string }>
-  setMeGlobalId: Action<MyCollectionArtworkModel, string>
+  setArtworkId: Action<MyCollectionArtworkModel, { artworkId: string }>
   setArtworkErrorOccurred: Action<MyCollectionArtworkModel, boolean>
   setLastUploadedPhoto: Action<MyCollectionArtworkModel, Image>
 
@@ -90,19 +87,6 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     dirtyFormCheckValues: initialFormValues,
     formValues: initialFormValues,
     artworkErrorOccurred: false,
-
-    /**
-     * TODO: this will likely be able to go away once we update our mutations to take
-     * advantage of the new Relay v10 directive-based update model.
-     * See https://github.com/facebook/relay/releases/tag/v10.0.0.
-     *
-     * The relay global ID of the `me` field, used to insert / delete edge post mutation.
-     */
-    meGlobalId: "",
-
-    // TODO: This can likely go away once we update mutation API to relay 10
-    // The relay global ID of the artwork so that, post-edit, we can update the view
-    artworkGlobalId: "",
   },
 
   setFormValues: action((state, input) => {
@@ -118,14 +102,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     state.sessionState.dirtyFormCheckValues = initialFormValues
   }),
 
-  setArtworkId: action((state, { artworkId, artworkGlobalId }) => {
+  setArtworkId: action((state, { artworkId }) => {
     state.sessionState.artworkId = artworkId
-    state.sessionState.artworkGlobalId = artworkGlobalId
-  }),
-
-  // TODO: This can be removed once we update to relay 10 mutation API
-  setMeGlobalId: action((state, meGlobalId) => {
-    state.sessionState.meGlobalId = meGlobalId
   }),
 
   setArtistSearchResult: action((state, artistSearchResult) => {
@@ -196,7 +174,6 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   startEditingArtwork: thunk((actions, artwork) => {
     actions.setArtworkId({
       artworkId: artwork.internalID,
-      artworkGlobalId: artwork.id,
     })
 
     const editProps: any /* FIXME: any */ = {

@@ -1,7 +1,6 @@
 import { MyCollectionArtworkListTestsQuery } from "__generated__/MyCollectionArtworkListTestsQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { MyCollectionArtworkListItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
-import { AppStore } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
@@ -73,22 +72,16 @@ describe("MyCollection", () => {
   })
 
   it("calls proper actions on press", () => {
-    const spy = jest.fn()
-    AppStore.actions.myCollection.artwork.setMeGlobalId = spy as any
     const tree = getWrapper()
     tree.root.findByType(FancyModalHeader).props.onRightButtonPress()
-    expect(spy).toHaveBeenCalledWith("<Me-mock-id-1>")
     const artworkModal = tree.root.findByType(MyCollectionArtworkFormModal)
     expect(artworkModal).toBeDefined()
     expect(artworkModal.props.visible).toBeTruthy()
   })
 
   it("calls proper actions on zero state button press", () => {
-    const spy = jest.fn()
-    AppStore.actions.myCollection.artwork.setMeGlobalId = spy as any
     const tree = getZeroStateWrapper()
     tree.root.findByType(Button).props.onPress()
-    expect(spy).toHaveBeenCalledWith("<Me-mock-id-1>")
     const artworkModal = tree.root.findByType(MyCollectionArtworkFormModal)
     expect(artworkModal).toBeDefined()
     expect(artworkModal.props.visible).toBeTruthy()
