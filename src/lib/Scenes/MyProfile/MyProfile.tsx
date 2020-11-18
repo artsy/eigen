@@ -45,10 +45,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
         />
       )}
       {!!shouldDisplayMyCollection && (
-        <MenuItem isBeta={true} title="My Collection" onPress={() => navigate("my-collection/artwork-list")} />
-      )}
-      {!!shouldDisplayMyCollection && (
-        <MenuItem isBeta={true} title="My Collection 2" onPress={() => navigate("my-collection")} />
+        <MenuItem isBeta={true} title="My Collection" onPress={() => navigate("my-collection")} />
       )}
       <MenuItem
         title="Saves and follows"
