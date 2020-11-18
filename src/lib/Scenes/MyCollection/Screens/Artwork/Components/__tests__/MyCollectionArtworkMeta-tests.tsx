@@ -85,11 +85,7 @@ describe("MyCollectionArtworkMeta", () => {
         const wrapper = renderWithWrappers(<TestRenderer viewAll={false} />)
         resolveData()
         wrapper.root.findByType(CaretButton).props.onPress()
-        expect(navigate).toHaveBeenCalledWith("/my-collection/artwork-details/some-internal-id", {
-          passProps: {
-            artwork: sharedArtworkProps,
-          },
-        })
+        expect(navigate).toHaveBeenCalledWith("/my-collection/artwork-details/some-internal-id")
       })
     })
 

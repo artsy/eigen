@@ -70,7 +70,7 @@ const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwo
         <Spacer my={0.5} />
 
         <CaretButton
-          onPress={() => navigate(`/my-collection/artwork-details/${artwork.internalID}`, { passProps: { artwork } })}
+          onPress={() => navigate(`/my-collection/artwork-details/${artwork.internalID}`)}
           text="View more"
         />
       </ScreenMargin>
