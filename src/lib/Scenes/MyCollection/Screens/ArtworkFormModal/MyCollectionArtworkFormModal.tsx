@@ -12,7 +12,7 @@ import {
 import { cleanArtworkPayload } from "lib/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { AppStore } from "lib/store/AppStore"
 import { Box, Flex } from "palette"
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import { ActionSheetIOS, ActivityIndicator, Alert } from "react-native"
 import { myCollectionAddArtwork } from "../../mutations/myCollectionAddArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
@@ -57,6 +57,12 @@ type MyCollectionArtworkFormModalProps = { visible: boolean; onDismiss: () => vo
 
 export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModalProps> = (props) => {
   const { formValues, dirtyFormCheckValues } = AppStore.useAppState((state) => state.myCollection.artwork.sessionState)
+
+  // we need to store the form values in a ref so that onDismiss can access their current value (prop updates are not
+  // sent through the NavigatorIOS system)
+  const formValuesRef = useRef(formValues)
+  formValuesRef.current = formValues
+
   const [loading, setLoading] = useState<boolean>(false)
 
   const formik = useFormik<ArtworkFormValues>({
@@ -124,7 +130,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
       : undefined
 
   const onDismiss = async () => {
-    const formIsDirty = !isEqual(formik.values, dirtyFormCheckValues)
+    const formIsDirty = !isEqual(formValuesRef.current, dirtyFormCheckValues)
 
     if (formIsDirty) {
       const discardData = await new Promise((resolve) =>
