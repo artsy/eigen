@@ -17,6 +17,7 @@ NSString *const AROptionsNewSalePage = @"AROptionsNewSalePage";
 NSString *const AROptionsNewFirstInquiry = @"AROptionsNewFirstInquiry";
 NSString *const AROptionsNewShowPage = @"AROptionsNewShowPage";
 NSString *const AROptionsNewFairPage = @"AROptionsNewFairPage";
+NSString *const AROptionsNewInsightsPage = @"AROptionsNewInsightsPage";
 
 // UX changes
 NSString *const AROptionsDisableNativeLiveAuctions = @"AROptionsDisableNativeLiveAuctions";
@@ -48,6 +49,7 @@ NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebVie
          AROptionsBidManagement: @"Enable Bid Management (a.k.a My Bids)",
          AROptionsNewFirstInquiry: @"Enable new first inquiry flow",
          AROptionsUseReactNativeWebView: @"Use react native webviews",
+         AROptionsNewInsightsPage: @"Enable artist insights page",
         };
     });
 }
