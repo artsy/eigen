@@ -1,4 +1,4 @@
-import { MyCollectionArtworkListTestsQuery } from "__generated__/MyCollectionArtworkListTestsQuery.graphql"
+import { MyCollectionTestsQuery } from "__generated__/MyCollectionTestsQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { MyCollectionArtworkListItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
 import { extractText } from "lib/tests/extractText"
@@ -17,10 +17,10 @@ jest.unmock("react-relay")
 describe("MyCollection", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <QueryRenderer<MyCollectionArtworkListTestsQuery>
+    <QueryRenderer<MyCollectionTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query MyCollectionArtworkListTestsQuery @relay_test_operation {
+        query MyCollectionTestsQuery @relay_test_operation {
           me {
             ...MyCollection_me
           }

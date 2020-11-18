@@ -1,25 +1,25 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 35154aec1f4c1d0ab5e224ef7421d082 */
+/* @relayHash 1de8ce5426f523f0750f7bc8b5d69b09 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionArtworkListTestsQueryVariables = {};
-export type MyCollectionArtworkListTestsQueryResponse = {
+export type MyCollectionTestsQueryVariables = {};
+export type MyCollectionTestsQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"MyCollection_me">;
     } | null;
 };
-export type MyCollectionArtworkListTestsQuery = {
-    readonly response: MyCollectionArtworkListTestsQueryResponse;
-    readonly variables: MyCollectionArtworkListTestsQueryVariables;
+export type MyCollectionTestsQuery = {
+    readonly response: MyCollectionTestsQueryResponse;
+    readonly variables: MyCollectionTestsQueryVariables;
 };
 
 
 
 /*
-query MyCollectionArtworkListTestsQuery {
+query MyCollectionTestsQuery {
   me {
     ...MyCollection_me
     id
@@ -103,7 +103,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyCollectionArtworkListTestsQuery",
+    "name": "MyCollectionTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -129,7 +129,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "MyCollectionArtworkListTestsQuery",
+    "name": "MyCollectionTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -293,7 +293,7 @@ return {
     ]
   },
   "params": {
-    "id": "35154aec1f4c1d0ab5e224ef7421d082",
+    "id": "1de8ce5426f523f0750f7bc8b5d69b09",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -358,11 +358,11 @@ return {
         }
       }
     },
-    "name": "MyCollectionArtworkListTestsQuery",
+    "name": "MyCollectionTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '4f2252479605b68b30547d3853cf7dd1';
+(node as any).hash = 'f92871534f578770b84dd56aca4132bc';
 export default node;
