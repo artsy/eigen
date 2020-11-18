@@ -930,12 +930,6 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARSystemTimeURL parameters:nil];
 }
 
-+ (NSURLRequest *)newRequestForBlankPage
-{
-    NSURL *pageURL = [[ARRouter baseWebURL] URLByAppendingPathComponent:@"/dev/blank"];
-    return [NSURLRequest requestWithURL:pageURL];
-}
-
 + (NSURLRequest *)newRequestForPageContent:(NSString *)slug
 {
     NSString *url = [NSString stringWithFormat:ARPageURLFormat, slug];
