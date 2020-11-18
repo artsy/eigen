@@ -2,7 +2,6 @@ import { MyCollectionArtworkMeta_artwork } from "__generated__/MyCollectionArtwo
 import { MyCollectionArtworkMetaTestsQuery } from "__generated__/MyCollectionArtworkMetaTestsQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { navigate } from "lib/navigation/navigate"
-import { AppStore } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"

@@ -1,7 +1,7 @@
 import { Route } from "@react-navigation/native"
 import { useFormikContext } from "formik"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { __appStoreTestUtils__, AppStore } from "lib/store/AppStore"
+import { __appStoreTestUtils__ } from "lib/store/AppStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { ActionSheetIOS } from "react-native"

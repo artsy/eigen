@@ -2,7 +2,6 @@ import { MyCollectionArtworkArtistAuctionResultsTestsQuery } from "__generated__
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
-import { AppStore } from "lib/store/AppStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
