@@ -1,5 +1,5 @@
 import { Input } from "lib/Components/Input/Input"
-import { autocompleteLocation, SimpleLocationAutocomplete } from "lib/utils/googleMaps"
+import { getLocationPredictions, SimpleLocation } from "lib/utils/googleMaps"
 import { color, Flex, LocationIcon, Text, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
@@ -7,12 +7,12 @@ import styled from "styled-components/native"
 
 interface Props {
   onChange: any
-  initialLocation: SimpleLocationAutocomplete | null
+  initialLocation: SimpleLocation | null
 }
 
 export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocation }) => {
-  const [predictions, setPredictions] = useState<SimpleLocationAutocomplete[]>([])
-  const [selectedLocation, setSelectedLocation] = useState<SimpleLocationAutocomplete | null>(initialLocation)
+  const [predictions, setPredictions] = useState<SimpleLocation[]>([])
+  const [selectedLocation, setSelectedLocation] = useState<SimpleLocation | null>(initialLocation)
   const [query, setQuery] = useState(selectedLocation?.name || "")
 
   // Autofocus
@@ -35,7 +35,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocatio
       setPredictions([])
     } else {
       ;(async () => {
-        const googlePredictions = await autocompleteLocation(query)
+        const googlePredictions = await getLocationPredictions(query)
         setPredictions(googlePredictions)
       })()
     }
@@ -82,9 +82,9 @@ export const LocationPredictions = ({
   onSelect,
   onOutsidePress,
 }: {
-  predictions: SimpleLocationAutocomplete[]
+  predictions: SimpleLocation[]
   query?: string
-  onSelect: (l: SimpleLocationAutocomplete) => void
+  onSelect: (l: SimpleLocation) => void
   onOutsidePress: () => void
 }) => {
   const [height, setHeight] = useState(0)

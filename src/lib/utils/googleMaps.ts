@@ -3,18 +3,27 @@ import Config from "react-native-config"
 
 const API_KEY = Config.GOOGLE_MAPS_API_KEY
 
-export interface SimpleLocationAutocomplete {
+export interface SimpleLocation {
   id: string
   name: string
 }
 
+export interface LocationWithDetails extends SimpleLocation {
+  city?: string
+  coordinates?: string[]
+  country?: string
+  postalCode?: string
+  state?: string
+  stateCode?: string
+}
+
 /** Expected GMaps API prediction shape */
-interface LocationResult {
+interface QueryAutocompletePrediction {
   place_id: string
   description: string
 }
 
-export const autocompleteLocation = async (query: string): Promise<SimpleLocationAutocomplete[]> => {
+export const getLocationPredictions = async (query: string): Promise<SimpleLocation[]> => {
   const queryString = stringify({
     key: API_KEY,
     language: "en",
@@ -27,30 +36,21 @@ export const autocompleteLocation = async (query: string): Promise<SimpleLocatio
   return results.predictions.map(predictionToResult)
 }
 
-const predictionToResult = (prediction: LocationResult): SimpleLocationAutocomplete => {
+const predictionToResult = (prediction: QueryAutocompletePrediction): SimpleLocation => {
   return { id: prediction.place_id, name: prediction.description }
 }
 
-export interface LocationDetails extends SimpleLocationAutocomplete {
-  city: string
-  coordinates?: string[]
-  country: string
-  postalCode: string
-  state: string
-  stateCode: string
-}
-
-export const getLocationDetails = async ({ id, name }: SimpleLocationAutocomplete): Promise<LocationDetails> => {
+export const getLocationDetails = async ({ id, name }: SimpleLocation): Promise<LocationWithDetails> => {
   const queryString = stringify({
     key: API_KEY,
     placeid: id,
   })
 
   const response = await fetch("https://maps.googleapis.com/maps/api/place/details/json?" + queryString)
-  const results = await response.json()
+  const data = await response.json()
 
   // TODO: Add dedicated error handling to the maps response
-  const { address_components, geometry } = results.result
+  const { address_components, geometry } = data.result as PlaceResult
   // @ts-ignore STRICTNESS_MIGRATION
   const cityPlace = address_components.find((comp) => comp.types[0] === "locality")
   // @ts-ignore STRICTNESS_MIGRATION
@@ -75,5 +75,21 @@ export const getLocationDetails = async ({ id, name }: SimpleLocationAutocomplet
     postalCode,
     id,
     name,
+  }
+}
+
+interface GeocoderAddressComponent {
+  long_name: string
+  short_name: string
+  types: string[]
+}
+
+interface PlaceResult {
+  address_components: GeocoderAddressComponent[]
+  geometry: {
+    location: {
+      lat: string
+      lng: string
+    }
   }
 }

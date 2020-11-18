@@ -5,7 +5,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import { LocationDetails } from "lib/utils/googleMaps"
+import { LocationWithDetails } from "lib/utils/googleMaps"
 import { Box, color, Flex, Separator, space, Text } from "palette"
 import React, { useContext, useState } from "react"
 import { LayoutAnimation, TouchableOpacity } from "react-native"
@@ -127,7 +127,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const { state, dispatch } = useContext(ArtworkInquiryContext)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const [errorMessageVisibility, setErrorMessageVisibility] = useState(false)
-  const selectShippingLocation = (locationDetails: LocationDetails) =>
+  const selectShippingLocation = (locationDetails: LocationWithDetails) =>
     dispatch({ type: "selectShippingLocation", payload: locationDetails })
 
   const resetAndExit = () => {

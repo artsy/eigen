@@ -1,6 +1,6 @@
 import { InquiryQuestionInput } from "__generated__/SubmitInquiryRequestMutation.graphql"
 import { Dispatch } from "react"
-import { LocationDetails } from "../googleMaps"
+import { LocationWithDetails } from "../googleMaps"
 
 export type ArtworkInquiryActions = SelectInquiryType | SelectLocation | SelectInquiryQuestion | ResetForm
 
@@ -11,7 +11,7 @@ export interface ArtworkInquiryContextProps {
 
 export interface ArtworkInquiryContextState {
   readonly inquiryType: InquiryTypes | null
-  readonly shippingLocation: LocationDetails | null
+  readonly shippingLocation: LocationWithDetails | null
   readonly inquiryQuestions: InquiryQuestionInput[]
 }
 
@@ -28,7 +28,7 @@ interface SelectInquiryType {
 
 interface SelectLocation {
   type: "selectShippingLocation"
-  payload: LocationDetails
+  payload: LocationWithDetails
 }
 
 interface SelectInquiryQuestion {

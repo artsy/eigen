@@ -1,4 +1,4 @@
-import { autocompleteLocation } from "../googleMaps"
+import { getLocationPredictions } from "../googleMaps"
 
 jest.mock("react-native-config", () => ({
   GOOGLE_MAPS_API_KEY: "keykey",
@@ -31,7 +31,7 @@ describe("queryLocation()", () => {
       })
     })
 
-    const result = await autocompleteLocation("Cox")
+    const result = await getLocationPredictions("Cox")
 
     expect(result).toEqual([
       {
