@@ -126,8 +126,6 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
   const onDismiss = async () => {
     const formIsDirty = !isEqual(formik.values, dirtyFormCheckValues)
 
-    console.warn({ formIsDirty }, formik.values.height, dirtyFormCheckValues.height)
-
     if (formIsDirty) {
       const discardData = await new Promise((resolve) =>
         ActionSheetIOS.showActionSheetWithOptions(
