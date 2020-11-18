@@ -30,8 +30,7 @@ const MyCollection: React.FC<{
 }> = ({ relay, me }) => {
   const [showModal, setShowModal] = useState(false)
 
-  // TODO: remove compact once https://github.com/artsy/gravity/pull/13633 is merged
-  const artworks = extractNodes(me?.myCollectionConnection).filter(Boolean)
+  const artworks = extractNodes(me?.myCollectionConnection)
   const { hasMore, isLoading, loadMore } = relay
   const [isRefreshing, setIsRefreshing] = useState(false)
 
