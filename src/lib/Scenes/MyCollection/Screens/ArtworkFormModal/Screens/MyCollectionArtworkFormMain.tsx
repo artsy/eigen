@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { AppStore } from "lib/store/AppStore"
-import { isEmpty } from "lodash"
+import { isEmpty, isEqualWith } from "lodash"
 import { BorderBox, Box, Button, Flex, Join, Sans, Spacer } from "palette"
 import React from "react"
 import { ActionSheetIOS, ScrollView } from "react-native"
@@ -24,6 +24,17 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
   const { formik } = useArtworkForm()
   const modalType = route.params.mode
   const addOrEditLabel = modalType === "edit" ? "Edit" : "Add"
+
+  const isFormDirty = () => {
+    // if you fill an empty field then delete it again, it changes from null to ""
+    const customizer = (aVal: any, bVal: any) =>
+      (aVal === "" || aVal === null) && (bVal === "" || bVal === null) ? true : undefined
+    return !isEqualWith(
+      artworkState.sessionState.dirtyFormCheckValues,
+      artworkState.sessionState.formValues,
+      customizer
+    )
+  }
 
   return (
     <>
@@ -69,17 +80,22 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
           }}
         />
 
-        <Spacer my={2} />
+        <Spacer mt={2} mb={1} />
 
         <ScreenMargin>
-          <Button disabled={!formik.isValid} block onPress={formik.handleSubmit} data-test-id="CompleteButton">
-            Complete
+          <Button
+            disabled={!formik.isValid || !isFormDirty()}
+            block
+            onPress={formik.handleSubmit}
+            data-test-id="CompleteButton"
+          >
+            {modalType === "edit" ? "Save changes" : "Complete"}
           </Button>
 
           {modalType === "edit" && (
             <Button
-              mt={2}
-              variant="secondaryGray"
+              mt={1}
+              variant="secondaryOutlineWarning"
               block
               onPress={() => {
                 ActionSheetIOS.showActionSheetWithOptions(
@@ -98,7 +114,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
               }}
               data-test-id="DeleteButton"
             >
-              Delete
+              Delete artwork
             </Button>
           )}
           <Spacer mt={4} />
