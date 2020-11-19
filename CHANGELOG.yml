@@ -7,6 +7,7 @@ upcoming:
     - Update url for echo, now in s3 - ash, pavlos
     - Move bottom tabs navigator to TS - david
     - Fix city guide CTA images not showing when running using Xcode 12 - pavlos
+    - Fix minimize startup api requests - brian
   user_facing:
     -
 releases:
