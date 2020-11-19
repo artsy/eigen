@@ -162,3 +162,19 @@ describe("App version Versions.RenameConsingmentsToMyCollections", () => {
     expect("myCollection" in migratedState).toBe(true)
   })
 })
+
+describe("App version Versions.RemoveMyCollectionNavigationState", () => {
+  it("deletes `myCollection.navigation`", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: Versions.RemoveMyCollectionNavigationState - 1,
+    }) as any
+    expect("navigation" in previousState.myCollection).toBe(true)
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: Versions.RemoveMyCollectionNavigationState,
+    }) as any
+    expect("navigation" in migratedState.myCollection).toBe(false)
+  })
+})
