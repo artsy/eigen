@@ -409,7 +409,6 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
 
 - (IBAction)back:(id)sender
 {
-    [ARAnalytics event:ARAnalyticsBackTapped];
     if (self.isAnimatingTransition) return;
 
     UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;

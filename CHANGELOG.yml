@@ -8,6 +8,7 @@ upcoming:
     - Move bottom tabs navigator to TS - david
     - Fix city guide CTA images not showing when running using Xcode 12 - pavlos
     - Fix minimize startup api requests - brian
+    - Remove analytics tracking on back-arrow taps - pepopowitz
   user_facing:
     -
 releases:

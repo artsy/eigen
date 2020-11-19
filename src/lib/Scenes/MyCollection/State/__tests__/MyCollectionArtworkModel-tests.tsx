@@ -1,22 +1,6 @@
 import { __appStoreTestUtils__, AppStore } from "lib/store/AppStore"
 import { Image } from "react-native-image-crop-picker"
 
-jest.mock("lib/Scenes/Consignments/Submission/geminiUploadToS3", () => ({
-  getConvectionGeminiKey: jest.fn(),
-  getGeminiCredentialsForEnvironment: jest.fn(),
-  uploadFileToS3: jest.fn(),
-}))
-
-import {
-  getConvectionGeminiKey,
-  getGeminiCredentialsForEnvironment,
-  uploadFileToS3,
-} from "lib/Scenes/Consignments/Submission/geminiUploadToS3"
-
-const getConvectionGeminiKeyMock = getConvectionGeminiKey as jest.Mock<any>
-const getGeminiCredentialsForEnvironmentMock = getGeminiCredentialsForEnvironment as jest.Mock<any>
-const uploadFileToS3Mock = uploadFileToS3 as jest.Mock<any>
-
 describe("MyCollectionArtworkModel", () => {
   const fakePhoto = (path: string) => {
     const photo: Image = {
@@ -148,85 +132,5 @@ describe("MyCollectionArtworkModel", () => {
     artworkActions.removePhoto(someOtherPhoto)
     const artworkState = __appStoreTestUtils__?.getCurrentState().myCollection.artwork
     expect(artworkState?.sessionState.formValues.photos).toEqual([somePhoto])
-  })
-
-  describe("uploading images", () => {
-    it("uploads photos to s3", async (done) => {
-      const somePhoto = fakePhoto("some-path")
-      const someOtherPhoto = fakePhoto("some-other-path")
-      const artworkActions = AppStore.actions.myCollection.artwork
-      getConvectionGeminiKeyMock.mockReturnValueOnce(Promise.resolve("some-key"))
-
-      const assetCredentials = {
-        signature: "some-signature",
-        credentials: "some-credentials",
-        policyEncoded: "some-policy-encoded",
-        policyDocument: {
-          expiration: "some-expiration",
-          conditions: {
-            acl: "some-acl",
-            bucket: "some-bucket",
-            geminiKey: "some-gemini-key",
-            successActionStatus: "some-success-action-status",
-          },
-        },
-      }
-      getGeminiCredentialsForEnvironmentMock.mockReturnValueOnce(Promise.resolve(assetCredentials))
-
-      uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
-
-      artworkActions.uploadPhotos([somePhoto, someOtherPhoto]).then(() => {
-        expect(uploadFileToS3).toHaveBeenCalledTimes(2)
-        expect(uploadFileToS3).toHaveBeenNthCalledWith(1, "some-path", "private", assetCredentials)
-        expect(uploadFileToS3).toHaveBeenNthCalledWith(2, "some-other-path", "private", assetCredentials)
-        done()
-      })
-    })
-
-    it("saves the last uploaded photo on upload", async (done) => {
-      const somePhoto = fakePhoto("some-path")
-      const artworkActions = AppStore.actions.myCollection.artwork
-      getConvectionGeminiKeyMock.mockReturnValueOnce(Promise.resolve("some-key"))
-
-      const assetCredentials = {
-        signature: "some-signature",
-        credentials: "some-credentials",
-        policyEncoded: "some-policy-encoded",
-        policyDocument: {
-          expiration: "some-expiration",
-          conditions: {
-            acl: "some-acl",
-            bucket: "some-bucket",
-            geminiKey: "some-gemini-key",
-            successActionStatus: "some-success-action-status",
-          },
-        },
-      }
-      getGeminiCredentialsForEnvironmentMock.mockReturnValueOnce(Promise.resolve(assetCredentials))
-
-      uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
-
-      artworkActions.uploadPhotos([somePhoto]).then(() => {
-        const artworkState = __appStoreTestUtils__?.getCurrentState().myCollection.artwork
-        expect(artworkState?.sessionState.lastUploadedPhoto).toEqual(somePhoto)
-        done()
-      })
-    })
-  })
-
-  it("set error occurred on edit error", () => {
-    __appStoreTestUtils__?.injectState({
-      myCollection: {
-        artwork: {
-          sessionState: {
-            artworkErrorOccurred: false,
-          },
-        },
-      },
-    })
-    const artworkActions = AppStore.actions.myCollection.artwork
-    artworkActions.editArtworkError(Error("some error"))
-    const artworkState = __appStoreTestUtils__?.getCurrentState().myCollection.artwork
-    expect(artworkState?.sessionState.artworkErrorOccurred).toBe(true)
   })
 })
