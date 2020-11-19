@@ -1,20 +1,37 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
+import { Stack } from "lib/Components/Stack"
 import { AppStore } from "lib/store/AppStore"
+import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { chunk } from "lodash"
 import { AddIcon, BorderBox, Box, color, Flex, XCircleIcon } from "palette"
 import React from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { Image as ImageProps } from "react-native-image-crop-picker"
 import { ArtworkFormModalScreen } from "../MyCollectionArtworkFormModal"
 
+const MARGIN = 20
+
 export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormModalScreen, "AddPhotos">> = ({
   navigation,
 }) => {
   const formValues = AppStore.useAppState((state) => state.myCollection.artwork.sessionState.formValues)
-  const imageSize = useImageSize()
   const { photos } = formValues
+  const { width: screenWidth } = useScreenDimensions()
+  const numColumns = isPad() ? 5 : 2
+  const imageSize = (screenWidth - MARGIN) / numColumns - MARGIN
+  const items = [<AddPhotosButton key="button" imageSize={imageSize} />].concat(
+    photos.map((photo, index) => {
+      return (
+        <Box key={index}>
+          <Image style={{ width: imageSize, height: imageSize, resizeMode: "cover" }} source={{ uri: photo.path }} />
+          <DeletePhotoButton photo={photo} />
+        </Box>
+      )
+    })
+  )
+  const rows = chunk(items, numColumns)
 
   return (
     <>
@@ -22,39 +39,24 @@ export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormModalSc
         Photos {!!photos.length && `(${photos.length})`}
       </FancyModalHeader>
       <ScrollView>
-        <Flex mt={2}>
-          <ScreenMargin>
-            <Flex flexDirection="row" flexWrap="wrap">
-              <AddPhotosButton />
-
-              {photos.map((photo, index) => {
-                return (
-                  <Box key={index}>
-                    <Box ml={index % 2 === 0 ? 1 : 0} mb={1}>
-                      <Image
-                        style={{ width: imageSize, height: imageSize, resizeMode: "cover" }}
-                        source={{ uri: photo.path }}
-                      />
-                      <DeletePhotoButton photo={photo} />
-                    </Box>
-                  </Box>
-                )
-              })}
-            </Flex>
-          </ScreenMargin>
+        <Flex flexDirection="row" flexWrap="wrap" my="2">
+          {rows.map((row, i) => (
+            <Stack horizontal key={i} mb="2" mx="2">
+              {row}
+            </Stack>
+          ))}
         </Flex>
       </ScrollView>
     </>
   )
 }
 
-const AddPhotosButton: React.FC = () => {
+const AddPhotosButton: React.FC<{ imageSize: number }> = ({ imageSize }) => {
   const artworkActions = AppStore.actions.myCollection.artwork
-  const imageSize = useImageSize()
 
   return (
     <TouchableOpacity onPress={() => artworkActions.takeOrPickPhotos()}>
-      <BorderBox mb={1} p={0} bg={color("white100")} width={imageSize} height={imageSize} key="addMorePhotos">
+      <BorderBox p={0} bg={color("white100")} width={imageSize} height={imageSize} key="addMorePhotos">
         <Flex flex={1} flexDirection="row" justifyContent="center" alignItems="center">
           <AddIcon width={30} height={30} />
         </Flex>
@@ -76,13 +78,6 @@ const DeletePhotoButton: React.FC<{ photo: ImageProps }> = ({ photo }) => {
       </TouchableOpacity>
     </Box>
   )
-}
-
-const useImageSize = () => {
-  const dimensions = useScreenDimensions()
-  const margins = 2 * 20 + 10
-  const size = Math.round((dimensions.width - margins) / 2)
-  return size
 }
 
 export const tests = {
