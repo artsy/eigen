@@ -5,6 +5,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
+import { LocationWithDetails } from "lib/utils/googleMaps"
 import { Box, color, Flex, Separator, space, Text } from "palette"
 import React, { useContext, useState } from "react"
 import { LayoutAnimation, TouchableOpacity } from "react-native"
@@ -70,7 +71,7 @@ const InquiryQuestionOption: React.FC<{
                   type: "selectInquiryQuestion",
                   payload: {
                     questionID: id,
-                    details: isShipping ? state.shippingLocation : null,
+                    details: isShipping ? state.shippingLocation?.name : null,
                     isChecked: !questionSelected,
                   },
                 })
@@ -104,7 +105,7 @@ const InquiryQuestionOption: React.FC<{
                 ) : (
                   <>
                     <Text variant="text" color="black100" style={{ width: "70%" }}>
-                      {state.shippingLocation}
+                      {state.shippingLocation.name}
                     </Text>
                     <Text variant="text" color="purple100">
                       Edit
@@ -126,7 +127,8 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const { state, dispatch } = useContext(ArtworkInquiryContext)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const [errorMessageVisibility, setErrorMessageVisibility] = useState(false)
-  const selectShippingLocation = (l: string) => dispatch({ type: "selectShippingLocation", payload: l })
+  const selectShippingLocation = (locationDetails: LocationWithDetails) =>
+    dispatch({ type: "selectShippingLocation", payload: locationDetails })
 
   const resetAndExit = () => {
     dispatch({ type: "resetForm", payload: null })
@@ -181,7 +183,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
         modalIsVisible={shippingModalVisibility}
         setLocation={selectShippingLocation}
-        location={state.shippingLocation as string}
+        location={state.shippingLocation}
       />
     </FancyModal>
   )

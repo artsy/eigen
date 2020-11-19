@@ -1,5 +1,5 @@
 import { Input } from "lib/Components/Input/Input"
-import { GMapsLocation, queryLocation } from "lib/utils/googleMaps"
+import { getLocationPredictions, SimpleLocation } from "lib/utils/googleMaps"
 import { color, Flex, LocationIcon, Text, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
@@ -7,13 +7,13 @@ import styled from "styled-components/native"
 
 interface Props {
   onChange: any
-  initialLocation: string
+  initialLocation: SimpleLocation | null
 }
 
 export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocation }) => {
-  const [predictions, setPredictions] = useState<GMapsLocation[]>([])
-  const [selectedLocation, setSelectedLocation] = useState(initialLocation ? initialLocation : "")
-  const [query, setQuery] = useState(selectedLocation)
+  const [predictions, setPredictions] = useState<SimpleLocation[]>([])
+  const [selectedLocation, setSelectedLocation] = useState(initialLocation)
+  const [query, setQuery] = useState(selectedLocation?.name || "")
 
   // Autofocus
   const input = useRef<Input>(null)
@@ -27,15 +27,15 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocatio
   }, [selectedLocation])
 
   useEffect(() => {
-    if (query !== selectedLocation) {
-      setSelectedLocation("")
+    if (query !== selectedLocation?.name) {
+      setSelectedLocation(null)
     }
 
-    if (query.length < 3 || selectedLocation === query) {
+    if (query.length < 3 || selectedLocation?.name === query) {
       setPredictions([])
     } else {
       ;(async () => {
-        const googlePredictions = await queryLocation(query)
+        const googlePredictions = await getLocationPredictions(query)
         setPredictions(googlePredictions)
       })()
     }
@@ -43,7 +43,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocatio
 
   const reset = () => {
     if (selectedLocation) {
-      setQuery(selectedLocation)
+      setQuery(selectedLocation.name)
     }
   }
   const touchOut = () => {
@@ -61,7 +61,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocatio
         style={{ marginVertical: 10 }}
         onChangeText={setQuery}
         onFocus={reset}
-        value={selectedLocation ? selectedLocation : query}
+        value={selectedLocation ? selectedLocation.name : query}
       />
       <LocationPredictions
         predictions={predictions}
@@ -70,8 +70,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocatio
         onOutsidePress={touchOut}
       />
       <Text color="black60">
-        Sharing your location with galleries helps them provide fast and accurate shipping quotes. You can always edit
-        this information later in your Collector Profile.
+        Sharing your location with galleries helps them provide fast and accurate shipping quotes.
       </Text>
     </Flex>
   )
@@ -83,9 +82,9 @@ export const LocationPredictions = ({
   onSelect,
   onOutsidePress,
 }: {
-  predictions: GMapsLocation[]
+  predictions: SimpleLocation[]
   query?: string
-  onSelect: (l: string) => void
+  onSelect: (l: SimpleLocation) => void
   onOutsidePress: () => void
 }) => {
   const [height, setHeight] = useState(0)
@@ -123,7 +122,7 @@ export const LocationPredictions = ({
           <Touchable
             key={p.id}
             onPress={() => {
-              onSelect(p.name)
+              onSelect(p)
             }}
             style={{ padding: 10 }}
           >
