@@ -12,7 +12,7 @@ interface Props {
 
 export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocation }) => {
   const [predictions, setPredictions] = useState<SimpleLocation[]>([])
-  const [selectedLocation, setSelectedLocation] = useState<SimpleLocation | null>(initialLocation)
+  const [selectedLocation, setSelectedLocation] = useState(initialLocation)
   const [query, setQuery] = useState(selectedLocation?.name || "")
 
   // Autofocus

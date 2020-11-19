@@ -39,7 +39,6 @@ export const SubmitInquiryRequest = (
       input: {
         inquireableID: inquireable.internalID,
         inquireableType: "Artwork",
-        // message: inquiryState.message,
         questions: formattedQuestions,
       },
     },
