@@ -18,9 +18,12 @@ export type MyCollectionArtworkMeta_artwork = {
     readonly editionNumber: string | null;
     readonly height: string | null;
     readonly id: string;
-    readonly image: {
+    readonly images: ReadonlyArray<{
+        readonly isDefault: boolean | null;
         readonly url: string | null;
-    } | null;
+        readonly width: number | null;
+        readonly height: number | null;
+    } | null> | null;
     readonly internalID: string;
     readonly medium: string | null;
     readonly metric: string | null;
@@ -43,6 +46,20 @@ var v0 = {
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "height",
+  "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "width",
   "storageKey": null
 };
 return {
@@ -119,13 +136,7 @@ return {
       "name": "editionNumber",
       "storageKey": null
     },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "height",
-      "storageKey": null
-    },
+    (v1/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -138,16 +149,25 @@ return {
       "args": null,
       "concreteType": "Image",
       "kind": "LinkedField",
-      "name": "image",
-      "plural": false,
+      "name": "images",
+      "plural": true,
       "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "isDefault",
+          "storageKey": null
+        },
         {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
           "name": "url",
           "storageKey": null
-        }
+        },
+        (v2/*: any*/),
+        (v1/*: any*/)
       ],
       "storageKey": null
     },
@@ -180,13 +200,7 @@ return {
       "name": "title",
       "storageKey": null
     },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "width",
-      "storageKey": null
-    }
+    (v2/*: any*/)
   ],
   "type": "Artwork",
   "abstractKey": null

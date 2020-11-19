@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0ca01dacd1e9709d87555b0ba676b6de */
+/* @relayHash 3f702ac6486d27d1f4ea5c2ade3ab8a4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,9 +25,12 @@ export type MyCollectionArtworkDetailQueryResponse = {
         readonly editionNumber: string | null;
         readonly height: string | null;
         readonly id: string;
-        readonly image: {
+        readonly images: ReadonlyArray<{
+            readonly isDefault: boolean | null;
             readonly url: string | null;
-        } | null;
+            readonly width: number | null;
+            readonly height: number | null;
+        } | null> | null;
         readonly internalID: string;
         readonly medium: string | null;
         readonly metric: string | null;
@@ -68,8 +71,11 @@ query MyCollectionArtworkDetailQuery(
     editionNumber
     height
     id
-    image {
+    images {
+      isDefault
       url
+      width
+      height
     }
     internalID
     medium
@@ -157,8 +163,11 @@ fragment MyCollectionArtworkDemandIndex_marketPriceInsights on MarketPriceInsigh
 fragment MyCollectionArtworkHeader_artwork on Artwork {
   artistNames
   date
-  image {
+  images {
+    height
+    isDefault
     url
+    width
   }
   title
 }
@@ -190,8 +199,11 @@ fragment MyCollectionArtworkMeta_artwork on Artwork {
   editionNumber
   height
   id
-  image {
+  images {
+    isDefault
     url
+    width
+    height
   }
   internalID
   medium
@@ -314,58 +326,67 @@ v14 = {
   "name": "id",
   "storageKey": null
 },
-v15 = [
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "url",
-    "storageKey": null
-  }
-],
+v15 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "url",
+  "storageKey": null
+},
 v16 = {
   "alias": null,
   "args": null,
-  "concreteType": "Image",
-  "kind": "LinkedField",
-  "name": "image",
-  "plural": false,
-  "selections": (v15/*: any*/),
+  "kind": "ScalarField",
+  "name": "width",
   "storageKey": null
 },
 v17 = {
   "alias": null,
   "args": null,
-  "kind": "ScalarField",
-  "name": "medium",
+  "concreteType": "Image",
+  "kind": "LinkedField",
+  "name": "images",
+  "plural": true,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "isDefault",
+      "storageKey": null
+    },
+    (v15/*: any*/),
+    (v16/*: any*/),
+    (v13/*: any*/)
+  ],
   "storageKey": null
 },
 v18 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "metric",
+  "name": "medium",
   "storageKey": null
 },
 v19 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "metric",
   "storageKey": null
 },
 v20 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "title",
+  "name": "slug",
   "storageKey": null
 },
 v21 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "width",
+  "name": "title",
   "storageKey": null
 },
 v22 = [
@@ -384,7 +405,10 @@ v23 = {
   "kind": "Literal",
   "name": "first",
   "value": 3
-};
+},
+v24 = [
+  (v15/*: any*/)
+];
 return {
   "fragment": {
     "argumentDefinitions": [
@@ -426,13 +450,13 @@ return {
           (v12/*: any*/),
           (v13/*: any*/),
           (v14/*: any*/),
-          (v16/*: any*/),
-          (v4/*: any*/),
           (v17/*: any*/),
+          (v4/*: any*/),
           (v18/*: any*/),
           (v19/*: any*/),
           (v20/*: any*/),
           (v21/*: any*/),
+          (v16/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
@@ -499,7 +523,7 @@ return {
             "selections": [
               (v4/*: any*/),
               (v14/*: any*/),
-              (v19/*: any*/),
+              (v20/*: any*/),
               {
                 "alias": null,
                 "args": [
@@ -532,7 +556,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v4/*: any*/),
-                          (v20/*: any*/),
+                          (v21/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -555,7 +579,7 @@ return {
                                 "kind": "LinkedField",
                                 "name": "thumbnail",
                                 "plural": false,
-                                "selections": (v15/*: any*/),
+                                "selections": (v24/*: any*/),
                                 "storageKey": null
                               }
                             ],
@@ -653,7 +677,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v19/*: any*/),
+                          (v20/*: any*/),
                           (v4/*: any*/),
                           {
                             "alias": null,
@@ -708,7 +732,7 @@ return {
                             "kind": "LinkedField",
                             "name": "thumbnailImage",
                             "plural": false,
-                            "selections": (v15/*: any*/),
+                            "selections": (v24/*: any*/),
                             "storageKey": null
                           },
                           (v14/*: any*/)
@@ -734,13 +758,13 @@ return {
           (v12/*: any*/),
           (v13/*: any*/),
           (v14/*: any*/),
-          (v16/*: any*/),
-          (v4/*: any*/),
           (v17/*: any*/),
+          (v4/*: any*/),
           (v18/*: any*/),
           (v19/*: any*/),
           (v20/*: any*/),
-          (v21/*: any*/)
+          (v21/*: any*/),
+          (v16/*: any*/)
         ],
         "storageKey": null
       },
@@ -835,7 +859,7 @@ return {
     ]
   },
   "params": {
-    "id": "0ca01dacd1e9709d87555b0ba676b6de",
+    "id": "3f702ac6486d27d1f4ea5c2ade3ab8a4",
     "metadata": {},
     "name": "MyCollectionArtworkDetailQuery",
     "operationKind": "query",

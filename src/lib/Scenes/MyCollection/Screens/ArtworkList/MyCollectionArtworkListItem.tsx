@@ -16,7 +16,7 @@ interface MyCollectionArtworkListItemProps {
 
 const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = ({ artwork }) => {
   const navActions = AppStore.actions.myCollection.navigation
-  const imageURL = artwork?.image?.url
+  const imageURL = artwork?.images && artwork.images[0]?.url
   const { width } = useScreenDimensions()
   const mediums: { [medium: string]: string } = artworkMediumCategories.reduce(
     (acc, cur) => ({ ...acc, [cur.value]: cur.label }),

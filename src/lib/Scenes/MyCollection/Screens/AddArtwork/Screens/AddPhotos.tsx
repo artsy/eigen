@@ -5,7 +5,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { AddIcon, BorderBox, Box, color, Flex, XCircleIcon } from "palette"
 import React from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
-import { Image as ImageProps } from "react-native-image-crop-picker"
+import { Image as ImageProps } from "../../../State/MyCollectionArtworkModel"
 
 export const AddPhotos: React.FC = () => {
   const navActions = AppStore.actions.myCollection.navigation
@@ -30,7 +30,7 @@ export const AddPhotos: React.FC = () => {
                   <Box ml={index % 2 === 0 ? 1 : 0} mb={1}>
                     <Image
                       style={{ width: imageSize, height: imageSize, resizeMode: "cover" }}
-                      source={{ uri: photo.path }}
+                      source={{ uri: photo.url || photo.path }}
                     />
                     <DeletePhotoButton photo={photo} />
                   </Box>

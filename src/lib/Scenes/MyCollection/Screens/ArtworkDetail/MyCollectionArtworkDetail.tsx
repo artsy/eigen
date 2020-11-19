@@ -95,8 +95,11 @@ export const ArtworkMetaProps = graphql`
     editionNumber
     height
     id
-    image {
+    images {
+      isDefault
       url
+      width
+      height
     }
     internalID
     medium

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4c14c4daf846aa976b5e94113562df3b */
+/* @relayHash 5d5b6a23aac500c2329c84c354738c60 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -47,8 +47,11 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
   editionNumber
   height
   id
-  image {
+  images {
+    isDefault
     url
+    width
+    height
   }
   internalID
   medium
@@ -120,6 +123,20 @@ v3 = {
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "height",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "width",
   "storageKey": null
 };
 return {
@@ -301,28 +318,31 @@ return {
                         "name": "editionNumber",
                         "storageKey": null
                       },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "height",
-                        "storageKey": null
-                      },
+                      (v4/*: any*/),
                       {
                         "alias": null,
                         "args": null,
                         "concreteType": "Image",
                         "kind": "LinkedField",
-                        "name": "image",
-                        "plural": false,
+                        "name": "images",
+                        "plural": true,
                         "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "isDefault",
+                            "storageKey": null
+                          },
                           {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
                             "name": "url",
                             "storageKey": null
-                          }
+                          },
+                          (v5/*: any*/),
+                          (v4/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -348,13 +368,7 @@ return {
                         "name": "title",
                         "storageKey": null
                       },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "width",
-                        "storageKey": null
-                      },
+                      (v5/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -393,7 +407,7 @@ return {
     ]
   },
   "params": {
-    "id": "4c14c4daf846aa976b5e94113562df3b",
+    "id": "5d5b6a23aac500c2329c84c354738c60",
     "metadata": {},
     "name": "MyCollectionArtworkListPaginationQuery",
     "operationKind": "query",

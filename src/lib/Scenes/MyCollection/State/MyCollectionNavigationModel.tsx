@@ -10,6 +10,7 @@ import { AdditionalDetails } from "../Screens/AddArtwork/Screens/AdditionalDetai
 import { AddPhotos } from "../Screens/AddArtwork/Screens/AddPhotos"
 import { MyCollectionArtworkDetailQueryRenderer } from "../Screens/ArtworkDetail/MyCollectionArtworkDetail"
 import { ViewAllDetails } from "../Screens/ArtworkDetail/Screens/ViewAllDetails"
+import { ViewAllImages } from "../Screens/ArtworkDetail/Screens/ViewAllImages"
 import { MyCollectionArtworkListQueryRenderer } from "../Screens/ArtworkList/MyCollectionArtworkList"
 import { ConsignmentsSubmissionForm } from "../Screens/ConsignmentsHome/ConsignmentsSubmissionForm"
 
@@ -66,6 +67,7 @@ export interface MyCollectionNavigationModel {
     }
   >
   navigateToViewAllArtworkDetails: Action<MyCollectionNavigationModel, { passProps: any }> // FIXME: any
+  navigateToViewAllArtworkImages: Action<MyCollectionNavigationModel, { passProps: any }>
 
   // External app locations
   navigateToConsignSubmission: Action<MyCollectionNavigationModel>
@@ -233,6 +235,13 @@ export const MyCollectionNavigationModel: MyCollectionNavigationModel = {
   navigateToViewAllArtworkDetails: action((state, { passProps }) => {
     getNavigatorIOS(state.sessionState).push({
       component: ViewAllDetails,
+      passProps,
+    })
+  }),
+
+  navigateToViewAllArtworkImages: action((state, { passProps }) => {
+    getNavigatorIOS(state.sessionState).push({
+      component: ViewAllImages,
       passProps,
     })
   }),

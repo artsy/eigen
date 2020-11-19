@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d5e3d7a80451b0f2f13b2389f2281bbf */
+/* @relayHash d2e9b83eb5490ad366870f907323e0de */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionArtworkListItemTestsQueryVariables = {};
@@ -20,9 +20,12 @@ export type MyCollectionArtworkListItemTestsQueryResponse = {
         readonly editionNumber: string | null;
         readonly height: string | null;
         readonly id: string;
-        readonly image: {
+        readonly images: ReadonlyArray<{
+            readonly isDefault: boolean | null;
             readonly url: string | null;
-        } | null;
+            readonly width: number | null;
+            readonly height: number | null;
+        } | null> | null;
         readonly internalID: string;
         readonly medium: string | null;
         readonly metric: string | null;
@@ -55,8 +58,11 @@ query MyCollectionArtworkListItemTestsQuery {
     editionNumber
     height
     id
-    image {
+    images {
+      isDefault
       url
+      width
+      height
     }
     internalID
     medium
@@ -156,54 +162,63 @@ v11 = {
 v12 = {
   "alias": null,
   "args": null,
+  "kind": "ScalarField",
+  "name": "width",
+  "storageKey": null
+},
+v13 = {
+  "alias": null,
+  "args": null,
   "concreteType": "Image",
   "kind": "LinkedField",
-  "name": "image",
-  "plural": false,
+  "name": "images",
+  "plural": true,
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "isDefault",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "url",
       "storageKey": null
-    }
+    },
+    (v12/*: any*/),
+    (v10/*: any*/)
   ],
-  "storageKey": null
-},
-v13 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "medium",
   "storageKey": null
 },
 v14 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "metric",
+  "name": "medium",
   "storageKey": null
 },
 v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "metric",
   "storageKey": null
 },
 v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "title",
+  "name": "slug",
   "storageKey": null
 },
 v17 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "width",
+  "name": "title",
   "storageKey": null
 },
 v18 = {
@@ -217,6 +232,12 @@ v19 = {
   "nullable": true,
   "plural": false,
   "type": "String"
+},
+v20 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Int"
 };
 return {
   "fragment": {
@@ -255,13 +276,13 @@ return {
           (v9/*: any*/),
           (v10/*: any*/),
           (v11/*: any*/),
-          (v12/*: any*/),
-          (v1/*: any*/),
           (v13/*: any*/),
+          (v1/*: any*/),
           (v14/*: any*/),
           (v15/*: any*/),
           (v16/*: any*/),
-          (v17/*: any*/)
+          (v17/*: any*/),
+          (v12/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-slug\")"
       }
@@ -306,20 +327,20 @@ return {
           (v9/*: any*/),
           (v10/*: any*/),
           (v11/*: any*/),
-          (v12/*: any*/),
-          (v1/*: any*/),
           (v13/*: any*/),
+          (v1/*: any*/),
           (v14/*: any*/),
           (v15/*: any*/),
           (v16/*: any*/),
-          (v17/*: any*/)
+          (v17/*: any*/),
+          (v12/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-slug\")"
       }
     ]
   },
   "params": {
-    "id": "d5e3d7a80451b0f2f13b2389f2281bbf",
+    "id": "d2e9b83eb5490ad366870f907323e0de",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -339,25 +360,28 @@ return {
         "artwork.artistNames": (v19/*: any*/),
         "artwork.category": (v19/*: any*/),
         "artwork.costCurrencyCode": (v19/*: any*/),
-        "artwork.costMinor": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Int"
-        },
+        "artwork.costMinor": (v20/*: any*/),
         "artwork.date": (v19/*: any*/),
         "artwork.depth": (v19/*: any*/),
         "artwork.editionNumber": (v19/*: any*/),
         "artwork.editionSize": (v19/*: any*/),
         "artwork.height": (v19/*: any*/),
         "artwork.id": (v18/*: any*/),
-        "artwork.image": {
+        "artwork.images": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "Image"
+        },
+        "artwork.images.height": (v20/*: any*/),
+        "artwork.images.isDefault": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
-          "type": "Image"
+          "type": "Boolean"
         },
-        "artwork.image.url": (v19/*: any*/),
+        "artwork.images.url": (v19/*: any*/),
+        "artwork.images.width": (v20/*: any*/),
         "artwork.internalID": (v18/*: any*/),
         "artwork.medium": (v19/*: any*/),
         "artwork.metric": (v19/*: any*/),

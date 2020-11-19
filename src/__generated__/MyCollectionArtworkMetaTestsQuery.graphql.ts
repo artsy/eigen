@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ae1fd3275b0e12d911ca8dc92f8a9fab */
+/* @relayHash 2e0aad98aa5c2cde4b84e7a33dc1b9a6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -41,8 +41,11 @@ fragment MyCollectionArtworkMeta_artwork on Artwork {
   editionNumber
   height
   id
-  image {
+  images {
+    isDefault
     url
+    width
+    height
   }
   internalID
   medium
@@ -76,16 +79,36 @@ v2 = {
   "storageKey": null
 },
 v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "height",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "width",
+  "storageKey": null
+},
+v5 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v4 = {
+v6 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
+},
+v7 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Int"
 };
 return {
   "fragment": {
@@ -197,29 +220,32 @@ return {
             "name": "editionNumber",
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "height",
-            "storageKey": null
-          },
+          (v3/*: any*/),
           (v2/*: any*/),
           {
             "alias": null,
             "args": null,
             "concreteType": "Image",
             "kind": "LinkedField",
-            "name": "image",
-            "plural": false,
+            "name": "images",
+            "plural": true,
             "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "isDefault",
+                "storageKey": null
+              },
               {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
                 "name": "url",
                 "storageKey": null
-              }
+              },
+              (v4/*: any*/),
+              (v3/*: any*/)
             ],
             "storageKey": null
           },
@@ -252,20 +278,14 @@ return {
             "name": "title",
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "width",
-            "storageKey": null
-          }
+          (v4/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-slug\")"
       }
     ]
   },
   "params": {
-    "id": "ae1fd3275b0e12d911ca8dc92f8a9fab",
+    "id": "2e0aad98aa5c2cde4b84e7a33dc1b9a6",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -280,36 +300,39 @@ return {
           "plural": false,
           "type": "Artist"
         },
-        "artwork.artist.id": (v3/*: any*/),
-        "artwork.artist.internalID": (v3/*: any*/),
-        "artwork.artistNames": (v4/*: any*/),
-        "artwork.category": (v4/*: any*/),
-        "artwork.costCurrencyCode": (v4/*: any*/),
-        "artwork.costMinor": {
+        "artwork.artist.id": (v5/*: any*/),
+        "artwork.artist.internalID": (v5/*: any*/),
+        "artwork.artistNames": (v6/*: any*/),
+        "artwork.category": (v6/*: any*/),
+        "artwork.costCurrencyCode": (v6/*: any*/),
+        "artwork.costMinor": (v7/*: any*/),
+        "artwork.date": (v6/*: any*/),
+        "artwork.depth": (v6/*: any*/),
+        "artwork.editionNumber": (v6/*: any*/),
+        "artwork.editionSize": (v6/*: any*/),
+        "artwork.height": (v6/*: any*/),
+        "artwork.id": (v5/*: any*/),
+        "artwork.images": {
           "enumValues": null,
           "nullable": true,
-          "plural": false,
-          "type": "Int"
-        },
-        "artwork.date": (v4/*: any*/),
-        "artwork.depth": (v4/*: any*/),
-        "artwork.editionNumber": (v4/*: any*/),
-        "artwork.editionSize": (v4/*: any*/),
-        "artwork.height": (v4/*: any*/),
-        "artwork.id": (v3/*: any*/),
-        "artwork.image": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
+          "plural": true,
           "type": "Image"
         },
-        "artwork.image.url": (v4/*: any*/),
-        "artwork.internalID": (v3/*: any*/),
-        "artwork.medium": (v4/*: any*/),
-        "artwork.metric": (v4/*: any*/),
-        "artwork.slug": (v3/*: any*/),
-        "artwork.title": (v4/*: any*/),
-        "artwork.width": (v4/*: any*/)
+        "artwork.images.height": (v7/*: any*/),
+        "artwork.images.isDefault": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Boolean"
+        },
+        "artwork.images.url": (v6/*: any*/),
+        "artwork.images.width": (v7/*: any*/),
+        "artwork.internalID": (v5/*: any*/),
+        "artwork.medium": (v6/*: any*/),
+        "artwork.metric": (v6/*: any*/),
+        "artwork.slug": (v5/*: any*/),
+        "artwork.title": (v6/*: any*/),
+        "artwork.width": (v6/*: any*/)
       }
     },
     "name": "MyCollectionArtworkMetaTestsQuery",

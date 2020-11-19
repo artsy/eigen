@@ -7,9 +7,12 @@ import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkHeader_artwork = {
     readonly artistNames: string | null;
     readonly date: string | null;
-    readonly image: {
+    readonly images: ReadonlyArray<{
+        readonly height: number | null;
+        readonly isDefault: boolean | null;
         readonly url: string | null;
-    } | null;
+        readonly width: number | null;
+    } | null> | null;
     readonly title: string | null;
     readonly " $refType": "MyCollectionArtworkHeader_artwork";
 };
@@ -46,14 +49,35 @@ const node: ReaderFragment = {
       "args": null,
       "concreteType": "Image",
       "kind": "LinkedField",
-      "name": "image",
-      "plural": false,
+      "name": "images",
+      "plural": true,
       "selections": [
         {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
+          "name": "height",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "isDefault",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "url",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "width",
           "storageKey": null
         }
       ],
@@ -70,5 +94,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '7f9d528e025064d6e33456b390ef520a';
+(node as any).hash = '2556b29c4eee1994b506accc071b9670';
 export default node;

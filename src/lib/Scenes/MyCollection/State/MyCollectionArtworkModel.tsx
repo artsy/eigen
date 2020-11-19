@@ -5,7 +5,7 @@ import { AppStoreModel } from "lib/store/AppStoreModel"
 import { isEqual } from "lodash"
 import { uniqBy } from "lodash"
 import { ActionSheetIOS, Alert } from "react-native"
-import ImagePicker, { Image } from "react-native-image-crop-picker"
+import ImagePicker from "react-native-image-crop-picker"
 import { commitMutation } from "react-relay"
 import { ConnectionHandler, graphql } from "relay-runtime"
 
@@ -21,6 +21,13 @@ import {
   uploadFileToS3,
 } from "../../Consignments/Submission/geminiUploadToS3"
 
+export interface Image {
+  height?: number
+  isDefault?: boolean
+  url?: string
+  path?: string
+  width?: number
+}
 export interface ArtworkFormValues {
   artist: string
   artistIds: string[]
@@ -94,7 +101,7 @@ export interface MyCollectionArtworkModel {
       id: string
       artist: { internalID: string }
       artistNames: string
-      image: { url: string }
+      images: Image[]
     },
     {},
     AppStoreModel
@@ -184,7 +191,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
 
   removePhoto: action((state, photoToRemove) => {
     state.sessionState.formValues.photos = state.sessionState.formValues.photos.filter(
-      (photo) => photo.path !== photoToRemove.path
+      (photo) => photo.path !== photoToRemove.path || photo.url !== photoToRemove.url
     )
   }),
 
@@ -192,7 +199,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     try {
       const state = getState()
       state.sessionState.lastUploadedPhoto = photos[0]
-      const imagePaths = photos.map((photo) => photo.path)
+      // only recently added photos have a path
+      const imagePaths = photos.filter((photo) => photo.path !== undefined).map((photo) => photo.path)
       const convectionKey = await getConvectionGeminiKey()
       const acl = "private"
       const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
@@ -363,7 +371,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       artistSearchResult: {
         internalID: artwork?.artist?.internalID,
         displayLabel: artwork?.artistNames,
-        imageUrl: artwork?.image?.url?.replace(":version", "square"),
+        imageUrl: artwork?.images?.find((i) => i.isDefault)?.url?.replace(":version", "square"),
       },
       category: artwork.category,
       date: artwork.date,
@@ -375,7 +383,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       height: artwork.height,
       medium: artwork.medium,
       metric: artwork.metric,
-      photos: [],
+      photos: artwork.images,
       title: artwork.title,
       width: artwork.width,
     }
@@ -395,8 +403,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
         const { sessionState } = getState()
         const input = cleanArtworkPayload(payload) as typeof payload
 
-        // TODO: Uncomment once edit mutation is updated in MP
-        // const externalImageUrls = await actions.uploadPhotos(photos)
+        const externalImageUrls = await actions.uploadPhotos(photos)
 
         commitMutation<MyCollectionArtworkModelUpdateArtworkMutation>(defaultEnvironment, {
           mutation: graphql`
@@ -426,8 +433,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
               // Cooerce type for MP
               costMinor: Number(costMinor),
 
-              // TODO: Wire up edit in MP
-              // externalImageUrls,
+              externalImageUrls,
               ...input,
             },
           },

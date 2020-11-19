@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash aa9fc4b03c430aeb6d2169369d949794 */
+/* @relayHash bdf56da7d04ddfebd06a78c55457ee79 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,8 +29,11 @@ query MyCollectionArtworkHeaderTestsQuery {
 fragment MyCollectionArtworkHeader_artwork on Artwork {
   artistNames
   date
-  image {
+  images {
+    height
+    isDefault
     url
+    width
   }
   title
 }
@@ -49,6 +52,12 @@ v1 = {
   "nullable": true,
   "plural": false,
   "type": "String"
+},
+v2 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Int"
 };
 return {
   "fragment": {
@@ -110,14 +119,35 @@ return {
             "args": null,
             "concreteType": "Image",
             "kind": "LinkedField",
-            "name": "image",
-            "plural": false,
+            "name": "images",
+            "plural": true,
             "selections": [
               {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
+                "name": "height",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "isDefault",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "url",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "width",
                 "storageKey": null
               }
             ],
@@ -143,7 +173,7 @@ return {
     ]
   },
   "params": {
-    "id": "aa9fc4b03c430aeb6d2169369d949794",
+    "id": "bdf56da7d04ddfebd06a78c55457ee79",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -160,13 +190,21 @@ return {
           "plural": false,
           "type": "ID"
         },
-        "artwork.image": {
+        "artwork.images": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "Image"
+        },
+        "artwork.images.height": (v2/*: any*/),
+        "artwork.images.isDefault": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
-          "type": "Image"
+          "type": "Boolean"
         },
-        "artwork.image.url": (v1/*: any*/),
+        "artwork.images.url": (v1/*: any*/),
+        "artwork.images.width": (v2/*: any*/),
         "artwork.title": (v1/*: any*/)
       }
     },

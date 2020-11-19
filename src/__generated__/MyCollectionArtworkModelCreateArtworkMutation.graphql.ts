@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 73f8c68498a941759ff01dc7eee1efc2 */
+/* @relayHash bee2af5c1a626449ddf38b11daf07beb */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionCreateArtworkInput = {
@@ -43,9 +43,12 @@ export type MyCollectionArtworkModelCreateArtworkMutationResponse = {
                     readonly editionNumber: string | null;
                     readonly height: string | null;
                     readonly id: string;
-                    readonly image: {
+                    readonly images: ReadonlyArray<{
+                        readonly isDefault: boolean | null;
                         readonly url: string | null;
-                    } | null;
+                        readonly width: number | null;
+                        readonly height: number | null;
+                    } | null> | null;
                     readonly internalID: string;
                     readonly medium: string | null;
                     readonly metric: string | null;
@@ -91,8 +94,11 @@ mutation MyCollectionArtworkModelCreateArtworkMutation(
             editionNumber
             height
             id
-            image {
+            images {
+              isDefault
               url
+              width
+              height
             }
             internalID
             medium
@@ -208,54 +214,63 @@ v12 = {
 v13 = {
   "alias": null,
   "args": null,
+  "kind": "ScalarField",
+  "name": "width",
+  "storageKey": null
+},
+v14 = {
+  "alias": null,
+  "args": null,
   "concreteType": "Image",
   "kind": "LinkedField",
-  "name": "image",
-  "plural": false,
+  "name": "images",
+  "plural": true,
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "isDefault",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "url",
       "storageKey": null
-    }
+    },
+    (v13/*: any*/),
+    (v11/*: any*/)
   ],
-  "storageKey": null
-},
-v14 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "medium",
   "storageKey": null
 },
 v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "metric",
+  "name": "medium",
   "storageKey": null
 },
 v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "metric",
   "storageKey": null
 },
 v17 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "title",
+  "name": "slug",
   "storageKey": null
 },
 v18 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "width",
+  "name": "title",
   "storageKey": null
 },
 v19 = {
@@ -359,13 +374,13 @@ return {
                           (v10/*: any*/),
                           (v11/*: any*/),
                           (v12/*: any*/),
-                          (v13/*: any*/),
-                          (v2/*: any*/),
                           (v14/*: any*/),
+                          (v2/*: any*/),
                           (v15/*: any*/),
                           (v16/*: any*/),
                           (v17/*: any*/),
-                          (v18/*: any*/)
+                          (v18/*: any*/),
+                          (v13/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -459,13 +474,13 @@ return {
                           (v10/*: any*/),
                           (v11/*: any*/),
                           (v12/*: any*/),
-                          (v13/*: any*/),
-                          (v2/*: any*/),
                           (v14/*: any*/),
+                          (v2/*: any*/),
                           (v15/*: any*/),
                           (v16/*: any*/),
                           (v17/*: any*/),
-                          (v18/*: any*/)
+                          (v18/*: any*/),
+                          (v13/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -487,7 +502,7 @@ return {
     ]
   },
   "params": {
-    "id": "73f8c68498a941759ff01dc7eee1efc2",
+    "id": "bee2af5c1a626449ddf38b11daf07beb",
     "metadata": {},
     "name": "MyCollectionArtworkModelCreateArtworkMutation",
     "operationKind": "mutation",
