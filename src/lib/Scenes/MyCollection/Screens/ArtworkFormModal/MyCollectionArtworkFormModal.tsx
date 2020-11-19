@@ -59,7 +59,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
   const { formValues, dirtyFormCheckValues } = AppStore.useAppState((state) => state.myCollection.artwork.sessionState)
 
   // we need to store the form values in a ref so that onDismiss can access their current value (prop updates are not
-  // sent through the NavigatorIOS system)
+  // sent through the react-navigation system)
   const formValuesRef = useRef(formValues)
   formValuesRef.current = formValues
 
