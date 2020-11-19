@@ -41,11 +41,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
       <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => route.params.onDismiss()}>
         {addOrEditLabel} artwork
       </FancyModalHeader>
-      <ScrollView
-        /* Disable touch events in form while loading */
-        keyboardDismissMode={"on-drag"}
-        keyboardShouldPersistTaps={"handled"}
-      >
+      <ScrollView keyboardDismissMode={"on-drag"} keyboardShouldPersistTaps={"handled"}>
         <Spacer my={1} />
 
         <Sans size="4" textAlign="center">
