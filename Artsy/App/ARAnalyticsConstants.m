@@ -1,7 +1,5 @@
 #import "ARAnalyticsConstants.h"
 
-NSString *const ARAnalyticsBackTapped = @"Back arrow";
-
 NSString *const ARAnalyticsAppUsageCountProperty = @"app launched count";
 NSString *const ARAnalyticsCollectorLevelProperty = @"collector level";
 NSString *const ARAnalyticsPriceRangeProperty = @"collector price range";
