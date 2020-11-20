@@ -19,11 +19,13 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { InquiryModalFragmentContainer } from "../InquiryModal"
 import { ShippingModal } from "../ShippingModal"
 import { press, typeInInput } from "./helpers"
+
 jest.unmock("react-relay")
 
 let env: ReturnType<typeof createMockEnvironment>
 
 const toggleVisibility = jest.fn()
+const onMutationSuccessful = jest.fn()
 
 // An app shell that holds modal visibility properties
 const FakeApp = (props: InquiryModalTestsQueryResponse) => {
@@ -32,6 +34,7 @@ const FakeApp = (props: InquiryModalTestsQueryResponse) => {
   const modalProps = {
     modalIsVisible,
     toggleVisibility,
+    onMutationSuccessful,
   }
 
   return (
@@ -39,6 +42,7 @@ const FakeApp = (props: InquiryModalTestsQueryResponse) => {
       artwork={props!.artwork!}
       modalIsVisible={modalProps.modalIsVisible}
       toggleVisibility={modalProps.toggleVisibility}
+      onMutationSuccessful={modalProps.onMutationSuccessful}
     />
   )
 }
