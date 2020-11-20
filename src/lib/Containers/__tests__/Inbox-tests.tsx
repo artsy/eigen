@@ -1,15 +1,55 @@
-import React from "react"
-import "react-native"
-import { Environment } from "relay-runtime"
-
+import { InboxTestsQuery } from "__generated__/InboxTestsQuery.graphql"
 import { renderWithLayout } from "lib/tests/renderWithLayout"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-
+import React from "react"
+import "react-native"
+import { graphql, QueryRenderer } from "react-relay"
+import { Environment } from "relay-runtime"
+import { MockPayloadGenerator } from "relay-test-utils"
+import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
+import { createMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
 import { Inbox as ActualInbox, InboxContainer } from "../Inbox"
+
+jest.unmock("react-relay")
 
 jest.mock("lib/Scenes/Inbox/Components/Conversations/Conversations", () => ({
   ConversationsContainer: () => "Conversations",
 }))
+
+const getWrapper = (mockResolvers: MockResolvers = {}) => {
+  const env = createMockEnvironment()
+
+  const TestRenderer = () => (
+    <QueryRenderer<InboxTestsQuery>
+      environment={env}
+      variables={{}}
+      query={graphql`
+        query InboxTestsQuery {
+          me {
+            ...Inbox_me
+          }
+        }
+      `}
+      render={({ props, error }) => {
+        if (props) {
+          return <InboxContainer {...props} isVisible={true} />
+        } else if (error) {
+          console.error(error)
+        }
+      }}
+    />
+  )
+
+  const wrapper = renderWithWrappers(<TestRenderer />)
+
+  env.mock.resolveMostRecentOperation((operation) => {
+    return MockPayloadGenerator.generate(operation, mockResolvers)
+  })
+
+  // wrapper.update(wrapper)
+
+  return wrapper
+}
 
 const emptyMeProps = {
   lot_standings: [],
@@ -17,7 +57,7 @@ const emptyMeProps = {
 }
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(<InboxContainer me={meProps() as any} isVisible={true} />)
+  getWrapper({ me: meProps() as any })
 })
 
 it("Shows a zero state when there are no bids/conversations", () => {
