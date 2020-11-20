@@ -1,6 +1,11 @@
 import { InboxTestsQuery } from "__generated__/InboxTestsQuery.graphql"
+import { press } from "lib/Scenes/Artwork/Components/CommercialButtons/__tests__/helpers"
+import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { extractText } from "lib/tests/extractText"
+import { RelayMockEnvironment } from "lib/tests/mockEnvironmentPayload"
 import { renderWithLayout } from "lib/tests/renderWithLayout"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Text } from "palette"
 import React from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -16,23 +21,26 @@ jest.mock("lib/Scenes/Inbox/Components/Conversations/Conversations", () => ({
   ConversationsContainer: () => "Conversations",
 }))
 
+let env: RelayMockEnvironment
+
 const getWrapper = (mockResolvers: MockResolvers = {}) => {
-  const env = createMockEnvironment()
+  env = createMockEnvironment()
 
   const TestRenderer = () => (
     <QueryRenderer<InboxTestsQuery>
       environment={env}
       variables={{}}
       query={graphql`
-        query InboxTestsQuery {
+        query InboxTestsQuery @relay_test_operation {
           me {
             ...Inbox_me
+            ...MyBids_me
           }
         }
       `}
       render={({ props, error }) => {
         if (props) {
-          return <InboxContainer {...props} isVisible={true} />
+          return <InboxContainer me={props!.me!} isVisible={true} />
         } else if (error) {
           console.error(error)
         }
@@ -56,16 +64,37 @@ const emptyMeProps = {
   conversations_existence_check: null,
 }
 
-it("renders without throwing an error", () => {
-  getWrapper({ me: meProps() as any })
+it("Shows a zero state when there are no bids/conversations", () => {
+  const tree = getWrapper({ Me: () => emptyMeProps })
+  expect(extractText(tree.root)).toContain("Buying art on Artsy is simple")
 })
 
-it("Shows a zero state when there are no bids/conversations", () => {
-  const tree = JSON.stringify(
-    renderWithLayout(<InboxContainer me={emptyMeProps as any} isVisible={true} />, { width: 768, height: 1024 })
-  )
-  // Taken from the title in ZeroStateInbox
-  expect(tree).toContain("Buying art on Artsy is simple")
+it("renders without throwing an error", () => {
+  getWrapper({ Me: () => meProps() })
+})
+
+fit("renders bids tab by default when bids are enabled", () => {
+  __appStoreTestUtils__?.injectEmissionOptions({ AROptionsBidManagement: true })
+  const tree = getWrapper({ Me: () => meProps() })
+  expect(extractText(tree.root)).toContain("Untitled (Flag 2), 2017")
+})
+
+it("renders inquiries tab when inquiries tab is selected", async () => {
+  __appStoreTestUtils__?.injectEmissionOptions({ AROptionsBidManagement: true })
+  // const tree = getWrapper({ Me: () => ({ conversations: { edges: [{ node: { to: { name: "ACA Galleries" } } }] } }) })
+  const tree = getWrapper({ Me: () => meProps() })
+  // const inquiriesTab = tree.root.findAllByType(Text)[1]
+  // console.log("INQUIREIS TAB", extractText(inquiriesTab))
+
+  await press(tree.root, { text: "Inquiries", componentType: Text })
+
+  // env.mock.resolveMostRecentOperation((operation) => {
+  //   return MockPayloadGenerator.generate(operation, {
+  //     Me: () => ({ conversations: { edges: [{ node: { to: { name: "ACA Galleries" } } }] } }),
+  //   })
+  // })
+  // inquiriesTab.props.onPress()
+  expect(extractText(tree.root)).toContain("ACA Galleries")
 })
 
 it("requests a relay refetch when fetchData is called in ZeroState", () => {
