@@ -54,12 +54,14 @@ export class MessageGroup extends React.Component<MessageGroupProps> {
             )}
           </SubjectContainer>
         )}
-        <Message
-          message={message}
-          key={message.internalID}
-          showTimeSince={!!(message.createdAt && today && group.length - 1 === messageIndex)}
-          conversationId={conversationId!}
-        />
+        {!!message.body && (
+          <Message
+            message={message}
+            key={message.internalID}
+            showTimeSince={!!(message.createdAt && today && group.length - 1 === messageIndex)}
+            conversationId={conversationId!}
+          />
+        )}
         <Spacer mb={spaceAfter} />
       </React.Fragment>
     )
