@@ -7624,12 +7624,7 @@ type Partner implements Node {
   # A slug ID.
   slug: ID!
   type: String
-  viewingRoomsConnection(
-    after: String
-    first: Int
-    published: Boolean = true
-    statuses: [ViewingRoomStatusEnum!]
-  ): ViewingRoomsConnection
+  viewingRoomsConnection(after: String, first: Int, statuses: [ViewingRoomStatusEnum!]): ViewingRoomsConnection
 
   # The gallery partner's web address
   website: String
@@ -8143,9 +8138,6 @@ type Query {
     # Returns the last _n_ elements from the list.
     last: Int
     partnerID: ID
-
-    # (Deprecated) Use statuses
-    published: Boolean
 
     # Returns only viewing rooms with these statuses
     statuses: [ViewingRoomStatusEnum!] = [live]
@@ -10752,7 +10744,6 @@ type Viewer {
     after: String
     first: Int
     partnerID: ID
-    published: Boolean = true
     statuses: [ViewingRoomStatusEnum!]
   ): ViewingRoomsConnection
 }
