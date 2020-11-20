@@ -45,7 +45,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
           onPress={() => navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-results`)}
           data-test-id="AuctionsResultsButton"
         >
-          <Box>
+          <Box mr={2}>
             {results.map(({ title, saleDate, priceRealized, internalID, images }) => {
               const dateOfSale = DateTime.fromISO(saleDate as string).toLocaleString(DateTime.DATE_MED)
               const salePrice = priceRealized?.centsUSD === 0 ? null : priceRealized?.display
