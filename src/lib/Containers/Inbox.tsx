@@ -4,8 +4,8 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import ActiveBids, { ActiveBids as ActiveBidsRef } from "lib/Scenes/Inbox/Components/ActiveBids"
 import { ConversationsContainer } from "lib/Scenes/Inbox/Components/Conversations/Conversations"
 import ZeroStateInbox from "lib/Scenes/Inbox/Components/Conversations/ZeroStateInbox"
-import { MyBidsQueryRenderer as MyBids } from "lib/Scenes/MyBids/MyBids.tsx"
-import { getCurrentEmissionState, useEmissionOption } from "lib/store/AppStore"
+import { MyBidsQueryRenderer as MyBids } from "lib/Scenes/MyBids/MyBids"
+import { getCurrentEmissionState } from "lib/store/AppStore"
 import { listenToNativeEvents } from "lib/store/NativeModel"
 import { extractNodes } from "lib/utils/extractNodes"
 import { get } from "lib/utils/get"
@@ -83,10 +83,6 @@ export class Inbox extends React.Component<Props, State> {
     }
   }
 
-  setInquiryTabIsSelected = (status: boolean) => {
-    this.setState({ inquiryTabIsSelected: status })
-  }
-
   render() {
     const lotStanding = get(this.props, (p) => p.me.lot_standings)
     const conversationsExistenceCheck = extractNodes(this.props.me.conversations_existence_check)
@@ -94,46 +90,58 @@ export class Inbox extends React.Component<Props, State> {
     const hasConversations = !!conversationsExistenceCheck && conversationsExistenceCheck.length > 0
     const shouldDisplayMyBids = getCurrentEmissionState().options.AROptionsBidManagement
 
-    return hasBids || hasConversations ? (
-      <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
-        <Spacer pb={5} />
-        {!!shouldDisplayMyBids && (
-          <Flex flexDirection="row" px={1.5} mb={1}>
-            <Text
-              mr={2}
-              color={this.state.inquiryTabIsSelected ? "black30" : "black100"}
-              onPress={() => {
-                this.setState({ inquiryTabIsSelected: false })
-              }}
-              variant="largeTitle"
-            >
-              Bids
-            </Text>
-            <Text
-              color={this.state.inquiryTabIsSelected ? "black100" : "black30"}
-              onPress={() => {
-                this.setState({ inquiryTabIsSelected: true })
-              }}
-              variant="largeTitle"
-            >
-              Inquiries
-            </Text>
-          </Flex>
-        )}
-        {!this.state.inquiryTabIsSelected ? (
-          <MyBids me={this.props.me} />
-        ) : (
+    if (shouldDisplayMyBids) {
+      return (
+        <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
+          <Spacer pb={5} />
+          {!!shouldDisplayMyBids && (
+            <Flex flexDirection="row" px={1.5} mb={1}>
+              <Text
+                mr={2}
+                color={this.state.inquiryTabIsSelected ? "black30" : "black100"}
+                onPress={() => {
+                  this.setState({ inquiryTabIsSelected: false })
+                }}
+                variant="largeTitle"
+              >
+                Bids
+              </Text>
+              <Text
+                color={this.state.inquiryTabIsSelected ? "black100" : "black30"}
+                onPress={() => {
+                  this.setState({ inquiryTabIsSelected: true })
+                }}
+                variant="largeTitle"
+              >
+                Inquiries
+              </Text>
+            </Flex>
+          )}
+          {!this.state.inquiryTabIsSelected ? (
+            <MyBids me={this.props.me} />
+          ) : (
+            <ConversationsContainer
+              me={this.props.me}
+              componentRef={(conversations) => (this.conversations = conversations)}
+            />
+          )}
+        </Container>
+      )
+    } else {
+      return hasBids || hasConversations ? (
+        <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
+          <ActiveBids me={this.props.me} componentRef={(activeBids) => (this.activeBids = activeBids)} />
           <ConversationsContainer
             me={this.props.me}
             componentRef={(conversations) => (this.conversations = conversations)}
           />
-        )}
-      </Container>
-    ) : (
-      <Flex style={{ flex: 1 }}>
-        <ZeroStateInbox />
-      </Flex>
-    )
+        </Container>
+      ) : (
+        <Flex style={{ flex: 1 }}>
+          <ZeroStateInbox />
+        </Flex>
+      )
+    }
   }
 }
 
