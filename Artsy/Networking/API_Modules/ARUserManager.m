@@ -526,7 +526,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 + (void)logoutAndExit
 {
     [self clearUserData];
-    // Clearning the Relay cache is an asynchonous operation, let's give it 0.5s to finish.
+    // Clearing the Relay cache is an asynchonous operation, let's give it 0.5s to finish.
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         exit(0);
     });

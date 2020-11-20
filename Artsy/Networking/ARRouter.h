@@ -152,7 +152,6 @@
 + (NSURLRequest *)newSetDeviceAPNTokenRequest:(NSString *)token forDevice:(NSString *)device;
 + (NSURLRequest *)newDeleteDeviceRequest:(NSString *)token;
 + (NSURLRequest *)newSystemTimeRequest;
-+ (NSURLRequest *)newRequestForBlankPage;
 
 #pragma mark - Pages
 
