@@ -1244,8 +1244,10 @@ type Artwork implements Node & Searchable & Sellable {
   description(format: Format): String
   dimensions: dimensions
   displayLabel: String
+  displayPriceRange: Boolean
   editionNumber: String
   editionOf: String
+  editionSet(id: String!): EditionSet
   editionSets(sort: EditionSetSorts): [EditionSet]
   editionSize: String
 
@@ -1343,6 +1345,7 @@ type Artwork implements Node & Searchable & Sellable {
     shallow: Boolean
   ): Partner
   pickupAvailable: Boolean
+  price: String
   priceCurrency: String
   priceIncludesTax: Boolean
   priceIncludesTaxDisplay: String
@@ -1523,6 +1526,8 @@ type ArtworkMeta {
   share: String
   title: String
 }
+
+union ArtworkOrEditionSetType = Artwork | EditionSet
 
 # The results for one of the requested aggregations
 type ArtworksAggregationResults {
@@ -2740,6 +2745,7 @@ type CommerceFulfillmentEdge {
 type CommerceLineItem {
   artwork: Artwork
   artworkId: String!
+  artworkOrEditionSet: ArtworkOrEditionSetType
   artworkVersion: ArtworkVersion
   artworkVersionId: String!
   commissionFee(
@@ -5145,6 +5151,7 @@ input EditableLocation {
 
 type EditionSet implements Sellable {
   dimensions: dimensions
+  displayPriceRange: Boolean
   editionOf: String
 
   # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
@@ -5160,6 +5167,7 @@ type EditionSet implements Sellable {
   isOfferable: Boolean
   isSold: Boolean
   listPrice: ListPrice
+  price: String
   saleMessage: String
 
   # size bucket assigned to an artwork based on its dimensions
