@@ -1,5 +1,6 @@
 import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "lib/navigation/navigate"
 import { AppStore } from "lib/store/AppStore"
 import { artworkMediumCategories } from "lib/utils/artworkMediumCategories"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -15,7 +16,6 @@ interface MyCollectionArtworkListItemProps {
 }
 
 const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = ({ artwork }) => {
-  const navActions = AppStore.actions.myCollection.navigation
   const imageURL = artwork?.images && artwork.images[0]?.url
   const { width } = useScreenDimensions()
   const mediums: { [medium: string]: string } = artworkMediumCategories.reduce(
@@ -26,48 +26,47 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
   const { artist, artistNames, medium, slug, title } = artwork
 
   const lastUploadedPhoto = AppStore.useAppState((state) => state.myCollection.artwork.sessionState.lastUploadedPhoto)
-  const Image = () => {
+  const renderImage = () => {
     if (!!imageURL) {
-      return <OpaqueImageView imageURL={imageURL.replace(":version", "square")} width={90} height={90} />
+      return (
+        <OpaqueImageView
+          data-test-id="Image"
+          imageURL={imageURL.replace(":version", "square")}
+          width={90}
+          height={90}
+        />
+      )
     } else if (lastUploadedPhoto) {
-      return <RNImage style={{ width: 90, height: 90, resizeMode: "cover" }} source={{ uri: lastUploadedPhoto.path }} />
+      return (
+        <RNImage
+          data-test-id="Image"
+          style={{ width: 90, height: 90, resizeMode: "cover" }}
+          source={{ uri: lastUploadedPhoto.path }}
+        />
+      )
     } else {
-      return <Box bg={color("black30")} width={90} height={90} />
+      return <Box data-test-id="Image" bg={color("black30")} width={90} height={90} />
     }
   }
-
-  const Medium = () =>
-    !!medium ? (
-      <Sans size="3t" color="black60" numberOfLines={2} style={{ flex: 1 }}>
-        {mediums[medium] || capitalize(medium)}
-      </Sans>
-    ) : null
-
-  const Title = () =>
-    !!title ? (
-      <Sans size="3t" color="black60" numberOfLines={2} style={{ flex: 1 }}>
-        {title}
-      </Sans>
-    ) : null
 
   return (
     <TouchElement
       onPress={() => {
         if (!!artist) {
-          navActions.navigateToArtworkDetail({
-            artistInternalID: artist.internalID,
-            artworkSlug: slug,
-            medium,
+          navigate("/my-collection/artwork/" + slug, {
+            passProps: {
+              medium,
+              artistInternalID: artist.internalID,
+            },
           })
-          // FIXME: Eventually remove this; an artistID should always be present but
-          // investigating a crash.
         } else {
           console.warn("MyCollectionArtworkListItem: Error: Missing artist.artistID")
         }
       }}
     >
       <Flex
-        m={1}
+        my={1}
+        mx={2}
         flexDirection="row"
         alignItems="center"
         justifyContent="space-between"
@@ -75,11 +74,19 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
         overflow="hidden"
       >
         <Flex flexDirection="row" alignItems="center">
-          <Image data-test-id="Image" />
+          {renderImage()}
           <Box m={1} maxWidth={width} style={{ flex: 1 }}>
             <Sans size="4">{artistNames}</Sans>
-            <Title />
-            <Medium />
+            {!!title ? (
+              <Sans size="3t" color="black60" numberOfLines={2} style={{ flex: 1 }}>
+                {title}
+              </Sans>
+            ) : null}
+            {!!medium ? (
+              <Sans size="3t" color="black60" numberOfLines={2} style={{ flex: 1 }}>
+                {mediums[medium] || capitalize(medium)}
+              </Sans>
+            ) : null}
           </Box>
         </Flex>
       </Flex>
@@ -90,7 +97,16 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
 export const MyCollectionArtworkListItemFragmentContainer = createFragmentContainer(MyCollectionArtworkListItem, {
   artwork: graphql`
     fragment MyCollectionArtworkListItem_artwork on Artwork {
-      ...MyCollectionArtworkDetail_sharedProps @relay(mask: false)
+      artist {
+        internalID
+      }
+      image {
+        url
+      }
+      artistNames
+      medium
+      slug
+      title
     }
   `,
 })

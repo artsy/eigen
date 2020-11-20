@@ -5,10 +5,6 @@
 // https://docs.google.com/spreadsheets/u/1/d/1bLbeOgVFaWzLSjxLOBDNOKs757-zBGoLSM1lIz3OPiI/edit#gid=497747862
 //
 
-// Global
-
-extern NSString *const ARAnalyticsBackTapped;
-
 // User properties
 
 extern NSString *const ARAnalyticsAppUsageCountProperty;
