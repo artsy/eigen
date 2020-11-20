@@ -17,7 +17,7 @@ export type Inbox_me = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"Conversations_me" | "ActiveBids_me">;
+    readonly " $fragmentRefs": FragmentRefs<"Conversations_me" | "ActiveBids_me" | "MyBids_me">;
     readonly " $refType": "Inbox_me";
 };
 export type Inbox_me$data = Inbox_me;
@@ -124,10 +124,15 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "FragmentSpread",
       "name": "ActiveBids_me"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "MyBids_me"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'fc3a51501e74ad6cd70d9cb1a4fa9f85';
+(node as any).hash = '4dbc88516d60bbd83176dd0e3e241405';
 export default node;

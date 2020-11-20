@@ -175,6 +175,7 @@ export const InboxContainer = createRefetchContainer(
         }
         ...Conversations_me
         ...ActiveBids_me
+        ...MyBids_me
       }
     `,
   },

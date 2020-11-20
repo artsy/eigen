@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 68cc0c67d78d123177899171d155a57a */
+/* @relayHash 97cb1ab3664166898831a85213fdadaf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -196,6 +196,7 @@ fragment Inbox_me on Me {
   }
   ...Conversations_me
   ...ActiveBids_me
+  ...MyBids_me
 }
 
 fragment Lot_saleArtwork on SaleArtwork {
@@ -1107,7 +1108,7 @@ return {
     ]
   },
   "params": {
-    "id": "68cc0c67d78d123177899171d155a57a",
+    "id": "97cb1ab3664166898831a85213fdadaf",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
