@@ -1,14 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 97cb1ab3664166898831a85213fdadaf */
+/* @relayHash b1f14211cec67a6bde4938013f87a2ed */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type InboxTestsQueryVariables = {};
 export type InboxTestsQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"Inbox_me" | "MyBids_me">;
+        readonly " $fragmentRefs": FragmentRefs<"Inbox_me">;
     } | null;
 };
 export type InboxTestsQuery = {
@@ -22,7 +22,6 @@ export type InboxTestsQuery = {
 query InboxTestsQuery {
   me {
     ...Inbox_me
-    ...MyBids_me
     id
   }
 }
@@ -462,11 +461,6 @@ return {
             "args": null,
             "kind": "FragmentSpread",
             "name": "Inbox_me"
-          },
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "MyBids_me"
           }
         ],
         "storageKey": null
@@ -1108,7 +1102,7 @@ return {
     ]
   },
   "params": {
-    "id": "97cb1ab3664166898831a85213fdadaf",
+    "id": "b1f14211cec67a6bde4938013f87a2ed",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -1346,5 +1340,5 @@ return {
   }
 };
 })();
-(node as any).hash = '20475c56a0a3e6e4bfa0eba53001f297';
+(node as any).hash = '0664d6807c9c2d53864ad6240891c43f';
 export default node;
