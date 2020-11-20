@@ -1380,6 +1380,9 @@ type Artwork implements Node & Searchable & Sellable {
   signature(format: Format): String
   signatureInfo: ArtworkInfoRow
 
+  # size bucket assigned to an artwork based on its dimensions
+  sizeBucket: String
+
   # score assigned to an artwork based on its dimensions
   sizeScore: Float
 
@@ -5158,6 +5161,9 @@ type EditionSet implements Sellable {
   isSold: Boolean
   listPrice: ListPrice
   saleMessage: String
+
+  # size bucket assigned to an artwork based on its dimensions
+  sizeBucket: String
 
   # score assigned to an artwork based on its dimensions
   sizeScore: Float
