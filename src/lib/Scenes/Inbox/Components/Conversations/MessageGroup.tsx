@@ -38,22 +38,6 @@ export class MessageGroup extends React.Component<MessageGroupProps> {
 
     return (
       <React.Fragment key={`message-${message.internalID}`}>
-        {!!message.isFirstMessage && (
-          <SubjectContainer>
-            {subjectItem?.__typename === "Artwork" && (
-              <ArtworkPreview
-                artwork={subjectItem}
-                onSelected={() => ARSwitchBoard.presentNavigationViewController(this, subjectItem.href!)}
-              />
-            )}
-            {subjectItem?.__typename === "Show" && (
-              <ShowPreview
-                show={subjectItem}
-                onSelected={() => ARSwitchBoard.presentNavigationViewController(this, subjectItem.href!)}
-              />
-            )}
-          </SubjectContainer>
-        )}
         <Message
           message={message}
           key={message.internalID}

@@ -11,6 +11,11 @@ import { Messages_conversation } from "__generated__/Messages_conversation.graph
 import { extractNodes } from "lib/utils/extractNodes"
 
 import { groupMessages, MessageGroup as MessageGroupType } from "./utils/groupMessages"
+import { Flex } from "palette"
+import ShowPreview from "./Preview/ShowPreview"
+import ArtworkPreview from "./Preview/ArtworkPreview"
+import ARSwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -22,6 +27,10 @@ interface Props {
 
 const LoadingIndicator = styled.ActivityIndicator`
   margin-top: 40px;
+`
+const SubjectContainer = styled(Flex)`
+  flex-direction: row;
+  justify-content: flex-end;
 `
 
 export const Messages: React.FC<Props> = forwardRef((props, ref) => {
@@ -101,41 +110,54 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
       }
     : {}
 
+  const subjectItem = conversation.items?.[0]?.item!
+
   return (
-    <FlatList
-      key={conversation.internalID!}
-      data={messages}
-      initialNumToRender={messages?.length}
-      renderItem={({ item, index }) => {
-        return (
-          <MessageGroup
-            group={item}
-            conversationId={conversation.internalID!}
-            subjectItem={conversation.items?.[0]?.item!}
-            key={`group-${index}-${item[0]?.key}`}
-          />
-        )
-      }}
-      inverted={!shouldStickFirstMessageToTop}
-      ref={flatList}
-      keyExtractor={({ id }) => id}
-      keyboardShouldPersistTaps="always"
-      onEndReached={loadMore}
-      onEndReachedThreshold={0.2}
-      onLayout={({
-        nativeEvent: {
-          layout: { height },
-        },
-      }) => {
-        setFlatListHeight(height)
-      }}
-      onContentSizeChange={(_width, height) => {
-        setContentHeight(height)
-      }}
-      refreshControl={refreshControl}
-      style={{ ...messagesStyles, paddingHorizontal: 10, flex: 0 }}
-      ListFooterComponent={<LoadingIndicator animating={fetchingMoreData} hidesWhenStopped />}
-    />
+    <>
+      <SubjectContainer>
+        {subjectItem?.__typename === "Artwork" && (
+          <ArtworkPreview artwork={subjectItem} onSelected={() => navigate(subjectItem.href!)} />
+        )}
+        {subjectItem?.__typename === "Show" && (
+          <ShowPreview show={subjectItem} onSelected={() => navigate(subjectItem.href!)} />
+        )}
+      </SubjectContainer>
+
+      <FlatList
+        key={conversation.internalID!}
+        data={messages}
+        initialNumToRender={messages?.length}
+        renderItem={({ item, index }) => {
+          return (
+            <MessageGroup
+              group={item}
+              conversationId={conversation.internalID!}
+              subjectItem={conversation.items?.[0]?.item!}
+              key={`group-${index}-${item[0]?.key}`}
+            />
+          )
+        }}
+        inverted={!shouldStickFirstMessageToTop}
+        ref={flatList}
+        keyExtractor={({ id }) => id}
+        keyboardShouldPersistTaps="always"
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.2}
+        onLayout={({
+          nativeEvent: {
+            layout: { height },
+          },
+        }) => {
+          setFlatListHeight(height)
+        }}
+        onContentSizeChange={(_width, height) => {
+          setContentHeight(height)
+        }}
+        refreshControl={refreshControl}
+        style={{ ...messagesStyles, paddingHorizontal: 10, flex: 0 }}
+        ListFooterComponent={<LoadingIndicator animating={fetchingMoreData} hidesWhenStopped />}
+      />
+    </>
   )
 })
 
