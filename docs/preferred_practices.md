@@ -19,10 +19,7 @@ Objective-C and Swift (sometimes called "Native" code) are responsible for the f
 
 - Sign up/in flow ("onboarding").
 - Live Auctions Integration (LAI) view controller and networking.
-- The Auction view controller.
-- The SwitchBoard (see "SwitchBoard" section below) to navigate between view controllers.
-- The top-level tab bar, and each tab's navigation controller.
-- Deep-link and notification handling (via SwitchBoard).
+- initial deep-link and notification handling (via ARAppNotificationsDelegate, ARAppDelegate).
 - Analytics for Native UI.
 - Initializing the React Native runtime.
 
