@@ -5,7 +5,6 @@ import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { Theme } from "palette"
-import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowQueryRenderer } from "./Containers/BidFlow"
 import { GeneQueryRenderer } from "./Containers/Gene"
 import { InboxQueryRenderer } from "./Containers/Inbox"
@@ -13,6 +12,7 @@ import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowQueryRenderer } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
 import { About } from "./Scenes/About/About"
+import { ArtistQueryRenderer } from "./Scenes/Artist/Artist"
 import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
@@ -29,12 +29,7 @@ import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 
 // Consignments / My Collection
 import { Consignments } from "./Scenes/Consignments"
-import { setupMyCollectionScreen } from "./Scenes/MyCollection/Boot"
-import { AddEditArtwork } from "./Scenes/MyCollection/Screens/AddArtwork/AddEditArtwork"
-import { MyCollectionArtworkDetailQueryRenderer as MyCollectionArtworkDetail } from "./Scenes/MyCollection/Screens/ArtworkDetail/MyCollectionArtworkDetail"
-import { MyCollectionArtworkListQueryRenderer as MyCollectionArtworkList } from "./Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkList"
-import { ConsignmentsSubmissionForm } from "./Scenes/MyCollection/Screens/ConsignmentsHome/ConsignmentsSubmissionForm"
-import { SellTabApp } from "./Scenes/MyCollection/SellTabApp"
+import { ConsignmentsSubmissionForm } from "./Scenes/Consignments/ConsignmentsHome/ConsignmentsSubmissionForm"
 
 import { FadeIn } from "./Components/FadeIn"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
@@ -82,6 +77,9 @@ import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
+import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
+import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
+import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
@@ -91,6 +89,7 @@ import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 
 LogBox.ignoreLogs([
+  "Non-serializable values were found in the navigation state",
   "Calling `getNode()` on the ref of an Animated component is no longer necessary.",
   "RelayResponseNormalizer: Payload did not contain a value for field `id: id`. Check that you are parsing with the same query that was used to fetch the payload.",
 
@@ -102,7 +101,7 @@ LogBox.ignoreLogs([
   // RN 0.59.0 ships with this issue, which has been effectively marked as #wontfix: https://github.com/facebook/react-native/issues/23130
   "Require cycle: node_modules/react-native/Libraries/Network/fetch.js -> node_modules/react-native/Libraries/vendor/core/whatwg-fetch.js -> node_modules/react-native/Libraries/Network/fetch.js",
 
-  "Require cycle: src/lib/store/AppStore.tsx -> src/lib/store/AppStoreModel.ts -> src/lib/Scenes/MyCollection/State/MyCollectionModel.tsx -> src/lib/Scenes/MyCollection/State/MyCollectionNavigationModel.tsx",
+  "Require cycle: src/lib/store/AppStore.tsx",
 
   // This is for the Artist page, which will likely get redone soon anyway.
   "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
@@ -416,9 +415,9 @@ export const modules = defineModules({
   MyAccountEditPassword: reactModule(MyAccountEditPassword, { hidesBackButton: true }),
   MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, { hidesBackButton: true }),
   MyBids: reactModule(MyBidsQueryRenderer),
-  AddEditArtwork: reactModule(setupMyCollectionScreen(AddEditArtwork)),
-  MyCollectionArtworkDetail: reactModule(setupMyCollectionScreen(MyCollectionArtworkDetail)),
-  MyCollectionArtworkList: reactModule(setupMyCollectionScreen(MyCollectionArtworkList)),
+  MyCollection: reactModule(MyCollectionQueryRenderer),
+  MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),
+  MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
   MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, { hidesBackButton: true }),
@@ -427,9 +426,9 @@ export const modules = defineModules({
   Partner: reactModule(Partner, { fullBleed: true }),
   PartnerLocations: reactModule(PartnerLocations),
   PrivacyRequest: reactModule(PrivacyRequest),
-  Sales: reactModule(setupMyCollectionScreen(Consignments), { isRootViewForTabName: "sell" }),
+  Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }),
+  SalesNotRootTabView: reactModule(Consignments),
   Search: reactModule(SearchWithTracking, { isRootViewForTabName: "search" }),
-  SellTabApp: reactModule(setupMyCollectionScreen(SellTabApp)),
   Show: reactModule(ShowQueryRenderer),
   Show2: reactModule(Show2QueryRenderer, { fullBleed: true }),
   ShowArtists: reactModule(ShowArtists),

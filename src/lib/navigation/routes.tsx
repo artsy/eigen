@@ -61,6 +61,9 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       url: `/artist/${artistID}/auction-results`,
     })),
     new RouteMatcher("/artist/:artistID/artist-series", "FullArtistSeriesList"),
+    new RouteMatcher("/artist/:artistID/articles", "WebView", (params) => ({
+      url: "/artist/" + params.artistID + "/articles",
+    })),
     new RouteMatcher("/artist/:artistID/*", "Artist"),
     // For artists in a gallery context, like https://artsy.net/spruth-magers/artist/astrid-klein . Until we have a native
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
@@ -107,14 +110,14 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/local-discovery", "LocalDiscovery"),
     new RouteMatcher("/privacy-request", "PrivacyRequest"),
 
-    new RouteMatcher("/my-collection/add-artwork", "AddEditArtwork"),
-    new RouteMatcher("/my-collection/artwork-detail/:artworkID", "MyCollectionArtworkDetail"),
-    new RouteMatcher("/my-collection/artwork-list", "MyCollectionArtworkList"),
+    new RouteMatcher("/my-collection", "MyCollection"),
+    new RouteMatcher("/my-collection/artwork/:artworkSlug", "MyCollectionArtwork"),
+    new RouteMatcher("/my-collection/artwork-details/:artworkSlug", "MyCollectionArtworkFullDetails"),
 
     // TODO: Follow-up about below route names
     new RouteMatcher("/collections/my-collection/artworks/new/submissions/new", "ConsignmentsSubmissionForm"),
     new RouteMatcher("/consign/submission", "ConsignmentsSubmissionForm"),
-    new RouteMatcher("/collections/my-collection/marketing-landing", "SellTabApp"),
+    new RouteMatcher("/collections/my-collection/marketing-landing", "SalesNotRootTabView"),
 
     new RouteMatcher("/conditions-of-sale", "WebView", () => ({ url: "/conditions-of-sale" })),
     new RouteMatcher("/artwork-classifications", "ArtworkAttributionClassFAQ"),

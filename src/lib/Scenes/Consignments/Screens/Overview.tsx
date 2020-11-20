@@ -5,8 +5,6 @@ import { Alert } from "react-native"
 import { AsyncStorage, Dimensions, Route, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { AppStore } from "lib/store/AppStore"
 import { Box, Button, color, Flex, Serif, Spacer, Theme } from "palette"
 import { ArtistResult, ConsignmentMetadata, ConsignmentSetup } from "../"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
@@ -28,7 +26,6 @@ interface Props extends ViewProperties {
   navigator: NavigatorIOS
   route: Route // this gets set by NavigatorIOS
   setup: ConsignmentSetup
-  isArrivingFromMyCollection?: boolean
 }
 
 interface State extends ConsignmentSetup {
@@ -246,7 +243,6 @@ export default class Overview extends React.Component<Props, State> {
 
     return (
       <>
-        {!!this.props.isArrivingFromMyCollection && <MyCollectionsNavHeader />}
         <Theme>
           <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} centerContent>
             <View
@@ -288,11 +284,9 @@ export default class Overview extends React.Component<Props, State> {
                   </Button>
                 )}
                 <Spacer mb={1} />
-                {!this.props.isArrivingFromMyCollection && (
-                  <Button variant="noOutline" onPress={() => SwitchBoard.dismissModalViewController(this)}>
-                    Close
-                  </Button>
-                )}
+                <Button variant="noOutline" onPress={() => SwitchBoard.dismissModalViewController(this)}>
+                  Close
+                </Button>
               </Flex>
             </View>
           </ScrollView>
@@ -300,9 +294,4 @@ export default class Overview extends React.Component<Props, State> {
       </>
     )
   }
-}
-
-const MyCollectionsNavHeader = () => {
-  const navActions = AppStore.actions.myCollection.navigation
-  return <FancyModalHeader onLeftButtonPress={() => navActions.goBack()} hideBottomDivider />
 }

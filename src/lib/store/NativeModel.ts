@@ -58,6 +58,7 @@ export interface NativeState {
     AROptionsUseReactNativeWebView: boolean
     AROptionsNewShowPage: boolean
     AROptionsNewFairPage: boolean
+    AROptionsNewInsightsPage: boolean
   }
   legacyFairSlugs: string[]
   legacyFairProfileSlugs: string[]

@@ -1,4 +1,7 @@
-jest.mock("../../../../../utils/googleMaps", () => ({ queryLocation: jest.fn() }))
+jest.mock("../../../../../utils/googleMaps", () => ({
+  getLocationPredictions: jest.fn(),
+  getLocationDetails: jest.fn(),
+}))
 
 import { InquiryModalTestsQuery, InquiryModalTestsQueryResponse } from "__generated__/InquiryModalTestsQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
@@ -7,7 +10,7 @@ import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
-import { queryLocation } from "lib/utils/googleMaps"
+import { getLocationDetails, getLocationPredictions } from "lib/utils/googleMaps"
 import { Touchable } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -16,11 +19,13 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { InquiryModalFragmentContainer } from "../InquiryModal"
 import { ShippingModal } from "../ShippingModal"
 import { press, typeInInput } from "./helpers"
+
 jest.unmock("react-relay")
 
 let env: ReturnType<typeof createMockEnvironment>
 
 const toggleVisibility = jest.fn()
+const onMutationSuccessful = jest.fn()
 
 // An app shell that holds modal visibility properties
 const FakeApp = (props: InquiryModalTestsQueryResponse) => {
@@ -29,6 +34,7 @@ const FakeApp = (props: InquiryModalTestsQueryResponse) => {
   const modalProps = {
     modalIsVisible,
     toggleVisibility,
+    onMutationSuccessful,
   }
 
   return (
@@ -36,6 +42,7 @@ const FakeApp = (props: InquiryModalTestsQueryResponse) => {
       artwork={props!.artwork!}
       modalIsVisible={modalProps.modalIsVisible}
       toggleVisibility={modalProps.toggleVisibility}
+      onMutationSuccessful={modalProps.onMutationSuccessful}
     />
   )
 }
@@ -196,10 +203,18 @@ describe("<InquiryModal />", () => {
     })
 
     it("User adds a location from the shipping modal", async () => {
-      ;(queryLocation as jest.Mock).mockResolvedValue([
+      ;(getLocationPredictions as jest.Mock).mockResolvedValue([
         { id: "a", name: "Coxsackie, NY, USA" },
         { id: "b", name: "Coxs Creek, KY, USA" },
       ])
+      ;(getLocationDetails as jest.Mock).mockResolvedValue({
+        city: "Coxsackie",
+        country: "USA",
+        state: "New York",
+        stateCode: "NY",
+        id: "a",
+        name: "Coxsackie, NY, USA",
+      })
       const wrapper = getWrapper()
       wrapper.root.findByProps({ "data-test-id": "checkbox-shipping_quote" }).props.onPress()
       await press(wrapper.root, { text: /^Add your location/ })
