@@ -45,7 +45,7 @@ export const Artist: React.FC<{
   if ((artistAboveTheFold.counts?.artworks ?? 0) > 0) {
     tabs.push({
       title: "Artworks",
-      initial: false, // TODO: To revert
+      initial: true,
       content: <ArtistArtworks artist={artistAboveTheFold} />,
     })
   }
@@ -61,7 +61,6 @@ export const Artist: React.FC<{
   if (isArtistInsightsEnabled) {
     tabs.push({
       title: "Insights",
-      initial: true, // TODO: To remove
       content: <ArtistInsights />,
     })
   }
