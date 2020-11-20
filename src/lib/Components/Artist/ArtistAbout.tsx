@@ -19,6 +19,8 @@ interface Props {
 
 class ArtistAbout extends React.Component<Props> {
   render() {
+    console.log("=====")
+    console.log(this.props.artist)
     const articles = extractNodes(this.props.artist.articles)
     const relatedArtists = extractNodes(this.props.artist.related?.artists)
     return (

@@ -1,9 +1,14 @@
+import { ArtistInsights_marketPriceInsights } from "__generated__/ArtistInsights_marketPriceInsights.graphql"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { Flex, Join, Separator, Text } from "palette"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 
-export const ArtistInsights = () => {
+interface Props {
+  marketPriceInsights: ArtistInsights_marketPriceInsights
+}
+const ArtistInsights: React.FC<Props> = ({ marketPriceInsights }) => {
   const MarketStats = () => (
     <>
       {/* Market Stats Hint */}
@@ -41,9 +46,39 @@ export const ArtistInsights = () => {
   )
   return (
     <StickyTabPageScrollView contentContainerStyle={{ paddingTop: 20 }}>
-      <Join separator={<Separator my={2} />}>
-        <MarketStats />
-      </Join>
+      <Join separator={<Separator my={2} />}>{!!marketPriceInsights && <MarketStats />}</Join>
     </StickyTabPageScrollView>
   )
 }
+
+export const ArtistInsightsFragmentContainer = createFragmentContainer(ArtistInsights, {
+  marketPriceInsights: graphql`
+    fragment ArtistInsights_marketPriceInsights on MarketPriceInsights {
+      annualLotsSold
+      annualValueSoldCents
+      artistId
+      artistName
+      artsyQInventory
+      createdAt
+      demandRank
+      demandTrend
+      highRangeCents
+      largeHighRangeCents
+      largeLowRangeCents
+      largeMidRangeCents
+      liquidityRank
+      lowRangeCents
+      medianSaleToEstimateRatio
+      medium
+      mediumHighRangeCents
+      mediumLowRangeCents
+      mediumMidRangeCents
+      midRangeCents
+      sellThroughRate
+      smallHighRangeCents
+      smallLowRangeCents
+      smallMidRangeCents
+      updatedAt
+    }
+  `,
+})
