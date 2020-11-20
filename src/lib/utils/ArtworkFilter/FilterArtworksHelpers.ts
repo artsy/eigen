@@ -42,7 +42,7 @@ export enum FilterDisplayName {
   gallery = "Gallery",
   institution = "Institution",
   medium = "Medium",
-  priceRange = "Price/estimate range",
+  priceRange = "Price",
   size = "Size",
   sort = "Sort by",
   timePeriod = "Time period",
