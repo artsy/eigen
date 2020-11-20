@@ -1,12 +1,11 @@
 import { MyCollectionArtworkArtistAuctionResults_artwork } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
-import { Divider } from "lib/Components/Bidding/Components/Divider"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { extractNodes } from "lib/utils/extractNodes"
 import { DateTime } from "luxon"
-import { Box, Flex, Spacer, Text } from "palette"
+import { Box, Flex, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -91,7 +90,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
       </ScreenMargin>
 
       <Box my={3}>
-        <Divider />
+        <Separator />
       </Box>
     </View>
   )
