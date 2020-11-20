@@ -19,7 +19,7 @@ Objective-C and Swift (sometimes called "Native" code) are responsible for the f
 
 - Sign up/in flow ("onboarding").
 - Live Auctions Integration (LAI) view controller and networking.
-- initial deep-link and notification handling (via ARAppNotificationsDelegate, ARAppDelegate).
+- Initial deep-link and notification handling (via ARAppNotificationsDelegate, ARAppDelegate).
 - Analytics for Native UI.
 - Initializing the React Native runtime.
 
@@ -102,8 +102,8 @@ Here are some great examples of what tests and test coverage should look like.
 
 ### Use `navigate()` for navigation between react native screens
 
-Our navigation logic has been (ported to typescript)[https://github.com/artsy/eigen/pull/3771] for most simple cases you should be able to use the `navigate()` 
-function for routing between screens. 
+Our navigation logic has been [ported to typescript](https://github.com/artsy/eigen/pull/3771)! For most simple cases you should be able to use the `navigate()` 
+function for routing between screens.
 
 ### Analytics
 
