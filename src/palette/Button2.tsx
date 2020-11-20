@@ -114,7 +114,6 @@ const ButtonVariant = React.forwardRef<
     isActive: boolean
   }>
 >(({ variant, children, isVisibleAtStart, isLoadingAtStart, isActive }, ref) => {
-  const activityIndicatorEntrance = useRef(new Animated.Value(isLoadingAtStart ? 1 : 0)).current
   const opacity = useRef(new Animated.Value(isVisibleAtStart ? 1 : 0)).current
   const scale = useRef(new Animated.Value(1)).current
   const translateY = useRef(new Animated.Value(0)).current
@@ -122,6 +121,12 @@ const ButtonVariant = React.forwardRef<
   const { textColor, borderColor, activeBorderColor, backgroundColor, activityIndicatorColor } = getVariantColors(
     variant
   )
+
+  const textOpacity = useRef(new Animated.Value(isLoadingAtStart ? 0 : 1)).current
+  const textTranslateY = useRef(new Animated.Value(0)).current
+
+  const activityIndicatorOpacity = useRef(new Animated.Value(isLoadingAtStart ? 1 : 0)).current
+  const activityIndicatorTranslateY = useRef(new Animated.Value(0)).current
 
   const animatedBorderColor = useAnimatedColor(isActive ? activeBorderColor : borderColor)
 
@@ -133,12 +138,10 @@ const ButtonVariant = React.forwardRef<
           this.setLoading(false, false)
           opacity.setValue(0)
           scale.setValue(0.97)
-          translateY.setValue(-7)
           setTimeout(() => {
             Animated.parallel([
               Animated.timing(opacity, { toValue: 1, useNativeDriver: true, easing: Easing.ease, duration: 130 }),
               Animated.timing(scale, { toValue: 1, useNativeDriver: true, easing: Easing.ease, duration: 130 }),
-              Animated.timing(translateY, { toValue: 0, useNativeDriver: true, easing: Easing.ease, duration: 110 }),
             ]).start()
           })
         },
@@ -150,20 +153,88 @@ const ButtonVariant = React.forwardRef<
             Animated.parallel([
               Animated.timing(opacity, { toValue: 0, useNativeDriver: true, easing: Easing.ease, duration: 130 }),
               Animated.timing(scale, { toValue: 0.9, useNativeDriver: true, easing: Easing.ease, duration: 130 }),
-              Animated.timing(translateY, { toValue: 5, useNativeDriver: true, easing: Easing.ease, duration: 150 }),
             ]).start()
           })
         },
         setLoading(loading, animated) {
+          const diff = 15
+          const duration = 150
+          const easing = Easing.inOut(Easing.ease)
           if (animated) {
-            Animated.timing(activityIndicatorEntrance, {
-              easing: Easing.ease,
-              duration: 120,
-              toValue: loading ? 1 : 0,
-              useNativeDriver: true,
-            }).start()
+            if (loading) {
+              textOpacity.setValue(1)
+              textTranslateY.setValue(0)
+              activityIndicatorOpacity.setValue(0)
+              activityIndicatorTranslateY.setValue(-diff)
+              setTimeout(() => {
+                Animated.parallel([
+                  Animated.timing(textOpacity, {
+                    toValue: 0,
+                    useNativeDriver: true,
+                    easing,
+                    duration,
+                  }),
+                  Animated.timing(textTranslateY, {
+                    toValue: diff,
+                    useNativeDriver: true,
+                    easing,
+                    duration,
+                  }),
+                  Animated.timing(activityIndicatorOpacity, {
+                    toValue: 1,
+                    useNativeDriver: true,
+                    easing,
+                    duration,
+                  }),
+                  Animated.timing(activityIndicatorTranslateY, {
+                    toValue: 0,
+                    useNativeDriver: true,
+                    easing,
+                    duration,
+                  }),
+                ]).start()
+              })
+            } else {
+              textOpacity.setValue(0)
+              textTranslateY.setValue(-diff)
+              activityIndicatorOpacity.setValue(1)
+              activityIndicatorTranslateY.setValue(0)
+
+              setTimeout(() => {
+                Animated.parallel([
+                  Animated.timing(textOpacity, {
+                    toValue: 1,
+                    useNativeDriver: true,
+                    easing,
+                    duration,
+                  }),
+                  Animated.timing(textTranslateY, {
+                    toValue: 0,
+                    useNativeDriver: true,
+                    easing,
+                    duration,
+                  }),
+                  Animated.timing(activityIndicatorOpacity, {
+                    toValue: 0,
+                    useNativeDriver: true,
+                    easing,
+                    duration,
+                  }),
+                  Animated.timing(activityIndicatorTranslateY, {
+                    toValue: diff,
+                    useNativeDriver: true,
+                    easing,
+                    duration,
+                  }),
+                ]).start()
+              })
+            }
           } else {
-            activityIndicatorEntrance.setValue(loading ? 1 : 0)
+            textOpacity.setValue(loading ? 0 : 1)
+            textTranslateY.setValue(0)
+
+            activityIndicatorOpacity.setValue(loading ? 1 : 0)
+            activityIndicatorTranslateY.setValue(0)
           }
         },
       }
@@ -174,17 +245,17 @@ const ButtonVariant = React.forwardRef<
     <StretchAbsolutely
       style={{
         opacity,
+        overflow: "hidden",
         transform: [
-          // {
-          //   scale,
-          // },
-          { translateY },
+          {
+            scale,
+          },
         ],
       }}
     >
       <StretchAbsolutely
         style={{
-          opacity: activityIndicatorEntrance.interpolate({
+          opacity: activityIndicatorOpacity.interpolate({
             inputRange: [0, 1],
             outputRange: [1, 0.7],
           }),
@@ -205,16 +276,10 @@ const ButtonVariant = React.forwardRef<
         style={{
           alignItems: "center",
           justifyContent: "center",
-          opacity: activityIndicatorEntrance.interpolate({
-            inputRange: [0, 1],
-            outputRange: [1, 0],
-          }),
+          opacity: textOpacity,
           transform: [
             {
-              scale: activityIndicatorEntrance.interpolate({
-                inputRange: [0, 1],
-                outputRange: [1, 0.85],
-              }),
+              translateY: textTranslateY,
             },
           ],
         }}
@@ -228,13 +293,10 @@ const ButtonVariant = React.forwardRef<
         style={{
           alignItems: "center",
           justifyContent: "center",
-          opacity: activityIndicatorEntrance,
+          opacity: activityIndicatorOpacity,
           transform: [
             {
-              scale: activityIndicatorEntrance.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 1],
-              }),
+              translateY: activityIndicatorTranslateY,
             },
           ],
         }}
