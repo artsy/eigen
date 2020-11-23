@@ -92,45 +92,6 @@ describe("CommercialButtons", () => {
     expect(commercialButtons.text()).toContain("Contact gallery")
   })
 
-  it("renders Inquire to Purchase button if isInquireable, price is visible, and lab option is true", async () => {
-    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFirstInquiry: true })
-
-    const artwork = {
-      ...ArtworkFixture,
-      isAcquireable: false,
-      isOfferable: false,
-      isInquireable: true,
-      isForSale: true,
-      isPriceHidden: false,
-    }
-
-    const commercialButtons = await relayComponent({
-      artwork,
-    })
-    expect(commercialButtons.find(Button).at(0).text()).toContain("Inquire to purchase")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact gallery")
-  })
-
-  it("renders Inquire on price button if isInquireable, price is hidden, and lab option is true", async () => {
-    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFirstInquiry: true })
-
-    const artwork = {
-      ...ArtworkFixture,
-      isAcquireable: false,
-      isOfferable: false,
-      isInquireable: true,
-      isForSale: true,
-      isPriceHidden: true,
-    }
-
-    const commercialButtons = await relayComponent({
-      artwork,
-    })
-
-    expect(commercialButtons.find(Button).at(0).text()).toContain("Inquire on price")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact gallery")
-  })
-
   it("renders Make Offer button if isOfferable", async () => {
     const artwork = {
       ...ArtworkFixture,

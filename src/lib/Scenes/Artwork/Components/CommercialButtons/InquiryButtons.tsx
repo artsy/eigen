@@ -1,4 +1,5 @@
 import { InquiryButtons_artwork } from "__generated__/InquiryButtons_artwork.graphql"
+import { InquirySuccessNotification } from "lib/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
 import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryTypes } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
@@ -17,8 +18,9 @@ export interface InquiryButtonsState {
   modalIsVisible: boolean
 }
 
-const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...props }) => {
+const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork }) => {
   const [modalVisibility, setModalVisibility] = useState(false)
+  const [notificationVisibility, setNotificationVisibility] = useState(false)
   const { dispatch } = useContext(ArtworkInquiryContext)
   const dispatchAction = (buttonText: string) => {
     dispatch({
@@ -31,30 +33,10 @@ const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...props }) =>
 
   return (
     <>
-      {!!artwork.isPriceHidden && (
-        <Button
-          onPress={() => dispatchAction(InquiryOptions.RequestPrice)}
-          size="large"
-          mb={1}
-          block
-          width={100}
-          variant={props.variant}
-        >
-          {InquiryOptions.RequestPrice}
-        </Button>
-      )}
-      {!artwork.isPriceHidden && (
-        <Button
-          onPress={() => dispatchAction(InquiryOptions.InquireToPurchase)}
-          size="large"
-          mb={1}
-          block
-          width={100}
-          variant={props.variant}
-        >
-          {InquiryOptions.InquireToPurchase}
-        </Button>
-      )}
+      <InquirySuccessNotification
+        modalVisible={notificationVisibility}
+        toggleNotification={(state: boolean) => setNotificationVisibility(state)}
+      />
       <Button
         onPress={() => dispatchAction(InquiryOptions.ContactGallery)}
         size="large"
@@ -68,6 +50,7 @@ const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...props }) =>
         artwork={artwork}
         modalIsVisible={modalVisibility}
         toggleVisibility={() => setModalVisibility(!modalVisibility)}
+        onMutationSuccessful={(state: boolean) => setNotificationVisibility(state)}
       />
     </>
   )

@@ -7,6 +7,7 @@ export const SubmitInquiryRequest = (
   environment: Environment,
   inquireable: any,
   inquiryState: ArtworkInquiryContextState,
+  setMutationSuccessful: (arg0: boolean) => void,
   showErrorMessage?: any
 ) => {
   const formattedQuestions = inquiryState.inquiryQuestions.map((q: InquiryQuestionInput) => {
@@ -29,11 +30,10 @@ export const SubmitInquiryRequest = (
 
   return commitMutation<SubmitInquiryRequestMutation>(environment, {
     onError: () => {
-      // Show error state
       showErrorMessage(true)
     },
     onCompleted: () => {
-      // Show delayed comfirmation notification
+      setMutationSuccessful(true)
     },
     variables: {
       input: {

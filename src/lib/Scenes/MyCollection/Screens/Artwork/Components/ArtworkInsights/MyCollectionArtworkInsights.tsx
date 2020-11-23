@@ -1,6 +1,5 @@
 import { MyCollectionArtworkInsights_artwork } from "__generated__/MyCollectionArtworkInsights_artwork.graphql"
 import { MyCollectionArtworkInsights_marketPriceInsights } from "__generated__/MyCollectionArtworkInsights_marketPriceInsights.graphql"
-import { Divider } from "lib/Components/Bidding/Components/Divider"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Separator, Spacer, Text } from "palette"
 import React from "react"
@@ -38,18 +37,18 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
           <Spacer mt={3} />
           <MyCollectionArtworkDemandIndexFragmentContainer marketPriceInsights={marketPriceInsights} />
           <ScreenMargin my={3}>
-            <Divider />
+            <Separator />
           </ScreenMargin>
           <MyCollectionArtworkPriceEstimateFragmentContainer
             artwork={artwork}
             marketPriceInsights={marketPriceInsights}
           />
           <ScreenMargin mt={2} mb={3}>
-            <Divider />
+            <Separator />
           </ScreenMargin>
           <MyCollectionArtworkArtistMarketFragmentContainer marketPriceInsights={marketPriceInsights} />
           <ScreenMargin mt={2} mb={3}>
-            <Divider />
+            <Separator />
           </ScreenMargin>
         </>
       )}

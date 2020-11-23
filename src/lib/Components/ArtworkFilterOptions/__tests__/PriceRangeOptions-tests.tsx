@@ -104,6 +104,14 @@ describe("Price Range Options Screen", () => {
     expect(extractText(firstOption)).toContain("All")
   })
 
+  it("renders price range options from most to least expensive", () => {
+    const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
+    const options = tree.root.findAllByType(OptionListItem)
+    const renderedOptions = options.map(extractText)
+
+    expect(renderedOptions).toEqual(["All", "$50,000+", "$10,000-50,000", "$5,000-10,000", "$1000-5,000", "$0-1,000"])
+  })
+
   describe("selectedPriceRangeOption", () => {
     it("returns the default option if there are no selected or applied filters", () => {
       const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)

@@ -7,7 +7,7 @@ import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquirySt
 import { InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { LocationWithDetails } from "lib/utils/googleMaps"
 import { Box, color, Flex, Separator, space, Text } from "palette"
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { LayoutAnimation, TextInput, TextInputProps, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -24,6 +24,7 @@ interface InquiryModalProps {
   navigator?: NavigatorIOS
   modalIsVisible: boolean
   relay: RelayProp
+  onMutationSuccessful: (state: boolean) => void
 }
 
 const ErrorMessageFlex = styled(Flex)`
@@ -122,7 +123,7 @@ const InquiryQuestionOption: React.FC<{
 }
 
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props }) => {
-  const { toggleVisibility, modalIsVisible, relay } = props
+  const { toggleVisibility, modalIsVisible, relay, onMutationSuccessful } = props
   const questions = artwork?.inquiryQuestions!
   const { state, dispatch } = useContext(ArtworkInquiryContext)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
@@ -130,11 +131,26 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const selectShippingLocation = (locationDetails: LocationWithDetails) =>
     dispatch({ type: "selectShippingLocation", payload: locationDetails })
   const setMessage = (message: string) => dispatch({ type: "setMessage", payload: message })
-
+  const [mutationSuccessful, setMutationSuccessful] = useState(false)
   const resetAndExit = () => {
     dispatch({ type: "resetForm", payload: null })
     toggleVisibility()
   }
+
+  useEffect(() => {
+    if (mutationSuccessful) {
+      toggleVisibility()
+
+      const delayNotification = setTimeout(() => {
+        onMutationSuccessful(true)
+        setMutationSuccessful(false)
+      }, 500)
+      return () => {
+        clearTimeout(delayNotification)
+      }
+    }
+  }, [mutationSuccessful])
+
   return (
     <FancyModal visible={modalIsVisible} onBackgroundPressed={() => resetAndExit()}>
       <FancyModalHeader
@@ -145,7 +161,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         rightButtonText="Send"
         rightButtonDisabled={state.inquiryQuestions.length === 0}
         onRightButtonPress={() => {
-          SubmitInquiryRequest(relay.environment, artwork, state, setErrorMessageVisibility)
+          SubmitInquiryRequest(relay.environment, artwork, state, setMutationSuccessful, setErrorMessageVisibility)
         }}
       >
         {state.inquiryType}
