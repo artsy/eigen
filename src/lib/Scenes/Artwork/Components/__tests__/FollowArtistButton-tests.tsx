@@ -1,6 +1,6 @@
 import { FollowArtistButtonTestsErrorQueryRawResponse } from "__generated__/FollowArtistButtonTestsErrorQuery.graphql"
 import { FollowArtistButtonTestsQueryRawResponse } from "__generated__/FollowArtistButtonTestsQuery.graphql"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
@@ -18,7 +18,7 @@ describe("FollowArtistButton", () => {
       <Theme>
         <FollowArtistButton
           relay={{ environment: {} } as RelayProp}
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           artist={followArtistButtonArtist}
         />
       </Theme>
@@ -29,7 +29,7 @@ describe("FollowArtistButton", () => {
   })
 
   describe("Following an artist", () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const getWrapper = async ({ mockArtistData, mockFollowResults }) => {
       return await renderRelayTree({
         Component: (props: any) => (

@@ -29,7 +29,7 @@ interface State {
   fetchingNextPage: boolean
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 @screenTrack((props: Props) => {
   let contextScreen
   switch (props.section) {

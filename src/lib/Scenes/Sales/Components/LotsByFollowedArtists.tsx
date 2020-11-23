@@ -30,7 +30,6 @@ export class LotsByFollowedArtists extends Component<Props> {
           <InfiniteScrollArtworksGrid
             loadMore={this.props.relay.loadMore}
             hasMore={this.props.relay.hasMore}
-            // @ts-ignore STRICTNESS_MIGRATION
             connection={this.props.me.lotsByFollowedArtistsConnection}
             HeaderComponent={<SectionTitle title={title} />}
             hideUrgencyTags={hideUrgencyTags}

@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount, shallow } from "enzyme"
 import { Sans } from "palette"
 import React from "react"
@@ -17,14 +17,14 @@ describe("OtherWorks", () => {
       contextGrids: null,
       " $fragmentRefs": null,
     }
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const component = shallow(<OtherWorks artwork={noGridsArtworkProps} />)
     expect(component.find(Header).length).toEqual(0)
   })
 
   it("renders no grids if an empty array is provided", () => {
     const noGridsArtworkProps = { contextGrids: [], " $fragmentRefs": null }
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const component = shallow(<OtherWorks artwork={noGridsArtworkProps} />)
     expect(component.find(Header).length).toEqual(0)
   })
@@ -49,7 +49,7 @@ describe("OtherWorks", () => {
       ],
       " $fragmentRefs": null,
     }
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const component = mount(<OtherWorks artwork={oneGridArtworkProps} />)
     expect(component.find(Header).length).toEqual(1)
     expect(component.find(Sans).first().text()).toEqual("Other works by Andy Warhol")
@@ -75,7 +75,7 @@ describe("OtherWorks", () => {
       ],
       " $fragmentRefs": null,
     }
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const component = mount(<OtherWorks artwork={oneGridArtworkProps} />)
     expect(component.find(Header).length).toEqual(2)
     expect(component.find(Sans).first().text()).toEqual("Other works by Andy Warhol")
@@ -112,7 +112,7 @@ describe("OtherWorks", () => {
       ],
       " $fragmentRefs": null,
     }
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const component = mount(<OtherWorks artwork={oneGridArtworkProps} />)
     expect(component.find(Header).length).toEqual(1)
     expect(component.find(Sans).first().text()).toEqual("Other works by Andy Warhol")

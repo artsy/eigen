@@ -1,11 +1,11 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import React, { useState } from "react"
 import { Animated, View } from "react-native"
 import { useAnimatedValue } from "../useAnimatedValue"
 
 describe(useAnimatedValue, () => {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   let val = null
 
   function Mock() {
@@ -15,12 +15,12 @@ describe(useAnimatedValue, () => {
   }
   it("returns a stable animated value", () => {
     const wrapper = mount(<Mock />)
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const prevVal = val
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(val).toBeInstanceOf(Animated.Value)
     wrapper.find(View).props().onMagicTap()
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(prevVal).toBe(val)
   })
 })

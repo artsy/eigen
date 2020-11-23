@@ -27,7 +27,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
   }
 
   updateAndCloseScreen = () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.props.updateWithEdition(this.state)
     this.props.navigator.pop()
   }
@@ -39,7 +39,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
     animate()
 
     this.setState({
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       editionInfo: this.state.editionInfo ? null : {},
     })
   }
@@ -47,9 +47,9 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
   updateSigned = () => this.setState({ signed: !this.state.signed })
   updateCert = () => this.setState({ certificateOfAuth: !this.state.certificateOfAuth })
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateEditionSize = (text) => this.setState({ editionInfo: { ...this.state.editionInfo, size: text } })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateEditionNumber = (text) => this.setState({ editionInfo: { ...this.state.editionInfo, number: text } })
 
   render() {

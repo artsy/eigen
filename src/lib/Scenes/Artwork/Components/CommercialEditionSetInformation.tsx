@@ -6,7 +6,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 type EditionSet = CommercialEditionSetInformation_artwork["editionSets"][0]
 
 interface Props {
@@ -33,14 +33,14 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   selectEdition = (internalID) => {
     const { setEditionSetId, artwork } = this.props
     const editionSets = artwork.editionSets
     this.setState({
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       selectedEdition: editionSets.find((edition) => {
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         return edition.internalID === internalID
       }),
     })
@@ -64,9 +64,9 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
         </Sans>
         <Flex flexDirection="row" alignContent="center" flexWrap="wrap">
           {editionSets.map((edition) => {
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             const { id, internalID, dimensions } = edition
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             const selected = internalID === selectedEdition.internalID
             return (
               <TouchableWithoutFeedback key={id} onPress={() => this.selectEdition(internalID)}>
@@ -84,7 +84,7 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
             <Spacer mb={1} />
             <Sans size="3t" color="black30">
               {
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 selectedEdition.editionOf
               }
             </Sans>
@@ -96,7 +96,7 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
 
             <Sans size="4" weight="medium" color="black100">
               {
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 selectedEdition.saleMessage
               }
             </Sans>

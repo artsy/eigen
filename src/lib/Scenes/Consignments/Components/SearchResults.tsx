@@ -19,7 +19,7 @@ export interface SearchQueryProps<T> extends TextInputProps {
   resultSelected?: (result: T) => void
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const noResults = (props) => {
   if (!props.query || props.searching) {
     return null
@@ -32,14 +32,14 @@ const noResults = (props) => {
 }
 
 function render<T>(props: SearchQueryProps<T>) {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   const rowForResult = (result) => {
     const resultID = !!result.internalID ? result.internalID : result.id
     return (
       <Box key={resultID}>
         <TouchableOpacity
           onPress={
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             () => props.resultSelected(result)
           }
         >
@@ -84,7 +84,7 @@ function render<T>(props: SearchQueryProps<T>) {
       />
       <ScrollView
         style={{ height: 182, paddingTop: 16 }}
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         scrollEnabled={props.results && !!props.results.length}
         keyboardShouldPersistTaps="always"
       >

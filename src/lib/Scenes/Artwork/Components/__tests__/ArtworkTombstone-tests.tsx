@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Theme } from "palette"
@@ -133,7 +133,7 @@ describe("ArtworkTombstone", () => {
   // TODO: THESE TESTS SHOULD NOT MUTATE THE FIXTURE!!!
   describe("for an artwork with less than 4 artists but more than 1", () => {
     beforeEach(() => {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       artworkTombstoneArtwork.artists = artworkTombstoneArtwork.artists.slice(0, 3)
     })
 
@@ -163,7 +163,7 @@ describe("ArtworkTombstone", () => {
 
   describe("for an artwork with one artist", () => {
     beforeEach(() => {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       artworkTombstoneArtwork.artists = artworkTombstoneArtwork.artists.slice(0, 1)
     })
 
@@ -188,9 +188,9 @@ describe("ArtworkTombstone", () => {
 
   describe("for an artwork with no artists but a cultural maker", () => {
     beforeEach(() => {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       artworkTombstoneArtwork.artists = []
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       artworkTombstoneArtwork.cultural_maker = "18th century American"
     })
 

@@ -22,18 +22,18 @@ interface PaymentInfoProps extends FlexProps {
 }
 
 export class PaymentInfo extends React.Component<PaymentInfoProps> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
   }
 
   presentCreditCardForm() {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.props.navigator.push({
       component: CreditCardForm,
       title: "",
       passProps: {
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         onSubmit: (token, params) => this.onCreditCardAdded(token, params),
         params: this.props.creditCardFormParams,
         navigator: this.props.navigator,
@@ -42,12 +42,12 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
   }
 
   presentBillingAddressForm() {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.props.navigator.push({
       component: BillingAddress,
       title: "",
       passProps: {
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         onSubmit: (address) => this.onBillingAddressAdded(address),
         billingAddress: this.props.billingAddress,
         navigator: this.props.navigator,
@@ -73,7 +73,7 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
 
           <BidInfoRow
             label="Credit card"
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             value={token && this.formatCard(token)}
             onPress={() => this.presentCreditCardForm()}
           />
@@ -82,7 +82,7 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
 
           <BidInfoRow
             label="Billing address"
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             value={billingAddress && this.formatAddress(billingAddress)}
             onPress={() => this.presentBillingAddressForm()}
           />

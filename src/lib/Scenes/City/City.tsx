@@ -4,7 +4,7 @@ import { Schema, screenTrack, track } from "lib/utils/track"
 import { Box, Button, color, Flex, Sans, Theme } from "palette"
 import React, { Component } from "react"
 import { NativeModules, View } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import ScrollableTabView from "react-native-scrollable-tab-view"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
@@ -41,7 +41,7 @@ const AllCityMetaTab = 0
   context_screen_owner_id: props.citySlug,
 }))
 export class CityView extends Component<Props, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   state = {
     buckets: null,
     filter: cityTabs[0],
@@ -102,7 +102,7 @@ export class CityView extends Component<Props, State> {
     EventEmitter.unsubscribe("map:error", this.handleError)
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   setSelectedTab(selectedTab) {
     EventEmitter.dispatch("filters:change", selectedTab.i)
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
@@ -136,19 +136,19 @@ export class CityView extends Component<Props, State> {
       action_type: Schema.ActionTypes.Tap,
     } as any
   })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   trackTab(_filter) {
     return null
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   componentDidUpdate(_, prevState) {
     if (prevState.filter.id !== this.state.filter.id) {
       this.trackTab(this.state.filter.id)
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   renderTabBar(props) {
     return (
       <View>
@@ -158,11 +158,11 @@ export class CityView extends Component<Props, State> {
   }
 
   // TODO: Is it correct that we have these two similar ones?
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   onScrollableTabViewLayout = (layout) => {
     this.scrollViewVerticalStart = layout.nativeEvent.layout.y
   }
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   onScrollViewLayout = (layout) => {
     this.scrollViewVerticalStart = layout.nativeEvent.layout.y
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
@@ -181,7 +181,7 @@ export class CityView extends Component<Props, State> {
             <Handle />
           </Flex>
           {relayErrorState ? (
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             <ErrorScreen relayErrorState={relayErrorState} key="error" />
           ) : (
             <ScrollableTabView
@@ -214,12 +214,12 @@ export class CityView extends Component<Props, State> {
                     <ScrollableTab tabLabel={tab.text} key={tab.id}>
                       <EventList
                         key={cityName + tab.id}
-                        // @ts-ignore STRICTNESS_MIGRATION
+                        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                         bucket={buckets[tab.id]}
                         type={tab.id}
                         cityName={cityName}
                         citySlug={citySlug}
-                        // @ts-ignore STRICTNESS_MIGRATION
+                        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                         relay={this.state.relay}
                         renderedInTab
                       />

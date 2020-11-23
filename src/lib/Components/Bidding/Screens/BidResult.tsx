@@ -62,7 +62,7 @@ export class BidResult extends React.Component<BidResultProps> {
 
   exitBidFlow = async () => {
     if (this.props.bidderPositionResult.status === "LIVE_BIDDING_STARTED") {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const saleSlug = this.props.sale_artwork.sale.slug
       const url = `${getCurrentEmissionState().predictionURL}/${saleSlug}`
       SwitchBoard.presentModalViewController(this, url)
@@ -73,7 +73,7 @@ export class BidResult extends React.Component<BidResultProps> {
 
   render() {
     const { sale_artwork, bidderPositionResult } = this.props
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const { liveStartAt, endAt } = sale_artwork.sale
     const { status, message_header, message_description_md } = bidderPositionResult
 
@@ -84,7 +84,7 @@ export class BidResult extends React.Component<BidResultProps> {
             <Flex alignItems="center">
               <Icon20
                 source={
-                  // @ts-ignore STRICTNESS_MIGRATION
+                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                   Icons[status] || require("../../../../../images/circle-x-red.png")
                 }
               />

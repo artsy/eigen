@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { shallow } from "enzyme"
 import React from "react"
 import "react-native"
@@ -11,7 +11,7 @@ import { SalesFragmentContainer } from "../index"
 jest.mock("../Components/LotsByFollowedArtists", () => "")
 
 it("renders the ZeroState when there are no sales", () => {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   const auctions = shallow(<SalesFragmentContainer {...props} sales={{ edges: [] } as any} me={null} />)
   expect(auctions.find("ZeroState").length).toEqual(1)
 })

@@ -25,7 +25,7 @@ export const populatedGrids = (grids: ReadonlyArray<Grid>) => {
 export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: OtherWorks_artwork }>(
   (props) => {
     const grids = props.artwork.contextGrids
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const gridsToShow = populatedGrids(grids) as ReadonlyArray<OtherWorksGrid>
 
     if (gridsToShow && gridsToShow.length > 0) {

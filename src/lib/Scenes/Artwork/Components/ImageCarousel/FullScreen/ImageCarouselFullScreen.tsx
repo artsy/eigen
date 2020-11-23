@@ -25,7 +25,6 @@ export const ImageCarouselFullScreen = () => {
   // update the imageIndex on scroll
   const onScroll = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-      // @ts-ignore STRICTNESS_MIGRATION
       const nextImageIndex = Math.round(e.nativeEvent.contentOffset.x / screenDimensions.width)
       if (fullScreenState.current === "entered" && nextImageIndex !== imageIndex.current) {
         dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex })
@@ -72,23 +71,19 @@ export const ImageCarouselFullScreen = () => {
         <WhiteUnderlay />
         <VerticalSwipeToDismiss onClose={onClose}>
           <FlatList<ImageDescriptor>
-            // @ts-ignore STRICTNESS_MIGRATION
             key={screenDimensions.orientation}
             data={images}
             horizontal
             showsHorizontalScrollIndicator={false}
             scrollEnabled={images.length > 1 && fullScreenState.current === "entered"}
-            // @ts-ignore STRICTNESS_MIGRATION
             snapToInterval={screenDimensions.width}
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             keyExtractor={(item) => item.url}
             decelerationRate="fast"
             initialScrollIndex={initialScrollIndex}
             getItemLayout={(_, index) => ({
               index,
-              // @ts-ignore STRICTNESS_MIGRATION
               offset: index * screenDimensions.width,
-              // @ts-ignore STRICTNESS_MIGRATION
               length: screenDimensions.width,
             })}
             onScroll={onScroll}
@@ -106,7 +101,7 @@ export const ImageCarouselFullScreen = () => {
                   image={item}
                   index={index}
                   ref={(ref) => {
-                    // @ts-ignore STRICTNESS_MIGRATION
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     zoomViewRefs[index] = ref
                   }}
                 />

@@ -8,7 +8,7 @@ interface Props {
   event: ShowEventSection_event
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const formatTime = (startAt, endAt) => {
   const startMoment = moment(startAt)
   const endMoment = moment(endAt)

@@ -30,16 +30,16 @@ interface ArtworkActionsProps {
 export const shareContent = (title: string, href: string, artists: ArtworkActions_artwork["artists"]) => {
   let computedTitle: string | null
   if (artists && artists.length) {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const names = take(artists, 3).map((artist) => artist.name)
     computedTitle = `${title} by ${names.join(", ")} on Artsy`
   } else if (title) {
     computedTitle = `${title} on Artsy`
   }
   return {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     title: computedTitle,
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     message: computedTitle,
     url: `https://artsy.net${href}?utm_content=artwork-share`,
   }
@@ -56,7 +56,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
   })
   handleArtworkSave() {
     const { artwork, relay } = this.props
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     commitMutation<ArtworkActionsSaveMutation>(relay.environment, {
       mutation: graphql`
         mutation ArtworkActionsSaveMutation($input: SaveArtworkInput!) {
@@ -82,7 +82,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
   async handleArtworkShare() {
     const { title, href, artists } = this.props.artwork
     try {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       await Share.share(shareContent(title, href, artists))
     } catch (error) {
       console.error("ArtworkActions.tsx", error)

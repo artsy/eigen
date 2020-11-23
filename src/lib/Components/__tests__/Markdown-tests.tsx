@@ -78,7 +78,7 @@ describe("Markdown", () => {
       ...basicRules,
       paragraph: {
         ...basicRules.paragraph,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => <Text testID="foobar">{output(node.content, state)}</Text>,
       },
     }

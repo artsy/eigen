@@ -20,18 +20,18 @@ export default class Provenance extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       provenance: props.provenance,
     }
   }
 
   doneTapped = () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.props.updateWithProvenance(this.state.provenance)
     this.props.navigator.pop()
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   textChanged = (text) => this.setState({ provenance: text })
 
   render() {

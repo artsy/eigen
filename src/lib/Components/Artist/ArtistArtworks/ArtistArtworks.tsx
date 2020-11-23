@@ -182,7 +182,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
         <>
           <Spacer mb={2} />
           <InfiniteScrollArtworksGrid
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             connection={artist.artworks}
             loadMore={relay.loadMore}
             hasMore={relay.hasMore}

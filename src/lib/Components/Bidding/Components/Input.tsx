@@ -12,7 +12,7 @@ interface InputState {
 }
 
 export class Input extends Component<InputProps, InputState> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
 
@@ -21,14 +21,14 @@ export class Input extends Component<InputProps, InputState> {
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   componentDidUpdate(prevProps) {
     if (this.props.error !== prevProps.error) {
       this.setState({ borderColor: this.props.error ? "red100" : "black10" })
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   onBlur(e) {
     if (this.props.onBlur) {
       this.props.onBlur(e)
@@ -39,7 +39,7 @@ export class Input extends Component<InputProps, InputState> {
     })
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   onFocus(e) {
     if (this.props.onFocus) {
       this.props.onFocus(e)
@@ -59,9 +59,7 @@ export class Input extends Component<InputProps, InputState> {
         {...this.props}
         // These props should not be overridden so they are declared after `{...this.props}`
         ref={this.props.inputRef}
-        // @ts-ignore STRICTNESS_MIGRATION
         onBlur={(e) => this.onBlur(e)}
-        // @ts-ignore STRICTNESS_MIGRATION
         onFocus={(e) => this.onFocus(e)}
       />
     )

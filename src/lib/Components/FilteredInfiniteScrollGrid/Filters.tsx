@@ -16,11 +16,11 @@ interface Props {
 }
 
 const getAggregationSlice = (sliceName: ArtworkAggregation, filteredArtworks: Filters_filteredArtworks) =>
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   filteredArtworks.aggregations.find(({ slice }) => slice === sliceName).counts
 
 const getAggregationOptions = (aggregation: ReturnType<typeof getAggregationSlice>) =>
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   aggregation.map(({ name, value }) => ({ text: name, value }))
 
 export const Filters: React.FC<Props> = ({ onFilterChange, mediumValue, priceRangeValue, filteredArtworks }) => {

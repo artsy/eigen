@@ -39,7 +39,7 @@ export const ArtistsGroupedByName: React.FC<Props> = ({ data, onEndReached }) =>
         </Sans>
       </Box>
     )}
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     renderSectionFooter={({ section }) => {
       if (section.index < data.length - 1) {
         return (

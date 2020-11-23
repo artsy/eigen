@@ -124,7 +124,7 @@ const TakePhotoID = "take_photo"
 const BlankImageID = "blank"
 
 export default class ImageSelection extends React.Component<Props, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
 
@@ -165,11 +165,11 @@ export default class ImageSelection extends React.Component<Props, State> {
             return item.image.uri
           }
         }}
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         renderItem={({ item }) => {
           if (typeof item === "string") {
             if (item === TakePhotoID) {
-              // @ts-ignore STRICTNESS_MIGRATION
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               return <TakePhotoImage onPressNewPhoto={this.props.onPressNewPhoto} />
             } else if (item === BlankImageID) {
               return <EmptyView />

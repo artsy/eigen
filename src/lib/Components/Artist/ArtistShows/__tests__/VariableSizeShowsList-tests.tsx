@@ -14,7 +14,7 @@ it("renders without throwing an error", () => {
   renderWithWrappers(<ShowsList shows={shows as any} showSize={"medium"} />)
 })
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const showProps = (n) => {
   return {
     id: `show-expansive-exhibition-${n}`,

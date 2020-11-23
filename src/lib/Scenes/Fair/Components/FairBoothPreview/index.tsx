@@ -20,7 +20,7 @@ interface State {
   isFollowedChanging: boolean
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const track: Track<Props, State> = _track
 
 @track()
@@ -34,7 +34,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
     const internalID = args[1]
     const {
       show: {
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         partner: { profile },
       },
     } = props
@@ -51,7 +51,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Gallery,
     } as any
   })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   trackFollowPartner(_slug, _internalID) {
     return null
   }
@@ -59,7 +59,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
   handleFollowPartner = () => {
     const { show, relay } = this.props
     const {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       partner: { slug: partnerSlug, internalID: partnerInternalID, id: partnerID, profile },
     } = show
     if (!profile) {
@@ -110,7 +110,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
             },
           },
           updater: (store) => {
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             store.get(partnerID).setValue(!isFollowed, "isFollowed")
           },
         })
@@ -153,7 +153,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
         coverImage,
         location,
         partner,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         counts: { artworks: artworkCount },
       },
     } = this.props

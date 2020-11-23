@@ -7,10 +7,10 @@ import {
   responsePathAsArray,
 } from "graphql"
 import { IMocks } from "graphql-tools/dist/Interfaces"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import getNetworkLayer from "relay-mock-network-layer"
 import { INetwork as RelayNetwork, Network } from "relay-runtime"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import uuid from "uuid"
 
 import { get } from "lib/utils/get"
@@ -25,7 +25,7 @@ export const createMockNetworkLayer = (mockResolvers: IMocks) => {
     getNetworkLayer({
       schema,
       mocks: { FormattedNumber: () => FormattedNumber, ...mockResolvers },
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       resolveQueryFromOperation: ({ id }) => {
         return require("../../../../data/complete.queryMap.json")[id]
       },
@@ -73,7 +73,7 @@ export const createMockFetchQuery = ({
       // whether to resolve fields in a given value
       if (typeof source !== "object") {
         const parentPath = pathAsArray.slice(0, -1).join("/")
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         const operationName = get(info, (i) => i.operation.name.value)
         throw new Error(
           `The value at path '${parentPath}' for operation '${operationName}' should be an object but is a ${typeof source}.`
@@ -127,7 +127,7 @@ export const createMockFetchQuery = ({
       )
     }) as GraphQLFieldResolver<any, any>,
     schema,
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     resolveQueryFromOperation: ({ id }) => {
       return require("../../../../data/complete.queryMap.json")[id]
     },
@@ -139,7 +139,7 @@ export const createMockFetchQuery = ({
       Query: Object.keys(mockData).reduce(
         (acc, k) => ({
           ...acc,
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           [k]: typeof mockData[k] === "function" ? mockData[k] : () => mockData[k],
         }),
         {}
@@ -147,7 +147,7 @@ export const createMockFetchQuery = ({
       Mutation: Object.keys(mockMutationResults).reduce(
         (acc, k) => ({
           ...acc,
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           [k]: typeof mockMutationResults[k] === "function" ? mockMutationResults[k] : () => mockMutationResults[k],
         }),
         {}
@@ -246,7 +246,7 @@ function error(
     renderMessage({
       path: responsePathAsArray(info.path).join("/"),
       type: info.returnType.inspect(),
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       operationName: get(info, (i) => i.operation.name.value, "(unknown)"),
     })
   )

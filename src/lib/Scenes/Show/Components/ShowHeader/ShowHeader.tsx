@@ -22,7 +22,7 @@ interface State {
   isFollowedSaving: boolean
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const track: Track<Props, State> = _track
 
 @track()
@@ -34,7 +34,7 @@ export class ShowHeader extends React.Component<Props, State> {
     if (show.isStubShow) {
       return
     }
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     SwitchBoard.presentPartnerViewController(this, show.partner?.href)
   }
 
@@ -78,7 +78,7 @@ export class ShowHeader extends React.Component<Props, State> {
             },
           },
           updater: (store) => {
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             store.get(relayID).setValue(!isShowFollowed, "is_followed")
           },
         })
@@ -121,7 +121,7 @@ export class ShowHeader extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Artist,
     } as any
   })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleArtistSelected(url, _slug, _internalID) {
     SwitchBoard.presentNavigationViewController(this, url)
   }
@@ -176,9 +176,9 @@ export class ShowHeader extends React.Component<Props, State> {
         <Box px={2}>
           <EntityList
             prefix="Works by"
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             list={uniqArtistList}
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             count={artists.length}
             displayedItems={3}
             onItemSelected={this.handleArtistSelected.bind(this)}

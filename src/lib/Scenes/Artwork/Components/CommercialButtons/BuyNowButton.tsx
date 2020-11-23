@@ -19,7 +19,7 @@ export interface State {
   isCommittingCreateOrderMutation: boolean
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const track: Track<BuyNowButtonProps, State> = _track
 
 @track()
@@ -28,7 +28,7 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
     isCommittingCreateOrderMutation: false,
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   onMutationError(error) {
     Alert.alert("Sorry, we couldn't process the request.", "Please try again or contact orders@artsy.net for help.", [
       {
@@ -91,7 +91,7 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
           onCompleted: (data) => {
             this.setState({ isCommittingCreateOrderMutation: false }, () => {
               const {
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 commerceCreateOrderWithArtwork: { orderOrError },
               } = data
               if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {

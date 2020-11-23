@@ -4,7 +4,7 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graphql"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
@@ -175,7 +175,7 @@ const MockFilterModalNavigator = ({ initialState }: InitialState) => {
         }}
       >
         <FilterModalNavigator
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           collection={CollectionFixture}
           exitModal={exitModalMock}
           closeModal={closeModalMock}
@@ -223,7 +223,7 @@ describe("Filter modal navigation flow", () => {
         }}
       >
         {React.createElement(
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           nextRoute.component,
           {
             ...nextRoute.passProps,
@@ -237,7 +237,7 @@ describe("Filter modal navigation flow", () => {
       </ArtworkFilterContext.Provider>
     )
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const getNextScreenTitle = (component) => component.root.findByType(FancyModalHeader).props.children
 
     expect(getNextScreenTitle(nextScreen)).toEqual("Sort by")
@@ -255,7 +255,7 @@ describe("Filter modal navigation flow", () => {
             followedArtists: null,
           },
 
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           dispatch: null,
         }}
       >
@@ -287,12 +287,12 @@ describe("Filter modal navigation flow", () => {
             followedArtists: null,
           },
 
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           dispatch: null,
         }}
       >
         {React.createElement(
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           nextRoute.component,
           {
             ...nextRoute.passProps,
@@ -306,7 +306,7 @@ describe("Filter modal navigation flow", () => {
       </ArtworkFilterContext.Provider>
     )
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const getNextScreenTitle = (component) => component.root.findAllByType(Sans)[0].props.children
     expect(getNextScreenTitle(nextScreen)).toEqual("Medium")
   })
@@ -561,7 +561,6 @@ describe("Applying filters on Artworks", () => {
                 <ArtworkFilterContext.Provider
                   value={{
                     state,
-                    // @ts-ignore STRICTNESS_MIGRATION
                     dispatch: jest.fn(),
                   }}
                 >

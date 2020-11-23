@@ -24,7 +24,7 @@ interface Props {
 export class ShowItem extends React.Component<Props> {
   get imageURL() {
     const {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       images: [image],
     } = this.props.show
 
@@ -47,7 +47,7 @@ export class ShowItem extends React.Component<Props> {
 
     const {
       name,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       partner: { name: galleryName },
       exhibition_period,
       end_at,
@@ -70,7 +70,7 @@ export class ShowItem extends React.Component<Props> {
             </Sans>
             <Sans size="3t" color="black60">
               {exhibitionDates(
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 exhibition_period,
                 end_at
               )}
