@@ -40,7 +40,7 @@ export const SubmitInquiryRequest = (
         inquireableID: inquireable.internalID,
         inquireableType: "Artwork",
         questions: formattedQuestions,
-        message: inquiryState.message,
+        message: inquiryState.message?.trim(),
       },
     },
     mutation: graphql`

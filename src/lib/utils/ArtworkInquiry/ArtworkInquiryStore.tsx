@@ -52,7 +52,7 @@ export const reducer = (
     case "setMessage":
       return {
         ...inquiryState,
-        message: action.payload.trim(),
+        message: action.payload,
       }
   }
 }
