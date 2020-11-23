@@ -11,6 +11,7 @@ upcoming:
     - Remove analytics tracking on back-arrow taps - pepopowitz
     - Rename AppStore to GlobalStore - david
     - Update STRICTNESS_MIGRATION comments - david
+    - Don't pass email to segment - brian
   user_facing:
     -
 releases:
