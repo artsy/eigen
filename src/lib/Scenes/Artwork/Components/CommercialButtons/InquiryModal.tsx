@@ -8,7 +8,7 @@ import { InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes
 import { LocationWithDetails } from "lib/utils/googleMaps"
 import { Box, color, Flex, Separator, space, Text } from "palette"
 import React, { useContext, useState } from "react"
-import { LayoutAnimation, TouchableOpacity } from "react-native"
+import { LayoutAnimation, TextInput, TextInputProps, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
@@ -129,6 +129,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const [errorMessageVisibility, setErrorMessageVisibility] = useState(false)
   const selectShippingLocation = (locationDetails: LocationWithDetails) =>
     dispatch({ type: "selectShippingLocation", payload: locationDetails })
+  const setMessage = (message: string) => dispatch({ type: "setMessage", payload: message })
 
   const resetAndExit = () => {
     dispatch({ type: "resetForm", payload: null })
@@ -179,6 +180,14 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           })
         }
       </Box>
+      <Box mx={2}>
+        <TextArea
+          placeholder="Add a custom note..."
+          title="Add Message"
+          value={state.message ? state.message : ""}
+          onChangeText={setMessage}
+        />
+      </Box>
       <ShippingModal
         toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
         modalIsVisible={shippingModalVisibility}
@@ -196,6 +205,27 @@ const InquiryField = styled(Flex)`
   margin-top: ${space(1)}px;
   padding: ${space(2)}px;
 `
+
+const StyledTextArea = styled(TextInput)`
+  border: solid 1px ${color("black10")};
+  padding: ${space(1)}px;
+  height: 88px;
+`
+
+// TODO: Replace with Palette when available
+interface TextAreaProps extends TextInputProps {
+  title: string
+}
+const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => (
+  <>
+    {!!title && (
+      <Text mb={1} variant="mediumText">
+        {title}
+      </Text>
+    )}
+    <StyledTextArea {...props} numberOfLines={3} multiline={true} editable />
+  </>
+)
 
 export const InquiryModalFragmentContainer = createFragmentContainer(InquiryModal, {
   artwork: graphql`
