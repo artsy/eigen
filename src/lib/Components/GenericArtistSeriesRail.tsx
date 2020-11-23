@@ -9,7 +9,7 @@ import {
 } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
 import { color, Sans, Spacer } from "palette"
@@ -37,7 +37,7 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
   const tracking = useTracking()
 
   const handleNavigation = (slug: string) => {
-    return SwitchBoard.presentNavigationViewController(navRef.current, `/collection/${slug}`)
+    return navigate(`/collection/${slug}`)
   }
 
   const validateArtworkImageURL = (

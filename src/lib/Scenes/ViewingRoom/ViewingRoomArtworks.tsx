@@ -2,7 +2,7 @@ import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtwor
 import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "lib/Components/ReadMore"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -49,10 +49,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
                     artwork.slug
                   ),
                 })
-                SwitchBoard.presentNavigationViewController(
-                  navRef.current!,
-                  `/viewing-room/${viewingRoom.slug}/${artwork.slug}`
-                )
+                navigate(`/viewing-room/${viewingRoom.slug}/${artwork.slug}`)
               }}
             >
               <Box>

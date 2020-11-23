@@ -1,6 +1,6 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
 import { ArtistList_targetSupply } from "__generated__/ArtistList_targetSupply.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { chunk, shuffle } from "lodash"
 import { Box, EntityHeader, Flex, Join, Sans, Spacer } from "palette"
@@ -104,7 +104,7 @@ const ArtistItem: React.FC<{ artist: any }> = ({ artist }) => {
           destinationScreenOwnerSlug: artist.slug,
         })
       )
-      SwitchBoard.presentNavigationViewController(navRef.current, artist.href)
+      navigate(artist.href)
     }
   }
 

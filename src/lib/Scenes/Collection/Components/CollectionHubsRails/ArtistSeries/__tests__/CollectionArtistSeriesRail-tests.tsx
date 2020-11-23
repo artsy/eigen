@@ -16,7 +16,7 @@ import {
 } from "lib/Components/GenericArtistSeriesRail"
 import { CardRailArtworkImageContainer as ArtworkImageContainer, CardRailCard } from "lib/Components/Home/CardRailCard"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import {
   CollectionArtistSeriesRail,
   CollectionArtistSeriesRailContainer,
@@ -26,9 +26,6 @@ import { Sans, Theme } from "palette"
 import { useTracking } from "react-tracking"
 
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 jest.mock("react-tracking")
 
 describe("Artist Series Rail", () => {
@@ -223,24 +220,15 @@ describe("Artist Series Rail", () => {
 
       wrapper.find(CardRailCard).at(0).props().onPress()
 
-      expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-        expect.anything(),
-        "/collection/cindy-sherman-untitled-film-stills"
-      )
+      expect(navigate).toHaveBeenCalledWith("/collection/cindy-sherman-untitled-film-stills")
 
       wrapper.find(CardRailCard).at(1).props().onPress()
 
-      expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-        expect.anything(),
-        "/collection/damien-hirst-butterflies"
-      )
+      expect(navigate).toHaveBeenCalledWith("/collection/damien-hirst-butterflies")
 
       wrapper.find(CardRailCard).at(2).props().onPress()
 
-      expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-        expect.anything(),
-        "/collection/hunt-slonem-bunnies"
-      )
+      expect(navigate).toHaveBeenCalledWith("/collection/hunt-slonem-bunnies")
     })
   })
 })

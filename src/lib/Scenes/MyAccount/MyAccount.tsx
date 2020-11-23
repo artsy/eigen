@@ -2,7 +2,7 @@ import { MyAccount_me } from "__generated__/MyAccount_me.graphql"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -21,7 +21,7 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
           title="Full Name"
           value={me.name}
           onPress={() => {
-            SwitchBoard.presentNavigationViewController(navRef.current!, "my-account/edit-name")
+            navigate("my-account/edit-name")
           }}
         />
         <MenuItem
@@ -29,14 +29,14 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
           value={me.email}
           ellipsizeMode="middle"
           onPress={() => {
-            SwitchBoard.presentNavigationViewController(navRef.current!, "my-account/edit-email")
+            navigate("my-account/edit-email")
           }}
         />
         <MenuItem
           title="Phone"
           value={me.phone || "Add phone"}
           onPress={() => {
-            SwitchBoard.presentNavigationViewController(navRef.current!, "my-account/edit-phone")
+            navigate("my-account/edit-phone")
           }}
         />
         {!!me.hasPassword && (
@@ -44,7 +44,7 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
             title="Password"
             value="Change password"
             onPress={() => {
-              SwitchBoard.presentNavigationViewController(navRef.current!, "my-account/edit-password")
+              navigate("my-account/edit-password")
             }}
           />
         )}

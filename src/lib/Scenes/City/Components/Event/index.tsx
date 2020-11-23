@@ -1,6 +1,6 @@
 import { EventMutation } from "__generated__/EventMutation.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { Show } from "lib/Scenes/Map/types"
 import { Schema, Track, track as _track } from "lib/utils/track"
@@ -127,7 +127,7 @@ export class Event extends React.Component<Props, State> {
     if (section === "bmw") {
       this.trackShowTap(Schema.ActionNames.OpenBMWShow, slug, internalID)
     }
-    SwitchBoard.presentNavigationViewController(this, `/show/${slug}`)
+    navigate(`/show/${slug}`)
   }
 
   render() {

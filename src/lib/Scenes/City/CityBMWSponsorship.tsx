@@ -1,4 +1,4 @@
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Schema } from "lib/utils/track"
 import { Flex, Sans } from "palette"
 import React, { useRef } from "react"
@@ -32,10 +32,7 @@ export const BMWSponsorship: React.FC<BMWSponsorshipProps> = (props) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        SwitchBoard.presentNavigationViewController(
-          navRef.current,
-          url || "https://www.bmw-arts-design.com/bmw_art_guide"
-        )
+        navigate(url || "https://www.bmw-arts-design.com/bmw_art_guide")
 
         tracking.trackEvent({
           action_name: Schema.ActionNames.BMWLogo,

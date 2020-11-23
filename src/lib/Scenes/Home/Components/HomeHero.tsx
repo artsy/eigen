@@ -1,6 +1,6 @@
 import { tappedPromoSpace } from "@artsy/cohesion"
 import { HomeHero_homePage } from "__generated__/HomeHero_homePage.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -35,7 +35,7 @@ const HomeHero: React.FC<{ homePage: HomeHero_homePage }> = ({ homePage }) => {
   const handlePromoSpaceTap = () => {
     const path = unit.href!
     tracking.trackEvent(tappedPromoSpace({ path, subject: unit.title! }))
-    SwitchBoard.presentNavigationViewController(navRef.current, path)
+    navigate(path)
   }
 
   return (

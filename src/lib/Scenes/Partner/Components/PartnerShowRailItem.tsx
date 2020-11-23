@@ -1,6 +1,6 @@
 import { PartnerShowRailItem_show } from "__generated__/PartnerShowRailItem_show.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { Schema, track } from "lib/utils/track"
 import { first } from "lodash"
@@ -30,7 +30,7 @@ export class PartnerShowRailItem extends React.Component<Props> {
     owner_type: Schema.OwnerEntityTypes.Show,
   }))
   onPress() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.slug}`)
+    navigate(`/show/${this.props.show.slug}`)
   }
 
   render() {

@@ -2,7 +2,7 @@ import { FeaturedCollectionsRail_collection } from "__generated__/FeaturedCollec
 import { FeaturedCollectionsRail_collectionGroup } from "__generated__/FeaturedCollectionsRail_collectionGroup.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { defaultRules } from "lib/utils/renderMarkdown"
 import { renderMarkdown } from "lib/utils/renderMarkdown"
 import { Schema } from "lib/utils/track"
@@ -43,7 +43,7 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
   }
 
   const handleNavigation = (slug: string) => {
-    return SwitchBoard.presentNavigationViewController(navRef.current, `/collection/${slug}`)
+    return navigate(`/collection/${slug}`)
   }
 
   return collections.length > 0 ? (

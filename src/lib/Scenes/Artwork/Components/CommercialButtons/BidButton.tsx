@@ -1,7 +1,7 @@
 import { BidButton_artwork } from "__generated__/BidButton_artwork.graphql"
 import { BidButton_me } from "__generated__/BidButton_me.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { bidderNeedsIdentityVerification } from "lib/utils/auction"
 import { Schema } from "lib/utils/track"
 import { Button, color, Sans } from "palette"
@@ -43,7 +43,7 @@ export class BidButton extends React.Component<BidButtonProps> {
     action_type: Schema.ActionTypes.Tap,
   })
   redirectToIdentityVerificationFAQ() {
-    SwitchBoard.presentNavigationViewController(this, `/identity-verification-faq`)
+    navigate(`/identity-verification-faq`)
   }
 
   @track({
@@ -53,7 +53,7 @@ export class BidButton extends React.Component<BidButtonProps> {
   redirectToRegister() {
     const { sale } = this.props.artwork
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    SwitchBoard.presentNavigationViewController(this, `/auction-registration/${sale.slug}`)
+    navigate(`/auction-registration/${sale.slug}`)
   }
 
   @track((props) => {
@@ -67,7 +67,7 @@ export class BidButton extends React.Component<BidButtonProps> {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const { slug } = this.props.artwork.sale
     const liveUrl = `${PREDICTION_URL}/${slug}`
-    SwitchBoard.presentNavigationViewController(this, liveUrl)
+    navigate(liveUrl)
   }
 
   @track((props) => {
@@ -84,7 +84,7 @@ export class BidButton extends React.Component<BidButtonProps> {
     const bid = firstIncrement
 
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    SwitchBoard.presentNavigationViewController(this, `/auction/${sale.slug}/bid/${slug}?bid=${bid}`)
+    navigate(`/auction/${sale.slug}/bid/${slug}?bid=${bid}`)
   }
 
   renderIsPreview(

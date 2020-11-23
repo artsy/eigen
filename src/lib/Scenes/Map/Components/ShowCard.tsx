@@ -1,5 +1,4 @@
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { navigate } from "lib/navigation/navigate"
 import { TabFairItemRow } from "lib/Scenes/City/Components/TabFairItemRow"
 import { isEqual } from "lodash"
@@ -71,7 +70,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleTap(item) {
     if (item.type === "Show") {
-      SwitchBoard.presentNavigationViewController(this, item.href)
+      navigate(item.href)
     } else {
       navigate(`/fair/${item.node.id}`)
     }

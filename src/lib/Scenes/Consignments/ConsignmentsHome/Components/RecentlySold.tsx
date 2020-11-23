@@ -1,7 +1,7 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
 import { RecentlySold_targetSupply } from "__generated__/RecentlySold_targetSupply.graphql"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { shuffle } from "lodash"
 import { Box, Flex, Join, Sans, Spacer } from "palette"
@@ -75,7 +75,7 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
                           destinationScreenOwnerSlug: item!.slug,
                         })
                       )
-                      SwitchBoard.presentNavigationViewController(navRef.current!, item?.href!)
+                      navigate(item?.href!)
                     }}
                   />
                 )

@@ -1,6 +1,6 @@
 import { ViewingRoomViewWorksButton_viewingRoom } from "__generated__/ViewingRoomViewWorksButton_viewingRoom.graphql"
 import { AnimatedBottomButton } from "lib/Components/AnimatedBottomButton"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Schema } from "lib/utils/track"
 import { color, Flex, Sans } from "palette"
 import React, { useRef } from "react"
@@ -31,7 +31,7 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
         isVisible={props.isVisible}
         onPress={() => {
           tracking.trackEvent(tracks.tappedViewWorksButton(viewingRoom.internalID, viewingRoom.slug))
-          SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}/artworks`)
+          navigate(`/viewing-room/${viewingRoom.slug}/artworks`)
         }}
       >
         <ViewWorksButton data-test-id="view-works" px="2">

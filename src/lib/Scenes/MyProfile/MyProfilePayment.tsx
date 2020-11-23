@@ -4,7 +4,7 @@ import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graph
 import { CreditCardDetailsContainer } from "lib/Components/CreditCardDetails"
 import { MenuItem } from "lib/Components/MenuItem"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
@@ -142,12 +142,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
         ItemSeparatorComponent={() => <Spacer mb={10} />}
         ListFooterComponent={
           <Flex pt={creditCards.length === 0 ? 0 : "2"}>
-            <MenuItem
-              title="Add New Card"
-              onPress={() =>
-                SwitchBoard.presentNavigationViewController(navRef.current!, "/my-profile/payment/new-card")
-              }
-            />
+            <MenuItem title="Add New Card" onPress={() => navigate("/my-profile/payment/new-card")} />
             {!!isLoadingMore && <ActivityIndicator style={{ marginTop: 30 }} />}
           </Flex>
         }

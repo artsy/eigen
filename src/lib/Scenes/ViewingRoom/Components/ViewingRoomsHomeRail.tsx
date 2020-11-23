@@ -2,7 +2,7 @@ import { ViewingRoomsHomeRail_regular$key } from "__generated__/ViewingRoomsHome
 import { ViewingRoomsHomeRailQuery } from "__generated__/ViewingRoomsHomeRailQuery.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
@@ -34,7 +34,7 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = (props)
           title="Viewing rooms"
           onPress={() => {
             trackEvent(tracks.tappedViewingRoomsHeader())
-            SwitchBoard.presentNavigationViewController(navRef.current, "/viewing-rooms")
+            navigate("/viewing-rooms")
           }}
           RightButtonContent={() => (
             <Sans size="3" color="black60">
@@ -160,7 +160,7 @@ export const ViewingRoomsRegularRail: React.FC<ViewingRoomsRegularRailProps> = (
                       )
                     : featuredTracks.tappedFeaturedViewingRoomRailItem(item.internalID, item.slug)
                 )
-                SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${item.slug!}`)
+                navigate(`/viewing-room/${item.slug!}`)
               }}
             >
               <MediumCard

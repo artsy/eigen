@@ -1,6 +1,6 @@
 import { ArtworkAttributionClassFAQ_artworkAttributionClasses } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
 import { ArtworkAttributionClassFAQQuery } from "__generated__/ArtworkAttributionClassFAQQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { goBack } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -42,7 +42,7 @@ export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttribution
             Our partners are responsible for providing accurate classification information for all works.
           </Sans>
           <Box height={30}>
-            <Button onPress={() => SwitchBoard.dismissNavigationViewController(navRef.current)} block>
+            <Button onPress={goBack} block>
               OK
             </Button>
           </Box>

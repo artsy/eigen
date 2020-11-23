@@ -2,7 +2,7 @@ import { ActionType, ContextModule, OwnerType, ScreenOwnerType, TappedArtworkGro
 import { ArtworksInSeriesRail_artwork } from "__generated__/ArtworksInSeriesRail_artwork.graphql"
 import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { ArrowRightIcon, Flex, Sans, Spacer } from "palette"
 import React, { Component, useRef } from "react"
@@ -78,7 +78,7 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
       <TouchableOpacity
         onPress={() => {
           trackHeaderClick({ destinationScreenOwnerSlug: artistSeriesSlug!, destinationScreenOwnerID: artistSeriesID! })
-          SwitchBoard.presentNavigationViewController(navRef.current!, `/artist-series/${artistSeriesSlug}`)
+          navigate(`/artist-series/${artistSeriesSlug}`)
         }}
       >
         <Flex pb={1} flexDirection="row" justifyContent="space-between">
@@ -97,7 +97,7 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
           <ArtworkTileRailCard
             onPress={() => {
               trackArtworkClick({ destinationScreenOwnerID: item.internalID, destinationScreenOwnerSlug: item.slug })
-              SwitchBoard.presentNavigationViewController(navRef.current!, item.href!)
+              navigate(item.href!)
             }}
             imageURL={item.image?.imageURL}
             imageAspectRatio={item.image?.aspectRatio}

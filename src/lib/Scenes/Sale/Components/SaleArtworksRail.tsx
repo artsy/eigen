@@ -3,7 +3,7 @@ import { SaleArtworksRail_me } from "__generated__/SaleArtworksRail_me.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { SaleArtworkTileRailCardContainer } from "lib/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spacer } from "palette"
 import React, { useRef } from "react"
@@ -41,7 +41,7 @@ export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
         renderItem={({ item: artwork }) => (
           <SaleArtworkTileRailCardContainer
             onPress={() => {
-              SwitchBoard.presentNavigationViewController(navRef.current, artwork.href!)
+              navigate(artwork.href!)
             }}
             saleArtwork={artwork.saleArtwork!}
             useSquareAspectRatio

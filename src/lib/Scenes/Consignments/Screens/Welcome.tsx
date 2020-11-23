@@ -1,5 +1,5 @@
 import { CamIcon, MoneyIcon, OfferIcon, SellIcon } from "lib/Icons/Consignments"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { dismissModal } from "lib/navigation/navigate"
 import { Schema, screenTrack } from "lib/utils/track"
 import { Box, Button, Flex, Sans, Serif, Spacer, Theme } from "palette"
 import React from "react"
@@ -79,7 +79,7 @@ export default class Welcome extends React.Component<Props> {
               <Flex flexDirection="column" alignItems="center">
                 <Button onPress={this.goTapped}>Get started</Button>
                 <Spacer mb={1} />
-                <Button variant="noOutline" onPress={() => SwitchBoard.dismissModalViewController(this)}>
+                <Button variant="noOutline" onPress={() => dismissModal()}>
                   Close
                 </Button>
               </Flex>

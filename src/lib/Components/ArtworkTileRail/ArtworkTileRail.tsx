@@ -1,5 +1,5 @@
 import { ArtworkTileRail_artworksConnection } from "__generated__/ArtworkTileRail_artworksConnection.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
 import { Spacer } from "palette"
@@ -51,9 +51,7 @@ export const ArtworkTileRailContainer: React.FC<ArtworkTileRailContainerProps> =
                 tracking.trackEvent(tappedArtworkGroupThumbnail(contextModule!, item.internalID, item.slug))
               }
               {
-                !!onTilePress
-                  ? onTilePress(item.slug, item.internalID)
-                  : SwitchBoard.presentNavigationViewController(navRef.current!, item.href!)
+                !!onTilePress ? onTilePress(item.slug, item.internalID) : navigate(item.href!)
               }
             }}
             imageURL={item.image?.imageURL}

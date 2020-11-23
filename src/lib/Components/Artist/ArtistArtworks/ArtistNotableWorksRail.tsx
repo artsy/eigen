@@ -2,7 +2,7 @@ import { ArtistNotableWorksRail_artist } from "__generated__/ArtistNotableWorksR
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Box, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -27,7 +27,7 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist 
     if (!slug) {
       return
     }
-    return SwitchBoard.presentNavigationViewController(navRef.current, `/artwork/${slug}`)
+    return navigate(`/artwork/${slug}`)
   }
   const saleMessage = (artwork: NotableArtwork) => {
     const sale = artwork?.node?.sale

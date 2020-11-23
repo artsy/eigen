@@ -1,7 +1,7 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
 import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { getUrgencyTag } from "lib/utils/getUrgencyTag"
 import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
 import { Box, Flex, Sans, Spacer } from "palette"
@@ -50,13 +50,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const handleTap = () => {
     trackArtworkTap()
-    onPress && artwork.slug
-      ? onPress(artwork.slug)
-      : SwitchBoard.presentNavigationViewController(
-          itemRef.current!,
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          artwork.href
-        )
+    onPress && artwork.slug ? onPress(artwork.slug) : navigate(artwork.href!)
   }
 
   const trackArtworkTap = () => {

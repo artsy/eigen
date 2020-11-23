@@ -1,6 +1,6 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { ArtistSeriesMoreSeries_artist } from "__generated__/ArtistSeriesMoreSeries_artist.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { Flex, FlexProps, Sans } from "palette"
 import React, { Component, useRef } from "react"
@@ -49,10 +49,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
         {totalCount > 4 && (
           <TouchableOpacity
             onPress={() => {
-              SwitchBoard.presentNavigationViewController(
-                navRef.current!,
-                `/artist/${artist?.internalID!}/artist-series`
-              )
+              navigate(`/artist/${artist?.internalID!}/artist-series`)
             }}
           >
             <Sans data-test-id="viewAll" size="4t">{`View All (${totalCount})`}</Sans>

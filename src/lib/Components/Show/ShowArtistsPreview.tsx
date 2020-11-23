@@ -1,7 +1,7 @@
 import { ShowArtistsPreview_show } from "__generated__/ShowArtistsPreview_show.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import Switchboard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { get } from "lib/utils/get"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { take } from "lodash"
@@ -30,7 +30,7 @@ export class ShowArtistsPreview extends React.Component<Props> {
     } as any
   })
   handlePress(url: string, _slug: string, _internalID: string) {
-    Switchboard.presentNavigationViewController(this.props.Component || this, url)
+    navigate(url)
   }
 
   render() {

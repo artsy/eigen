@@ -14,9 +14,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ArtistSeriesListItem } from "../ArtistSeriesListItem"
 
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 const trackEvent = useTracking().trackEvent
 

@@ -1,5 +1,5 @@
 import { ViewingRoomsListItem_item$key } from "__generated__/ViewingRoomsListItem_item.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
 import { CardTagProps, SmallCard, Touchable } from "palette"
@@ -90,7 +90,7 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = (props)
       <Touchable
         onPress={() => {
           trackEvent(tracks.tapViewingRoomListItem(internalID, slug))
-          SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${slug!}`)
+          navigate(`/viewing-room/${slug!}`)
         }}
       >
         <SmallCard images={images} title={title} subtitle={item.partner?.name ?? undefined} tag={tag} />

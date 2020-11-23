@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType, ScreenOwnerType, TappedArtistSeriesGroup } from "@artsy/cohesion"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { ArtistSeriesConnectionEdge } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ArrowRightIcon, Flex, Sans } from "palette"
 import React, { Component, useRef } from "react"
@@ -55,7 +55,7 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
     <TouchableOpacity
       onPress={() => {
         trackArtworkClick()
-        SwitchBoard.presentNavigationViewController(navRef.current!, `/artist-series/${listItem?.node?.slug}`)
+        navigate(`/artist-series/${listItem?.node?.slug}`)
       }}
     >
       <Flex ref={navRef} flexDirection="row" mb={1} justifyContent="space-between">

@@ -1,5 +1,5 @@
 import { RelatedArtist_artist } from "__generated__/RelatedArtist_artist.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { color, Sans, Spacer } from "palette"
 import React, { Component } from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
@@ -16,7 +16,7 @@ interface Props {
 class RelatedArtist extends Component<Props> {
   handleTap() {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    SwitchBoard.presentNavigationViewController(this, this.props.artist.href)
+    navigate(this.props.artist.href)
   }
 
   render() {

@@ -1,5 +1,5 @@
 import { ArtworkTileRailTestsQuery } from "__generated__/ArtworkTileRailTestsQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Schema } from "lib/utils/track"
 import React from "react"
@@ -10,9 +10,6 @@ import { ArtworkTileRail, tappedArtworkGroupThumbnail } from "../ArtworkTileRail
 import { ArtworkTileRailCard } from "../ArtworkTileRailCard"
 
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 describe("ArtworkTileRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -70,10 +67,7 @@ describe("ArtworkTileRail", () => {
 
     tree.root.findByType(ArtworkTileRailCard).props.onPress()
 
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-      expect.anything(),
-      "/artwork/nicolas-party-rocks-ii"
-    )
+    expect(navigate).toHaveBeenCalledWith("/artwork/nicolas-party-rocks-ii")
     expect(useTracking().trackEvent).toHaveBeenCalledWith(
       tappedArtworkGroupThumbnail(
         Schema.ContextModules.ViewingRoomArtworkRail,

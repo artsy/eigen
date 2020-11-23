@@ -6,7 +6,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import Switchboard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 
 import {
   CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
@@ -61,7 +61,7 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
                       if (tapEvent) {
                         tracking.trackEvent(tapEvent)
                       }
-                      Switchboard.presentNavigationViewController(navRef.current, `/collection/${result.slug}`)
+                      navigate(`/collection/${result.slug}`)
                     }
                   : undefined
               }

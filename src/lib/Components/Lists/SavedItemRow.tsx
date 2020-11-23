@@ -1,6 +1,6 @@
 import React, { useRef } from "react"
 
-import Switchboard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { color, Flex, Sans, Spacer, Touchable } from "palette"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
@@ -22,7 +22,7 @@ export const SavedItemRow: React.FC<SavedItemRowProps> = ({ href, name, image, s
       <Touchable
         underlayColor={color("black5")}
         onPress={() => {
-          Switchboard.presentNavigationViewController(navRef.current!, href)
+          navigate(href)
         }}
         style={{ paddingVertical: 5 }}
       >

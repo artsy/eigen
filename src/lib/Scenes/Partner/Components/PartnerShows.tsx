@@ -6,7 +6,7 @@ import {
   StickyTabSection,
 } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { TabEmptyState } from "lib/Components/TabEmptyState"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Box, color, Flex, Sans, space, Spacer } from "palette"
 import React, { useContext, useRef, useState } from "react"
@@ -25,7 +25,7 @@ interface ShowGridItemProps {
 class ShowGridItem extends React.Component<ShowGridItemProps> {
   onPress = () => {
     const { show } = this.props
-    SwitchBoard.presentNavigationViewController(this, `/show/${show.slug}`)
+    navigate(`/show/${show.slug}`)
   }
 
   render() {

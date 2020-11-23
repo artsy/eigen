@@ -1,6 +1,6 @@
 import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
@@ -8,7 +8,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { once } from "lodash"
 import { Box, Button, Flex, Sans, ShareIcon, Spacer, Text, Theme } from "palette"
 import { _maxWidth as maxWidth } from "palette"
-import React, { useCallback, useRef, useState } from "react"
+import React, { useCallback, useState } from "react"
 import { FlatList, LayoutAnimation, Share, TouchableWithoutFeedback, View, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -35,11 +35,7 @@ export enum ViewingRoomStatus {
   CLOSED = "closed",
 }
 
-export const ClosedNotice: React.FC<{ status: string; navRef: React.RefObject<View>; partnerHref: string }> = ({
-  status,
-  navRef,
-  partnerHref,
-}) => {
+export const ClosedNotice: React.FC<{ status: string; partnerHref: string }> = ({ status, partnerHref }) => {
   let finalText = ""
   if (status === ViewingRoomStatus.CLOSED) {
     finalText = "This viewing room is now closed. We invite you to view this gallery’s current works."
@@ -52,11 +48,7 @@ export const ClosedNotice: React.FC<{ status: string; navRef: React.RefObject<Vi
       <Sans mt="3" size="3t" mx="4" textAlign="center">
         {finalText}
       </Sans>
-      <Button
-        variant="secondaryGray"
-        onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, partnerHref)}
-        mt={2}
-      >
+      <Button variant="secondaryGray" onPress={() => navigate(partnerHref)} mt={2}>
         Visit gallery
       </Button>
     </Flex>
@@ -65,7 +57,6 @@ export const ClosedNotice: React.FC<{ status: string; navRef: React.RefObject<Vi
 
 export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
   const viewingRoom = props.viewingRoom
-  const navRef = useRef<View>(null)
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
   const tracking = useTracking()
   const trackBodyImpression = useCallback(
@@ -91,7 +82,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
   if (viewingRoom.status === ViewingRoomStatus.CLOSED || viewingRoom.status === ViewingRoomStatus.SCHEDULED) {
     sections.push({
       key: "closedNotice",
-      content: <ClosedNotice status={viewingRoom.status} navRef={navRef} partnerHref={viewingRoom.partner!.href!} />,
+      content: <ClosedNotice status={viewingRoom.status} partnerHref={viewingRoom.partner!.href!} />,
     })
   } else if (viewingRoom.status === ViewingRoomStatus.LIVE) {
     sections.push(
@@ -144,7 +135,6 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
     position: absolute;
     top: ${useScreenDimensions().safeAreaInsets.top + 12};
     right: 12;
-    height: 20;
     z-index: 1;
     background-color: #ffffff;
     height: 40px;
@@ -167,7 +157,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
   return (
     <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
       <Theme>
-        <View style={{ flex: 1, position: "relative" }} ref={navRef}>
+        <View style={{ flex: 1, position: "relative" }}>
           <ShareButton />
           <FlatList<ViewingRoomSection>
             onViewableItemsChanged={useCallback(({ viewableItems }) => {

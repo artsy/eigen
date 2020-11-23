@@ -1,4 +1,4 @@
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Schema, track } from "lib/utils/track"
 import { ArrowRightIcon, Flex, Sans } from "palette"
 import React from "react"
@@ -21,7 +21,7 @@ export class ContextGridCTA extends React.Component<ContextGridCTAProps> {
   openLink() {
     const { href } = this.props
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    SwitchBoard.presentNavigationViewController(this, href)
+    navigate(href)
   }
 
   render() {

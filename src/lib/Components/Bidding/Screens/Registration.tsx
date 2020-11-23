@@ -10,7 +10,7 @@ import stripe from "tipsi-stripe"
 import { bidderNeedsIdentityVerification } from "lib/utils/auction"
 import { Schema, screenTrack } from "lib/utils/track"
 
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 
 import { Flex } from "../Elements/Flex"
 
@@ -95,7 +95,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 
   onPressConditionsOfSale = () => {
-    SwitchBoard.presentModalViewController(this, "/conditions-of-sale")
+    navigate("/conditions-of-sale", { modal: true })
   }
 
   onCreditCardAdded(token: StripeToken, params: PaymentCardTextFieldParams) {

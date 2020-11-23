@@ -1,7 +1,7 @@
 import { ConversationDetails_me } from "__generated__/ConversationDetails_me.graphql"
 import { ConversationDetailsQuery } from "__generated__/ConversationDetailsQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ItemInfoFragmentContainer as ItemInfo } from "lib/Scenes/Inbox/Components/Conversations/ItemInfo"
 import { AttachmentListFragmentContainer as AttachmentList } from "lib/Scenes/Inbox/Components/Conversations/Preview/Attachment/AttachmentList"
@@ -32,7 +32,7 @@ export const ConversationDetails: React.FC<Props> = (props) => {
 
         <Touchable
           onPress={() => {
-            SwitchBoard.presentNavigationViewController(navRef.current!, item.href!)
+            navigate(item.href!)
           }}
         >
           <ItemInfo item={item} />
@@ -52,10 +52,7 @@ export const ConversationDetails: React.FC<Props> = (props) => {
       </Text>
       <Touchable
         onPress={() => {
-          SwitchBoard.presentModalViewController(
-            navRef.current!,
-            "https://support.artsy.net/hc/en-us/sections/360008203054-Contact-a-gallery"
-          )
+          navigate("https://support.artsy.net/hc/en-us/sections/360008203054-Contact-a-gallery", { modal: true })
         }}
       >
         <Flex mb={1} flexDirection="row">

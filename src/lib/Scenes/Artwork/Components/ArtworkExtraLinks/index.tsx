@@ -1,6 +1,6 @@
 import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { partnerName } from "lib/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
 import { useSelectedTab } from "lib/store/GlobalStore"
 import { Schema, track } from "lib/utils/track"
@@ -18,7 +18,7 @@ export interface ArtworkExtraLinksProps {
 @track()
 export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
   handleReadOurFAQTap = () => {
-    SwitchBoard.presentNavigationViewController(this, `/buy-now-feature-faq`)
+    navigate(`/buy-now-feature-faq`)
   }
 
   @track({
@@ -41,7 +41,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     context_module: Schema.ContextModules.ArtworkExtraLinks,
   })
   handleReadOurAuctionFAQsTap() {
-    SwitchBoard.presentNavigationViewController(this, `/auction-faq`)
+    navigate(`/auction-faq`)
     return
   }
 
@@ -51,7 +51,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     context_module: Schema.ContextModules.ArtworkExtraLinks,
   })
   handleConditionsOfSaleTap() {
-    SwitchBoard.presentNavigationViewController(this, `/conditions-of-sale`)
+    navigate(`/conditions-of-sale`)
   }
 
   renderFAQAndSpecialist = () => {
@@ -147,10 +147,7 @@ const ConsignmentsLink: React.FC<{ artistName: string }> = ({ artistName }) => {
               action_type: Schema.ActionTypes.Tap,
               context_module: Schema.ContextModules.ArtworkExtraLinks,
             })
-            SwitchBoard.presentNavigationViewController(
-              navRef.current!,
-              isSellTab ? "/collections/my-collection/marketing-landing" : "/sales"
-            )
+            navigate(isSellTab ? "/collections/my-collection/marketing-landing" : "/sales")
           }}
         >
           Consign with Artsy

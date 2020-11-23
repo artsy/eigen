@@ -69,3 +69,32 @@ export function goBack() {
 export function popParentViewController() {
   NativeModules.ARScreenPresenterModule.popStack(unsafe__getSelectedTab())
 }
+
+export enum EntityType {
+  Partner = "partner",
+  Fair = "fair",
+}
+
+export enum SlugType {
+  ProfileID = "profileID",
+  FairID = "fairID",
+}
+
+export function navigateToPartner(slug: string) {
+  navigate(slug, { passProps: { entity: EntityType.Partner, slugType: SlugType.ProfileID } })
+}
+
+/**
+ * Looks up the entity by slug passed in and presents appropriate viewController
+ * @param component: ignored, kept for compatibility
+ * @param slug: identifier for the entity to be presented
+ * @param entity: type of entity we are routing to, this is currently used to determine what loading
+ * state to show, either 'fair' or 'partner'
+ * @param slugType: type of slug or id being passed, this determines how the entity is looked up
+ * in the api, if we have a fairID we can route directly to fair component and load the fair, if
+ * we have a profileID we must first fetch the profile and find the ownerType which can be a fair
+ * partner or other.
+ */
+export function navigateToEntity(slug: string, entity: EntityType, slugType: SlugType) {
+  navigate(slug, { passProps: { entity, slugType } })
+}

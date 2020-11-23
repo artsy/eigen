@@ -2,7 +2,7 @@ import { ViewingRoomHeader_viewingRoom } from "__generated__/ViewingRoomHeader_v
 import { durationSections } from "lib/Components/Countdown"
 import { CountdownProps, CountdownTimer } from "lib/Components/Countdown/CountdownTimer"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Box, Flex, space, Text } from "palette"
 import React, { useRef } from "react"
 import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
@@ -114,9 +114,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
           </Flex>
         </Flex>
         <PartnerContainer>
-          <TouchableWithoutFeedback
-            onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, partner!.href!)}
-          >
+          <TouchableWithoutFeedback onPress={() => navigate(partner!.href!)}>
             <Flex flexDirection="row" justifyContent="center" alignItems="center">
               {!!partnerIconImageURL && (
                 <Box mr={0.5}>

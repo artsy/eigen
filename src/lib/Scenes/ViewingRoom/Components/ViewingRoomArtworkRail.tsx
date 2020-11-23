@@ -1,7 +1,7 @@
 import { ViewingRoomArtworkRail_viewingRoom } from "__generated__/ViewingRoomArtworkRail_viewingRoom.graphql"
 import { ArtworkTileRail } from "lib/Components/ArtworkTileRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Schema } from "lib/utils/track"
 import { Box } from "palette"
 import React, { useRef } from "react"
@@ -27,7 +27,7 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = (pr
           title={`${totalCount} ${pluralizedArtworksCount}`}
           onPress={() => {
             tracking.trackEvent(tracks.tappedArtworkGroupHeader(viewingRoom.internalID, viewingRoom.slug))
-            SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}/artworks`)
+            navigate(`/viewing-room/${viewingRoom.slug}/artworks`)
           }}
         />
       </Box>
@@ -36,7 +36,7 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = (pr
         shouldTrack={false}
         onTilePress={(slug, id) => {
           tracking.trackEvent(tracks.tappedArtworkThumbnail(viewingRoom.internalID, viewingRoom.slug, id, slug))
-          SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}/${slug}`)
+          navigate(`/viewing-room/${viewingRoom.slug}/${slug}`)
         }}
       />
     </View>
