@@ -159,7 +159,9 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           resetAndExit()
         }}
         rightButtonText="Send"
-        rightButtonDisabled={state.inquiryQuestions.length === 0}
+        rightButtonDisabled={
+          (state.inquiryQuestions.length === 0 && !!questions.length) || (!questions.length && !state.message)
+        }
         onRightButtonPress={() => {
           SubmitInquiryRequest(relay.environment, artwork, state, setMutationSuccessful, setErrorMessageVisibility)
         }}
@@ -251,7 +253,6 @@ const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => {
           setBorderColor(color("black10"))
         }}
         style={{ borderColor }}
-        numberOfLines={3}
         multiline={true}
       />
     </>
