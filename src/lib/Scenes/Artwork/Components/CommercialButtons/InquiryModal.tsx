@@ -160,7 +160,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         }}
         rightButtonText="Send"
         rightButtonDisabled={
-          (state.inquiryQuestions.length === 0 && !!questions.length) || (!questions.length && !state.message)
+          (state.inquiryQuestions.length === 0 && !state.message)
         }
         onRightButtonPress={() => {
           SubmitInquiryRequest(relay.environment, artwork, state, setMutationSuccessful, setErrorMessageVisibility)
