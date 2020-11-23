@@ -223,7 +223,7 @@ const InquiryField = styled(Flex)`
 `
 
 const StyledTextArea = styled(TextInput)`
-  border: solid 1px ${color("black10")};
+  border: solid 1px;
   padding: ${space(1)}px;
   height: 88px;
 `
@@ -232,16 +232,31 @@ const StyledTextArea = styled(TextInput)`
 interface TextAreaProps extends TextInputProps {
   title: string
 }
-const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => (
-  <>
-    {!!title && (
-      <Text mb={1} variant="mediumText">
-        {title}
-      </Text>
-    )}
-    <StyledTextArea {...props} numberOfLines={3} multiline={true} editable />
-  </>
-)
+const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => {
+  const [borderColor, setBorderColor] = useState(color("black10"))
+
+  return (
+    <>
+      {!!title && (
+        <Text mb={1} variant="mediumText">
+          {title}
+        </Text>
+      )}
+      <StyledTextArea
+        {...props}
+        onFocus={() => {
+          setBorderColor(color("purple100"))
+        }}
+        onBlur={() => {
+          setBorderColor(color("black10"))
+        }}
+        style={{ borderColor }}
+        numberOfLines={3}
+        multiline={true}
+      />
+    </>
+  )
+}
 
 export const InquiryModalFragmentContainer = createFragmentContainer(InquiryModal, {
   artwork: graphql`
