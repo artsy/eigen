@@ -1,5 +1,5 @@
 import { matchRoute } from "lib/navigation/routes"
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 
 describe("artsy.net routes", () => {
   it(`routes to Home`, () => {
@@ -187,7 +187,7 @@ describe("artsy.net routes", () => {
   })
 
   it("routes to the old Auction view when the AROptionsNewSalePage option is false", () => {
-    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewSalePage: false })
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewSalePage: false })
     expect(matchRoute("/auction/special-auction")).toMatchInlineSnapshot(`
       Object {
         "module": "Auction",
@@ -200,7 +200,7 @@ describe("artsy.net routes", () => {
   })
 
   it("routes to the new Auction view when the AROptionsNewSalePage option is true", () => {
-    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewSalePage: true })
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewSalePage: true })
     expect(matchRoute("/auction/special-auction")).toMatchInlineSnapshot(`
       Object {
         "module": "Auction2",
@@ -268,7 +268,7 @@ describe("artsy.net routes", () => {
 
   describe("routes to Show, based on lab option", () => {
     it("routes to the old Show view when the AROptionsNewShowPage option is false", () => {
-      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: false })
+      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: false })
       expect(matchRoute("/show/special-show")).toMatchInlineSnapshot(`
         Object {
           "module": "Show",
@@ -281,7 +281,7 @@ describe("artsy.net routes", () => {
     })
 
     it("routes to the new Show view when the AROptionsNewShowPage option is true", () => {
-      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: true })
+      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: true })
       expect(matchRoute("/show/special-show")).toMatchInlineSnapshot(`
         Object {
           "module": "Show2",

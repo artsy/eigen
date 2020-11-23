@@ -1,4 +1,4 @@
-import { unsafe__getSelectedTab } from "lib/store/AppStore"
+import { unsafe__getSelectedTab } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { GlobalState, useGlobalState } from "lib/utils/useGlobalState"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"

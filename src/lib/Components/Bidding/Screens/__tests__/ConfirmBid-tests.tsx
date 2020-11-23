@@ -50,7 +50,7 @@ import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { waitUntil } from "lib/tests/waitUntil"
 
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { Address } from "../../types"
 import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
@@ -80,7 +80,7 @@ beforeEach(() => {
   nextStep = null // reset nextStep between tests
   // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
   bidderPositionQueryMock.mockReset()
-  __appStoreTestUtils__?.injectEmissionOptions({ AROptionsPriceTransparency: true })
+  __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsPriceTransparency: true })
 })
 
 it("renders without throwing an error", () => {
@@ -154,7 +154,7 @@ it("can load and display price summary", () => {
 })
 
 it("does not display price summary when the feature flag is off", () => {
-  __appStoreTestUtils__?.injectEmissionOptions({
+  __globalStoreTestUtils__?.injectEmissionOptions({
     AROptionsPriceTransparency: false,
   })
 

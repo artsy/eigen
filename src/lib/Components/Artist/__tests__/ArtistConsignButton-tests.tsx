@@ -1,6 +1,6 @@
 import { ArtistConsignButtonTestsQuery } from "__generated__/ArtistConsignButtonTestsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
+import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
@@ -35,9 +35,9 @@ describe("ArtistConsignButton", () => {
       render={({ props, error }) => {
         if (props) {
           return (
-            <AppStoreProvider>
+            <GlobalStoreProvider>
               <ArtistConsignButtonFragmentContainer artist={props.artist as any} />
-            </AppStoreProvider>
+            </GlobalStoreProvider>
           )
         } else if (error) {
           console.log(error)
@@ -211,7 +211,7 @@ describe("ArtistConsignButton", () => {
     }
 
     it("sends user to sales tab if not already there", () => {
-      __appStoreTestUtils__?.injectState({
+      __globalStoreTestUtils__?.injectState({
         bottomTabs: { sessionState: { selectedTab: "home" } },
       })
 
@@ -228,7 +228,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("sends user to a new instance of landing page if user is already in sales tab", () => {
-      __appStoreTestUtils__?.injectState({
+      __globalStoreTestUtils__?.injectState({
         bottomTabs: { sessionState: { selectedTab: "sell" } },
       })
 

@@ -1,5 +1,5 @@
 import _ from "lodash"
-import { __appStoreTestUtils__ } from "../AppStore"
+import { __globalStoreTestUtils__ } from "../GlobalStore"
 import { CURRENT_APP_VERSION, migrate, Versions } from "../migration"
 import { sanitize } from "../persistence"
 
@@ -137,8 +137,8 @@ describe(migrate, () => {
  */
 describe("artsy app store migrations", () => {
   it("are up to date", () => {
-    __appStoreTestUtils__?.reset()
-    expect(migrate({ state: { version: 0 } })).toEqual(sanitize(__appStoreTestUtils__?.getCurrentState()))
+    __globalStoreTestUtils__?.reset()
+    expect(migrate({ state: { version: 0 } })).toEqual(sanitize(__globalStoreTestUtils__?.getCurrentState()))
   })
 
   it("CURRENT_APP_VERSION is always the latest one", () => {

@@ -19,7 +19,7 @@ import {
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
 } from "lib/Scenes/Consignments/Submission/geminiUploadToS3"
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 
 const getConvectionGeminiKeyMock = getConvectionGeminiKey as jest.Mock<any>
 const getGeminiCredentialsForEnvironmentMock = getGeminiCredentialsForEnvironment as jest.Mock<any>
@@ -118,7 +118,7 @@ describe("MyCollectionArtworkFormModal", () => {
       uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
       uploadPhotos([somePhoto]).then(() => {
-        const artworkState = __appStoreTestUtils__?.getCurrentState().myCollection.artwork
+        const artworkState = __globalStoreTestUtils__?.getCurrentState().myCollection.artwork
         expect(artworkState?.sessionState.lastUploadedPhoto).toEqual(somePhoto)
         done()
       })

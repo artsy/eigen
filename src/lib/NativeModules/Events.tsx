@@ -1,4 +1,4 @@
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { NativeModules } from "react-native"
 const { AREventsModule } = NativeModules
 

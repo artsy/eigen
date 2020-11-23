@@ -2,7 +2,7 @@ import GraphemeSplitter from "grapheme-splitter"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import SwitchBoard, { EntityType, SlugType } from "lib/NativeModules/SwitchBoard"
 import { navigate } from "lib/navigation/navigate"
-import { AppStore } from "lib/store/AppStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { normalizeText } from "lib/utils/normalizeText"
 import { Schema } from "lib/utils/track"
 import { CloseIcon, Flex, Sans, Spacer } from "palette"
@@ -46,7 +46,7 @@ export const SearchResult: React.FC<{
           setTimeout(() => {
             navigateToResult(result, navRef)
             if (updateRecentSearchesOnTap) {
-              AppStore.actions.search.addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
+              GlobalStore.actions.search.addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
             }
           }, 20)
           trackEvent({

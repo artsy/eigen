@@ -1,5 +1,5 @@
 import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { Box, Join, Sans, Spacer } from "palette"
 import React from "react"

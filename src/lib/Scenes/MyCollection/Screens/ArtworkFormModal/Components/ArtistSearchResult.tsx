@@ -1,6 +1,6 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
-import { AppStore } from "lib/store/AppStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { Button, Flex, Spacer, Text } from "palette"
 import React from "react"
 
@@ -26,7 +26,7 @@ export const ArtistSearchResult: React.FC<{ result: AutosuggestResult }> = ({ re
         variant="secondaryGray"
         size="small"
         onPress={() => {
-          AppStore.actions.myCollection.artwork.setArtistSearchResult(null)
+          GlobalStore.actions.myCollection.artwork.setArtistSearchResult(null)
         }}
       >
         Remove

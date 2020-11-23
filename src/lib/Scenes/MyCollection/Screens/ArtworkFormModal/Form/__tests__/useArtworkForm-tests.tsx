@@ -3,10 +3,10 @@ describe("useArtworkForm", () => {
 })
 
 /*
-// TODO: Reenable once we figure out circular dep issue involving AppStore
+// TODO: Reenable once we figure out circular dep issue involving GlobalStore
 
 import { useFormikContext } from "formik"
-import { AppStore } from "lib/store/AppStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { useEffect } from "react"
 import { useArtworkForm } from "../useArtworkForm"
 
@@ -34,7 +34,7 @@ describe("useArtworkForm", () => {
 
   it("updates formik values in store", (done) => {
     const spy = jest.fn()
-    AppStore.actions.myCollection.artwork.setFormValues = spy as any
+    GlobalStore.actions.myCollection.artwork.setFormValues = spy as any
     useArtworkForm()
     setImmediate(() => {
       expect(spy).toHaveBeenCalled()

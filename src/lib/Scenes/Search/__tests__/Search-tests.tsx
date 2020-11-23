@@ -1,4 +1,4 @@
-import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
+import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { isPad } from "lib/utils/hardware"
 import { Theme } from "palette"
@@ -41,9 +41,9 @@ const TestWrapper: typeof Search = (props) => {
   return (
     <Theme>
       <CatchErrors>
-        <AppStoreProvider>
+        <GlobalStoreProvider>
           <Search {...props} />
-        </AppStoreProvider>
+        </GlobalStoreProvider>
       </CatchErrors>
     </Theme>
   )
@@ -65,7 +65,7 @@ describe("The Search page", () => {
   })
 
   it(`shows city guide entrance when there are recent searches`, async () => {
-    __appStoreTestUtils__?.injectState({
+    __globalStoreTestUtils__?.injectState({
       search: {
         recentSearches: [banksy],
       },
@@ -77,7 +77,7 @@ describe("The Search page", () => {
   })
 
   it(`shows recent searches when there are recent searches`, () => {
-    __appStoreTestUtils__?.injectState({
+    __globalStoreTestUtils__?.injectState({
       search: {
         recentSearches: [banksy],
       },

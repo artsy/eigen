@@ -1,4 +1,4 @@
-import { __appStoreTestUtils__, AppStore, AppStoreProvider } from "lib/store/AppStore"
+import { __globalStoreTestUtils__, GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Theme } from "palette"
@@ -71,11 +71,11 @@ const anniAlbers: RecentSearch = {
 const TestPage = () => {
   return (
     <Theme>
-      <AppStoreProvider>
+      <GlobalStoreProvider>
         <SearchContext.Provider value={{ inputRef: { current: null }, queryRef: { current: null } }}>
           <RecentSearches />
         </SearchContext.Provider>
-      </AppStoreProvider>
+      </GlobalStoreProvider>
     </Theme>
   )
 }
@@ -91,12 +91,12 @@ describe("Recent Searches", () => {
   it("shows recent searches if there were any", () => {
     const tree = renderWithWrappers(<TestPage />)
 
-    AppStore.actions.search.addRecentSearch(banksy)
+    GlobalStore.actions.search.addRecentSearch(banksy)
 
     expect(tree.root.findAllByType(SearchResult)).toHaveLength(1)
     expect(extractText(tree.root)).toContain("Banksy")
 
-    AppStore.actions.search.addRecentSearch(andyWarhol)
+    GlobalStore.actions.search.addRecentSearch(andyWarhol)
 
     expect(tree.root.findAllByType(SearchResult)).toHaveLength(2)
     expect(extractText(tree.root)).toContain("Andy Warhol")
@@ -105,12 +105,12 @@ describe("Recent Searches", () => {
   it("shows a maxiumum of 5 searches", () => {
     const tree = renderWithWrappers(<TestPage />)
 
-    AppStore.actions.search.addRecentSearch(banksy)
-    AppStore.actions.search.addRecentSearch(andyWarhol)
-    AppStore.actions.search.addRecentSearch(keithHaring)
-    AppStore.actions.search.addRecentSearch(yayoiKusama)
-    AppStore.actions.search.addRecentSearch(joanMitchell)
-    AppStore.actions.search.addRecentSearch(anniAlbers)
+    GlobalStore.actions.search.addRecentSearch(banksy)
+    GlobalStore.actions.search.addRecentSearch(andyWarhol)
+    GlobalStore.actions.search.addRecentSearch(keithHaring)
+    GlobalStore.actions.search.addRecentSearch(yayoiKusama)
+    GlobalStore.actions.search.addRecentSearch(joanMitchell)
+    GlobalStore.actions.search.addRecentSearch(anniAlbers)
 
     expect(tree.root.findAllByType(SearchResult)).toHaveLength(5)
     expect(extractText(tree.root)).not.toContain("Banksy")

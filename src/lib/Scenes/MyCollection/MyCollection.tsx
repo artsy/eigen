@@ -5,7 +5,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { AppStore } from "lib/store/AppStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/utils/placeholders"
@@ -74,7 +74,7 @@ const MyCollection: React.FC<{
         rightButtonText="Add artwork"
         hideBottomDivider
         onRightButtonPress={() => {
-          AppStore.actions.myCollection.artwork.resetForm()
+          GlobalStore.actions.myCollection.artwork.resetForm()
           setShowModal(true)
         }}
       ></FancyModalHeader>

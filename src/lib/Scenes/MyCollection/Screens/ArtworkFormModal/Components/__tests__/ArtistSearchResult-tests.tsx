@@ -1,6 +1,6 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
-import { AppStore } from "lib/store/AppStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
@@ -22,7 +22,7 @@ describe("ArtistSearchResult", () => {
 
   it("sets the search results to null on remove button click", () => {
     const spy = jest.fn()
-    AppStore.actions.myCollection.artwork.setArtistSearchResult = spy as any
+    GlobalStore.actions.myCollection.artwork.setArtistSearchResult = spy as any
     const wrapper = renderWithWrappers(<ArtistSearchResult result={result as AutosuggestResult} />)
     wrapper.root.findByType(Button).props.onPress()
     expect(spy).toHaveBeenCalled()
