@@ -13,6 +13,8 @@ import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/Ar
 import { getLocationDetails, getLocationPredictions } from "lib/utils/googleMaps"
 import { Touchable } from "palette"
 import React from "react"
+// TODO: replace with Palette's TextArea when available
+import { TextInput } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -67,6 +69,7 @@ const renderComponent = ({ props, error }: RenderComponentProps) => {
 const initialState = {
   shippingLocation: null,
   inquiryType: null,
+  message: null,
   inquiryQuestions: [],
 }
 
@@ -139,14 +142,19 @@ describe("<InquiryModal />", () => {
     const wrapper = getWrapper(mockResolver, renderComponent)
     expect(wrapper.root.findByType(InquiryModalFragmentContainer).props.modalIsVisible).toBeTruthy()
     const checkBox = wrapper.root.findByProps({ "data-test-id": "checkbox-shipping_quote" })
+    const input = wrapper.root.findByType(TextInput)
     checkBox.props.onPress()
     await flushPromiseQueue()
     expect(checkBox.props.checked).toBeTruthy()
     wrapper.root.findByProps({ "data-test-id": "checkbox-shipping_quote" }).props.onPress()
+    const testMessage = "Test Message"
+    input.props.onChangeText(testMessage)
+    expect(input.props.value).toBe(testMessage)
     await press(wrapper.root, { text: "Cancel" })
 
     expect(wrapper.root.findByType(InquiryModalFragmentContainer).props.modalIsVisible).toBeFalsy()
     expect(checkBox.props.checked).toBeFalsy()
+    expect(input.props.value).toBeFalsy()
   })
 
   describe("user can select 'Price & Availability'", () => {
@@ -245,6 +253,19 @@ describe("<InquiryModal />", () => {
 
       await press(wrapper.root, { text: "Cancel" })
       expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeFalsy()
+    })
+  })
+
+  describe("user can input a custom message", () => {
+    it("message is typed in", () => {
+      const testString = "Test message"
+      const wrapper = getWrapper(mockResolver, renderComponentWithMockDispatch)
+      wrapper.root.findByType(TextInput).props.onChangeText(testString)
+
+      expect(mockDispatch).toBeCalledWith({
+        payload: testString,
+        type: "setMessage",
+      })
     })
   })
 })

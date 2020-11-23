@@ -8,7 +8,7 @@ import { InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes
 import { LocationWithDetails } from "lib/utils/googleMaps"
 import { Box, color, Flex, Separator, space, Text } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import { LayoutAnimation, TouchableOpacity } from "react-native"
+import { LayoutAnimation, TextInput, TextInputProps, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
@@ -130,6 +130,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const [errorMessageVisibility, setErrorMessageVisibility] = useState(false)
   const selectShippingLocation = (locationDetails: LocationWithDetails) =>
     dispatch({ type: "selectShippingLocation", payload: locationDetails })
+  const setMessage = (message: string) => dispatch({ type: "setMessage", payload: message })
   const [mutationSuccessful, setMutationSuccessful] = useState(false)
   const resetAndExit = () => {
     dispatch({ type: "resetForm", payload: null })
@@ -158,7 +159,9 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           resetAndExit()
         }}
         rightButtonText="Send"
-        rightButtonDisabled={state.inquiryQuestions.length === 0}
+        rightButtonDisabled={
+          (state.inquiryQuestions.length === 0 && !state.message)
+        }
         onRightButtonPress={() => {
           SubmitInquiryRequest(relay.environment, artwork, state, setMutationSuccessful, setErrorMessageVisibility)
         }}
@@ -195,6 +198,14 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           })
         }
       </Box>
+      <Box mx={2}>
+        <TextArea
+          placeholder="Add a custom note..."
+          title="Add Message"
+          value={state.message ? state.message : ""}
+          onChangeText={setMessage}
+        />
+      </Box>
       <ShippingModal
         toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
         modalIsVisible={shippingModalVisibility}
@@ -212,6 +223,41 @@ const InquiryField = styled(Flex)`
   margin-top: ${space(1)}px;
   padding: ${space(2)}px;
 `
+
+const StyledTextArea = styled(TextInput)`
+  border: solid 1px;
+  padding: ${space(1)}px;
+  height: 88px;
+`
+
+// TODO: Replace with Palette when available
+interface TextAreaProps extends TextInputProps {
+  title: string
+}
+const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => {
+  const [borderColor, setBorderColor] = useState(color("black10"))
+
+  return (
+    <>
+      {!!title && (
+        <Text mb={1} variant="mediumText">
+          {title}
+        </Text>
+      )}
+      <StyledTextArea
+        {...props}
+        onFocus={() => {
+          setBorderColor(color("purple100"))
+        }}
+        onBlur={() => {
+          setBorderColor(color("black10"))
+        }}
+        style={{ borderColor }}
+        multiline={true}
+      />
+    </>
+  )
+}
 
 export const InquiryModalFragmentContainer = createFragmentContainer(InquiryModal, {
   artwork: graphql`

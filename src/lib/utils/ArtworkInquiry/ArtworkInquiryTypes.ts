@@ -2,7 +2,7 @@ import { InquiryQuestionInput } from "__generated__/SubmitInquiryRequestMutation
 import { Dispatch } from "react"
 import { LocationWithDetails } from "../googleMaps"
 
-export type ArtworkInquiryActions = SelectInquiryType | SelectLocation | SelectInquiryQuestion | ResetForm
+export type ArtworkInquiryActions = SelectInquiryType | SelectLocation | SelectInquiryQuestion | SetMessage | ResetForm
 
 export interface ArtworkInquiryContextProps {
   state: ArtworkInquiryContextState
@@ -13,6 +13,7 @@ export interface ArtworkInquiryContextState {
   readonly inquiryType: InquiryTypes | null
   readonly shippingLocation: LocationWithDetails | null
   readonly inquiryQuestions: InquiryQuestionInput[]
+  readonly message: string | null
 }
 
 export type InquiryTypes = "Inquire on price" | "Contact gallery" | "Inquire to purchase"
@@ -29,6 +30,11 @@ interface SelectInquiryType {
 interface SelectLocation {
   type: "selectShippingLocation"
   payload: LocationWithDetails
+}
+
+interface SetMessage {
+  type: "setMessage"
+  payload: string
 }
 
 interface SelectInquiryQuestion {

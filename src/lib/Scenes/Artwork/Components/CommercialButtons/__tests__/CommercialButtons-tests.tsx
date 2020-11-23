@@ -44,6 +44,7 @@ const componentWithQuery = async ({ mockArtworkData, mockOrderMutationResults, m
 const state: ArtworkInquiryContextState = {
   shippingLocation: null,
   inquiryType: null,
+  message: null,
   inquiryQuestions: [],
 }
 
