@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 01eb0a2b288a0d33142169bf42818ec4 */
+/* @relayHash 1a94c4a00abd88e83411f2b811ddf874 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,8 +37,9 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
     internalID
     id
   }
-  image {
+  images {
     url
+    isDefault
     width
     height
   }
@@ -246,6 +247,13 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
+                            "name": "url",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "isDefault",
                             "storageKey": null
                           },
@@ -253,11 +261,16 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "url",
+                            "name": "width",
                             "storageKey": null
                           },
-                          (v5/*: any*/),
-                          (v4/*: any*/)
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "height",
+                            "storageKey": null
+                          }
                         ],
                         "storageKey": null
                       },
@@ -320,7 +333,7 @@ return {
     ]
   },
   "params": {
-    "id": "01eb0a2b288a0d33142169bf42818ec4",
+    "id": "1a94c4a00abd88e83411f2b811ddf874",
     "metadata": {},
     "name": "MyCollectionPaginationQuery",
     "operationKind": "query",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1de8ce5426f523f0750f7bc8b5d69b09 */
+/* @relayHash 2f7f19236937dfb1a6c650c53eb9ed5b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,8 +31,9 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
     internalID
     id
   }
-  image {
+  images {
     url
+    isDefault
     width
     height
   }
@@ -100,7 +101,7 @@ v4 = {
   "plural": false,
   "type": "String"
 },
-v8 = {
+v5 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -236,6 +237,13 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
+                            "name": "url",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "isDefault",
                             "storageKey": null
                           },
@@ -243,11 +251,16 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "url",
+                            "name": "width",
                             "storageKey": null
                           },
-                          (v4/*: any*/),
-                          (v3/*: any*/)
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "height",
+                            "storageKey": null
+                          }
                         ],
                         "storageKey": null
                       },
@@ -310,7 +323,7 @@ return {
     ]
   },
   "params": {
-    "id": "1de8ce5426f523f0750f7bc8b5d69b09",
+    "id": "2f7f19236937dfb1a6c650c53eb9ed5b",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -350,13 +363,21 @@ return {
         "me.myCollectionConnection.edges.node.artist.internalID": (v2/*: any*/),
         "me.myCollectionConnection.edges.node.artistNames": (v4/*: any*/),
         "me.myCollectionConnection.edges.node.id": (v2/*: any*/),
-        "me.myCollectionConnection.edges.node.image": {
+        "me.myCollectionConnection.edges.node.images": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "Image"
+        },
+        "me.myCollectionConnection.edges.node.images.height": (v5/*: any*/),
+        "me.myCollectionConnection.edges.node.images.isDefault": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Boolean"
         },
-        "me.myCollectionConnection.edges.node.image.url": (v4/*: any*/),
+        "me.myCollectionConnection.edges.node.images.url": (v4/*: any*/),
+        "me.myCollectionConnection.edges.node.images.width": (v5/*: any*/),
         "me.myCollectionConnection.edges.node.medium": (v4/*: any*/),
         "me.myCollectionConnection.edges.node.slug": (v2/*: any*/),
         "me.myCollectionConnection.edges.node.title": (v4/*: any*/),

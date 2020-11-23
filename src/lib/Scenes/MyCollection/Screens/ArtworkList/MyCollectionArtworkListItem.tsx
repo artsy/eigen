@@ -16,7 +16,7 @@ interface MyCollectionArtworkListItemProps {
 }
 
 const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = ({ artwork }) => {
-  const imageURL = artwork?.images && artwork.images[0]?.url
+  const imageURL = artwork.images?.find((i: any) => i?.isDefault)?.url || (artwork.images && artwork.images[0]?.url)
   const { width } = useScreenDimensions()
   const mediums: { [medium: string]: string } = artworkMediumCategories.reduce(
     (acc, cur) => ({ ...acc, [cur.value]: cur.label }),
@@ -100,8 +100,9 @@ export const MyCollectionArtworkListItemFragmentContainer = createFragmentContai
       artist {
         internalID
       }
-      image {
+      images {
         url
+        isDefault
       }
       artistNames
       medium

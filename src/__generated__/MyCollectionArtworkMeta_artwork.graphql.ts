@@ -126,7 +126,13 @@ const node: ReaderFragment = {
       "name": "title",
       "storageKey": null
     },
-    (v2/*: any*/)
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "width",
+      "storageKey": null
+    }
   ],
   "type": "Artwork",
   "abstractKey": null

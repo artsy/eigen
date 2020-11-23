@@ -231,8 +231,8 @@ return {
         "artwork.costMinor": {
           "enumValues": null,
           "nullable": true,
-          "plural": true,
-          "type": "Image"
+          "plural": false,
+          "type": "Int"
         },
         "artwork.date": (v1/*: any*/),
         "artwork.depth": (v1/*: any*/),

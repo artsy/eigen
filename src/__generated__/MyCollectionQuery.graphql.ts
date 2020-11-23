@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4aa3c03777a1d7a9e871f6bf61cb6a52 */
+/* @relayHash c186fec106d0371367230e15e6a349b3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,8 +31,9 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
     internalID
     id
   }
-  image {
+  images {
     url
+    isDefault
     width
     height
   }
@@ -212,6 +213,13 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
+                            "name": "url",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "isDefault",
                             "storageKey": null
                           },
@@ -219,11 +227,16 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "url",
+                            "name": "width",
                             "storageKey": null
                           },
-                          (v4/*: any*/),
-                          (v3/*: any*/)
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "height",
+                            "storageKey": null
+                          }
                         ],
                         "storageKey": null
                       },
@@ -286,7 +299,7 @@ return {
     ]
   },
   "params": {
-    "id": "4aa3c03777a1d7a9e871f6bf61cb6a52",
+    "id": "c186fec106d0371367230e15e6a349b3",
     "metadata": {},
     "name": "MyCollectionQuery",
     "operationKind": "query",
