@@ -10,6 +10,7 @@ upcoming:
     - Fix minimize startup api requests - brian
     - Remove analytics tracking on back-arrow taps - pepopowitz
     - Rename AppStore to GlobalStore - david
+    - Update STRICTNESS_MIGRATION comments - david
   user_facing:
     -
 releases:
