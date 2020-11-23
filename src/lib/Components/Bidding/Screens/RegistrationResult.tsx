@@ -107,7 +107,6 @@ const resultEnumToPageName = (result: RegistrationStatus) => {
 )
 export class RegistrationResult extends React.Component<RegistrationResultProps> {
   exitBidFlow = async () => {
-    // @ts-ignore STRICTNESS_MIGRATION
     await SwitchBoard.dismissModalViewController(this)
   }
 

@@ -99,7 +99,7 @@ export class Artwork extends React.Component<Props, State> {
     this.markArtworkAsRecentlyViewed()
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   componentDidUpdate(prevProps) {
     // If we are visible, but weren't, then we are re-appearing (not called on first render).
     if (this.props.isVisible && !prevProps.isVisible) {
@@ -127,7 +127,7 @@ export class Artwork extends React.Component<Props, State> {
 
   shouldRenderOtherWorks = () => {
     const { contextGrids } = this.props.artworkBelowTheFold
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const gridsToShow = populatedGrids(contextGrids)
 
     if (gridsToShow && gridsToShow.length > 0) {
@@ -464,11 +464,11 @@ export const ArtworkQueryRenderer: React.FC<{
               renderComponent: ({ above, below }) => {
                 return (
                   <ArtworkContainer
-                    // @ts-ignore STRICTNESS_MIGRATION
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     artworkAboveTheFold={above.artwork}
-                    // @ts-ignore STRICTNESS_MIGRATION
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     artworkBelowTheFold={below?.artwork ?? null}
-                    // @ts-ignore STRICTNESS_MIGRATION
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     me={above.me}
                     {...others}
                   />
@@ -489,7 +489,6 @@ export const ArtworkQueryRenderer: React.FC<{
 const AboveTheFoldPlaceholder: React.FC<{}> = ({}) => {
   const screenDimensions = useScreenDimensions()
   // The logic for artworkHeight comes from the zeplin spec https://zpl.io/25JLX0Q
-  // @ts-ignore STRICTNESS_MIGRATION
   const artworkHeight = screenDimensions.width >= 375 ? 340 : 290
 
   return (

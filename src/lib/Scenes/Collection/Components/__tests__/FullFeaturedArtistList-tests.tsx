@@ -47,7 +47,7 @@ describe("FullFeaturedArtistList", () => {
   })
 
   it("does not render an EntityHeader for excluded artists", async () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const tree = await render({
       ...FullFeaturedArtistListCollectionFixture,
       featuredArtistExclusionIds: ["34534-andy-warhols-id", "2342-pablo-picassos-id"],
@@ -66,7 +66,7 @@ describe("FullFeaturedArtistList", () => {
 
   describe("when artist ids are explicitly requested", () => {
     it("does not render an EntityHeader for any non-requested artists", async () => {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const tree = await render({
         ...FullFeaturedArtistListCollectionFixture,
         query: { id: "some-id", artistIDs: ["34534-andy-warhols-id"] },

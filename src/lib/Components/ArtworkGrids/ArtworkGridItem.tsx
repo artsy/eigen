@@ -54,7 +54,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       ? onPress(artwork.slug)
       : SwitchBoard.presentNavigationViewController(
           itemRef.current!,
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           artwork.href
         )
   }

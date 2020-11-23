@@ -22,7 +22,7 @@ afterEach(() => {
   SwitchBoardMock.presentModalViewController.mockReset()
 })
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const componentWithQuery = async ({ mockArtworkData, mockOrderMutationResults, mockOfferMutationResults }) => {
   return await renderRelayTree({
     Component: CommercialButtonsFragmentContainer,
@@ -59,7 +59,7 @@ const wrapper = (mockArtwork: _FragmentRefs<"CommercialButtons_artwork">): JSX.E
   </ArtworkInquiryContext.Provider>
 )
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const relayComponent = async ({ artwork }) => {
   return await renderRelayTree({
     Component: () => wrapper(artwork),

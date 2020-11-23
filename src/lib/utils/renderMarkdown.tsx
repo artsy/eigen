@@ -46,9 +46,9 @@ export function defaultRules({
     link: {
       react: (node, output, state) => {
         state.withinText = true
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         let element
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         const openUrl = (url) => {
           if (node.target.startsWith("mailto:")) {
             Linking.canOpenURL(url)
@@ -61,16 +61,15 @@ export function defaultRules({
               })
               .catch((err) => console.error("An error occurred", err))
           } else if (modal) {
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             SwitchBoard.presentModalViewController(element, url)
           } else {
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             SwitchBoard.presentNavigationViewController(element, url)
           }
         }
 
         return (
-          // @ts-ignore STRICTNESS_MIGRATION
           <LinkText key={state.key} onPress={() => openUrl(node.target)} ref={(el) => (element = el)}>
             {output(node.content, state)}
           </LinkText>
@@ -224,7 +223,7 @@ export function defaultRules({
           3: "subtitle",
           4: "text",
         }
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         const size = useNewTextStyles ? newTextMap[node.level] || "subtitle" : map[node.level] || "4"
         return useNewTextStyles ? (
           <Text mb="1" variant={size} key={state.key}>

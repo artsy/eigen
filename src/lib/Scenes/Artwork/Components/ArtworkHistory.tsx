@@ -34,7 +34,7 @@ export class ArtworkHistory extends React.Component<ArtworkHistoryProps> {
               {title}
             </Sans>
             <ReadMore
-              // @ts-ignore STRICTNESS_MIGRATION
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               content={value}
               contextModule={contextModule}
               maxChars={textLimit}

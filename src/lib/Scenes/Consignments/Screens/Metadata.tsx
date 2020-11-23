@@ -67,44 +67,44 @@ interface LiveStyledTextInput {
 }
 
 export default class Metadata extends React.Component<Props, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private yearInput: LiveStyledTextInput
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private mediumInput: LiveStyledTextInput
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private widthInput: LiveStyledTextInput
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private heightInput: LiveStyledTextInput
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private depthInput: LiveStyledTextInput
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
     this.state = props.metadata || {}
   }
 
   doneTapped = () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.props.updateWithMetadata(this.state)
     this.props.navigator.pop()
   }
 
   updateUnit = () => this.setState({ unit: this.state.unit === "CM" ? "IN" : "CM" })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateTitle = (title) => this.setState({ title })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateYear = (year) => this.setState({ year })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateMedium = (medium) => this.setState({ medium })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateWidth = (width) => this.setState({ width })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateHeight = (height) => this.setState({ height })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateDepth = (depth) => this.setState({ depth })
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   animateStateChange = (newState) => {
     const animate = LayoutAnimation.easeInEaseOut as any
     animate()
@@ -120,7 +120,7 @@ export default class Metadata extends React.Component<Props, State> {
   }
 
   hideCategorySelection = () => this.animateStateChange({ showPicker: false })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   changeCategoryValue = (_value, index) => {
     this.setState({
       categoryName: categoryOptions[index].name,
@@ -131,7 +131,7 @@ export default class Metadata extends React.Component<Props, State> {
   selectNextInput = () => {
     const inputs = [this.yearInput, this.mediumInput, this.widthInput, this.heightInput, this.depthInput]
     for (const input of inputs) {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       if (input && input.root && input.root.focus && !input.root.props.value) {
         return input.root.focus()
       }
@@ -152,7 +152,7 @@ export default class Metadata extends React.Component<Props, State> {
                       placeholder: "Title",
                       onFocus: this.hideCategorySelection,
                       onChangeText: this.updateTitle,
-                      // @ts-ignore STRICTNESS_MIGRATION
+                      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                       value: this.state.title,
                       onSubmitEditing: this.selectNextInput,
                       returnKeyType: "next",
@@ -169,7 +169,7 @@ export default class Metadata extends React.Component<Props, State> {
                     text={{
                       placeholder: "Year",
                       onChangeText: this.updateYear,
-                      // @ts-ignore STRICTNESS_MIGRATION
+                      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                       value: this.state.year,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
@@ -185,7 +185,7 @@ export default class Metadata extends React.Component<Props, State> {
                     text={{
                       placeholder: "Medium",
                       onChangeText: this.updateMedium,
-                      // @ts-ignore STRICTNESS_MIGRATION
+                      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                       value: this.state.medium,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
@@ -202,7 +202,7 @@ export default class Metadata extends React.Component<Props, State> {
                       keyboardType: "numeric",
                       placeholder: "Width",
                       onChangeText: this.updateWidth,
-                      // @ts-ignore STRICTNESS_MIGRATION
+                      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                       value: this.state.width,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
@@ -216,7 +216,7 @@ export default class Metadata extends React.Component<Props, State> {
                       keyboardType: "numeric",
                       placeholder: "Height",
                       onChangeText: this.updateHeight,
-                      // @ts-ignore STRICTNESS_MIGRATION
+                      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                       value: this.state.height,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
@@ -258,7 +258,7 @@ export default class Metadata extends React.Component<Props, State> {
                     <Text
                       text={{
                         placeholder: "Category",
-                        // @ts-ignore STRICTNESS_MIGRATION
+                        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                         value: this.state.categoryName,
                       }}
                       readonly={true}

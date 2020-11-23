@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount, ReactWrapper, RenderUntilPredicate } from "enzyme"
 import * as React from "react"
 import { waitUntil } from "./waitUntil"

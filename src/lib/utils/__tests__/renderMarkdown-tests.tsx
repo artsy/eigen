@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount, shallow } from "enzyme"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { Flex, Sans, Serif, Text, Theme } from "palette"
@@ -70,7 +70,7 @@ describe("renderMarkdown", () => {
       ...basicRules,
       paragraph: {
         ...basicRules.paragraph,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => {
           return (
             <Serif size="3t" color="black60" key={state.key}>
@@ -99,7 +99,7 @@ describe("renderMarkdown", () => {
       ...basicRules,
       paragraph: {
         ...basicRules.paragraph,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => {
           return (
             <Serif size="3t" color="black60" key={state.key}>
@@ -132,7 +132,7 @@ describe("renderMarkdown", () => {
       ...basicRules,
       paragraph: {
         ...basicRules.paragraph,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => {
           return (
             <Serif size="3t" color="black60" key={state.key}>
@@ -174,11 +174,9 @@ describe("renderMarkdown", () => {
 })
 
 function visitTree(tree: unknown, visit: (node: React.ReactElement) => void) {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   if (React.isValidElement(tree)) {
-    // @ts-ignore STRICTNESS_MIGRATION
     visit(tree)
-    // @ts-ignore STRICTNESS_MIGRATION
     React.Children.forEach((tree.props as any).children, (child) => visitTree(child, visit))
   } else if (Array.isArray(tree)) {
     tree.map((child) => visitTree(child, visit))

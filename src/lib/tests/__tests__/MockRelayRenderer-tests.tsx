@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import * as React from "react"
 import { Image, Text, View } from "react-native"
@@ -11,7 +11,7 @@ jest.unmock("react-relay")
 describe("MockRelayRenderer", () => {
   it("renders a Relay tree", async () => {
     const tree = await renderUntil(
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       (wrapper) => wrapper.text().includes("Mona Lisa"),
       <MockRelayRenderer
         Component={Artwork}

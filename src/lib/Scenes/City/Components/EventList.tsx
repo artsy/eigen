@@ -36,7 +36,7 @@ interface Props {
 
 // @TODO: Implement test for the EventList component https://artsyproduct.atlassian.net/browse/LD-562
 export class EventList extends React.Component<Props> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   renderItem = (item) => {
     const { type } = this.props
     return (

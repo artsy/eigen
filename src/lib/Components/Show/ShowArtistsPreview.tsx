@@ -36,7 +36,7 @@ export class ShowArtistsPreview extends React.Component<Props> {
   render() {
     const { show, onViewAllArtistsPressed, Component } = this.props
     const artistsShown = 5
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const artists = get(show, (s) => s.artists, []).concat(get(show, (s) => s.artists_without_artworks, []))
     const items = take(artists, artistsShown)
 
@@ -45,12 +45,12 @@ export class ShowArtistsPreview extends React.Component<Props> {
         <Sans size="4t">Artists</Sans>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           const { id } = artist
           return (
             <React.Fragment key={id}>
               <ArtistListItem
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 artist={artist}
                 Component={Component}
               />

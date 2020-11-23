@@ -44,9 +44,9 @@ export const convertCityToGeoJSON = (data: any /* STRICTNESS_MIGRATION */) => {
     features: data
       // The API has (at least once) given us back shows without locations
       // so we should protect against runtime errors.
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       .filter((feature) => feature.location && feature.location.coordinates)
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       .map((node) => {
         const {
           coordinates: { lat, lng },

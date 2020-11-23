@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import { Pin } from "lib/Icons/Pin"

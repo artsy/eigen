@@ -3,7 +3,7 @@ import { Message_message } from "__generated__/Message_message.graphql"
 import { BoxProps, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { NativeModules, View } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Hyperlink from "react-native-hyperlink"
 import { createFragmentContainer } from "react-relay"
 import styled from "styled-components/native"

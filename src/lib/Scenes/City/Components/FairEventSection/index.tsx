@@ -24,7 +24,7 @@ export class FairEventSection extends Component<Props> {
     SwitchBoard.presentNavigationViewController(this, `/city-fair/${citySlug}`)
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   renderItem = ({ item }) => {
     const fair = item
     return (

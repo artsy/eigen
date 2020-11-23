@@ -16,9 +16,9 @@ jest.mock("tipsi-stripe", () => ({
   createTokenWithCard: jest.fn(),
 }))
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 let nextStep
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const mockNavigator = { push: (route) => (nextStep = route), pop: () => null }
 jest.useFakeTimers()
 
@@ -37,7 +37,7 @@ it("shows the billing address that the user typed in the billing address form", 
     </BiddingThemeProvider>
   ).root.findAllByType(BidInfoRow)[1]
   billingAddressRow.instance.props.onPress()
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   expect(nextStep.component).toEqual(BillingAddress)
 
   expect(billingAddressRow.findAllByType(Serif)[1].props.children).toEqual("401 Broadway 25th floor New York NY")
@@ -50,7 +50,7 @@ it("shows the cc info that the user had typed into the form", () => {
     </BiddingThemeProvider>
   ).root.findAllByType(BidInfoRow)[0]
   creditCardRow.instance.props.onPress()
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   expect(nextStep.component).toEqual(CreditCardForm)
 
   expect(creditCardRow.findAllByType(Serif)[1].props.children).toEqual("VISA •••• 4242")

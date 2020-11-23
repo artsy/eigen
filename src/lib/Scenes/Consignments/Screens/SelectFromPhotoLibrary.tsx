@@ -47,7 +47,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
       loadingMore: false,
       lastCursor: "",
       noMorePhotos: false,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       selection: hasPhotos ? props.setup.photos.map((p) => p.file) : [],
     }
   }

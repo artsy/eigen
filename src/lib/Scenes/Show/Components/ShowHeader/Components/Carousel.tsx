@@ -12,10 +12,10 @@ interface Props extends ScrollViewProperties {
 }
 
 export class Carousel extends React.Component<Props> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   scrollView: ScrollView
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   keyForSource = ({ imageURL }) => imageURL
 
   renderItems = () => {
@@ -37,7 +37,7 @@ export class Carousel extends React.Component<Props> {
         <PageList
           {...this.props}
           ref={(ref) => {
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             this.scrollView = ref
           }}
           horizontal

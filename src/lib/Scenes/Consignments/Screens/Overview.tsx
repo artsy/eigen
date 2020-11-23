@@ -34,7 +34,7 @@ interface State extends ConsignmentSetup {
   hasSubmittedSuccessfully?: boolean
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const track: Track<Props, State> = _track
 
 @screenTrack({
@@ -42,7 +42,7 @@ const track: Track<Props, State> = _track
   context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
 })
 export default class Overview extends React.Component<Props, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
     this.state = props.setup || {}
@@ -200,7 +200,7 @@ export default class Overview extends React.Component<Props, State> {
         // quickly it doesn't upload duplicates
         photo.uploading = true
         this.setState({ photos: this.state.photos })
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         await uploadImageAndPassToGemini(photo.file, "private", this.state.submissionID)
 
         // Mutate state 'unexpectedly', then send it back through "setState" to trigger the next

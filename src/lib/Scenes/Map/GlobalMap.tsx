@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import colors from "lib/data/colors"
@@ -153,10 +153,10 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   map: Mapbox.MapView
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   filters: { [key: string]: FilterData }
   hideButtons = new Animated.Value(0)
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   currentZoom: number
 
   shows: { [id: string]: Show } = {}
@@ -192,7 +192,7 @@ export class GlobalMap extends React.Component<Props, State> {
     },
   })
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
 
@@ -202,13 +202,13 @@ export class GlobalMap extends React.Component<Props, State> {
       activeIndex: 0,
       currentLocation,
       bucketResults: emptyBucketResults,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       featureCollections: null,
       mapLoaded: false,
       isSavingShow: false,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       nearestFeature: null,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       activePin: null,
       currentZoom: DefaultZoomLevel,
     }
@@ -216,9 +216,9 @@ export class GlobalMap extends React.Component<Props, State> {
     this.updateShowIdMap()
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleFilterChange = (activeIndex) => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.setState({ activeIndex, activePin: null, activeShows: [] })
   }
 
@@ -242,14 +242,14 @@ export class GlobalMap extends React.Component<Props, State> {
     EventEmitter.unsubscribe("filters:change", this.handleFilterChange)
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   componentDidUpdate(_, prevState) {
     // Update the clusterMap if new bucket results
     if (this.state.bucketResults) {
       const shouldUpdate = !isEqual(
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         prevState.bucketResults.saved.map((g) => g.is_followed),
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         this.state.bucketResults.saved.map((g) => g.is_followed)
       )
 
@@ -313,7 +313,7 @@ export class GlobalMap extends React.Component<Props, State> {
       owner_type: !!type ? type : "",
     } as any
   })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   trackPinTap(_actionName, _show, _type) {
     return null
   }
@@ -340,7 +340,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
       clusterEngine.load(geoJSONFeature.features as any)
 
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       featureCollections[tab.id] = {
         featureCollection: geoJSONFeature,
         filter: tab.id,
@@ -360,7 +360,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
     const filter = cityTabs[this.state.activeIndex]
     const {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       city: { name: cityName, slug: citySlug, sponsoredContent },
     } = this.props.viewer
 
@@ -416,7 +416,7 @@ export class GlobalMap extends React.Component<Props, State> {
       const {
         nearestFeature: { properties, geometry },
       } = this.state
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const [clusterLat, clusterLng] = geometry.coordinates
 
       const clusterId = properties.cluster_id.toString()
@@ -524,7 +524,7 @@ export class GlobalMap extends React.Component<Props, State> {
               {!!hasShows && (
                 <ShowCard
                   shows={updatedShows}
-                  // @ts-ignore STRICTNESS_MIGRATION
+                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                   relay={this.props.relay}
                   onSaveStarted={() => {
                     this.setState({ isSavingShow: true })
@@ -559,7 +559,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
     if (this.currentZoom !== zoom) {
       this.setState({
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         activePin: null,
       })
     }
@@ -574,7 +574,7 @@ export class GlobalMap extends React.Component<Props, State> {
     if (!this.state.isSavingShow) {
       this.setState({
         activeShows: [],
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         activePin: null,
       })
     }
@@ -583,18 +583,18 @@ export class GlobalMap extends React.Component<Props, State> {
   onPressCitySwitcherButton = () => {
     this.setState({
       activeShows: [],
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       activePin: null,
     })
   }
 
   onPressUserPositionButton = () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const { lat, lng } = this.state.userLocation
     this.map.moveTo([lng, lat], 500)
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   onPressPinShapeLayer = (e) => this.handleFeaturePress(e.nativeEvent)
 
   storeMapRef = (c: any) => {
@@ -605,7 +605,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
   get currentFeatureCollection(): FilterData {
     const filterID = cityTabs[this.state.activeIndex].id
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     return this.state.featureCollections[filterID]
   }
 
@@ -651,7 +651,7 @@ export class GlobalMap extends React.Component<Props, State> {
           >
             <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end" px={3}>
               <CitySwitcherButton
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 sponsoredContentUrl={this.props.viewer && this.props.viewer.city.sponsoredContent.artGuideUrl}
                 city={city}
                 isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
@@ -786,7 +786,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
   getNearestPointToLatLongInCollection(values: { lat: number; lng: number }, features: any[]) {
     // https://stackoverflow.com/a/21623206
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     function distance(lat1, lon1, lat2, lon2) {
       const p = 0.017453292519943295 // Math.PI / 180
       const c = Math.cos

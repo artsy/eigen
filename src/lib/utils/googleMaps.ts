@@ -51,11 +51,8 @@ export const getLocationDetails = async ({ id, name }: SimpleLocation): Promise<
 
   // TODO: Add dedicated error handling to the maps response
   const { address_components, geometry } = data.result as PlaceResult
-  // @ts-ignore STRICTNESS_MIGRATION
   const cityPlace = address_components.find((comp) => comp.types[0] === "locality")
-  // @ts-ignore STRICTNESS_MIGRATION
   const statePlace = address_components.find((comp) => comp.types[0] === "administrative_area_level_1")
-  // @ts-ignore STRICTNESS_MIGRATION
   const countryPlace = address_components.find((comp) => comp.types[0] === "country")
   const postalCodePlace = address_components.find((comp) => comp.types[0] === "postal_code")
   const { lat, lng } = geometry.location

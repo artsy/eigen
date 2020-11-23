@@ -174,7 +174,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     const artworks = extractNodes(this.props.connection)
     const sectionedArtworks: Array<typeof artworks> = []
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     for (let i = 0; i < this.props.sectionCount; i++) {
       sectionedArtworks.push([])
       sectionRatioSums.push(0)
@@ -244,7 +244,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
       const sectionSpecificStyle = {
         width: this.state.sectionDimension,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         marginRight: i === this.props.sectionCount - 1 ? 0 : this.props.sectionMargin,
       }
 

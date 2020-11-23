@@ -44,11 +44,11 @@ export class FairExhibitors extends React.Component<Props, State> {
     const exhibitorsGroupedByName = fair.exhibitorsGroupedByName || []
     exhibitorsGroupedByName.forEach((group) => {
       sections.push({
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         title: group.letter,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         data: group.exhibitors,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         count: group.exhibitors.length,
       })
     })
@@ -66,14 +66,14 @@ export class FairExhibitors extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Gallery,
     } as any
   })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleOnPressName(profileID, _slug, _partnerID) {
     if (profileID) {
       SwitchBoard.presentNavigationViewController(this, `/show/${profileID}?entity=fair-booth`)
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   renderExhibitor(data) {
     const { item, index, section } = data
     const { count } = section
@@ -114,7 +114,7 @@ export class FairExhibitors extends React.Component<Props, State> {
               <Separator />
             </Box>
           )}
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           renderSectionFooter={({ section }) => {
             if (section.index < this.state.sections.length - 1) {
               return (

@@ -20,12 +20,12 @@ export function sendConversationMessage(
 ) {
   const storeUpdater = (store: RecordSourceSelectorProxy) => {
     const mutationPayload = store.getRootField("sendConversationMessage")
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const newMessageEdge = mutationPayload.getLinkedRecord("messageEdge")
     const conversationStore = store.get(conversation.id)
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const connection = ConnectionHandler.getConnection(conversationStore, "Messages_messagesConnection")
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     ConnectionHandler.insertEdgeBefore(connection, newMessageEdge)
   }
   return commitMutation<SendConversationMessageMutation>(environment, {

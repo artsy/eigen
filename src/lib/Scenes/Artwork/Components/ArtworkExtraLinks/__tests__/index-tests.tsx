@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Sans, Theme } from "palette"
@@ -54,7 +54,7 @@ describe("ArtworkExtraLinks", () => {
 
     const component = getWrapper({ artwork })
     const consignmentsLink = component.find(Text).at(1)
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const texts = component.find(Sans).map((x) => x.text())
 
     expect(texts[0]).toContain("Consign with Artsy.")
@@ -304,7 +304,7 @@ describe("ArtworkExtraLinks", () => {
     it("posts proper event in when clicking Ask A Specialist", () => {
       component
         .find("Text")
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         .findWhere((t) => t.text() === "ask a specialist")
         .first()
         .props()
@@ -319,7 +319,7 @@ describe("ArtworkExtraLinks", () => {
     it("posts proper event in when clicking Read our auction FAQs", () => {
       component
         .find("Text")
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         .findWhere((t) => t.text() === "Read our auction FAQs")
         .first()
         .props()
@@ -334,7 +334,7 @@ describe("ArtworkExtraLinks", () => {
     it("posts proper event in when clicking Conditions of Sale", () => {
       component
         .find("Text")
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         .findWhere((t) => t.text() === "Conditions of Sale")
         .first()
         .props()

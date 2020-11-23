@@ -125,10 +125,10 @@ it("renders the correct subtitle based on auction type", async () => {
   )
   const subtitles = tree.root.findAllByProps({ "data-test-id": "sale-subtitle" })
   // Timed sale
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   expect(extractText(first(subtitles))).toMatchInlineSnapshot(`"Timed Auction • In 1 day"`)
   // LAI sale
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   expect(extractText(last(subtitles))).toMatchInlineSnapshot(`"Live Auction • Live in 1 day"`)
 })
 
@@ -137,11 +137,11 @@ it("routes to live URL if present, otherwise href", () => {
     <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
   )
   // Timed sale
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   first(tree.root.findAllByType(CardRailCard)).props.onPress()
   expect(navigate).toHaveBeenCalledWith("/auction/the-sale")
   // LAI sale
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   last(tree.root.findAllByType(CardRailCard)).props.onPress()
   expect(navigate).toHaveBeenCalledWith("https://live.artsy.net/the-lai-sale")
 })
