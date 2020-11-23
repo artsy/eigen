@@ -2,8 +2,8 @@ import AsyncStorage from "@react-native-community/async-storage"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
 import { Action, action, Thunk, thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { AppStore, getCurrentEmissionState } from "lib/store/AppStore"
-import type { AppStoreModel } from "lib/store/AppStoreModel"
+import { getCurrentEmissionState, GlobalStore } from "lib/store/GlobalStore"
+import type { GlobalStoreModel } from "lib/store/GlobalStoreModel"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
@@ -18,7 +18,7 @@ export interface BottomTabsModel {
 
   switchTab: Action<BottomTabsModel, BottomTabType>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
-  __dev__didRehydrate: ThunkOn<BottomTabsModel, {}, AppStoreModel>
+  __dev__didRehydrate: ThunkOn<BottomTabsModel, {}, GlobalStoreModel>
 }
 
 export const BottomTabsModel: BottomTabsModel = {
@@ -44,8 +44,8 @@ export const BottomTabsModel: BottomTabsModel = {
       { force: true }
     )
     if (result?.me?.unreadConversationCount != null) {
-      AppStore.actions.bottomTabs.unreadConversationCountChanged(result.me.unreadConversationCount)
-      AppStore.actions.native.setApplicationIconBadgeNumber(result.me.unreadConversationCount)
+      GlobalStore.actions.bottomTabs.unreadConversationCountChanged(result.me.unreadConversationCount)
+      GlobalStore.actions.native.setApplicationIconBadgeNumber(result.me.unreadConversationCount)
     }
   }),
   setTabProps: action((state, { tab, props }) => {
@@ -90,7 +90,7 @@ async function maybeHandleDevReload() {
   try {
     const { launchCount, selectedTab } = JSON.parse(json)
     if (launchCount === getCurrentEmissionState().launchCount) {
-      AppStore.actions.bottomTabs.switchTab(selectedTab)
+      GlobalStore.actions.bottomTabs.switchTab(selectedTab)
     }
   } catch (e) {
     console.error("failed to handle dev reload state")

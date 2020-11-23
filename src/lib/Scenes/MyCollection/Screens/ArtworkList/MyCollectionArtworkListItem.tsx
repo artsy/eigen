@@ -1,7 +1,7 @@
 import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
-import { AppStore } from "lib/store/AppStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { artworkMediumCategories } from "lib/utils/artworkMediumCategories"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { capitalize } from "lodash"
@@ -25,7 +25,9 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
 
   const { artist, artistNames, medium, slug, title } = artwork
 
-  const lastUploadedPhoto = AppStore.useAppState((state) => state.myCollection.artwork.sessionState.lastUploadedPhoto)
+  const lastUploadedPhoto = GlobalStore.useAppState(
+    (state) => state.myCollection.artwork.sessionState.lastUploadedPhoto
+  )
   const renderImage = () => {
     if (!!imageURL) {
       return (

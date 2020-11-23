@@ -3,7 +3,7 @@ import { MyCollectionArtworkFullDetailsQuery } from "__generated__/MyCollectionA
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { popParentViewController } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { AppStore } from "lib/store/AppStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Flex, Spacer } from "palette"
 import React, { useState } from "react"
@@ -19,7 +19,7 @@ const MyCollectionArtworkFullDetails: React.FC<{ artwork: MyCollectionArtworkFul
       <FancyModalHeader
         rightButtonText="Edit"
         onRightButtonPress={() => {
-          AppStore.actions.myCollection.artwork.startEditingArtwork(props.artwork as any)
+          GlobalStore.actions.myCollection.artwork.startEditingArtwork(props.artwork as any)
           setShowModal(true)
         }}
       >

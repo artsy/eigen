@@ -1,6 +1,6 @@
 import InternalWebView from "lib/Components/InternalWebView"
 import { navigate } from "lib/navigation/navigate"
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -12,7 +12,7 @@ import { VanityURLPossibleRedirect } from "../VanityURLPossibleRedirect"
 const fetchMock = ((global as any).fetch = jest.fn())
 
 beforeEach(() => {
-  __appStoreTestUtils__?.injectState({ native: { sessionState: { webURL: "https://artsy.net" } } })
+  __globalStoreTestUtils__?.injectState({ native: { sessionState: { webURL: "https://artsy.net" } } })
   fetchMock.mockReset()
 })
 

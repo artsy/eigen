@@ -22,7 +22,7 @@ jest.mock("lib/relay/createEnvironment", () => ({
 
 import { EmailConfirmationBanner } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
-import { AppStoreProvider } from "lib/store/AppStore"
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { FairsRailFragmentContainer } from "../Components/FairsRail"
 import { HomeQueryRenderer } from "../Home"
@@ -32,9 +32,9 @@ const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironme
 
 const TestRenderer: React.FC = () => {
   return (
-    <AppStoreProvider>
+    <GlobalStoreProvider>
       <HomeQueryRenderer />
-    </AppStoreProvider>
+    </GlobalStoreProvider>
   )
 }
 

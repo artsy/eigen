@@ -1,7 +1,7 @@
 import { Route } from "@react-navigation/native"
 import { useFormikContext } from "formik"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { ActionSheetIOS } from "react-native"
@@ -48,7 +48,7 @@ describe("AddEditArtwork", () => {
 
   afterEach(() => {
     jest.clearAllMocks()
-    __appStoreTestUtils__?.reset()
+    __globalStoreTestUtils__?.reset()
   })
 
   it("renders correct components on Add", () => {

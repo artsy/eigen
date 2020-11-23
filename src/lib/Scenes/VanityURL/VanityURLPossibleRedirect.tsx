@@ -2,7 +2,7 @@ import { ArtsyWebView } from "lib/Components/ArtsyWebView"
 import { Stack } from "lib/Components/Stack"
 import { goBack, navigate } from "lib/navigation/navigate"
 import { matchRoute } from "lib/navigation/routes"
-import { AppStore } from "lib/store/AppStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { Button, Flex, Spinner, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { Linking } from "react-native"
@@ -14,7 +14,7 @@ function join(...parts: string[]) {
 export const VanityURLPossibleRedirect: React.FC<{ slug: string }> = ({ slug }) => {
   const [jsx, setJSX] = useState(<Loading />)
 
-  const { authenticationToken, webURL } = AppStore.useAppState((store) => store.native.sessionState)
+  const { authenticationToken, webURL } = GlobalStore.useAppState((store) => store.native.sessionState)
   const resolvedURL = join(webURL, slug)
 
   useEffect(() => {

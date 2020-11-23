@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react"
 import { Flex, Separator } from "palette"
 
 import { Stack } from "lib/Components/Stack"
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { NativeModules } from "react-native"
 import { MyAccountFieldEditScreen, MyAccountFieldEditScreenProps } from "./Components/MyAccountFieldEditScreen"
 

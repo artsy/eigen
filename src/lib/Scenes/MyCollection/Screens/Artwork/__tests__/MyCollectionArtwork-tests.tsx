@@ -1,6 +1,6 @@
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { navigate } from "lib/navigation/navigate"
-import { AppStore } from "lib/store/AppStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { MyCollectionArtworkInsightsFragmentContainer } from "../Components/ArtworkInsights/MyCollectionArtworkInsights"
@@ -36,7 +36,7 @@ describe("MyCollectionArtworkDetail", () => {
     it("calls startEditingArtworkAction when header edit button is pressed", () => {
       const artworkProps = { artwork: { internalID: "someInternalId" } }
       const spy = jest.fn()
-      AppStore.actions.myCollection.artwork.startEditingArtwork = spy as any
+      GlobalStore.actions.myCollection.artwork.startEditingArtwork = spy as any
       const wrapper = getWrapper(artworkProps)
       wrapper.root.findByType(FancyModalHeader).props.onRightButtonPress()
       expect(spy).toHaveBeenCalledWith(artworkProps.artwork)

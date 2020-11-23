@@ -7,7 +7,7 @@ import Composer from "lib/Scenes/Inbox/Components/Conversations/Composer"
 import Messages from "lib/Scenes/Inbox/Components/Conversations/Messages"
 import { sendConversationMessage } from "lib/Scenes/Inbox/Components/Conversations/SendConversationMessage"
 import { updateConversation } from "lib/Scenes/Inbox/Components/Conversations/UpdateConversation"
-import { AppStore } from "lib/store/AppStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { color, Flex, Text, Touchable } from "palette"
@@ -99,13 +99,13 @@ export class Conversation extends React.Component<Props, State> {
         // @ts-ignore STRICTNESS_MIGRATION
         (_response) => {
           this.setState({ markedMessageAsRead: true })
-          AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
+          GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
         },
         // @ts-ignore STRICTNESS_MIGRATION
         (error) => {
           console.warn(error)
           this.setState({ markedMessageAsRead: true })
-          AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
+          GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
         }
       )
     }

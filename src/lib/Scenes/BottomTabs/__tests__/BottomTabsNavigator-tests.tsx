@@ -1,5 +1,5 @@
 import { NativeViewController } from "lib/Components/NativeViewController"
-import { __appStoreTestUtils__, AppStore } from "lib/store/AppStore"
+import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { BottomTabsNavigator } from "../BottomTabsNavigator"
@@ -14,7 +14,7 @@ describe(BottomTabsNavigator, () => {
       tree.root.findAll((node) => node.type === NativeViewController && node.props.viewProps.tabName === "search")
     ).toHaveLength(0)
 
-    AppStore.actions.bottomTabs.switchTab("search")
+    GlobalStore.actions.bottomTabs.switchTab("search")
 
     expect(
       tree.root.findAll((node) => node.type === NativeViewController && node.props.viewProps.tabName === "search")

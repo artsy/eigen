@@ -7,7 +7,7 @@ import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageTabBar } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
-import { useIsStaging } from "lib/store/AppStore"
+import { useIsStaging } from "lib/store/GlobalStore"
 import { Sans, SettingsIcon as _SettingsIcon } from "palette"
 import { useTracking } from "react-tracking"
 import { FavoriteArtistsQueryRenderer } from "./FavoriteArtists"

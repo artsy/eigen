@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { AppStore } from "lib/store/AppStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { isEmpty, isEqualWith } from "lodash"
 import { BorderBox, Box, Button, Flex, Join, Sans, Spacer } from "palette"
 import React from "react"
@@ -19,8 +19,8 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
   navigation,
   route,
 }) => {
-  const artworkActions = AppStore.actions.myCollection.artwork
-  const artworkState = AppStore.useAppState((state) => state.myCollection.artwork)
+  const artworkActions = GlobalStore.actions.myCollection.artwork
+  const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
   const { formik } = useArtworkForm()
   const modalType = route.params.mode
   const addOrEditLabel = modalType === "edit" ? "Edit" : "Add"
@@ -130,7 +130,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
 }
 
 const PhotosButton: React.FC<{ onPress: () => void }> = ({ onPress }) => {
-  const artworkState = AppStore.useAppState((state) => state.myCollection.artwork)
+  const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
   const photos = artworkState.sessionState.formValues.photos
 
   return (

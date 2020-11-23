@@ -36,7 +36,7 @@ import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCrea
 import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { Modal } from "lib/Components/Modal"
 import { partnerName } from "lib/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 
 type BidderPositionResult = NonNullable<
   NonNullable<ConfirmBidCreateBidderPositionMutationResponse["createBidderPosition"]>["result"]

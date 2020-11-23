@@ -18,7 +18,7 @@ import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwo
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import { postEvent } from "lib/NativeModules/Events"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
+import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 
 function getWrapper({
   artwork,
@@ -28,11 +28,11 @@ function getWrapper({
   auctionState?: AuctionTimerState
 }) {
   return mount(
-    <AppStoreProvider>
+    <GlobalStoreProvider>
       <Theme>
         <ArtworkExtraLinks artwork={artwork} auctionState={auctionState!} />
       </Theme>
-    </AppStoreProvider>
+    </GlobalStoreProvider>
   )
 }
 
@@ -74,7 +74,7 @@ describe("ArtworkExtraLinks", () => {
       ],
     }
 
-    __appStoreTestUtils__?.injectState({ bottomTabs: { sessionState: { selectedTab: "sell" } } })
+    __globalStoreTestUtils__?.injectState({ bottomTabs: { sessionState: { selectedTab: "sell" } } })
     const component = getWrapper({ artwork })
     const consignmentsLink = component.find(Text).at(1)
 

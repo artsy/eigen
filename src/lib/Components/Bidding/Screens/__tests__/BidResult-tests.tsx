@@ -2,7 +2,7 @@ import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.gra
 // @ts-ignore STRICTNESS_MIGRATION
 import { shallow } from "enzyme"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
@@ -195,7 +195,7 @@ describe("BidResult component", () => {
     })
 
     it("dismisses controller and presents live interface when continue button is pressed", () => {
-      __appStoreTestUtils__?.injectState({
+      __globalStoreTestUtils__?.injectState({
         native: { sessionState: { predictionURL: "https://live-staging.artsy.net" } },
       })
       const bidResult = renderWithWrappers(

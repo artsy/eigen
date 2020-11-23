@@ -17,7 +17,7 @@ import { Title } from "../Components/Title"
 import { BidderPositionResult } from "../types"
 
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 

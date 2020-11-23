@@ -8,7 +8,7 @@ import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRec
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import {
   PlaceholderBox,

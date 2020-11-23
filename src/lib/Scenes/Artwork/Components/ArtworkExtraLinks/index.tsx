@@ -2,7 +2,7 @@ import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwo
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { partnerName } from "lib/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
-import { useSelectedTab } from "lib/store/AppStore"
+import { useSelectedTab } from "lib/store/GlobalStore"
 import { Schema, track } from "lib/utils/track"
 import { Sans, Spacer } from "palette"
 import React, { useRef } from "react"

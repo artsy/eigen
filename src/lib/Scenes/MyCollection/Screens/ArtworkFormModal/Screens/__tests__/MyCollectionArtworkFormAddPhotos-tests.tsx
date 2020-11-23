@@ -1,6 +1,6 @@
 import { Route } from "@react-navigation/native"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { __appStoreTestUtils__, AppStore } from "lib/store/AppStore"
+import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React, { ReactElement } from "react"
 import { Image, TouchableOpacity } from "react-native"
@@ -12,7 +12,7 @@ describe("MyCollectionAddPhotos", () => {
   let mockAddPhotos: ReactElement
 
   beforeEach(() => {
-    __appStoreTestUtils__?.injectState({
+    __globalStoreTestUtils__?.injectState({
       myCollection: {
         artwork: {
           sessionState: {
@@ -51,7 +51,7 @@ describe("MyCollectionAddPhotos", () => {
 
   it("triggers action on add photo button click", () => {
     const spy = jest.fn()
-    AppStore.actions.myCollection.artwork.takeOrPickPhotos = spy as any
+    GlobalStore.actions.myCollection.artwork.takeOrPickPhotos = spy as any
     const wrapper = renderWithWrappers(mockAddPhotos)
     wrapper.root.findByType(tests.AddPhotosButton).findByType(TouchableOpacity).props.onPress()
     expect(spy).toHaveBeenCalled()
@@ -59,7 +59,7 @@ describe("MyCollectionAddPhotos", () => {
 
   it("triggers action on add photo button click", () => {
     const spy = jest.fn()
-    AppStore.actions.myCollection.artwork.takeOrPickPhotos = spy as any
+    GlobalStore.actions.myCollection.artwork.takeOrPickPhotos = spy as any
     const mockNav = jest.fn()
     const mockRoute: Route<"AddPhotos", undefined> = {
       key: "AddPhotos",
@@ -73,7 +73,7 @@ describe("MyCollectionAddPhotos", () => {
 
   it("triggers action on delete photo button click", () => {
     const spy = jest.fn()
-    AppStore.actions.myCollection.artwork.removePhoto = spy as any
+    GlobalStore.actions.myCollection.artwork.removePhoto = spy as any
     const mockNav = jest.fn()
     const mockRoute: Route<"AddPhotos", undefined> = {
       key: "AddPhotos",
