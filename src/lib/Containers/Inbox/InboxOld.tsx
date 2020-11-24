@@ -15,22 +15,23 @@ import React from "react"
 import { EmitterSubscription, RefreshControl } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
+import { InboxOldQuery } from "__generated__/InboxOldQuery.graphql"
+import { InboxOld_me } from "__generated__/InboxOld_me.graphql"
 interface Props {
-  me: Inbox_me
+  me: InboxOld_me
   relay: RelayRefetchProp
   isVisible: boolean
 }
 
 interface State {
   fetchingData: boolean
-  inquiryTabIsSelected: boolean
 }
 
 const Container = styled.ScrollView`
   flex: 1;
 `
 
-export class Inbox extends React.Component<Props, State> {
+export class InboxOld extends React.Component<Props, State> {
   // @ts-ignore STRICTNESS_MIGRATION
   conversations: ConversationsRef
   // @ts-ignore STRICTNESS_MIGRATION
@@ -38,7 +39,6 @@ export class Inbox extends React.Component<Props, State> {
 
   state = {
     fetchingData: false,
-    inquiryTabIsSelected: false,
   }
 
   listener: EmitterSubscription | null = null
@@ -88,58 +88,19 @@ export class Inbox extends React.Component<Props, State> {
     const conversationsExistenceCheck = extractNodes(this.props.me.conversations_existence_check)
     const hasBids = !!lotStanding && lotStanding.length > 0
     const hasConversations = !!conversationsExistenceCheck && conversationsExistenceCheck.length > 0
-    const shouldDisplayMyBids = getCurrentEmissionState().options.AROptionsBidManagement
-
-    if (shouldDisplayMyBids) {
-      return (
-        <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
-          <Spacer pb={5} />
-          <Flex flexDirection="row" px={1.5} mb={1}>
-            <Text
-              mr={2}
-              color={this.state.inquiryTabIsSelected ? "black30" : "black100"}
-              onPress={() => {
-                this.setState({ inquiryTabIsSelected: false })
-              }}
-              variant="largeTitle"
-            >
-              Bids
-            </Text>
-            <Text
-              color={this.state.inquiryTabIsSelected ? "black100" : "black30"}
-              onPress={() => {
-                this.setState({ inquiryTabIsSelected: true })
-              }}
-              variant="largeTitle"
-            >
-              Inquiries
-            </Text>
-          </Flex>
-          {this.state.inquiryTabIsSelected ? (
-            <ConversationsContainer
-              me={this.props.me}
-              componentRef={(conversations) => (this.conversations = conversations)}
-            />
-          ) : (
-            <MyBidsContainer me={this.props.me} />
-          )}
-        </Container>
-      )
-    } else {
-      return hasBids || hasConversations ? (
-        <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
-          <ActiveBids me={this.props.me} componentRef={(activeBids) => (this.activeBids = activeBids)} />
-          <ConversationsContainer
-            me={this.props.me}
-            componentRef={(conversations) => (this.conversations = conversations)}
-          />
-        </Container>
-      ) : (
-        <Flex style={{ flex: 1 }}>
-          <ZeroStateInbox />
-        </Flex>
-      )
-    }
+    return hasBids || hasConversations ? (
+      <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
+        <ActiveBids me={this.props.me} componentRef={(activeBids) => (this.activeBids = activeBids)} />
+        <ConversationsContainer
+          me={this.props.me}
+          componentRef={(conversations) => (this.conversations = conversations)}
+        />
+      </Container>
+    ) : (
+      <Flex style={{ flex: 1 }}>
+        <ZeroStateInbox />
+      </Flex>
+    )
   }
 }
 
@@ -154,11 +115,11 @@ export class Inbox extends React.Component<Props, State> {
 //        ...Conversations_me @relay(mask: false)
 //        ...ActiveBids_me @relay(mask: false)
 //
-export const InboxContainer = createRefetchContainer(
-  Inbox,
+export const InboxOldContainer = createRefetchContainer(
+  InboxOld,
   {
     me: graphql`
-      fragment Inbox_me on Me {
+      fragment InboxOld_me on Me {
         lot_standings: lotStandings(live: true) {
           most_recent_bid: mostRecentBid {
             id
@@ -173,33 +134,32 @@ export const InboxContainer = createRefetchContainer(
         }
         ...Conversations_me
         ...ActiveBids_me
-        ...MyBids_me
       }
     `,
   },
   graphql`
-    query InboxRefetchQuery {
+    query InboxOldRefetchQuery {
       me {
-        ...Inbox_me
+        ...InboxOld_me
       }
     }
   `
 )
 
-export const InboxQueryRenderer: React.SFC = () => {
+export const InboxOldQueryRenderer: React.FC = () => {
   return (
-    <QueryRenderer<InboxQuery>
+    <QueryRenderer<InboxOldQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query InboxQuery {
+        query InboxOldQuery {
           me {
-            ...Inbox_me
+            ...InboxOld_me
           }
         }
       `}
       cacheConfig={{ force: true }}
       variables={{}}
-      render={renderWithLoadProgress(InboxContainer)}
+      render={renderWithLoadProgress(InboxOldContainer)}
     />
   )
 }

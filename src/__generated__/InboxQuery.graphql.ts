@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6336acbd37a66624004b382643415a58 */
+/* @relayHash d49c74840fe5edd83cf6163e321ee881 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,46 +23,6 @@ query InboxQuery {
   me {
     ...Inbox_me
     id
-  }
-}
-
-fragment ActiveBid_bid on LotStanding {
-  is_leading_bidder: isLeadingBidder
-  sale {
-    href
-    is_live_open: isLiveOpen
-    id
-  }
-  most_recent_bid: mostRecentBid {
-    id
-    sale_artwork: saleArtwork {
-      artwork {
-        href
-        image {
-          url
-        }
-        artist_names: artistNames
-        id
-      }
-      counts {
-        bidder_positions: bidderPositions
-      }
-      highest_bid: highestBid {
-        display
-      }
-      lot_label: lotLabel
-      reserve_status: reserveStatus
-      id
-    }
-  }
-}
-
-fragment ActiveBids_me on Me {
-  lot_standings: lotStandings(live: true) {
-    most_recent_bid: mostRecentBid {
-      id
-    }
-    ...ActiveBid_bid
   }
 }
 
@@ -180,21 +140,17 @@ fragment Conversations_me on Me {
 }
 
 fragment Inbox_me on Me {
-  lot_standings: lotStandings(live: true) {
-    most_recent_bid: mostRecentBid {
-      id
+  lotStandingsExistenceCheck: auctionsLotStandingConnection(first: 1) {
+    edges {
+      cursor
     }
   }
-  conversations_existence_check: conversationsConnection(first: 1) {
+  conversationsExistenceCheck: conversationsConnection(first: 1) {
     edges {
-      node {
-        internalID
-        id
-      }
+      cursor
     }
   }
   ...Conversations_me
-  ...ActiveBids_me
   ...MyBids_me
 }
 
@@ -256,47 +212,24 @@ fragment SaleCard_sale on Sale {
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
+var v0 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 1
+  }
+],
 v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "href",
+  "name": "cursor",
   "storageKey": null
 },
 v2 = [
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "url",
-    "storageKey": null
-  }
+  (v1/*: any*/)
 ],
-v3 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "Image",
-  "kind": "LinkedField",
-  "name": "image",
-  "plural": false,
-  "selections": (v2/*: any*/),
-  "storageKey": null
-},
-v4 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-},
-v5 = [
+v3 = [
   {
     "kind": "Literal",
     "name": "after",
@@ -308,16 +241,30 @@ v5 = [
     "value": 10
   }
 ],
-v6 = {
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
 v7 = [
-  (v6/*: any*/),
-  (v0/*: any*/)
+  (v5/*: any*/),
+  (v6/*: any*/)
 ],
 v8 = {
   "alias": null,
@@ -333,17 +280,26 @@ v9 = {
   "name": "artistNames",
   "storageKey": null
 },
-v10 = {
+v10 = [
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "url",
+    "storageKey": null
+  }
+],
+v11 = {
   "alias": null,
   "args": null,
   "concreteType": "Image",
   "kind": "LinkedField",
   "name": "coverImage",
   "plural": false,
-  "selections": (v2/*: any*/),
+  "selections": (v10/*: any*/),
   "storageKey": null
 },
-v11 = [
+v12 = [
   {
     "alias": null,
     "args": [
@@ -357,7 +313,14 @@ v11 = [
     "name": "displayAmount",
     "storageKey": "displayAmount(fractionalDigits:0)"
   }
-];
+],
+v13 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "href",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": [],
@@ -400,153 +363,29 @@ return {
         "plural": false,
         "selections": [
           {
-            "alias": "lot_standings",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "live",
-                "value": true
-              }
-            ],
-            "concreteType": "LotStanding",
+            "alias": "lotStandingsExistenceCheck",
+            "args": (v0/*: any*/),
+            "concreteType": "AuctionsLotStandingConnection",
             "kind": "LinkedField",
-            "name": "lotStandings",
-            "plural": true,
+            "name": "auctionsLotStandingConnection",
+            "plural": false,
             "selections": [
-              {
-                "alias": "most_recent_bid",
-                "args": null,
-                "concreteType": "BidderPosition",
-                "kind": "LinkedField",
-                "name": "mostRecentBid",
-                "plural": false,
-                "selections": [
-                  (v0/*: any*/),
-                  {
-                    "alias": "sale_artwork",
-                    "args": null,
-                    "concreteType": "SaleArtwork",
-                    "kind": "LinkedField",
-                    "name": "saleArtwork",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "Artwork",
-                        "kind": "LinkedField",
-                        "name": "artwork",
-                        "plural": false,
-                        "selections": [
-                          (v1/*: any*/),
-                          (v3/*: any*/),
-                          {
-                            "alias": "artist_names",
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "artistNames",
-                            "storageKey": null
-                          },
-                          (v0/*: any*/)
-                        ],
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "SaleArtworkCounts",
-                        "kind": "LinkedField",
-                        "name": "counts",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "alias": "bidder_positions",
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "bidderPositions",
-                            "storageKey": null
-                          }
-                        ],
-                        "storageKey": null
-                      },
-                      {
-                        "alias": "highest_bid",
-                        "args": null,
-                        "concreteType": "SaleArtworkHighestBid",
-                        "kind": "LinkedField",
-                        "name": "highestBid",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "display",
-                            "storageKey": null
-                          }
-                        ],
-                        "storageKey": null
-                      },
-                      {
-                        "alias": "lot_label",
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "lotLabel",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": "reserve_status",
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "reserveStatus",
-                        "storageKey": null
-                      },
-                      (v0/*: any*/)
-                    ],
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              },
-              {
-                "alias": "is_leading_bidder",
-                "args": null,
-                "kind": "ScalarField",
-                "name": "isLeadingBidder",
-                "storageKey": null
-              },
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Sale",
+                "concreteType": "AuctionsLotStandingEdge",
                 "kind": "LinkedField",
-                "name": "sale",
-                "plural": false,
-                "selections": [
-                  (v1/*: any*/),
-                  {
-                    "alias": "is_live_open",
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "isLiveOpen",
-                    "storageKey": null
-                  },
-                  (v0/*: any*/)
-                ],
+                "name": "edges",
+                "plural": true,
+                "selections": (v2/*: any*/),
                 "storageKey": null
               }
             ],
-            "storageKey": "lotStandings(live:true)"
+            "storageKey": "auctionsLotStandingConnection(first:1)"
           },
           {
-            "alias": "conversations_existence_check",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 1
-              }
-            ],
+            "alias": "conversationsExistenceCheck",
+            "args": (v0/*: any*/),
             "concreteType": "ConversationConnection",
             "kind": "LinkedField",
             "name": "conversationsConnection",
@@ -559,21 +398,7 @@ return {
                 "kind": "LinkedField",
                 "name": "edges",
                 "plural": true,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "Conversation",
-                    "kind": "LinkedField",
-                    "name": "node",
-                    "plural": false,
-                    "selections": [
-                      (v4/*: any*/),
-                      (v0/*: any*/)
-                    ],
-                    "storageKey": null
-                  }
-                ],
+                "selections": (v2/*: any*/),
                 "storageKey": null
               }
             ],
@@ -581,7 +406,7 @@ return {
           },
           {
             "alias": "conversations",
-            "args": (v5/*: any*/),
+            "args": (v3/*: any*/),
             "concreteType": "ConversationConnection",
             "kind": "LinkedField",
             "name": "conversationsConnection",
@@ -702,7 +527,16 @@ return {
                                     "storageKey": null
                                   },
                                   (v9/*: any*/),
-                                  (v3/*: any*/)
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Image",
+                                    "kind": "LinkedField",
+                                    "name": "image",
+                                    "plural": false,
+                                    "selections": (v10/*: any*/),
+                                    "storageKey": null
+                                  }
                                 ],
                                 "type": "Artwork",
                                 "abstractKey": null
@@ -720,8 +554,8 @@ return {
                                     "selections": (v7/*: any*/),
                                     "storageKey": null
                                   },
-                                  (v6/*: any*/),
-                                  (v10/*: any*/)
+                                  (v5/*: any*/),
+                                  (v11/*: any*/)
                                 ],
                                 "type": "Show",
                                 "abstractKey": null
@@ -729,7 +563,7 @@ return {
                               {
                                 "kind": "InlineFragment",
                                 "selections": [
-                                  (v0/*: any*/)
+                                  (v6/*: any*/)
                                 ],
                                 "type": "Node",
                                 "abstractKey": "__isNode"
@@ -758,18 +592,12 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v0/*: any*/),
+                      (v6/*: any*/),
                       (v8/*: any*/)
                     ],
                     "storageKey": null
                   },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "cursor",
-                    "storageKey": null
-                  }
+                  (v1/*: any*/)
                 ],
                 "storageKey": null
               },
@@ -785,7 +613,7 @@ return {
           },
           {
             "alias": "conversations",
-            "args": (v5/*: any*/),
+            "args": (v3/*: any*/),
             "filters": null,
             "handle": "connection",
             "key": "Conversations_conversations",
@@ -866,7 +694,7 @@ return {
                             "kind": "LinkedField",
                             "name": "onlineAskingPrice",
                             "plural": false,
-                            "selections": (v11/*: any*/),
+                            "selections": (v12/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -876,10 +704,10 @@ return {
                             "kind": "LinkedField",
                             "name": "floorSellingPrice",
                             "plural": false,
-                            "selections": (v11/*: any*/),
+                            "selections": (v12/*: any*/),
                             "storageKey": null
                           },
-                          (v0/*: any*/),
+                          (v6/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -914,7 +742,7 @@ return {
                             "plural": false,
                             "selections": [
                               (v9/*: any*/),
-                              (v1/*: any*/),
+                              (v13/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -939,7 +767,7 @@ return {
                                 ],
                                 "storageKey": null
                               },
-                              (v0/*: any*/)
+                              (v6/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -958,7 +786,7 @@ return {
                                 "name": "liveStartAt",
                                 "storageKey": null
                               },
-                              (v0/*: any*/),
+                              (v6/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -973,9 +801,9 @@ return {
                                 "name": "status",
                                 "storageKey": null
                               },
-                              (v1/*: any*/),
-                              (v6/*: any*/),
-                              (v10/*: any*/),
+                              (v13/*: any*/),
+                              (v5/*: any*/),
+                              (v11/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -990,7 +818,7 @@ return {
                             ],
                             "storageKey": null
                           },
-                          (v0/*: any*/),
+                          (v6/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -1001,7 +829,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v0/*: any*/)
+                      (v6/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -1011,14 +839,14 @@ return {
             ],
             "storageKey": "auctionsLotStandingConnection(first:25)"
           },
-          (v0/*: any*/)
+          (v6/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "6336acbd37a66624004b382643415a58",
+    "id": "d49c74840fe5edd83cf6163e321ee881",
     "metadata": {},
     "name": "InboxQuery",
     "operationKind": "query",
