@@ -139,7 +139,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
 
   useEffect(() => {
     if (mutationSuccessful) {
-      toggleVisibility()
+      resetAndExit()
 
       const delayNotification = setTimeout(() => {
         onMutationSuccessful(true)
@@ -159,9 +159,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           resetAndExit()
         }}
         rightButtonText="Send"
-        rightButtonDisabled={
-          (state.inquiryQuestions.length === 0 && !state.message)
-        }
+        rightButtonDisabled={state.inquiryQuestions.length === 0 && !state.message}
         onRightButtonPress={() => {
           SubmitInquiryRequest(relay.environment, artwork, state, setMutationSuccessful, setErrorMessageVisibility)
         }}
