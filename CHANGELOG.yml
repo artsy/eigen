@@ -12,6 +12,7 @@ upcoming:
     - Rename AppStore to GlobalStore - david
     - Update STRICTNESS_MIGRATION comments - david
     - Don't pass email to segment - brian
+    - Update color scheme - mdole
   user_facing:
     -
 releases:
