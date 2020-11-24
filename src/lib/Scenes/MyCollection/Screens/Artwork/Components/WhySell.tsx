@@ -38,7 +38,7 @@ const WhySellStep: React.FC<{ step: number; title: string; description: string }
       <Box mr={2}>
         <Text>{step}</Text>
       </Box>
-      <Box>
+      <Box mr={2}>
         <Text>{title}</Text>
         <Text color="black60">{description}</Text>
       </Box>

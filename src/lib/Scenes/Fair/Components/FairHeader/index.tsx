@@ -56,7 +56,7 @@ const CountdownContainer = styled.View`
 `
 
 const CountdownText: React.FC<CountdownProps> = ({ duration, label }) =>
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   label !== "Closed" && (
     <Flex justifyContent="center" alignItems="center">
       <LabeledTicker
@@ -70,7 +70,7 @@ const CountdownText: React.FC<CountdownProps> = ({ duration, label }) =>
     </Flex>
   )
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const track: Track<Props, State> = _track
 
 @track()
@@ -95,9 +95,9 @@ export class FairHeader extends React.Component<Props, State> {
       <>
         <EntityList
           prefix="Works by"
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           list={uniqArtistList}
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           count={counts.artists}
           displayedItems={3}
           onItemSelected={this.handleArtistPress.bind(this)}
@@ -118,7 +118,7 @@ export class FairHeader extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Gallery,
     } as any
   })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleExhibitorPress(href, _slug, _internalID) {
     SwitchBoard.presentNavigationViewController(this, `${href}?entity=fair-booth`)
   }
@@ -134,7 +134,7 @@ export class FairHeader extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Artist,
     } as any
   })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleArtistPress(href, _slug, _internalID) {
     SwitchBoard.presentNavigationViewController(this, href)
   }
@@ -177,7 +177,7 @@ export class FairHeader extends React.Component<Props, State> {
                 countdownComponent={CountdownText}
                 startAt={startAt}
                 endAt={endAt}
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 formattedOpeningHours={formattedOpeningHours}
               />
             </CountdownContainer>

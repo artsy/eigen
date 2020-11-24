@@ -2,7 +2,7 @@ import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwo
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { partnerName } from "lib/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
-import { useSelectedTab } from "lib/store/AppStore"
+import { useSelectedTab } from "lib/store/GlobalStore"
 import { Schema, track } from "lib/utils/track"
 import { Sans, Spacer } from "palette"
 import React, { useRef } from "react"
@@ -26,7 +26,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     action_type: Schema.ActionTypes.Tap,
     context_module: Schema.ContextModules.ArtworkExtraLinks,
   })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleAskASpecialistTap(emailAddress) {
     const { artwork } = this.props
     const mailtoSubject = `Inquiry on ${artwork.title}`.concat(
@@ -113,9 +113,9 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     const {
       artwork: { artists },
     } = this.props
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const consignableArtistsCount = artists.filter((artist) => artist.isConsignable).length
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const artistName = artists && artists.length === 1 ? artists[0].name : null
 
     return (

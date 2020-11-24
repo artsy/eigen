@@ -33,7 +33,7 @@ export class ShowArtworksPreview extends React.Component<Props> {
           <Box mt={1}>
             <CaretButton
               text={`View all ${
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 counts.artworks
               } works`}
               onPress={() => onViewAllArtworksPressed()}

@@ -68,12 +68,12 @@ export const BidFlowQueryRenderer: React.FC<{ artworkID?: string; saleID: string
       `}
       cacheConfig={{ force: true }} // We want to always fetch latest bid increments.
       variables={{
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         artworkID,
         saleID,
       }}
       render={renderWithLoadProgress<BidFlowQuery["response"]>((props) => (
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         <BidFlowFragmentContainer sale_artwork={props.artwork.sale_artwork} me={props.me} />
       ))}
     />

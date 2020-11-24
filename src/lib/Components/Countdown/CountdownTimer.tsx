@@ -20,7 +20,7 @@ enum TimerState {
   PAST = "PAST",
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 function relevantStateData(state, { startAt, endAt, formattedOpeningHours = "" }: Props) {
   switch (state) {
     case TimerState.UPCOMING:
@@ -54,7 +54,7 @@ function currentState({ startAt, endAt }: Props) {
 export const CountdownTimer: React.FC<Props> = (props: Props) => {
   const onState = () => {
     const state = currentState(props)
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const { label, date } = relevantStateData(state, props)
     return { state, label, date }
   }

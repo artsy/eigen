@@ -1,10 +1,10 @@
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { handleFairRouting, MatchResult } from "../util"
 
 describe("#handleFairRouting", () => {
   it("routes to a new fair page if the option is enabled", () => {
-    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFairPage: true })
-    __appStoreTestUtils__?.injectState({
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFairPage: true })
+    __globalStoreTestUtils__?.injectState({
       native: { sessionState: { legacyFairSlugs: [] } },
     })
 
@@ -22,8 +22,8 @@ describe("#handleFairRouting", () => {
   })
 
   it("routes to an old fair page if the option is enabled and fair is part of slug list", () => {
-    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFairPage: true })
-    __appStoreTestUtils__?.injectState({
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFairPage: true })
+    __globalStoreTestUtils__?.injectState({
       native: { sessionState: { legacyFairSlugs: ["awesome-fair"] } },
     })
 
@@ -41,8 +41,8 @@ describe("#handleFairRouting", () => {
   })
 
   it("returns same result if module is not part of fair list", () => {
-    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFairPage: true })
-    __appStoreTestUtils__?.injectState({
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFairPage: true })
+    __globalStoreTestUtils__?.injectState({
       native: { sessionState: { legacyFairSlugs: ["awesome-fair"] } },
     })
 

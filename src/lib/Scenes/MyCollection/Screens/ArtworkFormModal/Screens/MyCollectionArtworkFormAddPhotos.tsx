@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Stack } from "lib/Components/Stack"
-import { AppStore } from "lib/store/AppStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { chunk } from "lodash"
@@ -16,7 +16,7 @@ const MARGIN = 20
 export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormModalScreen, "AddPhotos">> = ({
   navigation,
 }) => {
-  const formValues = AppStore.useAppState((state) => state.myCollection.artwork.sessionState.formValues)
+  const formValues = GlobalStore.useAppState((state) => state.myCollection.artwork.sessionState.formValues)
   const { photos } = formValues
   const { width: screenWidth } = useScreenDimensions()
   const numColumns = isPad() ? 5 : 2
@@ -55,7 +55,7 @@ export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormModalSc
 }
 
 const AddPhotosButton: React.FC<{ imageSize: number }> = ({ imageSize }) => {
-  const artworkActions = AppStore.actions.myCollection.artwork
+  const artworkActions = GlobalStore.actions.myCollection.artwork
 
   return (
     <TouchableOpacity onPress={() => artworkActions.takeOrPickPhotos()}>
@@ -69,7 +69,7 @@ const AddPhotosButton: React.FC<{ imageSize: number }> = ({ imageSize }) => {
 }
 
 const DeletePhotoButton: React.FC<{ photo: ImageProps }> = ({ photo }) => {
-  const artworkActions = AppStore.actions.myCollection.artwork
+  const artworkActions = GlobalStore.actions.myCollection.artwork
 
   return (
     <Box position="absolute" right={-4} top={-5}>

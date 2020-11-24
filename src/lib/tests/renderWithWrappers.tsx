@@ -1,4 +1,4 @@
-import { AppStoreProvider } from "lib/store/AppStore"
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import ReactTestRenderer from "react-test-renderer"
@@ -41,8 +41,8 @@ export const renderWithWrappers = (component: ReactElement) => {
  */
 export const componentWithWrappers = (component: ReactElement) => {
   return (
-    <AppStoreProvider>
+    <GlobalStoreProvider>
       <Theme>{component}</Theme>
-    </AppStoreProvider>
+    </GlobalStoreProvider>
   )
 }

@@ -5,7 +5,6 @@ import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { Theme } from "palette"
-import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowQueryRenderer } from "./Containers/BidFlow"
 import { GeneQueryRenderer } from "./Containers/Gene"
 import { InboxQueryRenderer } from "./Containers/Inbox"
@@ -13,6 +12,7 @@ import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowQueryRenderer } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
 import { About } from "./Scenes/About/About"
+import { ArtistQueryRenderer } from "./Scenes/Artist/Artist"
 import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
@@ -85,7 +85,7 @@ import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { AppStore, AppStoreProvider } from "./store/AppStore"
+import { GlobalStore, GlobalStoreProvider } from "./store/GlobalStore"
 import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 
@@ -102,7 +102,7 @@ LogBox.ignoreLogs([
   // RN 0.59.0 ships with this issue, which has been effectively marked as #wontfix: https://github.com/facebook/react-native/issues/23130
   "Require cycle: node_modules/react-native/Libraries/Network/fetch.js -> node_modules/react-native/Libraries/vendor/core/whatwg-fetch.js -> node_modules/react-native/Libraries/Network/fetch.js",
 
-  "Require cycle: src/lib/store/AppStore.tsx",
+  "Require cycle: src/lib/store/GlobalStore.tsx",
 
   // This is for the Artist page, which will likely get redone soon anyway.
   "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
@@ -277,7 +277,7 @@ interface PageWrapperProps {
 const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) => {
   const paddingTop = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.top
   const paddingBottom = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.bottom
-  const isHydrated = AppStore.useAppState((state) => state.sessionState.isHydrated)
+  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   return (
     <View style={{ flex: 1, paddingTop, paddingBottom }}>
       {isHydrated ? (
@@ -296,13 +296,13 @@ class PageWrapper extends React.Component<PageWrapperProps> {
     return (
       <ProvideScreenDimensions>
         <RelayEnvironmentProvider environment={defaultEnvironment}>
-          <AppStoreProvider>
+          <GlobalStoreProvider>
             <Theme>
               <_FancyModalPageWrapper>
                 <InnerPageWrapper {...this.props} />
               </_FancyModalPageWrapper>
             </Theme>
-          </AppStoreProvider>
+          </GlobalStoreProvider>
         </RelayEnvironmentProvider>
       </ProvideScreenDimensions>
     )
@@ -454,9 +454,9 @@ for (const moduleName of Object.keys(modules)) {
 }
 
 const Main: React.FC<{}> = track()(({}) => {
-  const isHydrated = AppStore.useAppState((state) => state.sessionState.isHydrated)
-  const isLoggedIn = AppStore.useAppState((state) => !!state.native.sessionState.userID)
-  const onboardingState = AppStore.useAppState((state) => state.native.sessionState.onboardingState)
+  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
+  const isLoggedIn = GlobalStore.useAppState((state) => !!state.native.sessionState.userID)
+  const onboardingState = GlobalStore.useAppState((state) => state.native.sessionState.onboardingState)
 
   if (!isHydrated) {
     return <View></View>

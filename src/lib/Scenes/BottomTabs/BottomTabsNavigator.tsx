@@ -1,6 +1,6 @@
 import { AppModule } from "lib/AppRegistry"
 import { NativeViewController } from "lib/Components/NativeViewController"
-import { useSelectedTab } from "lib/store/AppStore"
+import { useSelectedTab } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useEffect, useRef } from "react"
 import { Animated, View } from "react-native"

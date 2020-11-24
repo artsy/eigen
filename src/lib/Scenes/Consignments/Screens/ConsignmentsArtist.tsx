@@ -38,7 +38,7 @@ export default class Artist extends React.Component<Props, State> {
   }
 
   artistSelected = (result: ArtistResult) => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.props.updateWithArtist(result)
     this.props.navigator.pop()
   }
@@ -93,7 +93,7 @@ export default class Artist extends React.Component<Props, State> {
           >
             <SearchResults<ArtistResult>
               results={this.state.results}
-              // @ts-ignore STRICTNESS_MIGRATION
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               query={this.state.query}
               placeholder="Artist/Designer Name"
               noResultsMessage="Unfortunately we are not accepting consignments for works by"

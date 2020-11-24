@@ -74,53 +74,52 @@ interface BillingAddressState {
 
 @screenTrack({
   context_screen: Schema.PageNames.BidFlowBillingAddressPage,
-  // @ts-ignore STRICTNESS_MIGRATION
   context_screen_owner_type: null,
 })
 export class BillingAddress extends React.Component<BillingAddressProps, BillingAddressState> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private addressLine1: StyledInputInterface
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private addressLine2: StyledInputInterface
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private city: StyledInputInterface
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private stateProvinceRegion: StyledInputInterface
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private postalCode: StyledInputInterface
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private phoneNumber: StyledInputInterface
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private fullNameLayout: LayoutRectangle
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private addressLine1Layout: LayoutRectangle
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private addressLine2Layout: LayoutRectangle
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private cityLayout: LayoutRectangle
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private stateProvinceRegionLayout: LayoutRectangle
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private postalCodeLayout: LayoutRectangle
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private phoneNumberLayout: LayoutRectangle
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private keyboardDidShowListener: EmitterSubscription
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private keyboardHeight: number
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private scrollView: ScrollView
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
 
     this.state = {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       values: { ...this.props.billingAddress },
       errors: {},
     }
@@ -142,7 +141,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
   validateField(field: string) {
     this.setState({
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       errors: { ...this.state.errors, [field]: this.validateAddress(this.state.values)[field] },
     })
   }
@@ -150,7 +149,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
   onSubmit() {
     const errors = this.validateAddress(this.state.values)
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     if (Object.keys(errors).filter((key) => errors[key]).length > 0) {
       this.setState({ errors })
     } else {
@@ -175,14 +174,14 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     action_name: Schema.ActionNames.BidFlowSaveBillingAddress,
   })
   submitValidAddress() {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.props.onSubmit(this.state.values)
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.props.navigator.pop()
   }
 
   presentSelectCountry() {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.props.navigator.push({
       component: SelectCountry,
       title: "",
@@ -211,7 +210,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
       <BiddingThemeProvider>
         <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={this.verticalOffset} style={{ flex: 1 }}>
           <BackButton
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             navigator={this.props.navigator}
           />
           <ScrollView ref={(scrollView) => (this.scrollView = scrollView as any)}>
@@ -226,7 +225,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 placeholder="Add your full name"
                 autoFocus={true}
                 textContentType="name"
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.addressLine1.focus()}
                 onLayout={({ nativeEvent }) => (this.fullNameLayout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.fullNameLayout) })}
@@ -237,7 +236,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="Address line 1"
                 placeholder="Add your street address"
                 textContentType="streetAddressLine1"
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.addressLine2.focus()}
                 onLayout={({ nativeEvent }) => (this.addressLine1Layout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.addressLine1Layout) })}
@@ -248,7 +247,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="Address line 2 (optional)"
                 placeholder="Add your apt, floor, suite, etc."
                 textContentType="streetAddressLine2"
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.city.focus()}
                 onLayout={({ nativeEvent }) => (this.addressLine2Layout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.addressLine2Layout) })}
@@ -259,7 +258,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="City"
                 placeholder="Add your city"
                 textContentType="addressCity"
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.stateProvinceRegion.focus()}
                 onLayout={({ nativeEvent }) => (this.cityLayout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.cityLayout) })}
@@ -270,7 +269,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="State, Province, or Region"
                 placeholder="Add state, province, or region"
                 textContentType="addressState"
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.postalCode.focus()}
                 inputRef={(el) => (this.stateProvinceRegion = el)}
                 onLayout={({ nativeEvent }) => (this.stateProvinceRegionLayout = nativeEvent.layout)}
@@ -287,7 +286,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="Postal code"
                 placeholder="Add your postal code"
                 textContentType="postalCode"
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.phoneNumber.focus()}
                 onLayout={({ nativeEvent }) => (this.postalCodeLayout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.postalCodeLayout) })}
@@ -341,19 +340,19 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
   private defaultPropsForInput(field: string): Partial<StyledInputProps> {
     return {
       autoCapitalize: "words",
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       errorMessage: this.state.errors[field],
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       inputRef: (el) => (this[field] = el),
       onBlur: () => this.validateField(field),
       onChangeText: (value) => this.setState({ values: { ...this.state.values, [field]: value } }),
       returnKeyType: "next",
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       value: this.state.values[field],
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private yPosition({ y, height }) {
     const windowHeight = Dimensions.get("window").height
 

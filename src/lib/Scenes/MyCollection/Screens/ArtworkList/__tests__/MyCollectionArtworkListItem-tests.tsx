@@ -1,6 +1,6 @@
 import { MyCollectionArtworkListItemTestsQuery } from "__generated__/MyCollectionArtworkListItemTestsQuery.graphql"
 import { navigate } from "lib/navigation/navigate"
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -66,7 +66,7 @@ describe("MyCollectionArtworkListItem", () => {
 
   it("uses last uploaded image as a fallback when no url is present", () => {
     const wrapper = renderWithWrappers(<TestRenderer />)
-    __appStoreTestUtils__?.injectState({
+    __globalStoreTestUtils__?.injectState({
       myCollection: {
         artwork: {
           sessionState: {

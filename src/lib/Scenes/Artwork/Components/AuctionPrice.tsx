@@ -20,11 +20,11 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   bidText = (bidsPresent, bidsCount) => {
     const { artwork } = this.props
     const bidTextParts = []
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     let reserveMessage = artwork.saleArtwork.reserveMessage
 
     if (bidsPresent) {
@@ -59,15 +59,15 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
 
     const myLotStanding = artwork.myLotStanding && artwork.myLotStanding[0]
     const myBidPresent = !!(myLotStanding && myLotStanding.mostRecentBid)
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const myBidWinning = myBidPresent && get(myLotStanding, (s) => s.activeBid.isWinning)
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const myMostRecent = myBidPresent && myLotStanding.mostRecentBid
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const myMaxBid = get(myMostRecent, (bid) => bid.maxBid.display)
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const bidsCount = get(artwork, (a) => a.saleArtwork.counts.bidderPositions)
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const bidsPresent = bidsCount > 0
     const bidText = this.bidText(bidsPresent, bidsCount) ? this.bidText(bidsPresent, bidsCount) : null
 

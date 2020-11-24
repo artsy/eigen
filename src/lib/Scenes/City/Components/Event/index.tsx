@@ -24,7 +24,7 @@ interface State {
   isFollowedSaving: boolean
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const track: Track<Props, {}> = _track
 
 @track()
@@ -95,7 +95,7 @@ export class Event extends React.Component<Props, State> {
               },
             },
             updater: (store) => {
-              // @ts-ignore STRICTNESS_MIGRATION
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               store.get(nodeID).setValue(!isShowFollowed, "is_followed")
             },
           })
@@ -116,7 +116,7 @@ export class Event extends React.Component<Props, State> {
       owner_slug: slug,
     } as any
   })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   trackShowTap(_actionName, _slug, _internalID) {
     return null
   }

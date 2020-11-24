@@ -10,7 +10,7 @@ import {
   uploadFileToS3,
 } from "lib/Scenes/Consignments/Submission/geminiUploadToS3"
 import { cleanArtworkPayload } from "lib/Scenes/MyCollection/utils/cleanArtworkPayload"
-import { AppStore } from "lib/store/AppStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { Box, Flex } from "palette"
 import React, { useRef, useState } from "react"
 import { ActionSheetIOS, ActivityIndicator, Alert } from "react-native"
@@ -56,7 +56,9 @@ type MyCollectionArtworkFormModalProps = { visible: boolean; onDismiss: () => vo
 )
 
 export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModalProps> = (props) => {
-  const { formValues, dirtyFormCheckValues } = AppStore.useAppState((state) => state.myCollection.artwork.sessionState)
+  const { formValues, dirtyFormCheckValues } = GlobalStore.useAppState(
+    (state) => state.myCollection.artwork.sessionState
+  )
 
   // we need to store the form values in a ref so that onDismiss can access their current value (prop updates are not
   // sent through the react-navigation system)
@@ -92,7 +94,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
         refreshMyCollection()
         props.onSuccess()
         setTimeout(() => {
-          AppStore.actions.myCollection.artwork.resetForm()
+          GlobalStore.actions.myCollection.artwork.resetForm()
         }, 500)
       } catch (e) {
         if (__DEV__) {
@@ -153,7 +155,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
       }
     }
 
-    AppStore.actions.myCollection.artwork.resetForm()
+    GlobalStore.actions.myCollection.artwork.resetForm()
     props.onDismiss?.()
   }
 
@@ -203,7 +205,7 @@ const LoadingIndicator = () => {
 }
 
 export async function uploadPhotos(photos: ArtworkFormValues["photos"]) {
-  AppStore.actions.myCollection.artwork.setLastUploadedPhoto(photos[0])
+  GlobalStore.actions.myCollection.artwork.setLastUploadedPhoto(photos[0])
   // only recently added photos have a path
   const imagePaths: string[] = photos.map((photo) => photo.path).filter((path): path is string => path !== undefined)
   const convectionKey = await getConvectionGeminiKey()

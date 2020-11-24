@@ -166,6 +166,7 @@ function getNativeModules(): typeof NativeModules {
           AROptionsUseReactNativeWebView: false,
           AROptionsNewShowPage: false,
           AROptionsNewFairPage: false,
+          AROptionsNewInsightsPage: false,
         },
         legacyFairSlugs: ["some-fairs-slug", "some-other-fair-slug"],
         legacyFairProfileSlugs: [],

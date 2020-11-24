@@ -1,4 +1,4 @@
-import { AppStore } from "lib/store/AppStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { Linking, NativeModules } from "react-native"
 import { navigate } from "../navigate"
 
@@ -11,8 +11,8 @@ jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
 
 describe(navigate, () => {
   beforeEach(() => {
-    AppStore.actions.bottomTabs.switchTab = jest.fn() as any
-    AppStore.actions.bottomTabs.setTabProps = jest.fn() as any
+    GlobalStore.actions.bottomTabs.switchTab = jest.fn() as any
+    GlobalStore.actions.bottomTabs.setTabProps = jest.fn() as any
     Linking.openURL = jest.fn()
   })
   describe("routes to various screens", () => {
@@ -99,20 +99,23 @@ describe(navigate, () => {
 
   it("switches tab and pops the view stack when routing to a root tab view", async () => {
     await navigate("/search")
-    expect(AppStore.actions.bottomTabs.switchTab).toHaveBeenCalledWith("search")
+    expect(GlobalStore.actions.bottomTabs.switchTab).toHaveBeenCalledWith("search")
     expect(NativeModules.ARScreenPresenterModule.popToRootAndScrollToTop).toHaveBeenCalledWith("search")
   })
 
   it("passes tab props when switching", async () => {
     await navigate("/search?query=banksy")
-    expect(AppStore.actions.bottomTabs.switchTab).toHaveBeenCalledWith("search")
+    expect(GlobalStore.actions.bottomTabs.switchTab).toHaveBeenCalledWith("search")
     expect(NativeModules.ARScreenPresenterModule.popToRootAndScrollToTop).toHaveBeenCalledWith("search")
-    expect(AppStore.actions.bottomTabs.setTabProps).toHaveBeenCalledWith({ tab: "search", props: { query: "banksy" } })
+    expect(GlobalStore.actions.bottomTabs.setTabProps).toHaveBeenCalledWith({
+      tab: "search",
+      props: { query: "banksy" },
+    })
   })
 
   it("switches tab before pushing in cases where that's required", async () => {
     await navigate("/conversation/234")
-    expect(AppStore.actions.bottomTabs.switchTab).toHaveBeenCalledWith("inbox")
+    expect(GlobalStore.actions.bottomTabs.switchTab).toHaveBeenCalledWith("inbox")
     expect(args(NativeModules.ARScreenPresenterModule.pushView as any)).toMatchInlineSnapshot(`
       Array [
         "inbox",

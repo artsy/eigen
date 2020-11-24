@@ -1,6 +1,6 @@
 import { Action, action, thunk, Thunk } from "easy-peasy"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
-import { AppStoreModel } from "lib/store/AppStoreModel"
+import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
 import { uniqBy } from "lodash"
 import { ActionSheetIOS } from "react-native"
 import ImagePicker from "react-native-image-crop-picker"
@@ -81,10 +81,10 @@ export interface MyCollectionArtworkModel {
       images: Image[]
     },
     {},
-    AppStoreModel
+    GlobalStoreModel
   >
 
-  takeOrPickPhotos: Thunk<MyCollectionArtworkModel, any, any, AppStoreModel>
+  takeOrPickPhotos: Thunk<MyCollectionArtworkModel, any, any, GlobalStoreModel>
 }
 
 export const MyCollectionArtworkModel: MyCollectionArtworkModel = {

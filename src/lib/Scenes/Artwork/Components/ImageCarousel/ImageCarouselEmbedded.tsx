@@ -15,7 +15,6 @@ interface ImageCarouselEmbeddedProps {
 export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({ cardHeight }) => {
   const screenDimensions = useScreenDimensions()
 
-  // @ts-ignore STRICTNESS_MIGRATION
   const embeddedCardBoundingBox = { width: screenDimensions.width, height: isPad() ? 460 : cardHeight }
 
   const {
@@ -26,7 +25,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({ ca
     imageIndex,
   } = useContext(ImageCarouselContext)
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   const measurements = getMeasurements({ images, boundingBox: embeddedCardBoundingBox })
   const offsets = measurements.map((m) => m.cumulativeScrollOffset)
 
@@ -94,7 +93,6 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({ ca
   return (
     <FlatList<ImageDescriptor>
       // force full re-render on orientation change
-      // @ts-ignore STRICTNESS_MIGRATION
       key={screenDimensions.orientation}
       data={images}
       horizontal
@@ -103,7 +101,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({ ca
       scrollEnabled={images.length > 1}
       getItemLayout={(_, index) => ({ index, offset: offsets[index], length: embeddedCardBoundingBox.width })}
       snapToOffsets={offsets}
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       keyExtractor={(item) => item.url}
       decelerationRate="fast"
       onScroll={onScroll}
@@ -114,7 +112,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({ ca
         const { cumulativeScrollOffset, ...styles } = measurements[index]
         return (
           <ImageWithLoadingState
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             imageURL={item.url}
             width={styles.width}
             height={styles.height}

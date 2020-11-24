@@ -8,7 +8,7 @@ import { navigate, popParentViewController } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { MyCollectionArtworkInsightsFragmentContainer } from "lib/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/MyCollectionArtworkInsights"
-import { AppStore } from "lib/store/AppStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Button, Flex, Join, Spacer } from "palette"
@@ -44,7 +44,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
       <FancyModalHeader
         rightButtonText="Edit"
         onRightButtonPress={() => {
-          AppStore.actions.myCollection.artwork.startEditingArtwork(artwork as any)
+          GlobalStore.actions.myCollection.artwork.startEditingArtwork(artwork as any)
           setShowModal(true)
         }}
         hideBottomDivider

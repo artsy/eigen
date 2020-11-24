@@ -1,4 +1,4 @@
-import { __appStoreTestUtils__, AppStore } from "lib/store/AppStore"
+import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
 import { Image } from "react-native-image-crop-picker"
 
 describe("MyCollectionArtworkModel", () => {
@@ -21,7 +21,7 @@ describe("MyCollectionArtworkModel", () => {
   }
 
   it("resets form values to initial values", () => {
-    __appStoreTestUtils__?.injectState({
+    __globalStoreTestUtils__?.injectState({
       myCollection: {
         artwork: {
           sessionState: {
@@ -48,9 +48,9 @@ describe("MyCollectionArtworkModel", () => {
       },
     })
 
-    const artworkActions = AppStore.actions.myCollection.artwork
+    const artworkActions = GlobalStore.actions.myCollection.artwork
     artworkActions.resetForm()
-    const artworkState = __appStoreTestUtils__?.getCurrentState().myCollection.artwork
+    const artworkState = __globalStoreTestUtils__?.getCurrentState().myCollection.artwork
     const expectedInitialFormValues = {
       artist: "",
       artistIds: [],
@@ -76,7 +76,7 @@ describe("MyCollectionArtworkModel", () => {
     const somePhoto = fakePhoto("somepath")
     const someOtherPhoto = fakePhoto("someOtherPath")
 
-    __appStoreTestUtils__?.injectState({
+    __globalStoreTestUtils__?.injectState({
       myCollection: {
         artwork: {
           sessionState: {
@@ -88,15 +88,15 @@ describe("MyCollectionArtworkModel", () => {
       },
     })
 
-    const artworkActions = AppStore.actions.myCollection.artwork
+    const artworkActions = GlobalStore.actions.myCollection.artwork
     artworkActions.addPhotos([someOtherPhoto])
-    const artworkState = __appStoreTestUtils__?.getCurrentState().myCollection.artwork
+    const artworkState = __globalStoreTestUtils__?.getCurrentState().myCollection.artwork
     expect(artworkState?.sessionState.formValues.photos).toEqual([somePhoto, someOtherPhoto])
   })
 
   it("doesn't add duplicate photos", () => {
     const somePhoto = fakePhoto("somePath")
-    __appStoreTestUtils__?.injectState({
+    __globalStoreTestUtils__?.injectState({
       myCollection: {
         artwork: {
           sessionState: {
@@ -108,16 +108,16 @@ describe("MyCollectionArtworkModel", () => {
       },
     })
 
-    const artworkActions = AppStore.actions.myCollection.artwork
+    const artworkActions = GlobalStore.actions.myCollection.artwork
     artworkActions.addPhotos([somePhoto])
-    const artworkState = __appStoreTestUtils__?.getCurrentState().myCollection.artwork
+    const artworkState = __globalStoreTestUtils__?.getCurrentState().myCollection.artwork
     expect(artworkState?.sessionState.formValues.photos).toEqual([somePhoto])
   })
 
   it("removes photos", () => {
     const somePhoto = fakePhoto("somePath")
     const someOtherPhoto = fakePhoto("someOtherPath")
-    __appStoreTestUtils__?.injectState({
+    __globalStoreTestUtils__?.injectState({
       myCollection: {
         artwork: {
           sessionState: {
@@ -128,9 +128,9 @@ describe("MyCollectionArtworkModel", () => {
         },
       },
     })
-    const artworkActions = AppStore.actions.myCollection.artwork
+    const artworkActions = GlobalStore.actions.myCollection.artwork
     artworkActions.removePhoto(someOtherPhoto)
-    const artworkState = __appStoreTestUtils__?.getCurrentState().myCollection.artwork
+    const artworkState = __globalStoreTestUtils__?.getCurrentState().myCollection.artwork
     expect(artworkState?.sessionState.formValues.photos).toEqual([somePhoto])
   })
 })

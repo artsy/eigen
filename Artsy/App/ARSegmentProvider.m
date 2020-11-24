@@ -12,7 +12,6 @@
  * Overrides initializer to disable tracking the idfa in the Segment config
  * the rest of the provider's functionality should be the same
  */
-
 - (instancetype)initWithIdentifier:(NSString *)identifier integrations:(NSArray *)integrations {
     if ((self = [super init])) {
         SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWithWriteKey:identifier];
@@ -25,5 +24,13 @@
      }
      return self;
 }
+
+/*
+ * Overrides identify call to not pass emails to Segment
+ */
+- (void)identifyUserWithID:(NSString *)userID anonymousID:(NSString *)anonymousID andEmailAddress:(NSString *)email {
+    [super identifyUserWithID:userID anonymousID:anonymousID andEmailAddress:nil];
+}
+
 @end
 

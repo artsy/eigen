@@ -25,7 +25,7 @@ interface Props extends ViewProperties {
 type Section =
   | {
       type: "event"
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       data: { event: MoreInfo_show["events"][number] }
     }
   | {
@@ -64,7 +64,7 @@ export class MoreInfo extends React.Component<Props, State> {
 
     const sections: Section[] = []
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     show.events.forEach((event) => {
       sections.push({
         type: "event",
@@ -93,7 +93,7 @@ export class MoreInfo extends React.Component<Props, State> {
       })
     }
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     if (show.partner.website) {
       sections.push({
         type: "galleryWebsite",
@@ -117,13 +117,13 @@ export class MoreInfo extends React.Component<Props, State> {
     owner_slug: props.show.id,
     owner_type: Schema.OwnerEntityTypes.Show,
   }))
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   renderGalleryWebsite(url) {
     Linking.openURL(url).catch((err) => console.error("An error occurred opening gallery link", err))
   }
 
   openPressReleaseLink = () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     SwitchBoard.presentNavigationViewController(this, this.props.show.pressReleaseUrl)
   }
 
@@ -132,9 +132,9 @@ export class MoreInfo extends React.Component<Props, State> {
       case "galleryWebsite":
         return (
           <CaretButton
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             onPress={() => this.renderGalleryWebsite(item.data.partner.website)}
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             text={item.data.partner.type === "Gallery" ? "Visit gallery site" : "Visit institution site"}
           />
         )
@@ -154,7 +154,7 @@ export class MoreInfo extends React.Component<Props, State> {
       case "event":
         return <ShowEventSection {...item.data} />
       case "pressRelease":
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         return <TextSection title="Press Release" text={item.data.press_release} />
     }
   }
@@ -174,7 +174,7 @@ export class MoreInfo extends React.Component<Props, State> {
         ListFooterComponent={<Spacer pb={4} />}
         ItemSeparatorComponent={this.renderItemSeparator}
         renderItem={(item) => <Box px={2}>{this.renderItem(item)}</Box>}
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         keyExtractor={(item, index) => item.type + String(index)}
         onScroll={hideBackButtonOnScroll}
         scrollEventThrottle={100}

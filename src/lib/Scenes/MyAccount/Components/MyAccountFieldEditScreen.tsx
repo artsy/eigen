@@ -1,6 +1,6 @@
 import LoadingModal from "lib/Components/Modals/LoadingModal"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { goBack } from "lib/navigation/navigate"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Sans } from "palette"
 import React, { useImperativeHandle, useRef, useState } from "react"
@@ -34,21 +34,12 @@ export const MyAccountFieldEditScreen = React.forwardRef<
   React.PropsWithChildren<MyAccountFieldEditScreenProps>
 >(({ children, canSave, onSave, title, contentContainerStyle }, ref) => {
   const [isSaving, setIsSaving] = useState<boolean>(false)
-  const [behindTheModalDismiss, setBehindTheModalDismiss] = useState(false)
-  const [behindTheModalAlert, setBehindTheModalAlert] = useState<AlertArgs | undefined>(undefined)
+  const afterLoadingAlert = useRef<AlertArgs>()
   const scrollViewRef = useRef<ScrollView>(null)
   const screen = useScreenDimensions()
 
-  const onDismiss = () => {
-    SwitchBoard.dismissNavigationViewController(scrollViewRef.current!)
-  }
-
-  const doTheDismiss = () => {
-    setBehindTheModalDismiss(true)
-  }
-
   const doTheAlert: AlertStatic["alert"] = (...args) => {
-    setBehindTheModalAlert(args)
+    afterLoadingAlert.current = args
   }
 
   const handleSave = async () => {
@@ -57,7 +48,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
     }
     try {
       setIsSaving(true)
-      await onSave(doTheDismiss, doTheAlert)
+      await onSave(goBack, doTheAlert)
     } catch (e) {
       console.error(e)
     } finally {
@@ -84,7 +75,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} keyboardVerticalOffset={screen.safeAreaInsets.top}>
       <PageWithSimpleHeader
         left={
-          <TouchableOpacity onPress={onDismiss}>
+          <TouchableOpacity onPress={goBack}>
             <Sans size="4" textAlign="left">
               Cancel
             </Sans>
@@ -105,17 +96,17 @@ export const MyAccountFieldEditScreen = React.forwardRef<
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
         >
-          <LoadingModal
-            isVisible={isSaving}
-            onDismiss={() => {
-              if (behindTheModalDismiss) {
-                onDismiss()
-              }
-              if (behindTheModalAlert !== undefined) {
-                Alert.alert(...behindTheModalAlert)
-              }
-            }}
-          />
+          {!!isSaving && (
+            <LoadingModal
+              isVisible
+              onDismiss={() => {
+                if (afterLoadingAlert.current) {
+                  Alert.alert(...afterLoadingAlert.current)
+                  afterLoadingAlert.current = undefined
+                }
+              }}
+            />
+          )}
           {children}
         </ScrollView>
       </PageWithSimpleHeader>

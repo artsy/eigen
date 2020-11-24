@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { Button, Sans } from "palette"
 import React from "react"
@@ -16,7 +16,7 @@ describe("ArtworkAttributionClassFAQ", () => {
     const component = mount(
       <ArtworkAttributionClassFAQ
         safeAreaInsets={{ top: 20, left: 0, right: 0, bottom: 0 }}
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         artworkAttributionClasses={attributionClasses}
       />
     )
@@ -27,7 +27,7 @@ describe("ArtworkAttributionClassFAQ", () => {
     const component = mount(
       <ArtworkAttributionClassFAQ
         safeAreaInsets={{ top: 20, left: 0, right: 0, bottom: 0 }}
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         artworkAttributionClasses={attributionClasses}
       />
     )
@@ -38,7 +38,7 @@ describe("ArtworkAttributionClassFAQ", () => {
     const component = mount(
       <ArtworkAttributionClassFAQ
         safeAreaInsets={{ top: 20, left: 0, right: 0, bottom: 0 }}
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         artworkAttributionClasses={attributionClasses}
       />
     )
@@ -51,7 +51,7 @@ describe("ArtworkAttributionClassFAQ", () => {
     const component = mount(
       <ArtworkAttributionClassFAQ
         safeAreaInsets={{ top: 20, left: 0, right: 0, bottom: 0 }}
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         artworkAttributionClasses={attributionClasses}
       />
     )

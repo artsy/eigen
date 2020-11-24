@@ -73,7 +73,7 @@ export class FairMoreInfo extends React.Component<Props, State> {
       })
     }
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.setState({ sections })
   }
 
@@ -92,7 +92,7 @@ export class FairMoreInfo extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Fair,
     } as any
   })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleFairSitePress(website) {
     SwitchBoard.presentModalViewController(this, website)
   }
@@ -106,12 +106,12 @@ export class FairMoreInfo extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Fair,
     } as any
   })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleBuyTicketsPress(ticketsLink) {
     SwitchBoard.presentModalViewController(this, ticketsLink)
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   renderItem = ({ item: { data, type } }) => {
     switch (type) {
       case "about":
@@ -151,7 +151,7 @@ export class FairMoreInfo extends React.Component<Props, State> {
             </>
           }
           ItemSeparatorComponent={this.renderItemSeparator}
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           keyExtractor={(item, index) => item.type + String(index)}
           onScroll={hideBackButtonOnScroll}
           scrollEventThrottle={100}

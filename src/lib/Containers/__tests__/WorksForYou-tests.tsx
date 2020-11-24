@@ -16,7 +16,7 @@ describe("with notifications", () => {
     renderWithWrappers(
       <WorksForYou
         me={me as any}
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         relay={null}
       />
     )
@@ -25,7 +25,7 @@ describe("with notifications", () => {
 
   it("renders without throwing an error", () => {
     const me = notificationsResponse().query.me
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     renderWithWrappers(<WorksForYou me={me as any} relay={null} />)
   })
 })
@@ -33,7 +33,7 @@ describe("with notifications", () => {
 describe("without notifications", () => {
   it("renders without throwing an error", () => {
     const me = emptyStateResponse().query.me
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     renderWithWrappers(<WorksForYou me={me as any} relay={null} />)
   })
 })
@@ -68,7 +68,7 @@ interface NotificationsResponse {
 }
 
 const notificationsResponse = () => {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   return {
     query: {
       me: {

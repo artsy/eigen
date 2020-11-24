@@ -1,5 +1,5 @@
 import { AppModule } from "lib/AppRegistry"
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { parse } from "url"

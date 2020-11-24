@@ -7,7 +7,7 @@ import styled from "styled-components/native"
 
 import { ArtistConsignButton_artist } from "__generated__/ArtistConsignButton_artist.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { useSelectedTab } from "lib/store/AppStore"
+import { useSelectedTab } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 
 export interface ArtistConsignButtonProps {

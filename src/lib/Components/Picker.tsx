@@ -90,7 +90,7 @@ export class Picker extends React.Component<Props, State> {
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleValueChange = (selectedValue) => {
     const { options } = this.props
     const { isOpen } = this.state
@@ -102,7 +102,7 @@ export class Picker extends React.Component<Props, State> {
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   shouldComponentUpdate(_nextProps, nextState) {
     /**
      * Picker is a controlled component, but we don't want to rerender due to a props/state change
@@ -129,21 +129,21 @@ export class Picker extends React.Component<Props, State> {
           precision={1}
         >
           {(
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             { bottom, progress, opacity }
           ) => {
             return (
               <>
                 <AnimatedView
                   style={{
-                    // @ts-ignore STRICTNESS_MIGRATION
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     display: progress.interpolate((p) => (p > 0.3 ? "flex" : "none")),
                     position: "absolute",
                     left: 0,
                     right: 0,
                     top: 0,
                     bottom: 0,
-                    // @ts-ignore STRICTNESS_MIGRATION
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     backgroundColor: opacity.interpolate((o) => `rgba(0, 0, 0, ${o})`),
                   }}
                 >
@@ -164,7 +164,7 @@ export class Picker extends React.Component<Props, State> {
                     </Flex>
                     <Separator />
                     <PickerIOS
-                      // @ts-ignore STRICTNESS_MIGRATION
+                      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                       selectedValue={pendingSelected ? pendingSelected.value : null}
                       onValueChange={this.handleValueChange}
                     >
@@ -184,7 +184,7 @@ export class Picker extends React.Component<Props, State> {
 
   renderSelect = () => {
     const { selected, options, prompt } = this.props
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const displayPrompt = selected ? options.find(({ value }) => value === selected).text : prompt
     return (
       <TouchableOpacity onPress={this.handleOpen}>

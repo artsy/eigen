@@ -31,14 +31,14 @@ export class ActiveBids extends React.Component<Props, State> {
   }
 
   hasContent() {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     return this.props.me.lot_standings.length > 0
   }
 
   renderRows() {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const bids = this.props.me.lot_standings.map((bidData) => {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       return <ActiveBid key={bidData.most_recent_bid.id} bid={bidData as any} />
     })
     return bids
@@ -53,7 +53,7 @@ export class ActiveBids extends React.Component<Props, State> {
       fetchingData: true,
     })
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const onFetchComplete = (error) => {
       if (error) {
         // FIXME: Handle error

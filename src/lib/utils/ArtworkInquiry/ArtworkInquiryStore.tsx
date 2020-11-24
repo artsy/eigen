@@ -12,6 +12,7 @@ const initialArtworkInquiryState: ArtworkInquiryContextState = {
   shippingLocation: null,
   inquiryType: null,
   inquiryQuestions: [],
+  message: null,
 }
 
 export const reducer = (
@@ -47,6 +48,11 @@ export const reducer = (
       return {
         ...inquiryState,
         inquiryQuestions: newSelection,
+      }
+    case "setMessage":
+      return {
+        ...inquiryState,
+        message: action.payload,
       }
   }
 }

@@ -29,9 +29,9 @@ const Container = styled.ScrollView`
 `
 
 export class Inbox extends React.Component<Props, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   conversations: ConversationsRef
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   activeBids: ActiveBidsRef
 
   state = {

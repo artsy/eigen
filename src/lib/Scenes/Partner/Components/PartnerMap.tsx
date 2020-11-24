@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { PartnerMap_location } from "__generated__/PartnerMap_location.graphql"
 import { cityAndPostalCode, tappedOnMap } from "lib/Components/LocationMap"

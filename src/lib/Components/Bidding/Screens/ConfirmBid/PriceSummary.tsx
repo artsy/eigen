@@ -89,11 +89,11 @@ export const PriceSummary = ({ saleArtworkId, bid }: PriceSummaryProps) => (
       }
     `}
     variables={{
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       saleArtworkId,
       bidAmountMinor: bid.cents,
     }}
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     render={renderWithLoadProgress<PriceSummaryQueryResponse>(({ node: { calculatedCost } }) => (
       <PriceSummaryFragmentContainer bid={bid} calculatedCost={calculatedCost} />
     ))}

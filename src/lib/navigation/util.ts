@@ -1,5 +1,5 @@
 import { AppModule } from "lib/AppRegistry"
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 
 export interface MatchResult {
   type: "match"

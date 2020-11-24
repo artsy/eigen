@@ -30,14 +30,14 @@ const ModalInnerView = styled.View`
 `
 
 export class Modal extends React.Component<ModalProps, any> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
 
     this.state = { modalVisible: props.visible || false }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   componentDidUpdate(prevProps) {
     if (this.props.visible !== prevProps.visible) {
       this.setState({ modalVisible: this.props.visible })

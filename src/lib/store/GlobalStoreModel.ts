@@ -7,7 +7,7 @@ import { CURRENT_APP_VERSION } from "./migration"
 import { NativeModel } from "./NativeModel"
 import { assignDeep } from "./persistence"
 
-interface AppStoreStateModel {
+interface GlobalStoreStateModel {
   version: number
   sessionState: {
     isHydrated: boolean
@@ -19,13 +19,13 @@ interface AppStoreStateModel {
   search: SearchModel
   myCollection: MyCollectionModel
 }
-export interface AppStoreModel extends AppStoreStateModel {
-  rehydrate: Action<AppStoreModel, DeepPartial<State<AppStoreStateModel>>>
-  reset: Action<AppStoreModel>
-  didRehydrate: ThunkOn<AppStoreModel>
+export interface GlobalStoreModel extends GlobalStoreStateModel {
+  rehydrate: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
+  reset: Action<GlobalStoreModel>
+  didRehydrate: ThunkOn<GlobalStoreModel>
 }
 
-export const appStoreModel: AppStoreModel = {
+export const GlobalStoreModel: GlobalStoreModel = {
   // META STATE
   version: CURRENT_APP_VERSION,
   rehydrate: action((state, unpersistedState) => {
@@ -37,7 +37,7 @@ export const appStoreModel: AppStoreModel = {
     state.sessionState.isHydrated = true
   }),
   reset: action(() => {
-    const result = createStore(appStoreModel).getState()
+    const result = createStore(GlobalStoreModel).getState()
     result.sessionState.isHydrated = true
     return result
   }),
@@ -61,4 +61,4 @@ export const appStoreModel: AppStoreModel = {
   myCollection: MyCollectionModel,
 }
 
-export type AppStoreState = State<AppStoreModel>
+export type GlobalStoreState = State<GlobalStoreModel>

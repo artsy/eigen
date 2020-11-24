@@ -1,4 +1,4 @@
-import { AppStore, useIsStaging } from "lib/store/AppStore"
+import { GlobalStore, useIsStaging } from "lib/store/GlobalStore"
 import { useInterval } from "lib/utils/useInterval"
 import { color, Flex, Separator } from "palette"
 import React, { useEffect } from "react"
@@ -6,14 +6,16 @@ import { BottomTabsButton } from "./BottomTabsButton"
 import { ICON_HEIGHT } from "./BottomTabsIcon"
 
 export const BottomTabs: React.FC = () => {
-  const unreadConversationCount = AppStore.useAppState((state) => state.bottomTabs.sessionState.unreadConversationCount)
+  const unreadConversationCount = GlobalStore.useAppState(
+    (state) => state.bottomTabs.sessionState.unreadConversationCount
+  )
 
   useEffect(() => {
-    AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
+    GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
   }, [])
 
   useInterval(() => {
-    AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
+    GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
     // run this every 60 seconds
   }, 1000 * 60)
 

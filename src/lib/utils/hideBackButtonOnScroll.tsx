@@ -1,4 +1,4 @@
-import { unsafe__getSelectedTab } from "lib/store/AppStore"
+import { unsafe__getSelectedTab } from "lib/store/GlobalStore"
 import { FlatListProps, NativeModules } from "react-native"
 
 const SCROLL_UP_TO_SHOW_THRESHOLD = 150

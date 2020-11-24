@@ -15,7 +15,7 @@ interface Props {
 
 class RelatedArtist extends Component<Props> {
   handleTap() {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     SwitchBoard.presentNavigationViewController(this, this.props.artist.href)
   }
 
@@ -40,14 +40,14 @@ class RelatedArtist extends Component<Props> {
   }
 
   artworksString(counts: RelatedArtist_artist["counts"]) {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const totalWorks = counts.artworks ? counts.artworks + (counts.artworks > 1 ? " works" : " work") : null
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     if (totalWorks && counts.forSaleArtworks === counts.artworks) {
       return totalWorks + " for sale"
     }
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const forSale = counts.forSaleArtworks ? counts.forSaleArtworks + " for sale" : null
     if (forSale && totalWorks) {
       return totalWorks + ", " + forSale

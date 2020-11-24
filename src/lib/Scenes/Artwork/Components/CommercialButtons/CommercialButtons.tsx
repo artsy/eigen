@@ -2,7 +2,7 @@ import { CommercialButtons_artwork } from "__generated__/CommercialButtons_artwo
 import { CommercialButtons_me } from "__generated__/CommercialButtons_me.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { Button, Spacer } from "palette"
 import React from "react"
@@ -49,7 +49,7 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
               <BuyNowButtonFragmentContainer
                 variant="secondaryOutline"
                 artwork={artwork}
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 editionSetID={this.props.editionSetID}
               />
             </>
@@ -63,23 +63,23 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
         <>
           <BuyNowButtonFragmentContainer
             artwork={artwork}
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             editionSetID={this.props.editionSetID}
           />
           <Spacer mb={1} />
           <MakeOfferButtonFragmentContainer
             artwork={artwork}
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             editionSetID={this.props.editionSetID}
             variant="secondaryOutline"
           />
         </>
       )
     } else if (isAcquireable) {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       return <BuyNowButtonFragmentContainer artwork={artwork} editionSetID={this.props.editionSetID} />
     } else if (isOfferable) {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       return <MakeOfferButtonFragmentContainer artwork={artwork} editionSetID={this.props.editionSetID} />
     } else if (isInquireable && !newFirstInquiry) {
       return (

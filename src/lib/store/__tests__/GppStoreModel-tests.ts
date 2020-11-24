@@ -1,13 +1,13 @@
-import { __appStoreTestUtils__, AppStore } from "../AppStore"
+import { __globalStoreTestUtils__, GlobalStore } from "../GlobalStore"
 import { CURRENT_APP_VERSION } from "../migration"
 
-describe("AppStoreModel", () => {
+describe("GlobalStoreModel", () => {
   it("has a version", () => {
-    expect(__appStoreTestUtils__?.getCurrentState().version).toBe(CURRENT_APP_VERSION)
+    expect(__globalStoreTestUtils__?.getCurrentState().version).toBe(CURRENT_APP_VERSION)
   })
   it("can be rehydrated", () => {
-    expect(__appStoreTestUtils__?.getCurrentState().search.recentSearches.length).toBe(0)
-    AppStore.actions.rehydrate({
+    expect(__globalStoreTestUtils__?.getCurrentState().search.recentSearches.length).toBe(0)
+    GlobalStore.actions.rehydrate({
       search: {
         recentSearches: [
           {
@@ -23,6 +23,6 @@ describe("AppStoreModel", () => {
       },
     })
 
-    expect(__appStoreTestUtils__?.getCurrentState().search.recentSearches[0].props.displayLabel).toEqual("Banksy")
+    expect(__globalStoreTestUtils__?.getCurrentState().search.recentSearches[0].props.displayLabel).toEqual("Banksy")
   })
 })

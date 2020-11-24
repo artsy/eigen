@@ -1,6 +1,6 @@
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { navigate } from "lib/navigation/navigate"
-import { AppStore, AppStoreProvider } from "lib/store/AppStore"
+import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { CatchErrors } from "lib/utils/CatchErrors"
@@ -35,14 +35,14 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 let recentSearchesArray: any[] = []
 
 const _TestWrapper: typeof SearchResult = (props) => {
-  const recentSearches = AppStore.useAppState((state) => state.search.recentSearches)
+  const recentSearches = GlobalStore.useAppState((state) => state.search.recentSearches)
 
   recentSearchesArray = recentSearches
   return <SearchResult {...props} />
 }
 
 const TestWrapper: typeof SearchResult = (props) => (
-  <AppStoreProvider>
+  <GlobalStoreProvider>
     <SearchContext.Provider
       value={{ inputRef: { current: { blur: inputBlurMock } as any }, queryRef: { current: "" } }}
     >
@@ -50,7 +50,7 @@ const TestWrapper: typeof SearchResult = (props) => (
         <_TestWrapper {...props} />
       </CatchErrors>
     </SearchContext.Provider>
-  </AppStoreProvider>
+  </GlobalStoreProvider>
 )
 
 describe(SearchResult, () => {

@@ -14,6 +14,7 @@ import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlacehold
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { isPad } from "lib/utils/hardware"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
@@ -22,6 +23,7 @@ import React from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import { ArtistInsights } from "../../Components/Artist/ArtistInsights/ArtistInsights"
 
 export const Artist: React.FC<{
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
@@ -55,7 +57,15 @@ export const Artist: React.FC<{
     })
   }
 
-  if (tabs.length === 0) {
+  const isArtistInsightsEnabled = getCurrentEmissionState().options.AROptionsNewInsightsPage
+  if (isArtistInsightsEnabled) {
+    tabs.push({
+      title: "Insights",
+      content: <ArtistInsights />,
+    })
+  }
+
+  if ((!isArtistInsightsEnabled && tabs.length === 0) || (isArtistInsightsEnabled && tabs.length === 1)) {
     tabs.push({
       title: "Artworks",
       content: (

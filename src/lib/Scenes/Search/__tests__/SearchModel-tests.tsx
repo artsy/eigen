@@ -1,4 +1,4 @@
-import { __appStoreTestUtils__, AppStore, AppStoreProvider } from "lib/store/AppStore"
+import { __globalStoreTestUtils__, GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { times } from "lodash"
 import React from "react"
@@ -25,9 +25,9 @@ const andyWarhol: RecentSearch = {
 }
 
 describe("Recent Searches", () => {
-  const getRecentSearches = () => __appStoreTestUtils__?.getCurrentState().search.recentSearches!
+  const getRecentSearches = () => __globalStoreTestUtils__?.getCurrentState().search.recentSearches!
   beforeEach(async () => {
-    __appStoreTestUtils__?.reset()
+    __globalStoreTestUtils__?.reset()
   })
 
   it("Starts out with an empty array", () => {
@@ -35,34 +35,34 @@ describe("Recent Searches", () => {
   })
 
   it("Saves added Recent Search", () => {
-    AppStore.actions.search.addRecentSearch(banksy)
+    GlobalStore.actions.search.addRecentSearch(banksy)
     expect(getRecentSearches()).toEqual([banksy])
   })
 
   it("puts the most recent items at the top", async () => {
-    AppStore.actions.search.addRecentSearch(banksy)
-    AppStore.actions.search.addRecentSearch(andyWarhol)
+    GlobalStore.actions.search.addRecentSearch(banksy)
+    GlobalStore.actions.search.addRecentSearch(andyWarhol)
 
     expect(getRecentSearches()).toEqual([andyWarhol, banksy])
   })
 
   it("reorders items if they get reused", async () => {
-    AppStore.actions.search.addRecentSearch(banksy)
-    AppStore.actions.search.addRecentSearch(andyWarhol)
+    GlobalStore.actions.search.addRecentSearch(banksy)
+    GlobalStore.actions.search.addRecentSearch(andyWarhol)
 
     // reorder
-    AppStore.actions.search.addRecentSearch(banksy)
+    GlobalStore.actions.search.addRecentSearch(banksy)
     expect(getRecentSearches()).toEqual([banksy, andyWarhol])
 
     // reorder again
-    AppStore.actions.search.addRecentSearch(andyWarhol)
+    GlobalStore.actions.search.addRecentSearch(andyWarhol)
     expect(getRecentSearches()).toEqual([andyWarhol, banksy])
   })
 
   it(`stores a max of ${MAX_SAVED_RECENT_SEARCHES} recent searches`, async () => {
     // act
     for (let i = 0; i < MAX_SAVED_RECENT_SEARCHES * 5; i++) {
-      AppStore.actions.search.addRecentSearch({
+      GlobalStore.actions.search.addRecentSearch({
         type: "AUTOSUGGEST_RESULT_TAPPED",
         props: {
           href: `https://example.com/${i}`,
@@ -78,9 +78,9 @@ describe("Recent Searches", () => {
 
   it(`allows deleting things`, async () => {
     // act
-    AppStore.actions.search.addRecentSearch(banksy)
-    AppStore.actions.search.addRecentSearch(andyWarhol)
-    AppStore.actions.search.deleteRecentSearch(andyWarhol.props)
+    GlobalStore.actions.search.addRecentSearch(banksy)
+    GlobalStore.actions.search.addRecentSearch(andyWarhol)
+    GlobalStore.actions.search.deleteRecentSearch(andyWarhol.props)
     expect(getRecentSearches()).toEqual([banksy])
   })
 })
@@ -91,22 +91,22 @@ describe(useRecentSearches, () => {
     let globalRecentSearches: SearchModel["recentSearches"] = []
     const TestComponent: React.FC<{ numSearches: number }> = ({ numSearches }) => {
       localRecentSearches = useRecentSearches(numSearches)
-      globalRecentSearches = __appStoreTestUtils__?.getCurrentState().search.recentSearches!
+      globalRecentSearches = __globalStoreTestUtils__?.getCurrentState().search.recentSearches!
 
       return null
     }
 
     const tree = renderWithWrappers(
-      <AppStoreProvider>
+      <GlobalStoreProvider>
         <TestComponent numSearches={5} />
-      </AppStoreProvider>
+      </GlobalStoreProvider>
     )
 
     expect(localRecentSearches.length).toBe(0)
     expect(globalRecentSearches.length).toBe(0)
 
     times(10).forEach((i) => {
-      AppStore.actions.search.addRecentSearch({
+      GlobalStore.actions.search.addRecentSearch({
         type: "AUTOSUGGEST_RESULT_TAPPED",
         props: {
           href: `https://example.com/${i}`,
@@ -121,9 +121,9 @@ describe(useRecentSearches, () => {
     expect(globalRecentSearches.length).toBe(10)
 
     tree.update(
-      <AppStoreProvider>
+      <GlobalStoreProvider>
         <TestComponent numSearches={8} />
-      </AppStoreProvider>
+      </GlobalStoreProvider>
     )
 
     expect(localRecentSearches.length).toBe(8)

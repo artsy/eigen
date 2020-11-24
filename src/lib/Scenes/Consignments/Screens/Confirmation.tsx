@@ -52,7 +52,7 @@ export default class Confirmation extends React.Component<Props, State> {
   }
 
   checkForSubmissionStatus = () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const success = this.props.submissionRequestValidationCheck()
     if (success === undefined) {
       setTimeout(this.checkForSubmissionStatus, 1000)

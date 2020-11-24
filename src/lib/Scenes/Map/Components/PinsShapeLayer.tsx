@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { isEqual } from "lodash"
 import React, { Component } from "react"
@@ -8,7 +8,7 @@ import { FilterData, MapGeoFeatureCollection } from "../types"
 
 interface Props {
   featureCollections: { [key in BucketKey]: FilterData } | {}
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   onPress?: (nativeEvent) => void
   duration?: number
   filterID: string
@@ -69,7 +69,7 @@ export class ShapeLayer extends Component<Props, State> {
     const { filterID } = this.props
 
     const getFeatures = (props: Props) =>
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       props.featureCollections[filterID].featureCollection.features.map((g) => g.is_followed)
 
     return (
@@ -106,7 +106,7 @@ export class ShapeLayer extends Component<Props, State> {
 
   render() {
     const { featureCollections, filterID } = this.props
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const collection: MapGeoFeatureCollection = featureCollections[filterID].featureCollection
 
     return (

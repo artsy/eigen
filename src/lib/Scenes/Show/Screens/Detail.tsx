@@ -72,7 +72,7 @@ export class Detail extends React.Component<Props, State> {
 
     if (show.location) {
       const { openingHours } = show.location
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       if ((openingHours.text && openingHours.text !== "") || openingHours.schedules) {
         sections.push({
           type: "hours",
@@ -92,7 +92,7 @@ export class Detail extends React.Component<Props, State> {
     }
 
     const hasArtsyArtists = show.counts && show.counts.artists
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const hasStubbedArtists = show.artistsWithoutArtworks.length > 0
     if (hasStubbedArtists || hasArtsyArtists) {
       sections.push({
@@ -112,11 +112,11 @@ export class Detail extends React.Component<Props, State> {
       })
     }
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.setState({ sections })
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   renderItemSeparator = (item) => {
     if (item && (item.leadingItem.type === "location" || item.leadingItem.type === "description")) {
       return null
@@ -145,7 +145,7 @@ export class Detail extends React.Component<Props, State> {
     return null
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   renderItem = ({ item: { data, type } }) => {
     switch (type) {
       case "location":

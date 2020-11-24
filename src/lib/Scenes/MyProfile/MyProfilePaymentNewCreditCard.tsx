@@ -10,7 +10,6 @@ import { useInterval } from "lib/utils/useInterval"
 import { color } from "palette"
 import { fontFamily } from "palette/platform/fonts/fontFamily"
 import React, { useEffect, useRef, useState } from "react"
-import { Alert } from "react-native"
 import { commitMutation, graphql } from "react-relay"
 // @ts-ignore
 import stripe, { PaymentCardTextField } from "tipsi-stripe"
@@ -113,7 +112,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
       ref={screenRef}
       canSave={state.allPresent}
       title="Add new card"
-      onSave={async (dismiss) => {
+      onSave={async (dismiss, alert) => {
         try {
           const stripeResult = await stripe.createTokenWithCard({
             ...state.fields.creditCard.value?.params,
@@ -142,7 +141,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           dismiss()
         } catch (e) {
           console.error(e)
-          Alert.alert("Something went wrong while attempting to save your credit card. Please try again or contact us.")
+          alert("Something went wrong while attempting to save your credit card. Please try again or contact us.")
         }
       }}
     >

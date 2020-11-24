@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const Shows: React.FC<Props> = ({ show }) => {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   const { edges } = show.nearbyShows
   return (
     <>
@@ -21,10 +21,8 @@ export const Shows: React.FC<Props> = ({ show }) => {
         horizontal
         data={edges}
         showsHorizontalScrollIndicator={false}
-        // @ts-ignore STRICTNESS_MIGRATION
         keyExtractor={(item) => item.node.id}
         renderItem={({ item }) => {
-          // @ts-ignore STRICTNESS_MIGRATION
           return <ShowItem show={item.node as any} />
         }}
       />

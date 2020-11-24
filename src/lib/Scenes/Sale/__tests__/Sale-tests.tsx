@@ -1,5 +1,5 @@
 import { navigate, popParentViewController } from "lib/navigation/navigate"
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import moment from "moment"
 import React, { Suspense } from "react"
@@ -42,7 +42,7 @@ describe("Sale", () => {
 
   it("switches to live auction view when sale goes live", () => {
     renderWithWrappers(<TestRenderer />)
-    __appStoreTestUtils__?.injectState({
+    __globalStoreTestUtils__?.injectState({
       native: {
         sessionState: { predictionURL: "https://live-staging.artsy.net" },
       },
@@ -75,7 +75,7 @@ describe("Sale", () => {
   it("switches to live auction view when sale goes live with no endAt", () => {
     renderWithWrappers(<TestRenderer />)
 
-    __appStoreTestUtils__?.injectState({
+    __globalStoreTestUtils__?.injectState({
       native: {
         sessionState: { predictionURL: "https://live-staging.artsy.net" },
       },

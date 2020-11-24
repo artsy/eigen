@@ -1,8 +1,8 @@
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { shallow } from "enzyme"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
@@ -195,7 +195,7 @@ describe("BidResult component", () => {
     })
 
     it("dismisses controller and presents live interface when continue button is pressed", () => {
-      __appStoreTestUtils__?.injectState({
+      __globalStoreTestUtils__?.injectState({
         native: { sessionState: { predictionURL: "https://live-staging.artsy.net" } },
       })
       const bidResult = renderWithWrappers(
@@ -224,14 +224,14 @@ describe("BidResult component", () => {
 })
 
 const Statuses = {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   winning: {
     status: "WINNING",
     message_header: null,
     message_description_md: null,
     position: null,
   } as BidderPositionResult,
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   outbid: {
     status: "OUTBID",
     message_header: "Your bid wasn’t high enough",
@@ -240,7 +240,7 @@ const Statuses = {
     `,
     position: null,
   } as BidderPositionResult,
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   live_bidding_started: {
     status: "LIVE_BIDDING_STARTED",
     message_header: "Live bidding has started",

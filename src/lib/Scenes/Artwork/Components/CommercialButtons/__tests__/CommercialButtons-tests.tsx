@@ -4,7 +4,7 @@ import { Button } from "palette"
 jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentModalViewController: jest.fn() }))
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
@@ -22,7 +22,7 @@ afterEach(() => {
   SwitchBoardMock.presentModalViewController.mockReset()
 })
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const componentWithQuery = async ({ mockArtworkData, mockOrderMutationResults, mockOfferMutationResults }) => {
   return await renderRelayTree({
     Component: CommercialButtonsFragmentContainer,
@@ -44,6 +44,7 @@ const componentWithQuery = async ({ mockArtworkData, mockOrderMutationResults, m
 const state: ArtworkInquiryContextState = {
   shippingLocation: null,
   inquiryType: null,
+  message: null,
   inquiryQuestions: [],
 }
 
@@ -59,7 +60,7 @@ const wrapper = (mockArtwork: _FragmentRefs<"CommercialButtons_artwork">): JSX.E
   </ArtworkInquiryContext.Provider>
 )
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const relayComponent = async ({ artwork }) => {
   return await renderRelayTree({
     Component: () => wrapper(artwork),
@@ -89,45 +90,6 @@ describe("CommercialButtons", () => {
       artwork,
     })
     expect(commercialButtons.text()).toContain("Contact gallery")
-  })
-
-  it("renders Inquire to Purchase button if isInquireable, price is visible, and lab option is true", async () => {
-    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFirstInquiry: true })
-
-    const artwork = {
-      ...ArtworkFixture,
-      isAcquireable: false,
-      isOfferable: false,
-      isInquireable: true,
-      isForSale: true,
-      isPriceHidden: false,
-    }
-
-    const commercialButtons = await relayComponent({
-      artwork,
-    })
-    expect(commercialButtons.find(Button).at(0).text()).toContain("Inquire to purchase")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact gallery")
-  })
-
-  it("renders Inquire on price button if isInquireable, price is hidden, and lab option is true", async () => {
-    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFirstInquiry: true })
-
-    const artwork = {
-      ...ArtworkFixture,
-      isAcquireable: false,
-      isOfferable: false,
-      isInquireable: true,
-      isForSale: true,
-      isPriceHidden: true,
-    }
-
-    const commercialButtons = await relayComponent({
-      artwork,
-    })
-
-    expect(commercialButtons.find(Button).at(0).text()).toContain("Inquire on price")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact gallery")
   })
 
   it("renders Make Offer button if isOfferable", async () => {

@@ -1,11 +1,10 @@
 import { MyCollectionArtworkArtistArticlesTestsQuery } from "__generated__/MyCollectionArtworkArtistArticlesTestsQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { TouchableOpacity } from "react-native"
+import { Image, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionArtworkArtistArticlesFragmentContainer } from "../MyCollectionArtworkArtistArticles"
@@ -47,7 +46,7 @@ describe("MyCollectionArtworkArtistArticles", () => {
   it("renders without throwing an error", () => {
     const wrapper = renderWithWrappers(<TestRenderer />)
     resolveData()
-    expect(wrapper.root.findByType(OpaqueImageView)).toBeDefined()
+    expect(wrapper.root.findByType(Image)).toBeDefined()
     const text = extractText(wrapper.root)
     expect(text).toContain("Latest Articles")
     expect(text).toContain("thumbnailTitle")

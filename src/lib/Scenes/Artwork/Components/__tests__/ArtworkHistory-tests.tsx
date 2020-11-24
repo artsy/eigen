@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { Theme } from "palette"
 import React from "react"
@@ -21,7 +21,7 @@ describe("Artwork History", () => {
       <Theme>
         <div>
           <ArtworkHistory
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             artwork={artworkHistoryInfo.artwork}
           />
         </div>
@@ -47,7 +47,7 @@ describe("Artwork History", () => {
       <Theme>
         <div>
           <ArtworkHistory
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             artwork={artworkHistoryInfo.artwork}
           />
         </div>
@@ -72,7 +72,7 @@ describe("Artwork History", () => {
       <Theme>
         <div>
           <ArtworkHistory
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             artwork={artworkHistoryInfo.artwork}
           />
         </div>

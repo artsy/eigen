@@ -7,7 +7,11 @@ upcoming:
     - Update url for echo, now in s3 - ash, pavlos
     - Move bottom tabs navigator to TS - david
     - Fix city guide CTA images not showing when running using Xcode 12 - pavlos
+    - Fix minimize startup api requests - brian
     - Remove analytics tracking on back-arrow taps - pepopowitz
+    - Rename AppStore to GlobalStore - david
+    - Update STRICTNESS_MIGRATION comments - david
+    - Don't pass email to segment - brian
   user_facing:
     -
 releases:
@@ -241,6 +245,7 @@ releases:
       - Hide artists with 0 published works on Gallery page - mounir
       - Fix bug preventing galleries' recent and upcoming shows from displaying in some cases - david
       - Fix partner artist counts label logic - david
+      - Fix My Account field edit form dismiss issues - david
 
   - version: 6.6.0
     date: August 5, 2020

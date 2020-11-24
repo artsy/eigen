@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockTracking } from "lib/tests/mockTracking"
@@ -15,7 +15,7 @@ import { RequestConditionReport } from "../RequestConditionReport"
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 
 const artwork: RequestConditionReport_artwork = {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   " $refType": null,
   internalID: "some-internal-id",
   slug: "pablo-picasso-guernica",
@@ -24,7 +24,7 @@ const artwork: RequestConditionReport_artwork = {
   },
 }
 const me: RequestConditionReport_me = {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   " $refType": null,
   email: "someemail@testerino.net",
   internalID: "some-id",
@@ -34,7 +34,7 @@ beforeEach(jest.resetAllMocks)
 
 it("tracks request condition report tapped", () => {
   const RequestConditionReportTracking = mockTracking(() => (
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     <RequestConditionReport artwork={artwork} me={me} relay={null} />
   ))
   const requestConditionReportComponent = mount(<RequestConditionReportTracking />)
@@ -50,7 +50,7 @@ it("tracks request condition report tapped", () => {
 
 it("tracks request condition report success", async () => {
   const RequestConditionReportTracking = mockTracking(() => (
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     <RequestConditionReport artwork={artwork} me={me} relay={null} />
   ))
   const trackingComponent = mount(<RequestConditionReportTracking />)
@@ -74,7 +74,7 @@ it("tracks request condition report success", async () => {
 
 it("tracks request condition report failure", async () => {
   const RequestConditionReportTracking = mockTracking(() => (
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     <RequestConditionReport artwork={artwork} me={me} relay={null} />
   ))
   const trackingComponent = mount(<RequestConditionReportTracking />)

@@ -62,14 +62,14 @@ export function renderWithPlaceholder<Props>({
         return <LoadFailureView style={{ flex: 1 }} />
       } else {
         retrying = true
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         return <LoadFailureView onRetry={retry} style={{ flex: 1 }} />
       }
     } else if (props) {
       if (render) {
         return <>{render({ ...initialProps, ...(props as any) })}</>
       } else {
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         return <Container {...initialProps} {...(props as any)} />
       }
     } else {

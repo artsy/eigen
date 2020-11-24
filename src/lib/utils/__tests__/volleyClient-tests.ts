@@ -1,4 +1,4 @@
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { volleyClient } from "../volleyClient"
 
 jest.mock("lodash", () => ({
@@ -61,7 +61,7 @@ describe("volleyClient", () => {
 
   describe("in production", () => {
     it("has a different URL", async () => {
-      __appStoreTestUtils__?.injectState({ native: { sessionState: { env: "production" } } })
+      __globalStoreTestUtils__?.injectState({ native: { sessionState: { env: "production" } } })
       await volleyClient.send({ type: "increment", name: "counter" })
       jest.advanceTimersByTime(3000)
       expect(fetch).toHaveBeenCalledTimes(1)

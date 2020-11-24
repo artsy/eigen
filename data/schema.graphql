@@ -1244,8 +1244,10 @@ type Artwork implements Node & Searchable & Sellable {
   description(format: Format): String
   dimensions: dimensions
   displayLabel: String
+  displayPriceRange: Boolean
   editionNumber: String
   editionOf: String
+  editionSet(id: String!): EditionSet
   editionSets(sort: EditionSetSorts): [EditionSet]
   editionSize: String
 
@@ -1343,6 +1345,7 @@ type Artwork implements Node & Searchable & Sellable {
     shallow: Boolean
   ): Partner
   pickupAvailable: Boolean
+  price: String
   priceCurrency: String
   priceIncludesTax: Boolean
   priceIncludesTaxDisplay: String
@@ -1379,6 +1382,9 @@ type Artwork implements Node & Searchable & Sellable {
   shows(active: Boolean, atAFair: Boolean, size: Int, sort: ShowSorts): [Show]
   signature(format: Format): String
   signatureInfo: ArtworkInfoRow
+
+  # size bucket assigned to an artwork based on its dimensions
+  sizeBucket: String
 
   # score assigned to an artwork based on its dimensions
   sizeScore: Float
@@ -1520,6 +1526,8 @@ type ArtworkMeta {
   share: String
   title: String
 }
+
+union ArtworkOrEditionSetType = Artwork | EditionSet
 
 # The results for one of the requested aggregations
 type ArtworksAggregationResults {
@@ -2737,6 +2745,7 @@ type CommerceFulfillmentEdge {
 type CommerceLineItem {
   artwork: Artwork
   artworkId: String!
+  artworkOrEditionSet: ArtworkOrEditionSetType
   artworkVersion: ArtworkVersion
   artworkVersionId: String!
   commissionFee(
@@ -3793,6 +3802,12 @@ enum ConsignmentOfferSort {
   # sort by notes in descending order
   NOTES_DESC
 
+  # sort by offer_responses_count in ascending order
+  OFFER_RESPONSES_COUNT_ASC
+
+  # sort by offer_responses_count in descending order
+  OFFER_RESPONSES_COUNT_DESC
+
   # sort by offer_type in ascending order
   OFFER_TYPE_ASC
 
@@ -4125,6 +4140,9 @@ type ConsignmentSubmission {
   provenance: String
   publishedAt: ISO8601DateTime
   signature: Boolean
+
+  # If this artwork exists in Gravity, its ID
+  sourceArtworkID: String
   state: ConsignmentSubmissionStateAggregation
   title: String
   userAgent: String
@@ -4411,6 +4429,12 @@ enum ConsignmentSubmissionSort {
 
   # sort by signature in descending order
   SIGNATURE_DESC
+
+  # sort by source_artwork_id in ascending order
+  SOURCE_ARTWORK_ID_ASC
+
+  # sort by source_artwork_id in descending order
+  SOURCE_ARTWORK_ID_DESC
 
   # sort by state in ascending order
   STATE_ASC
@@ -4801,6 +4825,9 @@ input CreateSubmissionMutationInput {
   minimumPriceDollars: Int
   provenance: String
   signature: Boolean
+
+  # If this artwork exists in Gravity, its ID
+  sourceArtworkID: String
   state: ConsignmentSubmissionStateAggregation
   title: String
   userAgent: String
@@ -5142,6 +5169,7 @@ input EditableLocation {
 
 type EditionSet implements Sellable {
   dimensions: dimensions
+  displayPriceRange: Boolean
   editionOf: String
 
   # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
@@ -5157,7 +5185,11 @@ type EditionSet implements Sellable {
   isOfferable: Boolean
   isSold: Boolean
   listPrice: ListPrice
+  price: String
   saleMessage: String
+
+  # size bucket assigned to an artwork based on its dimensions
+  sizeBucket: String
 
   # score assigned to an artwork based on its dimensions
   sizeScore: Float
@@ -7624,12 +7656,7 @@ type Partner implements Node {
   # A slug ID.
   slug: ID!
   type: String
-  viewingRoomsConnection(
-    after: String
-    first: Int
-    published: Boolean = true
-    statuses: [ViewingRoomStatusEnum!]
-  ): ViewingRoomsConnection
+  viewingRoomsConnection(after: String, first: Int, statuses: [ViewingRoomStatusEnum!]): ViewingRoomsConnection
 
   # The gallery partner's web address
   website: String
@@ -8143,9 +8170,6 @@ type Query {
     # Returns the last _n_ elements from the list.
     last: Int
     partnerID: ID
-
-    # (Deprecated) Use statuses
-    published: Boolean
 
     # Returns only viewing rooms with these statuses
     statuses: [ViewingRoomStatusEnum!] = [live]
@@ -10752,7 +10776,6 @@ type Viewer {
     after: String
     first: Int
     partnerID: ID
-    published: Boolean = true
     statuses: [ViewingRoomStatusEnum!]
   ): ViewingRoomsConnection
 }

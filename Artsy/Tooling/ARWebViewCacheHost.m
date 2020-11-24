@@ -56,11 +56,6 @@
     return self;
 }
 
-- (NSURLRequest *)requestForBlankPage
-{
-    return [ARRouter newRequestForBlankPage];
-}
-
 - (WKWebView *)spawnWebview
 {
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
@@ -91,7 +86,6 @@
 {
     ARWebViewCacheHost *shared = [ARWebViewCacheHost sharedInstance];
     WKWebView *webview = [shared spawnWebview];
-    [webview loadRequest:shared.requestForBlankPage];
     [shared.webViews addObject:webview];
 }
 

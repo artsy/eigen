@@ -11,6 +11,7 @@ describe("selectInquiryType", () => {
       shippingLocation: null,
       inquiryType: null,
       inquiryQuestions: [],
+      message: null,
     }
 
     inquiryAction = {
@@ -24,6 +25,7 @@ describe("selectInquiryType", () => {
       shippingLocation: null,
       inquiryType: "Inquire on price",
       inquiryQuestions: [{ questionID: "price_and_availability" }],
+      message: null,
     })
   })
 
@@ -32,6 +34,7 @@ describe("selectInquiryType", () => {
       shippingLocation: null,
       inquiryType: null,
       inquiryQuestions: [],
+      message: null,
     }
 
     inquiryAction = {
@@ -45,6 +48,7 @@ describe("selectInquiryType", () => {
       shippingLocation: null,
       inquiryType: "Contact gallery",
       inquiryQuestions: [],
+      message: null,
     })
   })
 
@@ -53,6 +57,7 @@ describe("selectInquiryType", () => {
       shippingLocation: null,
       inquiryType: null,
       inquiryQuestions: [],
+      message: null,
     }
 
     inquiryAction = {
@@ -66,6 +71,7 @@ describe("selectInquiryType", () => {
       shippingLocation: null,
       inquiryType: "Inquire to purchase",
       inquiryQuestions: [],
+      message: null,
     })
   })
 })
@@ -79,6 +85,7 @@ describe("selectInquiryQuestion", () => {
       shippingLocation: null,
       inquiryType: null,
       inquiryQuestions: [],
+      message: null,
     }
 
     inquiryAction = {
@@ -96,6 +103,7 @@ describe("selectInquiryQuestion", () => {
       shippingLocation: null,
       inquiryType: null,
       inquiryQuestions: [{ questionID: "condition_and_provenance", details: null }],
+      message: null,
     })
   })
 
@@ -113,6 +121,7 @@ describe("selectInquiryQuestion", () => {
           details: null,
         },
       ],
+      message: null,
     }
 
     inquiryAction = {
@@ -130,6 +139,7 @@ describe("selectInquiryQuestion", () => {
       shippingLocation: null,
       inquiryType: "Inquire to purchase",
       inquiryQuestions: [{ questionID: "shipping_quote", details: null }],
+      message: null,
     })
   })
 })
