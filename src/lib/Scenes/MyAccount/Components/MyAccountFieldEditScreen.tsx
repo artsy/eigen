@@ -34,12 +34,12 @@ export const MyAccountFieldEditScreen = React.forwardRef<
   React.PropsWithChildren<MyAccountFieldEditScreenProps>
 >(({ children, canSave, onSave, title, contentContainerStyle }, ref) => {
   const [isSaving, setIsSaving] = useState<boolean>(false)
-  const [behindTheModalAlert, setBehindTheModalAlert] = useState<AlertArgs | undefined>(undefined)
+  const afterLoadingAlert = useRef<AlertArgs>()
   const scrollViewRef = useRef<ScrollView>(null)
   const screen = useScreenDimensions()
 
   const doTheAlert: AlertStatic["alert"] = (...args) => {
-    setBehindTheModalAlert(args)
+    afterLoadingAlert.current = args
   }
 
   const handleSave = async () => {
@@ -96,14 +96,17 @@ export const MyAccountFieldEditScreen = React.forwardRef<
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
         >
-          <LoadingModal
-            isVisible={isSaving}
-            onDismiss={() => {
-              if (behindTheModalAlert !== undefined) {
-                Alert.alert(...behindTheModalAlert)
-              }
-            }}
-          />
+          {!!isSaving && (
+            <LoadingModal
+              isVisible
+              onDismiss={() => {
+                if (afterLoadingAlert.current) {
+                  Alert.alert(...afterLoadingAlert.current)
+                  afterLoadingAlert.current = undefined
+                }
+              }}
+            />
+          )}
           {children}
         </ScrollView>
       </PageWithSimpleHeader>
