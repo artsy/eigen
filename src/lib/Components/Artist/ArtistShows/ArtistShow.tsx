@@ -43,7 +43,7 @@ const Show: React.FC<Props> = ({ styles, show }) => {
   )
 }
 
-export default createFragmentContainer(Show, {
+export const ArtistShowFragmentContainer = createFragmentContainer(Show, {
   show: graphql`
     fragment ArtistShow_show on Show {
       slug

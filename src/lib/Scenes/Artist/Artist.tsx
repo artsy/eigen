@@ -6,7 +6,7 @@ import {
   ArtistBelowTheFoldQuery,
   ArtistBelowTheFoldQueryVariables,
 } from "__generated__/ArtistBelowTheFoldQuery.graphql"
-import ArtistAbout from "lib/Components/Artist/ArtistAbout"
+import ArtistAbout from "lib/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import ArtistHeader from "lib/Components/Artist/ArtistHeader"
 import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
@@ -50,14 +50,15 @@ export const Artist: React.FC<{
     })
   }
 
-  if ((artistAboveTheFold.counts?.partner_shows ?? 0) > 0) {
+  const isArtistInsightsEnabled = getCurrentEmissionState().options.AROptionsNewInsightsPage
+
+  if ((artistAboveTheFold.counts?.partner_shows ?? 0) > 0 && !isArtistInsightsEnabled) {
     tabs.push({
       title: "Shows",
       content: artistBelowTheFold ? <ArtistShows artist={artistBelowTheFold} /> : <LoadingPage />,
     })
   }
 
-  const isArtistInsightsEnabled = getCurrentEmissionState().options.AROptionsNewInsightsPage
   if (isArtistInsightsEnabled) {
     tabs.push({
       title: "Insights",

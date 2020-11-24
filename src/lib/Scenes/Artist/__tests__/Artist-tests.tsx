@@ -1,4 +1,4 @@
-import ArtistAbout from "lib/Components/Artist/ArtistAbout"
+import ArtistAbout from "lib/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import ArtistHeader from "lib/Components/Artist/ArtistHeader"
 import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
