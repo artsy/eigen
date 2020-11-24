@@ -15,7 +15,6 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 
 const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
-  const navRef = useRef(null)
   const listRef = useRef<FlatList<any>>(null)
   const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
   const shouldDisplayMyBids = useEmissionOption("AROptionsBidManagement")
@@ -30,7 +29,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
   }, [])
 
   return (
-    <ScrollView ref={navRef} refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
+    <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
       <Sans size="8" mx="2" mt="3">
         {me.name}
       </Sans>

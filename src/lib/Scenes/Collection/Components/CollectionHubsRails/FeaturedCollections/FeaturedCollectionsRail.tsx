@@ -7,7 +7,7 @@ import { defaultRules } from "lib/utils/renderMarkdown"
 import { renderMarkdown } from "lib/utils/renderMarkdown"
 import { Schema } from "lib/utils/track"
 import { color, Flex, Sans, Spacer, Touchable } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -20,7 +20,6 @@ interface FeaturedCollectionsRailProps {
 type FeaturedCollection = FeaturedCollectionsRail_collectionGroup["members"][0]
 
 export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (props) => {
-  const navRef = useRef<any>()
   const tracking = useTracking()
   const { collection, collectionGroup } = props
   const collections = collectionGroup?.members ?? []
@@ -48,7 +47,7 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
 
   return collections.length > 0 ? (
     <>
-      <Flex ml={"-20px"} ref={navRef}>
+      <Flex ml={"-20px"}>
         <Sans size="4" my={2} ml={4} data-test-id="group">
           {collectionGroup.name}
         </Sans>

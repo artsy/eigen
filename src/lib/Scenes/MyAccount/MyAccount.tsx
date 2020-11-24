@@ -8,15 +8,14 @@ import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { Flex } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
-  const navRef = useRef(null)
   return (
     <PageWithSimpleHeader title="Account">
-      <ScrollView ref={navRef} contentContainerStyle={{ paddingTop: 10 }}>
+      <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
         <MenuItem
           title="Full Name"
           value={me.name}

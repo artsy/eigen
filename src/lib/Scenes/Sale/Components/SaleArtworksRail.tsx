@@ -6,7 +6,7 @@ import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spacer } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
@@ -16,8 +16,6 @@ interface Props {
 export const INITIAL_NUMBER_TO_RENDER = 4
 
 export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
-  const navRef = useRef<any>(null)
-
   const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
 
   if (!artworks?.length) {
@@ -25,7 +23,7 @@ export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
   }
 
   return (
-    <Flex mt={3} ref={navRef}>
+    <Flex mt={3}>
       <Flex mx={2} my={1}>
         <SectionTitle title="Lots by artists you follow" />
       </Flex>

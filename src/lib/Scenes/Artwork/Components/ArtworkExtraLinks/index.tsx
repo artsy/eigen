@@ -5,7 +5,7 @@ import { partnerName } from "lib/Scenes/Artwork/Components/ArtworkExtraLinks/par
 import { useSelectedTab } from "lib/store/GlobalStore"
 import { Schema, track } from "lib/utils/track"
 import { Sans, Spacer } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { Linking, Text, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -133,10 +133,8 @@ const ConsignmentsLink: React.FC<{ artistName: string }> = ({ artistName }) => {
   const isSellTab = useSelectedTab() === "sell"
   const tracking = useTracking()
 
-  const navRef = useRef(null)
-
   return (
-    <View ref={navRef}>
+    <View>
       <Sans size="2" color="black60">
         Want to sell a work by {artistName}?{" "}
         <Text

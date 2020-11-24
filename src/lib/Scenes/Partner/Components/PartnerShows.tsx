@@ -9,7 +9,7 @@ import { TabEmptyState } from "lib/Components/TabEmptyState"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Box, color, Flex, Sans, space, Spacer } from "palette"
-import React, { useContext, useRef, useState } from "react"
+import React, { useContext, useState } from "react"
 import { ActivityIndicator, ImageBackground, TouchableWithoutFeedback, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
@@ -60,7 +60,6 @@ export const PartnerShows: React.FC<{
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [isLoadingMore, setIsLoadingMore] = useState(false)
-  const navRef = useRef(null)
 
   const recentShows = extractNodes(partner.recentShows).filter((show) => show.isDisplayable)
 
@@ -108,7 +107,7 @@ export const PartnerShows: React.FC<{
   const tabIsActive = Boolean(useNativeValue(tabContext.tabIsActive, 0))
 
   return (
-    <View style={{ flex: 1 }} ref={navRef}>
+    <View style={{ flex: 1 }}>
       <StickyTabPageFlatList
         data={sections}
         // using tabIsActive here to render only the minimal UI on this tab before the user actually switches to it

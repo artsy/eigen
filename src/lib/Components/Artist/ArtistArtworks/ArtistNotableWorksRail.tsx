@@ -21,8 +21,6 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist 
     return null
   }
 
-  const navRef = React.useRef<any>()
-
   const handleNavigation = (slug: string | undefined) => {
     if (!slug) {
       return
@@ -55,7 +53,6 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist 
       </Box>
       <ArtistNotableWorksRailWrapper>
         <AboveTheFoldFlatList<NotableArtwork>
-          listRef={navRef}
           horizontal
           ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
           ListFooterComponent={() => <Spacer mr={2}></Spacer>}

@@ -5,7 +5,7 @@ import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { color, Flex, Sans } from "palette"
-import React, { useRef, useState } from "react"
+import React, { useState } from "react"
 import { Image, TouchableOpacity, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -22,7 +22,6 @@ export const HomeHeroPlaceholder = () => {
 }
 
 const HomeHero: React.FC<{ homePage: HomeHero_homePage }> = ({ homePage }) => {
-  const navRef = useRef(null as any)
   const tracking = useTracking()
   const [hasLoaded, setHasLoaded] = useState(false)
   const unit = homePage.heroUnits?.[0]
@@ -39,7 +38,7 @@ const HomeHero: React.FC<{ homePage: HomeHero_homePage }> = ({ homePage }) => {
   }
 
   return (
-    <TouchableOpacity activeOpacity={0.9} ref={navRef} onPress={handlePromoSpaceTap}>
+    <TouchableOpacity activeOpacity={0.9} onPress={handlePromoSpaceTap}>
       <Flex height={height} justifyContent="flex-end" p="2" style={{ backgroundColor: color("black30") }}>
         <Image
           style={{ width, height, position: "absolute" }}

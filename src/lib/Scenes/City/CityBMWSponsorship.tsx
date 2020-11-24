@@ -1,7 +1,7 @@
 import { navigate } from "lib/navigation/navigate"
 import { Schema } from "lib/utils/track"
 import { Flex, Sans } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -13,7 +13,6 @@ interface BMWSponsorshipProps {
 }
 export const BMWSponsorship: React.FC<BMWSponsorshipProps> = (props) => {
   const { logoText, url, pressable = true } = props
-  const navRef = useRef<any>()
   const tracking = useTracking()
 
   const view = (
@@ -39,7 +38,6 @@ export const BMWSponsorship: React.FC<BMWSponsorshipProps> = (props) => {
           action_type: Schema.ActionTypes.Tap,
         })
       }}
-      ref={navRef}
     >
       {view}
     </TouchableOpacity>

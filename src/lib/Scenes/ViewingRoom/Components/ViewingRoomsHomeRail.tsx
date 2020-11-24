@@ -9,7 +9,7 @@ import { Schema } from "lib/utils/track"
 import _ from "lodash"
 import { Flex, Sans, Spacer } from "palette"
 import { MediumCard, Touchable } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
 import { graphql, useFragment, useQuery } from "relay-hooks"
@@ -22,13 +22,12 @@ interface ViewingRoomsHomeRailProps {
 
 export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = (props) => {
   const { trackEvent } = useTracking()
-  const navRef = useRef<any>(null)
 
   const featuredData = useFragment(featuredFragment, props.featured)
   const featuredLength = extractNodes(featuredData).length
 
   return (
-    <View ref={navRef}>
+    <View>
       <Flex mx="2">
         <SectionTitle
           title="Viewing rooms"
@@ -134,11 +133,10 @@ export const ViewingRoomsRegularRail: React.FC<ViewingRoomsRegularRailProps> = (
   const queryData = useFragment(fragment, props.query)
   const regular = extractNodes(queryData.viewingRooms)
 
-  const navRef = useRef<any>(null)
   const { trackEvent } = useTracking()
 
   return (
-    <Flex ref={navRef}>
+    <Flex>
       <FlatList
         horizontal
         ListHeaderComponent={() => <Spacer ml="2" />}

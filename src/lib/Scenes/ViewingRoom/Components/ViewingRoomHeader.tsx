@@ -4,7 +4,7 @@ import { CountdownProps, CountdownTimer } from "lib/Components/Countdown/Countdo
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { Box, Flex, space, Text } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -90,14 +90,13 @@ export const PartnerIconImage = styled.Image`
 `
 
 export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
-  const navRef = useRef<View>(null)
   const { heroImage, title, partner, startAt, endAt, status } = props.viewingRoom
   const partnerIconImageURL = partner?.profile?.icon?.url
   const { width: screenWidth } = Dimensions.get("window")
   const imageHeight = 547
 
   return (
-    <View ref={navRef}>
+    <View>
       <Box style={{ height: imageHeight, width: screenWidth, position: "relative" }}>
         <BackgroundImage
           data-test-id="background-image"

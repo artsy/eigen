@@ -5,7 +5,7 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { normalizeText } from "lib/utils/normalizeText"
 import { Schema } from "lib/utils/track"
 import { CloseIcon, Flex, Sans, Spacer } from "palette"
-import React, { useContext, useRef } from "react"
+import React, { useContext } from "react"
 import { Text, TouchableOpacity, View } from "react-native"
 import { useTracking } from "react-tracking"
 import { AutosuggestResult } from "./AutosuggestResults"
@@ -30,12 +30,10 @@ export const SearchResult: React.FC<{
   showResultType = true,
   updateRecentSearchesOnTap = true,
 }) => {
-  const navRef = useRef<any>()
   const { inputRef, queryRef } = useContext(SearchContext)
   const { trackEvent } = useTracking()
   return (
     <TouchableOpacity
-      ref={navRef}
       onPress={() => {
         if (onResultPress) {
           onResultPress(result)

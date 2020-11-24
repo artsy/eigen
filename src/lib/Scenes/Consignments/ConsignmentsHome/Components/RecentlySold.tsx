@@ -5,7 +5,7 @@ import { navigate } from "lib/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { shuffle } from "lodash"
 import { Box, Flex, Join, Sans, Spacer } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -27,7 +27,6 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
     return <RecentlySoldPlaceholder />
   }
 
-  const navRef = useRef<any>()
   const tracking = useTracking()
 
   const microfunnelItems = targetSupply.microfunnel || []
@@ -38,7 +37,7 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
   const recentlySoldArtworks = shuffle(microfunnelItems.map((x) => x?.artworksConnection?.edges?.[0]?.node))
 
   return (
-    <Box ref={navRef}>
+    <Box>
       <Box>
         <Sans size="4" px={2} mb={2}>
           Recently sold on Artsy

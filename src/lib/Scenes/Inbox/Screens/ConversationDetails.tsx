@@ -9,7 +9,6 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { track as _track } from "lib/utils/track"
 import { Box, Flex, Join, QuestionCircleIcon, Separator, Text, Touchable } from "palette"
 import React from "react"
-import { useRef } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 
 interface Props {
@@ -18,7 +17,6 @@ interface Props {
 }
 
 export const ConversationDetails: React.FC<Props> = (props) => {
-  const navRef = useRef<any>()
   const conversation = props.me?.conversation
   const partnerName = conversation?.to.name
 
@@ -67,7 +65,7 @@ export const ConversationDetails: React.FC<Props> = (props) => {
 
   return (
     <PageWithSimpleHeader title={partnerName!}>
-      <Flex ref={navRef}>
+      <Flex>
         <Join separator={<Separator my={1} />}>{sections}</Join>
       </Flex>
     </PageWithSimpleHeader>

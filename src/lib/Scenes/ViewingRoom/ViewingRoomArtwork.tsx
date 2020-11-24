@@ -10,7 +10,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
 import { Box, Button, EyeOpenedIcon, Flex, Sans, Separator, Spacer, Text } from "palette"
 import { LargeCard, Touchable } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { FlatList, NativeModules, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
 import { graphql, useFragment, useQuery } from "relay-hooks"
@@ -68,7 +68,6 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (p
   const selectedArtwork = useFragment(selectedArtworkFragmentSpec, props.selectedArtwork)
   const vrInfo = useFragment(viewingRoomInfoFragmentSpec, props.viewingRoomInfo)
 
-  const navRef = useRef(null)
   const { height: screenHeight } = useScreenDimensions()
 
   const { trackEvent } = useTracking()
@@ -93,7 +92,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (p
     <ProvideScreenTracking
       info={tracks.screen(vrInfo.internalID, vrInfo.slug, selectedArtwork.id, selectedArtwork.slug)}
     >
-      <ScrollView ref={navRef}>
+      <ScrollView>
         <Flex>
           <ImageCarousel images={[selectedArtwork.images![0]] as any} cardHeight={screenHeight} />
           {!!(NativeModules.ARCocoaConstantsModule.AREnabled && selectedArtwork.isHangable) && (

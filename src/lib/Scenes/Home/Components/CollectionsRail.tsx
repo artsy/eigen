@@ -29,7 +29,6 @@ interface Props {
 type Collection = CollectionsRail_collectionsModule["results"][0]
 
 const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
-  const navRef = useRef<any>()
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
 
@@ -38,7 +37,7 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
   }))
 
   return (
-    <View ref={navRef}>
+    <View>
       <Flex pl="2" pr="2">
         <SectionTitle title="Collections" subtitle="The newest works curated by Artsy" />
       </Flex>

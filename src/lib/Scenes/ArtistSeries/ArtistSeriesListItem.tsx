@@ -3,7 +3,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { ArtistSeriesConnectionEdge } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ArrowRightIcon, Flex, Sans } from "palette"
-import React, { Component, useRef } from "react"
+import React from "react"
 import { TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 
@@ -25,7 +25,6 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
   horizontalSlidePosition,
   listItem,
 }) => {
-  const navRef = useRef<Component>(null)
   const { trackEvent } = useTracking()
 
   const artworksCountMessage = listItem?.node?.artworksCountMessage
@@ -58,7 +57,7 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
         navigate(`/artist-series/${listItem?.node?.slug}`)
       }}
     >
-      <Flex ref={navRef} flexDirection="row" mb={1} justifyContent="space-between">
+      <Flex flexDirection="row" mb={1} justifyContent="space-between">
         <Flex flexDirection="row" justifyContent="space-between" width="100%">
           <Flex flexDirection="row">
             <OpaqueImageView

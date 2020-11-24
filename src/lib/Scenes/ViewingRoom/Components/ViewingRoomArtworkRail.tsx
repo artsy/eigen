@@ -4,7 +4,7 @@ import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { Schema } from "lib/utils/track"
 import { Box } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -17,11 +17,10 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = (pr
   const viewingRoom = props.viewingRoom
   const totalCount = viewingRoom.artworks! /* STRICTNESS_MIGRATION */.totalCount! /* STRICTNESS_MIGRATION */
   const tracking = useTracking()
-  const navRef = useRef(null)
   const pluralizedArtworksCount = totalCount === 1 ? "artwork" : "artworks"
 
   return (
-    <View ref={navRef}>
+    <View>
       <Box mx="2">
         <SectionTitle
           title={`${totalCount} ${pluralizedArtworksCount}`}

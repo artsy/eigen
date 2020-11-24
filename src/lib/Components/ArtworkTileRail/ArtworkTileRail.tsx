@@ -3,7 +3,7 @@ import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
 import { Spacer } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -31,10 +31,9 @@ export const ArtworkTileRailContainer: React.FC<ArtworkTileRailContainerProps> =
 }) => {
   const artworks = extractNodes(artworksConnection)
   const tracking = useTracking()
-  const navRef = useRef<any>()
 
   return (
-    <View ref={navRef}>
+    <View>
       <FlatList
         horizontal
         ListHeaderComponent={() => <Spacer mr={2}></Spacer>}

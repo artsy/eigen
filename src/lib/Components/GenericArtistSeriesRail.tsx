@@ -13,7 +13,7 @@ import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
 import { color, Sans, Spacer } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { View } from "react-native"
 import { useTracking } from "react-tracking"
 // @ts-ignore
@@ -33,7 +33,6 @@ type GenericArtistSeriesItem =
 export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (props) => {
   const { collections, contextScreenOwnerType, contextScreenOwnerId, contextScreenOwnerSlug } = props
 
-  const navRef = useRef<any>()
   const tracking = useTracking()
 
   const handleNavigation = (slug: string) => {
@@ -49,7 +48,7 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
   }
 
   return (
-    <View ref={navRef}>
+    <View>
       <CardRailFlatList<GenericArtistSeriesItem>
         data={collections as GenericArtistSeriesItem[]}
         keyExtractor={(_item, index) => String(index)}

@@ -11,7 +11,7 @@ import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { Flex, Sans, Spacer } from "palette"
-import React, { useCallback, useEffect, useReducer, useRef, useState } from "react"
+import React, { useCallback, useEffect, useReducer, useState } from "react"
 import { ActivityIndicator, Alert, FlatList, LayoutAnimation, RefreshControl, TouchableOpacity } from "react-native"
 import { commitMutation, createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
@@ -110,12 +110,10 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
   }
 
   const creditCards = extractNodes(me.creditCards)
-  const navRef = useRef(null)
 
   return (
     <PageWithSimpleHeader title="Payment">
       <FlatList
-        ref={navRef}
         style={{ flex: 1 }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
         data={creditCards}

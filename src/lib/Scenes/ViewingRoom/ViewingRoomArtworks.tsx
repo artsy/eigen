@@ -9,7 +9,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Box, Flex, Sans, Separator, space, Spinner, Text } from "palette"
 import { Touchable } from "palette"
-import React, { useMemo, useRef, useState } from "react"
+import React, { useMemo, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -28,7 +28,6 @@ interface ArtworkSection {
 export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) => {
   const { viewingRoom, relay } = props
   const [isLoadingMore, setIsLoadingMore] = useState(false)
-  const navRef = useRef(null)
   const tracking = useTracking()
   const artworks = extractNodes(viewingRoom.artworksConnection)
 
@@ -37,7 +36,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
       return {
         key: `${index}`,
         content: (
-          <Box ref={navRef}>
+          <Box>
             <Touchable
               onPress={() => {
                 tracking.trackEvent({

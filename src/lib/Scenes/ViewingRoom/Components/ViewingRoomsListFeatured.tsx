@@ -49,14 +49,13 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
   const featuredData = useFragment(featuredFragment, props.featured)
   const featured = extractNodes(featuredData)
   const { trackEvent } = useTracking()
-  const navRef = useRef(null)
   const listRef = useRef<FlatList<any>>(null)
   useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0 }),
   }))
 
   return (
-    <View ref={navRef}>
+    <View>
       <AboveTheFoldFlatList
         ListHeaderComponent={() => <Spacer ml="2" />}
         ListFooterComponent={() => <Spacer ml="2" />}

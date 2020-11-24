@@ -5,7 +5,7 @@ import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { ArrowRightIcon, Flex, Sans, Spacer } from "palette"
-import React, { Component, useRef } from "react"
+import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -15,7 +15,6 @@ interface ArtworksInSeriesRailProps {
 }
 
 export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artwork }) => {
-  const navRef = useRef<Component>(null)
   const { trackEvent } = useTracking()
 
   const artistSeriesSlug = artwork?.artistSeriesConnection?.edges?.[0]?.node?.slug
@@ -74,7 +73,7 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
   }
 
   return (
-    <Flex ref={navRef}>
+    <Flex>
       <TouchableOpacity
         onPress={() => {
           trackHeaderClick({ destinationScreenOwnerSlug: artistSeriesSlug!, destinationScreenOwnerID: artistSeriesID! })
