@@ -148,7 +148,7 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
 {
     UIViewController *vc = [[ARAppDelegate sharedInstance] window].rootViewController;
 
-    while ([vc presentedViewController]) {
+    while ([vc presentedViewController] && [[vc presentedViewController] isKindOfClass:ARModalWithBottomSafeAreaViewController.class]) {
         vc = [vc presentedViewController];
     }
 
@@ -163,7 +163,7 @@ RCT_EXPORT_METHOD(dismissModal)
 RCT_EXPORT_METHOD(goBack:(nonnull NSString *)currentTabStackID)
 {
     UINavigationController *vc = (id)[self.class currentlyPresentedVC];
-    if ([vc presentingViewController]) {
+    if ([vc presentingViewController] && [vc isKindOfClass:ARModalWithBottomSafeAreaViewController.class]) {
         // it's a modal
         if ([vc isKindOfClass:ARModalWithBottomSafeAreaViewController.class] && ((ARModalWithBottomSafeAreaViewController *)vc).stack.viewControllers.count > 1) {
             [((ARModalWithBottomSafeAreaViewController *)vc).stack popViewControllerAnimated:YES];
