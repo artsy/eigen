@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash bdf56da7d04ddfebd06a78c55457ee79 */
+/* @relayHash 8e0072dd70dce3eebc02d33af8e8890e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -35,6 +35,7 @@ fragment MyCollectionArtworkHeader_artwork on Artwork {
     url
     width
   }
+  internalID
   title
 }
 */
@@ -54,6 +55,12 @@ v1 = {
   "type": "String"
 },
 v2 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v3 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -157,6 +164,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "internalID",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "title",
             "storageKey": null
           },
@@ -173,7 +187,7 @@ return {
     ]
   },
   "params": {
-    "id": "bdf56da7d04ddfebd06a78c55457ee79",
+    "id": "8e0072dd70dce3eebc02d33af8e8890e",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -184,19 +198,14 @@ return {
         },
         "artwork.artistNames": (v1/*: any*/),
         "artwork.date": (v1/*: any*/),
-        "artwork.id": {
-          "enumValues": null,
-          "nullable": false,
-          "plural": false,
-          "type": "ID"
-        },
+        "artwork.id": (v2/*: any*/),
         "artwork.images": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "Image"
         },
-        "artwork.images.height": (v2/*: any*/),
+        "artwork.images.height": (v3/*: any*/),
         "artwork.images.isDefault": {
           "enumValues": null,
           "nullable": true,
@@ -204,7 +213,8 @@ return {
           "type": "Boolean"
         },
         "artwork.images.url": (v1/*: any*/),
-        "artwork.images.width": (v2/*: any*/),
+        "artwork.images.width": (v3/*: any*/),
+        "artwork.internalID": (v2/*: any*/),
         "artwork.title": (v1/*: any*/)
       }
     },

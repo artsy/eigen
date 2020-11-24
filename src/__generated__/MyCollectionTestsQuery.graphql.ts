@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2f7f19236937dfb1a6c650c53eb9ed5b */
+/* @relayHash d3da9611a5ea7ccdc86d28bdb162f258 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,8 +34,6 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
   images {
     url
     isDefault
-    width
-    height
   }
   artistNames
   medium
@@ -100,12 +98,6 @@ v4 = {
   "nullable": true,
   "plural": false,
   "type": "String"
-},
-v5 = {
-  "enumValues": null,
-  "nullable": true,
-  "plural": false,
-  "type": "Int"
 };
 return {
   "fragment": {
@@ -246,20 +238,6 @@ return {
                             "kind": "ScalarField",
                             "name": "isDefault",
                             "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "width",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "height",
-                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -323,7 +301,7 @@ return {
     ]
   },
   "params": {
-    "id": "2f7f19236937dfb1a6c650c53eb9ed5b",
+    "id": "d3da9611a5ea7ccdc86d28bdb162f258",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -369,7 +347,6 @@ return {
           "plural": true,
           "type": "Image"
         },
-        "me.myCollectionConnection.edges.node.images.height": (v5/*: any*/),
         "me.myCollectionConnection.edges.node.images.isDefault": {
           "enumValues": null,
           "nullable": true,
@@ -377,7 +354,6 @@ return {
           "type": "Boolean"
         },
         "me.myCollectionConnection.edges.node.images.url": (v4/*: any*/),
-        "me.myCollectionConnection.edges.node.images.width": (v5/*: any*/),
         "me.myCollectionConnection.edges.node.medium": (v4/*: any*/),
         "me.myCollectionConnection.edges.node.slug": (v2/*: any*/),
         "me.myCollectionConnection.edges.node.title": (v4/*: any*/),

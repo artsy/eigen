@@ -1,11 +1,12 @@
 import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "lib/navigation/navigate"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { AppStore } from "lib/store/AppStore"
+import { Image } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Spacer, Text } from "palette"
 import React from "react"
-import { TouchableOpacity, View } from "react-native"
+import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface MyCollectionArtworkHeaderProps {
@@ -14,13 +15,14 @@ interface MyCollectionArtworkHeaderProps {
 
 const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (props) => {
   const {
-    artwork: { artistNames, date, images, title },
+    artwork: { artistNames, date, images, internalID, title },
   } = props
   const dimensions = useScreenDimensions()
   const formattedTitleAndYear = [title, date].filter(Boolean).join(", ")
 
-  const navActions = AppStore.actions.myCollection.navigation
-  const defaultImage = images?.find((i) => i.isDefault) || (images && images[0])
+  const defaultImage = images?.find((i: any) => i.isDefault) || (images && images[0])
+
+  const isImage = (toCheck: any): toCheck is Image => !!toCheck
 
   return (
     <>
@@ -33,16 +35,8 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
 
       <Spacer my={1} />
 
-      <TouchableOpacity
-        onPress={() =>
-          navActions.navigateToViewAllArtworkImages({
-            passProps: {
-              images,
-            },
-          })
-        }
-      >
-        {!!defaultImage && (
+      <TouchableOpacity onPress={() => navigate(`/my-collection/artwork-images/${internalID}`)}>
+        {!!isImage(defaultImage) && (
           <OpaqueImageView
             // TODO: figure out if "normalized" is the correct version
             imageURL={defaultImage.url.replace(":version", "normalized")}
@@ -88,6 +82,7 @@ export const MyCollectionArtworkHeaderFragmentContainer = createFragmentContaine
         url
         width
       }
+      internalID
       title
     }
   `,

@@ -1,0 +1,88 @@
+import { MyCollectionArtworkFullDetailsQuery } from "__generated__/MyCollectionArtworkFullDetailsQuery.graphql"
+import { MyCollectionArtworkImages_artwork } from "__generated__/MyCollectionArtworkImages_artwork.graphql"
+import { MyCollectionArtworkImagesQuery } from "__generated__/MyCollectionArtworkImagesQuery.graphql"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Flex, Spacer } from "palette"
+import React from "react"
+import { ActivityIndicator, ScrollView, View } from "react-native"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { Image } from "../../State/MyCollectionArtworkModel"
+
+interface MyCollectionArtworkImagesProps {
+  artwork: MyCollectionArtworkImages_artwork
+}
+
+const MyCollectionArtworkImages: React.FC<MyCollectionArtworkImagesProps> = ({ artwork }) => {
+  const { images } = artwork
+  // const { navigation: navActions } = AppStore.actions.myCollection
+  const dimensions = useScreenDimensions()
+
+  return images !== null ? (
+    <>
+      <FancyModalHeader>
+        {images.length} Photo{!!images.length && "s"}
+      </FancyModalHeader>
+      <ScrollView>
+        {images.map((image: any, index: number) => (
+          <View key={index}>
+            <OpaqueImageView
+              // TODO: figure out if "normalized" is the correct version
+              imageURL={image.url?.replace(":version", "normalized")}
+              height={(dimensions.width / (image.width || 1)) * (image.height || 1)}
+              width={dimensions.width}
+            />
+            <Spacer my={1} />
+          </View>
+        ))}
+      </ScrollView>
+    </>
+  ) : null
+}
+
+export const MyCollectionArtworkImagesFragmentContainer = createFragmentContainer(MyCollectionArtworkImages, {
+  artwork: graphql`
+    fragment MyCollectionArtworkImages_artwork on Artwork {
+      images {
+        height
+        isDefault
+        url
+        width
+      }
+    }
+  `,
+})
+
+export const MyCollectionArtworkImagesQueryRenderer: React.FC<{
+  artworkSlug: string
+}> = ({ artworkSlug }) => {
+  return (
+    <QueryRenderer<MyCollectionArtworkImagesQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query MyCollectionArtworkImagesQuery($artworkSlug: String!) {
+          artwork(id: $artworkSlug) {
+            ...MyCollectionArtworkImages_artwork
+          }
+        }
+      `}
+      variables={{
+        artworkSlug,
+      }}
+      render={renderWithPlaceholder({
+        Container: MyCollectionArtworkImagesFragmentContainer,
+        renderPlaceholder: () => (
+          <Flex flexGrow={1}>
+            <FancyModalHeader>Artwork Details</FancyModalHeader>
+            <Flex alignItems="center" justifyContent="center" flexGrow={1}>
+              <ActivityIndicator />
+            </Flex>
+          </Flex>
+        ),
+      })}
+    />
+  )
+}
