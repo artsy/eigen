@@ -3,10 +3,6 @@ import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-<<<<<<< HEAD
-=======
-import { useEmissionOption } from "lib/store/GlobalStore"
->>>>>>> 9a5bebc9162a0cfd21df0f3e53b747b2bef8e92b
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
