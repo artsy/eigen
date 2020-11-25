@@ -8,7 +8,7 @@ import { Theme } from "palette"
 import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowQueryRenderer } from "./Containers/BidFlow"
 import { GeneQueryRenderer } from "./Containers/Gene"
-import { InboxQueryRenderer } from "./Containers/Inbox"
+import { InboxWrapper } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowQueryRenderer } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
@@ -144,7 +144,7 @@ const Inbox: React.FC<{}> = screenTrack<{}>(
     return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
   }
   // @ts-ignore STRICTNESS_MIGRATION
-)((props) => <InboxQueryRenderer {...props} />)
+)((props) => <InboxWrapper {...props} />)
 
 interface GeneProps {
   geneID: string
