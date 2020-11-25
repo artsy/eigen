@@ -1,5 +1,5 @@
 import { groupBy, mapValues, partition, sortBy } from "lodash"
-import { Flex, Join, Separator, Spacer, Text } from "palette"
+import { Flex, Join, Separator, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
