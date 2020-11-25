@@ -1,22 +1,19 @@
-import { Inbox_me } from "__generated__/Inbox_me.graphql"
-import { InboxQuery } from "__generated__/InboxQuery.graphql"
+import { InboxOld_me } from "__generated__/InboxOld_me.graphql"
+import { InboxOldQuery } from "__generated__/InboxOldQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import ActiveBids, { ActiveBids as ActiveBidsRef } from "lib/Scenes/Inbox/Components/ActiveBids"
 import { ConversationsContainer } from "lib/Scenes/Inbox/Components/Conversations/Conversations"
 import ZeroStateInbox from "lib/Scenes/Inbox/Components/Conversations/ZeroStateInbox"
-import { MyBidsContainer } from "lib/Scenes/MyBids/MyBids"
-import { getCurrentEmissionState } from "lib/store/AppStore"
 import { listenToNativeEvents } from "lib/store/NativeModel"
 import { extractNodes } from "lib/utils/extractNodes"
 import { get } from "lib/utils/get"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Flex, Spacer, Text } from "palette"
+import { Flex } from "palette"
 import React from "react"
 import { EmitterSubscription, RefreshControl } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
-import { InboxOldQuery } from "__generated__/InboxOldQuery.graphql"
-import { InboxOld_me } from "__generated__/InboxOld_me.graphql"
+
 interface Props {
   me: InboxOld_me
   relay: RelayRefetchProp

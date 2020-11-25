@@ -3,7 +3,6 @@ import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ActiveBids as ActiveBidsRef } from "lib/Scenes/Inbox/Components/ActiveBids"
 import { ConversationsContainer } from "lib/Scenes/Inbox/Components/Conversations/Conversations"
-import ZeroStateInbox from "lib/Scenes/Inbox/Components/Conversations/ZeroStateInbox"
 import { MyBidsContainer } from "lib/Scenes/MyBids/MyBids"
 import { listenToNativeEvents } from "lib/store/NativeModel"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -81,18 +80,6 @@ export class Inbox extends React.Component<Props, State> {
   }
 
   render() {
-    const somethingToShow = Boolean(
-      // tslint:disable-next-line: strict-boolean-expressions
-      this.props.me.lotStandingsExistenceCheck.edges?.length || this.props.me.conversationsExistenceCheck?.edges?.length
-    )
-
-    if (!somethingToShow) {
-      return (
-        <Flex style={{ flex: 1 }}>
-          <ZeroStateInbox />
-        </Flex>
-      )
-    }
     return (
       <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
         <Spacer pb={5} />
@@ -135,16 +122,6 @@ export const InboxContainer = createRefetchContainer(
   {
     me: graphql`
       fragment Inbox_me on Me {
-        lotStandingsExistenceCheck: auctionsLotStandingConnection(first: 1) {
-          edges {
-            cursor
-          }
-        }
-        conversationsExistenceCheck: conversationsConnection(first: 1) {
-          edges {
-            cursor
-          }
-        }
         ...Conversations_me
         ...MyBids_me
       }

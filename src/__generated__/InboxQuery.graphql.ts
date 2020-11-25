@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d49c74840fe5edd83cf6163e321ee881 */
+/* @relayHash 34c51b6ba13912996910abc70ed46d03 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -140,16 +140,6 @@ fragment Conversations_me on Me {
 }
 
 fragment Inbox_me on Me {
-  lotStandingsExistenceCheck: auctionsLotStandingConnection(first: 1) {
-    edges {
-      cursor
-    }
-  }
-  conversationsExistenceCheck: conversationsConnection(first: 1) {
-    edges {
-      cursor
-    }
-  }
   ...Conversations_me
   ...MyBids_me
 }
@@ -215,23 +205,6 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "Literal",
-    "name": "first",
-    "value": 1
-  }
-],
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "cursor",
-  "storageKey": null
-},
-v2 = [
-  (v1/*: any*/)
-],
-v3 = [
-  {
-    "kind": "Literal",
     "name": "after",
     "value": ""
   },
@@ -241,46 +214,46 @@ v3 = [
     "value": 10
   }
 ],
-v4 = {
+v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
   "storageKey": null
 },
-v5 = {
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v6 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v7 = [
-  (v5/*: any*/),
-  (v6/*: any*/)
+v4 = [
+  (v2/*: any*/),
+  (v3/*: any*/)
 ],
-v8 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v9 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "artistNames",
   "storageKey": null
 },
-v10 = [
+v7 = [
   {
     "alias": null,
     "args": null,
@@ -289,17 +262,17 @@ v10 = [
     "storageKey": null
   }
 ],
-v11 = {
+v8 = {
   "alias": null,
   "args": null,
   "concreteType": "Image",
   "kind": "LinkedField",
   "name": "coverImage",
   "plural": false,
-  "selections": (v10/*: any*/),
+  "selections": (v7/*: any*/),
   "storageKey": null
 },
-v12 = [
+v9 = [
   {
     "alias": null,
     "args": [
@@ -314,7 +287,7 @@ v12 = [
     "storageKey": "displayAmount(fractionalDigits:0)"
   }
 ],
-v13 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -363,50 +336,8 @@ return {
         "plural": false,
         "selections": [
           {
-            "alias": "lotStandingsExistenceCheck",
-            "args": (v0/*: any*/),
-            "concreteType": "AuctionsLotStandingConnection",
-            "kind": "LinkedField",
-            "name": "auctionsLotStandingConnection",
-            "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "AuctionsLotStandingEdge",
-                "kind": "LinkedField",
-                "name": "edges",
-                "plural": true,
-                "selections": (v2/*: any*/),
-                "storageKey": null
-              }
-            ],
-            "storageKey": "auctionsLotStandingConnection(first:1)"
-          },
-          {
-            "alias": "conversationsExistenceCheck",
-            "args": (v0/*: any*/),
-            "concreteType": "ConversationConnection",
-            "kind": "LinkedField",
-            "name": "conversationsConnection",
-            "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "ConversationEdge",
-                "kind": "LinkedField",
-                "name": "edges",
-                "plural": true,
-                "selections": (v2/*: any*/),
-                "storageKey": null
-              }
-            ],
-            "storageKey": "conversationsConnection(first:1)"
-          },
-          {
             "alias": "conversations",
-            "args": (v3/*: any*/),
+            "args": (v0/*: any*/),
             "concreteType": "ConversationConnection",
             "kind": "LinkedField",
             "name": "conversationsConnection",
@@ -453,7 +384,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v4/*: any*/),
+                      (v1/*: any*/),
                       {
                         "alias": "last_message",
                         "args": null,
@@ -468,7 +399,7 @@ return {
                         "kind": "LinkedField",
                         "name": "to",
                         "plural": false,
-                        "selections": (v7/*: any*/),
+                        "selections": (v4/*: any*/),
                         "storageKey": null
                       },
                       {
@@ -508,7 +439,7 @@ return {
                             "name": "item",
                             "plural": false,
                             "selections": [
-                              (v8/*: any*/),
+                              (v5/*: any*/),
                               {
                                 "kind": "InlineFragment",
                                 "selections": [
@@ -526,7 +457,7 @@ return {
                                     "name": "title",
                                     "storageKey": null
                                   },
-                                  (v9/*: any*/),
+                                  (v6/*: any*/),
                                   {
                                     "alias": null,
                                     "args": null,
@@ -534,7 +465,7 @@ return {
                                     "kind": "LinkedField",
                                     "name": "image",
                                     "plural": false,
-                                    "selections": (v10/*: any*/),
+                                    "selections": (v7/*: any*/),
                                     "storageKey": null
                                   }
                                 ],
@@ -551,11 +482,11 @@ return {
                                     "kind": "LinkedField",
                                     "name": "fair",
                                     "plural": false,
-                                    "selections": (v7/*: any*/),
+                                    "selections": (v4/*: any*/),
                                     "storageKey": null
                                   },
-                                  (v5/*: any*/),
-                                  (v11/*: any*/)
+                                  (v2/*: any*/),
+                                  (v8/*: any*/)
                                 ],
                                 "type": "Show",
                                 "abstractKey": null
@@ -563,7 +494,7 @@ return {
                               {
                                 "kind": "InlineFragment",
                                 "selections": [
-                                  (v6/*: any*/)
+                                  (v3/*: any*/)
                                 ],
                                 "type": "Node",
                                 "abstractKey": "__isNode"
@@ -592,12 +523,18 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v6/*: any*/),
-                      (v8/*: any*/)
+                      (v3/*: any*/),
+                      (v5/*: any*/)
                     ],
                     "storageKey": null
                   },
-                  (v1/*: any*/)
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "cursor",
+                    "storageKey": null
+                  }
                 ],
                 "storageKey": null
               },
@@ -613,7 +550,7 @@ return {
           },
           {
             "alias": "conversations",
-            "args": (v3/*: any*/),
+            "args": (v0/*: any*/),
             "filters": null,
             "handle": "connection",
             "key": "Conversations_conversations",
@@ -665,7 +602,7 @@ return {
                         "name": "lotState",
                         "plural": false,
                         "selections": [
-                          (v4/*: any*/),
+                          (v1/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -694,7 +631,7 @@ return {
                             "kind": "LinkedField",
                             "name": "onlineAskingPrice",
                             "plural": false,
-                            "selections": (v12/*: any*/),
+                            "selections": (v9/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -704,10 +641,10 @@ return {
                             "kind": "LinkedField",
                             "name": "floorSellingPrice",
                             "plural": false,
-                            "selections": (v12/*: any*/),
+                            "selections": (v9/*: any*/),
                             "storageKey": null
                           },
-                          (v6/*: any*/),
+                          (v3/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -741,8 +678,8 @@ return {
                             "name": "artwork",
                             "plural": false,
                             "selections": [
-                              (v9/*: any*/),
-                              (v13/*: any*/),
+                              (v6/*: any*/),
+                              (v10/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -767,7 +704,7 @@ return {
                                 ],
                                 "storageKey": null
                               },
-                              (v6/*: any*/)
+                              (v3/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -786,7 +723,7 @@ return {
                                 "name": "liveStartAt",
                                 "storageKey": null
                               },
-                              (v6/*: any*/),
+                              (v3/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -801,9 +738,9 @@ return {
                                 "name": "status",
                                 "storageKey": null
                               },
-                              (v13/*: any*/),
-                              (v5/*: any*/),
-                              (v11/*: any*/),
+                              (v10/*: any*/),
+                              (v2/*: any*/),
+                              (v8/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -811,14 +748,14 @@ return {
                                 "kind": "LinkedField",
                                 "name": "partner",
                                 "plural": false,
-                                "selections": (v7/*: any*/),
+                                "selections": (v4/*: any*/),
                                 "storageKey": null
                               },
-                              (v4/*: any*/)
+                              (v1/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v6/*: any*/),
+                          (v3/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -829,7 +766,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v6/*: any*/)
+                      (v3/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -839,14 +776,14 @@ return {
             ],
             "storageKey": "auctionsLotStandingConnection(first:25)"
           },
-          (v6/*: any*/)
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "d49c74840fe5edd83cf6163e321ee881",
+    "id": "34c51b6ba13912996910abc70ed46d03",
     "metadata": {},
     "name": "InboxQuery",
     "operationKind": "query",
