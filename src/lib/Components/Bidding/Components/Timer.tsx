@@ -39,18 +39,18 @@ export function relevantStateData(currentState: AuctionTimerState, { liveStartsA
       if (!startsAt) {
         console.error("startsAt is required when isPreview is true")
       }
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       return { date: startsAt, label: `Starts ${formatDate(startsAt)}` }
     }
     case AuctionTimerState.LIVE_INTEGRATION_UPCOMING: {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       return { date: liveStartsAt, label: `Live ${formatDate(liveStartsAt)}` }
     }
     case AuctionTimerState.LIVE_INTEGRATION_ONGOING: {
       return { date: null, label: "In progress" }
     }
     case AuctionTimerState.CLOSING: {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       return { date: endsAt, label: `Ends ${formatDate(endsAt)}` }
     }
     default: {

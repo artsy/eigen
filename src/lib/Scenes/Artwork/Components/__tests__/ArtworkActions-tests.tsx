@@ -1,5 +1,5 @@
 import { ArtworkActionsTestsQueryRawResponse } from "__generated__/ArtworkActionsTestsQuery.graphql"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { shallow } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
@@ -57,7 +57,7 @@ describe("ArtworkActions", () => {
 
   describe("with AR enabled", () => {
     it("renders buttons correctly", () => {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const component = shallow(<ArtworkActions artwork={artworkActionsArtwork} />)
       expect(component.find(Sans).length).toEqual(3)
 
@@ -73,7 +73,7 @@ describe("ArtworkActions", () => {
         ...artworkActionsArtwork,
         is_hangable: false,
       }
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const component = shallow(<ArtworkActions artwork={artworkActionsArtworkNotHangable} />)
       expect(component.find(Sans).length).toEqual(2)
 
@@ -91,7 +91,7 @@ describe("ArtworkActions", () => {
         isClosed: false,
       },
     }
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const component = shallow(<ArtworkActions artwork={artworkActionsArtworkInAuction} />)
     expect(component.find(Sans).length).toEqual(3)
 
@@ -103,7 +103,7 @@ describe("ArtworkActions", () => {
   describe("without AR enabled", () => {
     it("does not show the View in Room option if the phone does not have AREnabled", () => {
       NativeModules.ARCocoaConstantsModule.AREnabled = false
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const component = shallow(<ArtworkActions artwork={artworkActionsArtwork} />)
       expect(component.find(Sans).length).toEqual(2)
 
@@ -114,7 +114,7 @@ describe("ArtworkActions", () => {
   })
 
   describe("Saving an artwork", () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const getWrapper = async ({ mockArtworkData, mockSaveResults }) => {
       return await renderRelayTree({
         Component: ArtworkActionsFragmentContainer,

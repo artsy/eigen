@@ -1,7 +1,7 @@
 import { ViewingRoomArtworkRailTestsQuery } from "__generated__/ViewingRoomArtworkRailTestsQuery.graphql"
 import { ArtworkTileRail } from "lib/Components/ArtworkTileRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -12,9 +12,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { tracks, ViewingRoomArtworkRailContainer } from "../ViewingRoomArtworkRail"
 
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 describe("ViewingRoomArtworkRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -57,10 +54,7 @@ describe("ViewingRoomArtworkRail", () => {
     })
     tree.root.findByType(SectionTitle).props.onPress()
 
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-      expect.anything(),
-      "/viewing-room/gallery-name-viewing-room-name/artworks"
-    )
+    expect(navigate).toHaveBeenCalledWith("/viewing-room/gallery-name-viewing-room-name/artworks")
     expect(useTracking().trackEvent).toHaveBeenCalledWith(
       tracks.tappedArtworkGroupHeader("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name")
     )

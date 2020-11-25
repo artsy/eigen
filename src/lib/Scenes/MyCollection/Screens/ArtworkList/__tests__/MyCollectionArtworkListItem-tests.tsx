@@ -1,6 +1,6 @@
 import { MyCollectionArtworkListItemTestsQuery } from "__generated__/MyCollectionArtworkListItemTestsQuery.graphql"
-import { AppStore } from "lib/store/AppStore"
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { navigate } from "lib/navigation/navigate"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -19,7 +19,7 @@ describe("MyCollectionArtworkListItem", () => {
       query={graphql`
         query MyCollectionArtworkListItemTestsQuery @relay_test_operation {
           artwork(id: "some-slug") {
-            ...MyCollectionArtworkDetail_sharedProps @relay(mask: false)
+            ...MyCollectionArtwork_sharedProps @relay(mask: false)
           }
         }
       `}
@@ -53,21 +53,20 @@ describe("MyCollectionArtworkListItem", () => {
   })
 
   it("navigates to artwork detail on click", () => {
-    const spy = jest.fn()
-    AppStore.actions.myCollection.navigation.navigateToArtworkDetail = spy as any
     const wrapper = renderWithWrappers(<TestRenderer />)
     resolveData()
     wrapper.root.findByType(tests.TouchElement).props.onPress()
-    expect(spy).toHaveBeenCalledWith({
-      artistInternalID: "<Artist-mock-id-1>",
-      artworkSlug: "<Artwork-mock-id-5>",
-      medium: '<mock-value-for-field-"medium">',
+    expect(navigate).toHaveBeenCalledWith("/my-collection/artwork/<Artwork-mock-id-5>", {
+      passProps: {
+        artistInternalID: "<Artist-mock-id-1>",
+        medium: '<mock-value-for-field-"medium">',
+      },
     })
   })
 
   it("uses last uploaded image as a fallback when no url is present", () => {
     const wrapper = renderWithWrappers(<TestRenderer />)
-    __appStoreTestUtils__?.injectState({
+    __globalStoreTestUtils__?.injectState({
       myCollection: {
         artwork: {
           sessionState: {

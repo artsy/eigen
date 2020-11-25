@@ -3,12 +3,12 @@ import { Message_message } from "__generated__/Message_message.graphql"
 import { BoxProps, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { NativeModules, View } from "react-native"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Hyperlink from "react-native-hyperlink"
 import { createFragmentContainer } from "react-relay"
 import styled from "styled-components/native"
 
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 
 import { FileDownloadFragmentContainer as FileDownload } from "./Preview/Attachment/FileDownload"
 import ImagePreview from "./Preview/Attachment/ImagePreview"
@@ -93,7 +93,7 @@ export class Message extends React.Component<Props> {
     owner_id: props.conversationId,
   }))
   onLinkPress(url: string) {
-    return SwitchBoard.presentNavigationViewController(this, url)
+    return navigate(url)
   }
 
   render() {

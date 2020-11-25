@@ -1,10 +1,11 @@
 import Spinner from "lib/Components/Spinner"
+import { dismissModal, navigate } from "lib/navigation/navigate"
 import { Schema, screenTrack } from "lib/utils/track"
 import { Box, Button, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
-import { NavigatorIOS, Route, View, ViewProperties } from "react-native"
+import { Route, View, ViewProperties } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import Welcome from "./Welcome"
 
 interface Props extends ViewProperties {
@@ -51,7 +52,7 @@ export default class Confirmation extends React.Component<Props, State> {
   }
 
   checkForSubmissionStatus = () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const success = this.props.submissionRequestValidationCheck()
     if (success === undefined) {
       setTimeout(this.checkForSubmissionStatus, 1000)
@@ -61,10 +62,10 @@ export default class Confirmation extends React.Component<Props, State> {
     }
   }
 
-  exitModal = () => SwitchBoard.dismissModalViewController(this)
+  exitModal = () => dismissModal()
   exitModalAndGoHome = () => {
-    SwitchBoard.dismissModalViewController(this)
-    SwitchBoard.presentNavigationViewController(this, "/")
+    dismissModal()
+    navigate("/")
   }
   restart = () => this.props.navigator.push({ component: Welcome })
 

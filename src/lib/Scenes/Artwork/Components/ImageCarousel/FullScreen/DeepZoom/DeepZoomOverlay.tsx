@@ -30,7 +30,7 @@ export interface DeepZoomOverlayProps {
 export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
   image: {
     deepZoom: {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       image: { format, size: fullImageSize, tileSize, url },
     },
   },
@@ -51,7 +51,6 @@ export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
 
   // setup geometry
   const levels = useMemo(() => calculateDeepZoomLevels(fullImageSize), [fullImageSize])
-  // @ts-ignore STRICTNESS_MIGRATION
   const imageFittedWithinScreen = useMemo(() => fitInside(screenDimensions, { width, height }), [width, height])
   const zoomScaleBoundaries = useMemo(() => getZoomScaleBoundaries({ imageFittedWithinScreen, levels }), [
     levels,

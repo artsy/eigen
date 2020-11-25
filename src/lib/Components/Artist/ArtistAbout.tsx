@@ -6,7 +6,7 @@ import Articles from "./Articles"
 import Biography from "./Biography"
 
 import { ArtistAbout_artist } from "__generated__/ArtistAbout_artist.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { CaretButton } from "../Buttons/CaretButton"
 import { Stack } from "../Stack"
@@ -28,9 +28,7 @@ class ArtistAbout extends React.Component<Props> {
           {!!this.props.artist.is_display_auction_link && (
             <CaretButton
               text="Auction results"
-              onPress={() =>
-                SwitchBoard.presentNavigationViewController(this, `/artist/${this.props.artist.slug}/auction-results`)
-              }
+              onPress={() => navigate(`/artist/${this.props.artist.slug}/auction-results`)}
             />
           )}
           <ArtistConsignButton artist={this.props.artist} />

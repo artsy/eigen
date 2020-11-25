@@ -18,7 +18,7 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
     } = this.props
     const hasSingleArtist = artists && artists.length === 1
     const text =
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       hasSingleArtist && artists[0].biography_blurb && artists[0].biography_blurb.text
         ? artists! /* STRICTNESS_MIGRATION */[0]! /* STRICTNESS_MIGRATION */.biography_blurb.text
         : null
@@ -33,7 +33,7 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
           <Join separator={<Spacer my={1} />}>
             {artists! /* STRICTNESS_MIGRATION */
               .map((artist) => (
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 <ArtistListItem key={artist.id} artist={artist} contextModule={Schema.ContextModules.AboutTheArtist} />
               ))}
           </Join>

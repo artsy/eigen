@@ -1,6 +1,6 @@
 import { ArtistConsignButtonTestsQuery } from "__generated__/ArtistConsignButtonTestsQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
+import { navigate } from "lib/navigation/navigate"
+import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
@@ -13,9 +13,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ArtistConsignButtonFragmentContainer, tests } from "../ArtistConsignButton"
 
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 describe("ArtistConsignButton", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -35,9 +32,9 @@ describe("ArtistConsignButton", () => {
       render={({ props, error }) => {
         if (props) {
           return (
-            <AppStoreProvider>
+            <GlobalStoreProvider>
               <ArtistConsignButtonFragmentContainer artist={props.artist as any} />
-            </AppStoreProvider>
+            </GlobalStoreProvider>
           )
         } else if (error) {
           console.log(error)
@@ -57,7 +54,6 @@ describe("ArtistConsignButton", () => {
 
   afterEach(() => {
     trackEvent.mockClear()
-    ;(SwitchBoard.presentNavigationViewController as jest.Mock<any>).mockClear()
   })
 
   describe("Top 20 Artist ('Microfunnel') or Target Supply button", () => {
@@ -114,7 +110,7 @@ describe("ArtistConsignButton", () => {
       const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
         const responseWithoutImage = cloneDeep(response)
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         responseWithoutImage.artist.image = null
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -211,7 +207,7 @@ describe("ArtistConsignButton", () => {
     }
 
     it("sends user to sales tab if not already there", () => {
-      __appStoreTestUtils__?.injectState({
+      __globalStoreTestUtils__?.injectState({
         bottomTabs: { sessionState: { selectedTab: "home" } },
       })
 
@@ -224,11 +220,11 @@ describe("ArtistConsignButton", () => {
       })
       tree.root.findByType(TouchableOpacity).props.onPress()
 
-      expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/sales")
+      expect(navigate).toHaveBeenCalledWith("/sales")
     })
 
     it("sends user to a new instance of landing page if user is already in sales tab", () => {
-      __appStoreTestUtils__?.injectState({
+      __globalStoreTestUtils__?.injectState({
         bottomTabs: { sessionState: { selectedTab: "sell" } },
       })
 
@@ -241,10 +237,7 @@ describe("ArtistConsignButton", () => {
       })
       tree.root.findByType(TouchableOpacity).props.onPress()
 
-      expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-        expect.anything(),
-        "/collections/my-collection/marketing-landing"
-      )
+      expect(navigate).toHaveBeenCalledWith("/collections/my-collection/marketing-landing")
     })
   })
 })

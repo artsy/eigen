@@ -1,5 +1,5 @@
 import { MyProfileTestsQuery } from "__generated__/MyProfileTestsQuery.graphql"
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 

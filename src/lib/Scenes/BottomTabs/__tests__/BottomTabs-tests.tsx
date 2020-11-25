@@ -1,5 +1,5 @@
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
+import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { useInterval } from "lib/utils/useInterval"
@@ -36,9 +36,9 @@ function resolveUnreadConversationCountQuery(unreadConversationCount: number) {
 
 const TestWrapper: React.FC<{}> = ({}) => {
   return (
-    <AppStoreProvider>
+    <GlobalStoreProvider>
       <BottomTabs />
-    </AppStoreProvider>
+    </GlobalStoreProvider>
   )
 }
 
@@ -46,7 +46,7 @@ type ButtonProps = React.ComponentProps<typeof BottomTabsButton>
 
 describe(BottomTabs, () => {
   it(`displays the current unread notifications count`, async () => {
-    __appStoreTestUtils__?.injectState({
+    __globalStoreTestUtils__?.injectState({
       bottomTabs: { sessionState: { unreadConversationCount: 4 } },
     })
     const tree = renderWithWrappers(<TestWrapper />)

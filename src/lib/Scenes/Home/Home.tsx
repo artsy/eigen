@@ -18,7 +18,7 @@ import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "palette"
 
 import { Home_featured } from "__generated__/Home_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import { AppStore, useEmissionOption } from "lib/store/AppStore"
+import { GlobalStore, useEmissionOption } from "lib/store/GlobalStore"
 import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -35,8 +35,6 @@ interface Props extends ViewProperties {
 }
 
 const Home = (props: Props) => {
-  const navRef = useRef<any>()
-
   const { homePage, me, featured } = props
   const artworkModules = homePage.artworkModules || []
   const salesModule = homePage.salesModule
@@ -129,7 +127,7 @@ const Home = (props: Props) => {
       }}
     >
       <Theme>
-        <View ref={navRef} style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
           <AboveTheFoldFlatList
             data={rowData}
             initialNumToRender={5}
@@ -335,7 +333,7 @@ const messages = {
 }
 
 export const HomeQueryRenderer: React.FC = () => {
-  const { flash_message } = AppStore.useAppState((state) => state.bottomTabs.sessionState.tabProps.home ?? {}) as {
+  const { flash_message } = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.tabProps.home ?? {}) as {
     flash_message?: string
   }
   useEffect(() => {
@@ -350,7 +348,7 @@ export const HomeQueryRenderer: React.FC = () => {
       Alert.alert(message.title, message.message, [{ text: "Ok" }])
       // reset the tab props because we don't want this message to show again
       // if the home screen remounts for whatever reason.
-      AppStore.actions.bottomTabs.setTabProps({ tab: "home", props: {} })
+      GlobalStore.actions.bottomTabs.setTabProps({ tab: "home", props: {} })
     }
   }, [flash_message])
   return (

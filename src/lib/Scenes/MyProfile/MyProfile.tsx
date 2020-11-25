@@ -1,9 +1,12 @@
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+<<<<<<< HEAD
+=======
+import { useEmissionOption } from "lib/store/GlobalStore"
+>>>>>>> 9a5bebc9162a0cfd21df0f3e53b747b2bef8e92b
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -15,7 +18,6 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 
 const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
-  const navRef = useRef(null)
   const listRef = useRef<FlatList<any>>(null)
   const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
   const shouldDisplayMyCollection = me.labFeatures?.includes("My Collection")
@@ -29,36 +31,24 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
   }, [])
 
   return (
-    <ScrollView ref={navRef} refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
+    <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
       <Sans size="8" mx="2" mt="3">
         {me.name}
       </Sans>
       <Separator my={2} />
       <SectionHeading title="Favorites" />
       {!!shouldDisplayMyCollection && (
-        <MenuItem isBeta={true} title="My Collection" onPress={() => navigate("my-collection/artwork-list")} />
+        <MenuItem isBeta={true} title="My Collection" onPress={() => navigate("my-collection")} />
       )}
-      <MenuItem
-        title="Saves and follows"
-        onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "favorites")}
-      />
+      <MenuItem title="Saves and follows" onPress={() => navigate("favorites")} />
       {!!recentlySavedArtworks.length && (
         <SmallTileRailContainer artworks={recentlySavedArtworks} listRef={listRef} contextModule={null as any} />
       )}
       <Separator mt={3} mb={2} />
       <SectionHeading title="Account Settings" />
-      <MenuItem
-        title="Account"
-        onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-account")}
-      />
-      <MenuItem
-        title="Payment"
-        onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-profile/payment")}
-      />
-      <MenuItem
-        title="Push notifications"
-        onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "my-profile/push-notifications")}
-      />
+      <MenuItem title="Account" onPress={() => navigate("my-account")} />
+      <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
+      <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />
       <MenuItem
         title="Send feedback"
         onPress={() => {
@@ -68,11 +58,8 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
           )
         }}
       />
-      <MenuItem
-        title="Personal data request"
-        onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "privacy-request")}
-      />
-      <MenuItem title="About" onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, "about")} />
+      <MenuItem title="Personal data request" onPress={() => navigate("privacy-request")} />
+      <MenuItem title="About" onPress={() => navigate("about")} />
       <MenuItem title="Log out" onPress={confirmLogout} chevron={null} />
       <Spacer mb={1} />
     </ScrollView>

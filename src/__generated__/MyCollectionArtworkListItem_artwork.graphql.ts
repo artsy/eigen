@@ -8,25 +8,13 @@ export type MyCollectionArtworkListItem_artwork = {
     readonly artist: {
         readonly internalID: string;
     } | null;
-    readonly artistNames: string | null;
-    readonly category: string | null;
-    readonly costMinor: number | null;
-    readonly costCurrencyCode: string | null;
-    readonly date: string | null;
-    readonly depth: string | null;
-    readonly editionSize: string | null;
-    readonly editionNumber: string | null;
-    readonly height: string | null;
-    readonly id: string;
     readonly image: {
         readonly url: string | null;
     } | null;
-    readonly internalID: string;
+    readonly artistNames: string | null;
     readonly medium: string | null;
-    readonly metric: string | null;
     readonly slug: string;
     readonly title: string | null;
-    readonly width: string | null;
     readonly " $refType": "MyCollectionArtworkListItem_artwork";
 };
 export type MyCollectionArtworkListItem_artwork$data = MyCollectionArtworkListItem_artwork;
@@ -37,15 +25,7 @@ export type MyCollectionArtworkListItem_artwork$key = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -59,78 +39,14 @@ return {
       "name": "artist",
       "plural": false,
       "selections": [
-        (v0/*: any*/)
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "internalID",
+          "storageKey": null
+        }
       ],
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "artistNames",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "category",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "costMinor",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "costCurrencyCode",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "date",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "depth",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "editionSize",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "editionNumber",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "height",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "id",
       "storageKey": null
     },
     {
@@ -151,19 +67,18 @@ return {
       ],
       "storageKey": null
     },
-    (v0/*: any*/),
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "medium",
+      "name": "artistNames",
       "storageKey": null
     },
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "metric",
+      "name": "medium",
       "storageKey": null
     },
     {
@@ -179,18 +94,10 @@ return {
       "kind": "ScalarField",
       "name": "title",
       "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "width",
-      "storageKey": null
     }
   ],
   "type": "Artwork",
   "abstractKey": null
 };
-})();
-(node as any).hash = '9695fc56ee4b9a93c8586f5e83f5cc62';
+(node as any).hash = 'c8409aaf097d1a88e86780cc434626aa';
 export default node;

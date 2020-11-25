@@ -3,11 +3,7 @@ import "react-native"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
-
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import DarkNavigationButton from "../DarkNavigationButton"
 
 it("renders without throwing an error", () => {
@@ -18,7 +14,7 @@ describe("routing", () => {
   it("calls the switchboard with the route", () => {
     const button = new DarkNavigationButton({ title: "any", href: "/my/url" })
     button.openLink()
-    expect(SwitchBoard.presentNavigationViewController).toBeCalledWith(button, "/my/url")
+    expect(navigate).toBeCalledWith("/my/url")
   })
 
   it("calls onPress in props, if passed instead", () => {

@@ -1,5 +1,5 @@
 import { CollectionHeaderTestsQueryRawResponse } from "__generated__/CollectionHeaderTestsQuery.graphql"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "lib/Components/ReadMore"
@@ -31,7 +31,6 @@ it("renders without throwing an error", async () => {
 })
 
 describe("collection header", () => {
-  // @ts-ignore STRICTNESS_MIGRATION
   let props: any
   beforeEach(() => {
     props = {

@@ -3,7 +3,7 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 
 import { ActivityIndicator, FlatList, View } from "react-native"
 
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import ConversationSnippet from "./ConversationSnippet"
 
 import { PAGE_SIZE } from "lib/data/constants"
@@ -98,10 +98,7 @@ export class Conversations extends Component<Props, State> {
           ItemSeparatorComponent={() => <Separator mx={2} width="auto" />}
           renderItem={({ item }) => {
             return (
-              <ConversationSnippet
-                conversation={item}
-                onSelected={() => SwitchBoard.presentNavigationViewController(this, `conversation/${item.internalID}`)}
-              />
+              <ConversationSnippet conversation={item} onSelected={() => navigate(`conversation/${item.internalID}`)} />
             )
           }}
           onEndReached={this.fetchData}

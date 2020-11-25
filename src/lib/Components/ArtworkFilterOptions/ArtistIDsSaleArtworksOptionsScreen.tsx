@@ -1,7 +1,7 @@
 import { ArtworkFilterContext, FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { aggregationForFilter, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext, useState } from "react"
-import { NavigatorIOS } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 
 interface ArtistIDsSaleArtworksOptionsScreenProps {

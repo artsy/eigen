@@ -6,7 +6,7 @@ import { getTestWrapper } from "lib/utils/getTestWrapper"
 import { LotsByFollowedArtists } from "../LotsByFollowedArtists"
 
 describe("LotsByFollowedArtists", () => {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   let props
 
   beforeEach(() => {
@@ -38,7 +38,7 @@ describe("LotsByFollowedArtists", () => {
   })
 
   it("looks correct when rendered", () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const { text } = getTestWrapper(<LotsByFollowedArtists {...props} />)
     expect(text).toContain("Test Lots")
   })

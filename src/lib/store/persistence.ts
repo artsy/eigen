@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-community/async-storage"
 import { State } from "easy-peasy"
 import { isArray, isBoolean, isNull, isNumber, isPlainObject, isString, throttle } from "lodash"
 import { Middleware } from "redux"
-import { AppStoreModel } from "./AppStoreModel"
+import { GlobalStoreModel } from "./GlobalStoreModel"
 import { migrate } from "./migration"
 
 export const SESSION_KEY = "sessionState"
@@ -40,8 +40,8 @@ export function assignDeep(object: any, otherObject: any) {
   }
 }
 
-export async function persist(appStoreState: State<AppStoreModel>) {
-  return await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(sanitize(appStoreState)))
+export async function persist(globalStoreState: State<GlobalStoreModel>) {
+  return await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(sanitize(globalStoreState)))
 }
 
 async function loadLegacySearchState() {
@@ -63,11 +63,11 @@ async function loadLegacySearchState() {
   return null
 }
 
-export async function unpersist(): Promise<DeepPartial<State<AppStoreModel>>> {
+export async function unpersist(): Promise<DeepPartial<State<GlobalStoreModel>>> {
   const json = await AsyncStorage.getItem(STORAGE_KEY)
 
   try {
-    const result = (json ? migrate({ state: JSON.parse(json) }) : {}) as State<AppStoreModel>
+    const result = (json ? migrate({ state: JSON.parse(json) }) : {}) as State<GlobalStoreModel>
     const recentSearches = await loadLegacySearchState()
     if (recentSearches) {
       result.search = {

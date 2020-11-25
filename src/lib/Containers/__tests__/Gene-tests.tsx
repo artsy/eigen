@@ -19,11 +19,11 @@ const exampleProps = {
 describe("state", () => {
   it("sets up the initial state", () => {
     const gene = new Gene({
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       gene: null,
       medium: "glitch",
       price_range: "*-*",
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       relay: null,
     })
 

@@ -6,9 +6,9 @@ import _ from "lodash"
  * time into your console at the same places as the relay queries.
  */
 export function metaphysicsExtensionsLoggerMiddleware() {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   return (next) => (req) => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     return next(req).then((res) => {
       if (res.json.extensions && console.groupCollapsed) {
         // See: https://github.com/artsy/metaphysics/blob/master/src/lib/loaders/api/extensionsLogger.ts

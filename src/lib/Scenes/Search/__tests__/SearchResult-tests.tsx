@@ -1,6 +1,5 @@
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { navigate } from "lib/navigation/navigate"
-import { AppStore, AppStoreProvider } from "lib/store/AppStore"
+import { EntityType, navigate, navigateToEntity, SlugType } from "lib/navigation/navigate"
+import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { CatchErrors } from "lib/utils/CatchErrors"
@@ -20,29 +19,17 @@ const result = {
   displayType: "Artist",
 }
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-  EntityType: {
-    Partner: "partner",
-    Fair: "fair",
-  },
-  SlugType: {
-    ProfileID: "profileID",
-    FairID: "fairID",
-  },
-}))
-
 let recentSearchesArray: any[] = []
 
 const _TestWrapper: typeof SearchResult = (props) => {
-  const recentSearches = AppStore.useAppState((state) => state.search.recentSearches)
+  const recentSearches = GlobalStore.useAppState((state) => state.search.recentSearches)
 
   recentSearchesArray = recentSearches
   return <SearchResult {...props} />
 }
 
 const TestWrapper: typeof SearchResult = (props) => (
-  <AppStoreProvider>
+  <GlobalStoreProvider>
     <SearchContext.Provider
       value={{ inputRef: { current: { blur: inputBlurMock } as any }, queryRef: { current: "" } }}
     >
@@ -50,7 +37,7 @@ const TestWrapper: typeof SearchResult = (props) => (
         <_TestWrapper {...props} />
       </CatchErrors>
     </SearchContext.Provider>
-  </AppStoreProvider>
+  </GlobalStoreProvider>
 )
 
 describe(SearchResult, () => {
@@ -58,8 +45,6 @@ describe(SearchResult, () => {
     require("@react-native-community/async-storage").__resetState()
     recentSearchesArray = []
     inputBlurMock.mockClear()
-    // @ts-ignore
-    SwitchBoard.presentNavigationViewController.mockClear()
   })
   it(`works`, async () => {
     const tree = renderWithWrappers(<TestWrapper result={result} />)
@@ -79,11 +64,11 @@ describe(SearchResult, () => {
 
   it("blurs the input and navigates to the correct page when tapped", async () => {
     const tree = renderWithWrappers(<TestWrapper result={result} />)
-    expect(SwitchBoard.presentNavigationViewController).not.toHaveBeenCalled()
+    expect(navigate).not.toHaveBeenCalled()
     tree.root.findByType(TouchableOpacity).props.onPress()
     await new Promise((r) => setTimeout(r, 50))
     expect(inputBlurMock).toHaveBeenCalled()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), result.href)
+    expect(navigate).toHaveBeenCalledWith(result.href)
   })
 
   it(`highlights a part of the string if possible`, async () => {
@@ -120,7 +105,7 @@ describe(SearchResult, () => {
 
   it(`updates recent searches by default`, async () => {
     const tree = renderWithWrappers(<TestWrapper result={result} />)
-    expect(SwitchBoard.presentNavigationViewController).not.toHaveBeenCalled()
+    expect(navigate).not.toHaveBeenCalled()
     expect(recentSearchesArray).toHaveLength(0)
     act(() => {
       tree.root.findByType(TouchableOpacity).props.onPress()
@@ -131,7 +116,7 @@ describe(SearchResult, () => {
 
   it(`won't update recent searches if told not to`, async () => {
     const tree = renderWithWrappers(<TestWrapper result={result} updateRecentSearchesOnTap={false} />)
-    expect(SwitchBoard.presentNavigationViewController).not.toHaveBeenCalled()
+    expect(navigate).not.toHaveBeenCalled()
     expect(recentSearchesArray).toHaveLength(0)
     act(() => {
       tree.root.findByType(TouchableOpacity).props.onPress()
@@ -168,6 +153,6 @@ describe(SearchResult, () => {
       tree.root.findByType(TouchableOpacity).props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
-    expect(navigate).toHaveBeenCalledWith("/art-expo-diff-profile-slug?entity=fair&slugType=profileID")
+    expect(navigateToEntity).toHaveBeenCalledWith("/art-expo-diff-profile-slug", EntityType.Fair, SlugType.ProfileID)
   })
 })

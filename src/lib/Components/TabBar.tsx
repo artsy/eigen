@@ -40,14 +40,8 @@ const TabButton = styled.View<{ spaceEvenly?: boolean; active?: boolean }>`
   justify-content: center;
   padding-top: 5;
   flex-grow: 1;
-  ${(
-    // @ts-ignore STRICTNESS_MIGRATION
-    p
-  ) => p.spaceEvenly && `flex: 1;`};
-  ${(
-    // @ts-ignore STRICTNESS_MIGRATION
-    p
-  ) =>
+  ${(p) => p.spaceEvenly && `flex: 1;`};
+  ${(p) =>
     !p.spaceEvenly &&
     p.active &&
     `
@@ -64,7 +58,7 @@ interface TabProps {
 export const Tab: React.FC<TabProps> = ({ children }) => <View style={{ flex: 1, overflow: "hidden" }}>{children}</View>
 
 export default class TabBar extends React.Component<TabBarProps> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   renderTab(name, page, isTabActive, onPressHandler) {
     return (
       <Button
@@ -90,11 +84,11 @@ export default class TabBar extends React.Component<TabBarProps> {
   }
 
   render() {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const containerWidth = this.props.containerWidth - space(4)
     const numberOfTabs = this.props.tabs.length
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const translateX = this.props.scrollValue.interpolate({
       inputRange: [0, 1],
       outputRange: [0, containerWidth / numberOfTabs],

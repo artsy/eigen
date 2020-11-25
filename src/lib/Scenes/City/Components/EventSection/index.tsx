@@ -1,5 +1,5 @@
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Event } from "lib/Scenes/City/Components/Event"
 import { Box, Serif } from "palette"
 import React from "react"
@@ -16,18 +16,18 @@ export interface Props {
 export class EventSection extends React.Component<Props> {
   viewAllPressed = () => {
     const { citySlug, section } = this.props
-    SwitchBoard.presentNavigationViewController(this, `/city/${citySlug}/${section}`)
+    navigate(`/city/${citySlug}/${section}`)
   }
 
   renderEvents = () => {
     const { data } = this.props
     let finalShowsForPreviewBricks
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const eligibleForBrick = data.filter((s) => !s.isStubShow && !!s.cover_image && !!s.cover_image.url)
     finalShowsForPreviewBricks = eligibleForBrick.slice(0, 2)
 
     if (!!finalShowsForPreviewBricks) {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       return finalShowsForPreviewBricks.map((event) => {
         return (
           <Box key={event.id}>

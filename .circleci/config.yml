@@ -21,15 +21,15 @@ commands:
   install-node:
     steps:
       - run:
-          name: Install Node 12 (Required for Yarn)
+          name: Install Node 14 (Required for Yarn)
           command: |
             set +e
             touch $BASH_ENV
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
             echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
             echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-            echo 'nvm install v12.16.2' >> $BASH_ENV
-            echo 'nvm alias default v12.16.2' >> $BASH_ENV
+            echo 'nvm install v14.13.1' >> $BASH_ENV
+            echo 'nvm alias default v14.13.1' >> $BASH_ENV
             sudo mkdir ~/.config
             sudo chown -R $USER:$GROUP ~/.config
   generate-checksums:
@@ -54,12 +54,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v4-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+            - v5-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
       - run:
           name: Install node modules
           command: ls node_modules || yarn install
       - save_cache:
-          key: v4-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+          key: v5-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
   generate-query-map:
@@ -71,10 +71,10 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v5-jest-{{ .Branch }}
+            - v6-jest-{{ .Branch }}
       - restore_cache:
           keys:
-            - v4-js_test_results-{{ checksum ".manifests/js_test_results" }}
+            - v5-js_test_results-{{ checksum ".manifests/js_test_results" }}
       - run:
           name: Run TypeScript check
           command: ls test-results.json || yarn type-check
@@ -85,30 +85,30 @@ commands:
           name: Run jest tests
           command: ls test-results.json || yarn jest --outputFile test-results.json --json --ci --forceExit --runInBand
       - save_cache:
-          key: v4-js_test_results-{{ checksum ".manifests/js_test_results" }}
+          key: v5-js_test_results-{{ checksum ".manifests/js_test_results" }}
           paths:
             - test-results.json
       - save_cache:
-          key: v5-jest-{{ .Branch }}
+          key: v6-jest-{{ .Branch }}
           paths:
             - .jest
   bundle-js:
     steps:
       - restore_cache:
           keys:
-            - v5-js_bundle-{{ checksum ".manifests/js_bundle" }}
+            - v6-js_bundle-{{ checksum ".manifests/js_bundle" }}
       - restore_cache:
           keys:
-            - v5-metro-{{ checksum ".manifests/js_transform" }}
+            - v6-metro-{{ checksum ".manifests/js_transform" }}
       - run:
           name: Bundle emission
           command: ls emission/Pod/Assets/Emission.js || yarn bundle-for-native-ci
       - save_cache:
-          key: v5-metro-{{ checksum ".manifests/js_transform" }}
+          key: v6-metro-{{ checksum ".manifests/js_transform" }}
           paths:
             - .metro
       - save_cache:
-          key: v5-js_bundle-{{ checksum ".manifests/js_bundle" }}
+          key: v6-js_bundle-{{ checksum ".manifests/js_bundle" }}
           paths:
             - emission/Pod/Assets/Emission.js
             - emission/Pod/Assets/Emission.js.map
@@ -117,7 +117,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v2-gems-{{ checksum "Gemfile.lock" }}
+            - v3-gems-{{ checksum "Gemfile.lock" }}
       - run:
           name: Bundle install
           command: bundle check || bundle install
@@ -125,14 +125,14 @@ commands:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
       - save_cache:
-          key: v2-gems-{{ checksum "Gemfile.lock" }}
+          key: v3-gems-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
   install-cocoapods:
     steps:
       - restore_cache:
           keys:
-            - v8-pods-{{ checksum ".manifests/cocoapods" }}
+            - v9-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: bundle exec pod check --ignore-dev-pods || bundle exec pod install
@@ -140,7 +140,7 @@ commands:
           name: Update echo
           command: ls Artsy/App/EchoNew.json || make update_echo
       - save_cache:
-          key: v8-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v9-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - Pods
             # this changes after pod install because we don't instal dev tools on CI
@@ -150,12 +150,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v8-app_build-{{ checksum ".manifests/app_build" }}
+            - v9-app_build-{{ checksum ".manifests/app_build" }}
       - run:
           name: Build App
           command: ls derived_data || make ci
       - save_cache:
-          key: v8-app_build-{{ checksum ".manifests/app_build" }}
+          key: v9-app_build-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -166,7 +166,7 @@ jobs:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
 
     macos:
-      xcode: 11.3.0
+      xcode: 12.2.0
 
     steps:
       - checkout
@@ -181,7 +181,7 @@ jobs:
   update-metaphysics:
     executor:
       name: node/default
-      tag: "12.16.2"
+      tag: "14.13.1"
     steps:
       - checkout
       - generate-checksums
@@ -194,7 +194,7 @@ jobs:
   check-pr:
     executor:
       name: node/default
-      tag: "12.13.1"
+      tag: "14.13.1"
     steps:
       - checkout
       - generate-checksums
@@ -209,7 +209,7 @@ jobs:
   build-test-js:
     executor:
       name: node/default
-      tag: "12.16.2"
+      tag: "14.13.1"
     steps:
       - checkout
       - generate-checksums
@@ -243,14 +243,14 @@ jobs:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
 
     macos:
-      xcode: "11.3.0"
+      xcode: 12.2.0
 
     steps:
       - attach_workspace:
           at: ../workspace
       - restore_cache:
           keys:
-            - v5-test-success-{{ checksum "../workspace/.manifests/native_code" }}
+            - v6-test-success-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
       # and we're not on the beta branch
       - run:
@@ -282,7 +282,7 @@ jobs:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || make ci-test
       - save_cache:
-          key: v5-test-success-{{ checksum ".manifests/native_code" }}
+          key: v6-test-success-{{ checksum ".manifests/native_code" }}
           paths:
             - xcode_test_raw.log
 
@@ -311,7 +311,7 @@ jobs:
     environment:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
     macos:
-      xcode: "11.3.0"
+      xcode: 12.2.0
     steps:
       - checkout
       - install-gems

@@ -2,7 +2,7 @@ import { ArtworkFilterContext, useSelectedOptionsDisplay } from "lib/utils/Artwo
 import { AggregateOption, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Sans, Separator } from "palette"
 import React, { useContext } from "react"
-import { NavigatorIOS } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface PriceRangeOptionsScreenProps {

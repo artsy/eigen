@@ -1,5 +1,6 @@
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { getLocationDetails, LocationWithDetails, SimpleLocation } from "lib/utils/googleMaps"
 import { Flex } from "palette"
 import React, { useState } from "react"
 
@@ -8,14 +9,14 @@ import { LocationAutocomplete } from "./LocationAutocomplete"
 interface ShippingModalProps {
   toggleVisibility: () => void
   modalIsVisible: boolean
-  setLocation: (location: string) => void
-  location: string
+  setLocation: (locationDetails: LocationWithDetails) => void
+  location: LocationWithDetails | null
 }
 
 export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
   const { location, toggleVisibility, modalIsVisible, setLocation } = props
 
-  const [locationInput, setLocationInput] = useState("")
+  const [locationInput, setLocationInput] = useState<SimpleLocation | null>(null)
 
   return (
     <FancyModal visible={modalIsVisible} onBackgroundPressed={() => toggleVisibility()}>
@@ -25,8 +26,10 @@ export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
           toggleVisibility()
         }}
         rightButtonText="Apply"
-        onRightButtonPress={() => {
-          setLocation(locationInput)
+        onRightButtonPress={async () => {
+          const locationDetails = await getLocationDetails(locationInput as SimpleLocation)
+
+          setLocation(locationDetails)
           toggleVisibility()
         }}
         rightButtonDisabled={!locationInput}

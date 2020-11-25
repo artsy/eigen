@@ -1,14 +1,10 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Sans, Theme } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import { ArtworkExtraLinks } from "../index"
-
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 jest.unmock("react-tracking")
 
@@ -17,8 +13,8 @@ jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import { postEvent } from "lib/NativeModules/Events"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
+import { navigate } from "lib/navigation/navigate"
+import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 
 function getWrapper({
   artwork,
@@ -28,18 +24,15 @@ function getWrapper({
   auctionState?: AuctionTimerState
 }) {
   return mount(
-    <AppStoreProvider>
+    <GlobalStoreProvider>
       <Theme>
         <ArtworkExtraLinks artwork={artwork} auctionState={auctionState!} />
       </Theme>
-    </AppStoreProvider>
+    </GlobalStoreProvider>
   )
 }
 
 describe("ArtworkExtraLinks", () => {
-  beforeEach(() => {
-    ;(SwitchBoard.presentNavigationViewController as jest.Mock).mockReset()
-  })
   it("redirects to /sales when consignments link is clicked from outside of sell tab", () => {
     const artwork = {
       ...ArtworkFixture,
@@ -54,12 +47,12 @@ describe("ArtworkExtraLinks", () => {
 
     const component = getWrapper({ artwork })
     const consignmentsLink = component.find(Text).at(1)
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const texts = component.find(Sans).map((x) => x.text())
 
     expect(texts[0]).toContain("Consign with Artsy.")
     consignmentsLink.props().onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/sales")
+    expect(navigate).toHaveBeenCalledWith("/sales")
   })
 
   it("redirects to /collections/my-collection/marketing-landing when consignments link is clicked from within sell tab", () => {
@@ -74,15 +67,12 @@ describe("ArtworkExtraLinks", () => {
       ],
     }
 
-    __appStoreTestUtils__?.injectState({ bottomTabs: { sessionState: { selectedTab: "sell" } } })
+    __globalStoreTestUtils__?.injectState({ bottomTabs: { sessionState: { selectedTab: "sell" } } })
     const component = getWrapper({ artwork })
     const consignmentsLink = component.find(Text).at(1)
 
     consignmentsLink.props().onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-      expect.anything(),
-      "/collections/my-collection/marketing-landing"
-    )
+    expect(navigate).toHaveBeenCalledWith("/collections/my-collection/marketing-landing")
   })
 
   describe("for an artwork with more than 1 consignable artist", () => {
@@ -304,7 +294,7 @@ describe("ArtworkExtraLinks", () => {
     it("posts proper event in when clicking Ask A Specialist", () => {
       component
         .find("Text")
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         .findWhere((t) => t.text() === "ask a specialist")
         .first()
         .props()
@@ -319,7 +309,7 @@ describe("ArtworkExtraLinks", () => {
     it("posts proper event in when clicking Read our auction FAQs", () => {
       component
         .find("Text")
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         .findWhere((t) => t.text() === "Read our auction FAQs")
         .first()
         .props()
@@ -334,7 +324,7 @@ describe("ArtworkExtraLinks", () => {
     it("posts proper event in when clicking Conditions of Sale", () => {
       component
         .find("Text")
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         .findWhere((t) => t.text() === "Conditions of Sale")
         .first()
         .props()

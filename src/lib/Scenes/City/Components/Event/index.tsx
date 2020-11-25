@@ -1,6 +1,6 @@
 import { EventMutation } from "__generated__/EventMutation.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { Show } from "lib/Scenes/Map/types"
 import { Schema, Track, track as _track } from "lib/utils/track"
@@ -24,7 +24,7 @@ interface State {
   isFollowedSaving: boolean
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const track: Track<Props, {}> = _track
 
 @track()
@@ -95,7 +95,7 @@ export class Event extends React.Component<Props, State> {
               },
             },
             updater: (store) => {
-              // @ts-ignore STRICTNESS_MIGRATION
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               store.get(nodeID).setValue(!isShowFollowed, "is_followed")
             },
           })
@@ -116,7 +116,7 @@ export class Event extends React.Component<Props, State> {
       owner_slug: slug,
     } as any
   })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   trackShowTap(_actionName, _slug, _internalID) {
     return null
   }
@@ -127,7 +127,7 @@ export class Event extends React.Component<Props, State> {
     if (section === "bmw") {
       this.trackShowTap(Schema.ActionNames.OpenBMWShow, slug, internalID)
     }
-    SwitchBoard.presentNavigationViewController(this, `/show/${slug}`)
+    navigate(`/show/${slug}`)
   }
 
   render() {

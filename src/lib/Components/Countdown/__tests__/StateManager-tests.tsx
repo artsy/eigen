@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import moment from "moment"
 import React from "react"
@@ -20,7 +20,7 @@ describe("StateManager", () => {
           date: new Date(Date.now() + 1000).toISOString(),
           label: "foo",
         })}
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         onNextTickerState={jest.fn(() => ({ label: "bar", date: null, state: "foo" }))}
       />
     )
@@ -38,7 +38,7 @@ describe("StateManager", () => {
           date: new Date(Date.now() + 1000).toISOString(),
           label: "foo",
         })}
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         onNextTickerState={onNextTickerState}
       />
     )

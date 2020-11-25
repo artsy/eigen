@@ -1,5 +1,5 @@
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Box, Serif, space } from "palette"
 import { Component } from "react"
 import React from "react"
@@ -21,10 +21,10 @@ interface Props {
 export class FairEventSection extends Component<Props> {
   viewAllPressed = () => {
     const { citySlug } = this.props
-    SwitchBoard.presentNavigationViewController(this, `/city-fair/${citySlug}`)
+    navigate(`/city-fair/${citySlug}`)
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   renderItem = ({ item }) => {
     const fair = item
     return (

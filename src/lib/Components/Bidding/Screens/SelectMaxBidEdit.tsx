@@ -24,7 +24,6 @@ interface SelectMaxBidState {
 
 @screenTrack({
   context_screen: Schema.PageNames.BidFlowMaxBidPage,
-  // @ts-ignore STRICTNESS_MIGRATION
   context_screen_owner_type: null,
 })
 export class SelectMaxBidEdit extends React.Component<SelectMaxBidProps, SelectMaxBidState> {

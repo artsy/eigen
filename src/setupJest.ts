@@ -166,6 +166,7 @@ function getNativeModules(): typeof NativeModules {
           AROptionsUseReactNativeWebView: false,
           AROptionsNewShowPage: false,
           AROptionsNewFairPage: false,
+          AROptionsNewInsightsPage: false,
         },
         legacyFairSlugs: ["some-fairs-slug", "some-other-fair-slug"],
         legacyFairProfileSlugs: [],
@@ -181,14 +182,6 @@ function getNativeModules(): typeof NativeModules {
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       appVersion: "appVersion",
-    },
-
-    ARSwitchBoardModule: {
-      presentNavigationViewController: jest.fn(),
-      presentModalViewController: jest.fn(),
-      presentMediaPreviewController: jest.fn(),
-      presentArtworksSet: jest.fn(),
-      updateShouldHideBackButton: jest.fn(),
     },
     Emission: null as never,
     ARScreenPresenterModule: {
@@ -211,22 +204,11 @@ jest.mock("lib/navigation/navigate", () => ({
   navigate: jest.fn(),
   goBack: jest.fn(),
   dismissModal: jest.fn(),
+  navigateToEntity: jest.fn(),
+  navigateToPartner: jest.fn(),
+  EntityType: { partner: "partner", fair: "fair" },
+  SlugType: { partner: "partner", fair: "fair" },
 }))
-jest.mock("lib/NativeModules/SwitchBoard", () => {
-  const fns = {
-    presentNavigationViewController: jest.fn(),
-    presentMediaPreviewController: jest.fn(),
-    presentModalViewController: jest.fn(),
-    presentPartnerViewController: jest.fn(),
-    dismissModalViewController: jest.fn(),
-    dismissNavigationViewController: jest.fn(),
-  }
-  return {
-    EntityType: { partner: "partner", fair: "fair" },
-    SlugType: { partner: "partner", fair: "fair" },
-    ...fns,
-  }
-})
 
 Object.assign(NativeModules, getNativeModules())
 
@@ -246,6 +228,7 @@ beforeEach(() => {
     })
   }
   reset(NativeModules, getNativeModules())
+  reset(require("lib/navigation/navigate"), {})
 })
 
 declare const process: any
@@ -379,6 +362,40 @@ jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
   linear: jest.fn(),
   spring: jest.fn(),
 }))
+
+jest.mock("react-native-gesture-handler", () => {
+  const View = require("react-native/Libraries/Components/View/View")
+  return {
+    Swipeable: View,
+    DrawerLayout: View,
+    State: {},
+    ScrollView: View,
+    Slider: View,
+    Switch: View,
+    TextInput: View,
+    ToolbarAndroid: View,
+    ViewPagerAndroid: View,
+    DrawerLayoutAndroid: View,
+    WebView: View,
+    NativeViewGestureHandler: View,
+    TapGestureHandler: View,
+    FlingGestureHandler: View,
+    ForceTouchGestureHandler: View,
+    LongPressGestureHandler: View,
+    PanGestureHandler: View,
+    PinchGestureHandler: View,
+    RotationGestureHandler: View,
+    /* Buttons */
+    RawButton: View,
+    BaseButton: View,
+    RectButton: View,
+    BorderlessButton: View,
+    /* Other */
+    FlatList: View,
+    gestureHandlerRootHOC: jest.fn(),
+    Directions: {},
+  }
+})
 
 jest.mock("react-native-config", () => ({
   ARTSY_API_CLIENT_SECRET: "-",

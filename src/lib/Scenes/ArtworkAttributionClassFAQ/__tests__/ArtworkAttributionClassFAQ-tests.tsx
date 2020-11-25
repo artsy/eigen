@@ -1,22 +1,18 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { Button, Sans } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import { ArtworkAttributionClassFAQ } from "../ArtworkAttributionClassFAQ"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  dismissNavigationViewController: jest.fn(),
-}))
-
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { goBack } from "lib/navigation/navigate"
 
 describe("ArtworkAttributionClassFAQ", () => {
   it("renders FAQ header", () => {
     const component = mount(
       <ArtworkAttributionClassFAQ
         safeAreaInsets={{ top: 20, left: 0, right: 0, bottom: 0 }}
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         artworkAttributionClasses={attributionClasses}
       />
     )
@@ -27,7 +23,7 @@ describe("ArtworkAttributionClassFAQ", () => {
     const component = mount(
       <ArtworkAttributionClassFAQ
         safeAreaInsets={{ top: 20, left: 0, right: 0, bottom: 0 }}
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         artworkAttributionClasses={attributionClasses}
       />
     )
@@ -38,7 +34,7 @@ describe("ArtworkAttributionClassFAQ", () => {
     const component = mount(
       <ArtworkAttributionClassFAQ
         safeAreaInsets={{ top: 20, left: 0, right: 0, bottom: 0 }}
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         artworkAttributionClasses={attributionClasses}
       />
     )
@@ -51,13 +47,13 @@ describe("ArtworkAttributionClassFAQ", () => {
     const component = mount(
       <ArtworkAttributionClassFAQ
         safeAreaInsets={{ top: 20, left: 0, right: 0, bottom: 0 }}
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         artworkAttributionClasses={attributionClasses}
       />
     )
     const okButton = component.find(Button).at(0)
     okButton.props().onPress()
-    expect(SwitchBoard.dismissNavigationViewController).toHaveBeenCalled()
+    expect(goBack).toHaveBeenCalled()
   })
 })
 

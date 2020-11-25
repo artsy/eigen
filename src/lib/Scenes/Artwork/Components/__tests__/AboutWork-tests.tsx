@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount, shallow } from "enzyme"
 import { ReadMore } from "lib/Components/ReadMore"
 import { Sans, Theme } from "palette"
@@ -17,7 +17,7 @@ describe("AboutWork", () => {
     ;(truncatedTextLimit as jest.Mock).mockReset()
   })
   it("renders the AboutWork correctly if all info is present", () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const component = shallow(<AboutWork artwork={aboutWorkArtwork} />)
     expect(component.find(Sans).length).toEqual(2)
     expect(component.find(Sans).at(0).text()).toMatchInlineSnapshot(`"About the work"`)
@@ -29,7 +29,7 @@ describe("AboutWork", () => {
   it("renders the AboutWork correctly if only additional information is present", () => {
     const artworkNoDescription = { ...aboutWorkArtwork, description: null }
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const component = shallow(<AboutWork artwork={artworkNoDescription} />)
     expect(component.find(Sans).length).toEqual(1)
     expect(component.find(Sans).at(0).text()).toMatchInlineSnapshot(`"About the work"`)
@@ -40,7 +40,7 @@ describe("AboutWork", () => {
   it("renders the AboutWork correctly if only description is present", () => {
     const artworkNoAdditionalInfo = { ...aboutWorkArtwork, additional_information: null }
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const component = shallow(<AboutWork artwork={artworkNoAdditionalInfo} />)
     expect(component.find(Sans).length).toEqual(2)
     expect(component.find(Sans).at(0).text()).toMatchInlineSnapshot(`"About the work"`)
@@ -53,14 +53,14 @@ describe("AboutWork", () => {
   it("renders nothing if no information is present", () => {
     const artworkNoInfo = { ...aboutWorkArtwork, additional_information: null, description: null }
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const component = shallow(<AboutWork artwork={artworkNoInfo} />)
     expect(component.find(Sans).length).toEqual(0)
   })
 
   it("hides 'From Artsy Specialist:' for auction works", () => {
     const artworkInAuction = { ...aboutWorkArtwork, isInAuction: true }
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const component = shallow(<AboutWork artwork={artworkInAuction} />)
     expect(component.find(Sans).length).toEqual(1)
     expect(component.find(Sans).at(0).text()).not.toEqual("From Artsy Specialist:")
@@ -71,7 +71,7 @@ describe("AboutWork", () => {
     const component = mount(
       <Theme>
         <AboutWork
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           artwork={aboutWorkArtwork}
         />
       </Theme>
@@ -86,7 +86,7 @@ describe("AboutWork", () => {
     const component = mount(
       <Theme>
         <AboutWork
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           artwork={aboutWorkArtwork}
         />
       </Theme>

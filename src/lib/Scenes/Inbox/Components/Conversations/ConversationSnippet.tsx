@@ -46,7 +46,7 @@ const track: Track<Props, null, Schema.Entity> = _track
 
 @track()
 export class ConversationSnippet extends React.Component<Props> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   @track((props) => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationSelected,
@@ -54,7 +54,7 @@ export class ConversationSnippet extends React.Component<Props> {
     owner_type: Schema.OwnerEntityTypes.Conversation,
   }))
   conversationSelected() {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.props.onSelected()
   }
 
@@ -63,30 +63,30 @@ export class ConversationSnippet extends React.Component<Props> {
     // If we cannot resolve items in the conversation, such as deleted fair booths
     // prior to snapshotting them at time of inquiry (generally older conversations),
     // just skip over the entire conversation.
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     if (conversation.items.length === 0) {
       console.warn(`Unable to load items for conversation with ID ${conversation.internalID}`)
       return null
     }
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const item = conversation.items[0].item
 
     let imageURL: string
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     if (item.__typename === "Artwork") {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       imageURL = item.image && item.image.url
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     } else if (item.__typename === "Show") {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       imageURL = item.coverImage && item.coverImage.url
     }
 
     const partnerName = conversation.to.name
 
     const conversationText = conversation.lastMessage && conversation.lastMessage.replace(/\n/g, " ")
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const date = moment(conversation.lastMessageAt).fromNow(true) + " ago"
     return (
       <Touchable onPress={() => this.conversationSelected()} underlayColor={color("black5")}>
@@ -100,7 +100,7 @@ export class ConversationSnippet extends React.Component<Props> {
               )}
               <ImageView
                 imageURL={
-                  // @ts-ignore STRICTNESS_MIGRATION
+                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                   imageURL
                 }
               />

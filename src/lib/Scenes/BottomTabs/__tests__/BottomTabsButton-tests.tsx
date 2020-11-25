@@ -1,4 +1,4 @@
-import { __appStoreTestUtils__, AppStoreProvider } from "lib/store/AppStore"
+import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -7,25 +7,23 @@ import { TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
 import { BottomTabsButton } from "../BottomTabsButton"
 
-jest.mock("lib/NativeModules/SwitchBoard")
-
 const trackEvent = useTracking().trackEvent
 
 const TestWrapper: React.FC<React.ComponentProps<typeof BottomTabsButton>> = (props) => {
   return (
-    <AppStoreProvider>
+    <GlobalStoreProvider>
       <BottomTabsButton {...props} />
-    </AppStoreProvider>
+    </GlobalStoreProvider>
   )
 }
 
 describe(BottomTabsButton, () => {
   it(`updates the selected tab state on press`, async () => {
     const tree = renderWithWrappers(<TestWrapper tab="search" />)
-    expect(__appStoreTestUtils__?.getCurrentState().bottomTabs.sessionState.selectedTab).toBe("home")
+    expect(__globalStoreTestUtils__?.getCurrentState().bottomTabs.sessionState.selectedTab).toBe("home")
     tree.root.findByType(TouchableWithoutFeedback).props.onPress()
     await flushPromiseQueue()
-    expect(__appStoreTestUtils__?.getCurrentState().bottomTabs.sessionState.selectedTab).toBe("search")
+    expect(__globalStoreTestUtils__?.getCurrentState().bottomTabs.sessionState.selectedTab).toBe("search")
   })
 
   it(`dispatches an analytics action on press`, async () => {
@@ -33,7 +31,7 @@ describe(BottomTabsButton, () => {
     expect(trackEvent).not.toHaveBeenCalled()
     tree.root.findByType(TouchableWithoutFeedback).props.onPress()
     await flushPromiseQueue()
-    expect(__appStoreTestUtils__?.getCurrentState().bottomTabs.sessionState.selectedTab).toBe("sell")
+    expect(__globalStoreTestUtils__?.getCurrentState().bottomTabs.sessionState.selectedTab).toBe("sell")
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedTabBar",
       badge: false,

@@ -1,6 +1,6 @@
 import { RequestConditionReport_artwork } from "__generated__/RequestConditionReport_artwork.graphql"
 import { RequestConditionReport_me } from "__generated__/RequestConditionReport_me.graphql"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { Modal } from "lib/Components/Modal"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
@@ -9,7 +9,7 @@ import React from "react"
 import { RequestConditionReport } from "../RequestConditionReport"
 
 const artwork: RequestConditionReport_artwork = {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   " $refType": null,
   internalID: "some-internal-id",
   slug: "pablo-picasso-guernica",
@@ -18,7 +18,7 @@ const artwork: RequestConditionReport_artwork = {
   },
 }
 const me: RequestConditionReport_me = {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   " $refType": null,
   email: "someemail@testerino.net",
   internalID: "some-id",
@@ -26,7 +26,7 @@ const me: RequestConditionReport_me = {
 
 describe("RequestConditionReport", () => {
   it("renders correctly", () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const component = mount(<RequestConditionReport artwork={artwork} me={me} relay={null} />)
     const requestReportButton = component.find(Button).at(0)
     expect(requestReportButton.length).toEqual(1)
@@ -44,7 +44,7 @@ describe("RequestConditionReport", () => {
   })
 
   it("shows an error modal on failure", async () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const component = mount(<RequestConditionReport artwork={artwork} me={me} relay={null} />)
     component.instance().requestConditionReport = jest
       .fn()
@@ -64,7 +64,7 @@ describe("RequestConditionReport", () => {
   })
 
   it("shows a success modal on success", async () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const component = mount(<RequestConditionReport artwork={artwork} me={me} relay={null} />)
     component.instance().requestConditionReport = jest
       .fn()

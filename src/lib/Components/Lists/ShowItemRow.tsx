@@ -3,7 +3,7 @@ import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { hrefForPartialShow } from "lib/utils/router"
 import { Schema, Track, track as _track } from "lib/utils/track"
@@ -27,7 +27,7 @@ interface State {
   isFollowedSaving: boolean
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const track: Track<Props, {}> = _track
 
 @track()
@@ -37,7 +37,7 @@ export class ShowItemRow extends React.Component<Props, State> {
   }
   handleTap = debounce((_slug: string, _internalID: string) => {
     const href = hrefForPartialShow(this.props.show)
-    SwitchBoard.presentNavigationViewController(this, href)
+    navigate(href)
   })
 
   @track((props) => {
@@ -67,7 +67,7 @@ export class ShowItemRow extends React.Component<Props, State> {
           isFollowedSaving: true,
         },
         () => {
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           return commitMutation<ShowItemRowMutation>(this.props.relay.environment, {
             onCompleted: () => this.handleShowSuccessfullyUpdated(),
             mutation: graphql`
@@ -97,7 +97,7 @@ export class ShowItemRow extends React.Component<Props, State> {
               },
             },
             updater: (store) => {
-              // @ts-ignore STRICTNESS_MIGRATION
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               store.get(nodeID).setValue(!isShowFollowed, "is_followed")
             },
           })
@@ -151,7 +151,7 @@ export class ShowItemRow extends React.Component<Props, State> {
                 ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
                 : exhibitionDates(
                     show.exhibition_period,
-                    // @ts-ignore STRICTNESS_MIGRATION
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     show.end_at
                   )}
             </Sans>

@@ -10,9 +10,10 @@ export const Versions = {
   AddSearchesAndNativeAndBottomTabs: 1,
   AddConsignments: 2,
   RenameConsignmentsToMyCollection: 3,
+  RemoveMyCollectionNavigationState: 4,
 }
 
-export const CURRENT_APP_VERSION = Versions.RenameConsignmentsToMyCollection
+export const CURRENT_APP_VERSION = Versions.RemoveMyCollectionNavigationState
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -30,6 +31,9 @@ export const artsyAppMigrations: Migrations = {
   [Versions.RenameConsignmentsToMyCollection]: (state) => {
     state.myCollection = state.consignments
     delete state.consignments
+  },
+  [Versions.RemoveMyCollectionNavigationState]: (state) => {
+    delete state.myCollection.navigation
   },
 }
 

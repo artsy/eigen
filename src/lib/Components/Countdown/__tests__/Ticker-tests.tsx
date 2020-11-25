@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { render } from "enzyme"
 import moment from "moment"
 import React from "react"
@@ -15,7 +15,7 @@ describe("SimpleTicker", () => {
   })
 
   it("renders properly when duration is over", () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const zeroDuration = moment.duration(null)
     const comp = render(<SimpleTicker duration={zeroDuration} separator="  " size="5" />)
     expect(comp.text()).toEqual("00d  00h  00m  00s")

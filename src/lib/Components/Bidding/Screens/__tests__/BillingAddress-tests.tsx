@@ -8,7 +8,7 @@ import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { BillingAddress } from "../BillingAddress"
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const selectCountry = (component, navigator, country) => {
   // The second `<TouchableWithoutFeedback>` is a button that pushes a new `<SelectCountry>` instance.
   component.root.findAllByType(TouchableWithoutFeedback)[1].instance.props.onPress()
@@ -109,13 +109,13 @@ it("pre-fills the fields if initial billing address is provided", () => {
   expect(countryField.props.children).toEqual("United States")
 })
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const errorTextComponent = (component, label) => findFieldForInput(component, { label }).findByType(Sans)
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const textInputComponent = (component, label) => findFieldForInput(component, { label }).findByType(TextInput)
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const findFieldForInput = (component, { label }) => component.root.findByProps({ label })
 
 const billingAddress = {

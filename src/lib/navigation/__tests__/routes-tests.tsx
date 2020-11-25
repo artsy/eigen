@@ -1,5 +1,5 @@
 import { matchRoute } from "lib/navigation/routes"
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 
 describe("artsy.net routes", () => {
   it(`routes to Home`, () => {
@@ -187,7 +187,7 @@ describe("artsy.net routes", () => {
   })
 
   it("routes to the old Auction view when the AROptionsNewSalePage option is false", () => {
-    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewSalePage: false })
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewSalePage: false })
     expect(matchRoute("/auction/special-auction")).toMatchInlineSnapshot(`
       Object {
         "module": "Auction",
@@ -200,7 +200,7 @@ describe("artsy.net routes", () => {
   })
 
   it("routes to the new Auction view when the AROptionsNewSalePage option is true", () => {
-    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewSalePage: true })
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewSalePage: true })
     expect(matchRoute("/auction/special-auction")).toMatchInlineSnapshot(`
       Object {
         "module": "Auction2",
@@ -268,7 +268,7 @@ describe("artsy.net routes", () => {
 
   describe("routes to Show, based on lab option", () => {
     it("routes to the old Show view when the AROptionsNewShowPage option is false", () => {
-      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: false })
+      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: false })
       expect(matchRoute("/show/special-show")).toMatchInlineSnapshot(`
         Object {
           "module": "Show",
@@ -281,7 +281,7 @@ describe("artsy.net routes", () => {
     })
 
     it("routes to the new Show view when the AROptionsNewShowPage option is true", () => {
-      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: true })
+      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: true })
       expect(matchRoute("/show/special-show")).toMatchInlineSnapshot(`
         Object {
           "module": "Show2",
@@ -754,41 +754,52 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to AddEditArtwork", () => {
-    expect(matchRoute("/my-collection/add-artwork")).toMatchInlineSnapshot(`
+  it("routes to MyCollectionArtwork", () => {
+    expect(matchRoute("/my-collection/artwork/123")).toMatchInlineSnapshot(`
       Object {
-        "module": "AddEditArtwork",
-        "params": Object {},
-        "type": "match",
-      }
-    `)
-  })
-
-  it("routes to MyCollectionArtworkDetail", () => {
-    expect(matchRoute("/my-collection/artwork-detail/123")).toMatchInlineSnapshot(`
-      Object {
-        "module": "MyCollectionArtworkDetail",
+        "module": "MyCollectionArtwork",
         "params": Object {
-          "artworkID": "123",
+          "artworkSlug": "123",
         },
         "type": "match",
       }
     `)
-    expect(matchRoute("/my-collection/artwork-detail/456")).toMatchInlineSnapshot(`
+    expect(matchRoute("/my-collection/artwork/456")).toMatchInlineSnapshot(`
       Object {
-        "module": "MyCollectionArtworkDetail",
+        "module": "MyCollectionArtwork",
         "params": Object {
-          "artworkID": "456",
+          "artworkSlug": "456",
         },
         "type": "match",
       }
     `)
   })
 
-  it("routes to MyCollectionArtworkList", () => {
-    expect(matchRoute("/my-collection/artwork-list")).toMatchInlineSnapshot(`
+  it("routes to MyCollectionArtworkFullDetails", () => {
+    expect(matchRoute("/my-collection/artwork-details/123")).toMatchInlineSnapshot(`
       Object {
-        "module": "MyCollectionArtworkList",
+        "module": "MyCollectionArtworkFullDetails",
+        "params": Object {
+          "artworkSlug": "123",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("/my-collection/artwork-details/456")).toMatchInlineSnapshot(`
+      Object {
+        "module": "MyCollectionArtworkFullDetails",
+        "params": Object {
+          "artworkSlug": "456",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
+  it("routes to MyCollection", () => {
+    expect(matchRoute("/my-collection")).toMatchInlineSnapshot(`
+      Object {
+        "module": "MyCollection",
         "params": Object {},
         "type": "match",
       }
@@ -805,10 +816,10 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to SellTabApp", () => {
+  it("routes to Sales", () => {
     expect(matchRoute("/collections/my-collection/marketing-landing")).toMatchInlineSnapshot(`
       Object {
-        "module": "SellTabApp",
+        "module": "SalesNotRootTabView",
         "params": Object {},
         "type": "match",
       }

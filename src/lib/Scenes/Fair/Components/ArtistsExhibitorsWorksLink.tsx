@@ -1,5 +1,5 @@
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Box, Flex } from "palette"
 import React from "react"
 
@@ -9,15 +9,15 @@ interface ArtistsExhibitorsWorksLinkProps {
 
 export class ArtistsExhibitorsWorksLink extends React.Component<ArtistsExhibitorsWorksLinkProps> {
   onViewAllArtistsPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fairID}/artists`)
+    navigate(`/fair/${this.props.fairID}/artists`)
   }
 
   onViewAllExhibitorsPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fairID}/exhibitors`)
+    navigate(`/fair/${this.props.fairID}/exhibitors`)
   }
 
   onViewAllArtworksPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fairID}/artworks`)
+    navigate(`/fair/${this.props.fairID}/artworks`)
   }
 
   render() {

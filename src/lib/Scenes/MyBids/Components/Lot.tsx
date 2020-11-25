@@ -1,6 +1,6 @@
 import { Lot_saleArtwork } from "__generated__/Lot_saleArtwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Box, Flex, Text, Touchable } from "palette"
 import React from "react"
 import { View } from "react-native"
@@ -19,9 +19,7 @@ class Lot extends React.Component<Props> {
     const { saleArtwork, subtitle, children, ArtworkBadge } = this.props
 
     return (
-      <Touchable
-        onPress={() => SwitchBoard.presentNavigationViewController(this, saleArtwork?.artwork?.href as string)}
-      >
+      <Touchable onPress={() => navigate(saleArtwork?.artwork?.href as string)}>
         <View>
           <Flex my="1" flexDirection="row">
             <Flex mr="1">

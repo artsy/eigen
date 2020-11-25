@@ -1,17 +1,12 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount, shallow } from "enzyme"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { Flex, Sans, Serif, Text, Theme } from "palette"
 import React from "react"
 import { defaultRules, renderMarkdown } from "../renderMarkdown"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-  presentModalViewController: jest.fn(),
-}))
-
 import { readFileSync } from "fs"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { join } from "path"
 
 describe("renderMarkdown", () => {
@@ -70,7 +65,7 @@ describe("renderMarkdown", () => {
       ...basicRules,
       paragraph: {
         ...basicRules.paragraph,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => {
           return (
             <Serif size="3t" color="black60" key={state.key}>
@@ -99,7 +94,7 @@ describe("renderMarkdown", () => {
       ...basicRules,
       paragraph: {
         ...basicRules.paragraph,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => {
           return (
             <Serif size="3t" color="black60" key={state.key}>
@@ -123,7 +118,7 @@ describe("renderMarkdown", () => {
 
     renderedComponent.find(LinkText).at(0).props().onPress()
 
-    expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(expect.anything(), "/artist/first")
+    expect(navigate).toHaveBeenCalledWith("/artist/first", { modal: true })
   })
 
   it("doesn't open links modally when not specified", () => {
@@ -132,7 +127,7 @@ describe("renderMarkdown", () => {
       ...basicRules,
       paragraph: {
         ...basicRules.paragraph,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => {
           return (
             <Serif size="3t" color="black60" key={state.key}>
@@ -156,7 +151,7 @@ describe("renderMarkdown", () => {
 
     renderedComponent.find(LinkText).at(0).props().onPress()
 
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/first")
+    expect(navigate).toHaveBeenCalledWith("/artist/first")
   })
 
   it(`renders all the markdown elements`, async () => {
@@ -174,11 +169,9 @@ describe("renderMarkdown", () => {
 })
 
 function visitTree(tree: unknown, visit: (node: React.ReactElement) => void) {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   if (React.isValidElement(tree)) {
-    // @ts-ignore STRICTNESS_MIGRATION
     visit(tree)
-    // @ts-ignore STRICTNESS_MIGRATION
     React.Children.forEach((tree.props as any).children, (child) => visitTree(child, visit))
   } else if (Array.isArray(tree)) {
     tree.map((child) => visitTree(child, visit))

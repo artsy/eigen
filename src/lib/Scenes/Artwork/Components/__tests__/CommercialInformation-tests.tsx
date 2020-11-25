@@ -1,8 +1,8 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Countdown } from "lib/Components/Bidding/Components/Timer"
-import { AppStoreProvider } from "lib/store/AppStore"
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import "moment-timezone"
 import { Sans, Theme } from "palette"
 import React from "react"
@@ -17,14 +17,10 @@ import { CommercialInformationTimerWrapper, SaleAvailability } from "../Commerci
 const Wrapper: React.FC<{}> = ({ children }) => {
   return (
     <Theme>
-      <AppStoreProvider>{children}</AppStoreProvider>
+      <GlobalStoreProvider>{children}</GlobalStoreProvider>
     </Theme>
   )
 }
-
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 describe("CommercialInformation", () => {
   it("renders all information when the data is present", () => {

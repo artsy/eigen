@@ -1,11 +1,10 @@
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
-import { AppRegistry, View, YellowBox } from "react-native"
+import { AppRegistry, LogBox, View } from "react-native"
 import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { Theme } from "palette"
-import { ArtistQueryRenderer } from "./Containers/Artist"
 import { BidFlowQueryRenderer } from "./Containers/BidFlow"
 import { GeneQueryRenderer } from "./Containers/Gene"
 import { InboxWrapper } from "./Containers/Inbox"
@@ -13,6 +12,7 @@ import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowQueryRenderer } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
 import { About } from "./Scenes/About/About"
+import { ArtistQueryRenderer } from "./Scenes/Artist/Artist"
 import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
@@ -29,12 +29,7 @@ import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 
 // Consignments / My Collection
 import { Consignments } from "./Scenes/Consignments"
-import { setupMyCollectionScreen } from "./Scenes/MyCollection/Boot"
-import { AddEditArtwork } from "./Scenes/MyCollection/Screens/AddArtwork/AddEditArtwork"
-import { MyCollectionArtworkDetailQueryRenderer as MyCollectionArtworkDetail } from "./Scenes/MyCollection/Screens/ArtworkDetail/MyCollectionArtworkDetail"
-import { MyCollectionArtworkListQueryRenderer as MyCollectionArtworkList } from "./Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkList"
-import { ConsignmentsSubmissionForm } from "./Scenes/MyCollection/Screens/ConsignmentsHome/ConsignmentsSubmissionForm"
-import { SellTabApp } from "./Scenes/MyCollection/SellTabApp"
+import { ConsignmentsSubmissionForm } from "./Scenes/Consignments/ConsignmentsHome/ConsignmentsSubmissionForm"
 
 import { FadeIn } from "./Components/FadeIn"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
@@ -82,35 +77,31 @@ import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
+import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
+import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
+import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { AppStore, AppStoreProvider } from "./store/AppStore"
+import { GlobalStore, GlobalStoreProvider } from "./store/GlobalStore"
 import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 
-YellowBox.ignoreWarnings([
+LogBox.ignoreLogs([
+  "Non-serializable values were found in the navigation state",
   "Calling `getNode()` on the ref of an Animated component is no longer necessary.",
   "RelayResponseNormalizer: Payload did not contain a value for field `id: id`. Check that you are parsing with the same query that was used to fetch the payload.",
-  // Deprecated, we'll transition when it's removed.
-  "Warning: ListView is deprecated and will be removed in a future release. See https://fb.me/nolistview for more information",
-
-  // RN 0.59.0 ships with RNCameraRoll with this issue: https://github.com/facebook/react-native/issues/23755
-  // We can remove this once this PR gets shipped and we update: https://github.com/facebook/react-native/pull/24314
-  "Module RCTImagePickerManager requires main queue setup since it overrides `init`",
 
   // RN 0.59.0 ships with this bug, see: https://github.com/facebook/react-native/issues/16376
   "RCTBridge required dispatch_sync to load RCTDevLoadingView. This may lead to deadlocks",
 
-  // The following two items exist in node_modules. Once this PR is merged, to make warnings opt-in, we can ignore: https://github.com/facebook/metro/issues/287
+  // The following item exist in node_modules. Once this PR is merged, to make warnings opt-in, we can ignore: https://github.com/facebook/metro/issues/287
 
-  // react-native-sentry ships with this error, tracked here: https://github.com/getsentry/react-native-sentry/issues/479
-  "Require cycle: node_modules/react-native-sentry/lib/Sentry.js -> node_modules/react-native-sentry/lib/RavenClient.js -> node_modules/react-native-sentry/lib/Sentry.js",
   // RN 0.59.0 ships with this issue, which has been effectively marked as #wontfix: https://github.com/facebook/react-native/issues/23130
   "Require cycle: node_modules/react-native/Libraries/Network/fetch.js -> node_modules/react-native/Libraries/vendor/core/whatwg-fetch.js -> node_modules/react-native/Libraries/Network/fetch.js",
 
-  "Require cycle: src/lib/store/AppStore.tsx -> src/lib/store/AppStoreModel.ts -> src/lib/Scenes/MyCollection/State/MyCollectionModel.tsx -> src/lib/Scenes/MyCollection/State/MyCollectionNavigationModel.tsx",
+  "Require cycle: src/lib/store/GlobalStore.tsx",
 
   // This is for the Artist page, which will likely get redone soon anyway.
   "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
@@ -138,13 +129,9 @@ interface PartnerLocationsProps {
 }
 const PartnerLocations: React.FC<PartnerLocationsProps> = (props) => <PartnerLocationsQueryRenderer {...props} />
 
-const Inbox: React.FC<{}> = screenTrack<{}>(
-  // @ts-ignore STRICTNESS_MIGRATION
-  () => {
-    return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
-  }
-  // @ts-ignore STRICTNESS_MIGRATION
-)((props) => <InboxWrapper {...props} />)
+const Inbox: React.FC<{}> = screenTrack<{}>(() => {
+  return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
+})((props) => <InboxWrapper {...props} />)
 
 interface GeneProps {
   geneID: string
@@ -289,7 +276,7 @@ interface PageWrapperProps {
 const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) => {
   const paddingTop = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.top
   const paddingBottom = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.bottom
-  const isHydrated = AppStore.useAppState((state) => state.sessionState.isHydrated)
+  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   return (
     <View style={{ flex: 1, paddingTop, paddingBottom }}>
       {isHydrated ? (
@@ -308,13 +295,13 @@ class PageWrapper extends React.Component<PageWrapperProps> {
     return (
       <ProvideScreenDimensions>
         <RelayEnvironmentProvider environment={defaultEnvironment}>
-          <AppStoreProvider>
+          <GlobalStoreProvider>
             <Theme>
               <_FancyModalPageWrapper>
                 <InnerPageWrapper {...this.props} />
               </_FancyModalPageWrapper>
             </Theme>
-          </AppStoreProvider>
+          </GlobalStoreProvider>
         </RelayEnvironmentProvider>
       </ProvideScreenDimensions>
     )
@@ -428,9 +415,9 @@ export const modules = defineModules({
   MyAccountEditPassword: reactModule(MyAccountEditPassword, { hidesBackButton: true }),
   MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, { hidesBackButton: true }),
   MyBids: reactModule(MyBidsQueryRenderer),
-  AddEditArtwork: reactModule(setupMyCollectionScreen(AddEditArtwork)),
-  MyCollectionArtworkDetail: reactModule(setupMyCollectionScreen(MyCollectionArtworkDetail)),
-  MyCollectionArtworkList: reactModule(setupMyCollectionScreen(MyCollectionArtworkList)),
+  MyCollection: reactModule(MyCollectionQueryRenderer),
+  MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),
+  MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
   MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, { hidesBackButton: true }),
@@ -439,9 +426,9 @@ export const modules = defineModules({
   Partner: reactModule(Partner, { fullBleed: true }),
   PartnerLocations: reactModule(PartnerLocations),
   PrivacyRequest: reactModule(PrivacyRequest),
-  Sales: reactModule(setupMyCollectionScreen(Consignments), { isRootViewForTabName: "sell" }),
+  Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }),
+  SalesNotRootTabView: reactModule(Consignments),
   Search: reactModule(SearchWithTracking, { isRootViewForTabName: "search" }),
-  SellTabApp: reactModule(setupMyCollectionScreen(SellTabApp)),
   Show: reactModule(ShowQueryRenderer),
   Show2: reactModule(Show2QueryRenderer, { fullBleed: true }),
   ShowArtists: reactModule(ShowArtists),
@@ -465,9 +452,9 @@ for (const moduleName of Object.keys(modules)) {
 }
 
 const Main: React.FC<{}> = track()(({}) => {
-  const isHydrated = AppStore.useAppState((state) => state.sessionState.isHydrated)
-  const isLoggedIn = AppStore.useAppState((state) => !!state.native.sessionState.userID)
-  const onboardingState = AppStore.useAppState((state) => state.native.sessionState.onboardingState)
+  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
+  const isLoggedIn = GlobalStore.useAppState((state) => !!state.native.sessionState.userID)
+  const onboardingState = GlobalStore.useAppState((state) => state.native.sessionState.onboardingState)
 
   if (!isHydrated) {
     return <View></View>

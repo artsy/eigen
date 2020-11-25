@@ -1,5 +1,5 @@
 import { ConversationDetailsTestsQuery } from "__generated__/ConversationDetailsTestsQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { ItemInfo } from "lib/Scenes/Inbox/Components/Conversations/ItemInfo"
 import { FileDownload } from "lib/Scenes/Inbox/Components/Conversations/Preview/Attachment/FileDownload"
 import { extractText } from "lib/tests/extractText"
@@ -13,11 +13,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ConversationDetailsFragmentContainer } from "../ConversationDetails"
 
 jest.unmock("react-relay")
-
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-  presentModalViewController: jest.fn(),
-}))
 
 describe("ConversationDetailsFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -70,10 +65,7 @@ describe("ConversationDetailsFragmentContainer", () => {
 
     tree.root.findAllByType(Touchable)[0].props.onPress()
 
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-      expect.anything(),
-      "/artwork/happy-little-accident"
-    )
+    expect(navigate).toHaveBeenCalledWith("/artwork/happy-little-accident")
   })
 
   it("renders non-image attachments", () => {
@@ -99,9 +91,9 @@ describe("ConversationDetailsFragmentContainer", () => {
 
     tree.root.findAllByType(Touchable)[3].props.onPress()
 
-    expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(
-      expect.anything(),
-      "https://support.artsy.net/hc/en-us/sections/360008203054-Contact-a-gallery"
+    expect(navigate).toHaveBeenCalledWith(
+      "https://support.artsy.net/hc/en-us/sections/360008203054-Contact-a-gallery",
+      { modal: true }
     )
   })
 })

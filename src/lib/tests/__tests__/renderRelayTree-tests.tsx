@@ -59,7 +59,7 @@ describe("renderRelayTree", () => {
     }
 
     const tree = await renderRelayTree({
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       renderUntil: (wrapper) =>
         // FIXME: Why does this need `first`? Only a single Text component has this prop.
         wrapper.find({ testID: "much-later" }).first().text().length > 0,

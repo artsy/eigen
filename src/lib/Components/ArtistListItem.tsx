@@ -1,6 +1,6 @@
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Schema, track } from "lib/utils/track"
 import { Button, color, EntityHeader, Flex, Theme } from "palette"
 import { Touchable } from "palette"
@@ -91,7 +91,7 @@ export class ArtistListItem extends React.Component<Props, State> {
     )
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   @track((props: Props) => ({
     action_name: props.artist.is_followed ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
     action_type: Schema.ActionTypes.Success,
@@ -116,7 +116,7 @@ export class ArtistListItem extends React.Component<Props, State> {
     } as any
   })
   handleTap(href: string) {
-    SwitchBoard.presentNavigationViewController(this, href)
+    navigate(href)
   }
 
   render() {

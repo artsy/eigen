@@ -1,11 +1,11 @@
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Button, Flex, Text } from "palette"
 import React from "react"
 
 export class NoBids extends React.Component<{ headerText: string }> {
   render() {
     const handleViewAllAuctions = () => {
-      SwitchBoard.presentNavigationViewController(this, `/auctions`)
+      navigate(`/auctions`)
     }
     const { headerText } = this.props
     return (

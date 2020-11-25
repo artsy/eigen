@@ -3,10 +3,10 @@ import { Image, ImageStyle, StyleSheet, TouchableWithoutFeedback, View, ViewStyl
 import { createFragmentContainer, graphql } from "react-relay"
 
 import colors from "lib/data/colors"
-import SwitchBoard from "../../NativeModules/SwitchBoard"
 import GenericGrid from "../ArtworkGrids/GenericGrid"
 
 import { Notification_notification } from "__generated__/Notification_notification.graphql"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { color, Sans } from "palette"
 
@@ -23,7 +23,7 @@ export class Notification extends React.Component<Props> {
     const artistHref =
       this.props.notification.artistHref || extractNodes(this.props.notification.artworks)[0]?.artists?.[0]?.href
     if (artistHref) {
-      SwitchBoard.presentNavigationViewController(this, artistHref)
+      navigate(artistHref)
     }
   }
 

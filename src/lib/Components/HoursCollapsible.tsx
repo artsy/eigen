@@ -29,7 +29,7 @@ const markdownRules = {
   ...basicRules,
   paragraph: {
     ...basicRules.paragraph,
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     react: (node, output, state) => (
       <Sans size="3t" color="black100" key={state.key}>
         {output(node.content, state)}
@@ -57,17 +57,17 @@ export class HoursCollapsible extends React.Component<Props, State> {
     } else if (openingHours && openingHours.schedules) {
       return openingHours.schedules.map((daySchedule, idx, arr) => {
         return (
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           <Box key={daySchedule.days}>
             <Sans size="3t" weight="medium">
               {
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 daySchedule.days
               }
             </Sans>
             <Sans size="3t" color="black60">
               {
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 daySchedule.hours
               }
             </Sans>

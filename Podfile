@@ -7,8 +7,18 @@ unless using_bundler
   exit(1)
 end
 
+# We need to scope the side-effects of downloading Emission's NPM podspecs to
+# only cases where we are actually installing pods.
+installing_pods = ARGV.include?('install') || ARGV.include?('update')
+
+
 source 'https://github.com/artsy/Specs.git'
 source 'https://cdn.cocoapods.org/'
+
+system 'yarn install --ignore-engines' if installing_pods
+
+require_relative './node_modules/react-native/scripts/react_native_pods'
+require_relative './node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 platform :ios, '12.0'
 inhibit_all_warnings!
@@ -17,13 +27,14 @@ require 'down'
 require 'json'
 require 'fileutils'
 
-# We need to scope the side-effects of downloading Emission's NPM podspecs to
-# only cases where we are actually installing pods.
-installing_pods = ARGV.include?('install') || ARGV.include?('update')
-
-system 'yarn install --ignore-engines' if installing_pods
 
 target 'Artsy' do
+  config = use_native_modules!
+  use_react_native!(
+    :path => './node_modules/react-native',
+    :production => ENV['CIRCLE_BUILD_NUM'],
+  )
+
   # Networking
   pod 'AFNetworking', '~> 2.5', subspecs: %w[Reachability Serialization Security NSURLSession NSURLConnection]
   pod 'AFOAuth1Client', git: 'https://github.com/artsy/AFOAuth1Client.git', tag: '0.4.0-subspec-fix'
@@ -32,14 +43,14 @@ target 'Artsy' do
 
   # Core
   pod 'ARGenericTableViewController', git: 'https://github.com/orta/ARGenericTableViewController.git'
-  pod 'CocoaLumberjack', git: 'https://github.com/CocoaLumberjack/CocoaLumberjack.git' # Unreleased > 2.0.1 version has a CP modulemap fix
+  pod 'CocoaLumberjack', '2.4.0'
   pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
   pod 'FXBlurView'
   pod 'ISO8601DateFormatter', git: 'https://github.com/orta/iso-8601-date-formatter'
   pod 'JLRoutes', git: 'https://github.com/orta/JLRoutes.git'
   pod 'JSDecoupledAppDelegate'
-  pod 'Mantle', '~> 1.5.6'
-  pod 'MMMarkdown'
+  pod 'Mantle', '1.5.6'
+  pod 'MMMarkdown', '0.4'
   pod 'NPKeyboardLayoutGuide'
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
@@ -67,56 +78,6 @@ target 'Artsy' do
   pod 'Extraction'
 
   pod 'Emission', path: './emission'
-
-  pod 'React', path: 'node_modules/react-native'
-  if ENV['CIRCLE_BUILD_NUM']
-    pod 'React-Core', path: 'node_modules/react-native'
-  else
-    pod 'React-Core', path: 'node_modules/react-native', subspecs: ['DevSupport']
-  end
-  pod 'React-CoreModules', path: 'node_modules/react-native/React/CoreModules'
-  pod 'React-RCTActionSheet', path: 'node_modules/react-native/Libraries/ActionSheetIOS'
-  pod 'React-RCTAnimation', path: 'node_modules/react-native/Libraries/NativeAnimation'
-  pod 'React-RCTImage', path: 'node_modules/react-native/Libraries/Image'
-  pod 'React-RCTLinking', path: 'node_modules/react-native/Libraries/LinkingIOS'
-  pod 'React-RCTText', path: 'node_modules/react-native/Libraries/Text'
-  pod 'React-RCTNetwork', path: 'node_modules/react-native/Libraries/Network'
-  pod 'React-RCTSettings', path: 'node_modules/react-native/Libraries/Settings'
-  pod 'React-RCTBlob', path: 'node_modules/react-native/Libraries/Blob'
-  pod 'React-RCTVibration', path: 'node_modules/react-native/Libraries/Vibration'
-  pod 'FBLazyVector', path: 'node_modules/react-native/Libraries/FBLazyVector'
-  pod 'FBReactNativeSpec', path: 'node_modules/react-native/Libraries/FBReactNativeSpec'
-  pod 'RCTRequired', path: 'node_modules/react-native/Libraries/RCTRequired'
-  pod 'RCTTypeSafety', path: 'node_modules/react-native/Libraries/TypeSafety'
-  pod 'ReactCommon/turbomodule/core', path: 'node_modules/react-native/ReactCommon'
-  pod 'ReactCommon/callinvoker', path: 'node_modules/react-native/ReactCommon'
-  pod 'React-cxxreact', path: 'node_modules/react-native/ReactCommon/cxxreact'
-  pod 'React-jsi', path: 'node_modules/react-native/ReactCommon/jsi'
-  pod 'React-jsiexecutor', path: 'node_modules/react-native/ReactCommon/jsiexecutor'
-  pod 'React-jsinspector', path: 'node_modules/react-native/ReactCommon/jsinspector'
-  pod 'Yoga', path: 'node_modules/react-native/ReactCommon/yoga', modular_headers: true
-  pod 'Folly', podspec: 'node_modules/react-native/third-party-podspecs/Folly.podspec'
-  pod 'DoubleConversion', podspec: 'node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
-  pod 'glog', podspec: 'node_modules/react-native/third-party-podspecs/glog.podspec'
-  pod 'RNSentry', path: 'node_modules/@sentry/react-native'
-  pod 'Sentry', path: 'node_modules/@sentry/react-native/ios/Sentry'
-  pod 'tipsi-stripe', podspec: 'node_modules/tipsi-stripe/tipsi-stripe.podspec'
-  pod 'react-native-mapbox-gl', path: 'node_modules/@mapbox/react-native-mapbox-gl'
-  pod 'RNSVG', path: 'node_modules/react-native-svg'
-  pod 'react-native-cameraroll', path: 'node_modules/@react-native-community/cameraroll'
-  pod 'react-native-netinfo', path: 'node_modules/@react-native-community/netinfo'
-  pod 'react-native-geolocation', path: 'node_modules/@react-native-community/geolocation'
-  pod 'react-native-safe-area-context', path: 'node_modules/react-native-safe-area-context'
-  pod 'react-native-navigator-ios', path: 'node_modules/react-native-navigator-ios'
-  pod 'RNReanimated', path: 'node_modules/react-native-reanimated'
-  pod 'RNCAsyncStorage', path: 'node_modules/@react-native-community/async-storage'
-  pod 'RNCPicker', path: 'node_modules/@react-native-community/picker'
-  pod 'BVLinearGradient', path: './node_modules/react-native-linear-gradient'
-  pod 'RNImageCropPicker', path: './node_modules/react-native-image-crop-picker/RNImageCropPicker.podspec'
-  # TODO: Remove the `.podspec` files from these paths
-  pod 'react-native-config', path: 'node_modules/react-native-config'
-  pod 'RNReactNativeHapticFeedback', path: 'node_modules/react-native-haptic-feedback'
-  pod 'react-native-webview', path: 'node_modules/react-native-webview'
 
   # For Stripe integration with Emission. Using Ash's fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
   pod 'Pulley', git: 'https://github.com/l2succes/Pulley.git', branch: 'master'
@@ -146,23 +107,28 @@ target 'Artsy' do
   target 'Artsy Tests' do
     inherit! :search_paths
 
-    pod 'FBSnapshotTestCase'
-    pod 'Expecta+Snapshots'
     pod 'OHHTTPStubs'
     pod 'XCTest+OHHTTPStubSuiteCleanUp'
     pod 'Specta'
-    pod 'Expecta'
+    pod 'Expecta', '1.0.6'
+    pod 'Expecta+Snapshots', '3.1.1'
     pod 'OCMock'
     pod 'Forgeries/Mocks'
 
     # Swift pods 🎉
-    pod 'Quick'
-    pod 'Nimble'
-    pod 'Nimble-Snapshots'
+    pod 'Quick', '2.0.0'
+    pod 'Nimble', '7.3.4'
+    pod 'Nimble-Snapshots', '6.3.0'
   end
 end
 
+
+# Enables Flipper.
+# Note that if you have use_frameworks! enabled, Flipper will not work and
+# you should disable these next few lines.
+use_flipper!
 post_install do |installer|
+  flipper_post_install(installer)
   # So we can show some of this stuff in the Admin panel
   emission_podspec_json = installer.pod_targets.find { |f| f.name == 'Emission' }.specs[0].to_json
   File.write('Pods/Local Podspecs/Emission.podspec.json', emission_podspec_json)
@@ -218,8 +184,6 @@ post_install do |installer|
   %w[
     Pods/ORStackView/Classes/ios/ORStackView.h
     Pods/ARAnalytics/ARAnalytics.h
-    Pods/ARTiledImageView/Classes/ARTiledImageViewDataSource.h
-    Pods/DRKonamiCode/Sources/DRKonamiGestureRecognizer.h
     Pods/NAMapKit/NAMapKit/*.h
   ].flat_map { |x| Dir.glob(x) }.each do |header|
     addition = "#import <UIKit/UIKit.h>\n"

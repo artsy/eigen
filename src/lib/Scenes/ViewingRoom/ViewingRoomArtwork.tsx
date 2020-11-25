@@ -2,7 +2,7 @@ import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoo
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
 import LoadFailureView from "lib/Components/LoadFailureView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { cm2in } from "lib/utils/conversions"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
@@ -10,7 +10,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
 import { Box, Button, EyeOpenedIcon, Flex, Sans, Separator, Spacer, Text } from "palette"
 import { LargeCard, Touchable } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { FlatList, NativeModules, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
 import { graphql, useFragment, useQuery } from "relay-hooks"
@@ -68,7 +68,6 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (p
   const selectedArtwork = useFragment(selectedArtworkFragmentSpec, props.selectedArtwork)
   const vrInfo = useFragment(viewingRoomInfoFragmentSpec, props.viewingRoomInfo)
 
-  const navRef = useRef(null)
   const { height: screenHeight } = useScreenDimensions()
 
   const { trackEvent } = useTracking()
@@ -93,7 +92,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (p
     <ProvideScreenTracking
       info={tracks.screen(vrInfo.internalID, vrInfo.slug, selectedArtwork.id, selectedArtwork.slug)}
     >
-      <ScrollView ref={navRef}>
+      <ScrollView>
         <Flex>
           <ImageCarousel images={[selectedArtwork.images![0]] as any} cardHeight={screenHeight} />
           {!!(NativeModules.ARCocoaConstantsModule.AREnabled && selectedArtwork.isHangable) && (
@@ -140,7 +139,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (p
             block
             onPress={() => {
               trackEvent(tracks.tap(vrInfo.internalID, vrInfo.slug, selectedArtwork.id, selectedArtwork.slug))
-              SwitchBoard.presentNavigationViewController(navRef.current!, selectedArtwork.href!)
+              navigate(selectedArtwork.href!)
             }}
           >
             View more details
@@ -172,9 +171,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (p
           <Text variant="mediumText">In viewing room</Text>
           <Spacer mt="2" />
         </Box>
-        <Touchable
-          onPress={() => SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${vrInfo.slug!}`)}
-        >
+        <Touchable onPress={() => navigate(`/viewing-room/${vrInfo.slug!}`)}>
           <LargeCard
             title={vrInfo.title}
             subtitle={vrInfo.partner!.name!}

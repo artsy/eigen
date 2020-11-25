@@ -5,9 +5,10 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
+import { LocationWithDetails } from "lib/utils/googleMaps"
 import { Box, color, Flex, Separator, space, Text } from "palette"
-import React, { useContext, useState } from "react"
-import { LayoutAnimation, TouchableOpacity } from "react-native"
+import React, { useContext, useEffect, useState } from "react"
+import { LayoutAnimation, TextInput, TextInputProps, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
@@ -23,6 +24,7 @@ interface InquiryModalProps {
   navigator?: NavigatorIOS
   modalIsVisible: boolean
   relay: RelayProp
+  onMutationSuccessful: (state: boolean) => void
 }
 
 const ErrorMessageFlex = styled(Flex)`
@@ -70,7 +72,7 @@ const InquiryQuestionOption: React.FC<{
                   type: "selectInquiryQuestion",
                   payload: {
                     questionID: id,
-                    details: isShipping ? state.shippingLocation : null,
+                    details: isShipping ? state.shippingLocation?.name : null,
                     isChecked: !questionSelected,
                   },
                 })
@@ -104,7 +106,7 @@ const InquiryQuestionOption: React.FC<{
                 ) : (
                   <>
                     <Text variant="text" color="black100" style={{ width: "70%" }}>
-                      {state.shippingLocation}
+                      {state.shippingLocation.name}
                     </Text>
                     <Text variant="text" color="purple100">
                       Edit
@@ -121,17 +123,34 @@ const InquiryQuestionOption: React.FC<{
 }
 
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props }) => {
-  const { toggleVisibility, modalIsVisible, relay } = props
+  const { toggleVisibility, modalIsVisible, relay, onMutationSuccessful } = props
   const questions = artwork?.inquiryQuestions!
   const { state, dispatch } = useContext(ArtworkInquiryContext)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const [errorMessageVisibility, setErrorMessageVisibility] = useState(false)
-  const selectShippingLocation = (l: string) => dispatch({ type: "selectShippingLocation", payload: l })
-
+  const selectShippingLocation = (locationDetails: LocationWithDetails) =>
+    dispatch({ type: "selectShippingLocation", payload: locationDetails })
+  const setMessage = (message: string) => dispatch({ type: "setMessage", payload: message })
+  const [mutationSuccessful, setMutationSuccessful] = useState(false)
   const resetAndExit = () => {
     dispatch({ type: "resetForm", payload: null })
     toggleVisibility()
   }
+
+  useEffect(() => {
+    if (mutationSuccessful) {
+      resetAndExit()
+
+      const delayNotification = setTimeout(() => {
+        onMutationSuccessful(true)
+        setMutationSuccessful(false)
+      }, 500)
+      return () => {
+        clearTimeout(delayNotification)
+      }
+    }
+  }, [mutationSuccessful])
+
   return (
     <FancyModal visible={modalIsVisible} onBackgroundPressed={() => resetAndExit()}>
       <FancyModalHeader
@@ -140,9 +159,9 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           resetAndExit()
         }}
         rightButtonText="Send"
-        rightButtonDisabled={state.inquiryQuestions.length === 0}
+        rightButtonDisabled={state.inquiryQuestions.length === 0 && !state.message}
         onRightButtonPress={() => {
-          SubmitInquiryRequest(relay.environment, artwork, state, setErrorMessageVisibility)
+          SubmitInquiryRequest(relay.environment, artwork, state, setMutationSuccessful, setErrorMessageVisibility)
         }}
       >
         {state.inquiryType}
@@ -177,11 +196,19 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           })
         }
       </Box>
+      <Box mx={2}>
+        <TextArea
+          placeholder="Add a custom note..."
+          title="Add Message"
+          value={state.message ? state.message : ""}
+          onChangeText={setMessage}
+        />
+      </Box>
       <ShippingModal
         toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
         modalIsVisible={shippingModalVisibility}
         setLocation={selectShippingLocation}
-        location={state.shippingLocation as string}
+        location={state.shippingLocation}
       />
     </FancyModal>
   )
@@ -194,6 +221,41 @@ const InquiryField = styled(Flex)`
   margin-top: ${space(1)}px;
   padding: ${space(2)}px;
 `
+
+const StyledTextArea = styled(TextInput)`
+  border: solid 1px;
+  padding: ${space(1)}px;
+  height: 88px;
+`
+
+// TODO: Replace with Palette when available
+interface TextAreaProps extends TextInputProps {
+  title: string
+}
+const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => {
+  const [borderColor, setBorderColor] = useState(color("black10"))
+
+  return (
+    <>
+      {!!title && (
+        <Text mb={1} variant="mediumText">
+          {title}
+        </Text>
+      )}
+      <StyledTextArea
+        {...props}
+        onFocus={() => {
+          setBorderColor(color("purple100"))
+        }}
+        onBlur={() => {
+          setBorderColor(color("black10"))
+        }}
+        style={{ borderColor }}
+        multiline={true}
+      />
+    </>
+  )
+}
 
 export const InquiryModalFragmentContainer = createFragmentContainer(InquiryModal, {
   artwork: graphql`

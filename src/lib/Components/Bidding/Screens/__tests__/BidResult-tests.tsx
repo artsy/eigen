@@ -1,19 +1,14 @@
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { shallow } from "enzyme"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { dismissModal, navigate } from "lib/navigation/navigate"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { BidderPositionResult } from "../../types"
 import { BidResult } from "../BidResult"
-
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  dismissModalViewController: jest.fn(),
-  presentModalViewController: jest.fn(),
-}))
 
 const popToTop = jest.fn()
 const mockNavigator = { popToTop }
@@ -102,14 +97,12 @@ describe("BidResult component", () => {
           />
         </BiddingThemeProvider>
       )
-      const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
-      mockDismiss.mockReturnValueOnce(Promise.resolve())
 
       bidResult.root.findByType(Button).props.onPress()
       jest.runAllTicks()
 
-      expect(SwitchBoard.dismissModalViewController).toHaveBeenCalled()
-      expect(SwitchBoard.presentModalViewController).not.toHaveBeenCalled()
+      expect(dismissModal).toHaveBeenCalled()
+      expect(navigate).not.toHaveBeenCalled()
     })
   })
 
@@ -195,7 +188,7 @@ describe("BidResult component", () => {
     })
 
     it("dismisses controller and presents live interface when continue button is pressed", () => {
-      __appStoreTestUtils__?.injectState({
+      __globalStoreTestUtils__?.injectState({
         native: { sessionState: { predictionURL: "https://live-staging.artsy.net" } },
       })
       const bidResult = renderWithWrappers(
@@ -209,29 +202,24 @@ describe("BidResult component", () => {
           />
         </BiddingThemeProvider>
       )
-      const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
-      mockDismiss.mockReturnValueOnce(Promise.resolve())
 
       bidResult.root.findByType(Button).props.onPress()
       jest.runAllTicks()
 
-      expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(
-        expect.anything(),
-        "https://live-staging.artsy.net/sale-id"
-      )
+      expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/sale-id", { modal: true })
     })
   })
 })
 
 const Statuses = {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   winning: {
     status: "WINNING",
     message_header: null,
     message_description_md: null,
     position: null,
   } as BidderPositionResult,
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   outbid: {
     status: "OUTBID",
     message_header: "Your bid wasn’t high enough",
@@ -240,7 +228,7 @@ const Statuses = {
     `,
     position: null,
   } as BidderPositionResult,
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   live_bidding_started: {
     status: "LIVE_BIDDING_STARTED",
     message_header: "Live bidding has started",

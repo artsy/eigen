@@ -9,7 +9,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { FavoriteArtworks_me } from "__generated__/FavoriteArtworks_me.graphql"
 import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -84,7 +84,7 @@ export class SavedWorks extends Component<Props, State> {
                 variant="secondaryOutline"
                 size="large"
                 onPress={() => {
-                  SwitchBoard.presentNavigationViewController(this, "/")
+                  navigate("/")
                 }}
               >
                 Browse works for you
@@ -135,7 +135,7 @@ const FavoriteArtworksContainer = createPaginationContainer(
   },
   {
     getConnectionFromProps(props) {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       return props.me && props.me.followsAndSaves.artworks
     },
     getVariables(_props, { count, cursor }, fragmentVariables) {

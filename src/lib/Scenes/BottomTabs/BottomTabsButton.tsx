@@ -1,6 +1,6 @@
 import { tappedTabBar } from "@artsy/cohesion"
 import { PopIn } from "lib/Components/PopIn"
-import { AppStore, unsafe__getSelectedTab, useSelectedTab } from "lib/store/AppStore"
+import { GlobalStore, unsafe__getSelectedTab, useSelectedTab } from "lib/store/GlobalStore"
 import { color, Sans } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Easing, NativeModules, TouchableWithoutFeedback, View } from "react-native"
@@ -17,7 +17,6 @@ export const BottomTabsButton: React.FC<{
   const isActive = useSelectedTab() === tab
   const timeout = useRef<ReturnType<typeof setTimeout>>()
   const [isBeingPressed, setIsBeingPressed] = useState(false)
-  const navRef = useRef(null)
 
   const showActiveState = isActive || isBeingPressed
 
@@ -38,14 +37,13 @@ export const BottomTabsButton: React.FC<{
     if (tab === unsafe__getSelectedTab()) {
       NativeModules.ARScreenPresenterModule.popToRootOrScrollToTop(tab)
     } else {
-      AppStore.actions.bottomTabs.switchTab(tab)
+      GlobalStore.actions.bottomTabs.switchTab(tab)
     }
     tracking.trackEvent(tappedTabBar({ tab: bottomTabsConfig[tab].analyticsDescription, badge: badgeCount > 0 }))
   }
 
   return (
     <TouchableWithoutFeedback
-      ref={navRef}
       onPressIn={() => {
         clearTimeout(timeout.current!)
         setIsBeingPressed(true)
