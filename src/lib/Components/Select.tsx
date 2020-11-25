@@ -45,7 +45,7 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
       TextInput.State.blurTextInput(inputRef)
       await new Promise((r) => requestAnimationFrame(r))
     }
-    await new Promise((r) => this.setState({ showingModal: true }, r))
+    await new Promise<void>((r) => this.setState({ showingModal: true }, r))
   }
 
   close() {

@@ -77,7 +77,7 @@ export interface MyCollectionArtworkModel {
     GlobalStoreModel
   >
 
-  takeOrPickPhotos: Thunk<MyCollectionArtworkModel, any, any, GlobalStoreModel>
+  takeOrPickPhotos: Thunk<MyCollectionArtworkModel, void, any, GlobalStoreModel>
 }
 
 export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
