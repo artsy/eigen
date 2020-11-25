@@ -1,4 +1,3 @@
-import { MyCollectionArtworkFullDetailsQuery } from "__generated__/MyCollectionArtworkFullDetailsQuery.graphql"
 import { MyCollectionArtworkImages_artwork } from "__generated__/MyCollectionArtworkImages_artwork.graphql"
 import { MyCollectionArtworkImagesQuery } from "__generated__/MyCollectionArtworkImagesQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
@@ -10,7 +9,6 @@ import { Flex, Spacer } from "palette"
 import React from "react"
 import { ActivityIndicator, ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { Image } from "../../State/MyCollectionArtworkModel"
 
 interface MyCollectionArtworkImagesProps {
   artwork: MyCollectionArtworkImages_artwork
