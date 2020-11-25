@@ -33,6 +33,7 @@ import {
   Aggregations,
   ArtworkFilterContext,
   FilterArray,
+  NewStore,
   useSelectedOptionsDisplay,
 } from "./ArtworkFiltersStore"
 
@@ -51,15 +52,15 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
   const tracking = useTracking()
 
   const { closeModal, exitModal, isFilterArtworksModalVisible, id, slug, mode } = props
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-
+  const resetFilters = NewStore.useStoreActions((action) => action.resetFilters)
   const handleClosingModal = () => {
-    dispatch({ type: "resetFilters" })
+    resetFilters({})
     closeModal?.()
   }
 
+  const applyFiltersAction = NewStore.useStoreActions((action) => action.applyFiltersAction)
   const applyFilters = () => {
-    dispatch({ type: "applyFilters" })
+    applyFiltersAction({})
     exitModal?.()
   }
 
@@ -80,14 +81,15 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
     })
   }
 
-  const getApplyButtonCount = () => {
-    const selectedFiltersSum = state.selectedFilters.length
+  const applyButtonCount = NewStore.useStoreState((state) => state.applyButtonCount)
+  const applyButtonText = applyButtonCount > 0 ? `Apply (${applyButtonCount})` : "Apply"
 
-    return selectedFiltersSum > 0 ? `Apply (${selectedFiltersSum})` : "Apply"
-  }
-
+  const previouslyAppliedFilters = NewStore.useStoreState((state) => state.previouslyAppliedFilters)
+  const appliedFilters = NewStore.useStoreState((state) => state.appliedFilters)
+  const selectedFilters = NewStore.useStoreState((state) => state.selectedFilters)
   const isApplyButtonEnabled =
-    state.selectedFilters.length > 0 || (state.previouslyAppliedFilters.length === 0 && state.appliedFilters.length > 0)
+    applyButtonCount > 0 ||
+    (Object.keys(previouslyAppliedFilters).length === 0 && Object.keys(appliedFilters).length > 0)
 
   return (
     <FancyModal visible={isFilterArtworksModalVisible} onBackgroundPressed={handleClosingModal} maxHeight={550}>
@@ -105,34 +107,34 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
           <ApplyButton
             disabled={!isApplyButtonEnabled}
             onPress={() => {
-              const appliedFiltersParams = filterArtworksParams(state.appliedFilters)
+              // const appliedFiltersParams = selectedFilters
               // TODO: Update to use cohesion
-              switch (mode) {
-                case "Collection":
-                  trackChangeFilters(
-                    PageNames.Collection,
-                    OwnerEntityTypes.Collection,
-                    appliedFiltersParams,
-                    changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                  )
-                  break
-                case "ArtistArtworks":
-                  trackChangeFilters(
-                    PageNames.ArtistPage,
-                    OwnerEntityTypes.Artist,
-                    appliedFiltersParams,
-                    changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                  )
-                  break
-                case "Fair":
-                  trackChangeFilters(
-                    PageNames.Fair2Page,
-                    OwnerEntityTypes.Fair,
-                    appliedFiltersParams,
-                    changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                  )
-                  break
-              }
+              // switch (mode) {
+              //   case "Collection":
+              //     trackChangeFilters(
+              //       PageNames.Collection,
+              //       OwnerEntityTypes.Collection,
+              //       appliedFiltersParams,
+              //       changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+              //     )
+              //     break
+              //   case "ArtistArtworks":
+              //     trackChangeFilters(
+              //       PageNames.ArtistPage,
+              //       OwnerEntityTypes.Artist,
+              //       appliedFiltersParams,
+              //       changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+              //     )
+              //     break
+              //   case "Fair":
+              //     trackChangeFilters(
+              //       PageNames.Fair2Page,
+              //       OwnerEntityTypes.Fair,
+              //       appliedFiltersParams,
+              //       changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+              //     )
+              //     break
+              // }
               applyFilters()
             }}
             block
@@ -140,7 +142,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
             variant="primaryBlack"
             size="large"
           >
-            {getApplyButtonCount()}
+            {applyButtonText}
           </ApplyButton>
         </ApplyButtonContainer>
       </View>
@@ -186,9 +188,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
   const tracking = useTracking()
   const { closeModal, navigator, id, slug, mode } = props
 
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-
-  const selectedOptions = useSelectedOptionsDisplay()
+  const selectedFiltersDisplay = NewStore.useStoreState((state) => state.selectedFiltersDisplay)
 
   const navigateToNextFilterScreen = (NextComponent: any /* STRICTNESS_MIGRATION */) => {
     navigator.push({
@@ -196,7 +196,8 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
     })
   }
 
-  const concreteAggregations = state.aggregations ?? []
+  const aggregations = NewStore.useStoreState((state) => state.aggregations)
+  const concreteAggregations = aggregations ?? []
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
     concreteAggregations.map((aggregation) => {
       const filterOption = filterKeyFromAggregation[aggregation.slice]
@@ -281,9 +282,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
   const filterOptions: FilterDisplayConfig[] = staticFilterOptions.concat(aggregateFilterOptions)
   const sortedFilterOptions = filterOptions.sort(filterScreenSort)
 
-  const clearAllFilters = () => {
-    dispatch({ type: "clearAll" })
-  }
+  const clearFilters = NewStore.useStoreActions((actions) => actions.clearAll)
 
   const trackClear = (screenName: PageNames, ownerEntity: OwnerEntityTypes) => {
     tracking.trackEvent({
@@ -330,7 +329,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
                 break
             }
 
-            clearAllFilters()
+            clearFilters()
           }}
         >
           <Sans mr={2} mt={2} size="4" color="black100">
@@ -354,7 +353,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
                     </Sans>
                     <Flex flexDirection="row" alignItems="center">
                       <OptionDetail
-                        currentOption={selectedOption(selectedOptions, item.filterType)}
+                        currentOption={selectedFiltersDisplay[item.filterType]}
                         filterType={item.filterType}
                       />
                       <ArrowRightIcon fill="black30" ml="1" />
@@ -411,26 +410,33 @@ export const AnimatedArtworkFilterButton: React.FC<{ count: number; isVisible: b
   count,
   isVisible,
   onPress,
-}) => (
-  <AnimatedBottomButton isVisible={isVisible} onPress={onPress}>
-    <FilterArtworkButton px="2">
-      <FilterIcon fill="white100" />
-      <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
-        Filter
-      </Sans>
-      {count > 0 && (
-        <>
-          <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
-            {"\u2022"}
-          </Sans>
-          <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
-            {count}
-          </Sans>
-        </>
-      )}
-    </FilterArtworkButton>
-  </AnimatedBottomButton>
-)
+}) => {
+  const appliedFilters = NewStore.useStoreState((state) => state.appliedFilters)
+  const appliedFiltersCount = Object.keys(appliedFilters).length
+
+  console.log("hayyy", appliedFiltersCount)
+
+  return (
+    <AnimatedBottomButton isVisible={isVisible} onPress={onPress}>
+      <FilterArtworkButton px="2">
+        <FilterIcon fill="white100" />
+        <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
+          Filter
+        </Sans>
+        {count > 0 && (
+          <>
+            <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+              {"\u2022"}
+            </Sans>
+            <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+              {appliedFiltersCount}
+            </Sans>
+          </>
+        )}
+      </FilterArtworkButton>
+    </AnimatedBottomButton>
+  )
+}
 
 export const TouchableOptionListItemRow = styled(TouchableOpacity)``
 

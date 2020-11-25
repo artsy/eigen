@@ -29,6 +29,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   }
 
   const itemIsSelected = (item: FilterData): boolean => {
+    console.log("am i selected?", item)
     if (isSelected) {
       return isSelected(item)
     } else {

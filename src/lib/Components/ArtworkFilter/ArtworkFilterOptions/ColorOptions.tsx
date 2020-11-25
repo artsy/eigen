@@ -1,14 +1,9 @@
-import {
-  ArtworkFilterContext,
-  FilterData,
-  ParamDefaultValues,
-  useSelectedOptionsDisplay,
-} from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { FilterData, NewStore, ParamDefaultValues } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import { AggregateOption, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { isPad } from "lib/utils/hardware"
 import { floor } from "lodash"
 import { Flex } from "palette"
-import React, { useContext, useState } from "react"
+import React, { useState } from "react"
 import { LayoutChangeEvent, NavigatorIOS, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
 import { FancyModalHeader } from "../../FancyModal/FancyModalHeader"
@@ -72,11 +67,15 @@ const SIDE_MARGIN = isPad() ? 32 : 16
 const FLEX_MARGIN = SIDE_MARGIN - INTER_ITEM_SPACE / 2
 
 export const ColorOptionsScreen: React.FC<ColorOptionsScreenProps> = ({ navigator }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
   const [itemSize, setItemSize] = useState(0)
 
   const paramName = FilterParamName.color
-  const aggregation = aggregationForFilter(paramName, state.aggregations)
+
+  const selectedFilters = NewStore.useStoreState((state) => state.selectedFiltersComputed)
+  const selectedFilter = selectedFilters[paramName]
+
+  const aggregations = NewStore.useStoreState((state) => state.aggregations)
+  const aggregation = aggregationForFilter(paramName, aggregations)
   const options = aggregation?.counts.map((aggCount) => {
     return {
       displayText: aggCount.name,
@@ -85,29 +84,34 @@ export const ColorOptionsScreen: React.FC<ColorOptionsScreenProps> = ({ navigato
     }
   })
 
+  // TODO DEAL WITH white option
   const allOption = { displayText: "All", paramName, paramValue: ParamDefaultValues.color }
   const blackWhiteOption = {
     displayText: "black-and-white-2",
     paramName,
-    paramValue: "black-and-white",
+    paramValue: "black-and-white-2",
   }
   const displayOptions = [blackWhiteOption].concat(options ?? [])
   const sortedDisplayOptions = displayOptions.sort(colorSort)
 
-  const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
+  const selectedOption = displayOptions.find((option) => option.paramValue === selectedFilter) ?? allOption
+
+  const updateValue = NewStore.useStoreActions((actions) => actions.selectFilter)
 
   const selectOption = (option: AggregateOption) => {
     if (option.displayText === selectedOption.displayText) {
-      dispatch({ type: "selectFilters", payload: allOption })
+      updateValue({
+        paramName,
+        value: allOption.paramValue,
+        display: allOption.displayText,
+        filterScreenType: "color",
+      })
     } else {
-      dispatch({
-        type: "selectFilters",
-        payload: {
-          displayText: option.displayText,
-          paramValue: option.paramValue,
-          paramName,
-        },
+      updateValue({
+        paramName,
+        value: option.paramValue,
+        display: option.displayText,
+        filterScreenType: "color",
       })
     }
   }

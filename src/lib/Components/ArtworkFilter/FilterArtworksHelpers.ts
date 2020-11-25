@@ -39,16 +39,6 @@ export enum FilterDisplayName {
   artist = "Artists",
 }
 
-export interface InitialState {
-  initialState: {
-    selectedFilters: FilterArray
-    appliedFilters: FilterArray
-    previouslyAppliedFilters: FilterArray
-    applyFilters: boolean
-    aggregations: Aggregations
-  }
-}
-
 export interface AggregateOption {
   displayText: string
   paramValue: string
@@ -83,10 +73,6 @@ const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: Fil
   return filterParams
 }
 
-export const filterArtworksParams = (appliedFilters: FilterArray) => {
-  return paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams })
-}
-
 const getChangedParams = (appliedFilters: FilterArray) => {
   const filterParams = paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams })
   // when filters cleared return default params
@@ -110,61 +96,6 @@ export const changedFiltersParams = (currentFilterParams: FilterParams, selected
   })
 
   return changedFilters
-}
-
-/**
- * Formats the display for the Filter Modal "home" screen.
- */
-export const selectedOption = (selectedOptions: FilterArray, filterType: FilterScreen) => {
-  const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
-
-  if (filterType === "waysToBuy") {
-    const waysToBuyFilterNames = [
-      FilterParamName.waysToBuyBuy,
-      FilterParamName.waysToBuyMakeOffer,
-      FilterParamName.waysToBuyBid,
-      FilterParamName.waysToBuyInquire,
-    ]
-    const waysToBuyOptions = multiSelectedOptions
-      .filter((value) => waysToBuyFilterNames.includes(value.paramName))
-      .map((option) => option.displayText)
-
-    if (waysToBuyOptions.length === 0) {
-      return "All"
-    }
-    return waysToBuyOptions.join(", ")
-  } else if (filterType === "gallery" || filterType === "institution") {
-    const displayText = selectedOptions.find((option) => option.filterKey === filterType)?.displayText
-    if (displayText) {
-      return displayText
-    } else {
-      return "All"
-    }
-  } else if (filterType === "artist") {
-    const hasArtistsIFollowChecked = !!selectedOptions.find(({ paramName, paramValue }) => {
-      return paramName === FilterParamName.artistsIFollow && paramValue === true
-    })
-
-    const selectedArtistNames = selectedOptions.map(({ paramName, displayText }) => {
-      if (paramName === FilterParamName.artist) {
-        return displayText
-      }
-    })
-    const alphabetizedArtistNames = sortBy(compact(selectedArtistNames), (name) => name)
-    const allArtistDisplayNames = hasArtistsIFollowChecked
-      ? ["All artists I follow", ...alphabetizedArtistNames]
-      : alphabetizedArtistNames
-
-    if (allArtistDisplayNames.length === 1) {
-      return allArtistDisplayNames[0]
-    } else if (allArtistDisplayNames.length > 1) {
-      const numArtistsToDisplay = allArtistDisplayNames.length - 1
-      return `${allArtistDisplayNames[0]}, ${numArtistsToDisplay} more`
-    } else {
-      return "All"
-    }
-  }
-  return selectedOptions.find((option) => option.paramName === filterType)?.displayText
 }
 
 export type aggregationsType =

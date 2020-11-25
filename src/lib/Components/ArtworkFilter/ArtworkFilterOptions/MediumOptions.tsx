@@ -1,11 +1,6 @@
-import {
-  ArtworkFilterContext,
-  FilterData,
-  ParamDefaultValues,
-  useSelectedOptionsDisplay,
-} from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { FilterData, NewStore, ParamDefaultValues } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import { AggregateOption, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
-import React, { useContext } from "react"
+import React from "react"
 import { NavigatorIOS } from "react-native"
 import { aggregationForFilter } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
@@ -15,10 +10,13 @@ interface MediumOptionsScreenProps {
 }
 
 export const MediumOptionsScreen: React.FC<MediumOptionsScreenProps> = ({ navigator }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-
   const paramName = FilterParamName.medium
-  const aggregation = aggregationForFilter(paramName, state.aggregations)
+
+  const selectedFilters = NewStore.useStoreState((state) => state.selectedFiltersComputed)
+  const selectedFilter = selectedFilters[paramName]
+
+  const aggregations = NewStore.useStoreState((state) => state.aggregations)
+  const aggregation = aggregationForFilter(paramName, aggregations)
   const options = aggregation?.counts.map((aggCount) => {
     return {
       displayText: aggCount.name,
@@ -30,17 +28,15 @@ export const MediumOptionsScreen: React.FC<MediumOptionsScreenProps> = ({ naviga
   const allOption: FilterData = { displayText: "All", paramName, paramValue: ParamDefaultValues.medium }
   const displayOptions = [allOption].concat(options ?? [])
 
-  const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
+  const selectedOption = displayOptions.find((option) => option.paramValue === selectedFilter) ?? allOption
 
+  const updateValue = NewStore.useStoreActions((actions) => actions.selectFilter)
   const selectOption = (option: AggregateOption) => {
-    dispatch({
-      type: "selectFilters",
-      payload: {
-        displayText: option.displayText,
-        paramValue: option.paramValue,
-        paramName,
-      },
+    updateValue({
+      paramName,
+      value: option.paramValue,
+      display: option.displayText,
+      filterScreenType: "medium",
     })
   }
 

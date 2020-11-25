@@ -1,12 +1,7 @@
-import {
-  ArtworkFilterContext,
-  FilterData,
-  ParamDefaultValues,
-  useSelectedOptionsDisplay,
-} from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { FilterData, NewStore, ParamDefaultValues } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import { FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import _ from "lodash"
-import React, { useContext } from "react"
+import React from "react"
 import { NavigatorIOS } from "react-native"
 import { aggregationForFilter } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
@@ -16,8 +11,6 @@ interface TimePeriodOptionsScreenProps {
 }
 
 export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = ({ navigator }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-
   // TODO: a lot of redundant types, see if we can clean up
   const displayValue: Record<string, string> = {
     "2020": "2020-today",
@@ -39,7 +32,14 @@ export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = (
   }
 
   const paramName = FilterParamName.timePeriod
-  const aggregation = aggregationForFilter(paramName, state.aggregations)
+
+  const selectedFilters = NewStore.useStoreState((state) => state.selectedFiltersComputed)
+  const selectedFilter = selectedFilters.majorPeriods
+
+  const updateValue = NewStore.useStoreActions((actions) => actions.selectFilter)
+  const aggregations = NewStore.useStoreState((state) => state.aggregations)
+
+  const aggregation = aggregationForFilter(paramName, aggregations)
   const options = aggregation?.counts.map((aggCount) => aggCount.value) ?? []
   const aggFilterOptions: FilterData[] = _.compact(
     options.map((value) => {
@@ -55,11 +55,15 @@ export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = (
   const allOption: FilterData = { displayText: "All", paramName, paramValue: ParamDefaultValues.majorPeriods }
   const filterOptions = [allOption].concat(aggFilterOptions)
 
-  const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
+  const selectedOption = filterOptions.find((option) => option.paramValue === selectedFilter) ?? allOption
 
   const selectOption = (option: FilterData) => {
-    dispatch({ type: "selectFilters", payload: option })
+    updateValue({
+      paramName: option.paramName,
+      value: option.paramValue!,
+      display: option.displayText,
+      filterScreenType: "majorPeriods",
+    })
   }
 
   return (

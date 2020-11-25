@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Fair2Artworks_fair } from "__generated__/Fair2Artworks_fair.graphql"
-import { ArtworkFilterContext, FilterArray } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFilterContext, FilterArray, NewStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import {
   aggregationsType,
   aggregationsWithFollowedArtists,
@@ -23,9 +23,9 @@ interface Fair2ArtworksProps {
 
 export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay, initiallyAppliedFilter }) => {
   const artworks = fair.fairArtworks!
-  const { dispatch, state } = useContext(ArtworkFilterContext)
+  // const { dispatch, state } = useContext(ArtworkFilterContext)
   const tracking = useTracking()
-  const filterParams = filterArtworksParams(state.appliedFilters)
+  // const filterParams = filterArtworksParams(state.appliedFilters)
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
@@ -38,35 +38,41 @@ export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay, initi
     })
   }
 
-  useEffect(() => {
-    if (initiallyAppliedFilter) {
-      dispatch({ type: "setInitialFilterState", payload: initiallyAppliedFilter })
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (initiallyAppliedFilter) {
+  //     dispatch({ type: "setInitialFilterState", payload: initiallyAppliedFilter })
+  //   }
+  // }, [])
+
+  const applyFilters = NewStore.useStoreState((state) => state.applyFilters)
+  const filtersToApply = NewStore.useStoreState((state) => state.appliedFilters)
+  const setApplyFilters = NewStore.useStoreActions((action) => action.setApplyFilters)
 
   useEffect(() => {
-    if (state.applyFilters) {
+    console.log("i'm here!", applyFilters)
+    if (applyFilters) {
       relay.refetchConnection(
         FAIR2_ARTWORKS_PAGE_SIZE,
         (error) => {
           if (error) {
             throw new Error("Fair/FairArtworks filter error: " + error.message)
+          } else {
+            setApplyFilters(false)
           }
         },
-        filterParams
+        filtersToApply
       )
     }
-  }, [state.appliedFilters])
+  }, [applyFilters])
 
   const followedArtistCount = artworks?.counts?.followedArtists ?? 0
   const artworkAggregations = (artworks?.aggregations ?? []) as aggregationsType
   const aggregations = aggregationsWithFollowedArtists(followedArtistCount, artworkAggregations)
 
+  const setAggregations = NewStore.useStoreActions((actions) => actions.setAggregations)
+
   useEffect(() => {
-    dispatch({
-      type: "setAggregations",
-      payload: aggregations,
-    })
+    setAggregations(aggregations)
   }, [])
 
   if ((artworks?.counts?.total ?? 0) === 0) {

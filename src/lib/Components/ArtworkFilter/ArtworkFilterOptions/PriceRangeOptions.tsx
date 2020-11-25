@@ -1,10 +1,6 @@
-import {
-  ArtworkFilterContext,
-  FilterData,
-  useSelectedOptionsDisplay,
-} from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { FilterData, NewStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import { AggregateOption, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
-import React, { useContext } from "react"
+import React from "react"
 import { NavigatorIOS } from "react-native"
 import { aggregationForFilter } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
@@ -16,7 +12,7 @@ interface PriceRangeOptionsScreenProps {
 const priceRangeDisplayText: Map<string, string> = new Map([
   ["*-*", "All"],
   ["*-1000", "$0-1,000"],
-  ["1000-5000", "$1000-5,000"],
+  ["1000-5000", "$1,000-5,000"],
   ["5000-10000", "$5,000-10,000"],
   ["10000-50000", "$10,000-50,000"],
   ["50000-*", "$50,000+"],
@@ -34,10 +30,13 @@ const priceSort = (left: FilterData, right: FilterData): number => {
 }
 
 export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigator }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-
   const paramName = FilterParamName.priceRange
-  const aggregation = aggregationForFilter(paramName, state.aggregations)
+
+  const selectedFilters = NewStore.useStoreState((state) => state.selectedFiltersComputed)
+  const selectedFilter = selectedFilters.priceRange
+
+  const aggregations = NewStore.useStoreState((state) => state.aggregations)
+  const aggregation = aggregationForFilter(paramName, aggregations)
   const options = aggregation?.counts.map((aggCount) => {
     return {
       displayText: priceRangeDisplayText.get(aggCount.value) ?? aggCount.name,
@@ -46,17 +45,15 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
     }
   })
   const sortedOptions = options?.sort(priceSort) ?? []
-  const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
+  const selectedOption = sortedOptions.find((option) => option.paramValue === selectedFilter)
 
+  const updateValue = NewStore.useStoreActions((actions) => actions.selectFilter)
   const selectOption = (option: AggregateOption) => {
-    dispatch({
-      type: "selectFilters",
-      payload: {
-        displayText: option.displayText,
-        paramValue: option.paramValue,
-        paramName,
-      },
+    updateValue({
+      paramName,
+      value: option.paramValue,
+      display: option.displayText,
+      filterScreenType: "priceRange",
     })
   }
 

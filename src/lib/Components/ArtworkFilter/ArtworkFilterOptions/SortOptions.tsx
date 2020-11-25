@@ -1,10 +1,6 @@
-import {
-  ArtworkFilterContext,
-  FilterData,
-  useSelectedOptionsDisplay,
-} from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { NewStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import { FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
-import React, { useContext } from "react"
+import React from "react"
 import { NavigatorIOS } from "react-native"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
@@ -25,12 +21,14 @@ enum ArtworkSorts {
 
 export type SortOption = keyof typeof ArtworkSorts
 
-export const OrderedArtworkSorts: FilterData[] = [
-  {
-    displayText: "Default",
-    paramName: FilterParamName.sort,
-    paramValue: "-decayed_merch",
-  },
+const defaultOption = {
+  displayText: "Default",
+  paramName: FilterParamName.sort,
+  paramValue: "-decayed_merch",
+}
+
+export const OrderedArtworkSorts = [
+  defaultOption,
   {
     displayText: "Price (high to low)",
     paramName: FilterParamName.sort,
@@ -64,26 +62,24 @@ export const OrderedArtworkSorts: FilterData[] = [
 ]
 
 export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigator }) => {
-  const { dispatch } = useContext(ArtworkFilterContext)
+  const selectedFilters = NewStore.useStoreState((state) => state.selectedFiltersComputed)
+  const selectedFilter = selectedFilters.sort
 
-  const paramName = FilterParamName.sort
-  const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
+  const updateValue = NewStore.useStoreActions((actions) => actions.selectFilter)
 
-  const selectOption = (option: FilterData) => {
-    dispatch({
-      type: "selectFilters",
-      payload: {
-        displayText: option.displayText,
-        paramName,
-        paramValue: option.paramValue,
-      },
-    })
-  }
+  const selectedOption =
+    OrderedArtworkSorts.find((sortOption) => sortOption.paramValue === selectedFilter) ?? defaultOption
 
   return (
     <SingleSelectOptionScreen
-      onSelect={selectOption}
+      onSelect={(option) =>
+        updateValue({
+          paramName: FilterParamName.sort,
+          value: option.paramValue,
+          display: option.displayText,
+          filterScreenType: "sort",
+        })
+      }
       filterHeaderText={FilterDisplayName.sort}
       filterOptions={OrderedArtworkSorts}
       selectedOption={selectedOption}
