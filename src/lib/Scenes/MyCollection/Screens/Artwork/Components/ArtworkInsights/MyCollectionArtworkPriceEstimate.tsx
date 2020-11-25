@@ -13,6 +13,68 @@ interface MyCollectionArtworkPriceEstimateProps {
   marketPriceInsights: MyCollectionArtworkPriceEstimate_marketPriceInsights
 }
 
+const rangeCents = (
+  artwork: MyCollectionArtworkPriceEstimate_artwork,
+  marketPriceInsights: MyCollectionArtworkPriceEstimate_marketPriceInsights
+) => {
+  const {
+    lowRangeCents,
+    midRangeCents,
+    highRangeCents,
+    largeHighRangeCents,
+    largeLowRangeCents,
+    largeMidRangeCents,
+    mediumHighRangeCents,
+    mediumLowRangeCents,
+    mediumMidRangeCents,
+    smallHighRangeCents,
+    smallLowRangeCents,
+    smallMidRangeCents,
+  } = marketPriceInsights
+
+  let lowCents
+  let midCents
+  let highCents
+
+  switch (artwork.sizeBucket) {
+    case "small": {
+      lowCents = smallLowRangeCents
+      midCents = smallMidRangeCents
+      highCents = smallHighRangeCents
+      break
+    }
+    case "medium": {
+      lowCents = mediumLowRangeCents
+      midCents = mediumMidRangeCents
+      highCents = mediumHighRangeCents
+      break
+    }
+    case "large": {
+      lowCents = largeLowRangeCents
+      midCents = largeMidRangeCents
+      highCents = largeHighRangeCents
+      break
+    }
+    default: {
+      lowCents = lowRangeCents
+      midCents = midRangeCents
+      highCents = highRangeCents
+    }
+  }
+
+  if (Number(lowCents) === 0 || Number(midCents) === 0 || Number(highCents) === 0) {
+    lowCents = lowRangeCents
+    midCents = midRangeCents
+    highCents = highRangeCents
+  }
+
+  return {
+    lowRangeCents: lowCents,
+    midRangeCents: midCents,
+    highRangeCents: highCents,
+  }
+}
+
 const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimateProps> = ({
   artwork,
   marketPriceInsights,
@@ -21,7 +83,10 @@ const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimat
     return null
   }
 
-  const { lowRangeCents, midRangeCents, highRangeCents, artsyQInventory } = marketPriceInsights
+  const { artsyQInventory } = marketPriceInsights
+
+  const { lowRangeCents, midRangeCents, highRangeCents } = rangeCents(artwork, marketPriceInsights)
+
   const lowRangeDollars = formatCentsToDollars(Number(lowRangeCents))
   const midRangeDollars = formatCentsToDollars(Number(midRangeCents))
   const highRangeDollars = formatCentsToDollars(Number(highRangeCents))
@@ -73,14 +138,24 @@ export const MyCollectionArtworkPriceEstimateFragmentContainer = createFragmentC
       fragment MyCollectionArtworkPriceEstimate_artwork on Artwork {
         costCurrencyCode
         costMinor
+        sizeBucket
       }
     `,
     marketPriceInsights: graphql`
       fragment MyCollectionArtworkPriceEstimate_marketPriceInsights on MarketPriceInsights {
-        # FIXME: These props are coming back from diffusion untyped
-        lowRangeCents
-        midRangeCents
+        # FIXME: These props are coming back from diffusion untyped as strings
         highRangeCents
+        largeHighRangeCents
+        largeLowRangeCents
+        largeMidRangeCents
+        lowRangeCents
+        mediumHighRangeCents
+        mediumLowRangeCents
+        mediumMidRangeCents
+        midRangeCents
+        smallHighRangeCents
+        smallLowRangeCents
+        smallMidRangeCents
         artsyQInventory
       }
     `,

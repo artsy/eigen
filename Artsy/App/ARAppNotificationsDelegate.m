@@ -223,6 +223,7 @@
                                                        ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
 
     ARActionLog(@"Got device notification token: %@", deviceToken);
+    NSString *previousToken = [[NSUserDefaults standardUserDefaults] stringForKey:ARAPNSDeviceTokenKey];
 
     // Save device token purely for the admin settings view.
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
@@ -237,7 +238,7 @@
     // for notifications even if the user has not signed-in, we must be sure to always update this to ensure the Artsy
     // service always has an up-to-date record of devices and associated users.
     // https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622958-application?language=objc
-    if (![self tokensAreTheSame:previousToken newToken:deviceToken]) {
+    if (![self tokensAreTheSame:deviceToken previousToken:previousToken]) {
         [ArtsyAPI setAPNTokenForCurrentDevice:deviceToken success:^(id response) {
             ARActionLog(@"Pushed device token to Artsy's servers");
         } failure:^(NSError *error) {

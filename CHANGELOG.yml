@@ -11,6 +11,9 @@ upcoming:
     - Remove analytics tracking on back-arrow taps - pepopowitz
     - Rename AppStore to GlobalStore - david
     - Update STRICTNESS_MIGRATION comments - david
+    - Don't pass email to segment - brian
+    - Remove SwitchBoard.tsx - david
+    - Fix device token checking logic - david
   user_facing:
     -
 releases:
@@ -231,7 +234,6 @@ releases:
       - Add method for rendering wrapped components - brian
       - Refactor recent searches to use easy-peasy - brian, mounir, david
       - Add easy-peasy app store persistence & migration - david
-      - Remove SwitchBoard.tsx - david
     user_facing:
       - Prevent follow button going off screen in artist page - brian
       - don't show password on wrong password entry - brian

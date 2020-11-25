@@ -7,6 +7,7 @@ import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkPriceEstimate_artwork = {
     readonly costCurrencyCode: string | null;
     readonly costMinor: number | null;
+    readonly sizeBucket: string | null;
     readonly " $refType": "MyCollectionArtworkPriceEstimate_artwork";
 };
 export type MyCollectionArtworkPriceEstimate_artwork$data = MyCollectionArtworkPriceEstimate_artwork;
@@ -36,10 +37,17 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "name": "costMinor",
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "sizeBucket",
+      "storageKey": null
     }
   ],
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = 'cc20cca835416f0c81a766093a50c9a3';
+(node as any).hash = 'ed3863356afb703062edcc03183f51f0';
 export default node;

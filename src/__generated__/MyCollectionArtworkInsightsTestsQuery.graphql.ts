@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3d60a40260c18190255dd1c3dc8c036c */
+/* @relayHash c6cf395dfaa860ff36d7827cf0fc0c1d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -115,12 +115,22 @@ fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights 
 fragment MyCollectionArtworkPriceEstimate_artwork on Artwork {
   costCurrencyCode
   costMinor
+  sizeBucket
 }
 
 fragment MyCollectionArtworkPriceEstimate_marketPriceInsights on MarketPriceInsights {
-  lowRangeCents
-  midRangeCents
   highRangeCents
+  largeHighRangeCents
+  largeLowRangeCents
+  largeMidRangeCents
+  lowRangeCents
+  mediumHighRangeCents
+  mediumLowRangeCents
+  mediumMidRangeCents
+  midRangeCents
+  smallHighRangeCents
+  smallLowRangeCents
+  smallMidRangeCents
   artsyQInventory
 }
 */
@@ -285,6 +295,13 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "costMinor",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "sizeBucket",
             "storageKey": null
           },
           {
@@ -550,7 +567,56 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "highRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "largeHighRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "largeLowRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "largeMidRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "lowRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "mediumHighRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "mediumLowRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "mediumMidRangeCents",
             "storageKey": null
           },
           {
@@ -564,7 +630,21 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "highRangeCents",
+            "name": "smallHighRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "smallLowRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "smallMidRangeCents",
             "storageKey": null
           },
           {
@@ -622,7 +702,7 @@ return {
     ]
   },
   "params": {
-    "id": "3d60a40260c18190255dd1c3dc8c036c",
+    "id": "c6cf395dfaa860ff36d7827cf0fc0c1d",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -717,6 +797,7 @@ return {
         "artwork.costCurrencyCode": (v8/*: any*/),
         "artwork.costMinor": (v11/*: any*/),
         "artwork.id": (v7/*: any*/),
+        "artwork.sizeBucket": (v8/*: any*/),
         "marketPriceInsights": {
           "enumValues": null,
           "nullable": true,
@@ -729,11 +810,20 @@ return {
         "marketPriceInsights.demandRank": (v10/*: any*/),
         "marketPriceInsights.demandTrend": (v10/*: any*/),
         "marketPriceInsights.highRangeCents": (v12/*: any*/),
+        "marketPriceInsights.largeHighRangeCents": (v12/*: any*/),
+        "marketPriceInsights.largeLowRangeCents": (v12/*: any*/),
+        "marketPriceInsights.largeMidRangeCents": (v12/*: any*/),
         "marketPriceInsights.liquidityRank": (v10/*: any*/),
         "marketPriceInsights.lowRangeCents": (v12/*: any*/),
         "marketPriceInsights.medianSaleToEstimateRatio": (v10/*: any*/),
+        "marketPriceInsights.mediumHighRangeCents": (v12/*: any*/),
+        "marketPriceInsights.mediumLowRangeCents": (v12/*: any*/),
+        "marketPriceInsights.mediumMidRangeCents": (v12/*: any*/),
         "marketPriceInsights.midRangeCents": (v12/*: any*/),
-        "marketPriceInsights.sellThroughRate": (v10/*: any*/)
+        "marketPriceInsights.sellThroughRate": (v10/*: any*/),
+        "marketPriceInsights.smallHighRangeCents": (v12/*: any*/),
+        "marketPriceInsights.smallLowRangeCents": (v12/*: any*/),
+        "marketPriceInsights.smallMidRangeCents": (v12/*: any*/)
       }
     },
     "name": "MyCollectionArtworkInsightsTestsQuery",
