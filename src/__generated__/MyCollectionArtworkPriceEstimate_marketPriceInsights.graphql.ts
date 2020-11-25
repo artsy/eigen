@@ -5,9 +5,18 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkPriceEstimate_marketPriceInsights = {
-    readonly lowRangeCents: unknown | null;
-    readonly midRangeCents: unknown | null;
     readonly highRangeCents: unknown | null;
+    readonly largeHighRangeCents: unknown | null;
+    readonly largeLowRangeCents: unknown | null;
+    readonly largeMidRangeCents: unknown | null;
+    readonly lowRangeCents: unknown | null;
+    readonly mediumHighRangeCents: unknown | null;
+    readonly mediumLowRangeCents: unknown | null;
+    readonly mediumMidRangeCents: unknown | null;
+    readonly midRangeCents: unknown | null;
+    readonly smallHighRangeCents: unknown | null;
+    readonly smallLowRangeCents: unknown | null;
+    readonly smallMidRangeCents: unknown | null;
     readonly artsyQInventory: number | null;
     readonly " $refType": "MyCollectionArtworkPriceEstimate_marketPriceInsights";
 };
@@ -29,7 +38,56 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "highRangeCents",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "largeHighRangeCents",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "largeLowRangeCents",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "largeMidRangeCents",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "lowRangeCents",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "mediumHighRangeCents",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "mediumLowRangeCents",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "mediumMidRangeCents",
       "storageKey": null
     },
     {
@@ -43,7 +101,21 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "highRangeCents",
+      "name": "smallHighRangeCents",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "smallLowRangeCents",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "smallMidRangeCents",
       "storageKey": null
     },
     {
@@ -57,5 +129,5 @@ const node: ReaderFragment = {
   "type": "MarketPriceInsights",
   "abstractKey": null
 };
-(node as any).hash = 'c4741bd74a0ecbda63e9ed4d64c6524b';
+(node as any).hash = 'c5528817f0ed2109eb23e454510a27bd';
 export default node;

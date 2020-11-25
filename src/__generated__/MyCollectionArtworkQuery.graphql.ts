@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6033927086a124002c7322d4973ba1e8 */
+/* @relayHash 3e0d07aee35ae08457ee3362fb32ae60 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -205,12 +205,22 @@ fragment MyCollectionArtworkMeta_artwork on Artwork {
 fragment MyCollectionArtworkPriceEstimate_artwork on Artwork {
   costCurrencyCode
   costMinor
+  sizeBucket
 }
 
 fragment MyCollectionArtworkPriceEstimate_marketPriceInsights on MarketPriceInsights {
-  lowRangeCents
-  midRangeCents
   highRangeCents
+  largeHighRangeCents
+  largeLowRangeCents
+  largeMidRangeCents
+  lowRangeCents
+  mediumHighRangeCents
+  mediumLowRangeCents
+  mediumMidRangeCents
+  midRangeCents
+  smallHighRangeCents
+  smallLowRangeCents
+  smallMidRangeCents
   artsyQInventory
 }
 */
@@ -753,7 +763,13 @@ return {
           (v19/*: any*/),
           (v20/*: any*/),
           (v21/*: any*/),
-          (v16/*: any*/)
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "sizeBucket",
+            "storageKey": null
+          }
         ],
         "storageKey": null
       },
@@ -776,7 +792,56 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "highRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "largeHighRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "largeLowRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "largeMidRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "lowRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "mediumHighRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "mediumLowRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "mediumMidRangeCents",
             "storageKey": null
           },
           {
@@ -790,7 +855,21 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "highRangeCents",
+            "name": "smallHighRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "smallLowRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "smallMidRangeCents",
             "storageKey": null
           },
           {
@@ -848,7 +927,7 @@ return {
     ]
   },
   "params": {
-    "id": "6033927086a124002c7322d4973ba1e8",
+    "id": "3e0d07aee35ae08457ee3362fb32ae60",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",
