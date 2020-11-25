@@ -2,7 +2,7 @@ import {
   FeaturedCollectionsRailTestsQuery,
   FeaturedCollectionsRailTestsQueryRawResponse,
 } from "__generated__/FeaturedCollectionsRailTestsQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import {
   FeaturedCollectionsRail,
   FeaturedCollectionsRailContainer,
@@ -17,9 +17,6 @@ import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 jest.mock("react-tracking")
 
 describe("Featured Collections Rail", () => {
@@ -156,10 +153,7 @@ describe("Featured Collections Rail", () => {
       const instance = tree.findAllByType(TouchableHighlight)[0]
       act(() => instance.props.onPress())
 
-      expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-        expect.anything(),
-        "/collection/featured-collection-1"
-      )
+      expect(navigate).toHaveBeenCalledWith("/collection/featured-collection-1")
     })
   })
 })

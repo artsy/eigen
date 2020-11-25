@@ -1,11 +1,11 @@
 import Spinner from "lib/Components/Spinner"
+import { dismissModal, navigate } from "lib/navigation/navigate"
 import { Schema, screenTrack } from "lib/utils/track"
 import { Box, Button, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { Route, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import Welcome from "./Welcome"
 
 interface Props extends ViewProperties {
@@ -62,10 +62,10 @@ export default class Confirmation extends React.Component<Props, State> {
     }
   }
 
-  exitModal = () => SwitchBoard.dismissModalViewController(this)
+  exitModal = () => dismissModal()
   exitModalAndGoHome = () => {
-    SwitchBoard.dismissModalViewController(this)
-    SwitchBoard.presentNavigationViewController(this, "/")
+    dismissModal()
+    navigate("/")
   }
   restart = () => this.props.navigator.push({ component: Welcome })
 

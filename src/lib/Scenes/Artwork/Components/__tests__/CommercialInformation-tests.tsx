@@ -22,10 +22,6 @@ const Wrapper: React.FC<{}> = ({ children }) => {
   )
 }
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
-
 describe("CommercialInformation", () => {
   it("renders all information when the data is present", () => {
     const ForSaleArtwork = {

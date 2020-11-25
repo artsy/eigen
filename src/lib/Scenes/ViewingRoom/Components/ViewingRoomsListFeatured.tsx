@@ -1,6 +1,6 @@
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
@@ -49,14 +49,13 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
   const featuredData = useFragment(featuredFragment, props.featured)
   const featured = extractNodes(featuredData)
   const { trackEvent } = useTracking()
-  const navRef = useRef(null)
   const listRef = useRef<FlatList<any>>(null)
   useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0 }),
   }))
 
   return (
-    <View ref={navRef}>
+    <View>
       <AboveTheFoldFlatList
         ListHeaderComponent={() => <Spacer ml="2" />}
         ListFooterComponent={() => <Spacer ml="2" />}
@@ -82,7 +81,7 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
                       )
                     : tracks.tappedFeaturedViewingRoomRailItem(item.internalID, item.slug)
                 )
-                SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${item.slug!}`)
+                navigate(`/viewing-room/${item.slug!}`)
               }}
             >
               <MediumCard

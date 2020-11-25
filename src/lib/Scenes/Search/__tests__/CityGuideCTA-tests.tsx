@@ -1,13 +1,9 @@
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { CityGuideCTA } from "../CityGuideCTA"
-
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 describe("Search page empty state", () => {
   it(`renders correctly`, async () => {
@@ -19,6 +15,6 @@ describe("Search page empty state", () => {
   it(`navigates to cityGuide link`, () => {
     const tree = renderWithWrappers(<CityGuideCTA />)
     tree.root.findByType(TouchableOpacity).props.onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/local-discovery")
+    expect(navigate).toHaveBeenCalledWith("/local-discovery")
   })
 })

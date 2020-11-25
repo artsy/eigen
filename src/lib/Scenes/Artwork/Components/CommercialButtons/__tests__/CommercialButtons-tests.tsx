@@ -1,26 +1,18 @@
 import { CommercialButtonsTestsMutationQueryRawResponse } from "__generated__/CommercialButtonsTestsMutationQuery.graphql"
 import { CommercialButtonsTestsRenderQueryRawResponse } from "__generated__/CommercialButtonsTestsRenderQuery.graphql"
-import { Button } from "palette"
-jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentModalViewController: jest.fn() }))
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { ArtworkInquiryContextState } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
+import { Button } from "palette"
 import React from "react"
 import { _FragmentRefs, graphql } from "react-relay"
 import { CommercialButtonsFragmentContainer } from "../CommercialButtons"
 
 jest.unmock("react-relay")
-
-const SwitchBoardMock = SwitchBoard as any
-const { anything } = expect
-
-afterEach(() => {
-  SwitchBoardMock.presentModalViewController.mockReset()
-})
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const componentWithQuery = async ({ mockArtworkData, mockOrderMutationResults, mockOfferMutationResults }) => {
@@ -198,7 +190,7 @@ describe("CommercialButtons", () => {
     const BuyNowButton = commercialButtons.find(Button).at(0)
     BuyNowButton.props().onPress()
     await flushPromiseQueue()
-    expect(SwitchBoardMock.presentModalViewController).toHaveBeenCalledWith(anything(), "/orders/buyNowID")
+    expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", { modal: true })
   })
 
   it("commits the Make Offer mutation", async () => {
@@ -226,7 +218,7 @@ describe("CommercialButtons", () => {
     MakeOfferButton.props().onPress()
     await flushPromiseQueue()
 
-    expect(SwitchBoardMock.presentModalViewController).toHaveBeenCalledWith(anything(), "/orders/makeOfferID")
+    expect(navigate).toHaveBeenCalledWith("/orders/makeOfferID", { modal: true })
   })
 
   it("renders both Buy Now and Bid buttons when isInAuction and isBuyNowable", async () => {

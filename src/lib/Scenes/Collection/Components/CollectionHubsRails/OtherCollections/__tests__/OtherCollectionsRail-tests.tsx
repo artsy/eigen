@@ -1,12 +1,10 @@
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { CollectionHubRailsOtherCollectionsRailFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Sans } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { CollectionGroupMemberPill, OtherCollectionsRail } from "../OtherCollectionsRail"
-
-jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentNavigationViewController: jest.fn() }))
 
 describe("Other Collections Rail", () => {
   const TestRenderer = () => (
@@ -38,9 +36,6 @@ describe("Other Collections Rail", () => {
 
     button.props.onPress()
 
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-      expect.anything(),
-      "/collection/abstract-expressionism"
-    )
+    expect(navigate).toHaveBeenCalledWith("/collection/abstract-expressionism")
   })
 })

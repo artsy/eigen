@@ -1,5 +1,5 @@
 import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworksTestsQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -12,9 +12,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { tracks, ViewingRoomArtworksContainer } from "../ViewingRoomArtworks"
 
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 describe("ViewingRoom", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -97,10 +94,7 @@ describe("ViewingRoom", () => {
 
     tree.root.findByType(Touchable).props.onPress()
 
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-      expect.anything(),
-      "/viewing-room/gallery-name-viewing-room-name/nicolas-party-rocks-ii"
-    )
+    expect(navigate).toHaveBeenCalledWith("/viewing-room/gallery-name-viewing-room-name/nicolas-party-rocks-ii")
 
     expect(useTracking().trackEvent).toHaveBeenCalledWith({
       ...tracks.context("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name"),

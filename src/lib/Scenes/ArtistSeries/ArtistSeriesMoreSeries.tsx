@@ -1,9 +1,9 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { ArtistSeriesMoreSeries_artist } from "__generated__/ArtistSeriesMoreSeries_artist.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { Flex, FlexProps, Sans } from "palette"
-import React, { Component, useRef } from "react"
+import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -31,7 +31,6 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
   currentArtistSeriesExcluded,
   ...rest
 }) => {
-  const navRef = useRef<Component>(null)
   const series = artist?.artistSeriesConnection?.edges ?? []
   const excludedArtistSeriesCount = currentArtistSeriesExcluded ? 1 : 0
   const totalCount = Number(artist?.artistSeriesConnection?.totalCount ?? 0) + excludedArtistSeriesCount
@@ -41,7 +40,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
   }
 
   return (
-    <Flex {...rest} ref={navRef}>
+    <Flex {...rest}>
       <Flex mb="15px" flexDirection="row" justifyContent="space-between">
         <Sans size="4t" data-test-id="header">
           {artistSeriesHeader}
@@ -49,10 +48,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
         {totalCount > 4 && (
           <TouchableOpacity
             onPress={() => {
-              SwitchBoard.presentNavigationViewController(
-                navRef.current!,
-                `/artist/${artist?.internalID!}/artist-series`
-              )
+              navigate(`/artist/${artist?.internalID!}/artist-series`)
             }}
           >
             <Sans data-test-id="viewAll" size="4t">{`View All (${totalCount})`}</Sans>

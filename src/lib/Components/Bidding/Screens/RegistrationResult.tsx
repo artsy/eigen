@@ -11,7 +11,7 @@ import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
 import { Title } from "../Components/Title"
 
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { dismissModal } from "lib/navigation/navigate"
 import { defaultRules } from "lib/utils/renderMarkdown"
 import { Schema, screenTrack } from "lib/utils/track"
 
@@ -106,8 +106,8 @@ const resultEnumToPageName = (result: RegistrationStatus) => {
     } as any) /* STRICTNESS_MIGRATION */
 )
 export class RegistrationResult extends React.Component<RegistrationResultProps> {
-  exitBidFlow = async () => {
-    await SwitchBoard.dismissModalViewController(this)
+  exitBidFlow = () => {
+    dismissModal()
   }
 
   render() {

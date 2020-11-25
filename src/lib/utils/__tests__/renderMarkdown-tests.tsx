@@ -5,13 +5,8 @@ import { Flex, Sans, Serif, Text, Theme } from "palette"
 import React from "react"
 import { defaultRules, renderMarkdown } from "../renderMarkdown"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-  presentModalViewController: jest.fn(),
-}))
-
 import { readFileSync } from "fs"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { join } from "path"
 
 describe("renderMarkdown", () => {
@@ -123,7 +118,7 @@ describe("renderMarkdown", () => {
 
     renderedComponent.find(LinkText).at(0).props().onPress()
 
-    expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(expect.anything(), "/artist/first")
+    expect(navigate).toHaveBeenCalledWith("/artist/first", { modal: true })
   })
 
   it("doesn't open links modally when not specified", () => {
@@ -156,7 +151,7 @@ describe("renderMarkdown", () => {
 
     renderedComponent.find(LinkText).at(0).props().onPress()
 
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/first")
+    expect(navigate).toHaveBeenCalledWith("/artist/first")
   })
 
   it(`renders all the markdown elements`, async () => {

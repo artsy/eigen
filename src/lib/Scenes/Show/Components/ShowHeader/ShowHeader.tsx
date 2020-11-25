@@ -2,7 +2,7 @@ import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
 import { ShowHeaderFollowShowMutation } from "__generated__/ShowHeaderFollowShowMutation.graphql"
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate, navigateToPartner } from "lib/navigation/navigate"
 import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema, Track, track as _track } from "lib/utils/track"
@@ -34,8 +34,7 @@ export class ShowHeader extends React.Component<Props, State> {
     if (show.isStubShow) {
       return
     }
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    SwitchBoard.presentPartnerViewController(this, show.partner?.href)
+    navigateToPartner(show.partner?.href!)
   }
 
   handleFollowShow = () => {
@@ -123,11 +122,11 @@ export class ShowHeader extends React.Component<Props, State> {
   })
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleArtistSelected(url, _slug, _internalID) {
-    SwitchBoard.presentNavigationViewController(this, url)
+    navigate(url)
   }
 
   handleViewAllArtistsPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.slug}/artists`)
+    navigate(`/show/${this.props.show.slug}/artists`)
   }
 
   render() {

@@ -1,5 +1,5 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { SaleInfo } from "lib/Scenes/MyBids/Components/SaleInfo"
 import { Flex, Separator, Text, Touchable } from "palette"
 import React from "react"
@@ -14,11 +14,7 @@ export class SaleCard extends React.Component<{ sale: SaleCard_sale }> {
     const { sale, children } = this.props
     return (
       <React.Fragment>
-        <Touchable
-          underlayColor="transparent"
-          activeOpacity={0.8}
-          onPress={() => SwitchBoard.presentNavigationViewController(this, sale?.href as string)}
-        >
+        <Touchable underlayColor="transparent" activeOpacity={0.8} onPress={() => navigate(sale?.href as string)}>
           <Flex overflow="hidden" borderWidth={1} borderStyle="solid" borderColor="black10" borderRadius={4}>
             <OpaqueImageView height={CARD_HEIGHT} imageURL={sale?.coverImage?.url} />
             <Flex style={{ margin: 15 }}>

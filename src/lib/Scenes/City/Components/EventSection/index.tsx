@@ -1,5 +1,5 @@
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Event } from "lib/Scenes/City/Components/Event"
 import { Box, Serif } from "palette"
 import React from "react"
@@ -16,7 +16,7 @@ export interface Props {
 export class EventSection extends React.Component<Props> {
   viewAllPressed = () => {
     const { citySlug, section } = this.props
-    SwitchBoard.presentNavigationViewController(this, `/city/${citySlug}/${section}`)
+    navigate(`/city/${citySlug}/${section}`)
   }
 
   renderEvents = () => {

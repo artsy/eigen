@@ -4,11 +4,8 @@ import { Sans } from "palette"
 import React from "react"
 import { Header } from "../OtherWorks/Header"
 import { OtherWorksFragmentContainer as OtherWorks } from "../OtherWorks/OtherWorks"
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { TouchableWithoutFeedback } from "react-native"
 
 describe("OtherWorks", () => {
@@ -54,7 +51,7 @@ describe("OtherWorks", () => {
     expect(component.find(Header).length).toEqual(1)
     expect(component.find(Sans).first().text()).toEqual("Other works by Andy Warhol")
     component.find(TouchableWithoutFeedback).props().onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/andy-warhol")
+    expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
   })
 
   it("renders the grids if multiple are provided", () => {
@@ -82,10 +79,10 @@ describe("OtherWorks", () => {
     expect(component.find(Sans).last().text()).toEqual("View all works from Gagosian Gallery")
 
     component.find(TouchableWithoutFeedback).first().props().onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/andy-warhol")
+    expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
 
     component.find(TouchableWithoutFeedback).last().props().onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/gagosian-gallery")
+    expect(navigate).toHaveBeenCalledWith("/gagosian-gallery")
   })
 
   it("renders only grids with artworks", () => {

@@ -1,6 +1,6 @@
 import { dimensions, screen } from "lib/data/ScreenSizes/screenSizes"
 import { CircleWhiteCheckIcon } from "lib/Icons/CircleWhiteCheckIcon"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { Box, color, Flex, Sans, Separator, Serif, space } from "palette"
 import React, { Component } from "react"
@@ -74,10 +74,7 @@ export class CityPicker extends Component<Props, State> {
     /** Here we default to the hardcoded url as on the City Picker's inital load City is undefined
      *  and therefore does not have a sponsoredContentUrl property on City
      */
-    SwitchBoard.presentNavigationViewController(
-      this,
-      sponsoredContentUrl || "https://www.bmw-arts-design.com/bmw_art_guide"
-    )
+    navigate(sponsoredContentUrl || "https://www.bmw-arts-design.com/bmw_art_guide")
   }
 
   // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562

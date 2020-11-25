@@ -3,7 +3,7 @@ import { LabeledTicker } from "lib/Components/Countdown"
 import { CountdownProps, CountdownTimer } from "lib/Components/Countdown/CountdownTimer"
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { uniq } from "lodash"
@@ -78,11 +78,11 @@ export class FairHeader extends React.Component<Props, State> {
   state = { isSavedFairStateUpdating: false }
 
   viewAllArtists() {
-    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.slug}/artists`)
+    navigate(`/fair/${this.props.fair.slug}/artists`)
   }
 
   viewAllExhibitors() {
-    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.slug}/exhibitors`)
+    navigate(`/fair/${this.props.fair.slug}/exhibitors`)
   }
 
   getContextualDetails() {
@@ -120,7 +120,7 @@ export class FairHeader extends React.Component<Props, State> {
   })
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleExhibitorPress(href, _slug, _internalID) {
-    SwitchBoard.presentNavigationViewController(this, `${href}?entity=fair-booth`)
+    navigate(`${href}?entity=fair-booth`)
   }
 
   @track((__, _, args) => {
@@ -136,7 +136,7 @@ export class FairHeader extends React.Component<Props, State> {
   })
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleArtistPress(href, _slug, _internalID) {
-    SwitchBoard.presentNavigationViewController(this, href)
+    navigate(href)
   }
 
   render() {

@@ -2,11 +2,7 @@
 import { shallow } from "enzyme"
 import React from "react"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentModalViewController: jest.fn(),
-}))
-
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 
 import { LinkText } from "lib/Components/Text/LinkText"
 import { Button } from "palette"
@@ -19,7 +15,7 @@ describe(PrivacyRequest, () => {
 
     tree.find(LinkText).at(0).simulate("press")
 
-    expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(expect.anything(), "/privacy")
+    expect(navigate).toHaveBeenCalledWith("/privacy", { modal: true })
   })
 
   it("handles email link taps", () => {

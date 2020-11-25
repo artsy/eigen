@@ -2,7 +2,7 @@ import { FairBoothPreview_show } from "__generated__/FairBoothPreview_show.graph
 import { FairBoothPreviewMutation } from "__generated__/FairBoothPreviewMutation.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { Box } from "palette"
@@ -129,7 +129,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
     const {
       show: { slug: showSlug },
     } = this.props
-    SwitchBoard.presentNavigationViewController(this, `show/${showSlug}?entity=fair-booth`)
+    navigate(`show/${showSlug}?entity=fair-booth`)
   }
 
   @track((props) => ({
@@ -143,7 +143,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
     const {
       show: { slug: showSlug },
     } = this.props
-    SwitchBoard.presentNavigationViewController(this, `/show/${showSlug}?entity=fair-booth`)
+    navigate(`/show/${showSlug}?entity=fair-booth`)
   }
 
   render() {

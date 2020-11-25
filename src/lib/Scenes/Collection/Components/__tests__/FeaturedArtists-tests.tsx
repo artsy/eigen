@@ -1,5 +1,5 @@
 import { FeaturedArtistsTestsQueryRawResponse } from "__generated__/FeaturedArtistsTestsQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { mockTracking } from "lib/tests/mockTracking"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { Theme } from "palette"
@@ -10,11 +10,6 @@ jest.unmock("react-relay")
 jest.unmock("react-tracking")
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 import { postEvent } from "lib/NativeModules/Events"
-
-jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentNavigationViewController: jest.fn() }))
-
-const SwitchBoardMock = SwitchBoard as any
-const { anything } = expect
 
 const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQueryRawResponse["marketingCollection"] = {
   id: "some-id",
@@ -178,10 +173,6 @@ describe("FeaturedArtists", () => {
   })
 
   describe("View all", () => {
-    beforeEach(() => {
-      SwitchBoardMock.presentNavigationViewController.mockReset()
-    })
-
     it("shows more artists when 'View more' is tapped", async () => {
       const tree = await render(FeaturedArtistCollectionFixture)
       const output = tree.html()
@@ -192,10 +183,7 @@ describe("FeaturedArtists", () => {
       const viewAll = tree.find(ViewAll)
       viewAll.simulate("click")
 
-      expect(SwitchBoardMock.presentNavigationViewController).toHaveBeenCalledWith(
-        anything(),
-        "/collection/some-collection/artists"
-      )
+      expect(navigate).toHaveBeenCalledWith("/collection/some-collection/artists")
     })
 
     it("tracks an event when 'View more' is tapped", async () => {

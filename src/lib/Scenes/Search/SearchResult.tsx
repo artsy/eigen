@@ -1,12 +1,11 @@
 import GraphemeSplitter from "grapheme-splitter"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard, { EntityType, SlugType } from "lib/NativeModules/SwitchBoard"
-import { navigate } from "lib/navigation/navigate"
+import { EntityType, navigate, navigateToEntity, navigateToPartner, SlugType } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { normalizeText } from "lib/utils/normalizeText"
 import { Schema } from "lib/utils/track"
 import { CloseIcon, Flex, Sans, Spacer } from "palette"
-import React, { useContext, useRef } from "react"
+import React, { useContext } from "react"
 import { Text, TouchableOpacity, View } from "react-native"
 import { useTracking } from "react-tracking"
 import { AutosuggestResult } from "./AutosuggestResults"
@@ -31,12 +30,10 @@ export const SearchResult: React.FC<{
   showResultType = true,
   updateRecentSearchesOnTap = true,
 }) => {
-  const navRef = useRef<any>()
   const { inputRef, queryRef } = useContext(SearchContext)
   const { trackEvent } = useTracking()
   return (
     <TouchableOpacity
-      ref={navRef}
       onPress={() => {
         if (onResultPress) {
           onResultPress(result)
@@ -44,7 +41,7 @@ export const SearchResult: React.FC<{
           inputRef.current?.blur()
           // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
           setTimeout(() => {
-            navigateToResult(result, navRef)
+            navigateToResult(result)
             if (updateRecentSearchesOnTap) {
               GlobalStore.actions.search.addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
             }
@@ -103,14 +100,13 @@ const splitter = new GraphemeSplitter()
  * about the entity type to render the correct placeholder/skeleton loader
  * @param result
  */
-function navigateToResult(result: AutosuggestResult, navRef: React.MutableRefObject<any>) {
+function navigateToResult(result: AutosuggestResult) {
   if (result.displayType === "Gallery" || result.displayType === "Institution") {
-    SwitchBoard.presentPartnerViewController(navRef.current, result.slug!)
+    navigateToPartner(result.slug!)
   } else if (result.displayType === "Fair") {
-    const fairProfileUrl = `${result.href}?entity=${EntityType.Fair}&slugType=${SlugType.ProfileID}`
-    navigate(fairProfileUrl)
+    navigateToEntity(result.href!, EntityType.Fair, SlugType.ProfileID)
   } else {
-    SwitchBoard.presentNavigationViewController(navRef.current, result.href!)
+    navigate(result.href!)
   }
 }
 

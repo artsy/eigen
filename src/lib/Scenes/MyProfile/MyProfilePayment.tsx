@@ -4,14 +4,14 @@ import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graph
 import { CreditCardDetailsContainer } from "lib/Components/CreditCardDetails"
 import { MenuItem } from "lib/Components/MenuItem"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { Flex, Sans, Spacer } from "palette"
-import React, { useCallback, useEffect, useReducer, useRef, useState } from "react"
+import React, { useCallback, useEffect, useReducer, useState } from "react"
 import { ActivityIndicator, Alert, FlatList, LayoutAnimation, RefreshControl, TouchableOpacity } from "react-native"
 import { commitMutation, createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
@@ -110,12 +110,10 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
   }
 
   const creditCards = extractNodes(me.creditCards)
-  const navRef = useRef(null)
 
   return (
     <PageWithSimpleHeader title="Payment">
       <FlatList
-        ref={navRef}
         style={{ flex: 1 }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
         data={creditCards}
@@ -142,12 +140,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
         ItemSeparatorComponent={() => <Spacer mb={10} />}
         ListFooterComponent={
           <Flex pt={creditCards.length === 0 ? 0 : "2"}>
-            <MenuItem
-              title="Add New Card"
-              onPress={() =>
-                SwitchBoard.presentNavigationViewController(navRef.current!, "/my-profile/payment/new-card")
-              }
-            />
+            <MenuItem title="Add New Card" onPress={() => navigate("/my-profile/payment/new-card")} />
             {!!isLoadingMore && <ActivityIndicator style={{ marginTop: 30 }} />}
           </Flex>
         }

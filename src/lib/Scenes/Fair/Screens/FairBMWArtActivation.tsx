@@ -1,7 +1,7 @@
 import { FairBMWArtActivation_fair } from "__generated__/FairBMWArtActivation_fair.graphql"
 import { FairBMWArtActivationQuery } from "__generated__/FairBMWArtActivationQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { BMWSponsorship } from "lib/Scenes/City/CityBMWSponsorship"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { Box, Flex, Serif, space, Theme } from "palette"
@@ -54,7 +54,7 @@ export class FairBMWArtActivation extends React.Component<Props, State> {
 
   @track(eventProps(Schema.ActionNames.PressRelease))
   handleViewPressRelease(url: string) {
-    SwitchBoard.presentNavigationViewController(this, url)
+    navigate(url)
   }
 
   // @TODO: Implement tests for this component: https://artsyproduct.atlassian.net/browse/LD-549

@@ -3,7 +3,7 @@ import { SmallTileRail_artworks } from "__generated__/SmallTileRail_artworks.gra
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Spacer } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
@@ -41,7 +41,7 @@ const SmallTileRail: React.FC<Props> = ({ artworks, listRef, contextModule }) =>
                       HomeAnalytics.artworkThumbnailTapEvent(contextModule, item.slug, index, "single")
                     )
                   }
-                  SwitchBoard.presentNavigationViewController(listRef.current!, item.href!)
+                  navigate(item.href!)
                 }
               : undefined
           }

@@ -2,7 +2,7 @@ import {
   ArtistSeriesMetaTestsQuery,
   ArtistSeriesMetaTestsQueryRawResponse,
 } from "__generated__/ArtistSeriesMetaTestsQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { ArtistSeriesMeta, ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { EntityHeader } from "palette"
@@ -15,9 +15,6 @@ import { createMockEnvironment } from "relay-test-utils"
 
 jest.mock("react-tracking")
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 describe("Artist Series Meta", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -97,7 +94,7 @@ describe("Artist Series Meta", () => {
   it("navigates user to artist page when entity header artist tapped ", () => {
     const wrapper = getWrapper().root.findByType(TouchableOpacity)
     wrapper.props.onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/yayoi-kusama")
+    expect(navigate).toHaveBeenCalledWith("/artist/yayoi-kusama")
   })
 
   it("tracks unfollows", () => {
