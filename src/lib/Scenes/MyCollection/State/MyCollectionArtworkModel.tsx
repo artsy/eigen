@@ -14,6 +14,7 @@ export interface Image {
   path?: string
   width?: number
 }
+
 export interface ArtworkFormValues {
   artist: string
   artistIds: string[]
@@ -130,7 +131,10 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
    */
 
   addPhotos: action((state, photos) => {
-    state.sessionState.formValues.photos = uniqBy(state.sessionState.formValues.photos.concat(photos), "path")
+    state.sessionState.formValues.photos = uniqBy(
+      state.sessionState.formValues.photos.concat(photos),
+      (photo) => photo.url || photo.path
+    )
   }),
 
   removePhoto: action((state, photoToRemove) => {
@@ -187,7 +191,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       artistSearchResult: {
         internalID: artwork?.artist?.internalID,
         displayLabel: artwork?.artistNames,
-        imageUrl: artwork?.images?.find((i) => i.isDefault)?.url?.replace(":version", "square"),
+        imageUrl: artwork?.images?.length > 0 && artwork.images[0].url?.replace(":version", "square"),
       },
       category: artwork.category,
       date: artwork.date,

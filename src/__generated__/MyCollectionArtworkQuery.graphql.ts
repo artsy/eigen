@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3e0d07aee35ae08457ee3362fb32ae60 */
+/* @relayHash fa7e7cc6143d8a18f9ebe109712d1e50 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -763,6 +763,7 @@ return {
           (v19/*: any*/),
           (v20/*: any*/),
           (v21/*: any*/),
+          (v16/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -927,7 +928,7 @@ return {
     ]
   },
   "params": {
-    "id": "3e0d07aee35ae08457ee3362fb32ae60",
+    "id": "fa7e7cc6143d8a18f9ebe109712d1e50",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",
