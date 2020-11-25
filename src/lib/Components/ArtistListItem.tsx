@@ -1,6 +1,6 @@
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Schema, track } from "lib/utils/track"
 import { Button, color, EntityHeader, Flex, Theme } from "palette"
 import { Touchable } from "palette"
@@ -116,7 +116,7 @@ export class ArtistListItem extends React.Component<Props, State> {
     } as any
   })
   handleTap(href: string) {
-    SwitchBoard.presentNavigationViewController(this, href)
+    navigate(href)
   }
 
   render() {

@@ -1,5 +1,5 @@
 import { ArtistConsignButtonTestsQuery } from "__generated__/ArtistConsignButtonTestsQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -13,9 +13,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ArtistConsignButtonFragmentContainer, tests } from "../ArtistConsignButton"
 
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 describe("ArtistConsignButton", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -57,7 +54,6 @@ describe("ArtistConsignButton", () => {
 
   afterEach(() => {
     trackEvent.mockClear()
-    ;(SwitchBoard.presentNavigationViewController as jest.Mock<any>).mockClear()
   })
 
   describe("Top 20 Artist ('Microfunnel') or Target Supply button", () => {
@@ -224,7 +220,7 @@ describe("ArtistConsignButton", () => {
       })
       tree.root.findByType(TouchableOpacity).props.onPress()
 
-      expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/sales")
+      expect(navigate).toHaveBeenCalledWith("/sales")
     })
 
     it("sends user to a new instance of landing page if user is already in sales tab", () => {
@@ -241,10 +237,7 @@ describe("ArtistConsignButton", () => {
       })
       tree.root.findByType(TouchableOpacity).props.onPress()
 
-      expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-        expect.anything(),
-        "/collections/my-collection/marketing-landing"
-      )
+      expect(navigate).toHaveBeenCalledWith("/collections/my-collection/marketing-landing")
     })
   })
 })

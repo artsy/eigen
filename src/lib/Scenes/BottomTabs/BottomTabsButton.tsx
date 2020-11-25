@@ -17,7 +17,6 @@ export const BottomTabsButton: React.FC<{
   const isActive = useSelectedTab() === tab
   const timeout = useRef<ReturnType<typeof setTimeout>>()
   const [isBeingPressed, setIsBeingPressed] = useState(false)
-  const navRef = useRef(null)
 
   const showActiveState = isActive || isBeingPressed
 
@@ -45,7 +44,6 @@ export const BottomTabsButton: React.FC<{
 
   return (
     <TouchableWithoutFeedback
-      ref={navRef}
       onPressIn={() => {
         clearTimeout(timeout.current!)
         setIsBeingPressed(true)

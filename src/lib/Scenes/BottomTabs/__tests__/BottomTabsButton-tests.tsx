@@ -7,8 +7,6 @@ import { TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
 import { BottomTabsButton } from "../BottomTabsButton"
 
-jest.mock("lib/NativeModules/SwitchBoard")
-
 const trackEvent = useTracking().trackEvent
 
 const TestWrapper: React.FC<React.ComponentProps<typeof BottomTabsButton>> = (props) => {

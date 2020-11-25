@@ -1,6 +1,6 @@
 import { FairDetail_fair } from "__generated__/FairDetail_fair.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Box, Flex, Message, Separator, Serif, Theme } from "palette"
 import React from "react"
 import { ActivityIndicator, FlatList, ViewProperties } from "react-native"
@@ -138,14 +138,14 @@ export class FairDetail extends React.Component<Props, State> {
 
   onViewMoreInfoPressed = () => {
     if (shouldGoStraightToWebsite(this.props.fair as any /* STRICTNESS_MIGRATION */)) {
-      SwitchBoard.presentNavigationViewController(this, this.props.fair.organizer?.website! /* STRICTNESS_MIGRATION */)
+      navigate(this.props.fair.organizer?.website! /* STRICTNESS_MIGRATION */)
     } else {
-      SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.slug}/info`)
+      navigate(`/fair/${this.props.fair.slug}/info`)
     }
   }
 
   onViewBMWArtActivationPressed = () => {
-    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.slug}/bmw-sponsored-content`)
+    navigate(`/fair/${this.props.fair.slug}/bmw-sponsored-content`)
   }
 
   renderItem = ({ item: { data, type, showIndex } }: any /* STRICTNESS_MIGRATION */) => {

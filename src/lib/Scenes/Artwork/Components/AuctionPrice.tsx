@@ -1,6 +1,6 @@
 import { AuctionPrice_artwork } from "__generated__/AuctionPrice_artwork.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { get } from "lib/utils/get"
 import { CheckCircleIcon, CloseCircleIcon, Flex, Sans, Spacer } from "palette"
 import React from "react"
@@ -16,7 +16,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
   handleBuyersPremiumTap = () => {
     const auctionInternalID = this.props.artwork && this.props.artwork.sale && this.props.artwork.sale.internalID
     if (auctionInternalID) {
-      SwitchBoard.presentModalViewController(this, `/auction/${auctionInternalID}/buyers-premium`)
+      navigate(`/auction/${auctionInternalID}/buyers-premium`, { modal: true })
     }
   }
 

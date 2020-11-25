@@ -22,7 +22,7 @@ import { PriceSummary } from "lib/Components/Bidding/Screens/ConfirmBid/PriceSum
 import { SelectMaxBidEdit } from "lib/Components/Bidding/Screens/SelectMaxBidEdit"
 import { Address, Bid, PaymentCardTextFieldParams, StripeToken } from "lib/Components/Bidding/types"
 import { LinkText } from "lib/Components/Text/LinkText"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Schema, screenTrack, track } from "lib/utils/track"
 
 import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
@@ -358,7 +358,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   onConditionsOfSaleLinkPressed() {
-    SwitchBoard.presentModalViewController(this, "/conditions-of-sale")
+    navigate("/conditions-of-sale", { modal: true })
   }
 
   refreshBidderInfo = () => {

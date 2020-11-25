@@ -1,7 +1,7 @@
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import Spinner from "lib/Components/Spinner"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { MapTab, Show } from "lib/Scenes/Map/types"
 import { isEqual } from "lodash"
 import { Box, Message, Separator, Serif } from "palette"
@@ -80,7 +80,7 @@ export class EventList extends React.Component<Props> {
 
   viewAllPressed() {
     const { citySlug, type } = this.props
-    SwitchBoard.presentNavigationViewController(this, `/city/${citySlug}/${type}`)
+    navigate(`/city/${citySlug}/${type}`)
   }
 
   hasEventsComponent = () => {

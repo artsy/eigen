@@ -6,10 +6,6 @@ import React from "react"
 import { Text } from "react-native"
 import { ArtworkExtraLinks } from "../index"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
-
 jest.unmock("react-tracking")
 
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
@@ -17,7 +13,7 @@ jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import { postEvent } from "lib/NativeModules/Events"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 
 function getWrapper({
@@ -37,9 +33,6 @@ function getWrapper({
 }
 
 describe("ArtworkExtraLinks", () => {
-  beforeEach(() => {
-    ;(SwitchBoard.presentNavigationViewController as jest.Mock).mockReset()
-  })
   it("redirects to /sales when consignments link is clicked from outside of sell tab", () => {
     const artwork = {
       ...ArtworkFixture,
@@ -59,7 +52,7 @@ describe("ArtworkExtraLinks", () => {
 
     expect(texts[0]).toContain("Consign with Artsy.")
     consignmentsLink.props().onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/sales")
+    expect(navigate).toHaveBeenCalledWith("/sales")
   })
 
   it("redirects to /collections/my-collection/marketing-landing when consignments link is clicked from within sell tab", () => {
@@ -79,10 +72,7 @@ describe("ArtworkExtraLinks", () => {
     const consignmentsLink = component.find(Text).at(1)
 
     consignmentsLink.props().onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-      expect.anything(),
-      "/collections/my-collection/marketing-landing"
-    )
+    expect(navigate).toHaveBeenCalledWith("/collections/my-collection/marketing-landing")
   })
 
   describe("for an artwork with more than 1 consignable artist", () => {

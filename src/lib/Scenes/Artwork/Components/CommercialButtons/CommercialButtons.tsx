@@ -1,7 +1,7 @@
 import { CommercialButtons_artwork } from "__generated__/CommercialButtons_artwork.graphql"
 import { CommercialButtons_me } from "__generated__/CommercialButtons_me.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { Button, Spacer } from "palette"
@@ -30,7 +30,7 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
     context_module: Schema.ContextModules.CommercialButtons,
   })
   handleInquiry() {
-    SwitchBoard.presentNavigationViewController(this, `/inquiry/${this.props.artwork.slug}`)
+    navigate(`/inquiry/${this.props.artwork.slug}`)
   }
 
   render() {

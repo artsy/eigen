@@ -1,4 +1,4 @@
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
@@ -7,9 +7,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ViewingRoomArtworkQueryRenderer } from "../ViewingRoomArtwork"
 
 jest.unmock("react-relay")
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 describe("ViewingRoomArtwork", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -40,8 +37,7 @@ describe("ViewingRoomArtwork", () => {
 
     tree.root.findByType(Button).props.onPress()
 
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-      expect.anything(),
+    expect(navigate).toHaveBeenCalledWith(
       "/viewing-room/zero-dot-dot-dot-alessandro-pessoli/alessandro-pessoli-ardente-primavera-number-1"
     )
   })

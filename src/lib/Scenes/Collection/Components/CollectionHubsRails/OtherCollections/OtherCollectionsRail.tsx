@@ -1,6 +1,6 @@
 import { OtherCollectionsRail_collectionGroup } from "__generated__/OtherCollectionsRail_collectionGroup.graphql"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Sans, Spacer } from "palette"
 import React, { useRef } from "react"
 import { TouchableOpacity, View } from "react-native"
@@ -39,7 +39,7 @@ export const OtherCollectionsRail: React.FC<OtherCollectionsRailProps> = ({ coll
           return (
             <TouchableOpacity
               onPress={() => {
-                SwitchBoard.presentNavigationViewController(ref.current!, `/collection/${slug}`)
+                navigate(`/collection/${slug}`)
               }}
             >
               <CollectionGroupMemberPill>{title}</CollectionGroupMemberPill>

@@ -1,6 +1,6 @@
 import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardFollowMutation } from "__generated__/PartnerCardFollowMutation.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigateToPartner } from "lib/navigation/navigate"
 import { get } from "lib/utils/get"
 import { limitWithCount } from "lib/utils/limitWithCount"
 import { Schema, Track, track as _track } from "lib/utils/track"
@@ -74,7 +74,7 @@ export class PartnerCard extends React.Component<Props, State> {
   }
 
   handleTap(href: string) {
-    SwitchBoard.presentPartnerViewController(this, href)
+    navigateToPartner(href)
   }
 
   handleShowSuccessfullyUpdated() {

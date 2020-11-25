@@ -4,7 +4,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { compact, floor } from "lodash"
 import { Button, CloseIcon, color, Flex, Join, Sans, Touchable } from "palette"
@@ -37,7 +37,7 @@ export class ArtistCard extends React.Component<Props, State> {
   handleTap() {
     this.props.onTap?.()
     if (this.props.artist.href) {
-      SwitchBoard.presentNavigationViewController(this, this.props.artist.href)
+      navigate(this.props.artist.href)
     }
   }
 

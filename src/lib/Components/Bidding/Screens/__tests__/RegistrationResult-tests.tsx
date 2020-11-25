@@ -4,11 +4,7 @@ import React from "react"
 import { Button } from "palette"
 import { RegistrationResult, RegistrationStatus } from "../RegistrationResult"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  dismissModalViewController: jest.fn(),
-  presentModalViewController: jest.fn(),
-}))
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { dismissModal, navigate } from "lib/navigation/navigate"
 
 import { Linking } from "react-native"
 
@@ -107,13 +103,10 @@ describe("Registration result component", () => {
         <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
       </BiddingThemeProvider>
     )
-    const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
-    mockDismiss.mockReturnValueOnce(Promise.resolve())
-
     component.root.findByType(Button).props.onPress()
     jest.runAllTicks()
 
-    expect(SwitchBoard.dismissModalViewController).toHaveBeenCalled()
-    expect(SwitchBoard.presentModalViewController).not.toHaveBeenCalled()
+    expect(dismissModal).toHaveBeenCalled()
+    expect(navigate).not.toHaveBeenCalled()
   })
 })

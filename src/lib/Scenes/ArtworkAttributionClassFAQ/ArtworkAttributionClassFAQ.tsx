@@ -1,11 +1,11 @@
 import { ArtworkAttributionClassFAQ_artworkAttributionClasses } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
 import { ArtworkAttributionClassFAQQuery } from "__generated__/ArtworkAttributionClassFAQQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { goBack } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Button, Sans, Spacer, Theme } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
@@ -26,12 +26,11 @@ export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttribution
     )
   })
 
-  const navRef = useRef<any>(null)
   const { safeAreaInsets } = useScreenDimensions()
 
   return (
     <Theme>
-      <ScrollView ref={navRef}>
+      <ScrollView>
         <Box pt={safeAreaInsets.top + 3} pb={safeAreaInsets.top + 4} px={2}>
           <Spacer mt={3} />
           <Sans mb={2} size="8">
@@ -42,7 +41,7 @@ export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttribution
             Our partners are responsible for providing accurate classification information for all works.
           </Sans>
           <Box height={30}>
-            <Button onPress={() => SwitchBoard.dismissNavigationViewController(navRef.current)} block>
+            <Button onPress={goBack} block>
               OK
             </Button>
           </Box>

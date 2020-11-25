@@ -1,11 +1,11 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
 import { ArtistList_targetSupply } from "__generated__/ArtistList_targetSupply.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { chunk, shuffle } from "lodash"
 import { Box, EntityHeader, Flex, Join, Sans, Spacer } from "palette"
 import { Touchable } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -91,7 +91,6 @@ const trackingArgs: TappedEntityGroupArgs = {
 }
 
 const ArtistItem: React.FC<{ artist: any }> = ({ artist }) => {
-  const navRef = useRef<any>()
   const imageUrl = artist.image?.cropped?.url
   const tracking = useTracking()
 
@@ -104,12 +103,12 @@ const ArtistItem: React.FC<{ artist: any }> = ({ artist }) => {
           destinationScreenOwnerSlug: artist.slug,
         })
       )
-      SwitchBoard.presentNavigationViewController(navRef.current, artist.href)
+      navigate(artist.href)
     }
   }
 
   return (
-    <View ref={navRef}>
+    <View>
       <Touchable data-test-id="artist-item" onPress={handlePress}>
         <Box width="270">
           <EntityHeader name={artist.name || ""} imageUrl={imageUrl || undefined} />

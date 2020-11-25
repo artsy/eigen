@@ -1,9 +1,9 @@
 import { ViewingRoomsListItem_item$key } from "__generated__/ViewingRoomsListItem_item.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
 import { CardTagProps, SmallCard, Touchable } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { View } from "react-native"
 import { useTracking } from "react-tracking"
 import { graphql, useFragment } from "relay-hooks"
@@ -71,7 +71,6 @@ export interface ViewingRoomsListItemProps {
 export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = (props) => {
   const item = useFragment<ViewingRoomsListItem_item$key>(fragmentSpec, props.item)
   const { slug, internalID, heroImage, title, status, distanceToClose, distanceToOpen } = item
-  const navRef = useRef(null)
   const { trackEvent } = useTracking()
 
   const tag = tagForStatus(status, distanceToOpen, distanceToClose)
@@ -86,11 +85,11 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = (props)
   const images = [heroImage?.imageURLs?.normalized ?? "", ...artworks]
 
   return (
-    <View ref={navRef}>
+    <View>
       <Touchable
         onPress={() => {
           trackEvent(tracks.tapViewingRoomListItem(internalID, slug))
-          SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${slug!}`)
+          navigate(`/viewing-room/${slug!}`)
         }}
       >
         <SmallCard images={images} title={title} subtitle={item.partner?.name ?? undefined} tag={tag} />

@@ -3,7 +3,7 @@ import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { hrefForPartialShow } from "lib/utils/router"
 import { Schema, Track, track as _track } from "lib/utils/track"
@@ -37,7 +37,7 @@ export class ShowItemRow extends React.Component<Props, State> {
   }
   handleTap = debounce((_slug: string, _internalID: string) => {
     const href = hrefForPartialShow(this.props.show)
-    SwitchBoard.presentNavigationViewController(this, href)
+    navigate(href)
   })
 
   @track((props) => {

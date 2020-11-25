@@ -183,14 +183,6 @@ function getNativeModules(): typeof NativeModules {
       setApplicationIconBadgeNumber: jest.fn(),
       appVersion: "appVersion",
     },
-
-    ARSwitchBoardModule: {
-      presentNavigationViewController: jest.fn(),
-      presentModalViewController: jest.fn(),
-      presentMediaPreviewController: jest.fn(),
-      presentArtworksSet: jest.fn(),
-      updateShouldHideBackButton: jest.fn(),
-    },
     Emission: null as never,
     ARScreenPresenterModule: {
       presentMediaPreviewController: jest.fn(),
@@ -212,22 +204,11 @@ jest.mock("lib/navigation/navigate", () => ({
   navigate: jest.fn(),
   goBack: jest.fn(),
   dismissModal: jest.fn(),
+  navigateToEntity: jest.fn(),
+  navigateToPartner: jest.fn(),
+  EntityType: { partner: "partner", fair: "fair" },
+  SlugType: { partner: "partner", fair: "fair" },
 }))
-jest.mock("lib/NativeModules/SwitchBoard", () => {
-  const fns = {
-    presentNavigationViewController: jest.fn(),
-    presentMediaPreviewController: jest.fn(),
-    presentModalViewController: jest.fn(),
-    presentPartnerViewController: jest.fn(),
-    dismissModalViewController: jest.fn(),
-    dismissNavigationViewController: jest.fn(),
-  }
-  return {
-    EntityType: { partner: "partner", fair: "fair" },
-    SlugType: { partner: "partner", fair: "fair" },
-    ...fns,
-  }
-})
 
 Object.assign(NativeModules, getNativeModules())
 
@@ -247,6 +228,7 @@ beforeEach(() => {
     })
   }
   reset(NativeModules, getNativeModules())
+  reset(require("lib/navigation/navigate"), {})
 })
 
 declare const process: any
