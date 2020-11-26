@@ -4,7 +4,7 @@ import { color } from "../../helpers"
 import { Icon, IconProps, Mask, Path, Rect } from "../Icon"
 
 /** BoltCircleFill */
-export const BoltCircleFill: React.FC<IconProps> = props => {
+export const BoltCircleFill: React.FC<IconProps> = (props) => {
   console.warn(EMaskUnits)
   return (
     <Icon {...props} viewBox="0 0 20 20">

@@ -167,7 +167,7 @@ export const FilteredInfiniteScrollGridContainer = createPaginationContainer(
         node(id: $id) {
           ... on EntityWithFilterArtworksConnectionInterface {
             ...FilteredInfiniteScrollGrid_entity
-            @arguments(count: $count, cursor: $cursor, medium: $medium, priceRange: $priceRange)
+              @arguments(count: $count, cursor: $cursor, medium: $medium, priceRange: $priceRange)
           }
         }
       }

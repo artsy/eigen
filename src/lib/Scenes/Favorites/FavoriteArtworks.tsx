@@ -116,7 +116,7 @@ const FavoriteArtworksContainer = createPaginationContainer(
         # TODO: This should move into followsAndSaves
         followsAndSaves {
           artworks: artworksConnection(private: true, first: $count, after: $cursor)
-          @connection(key: "GenericGrid_artworks") {
+            @connection(key: "GenericGrid_artworks") {
             pageInfo {
               startCursor
               endCursor

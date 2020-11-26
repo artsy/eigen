@@ -244,16 +244,16 @@ export const SaleLotsListContainer = createPaginationContainer(
       # $saleID: ID
       @raw_response_type {
         ...SaleLotsList_saleArtworksConnection
-        @arguments(
-          geneIDs: $geneIDs
-          artistIDs: $artistIDs
-          count: $count
-          cursor: $cursor
-          sort: $sort
-          estimateRange: $estimateRange
-          saleID: $saleID
-          includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
-        )
+          @arguments(
+            geneIDs: $geneIDs
+            artistIDs: $artistIDs
+            count: $count
+            cursor: $cursor
+            sort: $sort
+            estimateRange: $estimateRange
+            saleID: $saleID
+            includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
+          )
       }
     `,
   }

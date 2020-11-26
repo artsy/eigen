@@ -132,7 +132,7 @@ export const MyCollectionContainer = createPaginationContainer(
       @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String" }) {
         id
         myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC)
-        @connection(key: "MyCollection_myCollectionConnection", filters: []) {
+          @connection(key: "MyCollection_myCollectionConnection", filters: []) {
           pageInfo {
             hasNextPage
             endCursor

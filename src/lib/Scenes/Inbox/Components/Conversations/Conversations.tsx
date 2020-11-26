@@ -115,7 +115,7 @@ export const ConversationsContainer = createPaginationContainer(
       fragment Conversations_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         conversations: conversationsConnection(first: $count, after: $cursor)
-        @connection(key: "Conversations_conversations") {
+          @connection(key: "Conversations_conversations") {
           pageInfo {
             endCursor
             hasNextPage
