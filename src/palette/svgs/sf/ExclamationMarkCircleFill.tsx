@@ -3,7 +3,7 @@ import { color } from "../../helpers"
 import { Icon, IconProps, Path } from "../Icon"
 
 /** ExclamationMarkCircleFill */
-export const ExclamationMarkCircleFill: React.FC<IconProps> = props => {
+export const ExclamationMarkCircleFill: React.FC<IconProps> = (props) => {
   return (
     <Icon {...props} viewBox="0 0 18 19">
       <Path

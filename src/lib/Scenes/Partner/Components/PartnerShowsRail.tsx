@@ -60,7 +60,7 @@ export const PartnerShowsRailContainer = createPaginationContainer(
       @argumentDefinitions(count: { type: "Int", defaultValue: 6 }, cursor: { type: "String" }) {
         internalID
         currentAndUpcomingShows: showsConnection(status: CURRENT, sort: END_AT_ASC, first: $count, after: $cursor)
-        @connection(key: "Partner_currentAndUpcomingShows") {
+          @connection(key: "Partner_currentAndUpcomingShows") {
           pageInfo {
             hasNextPage
             startCursor

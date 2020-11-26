@@ -162,7 +162,7 @@ export default createPaginationContainer(
         initialMessage
         lastMessageID
         messagesConnection(first: $count, after: $after, sort: DESC)
-        @connection(key: "Messages_messagesConnection", filters: []) {
+          @connection(key: "Messages_messagesConnection", filters: []) {
           pageInfo {
             startCursor
             endCursor

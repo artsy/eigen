@@ -86,7 +86,7 @@ export const CityBMWListContainer = createPaginationContainer(
         slug
         sponsoredContent {
           shows: showsConnection(first: $count, status: RUNNING, after: $cursor, sort: PARTNER_ASC)
-          @connection(key: "CityBMWList_shows") {
+            @connection(key: "CityBMWList_shows") {
             edges {
               node {
                 slug

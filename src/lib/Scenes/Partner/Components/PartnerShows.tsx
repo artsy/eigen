@@ -159,7 +159,7 @@ export const PartnerShowsFragmentContainer = createPaginationContainer(
           }
         }
         pastShows: showsConnection(status: CLOSED, sort: END_AT_DESC, first: $count, after: $cursor)
-        @connection(key: "Partner_pastShows") {
+          @connection(key: "Partner_pastShows") {
           pageInfo {
             hasNextPage
             startCursor
