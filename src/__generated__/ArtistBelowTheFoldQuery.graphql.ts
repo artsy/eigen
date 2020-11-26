@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 29bc2538277c55a1ad5078f1f3488ca5 */
+/* @relayHash b58eb0145f78a88d8f944a8dbabd2093 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -11,7 +11,7 @@ export type ArtistBelowTheFoldQueryVariables = {
 };
 export type ArtistBelowTheFoldQueryResponse = {
     readonly artist: {
-        readonly " $fragmentRefs": FragmentRefs<"ArtistAbout_artist" | "ArtistShows_artist">;
+        readonly " $fragmentRefs": FragmentRefs<"ArtistAbout_artist" | "ArtistShows_artist" | "ArtistInsights_artist">;
     } | null;
 };
 export type ArtistBelowTheFoldQuery = {
@@ -29,6 +29,7 @@ query ArtistBelowTheFoldQuery(
   artist(id: $artistID) {
     ...ArtistAbout_artist
     ...ArtistShows_artist
+    ...ArtistInsights_artist
     id
   }
 }
@@ -87,6 +88,20 @@ fragment ArtistConsignButton_artist on Artist {
   image {
     cropped(width: 66, height: 66) {
       url
+    }
+  }
+}
+
+fragment ArtistInsights_artist on Artist {
+  auctionResultsConnection(first: 10, sort: DATE_DESC) {
+    edges {
+      node {
+        id
+        title
+        dateText
+        mediumText
+        organization
+      }
     }
   }
 }
@@ -435,6 +450,11 @@ return {
             "args": null,
             "kind": "FragmentSpread",
             "name": "ArtistShows_artist"
+          },
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "ArtistInsights_artist"
           }
         ],
         "storageKey": null
@@ -745,6 +765,75 @@ return {
             "selections": (v9/*: any*/),
             "storageKey": "showsConnection(first:10,status:\"upcoming\")"
           },
+          {
+            "alias": null,
+            "args": [
+              (v7/*: any*/),
+              {
+                "kind": "Literal",
+                "name": "sort",
+                "value": "DATE_DESC"
+              }
+            ],
+            "concreteType": "AuctionResultConnection",
+            "kind": "LinkedField",
+            "name": "auctionResultsConnection",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "AuctionResultEdge",
+                "kind": "LinkedField",
+                "name": "edges",
+                "plural": true,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "AuctionResult",
+                    "kind": "LinkedField",
+                    "name": "node",
+                    "plural": false,
+                    "selections": [
+                      (v4/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "title",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "dateText",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "mediumText",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "organization",
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": "auctionResultsConnection(first:10,sort:\"DATE_DESC\")"
+          },
           (v4/*: any*/),
           {
             "condition": "isPad",
@@ -786,7 +875,7 @@ return {
     ]
   },
   "params": {
-    "id": "29bc2538277c55a1ad5078f1f3488ca5",
+    "id": "b58eb0145f78a88d8f944a8dbabd2093",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",
@@ -794,5 +883,5 @@ return {
   }
 };
 })();
-(node as any).hash = '8f1acae86c8252fd25a3994376dbbc4f';
+(node as any).hash = 'e0e19647062ef1b54ac09dde940cdf4c';
 export default node;

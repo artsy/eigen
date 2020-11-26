@@ -1,9 +1,18 @@
+import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
-import { Box, Flex, NoArtworkIcon, Separator, Spacer, Text } from "palette"
+import { extractNodes } from "lib/utils/extractNodes"
+import { Box, bullet, Flex, NoArtworkIcon, Separator, space, Text } from "palette"
 import React from "react"
-import { FlatList, Image, TouchableOpacity } from "react-native"
+import { FlatList, Image, Text as RNText, TouchableOpacity, View } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 
-export const ArtistInsights = () => {
+interface ArtistInsightsProps {
+  artist: ArtistInsights_artist
+}
+
+export const ArtistInsights = (props: ArtistInsightsProps) => {
+  const auctionResults = extractNodes(props.artist?.auctionResultsConnection)
+
   const MarketStats = () => (
     <>
       {/* Market Stats Hint */}
@@ -48,7 +57,8 @@ export const ArtistInsights = () => {
       <Separator />
       <Box my="2" mx="2">
         <FlatList
-          data={[{ a: 1 }, { a: 2 }]}
+          data={auctionResults}
+          keyExtractor={(item) => `${item.id}`}
           renderItem={({ item }) => (
             <Flex height={100} py="2" flexDirection="row">
               {true ? (
@@ -58,18 +68,26 @@ export const ArtistInsights = () => {
               ) : (
                 <Image style={{ width: 60, height: 60 }} />
               )}
-              <Flex ml={15}>
-                <Text variant="title">Untitled, 2015</Text>
-                <Flex flex={1} />
+              <Flex mx={15} flex={1}>
+                <Flex flexDirection="row">
+                  <Text variant="title" numberOfLines={1} style={{ flexShrink: 1 }}>
+                    {item.title}
+                  </Text>
+                  <Text variant="title" numberOfLines={1}>
+                    , {item.dateText}
+                  </Text>
+                </Flex>
+                <Flex flex={1} backgroundColor="pink" />
                 <Text variant="small" color="black60">
-                  Pastel on paper
+                  {item.mediumText}
                 </Text>
                 <Text variant="small" color="black60">
-                  Feb 13, 2019 (dot) Sotheby's
+                  Feb 13, 2019
+                  {` ${bullet} `}
+                  {item.organization}
                 </Text>
               </Flex>
-              <Flex flex={1} />
-              <Flex>
+              <Flex backgroundColor="orange">
                 <Text variant="mediumText">$500,000</Text>
               </Flex>
             </Flex>
@@ -89,3 +107,21 @@ export const ArtistInsights = () => {
     </StickyTabPageScrollView>
   )
 }
+
+export const ArtistInsightsFragmentContainer = createFragmentContainer(ArtistInsights, {
+  artist: graphql`
+    fragment ArtistInsights_artist on Artist {
+      auctionResultsConnection(first: 10, sort: DATE_DESC) {
+        edges {
+          node {
+            id
+            title
+            dateText
+            mediumText
+            organization
+          }
+        }
+      }
+    }
+  `,
+})
