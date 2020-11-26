@@ -329,10 +329,10 @@ export interface ViewOptions {
   onlyShowInTabName?: BottomTabType
 }
 
-type ModuleDescriptor =
+type ModuleDescriptor<Props> =
   | {
       type: "react"
-      Component: React.ComponentType<any>
+      Component: React.ComponentType<Props>
       options: ViewOptions
     }
   | {
@@ -340,35 +340,44 @@ type ModuleDescriptor =
       options: ViewOptions
     }
 
-function reactModule(Component: React.ComponentType<any>, options: ViewOptions = {}): ModuleDescriptor {
+function reactModule<Props>(Component: React.ComponentType<Props>, options: ViewOptions = {}): ModuleDescriptor<Props> {
   return { type: "react", options, Component }
 }
 
-function nativeModule(options: ViewOptions = {}): ModuleDescriptor {
+function nativeModule<Props>(options: ViewOptions = {}): ModuleDescriptor<Props> {
   return { type: "native", options }
 }
 
 // little helper function to make sure we get both intellisense and good type information on the result
-function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
+function defineModules<Modules extends { [Name: string]: ModuleDescriptor<any> }>(obj: Modules) {
   return obj
 }
 
-export type AppModule = keyof typeof modules
+export type AppModuleName = keyof typeof modules
+export type AppModuleProps<Module extends AppModuleName> = typeof modules[Module] extends ModuleDescriptor<infer Props>
+  ? Props
+  : never
+
+export type AppModuleSatisfyingProps<Props extends object, n extends AppModuleName = AppModuleName> = n extends any
+  ? AppModuleProps<n> extends Props
+    ? n
+    : never
+  : never
 
 export const modules = defineModules({
-  Admin: nativeModule(),
+  Admin: nativeModule<{}>(),
   About: reactModule(About),
   Artist: reactModule(ArtistQueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
   Artwork: reactModule(Artwork),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
-  Auction: nativeModule(),
+  Auction: nativeModule<{ id: string }>(),
   Auction2: reactModule(SaleQueryRenderer, { fullBleed: true }),
   Auctions: reactModule(SalesQueryRenderer),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
-  AuctionRegistration: nativeModule({ alwaysPresentModally: true }),
-  AuctionBidArtwork: nativeModule({ alwaysPresentModally: true }),
+  AuctionRegistration: nativeModule<{ id: string }>({ alwaysPresentModally: true }),
+  AuctionBidArtwork: nativeModule<{ id: string; artwork_id: string }>({ alwaysPresentModally: true }),
   BidFlow: reactModule(BidderFlow),
   BottomTabs: reactModule(BottomTabs, { fullBleed: true }),
   City: reactModule(CityView, { fullBleed: true }),
@@ -401,13 +410,13 @@ export const modules = defineModules({
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
   Inbox: reactModule(Inbox, { isRootViewForTabName: "inbox" }),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
-  LiveAuction: nativeModule({
+  LiveAuction: nativeModule<{ slug: string }>({
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
     modalPresentationStyle: "fullScreen",
   }),
-  LocalDiscovery: nativeModule(),
-  WebView: nativeModule(),
+  LocalDiscovery: nativeModule<{}>(),
+  WebView: nativeModule<{ url: string }>(),
   Map: reactModule(MapContainer, { fullBleed: true }),
   MyAccount: reactModule(MyAccountQueryRenderer),
   MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, { hidesBackButton: true }),
@@ -445,7 +454,7 @@ export const modules = defineModules({
 
 // Register react modules with the app registry
 for (const moduleName of Object.keys(modules)) {
-  const descriptor = modules[moduleName as AppModule]
+  const descriptor = modules[moduleName as AppModuleName]
   if ("Component" in descriptor) {
     register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed })
   }

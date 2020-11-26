@@ -1,4 +1,4 @@
-import { AppModule, modules, ViewOptions } from "lib/AppRegistry"
+import { AppModuleName, modules, ViewOptions } from "lib/AppRegistry"
 import { GlobalStore, unsafe__getSelectedTab } from "lib/store/GlobalStore"
 import { Linking, NativeModules } from "react-native"
 import { matchRoute } from "./routes"
@@ -6,7 +6,7 @@ import { handleFairRouting } from "./util"
 
 export interface ViewDescriptor extends ViewOptions {
   type: "react" | "native"
-  moduleName: AppModule
+  moduleName: AppModuleName
   props: object
 }
 

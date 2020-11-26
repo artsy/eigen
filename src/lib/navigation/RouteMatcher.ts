@@ -1,10 +1,24 @@
-import { AppModule } from "lib/AppRegistry"
+import { AppModuleSatisfyingProps } from "lib/AppRegistry"
 
 type RoutePart = { type: "match"; value: string } | { type: "variable"; name: string } | { type: "wildcard" }
 
-export class RouteMatcher {
+type PathParts<S extends string> =
+    string extends S ? never :
+    S extends '' ? never :
+    S extends `${infer T}/${infer U}` ? (T | PathParts<U>) :
+    S;
+
+type ExtractParams<S extends string> = S extends `:${infer ParamName}` ? ParamName : S extends `*` ? '*' : never
+
+type ExtractRouteParams<route extends string> = route extends `/${infer R}` ? { [k in ExtractParams<PathParts<R>>]: string} : never
+
+export class RouteMatcher<Route extends string, MappedParams extends object = ExtractRouteParams<Route>> {
   private parts: ReadonlyArray<RoutePart>
-  constructor(public route: string, public module: AppModule, private paramsMapper?: (val: any) => object) {
+  constructor(
+    public route: Route,
+    public module: AppModuleSatisfyingProps<MappedParams>,
+    private paramsMapper?: (val: ExtractRouteParams<Route>) => MappedParams
+  ) {
     if (!route.match(/^(\/\*?|(\/:?[\w-]+)+(\/\*)?)$/)) {
       throw new Error(`Invalid route format '${route}'.
 
@@ -38,7 +52,7 @@ Routes should not end with a forward slash.
       })
   }
 
-  match(pathParts: string[]): object | null {
+  match(pathParts: string[]): ExtractRouteParams<Route> | null {
     const hasWildcard = this.parts[this.parts.length - 1]?.type === "wildcard"
     if (!hasWildcard && pathParts.length !== this.parts.length) {
       return null

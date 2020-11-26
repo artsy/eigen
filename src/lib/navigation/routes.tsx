@@ -1,4 +1,4 @@
-import { AppModule } from "lib/AppRegistry"
+import { AppModuleName } from "lib/AppRegistry"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
@@ -7,7 +7,7 @@ import { RouteMatcher } from "./RouteMatcher"
 
 export function matchRoute(
   url: string
-): { type: "match"; module: AppModule; params: object } | { type: "external_url"; url: string } {
+): { type: "match"; module: AppModuleName; params: object } | { type: "external_url"; url: string } {
   const parsed = parse(url)
   const pathParts = parsed.pathname?.split(/\/+/).filter(Boolean) ?? []
   const queryParams: object = parsed.query ? parseQueryString(parsed.query) : {}
@@ -43,12 +43,12 @@ export function matchRoute(
   }
 }
 
-function getDomainMap(): Record<string, RouteMatcher[] | null> {
-  const liveDotArtsyDotNet: RouteMatcher[] = compact([
+function getDomainMap(): Record<string, Array<RouteMatcher<any, any>> | null> {
+  const liveDotArtsyDotNet: Array<RouteMatcher<any, any>> = compact([
     new RouteMatcher("/*", "LiveAuction", (params) => ({ slug: params["*"] })),
   ])
 
-  const artsyDotNet: RouteMatcher[] = compact([
+  const artsyDotNet: Array<RouteMatcher<any, any>> = compact([
     new RouteMatcher("/", "Home"),
     new RouteMatcher("/sales", "Sales"),
     new RouteMatcher("/search", "Search"),

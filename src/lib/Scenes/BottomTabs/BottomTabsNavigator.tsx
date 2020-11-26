@@ -1,4 +1,4 @@
-import { AppModule } from "lib/AppRegistry"
+import { AppModuleName } from "lib/AppRegistry"
 import { NativeViewController } from "lib/Components/NativeViewController"
 import { useSelectedTab } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -7,7 +7,7 @@ import { Animated, View } from "react-native"
 import { BottomTabs } from "./BottomTabs"
 import { BottomTabType } from "./BottomTabType"
 
-const NavStack = ({ tabName, rootModuleName }: { tabName: BottomTabType; rootModuleName: AppModule }) => {
+const NavStack = ({ tabName, rootModuleName }: { tabName: BottomTabType; rootModuleName: AppModuleName }) => {
   return (
     <NativeViewController
       viewName="TabNavigationStack"
