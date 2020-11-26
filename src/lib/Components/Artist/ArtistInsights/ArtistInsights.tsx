@@ -1,6 +1,9 @@
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { formatCentsToDollars } from "lib/Scenes/MyCollection/utils/formatCentsToDollars"
 import { extractNodes } from "lib/utils/extractNodes"
+import { capitalize } from "lodash"
+import moment from "moment"
 import { Box, bullet, Flex, NoArtworkIcon, Separator, space, Text } from "palette"
 import React from "react"
 import { FlatList, Image, Text as RNText, TouchableOpacity, View } from "react-native"
@@ -49,6 +52,8 @@ export const ArtistInsights = (props: ArtistInsightsProps) => {
     </>
   )
 
+  const now = moment()
+
   return (
     <StickyTabPageScrollView paddingHorizontal={0}>
       <Box my="2" mx="2">
@@ -59,39 +64,73 @@ export const ArtistInsights = (props: ArtistInsightsProps) => {
         <FlatList
           data={auctionResults}
           keyExtractor={(item) => `${item.id}`}
-          renderItem={({ item }) => (
-            <Flex height={100} py="2" flexDirection="row">
-              {true ? (
-                <Flex width={60} height={60} backgroundColor="black10" alignItems="center" justifyContent="center">
-                  <NoArtworkIcon width={28} height={28} opacity={0.3} />
-                </Flex>
-              ) : (
-                <Image style={{ width: 60, height: 60 }} />
-              )}
-              <Flex mx={15} flex={1}>
-                <Flex flexDirection="row">
-                  <Text variant="title" numberOfLines={1} style={{ flexShrink: 1 }}>
-                    {item.title}
+          renderItem={({ item }) => {
+            const awaitingResults = moment(item.saleDate).isAfter(now)
+            const ratio = item.priceRealized?.cents / item.estimate?.low
+            const ratioColor = (() => {
+              if (ratio >= 1.05) {
+                return "green100"
+              }
+              if (ratio >= 0.95) {
+                return "black60"
+              }
+              return "red100"
+            })()
+
+            return (
+              <Flex height={100} py="2" flexDirection="row">
+                {true ? (
+                  <Flex width={60} height={60} backgroundColor="black10" alignItems="center" justifyContent="center">
+                    <NoArtworkIcon width={28} height={28} opacity={0.3} />
+                  </Flex>
+                ) : (
+                  <Image style={{ width: 60, height: 60 }} />
+                )}
+                <Flex mx={15} flex={1}>
+                  <Flex flexDirection="row">
+                    <Text variant="title" numberOfLines={1} style={{ flexShrink: 1 }}>
+                      {item.title}
+                    </Text>
+                    <Text variant="title" numberOfLines={1}>
+                      , {item.dateText}
+                    </Text>
+                  </Flex>
+                  <Flex flex={1} backgroundColor="pink" />
+                  <Text variant="small" color="black60" numberOfLines={1}>
+                    {capitalize(item.mediumText)}
                   </Text>
-                  <Text variant="title" numberOfLines={1}>
-                    , {item.dateText}
+                  <Text variant="small" color="black60" numberOfLines={1}>
+                    {moment(item.saleDate).format("MMM D, YYYY")}
+                    {` ${bullet} `}
+                    {item.organization}
                   </Text>
                 </Flex>
-                <Flex flex={1} backgroundColor="pink" />
-                <Text variant="small" color="black60">
-                  {item.mediumText}
-                </Text>
-                <Text variant="small" color="black60">
-                  Feb 13, 2019
-                  {` ${bullet} `}
-                  {item.organization}
-                </Text>
+                <Flex>
+                  {awaitingResults ? (
+                    <Text variant="mediumText">Awaiting results</Text>
+                  ) : (
+                    <Flex alignItems="flex-end">
+                      <Text variant="mediumText">
+                        {(item.priceRealized?.display ?? "").replace(`${item.currency} `, "")}
+                      </Text>
+                      <Flex borderRadius={2} overflow="hidden">
+                        <Flex
+                          position="absolute"
+                          width="100%"
+                          height="100%"
+                          backgroundColor={ratioColor}
+                          opacity={0.05}
+                        />
+                        <Text variant="mediumText" color={ratioColor} px={5}>
+                          {ratio.toFixed(2)}x
+                        </Text>
+                      </Flex>
+                    </Flex>
+                  )}
+                </Flex>
               </Flex>
-              <Flex backgroundColor="orange">
-                <Text variant="mediumText">$500,000</Text>
-              </Flex>
-            </Flex>
-          )}
+            )
+          }}
           ListHeaderComponent={() => (
             <>
               <Text variant="title">Auction Results</Text>
@@ -118,7 +157,16 @@ export const ArtistInsightsFragmentContainer = createFragmentContainer(ArtistIns
             title
             dateText
             mediumText
+            saleDate
             organization
+            currency
+            priceRealized {
+              display
+              cents
+            }
+            estimate {
+              low
+            }
           }
         }
       }

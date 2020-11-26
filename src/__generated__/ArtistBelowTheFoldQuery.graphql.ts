@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b58eb0145f78a88d8f944a8dbabd2093 */
+/* @relayHash 19a3fc39e5216229a4522c737ee64e82 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -100,7 +100,16 @@ fragment ArtistInsights_artist on Artist {
         title
         dateText
         mediumText
+        saleDate
         organization
+        currency
+        priceRealized {
+          display
+          cents
+        }
+        estimate {
+          low
+        }
       }
     }
   }
@@ -822,7 +831,64 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "saleDate",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "organization",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "currency",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "AuctionResultPriceRealized",
+                        "kind": "LinkedField",
+                        "name": "priceRealized",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "display",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "cents",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "AuctionLotEstimate",
+                        "kind": "LinkedField",
+                        "name": "estimate",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "low",
+                            "storageKey": null
+                          }
+                        ],
                         "storageKey": null
                       }
                     ],
@@ -875,7 +941,7 @@ return {
     ]
   },
   "params": {
-    "id": "b58eb0145f78a88d8f944a8dbabd2093",
+    "id": "19a3fc39e5216229a4522c737ee64e82",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",
