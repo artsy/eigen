@@ -12,7 +12,16 @@ export type ArtistInsights_artist = {
                 readonly title: string | null;
                 readonly dateText: string | null;
                 readonly mediumText: string | null;
+                readonly saleDate: string | null;
                 readonly organization: string | null;
+                readonly currency: string | null;
+                readonly priceRealized: {
+                    readonly display: string | null;
+                    readonly cents: number | null;
+                } | null;
+                readonly estimate: {
+                    readonly low: number | null;
+                } | null;
             } | null;
         } | null> | null;
     } | null;
@@ -99,7 +108,64 @@ const node: ReaderFragment = {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
+                  "name": "saleDate",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "organization",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "currency",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "AuctionResultPriceRealized",
+                  "kind": "LinkedField",
+                  "name": "priceRealized",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "display",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "cents",
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "AuctionLotEstimate",
+                  "kind": "LinkedField",
+                  "name": "estimate",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "low",
+                      "storageKey": null
+                    }
+                  ],
                   "storageKey": null
                 }
               ],
@@ -115,5 +181,5 @@ const node: ReaderFragment = {
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = '96a5256c752eb6ae20d7c2129d41d20b';
+(node as any).hash = '6a0bc4745cdd196ee09b148eba374aec';
 export default node;
