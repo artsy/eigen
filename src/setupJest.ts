@@ -107,7 +107,7 @@ mockedModule("./lib/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueIm
 mockedModule("./lib/Components/Artist/ArtistShows/ArtistShows.tsx", "ArtistShows")
 mockedModule("./lib/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "ArtistArtworks")
 mockedModule("./lib/Components/Artist/ArtistHeader.tsx", "ArtistHeader")
-mockedModule("./lib/Components/Artist/ArtistAbout.tsx", "ArtistAbout")
+// mockedModule("./lib/Components/Artist/ArtistAbout/ArtistAbout.tsx", "ArtistAboutContainer")
 
 // Gene tests
 mockedModule("./lib/Components/Gene/Header.tsx", "Header")

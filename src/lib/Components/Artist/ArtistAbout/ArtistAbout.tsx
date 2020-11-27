@@ -19,19 +19,16 @@ interface Props {
   artist: ArtistAbout_artist
 }
 
-const ArtistAbout: React.FC<Props> = ({ artist }) => {
+export const ArtistAbout: React.FC<Props> = ({ artist }) => {
   const articles = extractNodes(artist.articles)
   const relatedArtists = extractNodes(artist.related?.artists)
 
   return (
     <StickyTabPageScrollView>
       <Stack spacing={3} my={2}>
-        {!!artist.has_metadata && <Biography artist={artist as any} />}
-        {!!artist.is_display_auction_link && (
-          <CaretButton
-            text="Auction results"
-            onPress={() => navigate(`/artist/${this.props.artist.slug}/auction-results`)}
-          />
+        {!!artist.hasMetadata && <Biography artist={artist as any} />}
+        {!!artist.isDisplayAuctionLink && (
+          <CaretButton text="Auction results" onPress={() => navigate(`/artist/${artist.slug}/auction-results`)} />
         )}
         <ArtistConsignButton artist={artist} />
         {!!getCurrentEmissionState().options.AROptionsNewInsightsPage && (
@@ -44,11 +41,11 @@ const ArtistAbout: React.FC<Props> = ({ artist }) => {
   )
 }
 
-export default createFragmentContainer(ArtistAbout, {
+export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
   artist: graphql`
     fragment ArtistAbout_artist on Artist {
-      has_metadata: hasMetadata
-      is_display_auction_link: isDisplayAuctionLink
+      hasMetadata
+      isDisplayAuctionLink
       slug
       ...Biography_artist
       ...ArtistConsignButton_artist

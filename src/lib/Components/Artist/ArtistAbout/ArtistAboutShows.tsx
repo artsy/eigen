@@ -3,7 +3,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { Button, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
-import { createFragmentContainer, createPaginationContainer, graphql } from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
 import { ArtistShowFragmentContainer } from "../ArtistShows/ArtistShow"
 
@@ -12,7 +12,6 @@ interface Props {
 }
 
 const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
-  console.log({ artist })
   const currentShows = extractNodes(artist.currentShows)
   const upcomingShows = extractNodes(artist.upcomingShows)
   const currentAndUpcomingShows = [...currentShows, ...upcomingShows]
@@ -28,7 +27,7 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
 
   if (userHasShows) {
     return (
-      <Flex position="absolute">
+      <Flex>
         <Text variant="subtitle" mb={1}>
           Shows featuring Nicolas Party
         </Text>
@@ -39,12 +38,12 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
               show={item}
               styles={{
                 container: {
-                  width: screenWidth - 80,
+                  width: 335,
+                  marginRight: 15,
                 },
                 image: {
-                  width: screenWidth - 80,
+                  width: 335,
                   height: 220,
-                  marginRight: 15,
                   marginBottom: 10,
                 },
               }}
@@ -54,7 +53,8 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
           keyExtractor={(show) => show.id}
           showsHorizontalScrollIndicator={false}
           horizontal
-          contentContainerStyle={{ paddingBottom: 15 }}
+          style={{ left: -20, width: screenWidth }}
+          contentContainerStyle={{ paddingBottom: 15, paddingLeft: 20 }}
         />
         {!!pastShows.length && (
           <Button

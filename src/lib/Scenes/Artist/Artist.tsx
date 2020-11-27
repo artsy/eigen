@@ -6,7 +6,7 @@ import {
   ArtistBelowTheFoldQuery,
   ArtistBelowTheFoldQueryVariables,
 } from "__generated__/ArtistBelowTheFoldQuery.graphql"
-import ArtistAbout from "lib/Components/Artist/ArtistAbout/ArtistAbout"
+import { ArtistAboutContainer } from "lib/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import ArtistHeader from "lib/Components/Artist/ArtistHeader"
 import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
@@ -38,7 +38,7 @@ export const Artist: React.FC<{
   if (displayAboutSection) {
     tabs.push({
       title: "About",
-      content: artistBelowTheFold ? <ArtistAbout artist={artistBelowTheFold} /> : <LoadingPage />,
+      content: artistBelowTheFold ? <ArtistAboutContainer artist={artistBelowTheFold} /> : <LoadingPage />,
     })
   }
 
