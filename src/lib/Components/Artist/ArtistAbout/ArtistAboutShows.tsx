@@ -60,6 +60,7 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
           <Button
             variant={"secondaryGray"}
             onPress={() => {
+              // We navigate to the past shows screen
               console.log("do nothing")
             }}
             size="medium"

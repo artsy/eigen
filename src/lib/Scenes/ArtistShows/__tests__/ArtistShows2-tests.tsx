@@ -49,6 +49,8 @@ describe("ArtistShows2", () => {
       }),
     })
 
+    console.log("====================")
+    console.log({ root: tree.root })
     expect(extractText(tree.root.findAllByType(Text)[0])).toEqual("Andy Warhol")
     expect(extractText(tree.root.findAllByType(Text)[1])).toEqual("Past Shows")
   })

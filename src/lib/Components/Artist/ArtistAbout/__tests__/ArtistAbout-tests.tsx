@@ -1,10 +1,11 @@
 import { ArtistAboutTestsQuery } from "__generated__/ArtistAboutTestsQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { createMockEnvironment } from "relay-test-utils"
 import Biography from "../../Biography"
 import { ArtistAboutContainer } from "../ArtistAbout"
 import { ArtistAboutShowsFragmentContainer } from "../ArtistAboutShows"
@@ -41,15 +42,13 @@ describe("ArtistAbout", () => {
     it("is shown when the artist has metadata", () => {
       const tree = renderWithWrappers(<TestRenderer />)
 
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Boolean: (context) => {
-            if (context.name === "hasMetadata") {
-              return true
-            }
-          },
-        })
-      )
+      mockEnvironmentPayload(mockEnvironment, {
+        Boolean: (context) => {
+          if (context.name === "hasMetadata") {
+            return true
+          }
+        },
+      })
 
       expect(tree.root.findAllByType(Biography).length).toEqual(1)
     })
@@ -57,15 +56,13 @@ describe("ArtistAbout", () => {
     it("is hidden when the artist has metadata", () => {
       const tree = renderWithWrappers(<TestRenderer />)
 
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Boolean: (context) => {
-            if (context.name === "hasMetadata") {
-              return false
-            }
-          },
-        })
-      )
+      mockEnvironmentPayload(mockEnvironment, {
+        Boolean: (context) => {
+          if (context.name === "hasMetadata") {
+            return false
+          }
+        },
+      })
 
       expect(tree.root.findAllByType(Biography).length).toEqual(0)
     })
@@ -75,15 +72,13 @@ describe("ArtistAbout", () => {
     it("is shown when isDisplayAuctionLink is true", () => {
       const tree = renderWithWrappers(<TestRenderer />)
 
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Boolean: (context) => {
-            if (context.name === "isDisplayAuctionLink") {
-              return true
-            }
-          },
-        })
-      )
+      mockEnvironmentPayload(mockEnvironment, {
+        Boolean: (context) => {
+          if (context.name === "isDisplayAuctionLink") {
+            return true
+          }
+        },
+      })
 
       expect(tree.root.findAllByType(CaretButton).length).toEqual(1)
     })
@@ -91,15 +86,13 @@ describe("ArtistAbout", () => {
     it("is hidden when isDisplayAuctionLink is false", () => {
       const tree = renderWithWrappers(<TestRenderer />)
 
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Boolean: (context) => {
-            if (context.name === "isDisplayAuctionLink") {
-              return false
-            }
-          },
-        })
-      )
+      mockEnvironmentPayload(mockEnvironment, {
+        Boolean: (context) => {
+          if (context.name === "isDisplayAuctionLink") {
+            return false
+          }
+        },
+      })
 
       expect(tree.root.findAllByType(CaretButton).length).toEqual(0)
     })
@@ -111,7 +104,7 @@ describe("ArtistAbout", () => {
 
       const tree = renderWithWrappers(<TestRenderer />)
 
-      mockEnvironment.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, {}))
+      mockEnvironmentPayload(mockEnvironment)
 
       expect(tree.root.findAllByType(ArtistAboutShowsFragmentContainer).length).toEqual(1)
     })
@@ -121,7 +114,7 @@ describe("ArtistAbout", () => {
 
       const tree = renderWithWrappers(<TestRenderer />)
 
-      mockEnvironment.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, {}))
+      mockEnvironmentPayload(mockEnvironment)
 
       expect(tree.root.findAllByType(ArtistAboutShowsFragmentContainer).length).toEqual(0)
     })
