@@ -15,6 +15,7 @@ upcoming:
     - Update color scheme - mdole
     - Remove SwitchBoard.tsx - david
     - Fix device token checking logic - david
+    - Allow for multiple artwork images in My Collection - adam
   user_facing:
     -
 releases:
