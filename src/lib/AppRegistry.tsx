@@ -15,6 +15,7 @@ import { About } from "./Scenes/About/About"
 import { ArtistQueryRenderer } from "./Scenes/Artist/Artist"
 import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
+import { ArtistShows2QueryRenderer } from "./Scenes/ArtistShows/ArtistShows2"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
@@ -359,6 +360,7 @@ export const modules = defineModules({
   Admin: nativeModule(),
   About: reactModule(About),
   Artist: reactModule(ArtistQueryRenderer),
+  ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
   Artwork: reactModule(Artwork),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),

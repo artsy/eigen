@@ -56,6 +56,9 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-profile", "MyProfile"),
 
     new RouteMatcher("/artist/:artistID", "Artist"),
+    getCurrentEmissionState().options.AROptionsNewInsightsPage
+      ? new RouteMatcher("/artist/:artistID/shows", "ArtistShows")
+      : null,
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
     new RouteMatcher("/artist/:artistID/auction-results", "WebView", ({ artistID }) => ({
       url: `/artist/${artistID}/auction-results`,
