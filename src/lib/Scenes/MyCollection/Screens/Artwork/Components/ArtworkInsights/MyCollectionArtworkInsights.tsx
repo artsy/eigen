@@ -1,5 +1,6 @@
 import { MyCollectionArtworkInsights_artwork } from "__generated__/MyCollectionArtworkInsights_artwork.graphql"
 import { MyCollectionArtworkInsights_marketPriceInsights } from "__generated__/MyCollectionArtworkInsights_marketPriceInsights.graphql"
+import { Artist } from "lib/Scenes/Artist/Artist"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Separator, Spacer, Text } from "palette"
 import React from "react"
@@ -31,7 +32,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
           <ScreenMargin>
             <Text variant="title">Price and market insights</Text>
             <Text variant="small" color="black60">
-              For this artist, category, and size combination
+              For {artwork.artist.name}, {artwork.medium}, size {artwork.sizeBucket}
             </Text>
           </ScreenMargin>
           <Spacer mt={3} />
@@ -62,6 +63,11 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 export const MyCollectionArtworkInsightsFragmentContainer = createFragmentContainer(MyCollectionArtworkInsights, {
   artwork: graphql`
     fragment MyCollectionArtworkInsights_artwork on Artwork {
+      sizeBucket
+      medium
+      artist {
+        name
+      }
       ...MyCollectionArtworkPriceEstimate_artwork
       ...MyCollectionArtworkArtistAuctionResults_artwork
       ...MyCollectionArtworkArtistArticles_artwork
