@@ -1,7 +1,7 @@
 import { ShowItem_show } from "__generated__/ShowItem_show.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Pin } from "lib/Icons/Pin"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { Schema, track } from "lib/utils/track"
 import { Flex, Sans } from "palette"
@@ -39,7 +39,7 @@ export class ShowItem extends React.Component<Props> {
     owner_type: Schema.OwnerEntityTypes.Show,
   }))
   onPress() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.slug}`)
+    navigate(`/show/${this.props.show.slug}`)
   }
 
   render() {

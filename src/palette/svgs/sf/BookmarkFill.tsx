@@ -3,7 +3,7 @@ import { color } from "../../helpers"
 import { Icon, IconProps, Path } from "../Icon"
 
 /** BookmarkFill */
-export const BookmarkFill: React.FC<IconProps> = props => {
+export const BookmarkFill: React.FC<IconProps> = (props) => {
   return (
     <Icon {...props} viewBox="0 0 18 21">
       <Path

@@ -186,20 +186,20 @@ export const Show2ArtworksPaginationContainer = createPaginationContainer(
       ) {
         show(id: $id) {
           ...Show2Artworks_show
-          @arguments(
-            count: $count
-            cursor: $cursor
-            sort: $sort
-            medium: $medium
-            color: $color
-            priceRange: $priceRange
-            dimensionRange: $dimensionRange
-            majorPeriods: $majorPeriods
-            acquireable: $acquireable
-            inquireableOnly: $inquireableOnly
-            atAuction: $atAuction
-            offerable: $offerable
-          )
+            @arguments(
+              count: $count
+              cursor: $cursor
+              sort: $sort
+              medium: $medium
+              color: $color
+              priceRange: $priceRange
+              dimensionRange: $dimensionRange
+              majorPeriods: $majorPeriods
+              acquireable: $acquireable
+              inquireableOnly: $inquireableOnly
+              atAuction: $atAuction
+              offerable: $offerable
+            )
         }
       }
     `,

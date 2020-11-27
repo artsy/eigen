@@ -1,7 +1,7 @@
 import { MoreInfo_show } from "__generated__/MoreInfo_show.graphql"
 import { MoreInfoQuery } from "__generated__/MoreInfoQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { hideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 import { Schema, screenTrack, track } from "lib/utils/track"
@@ -124,7 +124,7 @@ export class MoreInfo extends React.Component<Props, State> {
 
   openPressReleaseLink = () => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    SwitchBoard.presentNavigationViewController(this, this.props.show.pressReleaseUrl)
+    navigate(this.props.show.pressReleaseUrl)
   }
 
   renderItem = ({ item }: { item: Section }) => {

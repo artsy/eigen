@@ -2,6 +2,7 @@ import { Inquiry_artwork } from "__generated__/Inquiry_artwork.graphql"
 import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
+import { dismissModal } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { BottomAlignedButton } from "lib/Scenes/Consignments/Components/BottomAlignedButton"
 import ArtworkPreview from "lib/Scenes/Inbox/Components/Conversations/Preview/ArtworkPreview"
@@ -12,7 +13,6 @@ import React from "react"
 import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
-import ARSwitchBoard from "../NativeModules/SwitchBoard"
 import { Schema, Track, track as _track } from "../utils/track"
 
 const isPad = Dimensions.get("window").width > 700
@@ -113,7 +113,7 @@ export class Inquiry extends React.Component<Props, State> {
     owner_slug: props.artwork.slug,
   }))
   cancelModal() {
-    this.dismissModal()
+    dismissModal()
   }
 
   @track((props) => ({
@@ -124,11 +124,7 @@ export class Inquiry extends React.Component<Props, State> {
     owner_slug: props.artwork.slug,
   }))
   inquirySent() {
-    this.dismissModal()
-  }
-
-  dismissModal() {
-    ARSwitchBoard.dismissModalViewController(this)
+    dismissModal()
   }
 
   @track((props) => ({

@@ -6,7 +6,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 import { ArtistConsignButton_artist } from "__generated__/ArtistConsignButton_artist.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { useSelectedTab } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 
@@ -44,7 +44,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = (props) =
           destination_path: destination,
         })
 
-        SwitchBoard.presentNavigationViewController(buttonRef.current!, destination)
+        navigate(destination)
       }}
     >
       <BorderBox p={0}>

@@ -1,6 +1,6 @@
 import { BuyNowButton_artwork } from "__generated__/BuyNowButton_artwork.graphql"
 import { BuyNowButtonOrderMutation } from "__generated__/BuyNowButtonOrderMutation.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { Button, ButtonVariant } from "palette"
 import React from "react"
@@ -97,7 +97,7 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
               if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
                 this.onMutationError(orderOrError.error)
               } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
-                SwitchBoard.presentModalViewController(this, `/orders/${orderOrError.order.internalID}`)
+                navigate(`/orders/${orderOrError.order.internalID}`, { modal: true })
               }
             })
           },

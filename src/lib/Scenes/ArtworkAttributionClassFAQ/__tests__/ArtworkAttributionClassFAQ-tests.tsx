@@ -5,11 +5,7 @@ import React from "react"
 import { Text } from "react-native"
 import { ArtworkAttributionClassFAQ } from "../ArtworkAttributionClassFAQ"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  dismissNavigationViewController: jest.fn(),
-}))
-
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { goBack } from "lib/navigation/navigate"
 
 describe("ArtworkAttributionClassFAQ", () => {
   it("renders FAQ header", () => {
@@ -57,7 +53,7 @@ describe("ArtworkAttributionClassFAQ", () => {
     )
     const okButton = component.find(Button).at(0)
     okButton.props().onPress()
-    expect(SwitchBoard.dismissNavigationViewController).toHaveBeenCalled()
+    expect(goBack).toHaveBeenCalled()
   })
 })
 

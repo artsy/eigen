@@ -3,10 +3,10 @@ import { TouchableWithoutFeedback, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import Metadata from "./Metadata"
 
 import { ArtistShow_show } from "__generated__/ArtistShow_show.graphql"
+import { navigate } from "lib/navigation/navigate"
 import { hrefForPartialShow } from "lib/utils/router"
 
 interface Props {
@@ -20,7 +20,7 @@ interface Props {
 
 class Show extends React.Component<Props> {
   handleTap() {
-    SwitchBoard.presentNavigationViewController(this, hrefForPartialShow(this.props.show))
+    navigate(hrefForPartialShow(this.props.show))
   }
 
   render() {

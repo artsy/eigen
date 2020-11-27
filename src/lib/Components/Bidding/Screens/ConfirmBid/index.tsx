@@ -22,7 +22,7 @@ import { PriceSummary } from "lib/Components/Bidding/Screens/ConfirmBid/PriceSum
 import { SelectMaxBidEdit } from "lib/Components/Bidding/Screens/SelectMaxBidEdit"
 import { Address, Bid, PaymentCardTextFieldParams, StripeToken } from "lib/Components/Bidding/types"
 import { LinkText } from "lib/Components/Text/LinkText"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Schema, screenTrack, track } from "lib/utils/track"
 
 import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
@@ -158,7 +158,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
    * need a separate call to update our User model to store that info
    */
   async updatePhoneNumber() {
-    return new Promise((done, reject) => {
+    return new Promise<void>((done, reject) => {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const { phoneNumber } = this.state.billingAddress
       commitMutation<ConfirmBidUpdateUserMutation>(this.props.relay.environment, {
@@ -210,7 +210,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   async createCreditCard(token: any) {
-    return new Promise((done) => {
+    return new Promise<void>((done) => {
       commitMutation<ConfirmBidCreateCreditCardMutation>(this.props.relay.environment, {
         onCompleted: (data, errors) => {
           if (data && get(data, "createCreditCard.creditCardOrError.creditCard")) {
@@ -358,7 +358,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   onConditionsOfSaleLinkPressed() {
-    SwitchBoard.presentModalViewController(this, "/conditions-of-sale")
+    navigate("/conditions-of-sale", { modal: true })
   }
 
   refreshBidderInfo = () => {

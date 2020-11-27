@@ -1,4 +1,4 @@
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Box, color, Flex, Serif } from "palette"
 import React from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"
@@ -28,7 +28,7 @@ export default class DarkNavigationButton extends React.Component<Props, any> {
 
   openLink() {
     if (this.props.href) {
-      SwitchBoard.presentNavigationViewController(this, this.props.href)
+      navigate(this.props.href)
     } else if (this.props.onPress) {
       this.props.onPress()
     }

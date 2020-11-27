@@ -195,21 +195,21 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
       ) {
         marketingCollection(slug: $id) {
           ...CollectionArtworks_collection
-          @arguments(
-            count: $count
-            cursor: $cursor
-            sort: $sort
-            medium: $medium
-            color: $color
-            partnerID: $partnerID
-            priceRange: $priceRange
-            dimensionRange: $dimensionRange
-            majorPeriods: $majorPeriods
-            acquireable: $acquireable
-            inquireableOnly: $inquireableOnly
-            atAuction: $atAuction
-            offerable: $offerable
-          )
+            @arguments(
+              count: $count
+              cursor: $cursor
+              sort: $sort
+              medium: $medium
+              color: $color
+              partnerID: $partnerID
+              priceRange: $priceRange
+              dimensionRange: $dimensionRange
+              majorPeriods: $majorPeriods
+              acquireable: $acquireable
+              inquireableOnly: $inquireableOnly
+              atAuction: $atAuction
+              offerable: $offerable
+            )
         }
       }
     `,

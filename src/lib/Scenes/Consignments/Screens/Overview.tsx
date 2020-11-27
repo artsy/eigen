@@ -5,9 +5,9 @@ import { Alert } from "react-native"
 import { AsyncStorage, Dimensions, Route, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 
+import { dismissModal } from "lib/navigation/navigate"
 import { Box, Button, color, Flex, Serif, Spacer, Theme } from "palette"
 import { ArtistResult, ConsignmentMetadata, ConsignmentSetup } from "../"
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import { createConsignmentSubmission } from "../Submission/createConsignmentSubmission"
 import { updateConsignmentSubmission } from "../Submission/updateConsignmentSubmission"
@@ -187,7 +187,7 @@ export default class Overview extends React.Component<Props, State> {
     this.props.navigator.push({ component: Confirmation, passProps: { submissionRequestValidationCheck } })
   }
 
-  exitModal = () => SwitchBoard.dismissModalViewController(this)
+  exitModal = () => dismissModal()
 
   uploadPhotosIfNeeded = async () => {
     const uploading = this.state.photos && this.state.photos.some((f) => f.uploading)
@@ -284,7 +284,7 @@ export default class Overview extends React.Component<Props, State> {
                   </Button>
                 )}
                 <Spacer mb={1} />
-                <Button variant="noOutline" onPress={() => SwitchBoard.dismissModalViewController(this)}>
+                <Button variant="noOutline" onPress={() => dismissModal()}>
                   Close
                 </Button>
               </Flex>

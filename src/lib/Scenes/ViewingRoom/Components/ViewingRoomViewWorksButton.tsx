@@ -1,9 +1,9 @@
 import { ViewingRoomViewWorksButton_viewingRoom } from "__generated__/ViewingRoomViewWorksButton_viewingRoom.graphql"
 import { AnimatedBottomButton } from "lib/Components/AnimatedBottomButton"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Schema } from "lib/utils/track"
 import { color, Flex, Sans } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -17,7 +17,6 @@ interface ViewingRoomViewWorksButtonProps {
 export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProps> = (props) => {
   const { viewingRoom } = props
   const tracking = useTracking()
-  const navRef = useRef(null)
   const artworksCount = viewingRoom.artworksForCount?.totalCount
 
   if (artworksCount === 0) {
@@ -26,12 +25,12 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
 
   const pluralizedArtworksCount = artworksCount === 1 ? "work" : "works"
   return (
-    <View ref={navRef}>
+    <View>
       <AnimatedBottomButton
         isVisible={props.isVisible}
         onPress={() => {
           tracking.trackEvent(tracks.tappedViewWorksButton(viewingRoom.internalID, viewingRoom.slug))
-          SwitchBoard.presentNavigationViewController(navRef.current!, `/viewing-room/${viewingRoom.slug}/artworks`)
+          navigate(`/viewing-room/${viewingRoom.slug}/artworks`)
         }}
       >
         <ViewWorksButton data-test-id="view-works" px="2">

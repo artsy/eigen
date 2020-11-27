@@ -4,7 +4,7 @@ import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Countdown } from "lib/Components/Bidding/Components/Timer"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import "moment-timezone"
-import { Sans, Theme } from "palette"
+import { color, Sans, Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
@@ -21,10 +21,6 @@ const Wrapper: React.FC<{}> = ({ children }) => {
     </Theme>
   )
 }
-
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 describe("CommercialInformation", () => {
   it("renders all information when the data is present", () => {
@@ -59,7 +55,7 @@ describe("CommercialInformation", () => {
     )
 
     expect(component.text()).toContain("On hold")
-    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual("#F1AF1B")
+    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(color("yellow100"))
   })
 
   it("renders red indicator and correct message when artwork is sold", () => {
@@ -76,7 +72,7 @@ describe("CommercialInformation", () => {
     )
 
     expect(component.text()).toContain("Sold")
-    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual("#F7625A")
+    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(color("red100"))
   })
 
   it("renders green indicator and correct message when artwork is for sale", () => {
@@ -93,7 +89,7 @@ describe("CommercialInformation", () => {
     )
 
     expect(component.text()).toContain("For sale")
-    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual("#0EDA83")
+    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(color("green100"))
   })
 
   it("renders Bidding Closed and no CommercialButtons for auction works when the auction has ended", () => {

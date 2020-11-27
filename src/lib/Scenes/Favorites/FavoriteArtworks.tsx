@@ -9,7 +9,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { FavoriteArtworks_me } from "__generated__/FavoriteArtworks_me.graphql"
 import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -84,7 +84,7 @@ export class SavedWorks extends Component<Props, State> {
                 variant="secondaryOutline"
                 size="large"
                 onPress={() => {
-                  SwitchBoard.presentNavigationViewController(this, "/")
+                  navigate("/")
                 }}
               >
                 Browse works for you
@@ -116,7 +116,7 @@ const FavoriteArtworksContainer = createPaginationContainer(
         # TODO: This should move into followsAndSaves
         followsAndSaves {
           artworks: artworksConnection(private: true, first: $count, after: $cursor)
-          @connection(key: "GenericGrid_artworks") {
+            @connection(key: "GenericGrid_artworks") {
             pageInfo {
               startCursor
               endCursor

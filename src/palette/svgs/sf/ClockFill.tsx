@@ -3,7 +3,7 @@ import { color } from "../../helpers"
 import { Icon, IconProps, Path } from "../Icon"
 
 /** ClockFill */
-export const ClockFill: React.FC<IconProps> = props => {
+export const ClockFill: React.FC<IconProps> = (props) => {
   return (
     <Icon {...props} viewBox="0 0 16 16">
       <Path

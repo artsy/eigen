@@ -1,5 +1,5 @@
 import { HomeHeroTestsQuery } from "__generated__/HomeHeroTestsQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -9,9 +9,6 @@ import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { HomeHeroContainer } from "../HomeHero"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 jest.mock("react-tracking")
 
 jest.unmock("react-relay")
@@ -97,9 +94,9 @@ describe("HomeHero", () => {
       })
     )
 
-    expect(SwitchBoard.presentNavigationViewController).not.toHaveBeenCalled()
+    expect(navigate).not.toHaveBeenCalled()
     tree.root.findByType(TouchableOpacity).props.onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/my-special-href")
+    expect(navigate).toHaveBeenCalledWith("/my-special-href")
     expect(trackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
         subject: "My Special Title",

@@ -1,9 +1,3 @@
-This update includes a number of bug fixes and improvements, including:
-
-• Fixes a bug that affected users opening auctions from a push notification
-
-• Improved Auction and Show views with sort and filter functionality so you can find the works you're looking for
-
-• Performance improvements on Auction view, including a much faster load time
+This update fixes a bug that affected deep link handling when the app is closed.
 
 Have feedback? Email us at support@artsy.net

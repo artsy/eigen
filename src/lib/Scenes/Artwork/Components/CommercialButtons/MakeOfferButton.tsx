@@ -1,6 +1,6 @@
 import { MakeOfferButton_artwork } from "__generated__/MakeOfferButton_artwork.graphql"
 import { MakeOfferButtonOrderMutation } from "__generated__/MakeOfferButtonOrderMutation.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { Button, ButtonVariant } from "palette"
 import React from "react"
@@ -99,7 +99,7 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
               if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
                 this.onMutationError(orderOrError.error)
               } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
-                SwitchBoard.presentModalViewController(this, `/orders/${orderOrError.order.internalID}`)
+                navigate(`/orders/${orderOrError.order.internalID}`, { modal: true })
               }
             })
           },

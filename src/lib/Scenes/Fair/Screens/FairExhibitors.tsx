@@ -1,6 +1,6 @@
 import { FairExhibitors_fair } from "__generated__/FairExhibitors_fair.graphql"
 import { FairExhibitorsQuery } from "__generated__/FairExhibitorsQuery.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { hideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { Box, Sans, Separator, Serif, Theme } from "palette"
@@ -69,7 +69,7 @@ export class FairExhibitors extends React.Component<Props, State> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleOnPressName(profileID, _slug, _partnerID) {
     if (profileID) {
-      SwitchBoard.presentNavigationViewController(this, `/show/${profileID}?entity=fair-booth`)
+      navigate(`/show/${profileID}?entity=fair-booth`)
     }
   }
 

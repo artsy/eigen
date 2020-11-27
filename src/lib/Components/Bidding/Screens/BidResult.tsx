@@ -3,7 +3,7 @@ import { View } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { dismissModal, navigate } from "lib/navigation/navigate"
 
 import { Button } from "palette"
 import { Icon20 } from "../Components/Icon"
@@ -65,9 +65,9 @@ export class BidResult extends React.Component<BidResultProps> {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const saleSlug = this.props.sale_artwork.sale.slug
       const url = `${getCurrentEmissionState().predictionURL}/${saleSlug}`
-      SwitchBoard.presentModalViewController(this, url)
+      navigate(url, { modal: true })
     } else {
-      SwitchBoard.dismissModalViewController(this)
+      dismissModal()
     }
   }
 

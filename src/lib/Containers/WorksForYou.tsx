@@ -139,7 +139,7 @@ export const WorksForYouContainer = createPaginationContainer(
       ) {
         followsAndSaves {
           notifications: bundledArtworksByArtistConnection(sort: $sort, first: $count, after: $cursor)
-          @connection(key: "WorksForYou_notifications") {
+            @connection(key: "WorksForYou_notifications") {
             pageInfo {
               hasNextPage
               endCursor

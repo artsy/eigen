@@ -28,7 +28,6 @@ interface Props {
 type FairItem = FairsRail_fairsModule["results"][0]
 
 const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
-  const navRef = useRef<any>()
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
 
@@ -37,7 +36,7 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
   }))
 
   return (
-    <View ref={navRef}>
+    <View>
       <Flex pl="2" pr="2">
         <SectionTitle title="Featured fairs" subtitle="See works in top art fairs" />
       </Flex>

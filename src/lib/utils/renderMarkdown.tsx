@@ -1,5 +1,5 @@
 import { LinkText } from "lib/Components/Text/LinkText"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import _ from "lodash"
 import { color, Sans, Separator, Serif, space, Text } from "palette"
 import React from "react"
@@ -46,10 +46,7 @@ export function defaultRules({
     link: {
       react: (node, output, state) => {
         state.withinText = true
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        let element
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        const openUrl = (url) => {
+        const openUrl = (url: string) => {
           if (node.target.startsWith("mailto:")) {
             Linking.canOpenURL(url)
               .then((supported) => {
@@ -61,16 +58,14 @@ export function defaultRules({
               })
               .catch((err) => console.error("An error occurred", err))
           } else if (modal) {
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            SwitchBoard.presentModalViewController(element, url)
+            navigate(url, { modal: true })
           } else {
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            SwitchBoard.presentNavigationViewController(element, url)
+            navigate(url)
           }
         }
 
         return (
-          <LinkText key={state.key} onPress={() => openUrl(node.target)} ref={(el) => (element = el)}>
+          <LinkText key={state.key} onPress={() => openUrl(node.target)}>
             {output(node.content, state)}
           </LinkText>
         )

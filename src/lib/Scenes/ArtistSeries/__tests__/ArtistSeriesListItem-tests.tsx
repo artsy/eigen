@@ -1,16 +1,12 @@
 import { OwnerType } from "@artsy/cohesion"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { ArtistSeriesConnectionEdge } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
-
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 jest.unmock("react-relay")
 
@@ -28,10 +24,7 @@ describe("ArtistSeriesListItem", () => {
 
     act(() => instance.props.onPress())
 
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-      expect.anything(),
-      "/artist-series/yayoi-kusama-pumpkins"
-    )
+    expect(navigate).toHaveBeenCalledWith("/artist-series/yayoi-kusama-pumpkins")
   })
 
   it("shows the artist series title, image and for sale artwork counts", () => {

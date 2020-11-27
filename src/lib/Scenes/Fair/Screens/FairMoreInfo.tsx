@@ -1,7 +1,7 @@
 import { FairMoreInfo_fair } from "__generated__/FairMoreInfo_fair.graphql"
 import { FairMoreInfoQuery } from "__generated__/FairMoreInfoQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { hideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { Box, Separator, Serif, Spacer, Theme } from "palette"
@@ -94,7 +94,7 @@ export class FairMoreInfo extends React.Component<Props, State> {
   })
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleFairSitePress(website) {
-    SwitchBoard.presentModalViewController(this, website)
+    navigate(website, { modal: true })
   }
 
   @track((props) => {
@@ -108,7 +108,7 @@ export class FairMoreInfo extends React.Component<Props, State> {
   })
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleBuyTicketsPress(ticketsLink) {
-    SwitchBoard.presentModalViewController(this, ticketsLink)
+    navigate(ticketsLink, { modal: true })
   }
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

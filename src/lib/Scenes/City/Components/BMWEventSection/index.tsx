@@ -1,5 +1,5 @@
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Event } from "lib/Scenes/City/Components/Event"
 import { Show } from "lib/Scenes/Map/types"
 import { Schema, Track, track as _track } from "lib/utils/track"
@@ -52,12 +52,12 @@ export class BMWEventSection extends React.Component<Props> {
   })
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   getArtGuidePressed(artGuideUrl, _citySlug) {
-    SwitchBoard.presentNavigationViewController(this, artGuideUrl)
+    navigate(artGuideUrl)
   }
 
   viewAllBmwShows = () => {
     const { citySlug } = this.props
-    SwitchBoard.presentNavigationViewController(this, `/city-bmw-list/${citySlug}`)
+    navigate(`/city-bmw-list/${citySlug}`)
   }
 
   render() {

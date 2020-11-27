@@ -1,15 +1,10 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount, shallow } from "enzyme"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Sans, Serif, Text, Theme } from "palette"
 import React from "react"
 import { ReadMore } from "../ReadMore"
 import { LinkText } from "../Text/LinkText"
-
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-  presentModalViewController: jest.fn(),
-}))
 
 describe("ReadMore", () => {
   it("Doesn't show the 'Read more' link when the length of the text is < the number of characters allowed", () => {
@@ -89,7 +84,7 @@ describe("ReadMore", () => {
     // Clicking "Read more" expands the text
     component.find(LinkText).at(0).props().onPress()
 
-    expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(expect.anything(), "/artist/andy-warhol")
+    expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol", { modal: true })
   })
 
   it("doesn't open links modally when not specified", () => {
@@ -101,6 +96,6 @@ describe("ReadMore", () => {
     // Clicking "Read more" expands the text
     component.find(LinkText).at(0).props().onPress()
 
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/andy-warhol")
+    expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
   })
 })

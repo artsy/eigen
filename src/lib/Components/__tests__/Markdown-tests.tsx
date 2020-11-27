@@ -5,16 +5,8 @@ import { Linking, Text } from "react-native"
 import { Markdown } from "../Markdown"
 import { LinkText } from "../Text/LinkText"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentModalViewController: jest.fn() }))
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { defaultRules } from "lib/utils/renderMarkdown"
-
-const SwitchBoardMock = SwitchBoard as any
-const { anything } = expect
-
-beforeEach(() => {
-  SwitchBoardMock.presentModalViewController.mockReset()
-})
 
 describe("Markdown", () => {
   it("renders multiple paragraphs as Text elements", () => {
@@ -48,7 +40,7 @@ describe("Markdown", () => {
 
     markdown.root.findAllByType(LinkText)[0].props.onPress()
 
-    expect(SwitchBoardMock.presentModalViewController).toHaveBeenCalledWith(anything(), "http://www.artsy.net")
+    expect(navigate).toHaveBeenCalledWith("http://www.artsy.net", { modal: true })
   })
 
   it("renders mailto links as LinkText", async () => {

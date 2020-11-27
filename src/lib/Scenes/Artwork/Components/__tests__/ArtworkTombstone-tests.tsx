@@ -6,12 +6,8 @@ import React from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import { ArtworkTombstone } from "../ArtworkTombstone"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
-
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 
 describe("ArtworkTombstone", () => {
   it("renders fields correctly", () => {
@@ -49,7 +45,7 @@ describe("ArtworkTombstone", () => {
     const artistName = component.find(TouchableWithoutFeedback).at(0)
     expect(artistName.text()).toContain("Andy Warhol")
     artistName.props().onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/andy-warhol")
+    expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
   })
 
   it("redirects to attribution class faq page when attribution class is clicked", () => {
@@ -61,10 +57,7 @@ describe("ArtworkTombstone", () => {
     const attributionClass = component.find(TouchableWithoutFeedback).at(4)
     expect(attributionClass.text()).toContain("This is an edition of something")
     attributionClass.props().onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-      expect.anything(),
-      "/artwork-classifications"
-    )
+    expect(navigate).toHaveBeenCalledWith("/artwork-classifications")
   })
 
   describe("for a user not in the US", () => {

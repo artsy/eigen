@@ -8,7 +8,7 @@ import Hyperlink from "react-native-hyperlink"
 import { createFragmentContainer } from "react-relay"
 import styled from "styled-components/native"
 
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 
 import { FileDownloadFragmentContainer as FileDownload } from "./Preview/Attachment/FileDownload"
 import ImagePreview from "./Preview/Attachment/ImagePreview"
@@ -93,7 +93,7 @@ export class Message extends React.Component<Props> {
     owner_id: props.conversationId,
   }))
   onLinkPress(url: string) {
-    return SwitchBoard.presentNavigationViewController(this, url)
+    return navigate(url)
   }
 
   render() {

@@ -2,7 +2,7 @@ import { ContextModule, OwnerType, ScreenOwnerType, tappedEntityGroup, TappedEnt
 import { SaleArtworkListItem_artwork } from "__generated__/SaleArtworkListItem_artwork.graphql"
 import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Flex, Sans } from "palette"
 import { Touchable } from "palette"
 import React, { useRef } from "react"
@@ -24,7 +24,7 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
 
   const onPress = () => {
     trackArtworkTap()
-    SwitchBoard.presentNavigationViewController(itemRef.current!, artwork.href!)
+    navigate(artwork.href!)
   }
 
   const trackArtworkTap = () => {

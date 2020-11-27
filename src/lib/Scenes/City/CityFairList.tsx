@@ -99,7 +99,7 @@ export const CityFairListContainer = createPaginationContainer(
       @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
         slug
         fairs: fairsConnection(first: $count, after: $cursor, status: CURRENT, sort: START_AT_ASC)
-        @connection(key: "CityFairList_fairs") {
+          @connection(key: "CityFairList_fairs") {
           edges {
             node {
               internalID

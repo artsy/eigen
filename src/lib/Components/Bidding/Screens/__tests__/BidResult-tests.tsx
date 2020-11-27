@@ -1,7 +1,7 @@
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { shallow } from "enzyme"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { dismissModal, navigate } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
@@ -9,11 +9,6 @@ import React from "react"
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { BidderPositionResult } from "../../types"
 import { BidResult } from "../BidResult"
-
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  dismissModalViewController: jest.fn(),
-  presentModalViewController: jest.fn(),
-}))
 
 const popToTop = jest.fn()
 const mockNavigator = { popToTop }
@@ -102,14 +97,12 @@ describe("BidResult component", () => {
           />
         </BiddingThemeProvider>
       )
-      const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
-      mockDismiss.mockReturnValueOnce(Promise.resolve())
 
       bidResult.root.findByType(Button).props.onPress()
       jest.runAllTicks()
 
-      expect(SwitchBoard.dismissModalViewController).toHaveBeenCalled()
-      expect(SwitchBoard.presentModalViewController).not.toHaveBeenCalled()
+      expect(dismissModal).toHaveBeenCalled()
+      expect(navigate).not.toHaveBeenCalled()
     })
   })
 
@@ -209,16 +202,11 @@ describe("BidResult component", () => {
           />
         </BiddingThemeProvider>
       )
-      const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
-      mockDismiss.mockReturnValueOnce(Promise.resolve())
 
       bidResult.root.findByType(Button).props.onPress()
       jest.runAllTicks()
 
-      expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(
-        expect.anything(),
-        "https://live-staging.artsy.net/sale-id"
-      )
+      expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/sale-id", { modal: true })
     })
   })
 })

@@ -35,8 +35,6 @@ interface Props extends ViewProperties {
 }
 
 const Home = (props: Props) => {
-  const navRef = useRef<any>()
-
   const { homePage, me, featured } = props
   const artworkModules = homePage.artworkModules || []
   const salesModule = homePage.salesModule
@@ -129,7 +127,7 @@ const Home = (props: Props) => {
       }}
     >
       <Theme>
-        <View ref={navRef} style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
           <AboveTheFoldFlatList
             data={rowData}
             initialNumToRender={5}

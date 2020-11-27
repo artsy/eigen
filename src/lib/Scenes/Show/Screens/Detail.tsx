@@ -4,7 +4,7 @@ import { HoursCollapsibleFragmentContainer as HoursCollapsible } from "lib/Compo
 import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "lib/Components/Show/ShowArtistsPreview"
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "lib/Components/Show/ShowArtworksPreview"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { hideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import { Box, Sans, Separator } from "palette"
@@ -129,15 +129,15 @@ export class Detail extends React.Component<Props, State> {
   }
 
   handleViewAllArtistsPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.slug}/artists`)
+    navigate(`/show/${this.props.show.slug}/artists`)
   }
 
   handleViewAllArtworksPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.slug}/artworks`)
+    navigate(`/show/${this.props.show.slug}/artworks`)
   }
 
   handleViewMoreInfoPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.slug}/info`)
+    navigate(`/show/${this.props.show.slug}/info`)
   }
 
   @track(eventProps(Schema.ActionNames.ToggleHours))

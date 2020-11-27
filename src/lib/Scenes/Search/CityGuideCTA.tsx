@@ -1,5 +1,5 @@
 import { SectionTitle } from "lib/Components/SectionTitle"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { color, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
@@ -11,7 +11,7 @@ export class CityGuideCTA extends React.Component {
     return (
       <Flex>
         <SectionTitle title="Explore art on view" />
-        <TouchableOpacity onPress={() => SwitchBoard.presentNavigationViewController(this, "/local-discovery")}>
+        <TouchableOpacity onPress={() => navigate("/local-discovery")}>
           <Flex style={{ borderWidth: 1, borderColor: color("black10"), borderRadius: 4, overflow: "hidden" }}>
             <Image source={cityGuideMapImage} style={{ width: "100%" }} />
             <Flex m={15}>
