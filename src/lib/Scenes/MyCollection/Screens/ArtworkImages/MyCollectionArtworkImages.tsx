@@ -21,9 +21,7 @@ const MyCollectionArtworkImages: React.FC<MyCollectionArtworkImagesProps> = ({ a
 
   return images !== null ? (
     <>
-      <FancyModalHeader>
-        {images.length} Photo{!!images.length && "s"}
-      </FancyModalHeader>
+      <FancyModalHeader>Artwork Images</FancyModalHeader>
       <ScrollView>
         {images.map((image: any, index: number) => (
           <View key={index}>
@@ -74,7 +72,7 @@ export const MyCollectionArtworkImagesQueryRenderer: React.FC<{
         Container: MyCollectionArtworkImagesFragmentContainer,
         renderPlaceholder: () => (
           <Flex flexGrow={1}>
-            <FancyModalHeader>Artwork Details</FancyModalHeader>
+            <FancyModalHeader>Artwork Images</FancyModalHeader>
             <Flex alignItems="center" justifyContent="center" flexGrow={1}>
               <ActivityIndicator />
             </Flex>
