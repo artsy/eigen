@@ -5,7 +5,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button, Text } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { createMockEnvironment } from "relay-test-utils"
 import { extractText } from "../../../tests/extractText"
 import { RegisterToBidButtonContainer } from "../Components/RegisterToBidButton"
 
@@ -83,24 +83,16 @@ describe("RegisterToBidButton", () => {
   it("hides the approve to bid hint if the user has active lots standing", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => ({
-          slug: "the-sale",
-          name: "the sale",
-          internalID: "the-sale-internal",
-          startAt: null,
-          endAt: null,
-          requireIdentityVerification: false,
-          registrationStatus: {
-            qualifiedForBidding: true,
-          },
-        }),
-        Me: () => ({
-          biddedLots: [{ lot1: "lot1" }, { lot2: "lot2" }],
-        }),
-      })
-    )
+    mockEnvironmentPayload(mockEnvironment, {
+      Sale: () => ({
+        startAt: null,
+        endAt: null,
+        requireIdentityVerification: false,
+        registrationStatus: {
+          qualifiedForBidding: true,
+        },
+      }),
+    })
 
     expect(extractText(tree.root)).not.toContain("You're approved to bid")
   })
