@@ -1,5 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { RegisterToBidButtonTestsQuery } from "__generated__/RegisterToBidButtonTestsQuery.graphql"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button, Text } from "palette"
 import React from "react"
@@ -42,29 +43,19 @@ describe("RegisterToBidButton", () => {
     />
   )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
+  beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   it("shows button when not registered", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => ({
-          slug: "the-sale",
-          name: "the sale",
-          internalID: "the-sale-internal",
-          startAt: null,
-          endAt: null,
-          requireIdentityVerification: false,
-          registrationStatus: null,
-        }),
-        Me: () => ({
-          biddedLots: [],
-        }),
-      })
-    )
+    mockEnvironmentPayload(mockEnvironment, {
+      Sale: () => ({
+        startAt: null,
+        endAt: null,
+        requireIdentityVerification: false,
+        registrationStatus: null,
+      }),
+    })
 
     expect(tree.root.findAllByType(Button)[0].props.children).toMatch("Register to bid")
   })
