@@ -1,6 +1,7 @@
 import { Action, action, thunk, Thunk } from "easy-peasy"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
 import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
+import { requestPhotos } from "lib/utils/requestPhotos"
 import { uniqBy } from "lodash"
 import { ActionSheetIOS } from "react-native"
 import ImagePicker, { Image } from "react-native-image-crop-picker"
@@ -147,9 +148,11 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
           let photos = null
 
           if (buttonIndex === 0) {
-            photos = await ImagePicker.openPicker({
-              multiple: true,
-            })
+            // photos = await ImagePicker.openPicker({
+            //   multiple: true,
+            // })
+
+            requestPhotos()
           }
           if (buttonIndex === 1) {
             photos = await ImagePicker.openCamera({
