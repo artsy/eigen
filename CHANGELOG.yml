@@ -17,6 +17,7 @@ upcoming:
     - Fix device token checking logic - david
   user_facing:
     - Add loading spinner to infinite artwork grid on artist page - david
+    - Avoid shrinking the background on non-fullscreen fancy modals - david
 releases:
   - version: 6.7.1
     date: November 13, 2020

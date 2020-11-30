@@ -15,6 +15,7 @@ const BORDER_RADIUS = 10
 
 export interface FancyModalCard {
   readonly height: number
+  backgroundShouldShrink: boolean
   getStackAnimations(
     createAnimation: AnimationCreator,
     stack: Array<RefObject<FancyModalCard>>
@@ -30,7 +31,12 @@ export interface FancyModalCard {
  */
 export const FancyModalCard = React.forwardRef<
   FancyModalCard,
-  React.PropsWithChildren<{ level: number; height: number; onBackgroundPressed(): void }>
+  React.PropsWithChildren<{
+    level: number
+    height: number
+    backgroundShouldShrink: boolean
+    onBackgroundPressed(): void
+  }>
 >((props, ref) => {
   const screen = useScreenDimensions()
   const isRootCard = props.level === 0
@@ -43,6 +49,7 @@ export const FancyModalCard = React.forwardRef<
     ref,
     () => ({
       height: props.height,
+      backgroundShouldShrink: props.backgroundShouldShrink,
       getPopAnimations(createAnimation) {
         return [
           createAnimation(backdropOpacity, 0),
@@ -62,7 +69,13 @@ export const FancyModalCard = React.forwardRef<
           ]
         }
 
-        const distanceFromTopOfStack = Math.max(stack.length - props.level - 1, 0)
+        let distanceFromTopOfStack = Math.max(stack.length - props.level - 1, 0)
+
+        for (let i = stack.length - 1; i > props.level; i--) {
+          if (stack[i]?.current?.backgroundShouldShrink === false) {
+            distanceFromTopOfStack -= 1
+          }
+        }
 
         // The degree by which the cards should shrink at each layer.
         const scaleFactor = (screen.width - 2 * CARD_GUTTER_WIDTH) / screen.width
@@ -79,12 +92,20 @@ export const FancyModalCard = React.forwardRef<
             break
           }
         }
+
+        let effectiveVisualStackHeight = stack.length
+        for (let i = stack.length - 1; i > 0; i--) {
+          if (stack[i]?.current?.backgroundShouldShrink === false) {
+            effectiveVisualStackHeight--
+          }
+        }
+
         // The highest this card could possibly go. This is placed inside the stack overlay area (described above).
         const minTop =
           screen.safeAreaInsets.top +
           CARD_STACK_OVERLAY_HEIGHT +
           CARD_STACK_OVERLAY_Y_OFFSET -
-          (CARD_STACK_OVERLAY_HEIGHT / stack.length + 1) * distanceFromTopOfStack
+          (CARD_STACK_OVERLAY_HEIGHT / effectiveVisualStackHeight + 1) * distanceFromTopOfStack
         // The maximum distance between two cards' tops if they are stacked adjacently (and the front card does not have
         // a smaller height than the one behind)
         const maxStackOverlayOffset = CARD_STACK_OVERLAY_HEIGHT / 2
@@ -98,7 +119,11 @@ export const FancyModalCard = React.forwardRef<
         // transform origin alas, so this is used as a workaround)
         const scaleYOffset = (props.height - props.height * levelScale) / 2
 
-        const totalYoffset = -scaleYOffset - (naturalTop - top)
+        let totalYoffset = -scaleYOffset - (naturalTop - top)
+
+        if (isRootCard && distanceFromTopOfStack === 0) {
+          totalYoffset = 0
+        }
 
         return [
           createAnimation(backdropOpacity, 0.2),
