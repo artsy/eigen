@@ -106,9 +106,7 @@ export const ArtistInsights = (props: ArtistInsightsProps) => {
                   </Text>
                 </Flex>
                 <Flex>
-                  {awaitingResults ? (
-                    <Text variant="mediumText">Awaiting results</Text>
-                  ) : (
+                  {item.priceRealized !== null ? (
                     <Flex alignItems="flex-end">
                       <Text variant="mediumText">
                         {(item.priceRealized?.display ?? "").replace(`${item.currency} `, "")}
@@ -126,6 +124,8 @@ export const ArtistInsights = (props: ArtistInsightsProps) => {
                         </Text>
                       </Flex>
                     </Flex>
+                  ) : (
+                    <Text variant="mediumText">{awaitingResults ? "Awaiting results" : "Not available"}</Text>
                   )}
                 </Flex>
               </Flex>
@@ -150,6 +150,7 @@ export const ArtistInsights = (props: ArtistInsightsProps) => {
 export const ArtistInsightsFragmentContainer = createFragmentContainer(ArtistInsights, {
   artist: graphql`
     fragment ArtistInsights_artist on Artist {
+      name
       auctionResultsConnection(first: 10, sort: DATE_DESC) {
         edges {
           node {
