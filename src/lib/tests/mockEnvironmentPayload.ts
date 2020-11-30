@@ -1,7 +1,10 @@
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
+import { MockResolverContext, MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 
-const counters: { [path: string]: number } = {}
+let counters: { [path: string]: number } = {}
+const resetCounters = () => {
+  counters = {}
+}
 export const generateID = (pathComponents: readonly string[] | undefined) => {
   const path: string = pathComponents?.join(".") ?? "_GLOBAL_"
   const currentCounter = counters[path]
@@ -30,6 +33,7 @@ export const mockEnvironmentPayload = (
   mockEnvironment: ReturnType<typeof createMockEnvironment>,
   mockResolvers?: MockResolvers
 ) => {
+  resetCounters()
   mockEnvironment.mock.resolveMostRecentOperation((operation) =>
     MockPayloadGenerator.generate(operation, { ...DefaultMockResolvers, ...mockResolvers })
   )
