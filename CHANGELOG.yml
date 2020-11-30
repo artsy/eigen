@@ -6,6 +6,7 @@ upcoming:
     - Upgrade CI to Xcode 12 - pavlos
     - Update url for echo, now in s3 - ash, pavlos
     - Move bottom tabs navigator to TS - david
+    - Add some relay mock helpers - pavlos
     - Fix city guide CTA images not showing when running using Xcode 12 - pavlos
     - Fix minimize startup api requests - brian
     - Remove analytics tracking on back-arrow taps - pepopowitz
