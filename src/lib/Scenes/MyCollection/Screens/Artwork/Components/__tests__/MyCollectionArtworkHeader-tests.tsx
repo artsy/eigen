@@ -2,6 +2,7 @@ import { MyCollectionArtworkHeaderTestsQuery } from "__generated__/MyCollectionA
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
@@ -39,9 +40,7 @@ describe("MyCollectionArtworkHeader", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
+    mockEnvironmentPayload(mockEnvironment, mockResolvers)
     return tree
   }
 
