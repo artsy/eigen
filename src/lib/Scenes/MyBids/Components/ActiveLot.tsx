@@ -10,7 +10,7 @@ export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding 
   const timelySale = TimelySale.create(lotStanding?.saleArtwork?.sale!)
   const isLAI = timelySale.isLiveBiddingNow()
 
-  const sellingPrice = lotStanding?.lotState?.sellingPrice?.displayAmount
+  const sellingPrice = lotStanding?.lotState?.sellingPrice?.display
   const bidCount = lotStanding?.lotState?.bidCount
   const { saleArtwork, lotState } = lotStanding
 
@@ -49,10 +49,10 @@ export const ActiveLotFragmentContainer = createFragmentContainer(ActiveLot, {
         reserveStatus
         soldStatus
         askingPrice: onlineAskingPrice {
-          displayAmount(fractionalDigits: 0)
+          display
         }
         sellingPrice: floorSellingPrice {
-          displayAmount(fractionalDigits: 0)
+          display
         }
       }
       saleArtwork {
