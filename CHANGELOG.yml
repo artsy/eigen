@@ -16,7 +16,7 @@ upcoming:
     - Remove SwitchBoard.tsx - david
     - Fix device token checking logic - david
   user_facing:
-    -
+    - Add artist past shows screen - mounir
 releases:
   - version: 6.7.1
     date: November 13, 2020

@@ -24,7 +24,7 @@ const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
 
   const handleRefresh = () => {
     setIsRefreshing(true)
-    relay.refetchConnection(10, (error) => {
+    relay.refetchConnection(PAGE_SIZE, (error) => {
       if (error) {
         console.log(error.message)
       }
