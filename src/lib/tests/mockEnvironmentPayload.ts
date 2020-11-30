@@ -22,14 +22,15 @@ export const generateID = (pathComponents: readonly string[] | undefined) => {
 export const mockArray = (length: number) => new Array(length).fill({ node: {} })
 
 export const DefaultMockResolvers: MockResolvers = {
+  ID: (ctx) => `${ctx.name}-${generateID(ctx.path)}`,
   String: (ctx) => `${ctx.name}-${generateID(ctx.path)}`,
 }
 
 export const mockEnvironmentPayload = (
   mockEnvironment: ReturnType<typeof createMockEnvironment>,
-  mockResolvers: MockResolvers = DefaultMockResolvers
+  mockResolvers?: MockResolvers
 ) => {
   mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-    MockPayloadGenerator.generate(operation, mockResolvers)
+    MockPayloadGenerator.generate(operation, { ...DefaultMockResolvers, ...mockResolvers })
   )
 }
