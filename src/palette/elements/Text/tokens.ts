@@ -56,6 +56,8 @@ export type TextTreatments = {
   [K in typeof TEXT_TREATMENTS[number]]: TextTreatment
 }
 
+export type TextVariant = keyof TextTreatments
+
 /**
  * iOS-specific typographic treatments
  */

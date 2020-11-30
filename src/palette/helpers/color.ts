@@ -6,11 +6,10 @@ import { Color, themeProps } from "../Theme"
  */
 export function color(colorKey: undefined): undefined
 export function color(colorKey: Color): Color
-export function color(colorKey: Color | undefined): Color | undefined
-export function color(colorKey: any) {
+export function color(colorKey?: Color): Color | undefined {
   if (colorKey === undefined) {
     return undefined
   }
 
-  return themeProps.colors[colorKey as Color]
+  return themeProps.colors[colorKey]
 }
