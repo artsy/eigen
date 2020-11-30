@@ -18,6 +18,7 @@ upcoming:
     - Fix device token checking logic - david
     - Set price and marketing text dynamically - adam
   user_facing:
+    - Add artist past shows screen - mounir
     - Add loading spinner to infinite artwork grid on artist page - david
     - Avoid shrinking the background on non-fullscreen fancy modals - david
 releases:
