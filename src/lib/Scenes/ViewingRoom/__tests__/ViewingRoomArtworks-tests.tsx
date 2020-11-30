@@ -1,7 +1,7 @@
 import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworksTestsQuery.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
-import { mockArray, mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
+import { mockEdges, mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Touchable } from "palette"
@@ -35,7 +35,7 @@ describe("ViewingRoom", () => {
   it("renders a flatlist with one artwork", () => {
     const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironmentPayload(mockEnvironment, {
-      ViewingRoom: () => ({ artworksConnection: { edges: mockArray(1) } }),
+      ViewingRoom: () => ({ artworksConnection: { edges: mockEdges(1) } }),
     })
 
     expect(tree.root.findAllByType(FlatList)).toHaveLength(1)
@@ -47,7 +47,7 @@ describe("ViewingRoom", () => {
     mockEnvironmentPayload(mockEnvironment, {
       ViewingRoom: () => ({
         artworksConnection: {
-          edges: mockArray(1),
+          edges: mockEdges(1),
         },
       }),
     })
@@ -61,7 +61,7 @@ describe("ViewingRoom", () => {
     const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironmentPayload(mockEnvironment, {
       ViewingRoom: () => ({
-        artworksConnection: { edges: mockArray(1) },
+        artworksConnection: { edges: mockEdges(1) },
       }),
     })
 

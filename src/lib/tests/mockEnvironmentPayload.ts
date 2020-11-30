@@ -18,12 +18,12 @@ export const generateID = (pathComponents: readonly string[] | undefined) => {
  * Usage: ```
  * Artist: () => ({
  *   auctionResultsConnection: {
- *     edges: mockArray(10), // <- this will generate an array with 10 results, all prefilled
+ *     edges: mockEdges(10), // <- this will generate an array with 10 results, all prefilled
  *   }
  * })
  * ```
  */
-export const mockArray = (length: number) => new Array(length).fill({ node: {} })
+export const mockEdges = (length: number) => new Array(length).fill({ node: {} })
 
 const paths: { [name: string]: string } = {}
 const goodMockResolver = (ctx: MockResolverContext) => {
