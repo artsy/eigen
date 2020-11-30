@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3e0d07aee35ae08457ee3362fb32ae60 */
+/* @relayHash 5b040afc67b5edae0bfecca54074d6b7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -164,6 +164,12 @@ fragment MyCollectionArtworkHeader_artwork on Artwork {
 }
 
 fragment MyCollectionArtworkInsights_artwork on Artwork {
+  sizeBucket
+  medium
+  artist {
+    name
+    id
+  }
   ...MyCollectionArtworkPriceEstimate_artwork
   ...MyCollectionArtworkArtistAuctionResults_artwork
   ...MyCollectionArtworkArtistArticles_artwork
@@ -382,6 +388,13 @@ v22 = [
   }
 ],
 v23 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v24 = {
   "kind": "Literal",
   "name": "first",
   "value": 3
@@ -500,11 +513,12 @@ return {
             "selections": [
               (v4/*: any*/),
               (v14/*: any*/),
+              (v23/*: any*/),
               (v19/*: any*/),
               {
                 "alias": null,
                 "args": [
-                  (v23/*: any*/),
+                  (v24/*: any*/),
                   {
                     "kind": "Literal",
                     "name": "sort",
@@ -621,7 +635,7 @@ return {
               {
                 "alias": null,
                 "args": [
-                  (v23/*: any*/),
+                  (v24/*: any*/),
                   {
                     "kind": "Literal",
                     "name": "inEditorialFeed",
@@ -678,13 +692,7 @@ return {
                             "name": "author",
                             "plural": false,
                             "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "name",
-                                "storageKey": null
-                              },
+                              (v23/*: any*/),
                               (v14/*: any*/)
                             ],
                             "storageKey": null
@@ -906,7 +914,7 @@ return {
     ]
   },
   "params": {
-    "id": "3e0d07aee35ae08457ee3362fb32ae60",
+    "id": "5b040afc67b5edae0bfecca54074d6b7",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",

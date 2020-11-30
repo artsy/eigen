@@ -25,6 +25,7 @@ export const FancyModal: React.FC<{ visible: boolean; maxHeight?: number; onBack
   const context = useContext(FancyModalContext)
   const card = context.useCard({
     height,
+    backgroundShouldShrink: !maxHeight,
     content: showingUnderlyingModal ? (
       /* Keyboard Avoiding
         This works fine for full-screen fancy modals but a couple of caveats for the future:

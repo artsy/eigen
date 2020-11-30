@@ -15,8 +15,11 @@ upcoming:
     - Update color scheme - mdole
     - Remove SwitchBoard.tsx - david
     - Fix device token checking logic - david
+    - Set price and marketing text dynamically - adam
   user_facing:
     - Add artist past shows screen - mounir
+    - Add loading spinner to infinite artwork grid on artist page - david
+    - Avoid shrinking the background on non-fullscreen fancy modals - david
 releases:
   - version: 6.7.1
     date: November 13, 2020
