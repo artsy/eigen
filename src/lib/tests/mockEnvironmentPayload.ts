@@ -1,3 +1,4 @@
+import { takeRight } from "lodash"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolverContext, MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 
@@ -24,9 +25,23 @@ export const generateID = (pathComponents: readonly string[] | undefined) => {
  */
 export const mockArray = (length: number) => new Array(length).fill({ node: {} })
 
+const paths: { [name: string]: string } = {}
+const goodMockResolver = (ctx: MockResolverContext) => {
+  const fullpath = ctx.path?.join(".") ?? "_GLOBAL_"
+  let length = 1
+  let prefix = takeRight(fullpath.split("."), length).join(".")
+
+  while (Object.keys(paths).includes(prefix) && paths[prefix] !== fullpath) {
+    length += 1
+    prefix = takeRight(fullpath.split("."), length).join(".")
+  }
+  paths[prefix] = fullpath
+
+  return `${prefix}-${generateID(ctx.path)}`
+}
 export const DefaultMockResolvers: MockResolvers = {
-  ID: (ctx) => `${ctx.name}-${generateID(ctx.path)}`,
-  String: (ctx) => `${ctx.name}-${generateID(ctx.path)}`,
+  ID: (ctx) => goodMockResolver(ctx),
+  String: (ctx) => goodMockResolver(ctx),
 }
 
 export const mockEnvironmentPayload = (
