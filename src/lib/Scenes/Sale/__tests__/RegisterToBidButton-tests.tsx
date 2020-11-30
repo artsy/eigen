@@ -63,24 +63,19 @@ describe("RegisterToBidButton", () => {
   it("shows green checkmark when registered", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => ({
-          slug: "the-sale",
-          name: "the sale",
-          internalID: "the-sale-internal",
-          startAt: null,
-          endAt: null,
-          requireIdentityVerification: false,
-          registrationStatus: {
-            qualifiedForBidding: true,
-          },
-        }),
-        Me: () => ({
-          biddedLots: [],
-        }),
-      })
-    )
+    mockEnvironmentPayload(mockEnvironment, {
+      Sale: () => ({
+        startAt: null,
+        endAt: null,
+        requireIdentityVerification: false,
+        registrationStatus: {
+          qualifiedForBidding: true,
+        },
+      }),
+      Me: () => ({
+        biddedLots: [],
+      }),
+    })
 
     expect(tree.root.findAllByType(Text)[0].props.children).toMatch("You're approved to bid")
   })
