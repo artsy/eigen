@@ -106,7 +106,7 @@ export const PartnerOverviewFragmentContainer = createPaginationContainer(
           bio
         }
         artists: artistsConnection(sort: SORTABLE_ID_ASC, first: $count, after: $cursor)
-        @connection(key: "Partner_artists") {
+          @connection(key: "Partner_artists") {
           pageInfo {
             hasNextPage
             startCursor

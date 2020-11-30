@@ -385,7 +385,7 @@ export const GeneFragmentContainer = createPaginationContainer(
         node(id: $id) {
           ... on Gene {
             ...Gene_gene
-            @arguments(count: $count, cursor: $cursor, sort: $sort, medium: $medium, priceRange: $price_range)
+              @arguments(count: $count, cursor: $cursor, sort: $sort, medium: $medium, priceRange: $price_range)
           }
         }
       }

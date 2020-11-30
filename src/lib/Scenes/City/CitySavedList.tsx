@@ -82,7 +82,7 @@ export const CitySavedListContainer = createPaginationContainer(
       @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
         followsAndSaves {
           shows: showsConnection(first: $count, status: RUNNING_AND_UPCOMING, city: $citySlug, after: $cursor)
-          @connection(key: "CitySavedList_shows") {
+            @connection(key: "CitySavedList_shows") {
             edges {
               node {
                 slug

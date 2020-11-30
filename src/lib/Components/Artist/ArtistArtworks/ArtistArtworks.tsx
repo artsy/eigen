@@ -18,9 +18,9 @@ import { useEmissionOption } from "lib/store/GlobalStore"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
-import { Box, Separator, Spacer } from "palette"
+import { Box, Flex, Separator, Spacer } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import { FlatList } from "react-native"
+import { ActivityIndicator, FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtistCollectionsRailFragmentContainer } from "./ArtistCollectionsRail"
@@ -182,8 +182,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
         <>
           <Spacer mb={2} />
           <InfiniteScrollArtworksGrid
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            connection={artist.artworks}
+            connection={artist.artworks!}
             loadMore={relay.loadMore}
             hasMore={relay.hasMore}
             {...props}
@@ -191,6 +190,15 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
             contextScreenOwnerId={artist.internalID}
             contextScreenOwnerSlug={artist.slug}
           />
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            p="3"
+            pb="9"
+            style={{ opacity: relay.isLoading() && relay.hasMore() ? 1 : 0 }}
+          >
+            <ActivityIndicator />
+          </Flex>
         </>
       )
     }
@@ -367,21 +375,21 @@ export default createPaginationContainer(
         node(id: $id) {
           ... on Artist {
             ...ArtistArtworks_artist
-            @arguments(
-              count: $count
-              cursor: $cursor
-              sort: $sort
-              medium: $medium
-              color: $color
-              partnerID: $partnerID
-              priceRange: $priceRange
-              dimensionRange: $dimensionRange
-              majorPeriods: $majorPeriods
-              acquireable: $acquireable
-              inquireableOnly: $inquireableOnly
-              atAuction: $atAuction
-              offerable: $offerable
-            )
+              @arguments(
+                count: $count
+                cursor: $cursor
+                sort: $sort
+                medium: $medium
+                color: $color
+                partnerID: $partnerID
+                priceRange: $priceRange
+                dimensionRange: $dimensionRange
+                majorPeriods: $majorPeriods
+                acquireable: $acquireable
+                inquireableOnly: $inquireableOnly
+                atAuction: $atAuction
+                offerable: $offerable
+              )
           }
         }
       }

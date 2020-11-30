@@ -18,9 +18,8 @@ jest.mock("lib/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
 }))
 
-const mockFetchNotificationPermissions = NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions as jest.Mock<
-  any
->
+const mockFetchNotificationPermissions = NativeModules.ARTemporaryAPIModule
+  .fetchNotificationPermissions as jest.Mock<any>
 
 jest.unmock("react-relay")
 

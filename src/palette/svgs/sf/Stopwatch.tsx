@@ -3,7 +3,7 @@ import { color } from "../../helpers"
 import { Icon, IconProps, Path } from "../Icon"
 
 /** Stopwatch */
-export const Stopwatch: React.FC<IconProps> = props => {
+export const Stopwatch: React.FC<IconProps> = (props) => {
   return (
     <Icon {...props} viewBox="0 0 14 17">
       <Path

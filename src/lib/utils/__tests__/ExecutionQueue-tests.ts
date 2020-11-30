@@ -12,7 +12,7 @@ describe(ExecutionQueue, () => {
     // task 1
     queue?.executeInQueue(
       async () =>
-        await new Promise((resolve) => {
+        await new Promise<void>((resolve) => {
           startedTask1 = true
           resolveTask1 = () => {
             resolve()

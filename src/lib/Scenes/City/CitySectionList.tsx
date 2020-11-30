@@ -201,14 +201,14 @@ export const CitySectionListContainer = createPaginationContainer(
       ) {
         city(slug: $citySlug) {
           ...CitySectionList_city
-          @arguments(
-            count: $count
-            cursor: $cursor
-            partnerType: $partnerType
-            status: $status
-            sort: $sort
-            dayThreshold: $dayThreshold
-          )
+            @arguments(
+              count: $count
+              cursor: $cursor
+              partnerType: $partnerType
+              status: $status
+              sort: $sort
+              dayThreshold: $dayThreshold
+            )
         }
       }
     `,
@@ -263,7 +263,7 @@ export const CitySectionListQueryRenderer: React.FC<CitySectionListProps> = ({ c
         ) {
           city(slug: $citySlug) {
             ...CitySectionList_city
-            @arguments(partnerType: $partnerType, status: $status, sort: $sort, dayThreshold: $dayThreshold)
+              @arguments(partnerType: $partnerType, status: $status, sort: $sort, dayThreshold: $dayThreshold)
           }
         }
       `}

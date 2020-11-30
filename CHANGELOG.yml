@@ -12,10 +12,13 @@ upcoming:
     - Rename AppStore to GlobalStore - david
     - Update STRICTNESS_MIGRATION comments - david
     - Don't pass email to segment - brian
+    - Update color scheme - mdole
     - Remove SwitchBoard.tsx - david
     - Fix device token checking logic - david
+    - Set price and marketing text dynamically - adam
   user_facing:
-    -
+    - Add loading spinner to infinite artwork grid on artist page - david
+    - Avoid shrinking the background on non-fullscreen fancy modals - david
 releases:
   - version: 6.7.1
     date: November 13, 2020
