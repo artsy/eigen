@@ -20,7 +20,7 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
   const dimensions = useScreenDimensions()
   const formattedTitleAndYear = [title, date].filter(Boolean).join(", ")
 
-  const defaultImage = images?.find((i: any) => i.isDefault) || (images && images[0])
+  const defaultImage = images?.find((i) => i?.isDefault) || (images && images[0])
 
   const isImage = (toCheck: any): toCheck is Image => !!toCheck
 

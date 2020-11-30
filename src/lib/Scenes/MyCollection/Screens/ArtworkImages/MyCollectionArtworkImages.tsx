@@ -16,10 +16,13 @@ interface MyCollectionArtworkImagesProps {
 
 const MyCollectionArtworkImages: React.FC<MyCollectionArtworkImagesProps> = ({ artwork }) => {
   const { images } = artwork
-  // const { navigation: navActions } = AppStore.actions.myCollection
   const dimensions = useScreenDimensions()
 
-  return images !== null ? (
+  if (!images) {
+    return null
+  }
+
+  return (
     <>
       <FancyModalHeader>Artwork Images</FancyModalHeader>
       <ScrollView>
@@ -36,10 +39,10 @@ const MyCollectionArtworkImages: React.FC<MyCollectionArtworkImagesProps> = ({ a
         ))}
       </ScrollView>
     </>
-  ) : null
+  )
 }
 
-export const MyCollectionArtworkImagesFragmentContainer = createFragmentContainer(MyCollectionArtworkImages, {
+const MyCollectionArtworkImagesFragmentContainer = createFragmentContainer(MyCollectionArtworkImages, {
   artwork: graphql`
     fragment MyCollectionArtworkImages_artwork on Artwork {
       images {
