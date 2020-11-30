@@ -1,4 +1,4 @@
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import React from "react"
 import { InboxQueryRenderer } from "./Inbox"
 import { InboxOldQueryRenderer } from "./InboxOld"

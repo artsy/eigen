@@ -1,4 +1,4 @@
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { InboxWrapper } from "../Inbox"
@@ -20,7 +20,7 @@ describe("InboxWrapper", () => {
   })
 
   it("shows the Inbox if the flag is set", () => {
-    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsBidManagement: true })
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsBidManagement: true })
     const tree = renderWithWrappers(<InboxWrapper />)
     expect(tree.root.findAllByType(InboxOldQueryRenderer).length).toEqual(0)
     expect(tree.root.findAllByType(InboxQueryRenderer).length).toEqual(1)

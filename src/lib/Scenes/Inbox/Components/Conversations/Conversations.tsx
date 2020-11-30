@@ -9,7 +9,7 @@ import ConversationSnippet from "./ConversationSnippet"
 import { PAGE_SIZE } from "lib/data/constants"
 
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { color, Flex, Sans, Separator } from "palette"
 
@@ -121,7 +121,7 @@ export const ConversationsContainer = createPaginationContainer(
       fragment Conversations_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         conversations: conversationsConnection(first: $count, after: $cursor)
-          @connection(key: "Conversations_conversations") {
+        @connection(key: "Conversations_conversations") {
           pageInfo {
             endCursor
             hasNextPage
