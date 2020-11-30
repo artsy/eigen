@@ -23,12 +23,12 @@ const MyCollectionArtworkImages: React.FC<MyCollectionArtworkImagesProps> = ({ a
     <>
       <FancyModalHeader>Artwork Images</FancyModalHeader>
       <ScrollView>
-        {images.map((image: any, index: number) => (
+        {images.map((image, index) => (
           <View key={index}>
             <OpaqueImageView
               // TODO: figure out if "normalized" is the correct version
-              imageURL={image.url?.replace(":version", "normalized")}
-              height={(dimensions.width / (image.width || 1)) * (image.height || 1)}
+              imageURL={image!.url?.replace(":version", "normalized")}
+              height={(dimensions.width / (image!.width || 1)) * (image!.height || 1)}
               width={dimensions.width}
             />
             <Spacer my={1} />
