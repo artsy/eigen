@@ -69,18 +69,22 @@ export const FancyModalCard = React.forwardRef<
           ]
         }
 
-        let distanceFromTopOfStack = Math.max(stack.length - props.level - 1, 0)
-
-        for (let i = stack.length - 1; i > props.level; i--) {
-          if (stack[i]?.current?.backgroundShouldShrink === false) {
-            distanceFromTopOfStack -= 1
+        // we need to know how many perceived layers in the stack there are to decide how to position this card
+        let perceivedDistanceFromTopOfStack = 0
+        let perceivedStackHeight = 1
+        for (let i = 1; i < stack.length; i++) {
+          if (stack[i]?.current?.backgroundShouldShrink) {
+            perceivedStackHeight += 1
+            if (i > props.level) {
+              perceivedDistanceFromTopOfStack += 1
+            }
           }
         }
 
         // The degree by which the cards should shrink at each layer.
         const scaleFactor = (screen.width - 2 * CARD_GUTTER_WIDTH) / screen.width
         // The scale of this particular card's content.
-        const levelScale = Math.pow(scaleFactor, distanceFromTopOfStack)
+        const levelScale = Math.pow(scaleFactor, perceivedDistanceFromTopOfStack)
 
         // The max height of all the cards *above* this one.
         // We need this because if this card is 302px high and it pushes a new modal with height 402px, we need to slide
@@ -93,24 +97,19 @@ export const FancyModalCard = React.forwardRef<
           }
         }
 
-        let effectiveVisualStackHeight = stack.length
-        for (let i = stack.length - 1; i > 0; i--) {
-          if (stack[i]?.current?.backgroundShouldShrink === false) {
-            effectiveVisualStackHeight--
-          }
-        }
-
         // The highest this card could possibly go. This is placed inside the stack overlay area (described above).
         const minTop =
           screen.safeAreaInsets.top +
           CARD_STACK_OVERLAY_HEIGHT +
           CARD_STACK_OVERLAY_Y_OFFSET -
-          (CARD_STACK_OVERLAY_HEIGHT / effectiveVisualStackHeight + 1) * distanceFromTopOfStack
+          (CARD_STACK_OVERLAY_HEIGHT / perceivedStackHeight + 1) * perceivedDistanceFromTopOfStack
         // The maximum distance between two cards' tops if they are stacked adjacently (and the front card does not have
         // a smaller height than the one behind)
         const maxStackOverlayOffset = CARD_STACK_OVERLAY_HEIGHT / 2
         // The lowest this card could possibly go. This could be haflway down the screen if the heights are such.
-        const maxTop = isRootCard ? minTop : screen.height - maxHeight - maxStackOverlayOffset * distanceFromTopOfStack
+        const maxTop = isRootCard
+          ? minTop
+          : screen.height - maxHeight - maxStackOverlayOffset * perceivedDistanceFromTopOfStack
         // Now we select the top position which is furthest down the screen as the optimal choice
         const top = Math.max(minTop, maxTop)
         // The top position of the card if it is at the front of the stack
@@ -121,7 +120,7 @@ export const FancyModalCard = React.forwardRef<
 
         let totalYoffset = -scaleYOffset - (naturalTop - top)
 
-        if (isRootCard && distanceFromTopOfStack === 0) {
+        if (isRootCard && perceivedDistanceFromTopOfStack === 0) {
           totalYoffset = 0
         }
 
