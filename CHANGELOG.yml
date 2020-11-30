@@ -15,6 +15,7 @@ upcoming:
     - Update color scheme - mdole
     - Remove SwitchBoard.tsx - david
     - Fix device token checking logic - david
+    - Set price and marketing text dynamically - adam
   user_facing:
     - Add loading spinner to infinite artwork grid on artist page - david
 releases:
