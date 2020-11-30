@@ -67,11 +67,16 @@ describe("ViewingRoom", () => {
 
     tree.root.findByType(Touchable).props.onPress()
 
-    expect(navigate).toHaveBeenCalledWith("/viewing-room/slug-1/node.slug-1")
+    expect(navigate).toHaveBeenCalledWith("/viewing-room/slug-1/artworksConnection.slug-1")
 
     expect(useTracking().trackEvent).toHaveBeenCalledWith({
       ...tracks.context("internalID-1", "slug-1"),
-      ...tracks.tappedArtworkGroup("internalID-1", "slug-1", "node.internalID-1", "node.slug-1"),
+      ...tracks.tappedArtworkGroup(
+        "internalID-1",
+        "slug-1",
+        "artworksConnection.internalID-1",
+        "artworksConnection.slug-1"
+      ),
     })
   })
 })

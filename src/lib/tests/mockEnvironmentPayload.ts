@@ -27,13 +27,15 @@ export const mockArray = (length: number) => new Array(length).fill({ node: {} }
 
 const paths: { [name: string]: string } = {}
 const goodMockResolver = (ctx: MockResolverContext) => {
-  const fullpath = ctx.path?.join(".") ?? "_GLOBAL_"
+  const makePrefix = (path: string) => takeRight(path.split("."), length).join(".")
+
+  const fullpath = (ctx.path?.join(".") ?? "_GLOBAL_").replace(".edges.node", "")
   let length = 1
-  let prefix = takeRight(fullpath.split("."), length).join(".")
+  let prefix = makePrefix(fullpath)
 
   while (Object.keys(paths).includes(prefix) && paths[prefix] !== fullpath) {
     length += 1
-    prefix = takeRight(fullpath.split("."), length).join(".")
+    prefix = makePrefix(fullpath)
   }
   paths[prefix] = fullpath
 
