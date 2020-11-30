@@ -1,10 +1,11 @@
 import { ViewingRoomSubsectionsTestsQuery } from "__generated__/ViewingRoomSubsectionsTestsQuery.graphql"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Box } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { createMockEnvironment } from "relay-test-utils"
 import { ViewingRoomSubsectionsContainer } from "../ViewingRoomSubsections"
 
 jest.unmock("react-relay")
@@ -25,16 +26,12 @@ describe("ViewingRoomSubsections", () => {
       variables={{}}
     />
   )
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
+  beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   it("renders a Box for each subsection", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation)
-      return result
-    })
+    mockEnvironmentPayload(mockEnvironment)
+
     expect(tree.root.findAllByType(Box).filter((box) => box.props.testID === "subsection")).toHaveLength(1)
   })
 })
