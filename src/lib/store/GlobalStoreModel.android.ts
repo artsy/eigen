@@ -1,13 +1,10 @@
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
-import { BottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
-import { MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
-import { SearchModel } from "lib/Scenes/Search/SearchModel"
-import { NativeModules } from "react-native"
 import { AuthModel } from "./AuthModel"
 import { ConfigModel } from "./ConfigModel"
 import { CURRENT_APP_VERSION } from "./migration"
-import { NativeModel } from "./NativeModel"
 import { assignDeep } from "./persistence"
+
+console.warn("blah", ConfigModel)
 
 interface GlobalStoreStateModel {
   version: number
@@ -15,11 +12,6 @@ interface GlobalStoreStateModel {
     isHydrated: boolean
   }
 
-  native: NativeModel
-
-  bottomTabs: BottomTabsModel
-  search: SearchModel
-  myCollection: MyCollectionModel
   auth: AuthModel
   config: ConfigModel
 }
@@ -48,21 +40,13 @@ export const GlobalStoreModel: GlobalStoreModel = {
   didRehydrate: thunkOn(
     (actions) => actions.rehydrate,
     () => {
-      NativeModules.ARNotificationsManager.didFinishBootstrapping()
+      // NativeModules.ARNotificationsManager.didFinishBootstrapping()
     }
   ),
   sessionState: {
     // we don't perform hydration at test time so let's set it to always true for tests
     isHydrated: __TEST__,
   },
-
-  // NATIVE MIGRATION STATE
-  native: NativeModel,
-
-  // APP MODULE STATE
-  bottomTabs: BottomTabsModel,
-  search: SearchModel,
-  myCollection: MyCollectionModel,
 
   auth: AuthModel,
   config: ConfigModel,
