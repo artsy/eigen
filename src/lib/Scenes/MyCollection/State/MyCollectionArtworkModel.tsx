@@ -148,11 +148,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
           let photos = null
 
           if (buttonIndex === 0) {
-            // photos = await ImagePicker.openPicker({
-            //   multiple: true,
-            // })
-
-            requestPhotos()
+            photos = await requestPhotos()
           }
           if (buttonIndex === 1) {
             photos = await ImagePicker.openCamera({

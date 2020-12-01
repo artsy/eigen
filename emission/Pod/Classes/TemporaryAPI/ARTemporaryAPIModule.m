@@ -7,7 +7,9 @@
 #import <RNImageCropPicker/UIImage+Extension.h>
 
 @interface ARTemporaryAPIModule()
+
 @property (nonatomic, strong) RCTResponseSenderBlock photoResponseBlock;
+
 @end
 
 @implementation ARTemporaryAPIModule
@@ -39,6 +41,7 @@ RCT_EXPORT_METHOD(fetchNotificationPermissions:(RCTResponseSenderBlock)callback)
     }];
 }
 
+// TODO: Can I convert this to a promise to make this a little cleaner?
 RCT_EXPORT_METHOD(requestPhotos:(RCTResponseSenderBlock)callback)
 {
     self.photoResponseBlock = callback;
@@ -68,7 +71,7 @@ didFinishPicking:(NSArray<PHPickerResult *> *)results  API_AVAILABLE(ios(14)) {
          NSError *noPhotosError = [NSError errorWithDomain:@"PhotoPicker" code:404 userInfo:@{ NSLocalizedDescriptionKey: @"No photos returned." }];
         _photoResponseBlock(@[RCTJSErrorFromNSError(noPhotosError)]);
     } else {
-        NSMutableArray *imagePaths = [[NSMutableArray alloc] init];
+        NSMutableArray *images = [[NSMutableArray alloc] init];
         Compression *compression = [[Compression alloc] init];
         dispatch_group_t imageLoadGroup = dispatch_group_create();
         for (PHPickerResult *result in results) {
@@ -79,7 +82,8 @@ didFinishPicking:(NSArray<PHPickerResult *> *)results  API_AVAILABLE(ios(14)) {
                         UIImage *image = (UIImage*)object;
                         ImageResult *imageResult = [compression compressImage:[image fixOrientation] withOptions:nil];
                         NSString *filePath = [self persistFile:imageResult.data];
-                        [imagePaths addObject:filePath];
+                        NSDictionary *imageDict = [self dictFromImageResult:imageResult filePath:filePath];
+                        [images addObject:imageDict];
                     }
                     dispatch_group_leave(imageLoadGroup);
                 }];
@@ -93,17 +97,27 @@ didFinishPicking:(NSArray<PHPickerResult *> *)results  API_AVAILABLE(ios(14)) {
             NSError *noPhotosError = [NSError errorWithDomain:@"PhotoPicker" code:404 userInfo:@{ NSLocalizedDescriptionKey: @"No photos returned." }];
             _photoResponseBlock(@[RCTJSErrorFromNSError(noPhotosError)]);
         } else {
-            _photoResponseBlock(@[[NSNull null], imagePaths]);
+            _photoResponseBlock(@[[NSNull null], images]);
         }
     }
     _photoResponseBlock = nil;
+}
+
+- (NSDictionary *)dictFromImageResult:(ImageResult *)result filePath:(NSString *)filePath {
+    return @{
+      @"path": filePath,
+      @"size": [NSNumber numberWithUnsignedInteger:result.data.length],
+      @"width": result.width,
+      @"height": result.height,
+      @"mime": result.mime
+    };
 }
 
 - (NSString *)persistFile:(NSData*)data {
     // create temp file
     NSString *tmpDirFullPath = [self getTmpDirectory];
     NSString *filePath = [tmpDirFullPath stringByAppendingString:[[NSUUID UUID] UUIDString]];
-    filePath = [filePath stringByAppendingString:@".jpg"];
+    filePath = [filePath stringByAppendingString:@".jpg"]; // not a safe assumption
 
     // save cropped file
     BOOL status = [data writeToFile:filePath atomically:YES];
@@ -150,8 +164,7 @@ RCT_EXPORT_METHOD(validateAuthCredentialsAreCorrect)
 
 - (NSDictionary *)constantsToExport
 {
-    return @{@"appVersion"  : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]};
-
+    return @{ @"appVersion" : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] };
 }
 
 + (BOOL)requiresMainQueueSetup
