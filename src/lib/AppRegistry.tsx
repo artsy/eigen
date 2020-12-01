@@ -81,6 +81,7 @@ import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
+import { MyCollectionArtworkImagesQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkImages/MyCollectionArtworkImages"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
@@ -420,6 +421,7 @@ export const modules = defineModules({
   MyCollection: reactModule(MyCollectionQueryRenderer),
   MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),
   MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
+  MyCollectionArtworkImages: reactModule(MyCollectionArtworkImagesQueryRenderer),
   MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, { hidesBackButton: true }),

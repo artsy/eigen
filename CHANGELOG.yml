@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - Update color scheme - mdole
+    - Allow for multiple artwork images in My Collection - adam
     - Set price and marketing text dynamically - adam
   user_facing:
     - Add artist past shows screen - mounir
