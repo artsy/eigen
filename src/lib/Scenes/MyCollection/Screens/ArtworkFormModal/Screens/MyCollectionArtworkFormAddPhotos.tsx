@@ -1,6 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Stack } from "lib/Components/Stack"
+import { Image as ImageProps } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -8,7 +9,6 @@ import { chunk } from "lodash"
 import { AddIcon, BorderBox, Box, color, Flex, XCircleIcon } from "palette"
 import React from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
-import { Image as ImageProps } from "../../../State/MyCollectionArtworkModel"
 import { ArtworkFormModalScreen } from "../MyCollectionArtworkFormModal"
 
 const MARGIN = 20
