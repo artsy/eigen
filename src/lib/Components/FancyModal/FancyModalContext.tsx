@@ -39,7 +39,13 @@ class FancyModalCardStack {
   getRootCard(height: number, content: React.ReactNode) {
     return (
       <View style={{ flex: 1, backgroundColor: "black" }}>
-        <FancyModalCard level={0} ref={this.stack[0]} onBackgroundPressed={() => null} height={height}>
+        <FancyModalCard
+          level={0}
+          ref={this.stack[0]}
+          onBackgroundPressed={() => null}
+          height={height}
+          backgroundShouldShrink={false}
+        >
           {content}
         </FancyModalCard>
       </View>
@@ -49,6 +55,7 @@ class FancyModalCardStack {
   useCard(config: {
     content: React.ReactNode
     height: number
+    backgroundShouldShrink: boolean
     onBackgroundPressed(): void
   }): {
     jsx: JSX.Element
@@ -62,6 +69,7 @@ class FancyModalCardStack {
         ref={ref}
         onBackgroundPressed={config.onBackgroundPressed}
         height={config.height}
+        backgroundShouldShrink={config.backgroundShouldShrink}
       >
         {config.content}
       </FancyModalCard>

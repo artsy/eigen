@@ -234,7 +234,7 @@ type AnalyticsPartnerStats {
 
   # Time series data on number of artworks published
   artworksPublished(period: AnalyticsQueryPeriodEnum!): AnalyticsArtworksPublishedStats
-  @deprecated(reason: "Use artworkPublished for refactored time series bucket code")
+    @deprecated(reason: "Use artworkPublished for refactored time series bucket code")
 
   # Audience stats
   audience(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerAudienceStats
@@ -265,7 +265,7 @@ type AnalyticsPartnerStats {
 
   # Different types of partner pageviews
   pageviews(period: AnalyticsQueryPeriodEnum!): AnalyticsPageviewStats
-  @deprecated(reason: "Use pageview for refactored time series bucket code")
+    @deprecated(reason: "Use pageview for refactored time series bucket code")
   partnerId: String!
 
   # Artworks, shows, or artists ranked by views. Capped at 20 by the underlying sql query.
@@ -305,7 +305,7 @@ type AnalyticsPartnerStats {
 
   # Number of unique visitors
   uniqueVisitors(period: AnalyticsQueryPeriodEnum!): Int
-  @deprecated(reason: "Use audience() { uniqueVisitors } instead")
+    @deprecated(reason: "Use audience() { uniqueVisitors } instead")
 }
 
 # Publish artwork Series Stats
@@ -1175,7 +1175,7 @@ type ArtistTargetSupplyMicrofunnel {
     # Number of artworks to return
     size: Int
   ): [ArtistTargetSupplyMicrofunnelArtwork]
-  @deprecated(reason: "Prefer to use `artworksConnection`. [Will be removed in v2]")
+    @deprecated(reason: "Prefer to use `artworksConnection`. [Will be removed in v2]")
 
   # A list of recently sold artworks.
   artworksConnection(
@@ -1377,7 +1377,7 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Is this work available for shipping only within the Contenental US?
   shipsToContinentalUSOnly: Boolean
-  @deprecated(reason: "Prefer to use `onlyShipsDomestically`. [Will be removed in v2]")
+    @deprecated(reason: "Prefer to use `onlyShipsDomestically`. [Will be removed in v2]")
   show(active: Boolean, atAFair: Boolean, sort: ShowSorts): Show
   shows(active: Boolean, atAFair: Boolean, size: Int, sort: ShowSorts): [Show]
   signature(format: Format): String
@@ -4521,7 +4521,7 @@ type Conversation implements Node {
   # A globally unique ID.
   id: ID!
   initialMessage: String!
-  @deprecated(reason: "This field is no longer required. Prefer the first message from the MessageConnection.")
+    @deprecated(reason: "This field is no longer required. Prefer the first message from the MessageConnection.")
 
   # Gravity inquiry id.
   inquiryID: String
@@ -4549,11 +4549,11 @@ type Conversation implements Node {
 
   # Impulse id of the last message.
   lastMessageID: String
-  @deprecated(reason: "Prefer querying `messagesConnection(last:1) { edges { node { internalID } } }`")
+    @deprecated(reason: "Prefer querying `messagesConnection(last:1) { edges { node { internalID } } }`")
 
   # A connection for all messages in a single conversation
   messages(after: String, before: String, first: Int, last: Int, sort: sort): MessageConnection
-  @deprecated(reason: "Prefer messagesConnection")
+    @deprecated(reason: "Prefer messagesConnection")
 
   # A connection for all messages in a single conversation
   messagesConnection(after: String, before: String, first: Int, last: Int, sort: sort): MessageConnection
@@ -6556,33 +6556,33 @@ union InventoryHoldOrErrorUnion = Error | InventoryHold
 type Invoice implements Node {
   # A globally unique ID.
   id: ID!
-  @deprecated(
-    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
-  @deprecated(
-    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # Lewitt's invoice id.
   lewittInvoiceID: String!
-  @deprecated(
-    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # Link to public checkout page.
   paymentURL: String
-  @deprecated(
-    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # Current state of invoice.
   state: InvoiceState
-  @deprecated(
-    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # A formatted price with various currency formatting options.
   total(
@@ -6594,9 +6594,9 @@ type Invoice implements Node {
     symbol: String
     thousand: String = ","
   ): String
-  @deprecated(
-    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 }
 
 enum InvoiceState {
@@ -6977,9 +6977,9 @@ type Me implements Node {
     # The ID of the invoice
     invoiceId: String!
   ): Invoice
-  @deprecated(
-    reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # List of lab features for this user
   labFeatures: [String!]!
@@ -7107,9 +7107,9 @@ type Message implements Node {
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   invoice: Invoice
-  @deprecated(
-    reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # True if message is the first in the conversation.
   isFirstMessage: Boolean
@@ -7119,9 +7119,9 @@ type Message implements Node {
 
   # True if message is an invoice message
   isInvoice: Boolean
-  @deprecated(
-    reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
+    )
 }
 
 # A connection to a list of items.
@@ -7461,7 +7461,7 @@ type OrderedSet {
 
   # Returns a connection of the items. Only Artwork supported right now.
   itemsConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
-  @deprecated(reason: "Utilize `orderedItemsConnection` for union type")
+    @deprecated(reason: "Utilize `orderedItemsConnection` for union type")
   itemType: String
   key: String
   layout: OrderedSetLayouts!
@@ -7637,7 +7637,7 @@ type Partner implements Node {
 
   # This field is deprecated and is being used in Eigen release predating the 6.0 release
   locations(size: Int = 25): [Location]
-  @deprecated(reason: "Prefer to use `locationsConnection`. [Will be removed in v2]")
+    @deprecated(reason: "Prefer to use `locationsConnection`. [Will be removed in v2]")
 
   # A connection of locations from a Partner.
   locationsConnection(after: String, before: String, first: Int, last: Int): LocationConnection
@@ -8234,6 +8234,30 @@ type Query {
     sort: ArtistSorts
   ): [Artist]
 
+  # A list of artists
+  artistsConnection(
+    after: String
+    before: String
+    first: Int
+
+    #
+    #         Only return artists matching specified ids.
+    #         Accepts list of ids.
+    #
+    ids: [String]
+    last: Int
+    letter: String
+    page: Int
+    size: Int
+
+    #
+    #         Only return artists matching specified slugs.
+    #         Accepts list of slugs. (e.g. 'andy-warhol', 'banksy')
+    #
+    slugs: [String]
+    sort: ArtistSorts
+  ): ArtistConnection
+
   # Find an artist series by ID
   artistSeries(id: ID!): ArtistSeries
 
@@ -8282,7 +8306,7 @@ type Query {
     last: Int
     respectParamsOrder: Boolean = false
   ): ArtworkConnection
-  @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # Artworks Elastic Search results
   artworksConnection(
@@ -8584,7 +8608,7 @@ type Query {
     private: Boolean
     viewingRoomID: String
   ): ArtworkConnection
-  @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # A list of Partners
   partnersConnection(after: String, before: String, first: Int, ids: [String], last: Int): PartnerConnection
@@ -10197,6 +10221,9 @@ input UpdateMyProfileInput {
   # The given name of the user.
   name: String
 
+  # The user's password, required to change email address.
+  password: String
+
   # The given phone number of the user.
   phone: String
 
@@ -10474,6 +10501,30 @@ type Viewer {
     sort: ArtistSorts
   ): [Artist]
 
+  # A list of artists
+  artistsConnection(
+    after: String
+    before: String
+    first: Int
+
+    #
+    #         Only return artists matching specified ids.
+    #         Accepts list of ids.
+    #
+    ids: [String]
+    last: Int
+    letter: String
+    page: Int
+    size: Int
+
+    #
+    #         Only return artists matching specified slugs.
+    #         Accepts list of slugs. (e.g. 'andy-warhol', 'banksy')
+    #
+    slugs: [String]
+    sort: ArtistSorts
+  ): ArtistConnection
+
   # An Artwork
   artwork(
     # The slug or ID of the Artwork
@@ -10495,7 +10546,7 @@ type Viewer {
     last: Int
     respectParamsOrder: Boolean = false
   ): ArtworkConnection
-  @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # Artworks Elastic Search results
   artworksConnection(
@@ -10663,7 +10714,7 @@ type Viewer {
     private: Boolean
     viewingRoomID: String
   ): ArtworkConnection
-  @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # A list of Partners
   partnersConnection(after: String, before: String, first: Int, ids: [String], last: Int): PartnerConnection
