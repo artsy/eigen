@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5b040afc67b5edae0bfecca54074d6b7 */
+/* @relayHash 69516d3310bd4d4a3fc304b8b4bfb8e9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -418,7 +418,7 @@ v24 = {
   "name": "first",
   "value": 3
 },
-v24 = [
+v25 = [
   (v15/*: any*/)
 ];
 return {
@@ -535,9 +535,8 @@ return {
             "selections": [
               (v4/*: any*/),
               (v14/*: any*/),
-              (v19/*: any*/),
-              (v20/*: any*/),
               (v23/*: any*/),
+              (v20/*: any*/),
               {
                 "alias": null,
                 "args": [
@@ -593,7 +592,7 @@ return {
                                 "kind": "LinkedField",
                                 "name": "thumbnail",
                                 "plural": false,
-                                "selections": (v24/*: any*/),
+                                "selections": (v25/*: any*/),
                                 "storageKey": null
                               }
                             ],
@@ -740,7 +739,7 @@ return {
                             "kind": "LinkedField",
                             "name": "thumbnailImage",
                             "plural": false,
-                            "selections": (v24/*: any*/),
+                            "selections": (v25/*: any*/),
                             "storageKey": null
                           },
                           (v14/*: any*/)
@@ -937,7 +936,7 @@ return {
     ]
   },
   "params": {
-    "id": "5b040afc67b5edae0bfecca54074d6b7",
+    "id": "69516d3310bd4d4a3fc304b8b4bfb8e9",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",
