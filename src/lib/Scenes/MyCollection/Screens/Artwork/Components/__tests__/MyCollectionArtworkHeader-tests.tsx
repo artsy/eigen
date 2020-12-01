@@ -7,7 +7,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkHeaderFragmentContainer } from "../MyCollectionArtworkHeader"
 
 jest.unmock("react-relay")
