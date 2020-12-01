@@ -1,7 +1,6 @@
 import React from "react"
 import { FlatList, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-
 import ArtistShow from "./ArtistShow"
 
 import { SmallList_shows } from "__generated__/SmallList_shows.graphql"
@@ -10,19 +9,17 @@ interface Props extends ViewProperties {
   shows: SmallList_shows
 }
 
-class SmallList extends React.Component<Props> {
-  render() {
-    return (
-      <FlatList
-        data={this.props.shows}
-        style={{ flex: 1 }}
-        renderItem={({ item }) => <ArtistShow show={item} styles={showStyles} />}
-        keyExtractor={({ id }) => id}
-        scrollsToTop={false}
-        ItemSeparatorComponent={() => <View style={{ marginBottom: 20 }} />}
-      />
-    )
-  }
+const SmallList: React.FC<Props> = ({ shows }) => {
+  return (
+    <FlatList
+      data={shows}
+      style={{ flex: 1 }}
+      renderItem={({ item }) => <ArtistShow show={item} styles={showStyles} />}
+      keyExtractor={({ id }) => id}
+      scrollsToTop={false}
+      ItemSeparatorComponent={() => <View style={{ marginBottom: 20 }} />}
+    />
+  )
 }
 
 const showStyles = StyleSheet.create({

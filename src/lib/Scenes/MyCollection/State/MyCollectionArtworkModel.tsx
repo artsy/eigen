@@ -3,9 +3,17 @@ import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
 import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
 import { uniqBy } from "lodash"
 import { ActionSheetIOS } from "react-native"
-import ImagePicker, { Image } from "react-native-image-crop-picker"
+import ImagePicker from "react-native-image-crop-picker"
 
 import { Metric } from "../Screens/ArtworkFormModal/Components/Dimensions"
+
+export interface Image {
+  height?: number
+  isDefault?: boolean
+  url?: string
+  path?: string
+  width?: number
+}
 
 export interface ArtworkFormValues {
   artist: string
@@ -71,7 +79,7 @@ export interface MyCollectionArtworkModel {
       id: string
       artist: { internalID: string }
       artistNames: string
-      image: { url: string }
+      images: Image[]
     },
     {},
     GlobalStoreModel
@@ -123,12 +131,15 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
    */
 
   addPhotos: action((state, photos) => {
-    state.sessionState.formValues.photos = uniqBy(state.sessionState.formValues.photos.concat(photos), "path")
+    state.sessionState.formValues.photos = uniqBy(
+      state.sessionState.formValues.photos.concat(photos),
+      (photo) => photo.url || photo.path
+    )
   }),
 
   removePhoto: action((state, photoToRemove) => {
     state.sessionState.formValues.photos = state.sessionState.formValues.photos.filter(
-      (photo) => photo.path !== photoToRemove.path
+      (photo) => photo.path !== photoToRemove.path || photo.url !== photoToRemove.url
     )
   }),
 
@@ -180,7 +191,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       artistSearchResult: {
         internalID: artwork?.artist?.internalID,
         displayLabel: artwork?.artistNames,
-        imageUrl: artwork?.image?.url?.replace(":version", "square"),
+        imageUrl: artwork?.images?.[0].url?.replace(":version", "square"),
       },
       category: artwork.category,
       date: artwork.date,
@@ -192,7 +203,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       height: artwork.height,
       medium: artwork.medium,
       metric: artwork.metric,
-      photos: [],
+      photos: artwork.images,
       title: artwork.title,
       width: artwork.width,
     }

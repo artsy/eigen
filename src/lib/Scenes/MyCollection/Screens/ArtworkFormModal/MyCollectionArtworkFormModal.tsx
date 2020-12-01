@@ -206,7 +206,8 @@ const LoadingIndicator = () => {
 
 export async function uploadPhotos(photos: ArtworkFormValues["photos"]) {
   GlobalStore.actions.myCollection.artwork.setLastUploadedPhoto(photos[0])
-  const imagePaths = photos.map((photo) => photo.path)
+  // only recently added photos have a path
+  const imagePaths: string[] = photos.map((photo) => photo.path).filter((path): path is string => path !== undefined)
   const convectionKey = await getConvectionGeminiKey()
   const acl = "private"
   const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })

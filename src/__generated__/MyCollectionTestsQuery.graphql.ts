@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1de8ce5426f523f0750f7bc8b5d69b09 */
+/* @relayHash d3da9611a5ea7ccdc86d28bdb162f258 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,8 +31,9 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
     internalID
     id
   }
-  image {
+  images {
     url
+    isDefault
   }
   artistNames
   medium
@@ -221,14 +222,21 @@ return {
                         "args": null,
                         "concreteType": "Image",
                         "kind": "LinkedField",
-                        "name": "image",
-                        "plural": false,
+                        "name": "images",
+                        "plural": true,
                         "selections": [
                           {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
                             "name": "url",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "isDefault",
                             "storageKey": null
                           }
                         ],
@@ -293,7 +301,7 @@ return {
     ]
   },
   "params": {
-    "id": "1de8ce5426f523f0750f7bc8b5d69b09",
+    "id": "d3da9611a5ea7ccdc86d28bdb162f258",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -333,13 +341,19 @@ return {
         "me.myCollectionConnection.edges.node.artist.internalID": (v2/*: any*/),
         "me.myCollectionConnection.edges.node.artistNames": (v4/*: any*/),
         "me.myCollectionConnection.edges.node.id": (v2/*: any*/),
-        "me.myCollectionConnection.edges.node.image": {
+        "me.myCollectionConnection.edges.node.images": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "Image"
+        },
+        "me.myCollectionConnection.edges.node.images.isDefault": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
-          "type": "Image"
+          "type": "Boolean"
         },
-        "me.myCollectionConnection.edges.node.image.url": (v4/*: any*/),
+        "me.myCollectionConnection.edges.node.images.url": (v4/*: any*/),
         "me.myCollectionConnection.edges.node.medium": (v4/*: any*/),
         "me.myCollectionConnection.edges.node.slug": (v2/*: any*/),
         "me.myCollectionConnection.edges.node.title": (v4/*: any*/),

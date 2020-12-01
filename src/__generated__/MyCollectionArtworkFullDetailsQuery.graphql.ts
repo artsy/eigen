@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d3894fa288f0aeb38ed953a59bdb483a */
+/* @relayHash 1cffe7d864597e1c3efb4985a4f864dc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -45,8 +45,11 @@ fragment MyCollectionArtworkFullDetails_artwork on Artwork {
   editionNumber
   height
   id
-  image {
+  images {
+    isDefault
     url
+    width
+    height
   }
   internalID
   medium
@@ -102,6 +105,20 @@ v3 = {
   "args": null,
   "kind": "ScalarField",
   "name": "id",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "height",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "width",
   "storageKey": null
 };
 return {
@@ -214,29 +231,32 @@ return {
             "name": "editionNumber",
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "height",
-            "storageKey": null
-          },
+          (v4/*: any*/),
           (v3/*: any*/),
           {
             "alias": null,
             "args": null,
             "concreteType": "Image",
             "kind": "LinkedField",
-            "name": "image",
-            "plural": false,
+            "name": "images",
+            "plural": true,
             "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "isDefault",
+                "storageKey": null
+              },
               {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
                 "name": "url",
                 "storageKey": null
-              }
+              },
+              (v5/*: any*/),
+              (v4/*: any*/)
             ],
             "storageKey": null
           },
@@ -269,20 +289,14 @@ return {
             "name": "title",
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "width",
-            "storageKey": null
-          }
+          (v5/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "d3894fa288f0aeb38ed953a59bdb483a",
+    "id": "1cffe7d864597e1c3efb4985a4f864dc",
     "metadata": {},
     "name": "MyCollectionArtworkFullDetailsQuery",
     "operationKind": "query",

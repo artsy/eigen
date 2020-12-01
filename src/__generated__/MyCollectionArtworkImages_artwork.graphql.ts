@@ -4,23 +4,19 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionArtworkHeader_artwork = {
-    readonly artistNames: string | null;
-    readonly date: string | null;
+export type MyCollectionArtworkImages_artwork = {
     readonly images: ReadonlyArray<{
         readonly height: number | null;
         readonly isDefault: boolean | null;
         readonly url: string | null;
         readonly width: number | null;
     } | null> | null;
-    readonly internalID: string;
-    readonly title: string | null;
-    readonly " $refType": "MyCollectionArtworkHeader_artwork";
+    readonly " $refType": "MyCollectionArtworkImages_artwork";
 };
-export type MyCollectionArtworkHeader_artwork$data = MyCollectionArtworkHeader_artwork;
-export type MyCollectionArtworkHeader_artwork$key = {
-    readonly " $data"?: MyCollectionArtworkHeader_artwork$data;
-    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkHeader_artwork">;
+export type MyCollectionArtworkImages_artwork$data = MyCollectionArtworkImages_artwork;
+export type MyCollectionArtworkImages_artwork$key = {
+    readonly " $data"?: MyCollectionArtworkImages_artwork$data;
+    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkImages_artwork">;
 };
 
 
@@ -29,22 +25,8 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "MyCollectionArtworkHeader_artwork",
+  "name": "MyCollectionArtworkImages_artwork",
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "artistNames",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "date",
-      "storageKey": null
-    },
     {
       "alias": null,
       "args": null,
@@ -83,24 +65,10 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "internalID",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "title",
-      "storageKey": null
     }
   ],
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '482f0b0d9bfa5d2bfd6a35f9af7991bb';
+(node as any).hash = 'a57b8405b948f9508f0af757d3fb74bc';
 export default node;
