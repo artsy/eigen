@@ -10221,6 +10221,9 @@ input UpdateMyProfileInput {
   # The given name of the user.
   name: String
 
+  # The user's password, required to change email address.
+  password: String
+
   # The given phone number of the user.
   phone: String
 
