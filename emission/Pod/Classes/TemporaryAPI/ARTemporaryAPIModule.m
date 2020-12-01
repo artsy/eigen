@@ -1,5 +1,7 @@
 #import "ARTemporaryAPIModule.h"
 #import <UserNotifications/UserNotifications.h>
+#import <PhotosUI/PhotosUI.h>
+#import <React/RCTUtils.h>
 
 @implementation ARTemporaryAPIModule
 
@@ -30,6 +32,32 @@ RCT_EXPORT_METHOD(fetchNotificationPermissions:(RCTResponseSenderBlock)callback)
         }
     }];
 }
+
+RCT_EXPORT_METHOD(requestPhotos:(RCTResponseSenderBlock)callback)
+{
+    NSLog(@"Request photos from temporary api module");
+    [self presentPhotoPicker];
+}
+
+- (void)presentPhotoPicker API_AVAILABLE(ios(14)) {
+    NSLog(@"Called present photo picker");
+    PHPickerConfiguration *config = [[PHPickerConfiguration alloc] init];
+    PHPickerViewController *picker = [[PHPickerViewController alloc] initWithConfiguration:config];
+    picker.delegate = self;
+    UIViewController *currentVC = RCTPresentedViewController();
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [currentVC presentViewController:picker animated:true completion:nil];
+    });
+}
+
+
+#pragma mark - PHPickerViewControllerDelegate
+- (void)picker:(PHPickerViewController *)picker
+didFinishPicking:(NSArray<PHPickerResult *> *)results  API_AVAILABLE(ios(14)) {
+    UIViewController *currentVC = RCTPresentedViewController();
+    [currentVC dismissViewControllerAnimated:true completion:nil];
+}
+
 
 RCT_EXPORT_METHOD(markNotificationsRead:(RCTResponseSenderBlock)block)
 {

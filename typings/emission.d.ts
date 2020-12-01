@@ -2,10 +2,12 @@ import type { ViewDescriptor } from "lib/navigation/navigate"
 import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
 import type { NativeState } from "lib/store/NativeModel"
 import { NativeModulesStatic } from "react-native"
+import { Image } from "react-native-image-crop-picker"
 declare module "react-native" {
   interface NativeModulesStatic {
     ARTemporaryAPIModule: {
       appVersion: string
+      requestPhotos(callback: (error: any, result: Image[]) => void): void
       requestNotificationPermissions(): void
       fetchNotificationPermissions(callback: (error: any, result: PushAuthorizationStatus) => void): void
       markNotificationsRead(): void
