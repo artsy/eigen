@@ -31,7 +31,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
           <ScreenMargin>
             <Text variant="title">Price and market insights</Text>
             <Text variant="small" color="black60">
-              For this artist, category, and size combination
+              For {artwork.artist?.name || "Unknown Artist"}, {artwork.medium}, size {artwork.sizeBucket}
             </Text>
           </ScreenMargin>
           <Spacer mt={3} />
@@ -62,6 +62,11 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 export const MyCollectionArtworkInsightsFragmentContainer = createFragmentContainer(MyCollectionArtworkInsights, {
   artwork: graphql`
     fragment MyCollectionArtworkInsights_artwork on Artwork {
+      sizeBucket
+      medium
+      artist {
+        name
+      }
       ...MyCollectionArtworkPriceEstimate_artwork
       ...MyCollectionArtworkArtistAuctionResults_artwork
       ...MyCollectionArtworkArtistArticles_artwork
