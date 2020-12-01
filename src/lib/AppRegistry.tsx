@@ -451,18 +451,18 @@ for (const moduleName of Object.keys(modules)) {
   }
 }
 
-const Main: React.FC<{}> = track()(({}) => {
-  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
-  const isLoggedIn = GlobalStore.useAppState((state) => !!state.native.sessionState.userID)
-  const onboardingState = GlobalStore.useAppState((state) => state.native.sessionState.onboardingState)
+// const Main: React.FC<{}> = track()(({}) => {
+//   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
+//   const isLoggedIn = GlobalStore.useAppState((state) => !!state.native.sessionState.userID)
+//   const onboardingState = GlobalStore.useAppState((state) => state.native.sessionState.onboardingState)
 
-  if (!isHydrated) {
-    return <View></View>
-  }
-  if (!isLoggedIn || onboardingState === "incomplete") {
-    return <NativeViewController viewName="Onboarding" />
-  }
-  return <BottomTabsNavigator />
-})
+//   if (!isHydrated) {
+//     return <View></View>
+//   }
+//   if (!isLoggedIn || onboardingState === "incomplete") {
+//     return <NativeViewController viewName="Onboarding" />
+//   }
+//   return <BottomTabsNavigator />
+// })
 
-register("Main", Main, { fullBleed: true })
+// register("Main", Main, { fullBleed: true })

@@ -1,13 +1,13 @@
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
 import { BottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
-import { MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
-import { SearchModel } from "lib/Scenes/Search/SearchModel"
-import { NativeModules } from "react-native"
+import type { MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
+import type { SearchModel } from "lib/Scenes/Search/SearchModel"
 import { AuthModel } from "./AuthModel"
 import { ConfigModel } from "./ConfigModel"
 import { CURRENT_APP_VERSION } from "./migration"
-import { NativeModel } from "./NativeModel"
 import { assignDeep } from "./persistence"
+
+console.warn("blah", ConfigModel)
 
 interface GlobalStoreStateModel {
   version: number
@@ -15,13 +15,11 @@ interface GlobalStoreStateModel {
     isHydrated: boolean
   }
 
-  native: NativeModel
-
-  bottomTabs: BottomTabsModel
-  search: SearchModel
-  myCollection: MyCollectionModel
   auth: AuthModel
   config: ConfigModel
+  bottomTabs: BottomTabsModel
+  myCollection: MyCollectionModel
+  search: SearchModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
@@ -32,6 +30,8 @@ export interface GlobalStoreModel extends GlobalStoreStateModel {
 export const GlobalStoreModel: GlobalStoreModel = {
   // META STATE
   version: CURRENT_APP_VERSION,
+  myCollection: null as any,
+  search: null as any,
   rehydrate: action((state, unpersistedState) => {
     if (!__TEST__ && state.sessionState.isHydrated) {
       console.error("The store was already hydrated. `rehydrate` should only be called once.")
@@ -48,7 +48,7 @@ export const GlobalStoreModel: GlobalStoreModel = {
   didRehydrate: thunkOn(
     (actions) => actions.rehydrate,
     () => {
-      NativeModules.ARNotificationsManager.didFinishBootstrapping()
+      // NativeModules.ARNotificationsManager.didFinishBootstrapping()
     }
   ),
   sessionState: {
@@ -56,16 +56,9 @@ export const GlobalStoreModel: GlobalStoreModel = {
     isHydrated: __TEST__,
   },
 
-  // NATIVE MIGRATION STATE
-  native: NativeModel,
-
-  // APP MODULE STATE
-  bottomTabs: BottomTabsModel,
-  search: SearchModel,
-  myCollection: MyCollectionModel,
-
   auth: AuthModel,
   config: ConfigModel,
+  bottomTabs: BottomTabsModel,
 }
 
 export type GlobalStoreState = State<GlobalStoreModel>

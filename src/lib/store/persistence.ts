@@ -44,37 +44,37 @@ export async function persist(globalStoreState: State<GlobalStoreModel>) {
   return await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(sanitize(globalStoreState)))
 }
 
-async function loadLegacySearchState() {
-  const json = await AsyncStorage.getItem(LEGACY_SEARCH_STORAGE_KEY)
+// async function loadLegacySearchState() {
+//   const json = await AsyncStorage.getItem(LEGACY_SEARCH_STORAGE_KEY)
 
-  if (json) {
-    await AsyncStorage.removeItem(LEGACY_SEARCH_STORAGE_KEY)
+//   if (json) {
+//     await AsyncStorage.removeItem(LEGACY_SEARCH_STORAGE_KEY)
 
-    try {
-      const result = JSON.parse(json)
-      if (Array.isArray(result)) {
-        return result
-      }
-    } catch (e) {
-      // noop
-    }
-  }
+//     try {
+//       const result = JSON.parse(json)
+//       if (Array.isArray(result)) {
+//         return result
+//       }
+//     } catch (e) {
+//       // noop
+//     }
+//   }
 
-  return null
-}
+//   return null
+// }
 
 export async function unpersist(): Promise<DeepPartial<State<GlobalStoreModel>>> {
   const json = await AsyncStorage.getItem(STORAGE_KEY)
 
   try {
     const result = (json ? migrate({ state: JSON.parse(json) }) : {}) as State<GlobalStoreModel>
-    const recentSearches = await loadLegacySearchState()
-    if (recentSearches) {
-      result.search = {
-        ...result.search,
-        recentSearches,
-      }
-    }
+    // const recentSearches = await loadLegacySearchState()
+    // if (recentSearches) {
+    //   result.search = {
+    //     ...result.search,
+    //     recentSearches,
+    //   }
+    // }
     return result
   } catch (e) {
     if (!__TEST__) {

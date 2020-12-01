@@ -109,7 +109,9 @@ class VolleyClient {
 }
 
 function getDeviceTag() {
-  const deviceId = getCurrentEmissionState().deviceId
+  console.log("deviceId needed on android")
+  // const deviceId = getCurrentEmissionState().deviceId
+  const deviceId = "android"
   return `device:${deviceId}`
 }
 

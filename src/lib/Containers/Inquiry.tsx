@@ -142,8 +142,8 @@ export class Inquiry extends React.Component<Props, State> {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-ACCESS-TOKEN": authenticationToken,
-        "User-Agent": userAgent,
+        "X-ACCESS-TOKEN": authenticationToken!,
+        "User-Agent": userAgent!,
       },
       body: JSON.stringify({
         artwork: this.props.artwork.slug,

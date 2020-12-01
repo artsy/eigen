@@ -4,7 +4,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import ActiveBids, { ActiveBids as ActiveBidsRef } from "lib/Scenes/Inbox/Components/ActiveBids"
 import { ConversationsContainer } from "lib/Scenes/Inbox/Components/Conversations/Conversations"
 import ZeroStateInbox from "lib/Scenes/Inbox/Components/Conversations/ZeroStateInbox"
-import { listenToNativeEvents } from "lib/store/NativeModel"
+// import { listenToNativeEvents } from "lib/store/NativeModel"
 import { extractNodes } from "lib/utils/extractNodes"
 import { get } from "lib/utils/get"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -43,11 +43,11 @@ export class Inbox extends React.Component<Props, State> {
   flatListHeight = 0
 
   componentDidMount() {
-    this.listener = listenToNativeEvents((event) => {
-      if (event.type === "NOTIFICATION_RECEIVED") {
-        this.fetchData()
-      }
-    })
+    // this.listener = listenToNativeEvents((event) => {
+    //   if (event.type === "NOTIFICATION_RECEIVED") {
+    //     this.fetchData()
+    //   }
+    // })
   }
 
   componentWillUnmount() {

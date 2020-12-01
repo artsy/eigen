@@ -38,7 +38,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "X-ACCESS-TOKEN": authenticationToken,
+          "X-ACCESS-TOKEN": authenticationToken!,
           "User-Agent": userAgent,
         },
         body: JSON.stringify({

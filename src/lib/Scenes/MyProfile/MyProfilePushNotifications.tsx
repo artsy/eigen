@@ -102,15 +102,16 @@ export const MyProfilePushNotifications: React.FC<{
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
 
   useEffect(() => {
-    NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
-      setNotificationAuthorizationStatus(result)
-    })
+    // NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
+    //   setNotificationAuthorizationStatus(result)
+    // })
+    console.error("BAD TIMES this screen doesn't work yet")
   }, [])
 
   const onForeground = useCallback(() => {
-    NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
-      setNotificationAuthorizationStatus(result)
-    })
+    // NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
+    //   setNotificationAuthorizationStatus(result)
+    // })
   }, [])
 
   useAppState({ onForeground })

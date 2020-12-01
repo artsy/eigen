@@ -1,5 +1,5 @@
 import { Action, action } from "easy-peasy"
-import { GlobalStore } from "lib/store/GlobalStore"
+// import { GlobalStore } from "lib/store/GlobalStore"
 import { AutosuggestResult } from "./AutosuggestResults"
 
 export const MAX_SAVED_RECENT_SEARCHES = 100
@@ -35,6 +35,7 @@ export const SearchModel: SearchModel = {
   }),
 }
 
-export const useRecentSearches = (numSearches: number = MAX_SHOWN_RECENT_SEARCHES) => {
-  return GlobalStore.useAppState((state) => state.search.recentSearches).slice(0, numSearches)
+export const useRecentSearches = (_numSearches: number = MAX_SHOWN_RECENT_SEARCHES) => {
+  // return GlobalStore.useAppState((state) => state.search.recentSearches).slice(0, numSearches)
+  return [] as RecentSearch[]
 }

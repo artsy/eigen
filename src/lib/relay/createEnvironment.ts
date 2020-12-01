@@ -1,14 +1,19 @@
 import { NativeModules } from "react-native"
-import { errorMiddleware, loggerMiddleware, RelayNetworkLayer, urlMiddleware } from "react-relay-network-modern/node8"
+import {
+  // errorMiddleware,
+  // loggerMiddleware,
+  RelayNetworkLayer,
+  urlMiddleware,
+} from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
 
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { cacheMiddleware } from "./middlewares/cacheMiddleware"
-import { checkAuthenticationMiddleware } from "./middlewares/checkAuthenticationMiddleware"
-import { metaphysicsExtensionsLoggerMiddleware } from "./middlewares/metaphysicsMiddleware"
-import { principalFieldErrorMiddleware } from "./middlewares/principalFieldErrorMiddleware"
-import { rateLimitMiddleware } from "./middlewares/rateLimitMiddleware"
-import { timingMiddleware } from "./middlewares/timingMiddleware"
+// import { checkAuthenticationMiddleware } from "./middlewares/checkAuthenticationMiddleware"
+// import { metaphysicsExtensionsLoggerMiddleware } from "./middlewares/metaphysicsMiddleware"
+// import { principalFieldErrorMiddleware } from "./middlewares/principalFieldErrorMiddleware"
+// import { rateLimitMiddleware } from "./middlewares/rateLimitMiddleware"
+// import { timingMiddleware } from "./middlewares/timingMiddleware"
 
 /// WARNING: Creates a whole new, separate Relay environment. Useful for testing.
 /// Use `defaultEnvironment` for production code.
@@ -26,9 +31,9 @@ export default function createEnvironment() {
           console.warn("Current emission state", getCurrentEmissionState())
           return {
             "Content-Type": "application/json",
-            "User-Agent": userAgent,
-            "X-USER-ID": userID,
-            "X-ACCESS-TOKEN": authenticationToken,
+            "User-Agent": userAgent!,
+            "X-USER-ID": userID!,
+            "X-ACCESS-TOKEN": authenticationToken!,
             "X-TIMEZONE": NativeModules.ARCocoaConstantsModule?.LocalTimeZone || "Europe/London",
           }
         },

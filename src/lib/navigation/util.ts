@@ -11,8 +11,7 @@ export function handleFairRouting(result: MatchResult): MatchResult {
   const showNewFairViewFeatureEnabled = getCurrentEmissionState().options.AROptionsNewFairPage
   const fairSlugs = getCurrentEmissionState().legacyFairSlugs
 
-  // @ts-ignore
-  const useNewFairView = showNewFairViewFeatureEnabled && !fairSlugs?.includes(result.params.fairID)
+  const useNewFairView = showNewFairViewFeatureEnabled && !fairSlugs?.includes((result.params as any).fairID)
 
   const fairModuleMapping: Record<any, AppModule> = {
     Fair: "Fair2",

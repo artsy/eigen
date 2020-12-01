@@ -14,13 +14,14 @@ function join(...parts: string[]) {
 export const VanityURLPossibleRedirect: React.FC<{ slug: string }> = ({ slug }) => {
   const [jsx, setJSX] = useState(<Loading />)
 
-  const { authenticationToken, webURL } = GlobalStore.useAppState((store) => store.native.sessionState)
+  const { userAccessToken } = GlobalStore.useAppState((store) => store.auth)
+  const { webURL } = GlobalStore.useAppState((store) => store.config.sessionState)
   const resolvedURL = join(webURL, slug)
 
   useEffect(() => {
     fetch(resolvedURL, {
       method: "HEAD",
-      headers: { "X-Access-Token": authenticationToken },
+      headers: { "X-Access-Token": userAccessToken! },
     })
       .then((response) => {
         if (!response.ok) {

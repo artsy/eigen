@@ -1,5 +1,5 @@
 import { SectionTitle } from "lib/Components/SectionTitle"
-import { GlobalStore } from "lib/store/GlobalStore"
+// import { GlobalStore } from "lib/store/GlobalStore"
 import { Message } from "palette"
 import React from "react"
 import { LayoutAnimation } from "react-native"
@@ -21,7 +21,8 @@ export const RecentSearches: React.FC = () => {
               displayingRecentResult
               onDelete={() => {
                 LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 230 })
-                GlobalStore.actions.search.deleteRecentSearch(result)
+                // GlobalStore.actions.search.deleteRecentSearch(result)
+                console.error("BAD TIMES deleteRecentSearch")
               }}
             />
           ))}

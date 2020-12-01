@@ -10,7 +10,7 @@ import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import Spinner from "lib/Components/Spinner"
 import { navigate, popParentViewController } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+// import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
@@ -113,7 +113,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   }, [isLive, prevIsLive])
 
   const switchToLive = () => {
-    const liveBaseURL = getCurrentEmissionState().predictionURL
+    const liveBaseURL = "https://live-staging.artsy.net"
     const liveAuctionURL = `${liveBaseURL}/${sale.slug}`
     navigate(liveAuctionURL)
     setTimeout(popParentViewController, 500)

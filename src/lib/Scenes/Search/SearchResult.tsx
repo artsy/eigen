@@ -1,7 +1,7 @@
 import GraphemeSplitter from "grapheme-splitter"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { EntityType, navigate, navigateToEntity, navigateToPartner, SlugType } from "lib/navigation/navigate"
-import { GlobalStore } from "lib/store/GlobalStore"
+// import { GlobalStore } from "lib/store/GlobalStore"
 import { normalizeText } from "lib/utils/normalizeText"
 import { Schema } from "lib/utils/track"
 import { CloseIcon, Flex, Sans, Spacer } from "palette"
@@ -43,7 +43,8 @@ export const SearchResult: React.FC<{
           setTimeout(() => {
             navigateToResult(result)
             if (updateRecentSearchesOnTap) {
-              GlobalStore.actions.search.addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
+              // GlobalStore.actions.search.addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
+              console.error("BAD TIMES addRecentSearch")
             }
           }, 20)
           trackEvent({

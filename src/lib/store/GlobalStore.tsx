@@ -1,10 +1,9 @@
 import { action, createTypedHooks, StoreProvider } from "easy-peasy"
 import { createStore } from "easy-peasy"
 import React from "react"
-import { NativeModules } from "react-native"
+import Config from "react-native-config"
 import { Action, Middleware } from "redux"
 import { GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
-import { EmissionOptions } from "./NativeModel"
 import { assignDeep, persistenceMiddleware, unpersist } from "./persistence"
 
 function createGlobalStore() {
@@ -60,9 +59,6 @@ export const __globalStoreTestUtils__ = __TEST__
       injectState(state: DeepPartial<GlobalStoreState>) {
         ;(GlobalStore.actions as any).__injectState(state)
       },
-      injectEmissionOptions(options: Partial<EmissionOptions>) {
-        this.injectState({ native: { sessionState: { options } } })
-      },
       getCurrentState: () => globalStoreInstance.getState(),
       dispatchedActions: [] as Action[],
       getLastAction() {
@@ -99,13 +95,45 @@ export function useSelectedTab() {
 
 let globalStoreInstance = createGlobalStore()
 
-export function useEmissionOption(key: keyof EmissionOptions) {
-  return GlobalStore.useAppState((state) => state.native.sessionState.options[key])
+export function useEmissionOption(_key: string) {
+  return true
 }
 
 export function getCurrentEmissionState() {
   // on initial load globalStoreInstance might be undefined
-  return globalStoreInstance?.getState().native.sessionState ?? NativeModules.ARNotificationsManager.nativeState
+  return {
+    legacyFairSlugs: [] as string[],
+    legacyFairProfileSlugs: [] as string[],
+    env: "staging" as "staging",
+    sentryDSN: null,
+    launchCount: 1,
+    stripePublishableKey: "nope",
+    predictionURL: "https://live-staging.artsy.net/",
+    options: {
+      AROptionsBidManagement: true,
+      AROptionsEnableMyCollection: true,
+      AROptionsLotConditionReport: true,
+      AROptionsPriceTransparency: true,
+      AROptionsViewingRooms: true,
+      AROptionsNewSalePage: true,
+      AREnableViewingRooms: true,
+      AROptionsArtistSeries: true,
+      ipad_vir: true,
+      iphone_vir: true,
+      ARDisableReactNativeBidFlow: true,
+      AREnableNewPartnerView: true,
+      AROptionsNewFirstInquiry: true,
+      AROptionsUseReactNativeWebView: true,
+      AROptionsNewShowPage: true,
+      AROptionsNewFairPage: true,
+      AROptionsNewInsightsPage: true,
+    },
+    authenticationToken: globalStoreInstance?.getState().auth.userAccessToken!,
+    userAgent: "blah",
+    userID: globalStoreInstance?.getState().auth.userID!,
+    metaphysicsURL: "https://metaphysics-staging.artsy.net/v2",
+    gravityURL: "https://stagingapi.artsy.net",
+  }
 }
 
 /**
@@ -118,5 +146,5 @@ export function unsafe__getSelectedTab() {
 }
 
 export function useIsStaging() {
-  return GlobalStore.useAppState((state) => state.native.sessionState.env === "staging")
+  return true
 }
