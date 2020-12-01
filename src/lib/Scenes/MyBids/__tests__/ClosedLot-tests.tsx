@@ -15,10 +15,10 @@ const defaultLotStanding = {
     soldStatus: "Passed",
     reserveStatus: "ReserveMet",
     sellingPrice: {
-      displayAmount: "CHF 1,800",
+      display: "CHF 1,800",
     },
     askingPrice: {
-      displayAmount: "CHF 2,000",
+      display: "CHF 2,000",
     },
   },
   saleArtwork: {
@@ -79,6 +79,13 @@ describe(ClosedLot, () => {
     it("renders the time the sale ended by default", () => {
       const tree = renderWithWrappers(<ClosedLot lotStanding={lotStandingFixture()} />)
       expect(extractText(tree.root)).toContain("Closed Aug 5")
+    })
+  })
+
+  describe("selling price", () => {
+    it("shows selling price", () => {
+      const tree = renderWithWrappers(<ClosedLot lotStanding={lotStandingFixture()} />)
+      expect(extractText(tree.root)).toContain("CHF 1,800")
     })
   })
 })
