@@ -68,13 +68,6 @@ const emptyMeProps = {
   conversationsExistenceCheck: { edges: [] },
 }
 
-it("Shows a zero state when there are no bids/conversations", () => {
-  const tree = getWrapper({
-    Me: () => emptyMeProps,
-  })
-  expect(extractText(tree.root)).toContain("Buying art on Artsy is simple")
-})
-
 it("renders without throwing an error", () => {
   getWrapper({})
 })
