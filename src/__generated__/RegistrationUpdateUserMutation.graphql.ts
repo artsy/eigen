@@ -10,6 +10,7 @@ export type UpdateMyProfileInput = {
     email?: string | null;
     location?: EditableLocation | null;
     name?: string | null;
+    password?: string | null;
     phone?: string | null;
     priceRangeMax?: number | null;
     priceRangeMin?: number | null;
