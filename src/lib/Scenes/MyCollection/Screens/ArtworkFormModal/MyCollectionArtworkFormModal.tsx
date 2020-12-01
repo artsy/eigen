@@ -213,14 +213,13 @@ export async function uploadPhotos(photos: ArtworkFormValues["photos"]) {
   const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
   const bucket = assetCredentials.policyDocument.conditions.bucket
 
-  const uploadPromises = imagePaths.map(
-    async (path: string): Promise<string> => {
-      const s3 = await uploadFileToS3(path, acl, assetCredentials)
-      const url = `https://${bucket}.s3.amazonaws.com/${s3.key}`
-      return url
-    }
-  )
+  const externalImageUrls: string[] = []
 
-  const externalImageUrls: string[] = await Promise.all(uploadPromises)
+  for (const path of imagePaths) {
+    const s3 = await uploadFileToS3(path, acl, assetCredentials)
+    const url = `https://${bucket}.s3.amazonaws.com/${s3.key}`
+    externalImageUrls.push(url)
+  }
+
   return externalImageUrls
 }
