@@ -9,6 +9,7 @@ import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import moment from "moment-timezone"
@@ -73,7 +74,7 @@ class MyBids extends React.Component<MyBidsProps> {
                       const activeLotStandings = sortedActiveLots[saleId]
                       const sale = activeLotStandings[0]?.saleArtwork?.sale!
                       return (
-                        <SaleCardFragmentContainer key={saleId} sale={sale}>
+                        <SaleCardFragmentContainer key={saleId} sale={sale} smallScreen={isSmallScreen}>
                           <Join separator={<Separator my={1} />}>
                             {activeLotStandings.map((ls) => {
                               if (ls && sale) {
