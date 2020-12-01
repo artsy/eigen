@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Update color scheme - mdole
     - Set price and marketing text dynamically - adam
+    - Migrate floor selling price and online asking price in My Bids to the new type - starsirius
   user_facing:
     - Add artist past shows screen - mounir
     - Add loading spinner to infinite artwork grid on artist page - david
