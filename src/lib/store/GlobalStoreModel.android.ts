@@ -1,4 +1,5 @@
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
+import { BottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
 import { AuthModel } from "./AuthModel"
 import { ConfigModel } from "./ConfigModel"
 import { CURRENT_APP_VERSION } from "./migration"
@@ -14,6 +15,7 @@ interface GlobalStoreStateModel {
 
   auth: AuthModel
   config: ConfigModel
+  bottomTabs: BottomTabsModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
@@ -50,6 +52,7 @@ export const GlobalStoreModel: GlobalStoreModel = {
 
   auth: AuthModel,
   config: ConfigModel,
+  bottomTabs: BottomTabsModel,
 }
 
 export type GlobalStoreState = State<GlobalStoreModel>

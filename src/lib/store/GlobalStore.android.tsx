@@ -1,9 +1,9 @@
 import { action, createTypedHooks, StoreProvider } from "easy-peasy"
 import { createStore } from "easy-peasy"
 import React from "react"
-import { NativeModules } from "react-native"
 import { Action, Middleware } from "redux"
 import { GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
+import type { NativeState } from "./NativeModel"
 import { assignDeep, persistenceMiddleware, unpersist } from "./persistence"
 
 function createGlobalStore() {
@@ -99,9 +99,16 @@ export function useEmissionOption(_key: string) {
   return true
 }
 
-export function getCurrentEmissionState() {
+export function getCurrentEmissionState(): NativeState {
   // on initial load globalStoreInstance might be undefined
-  return globalStoreInstance?.getState().native.sessionState ?? NativeModules.ARNotificationsManager?.nativeState ?? {}
+  return {
+    env: "staging",
+    options: {},
+    authenticationToken: globalStoreInstance?.getState().auth.userAccessToken,
+    userAgent: "blah",
+    userID: globalStoreInstance?.getState().auth.userID,
+    metaphysicsURL: "https://metaphysics-staging.artsy.net/v2",
+  }
 }
 
 /**
@@ -114,5 +121,5 @@ export function unsafe__getSelectedTab() {
 }
 
 export function useIsStaging() {
-  return GlobalStore.useAppState((state) => state.native.sessionState.env === "staging")
+  return true
 }

@@ -4,6 +4,7 @@ import type { GlobalStoreModel } from "./GlobalStoreModel"
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 
 export interface AuthModel {
+  userID: string | null
   userAccessToken: string | null
   userAccessTokenExpiresIn: string | null
   xAppToken: string | null
@@ -27,6 +28,7 @@ export interface AuthModel {
 }
 
 export const AuthModel: AuthModel = {
+  userID: null,
   userAccessToken: null,
   userAccessTokenExpiresIn: null,
   xAppToken: null,
@@ -105,10 +107,16 @@ export const AuthModel: AuthModel = {
 
     if (result.status === 201) {
       const { expires_in, access_token } = await result.json()
+      const { id } = await (
+        await actions.gravityUnauthenticatedRequest({
+          path: `/api/v1/user?${stringify({ email })}`,
+        })
+      ).json()
 
       actions.setState({
         userAccessToken: access_token,
         userAccessTokenExpiresIn: expires_in,
+        userID: id,
       })
 
       return true

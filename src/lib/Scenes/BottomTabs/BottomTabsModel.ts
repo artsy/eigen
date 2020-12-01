@@ -31,21 +31,25 @@ export const BottomTabsModel: BottomTabsModel = {
     state.sessionState.unreadConversationCount = unreadConversationCount
   }),
   fetchCurrentUnreadConversationCount: thunk(async () => {
-    const result = await fetchQuery<BottomTabsModelFetchCurrentUnreadConversationCountQuery>(
-      defaultEnvironment,
-      graphql`
-        query BottomTabsModelFetchCurrentUnreadConversationCountQuery {
-          me @principalField {
-            unreadConversationCount
+    try {
+      const result = await fetchQuery<BottomTabsModelFetchCurrentUnreadConversationCountQuery>(
+        defaultEnvironment,
+        graphql`
+          query BottomTabsModelFetchCurrentUnreadConversationCountQuery {
+            me @principalField {
+              unreadConversationCount
+            }
           }
-        }
-      `,
-      {},
-      { force: true }
-    )
-    if (result?.me?.unreadConversationCount != null) {
-      GlobalStore.actions.bottomTabs.unreadConversationCountChanged(result.me.unreadConversationCount)
-      GlobalStore.actions.native.setApplicationIconBadgeNumber(result.me.unreadConversationCount)
+        `,
+        {},
+        { force: true }
+      )
+      if (result?.me?.unreadConversationCount != null) {
+        GlobalStore.actions.bottomTabs.unreadConversationCountChanged(result.me.unreadConversationCount)
+        // GlobalStore.actions.native.setApplicationIconBadgeNumber(result.me.unreadConversationCount)
+      }
+    } catch (e) {
+      console.error("RESULT!!!", e)
     }
   }),
   setTabProps: action((state, { tab, props }) => {

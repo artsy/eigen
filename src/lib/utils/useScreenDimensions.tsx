@@ -2,7 +2,7 @@ import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { createContext, useContext, useEffect, useState } from "react"
 import React from "react"
 import { Dimensions } from "react-native"
-import { SafeAreaConsumer, SafeAreaProvider } from "react-native-safe-area-context"
+import { SafeAreaConsumer, SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context"
 
 export type ScreenOrientation = "landscape" | "portrait"
 
@@ -29,7 +29,7 @@ function getCurrentDimensions(): ScreenDimensions {
   }
 }
 
-export const ProvideScreenDimensions: React.FC = ({ children }) => {
+export const _ProvideScreenDimensions: React.FC = ({ children }) => {
   const [dimensions, setDimensions] = useState<ScreenDimensions>(getCurrentDimensions())
 
   useEffect(() => {
@@ -42,18 +42,21 @@ export const ProvideScreenDimensions: React.FC = ({ children }) => {
     }
   }, [])
 
+  const safeAreaInsets = useSafeAreaInsets() || { top: 20, bottom: 0, left: 0, right: 0 }
+
+  console.warn({ safeAreaInsets })
+
+  return (
+    <ScreenDimensionsContext.Provider value={{ ...dimensions, safeAreaInsets }}>
+      {children}
+    </ScreenDimensionsContext.Provider>
+  )
+}
+
+export const ProvideScreenDimensions: React.FC = ({ children }) => {
   return (
     <SafeAreaProvider>
-      <SafeAreaConsumer>
-        {(safeAreaInsets) => {
-          safeAreaInsets = safeAreaInsets || { top: 20, bottom: 0, left: 0, right: 0 }
-          return (
-            <ScreenDimensionsContext.Provider value={{ ...dimensions, safeAreaInsets }}>
-              {children}
-            </ScreenDimensionsContext.Provider>
-          )
-        }}
-      </SafeAreaConsumer>
+      <_ProvideScreenDimensions>{children}</_ProvideScreenDimensions>
     </SafeAreaProvider>
   )
 }

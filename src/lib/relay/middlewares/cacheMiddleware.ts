@@ -43,6 +43,7 @@ export const cacheMiddleware = () => {
     try {
       response = await next(req)
     } catch (e) {
+      console.error("CAUGHT ERROR", e)
       if (!__DEV__ && e.toString().includes("Unable to serve persisted query with ID")) {
         // this should not happen normally, but let's try again with full query text to avoid ruining the user's day?
         captureMessage(e.stack)

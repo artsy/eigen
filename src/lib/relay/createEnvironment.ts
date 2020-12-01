@@ -18,35 +18,36 @@ export default function createEnvironment() {
       // The top middlewares run
       // @ts-ignore
       cacheMiddleware(),
-      rateLimitMiddleware(),
+      // rateLimitMiddleware(),
       urlMiddleware({
         url: () => getCurrentEmissionState().metaphysicsURL,
         headers: () => {
           const { userAgent, userID, authenticationToken } = getCurrentEmissionState()
+          console.warn("Current emission state", getCurrentEmissionState())
           return {
             "Content-Type": "application/json",
             "User-Agent": userAgent,
             "X-USER-ID": userID,
             "X-ACCESS-TOKEN": authenticationToken,
-            "X-TIMEZONE": NativeModules.ARCocoaConstantsModule.LocalTimeZone,
+            "X-TIMEZONE": NativeModules.ARCocoaConstantsModule?.LocalTimeZone || "Europe/London",
           }
         },
       }),
       // @ts-ignore
-      principalFieldErrorMiddleware(),
+      // principalFieldErrorMiddleware(),
       // We need to run the checkAuthenticationMiddleware as early as possible to make sure that the user
       // session is still valid. This is why we need to keep it as low as possible in the middlewares array.
-      checkAuthenticationMiddleware(),
-      loggerMiddleware(),
-      errorMiddleware({
-        disableServerMiddlewareTip: true,
-      }),
-      metaphysicsExtensionsLoggerMiddleware(),
-      timingMiddleware(),
-    ],
+      // checkAuthenticationMiddleware(),
+      // loggerMiddleware(),
+      // errorMiddleware({
+      //   disableServerMiddlewareTip: true,
+      // }),
+      // metaphysicsExtensionsLoggerMiddleware(),
+      // timingMiddleware(),
+    ]
     // `noThrow` is currently marked as "experimental" and may be deprecated in the future.
     // See: https://github.com/relay-tools/react-relay-network-modern#advanced-options-2nd-argument-after-middlewares
-    { noThrow: true }
+    // { noThrow: true }
   )
 
   const source = new RecordSource()

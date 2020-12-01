@@ -1,13 +1,22 @@
-import { AppModule } from "lib/AppRegistry"
+import type { AppModule } from "lib/AppRegistry"
 import { NativeViewController } from "lib/Components/NativeViewController"
 import { useSelectedTab } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Flex, Text } from "palette"
 import React, { useEffect, useRef } from "react"
-import { Animated, View } from "react-native"
+import { Animated, Platform, View } from "react-native"
+// import { Search } from "../Search"
 import { BottomTabs } from "./BottomTabs"
 import { BottomTabType } from "./BottomTabType"
 
 const NavStack = ({ tabName, rootModuleName }: { tabName: BottomTabType; rootModuleName: AppModule }) => {
+  if (Platform.OS === "android") {
+    return (
+      <Flex>
+        <Text variant="mediumText">Hello</Text>
+      </Flex>
+    )
+  }
   return (
     <NativeViewController
       viewName="TabNavigationStack"
