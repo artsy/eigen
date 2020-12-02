@@ -2,7 +2,7 @@ import { CollapsibleArtworkDetails_artwork } from "__generated__/CollapsibleArtw
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { ArtworkDetailsRow } from "lib/Scenes/Artwork/Components/ArtworkDetailsRow"
-import { Flex, Join, Separator, Spacer, Text } from "palette"
+import { Collapse, Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { LayoutAnimation, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -62,7 +62,7 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
           <ChevronIcon color="black" expanded={isExpanded} initialDirection="down" />
         </Flex>
       </TouchableOpacity>
-      {isExpanded && (
+      <Collapse open={isExpanded}>
         <Flex mx={2} mb={1}>
           <Join separator={<Spacer my={1} />}>
             {detailItems.map(({ title, value }, index) => (
@@ -70,7 +70,7 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
             ))}
           </Join>
         </Flex>
-      )}
+      </Collapse>
       <Separator />
     </>
   ) : null
