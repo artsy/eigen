@@ -12,7 +12,7 @@ export interface CollapseProps {
    * If we're rendering within a statically-sized component (e.g. FlatList), we need
    * to propagate a sentinel value in order to trigger re-render or re-measure.
    */
-  onAnimationFrame: (animateValue: { height: number }) => void
+  onAnimationFrame?: (animateValue: { height: number }) => void
 }
 
 interface State {
