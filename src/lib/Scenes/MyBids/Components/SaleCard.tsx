@@ -9,18 +9,19 @@ import { SaleCard_sale } from "__generated__/SaleCard_sale.graphql"
 
 export const CARD_HEIGHT = 72
 
-export class SaleCard extends React.Component<{ sale: SaleCard_sale }> {
+export class SaleCard extends React.Component<{ sale: SaleCard_sale; smallScreen?: boolean }> {
   render() {
-    const { sale, children } = this.props
+    const { sale, children, smallScreen } = this.props
+
     return (
       <React.Fragment>
         <Touchable underlayColor="transparent" activeOpacity={0.8} onPress={() => navigate(sale?.href as string)}>
           <Flex overflow="hidden" borderWidth={1} borderStyle="solid" borderColor="black10" borderRadius={4}>
             <OpaqueImageView height={CARD_HEIGHT} imageURL={sale?.coverImage?.url} />
-            <Flex style={{ margin: 15 }}>
+            <Flex style={{ margin: smallScreen! ? 10 : 15 }}>
               {!!sale.partner?.name && (
                 <Text variant="small" color="black60">
-                  {sale.partner.name}
+                  {sale?.partner?.name}
                 </Text>
               )}
               <Text variant="title">{sale?.name}</Text>
@@ -28,9 +29,7 @@ export class SaleCard extends React.Component<{ sale: SaleCard_sale }> {
               <SaleInfo sale={sale} />
             </Flex>
             <Separator mt={1} />
-            <Flex mx={2} my={1}>
-              {children}
-            </Flex>
+            <Flex style={{ marginHorizontal: smallScreen! ? 10 : 20, marginVertical: 10 }}>{children}</Flex>
           </Flex>
         </Touchable>
       </React.Fragment>
