@@ -7,6 +7,7 @@ typedef NS_ENUM(NSUInteger, ARPHPhotoPickerError) {
     ARPHPhotoPickerErrorOSVersionUnsupported = 0,
     ARPHPhotoPickerErrorNoPhotosReturned,
     ARPHPhotoPickerErrorLoadFailed,
+    ARPHPhotoPickerErrorLoadTimeout,
     ARPHPhotoPickerErrorSaveFailed,
 };
 
@@ -17,6 +18,10 @@ typedef NS_ENUM(NSUInteger, ARPHPhotoPickerError) {
 
 @end
 
+/*!
+ @discussion: Native Module for showing PHPhotoPicker introduced in iOS 14
+ */
+
 @implementation ARPHPhotoPickerModule
 
 static NSString * ErrorDomain = @"net.artsy.ARPHPhotoPicker";
@@ -24,6 +29,7 @@ static NSString * ErrorDomain = @"net.artsy.ARPHPhotoPicker";
 static NSString * UnsupportedOSErrorMessage = @"PHPhotoPicker unavailable before iOS 14.";
 static NSString * NoPhotosErrorMessage = @"No photos returned from picker.";
 static NSString * LoadFailedErrorMessage = @"Failed to load photos from picker.";
+static NSString * LoadTimeoutErrorMessage = @"Loading photos from picker timed out.";
 static NSString * SaveFailedErrorMessage = @"Failed to save photos locally.";
 
 RCT_EXPORT_MODULE();
@@ -54,6 +60,7 @@ RCT_EXPORT_METHOD(requestPhotos:(RCTPromiseResolveBlock)resolve
 }
 
 #pragma mark - PHPickerViewControllerDelegate
+
 - (void)picker:(PHPickerViewController *)picker
 didFinishPicking:(NSArray<PHPickerResult *> *)results  API_AVAILABLE(ios(14)) {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -86,7 +93,13 @@ didFinishPicking:(NSArray<PHPickerResult *> *)results  API_AVAILABLE(ios(14)) {
 
         double delayInSeconds = 0.5;
         dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_group_wait(imageLoadGroup, DISPATCH_TIME_FOREVER);
+        intptr_t status = dispatch_group_wait(imageLoadGroup, timeout);
+
+        if (status != 0) { // timeout
+            NSError *photoTimeoutError = [NSError errorWithDomain:ErrorDomain code:ARPHPhotoPickerErrorLoadTimeout userInfo:@{ NSLocalizedDescriptionKey: LoadTimeoutErrorMessage }];
+            _reject(ErrorDomain, LoadTimeoutErrorMessage, photoTimeoutError);
+        }
+
         if (results.count == 0) {
             NSError *noPhotosError = [NSError errorWithDomain:ErrorDomain code:ARPHPhotoPickerErrorLoadFailed userInfo:@{ NSLocalizedDescriptionKey: LoadFailedErrorMessage }];
             _reject(ErrorDomain, LoadFailedErrorMessage, noPhotosError);
@@ -97,6 +110,12 @@ didFinishPicking:(NSArray<PHPickerResult *> *)results  API_AVAILABLE(ios(14)) {
     _reject = nil;
     _resolve = nil;
 }
+
+/*!
+ @discussion: Helper functions for passing images across the bridge, must first persist to a temporary directory locally,
+  then convert to a dictionary with properties or Image type defined in react-native-image-crop-picker
+  Derived from code in https://github.com/ivpusic/react-native-image-crop-picker
+ */
 
 - (NSDictionary *)dictFromImageResult:(ImageResult *)result filePath:(NSString *)filePath {
     return @{

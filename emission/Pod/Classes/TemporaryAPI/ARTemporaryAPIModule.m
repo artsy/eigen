@@ -1,6 +1,5 @@
 #import "ARTemporaryAPIModule.h"
 #import <UserNotifications/UserNotifications.h>
-#import <React/RCTUtils.h>
 
 @implementation ARTemporaryAPIModule
 
