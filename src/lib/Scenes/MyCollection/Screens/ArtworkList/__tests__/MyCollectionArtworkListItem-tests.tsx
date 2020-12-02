@@ -81,7 +81,6 @@ describe("MyCollectionArtworkListItem", () => {
               cropRect: {} as any,
               filename: "some-file-name",
               creationDate: "some-creation-date",
-              duration: {} as any,
             },
           },
         },

@@ -176,13 +176,15 @@ function getNativeModules(): typeof NativeModules {
     },
 
     ARTemporaryAPIModule: {
-      requestPhotos: jest.fn(),
       validateAuthCredentialsAreCorrect: jest.fn(),
       requestNotificationPermissions: jest.fn(),
       fetchNotificationPermissions: jest.fn(),
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       appVersion: "appVersion",
+    },
+    ARPHPhotoPickerModule: {
+      requestPhotos: jest.fn(),
     },
     Emission: null as never,
     ARScreenPresenterModule: {

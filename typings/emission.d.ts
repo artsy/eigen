@@ -7,7 +7,6 @@ declare module "react-native" {
   interface NativeModulesStatic {
     ARTemporaryAPIModule: {
       appVersion: string
-      requestPhotos(callback: (error: any, result: Image[]) => void): void
       requestNotificationPermissions(): void
       fetchNotificationPermissions(callback: (error: any, result: PushAuthorizationStatus) => void): void
       markNotificationsRead(): void
@@ -18,6 +17,9 @@ declare module "react-native" {
       nativeState: NativeState
       postNotificationName(type: string, data: object): void
       didFinishBootstrapping(): void
+    }
+    ARPHPhotoPickerModule: {
+      requestPhotos(): Promise<any> // why?
     }
     ARCocoaConstantsModule: {
       AREnabled: boolean
