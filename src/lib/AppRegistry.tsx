@@ -367,8 +367,6 @@ export const modules = defineModules({
   LocalDiscovery: nativeModule(),
   WebView: nativeModule(),
   Map: reactModule(MapContainer, { fullBleed: true }),
-  MyAccount: reactModule(MyAccountQueryRenderer),
-  MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, { hidesBackButton: true }),
   MyAccountEditName: reactModule(MyAccountEditNameQueryRenderer, { hidesBackButton: true }),
   MyAccountEditPassword: reactModule(MyAccountEditPassword, { hidesBackButton: true }),
   MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, { hidesBackButton: true }),

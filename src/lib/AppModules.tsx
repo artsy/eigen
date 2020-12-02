@@ -1,6 +1,7 @@
 import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { Consignments } from "./Scenes/Consignments"
 import { ConsignmentsSubmissionForm } from "./Scenes/Consignments/ConsignmentsHome/ConsignmentsSubmissionForm"
+import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
 import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
@@ -44,6 +45,8 @@ export function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>
 export const safeModules = defineModules({
   MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }),
   PrivacyRequest: reactModule(PrivacyRequest),
+  MyAccount: reactModule(MyAccountQueryRenderer),
+  MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, { hidesBackButton: true }),
   Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }),
   ConsignmentsSubmissionForm: reactModule(ConsignmentsSubmissionForm, {
     alwaysPresentModally: true,

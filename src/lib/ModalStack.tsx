@@ -1,5 +1,6 @@
+import { NavigationContainerRef } from "@react-navigation/native"
 import { dropRight } from "lodash"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Modal, View } from "react-native"
 import { ViewDescriptor } from "./navigation/navigate"
 import { NavStack } from "./NavStack"
@@ -9,6 +10,7 @@ export let presentModal: (viewDescriptor: ViewDescriptor) => void
 export let dismissModal: () => void
 
 export const ModalStack = () => {
+  const navRef = useRef<NavigationContainerRef>()
   const [visible, setVisible] = useState(false)
   const [viewDescriptors, updateViewDescriptors] = useState<ViewDescriptor[]>([])
 
@@ -35,7 +37,7 @@ export const ModalStack = () => {
   return viewDescriptors.map((vd) => {
     return (
       <Modal visible>
-        <NavStack rootModuleName={vd.moduleName} />
+        <NavStack ref={(r) => (navRef.current = r)} rootModuleName={vd.moduleName} />
       </Modal>
     )
   })
