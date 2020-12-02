@@ -1,4 +1,5 @@
 import { ActiveLot_lotStanding } from "__generated__/ActiveLot_lotStanding.graphql"
+import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
 import { Flex, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -6,7 +7,7 @@ import { TimelySale } from "../helpers/timely"
 import { HighestBid, Outbid, ReserveNotMet } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
-export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding }) => {
+export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding }, smallScreen: boolean) => {
   const timelySale = TimelySale.create(lotStanding?.saleArtwork?.sale!)
   const isLAI = timelySale.isLiveBiddingNow()
 
@@ -14,18 +15,26 @@ export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding 
   const bidCount = lotStanding?.lotState?.bidCount
   const { saleArtwork, lotState } = lotStanding
 
+  const displayBidCount = (): string | undefined => {
+    if (isSmallScreen) {
+      return
+    } else {
+      return `(${bidCount.toString() + (bidCount === 1 ? " bid" : " bids")})`
+    }
+  }
+
   return (
     saleArtwork &&
     lotState && (
-      <Lot saleArtwork={saleArtwork}>
-        <Flex flexDirection="row">
+      <Lot saleArtwork={saleArtwork} isSmallScreen={smallScreen}>
+        <Flex flexDirection="row" justifyContent="flex-end">
           <Text variant="caption">{sellingPrice}</Text>
           <Text variant="caption" color="black60">
             {" "}
-            ({bidCount} {bidCount === 1 ? "bid" : "bids"})
+            {displayBidCount()}
           </Text>
         </Flex>
-        <Flex flexDirection="row" alignItems="center">
+        <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
           {!isLAI && lotStanding?.isHighestBidder && lotStanding.lotState.reserveStatus === "ReserveNotMet" ? (
             <ReserveNotMet />
           ) : lotStanding?.isHighestBidder ? (

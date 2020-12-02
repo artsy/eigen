@@ -1,5 +1,5 @@
 import { groupBy, mapValues, partition, sortBy } from "lodash"
-import { Flex, Join, Separator, Spacer, Text } from "palette"
+import { Flex, Join, Separator, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
@@ -9,6 +9,7 @@ import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import moment from "moment-timezone"
@@ -53,13 +54,7 @@ class MyBids extends React.Component<MyBidsProps> {
     return (
       <Flex flex={1}>
         <StickyTabPage
-          staticHeaderContent={
-            <Flex mt={2}>
-              <Text variant="mediumText" textAlign="center">
-                My Bids
-              </Text>
-            </Flex>
-          }
+          staticHeaderContent={<></>}
           tabs={[
             {
               title: `Active`,
@@ -73,7 +68,7 @@ class MyBids extends React.Component<MyBidsProps> {
                       const activeLotStandings = sortedActiveLots[saleId]
                       const sale = activeLotStandings[0]?.saleArtwork?.sale!
                       return (
-                        <SaleCardFragmentContainer key={saleId} sale={sale} me={me}>
+                        <SaleCardFragmentContainer key={saleId} sale={sale} me={me} smallScreen={isSmallScreen}>
                           <Join separator={<Separator my={1} />}>
                             {activeLotStandings.map((ls) => {
                               if (ls && sale) {
