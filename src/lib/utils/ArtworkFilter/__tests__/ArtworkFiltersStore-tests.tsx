@@ -1212,7 +1212,7 @@ describe("selectedOptionsUnion", () => {
           paramValue: false,
         },
         {
-          displayText: "Artists",
+          displayText: "All",
           paramName: "artistIDs",
           paramValue: [],
         },
@@ -1304,7 +1304,7 @@ describe("selectedOptionsUnion", () => {
           paramValue: false,
         },
         {
-          displayText: "Artists",
+          displayText: "All",
           paramName: "artistIDs",
           paramValue: [],
         },
@@ -1406,7 +1406,7 @@ describe("selectedOptionsUnion", () => {
           paramValue: false,
         },
         {
-          displayText: "Artists",
+          displayText: "All",
           paramName: "artistIDs",
           paramValue: [],
         },
@@ -1519,7 +1519,7 @@ describe("selectedOptionsUnion", () => {
           paramValue: false,
         },
         {
-          displayText: "Artists",
+          displayText: "All",
           paramName: "artistIDs",
           paramValue: [],
         },
@@ -1622,7 +1622,7 @@ describe("selectedOptionsUnion", () => {
           paramValue: false,
         },
         {
-          displayText: "Artists",
+          displayText: "All",
           paramName: "artistIDs",
           paramValue: [],
         },
@@ -1701,7 +1701,7 @@ describe("selectedOptionsUnion", () => {
           paramValue: false,
         },
         {
-          displayText: "Artists",
+          displayText: "All",
           paramName: "artistIDs",
           paramValue: [],
         },
@@ -1805,20 +1805,20 @@ describe("selectedOptionsUnion", () => {
         {
           paramName: FilterParamName.artistIDs,
           paramValue: [],
-          displayText: "Artists",
+          displayText: "All",
         },
       ] as FilterArray
       const selectedFilters = [
         {
           paramName: FilterParamName.artistIDs,
           paramValue: ["artist-1", "artist-2"],
-          displayText: "Artists",
+          displayText: "All",
         },
       ]
 
       expect(selectedOptionsUnion({ selectedFilters, previouslyAppliedFilters, filterType: "saleArtwork" })).toEqual([
         {
-          displayText: "Artists",
+          displayText: "All",
           paramName: "artistIDs",
           paramValue: ["artist-1", "artist-2"],
         },
