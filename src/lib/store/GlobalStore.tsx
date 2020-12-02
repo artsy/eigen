@@ -1,7 +1,6 @@
 import { action, createTypedHooks, StoreProvider } from "easy-peasy"
 import { createStore } from "easy-peasy"
 import React from "react"
-import Config from "react-native-config"
 import { Action, Middleware } from "redux"
 import { GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { assignDeep, persistenceMiddleware, unpersist } from "./persistence"
