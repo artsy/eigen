@@ -26,7 +26,7 @@ export const BottomTabsNavigator = () => {
     <View style={{ flex: 1, paddingBottom: bottom }}>
       <FadeBetween
         views={[
-          <NavStack ref={(ref) => (tabRefs.home = ref)} rootModuleName="MyProfile" />,
+          <NavStack ref={(ref) => (tabRefs.home = ref)} rootModuleName="Home" />,
           <NavStack ref={(ref) => (tabRefs.search = ref)} rootModuleName="MyProfile" />,
           <NavStack ref={(ref) => (tabRefs.inbox = ref)} rootModuleName="MyProfile" />,
           <NavStack ref={(ref) => (tabRefs.sell = ref)} rootModuleName="Sales" />,

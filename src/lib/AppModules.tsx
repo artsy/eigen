@@ -1,6 +1,7 @@
 import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { Consignments } from "./Scenes/Consignments"
 import { ConsignmentsSubmissionForm } from "./Scenes/Consignments/ConsignmentsHome/ConsignmentsSubmissionForm"
+import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
 import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
@@ -52,6 +53,7 @@ export const safeModules = defineModules({
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
   }),
+  Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
 })
 
 export type SafeAppModule = keyof typeof safeModules
