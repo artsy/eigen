@@ -1,4 +1,5 @@
 import { NavigationContainerRef } from "@react-navigation/native"
+import { ModalStack } from "lib/ModalStack"
 import { setTabStackNavRefs } from "lib/navigation/navigate"
 import { NavStack } from "lib/NavStack"
 import { useSelectedTab } from "lib/store/GlobalStore"
@@ -28,12 +29,13 @@ export const BottomTabsNavigator = () => {
           <NavStack ref={(ref) => (tabRefs.home = ref)} rootModuleName="MyProfile" />,
           <NavStack ref={(ref) => (tabRefs.search = ref)} rootModuleName="MyProfile" />,
           <NavStack ref={(ref) => (tabRefs.inbox = ref)} rootModuleName="MyProfile" />,
-          <NavStack ref={(ref) => (tabRefs.sell = ref)} rootModuleName="MyProfile" />,
+          <NavStack ref={(ref) => (tabRefs.sell = ref)} rootModuleName="Sales" />,
           <NavStack ref={(ref) => (tabRefs.profile = ref)} rootModuleName="MyProfile" />,
         ]}
         activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(selectedTab)}
       />
       <BottomTabs />
+      <ModalStack />
     </View>
   )
 }

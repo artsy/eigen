@@ -1,6 +1,7 @@
 // import { AppModule, modules, ViewOptions } from "lib/AppRegistry"
 import { NavigationContainerRef } from "@react-navigation/native"
 import { SafeAppModule, safeModules, ViewOptions } from "lib/AppModules"
+import { dismissModal as _dismissModal, presentModal as _presentModal, setGlobalVisible } from "lib/ModalStack"
 import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import { GlobalStore, unsafe__getSelectedTab } from "lib/store/GlobalStore"
 import { Linking } from "react-native"
@@ -20,8 +21,8 @@ export function setTabStackNavRefs(refs: typeof tabStackNavRefs) {
 }
 
 const infra = {
-  presentModal(..._args: any[]) {
-    console.error("no modals for you")
+  presentModal(viewDescriptor: ViewDescriptor) {
+    _presentModal(viewDescriptor)
   },
   popToRootAndScrollToTop(..._args: any[]) {
     console.error("no pop yet")
@@ -36,7 +37,7 @@ const infra = {
     tabStackNavRefs[selectedTab]?.goBack()
   },
   dismissModal(..._args: any[]) {
-    console.error("no modals for you")
+    _dismissModal()
   },
 }
 

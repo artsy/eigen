@@ -340,10 +340,6 @@ export const modules = defineModules({
   CitySavedList: reactModule(CitySavedListQueryRenderer),
   CitySectionList: reactModule(CitySectionListQueryRenderer),
   Collection: reactModule(CollectionQueryRenderer, { fullBleed: true }),
-  ConsignmentsSubmissionForm: reactModule(ConsignmentsSubmissionForm, {
-    alwaysPresentModally: true,
-    hasOwnModalCloseButton: true,
-  }),
   Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
   Fair: reactModule(FairQueryRenderer, { fullBleed: true }),
   Fair2: reactModule(Fair2QueryRenderer, { fullBleed: true }),
@@ -386,7 +382,6 @@ export const modules = defineModules({
   MySellingProfile: reactModule(View),
   Partner: reactModule(Partner, { fullBleed: true }),
   PartnerLocations: reactModule(PartnerLocations),
-  Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }),
   SalesNotRootTabView: reactModule(Consignments),
   Search: reactModule(SearchWithTracking, { isRootViewForTabName: "search" }),
   Show: reactModule(ShowQueryRenderer),
