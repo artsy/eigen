@@ -5,15 +5,20 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Text } from "palette"
 import React, { useEffect, useRef } from "react"
 import { Animated, Platform, View } from "react-native"
+import { MyProfileQueryRenderer } from "../MyProfile/MyProfile"
 // import { Search } from "../Search"
 import { BottomTabs } from "./BottomTabs"
 import { BottomTabType } from "./BottomTabType"
 
 const NavStack = ({ tabName, rootModuleName }: { tabName: BottomTabType; rootModuleName: AppModule }) => {
+  const selectedTab = useSelectedTab()
+  if (selectedTab === "profile") {
+    return <MyProfileQueryRenderer />
+  }
   if (Platform.OS === "android") {
     return (
       <Flex>
-        <Text variant="mediumText">Hello</Text>
+        <Text variant="mediumText">Hello {selectedTab}</Text>
       </Flex>
     )
   }

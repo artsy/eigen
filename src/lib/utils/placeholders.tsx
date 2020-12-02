@@ -1,4 +1,4 @@
-import { GenericGridPlaceholder } from "lib/Components/ArtworkGrids/GenericGrid"
+// import { GenericGridPlaceholder } from "lib/Components/ArtworkGrids/GenericGrid"
 import { color, Flex } from "palette"
 import React, { useContext, useEffect, useMemo, useRef } from "react"
 import { View, ViewStyle } from "react-native"
@@ -129,7 +129,7 @@ export const PlaceholderImage: React.FC<{ height: number }> = ({ height }) => {
 export const PlaceholderGrid: React.FC = () => {
   return (
     <Flex mx={2} flexDirection="row">
-      <GenericGridPlaceholder width={useScreenDimensions().width - 40} />
+      {/* <GenericGridPlaceholder width={useScreenDimensions().width - 40} /> */}
     </Flex>
   )
 }

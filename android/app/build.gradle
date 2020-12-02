@@ -211,6 +211,7 @@ dependencies {
     }
 
     compile project(':mapbox_react-native-mapbox-gl')
+    compile project(':react-native-reanimated')
 
     implementation 'com.android.support:multidex:1.0.3'
 }

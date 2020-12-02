@@ -1,18 +1,20 @@
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
-import { navigate } from "lib/navigation/navigate"
+// import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useEmissionOption } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
-import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
+import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { ChevronIcon, Flex, Join, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useRef, useState } from "react"
-import { Alert, FlatList, NativeModules, RefreshControl, ScrollView } from "react-native"
+import { Alert, FlatList, NativeModules, RefreshControl, ScrollView, View } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
+
+const navigate = console.log
 
 const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const listRef = useRef<FlatList<any>>(null)
