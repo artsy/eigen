@@ -1,5 +1,5 @@
 import { groupBy, mapValues, partition, sortBy } from "lodash"
-import { Flex, Join, Separator, Spacer, Text } from "palette"
+import { Flex, Join, Separator, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
@@ -53,13 +53,7 @@ class MyBids extends React.Component<MyBidsProps> {
     return (
       <Flex flex={1}>
         <StickyTabPage
-          staticHeaderContent={
-            <Flex mt={2}>
-              <Text variant="mediumText" textAlign="center">
-                My Bids
-              </Text>
-            </Flex>
-          }
+          staticHeaderContent={<></>}
           tabs={[
             {
               title: `Active`,

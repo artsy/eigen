@@ -7,7 +7,7 @@ import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { Theme } from "palette"
 import { BidFlowQueryRenderer } from "./Containers/BidFlow"
 import { GeneQueryRenderer } from "./Containers/Gene"
-import { InboxQueryRenderer } from "./Containers/Inbox"
+import { InboxWrapper } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowQueryRenderer } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
@@ -133,7 +133,7 @@ const PartnerLocations: React.FC<PartnerLocationsProps> = (props) => <PartnerLoc
 
 const Inbox: React.FC<{}> = screenTrack<{}>(() => {
   return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
-})((props) => <InboxQueryRenderer {...props} />)
+})((props) => <InboxWrapper {...props} />)
 
 interface GeneProps {
   geneID: string

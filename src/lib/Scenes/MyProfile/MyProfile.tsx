@@ -3,12 +3,11 @@ import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { useEmissionOption } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { ChevronIcon, Flex, Join, Sans, Separator, Spacer } from "palette"
+import { Flex, Join, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useRef, useState } from "react"
 import { Alert, FlatList, NativeModules, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -17,7 +16,6 @@ import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const listRef = useRef<FlatList<any>>(null)
   const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
-  const shouldDisplayMyBids = useEmissionOption("AROptionsBidManagement")
   const shouldDisplayMyCollection = me.labFeatures?.includes("My Collection")
   const [isRefreshing, setIsRefreshing] = useState(false)
   const onRefresh = useCallback(() => {
@@ -35,13 +33,6 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       </Sans>
       <Separator my={2} />
       <SectionHeading title="Favorites" />
-      {!!shouldDisplayMyBids && (
-        <MenuItem
-          title="My Bids"
-          onPress={() => navigate("my-bids")}
-          chevron={<ChevronIcon direction="right" fill="black60" />}
-        />
-      )}
       {!!shouldDisplayMyCollection && (
         <MenuItem isBeta={true} title="My Collection" onPress={() => navigate("my-collection")} />
       )}

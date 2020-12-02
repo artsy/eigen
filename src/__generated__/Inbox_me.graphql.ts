@@ -5,19 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Inbox_me = {
-    readonly lot_standings: ReadonlyArray<{
-        readonly most_recent_bid: {
-            readonly id: string;
-        } | null;
-    } | null> | null;
-    readonly conversations_existence_check: {
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly internalID: string | null;
-            } | null;
-        } | null> | null;
-    } | null;
-    readonly " $fragmentRefs": FragmentRefs<"Conversations_me" | "ActiveBids_me">;
+    readonly " $fragmentRefs": FragmentRefs<"Conversations_me" | "MyBids_me">;
     readonly " $refType": "Inbox_me";
 };
 export type Inbox_me$data = Inbox_me;
@@ -35,87 +23,6 @@ const node: ReaderFragment = {
   "name": "Inbox_me",
   "selections": [
     {
-      "alias": "lot_standings",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "live",
-          "value": true
-        }
-      ],
-      "concreteType": "LotStanding",
-      "kind": "LinkedField",
-      "name": "lotStandings",
-      "plural": true,
-      "selections": [
-        {
-          "alias": "most_recent_bid",
-          "args": null,
-          "concreteType": "BidderPosition",
-          "kind": "LinkedField",
-          "name": "mostRecentBid",
-          "plural": false,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "id",
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        }
-      ],
-      "storageKey": "lotStandings(live:true)"
-    },
-    {
-      "alias": "conversations_existence_check",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "first",
-          "value": 1
-        }
-      ],
-      "concreteType": "ConversationConnection",
-      "kind": "LinkedField",
-      "name": "conversationsConnection",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "ConversationEdge",
-          "kind": "LinkedField",
-          "name": "edges",
-          "plural": true,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "Conversation",
-              "kind": "LinkedField",
-              "name": "node",
-              "plural": false,
-              "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "internalID",
-                  "storageKey": null
-                }
-              ],
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        }
-      ],
-      "storageKey": "conversationsConnection(first:1)"
-    },
-    {
       "args": null,
       "kind": "FragmentSpread",
       "name": "Conversations_me"
@@ -123,11 +30,11 @@ const node: ReaderFragment = {
     {
       "args": null,
       "kind": "FragmentSpread",
-      "name": "ActiveBids_me"
+      "name": "MyBids_me"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'fc3a51501e74ad6cd70d9cb1a4fa9f85';
+(node as any).hash = 'b952dbf9da84367f7fc3e4c8f65bb09e';
 export default node;

@@ -151,6 +151,8 @@ export const themeProps = {
     0.5: "5px",
     /** Equivalent to 10px  */
     1: "10px",
+    /** Equivalent to 10px  */
+    1.5: "15px",
     /** Equivalent to 20px  */
     2: "20px",
     /** Equivalent to 30px  */
@@ -158,6 +160,8 @@ export const themeProps = {
     /** Equivalent to 40px  */
     4: "40px",
     /** Equivalent to 50px  */
+    5: "50px",
+    /** Equivalent to 60px  */
     6: "60px",
     /** Equivalent to 90px  */
     9: "90px",

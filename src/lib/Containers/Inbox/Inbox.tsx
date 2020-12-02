@@ -1,18 +1,21 @@
 import { Inbox_me } from "__generated__/Inbox_me.graphql"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import ActiveBids, { ActiveBids as ActiveBidsRef } from "lib/Scenes/Inbox/Components/ActiveBids"
+import { ActiveBids as ActiveBidsRef } from "lib/Scenes/Inbox/Components/ActiveBids"
 import { ConversationsContainer } from "lib/Scenes/Inbox/Components/Conversations/Conversations"
-import ZeroStateInbox from "lib/Scenes/Inbox/Components/Conversations/ZeroStateInbox"
+import { MyBidsContainer } from "lib/Scenes/MyBids/MyBids"
 import { listenToNativeEvents } from "lib/store/NativeModel"
-import { extractNodes } from "lib/utils/extractNodes"
-import { get } from "lib/utils/get"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Flex } from "palette"
+import { Flex, Spacer, Text } from "palette"
 import React from "react"
 import { EmitterSubscription, RefreshControl } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
+
+interface State {
+  fetchingData: boolean
+  inquiryTabIsSelected: boolean
+}
 
 interface Props {
   me: Inbox_me
@@ -20,22 +23,18 @@ interface Props {
   isVisible: boolean
 }
 
-interface State {
-  fetchingData: boolean
-}
-
 const Container = styled.ScrollView`
   flex: 1;
 `
-
 export class Inbox extends React.Component<Props, State> {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+  // @ts-ignore STRICTNESS_MIGRATION
   conversations: ConversationsRef
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+  // @ts-ignore STRICTNESS_MIGRATION
   activeBids: ActiveBidsRef
 
   state = {
     fetchingData: false,
+    inquiryTabIsSelected: false,
   }
 
   listener: EmitterSubscription | null = null
@@ -81,56 +80,50 @@ export class Inbox extends React.Component<Props, State> {
   }
 
   render() {
-    const lotStanding = get(this.props, (p) => p.me.lot_standings)
-    const conversationsExistenceCheck = extractNodes(this.props.me.conversations_existence_check)
-    const hasBids = !!lotStanding && lotStanding.length > 0
-    const hasConversations = !!conversationsExistenceCheck && conversationsExistenceCheck.length > 0
-    return hasBids || hasConversations ? (
+    return (
       <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
-        <ActiveBids me={this.props.me} componentRef={(activeBids) => (this.activeBids = activeBids)} />
-        <ConversationsContainer
-          me={this.props.me}
-          componentRef={(conversations) => (this.conversations = conversations)}
-        />
+        <Spacer pb={5} />
+        <Flex flexDirection="row" px={1.5} mb={1}>
+          <Text
+            mr={2}
+            color={this.state.inquiryTabIsSelected ? "black30" : "black100"}
+            onPress={() => {
+              this.setState({ inquiryTabIsSelected: false })
+            }}
+            variant="largeTitle"
+          >
+            Bids
+          </Text>
+          <Text
+            color={this.state.inquiryTabIsSelected ? "black100" : "black30"}
+            onPress={() => {
+              this.setState({ inquiryTabIsSelected: true })
+            }}
+            variant="largeTitle"
+          >
+            Inquiries
+          </Text>
+        </Flex>
+        {this.state.inquiryTabIsSelected ? (
+          <ConversationsContainer
+            me={this.props.me}
+            componentRef={(conversations) => (this.conversations = conversations)}
+          />
+        ) : (
+          <MyBidsContainer me={this.props.me} />
+        )}
       </Container>
-    ) : (
-      <Flex style={{ flex: 1 }}>
-        <ZeroStateInbox />
-      </Flex>
     )
   }
 }
 
-// FIXME: The `lot_standings` snippet is copy-pasted from the `ActiveBids` component so it doesn’t fetch data that’s not
-//        really needed MP should really just expose something like `has_active_bids` and ensure that it doesn’t perform
-//        extra backend reuqests to determine if it has active bids and resolve the `ActiveBids` query.
-//
-//        The same applies to the `conversations` snippet.
-//
-// TODO:  After switch to modern, we can use the following stopgap instead:
-//
-//        ...Conversations_me @relay(mask: false)
-//        ...ActiveBids_me @relay(mask: false)
-//
 export const InboxContainer = createRefetchContainer(
   Inbox,
   {
     me: graphql`
       fragment Inbox_me on Me {
-        lot_standings: lotStandings(live: true) {
-          most_recent_bid: mostRecentBid {
-            id
-          }
-        }
-        conversations_existence_check: conversationsConnection(first: 1) {
-          edges {
-            node {
-              internalID
-            }
-          }
-        }
         ...Conversations_me
-        ...ActiveBids_me
+        ...MyBids_me
       }
     `,
   },
@@ -143,7 +136,7 @@ export const InboxContainer = createRefetchContainer(
   `
 )
 
-export const InboxQueryRenderer: React.SFC = () => {
+export const InboxQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<InboxQuery>
       environment={defaultEnvironment}
