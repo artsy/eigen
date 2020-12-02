@@ -33,7 +33,6 @@ import { ConsignmentsSubmissionForm } from "./Scenes/Consignments/ConsignmentsHo
 
 import { FadeIn } from "./Components/FadeIn"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
-import { NativeViewController } from "./Components/NativeViewController"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import {
   FairArtistsQueryRenderer,
@@ -57,13 +56,11 @@ import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEdit
 import { MyAccountEditPassword } from "./Scenes/MyAccount/MyAccountEditPassword"
 import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEditPhone"
 import { MyBidsQueryRenderer } from "./Scenes/MyBids"
-import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyProfilePushNotifications"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
-import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { SaleQueryRenderer } from "./Scenes/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
@@ -75,8 +72,7 @@ import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { Show2MoreInfoQueryRenderer, Show2QueryRenderer } from "./Scenes/Show2"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
-import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
-import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
+import { defineModules, nativeModule, reactModule, safeModules } from "./AppModules"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
@@ -308,6 +304,7 @@ class PageWrapper extends React.Component<PageWrapperProps> {
   }
 }
 
+// @ts-expect-error
 function register(screenName: string, Component: React.ComponentType<any>, options?: PageWrapperProps) {
   const WrappedComponent = (props: any) => (
     <PageWrapper {...options}>
@@ -317,45 +314,10 @@ function register(screenName: string, Component: React.ComponentType<any>, optio
   AppRegistry.registerComponent(screenName, () => WrappedComponent)
 }
 
-export interface ViewOptions {
-  modalPresentationStyle?: "fullScreen" | "pageSheet" | "formSheet"
-  hasOwnModalCloseButton?: boolean
-  alwaysPresentModally?: boolean
-  hidesBackButton?: boolean
-  fullBleed?: boolean
-  // If this module is the root view of a particular tab, name it here
-  isRootViewForTabName?: BottomTabType
-  // If this module should only be shown in one particular tab, name it here
-  onlyShowInTabName?: BottomTabType
-}
-
-type ModuleDescriptor =
-  | {
-      type: "react"
-      Component: React.ComponentType<any>
-      options: ViewOptions
-    }
-  | {
-      type: "native"
-      options: ViewOptions
-    }
-
-function reactModule(Component: React.ComponentType<any>, options: ViewOptions = {}): ModuleDescriptor {
-  return { type: "react", options, Component }
-}
-
-function nativeModule(options: ViewOptions = {}): ModuleDescriptor {
-  return { type: "native", options }
-}
-
-// little helper function to make sure we get both intellisense and good type information on the result
-function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
-  return obj
-}
-
 export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
+  ...safeModules,
   Admin: nativeModule(),
   About: reactModule(About),
   Artist: reactModule(ArtistQueryRenderer),
@@ -418,14 +380,12 @@ export const modules = defineModules({
   MyCollection: reactModule(MyCollectionQueryRenderer),
   MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),
   MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
-  MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, { hidesBackButton: true }),
   MyProfilePushNotifications: reactModule(MyProfilePushNotificationsQueryRenderer),
   MySellingProfile: reactModule(View),
   Partner: reactModule(Partner, { fullBleed: true }),
   PartnerLocations: reactModule(PartnerLocations),
-  PrivacyRequest: reactModule(PrivacyRequest),
   Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }),
   SalesNotRootTabView: reactModule(Consignments),
   Search: reactModule(SearchWithTracking, { isRootViewForTabName: "search" }),

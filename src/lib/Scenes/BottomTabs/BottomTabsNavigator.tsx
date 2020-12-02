@@ -1,50 +1,35 @@
-import type { AppModule } from "lib/AppRegistry"
-import { NativeViewController } from "lib/Components/NativeViewController"
+import { NavigationContainerRef } from "@react-navigation/native"
+import { setTabStackNavRefs } from "lib/navigation/navigate"
+import { NavStack } from "lib/NavStack"
 import { useSelectedTab } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Text } from "palette"
 import React, { useEffect, useRef } from "react"
-import { Animated, Platform, View } from "react-native"
-import { MyProfileQueryRenderer } from "../MyProfile/MyProfile"
-// import { Search } from "../Search"
+import { Animated, View } from "react-native"
 import { BottomTabs } from "./BottomTabs"
 import { BottomTabType } from "./BottomTabType"
-
-const NavStack = ({ tabName, rootModuleName }: { tabName: BottomTabType; rootModuleName: AppModule }) => {
-  const selectedTab = useSelectedTab()
-  if (selectedTab === "profile") {
-    return <MyProfileQueryRenderer />
-  }
-  if (Platform.OS === "android") {
-    return (
-      <Flex>
-        <Text variant="mediumText">Hello {selectedTab}</Text>
-      </Flex>
-    )
-  }
-  return (
-    <NativeViewController
-      viewName="TabNavigationStack"
-      viewProps={{
-        tabName,
-        rootModuleName,
-      }}
-    />
-  )
-}
 
 export const BottomTabsNavigator = () => {
   const selectedTab = useSelectedTab()
   const { bottom } = useScreenDimensions().safeAreaInsets
+  const tabRefs = useRef<Record<BottomTabType, NavigationContainerRef | null>>({
+    home: null,
+    search: null,
+    inbox: null,
+    sell: null,
+    profile: null,
+  }).current
+  useEffect(() => {
+    setTabStackNavRefs(tabRefs)
+  }, [])
   return (
     <View style={{ flex: 1, paddingBottom: bottom }}>
       <FadeBetween
         views={[
-          <NavStack tabName="home" rootModuleName="Home" />,
-          <NavStack tabName="search" rootModuleName="Search" />,
-          <NavStack tabName="inbox" rootModuleName="Inbox" />,
-          <NavStack tabName="sell" rootModuleName="Sales" />,
-          <NavStack tabName="profile" rootModuleName="MyProfile" />,
+          <NavStack ref={(ref) => (tabRefs.home = ref)} rootModuleName="MyProfile" />,
+          <NavStack ref={(ref) => (tabRefs.search = ref)} rootModuleName="MyProfile" />,
+          <NavStack ref={(ref) => (tabRefs.inbox = ref)} rootModuleName="MyProfile" />,
+          <NavStack ref={(ref) => (tabRefs.sell = ref)} rootModuleName="MyProfile" />,
+          <NavStack ref={(ref) => (tabRefs.profile = ref)} rootModuleName="MyProfile" />,
         ]}
         activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(selectedTab)}
       />
