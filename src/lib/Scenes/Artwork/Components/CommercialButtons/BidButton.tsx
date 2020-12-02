@@ -1,7 +1,7 @@
 import { BidButton_artwork } from "__generated__/BidButton_artwork.graphql"
 import { BidButton_me } from "__generated__/BidButton_me.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { bidderNeedsIdentityVerification } from "lib/utils/auction"
 import { Schema } from "lib/utils/track"
 import { Button, color, Sans } from "palette"
@@ -19,14 +19,14 @@ export interface BidButtonProps {
   relay: RelayProp
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const watchOnly = (sale) => sale.isRegistrationClosed && !sale?.registrationStatus?.qualifiedForBidding
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const getMyLotStanding = (artwork) => artwork.myLotStanding && artwork.myLotStanding.length && artwork.myLotStanding[0]
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const getHasBid = (myLotStanding) => !!(myLotStanding && myLotStanding.mostRecentBid)
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const IdentityVerificationRequiredMessage = ({ onPress, ...remainderProps }) => (
   <Sans mt="1" size="3" color="black60" pb="1" textAlign="center" {...remainderProps}>
     Identity verification required to bid.{" "}
@@ -43,7 +43,7 @@ export class BidButton extends React.Component<BidButtonProps> {
     action_type: Schema.ActionTypes.Tap,
   })
   redirectToIdentityVerificationFAQ() {
-    SwitchBoard.presentNavigationViewController(this, `/identity-verification-faq`)
+    navigate(`/identity-verification-faq`)
   }
 
   @track({
@@ -52,8 +52,8 @@ export class BidButton extends React.Component<BidButtonProps> {
   })
   redirectToRegister() {
     const { sale } = this.props.artwork
-    // @ts-ignore STRICTNESS_MIGRATION
-    SwitchBoard.presentNavigationViewController(this, `/auction-registration/${sale.slug}`)
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    navigate(`/auction-registration/${sale.slug}`)
   }
 
   @track((props) => {
@@ -64,10 +64,10 @@ export class BidButton extends React.Component<BidButtonProps> {
     }
   })
   redirectToLiveBidding() {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const { slug } = this.props.artwork.sale
     const liveUrl = `${PREDICTION_URL}/${slug}`
-    SwitchBoard.presentNavigationViewController(this, liveUrl)
+    navigate(liveUrl)
   }
 
   @track((props) => {
@@ -83,12 +83,12 @@ export class BidButton extends React.Component<BidButtonProps> {
     const { slug, sale } = this.props.artwork
     const bid = firstIncrement
 
-    // @ts-ignore STRICTNESS_MIGRATION
-    SwitchBoard.presentNavigationViewController(this, `/auction/${sale.slug}/bid/${slug}?bid=${bid}`)
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    navigate(`/auction/${sale.slug}/bid/${slug}?bid=${bid}`)
   }
 
   renderIsPreview(
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     registrationStatus: BidButton_artwork["sale"]["registrationStatus"],
     needsIdentityVerification: boolean
   ) {
@@ -143,7 +143,7 @@ export class BidButton extends React.Component<BidButtonProps> {
   render() {
     const { artwork, auctionState, me } = this.props
     const { sale, saleArtwork } = artwork
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const { registrationStatus } = sale
 
     // TODO: Do we need a nil check against +sale+?
@@ -152,7 +152,7 @@ export class BidButton extends React.Component<BidButtonProps> {
     }
 
     const qualifiedForBidding = registrationStatus?.qualifiedForBidding
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const needsIdentityVerification = bidderNeedsIdentityVerification({ sale, user: me, bidder: registrationStatus })
 
     /**
@@ -178,7 +178,7 @@ export class BidButton extends React.Component<BidButtonProps> {
           )}
         </>
       )
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     } else if (sale.isRegistrationClosed && !qualifiedForBidding) {
       return (
         <Button width={100} block size="large" disabled>
@@ -196,13 +196,13 @@ export class BidButton extends React.Component<BidButtonProps> {
       )
     } else {
       const myLastMaxBid = hasBid && myLotStanding.mostRecentBid.maxBid.cents
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const increments = saleArtwork.increments.filter((increment) => increment.cents > (myLastMaxBid || 0))
       const firstIncrement = increments && increments.length && increments[0]
       const incrementCents = firstIncrement && firstIncrement.cents
 
       return (
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         <Button width={100} size="large" block onPress={() => this.redirectToBid(incrementCents)}>
           {hasBid ? "Increase max bid" : "Bid"}
         </Button>

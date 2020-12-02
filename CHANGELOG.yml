@@ -1,17 +1,144 @@
 upcoming:
-  version: 6.6.6
+  version: 6.7.3
   date: TBD
   dev:
-    - Change CheckAuthentication middleware to be called before the principalFieldMiddleware - mounir
+    - Update color scheme - mdole
+    - Allow for multiple artwork images in My Collection - adam
+    - Set price and marketing text dynamically - adam
+    - Migrate floor selling price and online asking price in My Bids to the new type - starsirius
   user_facing:
-    - Switch to live auction from new sale page - barry, brian
-    - Adds ability to filter by artist in a fair - sweir
-    - Fix environment variable names for Sentry - starsirius
-    - Adds Show2 header, behind lab option - damon
-    - Adds Show2 install shots, behind lab option - damon
-    - Link ConversationDetail screen - sepans
-
+    - Add artist past shows screen - mounir
+    - Add loading spinner to infinite artwork grid on artist page - david
+    - Avoid shrinking the background on non-fullscreen fancy modals - david
 releases:
+  - version: 6.7.2
+    date: November 30, 2020
+    dev:
+      - Remove SwitchBoard.tsx - david
+      - Update url for echo, now in s3 - ash, pavlos
+      - Move bottom tabs navigator to TS - david
+      - Add some relay mock helpers - pavlos
+      - Fix city guide CTA images not showing when running using Xcode 12 - pavlos
+      - Fix minimize startup api requests - brian
+      - Remove analytics tracking on back-arrow taps - pepopowitz
+      - Rename AppStore to GlobalStore - david
+      - Update STRICTNESS_MIGRATION comments - david
+      - Don't pass email to segment - brian
+      - Pass correct arguments to auction artwork grid tracking - pepopowitz
+      - Upgrade CI to Xcode 12 - pavlos
+      - Fix device token checking logic - david
+    user_facing:
+      -
+
+  - version: 6.7.1
+    date: November 13, 2020
+    dev:
+      -
+    user_facing:
+      - Fix a bug with unregistered auction screen being loaded from push - david
+
+  - version: 6.7.0
+    date: November 11, 2020
+    dev:
+      - Update url for echo, now in s3 - ash, pavlos
+      - Add tracking to new auction screen - mounir
+      - Fix echo not being checked for updated when _OSS_ flag is missing - pavlos
+      - Move bottom tabs navigator to TS - david
+    user_facing:
+      - Move My Collection into My Profile - adam
+      - Switch to live auction from new sale page - barry, brian
+      - Adds ability to filter by artist in a fair - sweir
+      - Fix environment variable names for Sentry - starsirius
+      - Fix capitalization on home auction rail - pavlos
+      - Adds Show2 header, behind lab option - damon
+      - Adds Show2 install shots, behind lab option - damon
+      - Link ConversationDetail screen - sepans
+      - Handle artist page subroutes natively by default - david
+      - Fix Vanity URL fallbacks - david
+      - Adds Show2 basic more information route, behind lab option - damon
+      - Add Show2 context card, linking to Fair or Partner - roop
+      - Fix filters on Fair2 Works by Artists I follow artwork grid - devon
+      - Fix blank screen bug in My Collection - brian
+      - Adds Show2 artwork grid + filter - mzikherman
+      - Add active bids to new auction sale page - mounir
+      - Adds Show2 location map - damon
+      - Adds Show2 location hours - damon
+      - Adds header text to new inquiry modal - lily
+      - Add Auctions Info screen - mounir
+      - Fix Fair2 sticky tab UI + interaction - david
+      - Loading state for My Collection - brian
+      - Show up to 5 marketing collections on fair screen - devon
+      - Adds no bids view to bid management - lily
+      - Loading plcaeholders on new auction screen - mounir
+      - Adds Show2 viewing room - damon
+      - Adds auction closed banner - mounir
+      - Fix add artwork modal title (my collection) - brian
+      - Switch to live auction from new sale page - barry, brian
+      - Adds ability to filter by artist in a fair - sweir
+      - Fix environment variable names for Sentry - starsirius
+      - Fix capitalization on home auction rail - pavlos
+      - Adds Show2 header, behind lab option - damon
+      - Adds Show2 install shots, behind lab option - damon
+      - Link ConversationDetail screen - sepans
+      - Handle artist page subroutes natively by default - david
+      - Fix Vanity URL fallbacks - david
+      - Adds Show2 basic more information route, behind lab option - damon
+      - Add Show2 context card, linking to Fair or Partner - roop
+      - Fix filters on Fair2 Works by Artists I follow artwork grid - devon
+      - Fix blank screen bug in My Collection - brian
+      - Adds Show2 artwork grid + filter - mzikherman
+      - Add active bids to new auction sale page - mounir
+      - Adds Show2 location map - damon
+      - Adds Show2 location hours - damon
+      - Add inquiry questions state to reducer + wire up mutation - christina
+      - Fix keyboard touch intercept (my collection) - brian
+      - Fix persisting edit form values (my collection) - brian
+      - Fix artist name truncation on add/edit artwork page (my collection) - david
+      - Fix photo layout in add/edit artwork page (my collection) - adam
+      - Improve buttons in edit artwork page (my collection) - adam
+      - Link sort and filter button to scroll position on new show screen - mounir
+      - Fix padding issue on new show screen - mounir
+      - Add feedback to More info about this auction button - mounir
+      - Fix title hidden by back button on Show2 - mounir
+      - Fix modal buttons behind keyboard (consignments, inquiry) - brian, steve, david
+      - Fix visibility of sort/filter control for shows with no eligible artworks - devon
+
+  - version: 6.6.7
+    date: October 27, 2020
+    dev:
+      - Fix when a closed auction is accessed, don't try to go live anymore - pavlos
+      - Fix when a closed auction is accessed, the register button should not render - pavlos
+      - Change CheckAuthentication middleware to be called before the principalFieldMiddleware - mounir
+    user_facing:
+      - Move My Collection into My Profile - adam
+      - Switch to live auction from new sale page - barry, brian
+      - Adds ability to filter by artist in a fair - sweir
+      - Fix environment variable names for Sentry - starsirius
+      - Fix capitalization on home auction rail - pavlos
+      - Adds Show2 header, behind lab option - damon
+      - Adds Show2 install shots, behind lab option - damon
+      - Link ConversationDetail screen - sepans
+      - Handle artist page subroutes natively by default - david
+      - Fix Vanity URL fallbacks - david
+      - Adds Show2 basic more information route, behind lab option - damon
+      - Add Show2 context card, linking to Fair or Partner - roop
+      - Fix filters on Fair2 Works by Artists I follow artwork grid - devon
+      - Fix blank screen bug in My Collection - brian
+      - Adds Show2 artwork grid + filter - mzikherman
+      - Add active bids to new auction sale page - mounir
+      - Adds Show2 location map - damon
+      - Add Auctions Info screen - mounir
+      - Adds Show2 location hours - damon
+      - Adds Show2 partner entity header - damon
+      - Fix Fair2 sticky tab UI + interaction - david
+
+  - version: 6.6.6
+    date: October 19, 2020
+    dev:
+      -
+    user_facing:
+      - Fix deep link handling when application is closed - david
+
   - version: 6.6.5
     date: October 13, 2020
     dev:
@@ -133,6 +260,7 @@ releases:
       - Hide artists with 0 published works on Gallery page - mounir
       - Fix bug preventing galleries' recent and upcoming shows from displaying in some cases - david
       - Fix partner artist counts label logic - david
+      - Fix My Account field edit form dismiss issues - david
 
   - version: 6.6.0
     date: August 5, 2020

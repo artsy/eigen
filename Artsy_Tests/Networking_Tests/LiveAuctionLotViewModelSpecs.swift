@@ -5,6 +5,18 @@ import Interstellar
 @testable
 import Artsy
 
+
+func bid(_ amount: Int, bidder: [String: AnyObject]) -> LiveEvent {
+    return LiveEvent(json: [
+        "type" : "FirstPriceBidPlaced",
+        "eventId" : NSUUID().uuidString,
+        "cancelled" : false,
+        "amountCents" : amount * 100,
+        "bidder" : bidder
+        ])
+}
+
+
 class LiveAuctionLotViewModelSpec: QuickSpec {
     override func spec() {
 

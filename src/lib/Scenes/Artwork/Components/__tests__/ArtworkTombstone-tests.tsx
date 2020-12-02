@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Theme } from "palette"
@@ -6,12 +6,8 @@ import React from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import { ArtworkTombstone } from "../ArtworkTombstone"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
-
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 
 describe("ArtworkTombstone", () => {
   it("renders fields correctly", () => {
@@ -49,7 +45,7 @@ describe("ArtworkTombstone", () => {
     const artistName = component.find(TouchableWithoutFeedback).at(0)
     expect(artistName.text()).toContain("Andy Warhol")
     artistName.props().onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/andy-warhol")
+    expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
   })
 
   it("redirects to attribution class faq page when attribution class is clicked", () => {
@@ -61,10 +57,7 @@ describe("ArtworkTombstone", () => {
     const attributionClass = component.find(TouchableWithoutFeedback).at(4)
     expect(attributionClass.text()).toContain("This is an edition of something")
     attributionClass.props().onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-      expect.anything(),
-      "/artwork-classifications"
-    )
+    expect(navigate).toHaveBeenCalledWith("/artwork-classifications")
   })
 
   describe("for a user not in the US", () => {
@@ -133,7 +126,7 @@ describe("ArtworkTombstone", () => {
   // TODO: THESE TESTS SHOULD NOT MUTATE THE FIXTURE!!!
   describe("for an artwork with less than 4 artists but more than 1", () => {
     beforeEach(() => {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       artworkTombstoneArtwork.artists = artworkTombstoneArtwork.artists.slice(0, 3)
     })
 
@@ -163,7 +156,7 @@ describe("ArtworkTombstone", () => {
 
   describe("for an artwork with one artist", () => {
     beforeEach(() => {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       artworkTombstoneArtwork.artists = artworkTombstoneArtwork.artists.slice(0, 1)
     })
 
@@ -188,9 +181,9 @@ describe("ArtworkTombstone", () => {
 
   describe("for an artwork with no artists but a cultural maker", () => {
     beforeEach(() => {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       artworkTombstoneArtwork.artists = []
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       artworkTombstoneArtwork.cultural_maker = "18th century American"
     })
 

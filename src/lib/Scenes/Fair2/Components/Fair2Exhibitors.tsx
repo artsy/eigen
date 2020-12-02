@@ -89,7 +89,7 @@ export const Fair2ExhibitorsFragmentContainer = createPaginationContainer(
         internalID
         slug
         exhibitors: showsConnection(first: $first, after: $after, sort: FEATURED_ASC)
-        @connection(key: "Fair2ExhibitorsQuery_exhibitors") {
+          @connection(key: "Fair2ExhibitorsQuery_exhibitors") {
           edges {
             node {
               id

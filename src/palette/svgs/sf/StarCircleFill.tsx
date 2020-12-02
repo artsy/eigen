@@ -1,10 +1,10 @@
 import React from "react"
 import { EMaskUnits } from "react-native-svg"
 import { color } from "../../helpers"
-import { Icon, IconProps, Mask, Path, Rect } from "../Icon"
+import { Circle, Icon, IconProps, Mask, Path, Rect } from "../Icon"
 
 /** StarCircleFill */
-export const StarCircleFill: React.FC<IconProps> = props => {
+export const StarCircleFill: React.FC<IconProps> = (props) => {
   return (
     <Icon {...props} viewBox="0 0 20 20">
       <Mask
@@ -23,6 +23,7 @@ export const StarCircleFill: React.FC<IconProps> = props => {
           d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18ZM9.65332 10.6357H7.16602C6.98145 10.6357 6.84961 10.5082 6.84961 10.3369C6.84961 10.2402 6.89355 10.1523 6.96826 10.0556L10.9585 5.06782C11.2573 4.69428 11.7231 4.93598 11.5562 5.38862L10.2422 8.94819H12.7295C12.9141 8.94819 13.0415 9.08002 13.0415 9.24702C13.0415 9.34809 13.002 9.43598 12.9272 9.52827L8.93701 14.5205C8.63818 14.8896 8.16797 14.6479 8.33936 14.1953L9.65332 10.6357Z"
         />
       </Mask>
+      <Circle cx="10" cy="10" r="5" fill={color("white100")} />
       <Path
         fillRule="evenodd"
         clipRule="evenodd"

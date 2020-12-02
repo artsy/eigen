@@ -17,6 +17,7 @@ NSString *const AROptionsNewSalePage = @"AROptionsNewSalePage";
 NSString *const AROptionsNewFirstInquiry = @"AROptionsNewFirstInquiry";
 NSString *const AROptionsNewShowPage = @"AROptionsNewShowPage";
 NSString *const AROptionsNewFairPage = @"AROptionsNewFairPage";
+NSString *const AROptionsNewInsightsPage = @"AROptionsNewInsightsPage";
 
 // UX changes
 NSString *const AROptionsDisableNativeLiveAuctions = @"AROptionsDisableNativeLiveAuctions";
@@ -46,11 +47,9 @@ NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebVie
          AROptionsPriceTransparency: @"Price Transparency",
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
          AROptionsBidManagement: @"Enable Bid Management (a.k.a My Bids)",
-         AROptionsNewSalePage: @"Enable new sale (auction) page",
          AROptionsNewFirstInquiry: @"Enable new first inquiry flow",
          AROptionsUseReactNativeWebView: @"Use react native webviews",
-         AROptionsNewShowPage: @"Enable new show page",
-         AROptionsNewFairPage: @"Enable new fair page",
+         AROptionsNewInsightsPage: @"Enable artist insights page",
         };
     });
 }

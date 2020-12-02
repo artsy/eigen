@@ -13,6 +13,8 @@ interface SingleSelectOptionScreenProps {
   onSelect: (any: any) => void
   selectedOption: FilterData
   filterOptions: FilterData[]
+  ListHeaderComponent?: JSX.Element
+  withExtraPadding?: boolean
 }
 
 export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> = ({
@@ -21,6 +23,8 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
   onSelect,
   filterOptions,
   navigator,
+  ListHeaderComponent,
+  withExtraPadding = false,
 }) => {
   const handleBackNavigation = () => {
     navigator.pop()
@@ -29,30 +33,21 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
   return (
     <Flex flexGrow={1}>
       <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
-      <Flex mb="125px">
-        <FlatList<FilterData>
+      <Flex flexGrow={1}>
+        <FlatList
+          style={{ flex: 1 }}
           initialNumToRender={100}
+          ListHeaderComponent={ListHeaderComponent}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
+          ItemSeparatorComponent={() => <Separator />}
           renderItem={({ item }) => (
-            <Box>
-              {
-                <SingleSelectOptionListItemRow onPress={() => onSelect(item)}>
-                  <OptionListItem>
-                    <InnerOptionListItem>
-                      <Option color="black100" size="3t">
-                        {item.displayText}
-                      </Option>
-                      {item.displayText === selectedOption.displayText && (
-                        <Box mb={0.1}>
-                          <CheckIcon fill="black100" />
-                        </Box>
-                      )}
-                    </InnerOptionListItem>
-                  </OptionListItem>
-                </SingleSelectOptionListItemRow>
-              }
-            </Box>
+            <ListItem
+              item={item}
+              selectedOption={selectedOption}
+              onSelect={onSelect}
+              withExtraPadding={withExtraPadding}
+            />
           )}
         />
       </Flex>
@@ -60,26 +55,51 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
   )
 }
 
-export const FilterHeader = styled(Flex)`
-  flex-direction: row;
-  justify-content: space-between;
-  padding-right: ${space(2)}px;
-  border: solid 0.5px ${color("black10")};
-  border-right-width: 0;
-  border-left-width: 0;
-  border-top-width: 0;
-`
-export const NavigateBackIconContainer = styled(TouchableOpacity)`
-  margin: 20px 0px 0px 20px;
-`
+const ListItem = ({
+  item,
+  onSelect,
+  selectedOption,
+  withExtraPadding,
+}: {
+  item: FilterData
+  onSelect: (any: any) => void
+  selectedOption: FilterData
+  withExtraPadding: boolean
+}) => (
+  <SingleSelectOptionListItemRow onPress={() => onSelect(item)}>
+    <OptionListItem>
+      <InnerOptionListItem px={withExtraPadding && item.displayText !== "All" ? 3 : 2}>
+        <Sans color="black100" size="3t">
+          {item.displayText}
+          {!!item.count && (
+            <Sans color="black60" size="3t">
+              {" "}
+              ({item.count})
+            </Sans>
+          )}
+        </Sans>
+        {item.displayText === selectedOption.displayText && (
+          <Box mb={0.1}>
+            <CheckIcon fill="black100" />
+          </Box>
+        )}
+      </InnerOptionListItem>
+    </OptionListItem>
+  </SingleSelectOptionListItemRow>
+)
 
 export const InnerOptionListItem = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   flex-grow: 1;
-  align-items: flex-end;
-  padding: ${space(2)}px;
+  align-items: center;
+  height: 60px;
 `
 
 export const SingleSelectOptionListItemRow = styled(TouchableOpacity)``
-export const Option = styled(Sans)``
+
+export const OptionListItem = styled(Flex)`
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+`

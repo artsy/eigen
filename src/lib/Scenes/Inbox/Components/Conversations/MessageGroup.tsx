@@ -1,4 +1,3 @@
-// import { groupMessages } from "./groupMessages"
 import React from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
@@ -8,12 +7,11 @@ import { Messages_conversation } from "__generated__/Messages_conversation.graph
 import moment from "moment"
 import { Flex, Spacer } from "palette"
 
+import { navigate } from "lib/navigation/navigate"
 import { Message } from "./Message"
 import ArtworkPreview from "./Preview/ArtworkPreview"
 import ShowPreview from "./Preview/ShowPreview"
 import { TimeSince } from "./TimeSince"
-
-import ARSwitchBoard from "lib/NativeModules/SwitchBoard"
 
 const SubjectContainer = styled(Flex)`
   flex-direction: row;
@@ -41,25 +39,21 @@ export class MessageGroup extends React.Component<MessageGroupProps> {
         {!!message.isFirstMessage && (
           <SubjectContainer>
             {subjectItem?.__typename === "Artwork" && (
-              <ArtworkPreview
-                artwork={subjectItem}
-                onSelected={() => ARSwitchBoard.presentNavigationViewController(this, subjectItem.href!)}
-              />
+              <ArtworkPreview artwork={subjectItem} onSelected={() => navigate(subjectItem.href!)} />
             )}
             {subjectItem?.__typename === "Show" && (
-              <ShowPreview
-                show={subjectItem}
-                onSelected={() => ARSwitchBoard.presentNavigationViewController(this, subjectItem.href!)}
-              />
+              <ShowPreview show={subjectItem} onSelected={() => navigate(subjectItem.href!)} />
             )}
           </SubjectContainer>
         )}
-        <Message
-          message={message}
-          key={message.internalID}
-          showTimeSince={!!(message.createdAt && today && group.length - 1 === messageIndex)}
-          conversationId={conversationId!}
-        />
+        {!!message.body && (
+          <Message
+            message={message}
+            key={message.internalID}
+            showTimeSince={!!(message.createdAt && today && group.length - 1 === messageIndex)}
+            conversationId={conversationId!}
+          />
+        )}
         <Spacer mb={spaceAfter} />
       </React.Fragment>
     )

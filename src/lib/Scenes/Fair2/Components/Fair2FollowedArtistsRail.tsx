@@ -33,6 +33,20 @@ export const Fair2FollowedArtistsRail: React.FC<Fair2FollowedArtistsRailProps> =
     }
     tracking.trackEvent(trackTappedArtworkProps)
   }
+
+  const trackTappedViewAll = () => {
+    const trackTappedArtworkProps: TappedArtworkGroup = {
+      action: ActionType.tappedArtworkGroup,
+      context_module: ContextModule.worksByArtistsYouFollowRail,
+      context_screen_owner_type: OwnerType.fair,
+      context_screen_owner_id: fair.internalID,
+      context_screen_owner_slug: fair.slug,
+      destination_screen_owner_type: OwnerType.fairArtworks,
+      type: "viewAll",
+    }
+    tracking.trackEvent(trackTappedArtworkProps)
+  }
+
   const artworks = compact(fair.followedArtistArtworks.edges)
 
   return (
@@ -40,7 +54,12 @@ export const Fair2FollowedArtistsRail: React.FC<Fair2FollowedArtistsRailProps> =
       <Box flexDirection="row" justifyContent="space-between" mx={2} mb={2}>
         <Text variant="subtitle">Works by artists you follow</Text>
         {artworks.length > 3 && (
-          <TouchableOpacity onPress={() => navigate(`/fair/${fair.slug}/followedArtists`)}>
+          <TouchableOpacity
+            onPress={() => {
+              trackTappedViewAll()
+              navigate(`/fair/${fair.slug}/followedArtists`)
+            }}
+          >
             <Text variant="subtitle" color="black60">
               View all
             </Text>

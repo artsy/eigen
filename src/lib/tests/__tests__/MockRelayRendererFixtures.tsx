@@ -2,9 +2,9 @@ import { MockRelayRendererFixtures_artist } from "__generated__/MockRelayRendere
 import { MockRelayRendererFixtures_artwork } from "__generated__/MockRelayRendererFixtures_artwork.graphql"
 import { MockRelayRendererFixtures_artworkMetadata } from "__generated__/MockRelayRendererFixtures_artworkMetadata.graphql"
 import { MockRelayRendererFixturesArtistQuery } from "__generated__/MockRelayRendererFixturesArtistQuery.graphql"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import cheerio from "cheerio"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { render } from "enzyme"
 import * as React from "react"
 import { Image, Text, View } from "react-native"
@@ -27,7 +27,7 @@ export const Artwork = createFragmentContainer(
   (props: { artwork: MockRelayRendererFixtures_artwork }) => (
     <View>
       <Image
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         source={{ uri: props.artwork && props.artwork.image && props.artwork.image.url }}
       />
       <Metadata artworkMetadata={props.artwork} />
@@ -66,7 +66,7 @@ const ArtistQueryRenderer = (props: { id: string }) => (
     {({ relayEnvironment }) => {
       return (
         <QueryRenderer<MockRelayRendererFixturesArtistQuery>
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           environment={relayEnvironment}
           variables={props}
           query={graphql`

@@ -1,5 +1,5 @@
-import { styled as primitives } from "../../platform/primitives"
-
+import { View, ViewProps } from "react-native"
+import styled from "styled-components/native"
 import {
   background,
   BackgroundProps,
@@ -28,7 +28,8 @@ export interface BoxProps
     LayoutProps,
     PositionProps,
     SpaceProps,
-    TextAlignProps {}
+    TextAlignProps,
+    ViewProps {}
 
 /**
  * All the system functions for Box
@@ -36,10 +37,9 @@ export interface BoxProps
 export const boxMixin = compose(background, border, color, flexbox, layout, position, space, textAlign)
 
 /**
- * Box is just a `View` or `div` (depending on the platform) with common styled-systems
- * hooks.
+ * Box is just a `View` with common styled-system props.
  */
-export const Box = primitives.View<BoxProps>`
+export const Box = styled(View)<BoxProps>`
   ${boxMixin}
 `
 

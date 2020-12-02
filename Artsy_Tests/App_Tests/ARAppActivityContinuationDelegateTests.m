@@ -1,5 +1,4 @@
 #import "ARAppActivityContinuationDelegate.h"
-#import "ARTopMenuViewController.h"
 #import "ARUserManager.h"
 #import "ARAppDelegate+Analytics.h"
 #import "ArtsyAPI+Sailthru.h"

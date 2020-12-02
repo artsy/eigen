@@ -1,13 +1,10 @@
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { dismissModal } from "lib/navigation/navigate"
 import { getTextTree } from "lib/utils/getTestWrapper"
 import React from "react"
 import "react-native"
 import Confirmation, { SubmissionTypes } from "../Confirmation"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  dismissModalViewController: jest.fn(),
-}))
 
 const emptyProps = { navigator: {} as any, route: {} as any }
 
@@ -22,7 +19,7 @@ describe("callbacks", () => {
   it("dismisses modal when done is tapped", () => {
     const confirmation = new Confirmation(emptyProps)
     confirmation.exitModal()
-    expect(SwitchBoard.dismissModalViewController).toHaveBeenCalled()
+    expect(dismissModal).toHaveBeenCalled()
   })
 
   it("requests submission status after 1 second", () => {

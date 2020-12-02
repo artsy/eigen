@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d390f1995bfcadc940cb21f450a58bce */
+/* @relayHash e1d69042a5c3f99f1f7167fd85323e96 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -35,12 +35,22 @@ query MyCollectionArtworkPriceEstimateTestsQuery {
 fragment MyCollectionArtworkPriceEstimate_artwork on Artwork {
   costCurrencyCode
   costMinor
+  sizeBucket
 }
 
 fragment MyCollectionArtworkPriceEstimate_marketPriceInsights on MarketPriceInsights {
-  lowRangeCents
-  midRangeCents
   highRangeCents
+  largeHighRangeCents
+  largeLowRangeCents
+  largeMidRangeCents
+  lowRangeCents
+  mediumHighRangeCents
+  mediumLowRangeCents
+  mediumMidRangeCents
+  midRangeCents
+  smallHighRangeCents
+  smallLowRangeCents
+  smallMidRangeCents
   artsyQInventory
 }
 */
@@ -69,9 +79,15 @@ v2 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
-  "type": "Int"
+  "type": "String"
 },
 v3 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Int"
+},
+v4 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -152,6 +168,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "sizeBucket",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "id",
             "storageKey": null
           }
@@ -170,7 +193,56 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "highRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "largeHighRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "largeLowRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "largeMidRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "lowRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "mediumHighRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "mediumLowRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "mediumMidRangeCents",
             "storageKey": null
           },
           {
@@ -184,7 +256,21 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "highRangeCents",
+            "name": "smallHighRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "smallLowRangeCents",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "smallMidRangeCents",
             "storageKey": null
           },
           {
@@ -200,7 +286,7 @@ return {
     ]
   },
   "params": {
-    "id": "d390f1995bfcadc940cb21f450a58bce",
+    "id": "e1d69042a5c3f99f1f7167fd85323e96",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -209,29 +295,34 @@ return {
           "plural": false,
           "type": "Artwork"
         },
-        "artwork.costCurrencyCode": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "String"
-        },
-        "artwork.costMinor": (v2/*: any*/),
+        "artwork.costCurrencyCode": (v2/*: any*/),
+        "artwork.costMinor": (v3/*: any*/),
         "artwork.id": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "ID"
         },
+        "artwork.sizeBucket": (v2/*: any*/),
         "marketPriceInsights": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "MarketPriceInsights"
         },
-        "marketPriceInsights.artsyQInventory": (v2/*: any*/),
-        "marketPriceInsights.highRangeCents": (v3/*: any*/),
-        "marketPriceInsights.lowRangeCents": (v3/*: any*/),
-        "marketPriceInsights.midRangeCents": (v3/*: any*/)
+        "marketPriceInsights.artsyQInventory": (v3/*: any*/),
+        "marketPriceInsights.highRangeCents": (v4/*: any*/),
+        "marketPriceInsights.largeHighRangeCents": (v4/*: any*/),
+        "marketPriceInsights.largeLowRangeCents": (v4/*: any*/),
+        "marketPriceInsights.largeMidRangeCents": (v4/*: any*/),
+        "marketPriceInsights.lowRangeCents": (v4/*: any*/),
+        "marketPriceInsights.mediumHighRangeCents": (v4/*: any*/),
+        "marketPriceInsights.mediumLowRangeCents": (v4/*: any*/),
+        "marketPriceInsights.mediumMidRangeCents": (v4/*: any*/),
+        "marketPriceInsights.midRangeCents": (v4/*: any*/),
+        "marketPriceInsights.smallHighRangeCents": (v4/*: any*/),
+        "marketPriceInsights.smallLowRangeCents": (v4/*: any*/),
+        "marketPriceInsights.smallMidRangeCents": (v4/*: any*/)
       }
     },
     "name": "MyCollectionArtworkPriceEstimateTestsQuery",

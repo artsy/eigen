@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7af42aa4c9ea53227bd46b149d2ad598 */
+/* @relayHash 27ed781943bc2465f009fba972080bd8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -91,6 +91,7 @@ export type CommercialButtonsTestsRenderQueryRawResponse = {
         }) | null;
         readonly artistNames: string | null;
         readonly inquiryQuestions: ReadonlyArray<({
+            readonly internalID: string;
             readonly question: string;
             readonly id: string;
         }) | null> | null;
@@ -235,7 +236,9 @@ fragment InquiryButtons_artwork on Artwork {
 
 fragment InquiryModal_artwork on Artwork {
   ...CollapsibleArtworkDetails_artwork
+  internalID
   inquiryQuestions {
+    internalID
     question
     id
   }
@@ -268,7 +271,14 @@ v2 = {
   "name": "id",
   "storageKey": null
 },
-v3 = [
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v4 = [
   {
     "alias": null,
     "args": null,
@@ -277,7 +287,7 @@ v3 = [
     "storageKey": null
   }
 ],
-v4 = [
+v5 = [
   {
     "alias": null,
     "args": null,
@@ -286,7 +296,7 @@ v4 = [
     "storageKey": null
   }
 ],
-v5 = [
+v6 = [
   {
     "alias": null,
     "args": null,
@@ -459,13 +469,7 @@ return {
             ],
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "internalID",
-            "storageKey": null
-          },
+          (v3/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -502,7 +506,7 @@ return {
                     "kind": "LinkedField",
                     "name": "maxBid",
                     "plural": false,
-                    "selections": (v3/*: any*/),
+                    "selections": (v4/*: any*/),
                     "storageKey": null
                   },
                   (v2/*: any*/)
@@ -527,7 +531,7 @@ return {
                 "kind": "LinkedField",
                 "name": "increments",
                 "plural": true,
-                "selections": (v3/*: any*/),
+                "selections": (v4/*: any*/),
                 "storageKey": null
               },
               (v2/*: any*/)
@@ -633,7 +637,7 @@ return {
             "kind": "LinkedField",
             "name": "signatureInfo",
             "plural": false,
-            "selections": (v4/*: any*/),
+            "selections": (v5/*: any*/),
             "storageKey": null
           },
           {
@@ -643,7 +647,7 @@ return {
             "kind": "LinkedField",
             "name": "artist",
             "plural": false,
-            "selections": (v5/*: any*/),
+            "selections": (v6/*: any*/),
             "storageKey": null
           },
           {
@@ -653,7 +657,7 @@ return {
             "kind": "LinkedField",
             "name": "attributionClass",
             "plural": false,
-            "selections": (v5/*: any*/),
+            "selections": (v6/*: any*/),
             "storageKey": null
           },
           {
@@ -684,7 +688,7 @@ return {
             "kind": "LinkedField",
             "name": "conditionDescription",
             "plural": false,
-            "selections": (v4/*: any*/),
+            "selections": (v5/*: any*/),
             "storageKey": null
           },
           {
@@ -694,7 +698,7 @@ return {
             "kind": "LinkedField",
             "name": "certificateOfAuthenticity",
             "plural": false,
-            "selections": (v4/*: any*/),
+            "selections": (v5/*: any*/),
             "storageKey": null
           },
           {
@@ -704,7 +708,7 @@ return {
             "kind": "LinkedField",
             "name": "framed",
             "plural": false,
-            "selections": (v4/*: any*/),
+            "selections": (v5/*: any*/),
             "storageKey": null
           },
           {
@@ -722,6 +726,7 @@ return {
             "name": "inquiryQuestions",
             "plural": true,
             "selections": [
+              (v3/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -740,7 +745,7 @@ return {
     ]
   },
   "params": {
-    "id": "7af42aa4c9ea53227bd46b149d2ad598",
+    "id": "27ed781943bc2465f009fba972080bd8",
     "metadata": {},
     "name": "CommercialButtonsTestsRenderQuery",
     "operationKind": "query",

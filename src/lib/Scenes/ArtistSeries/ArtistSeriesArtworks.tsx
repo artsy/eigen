@@ -182,21 +182,21 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
       ) {
         artistSeries(id: $id) {
           ...ArtistSeriesArtworks_artistSeries
-          @arguments(
-            count: $count
-            cursor: $cursor
-            sort: $sort
-            medium: $medium
-            color: $color
-            partnerID: $partnerID
-            priceRange: $priceRange
-            dimensionRange: $dimensionRange
-            majorPeriods: $majorPeriods
-            acquireable: $acquireable
-            inquireableOnly: $inquireableOnly
-            atAuction: $atAuction
-            offerable: $offerable
-          )
+            @arguments(
+              count: $count
+              cursor: $cursor
+              sort: $sort
+              medium: $medium
+              color: $color
+              partnerID: $partnerID
+              priceRange: $priceRange
+              dimensionRange: $dimensionRange
+              majorPeriods: $majorPeriods
+              acquireable: $acquireable
+              inquireableOnly: $inquireableOnly
+              atAuction: $atAuction
+              offerable: $offerable
+            )
         }
       }
     `,

@@ -1,32 +1,58 @@
+import { InquiryQuestionInput } from "__generated__/SubmitInquiryRequestMutation.graphql"
 import {
   ArtworkInquiryActions,
   ArtworkInquiryContextProps,
   ArtworkInquiryContextState,
+  InquiryOptions,
+  InquiryQuestionIDs,
 } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import React, { createContext, Reducer, useReducer } from "react"
 
-const artworkInquiryState: ArtworkInquiryContextState = {
+const initialArtworkInquiryState: ArtworkInquiryContextState = {
   shippingLocation: null,
   inquiryType: null,
+  inquiryQuestions: [],
+  message: null,
 }
 
-// NOTE: We will need to handle clearing the location fields and other CRUD like actions
-// But since we are working this in different streams we'll have to come back to this
 export const reducer = (
   inquiryState: ArtworkInquiryContextState,
   action: ArtworkInquiryActions
 ): ArtworkInquiryContextState => {
   switch (action.type) {
+    case "resetForm":
+      return initialArtworkInquiryState
     case "selectInquiryType":
       return {
-        shippingLocation: inquiryState.shippingLocation,
+        ...inquiryState,
         inquiryType: action.payload,
+        inquiryQuestions:
+          action.payload === InquiryOptions.RequestPrice
+            ? [{ questionID: InquiryQuestionIDs.PriceAndAvailability }]
+            : inquiryState.inquiryQuestions,
       }
 
     case "selectShippingLocation":
       return {
+        ...inquiryState,
         shippingLocation: action.payload,
-        inquiryType: inquiryState.inquiryType,
+      }
+
+    case "selectInquiryQuestion":
+      const { isChecked, ...payloadQuestion } = action.payload
+      const { inquiryQuestions = [] } = inquiryState
+      const newSelection: InquiryQuestionInput[] = isChecked
+        ? [...inquiryQuestions, payloadQuestion]
+        : inquiryQuestions.filter((q) => q.questionID !== payloadQuestion.questionID)
+
+      return {
+        ...inquiryState,
+        inquiryQuestions: newSelection,
+      }
+    case "setMessage":
+      return {
+        ...inquiryState,
+        message: action.payload,
       }
   }
 }
@@ -36,7 +62,7 @@ export const ArtworkInquiryContext = createContext<ArtworkInquiryContextProps>(n
 export const ArtworkInquiryStateProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer<Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>>(
     reducer,
-    artworkInquiryState
+    initialArtworkInquiryState
   )
   return <ArtworkInquiryContext.Provider value={{ state, dispatch }}>{children}</ArtworkInquiryContext.Provider>
 }

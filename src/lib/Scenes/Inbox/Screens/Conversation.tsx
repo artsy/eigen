@@ -7,7 +7,7 @@ import Composer from "lib/Scenes/Inbox/Components/Conversations/Composer"
 import Messages from "lib/Scenes/Inbox/Components/Conversations/Messages"
 import { sendConversationMessage } from "lib/Scenes/Inbox/Components/Conversations/SendConversationMessage"
 import { updateConversation } from "lib/Scenes/Inbox/Components/Conversations/UpdateConversation"
-import { AppStore } from "lib/store/AppStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { color, Flex, Text, Touchable } from "palette"
@@ -54,14 +54,14 @@ interface State {
   failedMessageText: string | null
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const track: Track<Props, State> = _track
 
 @track()
 export class Conversation extends React.Component<Props, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   messages: MessagesComponent
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   composer: Composer
 
   // Assume if the component loads, connection exists (this way the banner won't flash unnecessarily)
@@ -82,7 +82,7 @@ export class Conversation extends React.Component<Props, State> {
     NetInfo.isConnected.removeEventListener("connectionChange", this.handleConnectivityChange)
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleConnectivityChange = (isConnected) => {
     this.setState({ isConnected })
   }
@@ -92,30 +92,27 @@ export class Conversation extends React.Component<Props, State> {
     if (conversation?.unread && !this.state.markedMessageAsRead) {
       updateConversation(
         this.props.relay.environment,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         conversation,
-        // @ts-ignore STRICTNESS_MIGRATION
         conversation.lastMessageID,
-        // @ts-ignore STRICTNESS_MIGRATION
         (_response) => {
           this.setState({ markedMessageAsRead: true })
-          AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
+          GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
         },
-        // @ts-ignore STRICTNESS_MIGRATION
         (error) => {
           console.warn(error)
           this.setState({ markedMessageAsRead: true })
-          AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
+          GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
         }
       )
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   @track((props) => ({
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.ConversationSendReply,
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     owner_id: props.me.conversation.internalID,
     owner_type: Schema.OwnerEntityTypes.Conversation,
   }))
@@ -127,11 +124,11 @@ export class Conversation extends React.Component<Props, State> {
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   @track((props) => ({
     action_type: Schema.ActionTypes.Fail,
     action_name: Schema.ActionNames.ConversationSendReply,
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     owner_id: props.me.conversation.internalID,
     owner_type: Schema.OwnerEntityTypes.Conversation,
   }))
@@ -142,28 +139,26 @@ export class Conversation extends React.Component<Props, State> {
 
   render() {
     const conversation = this.props.me.conversation
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const partnerName = conversation.to.name
 
     return (
       <Composer
         disabled={this.state.sendingMessage || !this.state.isConnected}
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         ref={(composer) => (this.composer = composer)}
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         value={this.state.failedMessageText}
         onSubmit={(text) => {
           this.setState({ sendingMessage: true, failedMessageText: null })
           sendConversationMessage(
             this.props.relay.environment,
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             conversation,
             text,
-            // @ts-ignore STRICTNESS_MIGRATION
             (_response) => {
               this.messageSuccessfullySent(text)
             },
-            // @ts-ignore STRICTNESS_MIGRATION
             (error) => {
               this.messageFailedToSend(error, text)
             }

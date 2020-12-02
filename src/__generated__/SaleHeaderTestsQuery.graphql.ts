@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 108cb9f99476582d09ac4bcc310787c0 */
+/* @relayHash faf5ffa6c0fd866c4c321e2767a36810 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,7 +28,7 @@ query SaleHeaderTestsQuery {
 
 fragment SaleHeader_sale on Sale {
   name
-  internalID
+  slug
   liveStartAt
   endAt
   startAt
@@ -111,7 +111,7 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "internalID",
+            "name": "slug",
             "storageKey": null
           },
           {
@@ -173,7 +173,7 @@ return {
     ]
   },
   "params": {
-    "id": "108cb9f99476582d09ac4bcc310787c0",
+    "id": "faf5ffa6c0fd866c4c321e2767a36810",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "sale": {
@@ -191,9 +191,9 @@ return {
         "sale.coverImage.url": (v1/*: any*/),
         "sale.endAt": (v1/*: any*/),
         "sale.id": (v2/*: any*/),
-        "sale.internalID": (v2/*: any*/),
         "sale.liveStartAt": (v1/*: any*/),
         "sale.name": (v1/*: any*/),
+        "sale.slug": (v2/*: any*/),
         "sale.startAt": (v1/*: any*/),
         "sale.timeZone": (v1/*: any*/)
       }

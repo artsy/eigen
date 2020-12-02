@@ -1,12 +1,11 @@
-import React from "react"
-import { View } from "react-native"
-import LinearGradient from "react-native-linear-gradient"
-
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { color, Flex, Sans, space, Spacer } from "palette"
+import React from "react"
+import LinearGradient from "react-native-linear-gradient"
+import { Box, BoxProps } from "../Box"
 import { CardTag, CardTagProps } from "./CardTag"
 
-export interface MediumCardProps {
+export interface MediumCardProps extends BoxProps {
   image: string
   title: string
   subtitle?: string
@@ -17,17 +16,9 @@ export interface MediumCardProps {
  * `MediumCard` is a card with one image one tall image, and text for title and subtitle
  * at the bottom.
  */
-export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, tag }) => {
+export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, tag, ...rest }) => {
   return (
-    <View
-      style={{
-        width: 280,
-        height: 370,
-        flexDirection: "row",
-        borderRadius: 4,
-        overflow: "hidden",
-      }}
-    >
+    <Box width={280} height={370} flexDirection="row" borderRadius={4} overflow="hidden" {...rest}>
       <Flex flex={2} background={color("black10")}>
         <OpaqueImageView imageURL={image} style={{ flex: 1 }} />
       </Flex>
@@ -59,6 +50,6 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
         <Spacer mt={15} />
       </Flex>
       {!!tag && <CardTag {...tag} style={{ position: "absolute", top: 15, left: 15 }} />}
-    </View>
+    </Box>
   )
 }

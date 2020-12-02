@@ -55,7 +55,7 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
           }
         `,
         variables: {
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           input: { saleArtworkID: artwork.saleArtwork.internalID },
         },
       })
@@ -89,7 +89,7 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
         if (data.requestConditionReport) {
           this.presentSuccessModal()
         } else {
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           this.presentErrorModal(null)
         }
         this.setState({ requestingConditionReport: false })
@@ -162,7 +162,7 @@ export const RequestConditionReportQueryRenderer: React.FC<{
       `}
       render={({ props }) => {
         if (props) {
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           return <RequestConditionReportFragmentContainer artwork={props.artwork} me={props.me} />
         } else {
           return null

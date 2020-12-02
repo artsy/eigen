@@ -181,6 +181,8 @@ type AnalyticsPartnerInquiryCountTimeSeriesStats {
 # Inquiry stats of a partner
 type AnalyticsPartnerInquiryStats {
   inquiryCount: Int!
+
+  # Inquiry response time in seconds
   inquiryResponseTime: Int
   partnerId: String!
   period: AnalyticsQueryPeriodEnum!
@@ -192,6 +194,8 @@ type AnalyticsPartnerInquiryStats {
 # Sales stats of a partner
 type AnalyticsPartnerSalesStats {
   orderCount: Int!
+
+  # Order response time in seconds
   orderResponseTime: Int
   partnerId: String!
   period: AnalyticsQueryPeriodEnum!
@@ -226,7 +230,11 @@ type AnalyticsPartnerSalesTimeSeriesStats {
 # Partner Stats
 type AnalyticsPartnerStats {
   # Time series data on number of artworks published
+  artworkPublished(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerStatsArtworksPublished
+
+  # Time series data on number of artworks published
   artworksPublished(period: AnalyticsQueryPeriodEnum!): AnalyticsArtworksPublishedStats
+    @deprecated(reason: "Use artworkPublished for refactored time series bucket code")
 
   # Audience stats
   audience(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerAudienceStats
@@ -253,7 +261,11 @@ type AnalyticsPartnerStats {
   inquiry(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerInquiryStats
 
   # Different types of partner pageviews
+  pageview(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerStatsPageviews
+
+  # Different types of partner pageviews
   pageviews(period: AnalyticsQueryPeriodEnum!): AnalyticsPageviewStats
+    @deprecated(reason: "Use pageview for refactored time series bucket code")
   partnerId: String!
 
   # Artworks, shows, or artists ranked by views. Capped at 20 by the underlying sql query.
@@ -293,7 +305,47 @@ type AnalyticsPartnerStats {
 
   # Number of unique visitors
   uniqueVisitors(period: AnalyticsQueryPeriodEnum!): Int
-  @deprecated(reason: "Use audience() { uniqueVisitors } instead")
+    @deprecated(reason: "Use audience() { uniqueVisitors } instead")
+}
+
+# Publish artwork Series Stats
+type AnalyticsPartnerStatsArtworksPublished {
+  partnerId: String!
+  percentageChanged: Int!
+  period: AnalyticsQueryPeriodEnum!
+
+  # Partner artworks published count time series
+  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerStatsArtworksPublishedTimeSeries!]!
+  totalCount: Int!
+}
+
+# Artworks published time series data of a partner
+type AnalyticsPartnerStatsArtworksPublishedTimeSeries {
+  count: Int
+  endTime: AnalyticsDateTime
+  startTime: AnalyticsDateTime
+}
+
+# Stats for pageviews of partner content
+type AnalyticsPartnerStatsPageviews {
+  artworkViews: Int!
+  galleryViews: Int!
+  partnerId: String!
+  percentageChanged: Int!
+  period: AnalyticsQueryPeriodEnum!
+  showViews: Int!
+
+  # Pageviews time series
+  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerStatsPageviewsTimeSeries!]
+  totalCount: Int!
+  uniqueVisitors: Int!
+}
+
+# Pageviews time series data of a partner
+type AnalyticsPartnerStatsPageviewsTimeSeries {
+  count: Int
+  endTime: AnalyticsDateTime
+  startTime: AnalyticsDateTime
 }
 
 # Partner Time Series Stats
@@ -1123,7 +1175,7 @@ type ArtistTargetSupplyMicrofunnel {
     # Number of artworks to return
     size: Int
   ): [ArtistTargetSupplyMicrofunnelArtwork]
-  @deprecated(reason: "Prefer to use `artworksConnection`. [Will be removed in v2]")
+    @deprecated(reason: "Prefer to use `artworksConnection`. [Will be removed in v2]")
 
   # A list of recently sold artworks.
   artworksConnection(
@@ -1192,8 +1244,10 @@ type Artwork implements Node & Searchable & Sellable {
   description(format: Format): String
   dimensions: dimensions
   displayLabel: String
+  displayPriceRange: Boolean
   editionNumber: String
   editionOf: String
+  editionSet(id: String!): EditionSet
   editionSets(sort: EditionSetSorts): [EditionSet]
   editionSize: String
 
@@ -1291,6 +1345,7 @@ type Artwork implements Node & Searchable & Sellable {
     shallow: Boolean
   ): Partner
   pickupAvailable: Boolean
+  price: String
   priceCurrency: String
   priceIncludesTax: Boolean
   priceIncludesTaxDisplay: String
@@ -1322,11 +1377,14 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Is this work available for shipping only within the Contenental US?
   shipsToContinentalUSOnly: Boolean
-  @deprecated(reason: "Prefer to use `onlyShipsDomestically`. [Will be removed in v2]")
+    @deprecated(reason: "Prefer to use `onlyShipsDomestically`. [Will be removed in v2]")
   show(active: Boolean, atAFair: Boolean, sort: ShowSorts): Show
   shows(active: Boolean, atAFair: Boolean, size: Int, sort: ShowSorts): [Show]
   signature(format: Format): String
   signatureInfo: ArtworkInfoRow
+
+  # size bucket assigned to an artwork based on its dimensions
+  sizeBucket: String
 
   # score assigned to an artwork based on its dimensions
   sizeScore: Float
@@ -1468,6 +1526,8 @@ type ArtworkMeta {
   share: String
   title: String
 }
+
+union ArtworkOrEditionSetType = Artwork | EditionSet
 
 # The results for one of the requested aggregations
 type ArtworksAggregationResults {
@@ -1728,7 +1788,10 @@ type AuctionsLotStanding implements AuctionsNode {
   leadingBidAmount: AuctionsMoney!
 
   # whether this user has the leading bid
-  lotState: AuctionsLotState!
+  lot: AuctionsLotState!
+
+  # whether this user has the leading bid
+  lotState: AuctionsLotState! @deprecated(reason: "prefer `lot`")
   rawId: String!
   saleArtwork: SaleArtwork
 }
@@ -1751,13 +1814,14 @@ type AuctionsLotStandingEdge {
   node: AuctionsLotStanding!
 }
 
-# A lot in a sale
+# The state of a lot
 type AuctionsLotState {
   # total number of bids placed on the lot
   bidCount: Int!
+  floorSellingPrice: Money
 
-  # selling price on the live auction floor
-  floorSellingPrice: AuctionsMoney
+  # selling price, in minor unit, on the live auction floor
+  floorSellingPriceCents: Long
 
   # The bidder currently winning the online portion of the auction
   floorWinningBidder: AuctionsBidder
@@ -1767,9 +1831,10 @@ type AuctionsLotState {
 
   # The Gravity Lot ID.
   internalID: ID!
+  onlineAskingPrice: Money
 
-  # asking price for online bidders
-  onlineAskingPrice: AuctionsMoney!
+  # asking price, in minor unit, for online bidders
+  onlineAskingPriceCents: Long!
 
   # The bidder currently winning the online portion of the auction
   onlineSellingToBidder: AuctionsBidder
@@ -1875,7 +1940,7 @@ enum AuctionsReserveStatus {
   ReserveNotMet
 }
 
-# A collection of lots.
+# The state of a sale
 type AuctionsSaleState {
   # Users not allowed to participate in the sale
   bannedUsers: [AuctionsUser!]!
@@ -1886,7 +1951,7 @@ type AuctionsSaleState {
   # The Gravity Sale ID.
   id: ID!
 
-  # The Gravity Lot ID.
+  # The Gravity Sale ID.
   internalID: ID!
 
   # Lot ids that had an Artsy bid that was the highest bid on the lot but did not win
@@ -2100,16 +2165,7 @@ type BuyersPremium {
     thousand: String = ","
   ): String
   cents: Int
-
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
   percent: Float
-
-  # A slug ID.
-  slug: ID!
 }
 
 type CalculatedCost {
@@ -2694,6 +2750,7 @@ type CommerceFulfillmentEdge {
 type CommerceLineItem {
   artwork: Artwork
   artworkId: String!
+  artworkOrEditionSet: ArtworkOrEditionSetType
   artworkVersion: ArtworkVersion
   artworkVersionId: String!
   commissionFee(
@@ -3750,6 +3807,12 @@ enum ConsignmentOfferSort {
   # sort by notes in descending order
   NOTES_DESC
 
+  # sort by offer_responses_count in ascending order
+  OFFER_RESPONSES_COUNT_ASC
+
+  # sort by offer_responses_count in descending order
+  OFFER_RESPONSES_COUNT_DESC
+
   # sort by offer_type in ascending order
   OFFER_TYPE_ASC
 
@@ -4082,6 +4145,9 @@ type ConsignmentSubmission {
   provenance: String
   publishedAt: ISO8601DateTime
   signature: Boolean
+
+  # If this artwork exists in Gravity, its ID
+  sourceArtworkID: String
   state: ConsignmentSubmissionStateAggregation
   title: String
   userAgent: String
@@ -4369,6 +4435,12 @@ enum ConsignmentSubmissionSort {
   # sort by signature in descending order
   SIGNATURE_DESC
 
+  # sort by source_artwork_id in ascending order
+  SOURCE_ARTWORK_ID_ASC
+
+  # sort by source_artwork_id in descending order
+  SOURCE_ARTWORK_ID_DESC
+
   # sort by state in ascending order
   STATE_ASC
 
@@ -4454,7 +4526,7 @@ type Conversation implements Node {
   # A globally unique ID.
   id: ID!
   initialMessage: String!
-  @deprecated(reason: "This field is no longer required. Prefer the first message from the MessageConnection.")
+    @deprecated(reason: "This field is no longer required. Prefer the first message from the MessageConnection.")
 
   # Gravity inquiry id.
   inquiryID: String
@@ -4482,11 +4554,11 @@ type Conversation implements Node {
 
   # Impulse id of the last message.
   lastMessageID: String
-  @deprecated(reason: "Prefer querying `messagesConnection(last:1) { edges { node { internalID } } }`")
+    @deprecated(reason: "Prefer querying `messagesConnection(last:1) { edges { node { internalID } } }`")
 
   # A connection for all messages in a single conversation
   messages(after: String, before: String, first: Int, last: Int, sort: sort): MessageConnection
-  @deprecated(reason: "Prefer messagesConnection")
+    @deprecated(reason: "Prefer messagesConnection")
 
   # A connection for all messages in a single conversation
   messagesConnection(after: String, before: String, first: Int, last: Int, sort: sort): MessageConnection
@@ -4702,6 +4774,24 @@ type CreateOfferMutationPayload {
   consignmentOffer: ConsignmentOffer
 }
 
+# Autogenerated input type of CreateOfferResponseMutation
+input CreateOfferResponseMutationInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  comments: String
+  intendedState: IntendedState!
+  offerId: ID!
+  phoneNumber: String
+  rejectionReason: String
+}
+
+# Autogenerated return type of CreateOfferResponseMutation
+type CreateOfferResponseMutationPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  consignmentOfferResponse: OfferResponse
+}
+
 # Autogenerated input type of CreateSmsSecondFactor
 input CreateSmsSecondFactorInput {
   attributes: SmsSecondFactorAttributes!
@@ -4740,6 +4830,9 @@ input CreateSubmissionMutationInput {
   minimumPriceDollars: Int
   provenance: String
   signature: Boolean
+
+  # If this artwork exists in Gravity, its ID
+  sourceArtworkID: String
   state: ConsignmentSubmissionStateAggregation
   title: String
   userAgent: String
@@ -5081,6 +5174,7 @@ input EditableLocation {
 
 type EditionSet implements Sellable {
   dimensions: dimensions
+  displayPriceRange: Boolean
   editionOf: String
 
   # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
@@ -5096,7 +5190,11 @@ type EditionSet implements Sellable {
   isOfferable: Boolean
   isSold: Boolean
   listPrice: ListPrice
+  price: String
   saleMessage: String
+
+  # size bucket assigned to an artwork based on its dimensions
+  sizeBucket: String
 
   # score assigned to an artwork based on its dimensions
   sizeScore: Float
@@ -5374,6 +5472,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
 
     # Sorts for shows in a fair
     sort: ShowSorts
+    totalCount: Boolean = false
   ): ShowConnection
 
   # A slug ID.
@@ -5543,6 +5642,11 @@ type Feedback {
 
   # Feedback message
   message: String!
+}
+
+type FieldErrorResults {
+  message: String!
+  name: String!
 }
 
 # A connection to a list of items.
@@ -6036,6 +6140,7 @@ type GeneFamilyEdge {
 type GravityMutationError {
   detail: String
   error: String
+  fieldErrors: [FieldErrorResults]
   message: String
   type: String
 }
@@ -6342,6 +6447,8 @@ type ImageURLs {
   normalized: String
 }
 
+union InquiryItemType = Artwork | Show
+
 type InquiryQuestion {
   # A globally unique ID.
   id: ID!
@@ -6349,6 +6456,30 @@ type InquiryQuestion {
   # A type-specific ID.
   internalID: ID!
   question: String!
+}
+
+input InquiryQuestionInput {
+  details: String
+  questionID: String!
+}
+
+# A request to inquire on an artwork
+type InquiryRequest {
+  # A globally unique ID.
+  id: ID!
+  inquireable: InquiryItemType
+  inquirer: User
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  questions: [String]
+  shippingLocation: Location
+}
+
+enum IntendedState {
+  ACCEPTED
+  REJECTED
+  REVIEW
 }
 
 enum Intents {
@@ -6430,33 +6561,33 @@ union InventoryHoldOrErrorUnion = Error | InventoryHold
 type Invoice implements Node {
   # A globally unique ID.
   id: ID!
-  @deprecated(
-    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
-  @deprecated(
-    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # Lewitt's invoice id.
   lewittInvoiceID: String!
-  @deprecated(
-    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # Link to public checkout page.
   paymentURL: String
-  @deprecated(
-    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # Current state of invoice.
   state: InvoiceState
-  @deprecated(
-    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # A formatted price with various currency formatting options.
   total(
@@ -6468,9 +6599,9 @@ type Invoice implements Node {
     symbol: String
     thousand: String = ","
   ): String
-  @deprecated(
-    reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
+    )
 }
 
 enum InvoiceState {
@@ -6789,6 +6920,9 @@ type Me implements Node {
 
   # A list of the current user’s bidder registrations
   bidders(
+    # Limit results to bidders in active auctions
+    active: Boolean
+
     # The slug or ID of a Sale
     saleID: String
   ): [Bidder]
@@ -6848,9 +6982,12 @@ type Me implements Node {
     # The ID of the invoice
     invoiceId: String!
   ): Invoice
-  @deprecated(
-    reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
+    )
+
+  # List of lab features for this user
+  labFeatures: [String!]!
 
   # Sale Artworks search results
   lotsByFollowedArtistsConnection(
@@ -6975,9 +7112,9 @@ type Message implements Node {
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   invoice: Invoice
-  @deprecated(
-    reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
+    )
 
   # True if message is the first in the conversation.
   isFirstMessage: Boolean
@@ -6987,9 +7124,9 @@ type Message implements Node {
 
   # True if message is an invoice message
   isInvoice: Boolean
-  @deprecated(
-    reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
-  )
+    @deprecated(
+      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
+    )
 }
 
 # A connection to a list of items.
@@ -7088,6 +7225,7 @@ type Mutation {
   # Creates a bidder position
   createBidderPosition(input: BidderPositionInput!): BidderPositionPayload
   createConsignmentOffer(input: CreateOfferMutationInput!): CreateOfferMutationPayload
+  createConsignmentOfferResponse(input: CreateOfferResponseMutationInput!): CreateOfferResponseMutationPayload
   createConsignmentSubmission(input: CreateSubmissionMutationInput!): CreateSubmissionMutationPayload
 
   # Create a credit card
@@ -7153,6 +7291,9 @@ type Mutation {
 
   # Start an identity verification flow for a pending identity verification
   startIdentityVerification(input: startIdentityVerificationMutationInput!): startIdentityVerificationMutationPayload
+
+  # Create an artwork inquiry request
+  submitInquiryRequestMutation(input: SubmitInquiryRequestMutationInput!): SubmitInquiryRequestMutationPayload
   unpublishViewingRoom(input: UnpublishViewingRoomInput!): UnpublishViewingRoomPayload
   updateAppSecondFactor(input: UpdateAppSecondFactorInput!): UpdateAppSecondFactorPayload
 
@@ -7290,6 +7431,18 @@ interface Node {
   id: ID!
 }
 
+# Consignment Offer Response
+type OfferResponse {
+  comments: String
+
+  # Uniq ID for this offer response
+  id: ID!
+  intendedState: IntendedState!
+  offer: ConsignmentOffer!
+  phoneNumber: String
+  rejectionReason: String
+}
+
 type OpeningHoursArray {
   schedules: [FormattedDaySchedules]
 }
@@ -7313,7 +7466,7 @@ type OrderedSet {
 
   # Returns a connection of the items. Only Artwork supported right now.
   itemsConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
-  @deprecated(reason: "Utilize `orderedItemsConnection` for union type")
+    @deprecated(reason: "Utilize `orderedItemsConnection` for union type")
   itemType: String
   key: String
   layout: OrderedSetLayouts!
@@ -7489,7 +7642,7 @@ type Partner implements Node {
 
   # This field is deprecated and is being used in Eigen release predating the 6.0 release
   locations(size: Int = 25): [Location]
-  @deprecated(reason: "Prefer to use `locationsConnection`. [Will be removed in v2]")
+    @deprecated(reason: "Prefer to use `locationsConnection`. [Will be removed in v2]")
 
   # A connection of locations from a Partner.
   locationsConnection(after: String, before: String, first: Int, last: Int): LocationConnection
@@ -7514,12 +7667,7 @@ type Partner implements Node {
   # A slug ID.
   slug: ID!
   type: String
-  viewingRoomsConnection(
-    after: String
-    first: Int
-    published: Boolean = true
-    statuses: [ViewingRoomStatusEnum!]
-  ): ViewingRoomsConnection
+  viewingRoomsConnection(after: String, first: Int, statuses: [ViewingRoomStatusEnum!]): ViewingRoomsConnection
 
   # The gallery partner's web address
   website: String
@@ -7754,6 +7902,188 @@ enum PartnersSortType {
 
 union PartnerTypes = ExternalPartner | Partner
 
+# The connection type for MarketPriceInsights.
+type PriceInsightConnection {
+  # A list of edges.
+  edges: [PriceInsightEdge]
+
+  # A list of nodes.
+  nodes: [MarketPriceInsights]
+  pageCursors: PageCursors
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type PriceInsightEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: MarketPriceInsights
+}
+
+enum PriceInsightSort {
+  # sort by annual_lots_sold in ascending order
+  ANNUAL_LOTS_SOLD_ASC
+
+  # sort by annual_lots_sold in descending order
+  ANNUAL_LOTS_SOLD_DESC
+
+  # sort by annual_value_sold_cents in ascending order
+  ANNUAL_VALUE_SOLD_CENTS_ASC
+
+  # sort by annual_value_sold_cents in descending order
+  ANNUAL_VALUE_SOLD_CENTS_DESC
+
+  # sort by artist_id in ascending order
+  ARTIST_ID_ASC
+
+  # sort by artist_id in descending order
+  ARTIST_ID_DESC
+
+  # sort by artist_name in ascending order
+  ARTIST_NAME_ASC
+
+  # sort by artist_name in descending order
+  ARTIST_NAME_DESC
+
+  # sort by artsy_q_inventory in ascending order
+  ARTSY_Q_INVENTORY_ASC
+
+  # sort by artsy_q_inventory in descending order
+  ARTSY_Q_INVENTORY_DESC
+
+  # sort by created_at in ascending order
+  CREATED_AT_ASC
+
+  # sort by created_at in descending order
+  CREATED_AT_DESC
+
+  # sort by demand_rank in ascending order
+  DEMAND_RANK_ASC
+
+  # sort by demand_rank in descending order
+  DEMAND_RANK_DESC
+
+  # sort by demand_trend in ascending order
+  DEMAND_TREND_ASC
+
+  # sort by demand_trend in descending order
+  DEMAND_TREND_DESC
+
+  # sort by high_range_cents in ascending order
+  HIGH_RANGE_CENTS_ASC
+
+  # sort by high_range_cents in descending order
+  HIGH_RANGE_CENTS_DESC
+
+  # sort by id in ascending order
+  ID_ASC
+
+  # sort by id in descending order
+  ID_DESC
+
+  # sort by large_high_range_cents in ascending order
+  LARGE_HIGH_RANGE_CENTS_ASC
+
+  # sort by large_high_range_cents in descending order
+  LARGE_HIGH_RANGE_CENTS_DESC
+
+  # sort by large_low_range_cents in ascending order
+  LARGE_LOW_RANGE_CENTS_ASC
+
+  # sort by large_low_range_cents in descending order
+  LARGE_LOW_RANGE_CENTS_DESC
+
+  # sort by large_mid_range_cents in ascending order
+  LARGE_MID_RANGE_CENTS_ASC
+
+  # sort by large_mid_range_cents in descending order
+  LARGE_MID_RANGE_CENTS_DESC
+
+  # sort by liquidity_rank in ascending order
+  LIQUIDITY_RANK_ASC
+
+  # sort by liquidity_rank in descending order
+  LIQUIDITY_RANK_DESC
+
+  # sort by low_range_cents in ascending order
+  LOW_RANGE_CENTS_ASC
+
+  # sort by low_range_cents in descending order
+  LOW_RANGE_CENTS_DESC
+
+  # sort by median_sale_to_estimate_ratio in ascending order
+  MEDIAN_SALE_TO_ESTIMATE_RATIO_ASC
+
+  # sort by median_sale_to_estimate_ratio in descending order
+  MEDIAN_SALE_TO_ESTIMATE_RATIO_DESC
+
+  # sort by medium in ascending order
+  MEDIUM_ASC
+
+  # sort by medium in descending order
+  MEDIUM_DESC
+
+  # sort by medium_high_range_cents in ascending order
+  MEDIUM_HIGH_RANGE_CENTS_ASC
+
+  # sort by medium_high_range_cents in descending order
+  MEDIUM_HIGH_RANGE_CENTS_DESC
+
+  # sort by medium_low_range_cents in ascending order
+  MEDIUM_LOW_RANGE_CENTS_ASC
+
+  # sort by medium_low_range_cents in descending order
+  MEDIUM_LOW_RANGE_CENTS_DESC
+
+  # sort by medium_mid_range_cents in ascending order
+  MEDIUM_MID_RANGE_CENTS_ASC
+
+  # sort by medium_mid_range_cents in descending order
+  MEDIUM_MID_RANGE_CENTS_DESC
+
+  # sort by mid_range_cents in ascending order
+  MID_RANGE_CENTS_ASC
+
+  # sort by mid_range_cents in descending order
+  MID_RANGE_CENTS_DESC
+
+  # sort by sell_through_rate in ascending order
+  SELL_THROUGH_RATE_ASC
+
+  # sort by sell_through_rate in descending order
+  SELL_THROUGH_RATE_DESC
+
+  # sort by small_high_range_cents in ascending order
+  SMALL_HIGH_RANGE_CENTS_ASC
+
+  # sort by small_high_range_cents in descending order
+  SMALL_HIGH_RANGE_CENTS_DESC
+
+  # sort by small_low_range_cents in ascending order
+  SMALL_LOW_RANGE_CENTS_ASC
+
+  # sort by small_low_range_cents in descending order
+  SMALL_LOW_RANGE_CENTS_DESC
+
+  # sort by small_mid_range_cents in ascending order
+  SMALL_MID_RANGE_CENTS_ASC
+
+  # sort by small_mid_range_cents in descending order
+  SMALL_MID_RANGE_CENTS_DESC
+
+  # sort by updated_at in ascending order
+  UPDATED_AT_ASC
+
+  # sort by updated_at in descending order
+  UPDATED_AT_DESC
+}
+
 type PriceRange {
   display: String
   maxPrice: Money
@@ -7846,17 +8176,18 @@ type Query {
 
     # Returns the first _n_ elements from the list.
     first: Int
+    ids: [ID!]
 
     # Returns the last _n_ elements from the list.
     last: Int
     partnerID: ID
 
-    # (Deprecated) Use statuses
-    published: Boolean
-
     # Returns only viewing rooms with these statuses
     statuses: [ViewingRoomStatusEnum!] = [live]
   ): ViewingRoomsConnection
+
+  # Last updated timestamp
+  analyticsLastUpdatedAt: AnalyticsDateTime
 
   # Find PartnerStats
   analyticsPartnerStats(partnerId: String!): AnalyticsPartnerStats
@@ -7908,6 +8239,30 @@ type Query {
     sort: ArtistSorts
   ): [Artist]
 
+  # A list of artists
+  artistsConnection(
+    after: String
+    before: String
+    first: Int
+
+    #
+    #         Only return artists matching specified ids.
+    #         Accepts list of ids.
+    #
+    ids: [String]
+    last: Int
+    letter: String
+    page: Int
+    size: Int
+
+    #
+    #         Only return artists matching specified slugs.
+    #         Accepts list of slugs. (e.g. 'andy-warhol', 'banksy')
+    #
+    slugs: [String]
+    sort: ArtistSorts
+  ): ArtistConnection
+
   # Find an artist series by ID
   artistSeries(id: ID!): ArtistSeries
 
@@ -7956,7 +8311,7 @@ type Query {
     last: Int
     respectParamsOrder: Boolean = false
   ): ArtworkConnection
-  @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # Artworks Elastic Search results
   artworksConnection(
@@ -8201,7 +8556,7 @@ type Query {
   # Get an Offer
   offer(
     # Return offers for the given partner
-    gravityPartnerId: ID!
+    gravityPartnerId: ID
     id: ID!
   ): ConsignmentOffer
 
@@ -8258,10 +8613,29 @@ type Query {
     private: Boolean
     viewingRoomID: String
   ): ArtworkConnection
-  @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # A list of Partners
   partnersConnection(after: String, before: String, first: Int, ids: [String], last: Int): PartnerConnection
+
+  # Get all price insights for an artist.
+  priceInsights(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+    artistId: ID!
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+
+    # Return price insights sorted this way
+    sort: PriceInsightSort
+  ): PriceInsightConnection
 
   # A Sale
   sale(
@@ -9396,6 +9770,8 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
 
   # Is it a fair booth or a show?
   type: String
+  viewingRoomIDs: [String!]!
+  viewingRoomsConnection: ViewingRoomsConnection
 }
 
 type ShowArtworkGrid implements ArtworkContextGrid {
@@ -9579,6 +9955,29 @@ type SubmissionEdge {
 
   # The item at the end of the edge.
   node: ConsignmentSubmission
+}
+
+input SubmitInquiryRequestMutationInput {
+  clientMutationId: String
+
+  # The inquireable object id (Artwork ID or Show ID)
+  inquireableID: String!
+
+  # The type of inquireable object (Artwork or Show)
+  inquireableType: String!
+
+  # Optional inquiry message
+  message: String
+
+  # List of structured inquiry questions
+  questions: [InquiryQuestionInput]
+}
+
+type SubmitInquiryRequestMutationPayload {
+  clientMutationId: String
+
+  # Artwork Inquiry request
+  inquiryRequest: InquiryRequest
 }
 
 type System {
@@ -9827,6 +10226,9 @@ input UpdateMyProfileInput {
   # The given name of the user.
   name: String
 
+  # The user's password, required to change email address.
+  password: String
+
   # The given phone number of the user.
   phone: String
 
@@ -9858,10 +10260,21 @@ input UpdateMyProfileInput {
   receiveSaleOpeningClosingNotification: Boolean
 }
 
+union UpdateMyProfileMutation = UpdateMyProfileMutationFailure | UpdateMyProfileMutationSuccess
+
+type UpdateMyProfileMutationFailure {
+  mutationError: GravityMutationError
+}
+
+type UpdateMyProfileMutationSuccess {
+  user: User
+}
+
 type UpdateMyProfilePayload {
   clientMutationId: String
   me: Me
   user: User
+  userOrError: UpdateMyProfileMutation
 }
 
 # Autogenerated input type of UpdateSmsSecondFactor
@@ -10093,6 +10506,30 @@ type Viewer {
     sort: ArtistSorts
   ): [Artist]
 
+  # A list of artists
+  artistsConnection(
+    after: String
+    before: String
+    first: Int
+
+    #
+    #         Only return artists matching specified ids.
+    #         Accepts list of ids.
+    #
+    ids: [String]
+    last: Int
+    letter: String
+    page: Int
+    size: Int
+
+    #
+    #         Only return artists matching specified slugs.
+    #         Accepts list of slugs. (e.g. 'andy-warhol', 'banksy')
+    #
+    slugs: [String]
+    sort: ArtistSorts
+  ): ArtistConnection
+
   # An Artwork
   artwork(
     # The slug or ID of the Artwork
@@ -10114,7 +10551,7 @@ type Viewer {
     last: Int
     respectParamsOrder: Boolean = false
   ): ArtworkConnection
-  @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # Artworks Elastic Search results
   artworksConnection(
@@ -10282,7 +10719,7 @@ type Viewer {
     private: Boolean
     viewingRoomID: String
   ): ArtworkConnection
-  @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # A list of Partners
   partnersConnection(after: String, before: String, first: Int, ids: [String], last: Int): PartnerConnection
@@ -10412,7 +10849,6 @@ type Viewer {
     after: String
     first: Int
     partnerID: ID
-    published: Boolean = true
     statuses: [ViewingRoomStatusEnum!]
   ): ViewingRoomsConnection
 }

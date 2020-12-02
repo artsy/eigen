@@ -2,7 +2,7 @@ import { VanityURLEntity_fairOrPartner } from "__generated__/VanityURLEntity_fai
 import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Spinner } from "palette"
@@ -82,6 +82,7 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
         `}
         variables={{ id: slug, useNewFairView }}
         render={renderWithPlaceholder({
+          renderFallback: () => <VanityURLPossibleRedirect slug={slug} />,
           renderPlaceholder: () => {
             switch (entity) {
               case "fair":
@@ -101,11 +102,7 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
             }
           },
           render: (props: any) => {
-            if (props.vanityURLEntity) {
-              return <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} originalSlug={slug} />
-            } else {
-              return <VanityURLPossibleRedirect slug={slug} />
-            }
+            return <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} originalSlug={slug} />
           },
         })}
       />

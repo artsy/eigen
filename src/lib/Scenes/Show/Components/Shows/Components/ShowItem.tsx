@@ -1,7 +1,7 @@
 import { ShowItem_show } from "__generated__/ShowItem_show.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Pin } from "lib/Icons/Pin"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { Schema, track } from "lib/utils/track"
 import { Flex, Sans } from "palette"
@@ -24,7 +24,7 @@ interface Props {
 export class ShowItem extends React.Component<Props> {
   get imageURL() {
     const {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       images: [image],
     } = this.props.show
 
@@ -39,7 +39,7 @@ export class ShowItem extends React.Component<Props> {
     owner_type: Schema.OwnerEntityTypes.Show,
   }))
   onPress() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.slug}`)
+    navigate(`/show/${this.props.show.slug}`)
   }
 
   render() {
@@ -47,7 +47,7 @@ export class ShowItem extends React.Component<Props> {
 
     const {
       name,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       partner: { name: galleryName },
       exhibition_period,
       end_at,
@@ -70,7 +70,7 @@ export class ShowItem extends React.Component<Props> {
             </Sans>
             <Sans size="3t" color="black60">
               {exhibitionDates(
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 exhibition_period,
                 end_at
               )}

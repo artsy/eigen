@@ -1,5 +1,5 @@
 import { matchRoute } from "lib/navigation/routes"
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 
 describe("artsy.net routes", () => {
   it(`routes to Home`, () => {
@@ -119,6 +119,29 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes Artist works-for-you to the artist page", () => {
+    expect(matchRoute("/artist/banksy/works-for-you")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artist",
+        "params": Object {
+          "*": "works-for-you",
+          "artistID": "banksy",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("/artist/josef-albers/works-for-you")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artist",
+        "params": Object {
+          "*": "works-for-you",
+          "artistID": "josef-albers",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes profile artist routes to the Artist native view", () => {
     expect(matchRoute("/alpha-137/artist/banksy")).toMatchInlineSnapshot(`
       Object {
@@ -164,7 +187,7 @@ describe("artsy.net routes", () => {
   })
 
   it("routes to the old Auction view when the AROptionsNewSalePage option is false", () => {
-    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewSalePage: false })
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewSalePage: false })
     expect(matchRoute("/auction/special-auction")).toMatchInlineSnapshot(`
       Object {
         "module": "Auction",
@@ -177,7 +200,7 @@ describe("artsy.net routes", () => {
   })
 
   it("routes to the new Auction view when the AROptionsNewSalePage option is true", () => {
-    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewSalePage: true })
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewSalePage: true })
     expect(matchRoute("/auction/special-auction")).toMatchInlineSnapshot(`
       Object {
         "module": "Auction2",
@@ -212,6 +235,16 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes to the old Auction view when the AROptionsNewSalePage option is false", () => {
+    expect(matchRoute("/auction-faq")).toMatchInlineSnapshot(`
+      Object {
+        "module": "AuctionFAQ",
+        "params": Object {},
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes to Gene", () => {
     expect(matchRoute("/gene/blue")).toMatchInlineSnapshot(`
       Object {
@@ -235,7 +268,7 @@ describe("artsy.net routes", () => {
 
   describe("routes to Show, based on lab option", () => {
     it("routes to the old Show view when the AROptionsNewShowPage option is false", () => {
-      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: false })
+      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: false })
       expect(matchRoute("/show/special-show")).toMatchInlineSnapshot(`
         Object {
           "module": "Show",
@@ -248,7 +281,7 @@ describe("artsy.net routes", () => {
     })
 
     it("routes to the new Show view when the AROptionsNewShowPage option is true", () => {
-      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: true })
+      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: true })
       expect(matchRoute("/show/special-show")).toMatchInlineSnapshot(`
         Object {
           "module": "Show2",
@@ -731,41 +764,52 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to AddEditArtwork", () => {
-    expect(matchRoute("/my-collection/add-artwork")).toMatchInlineSnapshot(`
+  it("routes to MyCollectionArtwork", () => {
+    expect(matchRoute("/my-collection/artwork/123")).toMatchInlineSnapshot(`
       Object {
-        "module": "AddEditArtwork",
-        "params": Object {},
-        "type": "match",
-      }
-    `)
-  })
-
-  it("routes to MyCollectionArtworkDetail", () => {
-    expect(matchRoute("/my-collection/artwork-detail/123")).toMatchInlineSnapshot(`
-      Object {
-        "module": "MyCollectionArtworkDetail",
+        "module": "MyCollectionArtwork",
         "params": Object {
-          "artworkID": "123",
+          "artworkSlug": "123",
         },
         "type": "match",
       }
     `)
-    expect(matchRoute("/my-collection/artwork-detail/456")).toMatchInlineSnapshot(`
+    expect(matchRoute("/my-collection/artwork/456")).toMatchInlineSnapshot(`
       Object {
-        "module": "MyCollectionArtworkDetail",
+        "module": "MyCollectionArtwork",
         "params": Object {
-          "artworkID": "456",
+          "artworkSlug": "456",
         },
         "type": "match",
       }
     `)
   })
 
-  it("routes to MyCollectionArtworkList", () => {
-    expect(matchRoute("/my-collection/artwork-list")).toMatchInlineSnapshot(`
+  it("routes to MyCollectionArtworkFullDetails", () => {
+    expect(matchRoute("/my-collection/artwork-details/123")).toMatchInlineSnapshot(`
       Object {
-        "module": "MyCollectionArtworkList",
+        "module": "MyCollectionArtworkFullDetails",
+        "params": Object {
+          "artworkSlug": "123",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("/my-collection/artwork-details/456")).toMatchInlineSnapshot(`
+      Object {
+        "module": "MyCollectionArtworkFullDetails",
+        "params": Object {
+          "artworkSlug": "456",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
+  it("routes to MyCollection", () => {
+    expect(matchRoute("/my-collection")).toMatchInlineSnapshot(`
+      Object {
+        "module": "MyCollection",
         "params": Object {},
         "type": "match",
       }
@@ -782,10 +826,10 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to SellTabApp", () => {
+  it("routes to Sales", () => {
     expect(matchRoute("/collections/my-collection/marketing-landing")).toMatchInlineSnapshot(`
       Object {
-        "module": "SellTabApp",
+        "module": "SalesNotRootTabView",
         "params": Object {},
         "type": "match",
       }
@@ -829,107 +873,107 @@ describe("artsy.net routes", () => {
   describe("Fair routing", () => {
     it("routes to FairArtworks", () => {
       expect(matchRoute("/fair/red/artworks")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairArtworks",
-        "params": Object {
-          "fairID": "red",
-        },
-        "type": "match",
-      }
-    `)
+              Object {
+                "module": "FairArtworks",
+                "params": Object {
+                  "fairID": "red",
+                },
+                "type": "match",
+              }
+          `)
       expect(matchRoute("/fair/blue/artworks")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairArtworks",
-        "params": Object {
-          "fairID": "blue",
-        },
-        "type": "match",
-      }
-    `)
+              Object {
+                "module": "FairArtworks",
+                "params": Object {
+                  "fairID": "blue",
+                },
+                "type": "match",
+              }
+          `)
     })
 
     it("routes to Fair", () => {
       expect(matchRoute("/fair/red")).toMatchInlineSnapshot(`
-      Object {
-        "module": "Fair",
-        "params": Object {
-          "fairID": "red",
-        },
-        "type": "match",
-      }
-    `)
+              Object {
+                "module": "Fair",
+                "params": Object {
+                  "fairID": "red",
+                },
+                "type": "match",
+              }
+          `)
       expect(matchRoute("/fair/blue")).toMatchInlineSnapshot(`
-      Object {
-        "module": "Fair",
-        "params": Object {
-          "fairID": "blue",
-        },
-        "type": "match",
-      }
-    `)
+              Object {
+                "module": "Fair",
+                "params": Object {
+                  "fairID": "blue",
+                },
+                "type": "match",
+              }
+          `)
     })
 
     it("routes to FairArtists", () => {
       expect(matchRoute("/fair/red/artists")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairArtists",
-        "params": Object {
-          "fairID": "red",
-        },
-        "type": "match",
-      }
-    `)
+              Object {
+                "module": "FairArtists",
+                "params": Object {
+                  "fairID": "red",
+                },
+                "type": "match",
+              }
+          `)
       expect(matchRoute("/fair/blue/artists")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairArtists",
-        "params": Object {
-          "fairID": "blue",
-        },
-        "type": "match",
-      }
-    `)
+              Object {
+                "module": "FairArtists",
+                "params": Object {
+                  "fairID": "blue",
+                },
+                "type": "match",
+              }
+          `)
     })
 
     it("routes to FairExhibitors", () => {
       expect(matchRoute("/fair/red/exhibitors")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairExhibitors",
-        "params": Object {
-          "fairID": "red",
-        },
-        "type": "match",
-      }
-    `)
+              Object {
+                "module": "FairExhibitors",
+                "params": Object {
+                  "fairID": "red",
+                },
+                "type": "match",
+              }
+          `)
       expect(matchRoute("/fair/blue/exhibitors")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairExhibitors",
-        "params": Object {
-          "fairID": "blue",
-        },
-        "type": "match",
-      }
-    `)
+              Object {
+                "module": "FairExhibitors",
+                "params": Object {
+                  "fairID": "blue",
+                },
+                "type": "match",
+              }
+          `)
     })
 
     it("routes to FairBMWArtActivation", () => {
       expect(matchRoute("/fair/red/bmw-sponsored-content")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairBMWArtActivation",
-        "params": Object {
-          "fairID": "red",
-        },
-        "type": "match",
-      }
-    `)
+              Object {
+                "module": "FairBMWArtActivation",
+                "params": Object {
+                  "fairID": "red",
+                },
+                "type": "match",
+              }
+          `)
       expect(matchRoute("/fair/blue/bmw-sponsored-content")).toMatchInlineSnapshot(`
-      Object {
-        "module": "FairBMWArtActivation",
-        "params": Object {
-          "fairID": "blue",
-        },
-        "type": "match",
-      }
-    `)
+              Object {
+                "module": "FairBMWArtActivation",
+                "params": Object {
+                  "fairID": "blue",
+                },
+                "type": "match",
+              }
+          `)
     })
   })
 

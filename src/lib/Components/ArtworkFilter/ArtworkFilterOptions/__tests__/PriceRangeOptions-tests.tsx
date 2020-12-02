@@ -8,7 +8,7 @@ import { FakeNavigator as MockNavigator } from "../../../Bidding/__tests__/Helpe
 import { Aggregations, ArtworkFilterContext, ArtworkFilterContextState } from "../../ArtworkFiltersStore"
 import { OptionListItem } from "../../FilterModal"
 import { PriceRangeOptionsScreen } from "../PriceRangeOptions"
-import { InnerOptionListItem } from "../SingleSelectOption"
+import { InnerOptionListItem, OptionListItem } from "../SingleSelectOption"
 
 const aggregations: Aggregations = [
   {
@@ -60,6 +60,11 @@ describe("Price Range Options Screen", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
   })
 
@@ -95,6 +100,14 @@ describe("Price Range Options Screen", () => {
     expect(extractText(firstOption)).toContain("All")
   })
 
+  it("renders price range options from most to least expensive", () => {
+    const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
+    const options = tree.root.findAllByType(OptionListItem)
+    const renderedOptions = options.map(extractText)
+
+    expect(renderedOptions).toEqual(["All", "$50,000+", "$10,000-50,000", "$5,000-10,000", "$1000-5,000", "$0-1,000"])
+  })
+
   describe("selectedPriceRangeOption", () => {
     it("returns the default option if there are no selected or applied filters", () => {
       const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
@@ -123,6 +136,11 @@ describe("Price Range Options Screen", () => {
         ],
         applyFilters: false,
         aggregations,
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
@@ -144,6 +162,11 @@ describe("Price Range Options Screen", () => {
         previouslyAppliedFilters: [],
         applyFilters: false,
         aggregations,
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const component = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
@@ -179,6 +202,11 @@ describe("Price Range Options Screen", () => {
         ],
         applyFilters: false,
         aggregations,
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)

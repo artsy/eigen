@@ -15,7 +15,7 @@ interface State {
   isFollowedChanging: boolean
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const track: Track<Props, State> = _track
 
 @track()
@@ -85,7 +85,7 @@ class Header extends React.Component<Props, State> {
             },
           },
           updater: (store) => {
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             store.get(id).setValue(!isFollowed, "isFollowed")
           },
           onError: () => this.failedFollowChange(),

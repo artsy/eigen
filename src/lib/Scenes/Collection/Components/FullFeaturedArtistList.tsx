@@ -22,14 +22,14 @@ export class FullFeaturedArtistList extends React.Component<Props> {
     // When a collection contains artistsIDs we want to only display those artists as featured
     // instead of all the artists in the collection.
     if (artistIDs.length > 0) {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       return allArtists.filter((artist) => artistIDs.includes(artist?.internalID))
     }
 
     // Some artist even though they are within the collection shouldn't be displayed as featured artists
     // https://artsyproduct.atlassian.net/browse/FX-1595
     if (featuredArtistExclusionIds.length > 0) {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       return allArtists.filter((artist) => !featuredArtistExclusionIds.includes(artist.internalID))
     }
     return allArtists
@@ -46,10 +46,10 @@ export class FullFeaturedArtistList extends React.Component<Props> {
           keyExtractor={(_item, index) => String(index)}
           renderItem={({ item }) => {
             return (
-              // @ts-ignore STRICTNESS_MIGRATION
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               <Box width="100%" key={item.internalID} pb={20}>
                 <ArtistListItem
-                  // @ts-ignore STRICTNESS_MIGRATION
+                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                   artist={item}
                 />
               </Box>

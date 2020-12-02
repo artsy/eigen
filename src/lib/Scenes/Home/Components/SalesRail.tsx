@@ -17,8 +17,9 @@ import {
 } from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { navigate } from "lib/navigation/navigate"
+import { formatDisplayTimelyAt } from "lib/Scenes/Sale/helpers"
 import { extractNodes } from "lib/utils/extractNodes"
-import { capitalize, compact } from "lodash"
+import { compact } from "lodash"
 import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
 
@@ -32,11 +33,9 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
 
-  const getSaleSubtitle = (liveStartAt?: string | null, displayTimelyAt?: string | null) => {
+  const getSaleSubtitle = (liveStartAt: string | undefined | null, displayTimelyAt: string | undefined | null) => {
     const subtitle = !!liveStartAt ? "Live Auction" : "Timed Auction"
-    // We are getting a line break from metaphysics that is used in viewing rooms
-    // See https://www.notion.so/artsy/Seeing-register-by-in-time-field-on-Auction-cards-9e2e742a85e5457db62607a1655507cd
-    const dateAt = capitalize(displayTimelyAt?.replace(/(\n)/gm, " ") || "")
+    const dateAt = formatDisplayTimelyAt(displayTimelyAt !== undefined ? displayTimelyAt : null)
     return subtitle + " • " + dateAt
   }
 
@@ -74,7 +73,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
 
           return (
             <CardRailCard
-              key={result?.href! /* STRICTNESS_MIGRATION */}
+              key={result?.href!}
               onPress={() => {
                 tracking.trackEvent(HomeAnalytics.auctionThumbnailTapEvent(result?.internalID, result?.slug, index))
                 const url = result?.liveURLIfOpen ?? result?.href
@@ -103,7 +102,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
                 </ArtworkImageContainer>
                 <MetadataContainer>
                   <Sans numberOfLines={2} weight="medium" size="3t">
-                    {result?./* STRICTNESS_MIGRATION */ name}
+                    {result?.name}
                   </Sans>
                   <Sans numberOfLines={1} size="3t" color="black60" data-test-id="sale-subtitle" ellipsizeMode="middle">
                     {getSaleSubtitle(result?.liveStartAt, result?.displayTimelyAt).trim()}

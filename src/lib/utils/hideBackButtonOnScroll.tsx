@@ -1,3 +1,4 @@
+import { unsafe__getSelectedTab } from "lib/store/GlobalStore"
 import { FlatListProps, NativeModules } from "react-native"
 
 const SCROLL_UP_TO_SHOW_THRESHOLD = 150
@@ -34,17 +35,17 @@ export const hideBackButtonOnScroll: NonNullable<FlatListProps<any>["onScroll"]>
 
   // first always show the back button when we're near the top of the scroll view
   if (yOffset < SCROLL_DOWN_TO_HIDE_THRESHOLD) {
-    NativeModules.ARScreenPresenterModule.updateShouldHideBackButton(false)
+    NativeModules.ARScreenPresenterModule.updateShouldHideBackButton(false, unsafe__getSelectedTab())
     return
   }
 
   if (direction === "up" && offsetWhenDirectionChanged - yOffset > SCROLL_UP_TO_SHOW_THRESHOLD) {
     // then show the back button if the user has scrolled up far enough
-    NativeModules.ARScreenPresenterModule.updateShouldHideBackButton(false)
+    NativeModules.ARScreenPresenterModule.updateShouldHideBackButton(false, unsafe__getSelectedTab())
     return
   } else if (direction === "down" && yOffset - offsetWhenDirectionChanged > SCROLL_DOWN_TO_HIDE_THRESHOLD) {
     // hide the back button if the user has scrolled down far enough
-    NativeModules.ARScreenPresenterModule.updateShouldHideBackButton(true)
+    NativeModules.ARScreenPresenterModule.updateShouldHideBackButton(true, unsafe__getSelectedTab())
     return
   }
 }

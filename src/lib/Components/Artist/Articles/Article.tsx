@@ -5,7 +5,7 @@ import { StyleSheet, TouchableWithoutFeedback, View, ViewProperties } from "reac
 
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import fonts from "lib/data/fonts"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 
 import { Article_article } from "__generated__/Article_article.graphql"
 import { Sans, Spacer } from "palette"
@@ -16,7 +16,7 @@ interface Props extends ViewProperties {
 
 class Article extends React.Component<Props> {
   handleTap() {
-    SwitchBoard.presentNavigationViewController(this, this.props.article.href!)
+    navigate(this.props.article.href!)
   }
 
   render() {

@@ -21,14 +21,14 @@ enum ArtworkSorts {
 
 export type SortOption = keyof typeof ArtworkSorts
 
-const defaultOption = {
+const defaulArtworkSort = {
   displayText: "Default",
   paramName: FilterParamName.sort,
   paramValue: "-decayed_merch",
 }
 
 export const OrderedArtworkSorts = [
-  defaultOption,
+  defaulArtworkSort,
   {
     displayText: "Price (high to low)",
     paramName: FilterParamName.sort,
@@ -61,9 +61,47 @@ export const OrderedArtworkSorts = [
   },
 ]
 
+export const OrderedSaleArtworkSorts: FilterData[] = [
+  {
+    displayText: "Lot number ascending",
+    paramName: FilterParamName.sort,
+    paramValue: "position",
+  },
+  {
+    displayText: "Lot number descending",
+    paramName: FilterParamName.sort,
+    paramValue: "-position",
+  },
+  {
+    displayText: "Most bids",
+    paramName: FilterParamName.sort,
+    paramValue: "-bidder_positions_count",
+  },
+  {
+    displayText: "Least bids",
+    paramName: FilterParamName.sort,
+    paramValue: "bidder_positions_count",
+  },
+  {
+    displayText: "Highest bid",
+    paramName: FilterParamName.sort,
+    paramValue: "-searchable_estimate",
+  },
+  {
+    displayText: "Lowest bid",
+    paramName: FilterParamName.sort,
+    paramValue: "searchable_estimate",
+  },
+]
+
 export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigator }) => {
   const selectedFilters = NewStore.useStoreState((state) => state.selectedFiltersComputed)
   const selectedFilter = selectedFilters.sort
+
+  //   const filterType = state.filterType
+
+  // const filterOptions =
+  //   filterType === "artwork" ? [defaulArtworkSort, ...OrderedArtworkSorts] : [...OrderedSaleArtworkSorts]
 
   const updateValue = NewStore.useStoreActions((actions) => actions.selectFilter)
 
@@ -81,7 +119,7 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigator 
         })
       }
       filterHeaderText={FilterDisplayName.sort}
-      filterOptions={OrderedArtworkSorts}
+      filterOptions={filterOptions}
       selectedOption={selectedOption}
       navigator={navigator}
     />

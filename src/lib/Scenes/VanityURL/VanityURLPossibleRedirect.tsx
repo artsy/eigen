@@ -1,31 +1,20 @@
-import InternalWebView from "lib/Components/InternalWebView"
+import { ArtsyWebView } from "lib/Components/ArtsyWebView"
 import { Stack } from "lib/Components/Stack"
 import { goBack, navigate } from "lib/navigation/navigate"
 import { matchRoute } from "lib/navigation/routes"
-import { AppStore, useEmissionOption } from "lib/store/AppStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { Button, Flex, Spinner, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { Linking } from "react-native"
-import WebView from "react-native-webview"
 
 function join(...parts: string[]) {
   return parts.map((s) => s.replace(/(^\/+|\/+$)/g, "")).join("/")
 }
 
-const ArtsyWebView: React.FC<{ url: string }> = ({ url }) => {
-  const useReactNativeWebView = useEmissionOption("AROptionsUseReactNativeWebView")
-
-  if (useReactNativeWebView) {
-    return <WebView source={{ uri: url }} />
-  } else {
-    return <InternalWebView route={url} />
-  }
-}
-
 export const VanityURLPossibleRedirect: React.FC<{ slug: string }> = ({ slug }) => {
   const [jsx, setJSX] = useState(<Loading />)
 
-  const { authenticationToken, webURL } = AppStore.useAppState((store) => store.native.sessionState)
+  const { authenticationToken, webURL } = GlobalStore.useAppState((store) => store.native.sessionState)
   const resolvedURL = join(webURL, slug)
 
   useEffect(() => {

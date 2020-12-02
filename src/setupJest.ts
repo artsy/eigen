@@ -149,7 +149,6 @@ function getNativeModules(): typeof NativeModules {
         sentryDSN: "sentryDSN",
         stripePublishableKey: "stripePublishableKey",
         userID: "userID",
-        selectedTab: "home",
         options: {
           AROptionsBidManagement: false,
           AROptionsEnableMyCollection: false,
@@ -167,6 +166,7 @@ function getNativeModules(): typeof NativeModules {
           AROptionsUseReactNativeWebView: false,
           AROptionsNewShowPage: false,
           AROptionsNewFairPage: false,
+          AROptionsNewInsightsPage: false,
         },
         legacyFairSlugs: ["some-fairs-slug", "some-other-fair-slug"],
         legacyFairProfileSlugs: [],
@@ -183,26 +183,19 @@ function getNativeModules(): typeof NativeModules {
       setApplicationIconBadgeNumber: jest.fn(),
       appVersion: "appVersion",
     },
-
-    ARSwitchBoardModule: {
-      presentNavigationViewController: jest.fn(),
-      presentModalViewController: jest.fn(),
-      presentMediaPreviewController: jest.fn(),
-      presentArtworksSet: jest.fn(),
-      updateShouldHideBackButton: jest.fn(),
-    },
     Emission: null as never,
     ARScreenPresenterModule: {
       presentMediaPreviewController: jest.fn(),
       dismissModal: jest.fn(),
-      presentReactScreen: jest.fn(),
+      pushView: jest.fn(),
       goBack: jest.fn(),
-      presentNativeScreen: jest.fn(),
-      switchTab: jest.fn(),
       updateShouldHideBackButton: jest.fn(),
       presentAugmentedRealityVIR: jest.fn(),
       presentEmailComposer: jest.fn(),
-      popParentViewController: jest.fn(),
+      popStack: jest.fn(),
+      popToRootAndScrollToTop: jest.fn(),
+      popToRootOrScrollToTop: jest.fn(),
+      presentModal: jest.fn(),
     },
   }
 }
@@ -211,22 +204,11 @@ jest.mock("lib/navigation/navigate", () => ({
   navigate: jest.fn(),
   goBack: jest.fn(),
   dismissModal: jest.fn(),
+  navigateToEntity: jest.fn(),
+  navigateToPartner: jest.fn(),
+  EntityType: { partner: "partner", fair: "fair" },
+  SlugType: { partner: "partner", fair: "fair" },
 }))
-jest.mock("lib/NativeModules/SwitchBoard", () => {
-  const fns = {
-    presentNavigationViewController: jest.fn(),
-    presentMediaPreviewController: jest.fn(),
-    presentModalViewController: jest.fn(),
-    presentPartnerViewController: jest.fn(),
-    dismissModalViewController: jest.fn(),
-    dismissNavigationViewController: jest.fn(),
-  }
-  return {
-    EntityType: { partner: "partner", fair: "fair" },
-    SlugType: { partner: "partner", fair: "fair" },
-    ...fns,
-  }
-})
 
 Object.assign(NativeModules, getNativeModules())
 
@@ -246,6 +228,7 @@ beforeEach(() => {
     })
   }
   reset(NativeModules, getNativeModules())
+  reset(require("lib/navigation/navigate"), {})
 })
 
 declare const process: any
@@ -380,13 +363,46 @@ jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
   spring: jest.fn(),
 }))
 
+jest.mock("react-native-gesture-handler", () => {
+  const View = require("react-native/Libraries/Components/View/View")
+  return {
+    Swipeable: View,
+    DrawerLayout: View,
+    State: {},
+    ScrollView: View,
+    Slider: View,
+    Switch: View,
+    TextInput: View,
+    ToolbarAndroid: View,
+    ViewPagerAndroid: View,
+    DrawerLayoutAndroid: View,
+    WebView: View,
+    NativeViewGestureHandler: View,
+    TapGestureHandler: View,
+    FlingGestureHandler: View,
+    ForceTouchGestureHandler: View,
+    LongPressGestureHandler: View,
+    PanGestureHandler: View,
+    PinchGestureHandler: View,
+    RotationGestureHandler: View,
+    /* Buttons */
+    RawButton: View,
+    BaseButton: View,
+    RectButton: View,
+    BorderlessButton: View,
+    /* Other */
+    FlatList: View,
+    gestureHandlerRootHOC: jest.fn(),
+    Directions: {},
+  }
+})
+
 jest.mock("react-native-config", () => ({
   ARTSY_API_CLIENT_SECRET: "-",
   ARTSY_API_CLIENT_KEY: "-",
   ARTSY_FACEBOOK_APP_ID: "-",
   SEGMENT_PRODUCTION_WRITE_KEY: "-",
   SEGMENT_STAGING_WRITE_KEY: "-",
-  ARTSY_ECHO_PRODUCTION_TOKEN: "-",
   SENTRY_PRODUCTION_DSN: "-",
   SENTRY_STAGING_DSN: "-",
   GOOGLE_MAPS_API_KEY: "-",

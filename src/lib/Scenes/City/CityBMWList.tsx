@@ -20,7 +20,7 @@ interface State {
   fetchingNextPage: boolean
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 @screenTrack((props: Props) => ({
   context_screen: Schema.PageNames.CityGuideBMWList,
   context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
@@ -53,7 +53,7 @@ class CityBMWList extends React.Component<Props, State> {
     const {
       city: {
         name,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         sponsoredContent: { shows },
       },
       relay,
@@ -86,7 +86,7 @@ export const CityBMWListContainer = createPaginationContainer(
         slug
         sponsoredContent {
           shows: showsConnection(first: $count, status: RUNNING, after: $cursor, sort: PARTNER_ASC)
-          @connection(key: "CityBMWList_shows") {
+            @connection(key: "CityBMWList_shows") {
             edges {
               node {
                 slug

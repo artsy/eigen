@@ -21,12 +21,12 @@ export class DeepZoomTileID {
     return this.id
   }
   private intern() {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const result = DeepZoomTileID._cache[this.toString()]
     if (result) {
       return result
     }
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     DeepZoomTileID._cache[this.toString()] = this
     return this
   }

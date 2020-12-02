@@ -1,35 +1,33 @@
 import { SaleArtworksRailTestsQuery } from "__generated__/SaleArtworksRailTestsQuery.graphql"
+import { SaleArtworkTileRailCardContainer } from "lib/Components/SaleArtworkTileRailCard"
+import { SectionTitle } from "lib/Components/SectionTitle"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { extractNodes } from "lib/utils/extractNodes"
+import { Flex } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { SaleArtworksRailContainer } from "../Components/SaleArtworksRail"
+import { createMockEnvironment } from "relay-test-utils"
+import { INITIAL_NUMBER_TO_RENDER, SaleArtworksRailContainer } from "../Components/SaleArtworksRail"
 
 jest.unmock("react-relay")
 
 describe("SaleArtworksRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
   const TestRenderer = () => (
     <QueryRenderer<SaleArtworksRailTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query SaleArtworksRailTestsQuery @relay_test_operation {
-          sale(id: "the-sale") {
-            saleArtworksConnection(first: 10) {
-              edges {
-                node {
-                  ...SaleArtworksRail_saleArtworks
-                }
-              }
-            }
+        query SaleArtworksRailTestsQuery($saleID: ID) @relay_test_operation {
+          me {
+            ...SaleArtworksRail_me @arguments(saleID: $saleID)
           }
         }
       `}
-      variables={{}}
+      variables={{ saleID: "sale-id" }}
       render={({ props }) => {
-        if (props?.sale) {
-          return <SaleArtworksRailContainer saleArtworks={extractNodes(props.sale.saleArtworksConnection)} />
+        if (props?.me) {
+          return <SaleArtworksRailContainer me={props.me} />
         }
         return null
       }}
@@ -43,15 +41,25 @@ describe("SaleArtworksRail", () => {
   it("Renders list of sale artworks without throwing an error", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => ({
-          ...saleMock,
-        }),
-      })
-    )
+    mockEnvironmentPayload(mockEnvironment, mockProps)
 
-    expect(tree.root.findAllByType(SaleArtworksRailContainer)).toHaveLength(1)
+    expect(tree.root.findAllByType(SectionTitle)[0].props.title).toEqual("Lots by artists you follow")
+    expect(tree.root.findAllByType(SaleArtworkTileRailCardContainer)).toHaveLength(INITIAL_NUMBER_TO_RENDER)
+  })
+
+  it("returns null if there are no artworks", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+
+    const noArtworksProps = {
+      Me: () => ({
+        lotsByFollowedArtistsConnection: {
+          edges: [],
+        },
+      }),
+    }
+    mockEnvironmentPayload(mockEnvironment, noArtworksProps)
+    // React-test-renderer has no isEmptyComponent or isNullComponent therefore I am testing for the container
+    expect(tree.root.findAllByType(Flex)).toHaveLength(0)
   })
 })
 
@@ -64,7 +72,7 @@ const saleArtworkNode = {
     saleMessage: "Contact For Price",
     artistNames: "Banksy",
     slug: "artwork-slug",
-    internalID: Math.random(),
+    internalID: "Internal-ID",
     sale: {
       isAuction: true,
       isClosed: false,
@@ -82,11 +90,18 @@ const saleArtworkNode = {
   lotLabel: "1",
 }
 
-const saleArtworksConnectionEdges = new Array(10).fill({ node: saleArtworkNode })
-const saleMock = {
-  sale: {
-    saleArtworksConnection: {
+const saleArtworksConnectionEdges = new Array(10).fill({
+  node: {
+    saleArtwork: saleArtworkNode,
+    id: saleArtworkNode.artwork.internalID,
+    href: saleArtworkNode.artwork.href,
+  },
+})
+
+const mockProps = {
+  Me: () => ({
+    lotsByFollowedArtistsConnection: {
       edges: saleArtworksConnectionEdges,
     },
-  },
+  }),
 }

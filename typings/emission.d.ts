@@ -1,5 +1,6 @@
+import type { ViewDescriptor } from "lib/navigation/navigate"
 import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
-import { NativeState } from "lib/store/NativeModel"
+import type { NativeState } from "lib/store/NativeModel"
 import { NativeModulesStatic } from "react-native"
 declare module "react-native" {
   interface NativeModulesStatic {
@@ -24,12 +25,13 @@ declare module "react-native" {
     }
     Emission: never
     ARScreenPresenterModule: {
-      presentReactScreen(module: string, props: object, modal: boolean, hidesBackButton: boolean): void
-      presentNativeScreen(module: string, props: object, modal: boolean): void
+      pushView(currentTabStackID: string, descriptor: ViewDescriptor): void
+      presentModal(descriptor: ViewDescriptor): void
       dismissModal(): void
-      goBack(): void
-      popParentViewController(): void
-      switchTab(tabType: string, props: object, popToRoot: boolean): void
+      goBack(currentTabStackID: string): void
+      popStack(stackID: string): void
+      popToRootOrScrollToTop(stackID: string): void
+      popToRootAndScrollToTop(stackID: string): Promise<void>
       presentMediaPreviewController(reactTag: number, route: string, mimeType: string, cacheKey: string): void
       presentEmailComposer(to: string, subject: string, body?: string): void
       presentAugmentedRealityVIR(
@@ -39,7 +41,7 @@ declare module "react-native" {
         artworkSlug: string,
         artworkId: string
       ): void
-      updateShouldHideBackButton(shouldHideBackButton: boolean): void
+      updateShouldHideBackButton(shouldHideBackButton: boolean, currentTabStackID: string): void
     }
   }
 }
@@ -51,7 +53,6 @@ declare module "react-native-config" {
     ARTSY_FACEBOOK_APP_ID: string
     SEGMENT_PRODUCTION_WRITE_KEY: string
     SEGMENT_STAGING_WRITE_KEY: string
-    ARTSY_ECHO_PRODUCTION_TOKEN: string
     SENTRY_PRODUCTION_DSN: string
     SENTRY_STAGING_DSN: string
     GOOGLE_MAPS_API_KEY: string

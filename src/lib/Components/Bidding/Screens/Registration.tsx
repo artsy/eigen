@@ -4,13 +4,13 @@ import React from "react"
 import { NativeModules, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
 
 import { bidderNeedsIdentityVerification } from "lib/utils/auction"
 import { Schema, screenTrack } from "lib/utils/track"
 
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 
 import { Flex } from "../Elements/Flex"
 
@@ -29,7 +29,7 @@ import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import { RegistrationCreateBidderMutation } from "__generated__/RegistrationCreateBidderMutation.graphql"
 import { RegistrationCreateCreditCardMutation } from "__generated__/RegistrationCreateCreditCardMutation.graphql"
 import { RegistrationUpdateUserMutation } from "__generated__/RegistrationUpdateUserMutation.graphql"
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
 stripe.setOptions({ publishableKey: getCurrentEmissionState().stripePublishableKey })
@@ -52,18 +52,17 @@ interface RegistrationState {
   errorModalDetailText: string
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const Hint = (props) => {
   return <Sans mt="5" mx="4" size="3t" textAlign="center" {...props} />
 }
 
 @screenTrack({
   context_screen: Schema.PageNames.BidFlowRegistration,
-  // @ts-ignore STRICTNESS_MIGRATION
   context_screen_owner_type: null,
 })
 export class Registration extends React.Component<RegistrationProps, RegistrationState> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
 
@@ -71,11 +70,11 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     const requiresPaymentInformation = !has_credit_cards
 
     this.state = {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       billingAddress: null,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       creditCardToken: null,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       creditCardFormParams: null,
       conditionsOfSaleChecked: false,
       requiresPaymentInformation,
@@ -96,7 +95,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 
   onPressConditionsOfSale = () => {
-    SwitchBoard.presentModalViewController(this, "/conditions-of-sale")
+    navigate("/conditions-of-sale", { modal: true })
   }
 
   onCreditCardAdded(token: StripeToken, params: PaymentCardTextFieldParams) {
@@ -141,8 +140,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
    * need a separate call to update our User model to store that info
    */
   async updatePhoneNumber() {
-    return new Promise((done, reject) => {
-      // @ts-ignore STRICTNESS_MIGRATION
+    return new Promise<void>((done, reject) => {
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const { phoneNumber } = this.state.billingAddress
       commitMutation<RegistrationUpdateUserMutation>(this.props.relay.environment, {
         onCompleted: (_, errors) => {
@@ -175,25 +174,25 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     const { billingAddress, creditCardFormParams } = this.state
     return stripe.createTokenWithCard({
       ...creditCardFormParams,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       name: billingAddress.fullName,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       addressLine1: billingAddress.addressLine1,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       addressLine2: billingAddress.addressLine2,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       addressCity: billingAddress.city,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       addressState: billingAddress.state,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       addressZip: billingAddress.postalCode,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       addressCountry: billingAddress.country.shortName,
     })
   }
 
   async createCreditCard(token: any) {
-    return new Promise((done) => {
+    return new Promise<void>((done) => {
       commitMutation<RegistrationCreateCreditCardMutation>(this.props.relay.environment, {
         onCompleted: (data, errors) => {
           if (data && get(data, "createCreditCard.creditCardOrError.creditCard")) {
@@ -267,7 +266,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     })
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   presentRegistrationSuccess({ createBidder }) {
     NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
       ARAuctionID: this.props.sale.slug,
@@ -281,7 +280,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   presentRegistrationError(error, status) {
     console.error("Registration.tsx", error)
     this.presentRegistrationResult(status)
@@ -290,14 +289,13 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   presentRegistrationResult(status: RegistrationStatus) {
     const { sale, me, navigator } = this.props
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     navigator.push({
-      // @ts-ignore STRICTNESS_MIGRATION
       component: RegistrationResult,
       title: "",
       passProps: {
         status,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         needsIdentityVerification: bidderNeedsIdentityVerification({ sale, user: me }),
       },
     })
@@ -305,7 +303,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     this.setState({ isLoading: false })
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   presentErrorModal(errors, mutationMessage) {
     console.error("Registration.tsx", errors)
 
@@ -330,13 +328,13 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             <Flex alignItems="center">
               <Title mb={3}>Register to bid</Title>
               <Timer
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 liveStartsAt={live_start_at}
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 endsAt={end_at}
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 isPreview={is_preview}
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 startsAt={start_at}
               />
               <Serif size="4t" weight="semibold" my={5} mx={6} textAlign="center">
@@ -357,7 +355,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
               </>
             )}
             {!!bidderNeedsIdentityVerification(
-              // @ts-ignore STRICTNESS_MIGRATION
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               { sale, user: me }
             ) && (
               <>
@@ -369,7 +367,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             )}
             {!requiresPaymentInformation &&
               !bidderNeedsIdentityVerification(
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 { sale, user: me }
               ) && <Hint>To complete your registration, please confirm that you agree to the Conditions of Sale.</Hint>}
             <Modal
@@ -395,7 +393,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
             <Box m={4}>
               <Button
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onPress={this.canCreateBidder() ? this.register.bind(this) : null}
                 loading={isLoading}
                 block

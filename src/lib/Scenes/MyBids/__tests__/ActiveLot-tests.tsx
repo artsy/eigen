@@ -14,10 +14,10 @@ const defaultLotStanding = {
     soldStatus: "ForSale",
     reserveStatus: "ReserveMet",
     sellingPrice: {
-      displayAmount: "CHF 1,800",
+      display: "CHF 1,800",
     },
     askingPrice: {
-      displayAmount: "CHF 2,000",
+      display: "CHF 2,000",
     },
   },
   saleArtwork: {
@@ -95,6 +95,17 @@ describe(ActiveLot, () => {
         />
       )
       expect(extractText(tree.root)).toContain("Outbid")
+    })
+  })
+
+  describe("selling price", () => {
+    it("shows floor selling price", () => {
+      const tree = renderWithWrappers(
+        <ActiveLot
+          lotStanding={lotStandingFixture({ isHighestBidder: true, lotState: { reserveStatus: "ReserveMet" } })}
+        />
+      )
+      expect(extractText(tree.root)).toContain("CHF 1,800")
     })
   })
 })

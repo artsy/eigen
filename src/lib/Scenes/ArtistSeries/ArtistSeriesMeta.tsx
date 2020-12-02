@@ -2,7 +2,7 @@ import { ContextModule, FollowedArgs, followedArtist, OwnerType, unfollowedArtis
 import { ArtistSeriesMeta_artistSeries } from "__generated__/ArtistSeriesMeta_artistSeries.graphql"
 import { ArtistSeriesMetaFollowMutation } from "__generated__/ArtistSeriesMetaFollowMutation.graphql"
 import { ReadMore } from "lib/Components/ReadMore"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { truncatedTextLimit } from "lib/utils/hardware"
 import { EntityHeader, Sans, Spacer } from "palette"
 import React, { useRef } from "react"
@@ -78,7 +78,7 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
         <TouchableOpacity
           key={artist.id!}
           onPress={() => {
-            SwitchBoard.presentNavigationViewController(metaRef.current!, `/artist/${artist.slug}`)
+            navigate(`/artist/${artist.slug}`)
           }}
         >
           <Spacer my={0.5} />

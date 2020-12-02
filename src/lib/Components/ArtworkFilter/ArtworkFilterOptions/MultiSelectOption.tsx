@@ -29,7 +29,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   }
 
   const itemIsSelected = (item: FilterData): boolean => {
-    console.log("am i selected?", item)
+    console.log("am i selected?", item) // TODO: Delete
     if (isSelected) {
       return isSelected(item)
     } else {
@@ -48,11 +48,12 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   return (
     <Flex flexGrow={1}>
       <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
-      <Flex mb={120}>
+      <Flex flexGrow={1}>
         <FlatList<FilterData>
           initialNumToRender={4}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
+          ItemSeparatorComponent={Separator}
           renderItem={({ item }) => {
             return (
               <Box ml={0.5}>
@@ -90,8 +91,4 @@ export const OptionListItem = styled(Flex)`
   flex-grow: 1;
   align-items: flex-end;
   padding: 15px;
-  border: solid 0.5px ${color("black10")};
-  border-right-width: 0;
-  border-left-width: 0;
-  border-top-width: 0;
 `

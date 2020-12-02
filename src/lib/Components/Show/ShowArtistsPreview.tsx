@@ -1,7 +1,7 @@
 import { ShowArtistsPreview_show } from "__generated__/ShowArtistsPreview_show.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import Switchboard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { get } from "lib/utils/get"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { take } from "lodash"
@@ -30,13 +30,13 @@ export class ShowArtistsPreview extends React.Component<Props> {
     } as any
   })
   handlePress(url: string, _slug: string, _internalID: string) {
-    Switchboard.presentNavigationViewController(this.props.Component || this, url)
+    navigate(url)
   }
 
   render() {
     const { show, onViewAllArtistsPressed, Component } = this.props
     const artistsShown = 5
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const artists = get(show, (s) => s.artists, []).concat(get(show, (s) => s.artists_without_artworks, []))
     const items = take(artists, artistsShown)
 
@@ -45,12 +45,12 @@ export class ShowArtistsPreview extends React.Component<Props> {
         <Sans size="4t">Artists</Sans>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           const { id } = artist
           return (
             <React.Fragment key={id}>
               <ArtistListItem
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 artist={artist}
                 Component={Component}
               />

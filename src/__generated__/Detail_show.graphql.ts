@@ -16,7 +16,7 @@ export type Detail_show = {
             } | null> | null;
             readonly text?: string | null;
         } | null;
-        readonly " $fragmentRefs": FragmentRefs<"LocationMap_location">;
+        readonly " $fragmentRefs": FragmentRefs<"LocationMap_location" | "HoursCollapsible_location">;
     } | null;
     readonly artistsWithoutArtworks: ReadonlyArray<{
         readonly slug: string;
@@ -138,6 +138,11 @@ return {
           "args": null,
           "kind": "FragmentSpread",
           "name": "LocationMap_location"
+        },
+        {
+          "args": null,
+          "kind": "FragmentSpread",
+          "name": "HoursCollapsible_location"
         }
       ],
       "storageKey": null
@@ -236,5 +241,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '6b10fecaf389604f1d711c4b5b4bda88';
+(node as any).hash = '6f7c4921be394ff4cca6a761ccbb717f';
 export default node;

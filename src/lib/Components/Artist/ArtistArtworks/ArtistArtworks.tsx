@@ -2,11 +2,6 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
 import {
-  ArtworkFilterContext,
-  ArtworkFilterGlobalStateProvider,
-} from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
-import { filterArtworksParams } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
-import {
   AnimatedArtworkFilterButton,
   FilterModalMode,
   FilterModalNavigator,
@@ -17,16 +12,18 @@ import {
   Props as InfiniteScrollGridProps,
 } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { useEmissionOption } from "lib/store/GlobalStore"
 import { PAGE_SIZE } from "lib/data/constants"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { useEmissionOption } from "lib/store/AppStore"
 import { Schema } from "lib/utils/track"
-import { Box, Separator, Spacer } from "palette"
+import { Box, Flex, Separator, Spacer } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import { FlatList } from "react-native"
+import { ActivityIndicator, FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtistCollectionsRailFragmentContainer } from "./ArtistCollectionsRail"
+import { NewStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { filterArtworksParams } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
@@ -76,37 +73,31 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 25 })
 
   return (
-    <ArtworkFilterGlobalStateProvider>
-      <ArtworkFilterContext.Consumer>
-        {(context) => (
-          <>
-            <StickyTabPageScrollView>
-              <ArtistArtworksContainer
-                {...props}
-                viewableItemsRef={onViewRef}
-                viewConfigRef={viewConfigRef}
-                artist={artist}
-                relay={relay}
-              />
-              <FilterModalNavigator
-                {...props}
-                id={artist.id}
-                slug={artist.slug}
-                isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-                exitModal={handleFilterArtworksModal}
-                closeModal={closeFilterArtworksModal}
-                mode={FilterModalMode.ArtistArtworks}
-              />
-            </StickyTabPageScrollView>
-            <AnimatedArtworkFilterButton
-              isVisible={isArtworksGridVisible}
-              count={context.state.appliedFilters.length}
-              onPress={openFilterArtworksModal}
+    <NewStore.Provider>
+      {() => (
+        <>
+          <StickyTabPageScrollView>
+            <ArtistArtworksContainer
+              {...props}
+              viewableItemsRef={onViewRef}
+              viewConfigRef={viewConfigRef}
+              artist={artist}
+              relay={relay}
             />
-          </>
-        )}
-      </ArtworkFilterContext.Consumer>
-    </ArtworkFilterGlobalStateProvider>
+            <FilterModalNavigator
+              {...props}
+              id={artist.id}
+              slug={artist.slug}
+              isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+              exitModal={handleFilterArtworksModal}
+              closeModal={closeFilterArtworksModal}
+              mode={FilterModalMode.ArtistArtworks}
+            />
+          </StickyTabPageScrollView>
+          <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
+        </>
+      )}
+    </NewStore.Provider>
   )
 }
 
@@ -189,8 +180,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
         <>
           <Spacer mb={2} />
           <InfiniteScrollArtworksGrid
-            // @ts-ignore STRICTNESS_MIGRATION
-            connection={artist.artworks}
+            connection={artist.artworks!}
             loadMore={relay.loadMore}
             hasMore={relay.hasMore}
             {...props}
@@ -198,6 +188,15 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
             contextScreenOwnerId={artist.internalID}
             contextScreenOwnerSlug={artist.slug}
           />
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            p="3"
+            pb="9"
+            style={{ opacity: relay.isLoading() && relay.hasMore() ? 1 : 0 }}
+          >
+            <ActivityIndicator />
+          </Flex>
         </>
       )
     }
@@ -374,21 +373,21 @@ export default createPaginationContainer(
         node(id: $id) {
           ... on Artist {
             ...ArtistArtworks_artist
-            @arguments(
-              count: $count
-              cursor: $cursor
-              sort: $sort
-              medium: $medium
-              color: $color
-              partnerID: $partnerID
-              priceRange: $priceRange
-              dimensionRange: $dimensionRange
-              majorPeriods: $majorPeriods
-              acquireable: $acquireable
-              inquireableOnly: $inquireableOnly
-              atAuction: $atAuction
-              offerable: $offerable
-            )
+              @arguments(
+                count: $count
+                cursor: $cursor
+                sort: $sort
+                medium: $medium
+                color: $color
+                partnerID: $partnerID
+                priceRange: $priceRange
+                dimensionRange: $dimensionRange
+                majorPeriods: $majorPeriods
+                acquireable: $acquireable
+                inquireableOnly: $inquireableOnly
+                atAuction: $atAuction
+                offerable: $offerable
+              )
           }
         }
       }

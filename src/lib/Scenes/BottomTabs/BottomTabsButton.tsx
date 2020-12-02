@@ -1,6 +1,6 @@
 import { tappedTabBar } from "@artsy/cohesion"
 import { PopIn } from "lib/Components/PopIn"
-import { AppStore, useSelectedTab } from "lib/store/AppStore"
+import { GlobalStore, unsafe__getSelectedTab, useSelectedTab } from "lib/store/GlobalStore"
 import { color, Sans } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Easing, NativeModules, TouchableWithoutFeedback, View } from "react-native"
@@ -17,7 +17,6 @@ export const BottomTabsButton: React.FC<{
   const isActive = useSelectedTab() === tab
   const timeout = useRef<ReturnType<typeof setTimeout>>()
   const [isBeingPressed, setIsBeingPressed] = useState(false)
-  const navRef = useRef(null)
 
   const showActiveState = isActive || isBeingPressed
 
@@ -35,17 +34,16 @@ export const BottomTabsButton: React.FC<{
   const tracking = useTracking()
 
   const onPress = () => {
-    // need to eagerly update the selected tab state
-    // otherwise, if we wait for the native routing logic to do its job and get back to us,
-    // it can take a couple hundred milliseconds for the tab buttons to update their active state
-    AppStore.actions.native.setLocalState({ selectedTab: tab })
-    NativeModules.ARScreenPresenterModule.switchTab(tab, {}, false)
+    if (tab === unsafe__getSelectedTab()) {
+      NativeModules.ARScreenPresenterModule.popToRootOrScrollToTop(tab)
+    } else {
+      GlobalStore.actions.bottomTabs.switchTab(tab)
+    }
     tracking.trackEvent(tappedTabBar({ tab: bottomTabsConfig[tab].analyticsDescription, badge: badgeCount > 0 }))
   }
 
   return (
     <TouchableWithoutFeedback
-      ref={navRef}
       onPressIn={() => {
         clearTimeout(timeout.current!)
         setIsBeingPressed(true)

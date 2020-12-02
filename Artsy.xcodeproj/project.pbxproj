@@ -182,7 +182,6 @@
 		540262C618A0FAFB00844AE1 /* ARButtonWithImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 540262C518A0FAFB00844AE1 /* ARButtonWithImage.m */; };
 		54289FEE18AA7F4E00681E49 /* UINavigationController_InnermostTopViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 54289FED18AA7F4E00681E49 /* UINavigationController_InnermostTopViewControllerSpec.m */; };
 		5435192E18A8E9420060F31E /* UIView+OldSchoolSnapshots.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435192D18A8E9420060F31E /* UIView+OldSchoolSnapshots.m */; };
-		54B7477518A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B7477418A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m */; };
 		5E0846D71C6E474800855667 /* ARSaleArtworkItemFlowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E0846D61C6E474800855667 /* ARSaleArtworkItemFlowModule.m */; };
 		5E0846DA1C6E4B9800855667 /* ARSaleArtworkFlowCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E0846D91C6E4B9800855667 /* ARSaleArtworkFlowCollectionViewCell.m */; };
 		5E088DAE1C58072B00C448D7 /* RefinementOptionsViewController+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E088DAD1C58072B00C448D7 /* RefinementOptionsViewController+Private.swift */; };
@@ -311,8 +310,6 @@
 		5EFEF1C61CEB6CC000E3AAB2 /* LiveAuctionFancyLotCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFEF1C51CEB6CC000E3AAB2 /* LiveAuctionFancyLotCollectionViewLayout.swift */; };
 		5EFEF1C81CEB7C5800E3AAB2 /* LiveAuctionLotCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFEF1C71CEB7C5800E3AAB2 /* LiveAuctionLotCollectionViewDataSource.swift */; };
 		60026AF21BDE3EFB0040257C /* ARWebViewCacheHost.m in Sources */ = {isa = PBXBuildFile; fileRef = 60026AF11BDE3EFB0040257C /* ARWebViewCacheHost.m */; };
-		6002C2601CC5125200E249B2 /* UIViewController+TopMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6002C25F1CC5125200E249B2 /* UIViewController+TopMenuViewController.m */; };
-		6002C2651CC5153300E249B2 /* UIViewControllerTopMenuViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6002C2631CC512E200E249B2 /* UIViewControllerTopMenuViewControllerTests.m */; };
 		600415C917C4ECE2003C7974 /* ArtsyAPI+RelatedModels.m in Sources */ = {isa = PBXBuildFile; fileRef = 600415C817C4ECE2003C7974 /* ArtsyAPI+RelatedModels.m */; };
 		6008CB02200EA67B0074E11A /* ARGeneFavoritesNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6008CB01200EA67B0074E11A /* ARGeneFavoritesNetworkModel.m */; };
 		600A734317DE3F3F00E21233 /* ArtsyAPI+DeviceTokens.m in Sources */ = {isa = PBXBuildFile; fileRef = 600A734217DE3F3F00E21233 /* ArtsyAPI+DeviceTokens.m */; };
@@ -350,10 +347,8 @@
 		60327DCD1987AD240075B399 /* ARDispatchManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60327DCC1987AD240075B399 /* ARDispatchManager.m */; };
 		60327DD01987B7940075B399 /* ARDeveloperOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 60327DCF1987B7940075B399 /* ARDeveloperOptions.m */; };
 		60327DD21987BA830075B399 /* ARDeveloperOptionsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60327DD11987BA830075B399 /* ARDeveloperOptionsSpec.m */; };
-		60327DE11987FF490075B399 /* ARTopMenuNavigationDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 60327DE01987FF490075B399 /* ARTopMenuNavigationDataSource.m */; };
 		603338361CF3572A0085AB5A /* ARUserManager+TestExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603338351CF3572A0085AB5A /* ARUserManager+TestExtensions.swift */; };
 		6033D7771DA3EDFA00EAC2F5 /* GeneRefineSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6033D7761DA3EDFA00EAC2F5 /* GeneRefineSettings.swift */; };
-		6034EB2F1760A9BE0070478D /* ARTopMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6034EB2B1760A9BD0070478D /* ARTopMenuViewController.m */; };
 		6036B1DE20337EC700763E10 /* ARAugmentedVIRSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036B1DD20337EC700763E10 /* ARAugmentedVIRSetupViewController.m */; };
 		6036B1E1203384DD00763E10 /* ARAugmentRealitySetupViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036B1E0203384DC00763E10 /* ARAugmentRealitySetupViewControllerSpec.m */; };
 		6037340420CF1BFF0017A4D9 /* ARVIRShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6037340320CF1BFF0017A4D9 /* ARVIRShadow.png */; };
@@ -404,7 +399,6 @@
 		608B707B17D4A1C80088A56C /* FooterBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608B704917D4A1C70088A56C /* FooterBackground@2x.png */; };
 		608B708317D4A1C80088A56C /* MoreArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608B705117D4A1C70088A56C /* MoreArrow@2x.png */; };
 		608B709417D4A1C80088A56C /* CloseButtonLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608B706217D4A1C80088A56C /* CloseButtonLarge@2x.png */; };
-		608CFC6D1C90C4B500B9056C /* LiveAuctionBidHistoryViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608CFC6C1C90C4B500B9056C /* LiveAuctionBidHistoryViewControllerTests.swift */; };
 		608EE3DB19954CEB001F4FE0 /* UIViewController+Testing.m in Sources */ = {isa = PBXBuildFile; fileRef = 608EE3DA19954CEB001F4FE0 /* UIViewController+Testing.m */; };
 		60903CC4175CE21A002AB800 /* AROptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CC3175CE21A002AB800 /* AROptions.m */; };
 		60903CCB175CE766002AB800 /* ARAdminSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CCA175CE766002AB800 /* ARAdminSettingsViewController.m */; };
@@ -449,7 +443,6 @@
 		60C1C3181C5FA34400EC98EE /* ARSerifNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C1C3171C5FA34400EC98EE /* ARSerifNavigationViewController.m */; };
 		60C26DEA1BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C26DE91BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m */; };
 		60C26DED1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C26DEC1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.m */; };
-		60C2CBED1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C2CBEC1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.m */; };
 		60C2CBEF1CC11433009B30CA /* LiveAuctionToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2CBEE1CC11433009B30CA /* LiveAuctionToolbarView.swift */; };
 		60C5ADB91C5A28B700E2822E /* ARModelInfiniteScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C5ADB81C5A28B700E2822E /* ARModelInfiniteScrollViewController.swift */; };
 		60CB547C1CC8F3CC0094DCE5 /* LiveAuctionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CB547B1CC8F3CC0094DCE5 /* LiveAuctionViewControllerTests.swift */; };
@@ -484,6 +477,7 @@
 		66A43C671CE470C400FFD6ED /* Hash.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C641CE470C400FFD6ED /* Hash.png */; };
 		66A43C681CE470C400FFD6ED /* Hash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C651CE470C400FFD6ED /* Hash@2x.png */; };
 		66A43C691CE470C400FFD6ED /* Hash@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C661CE470C400FFD6ED /* Hash@3x.png */; };
+		68AE3912711D80B0018CCC9D /* libPods-Artsy Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 482115D14BD4E126B81B3A2B /* libPods-Artsy Tests.a */; };
 		7F45A1682003C7100063D6B5 /* conversations.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 7F45A1672003C7100063D6B5 /* conversations.graphql */; };
 		7F9C7EF22221FE2900F6967E /* AREigenMapContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9C7EF12221FE2900F6967E /* AREigenMapContainerViewController.m */; };
 		7FB8852720A3704700DE5E82 /* checkbox_unselected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8852420A3704600DE5E82 /* checkbox_unselected@3x.png */; };
@@ -493,13 +487,12 @@
 		837CEC841C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */; };
 		83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
 		83FF73B41CB87A74002B53FA /* RefinableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF73B31CB87A74002B53FA /* RefinableType.swift */; };
-		83FF73B91CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF73B81CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift */; };
 		9D3ED24621ADB11B00A0318A /* ArtsyEchoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3ED24521ADB11B00A0318A /* ArtsyEchoTests.m */; };
 		9D50B9522450CF6800A6DCD0 /* ARBackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D50B9512450CF6800A6DCD0 /* ARBackButton.m */; };
 		9D50B9562450CFB600A6DCD0 /* BackChevron@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D50B9532450CFB500A6DCD0 /* BackChevron@3x.png */; };
 		9D50B9572450CFB600A6DCD0 /* BackChevron.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D50B9542450CFB600A6DCD0 /* BackChevron.png */; };
 		9D50B9582450CFB600A6DCD0 /* BackChevron@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D50B9552450CFB600A6DCD0 /* BackChevron@2x.png */; };
-		9DCC0F6923EE04A500F0A773 /* ARTabContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DCC0F6723EE04A500F0A773 /* ARTabContentView.m */; };
+		A18CE1A9E25D2EE10D482D6C /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA8D5507586C1A8D7D25B02D /* libPods-Artsy.a */; };
 		B30FEF5A181EEA47009E4EAD /* ARBidButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */; };
 		B316E2F418170DF40086CCDB /* SaleArtwork.m in Sources */ = {isa = PBXBuildFile; fileRef = B316E2F318170DF40086CCDB /* SaleArtwork.m */; };
 		B316E2F7181713110086CCDB /* Bidder.m in Sources */ = {isa = PBXBuildFile; fileRef = B316E2F6181713110086CCDB /* Bidder.m */; };
@@ -511,11 +504,11 @@
 		B3EFC6391815B41C00F23540 /* BidderPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EFC6381815B41C00F23540 /* BidderPosition.m */; };
 		B63EC346244F49EE000C507E /* AuctionUserNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63EC345244F49EE000C507E /* AuctionUserNetworkModel.swift */; };
 		B91C4D8E24F6893F00F5F177 /* ARScreenPresenterModule.m in Sources */ = {isa = PBXBuildFile; fileRef = B91C4D8D24F6893F00F5F177 /* ARScreenPresenterModule.m */; };
-		B939FAB624B361AE002703C1 /* ARTabType.m in Sources */ = {isa = PBXBuildFile; fileRef = B939FAB524B361AE002703C1 /* ARTabType.m */; };
+		B9A039462553FE47002E010D /* ARModalWithBottomSafeAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A039452553FE47002E010D /* ARModalWithBottomSafeAreaViewController.m */; };
+		B9A0395C25540810002E010D /* UIView+ScrollToTop.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A0395B25540810002E010D /* UIView+ScrollToTop.m */; };
 		B9A29FE023EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
 		B9A29FE123EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
 		B9FD91AC24DD4ADA001F9598 /* ARNativeViewControllerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B9FD91AB24DD4ADA001F9598 /* ARNativeViewControllerManager.m */; };
-		C594DDCAE943654BE450F2EE /* libPods-Artsy Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C25525BDDBC17429B1334785 /* libPods-Artsy Tests.a */; };
 		CB206F7117C3FA8F00A4FDC4 /* ARPriceRangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB206F7017C3FA8F00A4FDC4 /* ARPriceRangeViewController.m */; };
 		CB206F7417C569E800A4FDC4 /* ARPersonalizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB206F7317C569E800A4FDC4 /* ARPersonalizeViewController.m */; };
 		CB42B64F181092480069A801 /* ARCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB42B64E181092480069A801 /* ARCountdownView.m */; };
@@ -541,7 +534,6 @@
 		D3ACE5391AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D3ACE5381AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m */; };
 		D3C8C2061B66D2FF004CAD7F /* ARImageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C8C2051B66D2FF004CAD7F /* ARImageTests.m */; };
 		D3F69A4A1AC1F7CB007C65C9 /* ARDefaultsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F69A491AC1F7CB007C65C9 /* ARDefaultsTests.m */; };
-		E0FBB1D65CC7A0A940268A15 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDA3347930E09971550251B /* libPods-Artsy.a */; };
 		E60673B319BE4E8C00EF05EB /* full_logo_white_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E60673B119BE4E8C00EF05EB /* full_logo_white_small@2x.png */; };
 		E611847018D78068000FE4C9 /* ARMessageItemProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E611846F18D78068000FE4C9 /* ARMessageItemProviderTests.m */; };
 		E611847218D7B4C4000FE4C9 /* ARSharingControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E611847118D7B4C4000FE4C9 /* ARSharingControllerTests.m */; };
@@ -632,7 +624,6 @@
 		0CE3C4331B8BB35C0092A24F /* EXPMatcher+UINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatcher+UINavigationController.h"; sourceTree = "<group>"; };
 		0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatcher+UINavigationController.m"; sourceTree = "<group>"; };
 		1AC7920F251A42CF00F50228 /* EchoNew.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EchoNew.json; sourceTree = "<group>"; };
-		1AC876215B49E6BF4D24AE23 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		1C029B001CCF7FE700808503 /* ARLoginFieldsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARLoginFieldsView.h; path = "../3_-_Sign_Up_+_Log_In/ARLoginFieldsView.h"; sourceTree = "<group>"; };
 		1C029B011CCF7FE700808503 /* ARLoginFieldsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARLoginFieldsView.m; path = "../3_-_Sign_Up_+_Log_In/ARLoginFieldsView.m"; sourceTree = "<group>"; };
 		1C029B031CD130A400808503 /* ARLoginButtonsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARLoginButtonsView.h; path = "../3_-_Sign_Up_+_Log_In/ARLoginButtonsView.h"; sourceTree = "<group>"; };
@@ -819,6 +810,7 @@
 		3CFBE33518C5848900C781D0 /* ARFileUtilsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFileUtilsTests.m; sourceTree = "<group>"; };
 		4191F43D1C8745D90054F823 /* ARAnalyticsVisualizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnalyticsVisualizer.h; sourceTree = "<group>"; };
 		4191F43E1C8745D90054F823 /* ARAnalyticsVisualizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnalyticsVisualizer.m; sourceTree = "<group>"; };
+		482115D14BD4E126B81B3A2B /* libPods-Artsy Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		491A4DE0168E4343003B2246 /* Gene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gene.h; sourceTree = "<group>"; };
 		491A4DE1168E4343003B2246 /* Gene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Gene.m; sourceTree = "<group>"; };
 		4938742617BD512700724795 /* ARSignUpSplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARSignUpSplashViewController.h; path = "../2_-_Calls_to_Action/ARSignUpSplashViewController.h"; sourceTree = "<group>"; };
@@ -883,7 +875,6 @@
 		49F0C67A17B9706000721244 /* AROnboardingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingViewController.m; sourceTree = "<group>"; };
 		49F0C67D17B972F200721244 /* ARSlideshowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSlideshowView.h; sourceTree = "<group>"; };
 		49F0C67E17B972F200721244 /* ARSlideshowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSlideshowView.m; sourceTree = "<group>"; };
-		4ADF6164FE5A0CF663832A03 /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
 		5102616D1BBE8324002AB8BB /* ARAuctionWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARAuctionWebViewController.h; path = Auction_Results/ARAuctionWebViewController.h; sourceTree = "<group>"; };
 		5102616E1BBE8324002AB8BB /* ARAuctionWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARAuctionWebViewController.m; path = Auction_Results/ARAuctionWebViewController.m; sourceTree = "<group>"; };
 		510261701BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionWebViewControllerTests.m; sourceTree = "<group>"; };
@@ -929,8 +920,6 @@
 		5435192C18A8E9420060F31E /* UIView+OldSchoolSnapshots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+OldSchoolSnapshots.h"; sourceTree = "<group>"; };
 		5435192D18A8E9420060F31E /* UIView+OldSchoolSnapshots.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+OldSchoolSnapshots.m"; sourceTree = "<group>"; };
 		54AD031F18A4FCCE0055F2D2 /* ARMenuAwareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARMenuAwareViewController.h; sourceTree = "<group>"; };
-		54B7477318A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARTopMenuViewController+DeveloperExtras.h"; sourceTree = "<group>"; };
-		54B7477418A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARTopMenuViewController+DeveloperExtras.m"; sourceTree = "<group>"; };
 		5E0846D51C6E474800855667 /* ARSaleArtworkItemFlowModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARSaleArtworkItemFlowModule.h; path = Sale_Artworks/ARSaleArtworkItemFlowModule.h; sourceTree = "<group>"; };
 		5E0846D61C6E474800855667 /* ARSaleArtworkItemFlowModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARSaleArtworkItemFlowModule.m; path = Sale_Artworks/ARSaleArtworkItemFlowModule.m; sourceTree = "<group>"; };
 		5E0846D81C6E4B9800855667 /* ARSaleArtworkFlowCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSaleArtworkFlowCollectionViewCell.h; sourceTree = "<group>"; };
@@ -998,6 +987,7 @@
 		5E6A16921C98A914004DB29B /* LiveAuctionStateManagerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionStateManagerSpec.swift; path = ../../Artsy/View_Controllers/Live_Auctions/LiveAuctionStateManagerSpec.swift; sourceTree = "<group>"; };
 		5E6BA6E71C56B5D700B942C1 /* CircularCancelButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CircularCancelButton@2x.png"; sourceTree = "<group>"; };
 		5E6BA6E81C56B5D700B942C1 /* CircularCancelButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CircularCancelButton.png; sourceTree = "<group>"; };
+		5E6C92F936EA71609C245323 /* Pods-Artsy Tests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.store.xcconfig"; sourceTree = "<group>"; };
 		5E6CBAFF1DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingPersonalizationGeneImageStateReconciler.h; sourceTree = "<group>"; };
 		5E6CBB001DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingPersonalizationGeneImageStateReconciler.m; sourceTree = "<group>"; };
 		5E6CBB021DB54BC000988CDF /* AROnboardingPersonalizationGeneImageStateReconcilerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingPersonalizationGeneImageStateReconcilerTests.m; sourceTree = "<group>"; };
@@ -1081,12 +1071,8 @@
 		5EFE2BE31910FC81003B5EEA /* ARAppDelegate+Analytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Analytics.m"; sourceTree = "<group>"; };
 		5EFEF1C51CEB6CC000E3AAB2 /* LiveAuctionFancyLotCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionFancyLotCollectionViewLayout.swift; path = Live_Auctions/Views/LiveAuctionFancyLotCollectionViewLayout.swift; sourceTree = "<group>"; };
 		5EFEF1C71CEB7C5800E3AAB2 /* LiveAuctionLotCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotCollectionViewDataSource.swift; path = Live_Auctions/Views/LiveAuctionLotCollectionViewDataSource.swift; sourceTree = "<group>"; };
-		5FDA3347930E09971550251B /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		60026AF01BDE3EFB0040257C /* ARWebViewCacheHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWebViewCacheHost.h; sourceTree = "<group>"; };
 		60026AF11BDE3EFB0040257C /* ARWebViewCacheHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWebViewCacheHost.m; sourceTree = "<group>"; };
-		6002C25E1CC5125200E249B2 /* UIViewController+TopMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+TopMenuViewController.h"; sourceTree = "<group>"; };
-		6002C25F1CC5125200E249B2 /* UIViewController+TopMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+TopMenuViewController.m"; sourceTree = "<group>"; };
-		6002C2631CC512E200E249B2 /* UIViewControllerTopMenuViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewControllerTopMenuViewControllerTests.m; sourceTree = "<group>"; };
 		600415C717C4ECE2003C7974 /* ArtsyAPI+RelatedModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+RelatedModels.h"; sourceTree = "<group>"; };
 		600415C817C4ECE2003C7974 /* ArtsyAPI+RelatedModels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+RelatedModels.m"; sourceTree = "<group>"; };
 		6008CB00200EA67A0074E11A /* ARGeneFavoritesNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARGeneFavoritesNetworkModel.h; sourceTree = "<group>"; };
@@ -1097,7 +1083,6 @@
 		600B8B3D1C4FCEE000776F84 /* welcome_to_eigen_beta.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = welcome_to_eigen_beta.md; sourceTree = "<group>"; };
 		600B8B3F1C4FCEE000776F84 /* thanks.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = thanks.md; sourceTree = "<group>"; };
 		600B8B441C4FCEEC00776F84 /* CHANGELOG.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.yml; sourceTree = SOURCE_ROOT; };
-		600D55388EBA7E8A41AC0843 /* Pods-Artsy Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		600E73511DAD42D40007BF39 /* GeneRefineSettingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GeneRefineSettingTests.swift; path = Data/GeneRefineSettingTests.swift; sourceTree = "<group>"; };
 		600E73551DAD4C120007BF39 /* gene_refine_example_short_no_prize_medium.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = gene_refine_example_short_no_prize_medium.json; path = Artsy_Tests/Model_Tests/Data/gene_refine_example_short_no_prize_medium.json; sourceTree = SOURCE_ROOT; };
 		600E73571DAD52D10007BF39 /* gene_refine_example_medium_price.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = gene_refine_example_medium_price.json; sourceTree = "<group>"; };
@@ -1152,12 +1137,8 @@
 		60327DCE1987B7940075B399 /* ARDeveloperOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDeveloperOptions.h; sourceTree = "<group>"; };
 		60327DCF1987B7940075B399 /* ARDeveloperOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDeveloperOptions.m; sourceTree = "<group>"; };
 		60327DD11987BA830075B399 /* ARDeveloperOptionsSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDeveloperOptionsSpec.m; sourceTree = "<group>"; };
-		60327DDF1987FF490075B399 /* ARTopMenuNavigationDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTopMenuNavigationDataSource.h; sourceTree = "<group>"; };
-		60327DE01987FF490075B399 /* ARTopMenuNavigationDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTopMenuNavigationDataSource.m; sourceTree = "<group>"; };
 		603338351CF3572A0085AB5A /* ARUserManager+TestExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ARUserManager+TestExtensions.swift"; sourceTree = "<group>"; };
 		6033D7761DA3EDFA00EAC2F5 /* GeneRefineSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GeneRefineSettings.swift; path = Artsy/View_Controllers/Gene/GeneRefineSettings.swift; sourceTree = SOURCE_ROOT; };
-		6034EB2A1760A9BD0070478D /* ARTopMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTopMenuViewController.h; sourceTree = "<group>"; };
-		6034EB2B1760A9BD0070478D /* ARTopMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTopMenuViewController.m; sourceTree = "<group>"; };
 		6035C25E1DACF14000CC4647 /* gene_refine_example_full.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = gene_refine_example_full.json; sourceTree = "<group>"; };
 		6036B1DC20337EC700763E10 /* ARAugmentedVIRSetupViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAugmentedVIRSetupViewController.h; sourceTree = "<group>"; };
 		6036B1DD20337EC700763E10 /* ARAugmentedVIRSetupViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedVIRSetupViewController.m; sourceTree = "<group>"; };
@@ -1235,7 +1216,6 @@
 		608B704917D4A1C70088A56C /* FooterBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FooterBackground@2x.png"; sourceTree = "<group>"; };
 		608B705117D4A1C70088A56C /* MoreArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MoreArrow@2x.png"; sourceTree = "<group>"; };
 		608B706217D4A1C80088A56C /* CloseButtonLarge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CloseButtonLarge@2x.png"; sourceTree = "<group>"; };
-		608CFC6C1C90C4B500B9056C /* LiveAuctionBidHistoryViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionBidHistoryViewControllerTests.swift; path = Live_Auction/LiveAuctionBidHistoryViewControllerTests.swift; sourceTree = "<group>"; };
 		608EE3D919954CEB001F4FE0 /* UIViewController+Testing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Testing.h"; sourceTree = "<group>"; };
 		608EE3DA19954CEB001F4FE0 /* UIViewController+Testing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Testing.m"; sourceTree = "<group>"; };
 		60903CC2175CE21A002AB800 /* AROptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROptions.h; sourceTree = "<group>"; };
@@ -1312,11 +1292,8 @@
 		60C26DE91BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREmbeddedModelsPreviewDelegate.m; sourceTree = "<group>"; };
 		60C26DEB1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREmbeddedModelPreviewViewController.h; sourceTree = "<group>"; };
 		60C26DEC1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREmbeddedModelPreviewViewController.m; sourceTree = "<group>"; };
-		60C2CBEB1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARTopMenuViewController+Testing.h"; sourceTree = "<group>"; };
-		60C2CBEC1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARTopMenuViewController+Testing.m"; sourceTree = "<group>"; };
 		60C2CBEE1CC11433009B30CA /* LiveAuctionToolbarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionToolbarView.swift; path = Live_Auctions/Views/LiveAuctionToolbarView.swift; sourceTree = "<group>"; };
 		60C5ADB81C5A28B700E2822E /* ARModelInfiniteScrollViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARModelInfiniteScrollViewController.swift; sourceTree = "<group>"; };
-		60CAA3741782D87B00CA3DA8 /* ARContentViewControllers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARContentViewControllers.h; sourceTree = "<group>"; };
 		60CB547B1CC8F3CC0094DCE5 /* LiveAuctionViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionViewControllerTests.swift; path = Live_Auction/LiveAuctionViewControllerTests.swift; sourceTree = "<group>"; };
 		60CC97331EC3203D00793566 /* ARSentryAnalyticsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSentryAnalyticsProvider.h; sourceTree = "<group>"; };
 		60CC97341EC3203D00793566 /* ARSentryAnalyticsProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSentryAnalyticsProvider.m; sourceTree = "<group>"; };
@@ -1362,7 +1339,6 @@
 		60FFE3D8188E91C50012B485 /* deploy_to_beta.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = deploy_to_beta.md; sourceTree = "<group>"; };
 		60FFE3D9188E91C50012B485 /* getting_started.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = getting_started.md; sourceTree = "<group>"; };
 		60FFE3DA188E91C50012B485 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		64CEDF29A84E7D83134CEE4E /* Pods-Artsy Tests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.store.xcconfig"; sourceTree = "<group>"; };
 		66A43C641CE470C400FFD6ED /* Hash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Hash.png; sourceTree = "<group>"; };
 		66A43C651CE470C400FFD6ED /* Hash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Hash@2x.png"; sourceTree = "<group>"; };
 		66A43C661CE470C400FFD6ED /* Hash@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Hash@3x.png"; sourceTree = "<group>"; };
@@ -1374,22 +1350,19 @@
 		7FB8852620A3704700DE5E82 /* checkbox_unselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox_unselected.png; sourceTree = "<group>"; };
 		7FC37D0820A1F0FA0029296A /* ARAcceptConditionsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAcceptConditionsView.h; sourceTree = "<group>"; };
 		7FC37D0920A1F0FA0029296A /* ARAcceptConditionsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAcceptConditionsView.m; sourceTree = "<group>"; };
-		83282D751EB0D9F1006F30C2 /* ARRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRootViewController.h; sourceTree = "<group>"; };
 		837CEC821C876B7C00A7E0E1 /* ArtsyAPI+Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Notifications.h"; sourceTree = "<group>"; };
 		837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Notifications.m"; sourceTree = "<group>"; };
 		83F9D57E1AD6FDE0000BCC77 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		83F9D57F1AD6FDE0000BCC77 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		83FF73B31CB87A74002B53FA /* RefinableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefinableType.swift; path = ../Views/RefinableType.swift; sourceTree = "<group>"; };
-		83FF73B81CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ARTopMenuViewController+SwiftDeveloperExtras.swift"; sourceTree = "<group>"; };
 		9434A9843098609F9F092F0D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		97983D93644ACC6409190A08 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		9D3ED24521ADB11B00A0318A /* ArtsyEchoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArtsyEchoTests.m; sourceTree = "<group>"; };
 		9D50B9502450CF6800A6DCD0 /* ARBackButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARBackButton.h; sourceTree = "<group>"; };
 		9D50B9512450CF6800A6DCD0 /* ARBackButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARBackButton.m; sourceTree = "<group>"; };
 		9D50B9532450CFB500A6DCD0 /* BackChevron@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackChevron@3x.png"; sourceTree = "<group>"; };
 		9D50B9542450CFB600A6DCD0 /* BackChevron.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BackChevron.png; sourceTree = "<group>"; };
 		9D50B9552450CFB600A6DCD0 /* BackChevron@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackChevron@2x.png"; sourceTree = "<group>"; };
-		9DCC0F6723EE04A500F0A773 /* ARTabContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTabContentView.m; sourceTree = "<group>"; };
-		9DCC0F6823EE04A500F0A773 /* ARTabContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTabContentView.h; sourceTree = "<group>"; };
 		B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBidButtonTests.m; sourceTree = "<group>"; };
 		B316E2F218170DF40086CCDB /* SaleArtwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaleArtwork.h; sourceTree = "<group>"; };
 		B316E2F318170DF40086CCDB /* SaleArtwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaleArtwork.m; sourceTree = "<group>"; };
@@ -1410,14 +1383,16 @@
 		B63EC345244F49EE000C507E /* AuctionUserNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionUserNetworkModel.swift; path = Auction/AuctionUserNetworkModel.swift; sourceTree = "<group>"; };
 		B91C4D8C24F6893F00F5F177 /* ARScreenPresenterModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARScreenPresenterModule.h; sourceTree = "<group>"; };
 		B91C4D8D24F6893F00F5F177 /* ARScreenPresenterModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARScreenPresenterModule.m; sourceTree = "<group>"; };
-		B939FAB424B361AE002703C1 /* ARTabType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTabType.h; sourceTree = "<group>"; };
-		B939FAB524B361AE002703C1 /* ARTabType.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTabType.m; sourceTree = "<group>"; };
+		B9A039442553FE47002E010D /* ARModalWithBottomSafeAreaViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARModalWithBottomSafeAreaViewController.h; sourceTree = "<group>"; };
+		B9A039452553FE47002E010D /* ARModalWithBottomSafeAreaViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARModalWithBottomSafeAreaViewController.m; sourceTree = "<group>"; };
+		B9A0395A25540810002E010D /* UIView+ScrollToTop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+ScrollToTop.h"; sourceTree = "<group>"; };
+		B9A0395B25540810002E010D /* UIView+ScrollToTop.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+ScrollToTop.m"; sourceTree = "<group>"; };
 		B9A29FDE23EB2680006EE2EC /* ARReactPackagerHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARReactPackagerHost.h; sourceTree = "<group>"; };
 		B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARReactPackagerHost.m; sourceTree = "<group>"; };
 		B9FD91AA24DD4ADA001F9598 /* ARNativeViewControllerManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARNativeViewControllerManager.h; sourceTree = "<group>"; };
 		B9FD91AB24DD4ADA001F9598 /* ARNativeViewControllerManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARNativeViewControllerManager.m; sourceTree = "<group>"; };
-		C090E60DA1F8FEC7053193C8 /* Pods-Artsy.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.demo.xcconfig"; sourceTree = "<group>"; };
-		C25525BDDBC17429B1334785 /* libPods-Artsy Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C1D5D316AD887B0D764B2DFF /* Pods-Artsy.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.demo.xcconfig"; sourceTree = "<group>"; };
+		C92C422D2B7B26F1D784B7A5 /* Pods-Artsy Tests.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.demo.xcconfig"; sourceTree = "<group>"; };
 		CB206F6F17C3FA8F00A4FDC4 /* ARPriceRangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARPriceRangeViewController.h; path = "../4-_Onboarding_New_User/ARPriceRangeViewController.h"; sourceTree = "<group>"; };
 		CB206F7017C3FA8F00A4FDC4 /* ARPriceRangeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARPriceRangeViewController.m; path = "../4-_Onboarding_New_User/ARPriceRangeViewController.m"; sourceTree = "<group>"; };
 		CB206F7317C569E800A4FDC4 /* ARPersonalizeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPersonalizeViewController.m; sourceTree = "<group>"; };
@@ -1444,7 +1419,6 @@
 		CB9E244017CBC36F00773A9A /* ARAuthProviders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuthProviders.m; sourceTree = "<group>"; };
 		CBB469CE181F1F1200B5692B /* Bid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bid.h; sourceTree = "<group>"; };
 		CBB469CF181F1F1200B5692B /* Bid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bid.m; sourceTree = "<group>"; };
-		CBBFF96B8BCEDF87FB66F4D1 /* Pods-Artsy Tests.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.demo.xcconfig"; sourceTree = "<group>"; };
 		CBF74083250ACDC5004048D3 /* ARAppDelegate+Echo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Echo.h"; sourceTree = "<group>"; };
 		CBF74084250ACDC5004048D3 /* ARAppDelegate+Echo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Echo.m"; sourceTree = "<group>"; };
 		CBFCA0542427ABBB00B2822D /* apple-login@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "apple-login@3x.png"; sourceTree = "<group>"; };
@@ -1456,6 +1430,8 @@
 		D3ACE5381AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARExternalWebBrowserViewControllerTests.m; sourceTree = "<group>"; };
 		D3C8C2051B66D2FF004CAD7F /* ARImageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageTests.m; sourceTree = "<group>"; };
 		D3F69A491AC1F7CB007C65C9 /* ARDefaultsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaultsTests.m; sourceTree = "<group>"; };
+		DA8D5507586C1A8D7D25B02D /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E46CDB9EB7EB81BF77D63EF5 /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
 		E60673B119BE4E8C00EF05EB /* full_logo_white_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_logo_white_small@2x.png"; sourceTree = "<group>"; };
 		E611846F18D78068000FE4C9 /* ARMessageItemProviderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMessageItemProviderTests.m; sourceTree = "<group>"; };
 		E611847118D7B4C4000FE4C9 /* ARSharingControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSharingControllerTests.m; sourceTree = "<group>"; };
@@ -1511,6 +1487,7 @@
 		E6FFEAAB19C7925600A0D7DE /* splash_4@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_4@2x~ipad.jpg"; sourceTree = "<group>"; };
 		E6FFEAAC19C7925600A0D7DE /* splash_4@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_4@2x~iphone.jpg"; sourceTree = "<group>"; };
 		E6FFEAAD19C7925600A0D7DE /* splash_5@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_5@2x~ipad.jpg"; sourceTree = "<group>"; };
+		F5228136EBA7C3D968C3D845 /* Pods-Artsy Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1531,7 +1508,7 @@
 				512AB35B1BD7C7A100F92B9A /* CoreSpotlight.framework in Frameworks */,
 				60935A461A69CFEE00129CE1 /* WebKit.framework in Frameworks */,
 				60935A441A69CFE700129CE1 /* MobileCoreServices.framework in Frameworks */,
-				E0FBB1D65CC7A0A940268A15 /* libPods-Artsy.a in Frameworks */,
+				A18CE1A9E25D2EE10D482D6C /* libPods-Artsy.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1541,7 +1518,7 @@
 			files = (
 				60476F4C1AD87DB200670502 /* UIKit.framework in Frameworks */,
 				B3ECE8291819D1E6009F5C5B /* Foundation.framework in Frameworks */,
-				C594DDCAE943654BE450F2EE /* libPods-Artsy Tests.a in Frameworks */,
+				68AE3912711D80B0018CCC9D /* libPods-Artsy Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1594,12 +1571,12 @@
 			isa = PBXGroup;
 			children = (
 				3A6EBA7E22358DE60052D0C0 /* Emission.podspec.json */,
-				1AC876215B49E6BF4D24AE23 /* Pods-Artsy.debug.xcconfig */,
-				4ADF6164FE5A0CF663832A03 /* Pods-Artsy.store.xcconfig */,
-				C090E60DA1F8FEC7053193C8 /* Pods-Artsy.demo.xcconfig */,
-				600D55388EBA7E8A41AC0843 /* Pods-Artsy Tests.debug.xcconfig */,
-				64CEDF29A84E7D83134CEE4E /* Pods-Artsy Tests.store.xcconfig */,
-				CBBFF96B8BCEDF87FB66F4D1 /* Pods-Artsy Tests.demo.xcconfig */,
+				97983D93644ACC6409190A08 /* Pods-Artsy.debug.xcconfig */,
+				E46CDB9EB7EB81BF77D63EF5 /* Pods-Artsy.store.xcconfig */,
+				C1D5D316AD887B0D764B2DFF /* Pods-Artsy.demo.xcconfig */,
+				F5228136EBA7C3D968C3D845 /* Pods-Artsy Tests.debug.xcconfig */,
+				5E6C92F936EA71609C245323 /* Pods-Artsy Tests.store.xcconfig */,
+				C92C422D2B7B26F1D784B7A5 /* Pods-Artsy Tests.demo.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1628,7 +1605,6 @@
 				603B3AE91774A0FA00BA5BD3 /* ARNavigationController.h */,
 				603B3AEA1774A0FA00BA5BD3 /* ARNavigationController.m */,
 				54AD031F18A4FCCE0055F2D2 /* ARMenuAwareViewController.h */,
-				83282D751EB0D9F1006F30C2 /* ARRootViewController.h */,
 				342F9D63C266DC8B9A46A4F5 /* Emumerations */,
 				342F949FC80594AFFBBE1017 /* Errors */,
 				342F9BBA54BBCF5FE29C8684 /* ARParallaxEffect.h */,
@@ -1721,6 +1697,8 @@
 				342F9DA91638895F6A6A432C /* UIImageView+AsyncImageLoading.m */,
 				5435192C18A8E9420060F31E /* UIView+OldSchoolSnapshots.h */,
 				5435192D18A8E9420060F31E /* UIView+OldSchoolSnapshots.m */,
+				B9A0395A25540810002E010D /* UIView+ScrollToTop.h */,
+				B9A0395B25540810002E010D /* UIView+ScrollToTop.m */,
 				342F91AA54E8417472868A61 /* UIViewController+FullScreenLoading.h */,
 				342F924737155CB0C5A439F9 /* UIViewController+FullScreenLoading.m */,
 				342F9DE76CE6DE0D374BC703 /* UIViewController+SimpleChildren.h */,
@@ -1738,8 +1716,6 @@
 				5EA250651C4EE95B001E4950 /* NSArray+Additions.m */,
 				5E79FCB01C7612D8003D5D65 /* Int+Metrification.swift */,
 				5E4962431CA1C7E800E77DD5 /* NSAttributedString+Additions.swift */,
-				6002C25E1CC5125200E249B2 /* UIViewController+TopMenuViewController.h */,
-				6002C25F1CC5125200E249B2 /* UIViewController+TopMenuViewController.m */,
 				5E257E311ECDEB3900C62008 /* UIViewController+Popovers.h */,
 				5E257E321ECDEB6600C62008 /* UIViewController+Popovers.m */,
 			);
@@ -1842,8 +1818,6 @@
 				0CE3C4331B8BB35C0092A24F /* EXPMatcher+UINavigationController.h */,
 				0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */,
 				5E088DAF1C58141D00C448D7 /* UIViewController+Tests.swift */,
-				60C2CBEB1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.h */,
-				60C2CBEC1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.m */,
 				60107F151CC7DC1D002F772E /* ARTestImageCachingFunctions.swift */,
 				603338351CF3572A0085AB5A /* ARUserManager+TestExtensions.swift */,
 			);
@@ -2155,8 +2129,8 @@
 				49BA7E031655ABE600C06572 /* UIKit.framework */,
 				B3ECE8271819D1E6009F5C5B /* XCTest.framework */,
 				9434A9843098609F9F092F0D /* Pods.framework */,
-				5FDA3347930E09971550251B /* libPods-Artsy.a */,
-				C25525BDDBC17429B1334785 /* libPods-Artsy Tests.a */,
+				DA8D5507586C1A8D7D25B02D /* libPods-Artsy.a */,
+				482115D14BD4E126B81B3A2B /* libPods-Artsy Tests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2371,7 +2345,6 @@
 			isa = PBXGroup;
 			children = (
 				54289FED18AA7F4E00681E49 /* UINavigationController_InnermostTopViewControllerSpec.m */,
-				6002C2631CC512E200E249B2 /* UIViewControllerTopMenuViewControllerTests.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2445,10 +2418,6 @@
 		6008A58F16D8155C007E8E26 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				9DCC0F6823EE04A500F0A773 /* ARTabContentView.h */,
-				B939FAB424B361AE002703C1 /* ARTabType.h */,
-				B939FAB524B361AE002703C1 /* ARTabType.m */,
-				9DCC0F6723EE04A500F0A773 /* ARTabContentView.m */,
 				3C48E20E1965AC640077A80B /* ARCustomEigenLabels.h */,
 				3C48E20F1965AC640077A80B /* ARCustomEigenLabels.m */,
 				5E50987B18F82FCF001AC704 /* AROfflineView.h */,
@@ -2583,7 +2552,6 @@
 				60ED311E1C8F73450071DD89 /* LiveAuctionLotViewControllerTests.swift */,
 				5E7598041D9D92F20084AAEC /* LiveAuctionLotBidHistoryGestureControllerTests.swift */,
 				60ED31201C8F74670071DD89 /* FakeSalesPerson.swift */,
-				608CFC6C1C90C4B500B9056C /* LiveAuctionBidHistoryViewControllerTests.swift */,
 				60AF60CA1CB395600041B430 /* LiveAuctionBidButtonTests.swift */,
 				60F242FB1CB3F32F00387AA1 /* LiveAuctionBidViewControllerTests.swift */,
 				5E1DDF1E1CE2698B00DFEE2A /* LiveAuctionBiddingViewModelTests.swift */,
@@ -2730,22 +2698,6 @@
 				5168A76D1B46A70500FFBCBF /* ARFilteredStackTrace.m */,
 			);
 			path = Tooling;
-			sourceTree = "<group>";
-		};
-		6034EB261760A1150070478D /* App Navigation */ = {
-			isa = PBXGroup;
-			children = (
-				60327DDF1987FF490075B399 /* ARTopMenuNavigationDataSource.h */,
-				60327DE01987FF490075B399 /* ARTopMenuNavigationDataSource.m */,
-				60CAA3741782D87B00CA3DA8 /* ARContentViewControllers.h */,
-				6034EB2A1760A9BD0070478D /* ARTopMenuViewController.h */,
-				6034EB2B1760A9BD0070478D /* ARTopMenuViewController.m */,
-				83FF73B81CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift */,
-				54B7477318A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.h */,
-				54B7477418A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m */,
-			);
-			name = "App Navigation";
-			path = App_Navigation;
 			sourceTree = "<group>";
 		};
 		6036B1DF2033843900763E10 /* ARVIR */ = {
@@ -2921,7 +2873,6 @@
 				5E47F34B1C3EC98200EC0751 /* Auction */,
 				6019A9041C7E648700E292FA /* Live Auctions */,
 				6016C18D178C2B46008EC8E7 /* Embedded */,
-				6034EB261760A1150070478D /* App Navigation */,
 				60903CC5175CE588002AB800 /* Admin */,
 				600249F2166CFD08007E6E9A /* Login and Onboarding */,
 				60B9D00F17834A35006E498A /* Web Browsing */,
@@ -3181,6 +3132,8 @@
 			children = (
 				B91C4D8C24F6893F00F5F177 /* ARScreenPresenterModule.h */,
 				B91C4D8D24F6893F00F5F177 /* ARScreenPresenterModule.m */,
+				B9A039442553FE47002E010D /* ARModalWithBottomSafeAreaViewController.h */,
+				B9A039452553FE47002E010D /* ARModalWithBottomSafeAreaViewController.m */,
 				5E830A501E969B1800A56C75 /* ArtsyEcho.h */,
 				5E830A511E969B1800A56C75 /* ArtsyEcho.m */,
 				1AC7920F251A42CF00F50228 /* EchoNew.json */,
@@ -3633,14 +3586,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49BA7E231655ABE600C06572 /* Build configuration list for PBXNativeTarget "Artsy" */;
 			buildPhases = (
-				3DDFDE0BD89435CF2CCB5242 /* [CP] Check Pods Manifest.lock */,
+				271FD00586DDEF4925626060 /* [CP] Check Pods Manifest.lock */,
 				49BA7DFB1655ABE600C06572 /* Sources */,
 				49BA7DFC1655ABE600C06572 /* Frameworks */,
 				5150685F1BCC176300018352 /* Generate Compilation DB */,
-				4F59D9726E617D9849261C9C /* [CP] Copy Pods Resources */,
 				49BA7DFD1655ABE600C06572 /* Resources */,
 				606C64B61E32A59400FD13E3 /* Embed App Extensions */,
-				43D41621DD0B170F4F0E50CC /* [CP] Embed Pods Frameworks */,
+				5A71C447DFCD4F537CFB14BA /* [CP] Embed Pods Frameworks */,
+				3DC40A4868886E7A205B706E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3672,7 +3625,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B3ECE8361819D1E7009F5C5B /* Build configuration list for PBXNativeTarget "Artsy Tests" */;
 			buildPhases = (
-				D9A0D273854EEC616AB8720E /* [CP] Check Pods Manifest.lock */,
+				98CDFEECF1F38475EE807C06 /* [CP] Check Pods Manifest.lock */,
 				B3ECE8221819D1E6009F5C5B /* Sources */,
 				B3ECE8231819D1E6009F5C5B /* Frameworks */,
 				B3ECE8241819D1E6009F5C5B /* Resources */,
@@ -3695,7 +3648,7 @@
 			attributes = {
 				CLASSPREFIX = AR;
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 1030;
+				LastUpgradeCheck = 1210;
 				ORGANIZATIONNAME = Artsy;
 				TargetAttributes = {
 					1C40C19B1DF8B1B7003F454F = {
@@ -3921,16 +3874,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3DDFDE0BD89435CF2CCB5242 /* [CP] Check Pods Manifest.lock */ = {
+		271FD00586DDEF4925626060 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Artsy-checkManifestLockResult.txt",
 			);
@@ -3939,29 +3896,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		43D41621DD0B170F4F0E50CC /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobileExtension.framework",
-				"${PODS_ROOT}/../node_modules/@mapbox/react-native-mapbox-gl/ios/Mapbox.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SailthruMobile.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SailthruMobileExtension.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4F59D9726E617D9849261C9C /* [CP] Copy Pods Resources */ = {
+		3DC40A4868886E7A205B706E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3988,6 +3923,7 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/MARKRangeSlider/MARKRangeSlider.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_close_button@2x.png",
 				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_close_button_white@2x.png",
 				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_message_close_button@2x.png",
@@ -4030,6 +3966,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MARKRangeSlider.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/NPKeyboardLayoutGuide.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_close_button@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_close_button_white@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_message_close_button@2x.png",
@@ -4070,16 +4007,42 @@
 			shellScript = "if type -p clang-compilation-database-tool > /dev/null 2>&1; then\n  clang-compilation-database-tool collect \"${OBJECT_FILE_DIR_normal}\" > \"${SRCROOT}/compiler_commands.json\"\nfi";
 			showEnvVarsInLog = 0;
 		};
-		D9A0D273854EEC616AB8720E /* [CP] Check Pods Manifest.lock */ = {
+		5A71C447DFCD4F537CFB14BA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework",
+				"${PODS_ROOT}/SailthruMobile/SailthruMobileExtension.framework",
+				"${PODS_ROOT}/../node_modules/@mapbox/react-native-mapbox-gl/ios/Mapbox.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SailthruMobile.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SailthruMobileExtension.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		98CDFEECF1F38475EE807C06 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Artsy Tests-checkManifestLockResult.txt",
 			);
@@ -4116,6 +4079,7 @@
 				600415C917C4ECE2003C7974 /* ArtsyAPI+RelatedModels.m in Sources */,
 				3CF144A718E45F6C00B1A764 /* SystemTime.m in Sources */,
 				608B2F6F1657D1D10046956C /* User.m in Sources */,
+				B9A0395C25540810002E010D /* UIView+ScrollToTop.m in Sources */,
 				1C6C00CE1E1BC597000B2C52 /* ARAppDelegate+TestScenarios.m in Sources */,
 				5EC929891C5FEAD10015133E /* UIViewController+Traits.swift in Sources */,
 				516CDA6C1BB56611001C02B2 /* UIViewController+ARUserActivity.m in Sources */,
@@ -4129,7 +4093,6 @@
 				83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */,
 				49A77235165ADB9400BC6FD3 /* ARFeedItem.m in Sources */,
 				60ED312B1C8F76CB0071DD89 /* LiveAuctionViewModel.swift in Sources */,
-				83FF73B91CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift in Sources */,
 				49A77236165ADB9400BC6FD3 /* ARFollowFairFeedItem.m in Sources */,
 				49A77237165ADB9400BC6FD3 /* ARPartnerShowFeedItem.m in Sources */,
 				49A77238165ADB9400BC6FD3 /* ARPublishedArtworkSetFeedItem.m in Sources */,
@@ -4146,7 +4109,6 @@
 				4191F43F1C8745D90054F823 /* ARAnalyticsVisualizer.m in Sources */,
 				3C7880BC18B9081C00595E30 /* ARNotificationView.m in Sources */,
 				60863E471D0B49AE0053B51C /* ArtsyAPI+HEAD.m in Sources */,
-				54B7477518A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m in Sources */,
 				5EA7BC3F1C612577009C52C9 /* AuctionNetworkModel.swift in Sources */,
 				5EBA3E831DFF4CCB005B4BEE /* ARTwoWayDictionaryTransformer.m in Sources */,
 				1CC9EB971CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.m in Sources */,
@@ -4181,7 +4143,6 @@
 				499A5894166683AC004B0E2F /* Artist.m in Sources */,
 				E667F12218EC825D00503F50 /* ARHTTPRequestOperationLogger.m in Sources */,
 				60327DD01987B7940075B399 /* ARDeveloperOptions.m in Sources */,
-				60327DE11987FF490075B399 /* ARTopMenuNavigationDataSource.m in Sources */,
 				CBB469D0181F1F1200B5692B /* Bid.m in Sources */,
 				1CF709B31CB803AA00C00FF4 /* AROnboardingHeaderView.m in Sources */,
 				5E925EAC1E68823C00A504D6 /* LiveAuctionSaleViewController.swift in Sources */,
@@ -4206,7 +4167,6 @@
 				5E20BB671C62C00D00C6D781 /* AuctionCircularButtons.swift in Sources */,
 				6016C199178C2C37008EC8E7 /* ARArtworkFlowModule.m in Sources */,
 				600A734317DE3F3F00E21233 /* ArtsyAPI+DeviceTokens.m in Sources */,
-				6002C2601CC5125200E249B2 /* UIViewController+TopMenuViewController.m in Sources */,
 				5435192E18A8E9420060F31E /* UIView+OldSchoolSnapshots.m in Sources */,
 				60BCE10F1FF2B8A500071AA6 /* ARAugmentedRealityConfig.m in Sources */,
 				CB206F7117C3FA8F00A4FDC4 /* ARPriceRangeViewController.m in Sources */,
@@ -4239,7 +4199,7 @@
 				CB6CE8E524F424E700ED2843 /* ARInternalWebViewManager.m in Sources */,
 				5E79FCBA1C768108003D5D65 /* ARNvagiationButton+Swift.swift in Sources */,
 				600EE29E16B3003F002E9F9A /* ARNavigationButton.m in Sources */,
-				9DCC0F6923EE04A500F0A773 /* ARTabContentView.m in Sources */,
+				B9A039462553FE47002E010D /* ARModalWithBottomSafeAreaViewController.m in Sources */,
 				60F242F21CB3AA7300387AA1 /* LiveAuctionBidButton.swift in Sources */,
 				6021F97F17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.m in Sources */,
 				34B1151A2069AA7C0025D925 /* AuctionBuyNowTitleView.swift in Sources */,
@@ -4337,7 +4297,6 @@
 				60289229176BE98C00512977 /* ARViewInRoomViewController.m in Sources */,
 				6016C190178C2B7F008EC8E7 /* AREmbeddedModelsViewController.m in Sources */,
 				5E4E329F1E4E6BD000C7F724 /* LotStandingsView.swift in Sources */,
-				6034EB2F1760A9BE0070478D /* ARTopMenuViewController.m in Sources */,
 				5E0DD14B1C9764420037F9E4 /* LiveAuctionStateManager.swift in Sources */,
 				B316E2F7181713110086CCDB /* Bidder.m in Sources */,
 				60ED31271C8F76AB0071DD89 /* LiveAuctionEventViewModel.swift in Sources */,
@@ -4390,7 +4349,6 @@
 				342F9667FC693B47498549FE /* UIApplicationStateEnum.m in Sources */,
 				342F9D1673764FE7442062AC /* ARNetworkErrorManager.m in Sources */,
 				1C029B021CCF7FE700808503 /* ARLoginFieldsView.m in Sources */,
-				B939FAB624B361AE002703C1 /* ARTabType.m in Sources */,
 				342F9272F2C534C1DFE2EB95 /* ARParallaxEffect.m in Sources */,
 				342F995E23C13C290DEFF23D /* ARScrollNavigationChief.m in Sources */,
 				342F9BDEE699AB7F9EA34E9F /* ARFileUtils.m in Sources */,
@@ -4425,7 +4383,6 @@
 				51F6960B1C6E55E7002B2E35 /* AuctionViewControllerTests.swift in Sources */,
 				5E0AD37624BE453600FD54A0 /* ARAugmentedRealityConfigSpec.m in Sources */,
 				3C6AA7CB1885F38D00501F07 /* SaleArtwork+Extensions.m in Sources */,
-				6002C2651CC5153300E249B2 /* UIViewControllerTopMenuViewControllerTests.m in Sources */,
 				60AF60CB1CB395600041B430 /* LiveAuctionBidButtonTests.swift in Sources */,
 				D3ACE5391AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m in Sources */,
 				51B4BA491C6A2B7F0014A394 /* AuctionBiddersNetworkModel.swift in Sources */,
@@ -4434,7 +4391,6 @@
 				E649708918D7762F009DB0C4 /* ARImageItemProviderTests.m in Sources */,
 				E61E772619A5477300C55E14 /* ARExpectaExtensions.m in Sources */,
 				1CD90D591DECBDF400FBD6C2 /* ARAppAnalyticsSpec.m in Sources */,
-				60C2CBED1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.m in Sources */,
 				5EF840801CED0C5F006248D7 /* LiveAuctionFancyLotCollectionViewLayoutTests.swift in Sources */,
 				9D3ED24621ADB11B00A0318A /* ArtsyEchoTests.m in Sources */,
 				3C3FEA8E1884346D00E1A16F /* ARUserManager+Stubs.m in Sources */,
@@ -4443,7 +4399,6 @@
 				60D70DE41D01F420008888D1 /* LiveAuctionLotViewModelSpecs.swift in Sources */,
 				5E86A6171F73183B00D00302 /* AFHTTPRequestOperationJSONTests.m in Sources */,
 				609624C91CEF3304002F3F33 /* ARTextViewTests.m in Sources */,
-				608CFC6D1C90C4B500B9056C /* LiveAuctionBidHistoryViewControllerTests.swift in Sources */,
 				6019A90D1C7F9EF600E292FA /* LiveAuctionLotSetViewControllerTests.swift in Sources */,
 				60B8D1241CBB7C1D006C3E42 /* TextStackTests.swift in Sources */,
 				5E174F5C1CADB35800657743 /* LiveAuctionStateReconcilerSpec.swift in Sources */,
@@ -4621,7 +4576,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = ArtsyRecordedTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = artsy.ArtsyRecordedTests;
@@ -4666,7 +4621,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = ArtsyRecordedTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = artsy.ArtsyRecordedTests;
@@ -4713,7 +4668,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = ArtsyRecordedTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = artsy.ArtsyRecordedTests;
@@ -4745,6 +4700,7 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -4789,7 +4745,7 @@
 		};
 		49BA7E241655ABE600C06572 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1AC876215B49E6BF4D24AE23 /* Pods-Artsy.debug.xcconfig */;
+			baseConfigurationReference = 97983D93644ACC6409190A08 /* Pods-Artsy.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_WARNINGS = NO;
@@ -4991,6 +4947,7 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -5023,7 +4980,7 @@
 		};
 		60AF3D0318D33C80008F3CC0 /* Demo */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C090E60DA1F8FEC7053193C8 /* Pods-Artsy.demo.xcconfig */;
+			baseConfigurationReference = C1D5D316AD887B0D764B2DFF /* Pods-Artsy.demo.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_WARNINGS = NO;
@@ -5080,7 +5037,7 @@
 		};
 		60AF3D0418D33C80008F3CC0 /* Demo */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CBBFF96B8BCEDF87FB66F4D1 /* Pods-Artsy Tests.demo.xcconfig */;
+			baseConfigurationReference = C92C422D2B7B26F1D784B7A5 /* Pods-Artsy Tests.demo.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
@@ -5142,6 +5099,7 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -5175,7 +5133,7 @@
 		};
 		B34D39FF17DFD99600308CAB /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4ADF6164FE5A0CF663832A03 /* Pods-Artsy.store.xcconfig */;
+			baseConfigurationReference = E46CDB9EB7EB81BF77D63EF5 /* Pods-Artsy.store.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_WARNINGS = NO;
@@ -5232,7 +5190,7 @@
 		};
 		B3ECE8371819D1E7009F5C5B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 600D55388EBA7E8A41AC0843 /* Pods-Artsy Tests.debug.xcconfig */;
+			baseConfigurationReference = F5228136EBA7C3D968C3D845 /* Pods-Artsy Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
@@ -5272,7 +5230,7 @@
 		};
 		B3ECE83A1819D1E7009F5C5B /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 64CEDF29A84E7D83134CEE4E /* Pods-Artsy Tests.store.xcconfig */;
+			baseConfigurationReference = 5E6C92F936EA71609C245323 /* Pods-Artsy Tests.store.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;

@@ -9,7 +9,6 @@
 #import "ARAnalyticsConstants.h"
 #import "UIApplicationStateEnum.h"
 #import "ARNotificationView.h"
-#import "ARTopMenuViewController.h"
 #import "ARSerifNavigationViewController.h"
 #import "ARLogger.h"
 #import "ARDefaults.h"
@@ -224,6 +223,7 @@
                                                        ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
 
     ARActionLog(@"Got device notification token: %@", deviceToken);
+    NSString *previousToken = [[NSUserDefaults standardUserDefaults] stringForKey:ARAPNSDeviceTokenKey];
 
     // Save device token purely for the admin settings view.
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
@@ -237,13 +237,14 @@
     // Apple says to always save the device token, as it may change. In addition, since we allow a device to register
     // for notifications even if the user has not signed-in, we must be sure to always update this to ensure the Artsy
     // service always has an up-to-date record of devices and associated users.
-    //
-    // https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/IPhoneOSClientImp.html#//apple_ref/doc/uid/TP40008194-CH103-SW2
-    [ArtsyAPI setAPNTokenForCurrentDevice:deviceToken success:^(id response) {
-        ARActionLog(@"Pushed device token to Artsy's servers");
-    } failure:^(NSError *error) {
-        ARErrorLog(@"Couldn't push the device token to Artsy, error: %@", error.localizedDescription);
-    }];
+    // https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622958-application?language=objc
+    if (![self tokensAreTheSame:deviceToken previousToken:previousToken]) {
+        [ArtsyAPI setAPNTokenForCurrentDevice:deviceToken success:^(id response) {
+            ARActionLog(@"Pushed device token to Artsy's servers");
+        } failure:^(NSError *error) {
+            ARErrorLog(@"Couldn't push the device token to Artsy, error: %@", error.localizedDescription);
+        }];
+    }
 #endif
 }
 
@@ -316,6 +317,15 @@
         }
     }
     return nil;
+}
+
+- (BOOL)tokensAreTheSame:(NSString *)newToken previousToken:(NSString * _Nullable)previousToken;
+{
+    if (!previousToken) {
+        return NO;
+    } else {
+        return [newToken isEqualToString:previousToken];
+    }
 }
 
 @end

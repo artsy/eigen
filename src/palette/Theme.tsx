@@ -79,22 +79,34 @@ export const themeProps = {
     black10: "#E5E5E5",
     /** 5 black (light grey), backgrounds only */
     black5: "#F8F8F8",
+    /** Full Blue. Calls to action, highlights, edits */
+    blue100: "#0A1AB4",
+    /** 10% of blue100 on white. Backgrounds */
+    blue10: "#E6E8F7",
+    /** Full copper. In consideration, transition, temporary */
+    copper100: "#A85F00",
+    /** 10% of copper100 on white. Backgrounds */
+    copper10: "#F6EFE5",
+    /** Full green. Success, approval, go */
+    green100: "#217C44",
+    /** 10% of green100 on white. Backgrounds */
+    green10: "#E9F2EC",
     /** Full purple, secondary brand color. Should only used in time/transitions (on hover, active state), for highlighting vital text, and links.   */
     purple100: "#6E1EFF",
     /** 30 purple (light purple), avoid usage  */
     purple30: "#D3BBFF",
     /* 5 purple, highlight, accent */
     purple5: "#F8F3FF",
-    /** Full green, success */
-    green100: "#0EDA83",
-    /** Full red, error */
-    red100: "#F7625A",
-    /** Full yellow, warn */
-    yellow100: "#F1AF1B",
+    /** Full red. Notification, error, stop */
+    red100: "#E82F1D",
+    /** 10% of red100 on white. Backgrounds */
+    red10: "#FDEAE8",
+    /** Replaced by copper100; hex updated here for consistency but copper100 should be used instead! */
+    yellow100: "#A85F00",
     /** 30 yellow (light yellow), avoid future use */
     yellow30: "#FAE7BA",
-    /** 10 yellow (lightest yellow), avoid future use */
-    yellow10: "#FDF7E8",
+    /** Replaced by copper10; hex updated here for consistency but copper10 should be used instead! */
+    yellow10: "#F6EFE5",
     /** Full white */
     white100: "#FFF",
   },

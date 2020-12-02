@@ -45,7 +45,7 @@ export const ReadMore = React.memo(
       ...basicRules,
       paragraph: {
         ...basicRules.paragraph,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => {
           return (
             <TextComponent {...textProps} color={color || "black100"} key={state.key}>
@@ -111,7 +111,7 @@ function truncate({
   // keep track of how many text nodes deep we are
   let textDepth = 0
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   function traverse(node: React.ReactNode) {
     if (offset === maxChars) {
       return null
@@ -120,7 +120,7 @@ function truncate({
     if (Array.isArray(node)) {
       const result = []
       for (const child of node) {
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         const truncated = traverse(child)
         if (truncated) {
           result.push(truncated)
@@ -139,7 +139,7 @@ function truncate({
         textDepth += 1
       }
       const children = React.Children.toArray((node.props as any).children)
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const truncatedChildren = traverse(children)
 
       if (node.type === Sans || node.type === Serif || node.type === PaletteText) {
@@ -156,7 +156,7 @@ function truncate({
         textDepth -= 1
       }
 
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       return React.cloneElement(node, null, ...truncatedChildren)
     }
 

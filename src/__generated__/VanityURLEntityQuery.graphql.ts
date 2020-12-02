@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9d7b50130cd93ab8ab8e995e453a2508 */
+/* @relayHash 2a0f9b922b1e9699fd7da1c672bafb74 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -133,7 +133,7 @@ fragment Fair2Artworks_fair on Fair {
 fragment Fair2Collections_fair on Fair {
   internalID
   slug
-  marketingCollections(size: 4) {
+  marketingCollections(size: 5) {
     slug
     title
     category
@@ -340,7 +340,7 @@ fragment Fair2_fair on Fair {
       __typename
     }
   }
-  marketingCollections(size: 4) {
+  marketingCollections(size: 5) {
     __typename
     id
   }
@@ -417,6 +417,7 @@ fragment FairDetail_fair on Fair {
   isActive
   location {
     ...LocationMap_location
+    ...HoursCollapsible_location
     coordinates {
       lat
       lng
@@ -514,6 +515,21 @@ fragment GenericGrid_artworks on Artwork {
   ...ArtworkGridItem_artwork
 }
 
+fragment HoursCollapsible_location on Location {
+  openingHours {
+    __typename
+    ... on OpeningHoursArray {
+      schedules {
+        days
+        hours
+      }
+    }
+    ... on OpeningHoursText {
+      text
+    }
+  }
+}
+
 fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
   __isArtworkConnectionInterface: __typename
   pageInfo {
@@ -543,29 +559,12 @@ fragment LocationMap_location on Location {
   internalID
   city
   address
-  address_2: address2
-  postal_code: postalCode
+  address2
+  postalCode
   summary
   coordinates {
     lat
     lng
-  }
-  day_schedules: daySchedules {
-    start_time: startTime
-    end_time: endTime
-    day_of_week: dayOfWeek
-  }
-  openingHours {
-    __typename
-    ... on OpeningHoursArray {
-      schedules {
-        days
-        hours
-      }
-    }
-    ... on OpeningHoursText {
-      text
-    }
   }
 }
 
@@ -1584,7 +1583,7 @@ return {
                       {
                         "kind": "Literal",
                         "name": "size",
-                        "value": 4
+                        "value": 5
                       }
                     ],
                     "concreteType": "MarketingCollection",
@@ -1663,7 +1662,7 @@ return {
                         "storageKey": "artworksConnection(first:3)"
                       }
                     ],
-                    "storageKey": "marketingCollections(size:4)"
+                    "storageKey": "marketingCollections(size:5)"
                   },
                   {
                     "alias": null,
@@ -2352,14 +2351,14 @@ return {
                         "storageKey": null
                       },
                       {
-                        "alias": "address_2",
+                        "alias": null,
                         "args": null,
                         "kind": "ScalarField",
                         "name": "address2",
                         "storageKey": null
                       },
                       {
-                        "alias": "postal_code",
+                        "alias": null,
                         "args": null,
                         "kind": "ScalarField",
                         "name": "postalCode",
@@ -2367,38 +2366,6 @@ return {
                       },
                       (v16/*: any*/),
                       (v19/*: any*/),
-                      {
-                        "alias": "day_schedules",
-                        "args": null,
-                        "concreteType": "DaySchedule",
-                        "kind": "LinkedField",
-                        "name": "daySchedules",
-                        "plural": true,
-                        "selections": [
-                          {
-                            "alias": "start_time",
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "startTime",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": "end_time",
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "endTime",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": "day_of_week",
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "dayOfWeek",
-                            "storageKey": null
-                          }
-                        ],
-                        "storageKey": null
-                      },
                       {
                         "alias": null,
                         "args": null,
@@ -3071,7 +3038,7 @@ return {
     ]
   },
   "params": {
-    "id": "9d7b50130cd93ab8ab8e995e453a2508",
+    "id": "2a0f9b922b1e9699fd7da1c672bafb74",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",

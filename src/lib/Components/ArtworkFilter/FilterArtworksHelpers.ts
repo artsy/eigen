@@ -1,23 +1,27 @@
-import { Aggregations, FilterArray } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
-import { FilterScreen } from "lib/Components/ArtworkFilter/FilterModal"
-import { compact, forOwn, groupBy, sortBy } from "lodash"
+import { AggregationName, Aggregations, FilterArray } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { FilterType } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { forOwn, groupBy } from "lodash"
+
+const toRemoveFilterType = "artwork"
 
 // General filter types and objects
 export enum FilterParamName {
-  sort = "sort",
+  artistIDs = "artistIDs",
+  artistsIFollow = "includeArtworksByFollowedArtists",
+  color = "color",
+  estimateRange = "estimateRange",
+  gallery = "partnerID",
+  institution = "partnerID",
   medium = "medium",
   priceRange = "priceRange",
   size = "dimensionRange",
-  color = "color",
-  gallery = "partnerID",
-  institution = "partnerID",
+  sort = "sort",
   timePeriod = "majorPeriods",
-  waysToBuyBuy = "acquireable",
+  viewAs = "viewAs",
   waysToBuyBid = "atAuction",
+  waysToBuyBuy = "acquireable",
   waysToBuyInquire = "inquireableOnly",
   waysToBuyMakeOffer = "offerable",
-  artistsIFollow = "includeArtworksByFollowedArtists",
-  artist = "artistIDs",
 }
 
 // Types for the parameters passed to Relay
@@ -26,17 +30,25 @@ export type FilterParams = {
 }
 
 export enum FilterDisplayName {
-  sort = "Sort",
-  medium = "Medium",
-  priceRange = "Price range",
-  size = "Size",
+  // artist = "Artists",
+  artistIDs = "Artists",
+  artistsIFollow = "Artist",
   color = "Color",
+  estimateRange = "Price/estimate range",
   gallery = "Gallery",
   institution = "Institution",
+  medium = "Medium",
+  priceRange = "Price",
+  size = "Size",
+  sort = "Sort by",
   timePeriod = "Time period",
+  viewAs = "View as",
   waysToBuy = "Ways to buy",
-  artistsIFollow = "Artist",
-  artist = "Artists",
+}
+
+export enum ViewAsValues {
+  Grid = "grid",
+  List = "list",
 }
 
 export interface AggregateOption {
@@ -44,24 +56,37 @@ export interface AggregateOption {
   paramValue: string
 }
 
-const defaultFilterParams = {
-  sort: "-decayed_merch",
-  medium: "*",
-  priceRange: "*-*",
-  dimensionRange: "*-*",
-  atAuction: false,
+const defaultArtworksParams = {
   acquireable: false,
+  atAuction: false,
+  dimensionRange: "*-*",
+  estimateRange: "",
   inquireableOnly: false,
+  medium: "*",
   offerable: false,
+  priceRange: "*-*",
+  sort: "-decayed_merch",
   includeArtworksByFollowedArtists: false,
 } as FilterParams
 
-const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams) => {
+const defaultSaleArtworksParams = {
+  sort: "position",
+  estimateRange: "",
+} as FilterParams
+
+const getDefaultParamsByType = (fitlerType: FilterType) => {
+  if (fitlerType === "artwork") {
+    return defaultArtworksParams
+  }
+  return defaultSaleArtworksParams
+}
+
+const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams, filterType: FilterType) => {
   const groupedFilters = groupBy(appliedFilters, "paramName")
   Object.keys(groupedFilters).forEach((paramName) => {
     const paramValues = groupedFilters[paramName].map((item) => item.paramValue)
     // If we add more filter options that can take arrays, we would include them here.
-    if (paramName === FilterParamName.artist) {
+    if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
       // For the artistIDs param, we want to return an array
       filterParams[paramName] = paramValues as string[]
     } else {
@@ -74,9 +99,13 @@ const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: Fil
 }
 
 const getChangedParams = (appliedFilters: FilterArray) => {
-  const filterParams = paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams })
+  const filterParams = paramsFromAppliedFilters(
+    appliedFilters,
+    { ...getDefaultParamsByType(toRemoveFilterType) },
+    toRemoveFilterType
+  )
   // when filters cleared return default params
-  return Object.keys(filterParams).length === 0 ? defaultFilterParams : filterParams
+  return Object.keys(filterParams).length === 0 ? getDefaultParamsByType(toRemoveFilterType) : filterParams
 }
 
 export const changedFiltersParams = (currentFilterParams: FilterParams, selectedFilterOptions: FilterArray) => {
@@ -119,4 +148,24 @@ export const aggregationsWithFollowedArtists = (
         ]
       : []
   return [...artworkAggregations, ...followedArtistAggregation]
+}
+
+// For most cases filter key can simply be FilterParamName, exception
+// is gallery and institution which share a paramName in metaphysics
+export const aggregationNameFromFilter: Record<string, AggregationName | undefined> = {
+  gallery: "GALLERY",
+  institution: "INSTITUTION",
+  color: "COLOR",
+  dimensionRange: "DIMENSION_RANGE",
+  majorPeriods: "MAJOR_PERIOD",
+  medium: "MEDIUM",
+  priceRange: "PRICE_RANGE",
+  artistsIFollow: "FOLLOWED_ARTISTS",
+  artistIDs: "ARTIST",
+}
+
+export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {
+  const aggregationName = aggregationNameFromFilter[filterKey]
+  const aggregation = aggregations!.find((value) => value.slice === aggregationName)
+  return aggregation
 }

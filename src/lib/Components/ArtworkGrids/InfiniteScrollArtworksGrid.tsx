@@ -80,6 +80,9 @@ export interface Props {
 
   /** Set as true to automatically manage the back button visibility as the user scrolls */
   hideBackButtonOnScroll?: boolean
+
+  /** To avoid layout jank, supply the width of the grid ahead of time. */
+  width?: number
 }
 
 interface PrivateProps {
@@ -106,7 +109,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
   }
 
   state = {
-    sectionDimension: 0,
+    sectionDimension: this.getSectionDimension(this.props.width),
     isLoading: false,
   }
 
@@ -148,19 +151,22 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     // tslint:enable:no-console
   }
 
-  onLayout = (event: LayoutChangeEvent) => {
-    const layout = event.nativeEvent.layout
-    const { shouldAddPadding } = this.props
-    if (layout.width > 0) {
+  getSectionDimension(width: number | null | undefined) {
+    if (width) {
       // This is the sum of all margins in between sections, so do not count to the right of last column.
-      // @ts-ignore STRICTNESS_MIGRATION
-      const sectionMargins = this.props.sectionMargin * (this.props.sectionCount - 1)
+      const sectionMargins = this.props.sectionMargin! * (this.props.sectionCount! - 1)
+      const { shouldAddPadding } = this.props
       const artworkPadding = shouldAddPadding ? space(4) : 0
-      this.setState({
-        // @ts-ignore STRICTNESS_MIGRATION
-        sectionDimension: (layout.width - sectionMargins) / this.props.sectionCount - artworkPadding,
-      })
+
+      return (width - sectionMargins) / (this.props.sectionCount! - artworkPadding)
     }
+    return 0
+  }
+
+  onLayout = (event: LayoutChangeEvent) => {
+    this.setState({
+      sectionDimension: this.getSectionDimension(event.nativeEvent.layout.width),
+    })
   }
 
   sectionedArtworks() {
@@ -168,7 +174,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     const artworks = extractNodes(this.props.connection)
     const sectionedArtworks: Array<typeof artworks> = []
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     for (let i = 0; i < this.props.sectionCount; i++) {
       sectionedArtworks.push([])
       sectionRatioSums.push(0)
@@ -238,7 +244,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
       const sectionSpecificStyle = {
         width: this.state.sectionDimension,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         marginRight: i === this.props.sectionCount - 1 ? 0 : this.props.sectionMargin,
       }
 

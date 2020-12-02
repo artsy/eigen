@@ -36,7 +36,7 @@ export const Fair2Editorial: React.FC<Fair2EditorialProps> = ({ fair, ...rest })
   return (
     <Box {...rest}>
       <Text mx={2} mb={2} variant="subtitle">
-        Related articles
+        Related Reading
       </Text>
 
       {(fair.articles.edges || []).map((edge) => {

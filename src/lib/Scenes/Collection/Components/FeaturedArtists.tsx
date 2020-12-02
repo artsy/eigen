@@ -1,6 +1,6 @@
 import { FeaturedArtists_collection } from "__generated__/FeaturedArtists_collection.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { ContextModules } from "lib/utils/track/schema"
 import { Box, Flex, Sans } from "palette"
@@ -15,20 +15,16 @@ interface FeaturedArtistsProps {
   tracking?: TrackingProp
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const track: Track<FeaturedArtistsProps, {}> = _track
 
 @track()
 export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
-  handleTap = (context: any, href: string) => {
-    SwitchBoard.presentNavigationViewController(context, href)
-  }
-
   getFeaturedArtistEntityCollection = (
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     artists: FeaturedArtists_collection["artworksConnection"]["merchandisableArtists"]
   ) => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     return artists.map((artist) => {
       return (
         <Box width="100%" key={artist.internalID} pb={20}>
@@ -44,12 +40,12 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
     const artistIDs = this.props.collection?.query?.artistIDs || []
 
     if (artistIDs.length > 0) {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       return allArtists.filter((artist) => artistIDs.includes(artist.internalID))
     }
 
     if (featuredArtistExclusionIds.length > 0) {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       return allArtists.filter((artist) => !featuredArtistExclusionIds.includes(artist.internalID))
     }
     return allArtists
@@ -75,8 +71,8 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
           {artists.length > artistCount && (
             <TouchableOpacity
               onPress={() => {
-                SwitchBoard.presentNavigationViewController(this, `/collection/${this.props.collection.slug}/artists`)
-                // @ts-ignore STRICTNESS_MIGRATION
+                navigate(`/collection/${this.props.collection.slug}/artists`)
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 tracking.trackEvent({
                   action_type: Schema.ActionTypes.Tap,
                   action_name: Schema.ActionNames.ViewMore,

@@ -1,3 +1,4 @@
+import { unsafe__getSelectedTab } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { GlobalState, useGlobalState } from "lib/utils/useGlobalState"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -81,7 +82,7 @@ export const StickyTabPage: React.FC<{
       Animated.onChange(
         shouldHideBackButton,
         Animated.call([shouldHideBackButton], ([shouldHide]) => {
-          NativeModules.ARScreenPresenterModule.updateShouldHideBackButton(!!shouldHide)
+          NativeModules.ARScreenPresenterModule.updateShouldHideBackButton(!!shouldHide, unsafe__getSelectedTab())
         })
       ),
     []

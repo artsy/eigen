@@ -59,7 +59,7 @@ return {
         {
           "kind": "Literal",
           "name": "size",
-          "value": 4
+          "value": 5
         }
       ],
       "concreteType": "MarketingCollection",
@@ -146,12 +146,12 @@ return {
           "storageKey": "artworksConnection(first:3)"
         }
       ],
-      "storageKey": "marketingCollections(size:4)"
+      "storageKey": "marketingCollections(size:5)"
     }
   ],
   "type": "Fair",
   "abstractKey": null
 };
 })();
-(node as any).hash = '1c2a4ac29f977c8da57e844650726019';
+(node as any).hash = 'dc2fac754448b2d5f16e6057429929ec';
 export default node;

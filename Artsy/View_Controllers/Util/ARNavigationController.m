@@ -2,6 +2,7 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import "ARDispatchManager.h"
+#import "ARAppDelegate.h"
 
 #import "UIView+HitTestExpansion.h"
 #import "UIViewController+InnermostTopViewController.h"
@@ -12,7 +13,6 @@
 #import "ARNavigationTransitionController.h"
 #import "ARNavigationController.h"
 #import "ARMenuAwareViewController.h"
-#import "ARTopMenuViewController.h"
 #import "ARScrollNavigationChief.h"
 #import "AREigenMapContainerViewController.h"
 #import "ARBackButton.h"
@@ -211,7 +211,7 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
 - (void)updateBackButtonPositionForViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    CGFloat topInsetMargin = [[ARTopMenuViewController sharedController].view safeAreaInsets].top;
+    CGFloat topInsetMargin = [[[ARAppDelegate sharedInstance] window] safeAreaInsets].top;
     CGFloat topMargin = topInsetMargin + 12;
 
     [UIView animateIf:animated duration:ARAnimationDuration :^{
@@ -409,7 +409,6 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
 
 - (IBAction)back:(id)sender
 {
-    [ARAnalytics event:ARAnalyticsBackTapped];
     if (self.isAnimatingTransition) return;
 
     UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;

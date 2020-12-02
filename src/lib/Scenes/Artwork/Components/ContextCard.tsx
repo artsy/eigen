@@ -1,6 +1,6 @@
 import { ContextCard_artwork } from "__generated__/ContextCard_artwork.graphql"
 import { ContextCardFollowMutation } from "__generated__/ContextCardFollowMutation.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { Box, Button, EntityHeader, Flex, Sans } from "palette"
 import React from "react"
@@ -100,10 +100,6 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
     })
   }
 
-  handleTap(context: any, href: string) {
-    SwitchBoard.presentNavigationViewController(context, href)
-  }
-
   followButton = (show: Show) => {
     const { isFollowed } = show
     const { isSaving } = this.state
@@ -169,7 +165,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
           </Sans>
         </Box>
         <Flex>
-          <TouchableWithoutFeedback onPress={() => this.handleTap(this, context.href!)}>
+          <TouchableWithoutFeedback onPress={() => navigate(context.href!)}>
             <EntityHeader
               name={context.name!}
               href={context.href || undefined}

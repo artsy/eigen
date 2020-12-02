@@ -1,5 +1,4 @@
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { navigate } from "lib/navigation/navigate"
 import { TabFairItemRow } from "lib/Scenes/City/Components/TabFairItemRow"
 import { isEqual } from "lodash"
@@ -45,7 +44,7 @@ const PageIndicator = styled(Box)`
 `
 
 export class ShowCard extends Component<ShowCardProps, ShowCardState> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   list: FlatList<Show | Fair>
 
   state = {
@@ -68,16 +67,16 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleTap(item) {
     if (item.type === "Show") {
-      SwitchBoard.presentNavigationViewController(this, item.href)
+      navigate(item.href)
     } else {
       navigate(`/fair/${item.node.id}`)
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   renderItem = ({ item }, noWidth = false) => {
     const props = noWidth ? { mr: 1 } : { width: this.cardWidth }
 
@@ -100,7 +99,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     )
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   onScroll = (e) => {
     const newPageNum = Math.round(e.nativeEvent.contentOffset.x / this.cardWidth + 1)
 

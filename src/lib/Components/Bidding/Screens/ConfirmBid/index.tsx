@@ -5,7 +5,7 @@ import { Image, NativeModules, ScrollView, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { PayloadError } from "relay-runtime"
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
 
 import { BiddingThemeProvider } from "lib/Components/Bidding/Components/BiddingThemeProvider"
@@ -22,7 +22,7 @@ import { PriceSummary } from "lib/Components/Bidding/Screens/ConfirmBid/PriceSum
 import { SelectMaxBidEdit } from "lib/Components/Bidding/Screens/SelectMaxBidEdit"
 import { Address, Bid, PaymentCardTextFieldParams, StripeToken } from "lib/Components/Bidding/types"
 import { LinkText } from "lib/Components/Text/LinkText"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Schema, screenTrack, track } from "lib/utils/track"
 
 import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
@@ -36,7 +36,7 @@ import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCrea
 import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { Modal } from "lib/Components/Modal"
 import { partnerName } from "lib/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 
 type BidderPositionResult = NonNullable<
   NonNullable<ConfirmBidCreateBidderPositionMutationResponse["createBidderPosition"]>["result"]
@@ -76,29 +76,28 @@ const resultForNetworkError = {
 
 @screenTrack({
   context_screen: Schema.PageNames.BidFlowConfirmBidPage,
-  // @ts-ignore STRICTNESS_MIGRATION
   context_screen_owner_type: null,
 })
 export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState> {
   private pollCount = 0
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
 
     const { bidders, has_qualified_credit_cards } = this.props.me
     const { requiresCheckbox, requiresPaymentInformation } = this.determineDisplayRequirements(
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       bidders,
       has_qualified_credit_cards
     )
 
     this.state = {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       billingAddress: null,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       creditCardToken: null,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       creditCardFormParams: null,
       conditionsOfSaleChecked: false,
       isLoading: false,
@@ -148,7 +147,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       await this.createBidderPosition()
     } catch (error) {
       if (!this.state.errorModalVisible) {
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         this.presentErrorModal(error, null)
       }
     }
@@ -159,13 +158,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
    * need a separate call to update our User model to store that info
    */
   async updatePhoneNumber() {
-    return new Promise((done, reject) => {
-      // @ts-ignore STRICTNESS_MIGRATION
+    return new Promise<void>((done, reject) => {
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const { phoneNumber } = this.state.billingAddress
       commitMutation<ConfirmBidUpdateUserMutation>(this.props.relay.environment, {
         onCompleted: (_, errors) => {
           if (errors && errors.length) {
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             this.presentErrorModal(errors, null)
             reject(errors)
           } else {
@@ -193,25 +192,25 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
     return stripe.createTokenWithCard({
       ...creditCardFormParams,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       name: billingAddress.fullName,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       addressLine1: billingAddress.addressLine1,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       addressLine2: billingAddress.addressLine2,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       addressCity: billingAddress.city,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       addressState: billingAddress.state,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       addressZip: billingAddress.postalCode,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       addressCountry: billingAddress.country.shortName,
     })
   }
 
   async createCreditCard(token: any) {
-    return new Promise((done) => {
+    return new Promise<void>((done) => {
       commitMutation<ConfirmBidCreateCreditCardMutation>(this.props.relay.environment, {
         onCompleted: (data, errors) => {
           if (data && get(data, "createCreditCard.creditCardOrError.creditCard")) {
@@ -221,7 +220,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               const mutationError = data && get(data, "createCreditCard.creditCardOrError.mutationError")
               this.presentErrorModal(mutationError, mutationError.detail)
             } else {
-              // @ts-ignore STRICTNESS_MIGRATION
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               this.presentErrorModal(errors, null)
             }
           }
@@ -260,7 +259,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   createBidderPosition() {
     commitMutation<ConfirmBidCreateBidderPositionMutation>(this.props.relay.environment, {
       onCompleted: (results, errors) => {
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         return isEmpty(errors) ? this.verifyBidderPosition(results) : this.presentErrorResult(errors)
       },
       onError: this.presentErrorResult.bind(this),
@@ -277,6 +276,27 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                   cents
                   display
                 }
+                saleArtwork {
+                  reserveMessage
+                  currentBid {
+                    display
+                  }
+                  counts {
+                    bidderPositions
+                  }
+                  artwork {
+                    myLotStanding(live: true) {
+                      activeBid {
+                        isWinning
+                      }
+                      mostRecentBid {
+                        maxBid {
+                          display
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -284,9 +304,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       `,
       variables: {
         input: {
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           saleID: this.props.sale_artwork.sale.slug,
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           artworkID: this.props.sale_artwork.artwork.slug,
           maxBidAmountCents: this.selectedBid().cents,
         },
@@ -295,7 +315,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   verifyBidderPosition(results: ConfirmBidCreateBidderPositionMutationResponse) {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const { result } = results.createBidderPosition
 
     if (result.status === "SUCCESS") {
@@ -316,7 +336,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   checkBidderPosition(data: BidderPositionQueryResponse) {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const { bidder_position } = data.me
 
     if (bidder_position.status === "PENDING" && this.pollCount < MAX_POLL_ATTEMPTS) {
@@ -338,13 +358,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   onConditionsOfSaleLinkPressed() {
-    SwitchBoard.presentModalViewController(this, "/conditions-of-sale")
+    navigate("/conditions-of-sale", { modal: true })
   }
 
   refreshBidderInfo = () => {
     this.props.relay.refetch(
       // FIXME: Should this be internalID?
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       { saleID: this.props.sale_artwork.sale.slug },
       null,
       (error) => {
@@ -353,7 +373,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
         }
         const { bidders, has_qualified_credit_cards } = this.props.me
         const { requiresCheckbox, requiresPaymentInformation } = this.determineDisplayRequirements(
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           bidders,
           has_qualified_credit_cards
         )
@@ -372,7 +392,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   goBackToSelectMaxBid() {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.props.navigator.push({
       component: SelectMaxBidEdit,
       title: "",
@@ -387,7 +407,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   presentErrorResult(error: Error | ReadonlyArray<PayloadError>) {
     console.error(error)
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.props.navigator.push({
       component: BidResultScreen,
       title: "",
@@ -402,17 +422,17 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   presentBidResult(bidderPositionResult: BidderPositionResult) {
     NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkBidUpdated", {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       ARAuctionID: this.props.sale_artwork.sale.slug,
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       ARAuctionArtworkID: this.props.sale_artwork.artwork.slug,
     })
     NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       ARAuctionID: this.props.sale_artwork.sale.slug,
     })
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.props.navigator.push({
       component: BidResultScreen,
       title: "",
@@ -446,7 +466,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   render() {
     const { id, artwork, lot_label, sale } = this.props.sale_artwork
     const { requiresPaymentInformation, requiresCheckbox, isLoading } = this.state
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const artworkImage = artwork.image
 
     // GOTCHA: Don't copy this kind of code if you're working in a functional component. use `useEmissionOption` instead
@@ -459,9 +479,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
             <Flex alignItems="center">
               <Title mb={3}>Confirm your bid</Title>
               <Timer
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 liveStartsAt={sale.live_start_at}
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 endsAt={sale.end_at}
               />
             </Flex>
@@ -469,13 +489,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
             <Box>
               <Flex m={4} alignItems="center">
                 {!!artworkImage && (
-                  // @ts-ignore STRICTNESS_MIGRATION
+                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                   <Image resizeMode="contain" style={{ width: 50, height: 50 }} source={{ uri: artworkImage.url }} />
                 )}
 
                 <Serif mt={4} size="4t" weight="semibold" numberOfLines={1} ellipsizeMode={"tail"}>
                   {
-                    // @ts-ignore STRICTNESS_MIGRATION
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     artwork.artist_names
                   }
                 </Serif>
@@ -485,14 +505,14 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
                 <Serif italic size="2" color="black60" textAlign="center" numberOfLines={1} ellipsizeMode={"tail"}>
                   {
-                    // @ts-ignore STRICTNESS_MIGRATION
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     artwork.title
                   }
                   {!!artwork! /* STRICTNESS_MIGRATION */.date && (
                     <Serif size="2">
                       ,{" "}
                       {
-                        // @ts-ignore STRICTNESS_MIGRATION
+                        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                         artwork.date
                       }
                     </Serif>
@@ -573,7 +593,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 block
                 width={100}
                 disabled={!this.canPlaceBid()}
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onPress={this.canPlaceBid() ? () => this.placeBid() : null}
               >
                 Bid

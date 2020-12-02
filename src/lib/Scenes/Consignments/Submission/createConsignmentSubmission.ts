@@ -1,6 +1,6 @@
 import { createConsignmentSubmissionMutation } from "__generated__/createConsignmentSubmissionMutation.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { commitMutation, graphql } from "relay-runtime"
 import { ConsignmentSetup } from "../index"
 import { consignmentSetupToMutationInput } from "./consignmentSetupToSubmission"
@@ -29,7 +29,7 @@ export const createConsignmentSubmission = (submission: ConsignmentSetup) => {
         if (errors && errors.length > 0) {
           reject(new Error(JSON.stringify(errors)))
         } else {
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           resolve(response.createConsignmentSubmission.consignmentSubmission.internalID)
         }
       },

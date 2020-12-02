@@ -1,5 +1,5 @@
 import { LinkText } from "lib/Components/Text/LinkText"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
 import React from "react"
 import { NativeModules, View } from "react-native"
@@ -21,10 +21,8 @@ export class PrivacyRequest extends React.Component {
           <Join separator={<Spacer mb={2} />}>
             <Sans size="3" textAlign="left">
               Please see Artsy’s{" "}
-              <LinkText onPress={() => SwitchBoard.presentModalViewController(this, "/privacy")}>
-                Privacy Policy
-              </LinkText>{" "}
-              for more information about the information we collect, how we use it, and why we use it.
+              <LinkText onPress={() => navigate("/privacy", { modal: true })}>Privacy Policy</LinkText> for more
+              information about the information we collect, how we use it, and why we use it.
             </Sans>
             <Sans size="3" textAlign="left">
               To submit a personal data request tap the button below or email{" "}

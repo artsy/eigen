@@ -1,26 +1,43 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { captureMessage } from "@sentry/react-native"
 import { Sale_me } from "__generated__/Sale_me.graphql"
 import { Sale_sale } from "__generated__/Sale_sale.graphql"
-import { SaleQueryRendererQuery } from "__generated__/SaleQueryRendererQuery.graphql"
+import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
+import { SaleBelowTheFoldQuery } from "__generated__/SaleBelowTheFoldQuery.graphql"
+import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
+import LoadFailureView from "lib/Components/LoadFailureView"
+import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import Spinner from "lib/Components/Spinner"
-import { SwitchMenu } from "lib/Components/SwitchMenu"
 import { navigate, popParentViewController } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { getCurrentEmissionState } from "lib/store/AppStore"
-import { extractNodes } from "lib/utils/extractNodes"
-import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
+import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { useInterval } from "lib/utils/useInterval"
+import { usePrevious } from "lib/utils/usePrevious"
+import _, { times } from "lodash"
 import moment from "moment"
-import { Flex } from "palette"
-import React, { useEffect, useRef, useState } from "react"
-import { Animated } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { RegisterToBidButton } from "./Components/RegisterToBidButton"
-import { SaleArtworksRailContainer as SaleArtworksRail } from "./Components/SaleArtworksRail"
-import { SaleHeaderContainer as SaleHeader } from "./Components/SaleHeader"
-import { SaleLotsListContainer as SaleLotsList } from "./Components/SaleLotsList"
+import { Box, Flex, Join, Spacer } from "palette"
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import { Animated, FlatList, RefreshControl } from "react-native"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { useTracking } from "react-tracking"
+import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import { SaleBelowTheFoldQueryResponse } from "../../../__generated__/SaleBelowTheFoldQuery.graphql"
+import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
+import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
+import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
+import { COVER_IMAGE_HEIGHT, SaleHeaderContainer as SaleHeader } from "./Components/SaleHeader"
+import { SaleLotsListContainer } from "./Components/SaleLotsList"
+import { saleStatus } from "./helpers"
 
 interface Props {
-  sale: Sale_sale
+  relay: RelayRefetchProp
   me: Sale_me
+  sale: Sale_sale
+  below: SaleBelowTheFoldQueryResponse
 }
 
 interface SaleSection {
@@ -28,147 +45,341 @@ interface SaleSection {
   content: JSX.Element
 }
 
-export const Sale: React.FC<Props> = (props) => {
-  const [showGrid, setShowGrid] = useState(true)
+const SALE_HEADER = "header"
+const SALE_REGISTER_TO_BID = "registerToBid"
+const SALE_ACTIVE_BIDS = "saleActiveBids"
+const SALE_ARTWORKS_RAIL = "saleArtworksRail"
+const SALE_LOTS_LIST = "saleLotsList"
 
-  const saleArtworks = extractNodes(props.sale.saleArtworksConnection)
+// Types related to showing filter button on scroll
+export interface ViewableItems {
+  viewableItems?: ViewToken[]
+}
+
+interface ViewToken {
+  item?: SaleSection
+  key?: string
+  index?: number | null
+  isViewable?: boolean
+  section?: any
+}
+
+export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
+  const tracking = useTracking()
+
+  const flatListRef = useRef<FlatList<any>>(null)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
+  const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const [isLive, setIsLive] = useState(false)
+  const prevIsLive = usePrevious(isLive, false)
+
   const scrollAnim = useRef(new Animated.Value(0)).current
 
-  let intervalId: NodeJS.Timeout
-
-  useEffect(() => {
-    if (props.sale.liveStartAt) {
-      // poll every .5 seconds to check if sale has gone live
-      intervalId = setInterval(checkIfSaleIsLive, 500)
-      return () => {
-        clearInterval(intervalId)
-      }
-    }
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true)
+    relay.refetch(() => {
+      setIsRefreshing(false)
+    })
   }, [])
 
-  const checkIfSaleIsLive = () => {
-    const liveStartAt = props.sale.liveStartAt
-    if (liveStartAt) {
-      const isLiveOpen = moment().isAfter(liveStartAt)
-      if (isLiveOpen) {
-        switchToLive()
-      }
+  // poll every .5 seconds to check if sale has gone live
+  useInterval(() => {
+    if (sale.liveStartAt === null) {
+      setIsLive(false)
+      return
     }
-  }
+    const now = moment()
+    if (now.isAfter(sale.liveStartAt)) {
+      if (sale.endAt === null) {
+        setIsLive(true)
+        return
+      }
+      if (now.isBefore(sale.endAt)) {
+        setIsLive(true)
+        return
+      }
+      setIsLive(false)
+      return
+    }
+    setIsLive(false)
+    return
+  }, 500)
 
-  const switchView = (value: boolean) => {
-    setShowGrid(value)
-  }
+  useEffect(() => {
+    if (isLive === true && prevIsLive === false) {
+      switchToLive()
+    }
+  }, [isLive, prevIsLive])
 
   const switchToLive = () => {
-    const { slug } = props.sale
     const liveBaseURL = getCurrentEmissionState().predictionURL
-    const liveAuctionURL = `${liveBaseURL}/${slug}`
+    const liveAuctionURL = `${liveBaseURL}/${sale.slug}`
     navigate(liveAuctionURL)
     setTimeout(popParentViewController, 500)
   }
 
-  const saleSectionsData: SaleSection[] = [
+  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
+  const viewableItemsChangedRef = React.useRef(({ viewableItems }: ViewableItems) => {
+    const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
+      return viewableItem?.item?.key === "saleLotsList"
+    })
+    setArtworksGridVisible(artworksItem?.isViewable ?? false)
+  })
+
+  const openFilterArtworksModal = () => {
+    tracking.trackEvent(tracks.openFilter(sale.internalID, sale.slug))
+    setFilterArtworkModalVisible(true)
+  }
+
+  const closeFilterArtworksModal = () => {
+    tracking.trackEvent(tracks.closeFilter(sale.internalID, sale.slug))
+    setFilterArtworkModalVisible(false)
+  }
+
+  const scrollToTop = () => {
+    const saleLotsListIndex = saleSectionsData.findIndex((section) => section.key === SALE_LOTS_LIST)
+    flatListRef.current?.scrollToIndex({ index: saleLotsListIndex, viewOffset: 50 })
+  }
+
+  const saleSectionsData: SaleSection[] = _.compact([
     {
-      key: "header",
-      content: <SaleHeader sale={props.sale} scrollAnim={scrollAnim} />,
+      key: SALE_HEADER,
+      content: <SaleHeader sale={sale} scrollAnim={scrollAnim} />,
     },
-    {
-      key: "registerToBid",
+    saleStatus(sale.startAt, sale.endAt, sale.registrationEndsAt) !== "closed" && {
+      key: SALE_REGISTER_TO_BID,
       content: (
         <Flex mx="2" mt={2}>
-          <RegisterToBidButton sale={props.sale} />
-        </Flex>
-      ),
-    },
-    {
-      key: "saleArtworksRail",
-      content: <SaleArtworksRail saleArtworks={saleArtworks} />,
-    },
-    //  TODO: Remove this once the filters are implemented
-    {
-      key: "temporarySwitch",
-      content: (
-        <Flex px={2}>
-          <SwitchMenu
-            title={showGrid ? "Show Grid" : "Show List"}
-            description="Show list of sale artworks"
-            value={showGrid}
-            onChange={(value) => switchView(value)}
+          <RegisterToBidButtonContainer
+            sale={sale}
+            me={me}
+            contextType={OwnerType.sale}
+            contextModule={ContextModule.auctionHome}
           />
         </Flex>
       ),
     },
     {
-      key: "saleLotsList",
-      content: <SaleLotsList me={props.me} showGrid={showGrid} />,
+      key: SALE_ACTIVE_BIDS,
+      content: <SaleActiveBidsContainer me={me} saleID={sale.internalID} />,
     },
-  ]
+    {
+      key: SALE_ARTWORKS_RAIL,
+      content: <SaleArtworksRailContainer me={me} />,
+    },
+    {
+      key: SALE_LOTS_LIST,
+      content: below ? (
+        <SaleLotsListContainer
+          saleArtworksConnection={below}
+          saleID={sale.internalID}
+          saleSlug={sale.slug}
+          scrollToTop={scrollToTop}
+        />
+      ) : (
+        // Since most likely this part of the screen will be already loaded when the user
+        // reaches it, there is no need to create the fancy placeholders here
+        <Flex justifyContent="center" alignItems="center" height={200}>
+          <Spinner />
+        </Flex>
+      ),
+    },
+  ])
 
   return (
-    <Animated.FlatList
-      data={saleSectionsData}
-      initialNumToRender={2}
-      renderItem={({ item }: { item: SaleSection }) => item.content}
-      keyExtractor={(item: SaleSection) => item.key}
-      onScroll={Animated.event(
-        [
-          {
-            nativeEvent: {
-              contentOffset: { y: scrollAnim },
-            },
-          },
-        ],
-        {
-          useNativeDriver: true,
-        }
-      )}
-      scrollEventThrottle={16}
-    />
+    <ArtworkFilterGlobalStateProvider>
+      <ArtworkFilterContext.Consumer>
+        {() => (
+          <ProvideScreenTracking info={tracks.screen(sale.internalID, sale.slug)}>
+            <Animated.FlatList
+              ref={flatListRef}
+              data={saleSectionsData}
+              viewabilityConfig={viewConfigRef.current}
+              onViewableItemsChanged={viewableItemsChangedRef.current}
+              contentContainerStyle={{ paddingBottom: 40 }}
+              renderItem={({ item }: { item: SaleSection }) => item.content}
+              keyExtractor={(item: SaleSection) => item.key}
+              onScroll={Animated.event(
+                [
+                  {
+                    nativeEvent: {
+                      contentOffset: { y: scrollAnim },
+                    },
+                  },
+                ],
+                {
+                  useNativeDriver: true,
+                }
+              )}
+              refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+              scrollEventThrottle={16}
+            />
+            <FilterModalNavigator
+              isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+              id={sale.internalID}
+              slug={sale.slug}
+              mode={FilterModalMode.SaleArtworks}
+              exitModal={closeFilterArtworksModal}
+              closeModal={closeFilterArtworksModal}
+            />
+            <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
+          </ProvideScreenTracking>
+        )}
+      </ArtworkFilterContext.Consumer>
+    </ArtworkFilterGlobalStateProvider>
   )
 }
 
-export const SaleContainer = createFragmentContainer(Sale, {
-  sale: graphql`
-    fragment Sale_sale on Sale {
-      slug
-      liveStartAt
-      ...SaleHeader_sale
-      ...RegisterToBidButton_sale
-      saleArtworksConnection(first: 10) {
-        edges {
-          node {
-            ...SaleArtworksRail_saleArtworks
-          }
-        }
+export const tracks = {
+  screen: (id: string, slug: string) => {
+    return {
+      context_screen: Schema.PageNames.Auction,
+      context_screen_owner_type: Schema.OwnerEntityTypes.Auction,
+      context_screen_owner_id: id,
+      context_screen_owner_slug: slug,
+    }
+  },
+  openFilter: (id: string, slug: string) => {
+    return {
+      action_name: "filter",
+      context_screen_owner_type: Schema.OwnerEntityTypes.Auction,
+      context_screen: Schema.PageNames.Auction,
+      context_screen_owner_id: id,
+      context_screen_owner_slug: slug,
+      action_type: Schema.ActionTypes.Tap,
+    }
+  },
+  closeFilter: (id: string, slug: string) => {
+    return {
+      action_name: "closeFilterWindow",
+      context_screen_owner_type: Schema.OwnerEntityTypes.Auction,
+      context_screen: Schema.PageNames.Auction,
+      context_screen_owner_id: id,
+      context_screen_owner_slug: slug,
+      action_type: Schema.ActionTypes.Tap,
+    }
+  },
+}
+
+export const SalePlaceholder: React.FC<{}> = () => (
+  <ProvidePlaceholderContext>
+    <PlaceholderBox height={COVER_IMAGE_HEIGHT} width="100%" />
+    <Flex px={2}>
+      <Join separator={<Spacer my={2} />}>
+        <Box>
+          <PlaceholderText width={200 + Math.random() * 100} marginTop={20} />
+          <PlaceholderText width={200 + Math.random() * 100} marginTop={20} />
+          <PlaceholderText width={100 + Math.random() * 100} marginTop={5} />
+        </Box>
+        <Box>
+          <PlaceholderText height={20} width={100 + Math.random() * 100} marginBottom={20} />
+          <PlaceholderBox height={50} width="100%" />
+        </Box>
+        <Box>
+          <PlaceholderText height={20} width={100 + Math.random() * 100} marginBottom={5} />
+          <Flex flexDirection="row" py={2}>
+            {times(3).map((index: number) => (
+              <Flex key={index} marginRight={1}>
+                <PlaceholderBox height={120} width={120} />
+                <PlaceholderText marginTop={20} key={index} width={40 + Math.random() * 80} />
+              </Flex>
+            ))}
+          </Flex>
+        </Box>
+      </Join>
+    </Flex>
+  </ProvidePlaceholderContext>
+)
+
+export const SaleContainer = createRefetchContainer(
+  Sale,
+  {
+    me: graphql`
+      fragment Sale_me on Me {
+        ...SaleArtworksRail_me @arguments(saleID: $saleSlug)
+        ...SaleActiveBids_me @arguments(saleID: $saleID)
+        ...RegisterToBidButton_me @arguments(saleID: $saleID)
+      }
+    `,
+    sale: graphql`
+      fragment Sale_sale on Sale {
+        ...SaleHeader_sale
+        ...RegisterToBidButton_sale
+        endAt
+        internalID
+        liveStartAt
+        startAt
+        registrationEndsAt
+        slug
+      }
+    `,
+  },
+  graphql`
+    query SaleRefetchQuery($saleID: String!, $saleSlug: ID!) {
+      me {
+        ...Sale_me
+      }
+      sale(id: $saleID) {
+        ...Sale_sale
       }
     }
-  `,
-  me: graphql`
-    fragment Sale_me on Me {
-      ...SaleLotsList_me
-    }
-  `,
-})
+  `
+)
 
-const Placeholder = () => <Spinner style={{ flex: 1 }} />
-
-export const SaleQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
+export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayModernEnvironment }> = ({
+  saleID,
+  environment,
+}) => {
   return (
-    <QueryRenderer<SaleQueryRendererQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query SaleQueryRendererQuery($saleID: String!) {
-          sale(id: $saleID) {
-            ...Sale_sale
-          }
-          me {
-            ...Sale_me
-          }
-        }
-      `}
-      variables={{ saleID }}
-      render={renderWithPlaceholder({ Container: SaleContainer, renderPlaceholder: Placeholder })}
+    <RetryErrorBoundary
+      render={({ isRetry }) => {
+        return (
+          <AboveTheFoldQueryRenderer<SaleAboveTheFoldQuery, SaleBelowTheFoldQuery>
+            environment={environment || defaultEnvironment}
+            above={{
+              query: graphql`
+                query SaleAboveTheFoldQuery($saleID: String!, $saleSlug: ID!) {
+                  sale(id: $saleID) {
+                    ...Sale_sale
+                  }
+                  me {
+                    ...Sale_me
+                  }
+                }
+              `,
+              variables: { saleID, saleSlug: saleID },
+            }}
+            below={{
+              query: graphql`
+                # query SaleBelowTheFoldQuery($saleID: String!, $saleSlug: ID!) {
+                query SaleBelowTheFoldQuery($saleID: ID) {
+                  ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleID)
+                }
+              `,
+              variables: { saleID },
+            }}
+            render={({ props, error }) => {
+              if (error) {
+                if (__DEV__) {
+                  console.error(error)
+                } else {
+                  captureMessage(error.stack!)
+                }
+                return <LoadFailureView style={{ flex: 1 }} />
+              }
+              if (!props?.above.me || !props.above.sale) {
+                return <SalePlaceholder />
+              }
+              return <SaleContainer sale={props.above.sale} me={props.above.me} below={props.below} />
+            }}
+            cacheConfig={{
+              // Bypass Relay cache on retries.
+              ...(isRetry && { force: true }),
+            }}
+          />
+        )
+      }}
     />
   )
 }

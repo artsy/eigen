@@ -22,6 +22,11 @@ describe("Sort Options Screen", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
   })
 
@@ -31,7 +36,7 @@ describe("Sort Options Screen", () => {
         <ArtworkFilterContext.Provider
           value={{
             state: initialState,
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             dispatch: null,
           }}
         >
@@ -80,6 +85,11 @@ describe("Sort Options Screen", () => {
         ],
         applyFilters: false,
         aggregations: [],
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
@@ -101,6 +111,11 @@ describe("Sort Options Screen", () => {
         previouslyAppliedFilters: [],
         applyFilters: false,
         aggregations: [],
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
@@ -136,6 +151,11 @@ describe("Sort Options Screen", () => {
         ],
         applyFilters: false,
         aggregations: [],
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
       }
 
       const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
@@ -164,6 +184,11 @@ describe("Sort Options Screen", () => {
       previouslyAppliedFilters: [],
       applyFilters: false,
       aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
     }
     const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
     const selectedRow = selectedSortOption(tree)

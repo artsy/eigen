@@ -3,11 +3,10 @@ import { AggregationName, FilterData, NewStore } from "lib/Components/ArtworkFil
 import { FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { sortBy } from "lodash"
 import React, { useContext } from "react"
-import { NavigatorIOS } from "react-native"
-import { aggregationForFilter } from "../FilterModal"
+import NavigatorIOS from "react-native-navigator-ios"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
-interface ArtistOptionsScreenProps {
+interface ArtistIDsArtworksOptionsScreenProps {
   navigator: NavigatorIOS
 }
 
@@ -23,7 +22,7 @@ export const ArtistOptionsScreen: React.FC<ArtistOptionsScreenProps> = ({ naviga
   const artistDisplayOptions = aggregation?.counts.map((aggCount) => {
     return {
       displayText: aggCount.name,
-      paramName: FilterParamName.artist,
+      paramName: FilterParamName.artistIDs,
       paramValue: aggCount.value,
       filterKey: "artist",
     }
@@ -47,7 +46,7 @@ export const ArtistOptionsScreen: React.FC<ArtistOptionsScreenProps> = ({ naviga
     // Send the paramValue directly if we're dealing with an artist filter.
     // If we're selecting the "Artists I Follow" filter, instead
     // send the opposite of the current val.
-    const selectedVal = option.paramName === FilterParamName.artist ? option.paramValue : !option.paramValue
+    const selectedVal = option.paramName === FilterParamName.artistIDs ? option.paramValue : !option.paramValue
 
     updateValue({
       paramName,
@@ -73,7 +72,7 @@ export const ArtistOptionsScreen: React.FC<ArtistOptionsScreenProps> = ({ naviga
 
   return (
     <MultiSelectOptionScreen
-      filterHeaderText={FilterDisplayName.artist}
+      filterHeaderText={FilterDisplayName.artistIDs}
       filterOptions={allOptions}
       onSelect={selectOption}
       navigator={navigator}

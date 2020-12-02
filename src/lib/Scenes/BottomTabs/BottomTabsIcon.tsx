@@ -3,7 +3,6 @@ import Svg, { Path } from "react-native-svg"
 import { BottomTabType } from "./BottomTabType"
 
 export const ICON_WIDTH = 56
-// This should match the value in "ARTopMenuViewController.m"
 export const ICON_HEIGHT = 52
 
 // need to bring the icons up a smidge because of the way they were exported

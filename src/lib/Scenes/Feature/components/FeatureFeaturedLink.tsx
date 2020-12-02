@@ -1,8 +1,8 @@
 import { FeatureFeaturedLink_featuredLink } from "__generated__/FeatureFeaturedLink_featuredLink.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Flex, Sans } from "palette"
-import React, { useRef } from "react"
+import React from "react"
 import { TouchableOpacity } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -14,15 +14,14 @@ export interface FeatureFeaturedLinkProps {
 }
 
 const FeatureFeaturedLink: React.FC<FeatureFeaturedLinkProps> = ({ featuredLink, width }) => {
-  const navRef = useRef(null)
   return (
-    <Flex ref={navRef} style={{ width }}>
+    <Flex style={{ width }}>
       <TouchableOpacity
         activeOpacity={0.9}
         onPress={
           featuredLink.href
             ? () => {
-                SwitchBoard.presentNavigationViewController(navRef.current!, featuredLink.href!)
+                navigate(featuredLink.href!)
               }
             : undefined
         }

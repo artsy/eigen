@@ -3,7 +3,7 @@ import {
   ArtworksInSeriesRailTestsQueryRawResponse,
 } from "__generated__/ArtworksInSeriesRailTestsQuery.graphql"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail/ArtworkTileRailCard"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
@@ -12,10 +12,6 @@ import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworksInSeriesRail, ArtworksInSeriesRailFragmentContainer } from "../ArtworksInSeriesRail"
-
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
 
 jest.unmock("react-relay")
 jest.mock("react-tracking")
@@ -86,10 +82,7 @@ describe("ArtworksInSeriesRail", () => {
     const wrapper = getWrapper()
     const header = wrapper.root.findAllByType(TouchableOpacity)[0]
     header.props.onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-      expect.anything(),
-      "/artist-series/alex-katz-departure"
-    )
+    expect(navigate).toHaveBeenCalledWith("/artist-series/alex-katz-departure")
   })
 
   it("tracks clicks to the View series button", () => {

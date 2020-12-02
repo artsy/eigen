@@ -5,10 +5,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-}))
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 
 import { CollectionsRailTestsQuery } from "__generated__/CollectionsRailTestsQuery.graphql"
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
@@ -102,10 +99,7 @@ describe("CollectionsRailFragmentContainer", () => {
     })
     // @ts-ignore
     first(tree.root.findAllByType(CardRailCard)).props.onPress()
-    expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(
-      expect.anything(),
-      "/collection/test-collection-one"
-    )
+    expect(navigate).toHaveBeenCalledWith("/collection/test-collection-one")
   })
 
   it("tracks collection thumbnail taps", () => {

@@ -83,7 +83,13 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
         query={props.above.query}
         variables={props.above.variables}
         render={(args) => {
-          setAboveArgs(args)
+          if (__TEST__) {
+            setAboveArgs(args)
+          } else {
+            setImmediate(() => {
+              setAboveArgs(args)
+            })
+          }
           return shouldCallRender
             ? render({
                 // make props null if we haven't received the above-the-fold result yet
@@ -94,6 +100,7 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
               })
             : null
         }}
+        cacheConfig={props.cacheConfig || null}
       />
       {aboveArgs?.props && (
         <QueryRenderer
@@ -102,9 +109,16 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
           query={props.below.query}
           variables={props.below.variables}
           render={(args) => {
-            setBelowArgs(args)
+            if (__TEST__) {
+              setBelowArgs(args)
+            } else {
+              setImmediate(() => {
+                setBelowArgs(args)
+              })
+            }
             return null
           }}
+          cacheConfig={props.cacheConfig || null}
         />
       )}
     </>

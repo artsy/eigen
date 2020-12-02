@@ -10,8 +10,8 @@
 
 - (instancetype)init
 {
-    NSURL *url = [[NSURL alloc] initWithString:@"https://echo-api-production.herokuapp.com/"];
-    self = [self initWithServerURL:url accountID:1 APIKey:[ReactNativeConfig envFor:@"ARTSY_ECHO_PRODUCTION_TOKEN"] localFilename:@"EchoNew"];
+    NSURL *url = [[NSURL alloc] initWithString:@"https://echo.artsy.net"];
+    self = [self initWithServerURL:url localFilename:@"EchoNew"];
 
     if (self) {
         [self setup];
@@ -28,7 +28,7 @@
         return;
     }
 
-    if (![[ReactNativeConfig envFor:@"ARTSY_ECHO_PRODUCTION_TOKEN"] isEqualToString:@"-"]) {
+    if (![[ReactNativeConfig envFor:@"_OSS_"] isEqualToString:@"true"]) {
         [super checkForUpdates:updateCheckCompleted];
     }
 }

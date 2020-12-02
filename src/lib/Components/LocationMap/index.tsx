@@ -1,9 +1,9 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import { Pin } from "lib/Icons/Pin"
 import { ArtsyMapStyleURL } from "lib/Scenes/Map/GlobalMap"
-import { Box, color, Flex, Sans } from "palette"
+import { Box, color, Flex, Text } from "palette"
 import React from "react"
 import { ActionSheetIOS, Clipboard, Linking, TouchableOpacity } from "react-native"
 import Config from "react-native-config"
@@ -21,15 +21,8 @@ const MapWrapper = styled(Flex)`
   border-color: ${color("black10")};
 `
 
-export enum PartnerType {
-  gallery = "Gallery",
-  museum = "Museum",
-  fair = "Fair",
-}
-
 interface Props {
   location: LocationMap_location
-  partnerType: PartnerType
   partnerName: string | null
 }
 
@@ -164,7 +157,7 @@ export class LocationMap extends React.Component<Props> {
   render() {
     const { location, partnerName } = this.props
     const { lat, lng } = location.coordinates || { lat: null, lng: null }
-    const { address_2, address, internalID, postal_code, city, summary } = location
+    const { address2, address, internalID, postalCode, city, summary } = location
 
     if (!lat || !lng) {
       return null
@@ -172,41 +165,41 @@ export class LocationMap extends React.Component<Props> {
 
     const renderSummaryAddress = () => {
       return (
-        <Box my={2}>
+        <Box m={2}>
           {!!partnerName && (
-            <Sans size="3" color="black100" textAlign="center" weight="medium">
+            <Text variant="mediumText" color="black100" textAlign="center">
               {partnerName}
-            </Sans>
+            </Text>
           )}
-          <Sans size="3t" color="black60" textAlign="center">
+          <Text variant="text" color="black60" textAlign="center">
             {summary}
-          </Sans>
+          </Text>
         </Box>
       )
     }
 
     const renderSegmentedAddress = () => {
       return (
-        <Box my={2}>
+        <Box m={2}>
           {!!partnerName && (
-            <Sans size="3" color="black100" textAlign="center" weight="medium">
+            <Text variant="mediumText" color="black100" textAlign="center">
               {partnerName}
-            </Sans>
+            </Text>
           )}
           {!!address && (
-            <Sans size="3t" color="black60" textAlign="center">
+            <Text variant="text" color="black60" textAlign="center">
               {address}
-            </Sans>
+            </Text>
           )}
-          {!!address_2 && (
-            <Sans size="3t" color="black60" textAlign="center">
-              {address_2}
-            </Sans>
+          {!!address2 && (
+            <Text variant="text" color="black60" textAlign="center">
+              {address2}
+            </Text>
           )}
-          {(!!city || !!postal_code) && (
-            <Sans size="3t" color="black60" textAlign="center">
-              {cityAndPostalCode(city, postal_code)}
-            </Sans>
+          {(!!city || !!postalCode) && (
+            <Text variant="text" color="black60" textAlign="center">
+              {cityAndPostalCode(city, postalCode)}
+            </Text>
           )}
         </Box>
       )
@@ -221,7 +214,7 @@ export class LocationMap extends React.Component<Props> {
     }
 
     return (
-      <TouchableOpacity onPress={() => tappedOnMap(lat, lng, address, summary, partnerName, city, postal_code)}>
+      <TouchableOpacity onPress={() => tappedOnMap(lat, lng, address, summary, partnerName, city, postalCode)}>
         <MapWrapper>
           <Map
             key={lng}
@@ -250,28 +243,12 @@ export const LocationMapContainer = createFragmentContainer(LocationMap, {
       internalID
       city
       address
-      address_2: address2
-      postal_code: postalCode
+      address2
+      postalCode
       summary
       coordinates {
         lat
         lng
-      }
-      day_schedules: daySchedules {
-        start_time: startTime
-        end_time: endTime
-        day_of_week: dayOfWeek
-      }
-      openingHours {
-        ... on OpeningHoursArray {
-          schedules {
-            days
-            hours
-          }
-        }
-        ... on OpeningHoursText {
-          text
-        }
       }
     }
   `,

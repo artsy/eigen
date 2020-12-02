@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1ba7cda597e4146adb5dbb0b289b1be8 */
+/* @relayHash c1a053100fb7bf586345080fd2a55470 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -120,6 +120,7 @@ fragment FairDetail_fair on Fair {
   isActive
   location {
     ...LocationMap_location
+    ...HoursCollapsible_location
     coordinates {
       lat
       lng
@@ -217,23 +218,7 @@ fragment GenericGrid_artworks on Artwork {
   ...ArtworkGridItem_artwork
 }
 
-fragment LocationMap_location on Location {
-  id
-  internalID
-  city
-  address
-  address_2: address2
-  postal_code: postalCode
-  summary
-  coordinates {
-    lat
-    lng
-  }
-  day_schedules: daySchedules {
-    start_time: startTime
-    end_time: endTime
-    day_of_week: dayOfWeek
-  }
+fragment HoursCollapsible_location on Location {
   openingHours {
     __typename
     ... on OpeningHoursArray {
@@ -245,6 +230,20 @@ fragment LocationMap_location on Location {
     ... on OpeningHoursText {
       text
     }
+  }
+}
+
+fragment LocationMap_location on Location {
+  id
+  internalID
+  city
+  address
+  address2
+  postalCode
+  summary
+  coordinates {
+    lat
+    lng
   }
 }
 */
@@ -577,14 +576,14 @@ return {
                 "storageKey": null
               },
               {
-                "alias": "address_2",
+                "alias": null,
                 "args": null,
                 "kind": "ScalarField",
                 "name": "address2",
                 "storageKey": null
               },
               {
-                "alias": "postal_code",
+                "alias": null,
                 "args": null,
                 "kind": "ScalarField",
                 "name": "postalCode",
@@ -617,38 +616,6 @@ return {
                     "args": null,
                     "kind": "ScalarField",
                     "name": "lng",
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              },
-              {
-                "alias": "day_schedules",
-                "args": null,
-                "concreteType": "DaySchedule",
-                "kind": "LinkedField",
-                "name": "daySchedules",
-                "plural": true,
-                "selections": [
-                  {
-                    "alias": "start_time",
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "startTime",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": "end_time",
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "endTime",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": "day_of_week",
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "dayOfWeek",
                     "storageKey": null
                   }
                 ],
@@ -1147,7 +1114,7 @@ return {
     ]
   },
   "params": {
-    "id": "1ba7cda597e4146adb5dbb0b289b1be8",
+    "id": "c1a053100fb7bf586345080fd2a55470",
     "metadata": {},
     "name": "FairQuery",
     "operationKind": "query",

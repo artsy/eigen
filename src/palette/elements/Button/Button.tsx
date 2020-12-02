@@ -11,7 +11,13 @@ import { Spinner } from "../Spinner"
 import { Sans } from "../Typography"
 
 /** Different theme variations */
-export type ButtonVariant = "primaryBlack" | "primaryWhite" | "secondaryGray" | "secondaryOutline" | "noOutline"
+export type ButtonVariant =
+  | "primaryBlack"
+  | "primaryWhite"
+  | "secondaryGray"
+  | "secondaryOutline"
+  | "secondaryOutlineWarning"
+  | "noOutline"
 /** Default button color variant */
 export const defaultVariant: ButtonVariant = "primaryBlack"
 
@@ -63,7 +69,7 @@ export interface ButtonBaseProps extends BoxProps {
  */
 export function getColorsForVariant(variant: ButtonVariant) {
   const {
-    colors: { black100, black10, black30, white100, purple100 },
+    colors: { black100, black10, black30, white100, purple100, red100 },
   } = themeProps
 
   switch (variant) {
@@ -112,6 +118,19 @@ export function getColorsForVariant(variant: ButtonVariant) {
           backgroundColor: white100,
           borderColor: black10,
           color: black100,
+        },
+        hover: {
+          backgroundColor: white100,
+          borderColor: black100,
+          color: black100,
+        },
+      }
+    case "secondaryOutlineWarning":
+      return {
+        default: {
+          backgroundColor: white100,
+          borderColor: black10,
+          color: red100,
         },
         hover: {
           backgroundColor: white100,
@@ -226,7 +245,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
   return (
     <Spring native from={from} to={to}>
       {
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         (springProps) => (
           <TouchableWithoutFeedback
             onPress={onPress}

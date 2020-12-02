@@ -1,5 +1,5 @@
 import { PartnerLocationSection_partner } from "__generated__/PartnerLocationSection_partner.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { get } from "lib/utils/get"
 import { Button, Sans, Spacer } from "palette"
 import React from "react"
@@ -26,7 +26,7 @@ class PartnerLocationSection extends React.Component<Props> {
   render() {
     const { partner } = this.props
     const handleSeeAllLocations = () => {
-      SwitchBoard.presentNavigationViewController(this, `/partner-locations/${partner.slug}`)
+      navigate(`/partner-locations/${partner.slug}`)
     }
     const cities = get(partner, (p) => p.cities)
     if (!cities) {

@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { Sans, Theme } from "palette"
 import React from "react"
@@ -9,7 +9,7 @@ describe("CommercialPartnerInformation", () => {
     const component = mount(
       <Theme>
         <CommercialPartnerInformation
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           artwork={CommercialPartnerInformationArtwork}
         />
       </Theme>
@@ -31,7 +31,7 @@ describe("CommercialPartnerInformation", () => {
     const component = mount(
       <Theme>
         <CommercialPartnerInformation
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           artwork={CommercialPartnerInformationArtworkClosedAuction}
         />
       </Theme>
@@ -51,7 +51,7 @@ describe("CommercialPartnerInformation", () => {
     const component = mount(
       <Theme>
         <CommercialPartnerInformation
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           artwork={CommercialPartnerInformationArtworkClosedAuction}
         />
       </Theme>
@@ -70,7 +70,7 @@ describe("CommercialPartnerInformation", () => {
     const component = mount(
       <Theme>
         <CommercialPartnerInformation
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           artwork={CommercialPartnerInformationNoEcommerce}
         />
       </Theme>
@@ -91,7 +91,7 @@ describe("CommercialPartnerInformation", () => {
     const component = mount(
       <Theme>
         <CommercialPartnerInformation
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           artwork={CommercialPartnerInformationArtworkClosedAuction}
         />
       </Theme>

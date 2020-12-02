@@ -5,15 +5,12 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Sale_sale = {
-    readonly slug: string;
+    readonly endAt: string | null;
+    readonly internalID: string;
     readonly liveStartAt: string | null;
-    readonly saleArtworksConnection: {
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly " $fragmentRefs": FragmentRefs<"SaleArtworksRail_saleArtworks">;
-            } | null;
-        } | null> | null;
-    } | null;
+    readonly startAt: string | null;
+    readonly registrationEndsAt: string | null;
+    readonly slug: string;
     readonly " $fragmentRefs": FragmentRefs<"SaleHeader_sale" | "RegisterToBidButton_sale">;
     readonly " $refType": "Sale_sale";
 };
@@ -35,7 +32,14 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "slug",
+      "name": "endAt",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
       "storageKey": null
     },
     {
@@ -47,47 +51,24 @@ const node: ReaderFragment = {
     },
     {
       "alias": null,
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "first",
-          "value": 10
-        }
-      ],
-      "concreteType": "SaleArtworkConnection",
-      "kind": "LinkedField",
-      "name": "saleArtworksConnection",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "SaleArtworkEdge",
-          "kind": "LinkedField",
-          "name": "edges",
-          "plural": true,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "SaleArtwork",
-              "kind": "LinkedField",
-              "name": "node",
-              "plural": false,
-              "selections": [
-                {
-                  "args": null,
-                  "kind": "FragmentSpread",
-                  "name": "SaleArtworksRail_saleArtworks"
-                }
-              ],
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        }
-      ],
-      "storageKey": "saleArtworksConnection(first:10)"
+      "args": null,
+      "kind": "ScalarField",
+      "name": "startAt",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "registrationEndsAt",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
+      "storageKey": null
     },
     {
       "args": null,
@@ -103,5 +84,5 @@ const node: ReaderFragment = {
   "type": "Sale",
   "abstractKey": null
 };
-(node as any).hash = 'be29dd4a743a9e44e481d467f8e0d258';
+(node as any).hash = 'f143025f2fb4cd547c1dbf266edc8f8b';
 export default node;

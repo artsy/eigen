@@ -35,7 +35,7 @@ const Input = styled.TextInput`
 `
 
 export default class TextArea extends React.Component<TextAreaProps, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
     this.state = {
@@ -43,9 +43,9 @@ export default class TextArea extends React.Component<TextAreaProps, State> {
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   onChangeText = (text) => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.props.text.onChangeText(text)
     this.setState({ text })
   }
@@ -53,9 +53,9 @@ export default class TextArea extends React.Component<TextAreaProps, State> {
   render() {
     const displayPlaceholder = this.state.text.length === 0
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const placeholderText = this.props.text.placeholder
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     delete this.props.text.placeholder
 
     return (

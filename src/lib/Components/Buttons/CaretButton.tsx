@@ -1,7 +1,7 @@
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { Box, Flex, Sans } from "palette"
 import React from "react"
-import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
+import { GestureResponderEvent, TouchableOpacity } from "react-native"
 
 interface Props {
   onPress?: (ev: GestureResponderEvent) => void
@@ -11,7 +11,7 @@ interface Props {
 
 export const CaretButton: React.FC<Props> = ({ text, onPress, textColor }) => {
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
+    <TouchableOpacity onPress={onPress}>
       <Flex flexDirection="row" align-items="base-line">
         <Sans size="3t" weight="medium" color={textColor}>
           {text}
@@ -20,6 +20,6 @@ export const CaretButton: React.FC<Props> = ({ text, onPress, textColor }) => {
           <ChevronIcon />
         </Box>
       </Flex>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   )
 }

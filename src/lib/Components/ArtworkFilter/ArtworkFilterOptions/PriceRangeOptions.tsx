@@ -19,7 +19,7 @@ const priceRangeDisplayText: Map<string, string> = new Map([
 ])
 
 const priceSort = (left: FilterData, right: FilterData): number => {
-  const sortOrder = ["*-*", "*-1000", "1000-5000", "5000-10000", "10000-50000", "50000-*"]
+  const sortOrder = ["*-*", "50000-*", "10000-50000", "5000-10000", "1000-5000", "*-1000"]
   const leftParam = left.paramValue as string
   const rightParam = right.paramValue as string
   if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {

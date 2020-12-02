@@ -46,7 +46,7 @@ We used to have many different `renderX` functions throughout our components, bu
 We use TypeScript to maximize runtime code safety. In April 2020, [we adopted TypeScript's `strict` mode](https://github.com/artsy/eigen/pull/3210). This disables "implicit any" and require strict null checks. The change left a lot of comments like this throughout the codebase:
 
 ```ts
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 ```
 
 Our goal is to reduce the number of `STRICTNESS_MIGRATION` migrations checks to zero over time. We use CI tooling to require PRs never to increase the number. You can opt in to helping out by requiring _all_ the files you change to fix all the migration comments by running the following command:

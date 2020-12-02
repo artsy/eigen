@@ -1,5 +1,5 @@
 import { AppModule } from "lib/AppRegistry"
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { parse } from "url"
@@ -56,10 +56,18 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-profile", "MyProfile"),
 
     new RouteMatcher("/artist/:artistID", "Artist"),
+    getCurrentEmissionState().options.AROptionsNewInsightsPage
+      ? new RouteMatcher("/artist/:artistID/shows", "ArtistShows")
+      : null,
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
-    new RouteMatcher("/artist/:id/auction-results", "WebView", ({ id }) => ({
-      url: `/artist/${id}/auction-results`,
+    new RouteMatcher("/artist/:artistID/auction-results", "WebView", ({ artistID }) => ({
+      url: `/artist/${artistID}/auction-results`,
     })),
+    new RouteMatcher("/artist/:artistID/artist-series", "FullArtistSeriesList"),
+    new RouteMatcher("/artist/:artistID/articles", "WebView", (params) => ({
+      url: "/artist/" + params.artistID + "/articles",
+    })),
+    new RouteMatcher("/artist/:artistID/*", "Artist"),
     // For artists in a gallery context, like https://artsy.net/spruth-magers/artist/astrid-klein . Until we have a native
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
     new RouteMatcher("/:profile_id_ignored/artist/:artistID", "Artist"),
@@ -67,14 +75,18 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     getCurrentEmissionState().options.AROptionsNewSalePage
       ? new RouteMatcher("/auction/:saleID", "Auction2")
       : new RouteMatcher("/auction/:id", "Auction"),
+    getCurrentEmissionState().options.AROptionsNewSalePage
+      ? new RouteMatcher("/auction/:saleID/info", "AuctionInfo")
+      : null,
+    new RouteMatcher("/auction-faq", "AuctionFAQ"),
     new RouteMatcher("/auction/:id/bid/:artwork_id", "AuctionBidArtwork"),
     new RouteMatcher("/gene/:geneID", "Gene"),
-    getCurrentEmissionState().options.AROptionsNewShowPage
-      ? new RouteMatcher("/show/:showID", "Show2")
-      : new RouteMatcher("/show/:showID", "Show"),
+    ...(getCurrentEmissionState().options.AROptionsNewShowPage
+      ? [new RouteMatcher("/show/:showID", "Show2"), new RouteMatcher("/show/:showID/info", "Show2MoreInfo")]
+      : [new RouteMatcher("/show/:showID", "Show"), new RouteMatcher("/show/:showID/info", "ShowMoreInfo")]),
     new RouteMatcher("/show/:showID/artworks", "ShowArtworks"),
     new RouteMatcher("/show/:showID/artists", "ShowArtists"),
-    new RouteMatcher("/show/:showID/info", "ShowMoreInfo"),
+
     new RouteMatcher("/inquiry/:artworkID", "Inquiry"),
     new RouteMatcher("/viewing-rooms", "ViewingRooms"),
     new RouteMatcher("/viewing-room/:viewing_room_id", "ViewingRoom"),
@@ -82,7 +94,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/viewing-room/:viewing_room_id/:artwork_id", "ViewingRoomArtwork"),
     new RouteMatcher("/feature/:slug", "Feature"),
     new RouteMatcher("/artist-series/:artistSeriesID", "ArtistSeries"),
-    new RouteMatcher("/artist/:artistID/artist-series", "FullArtistSeriesList"),
     new RouteMatcher("/collection/:collectionID", "Collection"),
     new RouteMatcher("/collection/:collectionID/artists", "FullFeaturedArtistList"),
     new RouteMatcher("/conversation/:conversationID", "Conversation"),
@@ -102,14 +113,15 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/local-discovery", "LocalDiscovery"),
     new RouteMatcher("/privacy-request", "PrivacyRequest"),
 
-    new RouteMatcher("/my-collection/add-artwork", "AddEditArtwork"),
-    new RouteMatcher("/my-collection/artwork-detail/:artworkID", "MyCollectionArtworkDetail"),
-    new RouteMatcher("/my-collection/artwork-list", "MyCollectionArtworkList"),
+    new RouteMatcher("/my-collection", "MyCollection"),
+    new RouteMatcher("/my-collection/artwork/:artworkSlug", "MyCollectionArtwork"),
+    new RouteMatcher("/my-collection/artwork-details/:artworkSlug", "MyCollectionArtworkFullDetails"),
+    new RouteMatcher("/my-collection/artwork-images/:artworkSlug", "MyCollectionArtworkImages"),
 
     // TODO: Follow-up about below route names
     new RouteMatcher("/collections/my-collection/artworks/new/submissions/new", "ConsignmentsSubmissionForm"),
     new RouteMatcher("/consign/submission", "ConsignmentsSubmissionForm"),
-    new RouteMatcher("/collections/my-collection/marketing-landing", "SellTabApp"),
+    new RouteMatcher("/collections/my-collection/marketing-landing", "SalesNotRootTabView"),
 
     new RouteMatcher("/conditions-of-sale", "WebView", () => ({ url: "/conditions-of-sale" })),
     new RouteMatcher("/artwork-classifications", "ArtworkAttributionClassFAQ"),
@@ -117,6 +129,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/partner-locations/:partnerID", "PartnerLocations"),
 
     new RouteMatcher("/fair/:fairID", "Fair"),
+    __DEV__ && new RouteMatcher("/fair2/:fairID", "Fair2"),
     new RouteMatcher("/fair/:fairID/artworks", "FairArtworks"),
     new RouteMatcher("/fair/:fairID/artists", "FairArtists"),
     new RouteMatcher("/fair/:fairID/exhibitors", "FairExhibitors"),
@@ -131,7 +144,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/works-for-you", "WorksForYou"),
     new RouteMatcher("/categories", "WebView", () => ({ url: "/categories" })),
     new RouteMatcher("/privacy", "WebView", () => ({ url: "/privacy" })),
-    new RouteMatcher("/auction-faq", "WebView", () => ({ url: "/auction-faq" })),
     new RouteMatcher("/identity-verification-faq", "WebView", () => ({ url: "/identity-verification-faq" })),
     new RouteMatcher("/terms", "WebView", () => ({ url: "/terms" })),
 

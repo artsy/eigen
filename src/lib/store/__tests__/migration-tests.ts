@@ -1,5 +1,5 @@
 import _ from "lodash"
-import { __appStoreTestUtils__ } from "../AppStore"
+import { __globalStoreTestUtils__ } from "../GlobalStore"
 import { CURRENT_APP_VERSION, migrate, Versions } from "../migration"
 import { sanitize } from "../persistence"
 
@@ -137,8 +137,8 @@ describe(migrate, () => {
  */
 describe("artsy app store migrations", () => {
   it("are up to date", () => {
-    __appStoreTestUtils__?.reset()
-    expect(migrate({ state: { version: 0 } })).toEqual(sanitize(__appStoreTestUtils__?.getCurrentState()))
+    __globalStoreTestUtils__?.reset()
+    expect(migrate({ state: { version: 0 } })).toEqual(sanitize(__globalStoreTestUtils__?.getCurrentState()))
   })
 
   it("CURRENT_APP_VERSION is always the latest one", () => {
@@ -160,5 +160,21 @@ describe("App version Versions.RenameConsingmentsToMyCollections", () => {
     const migratedState = migrate({ state: previousState, toVersion: Versions.RenameConsignmentsToMyCollection })
     expect("consignments" in migratedState).toBe(false)
     expect("myCollection" in migratedState).toBe(true)
+  })
+})
+
+describe("App version Versions.RemoveMyCollectionNavigationState", () => {
+  it("deletes `myCollection.navigation`", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: Versions.RemoveMyCollectionNavigationState - 1,
+    }) as any
+    expect("navigation" in previousState.myCollection).toBe(true)
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: Versions.RemoveMyCollectionNavigationState,
+    }) as any
+    expect("navigation" in migratedState.myCollection).toBe(false)
   })
 })

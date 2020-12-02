@@ -16,14 +16,14 @@ interface State {
   isFollowedChanging: boolean
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const formatCounts = ({ artists, artworks }) => {
   const artistLabel = artists === 1 ? "artist" : "artists"
   const worksLabel = artworks === 1 ? "work" : "works"
   return `${artworks} ${worksLabel} by ${artists} ${artistLabel}`
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const track: Track<Props, State> = _track
 
 @track()
@@ -44,7 +44,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Gallery,
     } as any
   })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   trackFollowPartner(_partnerSlug, _partnerID) {
     return null
   }
@@ -53,11 +53,11 @@ export class FairBoothHeader extends React.Component<Props, State> {
     const { show, relay } = this.props
     const {
       partner: {
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         slug: partnerSlug,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         internalID: partnerID,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         id: partnerRelayID,
       },
     } = show
@@ -106,7 +106,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
             },
           },
           updater: (store) => {
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             store.get(partnerRelayID).setValue(!partnerFollowed, "is_followed")
           },
         })
@@ -118,14 +118,14 @@ export class FairBoothHeader extends React.Component<Props, State> {
     const { show, onTitlePressed } = this.props
     const {
       partner: {
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         name: partnerName,
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         href: partnerHref,
       },
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       fair: { name: fairName },
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       location: { display: boothLocation },
       counts,
     } = show
@@ -150,7 +150,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
         )}
         <Sans size="3t" color="black60">
           {formatCounts(
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             counts
           )}
         </Sans>

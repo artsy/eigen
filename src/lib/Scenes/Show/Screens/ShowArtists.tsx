@@ -35,7 +35,7 @@ export class ShowArtists extends React.Component<Props, State> {
   componentDidMount() {
     const { show } = this.props
     const artistsGroupedByName = get(show, "artists_grouped_by_name", []) as any
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.setState({ data: artistsGroupedByName.map(({ letter, items }, index) => ({ letter, data: items, index })) })
   }
 

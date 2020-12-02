@@ -10,6 +10,7 @@ import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FAIR2_ARTWORKS_PAGE_SIZE } from "lib/data/constants"
 import { Schema } from "lib/utils/track"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box } from "palette"
 import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -19,9 +20,17 @@ interface Fair2ArtworksProps {
   fair: Fair2Artworks_fair
   relay: RelayPaginationProp
   initiallyAppliedFilter?: FilterArray
+  aggregations?: aggregationsType
+  followedArtistCount?: number | null | undefined
 }
 
-export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay, initiallyAppliedFilter }) => {
+// fair,
+// relay,
+// initiallyAppliedFilter,
+// aggregations,
+// followedArtistCount,
+
+export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay, aggregations, followedArtistCount }) => {
   const artworks = fair.fairArtworks!
   // const { dispatch, state } = useContext(ArtworkFilterContext)
   const tracking = useTracking()
@@ -65,15 +74,17 @@ export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay, initi
     }
   }, [applyFilters])
 
-  const followedArtistCount = artworks?.counts?.followedArtists ?? 0
-  const artworkAggregations = (artworks?.aggregations ?? []) as aggregationsType
-  const aggregations = aggregationsWithFollowedArtists(followedArtistCount, artworkAggregations)
+  const dispatchFollowedArtistCount = (followedArtistCount || artworks?.counts?.followedArtists) ?? 0
+  const artworkAggregations = ((aggregations || artworks?.aggregations) ?? []) as aggregationsType
+  const dispatchAggregations = aggregationsWithFollowedArtists(dispatchFollowedArtistCount, artworkAggregations)
 
   const setAggregations = NewStore.useStoreActions((actions) => actions.setAggregations)
 
   useEffect(() => {
     setAggregations(aggregations)
   }, [])
+
+  const screenWidth = useScreenDimensions().width
 
   if ((artworks?.counts?.total ?? 0) === 0) {
     return (
@@ -94,6 +105,7 @@ export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay, initi
         contextScreenOwnerType={OwnerType.fair}
         contextScreenOwnerId={fair.internalID}
         contextScreenOwnerSlug={fair.slug}
+        width={screenWidth - 40}
       />
     </Box>
   )
@@ -214,23 +226,23 @@ export const Fair2ArtworksFragmentContainer = createPaginationContainer(
       ) {
         fair(id: $id) {
           ...Fair2Artworks_fair
-          @arguments(
-            count: $count
-            cursor: $cursor
-            sort: $sort
-            medium: $medium
-            color: $color
-            partnerID: $partnerID
-            priceRange: $priceRange
-            dimensionRange: $dimensionRange
-            majorPeriods: $majorPeriods
-            acquireable: $acquireable
-            inquireableOnly: $inquireableOnly
-            atAuction: $atAuction
-            offerable: $offerable
-            includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
-            artistIDs: $artistIDs
-          )
+            @arguments(
+              count: $count
+              cursor: $cursor
+              sort: $sort
+              medium: $medium
+              color: $color
+              partnerID: $partnerID
+              priceRange: $priceRange
+              dimensionRange: $dimensionRange
+              majorPeriods: $majorPeriods
+              acquireable: $acquireable
+              inquireableOnly: $inquireableOnly
+              atAuction: $atAuction
+              offerable: $offerable
+              includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
+              artistIDs: $artistIDs
+            )
         }
       }
     `,

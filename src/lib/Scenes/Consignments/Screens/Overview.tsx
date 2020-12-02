@@ -5,11 +5,9 @@ import { Alert } from "react-native"
 import { AsyncStorage, Dimensions, Route, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { AppStore } from "lib/store/AppStore"
+import { dismissModal } from "lib/navigation/navigate"
 import { Box, Button, color, Flex, Serif, Spacer, Theme } from "palette"
 import { ArtistResult, ConsignmentMetadata, ConsignmentSetup } from "../"
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import { createConsignmentSubmission } from "../Submission/createConsignmentSubmission"
 import { updateConsignmentSubmission } from "../Submission/updateConsignmentSubmission"
@@ -28,7 +26,6 @@ interface Props extends ViewProperties {
   navigator: NavigatorIOS
   route: Route // this gets set by NavigatorIOS
   setup: ConsignmentSetup
-  isArrivingFromMyCollection?: boolean
 }
 
 interface State extends ConsignmentSetup {
@@ -37,7 +34,7 @@ interface State extends ConsignmentSetup {
   hasSubmittedSuccessfully?: boolean
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const track: Track<Props, State> = _track
 
 @screenTrack({
@@ -45,7 +42,7 @@ const track: Track<Props, State> = _track
   context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
 })
 export default class Overview extends React.Component<Props, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
     this.state = props.setup || {}
@@ -190,7 +187,7 @@ export default class Overview extends React.Component<Props, State> {
     this.props.navigator.push({ component: Confirmation, passProps: { submissionRequestValidationCheck } })
   }
 
-  exitModal = () => SwitchBoard.dismissModalViewController(this)
+  exitModal = () => dismissModal()
 
   uploadPhotosIfNeeded = async () => {
     const uploading = this.state.photos && this.state.photos.some((f) => f.uploading)
@@ -203,7 +200,7 @@ export default class Overview extends React.Component<Props, State> {
         // quickly it doesn't upload duplicates
         photo.uploading = true
         this.setState({ photos: this.state.photos })
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         await uploadImageAndPassToGemini(photo.file, "private", this.state.submissionID)
 
         // Mutate state 'unexpectedly', then send it back through "setState" to trigger the next
@@ -246,7 +243,6 @@ export default class Overview extends React.Component<Props, State> {
 
     return (
       <>
-        {!!this.props.isArrivingFromMyCollection && <MyCollectionsNavHeader />}
         <Theme>
           <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} centerContent>
             <View
@@ -288,11 +284,9 @@ export default class Overview extends React.Component<Props, State> {
                   </Button>
                 )}
                 <Spacer mb={1} />
-                {!this.props.isArrivingFromMyCollection && (
-                  <Button variant="noOutline" onPress={() => SwitchBoard.dismissModalViewController(this)}>
-                    Close
-                  </Button>
-                )}
+                <Button variant="noOutline" onPress={() => dismissModal()}>
+                  Close
+                </Button>
               </Flex>
             </View>
           </ScrollView>
@@ -300,9 +294,4 @@ export default class Overview extends React.Component<Props, State> {
       </>
     )
   }
-}
-
-const MyCollectionsNavHeader = () => {
-  const navActions = AppStore.actions.myCollection.navigation
-  return <FancyModalHeader onLeftButtonPress={() => navActions.goBack()} hideBottomDivider />
 }

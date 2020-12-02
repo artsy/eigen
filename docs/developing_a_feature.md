@@ -79,7 +79,7 @@ This works for when changing a part of Emission that already exists. But when we
 
 ## Replacing a lab option with an Echo Flag
 
-[Artsy Echo](https://github.com/artsy/echo) has a concept [called Features](https://echo-web-production.herokuapp.com/accounts/1/features) which are boolean options for features. **The Features here are synced across all users devices, in Production** (so be conservative about changes for people's bandwidth) and will be applied on the next launch of an app.
+[Artsy Echo](https://github.com/artsy/echo) has a concept called Features which are boolean options for features. **The Features here are synced across all users devices, in Production** (so be conservative about changes for people's bandwidth) and will be applied on the next launch of an app.
 
 When it comes time to release to users you will need to replace your lab option checks with echo flag checks. It is important to **replace/remove the corresponding lab option otherwise it will override the echo flag and your feature won't be visible to users.**
 

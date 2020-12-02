@@ -24,7 +24,7 @@ The file `Artsy/App/EchoNew.json` is not checked in (a sample file is included f
 
 ### Quick Start
 
-**Note**: We currently require using Xcode 11 for development, with the latest version (11.3) recommended. You can find all versions of Xcode from [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
+**Note**: We currently require using Xcode 12 for development, with the latest version (12.2.0) recommended. You can find all versions of Xcode from [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
 
 You'll need:
 

@@ -1,7 +1,7 @@
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import PinSavedOff from "lib/Icons/PinSavedOff"
 import PinSavedOn from "lib/Icons/PinSavedOn"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Track, track as _track } from "lib/utils/track"
 import { Box, color, Flex, Sans } from "palette"
 import React, { Component } from "react"
@@ -20,7 +20,7 @@ const track: Track<Props, {}> = _track as any
 @track()
 export class SavedEventSection extends Component<any> {
   handleTap = () => {
-    SwitchBoard.presentNavigationViewController(this, `/city-save/${this.props.citySlug}`)
+    navigate(`/city-save/${this.props.citySlug}`)
   }
 
   // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562

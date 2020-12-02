@@ -24,12 +24,15 @@ describe("Fair2AllFollowedArtists", () => {
           fair(id: $fairID) {
             ...Fair2AllFollowedArtists_fair
           }
+          fairForFilters: fair(id: $fairID) {
+            ...Fair2AllFollowedArtists_fairForFilters
+          }
         }
       `}
       variables={{ fairID: "art-basel-hong-kong-2019" }}
       render={({ props, error }) => {
-        if (props?.fair) {
-          return <Fair2AllFollowedArtistsFragmentContainer fair={props.fair} />
+        if (props?.fair && props?.fairForFilters) {
+          return <Fair2AllFollowedArtistsFragmentContainer fair={props.fair} fairForFilters={props.fairForFilters} />
         } else if (error) {
           console.log(error)
         }

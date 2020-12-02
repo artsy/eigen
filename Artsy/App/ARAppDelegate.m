@@ -18,7 +18,6 @@
 #import "ARFonts.h"
 #import "ARUserManager.h"
 #import "AROptions.h"
-#import "ARTopMenuViewController.h"
 
 #import "UIViewController+InnermostTopViewController.h"
 #import "ARAdminSettingsViewController.h"
@@ -48,6 +47,26 @@
 #import <React/RCTDevSettings.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARNotificationsManager.h>
+
+#ifdef FB_SONARKIT_ENABLED
+#import <FlipperKit/FlipperClient.h>
+#import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
+#import <FlipperKitUserDefaultsPlugin/FKUserDefaultsPlugin.h>
+#import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
+#import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
+#import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
+
+static void InitializeFlipper(UIApplication *application) {
+  FlipperClient *client = [FlipperClient sharedClient];
+  SKDescriptorMapper *layoutDescriptorMapper = [[SKDescriptorMapper alloc] initWithDefaults];
+  [client addPlugin:[[FlipperKitLayoutPlugin alloc] initWithRootNode:application withDescriptorMapper:layoutDescriptorMapper]];
+  [client addPlugin:[[FKUserDefaultsPlugin alloc] initWithSuiteName:nil]];
+  [client addPlugin:[FlipperKitReactPlugin new]];
+  [client addPlugin:[[FlipperKitNetworkPlugin alloc] initWithNetworkAdapter:[SKIOSNetworkAdapter new]]];
+  [client start];
+}
+#endif
+
 
 @interface ARAppDelegate ()
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
@@ -168,7 +187,10 @@ static ARAppDelegate *_sharedInstance = nil;
 /// This is called when the app is almost done launching
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    /// Make sure we set up here so there is an ARTopMenuViewController for routing when launching from a universal link
+#ifdef FB_SONARKIT_ENABLED
+    InitializeFlipper(application);
+#endif
+
     [self setupForAppLaunch];
 
     FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
@@ -260,6 +282,11 @@ static ARAppDelegate *_sharedInstance = nil;
             [ARSpotlight indexAllUsersFavorites];
             [self setupAdminTools];
         }
+
+        if (!([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding)) {
+            ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+            [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
+        }
     });
 }
 
@@ -273,10 +300,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORTildeKey:^{
         [self rageShakeNotificationRecieved];
-    }];
-
-    [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORDeleteKey:^{
-        [ARTopMenuViewController.sharedController.rootNavigationController popViewControllerAnimated:YES];
     }];
 }
 
@@ -360,24 +383,18 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)rageShakeNotificationRecieved
 {
-    UINavigationController *navigationController = ARTopMenuViewController.sharedController.rootNavigationController;
-
-    if (![navigationController.topViewController isKindOfClass:ARAdminSettingsViewController.class]) {
-        if (![UIDevice isPad]) {
-            // For some reason the supported orientation isn’t respected when this is pushed on top
-            // of a landscape VIR view.
-            //
-            // Since this is a debug/admin only issue, it’s safe to use private API here.
-            [[UIDevice currentDevice] setValue:@(UIInterfaceOrientationPortrait) forKey:@"orientation"];
-        }
-        ARAdminSettingsViewController *adminSettings = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-
-        SerifModalWebNavigationController *navController = [[SerifModalWebNavigationController alloc] initWithRootViewController:adminSettings];
-
-        [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
-
+    if (![UIDevice isPad]) {
+        // For some reason the supported orientation isn’t respected when this is pushed on top
+        // of a landscape VIR view.
+        //
+        // Since this is a debug/admin only issue, it’s safe to use private API here.
+        [[UIDevice currentDevice] setValue:@(UIInterfaceOrientationPortrait) forKey:@"orientation"];
     }
+    ARAdminSettingsViewController *adminSettings = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 
+    SerifModalWebNavigationController *navController = [[SerifModalWebNavigationController alloc] initWithRootViewController:adminSettings];
+
+    [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)countNumberOfRuns

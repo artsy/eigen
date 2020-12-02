@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5d6a47112815cab926fb8f2036b94039 */
+/* @relayHash b8b101dfb9cef8f069d5072d6c0173ee */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,10 +34,10 @@ fragment ActiveLot_lotStanding on AuctionsLotStanding {
     reserveStatus
     soldStatus
     askingPrice: onlineAskingPrice {
-      displayAmount(fractionalDigits: 0)
+      display
     }
     sellingPrice: floorSellingPrice {
-      displayAmount(fractionalDigits: 0)
+      display
     }
     id
   }
@@ -60,10 +60,10 @@ fragment ClosedLot_lotStanding on AuctionsLotStanding {
     reserveStatus
     soldStatus
     askingPrice: onlineAskingPrice {
-      displayAmount(fractionalDigits: 0)
+      display
     }
     sellingPrice: floorSellingPrice {
-      displayAmount(fractionalDigits: 0)
+      display
     }
     id
   }
@@ -146,16 +146,10 @@ var v0 = {
 v1 = [
   {
     "alias": null,
-    "args": [
-      {
-        "kind": "Literal",
-        "name": "fractionalDigits",
-        "value": 0
-      }
-    ],
+    "args": null,
     "kind": "ScalarField",
-    "name": "displayAmount",
-    "storageKey": "displayAmount(fractionalDigits:0)"
+    "name": "display",
+    "storageKey": null
   }
 ],
 v2 = {
@@ -187,9 +181,9 @@ v5 = {
 },
 v6 = {
   "enumValues": null,
-  "nullable": false,
+  "nullable": true,
   "plural": false,
-  "type": "String"
+  "type": "Money"
 },
 v7 = {
   "enumValues": null,
@@ -314,7 +308,7 @@ return {
                           {
                             "alias": "askingPrice",
                             "args": null,
-                            "concreteType": "AuctionsMoney",
+                            "concreteType": "Money",
                             "kind": "LinkedField",
                             "name": "onlineAskingPrice",
                             "plural": false,
@@ -324,7 +318,7 @@ return {
                           {
                             "alias": "sellingPrice",
                             "args": null,
-                            "concreteType": "AuctionsMoney",
+                            "concreteType": "Money",
                             "kind": "LinkedField",
                             "name": "floorSellingPrice",
                             "plural": false,
@@ -496,7 +490,7 @@ return {
     ]
   },
   "params": {
-    "id": "5d6a47112815cab926fb8f2036b94039",
+    "id": "b8b101dfb9cef8f069d5072d6c0173ee",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -536,13 +530,8 @@ return {
           "plural": false,
           "type": "AuctionsLotState"
         },
-        "me.auctionsLotStandingConnection.edges.node.lotState.askingPrice": {
-          "enumValues": null,
-          "nullable": false,
-          "plural": false,
-          "type": "AuctionsMoney"
-        },
-        "me.auctionsLotStandingConnection.edges.node.lotState.askingPrice.displayAmount": (v6/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lotState.askingPrice": (v6/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lotState.askingPrice.display": (v7/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.lotState.bidCount": {
           "enumValues": null,
           "nullable": false,
@@ -562,13 +551,8 @@ return {
           "type": "AuctionsReserveStatus"
         },
         "me.auctionsLotStandingConnection.edges.node.lotState.saleId": (v5/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.lotState.sellingPrice": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "AuctionsMoney"
-        },
-        "me.auctionsLotStandingConnection.edges.node.lotState.sellingPrice.displayAmount": (v6/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lotState.sellingPrice": (v6/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lotState.sellingPrice.display": (v7/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.lotState.soldStatus": {
           "enumValues": [
             "ForSale",

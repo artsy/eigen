@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash bd37ef982226143b0d68d972b5fee276 */
+/* @relayHash d8c77090bf70a32e15372ed90884a252 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,10 +34,10 @@ fragment ActiveLot_lotStanding on AuctionsLotStanding {
     reserveStatus
     soldStatus
     askingPrice: onlineAskingPrice {
-      displayAmount(fractionalDigits: 0)
+      display
     }
     sellingPrice: floorSellingPrice {
-      displayAmount(fractionalDigits: 0)
+      display
     }
     id
   }
@@ -60,10 +60,10 @@ fragment ClosedLot_lotStanding on AuctionsLotStanding {
     reserveStatus
     soldStatus
     askingPrice: onlineAskingPrice {
-      displayAmount(fractionalDigits: 0)
+      display
     }
     sellingPrice: floorSellingPrice {
-      displayAmount(fractionalDigits: 0)
+      display
     }
     id
   }
@@ -146,16 +146,10 @@ var v0 = {
 v1 = [
   {
     "alias": null,
-    "args": [
-      {
-        "kind": "Literal",
-        "name": "fractionalDigits",
-        "value": 0
-      }
-    ],
+    "args": null,
     "kind": "ScalarField",
-    "name": "displayAmount",
-    "storageKey": "displayAmount(fractionalDigits:0)"
+    "name": "display",
+    "storageKey": null
   }
 ],
 v2 = {
@@ -290,7 +284,7 @@ return {
                           {
                             "alias": "askingPrice",
                             "args": null,
-                            "concreteType": "AuctionsMoney",
+                            "concreteType": "Money",
                             "kind": "LinkedField",
                             "name": "onlineAskingPrice",
                             "plural": false,
@@ -300,7 +294,7 @@ return {
                           {
                             "alias": "sellingPrice",
                             "args": null,
-                            "concreteType": "AuctionsMoney",
+                            "concreteType": "Money",
                             "kind": "LinkedField",
                             "name": "floorSellingPrice",
                             "plural": false,
@@ -472,7 +466,7 @@ return {
     ]
   },
   "params": {
-    "id": "bd37ef982226143b0d68d972b5fee276",
+    "id": "d8c77090bf70a32e15372ed90884a252",
     "metadata": {},
     "name": "MyBidsQuery",
     "operationKind": "query",

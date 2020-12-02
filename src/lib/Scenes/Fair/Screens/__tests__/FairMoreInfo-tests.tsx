@@ -3,12 +3,9 @@ import { graphql } from "react-relay"
 import { fairFixture } from "../../__fixtures__"
 import { FairMoreInfo, shouldGoStraightToWebsite, shouldShowFairMoreInfo } from "../FairMoreInfo"
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentModalViewController: jest.fn(),
-}))
 jest.unmock("react-relay")
 
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 
 const renderTree = () =>
@@ -43,7 +40,7 @@ describe("FairMoreInfo", () => {
 
     button.props().onPress()
 
-    expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(expect.anything(), fairFixture.ticketsLink)
+    expect(navigate).toHaveBeenCalledWith(fairFixture.ticketsLink, { modal: true })
   })
 })
 

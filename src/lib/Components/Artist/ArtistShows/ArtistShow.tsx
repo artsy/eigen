@@ -1,13 +1,14 @@
 import React from "react"
-import { TouchableWithoutFeedback, View, ViewStyle } from "react-native"
+import { View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import Metadata from "./Metadata"
 
 import { ArtistShow_show } from "__generated__/ArtistShow_show.graphql"
+import { navigate } from "lib/navigation/navigate"
 import { hrefForPartialShow } from "lib/utils/router"
+import { Touchable } from "palette"
 
 interface Props {
   show: ArtistShow_show
@@ -18,33 +19,28 @@ interface Props {
   }
 }
 
-class Show extends React.Component<Props> {
-  handleTap() {
-    SwitchBoard.presentNavigationViewController(this, hrefForPartialShow(this.props.show))
+const Show: React.FC<Props> = ({ styles, show }) => {
+  const handleTap = () => {
+    navigate(hrefForPartialShow(show))
   }
 
-  render() {
-    const show = this.props.show
-    const image = show.cover_image
-    const imageURL = image && image.url
+  const image = show.cover_image
+  const imageURL = image && image.url
 
-    const styles = this.props.styles
-
-    return (
-      <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
-        <View style={[styles?.container]}>
-          <OpaqueImageView
-            imageURL={imageURL}
-            style={[styles?.image, { overflow: "hidden", borderRadius: 2, flex: 0 }]}
-          />
-          {/* this wrapper required to make numberOfLines work when parent is a row */}
-          <View style={{ flex: 1 }}>
-            <Metadata show={show} style={styles && styles.metadata} />
-          </View>
+  return (
+    <Touchable onPress={handleTap} haptic>
+      <View style={[styles?.container]}>
+        <OpaqueImageView
+          imageURL={imageURL}
+          style={[styles?.image, { overflow: "hidden", borderRadius: 2, flex: 0 }]}
+        />
+        {/* this wrapper required to make numberOfLines work when parent is a row */}
+        <View style={{ flex: 1 }}>
+          <Metadata show={show} style={styles && styles.metadata} />
         </View>
-      </TouchableWithoutFeedback>
-    )
-  }
+      </View>
+    </Touchable>
+  )
 }
 
 export default createFragmentContainer(Show, {

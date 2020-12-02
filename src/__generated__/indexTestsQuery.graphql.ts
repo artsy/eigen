@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ce0727d7e7a20e9dec933875130cd31d */
+/* @relayHash 71b867f4378f9adb00393c1cc131db26 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -87,6 +87,7 @@ fragment Detail_show on Show {
   ...Shows_show
   location {
     ...LocationMap_location
+    ...HoursCollapsible_location
     openingHours {
       __typename
       ... on OpeningHoursArray {
@@ -133,23 +134,7 @@ fragment GenericGrid_artworks on Artwork {
   ...ArtworkGridItem_artwork
 }
 
-fragment LocationMap_location on Location {
-  id
-  internalID
-  city
-  address
-  address_2: address2
-  postal_code: postalCode
-  summary
-  coordinates {
-    lat
-    lng
-  }
-  day_schedules: daySchedules {
-    start_time: startTime
-    end_time: endTime
-    day_of_week: dayOfWeek
-  }
+fragment HoursCollapsible_location on Location {
   openingHours {
     __typename
     ... on OpeningHoursArray {
@@ -161,6 +146,20 @@ fragment LocationMap_location on Location {
     ... on OpeningHoursText {
       text
     }
+  }
+}
+
+fragment LocationMap_location on Location {
+  id
+  internalID
+  city
+  address
+  address2
+  postalCode
+  summary
+  coordinates {
+    lat
+    lng
   }
 }
 
@@ -1060,14 +1059,14 @@ return {
                 "storageKey": null
               },
               {
-                "alias": "address_2",
+                "alias": null,
                 "args": null,
                 "kind": "ScalarField",
                 "name": "address2",
                 "storageKey": null
               },
               {
-                "alias": "postal_code",
+                "alias": null,
                 "args": null,
                 "kind": "ScalarField",
                 "name": "postalCode",
@@ -1100,38 +1099,6 @@ return {
                     "args": null,
                     "kind": "ScalarField",
                     "name": "lng",
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              },
-              {
-                "alias": "day_schedules",
-                "args": null,
-                "concreteType": "DaySchedule",
-                "kind": "LinkedField",
-                "name": "daySchedules",
-                "plural": true,
-                "selections": [
-                  {
-                    "alias": "start_time",
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "startTime",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": "end_time",
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "endTime",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": "day_of_week",
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "dayOfWeek",
                     "storageKey": null
                   }
                 ],
@@ -1217,7 +1184,7 @@ return {
     ]
   },
   "params": {
-    "id": "ce0727d7e7a20e9dec933875130cd31d",
+    "id": "71b867f4378f9adb00393c1cc131db26",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": (v22/*: any*/),
@@ -1383,7 +1350,7 @@ return {
           "type": "Location"
         },
         "show.location.address": (v24/*: any*/),
-        "show.location.address_2": (v24/*: any*/),
+        "show.location.address2": (v24/*: any*/),
         "show.location.city": (v24/*: any*/),
         "show.location.coordinates": {
           "enumValues": null,
@@ -1393,15 +1360,6 @@ return {
         },
         "show.location.coordinates.lat": (v31/*: any*/),
         "show.location.coordinates.lng": (v31/*: any*/),
-        "show.location.day_schedules": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": true,
-          "type": "DaySchedule"
-        },
-        "show.location.day_schedules.day_of_week": (v24/*: any*/),
-        "show.location.day_schedules.end_time": (v29/*: any*/),
-        "show.location.day_schedules.start_time": (v29/*: any*/),
         "show.location.id": (v25/*: any*/),
         "show.location.internalID": (v25/*: any*/),
         "show.location.openingHours": {
@@ -1420,7 +1378,7 @@ return {
         "show.location.openingHours.schedules.days": (v24/*: any*/),
         "show.location.openingHours.schedules.hours": (v24/*: any*/),
         "show.location.openingHours.text": (v24/*: any*/),
-        "show.location.postal_code": (v24/*: any*/),
+        "show.location.postalCode": (v24/*: any*/),
         "show.location.summary": (v24/*: any*/),
         "show.name": (v24/*: any*/),
         "show.nearbyShows": {

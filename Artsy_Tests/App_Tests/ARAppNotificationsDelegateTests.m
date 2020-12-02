@@ -2,9 +2,7 @@
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "ARNotificationView.h"
-#import "ARTopMenuViewController.h"
 #import "ARSerifNavigationViewController.h"
-#import "ARTopMenuNavigationDataSource.h"
 #import "UIApplicationStateEnum.h"
 #import <Emission/ARBidFlowViewController.h>
 #import <Emission/AREmission.h>
@@ -33,19 +31,16 @@ describe(@"receiveRemoteNotification", ^{
     __block ARAppNotificationsDelegate *delegate = nil;
     __block UIApplicationState appState = -1;
     __block id mockAnalytics = nil;
-    __block id mockTopMenuVC = nil;
 
     beforeEach(^{
         app = [UIApplication sharedApplication];
         delegate = [[ARAppNotificationsDelegate alloc] init];
 
         mockAnalytics = [OCMockObject mockForClass:[ARAnalytics class]];
-        mockTopMenuVC = [OCMockObject mockForClass:ARTopMenuViewController.class];
     });
 
     afterEach(^{
         [mockAnalytics stopMocking];
-        [mockTopMenuVC stopMocking];
     });
 
     sharedExamplesFor(@"when receiving a notification", ^(id _) {
@@ -62,7 +57,6 @@ describe(@"receiveRemoteNotification", ^{
     describe(@"while running in the background", ^{
         beforeEach(^{
             appState = UIApplicationStateBackground;
-            [[[mockTopMenuVC stub] andReturn:nil] sharedController];
         });
 
         itBehavesLike(@"when receiving a notification", nil);
@@ -74,10 +68,6 @@ describe(@"receiveRemoteNotification", ^{
         });
 
         describe(@"with stubbed top menu VC", ^{
-            beforeEach(^{
-                [[[mockTopMenuVC stub] andReturn:nil] sharedController];
-            });
-
             it(@"navigates to the url provided", ^{
                 id mock = [OCMockObject partialMockForObject:AREmission.sharedInstance];
                 [[mock expect] navigate:@"http://artsy.net/works-for-you"];
@@ -110,7 +100,6 @@ describe(@"receiveRemoteNotification", ^{
     describe(@"running in the foreground", ^{
         beforeEach(^{
             appState = UIApplicationStateActive;
-            [[[mockTopMenuVC stub] andReturn:nil] sharedController];
         });
 
         itBehavesLike(@"when receiving a notification", nil);

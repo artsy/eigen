@@ -1,9 +1,8 @@
 import { Action, action, Thunk, thunk } from "easy-peasy"
 import { NotificationsManager } from "lib/NativeModules/NotificationsManager"
 import { navigate } from "lib/navigation/navigate"
-import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import { NativeModules } from "react-native"
-import { AppStore } from "./AppStore"
+import { GlobalStore } from "./GlobalStore"
 
 // These should match the values in emission/Pod/Classes/EigenCommunications/ARNotificationsManager.m
 export type NativeEvent =
@@ -25,7 +24,6 @@ export type NativeEvent =
     }
 
 export interface NativeState {
-  selectedTab: BottomTabType
   userID: string
   authenticationToken: string
   launchCount: number
@@ -60,6 +58,7 @@ export interface NativeState {
     AROptionsUseReactNativeWebView: boolean
     AROptionsNewShowPage: boolean
     AROptionsNewFairPage: boolean
+    AROptionsNewInsightsPage: boolean
   }
   legacyFairSlugs: string[]
   legacyFairProfileSlugs: string[]
@@ -90,14 +89,14 @@ export function listenToNativeEvents(cb: (event: NativeEvent) => void) {
 listenToNativeEvents((event: NativeEvent) => {
   switch (event.type) {
     case "STATE_CHANGED":
-      AppStore.actions.native.setLocalState(event.payload)
+      GlobalStore.actions.native.setLocalState(event.payload)
       return
     case "NOTIFICATION_RECEIVED":
-      AppStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
+      GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
       return
     case "RESET_APP_STATE":
-      AppStore.actions.reset()
-      AppStore.actions.native.setLocalState(event.payload)
+      GlobalStore.actions.reset()
+      GlobalStore.actions.native.setLocalState(event.payload)
       return
     case "REQUEST_NAVIGATION":
       navigate(event.payload.route)

@@ -39,7 +39,7 @@ export class WorksForYou extends React.Component<Props, State> {
 
   componentDidMount() {
     // Update read status in gravity
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     NativeModules.ARTemporaryAPIModule.markNotificationsRead((error) => {
       if (error) {
         console.warn(error)
@@ -139,7 +139,7 @@ export const WorksForYouContainer = createPaginationContainer(
       ) {
         followsAndSaves {
           notifications: bundledArtworksByArtistConnection(sort: $sort, first: $count, after: $cursor)
-          @connection(key: "WorksForYou_notifications") {
+            @connection(key: "WorksForYou_notifications") {
             pageInfo {
               hasNextPage
               endCursor

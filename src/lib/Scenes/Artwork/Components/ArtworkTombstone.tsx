@@ -1,5 +1,5 @@
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Schema, track } from "lib/utils/track"
 import { Box, Flex, Sans, Spacer } from "palette"
 import React from "react"
@@ -29,7 +29,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     context_module: Schema.ContextModules.ArtworkTombstone,
   }))
   handleArtistTap(href: string) {
-    SwitchBoard.presentNavigationViewController(this, href)
+    navigate(href)
   }
 
   @track(() => ({
@@ -38,11 +38,11 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     context_module: Schema.ContextModules.ArtworkTombstone,
   }))
   handleClassificationTap(href: string) {
-    SwitchBoard.presentNavigationViewController(this, href)
+    navigate(href)
   }
 
   showAttributionClassFAQ() {
-    SwitchBoard.presentNavigationViewController(this, "/artwork-classifications")
+    navigate("/artwork-classifications")
   }
 
   showMoreArtists = () => {
@@ -56,7 +56,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
       <React.Fragment>
         <Text>
           {this.renderArtistName(
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             artist.name,
             artist.href
           )}
@@ -88,14 +88,14 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
       artwork: { artists },
     } = this.props
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const truncatedArtists = !this.state.showingMoreArtists ? artists.slice(0, 3) : artists
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const artistNames = truncatedArtists.map((artist, index) => {
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const artistNameWithComma = index !== artists.length - 1 ? artist.name + ", " : artist.name
       return (
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         <React.Fragment key={artist.href}>{this.renderArtistName(artistNameWithComma, artist.href)}</React.Fragment>
       )
     })
@@ -131,12 +131,12 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
         <Flex flexDirection="row" flexWrap="wrap">
           {artwork.artists! /* STRICTNESS_MIGRATION */.length === 1
             ? this.renderSingleArtist(
-                // @ts-ignore STRICTNESS_MIGRATION
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 artwork.artists[0]
               )
             : this.renderMultipleArtists()}
           {!!(artwork.artists! /* STRICTNESS_MIGRATION */.length === 0 && artwork.cultural_maker) &&
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             this.renderArtistName(artwork.cultural_maker, null)}
         </Flex>
         <Spacer mb={1} />
@@ -144,7 +144,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
           <Sans color="black100" size="3" weight="medium">
             Lot{" "}
             {
-              // @ts-ignore STRICTNESS_MIGRATION
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               artwork.saleArtwork.lotLabel
             }
           </Sans>

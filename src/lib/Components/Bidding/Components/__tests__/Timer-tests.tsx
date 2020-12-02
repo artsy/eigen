@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import moment from "moment"
@@ -16,21 +16,21 @@ const MINUTES = 60 * SECONDS
 
 const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const getTimerLabel = (timerComponent) => timerComponent.root.findAllByType(Sans)[1].props.children
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const getTimerText = (timerComponent) => timerComponent.root.findAllByType(Sans)[0].props.children
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const getMountedTimerLabel = (timerComponent) => timerComponent.find(Sans).at(1).text()
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const getMountedTimerText = (timerComponent) => timerComponent.find(Sans).at(0).text()
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 let pastTime
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 let futureTime
 
 beforeEach(() => {
@@ -132,7 +132,7 @@ it("shows 'In progress' when the auction is in live auction integration mode", (
         startsAt="2018-04-14T20:00:00+00:00"
         isPreview={false}
         liveStartsAt={
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           pastTime
         }
         isClosed={false}
@@ -209,7 +209,7 @@ it("omits the minutes when the sale ends on the hour", () => {
 
 describe("timer transitions", () => {
   it("transitions state from preview --> closing when the timer ends", () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const timer = mount(<Timer isPreview={true} startsAt={futureTime} endsAt={futureTime} />)
 
     expect(getMountedTimerLabel(timer)).toContain("Starts")
@@ -222,7 +222,7 @@ describe("timer transitions", () => {
   })
 
   it("transitions state from preview --> live upcoming when the timer ends", () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const timer = mount(<Timer isPreview={true} startsAt={futureTime} liveStartsAt={futureTime} />)
 
     expect(getMountedTimerLabel(timer)).toContain("Starts")
@@ -235,7 +235,7 @@ describe("timer transitions", () => {
   })
 
   it("transitions state from live upcoming --> live ongoing when the timer ends", () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const timer = mount(<Timer isPreview={false} startsAt={pastTime} liveStartsAt={futureTime} />)
 
     expect(getMountedTimerLabel(timer)).toContain("Live")
@@ -248,7 +248,7 @@ describe("timer transitions", () => {
   })
 
   it("transitions state from closing --> closed when the timer ends", () => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const timer = mount(<Timer isPreview={false} startsAt={pastTime} endsAt={futureTime} />)
 
     expect(getMountedTimerLabel(timer)).toContain("Ends")

@@ -2,7 +2,7 @@ import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
 import { ShowHeaderFollowShowMutation } from "__generated__/ShowHeaderFollowShowMutation.graphql"
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate, navigateToPartner } from "lib/navigation/navigate"
 import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema, Track, track as _track } from "lib/utils/track"
@@ -22,7 +22,7 @@ interface State {
   isFollowedSaving: boolean
 }
 
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const track: Track<Props, State> = _track
 
 @track()
@@ -34,8 +34,7 @@ export class ShowHeader extends React.Component<Props, State> {
     if (show.isStubShow) {
       return
     }
-    // @ts-ignore STRICTNESS_MIGRATION
-    SwitchBoard.presentPartnerViewController(this, show.partner?.href)
+    navigateToPartner(show.partner?.href!)
   }
 
   handleFollowShow = () => {
@@ -78,7 +77,7 @@ export class ShowHeader extends React.Component<Props, State> {
             },
           },
           updater: (store) => {
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             store.get(relayID).setValue(!isShowFollowed, "is_followed")
           },
         })
@@ -121,13 +120,13 @@ export class ShowHeader extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Artist,
     } as any
   })
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleArtistSelected(url, _slug, _internalID) {
-    SwitchBoard.presentNavigationViewController(this, url)
+    navigate(url)
   }
 
   handleViewAllArtistsPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.slug}/artists`)
+    navigate(`/show/${this.props.show.slug}/artists`)
   }
 
   render() {
@@ -176,9 +175,9 @@ export class ShowHeader extends React.Component<Props, State> {
         <Box px={2}>
           <EntityList
             prefix="Works by"
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             list={uniqArtistList}
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             count={artists.length}
             displayedItems={3}
             onItemSelected={this.handleArtistSelected.bind(this)}

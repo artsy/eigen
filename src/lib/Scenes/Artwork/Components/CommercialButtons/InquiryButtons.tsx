@@ -1,12 +1,12 @@
 import { InquiryButtons_artwork } from "__generated__/InquiryButtons_artwork.graphql"
-import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
+import { InquirySuccessNotification } from "lib/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
+import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryTypes } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Button, ButtonVariant } from "palette"
 import React, { useContext, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { InquiryModalFragmentContainer } from "./InquiryModal"
-
 export interface InquiryButtonsProps {
   artwork: InquiryButtons_artwork
   // EditionSetID is passed down from the edition selected by the user
@@ -18,8 +18,9 @@ export interface InquiryButtonsState {
   modalIsVisible: boolean
 }
 
-export const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...props }) => {
+const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork }) => {
   const [modalVisibility, setModalVisibility] = useState(false)
+  const [notificationVisibility, setNotificationVisibility] = useState(false)
   const { dispatch } = useContext(ArtworkInquiryContext)
   const dispatchAction = (buttonText: string) => {
     dispatch({
@@ -32,49 +33,30 @@ export const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...prop
 
   return (
     <>
-      {!!artwork.isPriceHidden && (
-        <Button
-          onPress={() => dispatchAction(InquiryOptions.RequestPrice)}
-          size="large"
-          mb={1}
-          block
-          width={100}
-          variant={props.variant}
-        >
-          {InquiryOptions.RequestPrice}
-        </Button>
-      )}
-      {!artwork.isPriceHidden && (
-        <Button
-          onPress={() => dispatchAction(InquiryOptions.InquireToPurchase)}
-          size="large"
-          mb={1}
-          block
-          width={100}
-          variant={props.variant}
-        >
-          {InquiryOptions.InquireToPurchase}
-        </Button>
-      )}
-      <Button
-        onPress={() => dispatchAction(InquiryOptions.ContactGallery)}
-        size="large"
-        block
-        width={100}
-        variant="secondaryOutline"
-      >
+      <InquirySuccessNotification
+        modalVisible={notificationVisibility}
+        toggleNotification={(state: boolean) => setNotificationVisibility(state)}
+      />
+      <Button onPress={() => dispatchAction(InquiryOptions.ContactGallery)} size="large" block width={100}>
         {InquiryOptions.ContactGallery}
       </Button>
       <InquiryModalFragmentContainer
         artwork={artwork}
         modalIsVisible={modalVisibility}
         toggleVisibility={() => setModalVisibility(!modalVisibility)}
+        onMutationSuccessful={(state: boolean) => setNotificationVisibility(state)}
       />
     </>
   )
 }
 
-export const InquiryButtonsFragmentContainer = createFragmentContainer(InquiryButtons, {
+const InquiryButtonsWrapper: React.FC<InquiryButtonsProps> = (props) => (
+  <ArtworkInquiryStateProvider>
+    <InquiryButtons {...props} />
+  </ArtworkInquiryStateProvider>
+)
+
+export const InquiryButtonsFragmentContainer = createFragmentContainer(InquiryButtonsWrapper, {
   artwork: graphql`
     fragment InquiryButtons_artwork on Artwork {
       image {

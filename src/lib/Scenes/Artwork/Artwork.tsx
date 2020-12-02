@@ -8,9 +8,8 @@ import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRec
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
-import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
@@ -100,7 +99,7 @@ export class Artwork extends React.Component<Props, State> {
     this.markArtworkAsRecentlyViewed()
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   componentDidUpdate(prevProps) {
     // If we are visible, but weren't, then we are re-appearing (not called on first render).
     if (this.props.isVisible && !prevProps.isVisible) {
@@ -128,7 +127,7 @@ export class Artwork extends React.Component<Props, State> {
 
   shouldRenderOtherWorks = () => {
     const { contextGrids } = this.props.artworkBelowTheFold
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const gridsToShow = populatedGrids(contextGrids)
 
     if (gridsToShow && gridsToShow.length > 0) {
@@ -289,25 +288,17 @@ export class Artwork extends React.Component<Props, State> {
 
   render() {
     return (
-      <ArtworkInquiryStateProvider>
-        <ArtworkInquiryContext.Consumer>
-          {(_context) => {
-            return (
-              <FlatList<ArtworkPageSection>
-                data={this.sections()}
-                ItemSeparatorComponent={() => (
-                  <Box mx={2} my={3}>
-                    <Separator />
-                  </Box>
-                )}
-                refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
-                contentContainerStyle={{ paddingBottom: 40 }}
-                renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
-              />
-            )
-          }}
-        </ArtworkInquiryContext.Consumer>
-      </ArtworkInquiryStateProvider>
+      <FlatList<ArtworkPageSection>
+        data={this.sections()}
+        ItemSeparatorComponent={() => (
+          <Box mx={2} my={3}>
+            <Separator />
+          </Box>
+        )}
+        refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
+        contentContainerStyle={{ paddingBottom: 40 }}
+        renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
+      />
     )
   }
 }
@@ -473,11 +464,11 @@ export const ArtworkQueryRenderer: React.FC<{
               renderComponent: ({ above, below }) => {
                 return (
                   <ArtworkContainer
-                    // @ts-ignore STRICTNESS_MIGRATION
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     artworkAboveTheFold={above.artwork}
-                    // @ts-ignore STRICTNESS_MIGRATION
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     artworkBelowTheFold={below?.artwork ?? null}
-                    // @ts-ignore STRICTNESS_MIGRATION
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     me={above.me}
                     {...others}
                   />
@@ -498,7 +489,6 @@ export const ArtworkQueryRenderer: React.FC<{
 const AboveTheFoldPlaceholder: React.FC<{}> = ({}) => {
   const screenDimensions = useScreenDimensions()
   // The logic for artworkHeight comes from the zeplin spec https://zpl.io/25JLX0Q
-  // @ts-ignore STRICTNESS_MIGRATION
   const artworkHeight = screenDimensions.width >= 375 ? 340 : 290
 
   return (

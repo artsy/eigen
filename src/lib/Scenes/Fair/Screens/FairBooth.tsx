@@ -1,5 +1,5 @@
 import { FairBooth_show } from "__generated__/FairBooth_show.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Schema, screenTrack } from "lib/utils/track"
 import { Box, Separator, Theme } from "palette"
 import React from "react"
@@ -43,11 +43,11 @@ export class FairBooth extends React.Component<Props, State> {
   }
 
   onViewFairBoothArtworksPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.slug}/artworks`)
+    navigate(`/show/${this.props.show.slug}/artworks`)
   }
 
   onViewFairBoothArtistsPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.slug}/artists`)
+    navigate(`/show/${this.props.show.slug}/artists`)
   }
 
   componentDidMount() {
@@ -69,7 +69,7 @@ export class FairBooth extends React.Component<Props, State> {
         onViewAllArtistsPressed: this.onViewFairBoothArtistsPressed.bind(this),
       },
     })
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.setState({ sections })
   }
 
@@ -84,9 +84,9 @@ export class FairBooth extends React.Component<Props, State> {
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   onTitlePressed = (partnerId) => {
-    SwitchBoard.presentNavigationViewController(this, partnerId)
+    navigate(partnerId)
   }
 
   render() {
@@ -110,7 +110,7 @@ export class FairBooth extends React.Component<Props, State> {
               </Box>
             )
           }}
-          // @ts-ignore STRICTNESS_MIGRATION
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           keyExtractor={(item, index) => item.type + String(index)}
         />
       </Theme>

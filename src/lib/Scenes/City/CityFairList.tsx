@@ -48,7 +48,7 @@ class CityFairList extends React.Component<Props, State> {
     })
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   renderItem = (item) => {
     return (
       <Box py={2}>
@@ -61,7 +61,7 @@ class CityFairList extends React.Component<Props, State> {
   render() {
     const {
       city: {
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         fairs: { edges },
       },
     } = this.props
@@ -79,11 +79,10 @@ class CityFairList extends React.Component<Props, State> {
             }}
             data={edges}
             ItemSeparatorComponent={() => <Separator />}
-            // @ts-ignore STRICTNESS_MIGRATION
             keyExtractor={(item) => item.node.internalID}
             renderItem={({ item }) => this.renderItem(item)}
             onScroll={isCloseToBottom(this.fetchData)}
-            // @ts-ignore STRICTNESS_MIGRATION
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             ListFooterComponent={!!fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
           />
         </Box>
@@ -100,7 +99,7 @@ export const CityFairListContainer = createPaginationContainer(
       @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
         slug
         fairs: fairsConnection(first: $count, after: $cursor, status: CURRENT, sort: START_AT_ASC)
-        @connection(key: "CityFairList_fairs") {
+          @connection(key: "CityFairList_fairs") {
           edges {
             node {
               internalID

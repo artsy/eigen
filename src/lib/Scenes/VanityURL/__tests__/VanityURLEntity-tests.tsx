@@ -4,8 +4,9 @@ import { fairFixture } from "lib/Scenes/Fair/__fixtures__"
 import { Fair, FairContainer, FairPlaceholder } from "lib/Scenes/Fair/Fair"
 import { Fair2FragmentContainer } from "lib/Scenes/Fair2/Fair2"
 import { PartnerContainer } from "lib/Scenes/Partner"
-import { __appStoreTestUtils__ } from "lib/store/AppStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { __renderWithPlaceholderTestUtils__ } from "lib/utils/renderWithPlaceholder"
 import { Spinner } from "palette"
 import React from "react"
 import { act } from "react-test-renderer"
@@ -40,6 +41,16 @@ describe("VanityURLEntity", () => {
 
   beforeEach(() => {
     env.mockClear()
+  })
+
+  it("renders a VanityURLPossibleRedirect when 404", () => {
+    if (__renderWithPlaceholderTestUtils__) {
+      __renderWithPlaceholderTestUtils__.allowFallbacksAtTestTime = true
+    }
+    const tree = renderWithWrappers(<TestRenderer entity="unknown" slug={"some-fair"} />)
+    expect(tree.root.findAllByType(VanityURLPossibleRedirect)).toHaveLength(0)
+    env.mock.resolveMostRecentOperation({ data: undefined, errors: [{ message: "404" }] })
+    expect(tree.root.findAllByType(VanityURLPossibleRedirect)).toHaveLength(1)
   })
 
   it("renders a fairQueryRenderer when given a fair id", () => {
@@ -162,14 +173,14 @@ describe("VanityURLEntity", () => {
 
   describe("rendering a profile with the new fair screen option enabled", () => {
     beforeEach(() => {
-      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFairPage: true })
+      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFairPage: true })
     })
 
     afterEach(() => {
-      __appStoreTestUtils__?.reset()
+      __globalStoreTestUtils__?.reset()
     })
     it("renders a new fair page when a fair is returned and the lab option is enabled", () => {
-      __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFairPage: true })
+      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFairPage: true })
 
       const tree = renderWithWrappers(<TestRenderer entity="fair" slugType="profileID" slug="some-fair-profile" />)
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("VanityURLEntityQuery")
@@ -190,11 +201,11 @@ describe("VanityURLEntity", () => {
   })
 
   it("renders an old fair page when the lab option is enabled and the slug is configured", () => {
-    __appStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFairPage: true })
-    __appStoreTestUtils__?.injectState({
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewFairPage: true })
+    __globalStoreTestUtils__?.injectState({
       native: { sessionState: { legacyFairSlugs: ["sofa-chicago-2018"] } },
     })
-    __appStoreTestUtils__?.injectState({
+    __globalStoreTestUtils__?.injectState({
       native: { sessionState: { legacyFairProfileSlugs: ["old-fair-profile"] } },
     })
 

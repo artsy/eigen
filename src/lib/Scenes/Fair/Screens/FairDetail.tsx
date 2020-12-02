@@ -1,13 +1,13 @@
 import { FairDetail_fair } from "__generated__/FairDetail_fair.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { Box, Flex, Message, Separator, Serif, Theme } from "palette"
 import React from "react"
 import { ActivityIndicator, FlatList, ViewProperties } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
-import { HoursCollapsible } from "lib/Components/HoursCollapsible"
-import { LocationMapContainer as LocationMap, PartnerType } from "lib/Components/LocationMap"
+import { HoursCollapsibleFragmentContainer as HoursCollapsible } from "lib/Components/HoursCollapsible"
+import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
 import { FAIR_SHOW_PAGE_SIZE } from "lib/data/constants"
 import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import { ArtistsExhibitorsWorksLink } from "../Components/ArtistsExhibitorsWorksLink"
@@ -68,7 +68,6 @@ export class FairDetail extends React.Component<Props, State> {
         data: {
           location: fair.location,
           partnerName: fair.profile ? fair.profile.name : fair.name,
-          partnerType: PartnerType.fair,
         },
       })
     }
@@ -139,20 +138,20 @@ export class FairDetail extends React.Component<Props, State> {
 
   onViewMoreInfoPressed = () => {
     if (shouldGoStraightToWebsite(this.props.fair as any /* STRICTNESS_MIGRATION */)) {
-      SwitchBoard.presentNavigationViewController(this, this.props.fair.organizer?.website! /* STRICTNESS_MIGRATION */)
+      navigate(this.props.fair.organizer?.website! /* STRICTNESS_MIGRATION */)
     } else {
-      SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.slug}/info`)
+      navigate(`/fair/${this.props.fair.slug}/info`)
     }
   }
 
   onViewBMWArtActivationPressed = () => {
-    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.slug}/bmw-sponsored-content`)
+    navigate(`/fair/${this.props.fair.slug}/bmw-sponsored-content`)
   }
 
   renderItem = ({ item: { data, type, showIndex } }: any /* STRICTNESS_MIGRATION */) => {
     switch (type) {
       case "location":
-        return <LocationMap partnerType="Fair" {...data} />
+        return <LocationMap {...data} />
       case "hours":
         return (
           <>
@@ -272,6 +271,7 @@ export const FairDetailContainer = createPaginationContainer(
         isActive
         location {
           ...LocationMap_location
+          ...HoursCollapsible_location
           coordinates {
             lat
             lng

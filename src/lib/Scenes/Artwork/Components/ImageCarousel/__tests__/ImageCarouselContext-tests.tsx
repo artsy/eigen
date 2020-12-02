@@ -1,4 +1,4 @@
-// @ts-ignore STRICTNESS_MIGRATION
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import React from "react"
 import { useTracking } from "react-tracking"
@@ -51,7 +51,7 @@ describe("image carousel context", () => {
     mount(<Mock />)
   })
   afterEach(() => {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     context = null
   })
   it("sets up the context properly", () => {
@@ -110,11 +110,11 @@ describe("image carousel context", () => {
     expect(context.fullScreenState.current).toBe("entered")
 
     context.dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex: 1 })
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(context.embeddedFlatListRef.current.scrollToIndex).toHaveBeenCalledWith({ animated: false, index: 1 })
 
     context.dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex: 0 })
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(context.embeddedFlatListRef.current.scrollToIndex).toHaveBeenCalledWith({ animated: false, index: 0 })
   })
 

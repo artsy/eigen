@@ -13,10 +13,10 @@ interface State {
 }
 
 export class DurationProvider extends React.Component<Props, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private intervalId: ReturnType<typeof setInterval>
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
     this.state = { timeLeftInMilliseconds: Date.parse(props.startAt) - Date.now() }
@@ -29,16 +29,16 @@ export class DurationProvider extends React.Component<Props, State> {
   componentWillUnmount() {
     if (this.intervalId) {
       clearInterval(this.intervalId)
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       this.intervalId = null
     }
   }
 
-  // @ts-ignore STRICTNESS_MIGRATION
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.startAt !== this.props.startAt) {
       clearInterval(this.intervalId)
-      // @ts-ignore STRICTNESS_MIGRATION
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       this.intervalId = null
       if (nextProps.startAt !== null) {
         this.setState(
@@ -62,7 +62,7 @@ export class DurationProvider extends React.Component<Props, State> {
       // Countdown expired, clear interval
       if (this.intervalId) {
         clearInterval(this.intervalId)
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         this.intervalId = null
       }
 

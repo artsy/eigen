@@ -125,8 +125,6 @@ jest.unmock("react-relay")
 // tslint:disable-next-line:no-empty
 jest.mock("@sentry/react-native", () => ({ captureMessage() {} }))
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentNavigationViewController: jest.fn() }))
-
 jest.mock("../RecentSearches", () => {
   const notifyRecentSearch = jest.fn()
   return {

@@ -1,6 +1,6 @@
 #import "ARNavigationController.h"
 #import "UIViewController+SimpleChildren.h"
-#import "ARTopMenuViewController.h"
+#import "ARMenuAwareViewController.h"
 
 
 @interface ARTestingHidesBackButtonViewController : UIViewController <ARMenuAwareViewController>

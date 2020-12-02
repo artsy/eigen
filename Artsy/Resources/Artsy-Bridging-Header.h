@@ -3,7 +3,6 @@
 //
 
 #import "UIViewController+FullScreenLoading.h"
-#import "UIViewController+TopMenuViewController.h"
 
 #import "ARUserActivity.h"
 
@@ -73,8 +72,6 @@
 #import "ARCollapsableTextView.h"
 #import "ARFonts.h"
 #import "ARCustomEigenLabels.h"
-
-#import "ARTopMenuViewController.h"
 
 #import "MTLModel+JSON.h"
 #import "ARCustomEigenLabels.h"

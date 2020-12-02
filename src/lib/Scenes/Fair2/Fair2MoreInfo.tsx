@@ -1,6 +1,6 @@
 import { Fair2MoreInfo_fair } from "__generated__/Fair2MoreInfo_fair.graphql"
 import { Fair2MoreInfoQuery } from "__generated__/Fair2MoreInfoQuery.graphql"
-import { LocationMapContainer, PartnerType } from "lib/Components/LocationMap"
+import { LocationMapContainer } from "lib/Components/LocationMap"
 import { Markdown } from "lib/Components/Markdown"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { navigate } from "lib/navigation/navigate"
@@ -75,11 +75,7 @@ export const Fair2MoreInfo: React.FC<Fair2MoreInfoProps> = ({ fair }) => {
                 <Text variant="mediumText">Location</Text>
                 {!!fair.location?.summary && <Text variant="text">{fair.location?.summary}</Text>}
                 {!!shouldShowLocationMap(fair.location?.coordinates) && (
-                  <LocationMapContainer
-                    location={fair.location}
-                    partnerType={PartnerType.fair}
-                    partnerName={fair.profile?.name ?? fair.name}
-                  />
+                  <LocationMapContainer location={fair.location} partnerName={fair.profile?.name ?? fair.name} />
                 )}
                 <Spacer my={1} />
               </>

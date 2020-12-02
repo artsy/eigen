@@ -1,5 +1,5 @@
 import { LinkText } from "lib/Components/Text/LinkText"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import _ from "lodash"
 import { color, Sans, Separator, Serif, space, Text } from "palette"
 import React from "react"
@@ -46,10 +46,7 @@ export function defaultRules({
     link: {
       react: (node, output, state) => {
         state.withinText = true
-        // @ts-ignore STRICTNESS_MIGRATION
-        let element
-        // @ts-ignore STRICTNESS_MIGRATION
-        const openUrl = (url) => {
+        const openUrl = (url: string) => {
           if (node.target.startsWith("mailto:")) {
             Linking.canOpenURL(url)
               .then((supported) => {
@@ -61,17 +58,14 @@ export function defaultRules({
               })
               .catch((err) => console.error("An error occurred", err))
           } else if (modal) {
-            // @ts-ignore STRICTNESS_MIGRATION
-            SwitchBoard.presentModalViewController(element, url)
+            navigate(url, { modal: true })
           } else {
-            // @ts-ignore STRICTNESS_MIGRATION
-            SwitchBoard.presentNavigationViewController(element, url)
+            navigate(url)
           }
         }
 
         return (
-          // @ts-ignore STRICTNESS_MIGRATION
-          <LinkText key={state.key} onPress={() => openUrl(node.target)} ref={(el) => (element = el)}>
+          <LinkText key={state.key} onPress={() => openUrl(node.target)}>
             {output(node.content, state)}
           </LinkText>
         )
@@ -224,7 +218,7 @@ export function defaultRules({
           3: "subtitle",
           4: "text",
         }
-        // @ts-ignore STRICTNESS_MIGRATION
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         const size = useNewTextStyles ? newTextMap[node.level] || "subtitle" : map[node.level] || "4"
         return useNewTextStyles ? (
           <Text mb="1" variant={size} key={state.key}>

@@ -12,11 +12,6 @@ import { ItemInfoFragmentContainer } from "../ItemInfo"
 
 jest.unmock("react-relay")
 
-jest.mock("lib/NativeModules/SwitchBoard", () => ({
-  presentNavigationViewController: jest.fn(),
-  presentModalViewController: jest.fn(),
-}))
-
 describe("ItemInfoFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

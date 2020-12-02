@@ -145,7 +145,7 @@ const AutosuggestResultsContainer = createPaginationContainer(
         entities: { type: "[SearchEntity]", defaultValue: [ARTIST, ARTWORK, FAIR, GENE, SALE, PROFILE, COLLECTION] }
       ) {
         results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: $cursor, entities: $entities)
-        @connection(key: "AutosuggestResults_results") {
+          @connection(key: "AutosuggestResults_results") {
           edges {
             node {
               imageUrl

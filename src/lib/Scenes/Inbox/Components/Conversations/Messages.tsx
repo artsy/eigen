@@ -33,7 +33,12 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   const [messages, setMessages] = useState<MessageGroupType[]>()
   useEffect(() => {
     const nodes = extractNodes(conversation.messagesConnection)
-      .filter((node) => node.body?.length || node.attachments?.length)
+      .filter((node) => {
+        if (node.isFirstMessage) {
+          return true
+        }
+        return node.body?.length || node.attachments?.length
+      })
       .map((node) => {
         return { key: node.id, ...node }
       })
@@ -157,7 +162,7 @@ export default createPaginationContainer(
         initialMessage
         lastMessageID
         messagesConnection(first: $count, after: $after, sort: DESC)
-        @connection(key: "Messages_messagesConnection", filters: []) {
+          @connection(key: "Messages_messagesConnection", filters: []) {
           pageInfo {
             startCursor
             endCursor

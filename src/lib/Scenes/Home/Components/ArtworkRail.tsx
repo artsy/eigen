@@ -5,7 +5,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { compact } from "lodash"
 import { FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
@@ -76,7 +76,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
                     if (tapEvent) {
                       tracking.trackEvent(tapEvent)
                     }
-                    SwitchBoard.presentNavigationViewController(railRef.current!, viewAllUrl)
+                    navigate(viewAllUrl)
                   }
                 : undefined
             }

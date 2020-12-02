@@ -1,5 +1,5 @@
 import NetInfo from "@react-native-community/netinfo"
-import { getCurrentEmissionState } from "lib/store/AppStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { throttle } from "lodash"
 
 const URLS = {

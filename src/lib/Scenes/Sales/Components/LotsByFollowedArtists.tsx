@@ -30,7 +30,6 @@ export class LotsByFollowedArtists extends Component<Props> {
           <InfiniteScrollArtworksGrid
             loadMore={this.props.relay.loadMore}
             hasMore={this.props.relay.hasMore}
-            // @ts-ignore STRICTNESS_MIGRATION
             connection={this.props.me.lotsByFollowedArtistsConnection}
             HeaderComponent={<SectionTitle title={title} />}
             hideUrgencyTags={hideUrgencyTags}
@@ -50,7 +49,7 @@ export default createPaginationContainer(
       fragment LotsByFollowedArtists_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         lotsByFollowedArtistsConnection(first: $count, after: $cursor, liveSale: true, isAuction: true)
-        @connection(key: "LotsByFollowedArtists_lotsByFollowedArtistsConnection") {
+          @connection(key: "LotsByFollowedArtists_lotsByFollowedArtistsConnection") {
           edges {
             cursor
           }

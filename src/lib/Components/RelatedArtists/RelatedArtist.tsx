@@ -1,5 +1,5 @@
 import { RelatedArtist_artist } from "__generated__/RelatedArtist_artist.graphql"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { navigate } from "lib/navigation/navigate"
 import { color, Sans, Spacer } from "palette"
 import React, { Component } from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
@@ -15,8 +15,8 @@ interface Props {
 
 class RelatedArtist extends Component<Props> {
   handleTap() {
-    // @ts-ignore STRICTNESS_MIGRATION
-    SwitchBoard.presentNavigationViewController(this, this.props.artist.href)
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    navigate(this.props.artist.href)
   }
 
   render() {
@@ -40,14 +40,14 @@ class RelatedArtist extends Component<Props> {
   }
 
   artworksString(counts: RelatedArtist_artist["counts"]) {
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const totalWorks = counts.artworks ? counts.artworks + (counts.artworks > 1 ? " works" : " work") : null
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     if (totalWorks && counts.forSaleArtworks === counts.artworks) {
       return totalWorks + " for sale"
     }
 
-    // @ts-ignore STRICTNESS_MIGRATION
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const forSale = counts.forSaleArtworks ? counts.forSaleArtworks + " for sale" : null
     if (forSale && totalWorks) {
       return totalWorks + ", " + forSale
