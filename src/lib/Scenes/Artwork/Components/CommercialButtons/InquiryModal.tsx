@@ -8,7 +8,7 @@ import { InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes
 import { LocationWithDetails } from "lib/utils/googleMaps"
 import { Box, color, Flex, Separator, space, Text } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import { LayoutAnimation, TextInput, TextInputProps, TouchableOpacity } from "react-native"
+import { LayoutAnimation, ScrollView, TextInput, TextInputProps, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
@@ -85,6 +85,7 @@ const InquiryQuestionOption: React.FC<{
         {!!isShipping && !!questionSelected && (
           <>
             <Separator my={2} />
+
             <TouchableOpacity
               data-test-id="toggle-shipping-modal"
               onPress={() => {
@@ -173,37 +174,39 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           </Text>
         </ErrorMessageFlex>
       )}
-      <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
-      <Box m={2}>
-        <Text variant="mediumText">What information are you looking for?</Text>
-        {
-          // NOTE: For now the inquiryQuestions field values are always present and therefore never null, so it is safe to destructure them
-          questions!.map((inquiryQuestion) => {
-            if (!inquiryQuestion) {
-              return false
-            }
-            const { internalID: id, question } = inquiryQuestion
-            return id === InquiryQuestionIDs.Shipping ? (
-              <InquiryQuestionOption
-                key={id}
-                id={id}
-                question={question}
-                setShippingModalVisibility={setShippingModalVisibility}
-              />
-            ) : (
-              <InquiryQuestionOption key={id} id={id} question={question} />
-            )
-          })
-        }
-      </Box>
-      <Box mx={2}>
-        <TextArea
-          placeholder="Add a custom note..."
-          title="Add Message"
-          value={state.message ? state.message : ""}
-          onChangeText={setMessage}
-        />
-      </Box>
+      <ScrollView>
+        <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
+        <Box m={2}>
+          <Text variant="mediumText">What information are you looking for?</Text>
+          {
+            // NOTE: For now the inquiryQuestions field values are always present and therefore never null, so it is safe to destructure them
+            questions!.map((inquiryQuestion) => {
+              if (!inquiryQuestion) {
+                return false
+              }
+              const { internalID: id, question } = inquiryQuestion
+              return id === InquiryQuestionIDs.Shipping ? (
+                <InquiryQuestionOption
+                  key={id}
+                  id={id}
+                  question={question}
+                  setShippingModalVisibility={setShippingModalVisibility}
+                />
+              ) : (
+                <InquiryQuestionOption key={id} id={id} question={question} />
+              )
+            })
+          }
+        </Box>
+        <Box mx={2} mb={4}>
+          <TextArea
+            placeholder="Add a custom note..."
+            title="Add Message"
+            value={state.message ? state.message : ""}
+            onChangeText={setMessage}
+          />
+        </Box>
+      </ScrollView>
       <ShippingModal
         toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
         modalIsVisible={shippingModalVisibility}
