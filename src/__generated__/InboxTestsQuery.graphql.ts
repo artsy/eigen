@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash cdfc8d57d7f2d0a6c349b40a0efe338d */
+/* @relayHash 5619ff1c89f3b5fef68bdec1644ec438 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,10 +34,10 @@ fragment ActiveLot_lotStanding on AuctionsLotStanding {
     reserveStatus
     soldStatus
     askingPrice: onlineAskingPrice {
-      displayAmount(fractionalDigits: 0)
+      display
     }
     sellingPrice: floorSellingPrice {
-      displayAmount(fractionalDigits: 0)
+      display
     }
     id
   }
@@ -60,10 +60,10 @@ fragment ClosedLot_lotStanding on AuctionsLotStanding {
     reserveStatus
     soldStatus
     askingPrice: onlineAskingPrice {
-      displayAmount(fractionalDigits: 0)
+      display
     }
     sellingPrice: floorSellingPrice {
-      displayAmount(fractionalDigits: 0)
+      display
     }
     id
   }
@@ -275,16 +275,10 @@ v8 = {
 v9 = [
   {
     "alias": null,
-    "args": [
-      {
-        "kind": "Literal",
-        "name": "fractionalDigits",
-        "value": 0
-      }
-    ],
+    "args": null,
     "kind": "ScalarField",
-    "name": "displayAmount",
-    "storageKey": "displayAmount(fractionalDigits:0)"
+    "name": "display",
+    "storageKey": null
   }
 ],
 v10 = {
@@ -308,9 +302,9 @@ v12 = {
 },
 v13 = {
   "enumValues": null,
-  "nullable": false,
+  "nullable": true,
   "plural": false,
-  "type": "String"
+  "type": "Money"
 },
 v14 = {
   "enumValues": null,
@@ -325,6 +319,12 @@ v15 = {
   "type": "Image"
 },
 v16 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "String"
+},
+v17 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -663,7 +663,7 @@ return {
                           {
                             "alias": "askingPrice",
                             "args": null,
-                            "concreteType": "AuctionsMoney",
+                            "concreteType": "Money",
                             "kind": "LinkedField",
                             "name": "onlineAskingPrice",
                             "plural": false,
@@ -673,7 +673,7 @@ return {
                           {
                             "alias": "sellingPrice",
                             "args": null,
-                            "concreteType": "AuctionsMoney",
+                            "concreteType": "Money",
                             "kind": "LinkedField",
                             "name": "floorSellingPrice",
                             "plural": false,
@@ -819,7 +819,7 @@ return {
     ]
   },
   "params": {
-    "id": "cdfc8d57d7f2d0a6c349b40a0efe338d",
+    "id": "5619ff1c89f3b5fef68bdec1644ec438",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -854,13 +854,8 @@ return {
           "plural": false,
           "type": "AuctionsLotState"
         },
-        "me.auctionsLotStandingConnection.edges.node.lotState.askingPrice": {
-          "enumValues": null,
-          "nullable": false,
-          "plural": false,
-          "type": "AuctionsMoney"
-        },
-        "me.auctionsLotStandingConnection.edges.node.lotState.askingPrice.displayAmount": (v13/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lotState.askingPrice": (v13/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lotState.askingPrice.display": (v14/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.lotState.bidCount": {
           "enumValues": null,
           "nullable": false,
@@ -880,13 +875,8 @@ return {
           "type": "AuctionsReserveStatus"
         },
         "me.auctionsLotStandingConnection.edges.node.lotState.saleId": (v11/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.lotState.sellingPrice": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "AuctionsMoney"
-        },
-        "me.auctionsLotStandingConnection.edges.node.lotState.sellingPrice.displayAmount": (v13/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lotState.sellingPrice": (v13/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lotState.sellingPrice.display": (v14/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.lotState.soldStatus": {
           "enumValues": [
             "ForSale",
@@ -957,14 +947,14 @@ return {
           "plural": true,
           "type": "ConversationEdge"
         },
-        "me.conversations.edges.cursor": (v13/*: any*/),
+        "me.conversations.edges.cursor": (v16/*: any*/),
         "me.conversations.edges.node": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Conversation"
         },
-        "me.conversations.edges.node.__typename": (v13/*: any*/),
+        "me.conversations.edges.node.__typename": (v16/*: any*/),
         "me.conversations.edges.node.id": (v11/*: any*/),
         "me.conversations.edges.node.internalID": {
           "enumValues": null,
@@ -984,8 +974,8 @@ return {
           "plural": false,
           "type": "ConversationItemType"
         },
-        "me.conversations.edges.node.items.item.__isNode": (v13/*: any*/),
-        "me.conversations.edges.node.items.item.__typename": (v13/*: any*/),
+        "me.conversations.edges.node.items.item.__isNode": (v16/*: any*/),
+        "me.conversations.edges.node.items.item.__typename": (v16/*: any*/),
         "me.conversations.edges.node.items.item.artistNames": (v14/*: any*/),
         "me.conversations.edges.node.items.item.coverImage": (v15/*: any*/),
         "me.conversations.edges.node.items.item.coverImage.url": (v14/*: any*/),
@@ -1012,7 +1002,7 @@ return {
           "plural": false,
           "type": "MessageConnection"
         },
-        "me.conversations.edges.node.messagesConnection.totalCount": (v16/*: any*/),
+        "me.conversations.edges.node.messagesConnection.totalCount": (v17/*: any*/),
         "me.conversations.edges.node.to": {
           "enumValues": null,
           "nullable": false,
@@ -1020,7 +1010,7 @@ return {
           "type": "ConversationResponder"
         },
         "me.conversations.edges.node.to.id": (v11/*: any*/),
-        "me.conversations.edges.node.to.name": (v13/*: any*/),
+        "me.conversations.edges.node.to.name": (v16/*: any*/),
         "me.conversations.edges.node.unread": {
           "enumValues": null,
           "nullable": true,
@@ -1035,7 +1025,7 @@ return {
         },
         "me.conversations.pageInfo.endCursor": (v14/*: any*/),
         "me.conversations.pageInfo.hasNextPage": (v12/*: any*/),
-        "me.conversations.totalUnreadCount": (v16/*: any*/),
+        "me.conversations.totalUnreadCount": (v17/*: any*/),
         "me.id": (v11/*: any*/)
       }
     },
