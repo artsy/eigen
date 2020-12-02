@@ -29,7 +29,6 @@ import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 
 // Consignments / My Collection
 import { Consignments } from "./Scenes/Consignments"
-import { ConsignmentsSubmissionForm } from "./Scenes/Consignments/ConsignmentsHome/ConsignmentsSubmissionForm"
 
 import { FadeIn } from "./Components/FadeIn"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
@@ -49,11 +48,6 @@ import { Fair2MoreInfoQueryRenderer } from "./Scenes/Fair2/Fair2MoreInfo"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { MapContainer } from "./Scenes/Map"
-import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
-import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
-import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEditName"
-import { MyAccountEditPassword } from "./Scenes/MyAccount/MyAccountEditPassword"
-import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEditPhone"
 import { MyBidsQueryRenderer } from "./Scenes/MyBids"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
@@ -365,9 +359,6 @@ export const modules = defineModules({
   LocalDiscovery: nativeModule(),
   WebView: nativeModule(),
   Map: reactModule(MapContainer, { fullBleed: true }),
-  MyAccountEditName: reactModule(MyAccountEditNameQueryRenderer, { hidesBackButton: true }),
-  MyAccountEditPassword: reactModule(MyAccountEditPassword, { hidesBackButton: true }),
-  MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, { hidesBackButton: true }),
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
   MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),

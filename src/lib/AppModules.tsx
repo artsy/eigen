@@ -4,6 +4,9 @@ import { ConsignmentsSubmissionForm } from "./Scenes/Consignments/ConsignmentsHo
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
+import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEditName"
+import { MyAccountEditPassword } from "./Scenes/MyAccount/MyAccountEditPassword"
+import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEditPhone"
 import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 
@@ -53,6 +56,9 @@ export const safeModules = defineModules({
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
   }),
+  MyAccountEditName: reactModule(MyAccountEditNameQueryRenderer, { hidesBackButton: true }),
+  MyAccountEditPassword: reactModule(MyAccountEditPassword, { hidesBackButton: true }),
+  MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, { hidesBackButton: true }),
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
 })
 
