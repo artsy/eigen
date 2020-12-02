@@ -1,4 +1,3 @@
-import { NavigationContainer } from "@react-navigation/native"
 import { LogIn } from "lib/LogIn/LogIn"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { BottomTabsNavigator } from "lib/Scenes/BottomTabs/BottomTabsNavigator"
@@ -17,9 +16,7 @@ const AndroidRoot: React.FC<{}> = ({}) => {
       <RelayEnvironmentProvider environment={defaultEnvironment}>
         <ProvideScreenDimensions>
           <GlobalStoreProvider>
-            <NavigationContainer>
-              <Main />
-            </NavigationContainer>
+            <Main />
           </GlobalStoreProvider>
         </ProvideScreenDimensions>
       </RelayEnvironmentProvider>
