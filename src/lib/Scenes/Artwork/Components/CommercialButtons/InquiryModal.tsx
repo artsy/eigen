@@ -99,7 +99,7 @@ const InquiryQuestionOption: React.FC<{
                     <Text variant="text" color="black60">
                       Add your location
                     </Text>
-                    <Box mt={0.5}>
+                    <Box>
                       <ChevronIcon color="black60" />
                     </Box>
                   </>
