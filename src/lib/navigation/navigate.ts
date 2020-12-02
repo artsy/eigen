@@ -1,5 +1,5 @@
 // import { AppModule, modules, ViewOptions } from "lib/AppRegistry"
-import { NavigationContainerRef } from "@react-navigation/native"
+import { NavigationContainerRef, StackActions } from "@react-navigation/native"
 import { SafeAppModule, safeModules, ViewOptions } from "lib/AppModules"
 import { dismissModal as _dismissModal, presentModal as _presentModal, setGlobalVisible } from "lib/ModalStack"
 import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
@@ -20,12 +20,21 @@ export function setTabStackNavRefs(refs: typeof tabStackNavRefs) {
   tabStackNavRefs = refs
 }
 
-const infra = {
+export const infra = {
   presentModal(viewDescriptor: ViewDescriptor) {
     _presentModal(viewDescriptor)
   },
-  popToRootAndScrollToTop(..._args: any[]) {
-    console.error("no pop yet")
+  popToRootAndScrollToTop(selectedTab: BottomTabType) {
+    tabStackNavRefs[selectedTab]?.dispatch(StackActions.popToTop())
+    // TODO: scroll to top
+  },
+  popToRootOrScrollToTop(selectedTab: BottomTabType) {
+    const state = tabStackNavRefs[selectedTab]?.getRootState()!
+    if (state.routes.length > 1) {
+      tabStackNavRefs[selectedTab]?.dispatch(StackActions.popToTop())
+    } else {
+      // TODO: scroll to top
+    }
   },
   pushView(selectedTab: BottomTabType, viewDescriptor: ViewDescriptor) {
     tabStackNavRefs[selectedTab]?.navigate(viewDescriptor.moduleName, viewDescriptor.props)

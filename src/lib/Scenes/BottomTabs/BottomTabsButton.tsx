@@ -1,5 +1,6 @@
 import { tappedTabBar } from "@artsy/cohesion"
 import { PopIn } from "lib/Components/PopIn"
+import { infra } from "lib/navigation/navigate"
 import { GlobalStore, unsafe__getSelectedTab, useSelectedTab } from "lib/store/GlobalStore"
 import { color, Sans } from "palette"
 import React, { useEffect, useRef, useState } from "react"
@@ -35,7 +36,7 @@ export const BottomTabsButton: React.FC<{
 
   const onPress = () => {
     if (tab === unsafe__getSelectedTab()) {
-      NativeModules.ARScreenPresenterModule.popToRootOrScrollToTop(tab)
+      infra.popToRootOrScrollToTop(tab)
     } else {
       GlobalStore.actions.bottomTabs.switchTab(tab)
     }
