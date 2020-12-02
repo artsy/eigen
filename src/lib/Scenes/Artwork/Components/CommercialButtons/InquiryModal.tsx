@@ -61,7 +61,16 @@ const InquiryQuestionOption: React.FC<{
 
   return (
     <React.Fragment>
-      <InquiryField>
+      <Flex
+        style={{
+          borderColor: questionSelected ? color("black100") : color("black10"),
+          borderWidth: 1,
+          borderRadius: 5,
+          flexDirection: "column",
+          marginTop: space(1),
+          padding: space(2),
+        }}
+      >
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex flexDirection="row">
             <Checkbox
@@ -118,7 +127,7 @@ const InquiryQuestionOption: React.FC<{
             </TouchableOpacity>
           </>
         )}
-      </InquiryField>
+      </Flex>
     </React.Fragment>
   )
 }
@@ -216,14 +225,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
     </FancyModal>
   )
 }
-
-const InquiryField = styled(Flex)`
-  border-radius: 5;
-  border: solid 1px ${color("black10")};
-  flex-direction: column;
-  margin-top: ${space(1)}px;
-  padding: ${space(2)}px;
-`
 
 const StyledTextArea = styled(TextInput)`
   border: solid 1px;
