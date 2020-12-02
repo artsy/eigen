@@ -443,13 +443,13 @@ export const modules = defineModules({
   WorksForYou: reactModule(WorksForYouQueryRenderer),
 })
 
-// Register react modules with the app registry
-for (const moduleName of Object.keys(modules)) {
-  const descriptor = modules[moduleName as AppModule]
-  if ("Component" in descriptor) {
-    register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed })
-  }
-}
+// // Register react modules with the app registry
+// for (const moduleName of Object.keys(modules)) {
+//   const descriptor = modules[moduleName as AppModule]
+//   if ("Component" in descriptor) {
+//     register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed })
+//   }
+// }
 
 // const Main: React.FC<{}> = track()(({}) => {
 //   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)

@@ -3,7 +3,7 @@ import { SmallTileRail_artworks } from "__generated__/SmallTileRail_artworks.gra
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
-import { navigate } from "lib/navigation/navigate"
+// import { navigate } from "lib/navigation/navigate"
 import { Spacer } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
@@ -11,6 +11,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { getUrgencyTag } from "../../../utils/getUrgencyTag"
 import HomeAnalytics from "../homeAnalytics"
+const navigate = console.log
 
 interface Props {
   artworks: SmallTileRail_artworks

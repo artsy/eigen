@@ -1,14 +1,6 @@
 import React from "react"
 
-import {
-  LayoutChangeEvent,
-  PixelRatio,
-  processColor,
-  requireNativeComponent,
-  StyleSheet,
-  View,
-  ViewProps,
-} from "react-native"
+import { Image, LayoutChangeEvent, PixelRatio, processColor, StyleSheet, ViewProps } from "react-native"
 
 import colors from "lib/data/colors"
 import { createGeminiUrl } from "./createGeminiUrl"
@@ -148,8 +140,15 @@ export default class OpaqueImageView extends React.Component<Props, State> {
       backgroundColorStyle = { backgroundColor: props.placeholderBackgroundColor }
     }
 
-    return <NativeOpaqueImageView style={[style, backgroundColorStyle]} {...remainderProps} />
+    // return <NativeOpaqueImageView style={[style, backgroundColorStyle]} {...remainderProps} />
+    return (
+      <Image
+        style={[style, backgroundColorStyle] as any}
+        {...remainderProps}
+        source={{ uri: remainderProps.imageURL! }}
+      />
+    )
   }
 }
 
-const NativeOpaqueImageView = requireNativeComponent("AROpaqueImageView") as typeof View
+// const NativeOpaqueImageView = requireNativeComponent("AROpaqueImageView") as typeof View
