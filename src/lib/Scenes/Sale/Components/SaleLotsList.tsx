@@ -1,18 +1,20 @@
 import { OwnerType } from "@artsy/cohesion"
 import { SaleLotsList_saleArtworksConnection } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
-import { OrderedSaleArtworkSorts } from "lib/Components/ArtworkFilterOptions/SortOptions"
+import { FilterParamName, ViewAsValues, filterArtworksParams } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+// import { OrderedSaleArtworkSorts } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { filterArtworksParams, FilterParamName, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { Box, color, Flex, Sans } from "palette"
 import React, { useCallback, useContext, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { FilterParams } from "../../../utils/ArtworkFilter/FilterArtworksHelpers"
+// import { FilterParams } from "../../../utils/ArtworkFilter/FilterArtworksHelpers"
 import { SaleArtworkListContainer } from "./SaleArtworkList"
+import { NewStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+// import { filterArtworksParams } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 
 interface Props {
   saleArtworksConnection: SaleLotsList_saleArtworksConnection
@@ -31,17 +33,19 @@ export const SaleLotsListSortMode = ({
   filteredTotal: number | null | undefined
   totalCount: number | null | undefined
 }) => {
-  const getSortDescription = useCallback(() => {
-    const sortMode = OrderedSaleArtworkSorts.find((sort) => sort.paramValue === filterParams?.sort)
-    if (sortMode) {
-      return sortMode.displayText
-    }
-  }, [filterParams])
+  // TODO: fix this
+  // const getSortDescription = useCallback(() => {
+  //   const sortMode = OrderedSaleArtworkSorts.find((sort) => sort.paramValue === filterParams?.sort)
+  //   if (sortMode) {
+  //     return sortMode.displayText
+  //   }
+  // }, [filterParams])
 
   return (
     <Flex px={2} mb={2}>
       <FilterTitle size="4" ellipsizeMode="tail">
-        Sorted by {getSortDescription()?.toLowerCase()}
+        {/* // TODO: FIX THIS */}
+        {/* Sorted by {getSortDescription()?.toLowerCase()} */}
       </FilterTitle>
 
       {!!filteredTotal && !!totalCount && (
@@ -56,7 +60,7 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
   const [totalCount, setTotalCount] = useState<number | null>(null)
   const tracking = useTracking()
 
-  const filterParams = filterArtworksParams(state.appliedFilters, state.filterType)
+  const filterParams = NewStore.useStoreState((state) => state.appliedFilters)
   const viewAsFilter = state.appliedFilters.find((filter) => filter.paramName === FilterParamName.viewAs)
   const counts = saleArtworksConnection.saleArtworksConnection?.counts
 
@@ -75,9 +79,9 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
     if (state.applyFilters) {
       // Add the new medium to geneIDs array
       const medium: string[] = []
-      if (typeof filterParams.medium === "string") {
-        medium.push(filterParams.medium)
-      }
+      // if (typeof filterParams.medium === "string") {
+      //   medium.push(filterParams.medium)
+      // }
 
       relay.refetchConnection(
         10,
@@ -87,10 +91,10 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
           }
         },
         {
-          ...filterParams,
+          // ...filterParams,
           saleID: saleSlug,
           geneIDs: medium,
-          includeArtworksByFollowedArtists: !!filterParams.includeArtworksByFollowedArtists,
+          // includeArtworksByFollowedArtists: !!filterParams.includeArtworksByFollowedArtists,
         }
       )
       scrollToTop()
@@ -98,10 +102,8 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
   }, [state.appliedFilters])
 
   useEffect(() => {
-    dispatch({
-      type: "setAggregations",
-      payload: saleArtworksConnection.saleArtworksConnection?.aggregations,
-    })
+    const setAggregations = NewStore.useStoreActions((actions) => actions.setAggregations)
+    setAggregations(saleArtworksConnection.saleArtworksConnection?.aggregations)
   }, [])
 
   useEffect(() => {

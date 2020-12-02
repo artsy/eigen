@@ -9,7 +9,7 @@ import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { ArtworkFilterContext } from "../../../Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFilterContext, NewStore } from "../../../Components/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams } from "../../../Components/ArtworkFilter/FilterArtworksHelpers"
 
 interface CollectionArtworksProps {
@@ -26,7 +26,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
   const artworks = get(collection, (p) => p.collectionArtworks)
   const artworksTotal = artworks?.counts?.total
   const { state, dispatch } = useContext(ArtworkFilterContext)
-  const filterParams = filterArtworksParams(state.appliedFilters)
+  const filterParams = NewStore.useStoreState((state) => state.appliedFilters)
 
   useEffect(() => {
     if (state.applyFilters) {
@@ -49,6 +49,8 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
       type: "setAggregations",
       payload: collection.collectionArtworks!.aggregations,
     })
+    const setAggregations = NewStore.useStoreActions((actions) => actions.setAggregations)
+    setAggregations(collection.collectionArtworks!.aggregations)
   }, [])
 
   const trackClear = (id: string, slug: string) => {

@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistSeriesArtworks_artistSeries } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
-import { ArtworkFilterContext } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFilterContext, NewStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ARTIST_SERIES_PAGE_SIZE } from "lib/data/constants"
@@ -21,7 +21,7 @@ const PAGE_SIZE = 20
 export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ artistSeries, relay }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const tracking = useTracking()
-  const filterParams = filterArtworksParams(state.appliedFilters)
+  const filterParams = NewStore.useStoreState((state) => state.appliedFilters)
 
   const artworks = artistSeries?.artistSeriesArtworks!
 
@@ -51,10 +51,8 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
   }, [state.appliedFilters])
 
   useEffect(() => {
-    dispatch({
-      type: "setAggregations",
-      payload: artworks?.aggregations,
-    })
+    const setAggregations = NewStore.useStoreActions((actions) => actions.setAggregations)
+    setAggregations(artworks?.aggregations)
   }, [])
 
   if ((artworks?.counts?.total ?? 0) === 0) {

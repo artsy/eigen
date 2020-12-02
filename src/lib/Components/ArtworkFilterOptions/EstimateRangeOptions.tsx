@@ -1,9 +1,10 @@
 import { ArtworkFilterContext, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { AggregateOption, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import { Sans, Separator } from "palette"
+import { AggregateOption, FilterParamName } from "../ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext } from "react"
+import { Separator, Sans  } from "palette"
 import NavigatorIOS from "react-native-navigator-ios"
-import { SingleSelectOptionScreen } from "./SingleSelectOption"
+import { SingleSelectOptionScreen } from "../ArtworkFilter/ArtworkFilterOptions/SingleSelectOption"
+"
 
 interface PriceRangeOptionsScreenProps {
   navigator: NavigatorIOS

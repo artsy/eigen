@@ -128,7 +128,8 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
 }) => {
   const tracking = useTracking()
   const { dispatch, state } = useContext(ArtworkFilterContext)
-  const filterParams = filterArtworksParams(state.appliedFilters)
+  const filterParams = NewStore.useStoreState((state) => state.appliedFilters)
+
   const artworks = artist.artworks
   const artworksTotal = artworks?.edges?.length
   const shouldShowCollections = artist.iconicCollections && artist.iconicCollections.length > 1
@@ -150,10 +151,8 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
   }, [state.appliedFilters])
 
   useEffect(() => {
-    dispatch({
-      type: "setAggregations",
-      payload: artworks?.aggregations,
-    })
+    const setAggregations = NewStore.useStoreActions((actions) => actions.setAggregations)
+    setAggregations(artworks?.aggregations)
   }, [])
 
   // TODO: Convert to use cohesion

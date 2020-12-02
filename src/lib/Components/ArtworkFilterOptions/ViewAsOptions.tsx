@@ -8,7 +8,7 @@ import {
   FilterDisplayName,
   FilterParamName,
   ViewAsValues,
-} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+} from "../ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext } from "react"
 import NavigatorIOS from "react-native-navigator-ios"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"

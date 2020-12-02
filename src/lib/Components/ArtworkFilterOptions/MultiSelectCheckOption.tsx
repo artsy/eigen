@@ -1,5 +1,5 @@
 import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { FilterParamName } from "../ArtworkFilter/FilterArtworksHelpers"
 import { Box, CheckIcon, Flex, Sans, Separator } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"

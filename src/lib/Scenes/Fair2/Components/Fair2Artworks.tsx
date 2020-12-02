@@ -34,7 +34,7 @@ export const Fair2Artworks: React.FC<Fair2ArtworksProps> = ({ fair, relay, aggre
   const artworks = fair.fairArtworks!
   // const { dispatch, state } = useContext(ArtworkFilterContext)
   const tracking = useTracking()
-  // const filterParams = filterArtworksParams(state.appliedFilters)
+  const filterParams = NewStore.useStoreState((state) => state.appliedFilters)
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({

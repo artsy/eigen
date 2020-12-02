@@ -1,15 +1,16 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Show2_show } from "__generated__/Show2_show.graphql"
 import { Show2Artworks_show } from "__generated__/Show2Artworks_show.graphql"
+import { aggregationsType, filterArtworksParams } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { SHOW2_ARTWORKS_PAGE_SIZE } from "lib/data/constants"
 import { ArtworkFilterContext, FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { aggregationsType, filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Box } from "palette"
 import React, { useContext, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { NewStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 
 interface Props {
   show: Show2Artworks_show
@@ -44,11 +45,13 @@ const Show2Artworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter })
   const artworks = show.showArtworks!
   const { internalID, slug } = show
   const { dispatch, state } = useContext(ArtworkFilterContext)
-  const filterParams = filterArtworksParams(state.appliedFilters)
+  const filterParams = NewStore.useStoreState((state) => state.appliedFilters)
 
   useEffect(() => {
     if (initiallyAppliedFilter) {
-      dispatch({ type: "setInitialFilterState", payload: initiallyAppliedFilter })
+      const setInitialFilterState = NewStore.useStoreActions((actions) => actions.setInitialFilterState)
+      setInitialFilterState(initiallyAppliedFilter)
+      // dispatch({ type: "setInitialFilterState", payload: initiallyAppliedFilter })
     }
   }, [])
 
@@ -64,7 +67,7 @@ const Show2Artworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter })
         filterParams
       )
     }
-  }, [state.appliedFilters])
+  }, [filterParams])
 
   const artworkAggregations = (artworks?.aggregations ?? []) as aggregationsType
 

@@ -112,7 +112,8 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
           <ApplyButton
             disabled={!isApplyButtonEnabled}
             onPress={() => {
-              // const appliedFiltersParams = filterArtworksParams(state.appliedFilters, state.filterType)
+              // const appliedFiltersParams = NewStore.useStoreState((state) => state.appliedFilters)
+
               // TODO: Update to use cohesion
               switch (
                 mode
