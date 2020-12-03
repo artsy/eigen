@@ -11,6 +11,7 @@ upcoming:
     - Add loading spinner to infinite artwork grid on artist page - david
     - Avoid shrinking the background on non-fullscreen fancy modals - david
     - Support iOS 14 photo picker in My Collection - brian
+    - removed x from inquiry sent notification - lily
 releases:
   - version: 6.7.2
     date: November 30, 2020
