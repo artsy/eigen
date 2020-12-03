@@ -52,9 +52,9 @@ export const Dimensions: React.FC = () => {
         }}
         value={formik.values.metric}
         enableSearch={false}
-        title="Metric"
+        title="Units"
         showTitleLabel={false}
-        placeholder="Metric"
+        placeholder="Units"
         options={metricSelectOptions}
       />
     </>
