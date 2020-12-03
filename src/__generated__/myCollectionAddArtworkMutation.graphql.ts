@@ -19,6 +19,7 @@ export type MyCollectionCreateArtworkInput = {
     height?: string | null;
     medium: string;
     metric?: string | null;
+    provenance?: string | null;
     title?: string | null;
     width?: string | null;
 };
