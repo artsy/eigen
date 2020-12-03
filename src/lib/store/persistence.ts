@@ -41,6 +41,7 @@ export function assignDeep(object: any, otherObject: any) {
 }
 
 export async function persist(globalStoreState: State<GlobalStoreModel>) {
+  console.warn("PERSISTING", globalStoreState.config.echoState.updated_at)
   return await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(sanitize(globalStoreState)))
 }
 
