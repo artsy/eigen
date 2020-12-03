@@ -1,8 +1,8 @@
 import { Input } from "lib/Components/Input/Input"
 import { getLocationPredictions, SimpleLocation } from "lib/utils/googleMaps"
-import { color, Flex, LocationIcon, Text, Touchable } from "palette"
+import { Button, color, Flex, LocationIcon, Text, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
+import { Dimensions, Keyboard, ScrollView, TouchableWithoutFeedback, View } from "react-native"
 import styled from "styled-components/native"
 
 interface Props {
@@ -122,6 +122,7 @@ export const LocationPredictions = ({
           <Touchable
             key={p.id}
             onPress={() => {
+              Keyboard.dismiss()
               onSelect(p)
             }}
             style={{ padding: 10 }}

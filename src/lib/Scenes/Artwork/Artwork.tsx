@@ -289,6 +289,7 @@ export class Artwork extends React.Component<Props, State> {
   render() {
     return (
       <FlatList<ArtworkPageSection>
+        keyboardShouldPersistTaps="always"
         data={this.sections()}
         ItemSeparatorComponent={() => (
           <Box mx={2} my={3}>
