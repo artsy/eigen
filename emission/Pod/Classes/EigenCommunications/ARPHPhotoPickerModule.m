@@ -23,12 +23,12 @@ typedef NS_ENUM(NSUInteger, ARPHPhotoPickerError) {
 
 @implementation ARPHPhotoPickerModule
 
-static NSString * ErrorDomain = @"net.artsy.ARPHPhotoPicker";
+static const NSString *ErrorDomain = @"net.artsy.ARPHPhotoPicker";
 
-static NSString * UnsupportedOSErrorMessage = @"PHPhotoPicker unavailable before iOS 14.";
-static NSString * NoPhotosErrorMessage = @"No photos returned from picker.";
-static NSString * LoadFailedErrorMessage = @"Failed to load photos from picker.";
-static NSString * SaveFailedErrorMessage = @"Failed to save photos locally.";
+static const NSString *UnsupportedOSErrorMessage = @"PHPhotoPicker unavailable before iOS 14.";
+static const NSString *NoPhotosErrorMessage = @"No photos returned from picker.";
+static const NSString *LoadFailedErrorMessage = @"Failed to load photos from picker.";
+static const NSString *SaveFailedErrorMessage = @"Failed to save photos locally.";
 
 RCT_EXPORT_MODULE();
 
