@@ -40,6 +40,7 @@ describe("MyCollectionArtworkModel", () => {
               medium: "some-medium",
               metric: "in",
               photos: [fakePhoto("somepath")],
+              provenance: "some-provenance",
               title: "some-title",
               width: "some-width",
             },
@@ -66,6 +67,7 @@ describe("MyCollectionArtworkModel", () => {
       medium: "",
       metric: "",
       photos: [],
+      provenance: "",
       title: "",
       width: "",
     }

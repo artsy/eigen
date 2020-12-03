@@ -3,6 +3,7 @@ import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Input } from "lib/Components/Input/Input"
 import { Select } from "lib/Components/Select"
+import { TextArea } from "lib/Components/TextArea"
 import { Flex, Join, Sans, space, Spacer } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native-gesture-handler"
@@ -83,6 +84,13 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
               onBlur={formik.handleBlur("category")}
               data-test-id="MaterialsInput"
               defaultValue={formikValues.category}
+            />
+
+            <TextArea
+              placeholder="Provenance"
+              title="Provenance"
+              value={formikValues.provenance}
+              onChangeText={formik.handleChange("provenance")}
             />
 
             <Input

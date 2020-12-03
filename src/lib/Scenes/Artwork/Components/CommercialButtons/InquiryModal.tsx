@@ -2,13 +2,14 @@ import { InquiryModal_artwork } from "__generated__/InquiryModal_artwork.graphql
 import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { TextArea } from "lib/Components/TextArea"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { LocationWithDetails } from "lib/utils/googleMaps"
 import { Box, color, Flex, Separator, space, Text } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import { LayoutAnimation, ScrollView, TextInput, TextInputProps, TouchableOpacity } from "react-native"
+import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
@@ -224,41 +225,6 @@ const InquiryField = styled(Flex)`
   margin-top: ${space(1)}px;
   padding: ${space(2)}px;
 `
-
-const StyledTextArea = styled(TextInput)`
-  border: solid 1px;
-  padding: ${space(1)}px;
-  height: 88px;
-`
-
-// TODO: Replace with Palette when available
-interface TextAreaProps extends TextInputProps {
-  title: string
-}
-const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => {
-  const [borderColor, setBorderColor] = useState(color("black10"))
-
-  return (
-    <>
-      {!!title && (
-        <Text mb={1} variant="mediumText">
-          {title}
-        </Text>
-      )}
-      <StyledTextArea
-        {...props}
-        onFocus={() => {
-          setBorderColor(color("purple100"))
-        }}
-        onBlur={() => {
-          setBorderColor(color("black10"))
-        }}
-        style={{ borderColor }}
-        multiline={true}
-      />
-    </>
-  )
-}
 
 export const InquiryModalFragmentContainer = createFragmentContainer(InquiryModal, {
   artwork: graphql`

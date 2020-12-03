@@ -30,6 +30,7 @@ export interface ArtworkFormValues {
   medium: string
   metric: Metric
   photos: Image[]
+  provenance: string
   title: string
   width: string
 }
@@ -49,6 +50,7 @@ export const initialFormValues: ArtworkFormValues = {
   medium: "",
   metric: "",
   photos: [],
+  provenance: "",
   title: "",
   width: "",
 }
@@ -204,6 +206,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       medium: artwork.medium,
       metric: artwork.metric,
       photos: artwork.images,
+      provenance: artwork.provenance,
       title: artwork.title,
       width: artwork.width,
     }
