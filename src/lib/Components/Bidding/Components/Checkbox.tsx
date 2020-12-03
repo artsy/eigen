@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { Component, GetDerivedStateFromProps } from "react"
 import { StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from "react-native"
 import styled from "styled-components/native"
 
@@ -17,12 +17,13 @@ interface CheckboxProps extends TouchableWithoutFeedbackProps, FlexProps {
 }
 
 export class Checkbox extends Component<CheckboxProps, CheckboxState> {
-  static getDerivedStateFromProps(props: CheckboxProps, state: CheckboxState) {
+  static getDerivedStateFromProps: GetDerivedStateFromProps<CheckboxProps, CheckboxState> = (props, state) => {
     if (props.checked !== state.checked) {
       return {
         checked: props.checked,
       }
     }
+    return {}
   }
 
   private readonly checkboxSize = 20
