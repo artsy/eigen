@@ -34,9 +34,9 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
               defaultValue={formikValues.title}
             />
             <Input
-              title="Year"
+              title="Year created"
               keyboardType="number-pad"
-              placeholder="Year"
+              placeholder="Year created"
               onChangeText={formik.handleChange("date")}
               onBlur={formik.handleBlur("date")}
               data-test-id="DateInput"
