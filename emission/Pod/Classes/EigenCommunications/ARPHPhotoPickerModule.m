@@ -38,6 +38,9 @@ RCT_EXPORT_METHOD(requestPhotos:(RCTPromiseResolveBlock)resolve
     if (@available(iOS 14.0, *)) {
         [self presentPhotoPicker];
     } else {
+        // We should be checking OS version and using a react-native
+        // photo picker on typescript side, this should never happen.
+        // See requestPhotos.ts
         NSError *unsupportedOSVersion = [NSError errorWithDomain: ErrorDomain code:ARPHPhotoPickerErrorOSVersionUnsupported userInfo:@{ NSLocalizedDescriptionKey: UnsupportedOSErrorMessage }];
         _reject(ErrorDomain, UnsupportedOSErrorMessage, unsupportedOSVersion);
     }
