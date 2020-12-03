@@ -20,6 +20,7 @@ export type MyCollectionUpdateArtworkInput = {
     height?: string | null;
     medium?: string | null;
     metric?: string | null;
+    provenance?: string | null;
     title?: string | null;
     width?: string | null;
 };
