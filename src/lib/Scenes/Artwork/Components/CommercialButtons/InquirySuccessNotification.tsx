@@ -1,8 +1,8 @@
 import { navigate } from "lib/navigation/navigate"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { CloseIcon, color, Flex, Text, Theme } from "palette"
+import { color, Flex, Text, Theme } from "palette"
 import React, { useEffect } from "react"
-import { Animated, Modal, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
+import { Animated, Modal, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
 interface InquirySuccessNotificationProps {
