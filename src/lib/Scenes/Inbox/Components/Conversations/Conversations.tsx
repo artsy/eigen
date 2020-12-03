@@ -29,6 +29,16 @@ export class Conversations extends Component<Props, State> {
     isLoading: false,
   }
 
+  componentDidUpdate() {
+    const { relay } = this.props
+    relay.refetchConnection(PAGE_SIZE, (error) => {
+      alert("WOOO!")
+      if (error) {
+        throw new Error("Conversations error: " + error.message)
+      }
+    })
+  }
+
   fetchData = () => {
     const { relay } = this.props
 
@@ -77,6 +87,8 @@ export class Conversations extends Component<Props, State> {
       return null
     }
 
+    console.log("CONVOS12", conversations)
+
     const unreadCount = this.props.me.conversations?.totalUnreadCount
     const unreadCounter = unreadCount ? `(${unreadCount})` : null
     const shouldDisplayMyBids = getCurrentEmissionState().options.AROptionsBidManagement
@@ -121,7 +133,7 @@ export const ConversationsContainer = createPaginationContainer(
       fragment Conversations_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         conversations: conversationsConnection(first: $count, after: $cursor)
-        @connection(key: "Conversations_conversations") {
+          @connection(key: "Conversations_conversations") {
           pageInfo {
             endCursor
             hasNextPage
