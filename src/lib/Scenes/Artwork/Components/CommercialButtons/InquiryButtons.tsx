@@ -37,13 +37,7 @@ const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork }) => {
         modalVisible={notificationVisibility}
         toggleNotification={(state: boolean) => setNotificationVisibility(state)}
       />
-      <Button
-        onPress={() => dispatchAction(InquiryOptions.ContactGallery)}
-        size="large"
-        block
-        width={100}
-        variant="secondaryOutline"
-      >
+      <Button onPress={() => dispatchAction(InquiryOptions.ContactGallery)} size="large" block width={100}>
         {InquiryOptions.ContactGallery}
       </Button>
       <InquiryModalFragmentContainer

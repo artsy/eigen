@@ -7,7 +7,7 @@ import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { Theme } from "palette"
 import { BidFlowQueryRenderer } from "./Containers/BidFlow"
 import { GeneQueryRenderer } from "./Containers/Gene"
-import { InboxQueryRenderer } from "./Containers/Inbox"
+import { InboxWrapper } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlowQueryRenderer } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
@@ -15,6 +15,7 @@ import { About } from "./Scenes/About/About"
 import { ArtistQueryRenderer } from "./Scenes/Artist/Artist"
 import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
+import { ArtistShows2QueryRenderer } from "./Scenes/ArtistShows/ArtistShows2"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { CityView } from "./Scenes/City"
@@ -80,6 +81,7 @@ import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
+import { MyCollectionArtworkImagesQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkImages/MyCollectionArtworkImages"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
@@ -131,7 +133,7 @@ const PartnerLocations: React.FC<PartnerLocationsProps> = (props) => <PartnerLoc
 
 const Inbox: React.FC<{}> = screenTrack<{}>(() => {
   return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
-})((props) => <InboxQueryRenderer {...props} />)
+})((props) => <InboxWrapper {...props} />)
 
 interface GeneProps {
   geneID: string
@@ -359,6 +361,7 @@ export const modules = defineModules({
   Admin: nativeModule(),
   About: reactModule(About),
   Artist: reactModule(ArtistQueryRenderer),
+  ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
   Artwork: reactModule(Artwork),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
@@ -418,6 +421,7 @@ export const modules = defineModules({
   MyCollection: reactModule(MyCollectionQueryRenderer),
   MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),
   MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
+  MyCollectionArtworkImages: reactModule(MyCollectionArtworkImagesQueryRenderer),
   MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, { hidesBackButton: true }),

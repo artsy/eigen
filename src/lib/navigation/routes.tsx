@@ -56,6 +56,9 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-profile", "MyProfile"),
 
     new RouteMatcher("/artist/:artistID", "Artist"),
+    getCurrentEmissionState().options.AROptionsNewInsightsPage
+      ? new RouteMatcher("/artist/:artistID/shows", "ArtistShows")
+      : null,
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
     new RouteMatcher("/artist/:artistID/auction-results", "WebView", ({ artistID }) => ({
       url: `/artist/${artistID}/auction-results`,
@@ -103,7 +106,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-account/edit-password", "MyAccountEditPassword"),
     new RouteMatcher("/my-account/edit-email", "MyAccountEditEmail"),
     new RouteMatcher("/my-account/edit-phone", "MyAccountEditPhone"),
-    new RouteMatcher("/my-bids", "MyBids"),
     new RouteMatcher("/my-profile/payment", "MyProfilePayment"),
     new RouteMatcher("/my-profile/payment/new-card", "MyProfilePaymentNewCreditCard"),
     new RouteMatcher("/my-profile/push-notifications", "MyProfilePushNotifications"),
@@ -113,6 +115,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-collection", "MyCollection"),
     new RouteMatcher("/my-collection/artwork/:artworkSlug", "MyCollectionArtwork"),
     new RouteMatcher("/my-collection/artwork-details/:artworkSlug", "MyCollectionArtworkFullDetails"),
+    new RouteMatcher("/my-collection/artwork-images/:artworkSlug", "MyCollectionArtworkImages"),
 
     // TODO: Follow-up about below route names
     new RouteMatcher("/collections/my-collection/artworks/new/submissions/new", "ConsignmentsSubmissionForm"),

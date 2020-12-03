@@ -72,8 +72,6 @@ describe("MyCollectionArtworkListItem", () => {
           sessionState: {
             lastUploadedPhoto: {
               path: "some-local-path",
-              size: 1800,
-              data: "some-data",
               width: 90,
               height: 90,
               mime: "some-mime",
@@ -89,9 +87,11 @@ describe("MyCollectionArtworkListItem", () => {
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Artwork: () => ({
-          image: {
-            url: null,
-          },
+          images: [
+            {
+              url: null,
+            },
+          ],
         }),
       })
     )

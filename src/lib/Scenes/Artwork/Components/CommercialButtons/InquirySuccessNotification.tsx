@@ -49,11 +49,11 @@ export const InquirySuccessNotification: React.FC<InquirySuccessNotificationProp
                 height: 1,
               },
               shadowOpacity: 0.18,
-              shadowRadius: 1.0,
+              shadowRadius: 5.0,
             }}
           >
             <TouchableOpacity onPress={navigateToConversation}>
-              <Flex ml={1}>
+              <Flex p={1}>
                 <Flex flexDirection="row" justifyContent="space-between">
                   <Text color="green100" variant="mediumText">
                     Message Sent

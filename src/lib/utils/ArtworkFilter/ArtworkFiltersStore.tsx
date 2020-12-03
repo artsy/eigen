@@ -356,7 +356,7 @@ export const selectedOptionsUnion = ({
     {
       paramName: FilterParamName.artistIDs,
       paramValue: [],
-      displayText: "Artists",
+      displayText: "All",
     },
     {
       paramName: FilterParamName.viewAs,

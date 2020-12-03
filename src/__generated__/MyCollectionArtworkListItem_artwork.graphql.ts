@@ -8,9 +8,10 @@ export type MyCollectionArtworkListItem_artwork = {
     readonly artist: {
         readonly internalID: string;
     } | null;
-    readonly image: {
+    readonly images: ReadonlyArray<{
         readonly url: string | null;
-    } | null;
+        readonly isDefault: boolean | null;
+    } | null> | null;
     readonly artistNames: string | null;
     readonly medium: string | null;
     readonly slug: string;
@@ -54,14 +55,21 @@ const node: ReaderFragment = {
       "args": null,
       "concreteType": "Image",
       "kind": "LinkedField",
-      "name": "image",
-      "plural": false,
+      "name": "images",
+      "plural": true,
       "selections": [
         {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
           "name": "url",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "isDefault",
           "storageKey": null
         }
       ],
@@ -99,5 +107,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = 'c8409aaf097d1a88e86780cc434626aa';
+(node as any).hash = '52c810078aeb3eecc44e110188b63913';
 export default node;

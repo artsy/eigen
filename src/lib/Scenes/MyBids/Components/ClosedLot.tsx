@@ -28,7 +28,7 @@ export const ClosedLot = ({
   withTimelyInfo?: boolean
 }) => {
   const sale = lotStanding?.saleArtwork?.sale!
-  const sellingPrice = lotStanding?.lotState?.sellingPrice?.displayAmount
+  const sellingPrice = lotStanding?.lotState?.sellingPrice?.display
   const subtitle = withTimelyInfo ? saleClosedMessage(sale) : undefined
 
   const result: BidderResult =
@@ -66,10 +66,10 @@ export const ClosedLotFragmentContainer = createFragmentContainer(ClosedLot, {
         reserveStatus
         soldStatus
         askingPrice: onlineAskingPrice {
-          displayAmount(fractionalDigits: 0)
+          display
         }
         sellingPrice: floorSellingPrice {
-          displayAmount(fractionalDigits: 0)
+          display
         }
       }
       saleArtwork {
