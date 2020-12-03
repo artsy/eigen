@@ -210,7 +210,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         <Box mx={2} mb={4}>
           <TextArea
             placeholder="Add a custom note..."
-            title="Add Message"
+            title="Add message"
             value={state.message ? state.message : ""}
             onChangeText={setMessage}
           />
