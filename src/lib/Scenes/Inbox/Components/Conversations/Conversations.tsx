@@ -32,7 +32,6 @@ export class Conversations extends Component<Props, State> {
   componentDidUpdate() {
     const { relay } = this.props
     relay.refetchConnection(PAGE_SIZE, (error) => {
-      alert("WOOO!")
       if (error) {
         throw new Error("Conversations error: " + error.message)
       }
