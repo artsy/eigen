@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProperties } from "react-native"
+import { StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from "react-native"
 import styled from "styled-components/native"
 
 import { Flex, FlexProps } from "../Elements/Flex"
@@ -10,13 +10,21 @@ interface CheckboxState {
   checked: boolean
 }
 
-interface CheckboxProps extends TouchableWithoutFeedbackProperties, FlexProps {
+interface CheckboxProps extends TouchableWithoutFeedbackProps, FlexProps {
   checked?: boolean
   disabled?: boolean
   error?: boolean
 }
 
 export class Checkbox extends Component<CheckboxProps, CheckboxState> {
+  static getDerivedStateFromProps(props: CheckboxProps, state: CheckboxState) {
+    if (props.checked !== state.checked) {
+      return {
+        checked: props.checked,
+      }
+    }
+  }
+
   private readonly checkboxSize = 20
 
   private readonly duration = 250
