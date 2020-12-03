@@ -1,7 +1,7 @@
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
-import { last } from "lodash"
-import React, { RefObject, useEffect, useRef, useState } from "react"
+import React from "react"
+import { View } from "react-native"
 import { SafeAppModule, safeModules } from "./AppModules"
 import { BackButton } from "./navigation/BackButton"
 
@@ -9,40 +9,8 @@ const StackNavigator = createStackNavigator()
 
 export const NavStack = React.forwardRef<NavigationContainerRef, { rootModuleName: SafeAppModule }>(
   ({ rootModuleName }, ref) => {
-    const ourRef = useRef<NavigationContainerRef>()
-    const [visibleBackButton, setVisibleBackButton] = useState(false)
-
-    useEffect(() => {
-      const maybeHideBackButton = () => {
-        const state = ourRef.current?.getRootState()!
-
-        if (state.routes.length === 1) {
-          setVisibleBackButton(false)
-          return
-        }
-
-        if (safeModules[last(state.routes)?.name as SafeAppModule].options.hidesBackButton === true) {
-          setVisibleBackButton(false)
-          return
-        }
-
-        setVisibleBackButton(true)
-      }
-
-      ourRef?.current?.addListener("state", maybeHideBackButton)
-
-      return () => {
-        ourRef.current?.removeListener("state", maybeHideBackButton)
-      }
-    }, [])
-
     return (
-      <NavigationContainer
-        ref={(r) => {
-          ourRef.current = r
-          ref(r)
-        }}
-      >
+      <NavigationContainer ref={ref}>
         <StackNavigator.Navigator
           screenOptions={{ headerShown: false, cardStyle: { backgroundColor: "white" } }}
           initialRouteName={rootModuleName}
@@ -53,16 +21,30 @@ export const NavStack = React.forwardRef<NavigationContainerRef, { rootModuleNam
               return null
             }
             return (
-              <StackNavigator.Screen
-                key={moduleName}
-                name={moduleName}
-                component={module.Component}
-              ></StackNavigator.Screen>
+              <StackNavigator.Screen key={moduleName} name={moduleName}>
+                {({ route }) => {
+                  return module.options.hidesBackButton ? (
+                    <module.Component {...route.params} />
+                  ) : (
+                    <BackButtonPageWrapper>
+                      <module.Component {...route.params} />
+                    </BackButtonPageWrapper>
+                  )
+                }}
+              </StackNavigator.Screen>
             )
           })}
         </StackNavigator.Navigator>
-        <BackButton visible={visibleBackButton} />
       </NavigationContainer>
     )
   }
 )
+
+const BackButtonPageWrapper: React.FC<{}> = ({ children }) => {
+  return (
+    <View style={{ flex: 1 }}>
+      {children}
+      <BackButton />
+    </View>
+  )
+}
