@@ -52,8 +52,7 @@ describe("My Bids", () => {
   }
 
   it("renders without throwing an error", () => {
-    const wrapper = getWrapper()
-    expect(extractText(wrapper.root)).toContain("My Bids")
+    getWrapper()
   })
 
   it("renders a lot standing from a closed sale in the closed section", () => {

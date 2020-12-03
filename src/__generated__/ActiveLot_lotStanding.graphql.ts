@@ -14,10 +14,10 @@ export type ActiveLot_lotStanding = {
         readonly reserveStatus: AuctionsReserveStatus;
         readonly soldStatus: AuctionsSoldStatus;
         readonly askingPrice: {
-            readonly displayAmount: string;
-        };
+            readonly display: string | null;
+        } | null;
         readonly sellingPrice: {
-            readonly displayAmount: string;
+            readonly display: string | null;
         } | null;
     };
     readonly saleArtwork: {
@@ -40,16 +40,10 @@ const node: ReaderFragment = (function(){
 var v0 = [
   {
     "alias": null,
-    "args": [
-      {
-        "kind": "Literal",
-        "name": "fractionalDigits",
-        "value": 0
-      }
-    ],
+    "args": null,
     "kind": "ScalarField",
-    "name": "displayAmount",
-    "storageKey": "displayAmount(fractionalDigits:0)"
+    "name": "display",
+    "storageKey": null
   }
 ];
 return {
@@ -104,7 +98,7 @@ return {
         {
           "alias": "askingPrice",
           "args": null,
-          "concreteType": "AuctionsMoney",
+          "concreteType": "Money",
           "kind": "LinkedField",
           "name": "onlineAskingPrice",
           "plural": false,
@@ -114,7 +108,7 @@ return {
         {
           "alias": "sellingPrice",
           "args": null,
-          "concreteType": "AuctionsMoney",
+          "concreteType": "Money",
           "kind": "LinkedField",
           "name": "floorSellingPrice",
           "plural": false,
@@ -163,5 +157,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '92094a5996a0066dabc4c4065c080578';
+(node as any).hash = '78ad33822042ca3df166ba20d09de074';
 export default node;

@@ -206,20 +206,20 @@ const LoadingIndicator = () => {
 
 export async function uploadPhotos(photos: ArtworkFormValues["photos"]) {
   GlobalStore.actions.myCollection.artwork.setLastUploadedPhoto(photos[0])
-  const imagePaths = photos.map((photo) => photo.path)
+  // only recently added photos have a path
+  const imagePaths: string[] = photos.map((photo) => photo.path).filter((path): path is string => path !== undefined)
   const convectionKey = await getConvectionGeminiKey()
   const acl = "private"
   const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
   const bucket = assetCredentials.policyDocument.conditions.bucket
 
-  const uploadPromises = imagePaths.map(
-    async (path): Promise<string> => {
-      const s3 = await uploadFileToS3(path, acl, assetCredentials)
-      const url = `https://${bucket}.s3.amazonaws.com/${s3.key}`
-      return url
-    }
-  )
+  const externalImageUrls: string[] = []
 
-  const externalImageUrls: string[] = await Promise.all(uploadPromises)
+  for (const path of imagePaths) {
+    const s3 = await uploadFileToS3(path, acl, assetCredentials)
+    const url = `https://${bucket}.s3.amazonaws.com/${s3.key}`
+    externalImageUrls.push(url)
+  }
+
   return externalImageUrls
 }

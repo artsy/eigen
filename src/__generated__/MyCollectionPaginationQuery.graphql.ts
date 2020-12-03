@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 01eb0a2b288a0d33142169bf42818ec4 */
+/* @relayHash 16d04ed4c049f0eee881df7c6634d646 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,8 +37,9 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
     internalID
     id
   }
-  image {
+  images {
     url
+    isDefault
   }
   artistNames
   medium
@@ -237,14 +238,21 @@ return {
                         "args": null,
                         "concreteType": "Image",
                         "kind": "LinkedField",
-                        "name": "image",
-                        "plural": false,
+                        "name": "images",
+                        "plural": true,
                         "selections": [
                           {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
                             "name": "url",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "isDefault",
                             "storageKey": null
                           }
                         ],
@@ -309,7 +317,7 @@ return {
     ]
   },
   "params": {
-    "id": "01eb0a2b288a0d33142169bf42818ec4",
+    "id": "16d04ed4c049f0eee881df7c6634d646",
     "metadata": {},
     "name": "MyCollectionPaginationQuery",
     "operationKind": "query",

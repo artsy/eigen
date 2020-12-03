@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash aa9fc4b03c430aeb6d2169369d949794 */
+/* @relayHash 8e0072dd70dce3eebc02d33af8e8890e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,9 +29,13 @@ query MyCollectionArtworkHeaderTestsQuery {
 fragment MyCollectionArtworkHeader_artwork on Artwork {
   artistNames
   date
-  image {
+  images {
+    height
+    isDefault
     url
+    width
   }
+  internalID
   title
 }
 */
@@ -49,6 +53,18 @@ v1 = {
   "nullable": true,
   "plural": false,
   "type": "String"
+},
+v2 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v3 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Int"
 };
 return {
   "fragment": {
@@ -110,17 +126,45 @@ return {
             "args": null,
             "concreteType": "Image",
             "kind": "LinkedField",
-            "name": "image",
-            "plural": false,
+            "name": "images",
+            "plural": true,
             "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "height",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "isDefault",
+                "storageKey": null
+              },
               {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
                 "name": "url",
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "width",
+                "storageKey": null
               }
             ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "internalID",
             "storageKey": null
           },
           {
@@ -143,7 +187,7 @@ return {
     ]
   },
   "params": {
-    "id": "aa9fc4b03c430aeb6d2169369d949794",
+    "id": "8e0072dd70dce3eebc02d33af8e8890e",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -154,19 +198,23 @@ return {
         },
         "artwork.artistNames": (v1/*: any*/),
         "artwork.date": (v1/*: any*/),
-        "artwork.id": {
+        "artwork.id": (v2/*: any*/),
+        "artwork.images": {
           "enumValues": null,
-          "nullable": false,
-          "plural": false,
-          "type": "ID"
+          "nullable": true,
+          "plural": true,
+          "type": "Image"
         },
-        "artwork.image": {
+        "artwork.images.height": (v3/*: any*/),
+        "artwork.images.isDefault": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
-          "type": "Image"
+          "type": "Boolean"
         },
-        "artwork.image.url": (v1/*: any*/),
+        "artwork.images.url": (v1/*: any*/),
+        "artwork.images.width": (v3/*: any*/),
+        "artwork.internalID": (v2/*: any*/),
         "artwork.title": (v1/*: any*/)
       }
     },

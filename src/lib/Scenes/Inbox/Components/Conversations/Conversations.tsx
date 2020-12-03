@@ -9,6 +9,7 @@ import ConversationSnippet from "./ConversationSnippet"
 import { PAGE_SIZE } from "lib/data/constants"
 
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { color, Flex, Sans, Separator } from "palette"
 
@@ -77,15 +78,20 @@ export class Conversations extends Component<Props, State> {
     }
 
     const unreadCount = this.props.me.conversations?.totalUnreadCount
-    const unredCounter = unreadCount ? `(${unreadCount})` : null
+    const unreadCounter = unreadCount ? `(${unreadCount})` : null
+    const shouldDisplayMyBids = getCurrentEmissionState().options.AROptionsBidManagement
 
     return (
       <View>
-        <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
-          <Sans mx={2} mt={1} size="8" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
-            Inbox {unredCounter}
-          </Sans>
-        </Flex>
+        {!!shouldDisplayMyBids ? (
+          <Separator />
+        ) : (
+          <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
+            <Sans mx={2} mt={1} size="8" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
+              Inbox {unreadCounter}
+            </Sans>
+          </Flex>
+        )}
         <FlatList
           data={conversations}
           keyExtractor={(item) => item.internalID!}
@@ -115,7 +121,7 @@ export const ConversationsContainer = createPaginationContainer(
       fragment Conversations_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         conversations: conversationsConnection(first: $count, after: $cursor)
-          @connection(key: "Conversations_conversations") {
+        @connection(key: "Conversations_conversations") {
           pageInfo {
             endCursor
             hasNextPage

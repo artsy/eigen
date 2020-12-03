@@ -8,7 +8,7 @@ import { InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes
 import { LocationWithDetails } from "lib/utils/googleMaps"
 import { Box, color, Flex, Separator, space, Text } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import { LayoutAnimation, TextInput, TextInputProps, TouchableOpacity } from "react-native"
+import { LayoutAnimation, ScrollView, TextInput, TextInputProps, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
@@ -61,7 +61,16 @@ const InquiryQuestionOption: React.FC<{
 
   return (
     <React.Fragment>
-      <InquiryField>
+      <Flex
+        style={{
+          borderColor: questionSelected ? color("black100") : color("black10"),
+          borderWidth: 1,
+          borderRadius: 5,
+          flexDirection: "column",
+          marginTop: space(1),
+          padding: space(2),
+        }}
+      >
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex flexDirection="row">
             <Checkbox
@@ -85,6 +94,7 @@ const InquiryQuestionOption: React.FC<{
         {!!isShipping && !!questionSelected && (
           <>
             <Separator my={2} />
+
             <TouchableOpacity
               data-test-id="toggle-shipping-modal"
               onPress={() => {
@@ -99,7 +109,7 @@ const InquiryQuestionOption: React.FC<{
                     <Text variant="text" color="black60">
                       Add your location
                     </Text>
-                    <Box mt={0.5}>
+                    <Box>
                       <ChevronIcon color="black60" />
                     </Box>
                   </>
@@ -117,7 +127,7 @@ const InquiryQuestionOption: React.FC<{
             </TouchableOpacity>
           </>
         )}
-      </InquiryField>
+      </Flex>
     </React.Fragment>
   )
 }
@@ -173,37 +183,39 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           </Text>
         </ErrorMessageFlex>
       )}
-      <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
-      <Box m={2}>
-        <Text variant="mediumText">What information are you looking for?</Text>
-        {
-          // NOTE: For now the inquiryQuestions field values are always present and therefore never null, so it is safe to destructure them
-          questions!.map((inquiryQuestion) => {
-            if (!inquiryQuestion) {
-              return false
-            }
-            const { internalID: id, question } = inquiryQuestion
-            return id === InquiryQuestionIDs.Shipping ? (
-              <InquiryQuestionOption
-                key={id}
-                id={id}
-                question={question}
-                setShippingModalVisibility={setShippingModalVisibility}
-              />
-            ) : (
-              <InquiryQuestionOption key={id} id={id} question={question} />
-            )
-          })
-        }
-      </Box>
-      <Box mx={2}>
-        <TextArea
-          placeholder="Add a custom note..."
-          title="Add Message"
-          value={state.message ? state.message : ""}
-          onChangeText={setMessage}
-        />
-      </Box>
+      <ScrollView>
+        <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
+        <Box m={2}>
+          <Text variant="mediumText">What information are you looking for?</Text>
+          {
+            // NOTE: For now the inquiryQuestions field values are always present and therefore never null, so it is safe to destructure them
+            questions!.map((inquiryQuestion) => {
+              if (!inquiryQuestion) {
+                return false
+              }
+              const { internalID: id, question } = inquiryQuestion
+              return id === InquiryQuestionIDs.Shipping ? (
+                <InquiryQuestionOption
+                  key={id}
+                  id={id}
+                  question={question}
+                  setShippingModalVisibility={setShippingModalVisibility}
+                />
+              ) : (
+                <InquiryQuestionOption key={id} id={id} question={question} />
+              )
+            })
+          }
+        </Box>
+        <Box mx={2} mb={4}>
+          <TextArea
+            placeholder="Add a custom note..."
+            title="Add Message"
+            value={state.message ? state.message : ""}
+            onChangeText={setMessage}
+          />
+        </Box>
+      </ScrollView>
       <ShippingModal
         toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
         modalIsVisible={shippingModalVisibility}
@@ -213,14 +225,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
     </FancyModal>
   )
 }
-
-const InquiryField = styled(Flex)`
-  border-radius: 5;
-  border: solid 1px ${color("black10")};
-  flex-direction: column;
-  margin-top: ${space(1)}px;
-  padding: ${space(2)}px;
-`
 
 const StyledTextArea = styled(TextInput)`
   border: solid 1px;

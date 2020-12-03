@@ -1,26 +1,36 @@
 upcoming:
-  version: 6.7.2
+  version: 6.7.3
   date: TBD
   dev:
-    - Pass correct arguments to auction artwork grid tracking - pepopowitz
-    - Upgrade CI to Xcode 12 - pavlos
-    - Update url for echo, now in s3 - ash, pavlos
-    - Move bottom tabs navigator to TS - david
-    - Fix city guide CTA images not showing when running using Xcode 12 - pavlos
-    - Fix minimize startup api requests - brian
-    - Remove analytics tracking on back-arrow taps - pepopowitz
-    - Rename AppStore to GlobalStore - david
-    - Update STRICTNESS_MIGRATION comments - david
-    - Don't pass email to segment - brian
     - Update color scheme - mdole
-    - Remove SwitchBoard.tsx - david
-    - Fix device token checking logic - david
+    - Allow for multiple artwork images in My Collection - adam
     - Set price and marketing text dynamically - adam
+    - Migrate floor selling price and online asking price in My Bids to the new type - starsirius
   user_facing:
+    - Add artist past shows screen - mounir
     - Add loading spinner to infinite artwork grid on artist page - david
     - Avoid shrinking the background on non-fullscreen fancy modals - david
     - Support iOS 14 photo picker in My Collection - brian
 releases:
+  - version: 6.7.2
+    date: November 30, 2020
+    dev:
+      - Remove SwitchBoard.tsx - david
+      - Update url for echo, now in s3 - ash, pavlos
+      - Move bottom tabs navigator to TS - david
+      - Add some relay mock helpers - pavlos
+      - Fix city guide CTA images not showing when running using Xcode 12 - pavlos
+      - Fix minimize startup api requests - brian
+      - Remove analytics tracking on back-arrow taps - pepopowitz
+      - Rename AppStore to GlobalStore - david
+      - Update STRICTNESS_MIGRATION comments - david
+      - Don't pass email to segment - brian
+      - Pass correct arguments to auction artwork grid tracking - pepopowitz
+      - Upgrade CI to Xcode 12 - pavlos
+      - Fix device token checking logic - david
+    user_facing:
+      -
+
   - version: 6.7.1
     date: November 13, 2020
     dev:
