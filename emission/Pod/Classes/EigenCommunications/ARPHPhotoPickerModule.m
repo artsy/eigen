@@ -5,7 +5,6 @@
 
 typedef NS_ENUM(NSUInteger, ARPHPhotoPickerError) {
     ARPHPhotoPickerErrorOSVersionUnsupported = 0,
-    ARPHPhotoPickerErrorNoPhotosReturned,
     ARPHPhotoPickerErrorLoadFailed,
     ARPHPhotoPickerErrorSaveFailed,
 };
@@ -26,7 +25,6 @@ typedef NS_ENUM(NSUInteger, ARPHPhotoPickerError) {
 static const NSString *ErrorDomain = @"net.artsy.ARPHPhotoPicker";
 
 static const NSString *UnsupportedOSErrorMessage = @"PHPhotoPicker unavailable before iOS 14.";
-static const NSString *NoPhotosErrorMessage = @"No photos returned from picker.";
 static const NSString *LoadFailedErrorMessage = @"Failed to load photos from picker.";
 static const NSString *SaveFailedErrorMessage = @"Failed to save photos locally.";
 
@@ -66,8 +64,7 @@ RCT_EXPORT_METHOD(requestPhotos:(RCTPromiseResolveBlock)resolve
     });
 
     if (results.count == 0) {
-         NSError *noPhotosError = [NSError errorWithDomain:ErrorDomain code:ARPHPhotoPickerErrorNoPhotosReturned userInfo:@{ NSLocalizedDescriptionKey: NoPhotosErrorMessage }];
-        _reject(ErrorDomain, NoPhotosErrorMessage, noPhotosError);
+        _resolve(@[]);
     } else {
         NSMutableArray *images = [[NSMutableArray alloc] init];
         Compression *compression = [[Compression alloc] init];
@@ -93,8 +90,8 @@ RCT_EXPORT_METHOD(requestPhotos:(RCTPromiseResolveBlock)resolve
         intptr_t status = dispatch_group_wait(imageLoadGroup, timeout);
 
         if (results.count == 0) {
-            NSError *noPhotosError = [NSError errorWithDomain:ErrorDomain code:ARPHPhotoPickerErrorLoadFailed userInfo:@{ NSLocalizedDescriptionKey: LoadFailedErrorMessage }];
-            _reject(ErrorDomain, LoadFailedErrorMessage, noPhotosError);
+            NSError *loadFailedError = [NSError errorWithDomain:ErrorDomain code:ARPHPhotoPickerErrorLoadFailed userInfo:@{ NSLocalizedDescriptionKey: LoadFailedErrorMessage }];
+            _reject(ErrorDomain, LoadFailedErrorMessage, loadFailedError);
         } else {
             _resolve(images);
         }
