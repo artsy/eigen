@@ -14,7 +14,7 @@ import { Home_me } from "__generated__/Home_me.graphql"
 import { HomeQuery } from "__generated__/HomeQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { compact, drop, flatten, take, times, zip } from "lodash"
-import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "palette"
+import { ArtsyLogoIcon, Box, Button, Flex, Join, Spacer, Theme } from "palette"
 
 import { Home_featured } from "__generated__/Home_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
@@ -75,7 +75,7 @@ const Home = (props: Props) => {
   - Trending artists to follow
   */
 
-  const viewingRoomsEchoFlag = useEmissionOption("AREnableViewingRooms")
+  const viewingRoomsEchoFlag = GlobalStore.useAppState((state) => state.config.features.ViewingRoomsEnabled)
 
   const rowData = compact([
     !!viewingRoomsEchoFlag && ({ type: "viewing-rooms" } as const),
@@ -119,6 +119,8 @@ const Home = (props: Props) => {
     )
   }
 
+  const override = GlobalStore.useAppState((state) => state.config.adminFeatureFlagOverrides.ViewingRoomsEnabled)
+
   return (
     <ProvideScreenTracking
       info={{
@@ -155,6 +157,18 @@ const Home = (props: Props) => {
             }}
             ListHeaderComponent={
               <Box mb={1} mt={2}>
+                <Flex flexDirection="row">
+                  <Button
+                    onPress={() =>
+                      GlobalStore.actions.config.setAdminOverride({
+                        key: "ViewingRoomsEnabled",
+                        value: override === true ? false : override === false ? null : true,
+                      })
+                    }
+                  >
+                    {override === true ? "on" : override === false ? "off" : "default"}
+                  </Button>
+                </Flex>
                 <Flex alignItems="center">
                   <ArtsyLogoIcon scale={0.75} />
                 </Flex>
