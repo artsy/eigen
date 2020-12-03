@@ -1,14 +1,14 @@
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
-import { dismissModal, navigate } from "lib/navigation/navigate"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useEmissionOption } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Button, ChevronIcon, Flex, Join, Sans, Separator, Spacer } from "palette"
+import { ChevronIcon, Flex, Join, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useRef, useState } from "react"
 import { Alert, FlatList, NativeModules, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -53,7 +53,6 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       <SectionHeading title="Account Settings" />
       <MenuItem title="Account" onPress={() => navigate("my-account")} />
       <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
-      <Button onPress={() => dismissModal()}>close</Button>
       <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />
       <MenuItem
         title="Send feedback"

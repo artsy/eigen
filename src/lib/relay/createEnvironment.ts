@@ -28,7 +28,6 @@ export default function createEnvironment() {
         url: () => getCurrentEmissionState().metaphysicsURL,
         headers: () => {
           const { userAgent, userID, authenticationToken } = getCurrentEmissionState()
-          console.warn("Current emission state", getCurrentEmissionState())
           return {
             "Content-Type": "application/json",
             "User-Agent": userAgent!,

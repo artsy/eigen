@@ -43,7 +43,10 @@ export const NavStack = React.forwardRef<NavigationContainerRef, { rootModuleNam
           ref(r)
         }}
       >
-        <StackNavigator.Navigator screenOptions={{ headerShown: false }} initialRouteName={rootModuleName}>
+        <StackNavigator.Navigator
+          screenOptions={{ headerShown: false, cardStyle: { backgroundColor: "white" } }}
+          initialRouteName={rootModuleName}
+        >
           {Object.keys(safeModules).map((moduleName) => {
             const module = safeModules[moduleName as keyof typeof safeModules]
             if (module.type !== "react") {

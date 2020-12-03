@@ -9,7 +9,7 @@ export let setGlobalVisible: (v: boolean) => void
 export let presentModal: (viewDescriptor: ViewDescriptor) => void
 export let dismissModal: () => void
 
-export const ModalStack = () => {
+export const ModalStack: React.FC = () => {
   const navRef = useRef<NavigationContainerRef>()
   const [visible, setVisible] = useState(false)
   const [viewDescriptors, updateViewDescriptors] = useState<ViewDescriptor[]>([])
@@ -34,11 +34,15 @@ export const ModalStack = () => {
   //   }
   // })
 
-  return viewDescriptors.map((vd) => {
-    return (
-      <Modal visible>
-        <NavStack ref={(r) => (navRef.current = r)} rootModuleName={vd.moduleName} />
-      </Modal>
-    )
-  })
+  return (
+    <>
+      {viewDescriptors.map((vd) => {
+        return (
+          <Modal visible>
+            <NavStack ref={(r) => (navRef.current = r)} rootModuleName={vd.moduleName} />
+          </Modal>
+        )
+      })}
+    </>
+  )
 }

@@ -44,8 +44,6 @@ export const _ProvideScreenDimensions: React.FC = ({ children }) => {
 
   const safeAreaInsets = useSafeAreaInsets() || { top: 20, bottom: 0, left: 0, right: 0 }
 
-  console.warn({ safeAreaInsets })
-
   return (
     <ScreenDimensionsContext.Provider value={{ ...dimensions, safeAreaInsets }}>
       {children}

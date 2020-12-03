@@ -23,7 +23,7 @@ export const BottomTabsNavigator = () => {
     setTabStackNavRefs(tabRefs)
   }, [])
   return (
-    <View style={{ flex: 1, paddingBottom: bottom }}>
+    <View style={{ flex: 1, paddingBottom: bottom, backgroundColor: "white" }}>
       <FadeBetween
         views={[
           <NavStack ref={(ref) => (tabRefs.home = ref)} rootModuleName="Home" />,
