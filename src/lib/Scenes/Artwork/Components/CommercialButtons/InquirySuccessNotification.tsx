@@ -1,8 +1,8 @@
 import { navigate } from "lib/navigation/navigate"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { CloseIcon, color, Flex, Text, Theme } from "palette"
+import { color, Flex, Text, Theme } from "palette"
 import React, { useEffect } from "react"
-import { Animated, Modal, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
+import { Animated, Modal, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
 interface InquirySuccessNotificationProps {
@@ -58,12 +58,6 @@ export const InquirySuccessNotification: React.FC<InquirySuccessNotificationProp
                   <Text color="green100" variant="mediumText">
                     Message Sent
                   </Text>
-                  <TouchableWithoutFeedback
-                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                    onPress={() => toggleNotification(false)}
-                  >
-                    <CloseIcon />
-                  </TouchableWithoutFeedback>
                 </Flex>
                 <Text color="black60" variant="text">
                   Expect a response within 1-3 business days.
