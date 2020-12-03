@@ -191,7 +191,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       artistSearchResult: {
         internalID: artwork?.artist?.internalID,
         displayLabel: artwork?.artistNames,
-        imageUrl: artwork?.images?.[0].url?.replace(":version", "square"),
+        imageUrl: artwork?.images?.[0]?.url?.replace(":version", "square"),
       },
       category: artwork.category,
       date: artwork.date,
