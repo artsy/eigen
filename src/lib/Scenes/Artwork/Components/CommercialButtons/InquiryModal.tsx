@@ -7,7 +7,7 @@ import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquirySt
 import { InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { LocationWithDetails } from "lib/utils/googleMaps"
 import { Box, color, Flex, Separator, space, Text } from "palette"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { LayoutAnimation, ScrollView, TextInput, TextInputProps, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -135,6 +135,10 @@ const InquiryQuestionOption: React.FC<{
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props }) => {
   const { toggleVisibility, modalIsVisible, relay, onMutationSuccessful } = props
   const questions = artwork?.inquiryQuestions!
+  const scrollViewRef = useRef<ScrollView>(null)
+
+  const [addMessageYCoordinate, setAddMessageYCoordinate] = useState<number>(0)
+
   const { state, dispatch } = useContext(ArtworkInquiryContext)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const [errorMessageVisibility, setErrorMessageVisibility] = useState(false)
@@ -146,6 +150,10 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
     dispatch({ type: "resetForm", payload: null })
     toggleVisibility()
   }
+
+  const scrollToInput = useCallback(() => {
+    scrollViewRef.current?.scrollTo({ y: addMessageYCoordinate })
+  }, [addMessageYCoordinate])
 
   useEffect(() => {
     if (mutationSuccessful) {
@@ -183,7 +191,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           </Text>
         </ErrorMessageFlex>
       )}
-      <ScrollView>
+      <ScrollView ref={scrollViewRef}>
         <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
         <Box m={2}>
           <Text variant="mediumText">What information are you looking for?</Text>
@@ -207,12 +215,19 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
             })
           }
         </Box>
-        <Box mx={2} mb={4}>
+        <Box
+          mx={2}
+          mb={4}
+          onLayout={({ nativeEvent }) => {
+            setAddMessageYCoordinate(nativeEvent.layout.y)
+          }}
+        >
           <TextArea
             placeholder="Add a custom note..."
             title="Add message"
             value={state.message ? state.message : ""}
             onChangeText={setMessage}
+            onFocus={scrollToInput}
           />
         </Box>
       </ScrollView>
@@ -229,14 +244,16 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
 const StyledTextArea = styled(TextInput)`
   border: solid 1px;
   padding: ${space(1)}px;
-  height: 88px;
+  min-height: 88px;
+  max-height: 200px;
 `
 
 // TODO: Replace with Palette when available
 interface TextAreaProps extends TextInputProps {
   title: string
+  onFocus?: () => void
 }
-const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => {
+const TextArea: React.FC<TextAreaProps> = ({ title, onFocus, ...props }) => {
   const [borderColor, setBorderColor] = useState(color("black10"))
 
   return (
@@ -249,6 +266,9 @@ const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => {
       <StyledTextArea
         {...props}
         onFocus={() => {
+          if (onFocus) {
+            onFocus()
+          }
           setBorderColor(color("purple100"))
         }}
         onBlur={() => {
