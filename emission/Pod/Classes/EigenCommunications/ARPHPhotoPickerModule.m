@@ -7,7 +7,6 @@ typedef NS_ENUM(NSUInteger, ARPHPhotoPickerError) {
     ARPHPhotoPickerErrorOSVersionUnsupported = 0,
     ARPHPhotoPickerErrorNoPhotosReturned,
     ARPHPhotoPickerErrorLoadFailed,
-    ARPHPhotoPickerErrorLoadTimeout,
     ARPHPhotoPickerErrorSaveFailed,
 };
 
@@ -29,7 +28,6 @@ static NSString * ErrorDomain = @"net.artsy.ARPHPhotoPicker";
 static NSString * UnsupportedOSErrorMessage = @"PHPhotoPicker unavailable before iOS 14.";
 static NSString * NoPhotosErrorMessage = @"No photos returned from picker.";
 static NSString * LoadFailedErrorMessage = @"Failed to load photos from picker.";
-static NSString * LoadTimeoutErrorMessage = @"Loading photos from picker timed out.";
 static NSString * SaveFailedErrorMessage = @"Failed to save photos locally.";
 
 RCT_EXPORT_MODULE();
@@ -91,14 +89,9 @@ didFinishPicking:(NSArray<PHPickerResult *> *)results  API_AVAILABLE(ios(14)) {
             }
         }
 
-        double delayInSeconds = 0.5;
+        double delayInSeconds = 3.0;
         dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         intptr_t status = dispatch_group_wait(imageLoadGroup, timeout);
-
-        if (status != 0) { // timeout
-            NSError *photoTimeoutError = [NSError errorWithDomain:ErrorDomain code:ARPHPhotoPickerErrorLoadTimeout userInfo:@{ NSLocalizedDescriptionKey: LoadTimeoutErrorMessage }];
-            _reject(ErrorDomain, LoadTimeoutErrorMessage, photoTimeoutError);
-        }
 
         if (results.count == 0) {
             NSError *noPhotosError = [NSError errorWithDomain:ErrorDomain code:ARPHPhotoPickerErrorLoadFailed userInfo:@{ NSLocalizedDescriptionKey: LoadFailedErrorMessage }];
@@ -107,8 +100,6 @@ didFinishPicking:(NSArray<PHPickerResult *> *)results  API_AVAILABLE(ios(14)) {
             _resolve(images);
         }
     }
-    _reject = nil;
-    _resolve = nil;
 }
 
 /*!
