@@ -10,7 +10,8 @@ upcoming:
     - Add artist past shows screen - mounir
     - Add loading spinner to infinite artwork grid on artist page - david
     - Avoid shrinking the background on non-fullscreen fancy modals - david
-releases:
+    - changed casing of Add Message to Add message in inquiry modal - lily
+    releases:
   - version: 6.7.2
     date: November 30, 2020
     dev:
