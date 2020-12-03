@@ -19,6 +19,7 @@ upcoming:
   user_facing:
     - Add loading spinner to infinite artwork grid on artist page - david
     - Avoid shrinking the background on non-fullscreen fancy modals - david
+    - Support iOS 14 photo picker in My Collection - brian
 releases:
   - version: 6.7.1
     date: November 13, 2020
