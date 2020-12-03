@@ -59,8 +59,7 @@ RCT_EXPORT_METHOD(requestPhotos:(RCTPromiseResolveBlock)resolve
 
 #pragma mark - PHPickerViewControllerDelegate
 
-- (void)picker:(PHPickerViewController *)picker
-didFinishPicking:(NSArray<PHPickerResult *> *)results  API_AVAILABLE(ios(14)) {
+- (void)picker:(PHPickerViewController *)picker didFinishPicking:(NSArray<PHPickerResult *> *)results API_AVAILABLE(ios(14)) {
     dispatch_async(dispatch_get_main_queue(), ^{
         UIViewController *currentVC = RCTPresentedViewController();
         [currentVC dismissViewControllerAnimated:true completion:nil];
