@@ -58,12 +58,6 @@ export const InquirySuccessNotification: React.FC<InquirySuccessNotificationProp
                   <Text color="green100" variant="mediumText">
                     Message Sent
                   </Text>
-                  <TouchableWithoutFeedback
-                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                    onPress={() => toggleNotification(false)}
-                  >
-                    <CloseIcon />
-                  </TouchableWithoutFeedback>
                 </Flex>
                 <Text color="black60" variant="text">
                   Expect a response within 1-3 business days.
