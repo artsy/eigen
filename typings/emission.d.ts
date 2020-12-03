@@ -2,6 +2,7 @@ import type { ViewDescriptor } from "lib/navigation/navigate"
 import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
 import type { NativeState } from "lib/store/NativeModel"
 import { NativeModulesStatic } from "react-native"
+import { Image as RNCImage } from "react-native-image-crop-picker"
 declare module "react-native" {
   interface NativeModulesStatic {
     ARTemporaryAPIModule: {
@@ -16,6 +17,9 @@ declare module "react-native" {
       nativeState: NativeState
       postNotificationName(type: string, data: object): void
       didFinishBootstrapping(): void
+    }
+    ARPHPhotoPickerModule: {
+      requestPhotos(): Promise<RNCImage[]>
     }
     ARCocoaConstantsModule: {
       AREnabled: boolean

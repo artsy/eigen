@@ -3,6 +3,7 @@
 #import "ARTemporaryAPIModule.h"
 #import "ARRefineOptionsModule.h"
 #import "ARTakeCameraPhotoModule.h"
+#import "ARPHPhotoPickerModule.h"
 #import "ARNotificationsManager.h"
 #import "ARCocoaConstantsModule.h"
 #import "ARGraphQLQueryPreloader.h"
@@ -40,6 +41,7 @@ static AREmission *_sharedInstance = nil;
     _APIModule = [ARTemporaryAPIModule new];
     _refineModule = [ARRefineOptionsModule new];
     _cameraModule = [ARTakeCameraPhotoModule new];
+    _phPhotoPickerModule = [ARPHPhotoPickerModule new];
     _notificationsManagerModule = [[ARNotificationsManager alloc] initWithState:state];
     _graphQLQueryCacheModule = [ARGraphQLQueryCache new];
     _graphQLQueryPreloaderModule = [[ARGraphQLQueryPreloader alloc] initWithCache:_graphQLQueryCacheModule];
@@ -49,6 +51,7 @@ static AREmission *_sharedInstance = nil;
         _eventsModule,
         _refineModule,
         _cameraModule,
+        _phPhotoPickerModule,
         _notificationsManagerModule,
         _graphQLQueryPreloaderModule,
         _graphQLQueryCacheModule,

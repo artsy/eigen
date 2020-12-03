@@ -59,7 +59,6 @@ describe("MyCollectionArtworkFormModal", () => {
         filename: "somefile",
         creationDate: "somedate",
         modificationDate: "somedate",
-        duration: 10,
       }
       return photo
     }
