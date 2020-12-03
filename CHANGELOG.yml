@@ -14,6 +14,7 @@ upcoming:
     - Make add message input height relative to its size - ashley, mounir
     - Avoid shrinking the background on non-fullscreen fancy modals - david
     - removed x from inquiry sent notification - lily
+    - Minor copy changes for My Collection - pepopowitz
 releases:
   - version: 6.7.2
     date: November 30, 2020
