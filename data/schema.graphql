@@ -1787,10 +1787,10 @@ type AuctionsLotStanding implements AuctionsNode {
   # The current leading bid on the lot, whether it is winning or not
   leadingBidAmount: AuctionsMoney!
 
-  # whether this user has the leading bid
+  # Current lot state
   lot: AuctionsLotState!
 
-  # whether this user has the leading bid
+  # Current lot state
   lotState: AuctionsLotState! @deprecated(reason: "prefer `lot`")
   rawId: String!
   saleArtwork: SaleArtwork
