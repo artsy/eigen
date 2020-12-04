@@ -111,6 +111,7 @@ export const ArtworkMetaProps = graphql`
     internalID
     medium
     metric
+    provenance
     slug
     title
     width

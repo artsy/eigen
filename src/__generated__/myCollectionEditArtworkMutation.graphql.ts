@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 229c86d9e6f11c0409d73a2ace71c838 */
+/* @relayHash 2a837adc9c380f05b607420f80049863 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -92,6 +92,7 @@ fragment MyCollectionArtwork_sharedProps on Artwork {
   internalID
   medium
   metric
+  provenance
   slug
   title
   width
@@ -380,6 +381,13 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "provenance",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "slug",
                         "storageKey": null
                       },
@@ -408,7 +416,7 @@ return {
     ]
   },
   "params": {
-    "id": "229c86d9e6f11c0409d73a2ace71c838",
+    "id": "2a837adc9c380f05b607420f80049863",
     "metadata": {},
     "name": "myCollectionEditArtworkMutation",
     "operationKind": "mutation",
