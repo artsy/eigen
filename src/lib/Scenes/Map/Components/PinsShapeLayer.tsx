@@ -1,5 +1,5 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import Mapbox from "@mapbox/react-native-mapbox-gl"
+import Mapbox from "@react-native-mapbox-gl/maps"
 import { isEqual } from "lodash"
 import React, { Component } from "react"
 import { Animated } from "react-native"
