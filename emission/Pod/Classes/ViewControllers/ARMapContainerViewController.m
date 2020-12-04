@@ -167,6 +167,7 @@ const CGFloat MARGIN = 10;
         self.mapNeedsUserLocation = YES;
     }
 
+    NSLog(@"wow");
     // Regardless of a previously-selected city, we need to find out if the user is close enough to show the location button.
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
@@ -365,6 +366,11 @@ const CGFloat MARGIN = 10;
 }
 
 #pragma mark - CLLocationManagerDelegate
+
+- (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager
+{
+    NSLog(@"www");
+}
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {

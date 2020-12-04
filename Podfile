@@ -28,6 +28,8 @@ require 'json'
 require 'fileutils'
 
 
+$ReactNativeMapboxGLIOSVersion = '~> 6.3'
+
 target 'Artsy' do
   config = use_native_modules!
   use_react_native!(
@@ -77,7 +79,7 @@ target 'Artsy' do
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
-  pod 'Emission', path: './emission'
+  pod 'Emission', path: './emission', :inhibit_warnings => false
 
   # For Stripe integration with Emission. Using Ash's fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
   pod 'Pulley', git: 'https://github.com/l2succes/Pulley.git', branch: 'master'
@@ -190,6 +192,7 @@ post_install do |installer|
     contents = File.read(header)
     next if contents.include?(addition)
 
+    `chmod +w #{header}`
     File.open(header, 'w') do |file|
       file.puts addition
       file.puts contents
@@ -204,6 +207,7 @@ post_install do |installer|
   ].flat_map { |x| Dir.glob(File.join(x, '**/*.{h,m}')) }.each do |header|
     contents = File.read(header)
     patched = contents.sub(%r{["<]\w+/(\w+-Swift\.h)[">]}, '"\1"')
+    `chmod +w #{header}`
     File.write(header, patched) if Regexp.last_match
   end
 end

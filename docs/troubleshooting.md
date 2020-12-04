@@ -66,6 +66,10 @@ dependencies from scratch:
 rm -rf Pods/ && bundle exec pod install
 ```
 
+- mapbox pod failed to install with a 401
+
+Go to 1Password and look for `Eigen mapbox cocoapod pod install`. In there you can find instructions of what to do before running `bundle e pod install` again.
+
 ### Working with local media assets
 
 When writing a component that refers to a local media asset

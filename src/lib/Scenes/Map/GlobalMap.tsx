@@ -1,5 +1,5 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import Mapbox from "@mapbox/react-native-mapbox-gl"
+import Mapbox from "@react-native-mapbox-gl/maps"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
@@ -112,7 +112,7 @@ export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfo
 const DefaultZoomLevel = 11
 const MinZoomLevel = 9
 const MaxZoomLevel = 17.5
-const DefaultCameraMode = 1 // https://github.com/nitaliano/react-native-mapbox-gl/blob/master/ios/RCTMGL/CameraMode.m
+const DefaultCameraMode = 1 // https://github.com/react-native-mapbox-gl/maps/blob/7.0.10/ios/RCTMGL/CameraMode.m
 
 const ButtonAnimation = {
   yDelta: -300,

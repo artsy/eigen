@@ -44,3 +44,9 @@
   When this is merged: https://github.com/facebook/react-native/pull/30345.
 
   For some reason CircleCI kept giving an error when running tests `TypeError: stacktraceParser.parse is not a function`. Once I moved the require higher up, things started working again.
+
+- hardcode mapbox version to at least 6.3.0 using $ReactNativeMapboxGLIOSVersion
+
+  When @react-native-mapbox-gl/maps uses mapbox-ios at least 6.3.0
+
+  We had issues with CLLocationManagerDelegate and iOS 14. Methods got deprecated and mapbox-ios supports iOS 14, so we had to manually use that version. Normally the npm package came with an older version.
