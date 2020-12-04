@@ -22,20 +22,13 @@ interface Props {
 
 interface State {
   isLoading?: boolean
+  isRefreshing: boolean
 }
 
 export class Conversations extends Component<Props, State> {
   state = {
     isLoading: false,
-  }
-
-  componentDidUpdate() {
-    const { relay } = this.props
-    relay.refetchConnection(PAGE_SIZE, (error) => {
-      if (error) {
-        throw new Error("Conversations error: " + error.message)
-      }
-    })
+    isRefreshing: false,
   }
 
   fetchData = () => {
@@ -60,14 +53,12 @@ export class Conversations extends Component<Props, State> {
 
   refreshConversations = (callback?: () => void) => {
     const { relay } = this.props
-
     if (!relay.isLoading()) {
       relay.refetchConnection(PAGE_SIZE, (error) => {
         if (error) {
           console.error("Conversations/index.tsx #refreshConversations", error.message)
           // FIXME: Handle error
         }
-
         if (callback) {
           callback()
         }
