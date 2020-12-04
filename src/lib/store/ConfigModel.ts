@@ -8,6 +8,10 @@ type EchoJSON = typeof echoLaunchJSON
 
 const features = {
   ViewingRoomsEnabled: {
+    readyForRelease: true,
+    echoFlagKey: "AREnableViewingRooms",
+  },
+  NewAuctionPage: {
     readyForRelease: false,
     echoFlagKey: "AREnableViewingRooms",
   },
@@ -34,11 +38,17 @@ export const ConfigModel: ConfigModel = {
   adminFeatureFlagOverrides: {} as any,
   features: computed((state) => {
     const result = {} as any
-    for (const [key, val] of Object.entries(features)) {
-      result[key] =
-        state.adminFeatureFlagOverrides[key as FeatureName] ??
-        state.echoState.features.find((f) => f.name === val.echoFlagKey)?.value ??
-        val.readyForRelease
+    for (const [key, feature] of Object.entries(features)) {
+      if (state.adminFeatureFlagOverrides[key as FeatureName] != null) {
+        // If there's an admin override, it takes precedence
+        result[key] = state.adminFeatureFlagOverrides[key as FeatureName]
+      } else if (feature.readyForRelease) {
+        // If the feature is ready for release, the echo flag takes precedence
+        result[key] = state.echoState.features.find((f) => f.name === feature.echoFlagKey)?.value ?? true
+      } else {
+        // If the feature is not ready for release, uh, don't show it
+        result[key] = false
+      }
     }
     return result
   }),
