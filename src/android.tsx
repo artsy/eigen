@@ -5,8 +5,8 @@ import "lib/store/GlobalStore"
 import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Theme } from "palette"
-import React from "react"
-import { AppRegistry, LogBox, View } from "react-native"
+import React, { useMemo } from "react"
+import { AppRegistry, LogBox, PanResponder, View } from "react-native"
 import track from "react-tracking"
 import { RelayEnvironmentProvider } from "relay-hooks"
 
@@ -16,7 +16,9 @@ const AndroidRoot: React.FC<{}> = ({}) => {
       <RelayEnvironmentProvider environment={defaultEnvironment}>
         <ProvideScreenDimensions>
           <GlobalStoreProvider>
-            <Main />
+            <AdminMenuTapInterceptor>
+              <Main />
+            </AdminMenuTapInterceptor>
           </GlobalStoreProvider>
         </ProvideScreenDimensions>
       </RelayEnvironmentProvider>
@@ -57,3 +59,45 @@ LogBox.ignoreLogs([
   // This is for the Artist page, which will likely get redone soon anyway.
   "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
 ])
+
+const AdminMenuTapInterceptor: React.FC<{}> = ({ children }) => {
+  const panResponder = useMemo(() => {
+    let lastTapTimestamp: number | null = null
+    let numSequentialTaps: number = 0
+    return PanResponder.create({
+      onStartShouldSetPanResponder: (ev) => {
+        if (ev.nativeEvent.touches.length !== 1) {
+          return false
+        }
+
+        if (lastTapTimestamp === null) {
+          lastTapTimestamp = ev.timeStamp
+          numSequentialTaps = 1
+          return false
+        }
+
+        if (ev.timeStamp - lastTapTimestamp > 300) {
+          lastTapTimestamp = ev.timeStamp
+          numSequentialTaps = 1
+          return false
+        }
+
+        numSequentialTaps += 1
+        lastTapTimestamp = ev.timeStamp
+
+        if (numSequentialTaps >= 5) {
+          lastTapTimestamp = null
+          numSequentialTaps = 0
+          console.warn("admin menu open sesame!!")
+        }
+
+        return false
+      },
+    })
+  }, [])
+  return (
+    <View style={{ flex: 1 }} {...panResponder.panHandlers}>
+      {children}
+    </View>
+  )
+}
