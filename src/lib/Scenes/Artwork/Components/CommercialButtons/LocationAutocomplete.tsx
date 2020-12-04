@@ -1,7 +1,7 @@
 import { Input } from "lib/Components/Input/Input"
 import { getLocationPredictions, SimpleLocation } from "lib/utils/googleMaps"
 import { color, Flex, LocationIcon, Text, Touchable } from "palette"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
 import styled from "styled-components/native"
 
@@ -14,12 +14,6 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocatio
   const [predictions, setPredictions] = useState<SimpleLocation[]>([])
   const [selectedLocation, setSelectedLocation] = useState(initialLocation)
   const [query, setQuery] = useState(selectedLocation?.name || "")
-
-  // Autofocus
-  const input = useRef<Input>(null)
-  useEffect(() => {
-    input.current?.focus()
-  }, [input])
 
   useEffect(() => {
     setPredictions([])
@@ -56,9 +50,9 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocatio
     <Flex>
       <Text>Location</Text>
       <Input
-        ref={input}
         placeholder="Add Location"
         style={{ marginVertical: 10 }}
+        autoFocus
         onChangeText={setQuery}
         onFocus={reset}
         value={selectedLocation ? selectedLocation.name : query}

@@ -3,6 +3,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { getLocationDetails, LocationWithDetails, SimpleLocation } from "lib/utils/googleMaps"
 import { Flex } from "palette"
 import React, { useState } from "react"
+import { ScrollView } from "react-native"
 
 import { LocationAutocomplete } from "./LocationAutocomplete"
 
@@ -36,9 +37,11 @@ export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
       >
         Add Location
       </FancyModalHeader>
-      <Flex m={2} flex={1}>
-        <LocationAutocomplete onChange={setLocationInput} initialLocation={location} />
-      </Flex>
+      <ScrollView keyboardShouldPersistTaps="always">
+        <Flex m={2} flex={1}>
+          <LocationAutocomplete onChange={setLocationInput} initialLocation={location} />
+        </Flex>
+      </ScrollView>
     </FancyModal>
   )
 }
