@@ -10,6 +10,7 @@ upcoming:
     - Add artist past shows screen - mounir
     - Add loading spinner to infinite artwork grid on artist page - david
     - Avoid shrinking the background on non-fullscreen fancy modals - david
+    - Add pull to refresh to bids view - lily
 releases:
   - version: 6.7.2
     date: November 30, 2020
