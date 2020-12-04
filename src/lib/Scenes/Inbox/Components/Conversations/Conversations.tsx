@@ -86,8 +86,6 @@ export class Conversations extends Component<Props, State> {
       return null
     }
 
-    console.log("CONVOS12", conversations)
-
     const unreadCount = this.props.me.conversations?.totalUnreadCount
     const unreadCounter = unreadCount ? `(${unreadCount})` : null
     const shouldDisplayMyBids = getCurrentEmissionState().options.AROptionsBidManagement
