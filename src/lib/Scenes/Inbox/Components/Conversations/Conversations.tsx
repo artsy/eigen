@@ -22,11 +22,13 @@ interface Props {
 
 interface State {
   isLoading?: boolean
+  isRefreshing: boolean
 }
 
 export class Conversations extends Component<Props, State> {
   state = {
     isLoading: false,
+    isRefreshing: false,
   }
 
   fetchData = () => {
@@ -51,14 +53,12 @@ export class Conversations extends Component<Props, State> {
 
   refreshConversations = (callback?: () => void) => {
     const { relay } = this.props
-
     if (!relay.isLoading()) {
       relay.refetchConnection(PAGE_SIZE, (error) => {
         if (error) {
           console.error("Conversations/index.tsx #refreshConversations", error.message)
           // FIXME: Handle error
         }
-
         if (callback) {
           callback()
         }
@@ -121,7 +121,7 @@ export const ConversationsContainer = createPaginationContainer(
       fragment Conversations_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         conversations: conversationsConnection(first: $count, after: $cursor)
-        @connection(key: "Conversations_conversations") {
+          @connection(key: "Conversations_conversations") {
           pageInfo {
             endCursor
             hasNextPage
