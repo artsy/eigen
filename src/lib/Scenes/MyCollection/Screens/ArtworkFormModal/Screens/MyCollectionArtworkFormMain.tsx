@@ -39,7 +39,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
   return (
     <>
       <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => route.params.onDismiss()}>
-        {addOrEditLabel} artwork
+        {addOrEditLabel} Artwork
       </FancyModalHeader>
       <ScrollView keyboardDismissMode={"on-drag"} keyboardShouldPersistTaps={"handled"}>
         <Spacer my={1} />

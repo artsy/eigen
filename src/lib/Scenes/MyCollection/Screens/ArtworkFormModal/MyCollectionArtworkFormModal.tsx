@@ -138,7 +138,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
       const discardData = await new Promise((resolve) =>
         ActionSheetIOS.showActionSheetWithOptions(
           {
-            title: "You sure?",
+            title: "Do you want to discard your changes?",
             options: ["Discard", "Keep editing"],
             destructiveButtonIndex: 0,
             cancelButtonIndex: 1,

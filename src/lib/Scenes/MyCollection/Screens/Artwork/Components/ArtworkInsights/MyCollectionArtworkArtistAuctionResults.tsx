@@ -33,8 +33,6 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
                 This data set includes 36 months of auction results from top commercial auction houses and sales hosted
                 on Artsy.
               </Text>
-              <Spacer my={1} />
-              <Text>Last updated Aug 30, 2020.</Text>
             </>
           }
         />
