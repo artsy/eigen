@@ -12,7 +12,7 @@ import { SaleCard_sale } from "__generated__/SaleCard_sale.graphql"
 
 export const CARD_HEIGHT = 72
 
-const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string }> = (props) => (
+export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string }> = (props) => (
   <Touchable
     underlayColor={props.navLink ? "black5" : "transparent"}
     onPress={() => props.navLink && navigate(props.navLink)}
