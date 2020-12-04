@@ -50,7 +50,6 @@ describe("CollapsibleArtworkDetails", () => {
     resolveData()
     expect(wrapper.root.findAllByType(OpaqueImageView)).toHaveLength(1)
     expect(wrapper.root.findAllByType(Text)).toHaveLength(2)
-    expect(wrapper.root.findAllByType(ArtworkDetailsRow)).toHaveLength(0)
   })
 
   it("renders artist names", () => {
