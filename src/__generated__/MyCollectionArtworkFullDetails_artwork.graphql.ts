@@ -27,6 +27,7 @@ export type MyCollectionArtworkFullDetails_artwork = {
     readonly internalID: string;
     readonly medium: string | null;
     readonly metric: string | null;
+    readonly provenance: string | null;
     readonly slug: string;
     readonly title: string | null;
     readonly width: string | null;
@@ -185,6 +186,13 @@ return {
       "args": null,
       "kind": "ScalarField",
       "name": "metric",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "provenance",
       "storageKey": null
     },
     {

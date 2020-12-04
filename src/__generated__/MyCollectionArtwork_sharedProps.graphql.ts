@@ -27,6 +27,7 @@ export type MyCollectionArtwork_sharedProps = {
     readonly internalID: string;
     readonly medium: string | null;
     readonly metric: string | null;
+    readonly provenance: string | null;
     readonly slug: string;
     readonly title: string | null;
     readonly width: string | null;
@@ -190,6 +191,13 @@ return {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "provenance",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
       "storageKey": null
     },
@@ -206,5 +214,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '5188826f739264f9ae89f440fe03b80b';
+(node as any).hash = '6efaed94e59ae9a1878ce122efdb84cf';
 export default node;
