@@ -79,7 +79,7 @@ describe("SaleCard", () => {
     expect(wrapper.root.findAllByProps({ navLink: "/identity-verification-faq" }).length).toEqual(1)
   })
 
-  it("renders a link to identity-verification-faq when the sale requires identity verification and the user is not yet verified", () => {
+  it("renders a notice that registration is pending when identity verification is not required, but the user is not yet qualified for bidding", () => {
     const wrapper = getWrapper({
       Sale: () => ({
         registrationStatus: { qualifiedForBidding: false },
