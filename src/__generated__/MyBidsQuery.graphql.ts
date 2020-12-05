@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d8c77090bf70a32e15372ed90884a252 */
+/* @relayHash 32702725bb6cbe59d257465bf2e4e167 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -91,6 +91,8 @@ fragment Lot_saleArtwork on SaleArtwork {
 }
 
 fragment MyBids_me on Me {
+  ...SaleCard_me
+  identityVerified
   auctionsLotStandingConnection(first: 25) {
     edges {
       node {
@@ -106,6 +108,7 @@ fragment MyBids_me on Me {
           position
           sale {
             ...SaleCard_sale
+            requireIdentityVerification
             internalID
             liveStartAt
             endAt
@@ -120,8 +123,17 @@ fragment MyBids_me on Me {
   }
 }
 
+fragment SaleCard_me on Me {
+  identityVerified
+  pendingIdentityVerification {
+    internalID
+    id
+  }
+}
+
 fragment SaleCard_sale on Sale {
   href
+  slug
   name
   liveStartAt
   endAt
@@ -132,6 +144,11 @@ fragment SaleCard_sale on Sale {
     name
     id
   }
+  registrationStatus {
+    qualifiedForBidding
+    id
+  }
+  requireIdentityVerification
 }
 */
 
@@ -143,7 +160,14 @@ var v0 = {
   "name": "internalID",
   "storageKey": null
 },
-v1 = [
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v2 = [
   {
     "alias": null,
     "args": null,
@@ -152,13 +176,6 @@ v1 = [
     "storageKey": null
   }
 ],
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
 v3 = {
   "alias": null,
   "args": null,
@@ -214,6 +231,26 @@ return {
         "name": "me",
         "plural": false,
         "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "identityVerified",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "IdentityVerification",
+            "kind": "LinkedField",
+            "name": "pendingIdentityVerification",
+            "plural": false,
+            "selections": [
+              (v0/*: any*/),
+              (v1/*: any*/)
+            ],
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": [
@@ -288,7 +325,7 @@ return {
                             "kind": "LinkedField",
                             "name": "onlineAskingPrice",
                             "plural": false,
-                            "selections": (v1/*: any*/),
+                            "selections": (v2/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -298,10 +335,10 @@ return {
                             "kind": "LinkedField",
                             "name": "floorSellingPrice",
                             "plural": false,
-                            "selections": (v1/*: any*/),
+                            "selections": (v2/*: any*/),
                             "storageKey": null
                           },
-                          (v2/*: any*/),
+                          (v1/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -367,7 +404,7 @@ return {
                                 ],
                                 "storageKey": null
                               },
-                              (v2/*: any*/)
+                              (v1/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -386,7 +423,7 @@ return {
                                 "name": "liveStartAt",
                                 "storageKey": null
                               },
-                              (v2/*: any*/),
+                              (v1/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -402,6 +439,13 @@ return {
                                 "storageKey": null
                               },
                               (v3/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "slug",
+                                "storageKey": null
+                              },
                               (v4/*: any*/),
                               {
                                 "alias": null,
@@ -430,15 +474,41 @@ return {
                                 "plural": false,
                                 "selections": [
                                   (v4/*: any*/),
-                                  (v2/*: any*/)
+                                  (v1/*: any*/)
                                 ],
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "Bidder",
+                                "kind": "LinkedField",
+                                "name": "registrationStatus",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "qualifiedForBidding",
+                                    "storageKey": null
+                                  },
+                                  (v1/*: any*/)
+                                ],
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "requireIdentityVerification",
                                 "storageKey": null
                               },
                               (v0/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v2/*: any*/),
+                          (v1/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -449,7 +519,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v2/*: any*/)
+                      (v1/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -459,14 +529,14 @@ return {
             ],
             "storageKey": "auctionsLotStandingConnection(first:25)"
           },
-          (v2/*: any*/)
+          (v1/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "d8c77090bf70a32e15372ed90884a252",
+    "id": "32702725bb6cbe59d257465bf2e4e167",
     "metadata": {},
     "name": "MyBidsQuery",
     "operationKind": "query",

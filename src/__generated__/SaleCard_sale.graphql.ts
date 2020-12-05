@@ -6,6 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SaleCard_sale = {
     readonly href: string | null;
+    readonly slug: string;
     readonly name: string | null;
     readonly liveStartAt: string | null;
     readonly endAt: string | null;
@@ -15,6 +16,10 @@ export type SaleCard_sale = {
     readonly partner: {
         readonly name: string | null;
     } | null;
+    readonly registrationStatus: {
+        readonly qualifiedForBidding: boolean | null;
+    } | null;
+    readonly requireIdentityVerification: boolean | null;
     readonly " $refType": "SaleCard_sale";
 };
 export type SaleCard_sale$data = SaleCard_sale;
@@ -44,6 +49,13 @@ return {
       "args": null,
       "kind": "ScalarField",
       "name": "href",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
       "storageKey": null
     },
     (v0/*: any*/),
@@ -90,11 +102,36 @@ return {
         (v0/*: any*/)
       ],
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Bidder",
+      "kind": "LinkedField",
+      "name": "registrationStatus",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "qualifiedForBidding",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "requireIdentityVerification",
+      "storageKey": null
     }
   ],
   "type": "Sale",
   "abstractKey": null
 };
 })();
-(node as any).hash = 'dc1ca99c284fdaddfec5360c0990763d';
+(node as any).hash = '4b1ba1befc97b6489b2ab29776d15825';
 export default node;

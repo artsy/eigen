@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ed78fded09727f48d9be6bfd2bc954ae */
+/* @relayHash 18e3e17cdfdd294f1b5e09fd0b19e5ee */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -157,6 +157,8 @@ fragment Lot_saleArtwork on SaleArtwork {
 }
 
 fragment MyBids_me on Me {
+  ...SaleCard_me
+  identityVerified
   auctionsLotStandingConnection(first: 25) {
     edges {
       node {
@@ -172,6 +174,7 @@ fragment MyBids_me on Me {
           position
           sale {
             ...SaleCard_sale
+            requireIdentityVerification
             internalID
             liveStartAt
             endAt
@@ -186,8 +189,17 @@ fragment MyBids_me on Me {
   }
 }
 
+fragment SaleCard_me on Me {
+  identityVerified
+  pendingIdentityVerification {
+    internalID
+    id
+  }
+}
+
 fragment SaleCard_sale on Sale {
   href
+  slug
   name
   liveStartAt
   endAt
@@ -198,6 +210,11 @@ fragment SaleCard_sale on Sale {
     name
     id
   }
+  registrationStatus {
+    qualifiedForBidding
+    id
+  }
+  requireIdentityVerification
 }
 */
 
@@ -553,6 +570,26 @@ return {
           },
           {
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "identityVerified",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "IdentityVerification",
+            "kind": "LinkedField",
+            "name": "pendingIdentityVerification",
+            "plural": false,
+            "selections": [
+              (v1/*: any*/),
+              (v3/*: any*/)
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
             "args": [
               {
                 "kind": "Literal",
@@ -733,6 +770,13 @@ return {
                                 "storageKey": null
                               },
                               (v10/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "slug",
+                                "storageKey": null
+                              },
                               (v2/*: any*/),
                               (v8/*: any*/),
                               {
@@ -743,6 +787,32 @@ return {
                                 "name": "partner",
                                 "plural": false,
                                 "selections": (v4/*: any*/),
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "Bidder",
+                                "kind": "LinkedField",
+                                "name": "registrationStatus",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "qualifiedForBidding",
+                                    "storageKey": null
+                                  },
+                                  (v3/*: any*/)
+                                ],
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "requireIdentityVerification",
                                 "storageKey": null
                               },
                               (v1/*: any*/)
@@ -777,7 +847,7 @@ return {
     ]
   },
   "params": {
-    "id": "ed78fded09727f48d9be6bfd2bc954ae",
+    "id": "18e3e17cdfdd294f1b5e09fd0b19e5ee",
     "metadata": {},
     "name": "InboxQuery",
     "operationKind": "query",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5619ff1c89f3b5fef68bdec1644ec438 */
+/* @relayHash 3b80e17f3babf7489347cadb076d45f3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -157,6 +157,8 @@ fragment Lot_saleArtwork on SaleArtwork {
 }
 
 fragment MyBids_me on Me {
+  ...SaleCard_me
+  identityVerified
   auctionsLotStandingConnection(first: 25) {
     edges {
       node {
@@ -172,6 +174,7 @@ fragment MyBids_me on Me {
           position
           sale {
             ...SaleCard_sale
+            requireIdentityVerification
             internalID
             liveStartAt
             endAt
@@ -186,8 +189,17 @@ fragment MyBids_me on Me {
   }
 }
 
+fragment SaleCard_me on Me {
+  identityVerified
+  pendingIdentityVerification {
+    internalID
+    id
+  }
+}
+
 fragment SaleCard_sale on Sale {
   href
+  slug
   name
   liveStartAt
   endAt
@@ -198,6 +210,11 @@ fragment SaleCard_sale on Sale {
     name
     id
   }
+  registrationStatus {
+    qualifiedForBidding
+    id
+  }
+  requireIdentityVerification
 }
 */
 
@@ -320,11 +337,17 @@ v15 = {
 },
 v16 = {
   "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Boolean"
+},
+v17 = {
+  "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "String"
 },
-v17 = {
+v18 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -595,6 +618,26 @@ return {
           },
           {
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "identityVerified",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "IdentityVerification",
+            "kind": "LinkedField",
+            "name": "pendingIdentityVerification",
+            "plural": false,
+            "selections": [
+              (v1/*: any*/),
+              (v3/*: any*/)
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
             "args": [
               {
                 "kind": "Literal",
@@ -775,6 +818,13 @@ return {
                                 "storageKey": null
                               },
                               (v10/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "slug",
+                                "storageKey": null
+                              },
                               (v2/*: any*/),
                               (v8/*: any*/),
                               {
@@ -785,6 +835,32 @@ return {
                                 "name": "partner",
                                 "plural": false,
                                 "selections": (v4/*: any*/),
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "Bidder",
+                                "kind": "LinkedField",
+                                "name": "registrationStatus",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "qualifiedForBidding",
+                                    "storageKey": null
+                                  },
+                                  (v3/*: any*/)
+                                ],
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "requireIdentityVerification",
                                 "storageKey": null
                               },
                               (v1/*: any*/)
@@ -819,7 +895,7 @@ return {
     ]
   },
   "params": {
-    "id": "5619ff1c89f3b5fef68bdec1644ec438",
+    "id": "3b80e17f3babf7489347cadb076d45f3",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -934,6 +1010,16 @@ return {
         },
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.partner.id": (v11/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.partner.name": (v14/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.registrationStatus": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Bidder"
+        },
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.registrationStatus.id": (v11/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.registrationStatus.qualifiedForBidding": (v16/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.requireIdentityVerification": (v16/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.slug": (v11/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.status": (v14/*: any*/),
         "me.conversations": {
           "enumValues": null,
@@ -947,14 +1033,14 @@ return {
           "plural": true,
           "type": "ConversationEdge"
         },
-        "me.conversations.edges.cursor": (v16/*: any*/),
+        "me.conversations.edges.cursor": (v17/*: any*/),
         "me.conversations.edges.node": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Conversation"
         },
-        "me.conversations.edges.node.__typename": (v16/*: any*/),
+        "me.conversations.edges.node.__typename": (v17/*: any*/),
         "me.conversations.edges.node.id": (v11/*: any*/),
         "me.conversations.edges.node.internalID": {
           "enumValues": null,
@@ -974,8 +1060,8 @@ return {
           "plural": false,
           "type": "ConversationItemType"
         },
-        "me.conversations.edges.node.items.item.__isNode": (v16/*: any*/),
-        "me.conversations.edges.node.items.item.__typename": (v16/*: any*/),
+        "me.conversations.edges.node.items.item.__isNode": (v17/*: any*/),
+        "me.conversations.edges.node.items.item.__typename": (v17/*: any*/),
         "me.conversations.edges.node.items.item.artistNames": (v14/*: any*/),
         "me.conversations.edges.node.items.item.coverImage": (v15/*: any*/),
         "me.conversations.edges.node.items.item.coverImage.url": (v14/*: any*/),
@@ -1002,7 +1088,7 @@ return {
           "plural": false,
           "type": "MessageConnection"
         },
-        "me.conversations.edges.node.messagesConnection.totalCount": (v17/*: any*/),
+        "me.conversations.edges.node.messagesConnection.totalCount": (v18/*: any*/),
         "me.conversations.edges.node.to": {
           "enumValues": null,
           "nullable": false,
@@ -1010,13 +1096,8 @@ return {
           "type": "ConversationResponder"
         },
         "me.conversations.edges.node.to.id": (v11/*: any*/),
-        "me.conversations.edges.node.to.name": (v16/*: any*/),
-        "me.conversations.edges.node.unread": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Boolean"
-        },
+        "me.conversations.edges.node.to.name": (v17/*: any*/),
+        "me.conversations.edges.node.unread": (v16/*: any*/),
         "me.conversations.pageInfo": {
           "enumValues": null,
           "nullable": false,
@@ -1025,8 +1106,17 @@ return {
         },
         "me.conversations.pageInfo.endCursor": (v14/*: any*/),
         "me.conversations.pageInfo.hasNextPage": (v12/*: any*/),
-        "me.conversations.totalUnreadCount": (v17/*: any*/),
-        "me.id": (v11/*: any*/)
+        "me.conversations.totalUnreadCount": (v18/*: any*/),
+        "me.id": (v11/*: any*/),
+        "me.identityVerified": (v16/*: any*/),
+        "me.pendingIdentityVerification": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "IdentityVerification"
+        },
+        "me.pendingIdentityVerification.id": (v11/*: any*/),
+        "me.pendingIdentityVerification.internalID": (v11/*: any*/)
       }
     },
     "name": "InboxTestsQuery",

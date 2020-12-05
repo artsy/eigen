@@ -6,6 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type AuctionsSoldStatus = "ForSale" | "Passed" | "Sold" | "%future added value";
 export type MyBids_me = {
+    readonly identityVerified: boolean | null;
     readonly auctionsLotStandingConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -17,6 +18,7 @@ export type MyBids_me = {
                 readonly saleArtwork: {
                     readonly position: number | null;
                     readonly sale: {
+                        readonly requireIdentityVerification: boolean | null;
                         readonly internalID: string;
                         readonly liveStartAt: string | null;
                         readonly endAt: string | null;
@@ -28,6 +30,7 @@ export type MyBids_me = {
             };
         } | null> | null;
     };
+    readonly " $fragmentRefs": FragmentRefs<"SaleCard_me">;
     readonly " $refType": "MyBids_me";
 };
 export type MyBids_me$data = MyBids_me;
@@ -52,6 +55,13 @@ return {
   "metadata": null,
   "name": "MyBids_me",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "identityVerified",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": [
@@ -131,6 +141,13 @@ return {
                       "name": "sale",
                       "plural": false,
                       "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "requireIdentityVerification",
+                          "storageKey": null
+                        },
                         (v0/*: any*/),
                         {
                           "alias": null,
@@ -182,11 +199,16 @@ return {
         }
       ],
       "storageKey": "auctionsLotStandingConnection(first:25)"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "SaleCard_me"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
 })();
-(node as any).hash = '6048cb7c56148cf77b09ca0e2e5def21';
+(node as any).hash = '06c46f0d06cd82d3d30c22e83d99572c';
 export default node;
