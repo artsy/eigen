@@ -1,3 +1,7 @@
-This update fixes a bug that affected deep link handling when the app is closed.
+This update includes a number of bug fixes and improvements, including:
+
+• Adds a new artwork inquiry flow.
+• Improves the conversations tab.
+• Fixes a bug with accessing the City Guide feature.
 
 Have feedback? Email us at support@artsy.net
