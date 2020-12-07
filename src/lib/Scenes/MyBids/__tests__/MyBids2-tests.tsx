@@ -94,7 +94,7 @@ describe("My Bids", () => {
     expect(closedLots[0]).toContain("Closed Aug 13")
   })
 
-  it.only("renders a completed lot in an ongoing live sale in the 'active' column", () => {
+  it("renders a completed lot in an ongoing live sale in the 'active' column", () => {
     const wrapper = getWrapper({
       Me: () => ({
         auctionsLotStandingConnection: {
