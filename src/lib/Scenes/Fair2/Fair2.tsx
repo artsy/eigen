@@ -191,6 +191,7 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
                   viewabilityConfig={viewConfigRef.current}
                   onViewableItemsChanged={viewableItemsChangedRef.current}
                   ItemSeparatorComponent={() => <Spacer mb={3} />}
+                  ListFooterComponent={<Spacer mb={3} />}
                   keyExtractor={(_item, index) => String(index)}
                   stickyHeaderIndices={[tabIndex]}
                   onScroll={hideBackButtonOnScroll}

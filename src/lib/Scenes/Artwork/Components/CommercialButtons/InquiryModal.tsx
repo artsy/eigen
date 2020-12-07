@@ -60,75 +60,75 @@ const InquiryQuestionOption: React.FC<{
 
   React.useLayoutEffect(maybeRegisterAnimation, [questionSelected])
 
+  const setSelection = () => {
+    dispatch({
+      type: "selectInquiryQuestion",
+      payload: {
+        questionID: id,
+        details: isShipping ? state.shippingLocation?.name : null,
+        isChecked: !questionSelected,
+      },
+    })
+  }
+
   return (
     <React.Fragment>
-      <Flex
-        style={{
-          borderColor: questionSelected ? color("black100") : color("black10"),
-          borderWidth: 1,
-          borderRadius: 5,
-          flexDirection: "column",
-          marginTop: space(1),
-          padding: space(2),
-        }}
-      >
-        <Flex flexDirection="row" justifyContent="space-between">
-          <Flex flexDirection="row">
-            <Checkbox
-              data-test-id={`checkbox-${id}`}
-              checked={questionSelected}
-              onPress={() => {
-                dispatch({
-                  type: "selectInquiryQuestion",
-                  payload: {
-                    questionID: id,
-                    details: isShipping ? state.shippingLocation?.name : null,
-                    isChecked: !questionSelected,
-                  },
-                })
-              }}
-            />
-            <Text variant="text">{question}</Text>
+      <TouchableOpacity onPress={setSelection}>
+        <Flex
+          style={{
+            borderColor: questionSelected ? color("black100") : color("black10"),
+            borderWidth: 1,
+            borderRadius: 5,
+            flexDirection: "column",
+            marginTop: space(1),
+            padding: space(2),
+          }}
+        >
+          <Flex flexDirection="row" justifyContent="space-between">
+            <Flex flexDirection="row">
+              <Checkbox data-test-id={`checkbox-${id}`} checked={questionSelected} onPress={setSelection} />
+              <Text variant="text">{question}</Text>
+            </Flex>
           </Flex>
+
+          {!!isShipping && !!questionSelected && (
+            <>
+              <Separator my={2} />
+
+              <TouchableOpacity
+                data-test-id="toggle-shipping-modal"
+                onPress={() => {
+                  if (typeof setShippingModalVisibility === "function") {
+                    setShippingModalVisibility(true)
+                  }
+                }}
+              >
+                <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+                  {!state.shippingLocation ? (
+                    <>
+                      <Text variant="text" color="black60">
+                        Add your location
+                      </Text>
+                      <Box>
+                        <ChevronIcon color="black60" />
+                      </Box>
+                    </>
+                  ) : (
+                    <>
+                      <Text variant="text" color="black100" style={{ width: "70%" }}>
+                        {state.shippingLocation.name}
+                      </Text>
+                      <Text variant="text" color="purple100">
+                        Edit
+                      </Text>
+                    </>
+                  )}
+                </Flex>
+              </TouchableOpacity>
+            </>
+          )}
         </Flex>
-
-        {!!isShipping && !!questionSelected && (
-          <>
-            <Separator my={2} />
-
-            <TouchableOpacity
-              data-test-id="toggle-shipping-modal"
-              onPress={() => {
-                if (typeof setShippingModalVisibility === "function") {
-                  setShippingModalVisibility(true)
-                }
-              }}
-            >
-              <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                {!state.shippingLocation ? (
-                  <>
-                    <Text variant="text" color="black60">
-                      Add your location
-                    </Text>
-                    <Box>
-                      <ChevronIcon color="black60" />
-                    </Box>
-                  </>
-                ) : (
-                  <>
-                    <Text variant="text" color="black100" style={{ width: "70%" }}>
-                      {state.shippingLocation.name}
-                    </Text>
-                    <Text variant="text" color="purple100">
-                      Edit
-                    </Text>
-                  </>
-                )}
-              </Flex>
-            </TouchableOpacity>
-          </>
-        )}
-      </Flex>
+      </TouchableOpacity>
     </React.Fragment>
   )
 }
