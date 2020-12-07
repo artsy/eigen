@@ -18,6 +18,7 @@ upcoming:
     - removed x from inquiry sent notification - lily
     - Minor copy changes for My Collection - pepopowitz
     - Fix city guide hang on iOS 14 - brian
+    - Fix regression that hids textarea in 1st inquiry modal - christina
 releases:
   - version: 6.7.2
     date: November 30, 2020
