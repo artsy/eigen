@@ -6,11 +6,9 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import { PlaceholderText } from "lib/utils/placeholders"
 
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { merge } from "lodash"
 import { MyBidsQueryRenderer } from ".."
-import { lotStandings as lsFixtures, me as meFixture } from "../__fixtures__/MyBidsQuery"
+import { me as meFixture } from "../__fixtures__/MyBidsQuery"
 import { ActiveLotFragmentContainer as ActiveLot, ClosedLotFragmentContainer as ClosedLot } from "../Components"
 
 jest.mock("lib/relay/createEnvironment", () => ({
