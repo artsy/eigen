@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 19a3fc39e5216229a4522c737ee64e82 */
+/* @relayHash a91e8ca6c511e09765b1d33f62fd1074 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -93,6 +93,7 @@ fragment ArtistConsignButton_artist on Artist {
 }
 
 fragment ArtistInsights_artist on Artist {
+  name
   auctionResultsConnection(first: 10, sort: DATE_DESC) {
     edges {
       node {
@@ -941,7 +942,7 @@ return {
     ]
   },
   "params": {
-    "id": "19a3fc39e5216229a4522c737ee64e82",
+    "id": "a91e8ca6c511e09765b1d33f62fd1074",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",
