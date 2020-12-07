@@ -5,6 +5,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { ActiveLot } from "../Components/ActiveLot"
 import { ClosedLot } from "../Components/ClosedLot"
 import { MyBidsContainer } from "../MyBids"
 
@@ -13,6 +14,13 @@ jest.unmock("react-relay")
 const closedSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
   const closedSection = root.findByProps({ "data-test-id": "closed-section" })
   return closedSection.findAllByType(ClosedLot)
+}
+
+const activeSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
+  const activeSection = root.findByProps({ "data-test-id": "active-section" })
+  const activeLots = activeSection.findAllByType(ActiveLot)
+  const closedLots = activeSection.findAllByType(ClosedLot)
+  return [...activeLots, ...closedLots]
 }
 
 describe("My Bids", () => {
@@ -84,6 +92,37 @@ describe("My Bids", () => {
     expect(closedLots[0]).toContain("artistNames")
     expect(closedLots[0]).toContain("Passed")
     expect(closedLots[0]).toContain("Closed Aug 13")
+  })
+
+  it.only("renders a completed lot in an ongoing live sale in the 'active' column", () => {
+    const wrapper = getWrapper({
+      Me: () => ({
+        auctionsLotStandingConnection: {
+          edges: [
+            {
+              node: {
+                isHighestBidder: true,
+                lotState: {
+                  soldStatus: "Passed",
+                  reserveStatus: "ReserveNotMet",
+                },
+                saleArtwork: {
+                  saleId: "sale-id",
+                  sale: {
+                    internalID: "sale-id",
+                    status: "open",
+                    liveStartAt: "2020-08-13T16:00:00+00:00",
+                  },
+                },
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    const activeLots = activeSectionLots(wrapper.root).map(extractText)
+    expect(activeLots[0]).toContain("Passed")
   })
 
   it("renders the no upcoming bids view when there are no active bids", () => {
