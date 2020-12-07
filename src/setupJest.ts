@@ -69,9 +69,7 @@ jest.mock("@react-native-mapbox-gl/maps", () => ({
     Light: null,
   },
   setAccessToken: () => jest.fn(),
-  StyleSheet: {
-    create: () => jest.fn(),
-  },
+  StyleSheet: {},
   ShapeSource: () => null,
   SymbolLayer: () => null,
 }))

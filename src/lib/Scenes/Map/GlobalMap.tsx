@@ -1,4 +1,3 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Mapbox from "@react-native-mapbox-gl/maps"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import colors from "lib/data/colors"
@@ -30,7 +29,7 @@ import { Fair, FilterData, MapGeoFeature, OSCoordsUpdate, RelayErrorState, Show 
 
 Mapbox.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
-const Map: React.ComponentType<any /* STRICTNESS_MIGRATION */> = styled(Mapbox.MapView)`
+const Map: React.ComponentType<any> = styled(Mapbox.MapView)`
   height: ${Dimensions.get("window").height};
   width: 100%;
 `
@@ -162,9 +161,9 @@ export class GlobalMap extends React.Component<Props, State> {
   shows: { [id: string]: Show } = {}
   fairs: { [id: string]: Fair } = {}
 
-  stylesheet = Mapbox.StyleSheet.create({
+  stylesheet = {
     singleShow: {
-      iconImage: Mapbox.StyleSheet.identity("icon"),
+      iconImage: ["get", "icon"],
       iconSize: 0.8,
     },
 
@@ -172,15 +171,14 @@ export class GlobalMap extends React.Component<Props, State> {
       circlePitchAlignment: "map",
       circleColor: "black",
 
-      circleRadius: Mapbox.StyleSheet.source(
-        [
-          [0, 15],
-          [5, 20],
-          [30, 30],
-        ],
-        "point_count",
-        Mapbox.InterpolationMode.Exponential
-      ),
+      // prettier-ignore
+      circleRadius: [
+        "step",
+        ["get", "point_count"],
+            15,
+         5, 20,
+        30, 30,
+      ],
     },
 
     clusterCount: {
@@ -190,7 +188,7 @@ export class GlobalMap extends React.Component<Props, State> {
       textFont: ["Unica77 LL Medium"],
       textPitchAlignment: "map",
     },
-  })
+  }
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {

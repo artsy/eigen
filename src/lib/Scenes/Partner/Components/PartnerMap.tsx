@@ -1,4 +1,3 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Mapbox from "@react-native-mapbox-gl/maps"
 import { PartnerMap_location } from "__generated__/PartnerMap_location.graphql"
 import { cityAndPostalCode, tappedOnMap } from "lib/Components/LocationMap"
@@ -17,7 +16,7 @@ const PartnerMap: React.FC<{
   location: PartnerMap_location
 }> = ({ location }) => {
   const { address, address2, city, postalCode, internalID } = location
-  const { lat, lng } = location.coordinates || { lat: null, lng: null }
+  const { lat, lng } = location.coordinates ?? { lat: null, lng: null }
 
   return (
     <Box px={2} mt={2}>
@@ -81,7 +80,7 @@ export const PartnerMapContainer = createFragmentContainer(PartnerMap, {
   `,
 })
 
-const Map: React.ComponentType<any /* STRICTNESS_MIGRATION */> = styled(Mapbox.MapView)`
+const Map: React.ComponentType<any> = styled(Mapbox.MapView)`
   height: 120;
 `
 
