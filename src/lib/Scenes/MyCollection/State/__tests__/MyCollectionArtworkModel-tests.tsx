@@ -15,7 +15,6 @@ describe("MyCollectionArtworkModel", () => {
       filename: "somefile",
       creationDate: "somedate",
       modificationDate: "somedate",
-      duration: 10,
     }
     return photo
   }
@@ -40,6 +39,7 @@ describe("MyCollectionArtworkModel", () => {
               medium: "some-medium",
               metric: "in",
               photos: [fakePhoto("somepath")],
+              provenance: "some-provenance",
               title: "some-title",
               width: "some-width",
             },
@@ -66,6 +66,7 @@ describe("MyCollectionArtworkModel", () => {
       medium: "",
       metric: "",
       photos: [],
+      provenance: "",
       title: "",
       width: "",
     }

@@ -6,6 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type AuctionsSoldStatus = "ForSale" | "Passed" | "Sold" | "%future added value";
 export type MyBids_me = {
+    readonly identityVerified: boolean | null;
     readonly auctionsLotStandingConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -28,6 +29,7 @@ export type MyBids_me = {
             };
         } | null> | null;
     };
+    readonly " $fragmentRefs": FragmentRefs<"SaleCard_me">;
     readonly " $refType": "MyBids_me";
 };
 export type MyBids_me$data = MyBids_me;
@@ -74,6 +76,13 @@ return {
   },
   "name": "MyBids_me",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "identityVerified",
+      "storageKey": null
+    },
     {
       "alias": "auctionsLotStandingConnection",
       "args": null,
@@ -237,11 +246,16 @@ return {
         }
       ],
       "storageKey": null
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "SaleCard_me"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
 })();
-(node as any).hash = '967ac4effcb8ff0cb4cd655803f4cf2a';
+(node as any).hash = 'f235f997ce8bd5cc78ab81d12aa81224';
 export default node;

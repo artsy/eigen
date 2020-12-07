@@ -22,11 +22,13 @@ interface Props {
 
 interface State {
   isLoading?: boolean
+  isRefreshing: boolean
 }
 
 export class Conversations extends Component<Props, State> {
   state = {
     isLoading: false,
+    isRefreshing: false,
   }
 
   fetchData = () => {

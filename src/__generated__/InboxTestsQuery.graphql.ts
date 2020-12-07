@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 999ca730d245beb5441ba11d3b5f4006 */
+/* @relayHash aeeb78eb609b596bd6ec4abb3952ee86 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -157,6 +157,8 @@ fragment Lot_saleArtwork on SaleArtwork {
 }
 
 fragment MyBids_me on Me {
+  ...SaleCard_me
+  identityVerified
   auctionsLotStandingConnection(first: 25, after: "") {
     edges {
       node {
@@ -192,8 +194,17 @@ fragment MyBids_me on Me {
   }
 }
 
+fragment SaleCard_me on Me {
+  identityVerified
+  pendingIdentityVerification {
+    internalID
+    id
+  }
+}
+
 fragment SaleCard_sale on Sale {
   href
+  slug
   name
   liveStartAt
   endAt
@@ -204,6 +215,11 @@ fragment SaleCard_sale on Sale {
     name
     id
   }
+  registrationStatus {
+    qualifiedForBidding
+    id
+  }
+  requireIdentityVerification
 }
 */
 
@@ -363,6 +379,12 @@ v20 = {
   "type": "Image"
 },
 v21 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Boolean"
+},
+v22 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -612,6 +634,26 @@ return {
           },
           {
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "identityVerified",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "IdentityVerification",
+            "kind": "LinkedField",
+            "name": "pendingIdentityVerification",
+            "plural": false,
+            "selections": [
+              (v3/*: any*/),
+              (v5/*: any*/)
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
             "args": (v12/*: any*/),
             "concreteType": "AuctionsLotStandingConnection",
             "kind": "LinkedField",
@@ -786,6 +828,13 @@ return {
                                 "storageKey": null
                               },
                               (v14/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "slug",
+                                "storageKey": null
+                              },
                               (v4/*: any*/),
                               (v10/*: any*/),
                               {
@@ -796,6 +845,32 @@ return {
                                 "name": "partner",
                                 "plural": false,
                                 "selections": (v6/*: any*/),
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "Bidder",
+                                "kind": "LinkedField",
+                                "name": "registrationStatus",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "qualifiedForBidding",
+                                    "storageKey": null
+                                  },
+                                  (v5/*: any*/)
+                                ],
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "requireIdentityVerification",
                                 "storageKey": null
                               },
                               (v3/*: any*/)
@@ -851,7 +926,7 @@ return {
     ]
   },
   "params": {
-    "id": "999ca730d245beb5441ba11d3b5f4006",
+    "id": "aeeb78eb609b596bd6ec4abb3952ee86",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -968,6 +1043,16 @@ return {
         },
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.partner.id": (v16/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.partner.name": (v19/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.registrationStatus": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Bidder"
+        },
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.registrationStatus.id": (v16/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.registrationStatus.qualifiedForBidding": (v21/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.requireIdentityVerification": (v21/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.slug": (v16/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.status": (v19/*: any*/),
         "me.auctionsLotStandingConnection.pageInfo": {
           "enumValues": null,
@@ -1044,7 +1129,7 @@ return {
           "plural": false,
           "type": "MessageConnection"
         },
-        "me.conversations.edges.node.messagesConnection.totalCount": (v21/*: any*/),
+        "me.conversations.edges.node.messagesConnection.totalCount": (v22/*: any*/),
         "me.conversations.edges.node.to": {
           "enumValues": null,
           "nullable": false,
@@ -1053,12 +1138,7 @@ return {
         },
         "me.conversations.edges.node.to.id": (v16/*: any*/),
         "me.conversations.edges.node.to.name": (v15/*: any*/),
-        "me.conversations.edges.node.unread": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Boolean"
-        },
+        "me.conversations.edges.node.unread": (v21/*: any*/),
         "me.conversations.pageInfo": {
           "enumValues": null,
           "nullable": false,
@@ -1067,8 +1147,17 @@ return {
         },
         "me.conversations.pageInfo.endCursor": (v19/*: any*/),
         "me.conversations.pageInfo.hasNextPage": (v17/*: any*/),
-        "me.conversations.totalUnreadCount": (v21/*: any*/),
-        "me.id": (v16/*: any*/)
+        "me.conversations.totalUnreadCount": (v22/*: any*/),
+        "me.id": (v16/*: any*/),
+        "me.identityVerified": (v21/*: any*/),
+        "me.pendingIdentityVerification": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "IdentityVerification"
+        },
+        "me.pendingIdentityVerification.id": (v16/*: any*/),
+        "me.pendingIdentityVerification.internalID": (v16/*: any*/)
       }
     },
     "name": "InboxTestsQuery",

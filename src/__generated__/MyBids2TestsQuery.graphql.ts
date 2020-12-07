@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 91013127bcd024cf3b28e440c7392c06 */
+/* @relayHash 85b2c6d4461d92e9e057a77b36a87fe1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -91,6 +91,8 @@ fragment Lot_saleArtwork on SaleArtwork {
 }
 
 fragment MyBids_me on Me {
+  ...SaleCard_me
+  identityVerified
   auctionsLotStandingConnection(first: 25, after: "") {
     edges {
       node {
@@ -126,8 +128,17 @@ fragment MyBids_me on Me {
   }
 }
 
+fragment SaleCard_me on Me {
+  identityVerified
+  pendingIdentityVerification {
+    internalID
+    id
+  }
+}
+
 fragment SaleCard_sale on Sale {
   href
+  slug
   name
   liveStartAt
   endAt
@@ -138,11 +149,30 @@ fragment SaleCard_sale on Sale {
     name
     id
   }
+  registrationStatus {
+    qualifiedForBidding
+    id
+  }
+  requireIdentityVerification
 }
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = [
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v2 = [
   {
     "kind": "Literal",
     "name": "after",
@@ -154,14 +184,7 @@ var v0 = [
     "value": 25
   }
 ],
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-},
-v2 = [
+v3 = [
   {
     "alias": null,
     "args": null,
@@ -170,13 +193,6 @@ v2 = [
     "storageKey": null
   }
 ],
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
 v4 = {
   "alias": null,
   "args": null,
@@ -226,6 +242,12 @@ v11 = {
   "nullable": true,
   "plural": false,
   "type": "Image"
+},
+v12 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Boolean"
 };
 return {
   "fragment": {
@@ -270,7 +292,27 @@ return {
         "selections": [
           {
             "alias": null,
-            "args": (v0/*: any*/),
+            "args": null,
+            "kind": "ScalarField",
+            "name": "identityVerified",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "IdentityVerification",
+            "kind": "LinkedField",
+            "name": "pendingIdentityVerification",
+            "plural": false,
+            "selections": [
+              (v0/*: any*/),
+              (v1/*: any*/)
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": (v2/*: any*/),
             "concreteType": "AuctionsLotStandingConnection",
             "kind": "LinkedField",
             "name": "auctionsLotStandingConnection",
@@ -307,7 +349,7 @@ return {
                         "name": "lotState",
                         "plural": false,
                         "selections": [
-                          (v1/*: any*/),
+                          (v0/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -336,7 +378,7 @@ return {
                             "kind": "LinkedField",
                             "name": "onlineAskingPrice",
                             "plural": false,
-                            "selections": (v2/*: any*/),
+                            "selections": (v3/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -346,10 +388,10 @@ return {
                             "kind": "LinkedField",
                             "name": "floorSellingPrice",
                             "plural": false,
-                            "selections": (v2/*: any*/),
+                            "selections": (v3/*: any*/),
                             "storageKey": null
                           },
-                          (v3/*: any*/),
+                          (v1/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -415,7 +457,7 @@ return {
                                 ],
                                 "storageKey": null
                               },
-                              (v3/*: any*/)
+                              (v1/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -434,7 +476,7 @@ return {
                                 "name": "liveStartAt",
                                 "storageKey": null
                               },
-                              (v3/*: any*/),
+                              (v1/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -450,6 +492,13 @@ return {
                                 "storageKey": null
                               },
                               (v4/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "slug",
+                                "storageKey": null
+                              },
                               (v5/*: any*/),
                               {
                                 "alias": null,
@@ -478,15 +527,41 @@ return {
                                 "plural": false,
                                 "selections": [
                                   (v5/*: any*/),
-                                  (v3/*: any*/)
+                                  (v1/*: any*/)
                                 ],
                                 "storageKey": null
                               },
-                              (v1/*: any*/)
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "Bidder",
+                                "kind": "LinkedField",
+                                "name": "registrationStatus",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "qualifiedForBidding",
+                                    "storageKey": null
+                                  },
+                                  (v1/*: any*/)
+                                ],
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "requireIdentityVerification",
+                                "storageKey": null
+                              },
+                              (v0/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v3/*: any*/),
+                          (v1/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -497,7 +572,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v3/*: any*/),
+                      (v1/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -548,21 +623,21 @@ return {
           },
           {
             "alias": null,
-            "args": (v0/*: any*/),
+            "args": (v2/*: any*/),
             "filters": null,
             "handle": "connection",
             "key": "MyBids_auctionsLotStandingConnection",
             "kind": "LinkedHandle",
             "name": "auctionsLotStandingConnection"
           },
-          (v3/*: any*/)
+          (v1/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "91013127bcd024cf3b28e440c7392c06",
+    "id": "85b2c6d4461d92e9e057a77b36a87fe1",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -679,6 +754,16 @@ return {
         },
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.partner.id": (v7/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.partner.name": (v10/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.registrationStatus": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Bidder"
+        },
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.registrationStatus.id": (v7/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.registrationStatus.qualifiedForBidding": (v12/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.requireIdentityVerification": (v12/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.slug": (v7/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.status": (v10/*: any*/),
         "me.auctionsLotStandingConnection.pageInfo": {
           "enumValues": null,
@@ -688,7 +773,16 @@ return {
         },
         "me.auctionsLotStandingConnection.pageInfo.endCursor": (v10/*: any*/),
         "me.auctionsLotStandingConnection.pageInfo.hasNextPage": (v8/*: any*/),
-        "me.id": (v7/*: any*/)
+        "me.id": (v7/*: any*/),
+        "me.identityVerified": (v12/*: any*/),
+        "me.pendingIdentityVerification": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "IdentityVerification"
+        },
+        "me.pendingIdentityVerification.id": (v7/*: any*/),
+        "me.pendingIdentityVerification.internalID": (v7/*: any*/)
       }
     },
     "name": "MyBids2TestsQuery",

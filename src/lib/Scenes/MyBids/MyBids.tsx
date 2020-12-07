@@ -89,7 +89,7 @@ class MyBids extends React.Component<MyBidsProps> {
                       const activeLotStandings = sortedActiveLots[saleId]
                       const sale = activeLotStandings[0]?.saleArtwork?.sale!
                       return (
-                        <SaleCardFragmentContainer key={saleId} sale={sale} smallScreen={isSmallScreen}>
+                        <SaleCardFragmentContainer key={saleId} sale={sale} me={me} smallScreen={isSmallScreen}>
                           <Join separator={<Separator my={1} />}>
                             {activeLotStandings.map((ls) => {
                               if (ls && sale) {
@@ -142,6 +142,8 @@ export const MyBidsContainer = createPaginationContainer(
     me: graphql`
       fragment MyBids_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 25 }, cursor: { type: "String", defaultValue: "" }) {
+        ...SaleCard_me
+        identityVerified
         auctionsLotStandingConnection(first: $count, after: $cursor)
           @connection(key: "MyBids_auctionsLotStandingConnection") {
           edges {

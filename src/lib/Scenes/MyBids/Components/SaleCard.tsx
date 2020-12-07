@@ -1,17 +1,67 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { SaleInfo } from "lib/Scenes/MyBids/Components/SaleInfo"
-import { Flex, Separator, Text, Touchable } from "palette"
+import { ArrowRightIcon, Flex, Separator, Text, Touchable } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
+import { ClockFill, ExclamationMarkCircleFill } from "palette/svgs/sf"
+
+import { SaleCard_me } from "__generated__/SaleCard_me.graphql"
 import { SaleCard_sale } from "__generated__/SaleCard_sale.graphql"
 
 export const CARD_HEIGHT = 72
 
-export class SaleCard extends React.Component<{ sale: SaleCard_sale; smallScreen?: boolean }> {
+export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string }> = (props) => (
+  <Touchable
+    underlayColor={props.navLink ? "black5" : "transparent"}
+    onPress={() => props.navLink && navigate(props.navLink)}
+  >
+    <Flex flexDirection="row" alignItems="center" justifyContent="center" py={1} bg="black5" mt={1}>
+      {!props.children && (
+        <>
+          <ExclamationMarkCircleFill fill="black100" />
+          <Text mx={0.5} variant="mediumText">
+            Complete registration
+          </Text>
+          <ArrowRightIcon />
+        </>
+      )}
+      {props.children}
+    </Flex>
+  </Touchable>
+)
+
+export class SaleCard extends React.Component<{ sale: SaleCard_sale; me: SaleCard_me; smallScreen?: boolean }> {
   render() {
-    const { sale, children, smallScreen } = this.props
+    const { sale, me, smallScreen, children } = this.props
+    const { registrationStatus } = sale
+
+    const pendingIdentityVerification = me.pendingIdentityVerification
+    const shouldPromptIdVerification =
+      !registrationStatus?.qualifiedForBidding &&
+      sale.requireIdentityVerification &&
+      !me.identityVerified &&
+      !!pendingIdentityVerification
+    let RegistrationCTA: React.FC
+    if (registrationStatus) {
+      if (registrationStatus?.qualifiedForBidding) {
+        RegistrationCTA = () => null
+      } else if (shouldPromptIdVerification) {
+        RegistrationCTA = () => <RegistrationCTAWrapper navLink="/identity-verification-faq" />
+      } else {
+        RegistrationCTA = () => (
+          <RegistrationCTAWrapper>
+            <ClockFill fill="black60" />
+            <Text ml={0.5} color="black60" variant="mediumText">
+              Registration pending
+            </Text>
+          </RegistrationCTAWrapper>
+        )
+      }
+    } else {
+      RegistrationCTA = () => <RegistrationCTAWrapper navLink={`/auction-registration/${sale.slug}`} />
+    }
 
     return (
       <React.Fragment>
@@ -27,6 +77,7 @@ export class SaleCard extends React.Component<{ sale: SaleCard_sale; smallScreen
               <Text variant="title">{sale?.name}</Text>
 
               <SaleInfo sale={sale} />
+              <RegistrationCTA />
             </Flex>
             <Separator mt={1} />
             <Flex style={{ marginHorizontal: smallScreen! ? 10 : 20, marginVertical: 10 }}>{children}</Flex>
@@ -41,6 +92,7 @@ export const SaleCardFragmentContainer = createFragmentContainer(SaleCard, {
   sale: graphql`
     fragment SaleCard_sale on Sale {
       href
+      slug
       name
       liveStartAt
       endAt
@@ -49,6 +101,18 @@ export const SaleCardFragmentContainer = createFragmentContainer(SaleCard, {
       }
       partner {
         name
+      }
+      registrationStatus {
+        qualifiedForBidding
+      }
+      requireIdentityVerification
+    }
+  `,
+  me: graphql`
+    fragment SaleCard_me on Me {
+      identityVerified
+      pendingIdentityVerification {
+        internalID
       }
     }
   `,

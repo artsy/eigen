@@ -476,12 +476,12 @@ PODS:
     - React
   - RNGestureHandler (1.8.0):
     - React
-  - RNImageCropPicker (0.32.2):
+  - RNImageCropPicker (0.35.1):
     - React-Core
     - React-RCTImage
-    - RNImageCropPicker/QBImagePickerController (= 0.32.2)
+    - RNImageCropPicker/QBImagePickerController (= 0.35.1)
     - TOCropViewController
-  - RNImageCropPicker/QBImagePickerController (0.32.2):
+  - RNImageCropPicker/QBImagePickerController (0.35.1):
     - React-Core
     - React-RCTImage
     - TOCropViewController
@@ -595,7 +595,7 @@ DEPENDENCIES:
   - OHHTTPStubs
   - ORKeyboardReactingApplication
   - ORStackView (= 2.0.3)
-  - Pulley (from `https://github.com/l2succes/Pulley.git`, branch `master`)
+  - Pulley (from `https://github.com/brainbicycle/Pulley.git`, branch `master`)
   - Quick (= 2.0.0)
   - RCTRequired (from `./node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `./node_modules/react-native/Libraries/TypeSafety`)
@@ -749,7 +749,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/orta/JLRoutes.git
   Pulley:
     :branch: master
-    :git: https://github.com/l2succes/Pulley.git
+    :git: https://github.com/brainbicycle/Pulley.git
   RCTRequired:
     :path: "./node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
@@ -857,8 +857,8 @@ CHECKOUT OPTIONS:
     :commit: 5a6df1a795766a4d3e586508e86ec9271d3ef3d9
     :git: https://github.com/orta/JLRoutes.git
   Pulley:
-    :commit: 23f1c0e8cad5a72d03176fe33535c14726e7a160
-    :git: https://github.com/l2succes/Pulley.git
+    :commit: f677b18b332ea3798dc379879dbc0d038efd3ccc
+    :git: https://github.com/brainbicycle/Pulley.git
   SSFadingScrollView:
     :commit: 3920e3582e46c9fe23b0d1200e28614ebd66d801
     :git: https://github.com/alloy/SSFadingScrollView.git
@@ -959,7 +959,7 @@ SPEC CHECKSUMS:
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPicker: 7d06ee91dff65b0bcd400ca00039051d5ddcb938
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
-  RNImageCropPicker: f0557a908758c4a3f83978894ec7227651529b45
+  RNImageCropPicker: 16951bc02411f50c4d197488ed6406a23dc3b5f1
   RNReactNativeHapticFeedback: 22c5ecf474428766c6b148f96f2ff6155cd7225e
   RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
   RNScreens: 13f23e5498fb4aa749d19a5eda7f8792fbb9d01f
@@ -982,6 +982,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 2b3d60f7af7fb9abd9e1ca7d370704ed8cc149ac
+PODFILE CHECKSUM: 872157d0f969a68e0fe9d70e1ce0095b013a9ba7
 
 COCOAPODS: 1.7.5

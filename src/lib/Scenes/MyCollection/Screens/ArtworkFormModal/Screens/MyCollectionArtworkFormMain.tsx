@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { GlobalStore } from "lib/store/GlobalStore"
-import { isEmpty, isEqualWith } from "lodash"
+import { isEmpty } from "lodash"
 import { BorderBox, Box, Button, Flex, Join, Sans, Spacer } from "palette"
 import React from "react"
 import { ActionSheetIOS, ScrollView } from "react-native"
@@ -27,19 +27,21 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
 
   const isFormDirty = () => {
     // if you fill an empty field then delete it again, it changes from null to ""
-    const customizer = (aVal: any, bVal: any) =>
-      (aVal === "" || aVal === null) && (bVal === "" || bVal === null) ? true : undefined
-    return !isEqualWith(
-      artworkState.sessionState.dirtyFormCheckValues,
-      artworkState.sessionState.formValues,
-      customizer
+    const isEqual = (aVal: any, bVal: any) =>
+      (aVal === "" || aVal === null) && (bVal === "" || bVal === null) ? true : aVal === bVal
+    const { formValues, dirtyFormCheckValues } = artworkState.sessionState
+    return Object.getOwnPropertyNames(dirtyFormCheckValues).reduce(
+      (accum: boolean, key: string) =>
+        accum ||
+        !isEqual((formValues as { [key: string]: any })[key], (dirtyFormCheckValues as { [key: string]: any })[key]),
+      false
     )
   }
 
   return (
     <>
       <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => route.params.onDismiss()}>
-        {addOrEditLabel} artwork
+        {addOrEditLabel} Artwork
       </FancyModalHeader>
       <ScrollView keyboardDismissMode={"on-drag"} keyboardShouldPersistTaps={"handled"}>
         <Spacer my={1} />

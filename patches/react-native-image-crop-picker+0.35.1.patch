@@ -2,7 +2,7 @@ diff --git a/node_modules/react-native-image-crop-picker/ios/.DS_Store b/node_mo
 new file mode 100644
 index 0000000..e69de29
 diff --git a/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m b/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
-index 25ead1a..ea872d1 100644
+index 3b867d1..6a19214 100644
 --- a/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
 +++ b/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
 @@ -123,8 +123,19 @@ - (void) setConfiguration:(NSDictionary *)options

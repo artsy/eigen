@@ -183,6 +183,9 @@ function getNativeModules(): typeof NativeModules {
       setApplicationIconBadgeNumber: jest.fn(),
       appVersion: "appVersion",
     },
+    ARPHPhotoPickerModule: {
+      requestPhotos: jest.fn(),
+    },
     Emission: null as never,
     ARScreenPresenterModule: {
       presentMediaPreviewController: jest.fn(),

@@ -52,7 +52,7 @@ export default class Provenance extends React.Component<Props, State> {
                 onChangeText: this.textChanged,
                 value: this.state.provenance,
                 placeholder:
-                  "Add notes about how you aquired the work. If you’re not sure add any details about how long you’ve had the work.",
+                  "Add notes about how you acquired the work. If you’re not sure add any details about how long you’ve owned the work.",
                 autoFocus: typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
               }}
             />
