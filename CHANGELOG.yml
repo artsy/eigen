@@ -17,6 +17,7 @@ upcoming:
     - Avoid shrinking the background on non-fullscreen fancy modals - david
     - removed x from inquiry sent notification - lily
     - Minor copy changes for My Collection - pepopowitz
+    - Fix city guide hang on iOS 14 - brian
 releases:
   - version: 6.7.2
     date: November 30, 2020

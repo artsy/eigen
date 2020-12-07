@@ -595,7 +595,7 @@ DEPENDENCIES:
   - OHHTTPStubs
   - ORKeyboardReactingApplication
   - ORStackView (= 2.0.3)
-  - Pulley (from `https://github.com/l2succes/Pulley.git`, branch `master`)
+  - Pulley (from `https://github.com/brainbicycle/Pulley.git`, branch `master`)
   - Quick (= 2.0.0)
   - RCTRequired (from `./node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `./node_modules/react-native/Libraries/TypeSafety`)
@@ -749,7 +749,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/orta/JLRoutes.git
   Pulley:
     :branch: master
-    :git: https://github.com/l2succes/Pulley.git
+    :git: https://github.com/brainbicycle/Pulley.git
   RCTRequired:
     :path: "./node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
@@ -857,8 +857,8 @@ CHECKOUT OPTIONS:
     :commit: 5a6df1a795766a4d3e586508e86ec9271d3ef3d9
     :git: https://github.com/orta/JLRoutes.git
   Pulley:
-    :commit: 23f1c0e8cad5a72d03176fe33535c14726e7a160
-    :git: https://github.com/l2succes/Pulley.git
+    :commit: f677b18b332ea3798dc379879dbc0d038efd3ccc
+    :git: https://github.com/brainbicycle/Pulley.git
   SSFadingScrollView:
     :commit: 3920e3582e46c9fe23b0d1200e28614ebd66d801
     :git: https://github.com/alloy/SSFadingScrollView.git
@@ -882,7 +882,7 @@ SPEC CHECKSUMS:
   CocoaLibEvent: 2fab71b8bd46dd33ddb959f7928ec5909f838e3f
   CocoaLumberjack: aa9dcab71bdf9eaf2a63bbd9ddc87863efe45457
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
-  DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
+  DoubleConversion: cde416483dac037923206447da6e1454df403714
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
   Emission: 5c5fb14e43f9ddc811185e8f17e11ab03a98dc09
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
@@ -904,7 +904,7 @@ SPEC CHECKSUMS:
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
-  glog: 1f3da668190260b06b429bb211bfbee5cd790c28
+  glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
@@ -982,6 +982,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 2b3d60f7af7fb9abd9e1ca7d370704ed8cc149ac
+PODFILE CHECKSUM: 872157d0f969a68e0fe9d70e1ce0095b013a9ba7
 
 COCOAPODS: 1.7.5
