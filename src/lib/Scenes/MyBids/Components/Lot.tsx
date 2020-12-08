@@ -46,7 +46,9 @@ class Lot extends React.Component<Props> {
             </Flex>
           </Flex>
 
-          <Flex width="50%">{children}</Flex>
+          <Flex width="50%" alignItems="flex-end">
+            {children}
+          </Flex>
         </Flex>
       </Touchable>
     )

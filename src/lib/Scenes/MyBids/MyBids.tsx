@@ -1,13 +1,11 @@
 import { groupBy, mapValues, partition, sortBy } from "lodash"
-import { Flex, Join, Separator, Spacer } from "palette"
+import { Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 import { MyBids_me } from "__generated__/MyBids_me.graphql"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 
-import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
-import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -52,68 +50,70 @@ class MyBids extends React.Component<MyBidsProps> {
     const noClosedBids = closedStandings.length === 0
 
     return (
-      <Flex flex={1}>
-        <StickyTabPage
-          staticHeaderContent={<></>}
-          tabs={[
-            {
-              title: `Active`,
-              content: (
-                <StickyTabPageScrollView data-test-id="active-section">
-                  <Spacer my={1} />
-
-                  <Join separator={<Spacer my={1} />}>
-                    {!!noActiveBids && <NoBids headerText="You don't have any upcoming bids." />}
-                    {sortedSaleIds.map((saleId) => {
-                      const activeLotStandings = sortedActiveLots[saleId]
-                      const sale = activeLotStandings[0]?.saleArtwork?.sale!
-                      return (
-                        <SaleCardFragmentContainer key={saleId} sale={sale} me={me} smallScreen={isSmallScreen}>
-                          <Join separator={<Separator my={1} />}>
-                            {activeLotStandings.map((ls) => {
-                              if (ls && sale) {
-                                const LotInfoComponent = isLotStandingComplete(ls) ? ClosedLot : ActiveLot
-                                return <LotInfoComponent lotStanding={ls as any} key={ls?.lotState?.internalID} />
-                              }
-                            })}
-                          </Join>
-                        </SaleCardFragmentContainer>
+      <>
+        {!!noActiveBids && !!noClosedBids && <NoBids headerText="No bidding history" />}
+        {!noActiveBids && (
+          <>
+            <BidTitle>Active Bids</BidTitle>
+            <Flex data-test-id="active-section">
+              <Join separator={<Spacer my={1} />}>
+                {sortedSaleIds.map((saleId) => {
+                  const activeLotStandings = sortedActiveLots[saleId]
+                  const sale = activeLotStandings[0]?.saleArtwork?.sale!
+                  return (
+                    <SaleCardFragmentContainer key={saleId} sale={sale} me={me} smallScreen={isSmallScreen}>
+                      <Join separator={<Separator my={1} />}>
+                        {activeLotStandings.map((ls) => {
+                          if (ls && sale) {
+                            const LotInfoComponent = isLotStandingComplete(ls) ? ClosedLot : ActiveLot
+                            return <LotInfoComponent lotStanding={ls as any} key={ls?.lotState?.internalID} />
+                          }
+                        })}
+                      </Join>
+                    </SaleCardFragmentContainer>
+                  )
+                })}
+              </Join>
+            </Flex>
+          </>
+        )}
+        {!noClosedBids && (
+          <>
+            <BidTitle>Closed Bids</BidTitle>
+            <Flex data-test-id="closed-section">
+              <Flex mt={2} px={1.5}>
+                <Join separator={<Separator my={2} />}>
+                  {closedStandings?.map((ls) => {
+                    return (
+                      !!ls && (
+                        <ClosedLot
+                          withTimelyInfo
+                          data-test-id="closed-sale-lot"
+                          lotStanding={ls}
+                          key={ls?.lotState?.internalID}
+                        />
                       )
-                    })}
-                  </Join>
-                  <Spacer my={2} />
-                </StickyTabPageScrollView>
-              ),
-            },
-            {
-              title: `Closed`,
-              content: (
-                <StickyTabPageScrollView data-test-id="closed-section">
-                  <Flex mt={1}>
-                    {!!noClosedBids && <NoBids headerText="No bidding history" />}
-                    {closedStandings?.map((ls) => {
-                      return (
-                        !!ls && (
-                          <ClosedLot
-                            withTimelyInfo
-                            data-test-id="closed-sale-lot"
-                            lotStanding={ls}
-                            key={ls?.lotState?.internalID}
-                          />
-                        )
-                      )
-                    })}
-                  </Flex>
-                  <Spacer my={2} />
-                </StickyTabPageScrollView>
-              ),
-            },
-          ]}
-        />
-      </Flex>
+                    )
+                  })}
+                </Join>
+              </Flex>
+            </Flex>
+          </>
+        )}
+        <Spacer my={2} />
+      </>
     )
   }
 }
+
+const BidTitle: React.FC<{ topBorder?: boolean }> = (props) => (
+  <Flex bg="white100">
+    <Text variant="subtitle" mx={1.5} my={2}>
+      {props.children}
+    </Text>
+    <Separator />
+  </Flex>
+)
 
 export const MyBidsContainer = createFragmentContainer(MyBids, {
   me: graphql`

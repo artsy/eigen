@@ -95,7 +95,7 @@ describe("My Bids", () => {
       }),
     })
 
-    expect(extractText(wrapper.root)).toContain("You don't have any upcoming bids.")
+    expect(extractText(wrapper.root)).toContain("No bidding history")
     expect(extractText(wrapper.root)).toContain(
       "Watch a live auction and place bids in advance or in real time, or you can bid in our curated timed auction"
     )

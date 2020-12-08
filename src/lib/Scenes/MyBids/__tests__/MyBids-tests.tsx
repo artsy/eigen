@@ -152,7 +152,7 @@ describe(MyBidsQueryRenderer, () => {
       })
     })
 
-    expect(extractText(tree.root)).toContain("You don't have any upcoming bids.")
+    expect(extractText(tree.root)).toContain("No bidding history")
     expect(extractText(tree.root)).toContain(
       "Watch a live auction and place bids in advance or in real time, or you can bid in our curated timed auction"
     )

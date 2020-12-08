@@ -83,9 +83,7 @@ export class Conversations extends Component<Props, State> {
 
     return (
       <View>
-        {!!shouldDisplayMyBids ? (
-          <Separator />
-        ) : (
+        {!shouldDisplayMyBids && (
           <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
             <Sans mx={2} mt={1} size="8" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
               Inbox {unreadCounter}
