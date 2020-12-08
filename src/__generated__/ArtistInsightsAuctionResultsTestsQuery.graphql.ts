@@ -1,27 +1,27 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 46c613070aac2aef33b7149bd7f9328f */
+/* @relayHash 1b554caf04bcd72535874d487ced163a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtistInsightsTestsQueryVariables = {};
-export type ArtistInsightsTestsQueryResponse = {
+export type ArtistInsightsAuctionResultsTestsQueryVariables = {};
+export type ArtistInsightsAuctionResultsTestsQueryResponse = {
     readonly artist: {
-        readonly " $fragmentRefs": FragmentRefs<"ArtistInsights_artist">;
+        readonly " $fragmentRefs": FragmentRefs<"ArtistInsightsAuctionResults_artist">;
     } | null;
 };
-export type ArtistInsightsTestsQuery = {
-    readonly response: ArtistInsightsTestsQueryResponse;
-    readonly variables: ArtistInsightsTestsQueryVariables;
+export type ArtistInsightsAuctionResultsTestsQuery = {
+    readonly response: ArtistInsightsAuctionResultsTestsQueryResponse;
+    readonly variables: ArtistInsightsAuctionResultsTestsQueryVariables;
 };
 
 
 
 /*
-query ArtistInsightsTestsQuery {
+query ArtistInsightsAuctionResultsTestsQuery {
   artist(id: "some-id") {
-    ...ArtistInsights_artist
+    ...ArtistInsightsAuctionResults_artist
     id
   }
 }
@@ -66,11 +66,6 @@ fragment ArtistInsightsAuctionResults_artist on Artist {
       hasNextPage
     }
   }
-}
-
-fragment ArtistInsights_artist on Artist {
-  name
-  ...ArtistInsightsAuctionResults_artist
 }
 */
 
@@ -136,7 +131,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "ArtistInsightsTestsQuery",
+    "name": "ArtistInsightsAuctionResultsTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -149,7 +144,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "ArtistInsights_artist"
+            "name": "ArtistInsightsAuctionResults_artist"
           }
         ],
         "storageKey": "artist(id:\"some-id\")"
@@ -162,7 +157,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "ArtistInsightsTestsQuery",
+    "name": "ArtistInsightsAuctionResultsTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -172,13 +167,6 @@ return {
         "name": "artist",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "name",
-            "storageKey": null
-          },
           {
             "alias": null,
             "args": (v1/*: any*/),
@@ -411,7 +399,7 @@ return {
     ]
   },
   "params": {
-    "id": "46c613070aac2aef33b7149bd7f9328f",
+    "id": "1b554caf04bcd72535874d487ced163a",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
@@ -496,15 +484,14 @@ return {
           "plural": false,
           "type": "Boolean"
         },
-        "artist.id": (v6/*: any*/),
-        "artist.name": (v4/*: any*/)
+        "artist.id": (v6/*: any*/)
       }
     },
-    "name": "ArtistInsightsTestsQuery",
+    "name": "ArtistInsightsAuctionResultsTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'bedea12321099e3bd4887bb11b76efc0';
+(node as any).hash = '2f2117c7c89001580a50389ac3613781';
 export default node;

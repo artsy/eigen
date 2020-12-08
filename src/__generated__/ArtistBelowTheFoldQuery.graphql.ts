@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5f0d8c8150492c5cd9e8e304df1da4f8 */
+/* @relayHash e6fda6c1886e2b4ec8178a63e85faaeb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -123,7 +123,13 @@ fragment ArtistInsightsAuctionResults_artist on Artist {
       node {
         id
         ...ArtistInsightsAuctionResult_auctionResult
+        __typename
       }
+      cursor
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
     }
   }
 }
@@ -309,7 +315,14 @@ v8 = [
   (v3/*: any*/),
   (v4/*: any*/)
 ],
-v9 = [
+v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
+  "storageKey": null
+},
+v10 = [
   {
     "alias": null,
     "args": null,
@@ -383,13 +396,7 @@ v9 = [
             "name": "partner",
             "plural": false,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "__typename",
-                "storageKey": null
-              },
+              (v9/*: any*/),
               {
                 "kind": "InlineFragment",
                 "selections": [
@@ -441,7 +448,15 @@ v9 = [
     "storageKey": null
   }
 ],
-v10 = [
+v11 = [
+  (v7/*: any*/),
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "DATE_DESC"
+  }
+],
+v12 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -772,7 +787,7 @@ return {
             "kind": "LinkedField",
             "name": "showsConnection",
             "plural": false,
-            "selections": (v9/*: any*/),
+            "selections": (v10/*: any*/),
             "storageKey": "showsConnection(first:10,status:\"running\")"
           },
           {
@@ -789,19 +804,12 @@ return {
             "kind": "LinkedField",
             "name": "showsConnection",
             "plural": false,
-            "selections": (v9/*: any*/),
+            "selections": (v10/*: any*/),
             "storageKey": "showsConnection(first:10,status:\"upcoming\")"
           },
           {
             "alias": null,
-            "args": [
-              (v7/*: any*/),
-              {
-                "kind": "Literal",
-                "name": "sort",
-                "value": "DATE_DESC"
-              }
-            ],
+            "args": (v11/*: any*/),
             "concreteType": "AuctionResultConnection",
             "kind": "LinkedField",
             "name": "auctionResultsConnection",
@@ -964,8 +972,41 @@ return {
                         "kind": "ScalarField",
                         "name": "title",
                         "storageKey": null
-                      }
+                      },
+                      (v9/*: any*/)
                     ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "cursor",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "PageInfo",
+                "kind": "LinkedField",
+                "name": "pageInfo",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "endCursor",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "hasNextPage",
                     "storageKey": null
                   }
                 ],
@@ -973,6 +1014,17 @@ return {
               }
             ],
             "storageKey": "auctionResultsConnection(first:10,sort:\"DATE_DESC\")"
+          },
+          {
+            "alias": null,
+            "args": (v11/*: any*/),
+            "filters": [
+              "sort"
+            ],
+            "handle": "connection",
+            "key": "artist_auctionResultsConnection",
+            "kind": "LinkedHandle",
+            "name": "auctionResultsConnection"
           },
           (v4/*: any*/),
           {
@@ -982,12 +1034,12 @@ return {
             "selections": [
               {
                 "alias": "pastSmallShows",
-                "args": (v10/*: any*/),
+                "args": (v12/*: any*/),
                 "concreteType": "ShowConnection",
                 "kind": "LinkedField",
                 "name": "showsConnection",
                 "plural": false,
-                "selections": (v9/*: any*/),
+                "selections": (v10/*: any*/),
                 "storageKey": "showsConnection(first:20,status:\"closed\")"
               }
             ]
@@ -999,12 +1051,12 @@ return {
             "selections": [
               {
                 "alias": "pastLargeShows",
-                "args": (v10/*: any*/),
+                "args": (v12/*: any*/),
                 "concreteType": "ShowConnection",
                 "kind": "LinkedField",
                 "name": "showsConnection",
                 "plural": false,
-                "selections": (v9/*: any*/),
+                "selections": (v10/*: any*/),
                 "storageKey": "showsConnection(first:20,status:\"closed\")"
               }
             ]
@@ -1015,7 +1067,7 @@ return {
     ]
   },
   "params": {
-    "id": "5f0d8c8150492c5cd9e8e304df1da4f8",
+    "id": "e6fda6c1886e2b4ec8178a63e85faaeb",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",
