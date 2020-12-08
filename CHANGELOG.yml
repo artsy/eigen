@@ -11,6 +11,7 @@ upcoming:
     - Add artist past shows screen - mounir
     - Add loading spinner to infinite artwork grid on artist page - david
     - Avoid shrinking the background on non-fullscreen fancy modals - david
+    - Add pull to refresh to bids view - lily
     - Support iOS 14 photo picker in My Collection - brian
     - Scroll to add message input on Inquire screen - ashley, mounir
     - Make add message input height relative to its size - ashley, mounir

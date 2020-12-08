@@ -29,6 +29,9 @@ export class Inbox extends React.Component<Props, State> {
   // @ts-ignore STRICTNESS_MIGRATION
   conversations: ConversationsRef
 
+  // @ts-ignore STRICTNESS_MIGRATION
+  myBids: MyBidsRef
+
   state = {
     fetchingData: false,
     inquiryTabIsSelected: false,
@@ -65,6 +68,10 @@ export class Inbox extends React.Component<Props, State> {
 
     if (this.conversations) {
       this.conversations.refreshConversations(() => {
+        this.setState({ fetchingData: false })
+      })
+    } else if (this.myBids) {
+      this.myBids.refreshMyBids(() => {
         this.setState({ fetchingData: false })
       })
     } else {
@@ -105,7 +112,7 @@ export class Inbox extends React.Component<Props, State> {
             componentRef={(conversations) => (this.conversations = conversations)}
           />
         ) : (
-          <MyBidsContainer me={this.props.me} />
+          <MyBidsContainer me={this.props.me} componentRef={(myBids) => (this.myBids = myBids)} />
         )}
       </Container>
     )
