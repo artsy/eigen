@@ -211,6 +211,22 @@ lane :notify_if_new_license_agreement do
   end
 end
 
+lane :notify_beta_failed do |options|
+  exception = options[:exception]
+  message = ':x: :iphone:\n'\
+            'Looks like the latest beta failed to deploy!\n'\
+            'See circle job for more details.'
+  slack(
+    message: message,
+    success: false,
+    payload: {
+      'Circle Build' => ENV['CIRCLE_BUILD_URL'],
+      'Exception' => exception.message
+    },
+    default_payloads: []
+  )
+end
+
 lane :tag_and_push do |options|
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for circle is read-only
@@ -219,4 +235,10 @@ lane :tag_and_push do |options|
   add_git_tag tag: tag
   `git remote add http https://github.com/artsy/eigen.git`
   `git push http #{tag} -f`
+end
+
+error do |lane, exception|
+ if lane == :ship_beta
+  notify_beta_failed(exception: exception)
+ end
 end
