@@ -24,6 +24,25 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
 
   const isImage = (toCheck: any): toCheck is Image => !!toCheck
 
+  const imageIsProcessing = (image: Image | null) => {
+    if (!image) {
+      return false
+    }
+
+    const isProcessing = image.height === null
+    return isProcessing
+  }
+
+  const hasImagesStillProcessing = (imagesToCheck: MyCollectionArtworkHeader_artwork["images"]) => {
+    if (!imagesToCheck) {
+      return false
+    }
+
+    const concreteImages = imagesToCheck as Image[]
+    const stillProcessing = concreteImages.filter((image) => imageIsProcessing(image)).length > 0
+    return stillProcessing
+  }
+
   return (
     <>
       <ScreenMargin>
@@ -36,7 +55,7 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
       <Spacer my={1} />
 
       <TouchableOpacity onPress={() => navigate(`/my-collection/artwork-images/${internalID}`)}>
-        {!!isImage(defaultImage) && (
+        {!!isImage(defaultImage) && !imageIsProcessing(defaultImage) && (
           <OpaqueImageView
             // TODO: figure out if "normalized" is the correct version
             imageURL={defaultImage.url.replace(":version", "normalized")}
@@ -44,7 +63,7 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
             width={dimensions.width}
           />
         )}
-        {!!images && (
+        {!!images && !hasImagesStillProcessing(images) && (
           <Flex
             mr={2}
             style={{
