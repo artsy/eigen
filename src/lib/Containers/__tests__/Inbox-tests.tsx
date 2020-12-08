@@ -13,6 +13,7 @@ import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { Inbox as ActualInbox, InboxContainer } from "../Inbox/Inbox"
 
 jest.unmock("react-relay")
+jest.unmock("react-native-scrollable-tab-view")
 
 jest.mock("lib/Scenes/Inbox/Components/Conversations/Conversations", () => {
   return {
@@ -72,8 +73,8 @@ it("renders without throwing an error", () => {
 
 it("renders bids tab by default when bids are enabled", () => {
   const tree = getWrapper()
-
   expect(tree.root.findAllByType(MyBidsContainer).length).toEqual(1)
+  expect(tree.root.findAllByType(ConversationsContainer).length).toEqual(0)
 })
 
 it("renders inquiries tab when inquiries tab is selected", async () => {

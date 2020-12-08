@@ -17,7 +17,7 @@ interface ScrollableTabProps extends ScrollViewProps {
   tabLabel: string
 }
 
-const ScrollableTab: React.FC<ScrollableTabProps> = (props) => <ScrollView {...props} />
+export const ScrollableTab: React.FC<ScrollableTabProps> = (props) => <ScrollView {...props} />
 
 const InboxTabs: React.FC<TabBarProps> = (props) => (
   <>
