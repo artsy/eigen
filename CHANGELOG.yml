@@ -11,6 +11,7 @@ upcoming:
     - Add artist past shows screen - mounir
     - Add loading spinner to infinite artwork grid on artist page - david
     - Avoid shrinking the background on non-fullscreen fancy modals - david
+    - Add pull to refresh to bids view - lily
     - Support iOS 14 photo picker in My Collection - brian
     - Scroll to add message input on Inquire screen - ashley, mounir
     - Make add message input height relative to its size - ashley, mounir
@@ -18,6 +19,8 @@ upcoming:
     - removed x from inquiry sent notification - lily
     - Minor copy changes for My Collection - pepopowitz
     - Fix city guide hang on iOS 14 - brian
+    - Fix apns token registration issue - brian
+    - Fix regression that hids textarea in 1st inquiry modal - christina
 releases:
   - version: 6.7.2
     date: November 30, 2020

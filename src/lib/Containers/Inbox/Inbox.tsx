@@ -60,6 +60,9 @@ export class Inbox extends React.Component<Props, State> {
   // @ts-ignore STRICTNESS_MIGRATION
   conversations: ConversationsRef
 
+  // @ts-ignore STRICTNESS_MIGRATION
+  myBids: MyBidsRef
+
   state = {
     fetchingData: false,
   }
@@ -99,6 +102,10 @@ export class Inbox extends React.Component<Props, State> {
       this.conversations.refreshConversations(() => {
         this.setState({ fetchingData: false })
       })
+    } else if (this.myBids) {
+      this.myBids.refreshMyBids(() => {
+        this.setState({ fetchingData: false })
+      })
     } else {
       this.props.relay.refetch({}, null, () => {
         this.setState({ fetchingData: false })
@@ -129,7 +136,7 @@ export class Inbox extends React.Component<Props, State> {
           key="bids"
           refreshControl={refreshControl}
         >
-          <MyBidsContainer me={this.props.me} />
+          <MyBidsContainer me={this.props.me} componentRef={(myBids) => (this.myBids = myBids)} />
         </ScrollableTab>
         <ScrollableTab tabLabel="Inquiries" key="inquiries" refreshControl={refreshControl}>
           <ConversationsContainer

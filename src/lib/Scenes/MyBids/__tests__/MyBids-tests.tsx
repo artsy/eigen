@@ -7,9 +7,8 @@ import { extractText } from "lib/tests/extractText"
 import { PlaceholderText } from "lib/utils/placeholders"
 
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { merge } from "lodash"
 import { MyBidsQueryRenderer } from ".."
-import { lotStandings as lsFixtures, me as meFixture } from "../__fixtures__/MyBidsQuery"
+import { me as meFixture } from "../__fixtures__/MyBidsQuery"
 import { ActiveLotFragmentContainer as ActiveLot, ClosedLotFragmentContainer as ClosedLot } from "../Components"
 
 jest.mock("lib/relay/createEnvironment", () => ({
@@ -91,38 +90,6 @@ describe(MyBidsQueryRenderer, () => {
     expect(closedLots[2]).toContain("Closed Aug 13")
   })
 
-  it("renders a completed lot in an ongoing live sale in the 'active' column", () => {
-    const stillLiveSale = lsFixtures.rnm.node.saleArtwork.sale
-    const passedLotInLiveAuction = merge(lsFixtures.passedClosed, {
-      node: { saleArtwork: { lotState: { saleId: stillLiveSale.internalID }, sale: stillLiveSale } },
-    })
-
-    const me = {
-      auctionsLotStandingConnection: {
-        edges: [passedLotInLiveAuction],
-      },
-    }
-
-    const tree = renderWithWrappers(<MyBidsQueryRenderer />)
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("MyBidsQuery")
-
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          me,
-        },
-      })
-    })
-
-    const activeLots = activeSectionLots(tree.root).map(extractText)
-    const lot = activeLots[0]
-
-    expect(extractText(lot)).toContain("Closed Swann RNM Artist")
-    expect(extractText(lot)).toContain("Passed")
-    expect(activeLots[0]).toContain("Lot 3")
-  })
-
   it.skip("renders null upon failure", () => {
     const tree = renderWithWrappers(<MyBidsQueryRenderer />)
 
@@ -131,55 +98,5 @@ describe(MyBidsQueryRenderer, () => {
     })
 
     expect(tree).toMatchInlineSnapshot(`null`)
-  })
-
-  it("renders the no upcoming bids view when there are no active bids", () => {
-    const me = {
-      auctionsLotStandingConnection: {
-        edges: [],
-      },
-    }
-
-    const tree = renderWithWrappers(<MyBidsQueryRenderer />)
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("MyBidsQuery")
-
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          me,
-        },
-      })
-    })
-
-    expect(extractText(tree.root)).toContain("No bidding history")
-    expect(extractText(tree.root)).toContain(
-      "Watch a live auction and place bids in advance or in real time, or you can bid in our curated timed auction"
-    )
-  })
-
-  it("renders the no bidding history view when there are no closed bids", () => {
-    const me = {
-      auctionsLotStandingConnection: {
-        edges: [],
-      },
-    }
-
-    const tree = renderWithWrappers(<MyBidsQueryRenderer />)
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("MyBidsQuery")
-
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          me,
-        },
-      })
-    })
-
-    expect(extractText(tree.root)).toContain("No bidding history")
-    expect(extractText(tree.root)).toContain(
-      "Watch a live auction and place bids in advance or in real time, or you can bid in our curated timed auction"
-    )
   })
 })
