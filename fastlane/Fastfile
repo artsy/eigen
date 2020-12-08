@@ -195,10 +195,12 @@ lane :notify_if_new_license_agreement do
   messages = Spaceship::Tunes.client.fetch_program_license_agreement_messages
 
   if !messages.empty?
-    message = ':apple: :handshake: :pencil:\n'\
-              'There is a new developer program agreement that needs to be signed to continue shipping!\n'\
-              'Reach out to legal :scales: for approval before signing.\n'\
-              'https://appstoreconnect.apple.com/agreements/#/'
+    message = <<~MSG
+                :apple: :handshake: :pencil:
+                There is a new developer program agreement that needs to be signed to continue shipping!
+                Reach out to legal :scales: for approval before signing.
+                https://appstoreconnect.apple.com/agreements/#/
+              MSG
     puts message
     puts messages[0]
     slack(
@@ -213,9 +215,11 @@ end
 
 lane :notify_beta_failed do |options|
   exception = options[:exception]
-  message = ':x: :iphone:\n'\
-            'Looks like the latest beta failed to deploy!\n'\
-            'See circle job for more details.'
+  message = <<~MSG
+              :x: :iphone:
+              Looks like the latest beta failed to deploy!
+              See circle job for more details.
+            MSG
   slack(
     message: message,
     success: false,
