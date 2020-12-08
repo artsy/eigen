@@ -8,6 +8,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Flex, Separator, Text } from "palette"
 import React from "react"
 import { EmitterSubscription, LayoutChangeEvent, RefreshControl, ScrollView, ScrollViewProps } from "react-native"
+// @ts-expect-error @types file generates duplicate declaration problems
 import ScrollableTabView, { TabBarProps } from "react-native-scrollable-tab-view"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
@@ -21,7 +22,7 @@ const ScrollableTab: React.FC<ScrollableTabProps> = (props) => <ScrollView {...p
 const InboxTabs: React.FC<TabBarProps> = (props) => (
   <>
     <Flex flexDirection="row" px={1.5} mb={1}>
-      {props.tabs?.map((name, page) => {
+      {props.tabs?.map((name: JSX.Element, page: number) => {
         const isTabActive = props.activeTab === page
         return (
           <Text
