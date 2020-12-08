@@ -1,11 +1,10 @@
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
-import { capitalize } from "lodash"
-import moment from "moment"
-import { bullet, Flex, NoArtworkIcon, Separator, Text } from "palette"
+import { Flex, Separator, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useScreenDimensions } from "../../../utils/useScreenDimensions"
 import { ArtistInsightsAuctionResultFragmentContainer } from "./ArtistInsightsAuctionResult"
 
 interface Props {
@@ -21,15 +20,16 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist }) => {
       keyExtractor={(item) => `${item.id}`}
       renderItem={({ item }) => <ArtistInsightsAuctionResultFragmentContainer auctionResult={item} />}
       ListHeaderComponent={() => (
-        <>
+        <Flex px={2}>
           <Text variant="title">Auction results</Text>
           <Text variant="small" color="black60">
             Sorted by most recent sale date
           </Text>
           <Separator mt="2" />
-        </>
+        </Flex>
       )}
       ItemSeparatorComponent={() => <Separator />}
+      style={{ width: useScreenDimensions().width, left: -20 }}
     />
   )
 }

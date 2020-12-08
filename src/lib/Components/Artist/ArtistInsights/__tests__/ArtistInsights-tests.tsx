@@ -27,10 +27,8 @@ describe("ArtistInsights", () => {
       render={({ props, error }) => {
         if (props?.artist) {
           return <ArtistInsightsFragmentContainer artist={props.artist} />
-        } else if (error !== null) {
-          return <View /> // error
         }
-        return <View /> // loading
+        return null
       }}
     />
   )
@@ -58,29 +56,7 @@ describe("ArtistInsights", () => {
         }),
       })
     )
-    // Artist: (ctx, generateId) => ({
-    // name: "3",
-    // auctionResultsConnection: {
-    // edges: [
-    // {
-    // node: {
-    // id: `${generateId()}`,
-    // title: `title-${generateId()}`,
-    // dateText: "date",
-    // mediumText: "3",
-    // saleDate: "2020",
-    // organization: "39",
-    // currency: "USD",
-    // priceRealized: { display: "3", cents: 4 },
-    // estimate: { low: 29 },
-    // },
-    // },
-    // ],
-    // },
-    // }),
-    // })
-    // )
 
-    expect(tree.findAllByType(FlatList)[1].findAllByType(Text)[2].props.children).toMatch("title-1")
+    expect(tree.findAllByType(FlatList).length).toEqual(2)
   })
 })

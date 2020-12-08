@@ -1,5 +1,6 @@
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Join, Separator, Text } from "palette"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
@@ -49,7 +50,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
 
   return (
     <StickyTabPageScrollView contentContainerStyle={{ paddingTop: 20 }}>
-      <Join separator={<Separator my={2} />}>
+      <Join separator={<Separator my={2} ml={-2} width={useScreenDimensions().width} />}>
         <MarketStats />
         <ArtistInsightsAuctionResultsPaginationContainer artist={artist} />
       </Join>

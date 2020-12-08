@@ -8,6 +8,7 @@ import { Flex } from "../Flex"
 interface ExtraTouchableProps {
   flex?: number
   haptic?: HapticFeedbackTypes | true
+  withBlackUnderlayColor?: boolean
 }
 
 /**
@@ -20,11 +21,12 @@ export const Touchable: React.FC<TouchableHighlightProps & ExtraTouchableProps> 
   children,
   flex,
   haptic,
+  withBlackUnderlayColor,
   onPress,
   ...props
 }) => (
   <TouchableHighlight
-    underlayColor={color("white100")}
+    underlayColor={withBlackUnderlayColor ? color("black5") : color("white100")}
     activeOpacity={0.8}
     {...props}
     onPress={(evt) => {
