@@ -20,12 +20,14 @@ const ROW_HEIGHT = 40
 interface SelectProps<ValueType> {
   options: Array<SelectOption<ValueType>>
   value: ValueType | null
-  placeholder: string
+  placeholder?: string
   title: string
   showTitleLabel?: boolean
   subTitle?: string
   enableSearch?: boolean
   onSelectValue(value: ValueType): void
+  renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
+  renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
 }
 interface State {
   showingModal: boolean
@@ -58,14 +60,16 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
     const selectedItem = options.find((o) => o.value === value)
     return (
       <>
-        <SelectButton
-          title={title}
-          showTitleLabel={showTitleLabel}
-          subTitle={subTitle}
-          placeholder={placeholder}
-          value={selectedItem?.label}
-          onPress={this.open.bind(this)}
-        />
+        {this.props.renderButton?.({ selectedValue: selectedItem?.value ?? null, onPress: this.open.bind(this) }) ?? (
+          <SelectButton
+            title={title}
+            showTitleLabel={showTitleLabel}
+            subTitle={subTitle}
+            placeholder={placeholder}
+            value={selectedItem?.label}
+            onPress={this.open.bind(this)}
+          />
+        )}
         <SelectModal
           visible={this.state.showingModal}
           title={title}
@@ -74,6 +78,7 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
           options={options}
           onDismiss={this.close.bind(this)}
           onSelectValue={onSelectValue}
+          renderItemLabel={this.props.renderItemLabel}
         />
       </>
     )
@@ -85,7 +90,7 @@ const SelectButton: React.FC<{
   title?: string
   showTitleLabel?: boolean
   subTitle?: string
-  placeholder: string
+  placeholder?: string
   onPress(): void
 }> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle }) => {
   return (
@@ -113,7 +118,7 @@ const SelectButton: React.FC<{
             <Sans size="3t">{value}</Sans>
           ) : (
             <Sans size="3t" color="black60">
-              {placeholder}
+              {placeholder ?? "Pick an option"}
             </Sans>
           )}
           <TriangleDown />
@@ -131,6 +136,7 @@ const SelectModal: React.FC<{
   visible: boolean
   onDismiss(): any
   onSelectValue(value: unknown): any
+  renderItemLabel?(value: SelectOption<unknown>): JSX.Element
 }> = (props) => {
   // we need to be able to have a local version of the value state so we can show the updated
   // state between the moment the user taps a selection and the moment we automatically
@@ -226,7 +232,7 @@ const SelectModal: React.FC<{
         data={autocompleteResults}
         extraData={{ value: localValue }}
         keyExtractor={(item) => String(item.value)}
-        windowSize={3}
+        windowSize={4}
         contentContainerStyle={{ paddingTop: 10, paddingBottom: 60 }}
         // we handle scrolling to the selected value ourselves because FlatList has weird
         // rendering bugs when initialScrollIndex changes, at the time of writing
@@ -245,6 +251,7 @@ const SelectModal: React.FC<{
                 props.onSelectValue(item.value)
               }, 400)
             }}
+            style={{ flexGrow: 0 }}
           >
             <Flex
               flexDirection="row"
@@ -254,8 +261,13 @@ const SelectModal: React.FC<{
               height={ROW_HEIGHT}
               alignItems="center"
               backgroundColor={localValue === item.value ? "black5" : "white"}
+              flexGrow={0}
             >
-              <Sans size="4">{item.label}</Sans>
+              {props.renderItemLabel?.(item) ?? (
+                <Sans size="4" numberOfLines={1} ellipsizeMode="tail" style={{ flexShrink: 1 }}>
+                  {item.label}
+                </Sans>
+              )}
               {localValue === item.value ? (
                 <PopIn>
                   <CheckIcon width={25} height={25} />
