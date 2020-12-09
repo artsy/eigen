@@ -9,7 +9,9 @@ import { Select, SelectOption } from "../Select"
 import countries from "./countries.json"
 import { getCountryIso2FromPhoneNumber } from "./getCountryIso2FromPhoneNumber"
 
+const iso2dialCode = {} as Record<string, string>
 const countryOptions: Array<SelectOption<string>> = countries.map((c) => {
+  iso2dialCode[c.iso2] = c.dialCode
   return {
     label: c.name,
     value: c.iso2,
@@ -40,11 +42,14 @@ const CountryFlag: React.FC<{ iso2Code: string }> = ({ iso2Code }) => {
 export const PhoneInput: React.FC<
   {
     onChange: (fullValue: string, parts: { countryCode: string; phoneNumber: string }) => void
+    defaultCountryIso2: string
   } & Omit<InputProps, "onChange">
-> = ({ value, onChange, ...rest }) => {
-  const [countryIso, setCountryIso] = useState((value && getCountryIso2FromPhoneNumber(value)) ?? "us")
+> = ({ value, onChange, defaultCountryIso2, ...rest }) => {
+  const [countryIso, setCountryIso] = useState(
+    (value && getCountryIso2FromPhoneNumber(value)) ?? defaultCountryIso2 ?? "gb"
+  )
 
-  const countryCode = countries.find((c) => c.iso2 === countryIso)?.dialCode
+  const countryCode = iso2dialCode[countryIso]
 
   return (
     <Input
@@ -62,10 +67,8 @@ export const PhoneInput: React.FC<
             return (
               <Flex flexDirection="row" alignItems="center" flexShrink={1}>
                 <Sans size="4" style={{ width: 45 }}>
-                  +{countries.find((c) => c.iso2 === value)?.dialCode}
+                  +{iso2dialCode[value]}
                 </Sans>
-                <Spacer mr="1" />
-                <CountryFlag iso2Code={value}></CountryFlag>
                 <Spacer mr="1" />
                 <Sans size="4" numberOfLines={1} ellipsizeMode="tail" style={{ flexShrink: 1 }}>
                   {label}
