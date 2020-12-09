@@ -9,6 +9,7 @@ import {
 import { ArtistAboutContainer } from "lib/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import ArtistHeader from "lib/Components/Artist/ArtistHeader"
+import { ArtistInsightsFragmentContainer } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
 import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
@@ -23,7 +24,6 @@ import React from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
-import { ArtistInsights } from "../../Components/Artist/ArtistInsights/ArtistInsights"
 
 export const Artist: React.FC<{
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
@@ -62,7 +62,7 @@ export const Artist: React.FC<{
   if (isArtistInsightsEnabled) {
     tabs.push({
       title: "Insights",
-      content: <ArtistInsights />,
+      content: artistBelowTheFold ? <ArtistInsightsFragmentContainer artist={artistBelowTheFold} /> : <LoadingPage />,
     })
   }
 
@@ -130,6 +130,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artist
             artist(id: $artistID) {
               ...ArtistAbout_artist
               ...ArtistShows_artist
+              ...ArtistInsights_artist
             }
           }
         `,

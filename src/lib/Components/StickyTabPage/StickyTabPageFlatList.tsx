@@ -27,6 +27,7 @@ export interface StickyTabSection {
 export interface StickyTabFlatListProps
   extends Omit<FlatListProps<any>, "onScroll" | "data" | "scrollEventThrottle" | "ListHeaderComponent" | "renderItem"> {
   data: StickyTabSection[]
+  paddingHorizontal?: number
 }
 
 export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) => {
@@ -98,8 +99,7 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
         style={[
           {
             flex: 1,
-            // standard h padding, might want to override in future?
-            paddingHorizontal: space(2),
+            paddingHorizontal: props.paddingHorizontal ?? space(2),
           },
           style,
         ]}
