@@ -69,10 +69,10 @@ class MyBids extends React.Component<MyBidsProps> {
     // sort each group of lot standings by position (lot number)
     const sortedActiveLots = mapValues(activeBySaleId, (lss) => sortBy(lss, (ls) => ls?.saleArtwork?.position!))
 
-    // create list of all unique sales from lotStandings, bidders, and watchedLots (in the future).
+    // TODO: create list of all unique sales from lotStandings, bidders, and watchedLots (in the future).
     // NOTE: bidders should include lotStandings, do we need both?
 
-    // sortedSales === sortedSaleIds but not just ids
+    // sort an ordered list of sales by their relevant end time
     const sales: Sale[] = me.bidders?.map((b) => b!.sale!) || []
     const sortedSales = sortBy(sales, (sale) => {
       const timelySale = TimelySale.create(sale)
