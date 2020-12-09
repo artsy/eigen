@@ -1,5 +1,5 @@
 import { compact } from "lodash"
-import countries from "./countries.json"
+import { countries } from "./countries"
 
 export function getCountryIso2FromPhoneNumber(phoneNumber: string) {
   if (!phoneNumber.startsWith("+")) {

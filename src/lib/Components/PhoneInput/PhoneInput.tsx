@@ -2,16 +2,13 @@ import { TriangleDown } from "lib/Icons/TriangleDown"
 import { color, Flex, Sans, Spacer, Touchable } from "palette"
 import { useEffect, useState } from "react"
 import React from "react"
-import { View } from "react-native"
-import { flagMappings } from "react-native-country-flags"
+import { Image, View } from "react-native"
 import { Input, InputProps } from "../Input/Input"
 import { Select, SelectOption } from "../Select"
-import countries from "./countries.json"
+import { countries, countryIndex } from "./countries"
 import { getCountryIso2FromPhoneNumber } from "./getCountryIso2FromPhoneNumber"
 
-const iso2dialCode = {} as Record<string, string>
 const countryOptions: Array<SelectOption<string>> = countries.map((c) => {
-  iso2dialCode[c.iso2] = c.dialCode
   return {
     label: c.name,
     value: c.iso2,
@@ -32,11 +29,11 @@ const countryOptions: Array<SelectOption<string>> = countries.map((c) => {
 })
 
 const CountryFlag: React.FC<{ iso2Code: string }> = ({ iso2Code }) => {
-  const Flag = flagMappings[iso2Code]
-  if (!Flag) {
-    return <View style={{ width: 24, height: 24, backgroundColor: color("black5") }}></View>
+  const imageSrc = countryIndex[iso2Code]?.flag
+  if (!imageSrc) {
+    return <View style={{ width: 20, height: 12, backgroundColor: color("black5") }}></View>
   }
-  return <Flag width={20} height={12}></Flag>
+  return <Image width={20} height={12} source={imageSrc}></Image>
 }
 
 export const PhoneInput: React.FC<
@@ -49,7 +46,7 @@ export const PhoneInput: React.FC<
     (value && getCountryIso2FromPhoneNumber(value)) ?? defaultCountryIso2 ?? "gb"
   )
 
-  const countryCode = iso2dialCode[countryIso]
+  const countryCode = countryIndex[countryIso].dialCode
   const [phoneNumber, setPhoneNumber] = useState(
     value?.startsWith("+" + countryCode) ? value.slice(("+" + countryCode).length).trim() : value ?? ""
   )
@@ -75,8 +72,10 @@ export const PhoneInput: React.FC<
           renderItemLabel={({ label, value }) => {
             return (
               <Flex flexDirection="row" alignItems="center" flexShrink={1}>
+                <CountryFlag iso2Code={value} />
+                <Spacer mr="1" />
                 <Sans size="4" style={{ width: 45 }}>
-                  +{iso2dialCode[value]}
+                  +{countryIndex[value].dialCode}
                 </Sans>
                 <Spacer mr="1" />
                 <Sans size="4" numberOfLines={1} ellipsizeMode="tail" style={{ flexShrink: 1 }}>

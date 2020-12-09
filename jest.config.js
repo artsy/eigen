@@ -7,7 +7,6 @@ module.exports = {
     "^palette/(.*)": "<rootDir>/src/palette/$1",
     "@images/(.*)": "<rootDir>/images/$1",
     "@relay/(.*)": "<rootDir>/src/lib/relay/$1",
-    "\\.svg": "<rootDir>/__mocks__/svgMock.js",
   },
   testMatch: ["<rootDir>/src/**/__tests__/*tests.(ts|tsx|js)"],
   testEnvironment: "jsdom",
