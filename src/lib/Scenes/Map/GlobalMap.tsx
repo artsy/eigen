@@ -1,4 +1,4 @@
-import Mapbox from "@react-native-mapbox-gl/maps"
+import Mapbox, { Point } from "@react-native-mapbox-gl/maps"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
@@ -17,7 +17,7 @@ import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 // @ts-ignore
 import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
-import Supercluster from "supercluster"
+import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
 import { cityTabs } from "../City/cityTabs"
 import { bucketCityResults, BucketKey, BucketResults, emptyBucketResults } from "./bucketCityResults"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
@@ -25,7 +25,7 @@ import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { Fair, FilterData, MapGeoFeature, OSCoordsUpdate, RelayErrorState, Show } from "./types"
+import { Fair, FilterData, OSCoordsUpdate, RelayErrorState, Show } from "./types"
 
 Mapbox.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
@@ -91,19 +91,17 @@ interface State {
   /** The center location for the map right now */
   currentLocation?: { lat: number; lng: number }
   /** The users's location from core location */
-  userLocation?: { lat: number; lng: number }
+  userLocation: { lat: number; lng: number } | null
   /** A set of GeoJSON features, which right now is our show clusters */
-  featureCollections: { [key in BucketKey]: FilterData } | {}
+  featureCollections: { [key in BucketKey]: FilterData } | null
   /** Has the map fully rendered? */
   mapLoaded: boolean
   /** In the process of saving a show */
   isSavingShow: boolean
   /** Cluster map data used to populate selected cluster annotation */
-  nearestFeature: MapGeoFeature
+  nearestFeature: PointFeature<ClusterProperties & AnyProps> | PointFeature<AnyProps> | null
   /** Cluster map data used currently in view window */
-  activePin: MapGeoFeature
-  /** Current map zoom level */
-  currentZoom: number
+  activePin: GeoJSON.Feature | null
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
@@ -111,7 +109,7 @@ export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfo
 const DefaultZoomLevel = 11
 const MinZoomLevel = 9
 const MaxZoomLevel = 17.5
-const DefaultCameraMode = 1 // https://github.com/react-native-mapbox-gl/maps/blob/7.0.10/ios/RCTMGL/CameraMode.m
+const DefaultCameraMode = "flyTo"
 
 const ButtonAnimation = {
   yDelta: -300,
@@ -151,11 +149,9 @@ export class GlobalMap extends React.Component<Props, State> {
     return { lat: coords.latitude, lng: coords.longitude }
   }
 
-  map: Mapbox.MapView
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  filters: { [key: string]: FilterData }
+  map: Mapbox.MapView | null
+  camera: Mapbox.Camera | null
   hideButtons = new Animated.Value(0)
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   currentZoom: number
 
   shows: { [id: string]: Show } = {}
@@ -190,8 +186,7 @@ export class GlobalMap extends React.Component<Props, State> {
     },
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
 
     const currentLocation = this.props.initialCoordinates || get(this.props, "viewer.city.coordinates")
@@ -199,37 +194,33 @@ export class GlobalMap extends React.Component<Props, State> {
       activeShows: [],
       activeIndex: 0,
       currentLocation,
+      userLocation: null,
       bucketResults: emptyBucketResults,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       featureCollections: null,
       mapLoaded: false,
       isSavingShow: false,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       nearestFeature: null,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       activePin: null,
-      currentZoom: DefaultZoomLevel,
     }
+    this.currentZoom = DefaultZoomLevel
+    this.map = null
+    this.camera = null
 
     this.updateShowIdMap()
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  handleFilterChange = (activeIndex) => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+  handleFilterChange = (activeIndex: any) => {
     this.setState({ activeIndex, activePin: null, activeShows: [] })
   }
 
   resetZoomAndCamera = () => {
-    if (this.map) {
-      this.map.setCamera({
-        mode: DefaultCameraMode,
-        zoom: DefaultZoomLevel,
-        pitch: 0,
-        heading: 0,
-        duration: 1000,
-      })
-    }
+    this.camera?.setCamera({
+      animationMode: DefaultCameraMode,
+      zoomLevel: DefaultZoomLevel,
+      pitch: 0,
+      heading: 0,
+      animationDuration: 1000,
+    })
   }
 
   componentDidMount() {
@@ -240,15 +231,12 @@ export class GlobalMap extends React.Component<Props, State> {
     EventEmitter.unsubscribe("filters:change", this.handleFilterChange)
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  componentDidUpdate(_, prevState) {
+  componentDidUpdate(_: any, prevState: State) {
     // Update the clusterMap if new bucket results
     if (this.state.bucketResults) {
       const shouldUpdate = !isEqual(
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        prevState.bucketResults.saved.map((g) => g.is_followed),
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        this.state.bucketResults.saved.map((g) => g.is_followed)
+        prevState.bucketResults.saved.map((g) => g?.is_followed),
+        this.state.bucketResults.saved.map((g) => g?.is_followed)
       )
 
       if (shouldUpdate) {
@@ -311,8 +299,7 @@ export class GlobalMap extends React.Component<Props, State> {
       owner_type: !!type ? type : "",
     } as any
   })
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  trackPinTap(_actionName, _show, _type) {
+  trackPinTap(_actionName: any, _show: any, _type: any) {
     return null
   }
 
@@ -338,7 +325,6 @@ export class GlobalMap extends React.Component<Props, State> {
 
       clusterEngine.load(geoJSONFeature.features as any)
 
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       featureCollections[tab.id] = {
         featureCollection: geoJSONFeature,
         filter: tab.id,
@@ -357,10 +343,8 @@ export class GlobalMap extends React.Component<Props, State> {
     }
 
     const filter = cityTabs[this.state.activeIndex]
-    const {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      city: { name: cityName, slug: citySlug, sponsoredContent },
-    } = this.props.viewer
+    const { city } = this.props.viewer
+    const { name: cityName, slug: citySlug, sponsoredContent } = city ?? {}
 
     EventEmitter.dispatch("map:change", {
       filter,
@@ -408,13 +392,14 @@ export class GlobalMap extends React.Component<Props, State> {
     const { activeShows, activePin } = this.state
     const {
       properties: { cluster, type },
-    } = activePin
+    } = activePin ?? {}
 
     if (cluster) {
-      const {
-        nearestFeature: { properties, geometry },
-      } = this.state
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+      const { nearestFeature } = this.state
+      const { properties, geometry } = nearestFeature ?? {
+        properties: {},
+        geometry: { type: "Point", coordinates: [0, 0] } as GeoJSON.Point,
+      }
       const [clusterLat, clusterLng] = geometry.coordinates
 
       const clusterId = properties.cluster_id.toString()
@@ -557,7 +542,6 @@ export class GlobalMap extends React.Component<Props, State> {
 
     if (this.currentZoom !== zoom) {
       this.setState({
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         activePin: null,
       })
     }
@@ -572,7 +556,6 @@ export class GlobalMap extends React.Component<Props, State> {
     if (!this.state.isSavingShow) {
       this.setState({
         activeShows: [],
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         activePin: null,
       })
     }
@@ -581,30 +564,23 @@ export class GlobalMap extends React.Component<Props, State> {
   onPressCitySwitcherButton = () => {
     this.setState({
       activeShows: [],
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       activePin: null,
     })
   }
 
   onPressUserPositionButton = () => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const { lat, lng } = this.state.userLocation
-    this.map.moveTo([lng, lat], 500)
+    const { lat = 0, lng = 0 } = this.state.userLocation ?? {}
+    this.camera?.moveTo([lng, lat], 500)
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   onPressPinShapeLayer = (e) => this.handleFeaturePress(e.nativeEvent)
-
-  storeMapRef = (c: any) => {
-    if (c) {
-      this.map = c
-    }
-  }
 
   get currentFeatureCollection(): FilterData {
     const filterID = cityTabs[this.state.activeIndex].id
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    return this.state.featureCollections[filterID]
+    if (this.state.featureCollections === null) {
+      return {}
+    }
+    return this.state.featureCollections[filterID as BucketKey]
   }
 
   // @TODO: Implement tests for this component https://artsyproduct.atlassian.net/browse/LD-564
@@ -649,7 +625,6 @@ export class GlobalMap extends React.Component<Props, State> {
           >
             <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end" px={3}>
               <CitySwitcherButton
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 sponsoredContentUrl={this.props.viewer && this.props.viewer.city.sponsoredContent.artGuideUrl}
                 city={city}
                 isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
@@ -683,10 +658,11 @@ export class GlobalMap extends React.Component<Props, State> {
                 onUserLocationUpdate={this.onUserLocationUpdate}
                 onDidFinishRenderingMapFully={this.onDidFinishRenderingMapFully}
                 onPress={this.onPressMap}
-                ref={this.storeMapRef}
+                ref={(r: any) => (this.map = r)}
               >
                 {!!city && (
                   <>
+                    <Mapbox.Camera ref={(r) => this.camera} />
                     {!!this.state.featureCollections && (
                       <PinsShapeLayer
                         filterID={cityTabs[this.state.activeIndex].id}
@@ -782,10 +758,12 @@ export class GlobalMap extends React.Component<Props, State> {
     })
   }
 
-  getNearestPointToLatLongInCollection(values: { lat: number; lng: number }, features: any[]) {
+  getNearestPointToLatLongInCollection(
+    values: { lat: number; lng: number },
+    features: Array<PointFeature<ClusterProperties & AnyProps> | PointFeature<AnyProps>>
+  ) {
     // https://stackoverflow.com/a/21623206
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    function distance(lat1, lon1, lat2, lon2) {
+    function distance(lat1: number, lon1: number, lat2: number, lon2: number) {
       const p = 0.017453292519943295 // Math.PI / 180
       const c = Math.cos
       const a = 0.5 - c((lat2 - lat1) * p) / 2 + (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2

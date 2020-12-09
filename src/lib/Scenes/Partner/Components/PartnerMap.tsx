@@ -16,7 +16,13 @@ const PartnerMap: React.FC<{
   location: PartnerMap_location
 }> = ({ location }) => {
   const { address, address2, city, postalCode, internalID } = location
-  const { lat, lng } = location.coordinates ?? { lat: null, lng: null }
+  let { lat, lng } = location.coordinates ?? { lat: null, lng: null }
+  if (lat === null) {
+    lat = 0
+  }
+  if (lng === null) {
+    lng = 0
+  }
 
   return (
     <Box px={2} mt={2}>

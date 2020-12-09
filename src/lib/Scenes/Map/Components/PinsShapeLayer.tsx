@@ -115,6 +115,7 @@ export class ShapeLayer extends Component<Props, State> {
         <Mapbox.Animated.SymbolLayer
           id="singleShow"
           filter={["!", "has", "point_count"]}
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           style={[singleShowStyle, { iconOpacity: this.state.pinOpacity }]}
         />
         <Mapbox.Animated.SymbolLayer id="pointCount" style={clusterCountStyle} />
@@ -122,6 +123,7 @@ export class ShapeLayer extends Component<Props, State> {
           id="clusteredPoints"
           belowLayerID="pointCount"
           filter={["has", "point_count"]}
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           style={[clusteredPointsStyle, { circleOpacity: this.state.clusterOpacity }]}
         />
       </Mapbox.Animated.ShapeSource>
