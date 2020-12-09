@@ -1,7 +1,7 @@
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import { Autocomplete } from "lib/utils/Autocomplete"
 import { CheckIcon, CloseIcon, color, Flex, Sans, Separator, Spacer, Touchable } from "palette"
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
 import { FancyModal } from "./FancyModal/FancyModal"
 import { INPUT_HEIGHT } from "./Input/Input"
@@ -178,23 +178,32 @@ const SelectModal: React.FC<{
   }, [autocomplete, searchTerm])
 
   const flatListRef = useRef<FlatList>(null)
-  const flatListHeight = useRef(0)
+  const flatListHeight = useRef<number | null>(null)
 
   // scroll to show the selected value whenever we either clear the
   // search input, or show the modal.
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!props.visible) {
       return
     }
 
     if (!searchTerm.trim() && selectedItem) {
-      // search was cleared (or hasn't been touched yet) and the user has previously selected a value
-      const initialScrollIndex = props.options.indexOf(selectedItem)
-      // try to center the option on screen
-      const initialScrollOffset = initialScrollIndex * ROW_HEIGHT - flatListHeight.current / 2 + ROW_HEIGHT
-      requestAnimationFrame(() => {
-        flatListRef.current?.scrollToOffset({ offset: initialScrollOffset, animated: false })
-      })
+      const scrollToSelectedItem = async () => {
+        let safety = 0
+        // wait for flat list to lay out
+        while (flatListHeight.current == null && safety++ < 100) {
+          await new Promise((r) => requestAnimationFrame(r))
+        }
+        // search was cleared (or hasn't been touched yet) and the user has previously selected a value
+        const initialScrollIndex = props.options.indexOf(selectedItem)
+        // try to center the option on screen
+        const initialScrollOffset = initialScrollIndex * ROW_HEIGHT - (flatListHeight.current ?? 0) / 2 + ROW_HEIGHT
+        requestAnimationFrame(() => {
+          flatListRef.current?.scrollToOffset({ offset: initialScrollOffset, animated: false })
+        })
+      }
+
+      scrollToSelectedItem()
     } else {
       requestAnimationFrame(() => {
         flatListRef.current?.scrollToOffset({ offset: 0, animated: false })
