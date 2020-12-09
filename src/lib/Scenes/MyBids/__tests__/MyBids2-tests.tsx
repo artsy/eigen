@@ -125,7 +125,7 @@ describe("My Bids", () => {
     expect(activeLots[0]).toContain("Passed")
   })
 
-  it("renders the no upcoming bids view when there are no active bids", () => {
+  it("renders the empty view when there are no active bids", () => {
     const wrapper = getWrapper({
       Me: () => ({
         auctionsLotStandingConnection: {
@@ -134,13 +134,13 @@ describe("My Bids", () => {
       }),
     })
 
-    expect(extractText(wrapper.root)).toContain("You don't have any upcoming bids.")
+    expect(extractText(wrapper.root)).toContain("Discover works for you at auction")
     expect(extractText(wrapper.root)).toContain(
-      "Watch a live auction and place bids in advance or in real time, or you can bid in our curated timed auction"
+      "Browse and bid in auctions around the world, from online-only sales to benefit auctions—all in the Artsy app"
     )
   })
 
-  it("renders the no bidding history view when there are no closed bids", () => {
+  it("renders the empty view when there are no closed bids", () => {
     const wrapper = getWrapper({
       Me: () => ({
         auctionsLotStandingConnection: {
@@ -149,9 +149,9 @@ describe("My Bids", () => {
       }),
     })
 
-    expect(extractText(wrapper.root)).toContain("No bidding history")
+    expect(extractText(wrapper.root)).toContain("Discover works for you at auction")
     expect(extractText(wrapper.root)).toContain(
-      "Watch a live auction and place bids in advance or in real time, or you can bid in our curated timed auction"
+      "Browse and bid in auctions around the world, from online-only sales to benefit auctions—all in the Artsy app"
     )
   })
 })

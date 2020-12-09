@@ -61,7 +61,7 @@ jest.mock("./lib/NativeModules/Events.tsx", () => ({
 jest.mock("@sentry/react-native", () => ({ captureMessage() {} }))
 
 // Needing to mock react-native-scrollable-tab-view due to Flow issue
-jest.mock("react-native-scrollable-tab-view", () => jest.fn())
+jest.mock("react-native-scrollable-tab-view", () => jest.fn(() => null))
 
 jest.mock("@mapbox/react-native-mapbox-gl", () => ({
   MapView: () => null,
