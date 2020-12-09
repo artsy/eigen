@@ -3,6 +3,7 @@ import { color, Flex, Sans, Spacer, Touchable } from "palette"
 import { useEffect, useState } from "react"
 import React from "react"
 import { Image, View } from "react-native"
+import { getCountry } from "react-native-localize"
 import { Input, InputProps } from "../Input/Input"
 import { Select, SelectOption } from "../Select"
 import { countries, countryIndex } from "./countries"
@@ -36,27 +37,40 @@ const CountryFlag: React.FC<{ iso2Code: string }> = ({ iso2Code }) => {
   return <Image width={20} height={12} source={imageSrc}></Image>
 }
 
-export const PhoneInput: React.FC<
-  {
-    onChange: (fullValue: string, parts: { countryCode: string; phoneNumber: string }) => void
-    defaultCountryIso2: string
-  } & Omit<InputProps, "onChange">
-> = ({ value, onChange, defaultCountryIso2, ...rest }) => {
-  const [countryIso, setCountryIso] = useState(
-    (value && getCountryIso2FromPhoneNumber(value)) ?? defaultCountryIso2 ?? "gb"
-  )
+function cleanUserPhoneNumber(value: string) {
+  // try to parse out the country code from the phone number
+  if (value.startsWith("00")) {
+    value = "+" + value.slice(2)
+  }
+  // fall back to user's current locale
+  const countryCode = getCountryIso2FromPhoneNumber(value) ?? getCountry().toLowerCase()
+  const dialCode = countryIndex[countryCode].dialCode
+  const phoneNumber = value.startsWith("+" + dialCode) ? value.slice(dialCode.length + 1) : value
+  return { countryCode, phoneNumber }
+}
 
-  const countryCode = countryIndex[countryIso].dialCode
-  const [phoneNumber, setPhoneNumber] = useState(
-    value?.startsWith("+" + countryCode) ? value.slice(("+" + countryCode).length).trim() : value ?? ""
-  )
+export const PhoneInput = React.forwardRef<
+  Input,
+  {
+    onChange?: (value: string) => void
+  } & Omit<InputProps, "onChange">
+>(({ value, onChange, onChangeText, ...rest }, ref) => {
+  const initialValues = cleanUserPhoneNumber(value ?? "")
+
+  const [countryCode, setCountryCode] = useState(initialValues.countryCode)
+  const [phoneNumber, setPhoneNumber] = useState(initialValues.phoneNumber)
+
+  const dialCode = countryIndex[countryCode].dialCode
 
   useEffect(() => {
-    onChange?.(`+${countryCode} ${phoneNumber}`, { countryCode, phoneNumber })
-  }, [phoneNumber, countryCode])
+    const newValue = `+${dialCode} ${phoneNumber}`
+    onChangeText?.(newValue)
+    onChange?.(newValue)
+  }, [phoneNumber, dialCode])
 
   return (
     <Input
+      ref={ref}
       {...rest}
       value={phoneNumber}
       onChangeText={setPhoneNumber}
@@ -65,8 +79,8 @@ export const PhoneInput: React.FC<
         <Select<string>
           options={countryOptions}
           enableSearch
-          value={countryIso}
-          onSelectValue={setCountryIso}
+          value={countryCode}
+          onSelectValue={setCountryCode}
           title="Country code"
           // tslint:disable-next-line:no-shadowed-variable
           renderItemLabel={({ label, value }) => {
@@ -95,7 +109,7 @@ export const PhoneInput: React.FC<
                   </Flex>
                   <Flex justifyContent="center" pl="1">
                     <Sans color="black30" size="3" mt="2px">
-                      +{countryCode}
+                      +{dialCode}
                     </Sans>
                   </Flex>
                 </Flex>
@@ -106,4 +120,4 @@ export const PhoneInput: React.FC<
       )}
     />
   )
-}
+})
