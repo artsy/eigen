@@ -21,6 +21,7 @@ export type ArtistInsightsAuctionResult_auctionResult = {
     } | null;
     readonly mediumText: string | null;
     readonly organization: string | null;
+    readonly boughtIn: boolean | null;
     readonly priceRealized: {
         readonly display: string | null;
         readonly cents: number | null;
@@ -155,6 +156,13 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
+      "kind": "ScalarField",
+      "name": "boughtIn",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
       "concreteType": "AuctionResultPriceRealized",
       "kind": "LinkedField",
       "name": "priceRealized",
@@ -195,5 +203,5 @@ const node: ReaderFragment = {
   "type": "AuctionResult",
   "abstractKey": null
 };
-(node as any).hash = '665e915ee5d06eea3819c5f595db435c';
+(node as any).hash = 'f9de04270a923bfd6d1926d17fbb9958';
 export default node;

@@ -13,7 +13,9 @@ interface Props {
 const ArtistInsightsAuctionResult: React.FC<Props> = ({ auctionResult }) => {
   const now = moment()
 
-  const awaitingResults = auctionResult.saleDate ? moment(auctionResult.saleDate).isAfter(now) : false
+  const isFromPastMonth = auctionResult.saleDate
+    ? moment(auctionResult.saleDate).isAfter(now.subtract(1, "month"))
+    : false
 
   const getRatio = useCallback(() => {
     if (!auctionResult.priceRealized?.cents || !auctionResult.estimate?.low) {
@@ -93,7 +95,7 @@ const ArtistInsightsAuctionResult: React.FC<Props> = ({ auctionResult }) => {
               </Flex>
             ) : (
               <Text variant="mediumText" style={{ width: 70 }} textAlign="right">
-                {awaitingResults ? "Awaiting results" : "Not available"}
+                {isFromPastMonth ? "Awaiting results" : auctionResult.boughtIn === true ? "Bought in" : "Not available"}
               </Text>
             )}
           </Flex>
@@ -133,6 +135,7 @@ export const ArtistInsightsAuctionResultFragmentContainer = createFragmentContai
       }
       mediumText
       organization
+      boughtIn
       priceRealized {
         display
         cents

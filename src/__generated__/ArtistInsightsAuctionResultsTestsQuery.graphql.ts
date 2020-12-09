@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1b554caf04bcd72535874d487ced163a */
+/* @relayHash 060e4bf98f396f19f1da4d62c02059f6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -43,6 +43,7 @@ fragment ArtistInsightsAuctionResult_auctionResult on AuctionResult {
   }
   mediumText
   organization
+  boughtIn
   priceRealized {
     display
     cents
@@ -297,6 +298,13 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "boughtIn",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "AuctionResultPriceRealized",
                         "kind": "LinkedField",
                         "name": "priceRealized",
@@ -399,7 +407,7 @@ return {
     ]
   },
   "params": {
-    "id": "1b554caf04bcd72535874d487ced163a",
+    "id": "060e4bf98f396f19f1da4d62c02059f6",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
@@ -428,6 +436,12 @@ return {
           "type": "AuctionResult"
         },
         "artist.auctionResultsConnection.edges.node.__typename": (v3/*: any*/),
+        "artist.auctionResultsConnection.edges.node.boughtIn": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Boolean"
+        },
         "artist.auctionResultsConnection.edges.node.currency": (v4/*: any*/),
         "artist.auctionResultsConnection.edges.node.dateText": (v4/*: any*/),
         "artist.auctionResultsConnection.edges.node.estimate": {
