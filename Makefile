@@ -85,12 +85,12 @@ deploy_if_beta_branch:
 	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make distribute; fi
 
 deploy:
-	git push origin "$(LOCAL_BRANCH):beta" -f
+	git push origin "$(LOCAL_BRANCH):beta" -f --no-verify
 
 ### App Store Submission
 
 promote_beta_to_submission:
-	git push origin "$(LOCAL_BRANCH):app_store_submission" -f
+	git push origin "$(LOCAL_BRANCH):app_store_submission" -f --no-verify
 
 promote_if_app_store_submission_branch:
 	if [ "$(LOCAL_BRANCH)" == "app_store_submission" ]; then make _promote_beta; fi
@@ -150,7 +150,7 @@ push:
 	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push origin $(LOCAL_BRANCH):$(BRANCH); fi
 
 fpush:
-	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push origin $(LOCAL_BRANCH):$(BRANCH) --force; fi
+	if [ "$(LOCAL_BRANCH)" == "master" ]; then echo "In master, not pushing"; else git push origin $(LOCAL_BRANCH):$(BRANCH) --force --no-verify; fi
 
 # Clear local caches and build files
 flip_table:
