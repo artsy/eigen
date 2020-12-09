@@ -6,6 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type AuctionsSoldStatus = "ForSale" | "Passed" | "Sold" | "%future added value";
 export type MyBids_me = {
+    readonly identityVerified: boolean | null;
     readonly auctionsLotStandingConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -28,6 +29,7 @@ export type MyBids_me = {
             };
         } | null> | null;
     };
+    readonly " $fragmentRefs": FragmentRefs<"SaleCard_me">;
     readonly " $refType": "MyBids_me";
 };
 export type MyBids_me$data = MyBids_me;
@@ -47,23 +49,46 @@ var v0 = {
   "storageKey": null
 };
 return {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": 25,
+      "kind": "LocalArgument",
+      "name": "count"
+    },
+    {
+      "defaultValue": "",
+      "kind": "LocalArgument",
+      "name": "cursor"
+    }
+  ],
   "kind": "Fragment",
-  "metadata": null,
+  "metadata": {
+    "connection": [
+      {
+        "count": "count",
+        "cursor": "cursor",
+        "direction": "forward",
+        "path": [
+          "auctionsLotStandingConnection"
+        ]
+      }
+    ]
+  },
   "name": "MyBids_me",
   "selections": [
     {
       "alias": null,
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "first",
-          "value": 25
-        }
-      ],
+      "args": null,
+      "kind": "ScalarField",
+      "name": "identityVerified",
+      "storageKey": null
+    },
+    {
+      "alias": "auctionsLotStandingConnection",
+      "args": null,
       "concreteType": "AuctionsLotStandingConnection",
       "kind": "LinkedField",
-      "name": "auctionsLotStandingConnection",
+      "name": "__MyBids_auctionsLotStandingConnection_connection",
       "plural": false,
       "selections": [
         {
@@ -165,6 +190,13 @@ return {
                   "storageKey": null
                 },
                 {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
+                  "storageKey": null
+                },
+                {
                   "args": null,
                   "kind": "FragmentSpread",
                   "name": "ActiveLot_lotStanding"
@@ -176,17 +208,54 @@ return {
                 }
               ],
               "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "AuctionsPageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "endCursor",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "hasNextPage",
+              "storageKey": null
             }
           ],
           "storageKey": null
         }
       ],
-      "storageKey": "auctionsLotStandingConnection(first:25)"
+      "storageKey": null
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "SaleCard_me"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
 })();
-(node as any).hash = '6048cb7c56148cf77b09ca0e2e5def21';
+(node as any).hash = 'f235f997ce8bd5cc78ab81d12aa81224';
 export default node;

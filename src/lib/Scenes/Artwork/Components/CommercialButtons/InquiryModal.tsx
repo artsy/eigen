@@ -2,13 +2,14 @@ import { InquiryModal_artwork } from "__generated__/InquiryModal_artwork.graphql
 import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { TextArea } from "lib/Components/TextArea"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { LocationWithDetails } from "lib/utils/googleMaps"
 import { Box, color, Flex, Separator, space, Text } from "palette"
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
-import { LayoutAnimation, ScrollView, TextInput, TextInputProps, TouchableOpacity } from "react-native"
+import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
@@ -59,75 +60,75 @@ const InquiryQuestionOption: React.FC<{
 
   React.useLayoutEffect(maybeRegisterAnimation, [questionSelected])
 
+  const setSelection = () => {
+    dispatch({
+      type: "selectInquiryQuestion",
+      payload: {
+        questionID: id,
+        details: isShipping ? state.shippingLocation?.name : null,
+        isChecked: !questionSelected,
+      },
+    })
+  }
+
   return (
     <React.Fragment>
-      <Flex
-        style={{
-          borderColor: questionSelected ? color("black100") : color("black10"),
-          borderWidth: 1,
-          borderRadius: 5,
-          flexDirection: "column",
-          marginTop: space(1),
-          padding: space(2),
-        }}
-      >
-        <Flex flexDirection="row" justifyContent="space-between">
-          <Flex flexDirection="row">
-            <Checkbox
-              data-test-id={`checkbox-${id}`}
-              checked={questionSelected}
-              onPress={() => {
-                dispatch({
-                  type: "selectInquiryQuestion",
-                  payload: {
-                    questionID: id,
-                    details: isShipping ? state.shippingLocation?.name : null,
-                    isChecked: !questionSelected,
-                  },
-                })
-              }}
-            />
-            <Text variant="text">{question}</Text>
+      <TouchableOpacity onPress={setSelection}>
+        <Flex
+          style={{
+            borderColor: questionSelected ? color("black100") : color("black10"),
+            borderWidth: 1,
+            borderRadius: 5,
+            flexDirection: "column",
+            marginTop: space(1),
+            padding: space(2),
+          }}
+        >
+          <Flex flexDirection="row" justifyContent="space-between">
+            <Flex flexDirection="row">
+              <Checkbox data-test-id={`checkbox-${id}`} checked={questionSelected} onPress={setSelection} />
+              <Text variant="text">{question}</Text>
+            </Flex>
           </Flex>
+
+          {!!isShipping && !!questionSelected && (
+            <>
+              <Separator my={2} />
+
+              <TouchableOpacity
+                data-test-id="toggle-shipping-modal"
+                onPress={() => {
+                  if (typeof setShippingModalVisibility === "function") {
+                    setShippingModalVisibility(true)
+                  }
+                }}
+              >
+                <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+                  {!state.shippingLocation ? (
+                    <>
+                      <Text variant="text" color="black60">
+                        Add your location
+                      </Text>
+                      <Box>
+                        <ChevronIcon color="black60" />
+                      </Box>
+                    </>
+                  ) : (
+                    <>
+                      <Text variant="text" color="black100" style={{ width: "70%" }}>
+                        {state.shippingLocation.name}
+                      </Text>
+                      <Text variant="text" color="purple100">
+                        Edit
+                      </Text>
+                    </>
+                  )}
+                </Flex>
+              </TouchableOpacity>
+            </>
+          )}
         </Flex>
-
-        {!!isShipping && !!questionSelected && (
-          <>
-            <Separator my={2} />
-
-            <TouchableOpacity
-              data-test-id="toggle-shipping-modal"
-              onPress={() => {
-                if (typeof setShippingModalVisibility === "function") {
-                  setShippingModalVisibility(true)
-                }
-              }}
-            >
-              <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                {!state.shippingLocation ? (
-                  <>
-                    <Text variant="text" color="black60">
-                      Add your location
-                    </Text>
-                    <Box>
-                      <ChevronIcon color="black60" />
-                    </Box>
-                  </>
-                ) : (
-                  <>
-                    <Text variant="text" color="black100" style={{ width: "70%" }}>
-                      {state.shippingLocation.name}
-                    </Text>
-                    <Text variant="text" color="purple100">
-                      Edit
-                    </Text>
-                  </>
-                )}
-              </Flex>
-            </TouchableOpacity>
-          </>
-        )}
-      </Flex>
+      </TouchableOpacity>
     </React.Fragment>
   )
 }
@@ -238,46 +239,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         location={state.shippingLocation}
       />
     </FancyModal>
-  )
-}
-
-const StyledTextArea = styled(TextInput)`
-  border: solid 1px;
-  padding: ${space(1)}px;
-  min-height: 88px;
-  max-height: 200px;
-`
-
-// TODO: Replace with Palette when available
-interface TextAreaProps extends TextInputProps {
-  title: string
-  onFocus?: () => void
-}
-const TextArea: React.FC<TextAreaProps> = ({ title, onFocus, ...props }) => {
-  const [borderColor, setBorderColor] = useState(color("black10"))
-
-  return (
-    <>
-      {!!title && (
-        <Text mb={1} variant="mediumText">
-          {title}
-        </Text>
-      )}
-      <StyledTextArea
-        {...props}
-        onFocus={() => {
-          if (onFocus) {
-            onFocus()
-          }
-          setBorderColor(color("purple100"))
-        }}
-        onBlur={() => {
-          setBorderColor(color("black10"))
-        }}
-        style={{ borderColor }}
-        multiline={true}
-      />
-    </>
   )
 }
 

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d2e9b83eb5490ad366870f907323e0de */
+/* @relayHash 48bfb5a03788e6e1176e56b014179fbe */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionArtworkListItemTestsQueryVariables = {};
@@ -29,6 +29,7 @@ export type MyCollectionArtworkListItemTestsQueryResponse = {
         readonly internalID: string;
         readonly medium: string | null;
         readonly metric: string | null;
+        readonly provenance: string | null;
         readonly slug: string;
         readonly title: string | null;
         readonly width: string | null;
@@ -67,6 +68,7 @@ query MyCollectionArtworkListItemTestsQuery {
     internalID
     medium
     metric
+    provenance
     slug
     title
     width
@@ -211,29 +213,36 @@ v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "provenance",
   "storageKey": null
 },
 v17 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "title",
+  "name": "slug",
   "storageKey": null
 },
 v18 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
+  "storageKey": null
+},
+v19 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v19 = {
+v20 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v20 = {
+v21 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -282,6 +291,7 @@ return {
           (v15/*: any*/),
           (v16/*: any*/),
           (v17/*: any*/),
+          (v18/*: any*/),
           (v12/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-slug\")"
@@ -333,6 +343,7 @@ return {
           (v15/*: any*/),
           (v16/*: any*/),
           (v17/*: any*/),
+          (v18/*: any*/),
           (v12/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-slug\")"
@@ -340,7 +351,7 @@ return {
     ]
   },
   "params": {
-    "id": "d2e9b83eb5490ad366870f907323e0de",
+    "id": "48bfb5a03788e6e1176e56b014179fbe",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -355,39 +366,40 @@ return {
           "plural": false,
           "type": "Artist"
         },
-        "artwork.artist.id": (v18/*: any*/),
-        "artwork.artist.internalID": (v18/*: any*/),
-        "artwork.artistNames": (v19/*: any*/),
-        "artwork.category": (v19/*: any*/),
-        "artwork.costCurrencyCode": (v19/*: any*/),
-        "artwork.costMinor": (v20/*: any*/),
-        "artwork.date": (v19/*: any*/),
-        "artwork.depth": (v19/*: any*/),
-        "artwork.editionNumber": (v19/*: any*/),
-        "artwork.editionSize": (v19/*: any*/),
-        "artwork.height": (v19/*: any*/),
-        "artwork.id": (v18/*: any*/),
+        "artwork.artist.id": (v19/*: any*/),
+        "artwork.artist.internalID": (v19/*: any*/),
+        "artwork.artistNames": (v20/*: any*/),
+        "artwork.category": (v20/*: any*/),
+        "artwork.costCurrencyCode": (v20/*: any*/),
+        "artwork.costMinor": (v21/*: any*/),
+        "artwork.date": (v20/*: any*/),
+        "artwork.depth": (v20/*: any*/),
+        "artwork.editionNumber": (v20/*: any*/),
+        "artwork.editionSize": (v20/*: any*/),
+        "artwork.height": (v20/*: any*/),
+        "artwork.id": (v19/*: any*/),
         "artwork.images": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "Image"
         },
-        "artwork.images.height": (v20/*: any*/),
+        "artwork.images.height": (v21/*: any*/),
         "artwork.images.isDefault": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Boolean"
         },
-        "artwork.images.url": (v19/*: any*/),
-        "artwork.images.width": (v20/*: any*/),
-        "artwork.internalID": (v18/*: any*/),
-        "artwork.medium": (v19/*: any*/),
-        "artwork.metric": (v19/*: any*/),
-        "artwork.slug": (v18/*: any*/),
-        "artwork.title": (v19/*: any*/),
-        "artwork.width": (v19/*: any*/)
+        "artwork.images.url": (v20/*: any*/),
+        "artwork.images.width": (v21/*: any*/),
+        "artwork.internalID": (v19/*: any*/),
+        "artwork.medium": (v20/*: any*/),
+        "artwork.metric": (v20/*: any*/),
+        "artwork.provenance": (v20/*: any*/),
+        "artwork.slug": (v19/*: any*/),
+        "artwork.title": (v20/*: any*/),
+        "artwork.width": (v20/*: any*/)
       }
     },
     "name": "MyCollectionArtworkListItemTestsQuery",

@@ -595,7 +595,7 @@ DEPENDENCIES:
   - OHHTTPStubs
   - ORKeyboardReactingApplication
   - ORStackView (= 2.0.3)
-  - Pulley (from `https://github.com/l2succes/Pulley.git`, branch `master`)
+  - Pulley (from `https://github.com/brainbicycle/Pulley.git`, branch `master`)
   - Quick (= 2.0.0)
   - RCTRequired (from `./node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `./node_modules/react-native/Libraries/TypeSafety`)
@@ -749,7 +749,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/orta/JLRoutes.git
   Pulley:
     :branch: master
-    :git: https://github.com/l2succes/Pulley.git
+    :git: https://github.com/brainbicycle/Pulley.git
   RCTRequired:
     :path: "./node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
@@ -857,8 +857,8 @@ CHECKOUT OPTIONS:
     :commit: 5a6df1a795766a4d3e586508e86ec9271d3ef3d9
     :git: https://github.com/orta/JLRoutes.git
   Pulley:
-    :commit: 23f1c0e8cad5a72d03176fe33535c14726e7a160
-    :git: https://github.com/l2succes/Pulley.git
+    :commit: f677b18b332ea3798dc379879dbc0d038efd3ccc
+    :git: https://github.com/brainbicycle/Pulley.git
   SSFadingScrollView:
     :commit: 3920e3582e46c9fe23b0d1200e28614ebd66d801
     :git: https://github.com/alloy/SSFadingScrollView.git
@@ -982,6 +982,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 2b3d60f7af7fb9abd9e1ca7d370704ed8cc149ac
+PODFILE CHECKSUM: 872157d0f969a68e0fe9d70e1ce0095b013a9ba7
 
 COCOAPODS: 1.7.5

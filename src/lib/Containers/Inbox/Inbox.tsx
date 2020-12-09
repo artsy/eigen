@@ -1,7 +1,6 @@
 import { Inbox_me } from "__generated__/Inbox_me.graphql"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { ActiveBids as ActiveBidsRef } from "lib/Scenes/Inbox/Components/ActiveBids"
 import { ConversationsContainer } from "lib/Scenes/Inbox/Components/Conversations/Conversations"
 import { MyBidsContainer } from "lib/Scenes/MyBids/MyBids"
 import { listenToNativeEvents } from "lib/store/NativeModel"
@@ -29,8 +28,9 @@ const Container = styled.ScrollView`
 export class Inbox extends React.Component<Props, State> {
   // @ts-ignore STRICTNESS_MIGRATION
   conversations: ConversationsRef
+
   // @ts-ignore STRICTNESS_MIGRATION
-  activeBids: ActiveBidsRef
+  myBids: MyBidsRef
 
   state = {
     fetchingData: false,
@@ -66,10 +66,12 @@ export class Inbox extends React.Component<Props, State> {
 
     this.setState({ fetchingData: true })
 
-    if (this.activeBids && this.conversations) {
-      // Allow Conversations & Active Bids to properly force-fetch themselves.
-      this.activeBids.refreshActiveBids()
+    if (this.conversations) {
       this.conversations.refreshConversations(() => {
+        this.setState({ fetchingData: false })
+      })
+    } else if (this.myBids) {
+      this.myBids.refreshMyBids(() => {
         this.setState({ fetchingData: false })
       })
     } else {
@@ -110,7 +112,7 @@ export class Inbox extends React.Component<Props, State> {
             componentRef={(conversations) => (this.conversations = conversations)}
           />
         ) : (
-          <MyBidsContainer me={this.props.me} />
+          <MyBidsContainer me={this.props.me} componentRef={(myBids) => (this.myBids = myBids)} />
         )}
       </Container>
     )

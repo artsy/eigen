@@ -1,12 +1,8 @@
 upcoming:
-  version: 6.7.3
+  version: 6.7.4
   date: TBD
   dev:
-    - Update color scheme - mdole
-    - Allow for multiple artwork images in My Collection - adam
-    - Set price and marketing text dynamically - adam
-    - Migrate floor selling price and online asking price in My Bids to the new type - starsirius
-    - remove new inquiry flow feature flag in favor of echo flag - lily
+    -
   user_facing:
     - Add artist past shows screen - mounir
     - Add loading spinner to infinite artwork grid on artist page - david
@@ -18,7 +14,32 @@ upcoming:
     - removed x from inquiry sent notification - lily
     - Minor copy changes for My Collection - pepopowitz
     - Move shows entry point to about tab - mounir
+    -
+
 releases:
+  - version: 6.7.3
+    date: Dec 8, 2020
+    dev:
+      - Update color scheme - mdole
+      - Allow for multiple artwork images in My Collection - adam
+      - Set price and marketing text dynamically - adam
+      - Migrate floor selling price and online asking price in My Bids to the new type - starsirius
+      - remove new inquiry flow feature flag in favor of echo flag - lily
+    user_facing:
+      - Add artist past shows screen - mounir
+      - Add loading spinner to infinite artwork grid on artist page - david
+      - Avoid shrinking the background on non-fullscreen fancy modals - david
+      - Add pull to refresh to bids view - lily
+      - Support iOS 14 photo picker in My Collection - brian
+      - Scroll to add message input on Inquire screen - ashley, mounir
+      - Make add message input height relative to its size - ashley, mounir
+      - Avoid shrinking the background on non-fullscreen fancy modals - david
+      - removed x from inquiry sent notification - lily
+      - Minor copy changes for My Collection - pepopowitz
+      - Fix city guide hang on iOS 14 - brian
+      - Fix apns token registration issue - brian
+      - Fix regression that hids textarea in 1st inquiry modal - christina
+
   - version: 6.7.2
     date: November 30, 2020
     dev:

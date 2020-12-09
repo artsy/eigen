@@ -80,7 +80,7 @@ target 'Artsy' do
   pod 'Emission', path: './emission'
 
   # For Stripe integration with Emission. Using Ash's fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
-  pod 'Pulley', git: 'https://github.com/l2succes/Pulley.git', branch: 'master'
+  pod 'Pulley', git: 'https://github.com/brainbicycle/Pulley.git', branch: 'master'
 
   # Facebook
   pod 'FBSDKCoreKit', '~> 8.0.0'

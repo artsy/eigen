@@ -1209,13 +1209,17 @@ type Artwork implements Node & Searchable & Sellable {
   ): [Artist]
   artistSeriesConnection(after: String, before: String, first: Int, last: Int): ArtistSeriesConnection
 
-  # Attribution class object
+  # Represents the "**classification**" of an artwork, such as _limited edition_
   attributionClass: AttributionClass
   availability: String
   cached: Int
 
   # Can a user request a lot conditions report for this artwork?
   canRequestLotConditionsReport: Boolean
+
+  # Represents the "**medium type**", such as _Painting_. (This field is also
+  # commonly referred to as just "medium", but should not be confused with the
+  # artwork attribute called `medium`.)
   category: String
 
   # Returns the display label and detail for artwork certificate of authenticity
@@ -1331,6 +1335,10 @@ type Artwork implements Node & Searchable & Sellable {
   listPrice: ListPrice
   literature(format: Format): String
   manufacturer(format: Format): String
+
+  # Represents the **materials** used in this work, such as _oil and acrylic on
+  # canvas_. (This should not be confused with the artwork attribute called
+  # `category`, which is commonly referred to as "medium" or "medium type")
   medium: String
   meta: ArtworkMeta
 
@@ -1787,10 +1795,10 @@ type AuctionsLotStanding implements AuctionsNode {
   # The current leading bid on the lot, whether it is winning or not
   leadingBidAmount: AuctionsMoney!
 
-  # whether this user has the leading bid
+  # Current lot state
   lot: AuctionsLotState!
 
-  # whether this user has the leading bid
+  # Current lot state
   lotState: AuctionsLotState! @deprecated(reason: "prefer `lot`")
   rawId: String!
   saleArtwork: SaleArtwork
