@@ -1,7 +1,7 @@
 import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import { bullet, Flex, Sans } from "palette"
+import { Flex, Sans } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -91,7 +91,7 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
                   </Sans>
                   <Sans numberOfLines={1} size="3t" color="black60" data-test-id="card-subtitle">
                     {result?.exhibitionPeriod}
-                    {Boolean(location) && ` ${bullet} ${location}`}
+                    {Boolean(location) && `  •  ${location}`}
                   </Sans>
                 </MetadataContainer>
               </View>
