@@ -3,7 +3,6 @@ import { countries } from "./countries"
 
 export function getCountryIso2FromPhoneNumber(phoneNumber: string) {
   if (!phoneNumber.startsWith("+")) {
-    // TODO: handle '00' logic?
     return null
   }
   phoneNumber = phoneNumber.slice(1).replace(/\D/g, "")

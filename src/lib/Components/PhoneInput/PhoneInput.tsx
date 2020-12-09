@@ -3,11 +3,10 @@ import { color, Flex, Sans, Spacer, Touchable } from "palette"
 import { useEffect, useState } from "react"
 import React from "react"
 import { Image, View } from "react-native"
-import { getCountry } from "react-native-localize"
 import { Input, InputProps } from "../Input/Input"
 import { Select, SelectOption } from "../Select"
+import { cleanUserPhoneNumber } from "./cleanUserPhoneNumber"
 import { countries, countryIndex } from "./countries"
-import { getCountryIso2FromPhoneNumber } from "./getCountryIso2FromPhoneNumber"
 
 const countryOptions: Array<SelectOption<string>> = countries.map((c) => {
   return {
@@ -35,18 +34,6 @@ const CountryFlag: React.FC<{ iso2Code: string }> = ({ iso2Code }) => {
     return <View style={{ width: 20, height: 12, backgroundColor: color("black5") }}></View>
   }
   return <Image width={20} height={12} source={imageSrc}></Image>
-}
-
-function cleanUserPhoneNumber(value: string) {
-  // try to parse out the country code from the phone number
-  if (value.startsWith("00")) {
-    value = "+" + value.slice(2)
-  }
-  // fall back to user's current locale
-  const countryCode = getCountryIso2FromPhoneNumber(value) ?? getCountry().toLowerCase()
-  const dialCode = countryIndex[countryCode].dialCode
-  const phoneNumber = value.startsWith("+" + dialCode) ? value.slice(dialCode.length + 1) : value
-  return { countryCode, phoneNumber }
 }
 
 export const PhoneInput = React.forwardRef<
