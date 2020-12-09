@@ -1,13 +1,14 @@
 import { MyBids2TestsQuery } from "__generated__/MyBids2TestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { PlaceholderText } from "lib/utils/placeholders"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ActiveLot } from "../Components/ActiveLot"
 import { ClosedLot } from "../Components/ClosedLot"
-import { MyBidsContainer } from "../MyBids"
+import { MyBidsContainer, MyBidsQueryRenderer } from "../MyBids"
 
 jest.unmock("react-relay")
 
@@ -59,33 +60,46 @@ describe("My Bids", () => {
     return tree
   }
 
+  describe("MyBidsQueryRenderer loading state", () => {
+    it("shows placeholder until the operation resolves", () => {
+      const tree = renderWithWrappers(<MyBidsQueryRenderer />)
+      expect(tree.root.findAllByType(PlaceholderText).length).toBeGreaterThan(0)
+    })
+  })
+
   it("renders without throwing an error", () => {
     getWrapper()
   })
 
   it("renders a lot standing from a closed sale in the closed section", () => {
     const wrapper = getWrapper({
-      Me: () => ({
-        auctionsLotStandingConnection: {
-          edges: [
-            {
-              node: {
-                isHighestBidder: true,
-                lotState: {
-                  soldStatus: "Passed",
-                },
-                saleArtwork: {
-                  sale: {
-                    endAt: "2020-08-13T16:00:00+00:00",
-                    timeZone: "America/New_York",
-                    status: "closed",
+      Me: () => {
+        const sale = {
+          internalID: "sale1",
+          endAt: "2020-08-13T16:00:00+00:00",
+          timeZone: "America/New_York",
+          status: "closed",
+        }
+
+        return {
+          bidders: [],
+          auctionsLotStandingConnection: {
+            edges: [
+              {
+                node: {
+                  isHighestBidder: true,
+                  lotState: {
+                    soldStatus: "Passed",
+                  },
+                  saleArtwork: {
+                    sale,
                   },
                 },
               },
-            },
-          ],
-        },
-      }),
+            ],
+          },
+        }
+      },
     })
 
     const closedLots = closedSectionLots(wrapper.root).map(extractText)
@@ -96,29 +110,36 @@ describe("My Bids", () => {
 
   it("renders a completed lot in an ongoing live sale in the 'active' column", () => {
     const wrapper = getWrapper({
-      Me: () => ({
-        auctionsLotStandingConnection: {
-          edges: [
+      Me: () => {
+        const sale = {
+          internalID: "sale-id",
+          status: "open",
+          liveStartAt: "2020-08-13T16:00:00+00:00",
+        }
+        return {
+          bidders: [
             {
-              node: {
-                isHighestBidder: true,
-                lotState: {
-                  soldStatus: "Passed",
-                  reserveStatus: "ReserveNotMet",
-                },
-                saleArtwork: {
-                  saleId: "sale-id",
-                  sale: {
-                    internalID: "sale-id",
-                    status: "open",
-                    liveStartAt: "2020-08-13T16:00:00+00:00",
+              sale,
+            },
+          ],
+          auctionsLotStandingConnection: {
+            edges: [
+              {
+                node: {
+                  isHighestBidder: true,
+                  lotState: {
+                    soldStatus: "Passed",
+                    reserveStatus: "ReserveNotMet",
+                  },
+                  saleArtwork: {
+                    sale,
                   },
                 },
               },
-            },
-          ],
-        },
-      }),
+            ],
+          },
+        }
+      },
     })
 
     const activeLots = activeSectionLots(wrapper.root).map(extractText)
@@ -154,4 +175,6 @@ describe("My Bids", () => {
       "Browse and bid in auctions around the world, from online-only sales to benefit auctions—all in the Artsy app"
     )
   })
+
+  // it("renders upon success")
 })
