@@ -1,6 +1,6 @@
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import { color, Flex, Sans, Spacer, Touchable } from "palette"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import React from "react"
 import { View } from "react-native"
 import { flagMappings } from "react-native-country-flags"
@@ -50,10 +50,19 @@ export const PhoneInput: React.FC<
   )
 
   const countryCode = iso2dialCode[countryIso]
+  const [phoneNumber, setPhoneNumber] = useState(
+    value?.startsWith("+" + countryCode) ? value.slice(("+" + countryCode).length).trim() : value ?? ""
+  )
+
+  useEffect(() => {
+    onChange?.(`+${countryCode} ${phoneNumber}`, { countryCode, phoneNumber })
+  }, [phoneNumber, countryCode])
 
   return (
     <Input
       {...rest}
+      value={phoneNumber}
+      onChangeText={setPhoneNumber}
       keyboardType="phone-pad"
       renderLeftHandSection={() => (
         <Select<string>
