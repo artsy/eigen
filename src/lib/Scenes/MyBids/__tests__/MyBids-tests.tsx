@@ -1,4 +1,4 @@
-import { MyBids2TestsQuery } from "__generated__/MyBids2TestsQuery.graphql"
+import { MyBidsTestsQuery } from "__generated__/MyBidsTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { PlaceholderText } from "lib/utils/placeholders"
@@ -32,10 +32,10 @@ describe("My Bids", () => {
   })
 
   const TestRenderer = () => (
-    <QueryRenderer<MyBids2TestsQuery>
+    <QueryRenderer<MyBidsTestsQuery>
       environment={env}
       query={graphql`
-        query MyBids2TestsQuery @relay_test_operation {
+        query MyBidsTestsQuery @relay_test_operation {
           me {
             ...MyBids_me
           }

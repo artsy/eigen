@@ -1,25 +1,25 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2d3051b8cc1160e5e0fe92fa0701dcb1 */
+/* @relayHash bed67826bbc6c6d6c501d1cf5e3f227c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyBids2TestsQueryVariables = {};
-export type MyBids2TestsQueryResponse = {
+export type MyBidsTestsQueryVariables = {};
+export type MyBidsTestsQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"MyBids_me">;
     } | null;
 };
-export type MyBids2TestsQuery = {
-    readonly response: MyBids2TestsQueryResponse;
-    readonly variables: MyBids2TestsQueryVariables;
+export type MyBidsTestsQuery = {
+    readonly response: MyBidsTestsQueryResponse;
+    readonly variables: MyBidsTestsQueryVariables;
 };
 
 
 
 /*
-query MyBids2TestsQuery {
+query MyBidsTestsQuery {
   me {
     ...MyBids_me
     id
@@ -372,7 +372,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyBids2TestsQuery",
+    "name": "MyBidsTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -398,7 +398,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "MyBids2TestsQuery",
+    "name": "MyBidsTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -719,7 +719,7 @@ return {
     ]
   },
   "params": {
-    "id": "2d3051b8cc1160e5e0fe92fa0701dcb1",
+    "id": "bed67826bbc6c6d6c501d1cf5e3f227c",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -877,11 +877,11 @@ return {
         "me.pendingIdentityVerification.internalID": (v15/*: any*/)
       }
     },
-    "name": "MyBids2TestsQuery",
+    "name": "MyBidsTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'ed2fa16933b6f43d2358006cbf872311';
+(node as any).hash = 'b171cc29f771a471afbf0365e3b1cc5e';
 export default node;
