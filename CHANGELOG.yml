@@ -2,7 +2,7 @@ upcoming:
   version: 6.7.4
   date: TBD
   dev:
-    -
+    - Add slack notification when betas fail - brian
   user_facing:
     - Add artist past shows screen - mounir
     - Add loading spinner to infinite artwork grid on artist page - david
