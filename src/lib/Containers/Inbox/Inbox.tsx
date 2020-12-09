@@ -132,7 +132,7 @@ export class Inbox extends React.Component<Props, State> {
         <TabWrapper tabLabel="Bids" key="bids" style={{ flexGrow: 1, justifyContent: "center" }}>
           <MyBidsContainer me={this.props.me} componentRef={(myBids) => (this.myBids = myBids)} />
         </TabWrapper>
-        <TabWrapper tabLabel="Inquiries" key="inquiries">
+        <TabWrapper tabLabel="Inquiries" key="inquiries" style={{ flexGrow: 1, justifyContent: "flex-start" }}>
           <ConversationsContainer
             me={this.props.me}
             componentRef={(conversations) => (this.conversations = conversations)}
