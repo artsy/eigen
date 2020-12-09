@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
-import { ActivityIndicator, FlatList, View } from "react-native"
+import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native"
 
 import { navigate } from "lib/navigation/navigate"
 import ConversationSnippet from "./ConversationSnippet"
@@ -23,12 +23,14 @@ interface Props {
 interface State {
   isLoading?: boolean
   isRefreshing: boolean
+  fetching: boolean
 }
 
 export class Conversations extends Component<Props, State> {
   state = {
     isLoading: false,
     isRefreshing: false,
+    fetching: false,
   }
 
   fetchData = () => {
@@ -54,6 +56,7 @@ export class Conversations extends Component<Props, State> {
   refreshConversations = (callback?: () => void) => {
     const { relay } = this.props
     if (!relay.isLoading()) {
+      this.setState({ fetching: true })
       relay.refetchConnection(PAGE_SIZE, (error) => {
         if (error) {
           console.error("Conversations/index.tsx #refreshConversations", error.message)
@@ -62,6 +65,7 @@ export class Conversations extends Component<Props, State> {
         if (callback) {
           callback()
         }
+        this.setState({ fetching: false })
       })
     } else {
       if (callback) {
@@ -92,6 +96,14 @@ export class Conversations extends Component<Props, State> {
         )}
         <FlatList
           data={conversations}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.fetching}
+              onRefresh={() => {
+                this.refreshConversations()
+              }}
+            />
+          }
           keyExtractor={(item) => item.internalID!}
           ItemSeparatorComponent={() => <Separator mx={2} width="auto" />}
           renderItem={({ item }) => {

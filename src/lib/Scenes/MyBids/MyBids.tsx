@@ -1,6 +1,7 @@
 import { groupBy, mapValues, partition, sortBy } from "lodash"
 import { Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
+import { RefreshControl, ScrollView } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 import { MyBids_me } from "__generated__/MyBids_me.graphql"
@@ -27,9 +28,13 @@ export interface MyBidsProps {
 }
 
 class MyBids extends React.Component<MyBidsProps> {
+  state = {
+    fetching: false,
+  }
   refreshMyBids = (callback?: () => void) => {
     const { relay } = this.props
     if (!relay.isLoading()) {
+      this.setState({ fetching: true })
       relay.refetchConnection(PAGE_SIZE, (error) => {
         if (error) {
           console.error("MyBids/index.tsx #refreshMyBids", error.message)
@@ -38,6 +43,7 @@ class MyBids extends React.Component<MyBidsProps> {
         if (callback) {
           callback()
         }
+        this.setState({ fetching: false })
       })
     } else {
       if (callback) {
@@ -69,60 +75,68 @@ class MyBids extends React.Component<MyBidsProps> {
 
     const noActiveBids = activeStandings.length === 0
     const noClosedBids = closedStandings.length === 0
+    const noBids = noActiveBids && noClosedBids
 
     return (
-      <>
-        {!!noActiveBids && !!noClosedBids && <NoBids headerText="No bidding history" />}
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, justifyContent: !!noBids ? "center" : "flex-start" }}
+        stickyHeaderIndices={[0, 2]}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.fetching}
+            onRefresh={() => {
+              this.refreshMyBids()
+            }}
+          />
+        }
+      >
+        {!!noBids && <NoBids headerText="No bidding history" />}
+        {!noActiveBids && <BidTitle>Active Bids</BidTitle>}
         {!noActiveBids && (
-          <>
-            <BidTitle>Active Bids</BidTitle>
-            <Flex data-test-id="active-section">
-              <Join separator={<Spacer my={1} />}>
-                {sortedSaleIds.map((saleId) => {
-                  const activeLotStandings = sortedActiveLots[saleId]
-                  const sale = activeLotStandings[0]?.saleArtwork?.sale!
+          <Flex data-test-id="active-section">
+            <Join separator={<Spacer my={1} />}>
+              {sortedSaleIds.map((saleId) => {
+                const activeLotStandings = sortedActiveLots[saleId]
+                const sale = activeLotStandings[0]?.saleArtwork?.sale!
+                return (
+                  <SaleCardFragmentContainer key={saleId} sale={sale} me={me} smallScreen={isSmallScreen}>
+                    <Join separator={<Separator my={1} />}>
+                      {activeLotStandings.map((ls) => {
+                        if (ls && sale) {
+                          const LotInfoComponent = isLotStandingComplete(ls) ? ClosedLot : ActiveLot
+                          return <LotInfoComponent lotStanding={ls as any} key={ls?.lotState?.internalID} />
+                        }
+                      })}
+                    </Join>
+                  </SaleCardFragmentContainer>
+                )
+              })}
+            </Join>
+          </Flex>
+        )}
+        {!noClosedBids && <BidTitle>Closed Bids</BidTitle>}
+        {!noClosedBids && (
+          <Flex data-test-id="closed-section">
+            <Flex mt={2} px={1.5}>
+              <Join separator={<Separator my={2} />}>
+                {closedStandings?.map((ls) => {
                   return (
-                    <SaleCardFragmentContainer key={saleId} sale={sale} me={me} smallScreen={isSmallScreen}>
-                      <Join separator={<Separator my={1} />}>
-                        {activeLotStandings.map((ls) => {
-                          if (ls && sale) {
-                            const LotInfoComponent = isLotStandingComplete(ls) ? ClosedLot : ActiveLot
-                            return <LotInfoComponent lotStanding={ls as any} key={ls?.lotState?.internalID} />
-                          }
-                        })}
-                      </Join>
-                    </SaleCardFragmentContainer>
+                    !!ls && (
+                      <ClosedLot
+                        withTimelyInfo
+                        data-test-id="closed-sale-lot"
+                        lotStanding={ls}
+                        key={ls?.lotState?.internalID}
+                      />
+                    )
                   )
                 })}
               </Join>
             </Flex>
-          </>
-        )}
-        {!noClosedBids && (
-          <>
-            <BidTitle>Closed Bids</BidTitle>
-            <Flex data-test-id="closed-section">
-              <Flex mt={2} px={1.5}>
-                <Join separator={<Separator my={2} />}>
-                  {closedStandings?.map((ls) => {
-                    return (
-                      !!ls && (
-                        <ClosedLot
-                          withTimelyInfo
-                          data-test-id="closed-sale-lot"
-                          lotStanding={ls}
-                          key={ls?.lotState?.internalID}
-                        />
-                      )
-                    )
-                  })}
-                </Join>
-              </Flex>
-            </Flex>
-          </>
+          </Flex>
         )}
         <Spacer my={2} />
-      </>
+      </ScrollView>
     )
   }
 }

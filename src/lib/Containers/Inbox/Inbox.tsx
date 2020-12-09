@@ -7,17 +7,17 @@ import { listenToNativeEvents } from "lib/store/NativeModel"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Flex, Separator, Text } from "palette"
 import React from "react"
-import { EmitterSubscription, LayoutChangeEvent, RefreshControl, ScrollView, ScrollViewProps } from "react-native"
+import { EmitterSubscription, LayoutChangeEvent, View, ViewProps } from "react-native"
 // @ts-expect-error @types file generates duplicate declaration problems
 import ScrollableTabView, { TabBarProps } from "react-native-scrollable-tab-view"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 // Tabs
-interface ScrollableTabProps extends ScrollViewProps {
+interface TabWrapperProps extends ViewProps {
   tabLabel: string
 }
 
-export const ScrollableTab: React.FC<ScrollableTabProps> = (props) => <ScrollView {...props} />
+const TabWrapper: React.FC<TabWrapperProps> = (props) => <View {...props} />
 
 const InboxTabs: React.FC<TabBarProps> = (props) => (
   <>
@@ -119,7 +119,6 @@ export class Inbox extends React.Component<Props, State> {
 
   render() {
     const bottomInset = this.scrollViewVerticalStart
-    const refreshControl = <RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />
     return (
       <ScrollableTabView
         style={{ paddingTop: 50 }}
@@ -130,20 +129,15 @@ export class Inbox extends React.Component<Props, State> {
           onLayout: this.onScrollableTabViewLayout,
         }}
       >
-        <ScrollableTab
-          contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
-          tabLabel="Bids"
-          key="bids"
-          refreshControl={refreshControl}
-        >
+        <TabWrapper tabLabel="Bids" key="bids" style={{ flexGrow: 1, justifyContent: "center" }}>
           <MyBidsContainer me={this.props.me} componentRef={(myBids) => (this.myBids = myBids)} />
-        </ScrollableTab>
-        <ScrollableTab tabLabel="Inquiries" key="inquiries" refreshControl={refreshControl}>
+        </TabWrapper>
+        <TabWrapper tabLabel="Inquiries" key="inquiries">
           <ConversationsContainer
             me={this.props.me}
             componentRef={(conversations) => (this.conversations = conversations)}
           />
-        </ScrollableTab>
+        </TabWrapper>
       </ScrollableTabView>
     )
   }
