@@ -4,7 +4,7 @@ upcoming:
   dev:
     - Add slack notification when betas fail - brian
   user_facing:
-    -
+    - Move shows entry point to about tab - mounir
 
 releases:
   - version: 6.7.3
