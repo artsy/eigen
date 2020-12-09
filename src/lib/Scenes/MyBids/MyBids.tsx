@@ -103,10 +103,17 @@ class MyBids extends React.Component<MyBidsProps> {
             <Join separator={<Spacer my={1} />}>
               {sortedSales.map((sale) => {
                 const activeLotStandings = sortedActiveLots[sale.internalID] || []
+                const showNoBids = !activeLotStandings.length && !!sale.registrationStatus?.qualifiedForBidding
                 return (
-                  <SaleCardFragmentContainer key={sale.internalID} sale={sale} me={me} smallScreen={isSmallScreen}>
+                  <SaleCardFragmentContainer
+                    key={sale.internalID}
+                    sale={sale}
+                    me={me}
+                    smallScreen={isSmallScreen}
+                    hideChildren={!showNoBids && !activeLotStandings.length}
+                  >
                     <Join separator={<Separator my={1} />}>
-                      {!activeLotStandings.length && (
+                      {!!showNoBids && (
                         <Text color="black60" py={1} textAlign="center">
                           You haven't placed any bids on this sale
                         </Text>
@@ -171,6 +178,9 @@ export const MyBidsContainer = createPaginationContainer(
         bidders(active: true) {
           sale {
             ...SaleCard_sale
+            registrationStatus {
+              qualifiedForBidding
+            }
             internalID
             liveStartAt
             endAt

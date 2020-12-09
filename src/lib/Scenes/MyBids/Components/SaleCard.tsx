@@ -32,9 +32,14 @@ export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string 
   </Touchable>
 )
 
-export class SaleCard extends React.Component<{ sale: SaleCard_sale; me: SaleCard_me; smallScreen?: boolean }> {
+export class SaleCard extends React.Component<{
+  sale: SaleCard_sale
+  me: SaleCard_me
+  smallScreen?: boolean
+  hideChildren?: boolean
+}> {
   render() {
-    const { sale, me, smallScreen, children } = this.props
+    const { sale, me, smallScreen, hideChildren, children } = this.props
     const { registrationStatus } = sale
 
     const pendingIdentityVerification = me.pendingIdentityVerification
@@ -81,8 +86,12 @@ export class SaleCard extends React.Component<{ sale: SaleCard_sale; me: SaleCar
               <SaleInfo sale={sale} />
               <RegistrationCTA />
             </Flex>
-            <Separator mt={1} />
-            <Flex style={{ marginHorizontal: smallScreen! ? 10 : 20, marginVertical: 10 }}>{children}</Flex>
+            {!hideChildren && (
+              <>
+                <Separator mt={1} />
+                <Flex style={{ marginHorizontal: smallScreen! ? 10 : 20, marginVertical: 10 }}>{children}</Flex>
+              </>
+            )}
           </Flex>
         </Touchable>
       </React.Fragment>
