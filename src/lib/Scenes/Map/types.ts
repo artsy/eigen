@@ -38,19 +38,6 @@ export interface RelayErrorState {
   error: Error
 }
 
-/** Comes in from the OS via the MapBox onUserLocationUpdate */
-export interface OSCoordsUpdate {
-  timestamp: number
-  coords: {
-    accuracy: number
-    speed: number
-    latitude: number
-    longitude: number
-    heading: number
-    altitude: number
-  }
-}
-
 export interface FilterData {
   filter: string
   featureCollection: GeoJSON.FeatureCollection

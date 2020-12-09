@@ -49,4 +49,5 @@
 
   When @react-native-mapbox-gl/maps uses mapbox-ios at least 6.3.0
 
-  We had issues with CLLocationManagerDelegate and iOS 14. Methods got deprecated and mapbox-ios supports iOS 14, so we had to manually use that version. Normally the npm package came with an older version.
+  Version 6.3 added support for Xcode 12 and iOS 14. Without this hardcoding we get version 5.7. Let's keep the hardcode, at least until they give us at least that version with the npm package.
+  To check which version comes with, either remove `$ReactNativeMapboxGLIOSVersion` and after `pod install` check the `Podfile.lock` for version, or look on github https://github.com/react-native-mapbox-gl/maps/blob/master/CHANGELOG.md for versions bundle with an npm version.

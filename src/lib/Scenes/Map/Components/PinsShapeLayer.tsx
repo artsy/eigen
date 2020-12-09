@@ -1,4 +1,4 @@
-import Mapbox, { CircleLayerStyle, SymbolLayerStyle } from "@react-native-mapbox-gl/maps"
+import MapboxGL, { CircleLayerStyle, SymbolLayerStyle } from "@react-native-mapbox-gl/maps"
 import { isEqual } from "lodash"
 import React, { Component } from "react"
 import { Animated, StyleProp } from "react-native"
@@ -105,28 +105,26 @@ export class ShapeLayer extends Component<Props, State> {
     const collection = featureCollections[filterID].featureCollection
 
     return (
-      <Mapbox.Animated.ShapeSource
+      <MapboxGL.Animated.ShapeSource
         id="shows"
         shape={collection}
         cluster
         clusterRadius={50}
         onPress={this.props.onPress}
       >
-        <Mapbox.Animated.SymbolLayer
+        <MapboxGL.Animated.SymbolLayer
           id="singleShow"
-          filter={["!", "has", "point_count"]}
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          filter={["!", ["has", "point_count"]]}
           style={[singleShowStyle, { iconOpacity: this.state.pinOpacity }]}
         />
-        <Mapbox.Animated.SymbolLayer id="pointCount" style={clusterCountStyle} />
-        <Mapbox.Animated.CircleLayer
+        <MapboxGL.Animated.SymbolLayer id="pointCount" style={clusterCountStyle} />
+        <MapboxGL.Animated.CircleLayer
           id="clusteredPoints"
           belowLayerID="pointCount"
           filter={["has", "point_count"]}
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           style={[clusteredPointsStyle, { circleOpacity: this.state.clusterOpacity }]}
         />
-      </Mapbox.Animated.ShapeSource>
+      </MapboxGL.Animated.ShapeSource>
     )
   }
 }

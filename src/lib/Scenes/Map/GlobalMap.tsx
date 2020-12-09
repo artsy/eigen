@@ -1,4 +1,4 @@
-import Mapbox, { Point } from "@react-native-mapbox-gl/maps"
+import MapboxGL, { Point } from "@react-native-mapbox-gl/maps"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
@@ -25,14 +25,10 @@ import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { Fair, FilterData, OSCoordsUpdate, RelayErrorState, Show } from "./types"
+import { Fair, FilterData, RelayErrorState, Show } from "./types"
 
-Mapbox.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
+MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
-const Map: React.ComponentType<any> = styled(Mapbox.MapView)`
-  height: ${Dimensions.get("window").height};
-  width: 100%;
-`
 const AnimatedView = animated(View)
 
 const ShowCardContainer = styled(Box)`
@@ -149,8 +145,8 @@ export class GlobalMap extends React.Component<Props, State> {
     return { lat: coords.latitude, lng: coords.longitude }
   }
 
-  map: Mapbox.MapView | null
-  camera: Mapbox.Camera | null
+  map: MapboxGL.MapView | null
+  camera: MapboxGL.Camera | null
   hideButtons = new Animated.Value(0)
   currentZoom: number
 
@@ -413,13 +409,18 @@ export class GlobalMap extends React.Component<Props, State> {
         clusterLat &&
         clusterLng &&
         pointCount && (
-          <Mapbox.PointAnnotation key={clusterId} id={clusterId} selected={true} coordinate={[clusterLat, clusterLng]}>
+          <MapboxGL.PointAnnotation
+            key={clusterId}
+            id={clusterId}
+            selected={true}
+            coordinate={[clusterLat, clusterLng]}
+          >
             <SelectedCluster width={radius} height={radius}>
               <Sans size="3" weight="medium" color={color("white100")}>
                 {pointCount}
               </Sans>
             </SelectedCluster>
-          </Mapbox.PointAnnotation>
+          </MapboxGL.PointAnnotation>
         )
       )
     }
@@ -439,9 +440,9 @@ export class GlobalMap extends React.Component<Props, State> {
         lat &&
         lng &&
         id && (
-          <Mapbox.PointAnnotation key={id} id={id} coordinate={[lng, lat]}>
+          <MapboxGL.PointAnnotation key={id} id={id} coordinate={[lng, lat]}>
             <PinFairSelected />
-          </Mapbox.PointAnnotation>
+          </MapboxGL.PointAnnotation>
         )
       )
     } else if (type === "Show") {
@@ -451,13 +452,13 @@ export class GlobalMap extends React.Component<Props, State> {
         lat &&
         lng &&
         id && (
-          <Mapbox.PointAnnotation key={id} id={id} selected={true} coordinate={[lng, lat]}>
+          <MapboxGL.PointAnnotation key={id} id={id} selected={true} coordinate={[lng, lat]}>
             {isSaved ? (
               <PinSavedSelected pinHeight={45} pinWidth={45} />
             ) : (
               <Pin pinHeight={45} pinWidth={45} selected={true} />
             )}
-          </Mapbox.PointAnnotation>
+          </MapboxGL.PointAnnotation>
         )
       )
     }
@@ -524,9 +525,9 @@ export class GlobalMap extends React.Component<Props, State> {
     )
   }
 
-  onUserLocationUpdate = (location: OSCoordsUpdate) => {
+  onUserLocationUpdate = (feature: MapboxGL.Location) => {
     this.setState({
-      userLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
+      userLocation: feature.coords && GlobalMap.longCoordsToLocation(feature.coords),
     })
   }
 
@@ -593,7 +594,7 @@ export class GlobalMap extends React.Component<Props, State> {
     const mapProps = {
       showUserLocation: true,
       styleURL: ArtsyMapStyleURL,
-      userTrackingMode: Mapbox.UserTrackingModes.Follow,
+      userTrackingMode: MapboxGL.UserTrackingModes.Follow,
       centerCoordinate: [centerLng, centerLat],
       zoomLevel: DefaultZoomLevel,
       minZoomLevel: MinZoomLevel,
@@ -652,7 +653,8 @@ export class GlobalMap extends React.Component<Props, State> {
         >
           {({ opacity }: any /* STRICTNESS_MIGRATION */) => (
             <AnimatedView style={{ flex: 1, opacity }}>
-              <Map
+              <MapboxGL.MapView
+                style={{ width: "100%", height: Dimensions.get("window").height }}
                 {...mapProps}
                 onRegionIsChanging={this.onRegionIsChanging}
                 onUserLocationUpdate={this.onUserLocationUpdate}
@@ -662,7 +664,7 @@ export class GlobalMap extends React.Component<Props, State> {
               >
                 {!!city && (
                   <>
-                    <Mapbox.Camera ref={(r) => this.camera} />
+                    <MapboxGL.Camera ref={(r) => this.camera} />
                     {!!this.state.featureCollections && (
                       <PinsShapeLayer
                         filterID={cityTabs[this.state.activeIndex].id}
@@ -674,7 +676,7 @@ export class GlobalMap extends React.Component<Props, State> {
                     {!!mapLoaded && !!activeShows && !!activePin && this.renderSelectedPin()}
                   </>
                 )}
-              </Map>
+              </MapboxGL.MapView>
             </AnimatedView>
           )}
         </Spring>

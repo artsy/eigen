@@ -1,4 +1,4 @@
-import Mapbox from "@react-native-mapbox-gl/maps"
+import MapboxGL from "@react-native-mapbox-gl/maps"
 import { PartnerMap_location } from "__generated__/PartnerMap_location.graphql"
 import { cityAndPostalCode, tappedOnMap } from "lib/Components/LocationMap"
 import { Pin } from "lib/Icons/Pin"
@@ -10,7 +10,7 @@ import Config from "react-native-config"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-Mapbox.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
+MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
 const PartnerMap: React.FC<{
   location: PartnerMap_location
@@ -32,19 +32,19 @@ const PartnerMap: React.FC<{
       <Spacer mb={0.5} />
       <TouchableOpacity onPress={() => tappedOnMap(lat, lng, address, null, null, city, postalCode)}>
         <MapWrapper>
-          <Map
+          <MapboxGL.MapView
+            style={{ height: 120 }}
             key={`${lng}`}
             styleURL={ArtsyMapStyleURL}
-            centerCoordinate={[lng, lat]}
-            zoomLevel={14}
             logoEnabled={false}
             scrollEnabled={false}
             attributionEnabled={false}
           >
-            <Mapbox.PointAnnotation id={internalID} coordinate={[lng, lat]}>
+            <MapboxGL.Camera centerCoordinate={[lng, lat]} zoomLevel={14} />
+            <MapboxGL.PointAnnotation id={internalID} coordinate={[lng, lat]}>
               <Pin />
-            </Mapbox.PointAnnotation>
-          </Map>
+            </MapboxGL.PointAnnotation>
+          </MapboxGL.MapView>
           <Box my={2}>
             {!!address && (
               <Serif size="3t" color="black60" textAlign="center">
@@ -85,10 +85,6 @@ export const PartnerMapContainer = createFragmentContainer(PartnerMap, {
     }
   `,
 })
-
-const Map: React.ComponentType<any> = styled(Mapbox.MapView)`
-  height: 120;
-`
 
 const MapWrapper = styled(Flex)`
   border-width: 1px;
