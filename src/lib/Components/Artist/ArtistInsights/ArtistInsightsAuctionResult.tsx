@@ -2,7 +2,7 @@ import { ArtistInsightsAuctionResult_auctionResult } from "__generated__/ArtistI
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { bullet, Flex, NoArtworkIcon, Text, Touchable } from "palette"
+import { bullet, color, Flex, NoArtworkIcon, Text, Touchable } from "palette"
 import React, { useCallback } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -26,7 +26,7 @@ const ArtistInsightsAuctionResult: React.FC<Props> = ({ auctionResult }) => {
 
   return (
     <Touchable
-      withBlackUnderlayColor
+      underlayColor={color("black5")}
       onPress={() => {
         console.log("do nothing")
       }}
