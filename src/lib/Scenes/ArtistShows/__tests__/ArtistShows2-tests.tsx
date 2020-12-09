@@ -1,5 +1,5 @@
 import { ArtistShows2TestsQuery } from "__generated__/ArtistShows2TestsQuery.graphql"
-import ArtistShow from "lib/Components/Artist/ArtistShows/ArtistShow"
+import { ArtistShowFragmentContainer } from "lib/Components/Artist/ArtistShows/ArtistShow"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Text } from "palette"
@@ -64,6 +64,6 @@ describe("ArtistShows2", () => {
     })
 
     expect(tree.root.findAllByType(FlatList).length).toEqual(1)
-    expect(tree.root.findAllByType(ArtistShow).length).toEqual(3)
+    expect(tree.root.findAllByType(ArtistShowFragmentContainer).length).toEqual(3)
   })
 })

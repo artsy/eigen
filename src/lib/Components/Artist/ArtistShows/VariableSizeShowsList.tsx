@@ -7,7 +7,7 @@ import { VariableSizeShowsList_shows } from "__generated__/VariableSizeShowsList
 import { Stack } from "lib/Components/Stack"
 import { isPad } from "lib/utils/hardware"
 import { chunk } from "lodash"
-import ArtistShow from "./ArtistShow"
+import { ArtistShowFragmentContainer } from "./ArtistShow"
 
 interface Props {
   shows: VariableSizeShowsList_shows
@@ -68,7 +68,7 @@ class ShowsList extends Component<Props, State> {
           {chunk(this.props.shows, this.numberOfColumns()).map((shows, index) => (
             <Stack horizontal key={index} style={{ flex: 0 }}>
               {shows.map((show) => (
-                <ArtistShow show={show} styles={showStyles} key={show.id} />
+                <ArtistShowFragmentContainer show={show} styles={showStyles} key={show.id} />
               ))}
             </Stack>
           ))}

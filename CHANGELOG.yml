@@ -2,9 +2,10 @@ upcoming:
   version: 6.7.4
   date: TBD
   dev:
-    -
+    - Add slack notification when betas fail - brian
   user_facing:
     - Add auction lots history to artist insights tab - mounir, pavlos
+    - Move shows entry point to about tab - mounir
 
 releases:
   - version: 6.7.3
