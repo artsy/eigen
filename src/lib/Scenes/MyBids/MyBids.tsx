@@ -27,6 +27,8 @@ export interface MyBidsProps {
   relay: RelayPaginationProp
 }
 
+type Sale = NonNullable<NonNullable<NonNullable<MyBids_me["bidders"]>[0]>["sale"]>
+
 class MyBids extends React.Component<MyBidsProps> {
   state = {
     fetching: false,
@@ -67,9 +69,13 @@ class MyBids extends React.Component<MyBidsProps> {
     // sort each group of lot standings by position (lot number)
     const sortedActiveLots = mapValues(activeBySaleId, (lss) => sortBy(lss, (ls) => ls?.saleArtwork?.position!))
 
-    // sort an ordered list of sale ids by their relevant end time
-    const sortedSaleIds: string[] = sortBy(Object.keys(sortedActiveLots), (saleId) => {
-      const timelySale = TimelySale.create(sortedActiveLots[saleId][0]?.saleArtwork?.sale!)
+    // create list of all unique sales from lotStandings, bidders, and watchedLots (in the future).
+    // NOTE: bidders should include lotStandings, do we need both?
+
+    // sortedSales === sortedSaleIds but not just ids
+    const sales: Sale[] = me.bidders?.map((b) => b!.sale!) || []
+    const sortedSales = sortBy(sales, (sale) => {
+      const timelySale = TimelySale.create(sale)
       return moment(timelySale.relevantEnd).unix()
     })
 
@@ -95,16 +101,20 @@ class MyBids extends React.Component<MyBidsProps> {
         {!noActiveBids && (
           <Flex data-test-id="active-section">
             <Join separator={<Spacer my={1} />}>
-              {sortedSaleIds.map((saleId) => {
-                const activeLotStandings = sortedActiveLots[saleId]
-                const sale = activeLotStandings[0]?.saleArtwork?.sale!
+              {sortedSales.map((sale) => {
+                const activeLotStandings = sortedActiveLots[sale.internalID] || []
                 return (
-                  <SaleCardFragmentContainer key={saleId} sale={sale} me={me} smallScreen={isSmallScreen}>
+                  <SaleCardFragmentContainer key={sale.internalID} sale={sale} me={me} smallScreen={isSmallScreen}>
                     <Join separator={<Separator my={1} />}>
+                      {!activeLotStandings.length && (
+                        <Text color="black60" py={1} textAlign="center">
+                          You haven't placed any bids on this sale
+                        </Text>
+                      )}
                       {activeLotStandings.map((ls) => {
                         if (ls && sale) {
                           const LotInfoComponent = isLotStandingComplete(ls) ? ClosedLot : ActiveLot
-                          return <LotInfoComponent lotStanding={ls as any} key={ls?.lotState?.internalID} />
+                          return <LotInfoComponent lotStanding={ls} key={ls?.lotState?.internalID} />
                         }
                       })}
                     </Join>
@@ -158,6 +168,15 @@ export const MyBidsContainer = createPaginationContainer(
       @argumentDefinitions(count: { type: "Int", defaultValue: 25 }, cursor: { type: "String", defaultValue: "" }) {
         ...SaleCard_me
         identityVerified
+        bidders(active: true) {
+          sale {
+            ...SaleCard_sale
+            internalID
+            liveStartAt
+            endAt
+            status
+          }
+        }
         auctionsLotStandingConnection(first: $count, after: $cursor)
           @connection(key: "MyBids_auctionsLotStandingConnection") {
           edges {

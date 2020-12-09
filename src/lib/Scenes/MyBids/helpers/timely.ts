@@ -12,7 +12,7 @@ export const lotInActiveSale: (lotStanding: {
 export const isLotStandingComplete: (lotStanding: { lotState?: { soldStatus?: string } }) => boolean = (lotStanding) =>
   !!(lotStanding.lotState?.soldStatus && ["sold", "passed"].includes(lotStanding.lotState.soldStatus?.toLowerCase()))
 
-interface SaleWithTimes {
+export interface SaleWithTimes {
   status?: string | null
   liveStartAt?: string | null
   endAt?: string | null

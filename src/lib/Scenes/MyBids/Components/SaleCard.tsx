@@ -10,7 +10,7 @@ import { ClockFill, ExclamationMarkCircleFill } from "palette/svgs/sf"
 import { SaleCard_me } from "__generated__/SaleCard_me.graphql"
 import { SaleCard_sale } from "__generated__/SaleCard_sale.graphql"
 
-export const CARD_HEIGHT = 72
+export const COVER_IMAGE_HEIGHT = 100
 
 export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string }> = (props) => (
   <Touchable
@@ -48,7 +48,9 @@ export class SaleCard extends React.Component<{ sale: SaleCard_sale; me: SaleCar
       if (registrationStatus?.qualifiedForBidding) {
         RegistrationCTA = () => null
       } else if (shouldPromptIdVerification) {
-        RegistrationCTA = () => <RegistrationCTAWrapper navLink="/identity-verification-faq" />
+        RegistrationCTA = () => (
+          <RegistrationCTAWrapper navLink={`/identity-verification/${me.pendingIdentityVerification?.internalID}`} />
+        )
       } else {
         RegistrationCTA = () => (
           <RegistrationCTAWrapper>
@@ -67,7 +69,7 @@ export class SaleCard extends React.Component<{ sale: SaleCard_sale; me: SaleCar
       <React.Fragment>
         <Touchable underlayColor="transparent" activeOpacity={0.8} onPress={() => navigate(sale?.href as string)}>
           <Flex overflow="hidden" borderWidth={1} borderStyle="solid" borderColor="black10" borderRadius={4}>
-            <OpaqueImageView height={CARD_HEIGHT} imageURL={sale?.coverImage?.url} />
+            <OpaqueImageView height={COVER_IMAGE_HEIGHT} imageURL={sale?.coverImage?.url} />
             <Flex style={{ margin: smallScreen! ? 10 : 15 }}>
               {!!sale.partner?.name && (
                 <Text variant="small" color="black60">
