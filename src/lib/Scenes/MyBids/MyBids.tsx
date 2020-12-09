@@ -20,16 +20,23 @@ import {
 } from "./Components"
 import { NoBids } from "./Components/NoBids"
 import { isLotStandingComplete, TimelySale } from "./helpers/timely"
+import { RefreshControl, ScrollViewProps, View } from "react-native"
+import { ScrollView } from "react-native-gesture-handler"
 
 export interface MyBidsProps {
   me: MyBids_me
   relay: RelayPaginationProp
 }
 
-class MyBids extends React.Component<MyBidsProps> {
+class MyBids extends React.Component<MyBidsProps, { fetching: boolean }> {
+  state = {
+    fetching: false,
+  }
+
   refreshMyBids = (callback?: () => void) => {
     const { relay } = this.props
     if (!relay.isLoading()) {
+      this.setState({ fetching: true })
       relay.refetchConnection(PAGE_SIZE, (error) => {
         if (error) {
           console.error("MyBids/index.tsx #refreshMyBids", error.message)
@@ -38,6 +45,7 @@ class MyBids extends React.Component<MyBidsProps> {
         if (callback) {
           callback()
         }
+        this.setState({ fetching: false })
       })
     } else {
       if (callback) {
@@ -71,7 +79,17 @@ class MyBids extends React.Component<MyBidsProps> {
     const noClosedBids = closedStandings.length === 0
 
     return (
-      <>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.fetching}
+            onRefresh={() => {
+              // console.warn("MB RefreshControl")
+              this.refreshMyBids()
+            }}
+          />
+        }
+      >
         {!!noActiveBids && !!noClosedBids && <NoBids headerText="No bidding history" />}
         {!noActiveBids && (
           <>
@@ -122,7 +140,7 @@ class MyBids extends React.Component<MyBidsProps> {
           </>
         )}
         <Spacer my={2} />
-      </>
+      </ScrollView>
     )
   }
 }

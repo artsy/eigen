@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
-import { ActivityIndicator, FlatList, View } from "react-native"
+import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native"
 
 import { navigate } from "lib/navigation/navigate"
 import ConversationSnippet from "./ConversationSnippet"
@@ -21,13 +21,13 @@ interface Props {
 }
 
 interface State {
-  isLoading?: boolean
+  fetching: boolean
   isRefreshing: boolean
 }
 
 export class Conversations extends Component<Props, State> {
   state = {
-    isLoading: false,
+    fetching: false,
     isRefreshing: false,
   }
 
@@ -36,7 +36,7 @@ export class Conversations extends Component<Props, State> {
 
     if (relay.hasMore() && !relay.isLoading()) {
       this.setState({
-        isLoading: true,
+        fetching: true,
       })
       relay.loadMore(PAGE_SIZE, (error) => {
         if (error) {
@@ -45,7 +45,7 @@ export class Conversations extends Component<Props, State> {
         }
 
         this.setState({
-          isLoading: false,
+          fetching: false,
         })
       })
     }
@@ -54,6 +54,7 @@ export class Conversations extends Component<Props, State> {
   refreshConversations = (callback?: () => void) => {
     const { relay } = this.props
     if (!relay.isLoading()) {
+      this.setState({ isRefreshing: true })
       relay.refetchConnection(PAGE_SIZE, (error) => {
         if (error) {
           console.error("Conversations/index.tsx #refreshConversations", error.message)
@@ -62,6 +63,7 @@ export class Conversations extends Component<Props, State> {
         if (callback) {
           callback()
         }
+        this.setState({ isRefreshing: false })
       })
     } else {
       if (callback) {
@@ -91,6 +93,14 @@ export class Conversations extends Component<Props, State> {
           </Flex>
         )}
         <FlatList
+          // refreshControl={
+          //   <RefreshControl
+          //     refreshing={this.state.isRefreshing}
+          //     onRefresh={() => {
+          //       this.refreshConversations()
+          //     }}
+          //   />
+          // }
           data={conversations}
           keyExtractor={(item) => item.internalID!}
           ItemSeparatorComponent={() => <Separator mx={2} width="auto" />}
@@ -102,7 +112,7 @@ export class Conversations extends Component<Props, State> {
           onEndReached={this.fetchData}
           onEndReachedThreshold={2}
         />
-        {!!(this.props.relay.hasMore() && this.state.isLoading) && (
+        {!!(this.props.relay.hasMore() && this.state.fetching) && (
           <Flex p={3} alignItems="center">
             <ActivityIndicator />
           </Flex>

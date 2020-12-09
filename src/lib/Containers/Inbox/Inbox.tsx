@@ -7,7 +7,15 @@ import { listenToNativeEvents } from "lib/store/NativeModel"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Flex, Separator, Text } from "palette"
 import React from "react"
-import { EmitterSubscription, LayoutChangeEvent, RefreshControl, ScrollView, ScrollViewProps } from "react-native"
+import {
+  EmitterSubscription,
+  LayoutChangeEvent,
+  RefreshControl,
+  ScrollView,
+  ScrollViewProps,
+  View,
+  ViewProps,
+} from "react-native"
 // @ts-expect-error @types file generates duplicate declaration problems
 import ScrollableTabView, { TabBarProps } from "react-native-scrollable-tab-view"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -17,7 +25,11 @@ interface ScrollableTabProps extends ScrollViewProps {
   tabLabel: string
 }
 
-const ScrollableTab: React.FC<ScrollableTabProps> = (props) => <ScrollView {...props} />
+// changing this to a normal view fixes the issue where refreshing only works the first time,
+// but not the issue where changing to the second tab breaks refreshing on both tabs
+// this is even after making the changes below which move the refreshControl logic into
+// each individual compoent
+const TabWrapper: React.FC<ScrollableTabProps> = (props) => <View {...props} />
 
 const InboxTabs: React.FC<TabBarProps> = (props) => (
   <>
@@ -48,6 +60,7 @@ const InboxTabs: React.FC<TabBarProps> = (props) => (
 // Inbox
 interface State {
   fetchingData: boolean
+  selectedTab: "bids" | "conversations"
 }
 
 interface Props {
@@ -65,6 +78,7 @@ export class Inbox extends React.Component<Props, State> {
 
   state = {
     fetchingData: false,
+    selectedTab: "bids" as any,
   }
 
   scrollViewVerticalStart = 0
@@ -98,19 +112,26 @@ export class Inbox extends React.Component<Props, State> {
 
     this.setState({ fetchingData: true })
 
+    // FIXME: This is leftover from WIP work and likely buggy because
+    // this component no longer is responsible for refetching its children's
+    // relay queries
     if (this.conversations) {
-      this.conversations.refreshConversations(() => {
+      console.warn("fetchData - refreshing conversations")
+      this.conversations?.refreshConversations(() => {
         this.setState({ fetchingData: false })
       })
     } else if (this.myBids) {
-      this.myBids.refreshMyBids(() => {
+      console.warn("fetchData - refreshing bids")
+      this.myBids?.refreshMyBids(() => {
         this.setState({ fetchingData: false })
       })
     } else {
+      console.warn("fetchData - fallback")
       this.props.relay.refetch({}, null, () => {
         this.setState({ fetchingData: false })
       })
     }
+    console.warn("fetchData - end")
   }
 
   onScrollableTabViewLayout = (layout: LayoutChangeEvent) => {
@@ -119,31 +140,61 @@ export class Inbox extends React.Component<Props, State> {
 
   render() {
     const bottomInset = this.scrollViewVerticalStart
-    const refreshControl = <RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />
+    // no longer used
+    const refreshControl = (
+      <RefreshControl
+        refreshing={this.state.fetchingData}
+        onRefresh={() => {
+          console.warn("pulled")
+          this.fetchData()
+        }}
+      />
+    )
     return (
       <ScrollableTabView
         style={{ paddingTop: 50 }}
         initialPage={0}
         renderTabBar={() => <InboxTabs />}
+        onChangeTab={({ i }: { i: number }) => {
+          // leftover from an idea where we would use selectedTab rather than component refs
+          // in fetchData - it didn't work either
+          this.setState({ selectedTab: i === 0 ? "bids" : "conversations" })
+        }}
         contentProps={{
           contentInset: { bottom: bottomInset },
           onLayout: this.onScrollableTabViewLayout,
         }}
       >
-        <ScrollableTab
+        <TabWrapper
           contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
           tabLabel="Bids"
           key="bids"
           refreshControl={refreshControl}
         >
-          <MyBidsContainer me={this.props.me} componentRef={(myBids) => (this.myBids = myBids)} />
-        </ScrollableTab>
-        <ScrollableTab tabLabel="Inquiries" key="inquiries" refreshControl={refreshControl}>
+          <MyBidsContainer
+            me={this.props.me}
+            componentRef={(myBids) => {
+              // commented out for test below to work
+              this.myBids = myBids
+            }}
+          />
+        </TabWrapper>
+        <TabWrapper
+          tabLabel="Inquiries"
+          key="inquiries"
+          // no longer used
+          refreshControl={refreshControl}
+        >
+          {/* even if this is another MyBidsContainer its presence after visiting breaks the refreshControl */}
           <ConversationsContainer
             me={this.props.me}
-            componentRef={(conversations) => (this.conversations = conversations)}
+            componentRef={(conversations) => {
+              //  is this ref changing?
+              // this.conversations && console.warn("Same conversations ref: ", conversations === this.conversations)
+              this.conversations = conversations
+            }}
           />
-        </ScrollableTab>
+        </TabWrapper>
       </ScrollableTabView>
     )
   }
