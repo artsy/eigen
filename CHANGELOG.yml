@@ -4,7 +4,7 @@ upcoming:
   dev:
     -
   user_facing:
-    - Add auction lots history to artist insights tab - mounir
+    - Add auction lots history to artist insights tab - mounir, pavlos
 
 releases:
   - version: 6.7.3
