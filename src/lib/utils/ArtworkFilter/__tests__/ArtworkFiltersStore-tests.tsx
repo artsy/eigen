@@ -1893,6 +1893,85 @@ describe("selectedOptionsUnion", () => {
       ])
     })
   })
+
+  describe("showArtworks", () => {
+    it("correctly sets defaults", () => {
+      const previouslyAppliedFilters = [] as FilterArray
+      const selectedFilters = [] as FilterArray
+
+      expect(selectedOptionsUnion({ selectedFilters, previouslyAppliedFilters, filterType: "showArtwork" })).toEqual([
+        { displayText: "Gallery Curated", paramName: FilterParamName.sort, paramValue: "partner_show_position" },
+        {
+          displayText: "All",
+          paramName: "estimateRange",
+          paramValue: "",
+        },
+        {
+          displayText: "All",
+          paramName: "medium",
+          paramValue: "*",
+        },
+        {
+          displayText: "All",
+          paramName: "priceRange",
+          paramValue: "*-*",
+        },
+        {
+          displayText: "All",
+          paramName: "dimensionRange",
+          paramValue: "*-*",
+        },
+        {
+          displayText: "All",
+          paramName: "partnerID",
+        },
+        {
+          displayText: "All",
+          paramName: "color",
+        },
+        {
+          displayText: "All",
+          paramName: "majorPeriods",
+          paramValue: "*-*",
+        },
+        {
+          displayText: "Buy now",
+          paramName: "acquireable",
+          paramValue: false,
+        },
+        {
+          displayText: "Inquire",
+          paramName: "inquireableOnly",
+          paramValue: false,
+        },
+        {
+          displayText: "Make offer",
+          paramName: "offerable",
+          paramValue: false,
+        },
+        {
+          displayText: "Bid",
+          paramName: "atAuction",
+          paramValue: false,
+        },
+        {
+          displayText: "All artists I follow",
+          paramName: "includeArtworksByFollowedArtists",
+          paramValue: false,
+        },
+        {
+          displayText: "All",
+          paramName: "artistIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "Grid",
+          paramName: "viewAs",
+          paramValue: false,
+        },
+      ])
+    })
+  })
 })
 
 describe("SetFilterCounts", () => {

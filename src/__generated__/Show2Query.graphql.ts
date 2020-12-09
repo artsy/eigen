@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 36bc08c680ce6d14036c06a08cec5dfe */
+/* @relayHash 2ce18fbe8fb30fd02a62b29bb6f6dbe7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -97,7 +97,7 @@ fragment Show2ArtworksEmptyState_show on Show {
 fragment Show2Artworks_show on Show {
   slug
   internalID
-  showArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  showArtworks: filterArtworksConnection(first: 30, sort: "partner_show_position", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -401,7 +401,7 @@ v14 = [
   {
     "kind": "Literal",
     "name": "sort",
-    "value": "-decayed_merch"
+    "value": "partner_show_position"
   }
 ];
 return {
@@ -1183,7 +1183,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:30,medium:\"*\",sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:30,medium:\"*\",sort:\"partner_show_position\")"
           },
           {
             "alias": "showArtworks",
@@ -1239,7 +1239,7 @@ return {
     ]
   },
   "params": {
-    "id": "36bc08c680ce6d14036c06a08cec5dfe",
+    "id": "2ce18fbe8fb30fd02a62b29bb6f6dbe7",
     "metadata": {},
     "name": "Show2Query",
     "operationKind": "query",

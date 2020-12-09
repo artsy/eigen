@@ -35,8 +35,7 @@ describe("Sort Options Screen", () => {
         <ArtworkFilterContext.Provider
           value={{
             state: initialState,
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            dispatch: null,
+            dispatch: jest.fn(),
           }}
         >
           <SortOptionsScreen navigator={mockNavigator as any} />
@@ -193,5 +192,28 @@ describe("Sort Options Screen", () => {
     const selectedRow = selectedSortOption(tree)
     expect(extractText(selectedRow)).toEqual("Price (high to low)")
     expect(selectedRow.findAllByType(CheckIcon)).toHaveLength(1)
+  })
+
+  describe("filterType of showArtwork", () => {
+    it("has the correct options", () => {
+      state = {
+        selectedFilters: [],
+        appliedFilters: [],
+        previouslyAppliedFilters: [],
+        applyFilters: false,
+        aggregations: [],
+        filterType: "showArtwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
+      }
+
+      const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
+      const selectedRow = selectedSortOption(tree)
+
+      expect(extractText(selectedRow)).toEqual("Gallery Curated")
+      expect(selectedRow.findAllByType(CheckIcon)).toHaveLength(1)
+    })
   })
 })

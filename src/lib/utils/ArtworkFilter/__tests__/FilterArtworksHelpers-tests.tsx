@@ -346,6 +346,56 @@ describe("filterArtworksParams helper", () => {
       includeArtworksByFollowedArtists: false,
     })
   })
+
+  describe("showArtwork", () => {
+    it("maps applied filters to relay params when default filters", () => {
+      appliedFilters = [
+        {
+          displayText: "Gallery Curated",
+          paramValue: "partner_show_position",
+          paramName: FilterParamName.sort,
+        },
+        { displayText: "All", paramValue: "*", paramName: FilterParamName.medium },
+        {
+          displayText: "All",
+          paramValue: "*-*",
+          paramName: FilterParamName.priceRange,
+        },
+        {
+          displayText: "Bid",
+          paramValue: false,
+          paramName: FilterParamName.waysToBuyBid,
+        },
+        {
+          displayText: "Buy",
+          paramValue: false,
+          paramName: FilterParamName.waysToBuyBuy,
+        },
+        {
+          displayText: "Inquire",
+          paramValue: false,
+          paramName: FilterParamName.waysToBuyInquire,
+        },
+        {
+          displayText: "Make Offer",
+          paramValue: false,
+          paramName: FilterParamName.waysToBuyMakeOffer,
+        },
+      ]
+      expect(filterArtworksParams(appliedFilters, "showArtwork")).toEqual({
+        sort: "partner_show_position",
+        medium: "*",
+        priceRange: "*-*",
+        estimateRange: "",
+        dimensionRange: "*-*",
+        includeArtworksByFollowedArtists: false,
+        inquireableOnly: false,
+        atAuction: false,
+        acquireable: false,
+        offerable: false,
+      })
+    })
+  })
 })
 
 describe("selectedOption", () => {
