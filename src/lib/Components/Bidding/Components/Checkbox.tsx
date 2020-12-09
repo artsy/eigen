@@ -18,7 +18,7 @@ interface CheckboxProps extends TouchableWithoutFeedbackProps, FlexProps {
 
 export class Checkbox extends Component<CheckboxProps, CheckboxState> {
   static getDerivedStateFromProps: GetDerivedStateFromProps<CheckboxProps, CheckboxState> = (props, state) => {
-    if (props.checked && props.checked !== state.checked) {
+    if ("checked" in props && props.checked !== state.checked) {
       return {
         checked: props.checked,
       }
