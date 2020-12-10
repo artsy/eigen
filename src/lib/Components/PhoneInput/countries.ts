@@ -730,7 +730,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 83166711,
     flag: "🇩🇪",
-    mask: "99999 9999999",
+    mask: "99 99999999",
   },
   {
     name: "Ghana (Gaana)",
@@ -1964,7 +1964,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 66796807,
     flag: "🇬🇧",
-    mask: "99999 999999",
+    mask: "9999 999999",
   },
   {
     name: "United States",

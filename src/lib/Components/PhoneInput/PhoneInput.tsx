@@ -2,31 +2,11 @@ import { TriangleDown } from "lib/Icons/TriangleDown"
 import { color, Flex, Sans, Spacer, Touchable } from "palette"
 import { useEffect, useRef, useState } from "react"
 import React from "react"
-import { Image, View } from "react-native"
 import { Input, InputProps } from "../Input/Input"
 import { Select, SelectOption } from "../Select"
 import { cleanUserPhoneNumber } from "./cleanUserPhoneNumber"
 import { countries, countryIndex } from "./countries"
-
-const countryOptions: Array<SelectOption<string>> = countries.map((c) => {
-  return {
-    label: c.name,
-    value: c.iso2,
-    searchImportance: c.priority,
-    searchTerms: [
-      c.dialCode,
-      "+" + c.dialCode,
-      c.name,
-      // individual words of country name
-      ...c.name.split(/\W+/g),
-      // initials of country name
-      c.name
-        .split(/\W+/g)
-        .map((word) => word[0])
-        .join(""),
-    ],
-  }
-})
+import { formatPhoneNumber } from "./formatPhoneNumber"
 
 export const PhoneInput = React.forwardRef<
   Input,
@@ -37,7 +17,9 @@ export const PhoneInput = React.forwardRef<
   const initialValues = cleanUserPhoneNumber(value ?? "")
 
   const [countryCode, setCountryCode] = useState(initialValues.countryCode)
-  const [phoneNumber, setPhoneNumber] = useState(initialValues.phoneNumber)
+  const [phoneNumber, setPhoneNumber] = useState(
+    formatPhoneNumber({ current: initialValues.phoneNumber, previous: initialValues.phoneNumber, countryCode })
+  )
 
   const dialCode = countryIndex[countryCode].dialCode
 
@@ -57,14 +39,23 @@ export const PhoneInput = React.forwardRef<
       {...rest}
       ref={ref}
       value={phoneNumber}
-      onChangeText={setPhoneNumber}
+      placeholder={countryIndex[countryCode]?.mask?.replace(/9/g, "0")}
+      placeholderTextColor={color("black30")}
+      onChangeText={(newPhoneNumber) =>
+        setPhoneNumber(formatPhoneNumber({ current: newPhoneNumber, previous: phoneNumber, countryCode }))
+      }
       keyboardType="phone-pad"
       renderLeftHandSection={() => (
         <Select<string>
           options={countryOptions}
           enableSearch
           value={countryCode}
-          onSelectValue={setCountryCode}
+          onSelectValue={(newCountryCode) => {
+            setCountryCode(newCountryCode)
+            setPhoneNumber(
+              formatPhoneNumber({ current: phoneNumber, previous: phoneNumber, countryCode: newCountryCode })
+            )
+          }}
           title="Country code"
           renderButton={({ selectedValue, onPress }) => {
             return (
@@ -77,7 +68,7 @@ export const PhoneInput = React.forwardRef<
                     <TriangleDown width="8" />
                   </Flex>
                   <Flex justifyContent="center" pl="1">
-                    <Sans color="black30" size="3" mt="2px">
+                    <Sans color="black60" size="3" mt="2px">
                       +{dialCode}
                     </Sans>
                   </Flex>
@@ -105,4 +96,24 @@ export const PhoneInput = React.forwardRef<
       )}
     />
   )
+})
+
+const countryOptions: Array<SelectOption<string>> = countries.map((c) => {
+  return {
+    label: c.name,
+    value: c.iso2,
+    searchImportance: c.priority,
+    searchTerms: [
+      c.dialCode,
+      "+" + c.dialCode,
+      c.name,
+      // individual words of country name
+      ...c.name.split(/\W+/g),
+      // initials of country name
+      c.name
+        .split(/\W+/g)
+        .map((word) => word[0])
+        .join(""),
+    ],
+  }
 })

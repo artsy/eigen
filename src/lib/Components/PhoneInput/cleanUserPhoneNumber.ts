@@ -13,7 +13,8 @@ import { getCountryIso2FromPhoneNumber } from "./getCountryIso2FromPhoneNumber"
  * then to call this number you'd type in '+447825577664'
  */
 export function cleanUserPhoneNumber(value: string) {
-  let phoneNumber = value.trim()
+  // remove anything but numbers and plusses
+  let phoneNumber = value.replace(/[^+\d]/g, "").trim()
   const userLocaleCountryCode = getCountry().toLowerCase()
 
   if (!phoneNumber.startsWith("+")) {
