@@ -82,7 +82,7 @@ describe("MyCollectionArtworkFormModal", () => {
           },
         },
       }
-      getGeminiCredentialsForEnvironmentMock.mockReturnValueOnce(Promise.resolve(assetCredentials))
+      getGeminiCredentialsForEnvironmentMock.mockReturnValue(Promise.resolve(assetCredentials))
 
       uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 

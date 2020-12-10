@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Add slack notification when betas fail - brian
   user_facing:
+    - Fix multi-image upload and add processing state in my collection - brian, barry
     - Add auction lots history to artist insights tab - mounir, pavlos
     - Move shows entry point to about tab - mounir
 
