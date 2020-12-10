@@ -28,8 +28,8 @@ const countryOptions: Array<SelectOption<string>> = countries.map((c) => {
   }
 })
 
-const CountryFlag: React.FC<{ iso2Code: string }> = ({ iso2Code }) => {
-  const imageSrc = countryIndex[iso2Code]?.flag
+const CountryFlag: React.FC<{ countryCode: string }> = ({ countryCode }) => {
+  const imageSrc = countryIndex[countryCode]?.flag
   if (!imageSrc) {
     return <View style={{ width: 20, height: 12, backgroundColor: color("black5") }}></View>
   }
@@ -73,7 +73,7 @@ export const PhoneInput = React.forwardRef<
           renderItemLabel={({ label, value }) => {
             return (
               <Flex flexDirection="row" alignItems="center" flexShrink={1}>
-                <CountryFlag iso2Code={value} />
+                <CountryFlag countryCode={value} />
                 <Spacer mr="1" />
                 <Sans size="4" style={{ width: 45 }}>
                   +{countryIndex[value].dialCode}
@@ -90,7 +90,7 @@ export const PhoneInput = React.forwardRef<
               <Touchable onPress={onPress}>
                 <Flex flexDirection="row" style={{ width: "100%", height: "100%" }}>
                   <Flex flexDirection="row" px="1" alignItems="center" backgroundColor="black10">
-                    <CountryFlag iso2Code={selectedValue ?? "us"} />
+                    <CountryFlag countryCode={selectedValue ?? "us"} />
                     <Spacer mr={0.5} />
                     <TriangleDown width="8" />
                   </Flex>
