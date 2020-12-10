@@ -24,7 +24,7 @@ export const SaleInfo = ({
   const formatTime = (dateTime: Moment): string => {
     const suffix = dateTime.format("a") === "am" ? "a.m." : "p.m."
     const time = dateTime.format("h:mm")
-    const timeZone = moment.tz(dateTime, "America/New_York").format("z")
+    const timeZone = dateTime.format("z")
     return `${time} ${suffix} (${timeZone})`
   }
 
