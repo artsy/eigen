@@ -48,7 +48,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
       <Flex pl="2" pr="2">
         <SectionTitle
           title="Auctions"
-          subtitle="Bid online in live and timed auctions"
+          subtitle="Discover and bid on works for you"
           onPress={() => {
             tracking.trackEvent(HomeAnalytics.auctionHeaderTapEvent())
             navigate("/auctions")

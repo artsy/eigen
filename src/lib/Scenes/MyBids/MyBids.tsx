@@ -98,7 +98,7 @@ class MyBids extends React.Component<MyBidsProps> {
           />
         }
       >
-        {!somethingToShow && <NoBids headerText="Discover works for you at auction" />}
+        {!somethingToShow && <NoBids headerText="Discover works for you at auction." />}
         {!!hasRegistrations && <BidTitle>Active Bids</BidTitle>}
         {!!hasRegistrations && (
           <Flex data-test-id="active-section">
