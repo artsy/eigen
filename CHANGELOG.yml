@@ -21,6 +21,7 @@ upcoming:
     - Fix city guide hang on iOS 14 - brian
     - Fix apns token registration issue - brian
     - Fix regression that hids textarea in 1st inquiry modal - christina
+    - Fix multi-image upload and add processing state in my collection - brian, barry
 releases:
   - version: 6.7.2
     date: November 30, 2020
