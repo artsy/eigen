@@ -9,9 +9,6 @@ export type MyBids_me = {
     readonly identityVerified: boolean | null;
     readonly bidders: ReadonlyArray<{
         readonly sale: {
-            readonly registrationStatus: {
-                readonly qualifiedForBidding: boolean | null;
-            } | null;
             readonly internalID: string;
             readonly liveStartAt: string | null;
             readonly endAt: string | null;
@@ -63,28 +60,40 @@ var v0 = {
 v1 = {
   "alias": null,
   "args": null,
-  "kind": "ScalarField",
-  "name": "liveStartAt",
+  "concreteType": "Sale",
+  "kind": "LinkedField",
+  "name": "sale",
+  "plural": false,
+  "selections": [
+    (v0/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "liveStartAt",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "endAt",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "status",
+      "storageKey": null
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "SaleCard_sale"
+    }
+  ],
   "storageKey": null
-},
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "endAt",
-  "storageKey": null
-},
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "status",
-  "storageKey": null
-},
-v4 = {
-  "args": null,
-  "kind": "FragmentSpread",
-  "name": "SaleCard_sale"
 };
 return {
   "argumentDefinitions": [
@@ -135,40 +144,7 @@ return {
       "name": "bidders",
       "plural": true,
       "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "Sale",
-          "kind": "LinkedField",
-          "name": "sale",
-          "plural": false,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "Bidder",
-              "kind": "LinkedField",
-              "name": "registrationStatus",
-              "plural": false,
-              "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "qualifiedForBidding",
-                  "storageKey": null
-                }
-              ],
-              "storageKey": null
-            },
-            (v0/*: any*/),
-            (v1/*: any*/),
-            (v2/*: any*/),
-            (v3/*: any*/),
-            (v4/*: any*/)
-          ],
-          "storageKey": null
-        }
+        (v1/*: any*/)
       ],
       "storageKey": "bidders(active:true)"
     },
@@ -237,22 +213,7 @@ return {
                       "name": "position",
                       "storageKey": null
                     },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "concreteType": "Sale",
-                      "kind": "LinkedField",
-                      "name": "sale",
-                      "plural": false,
-                      "selections": [
-                        (v0/*: any*/),
-                        (v1/*: any*/),
-                        (v2/*: any*/),
-                        (v3/*: any*/),
-                        (v4/*: any*/)
-                      ],
-                      "storageKey": null
-                    }
+                    (v1/*: any*/)
                   ],
                   "storageKey": null
                 },
@@ -324,5 +285,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'd245db0915dcfad6612f1d6ea10f7d37';
+(node as any).hash = '7509435977b8c6846d78f51e305e3ebb';
 export default node;

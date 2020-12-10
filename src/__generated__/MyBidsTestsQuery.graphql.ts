@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash bed67826bbc6c6d6c501d1cf5e3f227c */
+/* @relayHash 79e49bed2f9de923912c13a519a20e16 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -96,10 +96,6 @@ fragment MyBids_me on Me {
   bidders(active: true) {
     sale {
       ...SaleCard_sale
-      registrationStatus {
-        qualifiedForBidding
-        id
-      }
       internalID
       liveStartAt
       endAt
@@ -719,7 +715,7 @@ return {
     ]
   },
   "params": {
-    "id": "bed67826bbc6c6d6c501d1cf5e3f227c",
+    "id": "79e49bed2f9de923912c13a519a20e16",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
