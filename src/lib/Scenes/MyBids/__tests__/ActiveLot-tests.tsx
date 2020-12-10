@@ -58,12 +58,14 @@ describe(ActiveLot, () => {
     })
 
     it("says 'Highest bid' if the user is winning the lot but the reserveStatus is ReserveNotMet in a Live Auction", () => {
+      const date = new Date()
+      date.setDate(date.getDate() + 1)
       const tree = renderWithWrappers(
         <ActiveLot
           lotStanding={lotStandingFixture({
             isHighestBidder: true,
             lotState: { reserveStatus: "ReserveNotMet" },
-            saleArtwork: { sale: { liveStartAt: new Date().toJSON() } },
+            saleArtwork: { sale: { liveStartAt: date } },
           })}
         />
       )
