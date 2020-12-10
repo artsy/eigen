@@ -43,22 +43,20 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
     }
 
     const concreteImages = imagesToCheck as Image[]
-    const stillProcessing = concreteImages.filter((image) => imageIsProcessing(image)).length > 0
+    const stillProcessing = concreteImages.some((image) => imageIsProcessing(image))
     return stillProcessing
   }
 
-  const processingText = () => {
-    return images && images?.length > 0 ? "Processing photos" : "Processing photo"
-  }
-
-  const MainImageView = () => {
+  const renderMainImageView = () => {
     if (!isImage(defaultImage) || imageIsProcessing(defaultImage)) {
       return (
         <Flex
           style={{ height: 300, alignItems: "center", justifyContent: "center", backgroundColor: color("black10") }}
         >
           <ArtworkIcon style={{ opacity: 0.6 }} height={100} width={100} />
-          <Text style={{ opacity: 0.6 }}>{processingText()}</Text>
+          <Text style={{ opacity: 0.6 }}>
+            {images && images?.length > 0 ? "Processing photos" : "Processing photo"}
+          </Text>
         </Flex>
       )
     } else {
@@ -88,7 +86,7 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
           navigate(`/my-collection/artwork-images/${internalID}`)
         }}
       >
-        <MainImageView />
+        {renderMainImageView()}
         {!!images && !hasImagesStillProcessing(defaultImage, images) && (
           <Flex
             mr={2}
