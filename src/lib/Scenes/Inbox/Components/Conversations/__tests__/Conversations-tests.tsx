@@ -50,9 +50,7 @@ describe("messaging inbox", () => {
     expect(wrapper.root.findAllByType(ConversationsContainer)).toHaveLength(1)
   })
 
-  it("doesn't render the header when there are no messages", () => {
-    const expected = "Messages"
-
+  it("renders the no messages notice when there are no messages", () => {
     const wrapper = getWrapper({
       Me: () => ({
         conversations: {
@@ -65,6 +63,6 @@ describe("messaging inbox", () => {
       }),
     })
 
-    expect(extractText(wrapper.root)).not.toContain(expected)
+    expect(extractText(wrapper.root)).toContain("Keep track of your conversations with galleries")
   })
 })
