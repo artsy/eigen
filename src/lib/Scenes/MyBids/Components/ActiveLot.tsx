@@ -9,7 +9,6 @@ import { LotFragmentContainer as Lot } from "./Lot"
 
 export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding }, smallScreen: boolean) => {
   const timelySale = TimelySale.create(lotStanding?.saleArtwork?.sale!)
-  const isLAI = timelySale.isLiveBiddingNow()
 
   const sellingPrice = lotStanding?.lotState?.sellingPrice?.display
   const bidCount = lotStanding?.lotState?.bidCount
@@ -35,7 +34,9 @@ export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding 
           </Text>
         </Flex>
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
-          {!isLAI && lotStanding?.isHighestBidder && lotStanding.lotState.reserveStatus === "ReserveNotMet" ? (
+          {!timelySale.isLAI &&
+          lotStanding?.isHighestBidder &&
+          lotStanding.lotState.reserveStatus === "ReserveNotMet" ? (
             <ReserveNotMet />
           ) : lotStanding?.isHighestBidder ? (
             <HighestBid />
