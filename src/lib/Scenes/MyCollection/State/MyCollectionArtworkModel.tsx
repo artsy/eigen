@@ -11,7 +11,7 @@ import { Metric } from "../Screens/ArtworkFormModal/Components/Dimensions"
 export interface Image {
   height?: number
   isDefault?: boolean
-  url?: string
+  imageURL?: string
   path?: string
   width?: number
 }
@@ -136,13 +136,13 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   addPhotos: action((state, photos) => {
     state.sessionState.formValues.photos = uniqBy(
       state.sessionState.formValues.photos.concat(photos),
-      (photo) => photo.url || photo.path
+      (photo) => photo.imageURL || photo.path
     )
   }),
 
   removePhoto: action((state, photoToRemove) => {
     state.sessionState.formValues.photos = state.sessionState.formValues.photos.filter(
-      (photo) => photo.path !== photoToRemove.path || photo.url !== photoToRemove.url
+      (photo) => photo.path !== photoToRemove.path || photo.imageURL !== photoToRemove.imageURL
     )
   }),
 
@@ -192,7 +192,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       artistSearchResult: {
         internalID: artwork?.artist?.internalID,
         displayLabel: artwork?.artistNames,
-        imageUrl: artwork?.images?.[0]?.url?.replace(":version", "square"),
+        imageUrl: artwork?.images?.[0]?.imageURL?.replace(":version", "square"),
       },
       category: artwork.category,
       date: artwork.date,

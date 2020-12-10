@@ -63,7 +63,7 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
       // TODO: figure out if "normalized" is the correct version
       return (
         <OpaqueImageView
-          imageURL={defaultImage.url.replace(":version", "normalized")}
+          imageURL={defaultImage.imageURL.replace(":version", "normalized")}
           height={defaultImage.height * (dimensions.width / defaultImage.width)}
           width={dimensions.width}
         />
@@ -122,7 +122,7 @@ export const MyCollectionArtworkHeaderFragmentContainer = createFragmentContaine
       images {
         height
         isDefault
-        url
+        imageURL
         width
       }
       internalID
