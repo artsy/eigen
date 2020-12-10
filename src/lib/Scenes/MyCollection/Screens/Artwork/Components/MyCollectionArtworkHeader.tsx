@@ -51,17 +51,6 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
     return images && images?.length > 0 ? "Processing photos" : "Processing photo"
   }
 
-  // Needs adjustment
-  const imageViewHeight = (fullHeight: number, fullWidth: number, constrainedWidth: number) => {
-    const maxHeight = dimensions.height * 0.65
-    const targetHeight = fullHeight * (constrainedWidth / fullWidth)
-    if (targetHeight > maxHeight) {
-      return maxHeight
-    } else {
-      return targetHeight
-    }
-  }
-
   const MainImageView = () => {
     if (!isImage(defaultImage) || imageIsProcessing(defaultImage)) {
       return (
@@ -77,7 +66,7 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
       return (
         <OpaqueImageView
           imageURL={defaultImage.url.replace(":version", "normalized")}
-          height={imageViewHeight(defaultImage.height, defaultImage.width, dimensions.width)}
+          height={defaultImage.height * (dimensions.width / defaultImage.width)}
           width={dimensions.width}
         />
       )
