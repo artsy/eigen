@@ -138,7 +138,7 @@ class MyBids extends React.Component<MyBidsProps> {
           <Flex data-test-id="closed-section">
             <Flex mt={2} px={1.5}>
               <Join separator={<Separator my={2} />}>
-                {activeStandings?.map((ls) => {
+                {closedStandings?.map((ls) => {
                   return (
                     !!ls && (
                       <ClosedLot
