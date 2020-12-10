@@ -21,7 +21,6 @@ import {
 } from "./Components"
 import { NoBids } from "./Components/NoBids"
 import { isLotStandingComplete, TimelySale } from "./helpers/timely"
-import { error } from "console"
 
 export interface MyBidsProps {
   me: MyBids_me
@@ -100,8 +99,8 @@ class MyBids extends React.Component<MyBidsProps> {
         }
       >
         {!somethingToShow && <NoBids headerText="Discover works for you at auction" />}
-        {hasActiveBids && <BidTitle>Active Bids</BidTitle>}
-        {hasRegistrations && (
+        {!!hasRegistrations && <BidTitle>Active Bids</BidTitle>}
+        {!!hasRegistrations && (
           <Flex data-test-id="active-section">
             <Join separator={<Spacer my={1} />}>
               {sortedSales.map((sale) => {
@@ -134,28 +133,26 @@ class MyBids extends React.Component<MyBidsProps> {
             </Join>
           </Flex>
         )}
-        {hasClosedBids && (
-          <>
-            <BidTitle>Closed Bids</BidTitle>
-            <Flex data-test-id="closed-section">
-              <Flex mt={2} px={1.5}>
-                <Join separator={<Separator my={2} />}>
-                  {closedStandings?.map((ls) => {
-                    return (
-                      ls && (
-                        <ClosedLot
-                          withTimelyInfo
-                          data-test-id="closed-sale-lot"
-                          lotStanding={ls}
-                          key={ls?.lotState?.internalID}
-                        />
-                      )
+        {!!hasClosedBids && <BidTitle>Closed Bids</BidTitle>}
+        {!!hasClosedBids && (
+          <Flex data-test-id="closed-section">
+            <Flex mt={2} px={1.5}>
+              <Join separator={<Separator my={2} />}>
+                {activeStandings?.map((ls) => {
+                  return (
+                    !!ls && (
+                      <ClosedLot
+                        withTimelyInfo
+                        data-test-id="closed-sale-lot"
+                        lotStanding={ls}
+                        key={ls?.lotState?.internalID}
+                      />
                     )
-                  })}
-                </Join>
-              </Flex>
+                  )
+                })}
+              </Join>
             </Flex>
-          </>
+          </Flex>
         )}
         <Spacer my={2} />
       </ScrollView>
