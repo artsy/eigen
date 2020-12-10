@@ -1,3 +1,4 @@
+import { addCollectedArtwork } from "@artsy/cohesion"
 import { MyCollectionTestsQuery } from "__generated__/MyCollectionTestsQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { MyCollectionArtworkListItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
@@ -7,15 +8,18 @@ import { Button } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
+import { act, ReactTestRenderer } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionContainer } from "../MyCollection"
 import { MyCollectionArtworkFormModal } from "../Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
 
 jest.unmock("react-relay")
+jest.mock("react-tracking")
 
 describe("MyCollection", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const trackEvent = jest.fn()
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionTestsQuery>
       environment={mockEnvironment}
@@ -38,6 +42,16 @@ describe("MyCollection", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    const mockTracking = useTracking as jest.Mock
+    mockTracking.mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
   const getWrapper = (mockResolvers = {}) => {
@@ -59,33 +73,61 @@ describe("MyCollection", () => {
       }),
     })
 
-  it("renders without throwing an error", () => {
-    const tree = getWrapper()
-    expect(tree.root.findByType(FancyModalHeader)).toBeDefined()
-    expect(tree.root.findByType(FlatList)).toBeDefined()
-    expect(tree.root.findByType(MyCollectionArtworkListItemFragmentContainer)).toBeDefined()
+  describe("collection is empty", () => {
+    let tree: ReactTestRenderer
+
+    beforeEach(() => {
+      tree = getZeroStateWrapper()
+    })
+
+    it("shows zerostate", () => {
+      expect(extractText(tree.root)).toContain(
+        "Add details about an artwork from your collection to access price and market insights."
+      )
+    })
+
+    it("shows form modal when Add Artwork is pressed", () => {
+      const addArtworkButton = tree.root.findByProps({ "data-test-id": "add-artwork-button-zero-state" })
+      addArtworkButton.props.onPress()
+
+      const artworkModal = tree.root.findByType(MyCollectionArtworkFormModal)
+      expect(artworkModal).toBeDefined()
+      expect(artworkModal.props.visible).toBeTruthy()
+    })
+
+    it("tracks analytics event when Add Artwork is pressed", () => {
+      const addArtworkButton = tree.root.findByProps({ "data-test-id": "add-artwork-button-zero-state" })
+      addArtworkButton.props.onPress()
+
+      expect(trackEvent).toHaveBeenCalledTimes(1)
+      expect(trackEvent).toHaveBeenCalledWith(addCollectedArtwork())
+    })
   })
 
-  it("shows zerostate when collection is empty", () => {
-    const tree = getZeroStateWrapper()
-    expect(extractText(tree.root)).toContain(
-      "Add details about an artwork from your collection to access price and market insights."
-    )
-  })
+  describe("collection is not empty", () => {
+    let tree: ReactTestRenderer
+    beforeEach(() => {
+      tree = getWrapper()
+    })
 
-  it("calls proper actions on press", () => {
-    const tree = getWrapper()
-    tree.root.findByType(FancyModalHeader).props.onRightButtonPress()
-    const artworkModal = tree.root.findByType(MyCollectionArtworkFormModal)
-    expect(artworkModal).toBeDefined()
-    expect(artworkModal.props.visible).toBeTruthy()
-  })
+    it("renders without throwing an error", () => {
+      expect(tree.root.findByType(FancyModalHeader)).toBeDefined()
+      expect(tree.root.findByType(FlatList)).toBeDefined()
+      expect(tree.root.findByType(MyCollectionArtworkListItemFragmentContainer)).toBeDefined()
+    })
 
-  it("calls proper actions on zero state button press", () => {
-    const tree = getZeroStateWrapper()
-    tree.root.findByType(Button).props.onPress()
-    const artworkModal = tree.root.findByType(MyCollectionArtworkFormModal)
-    expect(artworkModal).toBeDefined()
-    expect(artworkModal.props.visible).toBeTruthy()
+    it("shows form modal when Add Artwork is pressed", () => {
+      tree.root.findByType(FancyModalHeader).props.onRightButtonPress()
+      const artworkModal = tree.root.findByType(MyCollectionArtworkFormModal)
+      expect(artworkModal).toBeDefined()
+      expect(artworkModal.props.visible).toBeTruthy()
+    })
+
+    it("tracks analytics event when Add Artwork is pressed", () => {
+      tree.root.findByType(FancyModalHeader).props.onRightButtonPress()
+
+      expect(trackEvent).toHaveBeenCalledTimes(1)
+      expect(trackEvent).toHaveBeenCalledWith(addCollectedArtwork())
+    })
   })
 })
