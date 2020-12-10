@@ -21,6 +21,7 @@ import {
 } from "./Components"
 import { NoBids } from "./Components/NoBids"
 import { isLotStandingComplete, TimelySale } from "./helpers/timely"
+import { error } from "console"
 
 export interface MyBidsProps {
   me: MyBids_me
@@ -79,13 +80,15 @@ class MyBids extends React.Component<MyBidsProps> {
       return moment(timelySale.relevantEnd).unix()
     })
 
-    const noActiveBids = activeStandings.length === 0
-    const noClosedBids = closedStandings.length === 0
-    const noBids = noActiveBids && noClosedBids
+    const hasActiveBids = activeStandings.length > 0
+    const hasClosedBids = closedStandings.length > 0
+    const hasRegistrations = sales.length > 0
+
+    const somethingToShow = hasActiveBids || hasClosedBids || hasRegistrations
 
     return (
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1, justifyContent: !!noBids ? "center" : "flex-start" }}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: !!somethingToShow ? "center" : "flex-start" }}
         stickyHeaderIndices={[0, 2]}
         refreshControl={
           <RefreshControl
@@ -96,9 +99,9 @@ class MyBids extends React.Component<MyBidsProps> {
           />
         }
       >
-        {!!noBids && <NoBids headerText="Discover works for you at auction" />}
-        {!noActiveBids && <BidTitle>Active Bids</BidTitle>}
-        {!noActiveBids && (
+        {!somethingToShow && <NoBids headerText="Discover works for you at auction" />}
+        {hasActiveBids && <BidTitle>Active Bids</BidTitle>}
+        {hasRegistrations && (
           <Flex data-test-id="active-section">
             <Join separator={<Spacer my={1} />}>
               {sortedSales.map((sale) => {
@@ -131,26 +134,28 @@ class MyBids extends React.Component<MyBidsProps> {
             </Join>
           </Flex>
         )}
-        {!noClosedBids && <BidTitle>Closed Bids</BidTitle>}
-        {!noClosedBids && (
-          <Flex data-test-id="closed-section">
-            <Flex mt={2} px={1.5}>
-              <Join separator={<Separator my={2} />}>
-                {closedStandings?.map((ls) => {
-                  return (
-                    !!ls && (
-                      <ClosedLot
-                        withTimelyInfo
-                        data-test-id="closed-sale-lot"
-                        lotStanding={ls}
-                        key={ls?.lotState?.internalID}
-                      />
+        {hasClosedBids && (
+          <>
+            <BidTitle>Closed Bids</BidTitle>
+            <Flex data-test-id="closed-section">
+              <Flex mt={2} px={1.5}>
+                <Join separator={<Separator my={2} />}>
+                  {closedStandings?.map((ls) => {
+                    return (
+                      ls && (
+                        <ClosedLot
+                          withTimelyInfo
+                          data-test-id="closed-sale-lot"
+                          lotStanding={ls}
+                          key={ls?.lotState?.internalID}
+                        />
+                      )
                     )
-                  )
-                })}
-              </Join>
+                  })}
+                </Join>
+              </Flex>
             </Flex>
-          </Flex>
+          </>
         )}
         <Spacer my={2} />
       </ScrollView>

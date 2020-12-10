@@ -146,9 +146,10 @@ describe("My Bids", () => {
     expect(activeLots[0]).toContain("Passed")
   })
 
-  it("renders the empty view when there are no active bids", () => {
+  it("renders the empty view when there are no lot standings", () => {
     const wrapper = getWrapper({
       Me: () => ({
+        bidders: [],
         auctionsLotStandingConnection: {
           edges: [],
         },
@@ -161,20 +162,25 @@ describe("My Bids", () => {
     )
   })
 
-  it("renders the empty view when there are no closed bids", () => {
+  it("tells a user they have no bids on a registered sale", () => {
     const wrapper = getWrapper({
-      Me: () => ({
-        auctionsLotStandingConnection: {
-          edges: [],
-        },
-      }),
+      Me: () => {
+        return {
+          bidders: [
+            {
+              sale: {
+                registrationStatus: {
+                  qualifiedForBidding: true,
+                },
+              },
+            },
+          ],
+          auctionsLotStandingConnection: {
+            edges: [],
+          },
+        }
+      },
     })
-
-    expect(extractText(wrapper.root)).toContain("Discover works for you at auction")
-    expect(extractText(wrapper.root)).toContain(
-      "Browse and bid in auctions around the world, from online-only sales to benefit auctions—all in the Artsy app"
-    )
+    expect(extractText(wrapper.root)).toContain("You haven't placed any bids on this sale")
   })
-
-  // it("renders upon success")
 })
