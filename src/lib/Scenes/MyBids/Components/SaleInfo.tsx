@@ -21,13 +21,28 @@ export const SaleInfo = ({
   const now = moment().tz(tz)
   const endMoment = moment(tSale.relevantEnd, moment.ISO_8601).tz(tz)
 
+  const formatTime = (dateTime: Moment): string => {
+    const suffix = dateTime.format("a") === "am" ? "a.m." : "p.m."
+    const time = dateTime.format("h:mm")
+    const timeZone = moment.tz(dateTime, "America/New_York").format("z")
+    return `${time} ${suffix} (${timeZone})`
+  }
+
+  const formatDate = (dateTime: Moment): string => {
+    const month =
+      dateTime.format("MMMM") === "June" || dateTime.format("MMMM") === "July"
+        ? dateTime.format("MMMM")
+        : dateTime.format("MMM.")
+    const day = dateTime.format("Do")
+    return `${month} ${day}`
+  }
   const line1Message = (message: string, deadline: Moment): string => {
     if (deadline.isSame(now, "day")) {
-      return `${message} today at ${endMoment.format("h:mma")}`
+      return `${message} today at ${formatTime(endMoment)}`
     } else if (endMoment.isSame(now.clone().add(1, "day"), "day")) {
-      return `${message} tomorrow at ${endMoment.format("h:mma")}`
+      return `${message} tomorrow at ${formatTime(endMoment)}`
     } else {
-      return `${message} at ${endMoment.format("h:mma")} on ${endMoment.format("M/D")}`
+      return `${message} ${formatDate(endMoment)} at ${formatTime(endMoment)}`
     }
   }
 
@@ -36,8 +51,10 @@ export const SaleInfo = ({
     if (now.isBefore(deadline) && hoursTillDeadline <= 10) {
       if (hoursTillDeadline === 0) {
         return `${message} in ${deadline.diff(now, "minutes")} minutes`
+      } else if (hoursTillDeadline === 1) {
+        return `${message} in ${hoursTillDeadline} hour`
       } else {
-        return `${message} in ${deadline.diff(now, "hours")} hours`
+        return `${message} in ${hoursTillDeadline} hours`
       }
     }
   }
