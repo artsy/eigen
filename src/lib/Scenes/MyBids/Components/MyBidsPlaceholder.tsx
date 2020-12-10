@@ -2,7 +2,7 @@ import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { times } from "lodash"
 import { Flex, Join, Separator } from "palette"
 import React from "react"
-import { CARD_HEIGHT } from "./SaleCard"
+import { COVER_IMAGE_HEIGHT } from "./SaleCard"
 
 export const MyBidsPlaceholder: React.FC = () => (
   <Flex pt="3" px="1">
@@ -31,7 +31,7 @@ export const MyBidsPlaceholder: React.FC = () => (
       <Flex flexDirection="row" pb={2}>
         {times(3).map((index) => (
           <Flex key={index} marginRight={2}>
-            <PlaceholderBox height={CARD_HEIGHT} width="100%" />
+            <PlaceholderBox height={COVER_IMAGE_HEIGHT} width="100%" />
             <PlaceholderText marginTop={10} width={40 + Math.random() * 80} />
             <PlaceholderText marginTop={5} width={40 + Math.random() * 80} />
           </Flex>
