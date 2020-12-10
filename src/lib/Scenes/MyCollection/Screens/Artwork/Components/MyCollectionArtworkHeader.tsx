@@ -8,7 +8,6 @@ import { ArtworkIcon, color, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { opacity } from "styled-system"
 
 interface MyCollectionArtworkHeaderProps {
   artwork: MyCollectionArtworkHeader_artwork
@@ -34,7 +33,11 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
     return isProcessing
   }
 
-  const hasImagesStillProcessing = (imagesToCheck: MyCollectionArtworkHeader_artwork["images"]) => {
+  const hasImagesStillProcessing = (mainImage: any, imagesToCheck: MyCollectionArtworkHeader_artwork["images"]) => {
+    if (!isImage(mainImage) || imageIsProcessing(mainImage)) {
+      return true
+    }
+
     if (!imagesToCheck) {
       return false
     }
@@ -48,9 +51,15 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
     return images && images?.length > 0 ? "Processing photos" : "Processing photo"
   }
 
+  // Needs adjustment
   const imageViewHeight = (fullHeight: number, fullWidth: number, constrainedWidth: number) => {
-    const screenHeightPercent = 0.65
-    return fullHeight * (constrainedWidth / fullWidth) * screenHeightPercent
+    const maxHeight = dimensions.height * 0.65
+    const targetHeight = fullHeight * (constrainedWidth / fullWidth)
+    if (targetHeight > maxHeight) {
+      return maxHeight
+    } else {
+      return targetHeight
+    }
   }
 
   const MainImageView = () => {
@@ -84,9 +93,14 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
         </Text>
       </ScreenMargin>
       <Spacer my={1} />
-      <TouchableOpacity onPress={() => navigate(`/my-collection/artwork-images/${internalID}`)}>
+      <TouchableOpacity
+        disabled={hasImagesStillProcessing(defaultImage, images)}
+        onPress={() => {
+          navigate(`/my-collection/artwork-images/${internalID}`)
+        }}
+      >
         <MainImageView />
-        {!!images && !hasImagesStillProcessing(images) && (
+        {!!images && !hasImagesStillProcessing(defaultImage, images) && (
           <Flex
             mr={2}
             style={{
