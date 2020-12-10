@@ -13,9 +13,14 @@ import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import moment from "moment-timezone"
-import { ClosedLotFragmentContainer as ClosedLot, MyBidsPlaceholder, SaleCardFragmentContainer } from "./Components"
+import {
+  ActiveLotFragmentContainer as ActiveLot,
+  ClosedLotFragmentContainer as ClosedLot,
+  MyBidsPlaceholder,
+  SaleCardFragmentContainer,
+} from "./Components"
 import { NoBids } from "./Components/NoBids"
-import { TimelySale } from "./helpers/timely"
+import { isLotStandingComplete, TimelySale } from "./helpers/timely"
 
 export interface MyBidsProps {
   me: MyBids_me
@@ -97,14 +102,30 @@ class MyBids extends React.Component<MyBidsProps> {
           <Flex data-test-id="active-section">
             <Join separator={<Spacer my={1} />}>
               {sortedSales.map((sale) => {
+                const activeLotStandings = sortedActiveLots[sale.internalID] || []
+                const showNoBids = !activeLotStandings.length && !!sale.registrationStatus?.qualifiedForBidding
                 return (
                   <SaleCardFragmentContainer
                     key={sale.internalID}
                     sale={sale}
                     me={me}
                     smallScreen={isSmallScreen}
-                    lotStandings={sortedActiveLots[sale.internalID]}
-                  />
+                    hideChildren={!showNoBids && !activeLotStandings.length}
+                  >
+                    <Join separator={<Separator my={1} />}>
+                      {!!showNoBids && (
+                        <Text color="black60" py={1} textAlign="center">
+                          You haven't placed any bids on this sale
+                        </Text>
+                      )}
+                      {activeLotStandings.map((ls) => {
+                        if (ls && sale) {
+                          const LotInfoComponent = isLotStandingComplete(ls) ? ClosedLot : ActiveLot
+                          return <LotInfoComponent lotStanding={ls} key={ls?.lotState?.internalID} />
+                        }
+                      })}
+                    </Join>
+                  </SaleCardFragmentContainer>
                 )
               })}
             </Join>
@@ -157,6 +178,9 @@ export const MyBidsContainer = createPaginationContainer(
         bidders(active: true) {
           sale {
             ...SaleCard_sale
+            registrationStatus {
+              qualifiedForBidding
+            }
             internalID
             liveStartAt
             endAt
