@@ -9,7 +9,7 @@ import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/plac
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Flex, Message, Separator, Spacer, Theme } from "palette"
+import { Box, Flex, Separator, Spacer, Theme } from "palette"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, View, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -17,6 +17,7 @@ import { useTracking } from "react-tracking"
 import { Fair2ArtworksFragmentContainer } from "./Components/Fair2Artworks"
 import { Fair2CollectionsFragmentContainer } from "./Components/Fair2Collections"
 import { Fair2EditorialFragmentContainer } from "./Components/Fair2Editorial"
+import { Fair2EmptyStateFragmentContainer } from "./Components/Fair2EmptyState"
 import { Fair2ExhibitorsFragmentContainer } from "./Components/Fair2Exhibitors"
 import { Fair2FollowedArtistsRailFragmentContainer } from "./Components/Fair2FollowedArtistsRail"
 import { Fair2HeaderFragmentContainer } from "./Components/Fair2Header"
@@ -209,11 +210,7 @@ export const Fair2: React.FC<Fair2Props> = ({ fair }) => {
                         )
                       }
                       case "notActive": {
-                        return (
-                          <Message mx={2}>
-                            This fair is not open yet. Please check back closer to the fair for exhibitors and artworks.
-                          </Message>
-                        )
+                        return <Fair2EmptyStateFragmentContainer fair={fair} />
                       }
                       case "fairFollowedArtistsRail": {
                         return <Fair2FollowedArtistsRailFragmentContainer fair={fair} />
@@ -305,6 +302,7 @@ export const Fair2FragmentContainer = createFragmentContainer(Fair2, {
         }
       }
       ...Fair2Header_fair
+      ...Fair2EmptyState_fair
       ...Fair2Editorial_fair
       ...Fair2Collections_fair
       ...Fair2Artworks_fair
