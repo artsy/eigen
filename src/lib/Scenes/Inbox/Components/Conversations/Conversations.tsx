@@ -84,7 +84,7 @@ export class Conversations extends Component<Props, State> {
     const shouldDisplayMyBids = getCurrentEmissionState().options.AROptionsBidManagement
 
     return (
-      <View>
+      <View style={{ flexGrow: 1 }}>
         {!shouldDisplayMyBids && (
           <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
             <Sans mx={2} mt={1} size="8" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
