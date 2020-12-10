@@ -195,10 +195,12 @@ lane :notify_if_new_license_agreement do
   messages = Spaceship::Tunes.client.fetch_program_license_agreement_messages
 
   if !messages.empty?
-    message = ':apple: :handshake: :pencil:\n'\
-              'There is a new developer program agreement that needs to be signed to continue shipping!\n'\
-              'Reach out to legal :scales: for approval before signing.\n'\
-              'https://appstoreconnect.apple.com/agreements/#/'
+    message = <<~MSG
+                :apple: :handshake: :pencil:
+                There is a new developer program agreement that needs to be signed to continue shipping!
+                Reach out to legal :scales: for approval before signing.
+                https://appstoreconnect.apple.com/agreements/#/
+              MSG
     puts message
     puts messages[0]
     slack(
@@ -211,6 +213,24 @@ lane :notify_if_new_license_agreement do
   end
 end
 
+lane :notify_beta_failed do |options|
+  exception = options[:exception]
+  message = <<~MSG
+              :x: :iphone:
+              Looks like the latest beta failed to deploy!
+              See circle job for more details.
+            MSG
+  slack(
+    message: message,
+    success: false,
+    payload: {
+      'Circle Build' => ENV['CIRCLE_BUILD_URL'],
+      'Exception' => exception.message
+    },
+    default_payloads: []
+  )
+end
+
 lane :tag_and_push do |options|
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for circle is read-only
@@ -219,4 +239,10 @@ lane :tag_and_push do |options|
   add_git_tag tag: tag
   `git remote add http https://github.com/artsy/eigen.git`
   `git push http #{tag} -f`
+end
+
+error do |lane, exception|
+ if lane == :ship_beta
+  notify_beta_failed(exception: exception)
+ end
 end

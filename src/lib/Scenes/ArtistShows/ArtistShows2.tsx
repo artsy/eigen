@@ -1,5 +1,4 @@
 import { ArtistShows2_artist } from "__generated__/ArtistShows2_artist.graphql"
-import ArtistShow from "lib/Components/Artist/ArtistShows/ArtistShow"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -10,6 +9,7 @@ import React, { useState } from "react"
 import { FlatList, RefreshControl, StyleSheet, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { ArtistShows2Query } from "../../../__generated__/ArtistShows2Query.graphql"
+import { ArtistShowFragmentContainer } from "../../Components/Artist/ArtistShows/ArtistShow"
 
 interface Props {
   artist: ArtistShows2_artist
@@ -60,7 +60,7 @@ const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
           </>
         )
       }}
-      renderItem={({ item }) => <ArtistShow show={item} styles={showStyles} />}
+      renderItem={({ item }) => <ArtistShowFragmentContainer show={item} styles={showStyles} />}
       keyExtractor={({ id }) => id}
       onEndReachedThreshold={0.2}
       ItemSeparatorComponent={() => <Spacer height={20} />}

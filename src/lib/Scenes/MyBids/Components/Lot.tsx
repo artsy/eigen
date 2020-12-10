@@ -27,7 +27,7 @@ class Lot extends React.Component<Props> {
           <Flex width="50%">
             <Flex flexDirection="row">
               <Flex mr={isSmallScreen! ? 0.5 : 1}>
-                <OpaqueImageView width={60} height={60} imageURL={saleArtwork?.artwork?.image?.url} />
+                <OpaqueImageView width={50} height={50} imageURL={saleArtwork?.artwork?.image?.url} />
                 {!!ArtworkBadge && (
                   <Box position="absolute" top={-2} left={-5}>
                     {<ArtworkBadge />}
@@ -46,7 +46,9 @@ class Lot extends React.Component<Props> {
             </Flex>
           </Flex>
 
-          <Flex width="50%">{children}</Flex>
+          <Flex width="50%" alignItems="flex-end">
+            {children}
+          </Flex>
         </Flex>
       </Touchable>
     )

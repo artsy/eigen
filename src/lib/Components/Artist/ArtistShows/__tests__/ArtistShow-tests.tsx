@@ -3,7 +3,7 @@ import "react-native"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 
-import ArtistShow from "../ArtistShow"
+import { ArtistShowFragmentContainer } from "../ArtistShow"
 
 const showProps = {
   href: "artsy.net/show",
@@ -36,7 +36,7 @@ const showStyles = {
 }
 
 it("renders without throwing an error with all props", () => {
-  renderWithWrappers(<ArtistShow show={showProps as any} styles={showStyles} />)
+  renderWithWrappers(<ArtistShowFragmentContainer show={showProps as any} styles={showStyles} />)
 })
 
 it("renders without throwing an error with null show kind", () => {
@@ -45,5 +45,5 @@ it("renders without throwing an error with null show kind", () => {
     kind: null,
   }
 
-  renderWithWrappers(<ArtistShow show={showPropsNullKind as any} styles={showStyles} />)
+  renderWithWrappers(<ArtistShowFragmentContainer show={showPropsNullKind as any} styles={showStyles} />)
 })
