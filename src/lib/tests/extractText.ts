@@ -6,9 +6,13 @@ export const extractText = (root: ReactTestInstance | string) => {
   }
   let result = ""
   root.findAll((el) => {
-    // @ts-ignore
+    // @ts-expect-error
     if (el.type === "Text") {
       result += el.children.map(extractText).join("")
+    }
+    // @ts-expect-error
+    if (el.type === "TextInput") {
+      result += el.props.value ?? el.props.defaultValue ?? ""
     }
     return false
   })
