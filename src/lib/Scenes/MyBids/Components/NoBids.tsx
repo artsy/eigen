@@ -14,11 +14,11 @@ export class NoBids extends React.Component<{ headerText: string }> {
           {headerText}
         </Text>
         <Text mb={2} mt={1} mx={4} variant="text" textAlign="center" fontWeight="normal" color="black60">
-          Watch a live auction and place bids in advance or in real time, or you can bid in our curated timed auction
+          Browse and bid in auctions around the world, from online-only sales to benefit auctions—all in the Artsy app
         </Text>
         <Flex width="100%" justifyContent="center" flexDirection="row">
           <Button variant="primaryBlack" onPress={() => handleViewAllAuctions()}>
-            Explore Auctions
+            Explore auctions
           </Button>
         </Flex>
       </Flex>

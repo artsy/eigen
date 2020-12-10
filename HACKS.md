@@ -44,3 +44,9 @@
   When this is merged: https://github.com/facebook/react-native/pull/30345.
 
   For some reason CircleCI kept giving an error when running tests `TypeError: stacktraceParser.parse is not a function`. Once I moved the require higher up, things started working again.
+
+- exporting MockResolverContext (@types/relay-test-utils patch-package)
+
+  Not really needed to be removed, unless it causes problems.
+
+  We use this type in out code for our tests and the `mockEnvironmentPayload`, so we exported it.
