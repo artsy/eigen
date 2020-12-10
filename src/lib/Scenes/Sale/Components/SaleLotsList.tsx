@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { SaleLotsList_saleArtworksConnection } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
-import { OrderedSaleArtworkSorts } from "lib/Components/ArtworkFilterOptions/SortOptions"
+import { ORDERED_SALE_ARTWORK_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
@@ -32,7 +32,7 @@ export const SaleLotsListSortMode = ({
   totalCount: number | null | undefined
 }) => {
   const getSortDescription = useCallback(() => {
-    const sortMode = OrderedSaleArtworkSorts.find((sort) => sort.paramValue === filterParams?.sort)
+    const sortMode = ORDERED_SALE_ARTWORK_SORTS.find((sort) => sort.paramValue === filterParams?.sort)
     if (sortMode) {
       return sortMode.displayText
     }

@@ -23,6 +23,7 @@ export const reducer = (
     ...defaultCommonFilterOptions,
     sort: getSortDefaultValueByFilterType(artworkFilterState.filterType),
   }
+
   switch (action.type) {
     case "applyFilters":
       let multiOptionFilters = unionBy(
@@ -251,10 +252,7 @@ export const reducer = (
 }
 
 const getSortDefaultValueByFilterType = (filterType: FilterType) => {
-  if (filterType === "saleArtwork") {
-    return "position"
-  }
-  return "-decayed_merch"
+  return { artwork: "-decayed_merch", saleArtwork: "position", showArtwork: "partner_show_position" }[filterType]
 }
 
 export const ParamDefaultValues = {
@@ -303,18 +301,24 @@ export const selectedOptionsUnion = ({
   previouslyAppliedFilters: FilterArray
   filterType?: FilterType
 }): FilterArray => {
-  const defaultSortFilter =
-    filterType === "artwork"
-      ? {
-          paramName: FilterParamName.sort,
-          paramValue: "-decayed_merch",
-          displayText: "Default",
-        }
-      : {
-          paramName: FilterParamName.sort,
-          paramValue: "position",
-          displayText: "Lot number ascending",
-        }
+  const defaultSortFilter = {
+    artwork: {
+      paramName: FilterParamName.sort,
+      paramValue: "-decayed_merch",
+      displayText: "Default",
+    },
+    saleArtwork: {
+      paramName: FilterParamName.sort,
+      paramValue: "position",
+      displayText: "Lot number ascending",
+    },
+    showArtwork: {
+      paramName: FilterParamName.sort,
+      paramValue: "partner_show_position",
+      displayText: "Gallery Curated",
+    },
+  }[filterType]
+
   const defaultFilters: FilterArray = [
     defaultSortFilter,
     { paramName: FilterParamName.estimateRange, paramValue: "", displayText: "All" },
@@ -419,7 +423,7 @@ export const ArtworkFilterGlobalStateProvider = ({ children }: any /* STRICTNESS
   return <ArtworkFilterContext.Provider value={{ state, dispatch }}>{children}</ArtworkFilterContext.Provider>
 }
 
-export type FilterType = "artwork" | "saleArtwork"
+export type FilterType = "artwork" | "saleArtwork" | "showArtwork"
 
 export interface FilterCounts {
   total: number | null
