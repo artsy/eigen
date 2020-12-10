@@ -27,6 +27,8 @@ export interface MyBidsProps {
   relay: RelayPaginationProp
 }
 
+type Sale = NonNullable<NonNullable<NonNullable<MyBids_me["bidders"]>[0]>["sale"]>
+
 class MyBids extends React.Component<MyBidsProps> {
   state = {
     fetching: false,
@@ -67,19 +69,25 @@ class MyBids extends React.Component<MyBidsProps> {
     // sort each group of lot standings by position (lot number)
     const sortedActiveLots = mapValues(activeBySaleId, (lss) => sortBy(lss, (ls) => ls?.saleArtwork?.position!))
 
-    // sort an ordered list of sale ids by their relevant end time
-    const sortedSaleIds: string[] = sortBy(Object.keys(sortedActiveLots), (saleId) => {
-      const timelySale = TimelySale.create(sortedActiveLots[saleId][0]?.saleArtwork?.sale!)
+    // TODO: create list of all unique sales from lotStandings, bidders, and watchedLots (in the future).
+    // NOTE: bidders should include lotStandings, do we need both?
+
+    // sort an ordered list of sales by their relevant end time
+    const sales: Sale[] = me.bidders?.map((b) => b!.sale!) || []
+    const sortedSales = sortBy(sales, (sale) => {
+      const timelySale = TimelySale.create(sale)
       return moment(timelySale.relevantEnd).unix()
     })
 
-    const noActiveBids = activeStandings.length === 0
-    const noClosedBids = closedStandings.length === 0
-    const noBids = noActiveBids && noClosedBids
+    const hasActiveBids = activeStandings.length > 0
+    const hasClosedBids = closedStandings.length > 0
+    const hasRegistrations = sales.length > 0
+
+    const somethingToShow = hasActiveBids || hasClosedBids || hasRegistrations
 
     return (
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1, justifyContent: !!noBids ? "center" : "flex-start" }}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: !!somethingToShow ? "center" : "flex-start" }}
         stickyHeaderIndices={[0, 2]}
         refreshControl={
           <RefreshControl
@@ -90,21 +98,32 @@ class MyBids extends React.Component<MyBidsProps> {
           />
         }
       >
-        {!!noBids && <NoBids headerText="Discover works for you at auction. " />}
-        {!noActiveBids && <BidTitle>Active Bids</BidTitle>}
-        {!noActiveBids && (
+        {!somethingToShow && <NoBids headerText="Discover works for you at auction." />}
+        {!!hasRegistrations && <BidTitle>Active Bids</BidTitle>}
+        {!!hasRegistrations && (
           <Flex data-test-id="active-section">
             <Join separator={<Spacer my={1} />}>
-              {sortedSaleIds.map((saleId) => {
-                const activeLotStandings = sortedActiveLots[saleId]
-                const sale = activeLotStandings[0]?.saleArtwork?.sale!
+              {sortedSales.map((sale) => {
+                const activeLotStandings = sortedActiveLots[sale.internalID] || []
+                const showNoBids = !activeLotStandings.length && !!sale.registrationStatus?.qualifiedForBidding
                 return (
-                  <SaleCardFragmentContainer key={saleId} sale={sale} me={me} smallScreen={isSmallScreen}>
+                  <SaleCardFragmentContainer
+                    key={sale.internalID}
+                    sale={sale}
+                    me={me}
+                    smallScreen={isSmallScreen}
+                    hideChildren={!showNoBids && !activeLotStandings.length}
+                  >
                     <Join separator={<Separator my={1} />}>
+                      {!!showNoBids && (
+                        <Text color="black60" py={1} textAlign="center">
+                          You haven't placed any bids on this sale
+                        </Text>
+                      )}
                       {activeLotStandings.map((ls) => {
                         if (ls && sale) {
                           const LotInfoComponent = isLotStandingComplete(ls) ? ClosedLot : ActiveLot
-                          return <LotInfoComponent lotStanding={ls as any} key={ls?.lotState?.internalID} />
+                          return <LotInfoComponent lotStanding={ls} key={ls?.lotState?.internalID} />
                         }
                       })}
                     </Join>
@@ -114,8 +133,8 @@ class MyBids extends React.Component<MyBidsProps> {
             </Join>
           </Flex>
         )}
-        {!noClosedBids && <BidTitle>Closed Bids</BidTitle>}
-        {!noClosedBids && (
+        {!!hasClosedBids && <BidTitle>Closed Bids</BidTitle>}
+        {!!hasClosedBids && (
           <Flex data-test-id="closed-section">
             <Flex mt={2} px={1.5}>
               <Join separator={<Separator my={2} />}>
@@ -158,6 +177,18 @@ export const MyBidsContainer = createPaginationContainer(
       @argumentDefinitions(count: { type: "Int", defaultValue: 25 }, cursor: { type: "String", defaultValue: "" }) {
         ...SaleCard_me
         identityVerified
+        bidders(active: true) {
+          sale {
+            ...SaleCard_sale
+            registrationStatus {
+              qualifiedForBidding
+            }
+            internalID
+            liveStartAt
+            endAt
+            status
+          }
+        }
         auctionsLotStandingConnection(first: $count, after: $cursor)
           @connection(key: "MyBids_auctionsLotStandingConnection") {
           edges {
