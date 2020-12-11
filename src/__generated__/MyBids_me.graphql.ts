@@ -22,7 +22,7 @@ export type MyBids_me = {
     readonly auctionsLotStandingConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly lotState: {
+                readonly lot: {
                     readonly internalID: string;
                     readonly saleId: string;
                     readonly soldStatus: AuctionsSoldStatus;
@@ -201,7 +201,7 @@ return {
                   "args": null,
                   "concreteType": "AuctionsLotState",
                   "kind": "LinkedField",
-                  "name": "lotState",
+                  "name": "lot",
                   "plural": false,
                   "selections": [
                     (v0/*: any*/),
@@ -324,5 +324,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'd245db0915dcfad6612f1d6ea10f7d37';
+(node as any).hash = '3b7393a5d5db8d2f7c959fea97ac9530';
 export default node;

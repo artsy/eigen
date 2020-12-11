@@ -28,11 +28,11 @@ export const ClosedLot = ({
   withTimelyInfo?: boolean
 }) => {
   const sale = lotStanding?.saleArtwork?.sale!
-  const sellingPrice = lotStanding?.lotState?.sellingPrice?.display
+  const sellingPrice = lotStanding?.lot?.sellingPrice?.display
   const subtitle = withTimelyInfo ? saleClosedMessage(sale) : undefined
 
   const result: BidderResult =
-    lotStanding?.lotState.soldStatus === "Passed" ? "passed" : lotStanding?.isHighestBidder ? "won" : "lost"
+    lotStanding?.lot.soldStatus === "Passed" ? "passed" : lotStanding?.isHighestBidder ? "won" : "lost"
   const Badge = result === "won" ? StarCircleFill : undefined
 
   const bidderMessages: { [k in BidderResult]: React.ComponentType } = {
@@ -59,16 +59,13 @@ export const ClosedLotFragmentContainer = createFragmentContainer(ClosedLot, {
   lotStanding: graphql`
     fragment ClosedLot_lotStanding on AuctionsLotStanding {
       isHighestBidder
-      lotState {
+      lot {
         internalID
         saleId
         bidCount
         reserveStatus
         soldStatus
-        askingPrice: onlineAskingPrice {
-          display
-        }
-        sellingPrice: floorSellingPrice {
+        sellingPrice {
           display
         }
       }

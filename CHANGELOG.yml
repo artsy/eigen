@@ -8,6 +8,7 @@ upcoming:
     - Add auction lots history to artist insights tab - mounir, pavlos
     - Move shows entry point to about tab - mounir
     - Fix image graininess in my collection - brian
+    - Fix bug where user profile may fail to load - erik
 
 releases:
   - version: 6.7.3
