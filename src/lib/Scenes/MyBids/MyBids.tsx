@@ -87,7 +87,7 @@ class MyBids extends React.Component<MyBidsProps> {
 
     return (
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1, justifyContent: !!somethingToShow ? "center" : "flex-start" }}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: !somethingToShow ? "center" : "flex-start" }}
         stickyHeaderIndices={[0, 2]}
         refreshControl={
           <RefreshControl
