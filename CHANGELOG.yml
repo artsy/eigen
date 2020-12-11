@@ -4,22 +4,13 @@ upcoming:
   dev:
     - Add slack notification when betas fail - brian
   user_facing:
+    - Fix multi-image upload and add processing state in my collection - brian, barry
     - Add auction lots history to artist insights tab - mounir, pavlos
     - Move shows entry point to about tab - mounir
-
-    - Add artist past shows screen - mounir
-    - Add loading spinner to infinite artwork grid on artist page - david
-    - Avoid shrinking the background on non-fullscreen fancy modals - david
-    - Support iOS 14 photo picker in My Collection - brian
-    - Scroll to add message input on Inquire screen - ashley, mounir
-    - Make add message input height relative to its size - ashley, mounir
-    - Avoid shrinking the background on non-fullscreen fancy modals - david
-    - removed x from inquiry sent notification - lily
-    - Minor copy changes for My Collection - pepopowitz
-    - Fix city guide hang on iOS 14 - brian
-    - Fix apns token registration issue - brian
-    - Fix regression that hids textarea in 1st inquiry modal - christina
+    - Fix image graininess in my collection - brian
+    - Fix bug where user profile may fail to load - erik
     - Add improved phone number input - david
+
 releases:
   - version: 6.7.3
     date: Dec 8, 2020
