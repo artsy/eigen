@@ -8,6 +8,7 @@ upcoming:
     - Add auction lots history to artist insights tab - mounir, pavlos
     - Move shows entry point to about tab - mounir
     - Fix bug where user profile may fail to load - erik
+    - Fix bug preventing empty values from being saved (my collection) - brian
 
 releases:
   - version: 6.7.3
