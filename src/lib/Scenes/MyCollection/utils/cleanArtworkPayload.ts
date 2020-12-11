@@ -11,7 +11,10 @@ export function cleanArtworkPayload(payload = {}): any {
   return cleanPayload
 }
 
-export function explicitlyClearedFields(payload = {}, previousPayload: ArtworkFormValues): any {
+export function explicitlyClearedFields(
+  payload: Partial<ArtworkFormValues> = {},
+  previousPayload: ArtworkFormValues
+): any {
   const cleanPayload = cleanArtworkPayload(payload)
   const cleanPreviousPayload = cleanArtworkPayload(previousPayload)
 
