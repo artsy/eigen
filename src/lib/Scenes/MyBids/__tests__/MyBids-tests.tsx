@@ -88,7 +88,7 @@ describe("My Bids", () => {
               {
                 node: {
                   isHighestBidder: true,
-                  lotState: {
+                  lot: {
                     soldStatus: "Passed",
                   },
                   saleArtwork: {
@@ -127,7 +127,7 @@ describe("My Bids", () => {
               {
                 node: {
                   isHighestBidder: true,
-                  lotState: {
+                  lot: {
                     soldStatus: "Passed",
                     reserveStatus: "ReserveNotMet",
                   },

@@ -8,15 +8,12 @@ export type AuctionsReserveStatus = "NoReserve" | "ReserveMet" | "ReserveNotMet"
 export type AuctionsSoldStatus = "ForSale" | "Passed" | "Sold" | "%future added value";
 export type ClosedLot_lotStanding = {
     readonly isHighestBidder: boolean;
-    readonly lotState: {
+    readonly lot: {
         readonly internalID: string;
         readonly saleId: string;
         readonly bidCount: number;
         readonly reserveStatus: AuctionsReserveStatus;
         readonly soldStatus: AuctionsSoldStatus;
-        readonly askingPrice: {
-            readonly display: string | null;
-        } | null;
         readonly sellingPrice: {
             readonly display: string | null;
         } | null;
@@ -38,17 +35,7 @@ export type ClosedLot_lotStanding$key = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = [
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "display",
-    "storageKey": null
-  }
-];
-return {
+const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -66,7 +53,7 @@ return {
       "args": null,
       "concreteType": "AuctionsLotState",
       "kind": "LinkedField",
-      "name": "lotState",
+      "name": "lot",
       "plural": false,
       "selections": [
         {
@@ -105,23 +92,21 @@ return {
           "storageKey": null
         },
         {
-          "alias": "askingPrice",
+          "alias": null,
           "args": null,
           "concreteType": "Money",
           "kind": "LinkedField",
-          "name": "onlineAskingPrice",
+          "name": "sellingPrice",
           "plural": false,
-          "selections": (v0/*: any*/),
-          "storageKey": null
-        },
-        {
-          "alias": "sellingPrice",
-          "args": null,
-          "concreteType": "Money",
-          "kind": "LinkedField",
-          "name": "floorSellingPrice",
-          "plural": false,
-          "selections": (v0/*: any*/),
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "display",
+              "storageKey": null
+            }
+          ],
           "storageKey": null
         }
       ],
@@ -172,6 +157,5 @@ return {
   "type": "AuctionsLotStanding",
   "abstractKey": null
 };
-})();
-(node as any).hash = '4a5e3b7db9b08a583aa471db21ece37e';
+(node as any).hash = '3ab56e4e50230ad593b01efa228b3bf3';
 export default node;

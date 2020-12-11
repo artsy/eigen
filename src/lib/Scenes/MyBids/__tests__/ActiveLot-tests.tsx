@@ -8,7 +8,7 @@ import { ActiveLot } from "../Components/ActiveLot"
 
 const defaultLotStanding = {
   isHighestBidder: true,
-  lotState: {
+  lot: {
     internalID: "123",
     bidCount: 1,
     soldStatus: "ForSale",
@@ -41,9 +41,7 @@ describe(ActiveLot, () => {
   describe("User winning status", () => {
     it("says 'Highest bid' if the user is winning the lot", () => {
       const tree = renderWithWrappers(
-        <ActiveLot
-          lotStanding={lotStandingFixture({ isHighestBidder: true, lotState: { reserveStatus: "ReserveMet" } })}
-        />
+        <ActiveLot lotStanding={lotStandingFixture({ isHighestBidder: true, lot: { reserveStatus: "ReserveMet" } })} />
       )
       expect(extractText(tree.root)).toContain("Highest bid")
     })
@@ -51,7 +49,7 @@ describe(ActiveLot, () => {
     it("says 'Highest bid' if the user is has the high bid and reserveStatus is UnknownReserve", () => {
       const tree = renderWithWrappers(
         <ActiveLot
-          lotStanding={lotStandingFixture({ isHighestBidder: true, lotState: { reserveStatus: "UnknownReserve" } })}
+          lotStanding={lotStandingFixture({ isHighestBidder: true, lot: { reserveStatus: "UnknownReserve" } })}
         />
       )
       expect(extractText(tree.root)).toContain("Highest bid")
@@ -64,7 +62,7 @@ describe(ActiveLot, () => {
         <ActiveLot
           lotStanding={lotStandingFixture({
             isHighestBidder: true,
-            lotState: { reserveStatus: "ReserveNotMet" },
+            lot: { reserveStatus: "ReserveNotMet" },
             saleArtwork: { sale: { liveStartAt: date } },
           })}
         />
@@ -75,7 +73,7 @@ describe(ActiveLot, () => {
     it("says 'Reserve not met' if the user is winning the lot, but the reserveStatus is ReserveNotMet", () => {
       const tree = renderWithWrappers(
         <ActiveLot
-          lotStanding={lotStandingFixture({ isHighestBidder: true, lotState: { reserveStatus: "ReserveNotMet" } })}
+          lotStanding={lotStandingFixture({ isHighestBidder: true, lot: { reserveStatus: "ReserveNotMet" } })}
         />
       )
       expect(extractText(tree.root)).toContain("Reserve not met")
@@ -84,7 +82,7 @@ describe(ActiveLot, () => {
     it("says 'Outbid' if the user is outbid on the lot, but the reserveStatus is ReserveNotMet", () => {
       const tree = renderWithWrappers(
         <ActiveLot
-          lotStanding={lotStandingFixture({ isHighestBidder: false, lotState: { reserveStatus: "ReserveNotMet" } })}
+          lotStanding={lotStandingFixture({ isHighestBidder: false, lot: { reserveStatus: "ReserveNotMet" } })}
         />
       )
       expect(extractText(tree.root)).toContain("Outbid")
@@ -92,9 +90,7 @@ describe(ActiveLot, () => {
 
     it("says 'outbid' if the user is outbid on the lot and reserve is met", () => {
       const tree = renderWithWrappers(
-        <ActiveLot
-          lotStanding={lotStandingFixture({ isHighestBidder: false, lotState: { reserveStatus: "ReserveMet" } })}
-        />
+        <ActiveLot lotStanding={lotStandingFixture({ isHighestBidder: false, lot: { reserveStatus: "ReserveMet" } })} />
       )
       expect(extractText(tree.root)).toContain("Outbid")
     })
@@ -103,9 +99,7 @@ describe(ActiveLot, () => {
   describe("selling price", () => {
     it("shows floor selling price", () => {
       const tree = renderWithWrappers(
-        <ActiveLot
-          lotStanding={lotStandingFixture({ isHighestBidder: true, lotState: { reserveStatus: "ReserveMet" } })}
-        />
+        <ActiveLot lotStanding={lotStandingFixture({ isHighestBidder: true, lot: { reserveStatus: "ReserveMet" } })} />
       )
       expect(extractText(tree.root)).toContain("CHF 1,800")
     })
