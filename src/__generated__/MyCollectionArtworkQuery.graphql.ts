@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5d874d4f046f77e70bb772e694c5f45d */
+/* @relayHash 34bc05b66fb9e2c5926a7ba693b68d47 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -168,7 +168,7 @@ fragment MyCollectionArtworkHeader_artwork on Artwork {
   images {
     height
     isDefault
-    url
+    imageURL
     width
   }
   internalID
@@ -337,35 +337,21 @@ v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "url",
+  "name": "isDefault",
   "storageKey": null
 },
 v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "width",
+  "name": "url",
   "storageKey": null
 },
 v17 = {
   "alias": null,
   "args": null,
-  "concreteType": "Image",
-  "kind": "LinkedField",
-  "name": "images",
-  "plural": true,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "isDefault",
-      "storageKey": null
-    },
-    (v15/*: any*/),
-    (v16/*: any*/),
-    (v13/*: any*/)
-  ],
+  "kind": "ScalarField",
+  "name": "width",
   "storageKey": null
 },
 v18 = {
@@ -428,7 +414,7 @@ v25 = {
   "value": 3
 },
 v26 = [
-  (v15/*: any*/)
+  (v16/*: any*/)
 ];
 return {
   "fragment": {
@@ -471,14 +457,28 @@ return {
           (v12/*: any*/),
           (v13/*: any*/),
           (v14/*: any*/),
-          (v17/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "images",
+            "plural": true,
+            "selections": [
+              (v15/*: any*/),
+              (v16/*: any*/),
+              (v17/*: any*/),
+              (v13/*: any*/)
+            ],
+            "storageKey": null
+          },
           (v4/*: any*/),
           (v18/*: any*/),
           (v19/*: any*/),
           (v20/*: any*/),
           (v21/*: any*/),
           (v22/*: any*/),
-          (v16/*: any*/),
+          (v17/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
@@ -775,14 +775,35 @@ return {
           (v12/*: any*/),
           (v13/*: any*/),
           (v14/*: any*/),
-          (v17/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "images",
+            "plural": true,
+            "selections": [
+              (v15/*: any*/),
+              (v16/*: any*/),
+              (v17/*: any*/),
+              (v13/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "imageURL",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
           (v4/*: any*/),
           (v18/*: any*/),
           (v19/*: any*/),
           (v20/*: any*/),
           (v21/*: any*/),
           (v22/*: any*/),
-          (v16/*: any*/),
+          (v17/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -947,7 +968,7 @@ return {
     ]
   },
   "params": {
-    "id": "5d874d4f046f77e70bb772e694c5f45d",
+    "id": "34bc05b66fb9e2c5926a7ba693b68d47",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",

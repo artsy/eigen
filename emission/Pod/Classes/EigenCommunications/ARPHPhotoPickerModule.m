@@ -77,7 +77,8 @@ RCT_EXPORT_METHOD(requestPhotos:(RCTPromiseResolveBlock)resolve
                 [result.itemProvider loadObjectOfClass:[UIImage class] completionHandler:^(__kindof id<NSItemProviderReading> _Nullable object, NSError * _Nullable error) {
                     if ([object isKindOfClass:[UIImage class]]) {
                         UIImage *image = (UIImage*)object;
-                        ImageResult *imageResult = [compression compressImage:[image fixOrientation] withOptions:nil];
+                        NSDictionary *compressionOption = @{ @"compressImageQuality": @1.0 };
+                        ImageResult *imageResult = [compression compressImage:[image fixOrientation] withOptions:compressionOption];
                         NSString *filePath = [self persistFile:imageResult.data];
                         NSDictionary *imageDict = [self dictFromImageResult:imageResult filePath:filePath];
                         [images addObject:imageDict];
