@@ -1,9 +1,8 @@
 import { ExecutionQueue } from "lib/utils/ExecutionQueue"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { compact, flatten } from "lodash"
 import React, { RefObject, useEffect, useRef, useState } from "react"
-import { Animated, View } from "react-native"
-import { AnimationCreator, ease, FancyModalCard, spring } from "./FancyModalCard"
+import { View } from "react-native"
+import { FancyModalCard } from "./FancyModalCard"
 
 /**
  * This is responsible for managing a stack of FancyModalCard instances, and making sure they are positioned correctly.
@@ -29,11 +28,7 @@ class FancyModalCardStack {
         this.stack.splice(i, 1)
       }
     }
-    runAnimations(this.getStackAnimations(ease))
-  }
-
-  getStackAnimations(createAnimation: AnimationCreator) {
-    return flatten(compact(this.stack.map((card) => card.current?.getStackAnimations(createAnimation, this.stack))))
+    // TODO: run appear/disappear
   }
 
   getRootCard(height: number, content: React.ReactNode) {
@@ -42,6 +37,7 @@ class FancyModalCardStack {
         <FancyModalCard
           level={0}
           ref={this.stack[0]}
+          stack={this.stack}
           onBackgroundPressed={() => null}
           height={height}
           backgroundShouldShrink={false}
@@ -66,6 +62,7 @@ class FancyModalCardStack {
     const jsx = (
       <FancyModalCard
         level={this.level}
+        stack={this.stack}
         ref={ref}
         onBackgroundPressed={config.onBackgroundPressed}
         height={config.height}
@@ -92,17 +89,14 @@ class FancyModalCardStack {
       show: async () => {
         await this.executionQueue.executeInQueue(async () => {
           this.stack.push(ref)
-          await runAnimations(this.getStackAnimations(spring))
+          await ref.current?.appear()
         })
       },
       hide: async () => {
         await this.executionQueue.executeInQueue(async () => {
           if (this.stack.includes(ref)) {
             this.stack.splice(this.stack.indexOf(ref), 1)
-            await runAnimations([
-              ...this.getStackAnimations(ease),
-              ...(ref.current ? ref.current.getPopAnimations(ease) : []),
-            ])
+            await ref.current?.disappear()
           }
         })
       },
@@ -132,6 +126,6 @@ export const _FancyModalPageWrapper: React.FC = ({ children }) => {
   )
 }
 
-async function runAnimations(animations: Animated.CompositeAnimation[]) {
-  await new Promise((resolve) => Animated.parallel(animations).start(resolve))
-}
+// async function runAnimations(animations: Animated.CompositeAnimation[]) {
+//   await new Promise((resolve) => Animated.parallel(animations).start(resolve))
+// }
