@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Inbox_me } from "__generated__/Inbox_me.graphql"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -11,6 +12,7 @@ import { EmitterSubscription, LayoutChangeEvent, View, ViewProps } from "react-n
 // @ts-expect-error @types file generates duplicate declaration problems
 import ScrollableTabView, { TabBarProps } from "react-native-scrollable-tab-view"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import track from "react-tracking"
 
 // Tabs
 interface TabWrapperProps extends ViewProps {
@@ -117,6 +119,20 @@ export class Inbox extends React.Component<Props, State> {
     this.scrollViewVerticalStart = layout.nativeEvent.layout.y
   }
 
+  // Type Error??
+  @track((index: number) => ({
+    action: ActionType.tappedNavigationTab,
+    // ContextModule: index === 0 ? myBids : inboxInquiries
+    context_module: ContextModule,
+    context_screen_owner_type: OwnerType.inbox,
+    // What does the owner id represent here?
+    context_screen_owner_id: index,
+    context_screen_owner_slug: "string",
+  }))
+  handleNavigationTabTap = () => {
+    // no op
+  }
+
   render() {
     const bottomInset = this.scrollViewVerticalStart
     return (
@@ -128,6 +144,7 @@ export class Inbox extends React.Component<Props, State> {
           contentInset: { bottom: bottomInset },
           onLayout: this.onScrollableTabViewLayout,
         }}
+        onChangeTab={(i) => this.handleNavigationTabTap(i)}
       >
         <TabWrapper tabLabel="Bids" key="bids" style={{ flexGrow: 1, justifyContent: "center" }}>
           <MyBidsContainer me={this.props.me} componentRef={(myBids) => (this.myBids = myBids)} />

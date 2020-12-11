@@ -12,6 +12,8 @@ import { Conversations_me } from "__generated__/Conversations_me.graphql"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { color, Flex, Sans, Separator } from "palette"
+import track from "react-tracking"
+import { ActionType, ContextModule, OwnerType,  ScreenOwnerType,}  from "@artsy/cohesion"
 
 interface Props {
   me: Conversations_me
@@ -25,6 +27,7 @@ interface State {
   fetching: boolean
 }
 
+@track()
 export class Conversations extends Component<Props, State> {
   state = {
     isLoading: false,
@@ -72,6 +75,17 @@ export class Conversations extends Component<Props, State> {
     }
   }
 
+  @track((props) => {
+    action: ActionType.tappedInboxConversation,
+    context_module: ContextModule.inboxInquiries,
+    context_screen_owner_type: OwnerType.inboxInquiries,
+    destination_screen_owner_type: OwnerType.inboxConversation,
+    destination_screen_owner_id: props.id,
+  })
+  handleConversationTap(item) {
+    navigate(`conversation/${item.internalID}`)
+  }
+
   render() {
     const conversations = extractNodes(this.props.me.conversations)
 
@@ -106,7 +120,10 @@ export class Conversations extends Component<Props, State> {
           ItemSeparatorComponent={() => <Separator mx={2} width="auto" />}
           renderItem={({ item }) => {
             return (
-              <ConversationSnippet conversation={item} onSelected={() => navigate(`conversation/${item.internalID}`)} />
+              <ConversationSnippet conversation={item} onSelected={() => {
+                this.handleConversationTap(item)
+                // navigate(`conversation/${item.internalID}`)
+              }} />
             )
           }}
           onEndReached={this.fetchData}

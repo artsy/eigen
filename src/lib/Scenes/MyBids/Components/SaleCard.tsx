@@ -9,6 +9,8 @@ import { ClockFill, ExclamationMarkCircleFill } from "palette/svgs/sf"
 
 import { SaleCard_me } from "__generated__/SaleCard_me.graphql"
 import { SaleCard_sale } from "__generated__/SaleCard_sale.graphql"
+import { useTracking } from "react-tracking"
+import { ActionType, ContextModule } from "@artsy/cohesion"
 
 export const CARD_HEIGHT = 72
 
@@ -36,6 +38,7 @@ export class SaleCard extends React.Component<{ sale: SaleCard_sale; me: SaleCar
   render() {
     const { sale, me, smallScreen, children } = this.props
     const { registrationStatus } = sale
+    const tracking = useTracking()
 
     const pendingIdentityVerification = me.pendingIdentityVerification
     const shouldPromptIdVerification =
@@ -65,7 +68,25 @@ export class SaleCard extends React.Component<{ sale: SaleCard_sale; me: SaleCar
 
     return (
       <React.Fragment>
-        <Touchable underlayColor="transparent" activeOpacity={0.8} onPress={() => navigate(sale?.href as string)}>
+        <Touchable
+          underlayColor="transparent"
+          activeOpacity={0.8}
+          onPress={() => {
+            tracking.trackEvent({
+              // track some stuff
+              action: ActionType.tappedAuctionGroup,
+              context_module: ContextModule,
+              context_screen_owner_type: "home",
+              destination_screen_owner_type: "sale",
+              destination_screen_owner_id: "5e95b37a2fdcb20012a0e082",
+              destination_screen_owner_slug: "forum-auctions-colour-theory-4",
+              horizontal_slide_position: 3,
+              module_height: "double",
+              type: "thumbnail",
+            })
+            navigate(sale?.href as string)
+          }}
+        >
           <Flex overflow="hidden" borderWidth={1} borderStyle="solid" borderColor="black10" borderRadius={4}>
             <OpaqueImageView height={CARD_HEIGHT} imageURL={sale?.coverImage?.url} />
             <Flex style={{ margin: smallScreen! ? 10 : 15 }}>
