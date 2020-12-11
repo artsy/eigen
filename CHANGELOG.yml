@@ -9,6 +9,8 @@ upcoming:
     - Move shows entry point to about tab - mounir
     - Fix image graininess in my collection - brian
     - Fix bug where user profile may fail to load - erik
+    - Add improved phone number input - david
+
 
 releases:
   - version: 6.7.3

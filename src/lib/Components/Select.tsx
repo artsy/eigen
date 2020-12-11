@@ -1,7 +1,7 @@
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import { Autocomplete } from "lib/utils/Autocomplete"
 import { CheckIcon, CloseIcon, color, Flex, Sans, Separator, Spacer, Touchable } from "palette"
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
 import { FancyModal } from "./FancyModal/FancyModal"
 import { INPUT_HEIGHT } from "./Input/Input"
@@ -20,12 +20,15 @@ const ROW_HEIGHT = 40
 interface SelectProps<ValueType> {
   options: Array<SelectOption<ValueType>>
   value: ValueType | null
-  placeholder: string
+  placeholder?: string
   title: string
   showTitleLabel?: boolean
   subTitle?: string
   enableSearch?: boolean
   onSelectValue(value: ValueType): void
+  renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
+  renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
+  onModalFinishedClosing?(): void
 }
 interface State {
   showingModal: boolean
@@ -58,14 +61,16 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
     const selectedItem = options.find((o) => o.value === value)
     return (
       <>
-        <SelectButton
-          title={title}
-          showTitleLabel={showTitleLabel}
-          subTitle={subTitle}
-          placeholder={placeholder}
-          value={selectedItem?.label}
-          onPress={this.open.bind(this)}
-        />
+        {this.props.renderButton?.({ selectedValue: selectedItem?.value ?? null, onPress: this.open.bind(this) }) ?? (
+          <SelectButton
+            title={title}
+            showTitleLabel={showTitleLabel}
+            subTitle={subTitle}
+            placeholder={placeholder}
+            value={selectedItem?.label}
+            onPress={this.open.bind(this)}
+          />
+        )}
         <SelectModal
           visible={this.state.showingModal}
           title={title}
@@ -74,6 +79,8 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
           options={options}
           onDismiss={this.close.bind(this)}
           onSelectValue={onSelectValue}
+          renderItemLabel={this.props.renderItemLabel}
+          onModalFinishedClosing={this.props.onModalFinishedClosing}
         />
       </>
     )
@@ -85,7 +92,7 @@ const SelectButton: React.FC<{
   title?: string
   showTitleLabel?: boolean
   subTitle?: string
-  placeholder: string
+  placeholder?: string
   onPress(): void
 }> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle }) => {
   return (
@@ -113,7 +120,7 @@ const SelectButton: React.FC<{
             <Sans size="3t">{value}</Sans>
           ) : (
             <Sans size="3t" color="black60">
-              {placeholder}
+              {placeholder ?? "Pick an option"}
             </Sans>
           )}
           <TriangleDown />
@@ -131,6 +138,8 @@ const SelectModal: React.FC<{
   visible: boolean
   onDismiss(): any
   onSelectValue(value: unknown): any
+  renderItemLabel?(value: SelectOption<unknown>): JSX.Element
+  onModalFinishedClosing?(): void
 }> = (props) => {
   // we need to be able to have a local version of the value state so we can show the updated
   // state between the moment the user taps a selection and the moment we automatically
@@ -172,23 +181,32 @@ const SelectModal: React.FC<{
   }, [autocomplete, searchTerm])
 
   const flatListRef = useRef<FlatList>(null)
-  const flatListHeight = useRef(0)
+  const flatListHeight = useRef<number | null>(null)
 
   // scroll to show the selected value whenever we either clear the
   // search input, or show the modal.
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!props.visible) {
       return
     }
 
     if (!searchTerm.trim() && selectedItem) {
-      // search was cleared (or hasn't been touched yet) and the user has previously selected a value
-      const initialScrollIndex = props.options.indexOf(selectedItem)
-      // try to center the option on screen
-      const initialScrollOffset = initialScrollIndex * ROW_HEIGHT - flatListHeight.current / 2 + ROW_HEIGHT
-      requestAnimationFrame(() => {
-        flatListRef.current?.scrollToOffset({ offset: initialScrollOffset, animated: false })
-      })
+      const scrollToSelectedItem = async () => {
+        let safety = 0
+        // wait for flat list to lay out
+        while (flatListHeight.current == null && safety++ < 100) {
+          await new Promise((r) => requestAnimationFrame(r))
+        }
+        // search was cleared (or hasn't been touched yet) and the user has previously selected a value
+        const initialScrollIndex = props.options.indexOf(selectedItem)
+        // try to center the option on screen
+        const initialScrollOffset = initialScrollIndex * ROW_HEIGHT - (flatListHeight.current ?? 0) / 2 + ROW_HEIGHT
+        requestAnimationFrame(() => {
+          flatListRef.current?.scrollToOffset({ offset: initialScrollOffset, animated: false })
+        })
+      }
+
+      scrollToSelectedItem()
     } else {
       requestAnimationFrame(() => {
         flatListRef.current?.scrollToOffset({ offset: 0, animated: false })
@@ -197,7 +215,11 @@ const SelectModal: React.FC<{
   }, [searchTerm, props.visible])
 
   return (
-    <FancyModal visible={props.visible} onBackgroundPressed={props.onDismiss}>
+    <FancyModal
+      visible={props.visible}
+      onBackgroundPressed={props.onDismiss}
+      onModalFinishedClosing={props.onModalFinishedClosing}
+    >
       <Flex p="2" pb={15} flexDirection="row" alignItems="center" flexGrow={0}>
         <Flex flex={1}></Flex>
         <Flex flex={2} alignItems="center">
@@ -226,7 +248,7 @@ const SelectModal: React.FC<{
         data={autocompleteResults}
         extraData={{ value: localValue }}
         keyExtractor={(item) => String(item.value)}
-        windowSize={3}
+        windowSize={4}
         contentContainerStyle={{ paddingTop: 10, paddingBottom: 60 }}
         // we handle scrolling to the selected value ourselves because FlatList has weird
         // rendering bugs when initialScrollIndex changes, at the time of writing
@@ -245,6 +267,7 @@ const SelectModal: React.FC<{
                 props.onSelectValue(item.value)
               }, 400)
             }}
+            style={{ flexGrow: 0 }}
           >
             <Flex
               flexDirection="row"
@@ -254,8 +277,13 @@ const SelectModal: React.FC<{
               height={ROW_HEIGHT}
               alignItems="center"
               backgroundColor={localValue === item.value ? "black5" : "white"}
+              flexGrow={0}
             >
-              <Sans size="4">{item.label}</Sans>
+              {props.renderItemLabel?.(item) ?? (
+                <Sans size="4" numberOfLines={1} ellipsizeMode="tail" style={{ flexShrink: 1 }}>
+                  {item.label}
+                </Sans>
+              )}
               {localValue === item.value ? (
                 <PopIn>
                   <CheckIcon width={25} height={25} />

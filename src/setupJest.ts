@@ -354,6 +354,10 @@ jest.mock("@react-native-community/async-storage", () => {
   }
 })
 
+jest.mock("react-native-localize", () => ({
+  getCountry: jest.fn(() => "US"),
+}))
+
 jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
 
 jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
