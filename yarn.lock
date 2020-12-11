@@ -8,9 +8,9 @@
   integrity sha512-mJyuKNDMYZcgc2oLIkvmpVIr1RexklV71JmU+to5qs3Y9pv5dsj4WHl8+wf9g74EQNOyhWH2SYMGBm1JoPYh/Q==
 
 "@artsy/cohesion@^1.53.0":
-  version "1.53.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.53.0.tgz#bae743a831b2475215c01605995a6ba4cea267c7"
-  integrity sha512-qWVwLQPtrODSOdNoR+KEiy2hagOlFzOab0aVS4J1SPFGLq5l5QerpQkaJWtJIWbPssa4EMMuToKwSrgyjEogRQ==
+  version "1.66.1"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.66.1.tgz#6c62435e5e802b59cdd12d57ab869386763501cd"
+  integrity sha512-+YWKgNLpyyuHsiDom2LMECy8q2S2E3ZAe/t9rlnUbX+OjkcpJJMVYPnX7fAvyxV3dK+c0oI4gjf8Q8jqfDYcBA==
 
 "@artsy/update-repo@0.2.0":
   version "0.2.0"

@@ -7,11 +7,13 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 import { MyBids_me } from "__generated__/MyBids_me.graphql"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 
+import { OwnerType } from "@artsy/cohesion"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { ProvideScreenTracking } from "lib/utils/track"
 import moment from "moment-timezone"
 import {
   ActiveLotFragmentContainer as ActiveLot,
@@ -78,65 +80,76 @@ class MyBids extends React.Component<MyBidsProps> {
     const noBids = noActiveBids && noClosedBids
 
     return (
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1, justifyContent: !!noBids ? "center" : "flex-start" }}
-        stickyHeaderIndices={[0, 2]}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.fetching}
-            onRefresh={() => {
-              this.refreshMyBids()
-            }}
-          />
+      <ProvideScreenTracking
+        info={
+          {
+            // context_screen: Page ,
+            // context_screen_owner_type: OwnerType.inboxBids,
+            // context_screen_owner_slug: artistSeries.slug,
+            // context_screen_owner_id: artistSeries.internalID,
+          }
         }
       >
-        {!!noBids && <NoBids headerText="Discover works for you at auction" />}
-        {!noActiveBids && <BidTitle>Active Bids</BidTitle>}
-        {!noActiveBids && (
-          <Flex data-test-id="active-section">
-            <Join separator={<Spacer my={1} />}>
-              {sortedSaleIds.map((saleId) => {
-                const activeLotStandings = sortedActiveLots[saleId]
-                const sale = activeLotStandings[0]?.saleArtwork?.sale!
-                return (
-                  <SaleCardFragmentContainer key={saleId} sale={sale} me={me} smallScreen={isSmallScreen}>
-                    <Join separator={<Separator my={1} />}>
-                      {activeLotStandings.map((ls) => {
-                        if (ls && sale) {
-                          const LotInfoComponent = isLotStandingComplete(ls) ? ClosedLot : ActiveLot
-                          return <LotInfoComponent lotStanding={ls as any} key={ls?.lotState?.internalID} />
-                        }
-                      })}
-                    </Join>
-                  </SaleCardFragmentContainer>
-                )
-              })}
-            </Join>
-          </Flex>
-        )}
-        {!noClosedBids && <BidTitle>Closed Bids</BidTitle>}
-        {!noClosedBids && (
-          <Flex data-test-id="closed-section">
-            <Flex mt={2} px={1.5}>
-              <Join separator={<Separator my={2} />}>
-                {closedStandings?.map((ls) => {
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: !!noBids ? "center" : "flex-start" }}
+          stickyHeaderIndices={[0, 2]}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.fetching}
+              onRefresh={() => {
+                this.refreshMyBids()
+              }}
+            />
+          }
+        >
+          {!!noBids && <NoBids headerText="Discover works for you at auction" />}
+          {!noActiveBids && <BidTitle>Active Bids</BidTitle>}
+          {!noActiveBids && (
+            <Flex data-test-id="active-section">
+              <Join separator={<Spacer my={1} />}>
+                {sortedSaleIds.map((saleId) => {
+                  const activeLotStandings = sortedActiveLots[saleId]
+                  const sale = activeLotStandings[0]?.saleArtwork?.sale!
                   return (
-                    !!ls && (
-                      <ClosedLot
-                        withTimelyInfo
-                        data-test-id="closed-sale-lot"
-                        lotStanding={ls}
-                        key={ls?.lotState?.internalID}
-                      />
-                    )
+                    <SaleCardFragmentContainer key={saleId} sale={sale} me={me} smallScreen={isSmallScreen}>
+                      <Join separator={<Separator my={1} />}>
+                        {activeLotStandings.map((ls) => {
+                          if (ls && sale) {
+                            const LotInfoComponent = isLotStandingComplete(ls) ? ClosedLot : ActiveLot
+                            return <LotInfoComponent lotStanding={ls as any} key={ls?.lotState?.internalID} />
+                          }
+                        })}
+                      </Join>
+                    </SaleCardFragmentContainer>
                   )
                 })}
               </Join>
             </Flex>
-          </Flex>
-        )}
-        <Spacer my={2} />
-      </ScrollView>
+          )}
+          {!noClosedBids && <BidTitle>Closed Bids</BidTitle>}
+          {!noClosedBids && (
+            <Flex data-test-id="closed-section">
+              <Flex mt={2} px={1.5}>
+                <Join separator={<Separator my={2} />}>
+                  {closedStandings?.map((ls) => {
+                    return (
+                      !!ls && (
+                        <ClosedLot
+                          withTimelyInfo
+                          data-test-id="closed-sale-lot"
+                          lotStanding={ls}
+                          key={ls?.lotState?.internalID}
+                        />
+                      )
+                    )
+                  })}
+                </Join>
+              </Flex>
+            </Flex>
+          )}
+          <Spacer my={2} />
+        </ScrollView>
+      </ProvideScreenTracking>
     )
   }
 }

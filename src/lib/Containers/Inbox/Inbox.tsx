@@ -119,18 +119,16 @@ export class Inbox extends React.Component<Props, State> {
     this.scrollViewVerticalStart = layout.nativeEvent.layout.y
   }
 
-  // Type Error??
-  @track((index: number) => ({
-    action: ActionType.tappedNavigationTab,
-    // ContextModule: index === 0 ? myBids : inboxInquiries
-    context_module: ContextModule,
-    context_screen_owner_type: OwnerType.inbox,
-    // What does the owner id represent here?
-    context_screen_owner_id: index,
-    context_screen_owner_slug: "string",
-  }))
-  handleNavigationTabTap = () => {
-    // no op
+  handleNavigationTabTap = (index: number) => {
+    track({
+      action: ActionType.tappedNavigationTab,
+      // ContextModule: index === 0 ? myBids : inboxInquiries
+      context_module: ContextModule,
+      context_screen_owner_type: OwnerType.inbox,
+      // What does the owner id represent here?
+      context_screen_owner_id: index,
+      context_screen_owner_slug: "string",
+    })
   }
 
   render() {
@@ -144,7 +142,7 @@ export class Inbox extends React.Component<Props, State> {
           contentInset: { bottom: bottomInset },
           onLayout: this.onScrollableTabViewLayout,
         }}
-        onChangeTab={(i) => this.handleNavigationTabTap(i)}
+        onChangeTab={({ i }) => this.handleNavigationTabTap(i)}
       >
         <TabWrapper tabLabel="Bids" key="bids" style={{ flexGrow: 1, justifyContent: "center" }}>
           <MyBidsContainer me={this.props.me} componentRef={(myBids) => (this.myBids = myBids)} />
