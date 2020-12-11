@@ -28,6 +28,7 @@ interface SelectProps<ValueType> {
   onSelectValue(value: ValueType): void
   renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
   renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
+  onModalFinishedClosing?(): void
 }
 interface State {
   showingModal: boolean
@@ -79,6 +80,7 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
           onDismiss={this.close.bind(this)}
           onSelectValue={onSelectValue}
           renderItemLabel={this.props.renderItemLabel}
+          onModalFinishedClosing={this.props.onModalFinishedClosing}
         />
       </>
     )
@@ -137,6 +139,7 @@ const SelectModal: React.FC<{
   onDismiss(): any
   onSelectValue(value: unknown): any
   renderItemLabel?(value: SelectOption<unknown>): JSX.Element
+  onModalFinishedClosing?(): void
 }> = (props) => {
   // we need to be able to have a local version of the value state so we can show the updated
   // state between the moment the user taps a selection and the moment we automatically
@@ -212,7 +215,11 @@ const SelectModal: React.FC<{
   }, [searchTerm, props.visible])
 
   return (
-    <FancyModal visible={props.visible} onBackgroundPressed={props.onDismiss}>
+    <FancyModal
+      visible={props.visible}
+      onBackgroundPressed={props.onDismiss}
+      onModalFinishedClosing={props.onModalFinishedClosing}
+    >
       <Flex p="2" pb={15} flexDirection="row" alignItems="center" flexGrow={0}>
         <Flex flex={1}></Flex>
         <Flex flex={2} alignItems="center">

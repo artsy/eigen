@@ -13,7 +13,8 @@ export const PhoneInput = React.forwardRef<
   {
     onChange?: (value: string) => void
   } & Omit<InputProps, "onChange">
->(({ value, onChange, onChangeText, ...rest }, ref) => {
+>(({ value, onChange, onChangeText, ...rest }, outerRef) => {
+  const innerRef = useRef<Input | null>()
   const initialValues = cleanUserPhoneNumber(value ?? "")
 
   const [countryCode, setCountryCode] = useState(initialValues.countryCode)
@@ -37,7 +38,17 @@ export const PhoneInput = React.forwardRef<
   return (
     <Input
       {...rest}
-      ref={ref}
+      ref={(ref) => {
+        if (typeof outerRef === "function") {
+          outerRef(ref)
+        } else if (outerRef && "current" in outerRef) {
+          // @ts-expect-error
+          outerRef.current = ref
+        } else if (outerRef != null) {
+          console.error("bad ref given to PhoneInput")
+        }
+        innerRef.current = ref
+      }}
       value={phoneNumber}
       placeholder={countryIndex[countryCode]?.mask?.replace(/9/g, "0")}
       placeholderTextColor={color("black30")}
@@ -50,6 +61,9 @@ export const PhoneInput = React.forwardRef<
           options={countryOptions}
           enableSearch
           value={countryCode}
+          onModalFinishedClosing={() => {
+            innerRef.current?.focus()
+          }}
           onSelectValue={(newCountryCode) => {
             setCountryCode(newCountryCode)
             setPhoneNumber(
