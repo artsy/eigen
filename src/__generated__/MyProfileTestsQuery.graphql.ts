@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e2ffa7a421c80bf764e0f539efa99be7 */
+/* @relayHash da42cfb720cb01ac9613f8f5da6369ec */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,20 +29,6 @@ query MyProfileTestsQuery {
 fragment MyProfile_me on Me {
   name
   labFeatures
-  auctionsLotStandingConnection(first: 25) {
-    edges {
-      node {
-        saleArtwork {
-          sale {
-            status
-            id
-          }
-          id
-        }
-        id
-      }
-    }
-  }
   followsAndSaves {
     artworksConnection(first: 10, private: true) {
       edges {
@@ -150,77 +136,6 @@ return {
             "kind": "ScalarField",
             "name": "labFeatures",
             "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 25
-              }
-            ],
-            "concreteType": "AuctionsLotStandingConnection",
-            "kind": "LinkedField",
-            "name": "auctionsLotStandingConnection",
-            "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "AuctionsLotStandingEdge",
-                "kind": "LinkedField",
-                "name": "edges",
-                "plural": true,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "AuctionsLotStanding",
-                    "kind": "LinkedField",
-                    "name": "node",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "SaleArtwork",
-                        "kind": "LinkedField",
-                        "name": "saleArtwork",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Sale",
-                            "kind": "LinkedField",
-                            "name": "sale",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "status",
-                                "storageKey": null
-                              },
-                              (v1/*: any*/)
-                            ],
-                            "storageKey": null
-                          },
-                          (v1/*: any*/)
-                        ],
-                        "storageKey": null
-                      },
-                      (v1/*: any*/)
-                    ],
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": "auctionsLotStandingConnection(first:25)"
           },
           {
             "alias": null,
@@ -439,7 +354,7 @@ return {
     ]
   },
   "params": {
-    "id": "e2ffa7a421c80bf764e0f539efa99be7",
+    "id": "da42cfb720cb01ac9613f8f5da6369ec",
     "metadata": {},
     "name": "MyProfileTestsQuery",
     "operationKind": "query",

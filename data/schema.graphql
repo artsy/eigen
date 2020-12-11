@@ -1824,14 +1824,16 @@ type AuctionsLotStandingEdge {
 
 # The state of a lot
 type AuctionsLotState {
-  # total number of bids placed on the lot
+  # total number of actual bids placed by users on the lot
   bidCount: Int!
+
+  # current high bid recognized on the live auction floor
   floorSellingPrice: Money
 
   # selling price, in minor unit, on the live auction floor
   floorSellingPriceCents: Long
 
-  # The bidder currently winning the online portion of the auction
+  # The bidder currently winning the live floor portion of the auction
   floorWinningBidder: AuctionsBidder
 
   # The Gravity Lot ID.
@@ -1852,6 +1854,12 @@ type AuctionsLotState {
 
   # The Gravity Sale ID.
   saleId: ID!
+
+  # current high bid
+  sellingPrice: Money
+
+  # current bid amount in minor unit, whether reserve is met or not
+  sellingPriceCents: Long!
 
   # Whether the lot is sold, for sale or passed
   soldStatus: AuctionsSoldStatus!
