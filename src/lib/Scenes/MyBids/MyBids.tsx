@@ -123,7 +123,7 @@ class MyBids extends React.Component<MyBidsProps> {
                       {activeLotStandings.map((ls) => {
                         if (ls && sale) {
                           const LotInfoComponent = isLotStandingComplete(ls) ? ClosedLot : ActiveLot
-                          return <LotInfoComponent lotStanding={ls} key={ls?.lotState?.internalID} />
+                          return <LotInfoComponent lotStanding={ls} key={ls?.lot?.internalID} />
                         }
                       })}
                     </Join>
@@ -145,7 +145,7 @@ class MyBids extends React.Component<MyBidsProps> {
                         withTimelyInfo
                         data-test-id="closed-sale-lot"
                         lotStanding={ls}
-                        key={ls?.lotState?.internalID}
+                        key={ls?.lot?.internalID}
                       />
                     )
                   )
@@ -195,7 +195,7 @@ export const MyBidsContainer = createPaginationContainer(
             node {
               ...ActiveLot_lotStanding
               ...ClosedLot_lotStanding
-              lotState {
+              lot {
                 internalID
                 saleId
                 soldStatus
