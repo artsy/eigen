@@ -11,6 +11,7 @@ upcoming:
     - Fix bug where user profile may fail to load - erik
     - Add improved phone number input - david
 
+
 releases:
   - version: 6.7.3
     date: Dec 8, 2020

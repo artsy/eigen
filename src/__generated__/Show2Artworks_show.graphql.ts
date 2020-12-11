@@ -95,7 +95,7 @@ const node: ReaderFragment = {
       "name": "priceRange"
     },
     {
-      "defaultValue": "-decayed_merch",
+      "defaultValue": "partner_show_position",
       "kind": "LocalArgument",
       "name": "sort"
     }
@@ -347,5 +347,5 @@ const node: ReaderFragment = {
   "type": "Show",
   "abstractKey": null
 };
-(node as any).hash = '94d4b372be160c1a5a4a3c233e3cf998';
+(node as any).hash = '2e563b4dd73721fe67dc9b1fffe89506';
 export default node;

@@ -21,7 +21,7 @@ const TabWrapper: React.FC<TabWrapperProps> = (props) => <View {...props} />
 
 const InboxTabs: React.FC<TabBarProps> = (props) => (
   <>
-    <Flex flexDirection="row" px={1.5} mb={1}>
+    <Flex flexDirection="row" px={1.5} mb={2}>
       {props.tabs?.map((name: JSX.Element, page: number) => {
         const isTabActive = props.activeTab === page
         return (
@@ -121,7 +121,7 @@ export class Inbox extends React.Component<Props, State> {
     const bottomInset = this.scrollViewVerticalStart
     return (
       <ScrollableTabView
-        style={{ paddingTop: 50 }}
+        style={{ paddingTop: 30 }}
         initialPage={0}
         renderTabBar={() => <InboxTabs />}
         contentProps={{

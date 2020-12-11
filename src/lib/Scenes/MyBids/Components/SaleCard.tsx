@@ -14,6 +14,7 @@ export const COVER_IMAGE_HEIGHT = 100
 
 export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string }> = (props) => (
   <Touchable
+    style={{ marginTop: 15 }}
     underlayColor={props.navLink ? "black5" : "transparent"}
     onPress={() => props.navLink && navigate(props.navLink)}
   >

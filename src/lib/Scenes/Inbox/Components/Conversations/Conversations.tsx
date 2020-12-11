@@ -5,6 +5,7 @@ import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native"
 
 import { navigate } from "lib/navigation/navigate"
 import ConversationSnippet from "./ConversationSnippet"
+import { NoMessages } from "./NoMessages"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
@@ -75,10 +76,6 @@ export class Conversations extends Component<Props, State> {
   render() {
     const conversations = extractNodes(this.props.me.conversations)
 
-    if (conversations.length === 0) {
-      return null
-    }
-
     const unreadCount = this.props.me.conversations?.totalUnreadCount
     const unreadCounter = unreadCount ? `(${unreadCount})` : null
     const shouldDisplayMyBids = getCurrentEmissionState().options.AROptionsBidManagement
@@ -111,6 +108,8 @@ export class Conversations extends Component<Props, State> {
           }}
           onEndReached={this.fetchData}
           onEndReachedThreshold={2}
+          contentContainerStyle={{ flexGrow: 1, justifyContent: !conversations.length ? "center" : "flex-start" }}
+          ListEmptyComponent={<NoMessages />}
         />
         {!!(this.props.relay.hasMore() && this.state.isLoading) && (
           <Flex p={3} alignItems="center">
