@@ -50,6 +50,7 @@ const MyCollectionArtworkImagesFragmentContainer = createFragmentContainer(MyCol
         isDefault
         imageURL
         width
+        internalID
       }
     }
   `,

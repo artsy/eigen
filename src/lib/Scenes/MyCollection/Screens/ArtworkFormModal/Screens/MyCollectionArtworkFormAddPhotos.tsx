@@ -27,7 +27,7 @@ export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormModalSc
         <Box key={index}>
           <Image
             style={{ width: imageSize, height: imageSize, resizeMode: "cover" }}
-            source={{ uri: photo.imageURL || photo.path }}
+            source={{ uri: photo.imageURL?.replace(":version", "normalized") || photo.path }}
           />
           <DeletePhotoButton photo={photo} />
         </Box>

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 48bfb5a03788e6e1176e56b014179fbe */
+/* @relayHash 4fd853649175533922b8cc0cf18f1a05 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionArtworkListItemTestsQueryVariables = {};
@@ -22,9 +22,10 @@ export type MyCollectionArtworkListItemTestsQueryResponse = {
         readonly id: string;
         readonly images: ReadonlyArray<{
             readonly isDefault: boolean | null;
-            readonly url: string | null;
+            readonly imageURL: string | null;
             readonly width: number | null;
             readonly height: number | null;
+            readonly internalID: string | null;
         } | null> | null;
         readonly internalID: string;
         readonly medium: string | null;
@@ -61,9 +62,10 @@ query MyCollectionArtworkListItemTestsQuery {
     id
     images {
       isDefault
-      url
+      imageURL
       width
       height
+      internalID
     }
     internalID
     medium
@@ -187,11 +189,12 @@ v13 = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "url",
+      "name": "imageURL",
       "storageKey": null
     },
     (v12/*: any*/),
-    (v10/*: any*/)
+    (v10/*: any*/),
+    (v1/*: any*/)
   ],
   "storageKey": null
 },
@@ -351,7 +354,7 @@ return {
     ]
   },
   "params": {
-    "id": "48bfb5a03788e6e1176e56b014179fbe",
+    "id": "4fd853649175533922b8cc0cf18f1a05",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -385,13 +388,19 @@ return {
           "type": "Image"
         },
         "artwork.images.height": (v21/*: any*/),
+        "artwork.images.imageURL": (v20/*: any*/),
+        "artwork.images.internalID": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ID"
+        },
         "artwork.images.isDefault": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Boolean"
         },
-        "artwork.images.url": (v20/*: any*/),
         "artwork.images.width": (v21/*: any*/),
         "artwork.internalID": (v19/*: any*/),
         "artwork.medium": (v20/*: any*/),

@@ -20,9 +20,10 @@ export type MyCollectionArtwork_sharedProps = {
     readonly id: string;
     readonly images: ReadonlyArray<{
         readonly isDefault: boolean | null;
-        readonly url: string | null;
+        readonly imageURL: string | null;
         readonly width: number | null;
         readonly height: number | null;
+        readonly internalID: string | null;
     } | null> | null;
     readonly internalID: string;
     readonly medium: string | null;
@@ -164,11 +165,12 @@ return {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
-          "name": "url",
+          "name": "imageURL",
           "storageKey": null
         },
         (v2/*: any*/),
-        (v1/*: any*/)
+        (v1/*: any*/),
+        (v0/*: any*/)
       ],
       "storageKey": null
     },
@@ -214,5 +216,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '6efaed94e59ae9a1878ce122efdb84cf';
+(node as any).hash = 'ee2ed6b91946290ebe919132a3dce05c';
 export default node;
