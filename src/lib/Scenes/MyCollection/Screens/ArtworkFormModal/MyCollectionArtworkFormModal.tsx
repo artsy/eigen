@@ -17,7 +17,7 @@ import { ActionSheetIOS, ActivityIndicator, Alert } from "react-native"
 import { myCollectionAddArtwork } from "../../mutations/myCollectionAddArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
 import { myCollectionEditArtwork } from "../../mutations/myCollectionEditArtwork"
-import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
+import { ArtworkFormValues, Image } from "../../State/MyCollectionArtworkModel"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
 
 import { isEqual } from "lodash"
@@ -83,6 +83,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
             ...cleanArtworkPayload(others),
           })
         } else {
+          const deletedIDs = deletedPhotoIDs(dirtyFormCheckValues.photos, photos)
           await myCollectionEditArtwork({
             artistIds: [artistSearchResult!.internalID as string],
             artworkId: props.artwork.internalID,
@@ -202,6 +203,17 @@ const LoadingIndicator = () => {
       </Flex>
     </Box>
   )
+}
+
+function deletedPhotoIDs(initialPhotos: Image[], submittedPhotos: Image[]) {
+  let removedPhotoIDs: string[] = []
+  for (const photo of initialPhotos) {
+    const photoRemoved = !submittedPhotos.some((submittedPhoto) => submittedPhoto.internalID === photo.internalID)
+    if (photoRemoved) {
+      removedPhotoIDs = removedPhotoIDs.concat(photo.internalID!)
+    }
+  }
+  return removedPhotoIDs
 }
 
 export async function uploadPhotos(photos: ArtworkFormValues["photos"]) {
