@@ -17,11 +17,12 @@ import { ActionSheetIOS, ActivityIndicator, Alert } from "react-native"
 import { myCollectionAddArtwork } from "../../mutations/myCollectionAddArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
 import { myCollectionEditArtwork } from "../../mutations/myCollectionEditArtwork"
-import { ArtworkFormValues, Image } from "../../State/MyCollectionArtworkModel"
+import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
 
 import { isEqual } from "lodash"
 import { refreshMyCollection } from "../../MyCollection"
+import { deletedPhotoIDs } from "../../utils/deletedPhotoIDs"
 import { MyCollectionAdditionalDetailsForm } from "./Screens/MyCollectionArtworkFormAdditionalDetails"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
 import { MyCollectionArtworkFormMain } from "./Screens/MyCollectionArtworkFormMain"
@@ -203,17 +204,6 @@ const LoadingIndicator = () => {
       </Flex>
     </Box>
   )
-}
-
-function deletedPhotoIDs(initialPhotos: Image[], submittedPhotos: Image[]) {
-  let removedPhotoIDs: string[] = []
-  for (const photo of initialPhotos) {
-    const photoRemoved = !submittedPhotos.some((submittedPhoto) => submittedPhoto.internalID === photo.internalID)
-    if (photoRemoved) {
-      removedPhotoIDs = removedPhotoIDs.concat(photo.internalID!)
-    }
-  }
-  return removedPhotoIDs
 }
 
 export async function uploadPhotos(photos: ArtworkFormValues["photos"]) {
