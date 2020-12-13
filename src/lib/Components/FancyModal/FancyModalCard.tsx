@@ -1,7 +1,7 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { RefObject, useImperativeHandle, useRef } from "react"
 import { View } from "react-native"
-import { PanGestureHandler, State, TouchableWithoutFeedback } from "react-native-gesture-handler"
+import { PanGestureHandler, State, TapGestureHandler } from "react-native-gesture-handler"
 import Animated, { Easing, SpringUtils } from "react-native-reanimated"
 
 // The width of the black gutters either side of the first-from-the-front card
@@ -44,7 +44,8 @@ export const FancyModalCard = React.forwardRef<
 
   const recession = useRef(new Animated.Value(0)).current
   const pushEntrance = useRef(new Animated.Value(isRootCard ? 1 : 0)).current
-  const dragY = useRef(new Animated.Value(0 as number)).current
+  const _dragY = useRef(new Animated.Value(0 as number)).current
+  const dragY = useRef(Animated.max(0, _dragY)).current
   // dragExit = (cardHeight - dragY) / cardHeight --- (so the more you drag it tends from 1 towards 0)
   const dragExit = useRef(Animated.divide(Animated.sub(props.height, dragY), props.height)).current
   const entrance = useRef(Animated.multiply(pushEntrance, dragExit)).current
@@ -53,18 +54,29 @@ export const FancyModalCard = React.forwardRef<
   const dragVelocityY = useRef(new Animated.Value<number>(0)).current
 
   const dragEvent = useRef(
-    Animated.event([{ nativeEvent: { state: dragState, velocityY: dragVelocityY, translationY: dragY } }])
+    Animated.event([{ nativeEvent: { state: dragState, velocityY: dragVelocityY, translationY: _dragY } }])
   ).current
 
   const clock = useRef(new Animated.Clock()).current
+  const triggeredClose = useRef(new Animated.Value<number>(0)).current
 
   Animated.useCode(
     () =>
-      Animated.cond(
-        Animated.eq(dragState, State.ACTIVE),
-        Animated.stopClock(clock),
-        runSpring(clock, dragY, dragVelocityY, 0)
-      ),
+      Animated.cond(Animated.eq(dragState, State.ACTIVE), Animated.stopClock(clock), [
+        Animated.set(triggeredClose, Animated.greaterThan(dragVelocityY, 1000)),
+        runSpring(
+          clock,
+          _dragY,
+          dragVelocityY,
+          Animated.cond(triggeredClose, props.height, 0),
+          Animated.cond(
+            triggeredClose,
+            Animated.call([], () => {
+              props.onBackgroundPressed()
+            })
+          )
+        ),
+      ]),
     []
   )
 
@@ -84,8 +96,8 @@ export const FancyModalCard = React.forwardRef<
   const borderRadius = useRef(
     Animated.divide(
       Animated.interpolate(recession, {
-        inputRange: [0, 1],
-        outputRange: [0, BORDER_RADIUS],
+        inputRange: [0, 0.5, 1],
+        outputRange: [0, BORDER_RADIUS, BORDER_RADIUS],
       }),
       scale
     )
@@ -131,7 +143,7 @@ export const FancyModalCard = React.forwardRef<
   )
 
   return (
-    <View style={{ flex: 1, borderWidth: 1, borderColor: "red" }}>
+    <View style={{ flex: 1 }}>
       {/* This view both darkens the backdrop and provides a touch target for dismissing the modal */}
       {!isRootCard && (
         <Animated.View
@@ -148,12 +160,19 @@ export const FancyModalCard = React.forwardRef<
             backgroundColor: "black",
           }}
         >
-          <TouchableWithoutFeedback
-            onPress={props.onBackgroundPressed}
-            style={{
-              flex: 1,
-            }}
-          ></TouchableWithoutFeedback>
+          <PanGestureHandler onHandlerStateChange={dragEvent} onGestureEvent={dragEvent} hitSlop={80}>
+            <Animated.View style={{ flex: 1 }}>
+              <TapGestureHandler
+                onHandlerStateChange={(e) => {
+                  if (e.nativeEvent.oldState === State.ACTIVE) {
+                    props.onBackgroundPressed()
+                  }
+                }}
+              >
+                <Animated.View style={{ flex: 1 }}></Animated.View>
+              </TapGestureHandler>
+            </Animated.View>
+          </PanGestureHandler>
         </Animated.View>
       )}
       <Animated.View
@@ -161,8 +180,8 @@ export const FancyModalCard = React.forwardRef<
           position: "absolute",
           left: 0,
           right: 0,
+          top: isRootCard ? 0 : screen.height - props.height,
           bottom: 0,
-          height: props.height,
           borderTopLeftRadius: isRootCard ? borderRadius : BORDER_RADIUS,
           borderTopRightRadius: isRootCard ? borderRadius : BORDER_RADIUS,
           overflow: "hidden",
@@ -172,39 +191,26 @@ export const FancyModalCard = React.forwardRef<
         {/* We need to apply background color in this extra inner view otherwise there is some glitchy
             tearing sometimes when hiding the modal */}
         <View style={{ flex: 1, backgroundColor: "white" }}>{props.children}</View>
-        {/* drag handle */}
-        {props.level > 0 && (
-          <PanGestureHandler
-            // onHandlerStateChange={(e) => {
-            //   if (e.nativeEvent.oldState === State.ACTIVE) {
-            //     Animated.spring(dragY, {
-            //       velocity: e.nativeEvent.velocityY,
-            //       toValue: 0,
-            //     })
-            //     spring(dragY, 0).start()
-            //     if (e.nativeEvent.velocityY > 1000 || e.nativeEvent.translationY > 300) {
-            //       console.warn({ velocityY: e.nativeEvent.velocityY, translationY: e.nativeEvent.translationY })
-            //       props.onBackgroundPressed()
-            //     }
-            //   }
-            // }}
-            onHandlerStateChange={dragEvent}
-            onGestureEvent={dragEvent}
-          >
-            <Animated.View
-              style={{
-                position: "absolute",
-                left: 0,
-                right: 0,
-                top: -30,
-                height: 50,
-                borderWidth: 1,
-                borderColor: "blue",
-              }}
-            ></Animated.View>
-          </PanGestureHandler>
-        )}
       </Animated.View>
+
+      {/* drag handle */}
+      {props.level > 0 && (
+        <Animated.View
+          style={{
+            position: "absolute",
+            left: 80,
+            right: 80,
+            top: screen.height - props.height,
+            height: 60,
+            borderWidth: 1,
+            transform: [{ translateY }],
+          }}
+        >
+          <PanGestureHandler onHandlerStateChange={dragEvent} onGestureEvent={dragEvent} hitSlop={80}>
+            <Animated.View style={{ flex: 1 }}></Animated.View>
+          </PanGestureHandler>
+        </Animated.View>
+      )}
     </View>
   )
 })
@@ -229,10 +235,11 @@ function runSpring(
   clock: Animated.Clock,
   value: Animated.Value<number>,
   velocity: Animated.Value<number>,
-  dest: number
+  dest: number | Animated.Node<number>,
+  onFinish: Animated.Node<any>
 ) {
   // tslint:disable-next-line:no-shadowed-variable
-  const { Value, cond, set, clockRunning, stopClock, startClock, spring } = Animated
+  const { Value, cond, set, clockRunning, stopClock, startClock, spring, and } = Animated
   const state = {
     finished: new Value(0),
     velocity: new Value(0),
@@ -242,11 +249,11 @@ function runSpring(
 
   const config = {
     damping: 70,
-    mass: 1,
-    stiffness: 101.6,
+    mass: 0.5,
+    stiffness: 121.6,
     overshootClamping: false,
-    restSpeedThreshold: 0.001,
-    restDisplacementThreshold: 0.001,
+    restSpeedThreshold: 500,
+    restDisplacementThreshold: 10,
     toValue: new Value(0),
   }
 
@@ -260,201 +267,6 @@ function runSpring(
     ]),
     spring(clock, state, config),
     set(value, state.position),
-    cond(state.finished, stopClock(clock)),
+    cond(and(state.finished, clockRunning(clock)), [stopClock(clock), onFinish]),
   ]
 }
-
-// export type AnimationCreator = typeof spring | typeof ease
-
-// /**
-//  * A FancyModalCard is a component which handles displaying the contents of a single layer of fancy modal content.
-//  *
-//  * It has a tappable backdrop and a content overlay and it is responsible for positioning the overlay and controlling
-//  * the opacity of the backdrop in response to directions from FancyModalContext, which manages a 'stack' of these cards.
-//  */
-// export const FancyModalCard = React.forwardRef<
-//   FancyModalCard,
-//   React.PropsWithChildren<{
-//     level: number
-//     height: number
-//     backgroundShouldShrink: boolean
-//     onBackgroundPressed(): void
-//   }>
-// >((props, ref) => {
-//   const screen = useScreenDimensions()
-//   const isRootCard = props.level === 0
-//   const backdropOpacity = useRef(new Animated.Value(0)).current
-//   const scale = useRef(new Animated.Value(1)).current
-//   const translateY = useRef(new Animated.Value(isRootCard ? 0 : props.height)).current
-//   const borderRadius = useRef(new Animated.Value(isRootCard ? 0 : 10)).current
-
-//   const dragY = useRef(new Animated.Value(0)).current
-
-//   useImperativeHandle(
-//     ref,
-//     () => ({
-//       height: props.height,
-//       backgroundShouldShrink: props.backgroundShouldShrink,
-//       getPopAnimations(createAnimation) {
-//         return [
-//           createAnimation(backdropOpacity, 0),
-//           createAnimation(borderRadius, BORDER_RADIUS),
-//           createAnimation(scale, 1),
-//           createAnimation(translateY, props.height),
-//         ]
-//       },
-//       getStackAnimations(createAnimation, stack) {
-//         if (isRootCard && stack.length === 1) {
-//           // There are no fancy modals showing, so reset the background.
-//           return [
-//             createAnimation(backdropOpacity, 0),
-//             createAnimation(borderRadius, 0),
-//             createAnimation(scale, 1),
-//             createAnimation(translateY, 0),
-//           ]
-//         }
-
-//         // we need to know how many perceived layers in the stack there are to decide how to position this card
-//         let perceivedDistanceFromTopOfStack = 0
-//         let perceivedStackHeight = 1
-//         for (let i = 1; i < stack.length; i++) {
-//           if (stack[i]?.current?.backgroundShouldShrink) {
-//             perceivedStackHeight += 1
-//             if (i > props.level) {
-//               perceivedDistanceFromTopOfStack += 1
-//             }
-//           }
-//         }
-
-//         // The degree by which the cards should shrink at each layer.
-//         const scaleFactor = (screen.width - 2 * CARD_GUTTER_WIDTH) / screen.width
-//         // The scale of this particular card's content.
-//         const levelScale = Math.pow(scaleFactor, perceivedDistanceFromTopOfStack)
-
-//         // The max height of all the cards *above* this one.
-//         // We need this because if this card is 302px high and it pushes a new modal with height 402px, we need to slide
-//         // this card up another 100px
-//         let maxHeight = 0
-//         for (let i = stack.length - 1; i >= 0; i--) {
-//           maxHeight = Math.max(stack[i].current?.height ?? 0, maxHeight)
-//           if (i === props.level) {
-//             break
-//           }
-//         }
-
-//         // The highest this card could possibly go. This is placed inside the stack overlay area (described above).
-//         const minTop =
-//           screen.safeAreaInsets.top +
-//           CARD_STACK_OVERLAY_HEIGHT +
-//           CARD_STACK_OVERLAY_Y_OFFSET -
-//           (CARD_STACK_OVERLAY_HEIGHT / perceivedStackHeight + 1) * perceivedDistanceFromTopOfStack
-//         // The maximum distance between two cards' tops if they are stacked adjacently (and the front card does not have
-//         // a smaller height than the one behind)
-//         const maxStackOverlayOffset = CARD_STACK_OVERLAY_HEIGHT / 2
-//         // The lowest this card could possibly go. This could be haflway down the screen if the heights are such.
-//         const maxTop = isRootCard
-//           ? minTop
-//           : screen.height - maxHeight - maxStackOverlayOffset * perceivedDistanceFromTopOfStack
-//         // Now we select the top position which is furthest down the screen as the optimal choice
-//         const top = Math.max(minTop, maxTop)
-//         // The top position of the card if it is at the front of the stack
-//         const naturalTop = isRootCard ? 0 : screen.height - props.height
-//         // The offset we need to apply to scale the card down without affecting it's top position (we cannot set the
-//         // transform origin alas, so this is used as a workaround)
-//         const scaleYOffset = (props.height - props.height * levelScale) / 2
-
-//         let totalYoffset = -scaleYOffset - (naturalTop - top)
-
-//         if (isRootCard && perceivedDistanceFromTopOfStack === 0) {
-//           totalYoffset = 0
-//         }
-
-//         return [
-//           createAnimation(backdropOpacity, 0.2),
-//           createAnimation(borderRadius, BORDER_RADIUS),
-//           createAnimation(scale, levelScale),
-//           createAnimation(translateY, totalYoffset),
-//         ]
-//       },
-//     }),
-//     [props.height]
-//   )
-
-//   return (
-//     <View style={{ flex: 1 }}>
-//       {/* This view both darkens the backdrop and provides a touch target for dismissing the modal */}
-//       {!isRootCard && (
-//         <TouchableWithoutFeedback
-//           style={{ position: "absolute", left: 0, right: 0, bottom: 0, top: 0 }}
-//           onPress={props.onBackgroundPressed}
-//         >
-//           <Animated.View
-//             style={{
-//               flex: 1,
-//               backgroundColor: "black",
-//               opacity: backdropOpacity,
-//             }}
-//           ></Animated.View>
-//         </TouchableWithoutFeedback>
-//       )}
-//       <Animated.View
-//         style={{
-//           position: "absolute",
-//           left: 0,
-//           right: 0,
-//           bottom: 0,
-//           height: props.height,
-//           borderTopLeftRadius: borderRadius,
-//           borderTopRightRadius: borderRadius,
-//           overflow: "hidden",
-//           transform: [
-//             {
-//               translateY: Animated.add(translateY, dragY),
-//             },
-//             {
-//               scale: 1,
-//             },
-//           ],
-//         }}
-//       >
-//         {/* We need to apply background color in this extra inner view otherwise there is some glitchy
-//             tearing sometimes when hiding the modal */}
-//         <View style={{ flex: 1, backgroundColor: "white" }}>{props.children}</View>
-//         {/* drag handle */}
-//         {props.level > 0 && (
-//           <PanGestureHandler
-//             onHandlerStateChange={(e) => {
-//               if (e.nativeEvent.oldState === State.ACTIVE) {
-//                 spring(dragY, 0).start()
-//                 if (e.nativeEvent.velocityY > 1000 || e.nativeEvent.translationY > 300) {
-//                   console.warn({ velocityY: e.nativeEvent.velocityY, translationY: e.nativeEvent.translationY })
-//                   props.onBackgroundPressed()
-//                 }
-//               }
-//             }}
-//             onGestureEvent={(e) => {
-//               Animated.timing(dragY, {
-//                 toValue: e.nativeEvent.translationY,
-//                 duration: 10,
-//                 useNativeDriver: true,
-//               }).start()
-//               return false
-//             }}
-//           >
-//             <Reanimated.View
-//               style={{
-//                 position: "absolute",
-//                 left: 0,
-//                 right: 0,
-//                 top: -30,
-//                 height: 50,
-//                 borderWidth: 1,
-//                 borderColor: "blue",
-//               }}
-//             ></Reanimated.View>
-//           </PanGestureHandler>
-//         )}
-//       </Animated.View>
-//     </View>
-//   )
-// })
