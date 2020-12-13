@@ -83,7 +83,7 @@ export const FancyModalCard = React.forwardRef<
   const parentCard = props.stack[props.level - 1]?.current
   if (parentCard) {
     // safe to use a hook here, this should never change for a different instance
-    Animated.useCode(() => Animated.set(parentCard.recession, entrance), [])
+    Animated.useCode(() => Animated.set(parentCard.recession, props.backgroundShouldShrink ? entrance : recession), [])
   }
 
   const scale = useRef(
