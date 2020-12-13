@@ -1,0 +1,49 @@
+import {
+  deleteArtworkImageMutation,
+  deleteArtworkImageMutationResponse,
+} from "__generated__/deleteArtworkImageMutation.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { commitMutation, graphql } from "react-relay"
+
+export function deleteArtworkImage(artworkID: string, imageID: string) {
+  return new Promise<deleteArtworkImageMutationResponse>((resolve, reject) => {
+    commitMutation<deleteArtworkImageMutation>(defaultEnvironment, {
+      mutation: graphql`
+        mutation deleteArtworkImageMutation($input: DeleteArtworkImageInput!) {
+          deleteArtworkImage(input: $input) {
+            artworkOrError {
+              ... on ArtworkMutationSuccess {
+                artwork {
+                  images {
+                    imageURL
+                  }
+                }
+              }
+              ... on ArtworkMutationFailure {
+                mutationError {
+                  message
+                }
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        input: {
+          artworkID,
+          imageID,
+        },
+      },
+      onCompleted: (response, errors) => {
+        if (errors?.length) {
+          reject(errors)
+        } else if (response.deleteArtworkImage?.artworkOrError?.mutationError) {
+          reject(response.deleteArtworkImage?.artworkOrError?.mutationError.message)
+        } else {
+          resolve(response)
+        }
+      },
+      onError: reject,
+    })
+  })
+}
