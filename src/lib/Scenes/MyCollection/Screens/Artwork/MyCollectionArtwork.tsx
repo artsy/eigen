@@ -133,6 +133,9 @@ export const MyCollectionArtworkQueryRenderer: React.FC<{
             ...MyCollectionArtworkHeader_artwork
             ...MyCollectionArtworkMeta_artwork
             ...MyCollectionArtworkInsights_artwork
+            images {
+              ImageCarousel_images
+            }
           }
 
           marketPriceInsights(artistId: $artistInternalID, medium: $medium) {

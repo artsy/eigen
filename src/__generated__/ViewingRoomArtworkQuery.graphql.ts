@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 649ba90dbd127d2c0b189ba9d8ccc534 */
+/* @relayHash f75074f35caa6217aaec13b15d0aa1b3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -55,7 +55,7 @@ fragment ViewingRoomArtwork_selectedArtwork on Artwork {
   heightCm
   id
   images {
-    url: imageURL
+    url
     width
     height
     imageVersions
@@ -300,10 +300,10 @@ return {
             "plural": true,
             "selections": [
               {
-                "alias": "url",
+                "alias": null,
                 "args": null,
                 "kind": "ScalarField",
-                "name": "imageURL",
+                "name": "url",
                 "storageKey": null
               },
               {
@@ -493,7 +493,7 @@ return {
     ]
   },
   "params": {
-    "id": "649ba90dbd127d2c0b189ba9d8ccc534",
+    "id": "f75074f35caa6217aaec13b15d0aa1b3",
     "metadata": {},
     "name": "ViewingRoomArtworkQuery",
     "operationKind": "query",

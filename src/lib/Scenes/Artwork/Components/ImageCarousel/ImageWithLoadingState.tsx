@@ -5,7 +5,7 @@ import { TouchableWithoutFeedback, View, ViewProps } from "react-native"
 interface ImageWithLoadingStateProps {
   width: number
   height: number
-  imageURL: string
+  imageURL?: string
   onLoad?: () => void
   onPress?: () => void
   style?: ViewProps["style"]
@@ -28,18 +28,20 @@ export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStat
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={[{ width, height }, props.style]} ref={ref}>
-        <OpaqueImageView
-          useRawURL
-          onLoad={() => {
-            if (props.onLoad) {
-              props.onLoad()
-            }
-          }}
-          imageURL={imageURL}
-          aspectRatio={width / height}
-          style={{ width, height }}
-          highPriority={props.highPriority}
-        />
+        {!!imageURL && (
+          <OpaqueImageView
+            useRawURL
+            onLoad={() => {
+              if (props.onLoad) {
+                props.onLoad()
+              }
+            }}
+            imageURL={imageURL}
+            aspectRatio={width / height}
+            style={{ width, height }}
+            highPriority={props.highPriority}
+          />
+        )}
       </View>
     </TouchableWithoutFeedback>
   )

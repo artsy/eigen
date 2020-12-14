@@ -170,10 +170,10 @@ const node: ReaderFragment = {
       "plural": true,
       "selections": [
         {
-          "alias": "url",
+          "alias": null,
           "args": null,
           "kind": "ScalarField",
-          "name": "imageURL",
+          "name": "url",
           "storageKey": null
         },
         {

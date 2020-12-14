@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5d874d4f046f77e70bb772e694c5f45d */
+/* @relayHash 185d6e2541b4eda63f4e6726ae5a3dbe */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -94,6 +94,24 @@ query MyCollectionArtworkQuery(
   }
 }
 
+fragment ImageCarousel_images on Image {
+  url
+  width
+  height
+  imageVersions
+  deepZoom {
+    image: Image {
+      tileSize: TileSize
+      url: Url
+      format: Format
+      size: Size {
+        width: Width
+        height: Height
+      }
+    }
+  }
+}
+
 fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
   artist {
     slug
@@ -166,10 +184,8 @@ fragment MyCollectionArtworkHeader_artwork on Artwork {
   artistNames
   date
   images {
-    height
+    ...ImageCarousel_images
     isDefault
-    url
-    width
   }
   internalID
   title
@@ -337,35 +353,21 @@ v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "url",
+  "name": "isDefault",
   "storageKey": null
 },
 v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "width",
+  "name": "url",
   "storageKey": null
 },
 v17 = {
   "alias": null,
   "args": null,
-  "concreteType": "Image",
-  "kind": "LinkedField",
-  "name": "images",
-  "plural": true,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "isDefault",
-      "storageKey": null
-    },
-    (v15/*: any*/),
-    (v16/*: any*/),
-    (v13/*: any*/)
-  ],
+  "kind": "ScalarField",
+  "name": "width",
   "storageKey": null
 },
 v18 = {
@@ -428,7 +430,7 @@ v25 = {
   "value": 3
 },
 v26 = [
-  (v15/*: any*/)
+  (v16/*: any*/)
 ];
 return {
   "fragment": {
@@ -471,14 +473,28 @@ return {
           (v12/*: any*/),
           (v13/*: any*/),
           (v14/*: any*/),
-          (v17/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "images",
+            "plural": true,
+            "selections": [
+              (v15/*: any*/),
+              (v16/*: any*/),
+              (v17/*: any*/),
+              (v13/*: any*/)
+            ],
+            "storageKey": null
+          },
           (v4/*: any*/),
           (v18/*: any*/),
           (v19/*: any*/),
           (v20/*: any*/),
           (v21/*: any*/),
           (v22/*: any*/),
-          (v16/*: any*/),
+          (v17/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
@@ -775,14 +791,103 @@ return {
           (v12/*: any*/),
           (v13/*: any*/),
           (v14/*: any*/),
-          (v17/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "images",
+            "plural": true,
+            "selections": [
+              (v15/*: any*/),
+              (v16/*: any*/),
+              (v17/*: any*/),
+              (v13/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "imageVersions",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "DeepZoom",
+                "kind": "LinkedField",
+                "name": "deepZoom",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": "image",
+                    "args": null,
+                    "concreteType": "DeepZoomImage",
+                    "kind": "LinkedField",
+                    "name": "Image",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": "tileSize",
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "TileSize",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": "url",
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "Url",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": "format",
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "Format",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": "size",
+                        "args": null,
+                        "concreteType": "DeepZoomImageSize",
+                        "kind": "LinkedField",
+                        "name": "Size",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": "width",
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "Width",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": "height",
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "Height",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
           (v4/*: any*/),
           (v18/*: any*/),
           (v19/*: any*/),
           (v20/*: any*/),
           (v21/*: any*/),
           (v22/*: any*/),
-          (v16/*: any*/),
+          (v17/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -947,7 +1052,7 @@ return {
     ]
   },
   "params": {
-    "id": "5d874d4f046f77e70bb772e694c5f45d",
+    "id": "185d6e2541b4eda63f4e6726ae5a3dbe",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",

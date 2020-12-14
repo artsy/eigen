@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8e0072dd70dce3eebc02d33af8e8890e */
+/* @relayHash 61c82a547695c52e6af08b7f3b193de2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,14 +26,30 @@ query MyCollectionArtworkHeaderTestsQuery {
   }
 }
 
+fragment ImageCarousel_images on Image {
+  url
+  width
+  height
+  imageVersions
+  deepZoom {
+    image: Image {
+      tileSize: TileSize
+      url: Url
+      format: Format
+      size: Size {
+        width: Width
+        height: Height
+      }
+    }
+  }
+}
+
 fragment MyCollectionArtworkHeader_artwork on Artwork {
   artistNames
   date
   images {
-    height
+    ...ImageCarousel_images
     isDefault
-    url
-    width
   }
   internalID
   title
@@ -133,20 +149,6 @@ return {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
-                "name": "height",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "isDefault",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
                 "name": "url",
                 "storageKey": null
               },
@@ -155,6 +157,95 @@ return {
                 "args": null,
                 "kind": "ScalarField",
                 "name": "width",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "height",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "imageVersions",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "DeepZoom",
+                "kind": "LinkedField",
+                "name": "deepZoom",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": "image",
+                    "args": null,
+                    "concreteType": "DeepZoomImage",
+                    "kind": "LinkedField",
+                    "name": "Image",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": "tileSize",
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "TileSize",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": "url",
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "Url",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": "format",
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "Format",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": "size",
+                        "args": null,
+                        "concreteType": "DeepZoomImageSize",
+                        "kind": "LinkedField",
+                        "name": "Size",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": "width",
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "Width",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": "height",
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "Height",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "isDefault",
                 "storageKey": null
               }
             ],
@@ -187,7 +278,7 @@ return {
     ]
   },
   "params": {
-    "id": "8e0072dd70dce3eebc02d33af8e8890e",
+    "id": "61c82a547695c52e6af08b7f3b193de2",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -205,7 +296,36 @@ return {
           "plural": true,
           "type": "Image"
         },
+        "artwork.images.deepZoom": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "DeepZoom"
+        },
+        "artwork.images.deepZoom.image": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "DeepZoomImage"
+        },
+        "artwork.images.deepZoom.image.format": (v1/*: any*/),
+        "artwork.images.deepZoom.image.size": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "DeepZoomImageSize"
+        },
+        "artwork.images.deepZoom.image.size.height": (v3/*: any*/),
+        "artwork.images.deepZoom.image.size.width": (v3/*: any*/),
+        "artwork.images.deepZoom.image.tileSize": (v3/*: any*/),
+        "artwork.images.deepZoom.image.url": (v1/*: any*/),
         "artwork.images.height": (v3/*: any*/),
+        "artwork.images.imageVersions": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "String"
+        },
         "artwork.images.isDefault": {
           "enumValues": null,
           "nullable": true,

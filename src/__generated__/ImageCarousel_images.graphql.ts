@@ -39,10 +39,10 @@ const node: ReaderFragment = {
   "name": "ImageCarousel_images",
   "selections": [
     {
-      "alias": "url",
+      "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "imageURL",
+      "name": "url",
       "storageKey": null
     },
     {
@@ -138,5 +138,5 @@ const node: ReaderFragment = {
   "type": "Image",
   "abstractKey": null
 };
-(node as any).hash = 'd476e0fe87d0fa4cede85d40854121ff';
+(node as any).hash = '53c81125eda10bbc56cb5efcc61c265e';
 export default node;

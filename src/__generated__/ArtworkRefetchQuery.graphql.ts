@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8ad3f45a09d9e2389f5cd547ac141af0 */
+/* @relayHash f916b644c55e5d9fed56e7a29506f27c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -644,7 +644,7 @@ fragment GenericGrid_artworks on Artwork {
 }
 
 fragment ImageCarousel_images on Image {
-  url: imageURL
+  url
   width
   height
   imageVersions
@@ -1476,13 +1476,7 @@ return {
             "name": "images",
             "plural": true,
             "selections": [
-              {
-                "alias": "url",
-                "args": null,
-                "kind": "ScalarField",
-                "name": "imageURL",
-                "storageKey": null
-              },
+              (v11/*: any*/),
               (v14/*: any*/),
               (v15/*: any*/),
               {
@@ -2334,7 +2328,7 @@ return {
     ]
   },
   "params": {
-    "id": "8ad3f45a09d9e2389f5cd547ac141af0",
+    "id": "f916b644c55e5d9fed56e7a29506f27c",
     "metadata": {},
     "name": "ArtworkRefetchQuery",
     "operationKind": "query",

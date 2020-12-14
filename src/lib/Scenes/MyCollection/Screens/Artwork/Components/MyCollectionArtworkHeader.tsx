@@ -1,12 +1,13 @@
 import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
+import { ImageCarouselFragmentContainer } from "lib/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Image } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { ArtworkIcon, color, Flex, Spacer, Text } from "palette"
 import React from "react"
-import { TouchableOpacity } from "react-native"
+import { Dimensions, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface MyCollectionArtworkHeaderProps {
@@ -50,9 +51,7 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
   const renderMainImageView = () => {
     if (!isImage(defaultImage) || imageIsProcessing(defaultImage)) {
       return (
-        <Flex
-          style={{ height: 300, alignItems: "center", justifyContent: "center", backgroundColor: color("black10") }}
-        >
+        <Flex style={{ height: 300, alignItems: "center", justifyContent: "center", backgroundColor: color("black5") }}>
           <ArtworkIcon style={{ opacity: 0.6 }} height={100} width={100} />
           <Text style={{ opacity: 0.6 }}>
             {images && images?.length > 0 ? "Processing photos" : "Processing photo"}
@@ -60,14 +59,22 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
         </Flex>
       )
     } else {
-      // TODO: figure out if "normalized" is the correct version
+      const screenDimensions = Dimensions.get("screen")
       return (
-        <OpaqueImageView
-          imageURL={defaultImage.url.replace(":version", "normalized")}
-          height={defaultImage.height * (dimensions.width / defaultImage.width)}
-          width={dimensions.width}
-        />
+        <Flex py={2} backgroundColor="black5">
+          <ImageCarouselFragmentContainer
+            images={images as any /* STRICTNESS_MIGRATION */}
+            cardHeight={screenDimensions.width >= 375 ? 340 : 290}
+          />
+        </Flex>
       )
+      // return (
+      //   <OpaqueImageView
+      //     imageURL={defaultImage.url.replace(":version", "larger")}
+      //     height={defaultImage.height * (dimensions.width / defaultImage.width)}
+      //     width={dimensions.width}
+      //   />
+      // )
     }
   }
 
@@ -80,36 +87,7 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
         </Text>
       </ScreenMargin>
       <Spacer my={1} />
-      <TouchableOpacity
-        disabled={hasImagesStillProcessing(defaultImage, images)}
-        onPress={() => {
-          navigate(`/my-collection/artwork-images/${internalID}`)
-        }}
-      >
-        {renderMainImageView()}
-        {!!images && !hasImagesStillProcessing(defaultImage, images) && (
-          <Flex
-            mr={2}
-            style={{
-              top: -50,
-              alignItems: "flex-end",
-            }}
-          >
-            <Flex
-              py={0.5}
-              px={2}
-              style={{
-                backgroundColor: "rgba(255, 255, 255, 0.95)",
-                borderRadius: 3,
-              }}
-            >
-              <Text variant="small">
-                {images.length} photo{images.length > 1 ? "s" : ""}
-              </Text>
-            </Flex>
-          </Flex>
-        )}
-      </TouchableOpacity>
+      {renderMainImageView()}
     </>
   )
 }
@@ -120,10 +98,8 @@ export const MyCollectionArtworkHeaderFragmentContainer = createFragmentContaine
       artistNames
       date
       images {
-        height
+        ...ImageCarousel_images
         isDefault
-        url
-        width
       }
       internalID
       title

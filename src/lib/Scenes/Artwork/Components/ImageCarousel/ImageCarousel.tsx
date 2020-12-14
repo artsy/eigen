@@ -34,22 +34,27 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
   const images: ImageDescriptor[] = useMemo(() => {
     let result = props.images
       .map((image) => {
-        if (!image.height || !image.width || !image.url) {
-          // something is very wrong
-          return null
-        }
+        // if (!image.height || !image.width || !image.url) {
+        //   // something is very wrong
+        //   return null
+        // }
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        const { width, height } = fitInside(embeddedCardBoundingBox, image)
+
+        // we want to allow for the possibility that this image is still processing
+        // in which case we should permanently show the loading spinner provided by ImageWithLoadingState
+        const { width, height } = !!image.width ? fitInside(embeddedCardBoundingBox, image) : embeddedCardBoundingBox
         return {
           width,
           height,
-          url: createGeminiUrl({
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            imageURL: image.url.replace(":version", getBestImageVersionForThumbnail(image.imageVersions)),
-            // upscale to match screen resolution
-            width: width * PixelRatio.get(),
-            height: height * PixelRatio.get(),
-          }),
+          url: image.url
+            ? createGeminiUrl({
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                imageURL: image.url.replace(":version", getBestImageVersionForThumbnail(image.imageVersions)),
+                // upscale to match screen resolution
+                width: width * PixelRatio.get(),
+                height: height * PixelRatio.get(),
+              })
+            : "",
           deepZoom: image.deepZoom,
         }
       })
@@ -124,7 +129,7 @@ export const PaginationDot = ({ diameter, index }: { diameter: number; index: nu
 export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarousel, {
   images: graphql`
     fragment ImageCarousel_images on Image @relay(plural: true) {
-      url: imageURL
+      url
       width
       height
       imageVersions

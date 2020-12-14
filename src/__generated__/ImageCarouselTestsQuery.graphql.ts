@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8792d37017c851a70dfa3671f759a20f */
+/* @relayHash 66f2486ea6dc38ac57d968dd9d29014f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -54,7 +54,7 @@ query ImageCarouselTestsQuery {
 }
 
 fragment ImageCarousel_images on Image {
-  url: imageURL
+  url
   width
   height
   imageVersions
@@ -141,10 +141,10 @@ return {
             "plural": true,
             "selections": [
               {
-                "alias": "url",
+                "alias": null,
                 "args": null,
                 "kind": "ScalarField",
-                "name": "imageURL",
+                "name": "url",
                 "storageKey": null
               },
               {
@@ -252,7 +252,7 @@ return {
     ]
   },
   "params": {
-    "id": "8792d37017c851a70dfa3671f759a20f",
+    "id": "66f2486ea6dc38ac57d968dd9d29014f",
     "metadata": {},
     "name": "ImageCarouselTestsQuery",
     "operationKind": "query",
