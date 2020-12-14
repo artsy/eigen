@@ -171,7 +171,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   }, [mutationSuccessful])
 
   return (
-    <FancyModal visible={modalIsVisible} onBackgroundPressed={() => resetAndExit()}>
+    <FancyModal visible={modalIsVisible} onDismiss={() => resetAndExit()}>
       <FancyModalHeader
         leftButtonText="Cancel"
         onLeftButtonPress={() => {

@@ -26,7 +26,7 @@ export const InfoButton: React.FC<InfoButtonProps> = ({ title, subTitle, modalTi
         </TouchableOpacity>
       </Flex>
       {!!subTitle && <Text color="black60">{subTitle}</Text>}
-      <FancyModal visible={modalVisible} onBackgroundPressed={() => setModalVisible(false)}>
+      <FancyModal visible={modalVisible} onDismiss={() => setModalVisible(false)}>
         <FancyModalHeader onLeftButtonPress={() => setModalVisible(false)}>{modalTitle ?? title}</FancyModalHeader>
         <Spacer my={1} />
         <ScreenMargin>{modalContent}</ScreenMargin>

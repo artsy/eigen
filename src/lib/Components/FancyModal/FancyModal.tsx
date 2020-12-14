@@ -7,9 +7,10 @@ import { FancyModalContext } from "./FancyModalContext"
 export const FancyModal: React.FC<{
   visible: boolean
   maxHeight?: number
-  onBackgroundPressed(): void
+  showDragHandle?: boolean
+  onDismiss?(): void
   onModalFinishedClosing?(): void
-}> = ({ visible, children, onBackgroundPressed, maxHeight, onModalFinishedClosing }) => {
+}> = ({ visible, children, onDismiss, maxHeight, onModalFinishedClosing, showDragHandle }) => {
   const {
     height: screenHeight,
     safeAreaInsets: { top },
@@ -26,7 +27,7 @@ export const FancyModal: React.FC<{
   const card = context.useCard({
     height,
     backgroundShouldShrink: !maxHeight,
-    content: showingUnderlyingModal ? (
+    children: showingUnderlyingModal ? (
       /* Keyboard Avoiding
         This works fine for full-screen fancy modals but a couple of caveats for the future:
         - We might want to allow consumers to turn this off
@@ -43,7 +44,8 @@ export const FancyModal: React.FC<{
         {children}
       </KeyboardAvoidingView>
     ) : null,
-    onBackgroundPressed,
+    showDragHandle,
+    onDismiss,
   })
 
   useEffect(() => {

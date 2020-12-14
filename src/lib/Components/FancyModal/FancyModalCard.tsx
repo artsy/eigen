@@ -1,4 +1,5 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { color } from "palette"
 import React, { RefObject, useImperativeHandle, useRef } from "react"
 import { View } from "react-native"
 import { PanGestureHandler, State, TapGestureHandler } from "react-native-gesture-handler"
@@ -23,22 +24,22 @@ export interface FancyModalCard {
   disappear(): Promise<void>
 }
 
+export interface FancyModalCardProps extends React.PropsWithChildren<{}> {
+  level: number
+  height: number
+  backgroundShouldShrink: boolean
+  stack: Array<RefObject<FancyModalCard>>
+  showDragHandle?: boolean
+  onDismiss?(): void
+}
+
 /**
  * A FancyModalCard is a component which handles displaying the contents of a single layer of fancy modal content.
  *
  * It has a tappable backdrop and a content overlay and it is responsible for positioning the overlay and controlling
  * the opacity of the backdrop in response to directions from FancyModalContext, which manages a 'stack' of these cards.
  */
-export const FancyModalCard = React.forwardRef<
-  FancyModalCard,
-  React.PropsWithChildren<{
-    level: number
-    height: number
-    backgroundShouldShrink: boolean
-    stack: Array<RefObject<FancyModalCard>>
-    onBackgroundPressed(): void
-  }>
->((props, ref) => {
+export const FancyModalCard = React.forwardRef<FancyModalCard, FancyModalCardProps>((props, ref) => {
   const screen = useScreenDimensions()
   const isRootCard = props.level === 0
 
@@ -72,7 +73,7 @@ export const FancyModalCard = React.forwardRef<
           Animated.cond(
             triggeredClose,
             Animated.call([], () => {
-              props.onBackgroundPressed()
+              props.onDismiss?.()
             })
           )
         ),
@@ -160,19 +161,21 @@ export const FancyModalCard = React.forwardRef<
             backgroundColor: "black",
           }}
         >
-          <PanGestureHandler onHandlerStateChange={dragEvent} onGestureEvent={dragEvent} hitSlop={80}>
-            <Animated.View style={{ flex: 1 }}>
-              <TapGestureHandler
-                onHandlerStateChange={(e) => {
-                  if (e.nativeEvent.oldState === State.ACTIVE) {
-                    props.onBackgroundPressed()
-                  }
-                }}
-              >
-                <Animated.View style={{ flex: 1 }}></Animated.View>
-              </TapGestureHandler>
-            </Animated.View>
-          </PanGestureHandler>
+          {!!props.onDismiss && (
+            <PanGestureHandler onHandlerStateChange={dragEvent} onGestureEvent={dragEvent} hitSlop={80}>
+              <Animated.View style={{ flex: 1 }}>
+                <TapGestureHandler
+                  onHandlerStateChange={(e) => {
+                    if (e.nativeEvent.oldState === State.ACTIVE) {
+                      props.onDismiss?.()
+                    }
+                  }}
+                >
+                  <Animated.View style={{ flex: 1 }}></Animated.View>
+                </TapGestureHandler>
+              </Animated.View>
+            </PanGestureHandler>
+          )}
         </Animated.View>
       )}
       <Animated.View
@@ -194,20 +197,23 @@ export const FancyModalCard = React.forwardRef<
       </Animated.View>
 
       {/* drag handle */}
-      {props.level > 0 && (
+      {!!props.onDismiss && props.level > 0 && (
         <Animated.View
           style={{
             position: "absolute",
-            left: 80,
-            right: 80,
+            left: 100,
+            right: 100,
             top: screen.height - props.height,
-            height: 60,
-            borderWidth: 1,
+            height: 50,
             transform: [{ translateY }],
           }}
         >
-          <PanGestureHandler onHandlerStateChange={dragEvent} onGestureEvent={dragEvent} hitSlop={80}>
-            <Animated.View style={{ flex: 1 }}></Animated.View>
+          <PanGestureHandler onHandlerStateChange={dragEvent} onGestureEvent={dragEvent}>
+            <Animated.View style={{ flex: 1, alignItems: "center", paddingTop: 8 }}>
+              {!!props.showDragHandle && (
+                <View style={{ borderRadius: 2, height: 4, width: 74, backgroundColor: color("black30") }}></View>
+              )}
+            </Animated.View>
           </PanGestureHandler>
         </Animated.View>
       )}

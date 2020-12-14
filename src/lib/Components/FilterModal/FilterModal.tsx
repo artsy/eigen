@@ -102,7 +102,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
     state.selectedFilters.length > 0 || (state.previouslyAppliedFilters.length === 0 && state.appliedFilters.length > 0)
 
   return (
-    <FancyModal visible={isFilterArtworksModalVisible} onBackgroundPressed={handleClosingModal} maxHeight={550}>
+    <FancyModal visible={isFilterArtworksModalVisible} onDismiss={handleClosingModal} maxHeight={550}>
       <View style={{ flex: 1 }}>
         <NavigatorIOS
           navigationBarHidden={true}

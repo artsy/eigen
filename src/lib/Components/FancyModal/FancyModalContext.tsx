@@ -2,7 +2,7 @@ import { ExecutionQueue } from "lib/utils/ExecutionQueue"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { RefObject, useEffect, useRef, useState } from "react"
 import { View } from "react-native"
-import { FancyModalCard } from "./FancyModalCard"
+import { FancyModalCard, FancyModalCardProps } from "./FancyModalCard"
 
 /**
  * This is responsible for managing a stack of FancyModalCard instances, and making sure they are positioned correctly.
@@ -38,9 +38,10 @@ class FancyModalCardStack {
           level={0}
           ref={this.stack[0]}
           stack={this.stack}
-          onBackgroundPressed={() => null}
+          onDismiss={() => null}
           height={height}
           backgroundShouldShrink={false}
+          showDragHandle={false}
         >
           {content}
         </FancyModalCard>
@@ -48,29 +49,15 @@ class FancyModalCardStack {
     )
   }
 
-  useCard(config: {
-    content: React.ReactNode
-    height: number
-    backgroundShouldShrink: boolean
-    onBackgroundPressed(): void
-  }): {
+  useCard(
+    config: Omit<FancyModalCardProps, "level" | "stack">
+  ): {
     jsx: JSX.Element
     show(): Promise<void>
     hide(): Promise<void>
   } {
     const ref = useRef<FancyModalCard>(null)
-    const jsx = (
-      <FancyModalCard
-        level={this.level}
-        stack={this.stack}
-        ref={ref}
-        onBackgroundPressed={config.onBackgroundPressed}
-        height={config.height}
-        backgroundShouldShrink={config.backgroundShouldShrink}
-      >
-        {config.content}
-      </FancyModalCard>
-    )
+    const jsx = <FancyModalCard level={this.level} stack={this.stack} ref={ref} {...config} />
 
     // clean up after unmount
     useEffect(() => {

@@ -20,7 +20,7 @@ export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
   const [locationInput, setLocationInput] = useState<SimpleLocation | null>(null)
 
   return (
-    <FancyModal visible={modalIsVisible} onBackgroundPressed={() => toggleVisibility()}>
+    <FancyModal visible={modalIsVisible} onDismiss={() => toggleVisibility()}>
       <FancyModalHeader
         leftButtonText="Cancel"
         onLeftButtonPress={() => {

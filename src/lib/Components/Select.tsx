@@ -217,7 +217,7 @@ const SelectModal: React.FC<{
   return (
     <FancyModal
       visible={props.visible}
-      onBackgroundPressed={props.onDismiss}
+      onDismiss={props.onDismiss}
       onModalFinishedClosing={props.onModalFinishedClosing}
     >
       <Flex p="2" pb={15} flexDirection="row" alignItems="center" flexGrow={0}>
