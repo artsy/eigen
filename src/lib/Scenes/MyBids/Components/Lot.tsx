@@ -35,7 +35,7 @@ class Lot extends React.Component<Props> {
                 )}
               </Flex>
 
-              <Flex alignItems="baseline" width="50%">
+              <Flex alignItems="baseline">
                 <Text variant="caption" numberOfLines={2}>
                   {saleArtwork?.artwork?.artistNames}
                 </Text>

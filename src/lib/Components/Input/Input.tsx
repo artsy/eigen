@@ -17,6 +17,7 @@ export interface InputProps extends TextInputProps {
   title?: string
   enableClearButton?: boolean
   onClear?(): void
+  renderLeftHandSection?(): JSX.Element
 }
 
 export type Input = TextInput
@@ -24,7 +25,21 @@ export type Input = TextInput
  * Input component
  */
 export const Input = React.forwardRef<TextInput, InputProps>(
-  ({ containerStyle, description, disabled, error, icon, required, enableClearButton, title, ...rest }, ref) => {
+  (
+    {
+      containerStyle,
+      description,
+      disabled,
+      error,
+      icon,
+      required,
+      enableClearButton,
+      title,
+      renderLeftHandSection,
+      ...rest
+    },
+    ref
+  ) => {
     const [focused, setFocused] = useState(false)
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
     const input = useRef<TextInput>()
@@ -51,6 +66,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
               },
             ]}
           >
+            {renderLeftHandSection?.()}
             {!!icon && (
               <Flex pl="1" justifyContent="center" flexGrow={0}>
                 {icon}

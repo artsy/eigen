@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7586c08c265edd05072d6b38b6a604ab */
+/* @relayHash 97cf71c0ae66288ac0ee56aeb7557650 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,7 +28,7 @@ query InboxTestsQuery {
 
 fragment ActiveLot_lotStanding on AuctionsLotStanding {
   isHighestBidder
-  lotState {
+  lot {
     internalID
     bidCount
     reserveStatus
@@ -36,7 +36,7 @@ fragment ActiveLot_lotStanding on AuctionsLotStanding {
     askingPrice: onlineAskingPrice {
       display
     }
-    sellingPrice: floorSellingPrice {
+    sellingPrice {
       display
     }
     id
@@ -53,16 +53,13 @@ fragment ActiveLot_lotStanding on AuctionsLotStanding {
 
 fragment ClosedLot_lotStanding on AuctionsLotStanding {
   isHighestBidder
-  lotState {
+  lot {
     internalID
     saleId
     bidCount
     reserveStatus
     soldStatus
-    askingPrice: onlineAskingPrice {
-      display
-    }
-    sellingPrice: floorSellingPrice {
+    sellingPrice {
       display
     }
     id
@@ -179,7 +176,7 @@ fragment MyBids_me on Me {
       node {
         ...ActiveLot_lotStanding
         ...ClosedLot_lotStanding
-        lotState {
+        lot {
           internalID
           saleId
           soldStatus
@@ -826,7 +823,7 @@ return {
                         "args": null,
                         "concreteType": "AuctionsLotState",
                         "kind": "LinkedField",
-                        "name": "lotState",
+                        "name": "lot",
                         "plural": false,
                         "selections": [
                           (v3/*: any*/),
@@ -862,11 +859,11 @@ return {
                             "storageKey": null
                           },
                           {
-                            "alias": "sellingPrice",
+                            "alias": null,
                             "args": null,
                             "concreteType": "Money",
                             "kind": "LinkedField",
-                            "name": "floorSellingPrice",
+                            "name": "sellingPrice",
                             "plural": false,
                             "selections": (v21/*: any*/),
                             "storageKey": null
@@ -1007,7 +1004,7 @@ return {
     ]
   },
   "params": {
-    "id": "7586c08c265edd05072d6b38b6a604ab",
+    "id": "97cf71c0ae66288ac0ee56aeb7557650",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -1038,23 +1035,23 @@ return {
         "me.auctionsLotStandingConnection.edges.node.__typename": (v22/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.id": (v23/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.isHighestBidder": (v24/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.lotState": {
+        "me.auctionsLotStandingConnection.edges.node.lot": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "AuctionsLotState"
         },
-        "me.auctionsLotStandingConnection.edges.node.lotState.askingPrice": (v25/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.lotState.askingPrice.display": (v26/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.lotState.bidCount": {
+        "me.auctionsLotStandingConnection.edges.node.lot.askingPrice": (v25/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lot.askingPrice.display": (v26/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lot.bidCount": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "Int"
         },
-        "me.auctionsLotStandingConnection.edges.node.lotState.id": (v23/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.lotState.internalID": (v23/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.lotState.reserveStatus": {
+        "me.auctionsLotStandingConnection.edges.node.lot.id": (v23/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lot.internalID": (v23/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lot.reserveStatus": {
           "enumValues": [
             "NoReserve",
             "ReserveMet",
@@ -1064,10 +1061,10 @@ return {
           "plural": false,
           "type": "AuctionsReserveStatus"
         },
-        "me.auctionsLotStandingConnection.edges.node.lotState.saleId": (v23/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.lotState.sellingPrice": (v25/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.lotState.sellingPrice.display": (v26/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.lotState.soldStatus": {
+        "me.auctionsLotStandingConnection.edges.node.lot.saleId": (v23/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lot.sellingPrice": (v25/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lot.sellingPrice.display": (v26/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lot.soldStatus": {
           "enumValues": [
             "ForSale",
             "Passed",

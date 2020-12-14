@@ -9,6 +9,7 @@ import {
   AlertButton,
   AlertOptions,
   AlertStatic,
+  Keyboard,
   KeyboardAvoidingView,
   ScrollView,
   TouchableOpacity,
@@ -46,6 +47,8 @@ export const MyAccountFieldEditScreen = React.forwardRef<
     if (!canSave) {
       return
     }
+    // prevent any text input on the screen from grabbing focus again once the loading modal is dismissed
+    Keyboard.dismiss()
     try {
       setIsSaving(true)
       await onSave(goBack, doTheAlert)

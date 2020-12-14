@@ -9,8 +9,8 @@ export const lotInActiveSale: (lotStanding: {
 }
 
 /** Whether the lot has been completed, regardless of the sale's closed status */
-export const isLotStandingComplete: (lotStanding: { lotState?: { soldStatus?: string } }) => boolean = (lotStanding) =>
-  !!(lotStanding.lotState?.soldStatus && ["sold", "passed"].includes(lotStanding.lotState.soldStatus?.toLowerCase()))
+export const isLotStandingComplete: (lotStanding: { lot?: { soldStatus?: string } }) => boolean = (lotStanding) =>
+  !!(lotStanding.lot?.soldStatus && ["sold", "passed"].includes(lotStanding.lot.soldStatus?.toLowerCase()))
 
 interface SaleWithTimes {
   status?: string | null

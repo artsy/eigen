@@ -153,7 +153,7 @@ const imageVersionsSortedBySize = ["normalized", "larger", "large", "medium", "s
 // we used to rely on there being a "normalized" version of every image, but that
 // turns out not to be the case, so in those rare situations we order the image versions
 // by size and pick the largest avaialable. These large images will then be resized by
-// gemini for the actual thumnail we fetch.
+// gemini for the actual thumbnail we fetch.
 function getBestImageVersionForThumbnail(imageVersions: readonly string[]) {
   for (const size of imageVersionsSortedBySize) {
     if (imageVersions.includes(size)) {

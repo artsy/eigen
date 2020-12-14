@@ -332,7 +332,6 @@ return {
           "plural": false,
           "type": "Boolean"
         },
-        "artwork.images.url": (v1/*: any*/),
         "artwork.images.width": (v3/*: any*/),
         "artwork.internalID": (v2/*: any*/),
         "artwork.title": (v1/*: any*/)

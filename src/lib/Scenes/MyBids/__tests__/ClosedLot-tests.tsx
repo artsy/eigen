@@ -9,7 +9,7 @@ import { ClosedLot } from "../Components/ClosedLot"
 
 const defaultLotStanding = {
   isHighestBidder: true,
-  lotState: {
+  lot: {
     internalID: "123",
     bidCount: 1,
     soldStatus: "Passed",
@@ -45,21 +45,21 @@ describe(ClosedLot, () => {
   describe("result message", () => {
     it("says 'You won!' if the user won the lot", () => {
       const tree = renderWithWrappers(
-        <ClosedLot lotStanding={lotStandingFixture({ isHighestBidder: true, lotState: { soldStatus: "Sold" } })} />
+        <ClosedLot lotStanding={lotStandingFixture({ isHighestBidder: true, lot: { soldStatus: "Sold" } })} />
       )
       expect(extractText(tree.root)).toContain("You won!")
     })
 
     it("says 'Outbid' if the the lot sold to someone else", () => {
       const tree = renderWithWrappers(
-        <ClosedLot lotStanding={lotStandingFixture({ isHighestBidder: false, lotState: { soldStatus: "Sold" } })} />
+        <ClosedLot lotStanding={lotStandingFixture({ isHighestBidder: false, lot: { soldStatus: "Sold" } })} />
       )
       expect(extractText(tree.root)).toContain("Outbid")
     })
 
     it("says 'Passed' if the lot did not sell at all", () => {
       const tree = renderWithWrappers(
-        <ClosedLot lotStanding={lotStandingFixture({ isHighestBidder: true, lotState: { soldStatus: "Passed" } })} />
+        <ClosedLot lotStanding={lotStandingFixture({ isHighestBidder: true, lot: { soldStatus: "Passed" } })} />
       )
       expect(extractText(tree.root)).toContain("Passed")
     })
@@ -69,7 +69,7 @@ describe(ClosedLot, () => {
     it("has a little star badge if the user won the lot", () => {
       expect(
         renderWithWrappers(
-          <ClosedLot lotStanding={lotStandingFixture({ isHighestBidder: true, lotState: { soldStatus: "Sold" } })} />
+          <ClosedLot lotStanding={lotStandingFixture({ isHighestBidder: true, lot: { soldStatus: "Sold" } })} />
         ).root.findAllByType(StarCircleFill).length
       ).toBe(1)
     })
