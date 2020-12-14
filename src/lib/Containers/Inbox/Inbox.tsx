@@ -26,7 +26,12 @@ const InboxTabs: React.FC<TabBarProps> = (props) => (
       {props.tabs?.map((name: JSX.Element, page: number) => {
         const isTabActive = props.activeTab === page
         return (
-          <CssTransition style={[{ opacity: isTabActive ? 1 : 0.3 }]} animate={["opacity"]} duration={200}>
+          <CssTransition
+            style={[{ opacity: isTabActive ? 1 : 0.3 }]}
+            animate={["opacity"]}
+            duration={200}
+            key={`inbox-tab-${name}`}
+          >
             <Text
               mr={2}
               color="black100"
