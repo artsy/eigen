@@ -29,7 +29,7 @@ const InboxTabs: React.FC<TabBarProps> = (props) => (
           <CssTransition style={[{ opacity: isTabActive ? 1 : 0.3 }]} animate={["opacity"]} duration={200}>
             <Text
               mr={2}
-              color={"black100"}
+              color="black100"
               variant="largeTitle"
               onPress={() => {
                 if (!!props.goToPage) {
