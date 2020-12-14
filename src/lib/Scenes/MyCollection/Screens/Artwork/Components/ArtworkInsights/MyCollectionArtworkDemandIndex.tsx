@@ -25,11 +25,9 @@ const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexPro
         modalContent={
           <>
             <Text>
-              Overall strength of demand for this artist and medium combination in the art market. Based on 36 months of
-              auction result data including liquidity, sell-through rate, data 3, data 4. 2020.
+              Overall strength of demand for this artist and medium combination. Based on the last 36 months of auction
+              sale data from top commercial auction houses.
             </Text>
-            <Spacer my={1} />
-            <Text>Last updated Aug 30, 2020.</Text>
           </>
         }
       />
