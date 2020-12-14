@@ -30,7 +30,6 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
 
   const embeddedCardBoundingBox = { width: screenDimensions.width, height: isPad() ? 460 : cardHeight }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   const images: ImageDescriptor[] = useMemo(() => {
     let result = props.images
       .map((image) => {
@@ -60,9 +59,7 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
       })
       .filter(Boolean)
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     if (result.some((image) => !image.deepZoom)) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const filteredResult = result.filter((image) => image.deepZoom)
       if (filteredResult.length === 0) {
         result = [result[0]]

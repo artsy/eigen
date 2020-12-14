@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 185d6e2541b4eda63f4e6726ae5a3dbe */
+/* @relayHash f0f03d3afc9d2590ee5b7ea72007f45c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,6 +30,7 @@ export type MyCollectionArtworkQueryResponse = {
             readonly url: string | null;
             readonly width: number | null;
             readonly height: number | null;
+            readonly " $fragmentRefs": FragmentRefs<"ImageCarousel_images">;
         } | null> | null;
         readonly internalID: string;
         readonly medium: string | null;
@@ -77,6 +78,7 @@ query MyCollectionArtworkQuery(
       url
       width
       height
+      ...ImageCarousel_images
     }
     internalID
     medium
@@ -484,7 +486,12 @@ return {
               (v15/*: any*/),
               (v16/*: any*/),
               (v17/*: any*/),
-              (v13/*: any*/)
+              (v13/*: any*/),
+              {
+                "args": null,
+                "kind": "FragmentSpread",
+                "name": "ImageCarousel_images"
+              }
             ],
             "storageKey": null
           },
@@ -1052,7 +1059,7 @@ return {
     ]
   },
   "params": {
-    "id": "185d6e2541b4eda63f4e6726ae5a3dbe",
+    "id": "f0f03d3afc9d2590ee5b7ea72007f45c",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",
@@ -1060,5 +1067,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'ff48730bc0fe2c28a7e2ccd715f72842';
+(node as any).hash = '20d97f1c32258e3fd84ef09359adc978';
 export default node;

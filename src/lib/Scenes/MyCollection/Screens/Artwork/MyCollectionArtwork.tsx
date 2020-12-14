@@ -134,7 +134,7 @@ export const MyCollectionArtworkQueryRenderer: React.FC<{
             ...MyCollectionArtworkMeta_artwork
             ...MyCollectionArtworkInsights_artwork
             images {
-              ImageCarousel_images
+              ...ImageCarousel_images @relay(mask: false)
             }
           }
 
