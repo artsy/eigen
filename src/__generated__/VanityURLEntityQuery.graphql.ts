@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2a0f9b922b1e9699fd7da1c672bafb74 */
+/* @relayHash bb394de407b0ea9bce11d17aa9c74035 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -170,6 +170,11 @@ fragment Fair2Editorial_fair on Fair {
       }
     }
   }
+}
+
+fragment Fair2EmptyState_fair on Fair {
+  isActive
+  endAt
 }
 
 fragment Fair2ExhibitorRail_show on Show {
@@ -355,6 +360,7 @@ fragment Fair2_fair on Fair {
     id
   }
   ...Fair2Header_fair
+  ...Fair2EmptyState_fair
   ...Fair2Editorial_fair
   ...Fair2Collections_fair
   ...Fair2Artworks_fair
@@ -3038,7 +3044,7 @@ return {
     ]
   },
   "params": {
-    "id": "2a0f9b922b1e9699fd7da1c672bafb74",
+    "id": "bb394de407b0ea9bce11d17aa9c74035",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",

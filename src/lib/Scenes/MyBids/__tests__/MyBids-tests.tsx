@@ -1,102 +1,186 @@
-import React from "react"
-import { act, ReactTestInstance } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
-
-import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { MyBidsTestsQuery } from "__generated__/MyBidsTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
-import { PlaceholderText } from "lib/utils/placeholders"
-
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { MyBidsQueryRenderer } from ".."
-import { me as meFixture } from "../__fixtures__/MyBidsQuery"
-import { ActiveLotFragmentContainer as ActiveLot, ClosedLotFragmentContainer as ClosedLot } from "../Components"
-
-jest.mock("lib/relay/createEnvironment", () => ({
-  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-}))
+import { PlaceholderText } from "lib/utils/placeholders"
+import React from "react"
+import { graphql, QueryRenderer } from "react-relay"
+import { act, ReactTestInstance } from "react-test-renderer"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { ActiveLot } from "../Components/ActiveLot"
+import { ClosedLot } from "../Components/ClosedLot"
+import { MyBidsContainer, MyBidsQueryRenderer } from "../MyBids"
 
 jest.unmock("react-relay")
-const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironment>
-
-const activeSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
-  const activeSection = root.findByProps({ "data-test-id": "active-section" })
-  const activeLotsinActive = activeSection.findAllByType(ActiveLot)
-  const completedLotsinActive = activeSection.findAllByType(ClosedLot)
-  const activeLots = [...activeLotsinActive, ...completedLotsinActive]
-  return activeLots
-}
 
 const closedSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
   const closedSection = root.findByProps({ "data-test-id": "closed-section" })
   return closedSection.findAllByType(ClosedLot)
 }
 
-describe(MyBidsQueryRenderer, () => {
-  it("spins until the operation resolves", () => {
-    const tree = renderWithWrappers(<MyBidsQueryRenderer />)
+const activeSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
+  const activeSection = root.findByProps({ "data-test-id": "active-section" })
+  const activeLots = activeSection.findAllByType(ActiveLot)
+  const closedLots = activeSection.findAllByType(ClosedLot)
+  return [...activeLots, ...closedLots]
+}
 
-    expect(tree.root.findAllByType(PlaceholderText).length).not.toBe(0)
+describe("My Bids", () => {
+  let env: ReturnType<typeof createMockEnvironment>
+
+  beforeEach(() => {
+    env = createMockEnvironment()
   })
 
-  it("renders upon success", () => {
-    const tree = renderWithWrappers(<MyBidsQueryRenderer />)
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("MyBidsQuery")
+  const TestRenderer = () => (
+    <QueryRenderer<MyBidsTestsQuery>
+      environment={env}
+      query={graphql`
+        query MyBidsTestsQuery @relay_test_operation {
+          me {
+            ...MyBids_me
+          }
+        }
+      `}
+      variables={{ artistSeriesID: "pumpkins" }}
+      render={({ props, error }) => {
+        if (Boolean(props?.me)) {
+          return <MyBidsContainer me={props!.me!} />
+        } else if (Boolean(error)) {
+          console.log(error)
+        }
+      }}
+    />
+  )
 
+  const getWrapper = (mockResolvers = {}) => {
+    const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          me: meFixture,
-        },
-      })
+      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+    })
+    return tree
+  }
+
+  describe("MyBidsQueryRenderer loading state", () => {
+    it("shows placeholder until the operation resolves", () => {
+      const tree = renderWithWrappers(<MyBidsQueryRenderer />)
+      expect(tree.root.findAllByType(PlaceholderText).length).toBeGreaterThan(0)
+    })
+  })
+
+  it("renders without throwing an error", () => {
+    getWrapper()
+  })
+
+  it("renders a lot standing from a closed sale in the closed section", () => {
+    const wrapper = getWrapper({
+      Me: () => {
+        const sale = {
+          internalID: "sale1",
+          endAt: "2020-08-13T16:00:00+00:00",
+          timeZone: "America/New_York",
+          status: "closed",
+        }
+
+        return {
+          bidders: [],
+          auctionsLotStandingConnection: {
+            edges: [
+              {
+                node: {
+                  isHighestBidder: true,
+                  lot: {
+                    soldStatus: "Passed",
+                  },
+                  saleArtwork: {
+                    sale,
+                  },
+                },
+              },
+            ],
+          },
+        }
+      },
     })
 
-    expect(extractText(tree.root)).toContain("Active")
-    expect(extractText(tree.root)).toContain("Closed")
-    expect(extractText(tree.root)).toContain("Heritage: Urban Art Summer Skate")
-    expect(extractText(tree.root)).toContain("Swann Auction Galleries: LGBTQ+ Art, Material Culture & History")
-
-    const activeLots = activeSectionLots(tree.root).map(extractText)
-
-    // Active lots are grouped by sale and sorted by lot number (saleArtwork.position)
-    expect(activeLots[0]).toContain("Open Heritage Winning Artist")
-    expect(activeLots[0]).toContain("2 bids")
-    expect(activeLots[0]).toContain("Lot 2")
-    expect(activeLots[0]).toContain("Winning")
-
-    expect(activeLots[1]).toContain("Open Swann Outbid Artist")
-    expect(activeLots[1]).toContain("1 bid")
-    expect(activeLots[1]).toContain("Lot 1")
-    expect(activeLots[1]).toContain("Outbid")
-
-    expect(activeLots[2]).toContain("Open Swann RNM Artist")
-    expect(activeLots[2]).toContain("1 bid")
-    expect(activeLots[2]).toContain("Lot 3")
-    expect(activeLots[2]).toContain("Reserve not met")
-
-    const closedLots = closedSectionLots(tree.root).map(extractText)
-
-    // Closed lots have no ordering - assume they are served by recentness
-    expect(closedLots[0]).toContain("Closed Swann RNM Artist")
+    const closedLots = closedSectionLots(wrapper.root).map(extractText)
+    expect(closedLots[0]).toContain("artistNames")
     expect(closedLots[0]).toContain("Passed")
     expect(closedLots[0]).toContain("Closed Aug 13")
-
-    expect(closedLots[1]).toContain("Closed Heritage Winning Artist")
-    expect(closedLots[1]).toContain("You won!")
-    expect(closedLots[1]).toContain("Closed Aug 5")
-
-    expect(closedLots[2]).toContain("Closed Swann Outbid Artist")
-    expect(closedLots[2]).toContain("Outbid")
-    expect(closedLots[2]).toContain("Closed Aug 13")
   })
 
-  it.skip("renders null upon failure", () => {
-    const tree = renderWithWrappers(<MyBidsQueryRenderer />)
-
-    act(() => {
-      env.mock.rejectMostRecentOperation(new Error())
+  it("renders a completed lot in an ongoing live sale in the 'active' column", () => {
+    const wrapper = getWrapper({
+      Me: () => {
+        const sale = {
+          internalID: "sale-id",
+          status: "open",
+          liveStartAt: "2020-08-13T16:00:00+00:00",
+        }
+        return {
+          bidders: [
+            {
+              sale,
+            },
+          ],
+          auctionsLotStandingConnection: {
+            edges: [
+              {
+                node: {
+                  isHighestBidder: true,
+                  lot: {
+                    soldStatus: "Passed",
+                    reserveStatus: "ReserveNotMet",
+                  },
+                  saleArtwork: {
+                    sale,
+                  },
+                },
+              },
+            ],
+          },
+        }
+      },
     })
 
-    expect(tree).toMatchInlineSnapshot(`null`)
+    const activeLots = activeSectionLots(wrapper.root).map(extractText)
+    expect(activeLots[0]).toContain("Passed")
+  })
+
+  it("renders the empty view when there are no lot standings", () => {
+    const wrapper = getWrapper({
+      Me: () => ({
+        bidders: [],
+        auctionsLotStandingConnection: {
+          edges: [],
+        },
+      }),
+    })
+
+    expect(extractText(wrapper.root)).toContain("Discover works for you at auction")
+    expect(extractText(wrapper.root)).toContain(
+      "Browse and bid in auctions around the world, from online-only sales to benefit auctions—all in the Artsy app"
+    )
+  })
+
+  it("tells a user they have no bids on a registered sale", () => {
+    const wrapper = getWrapper({
+      Me: () => {
+        return {
+          bidders: [
+            {
+              sale: {
+                registrationStatus: {
+                  qualifiedForBidding: true,
+                },
+              },
+            },
+          ],
+          auctionsLotStandingConnection: {
+            edges: [],
+          },
+        }
+      },
+    })
+    expect(extractText(wrapper.root)).toContain("You haven't placed any bids on this sale")
   })
 })

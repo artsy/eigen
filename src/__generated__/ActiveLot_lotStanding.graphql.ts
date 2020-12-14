@@ -8,7 +8,7 @@ export type AuctionsReserveStatus = "NoReserve" | "ReserveMet" | "ReserveNotMet"
 export type AuctionsSoldStatus = "ForSale" | "Passed" | "Sold" | "%future added value";
 export type ActiveLot_lotStanding = {
     readonly isHighestBidder: boolean;
-    readonly lotState: {
+    readonly lot: {
         readonly internalID: string;
         readonly bidCount: number;
         readonly reserveStatus: AuctionsReserveStatus;
@@ -64,7 +64,7 @@ return {
       "args": null,
       "concreteType": "AuctionsLotState",
       "kind": "LinkedField",
-      "name": "lotState",
+      "name": "lot",
       "plural": false,
       "selections": [
         {
@@ -106,11 +106,11 @@ return {
           "storageKey": null
         },
         {
-          "alias": "sellingPrice",
+          "alias": null,
           "args": null,
           "concreteType": "Money",
           "kind": "LinkedField",
-          "name": "floorSellingPrice",
+          "name": "sellingPrice",
           "plural": false,
           "selections": (v0/*: any*/),
           "storageKey": null
@@ -157,5 +157,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '78ad33822042ca3df166ba20d09de074';
+(node as any).hash = '73cf6b7591e59069730b37b2e13e69b2';
 export default node;

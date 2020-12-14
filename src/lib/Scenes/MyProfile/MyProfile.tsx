@@ -103,17 +103,6 @@ export const MyProfileContainer = createRefetchContainer(
       fragment MyProfile_me on Me {
         name
         labFeatures
-        auctionsLotStandingConnection(first: 25) {
-          edges {
-            node {
-              saleArtwork {
-                sale {
-                  status
-                }
-              }
-            }
-          }
-        }
         followsAndSaves {
           artworksConnection(first: 10, private: true) {
             edges {

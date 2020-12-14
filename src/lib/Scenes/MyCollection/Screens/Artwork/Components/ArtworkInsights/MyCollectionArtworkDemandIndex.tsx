@@ -118,7 +118,9 @@ const ProgressBar: React.FC<{ width: number }> = ({ width }) => {
   return (
     <>
       <Box width="100%" position="relative" height={10} left={-6}>
-        <TriangleDown left={pctWidth} position="absolute" />
+        <Box left={pctWidth} position="absolute">
+          <TriangleDown />
+        </Box>
       </Box>
       <Box height={20} width="100%" bg="black5">
         <LinearGradient

@@ -2,7 +2,7 @@ import React from "react"
 import { Avatar } from "../Avatar"
 import { Flex } from "../Flex"
 import { SpacerProps } from "../Spacer"
-import { Sans } from "../Typography"
+import { bullet, Sans } from "../Typography"
 
 interface EntityHeaderProps extends SpacerProps {
   smallVariant?: boolean
@@ -53,7 +53,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
           {headerName}
 
           <Sans size="3" ml={0.3}>
-            •
+            {bullet}
           </Sans>
 
           {followButton}

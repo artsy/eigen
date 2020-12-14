@@ -4,12 +4,12 @@ import { KeyboardAvoidingView, Modal } from "react-native"
 import { CARD_STACK_OVERLAY_HEIGHT, CARD_STACK_OVERLAY_Y_OFFSET } from "./FancyModalCard"
 import { FancyModalContext } from "./FancyModalContext"
 
-export const FancyModal: React.FC<{ visible: boolean; maxHeight?: number; onBackgroundPressed(): void }> = ({
-  visible,
-  children,
-  onBackgroundPressed,
-  maxHeight,
-}) => {
+export const FancyModal: React.FC<{
+  visible: boolean
+  maxHeight?: number
+  onBackgroundPressed(): void
+  onModalFinishedClosing?(): void
+}> = ({ visible, children, onBackgroundPressed, maxHeight, onModalFinishedClosing }) => {
   const {
     height: screenHeight,
     safeAreaInsets: { top },
@@ -54,6 +54,9 @@ export const FancyModal: React.FC<{ visible: boolean; maxHeight?: number; onBack
       if (!firstMount.current) {
         card.hide().then(() => {
           setShowingUnderlyingModal(false)
+          if (onModalFinishedClosing) {
+            requestAnimationFrame(onModalFinishedClosing)
+          }
         })
       }
     }

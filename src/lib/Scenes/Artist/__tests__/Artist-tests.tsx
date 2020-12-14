@@ -1,8 +1,9 @@
-import ArtistAbout from "lib/Components/Artist/ArtistAbout"
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import ArtistHeader from "lib/Components/Artist/ArtistHeader"
+import { ArtistInsights } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
 import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
 import { StickyTab } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import _ from "lodash"
@@ -10,6 +11,7 @@ import React from "react"
 import "react-native"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
+import { ArtistAboutContainer } from "../../../Components/Artist/ArtistAbout/ArtistAbout"
 import { ArtistQueryRenderer } from "../Artist"
 
 jest.unmock("react-relay")
@@ -78,10 +80,10 @@ describe("availableTabs", () => {
     })
     expect(tree.root.findAllByType(ArtistHeader)).toHaveLength(1)
     expect(tree.root.findAllByType(StickyTab)).toHaveLength(1)
-    expect(tree.root.findAllByType(ArtistAbout)).toHaveLength(0)
+    expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(0)
     // it only shows below the fold
     mockMostRecentOperation("ArtistBelowTheFoldQuery")
-    expect(tree.root.findAllByType(ArtistAbout)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(1)
   })
 
   it("returns About tab if artist has articles", async () => {
@@ -95,10 +97,11 @@ describe("availableTabs", () => {
       },
     })
     mockMostRecentOperation("ArtistBelowTheFoldQuery")
-    expect(tree.root.findAllByType(ArtistAbout)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(1)
   })
 
   it("returns Shows tab if artist has shows", async () => {
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewInsightsPage: false })
     const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -112,7 +115,8 @@ describe("availableTabs", () => {
     expect(tree.root.findAllByType(ArtistShows)).toHaveLength(1)
   })
 
-  it("returns all three tabs if artist has metadata, works, and shows", async () => {
+  it("returns all three tabs if artist has metadata, works, and shows when AROptionsNewInsightsPage is false", async () => {
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewInsightsPage: false })
     const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -124,8 +128,27 @@ describe("availableTabs", () => {
     })
     expect(tree.root.findAllByType(ArtistArtworks)).toHaveLength(1)
     mockMostRecentOperation("ArtistBelowTheFoldQuery")
-    expect(tree.root.findAllByType(ArtistAbout)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(1)
     expect(tree.root.findAllByType(ArtistShows)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtistInsights)).toHaveLength(0)
+  })
+
+  it("returns two tabs if artist has metadata, works, and shows when AROptionsNewInsightsPage is true", async () => {
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewInsightsPage: true })
+    const tree = renderWithWrappers(<TestWrapper />)
+    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
+      Artist() {
+        return {
+          has_metadata: true,
+          counts: { articles: 1, related_artists: 0, artworks: 1, partner_shows: 1 },
+        }
+      },
+    })
+    expect(tree.root.findAllByType(ArtistArtworks)).toHaveLength(1)
+    mockMostRecentOperation("ArtistBelowTheFoldQuery")
+    expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtistShows)).toHaveLength(0)
+    expect(tree.root.findAllByType(ArtistInsights)).toHaveLength(1)
   })
 
   it("tracks a page view", () => {

@@ -61,7 +61,7 @@ jest.mock("./lib/NativeModules/Events.tsx", () => ({
 jest.mock("@sentry/react-native", () => ({ captureMessage() {} }))
 
 // Needing to mock react-native-scrollable-tab-view due to Flow issue
-jest.mock("react-native-scrollable-tab-view", () => jest.fn())
+jest.mock("react-native-scrollable-tab-view", () => jest.fn(() => null))
 
 jest.mock("@mapbox/react-native-mapbox-gl", () => ({
   MapView: () => null,
@@ -107,7 +107,6 @@ mockedModule("./lib/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueIm
 mockedModule("./lib/Components/Artist/ArtistShows/ArtistShows.tsx", "ArtistShows")
 mockedModule("./lib/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "ArtistArtworks")
 mockedModule("./lib/Components/Artist/ArtistHeader.tsx", "ArtistHeader")
-mockedModule("./lib/Components/Artist/ArtistAbout.tsx", "ArtistAbout")
 
 // Gene tests
 mockedModule("./lib/Components/Gene/Header.tsx", "Header")
@@ -354,6 +353,10 @@ jest.mock("@react-native-community/async-storage", () => {
     },
   }
 })
+
+jest.mock("react-native-localize", () => ({
+  getCountry: jest.fn(() => "US"),
+}))
 
 jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
 

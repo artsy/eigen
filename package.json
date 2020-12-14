@@ -99,6 +99,7 @@
     "react-native-hyperlink": "0.0.11",
     "react-native-image-crop-picker": "0.35.1",
     "react-native-linear-gradient": "2.5.6",
+    "react-native-localize": "^2.0.1",
     "react-native-navigator-ios": "https://github.com/ashfurrow/react-native-navigator-ios#license_podspec",
     "react-native-parallax-scroll-view": "orta/react-native-parallax-scroll-view",
     "react-native-reanimated": "^1.13.1",

@@ -44,9 +44,11 @@ const Show2Artworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter })
   const artworks = show.showArtworks!
   const { internalID, slug } = show
   const { dispatch, state } = useContext(ArtworkFilterContext)
-  const filterParams = filterArtworksParams(state.appliedFilters)
+  const filterParams = filterArtworksParams(state.appliedFilters, "showArtwork")
 
   useEffect(() => {
+    dispatch({ type: "setFilterType", payload: "showArtwork" })
+
     if (initiallyAppliedFilter) {
       dispatch({ type: "setInitialFilterState", payload: initiallyAppliedFilter })
     }
@@ -103,7 +105,7 @@ export const Show2ArtworksPaginationContainer = createPaginationContainer(
       @argumentDefinitions(
         count: { type: "Int", defaultValue: 30 }
         cursor: { type: "String" }
-        sort: { type: "String", defaultValue: "-decayed_merch" }
+        sort: { type: "String", defaultValue: "partner_show_position" }
         medium: { type: "String", defaultValue: "*" }
         priceRange: { type: "String" }
         color: { type: "String" }

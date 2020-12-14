@@ -1,5 +1,5 @@
 import { SalesRail_salesModule } from "__generated__/SalesRail_salesModule.graphql"
-import { Flex, Sans } from "palette"
+import { bullet, Flex, Sans } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -36,7 +36,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
   const getSaleSubtitle = (liveStartAt: string | undefined | null, displayTimelyAt: string | undefined | null) => {
     const subtitle = !!liveStartAt ? "Live Auction" : "Timed Auction"
     const dateAt = formatDisplayTimelyAt(displayTimelyAt !== undefined ? displayTimelyAt : null)
-    return subtitle + " • " + dateAt
+    return `${subtitle} ${bullet} ${dateAt}`
   }
 
   useImperativeHandle(props.scrollRef, () => ({
@@ -48,7 +48,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
       <Flex pl="2" pr="2">
         <SectionTitle
           title="Auctions"
-          subtitle="Bid online in live and timed auctions"
+          subtitle="Discover and bid on works for you"
           onPress={() => {
             tracking.trackEvent(HomeAnalytics.auctionHeaderTapEvent())
             navigate("/auctions")

@@ -9,11 +9,10 @@ import { LotFragmentContainer as Lot } from "./Lot"
 
 export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding }, smallScreen: boolean) => {
   const timelySale = TimelySale.create(lotStanding?.saleArtwork?.sale!)
-  const isLAI = timelySale.isLiveBiddingNow()
 
-  const sellingPrice = lotStanding?.lotState?.sellingPrice?.display
-  const bidCount = lotStanding?.lotState?.bidCount
-  const { saleArtwork, lotState } = lotStanding
+  const sellingPrice = lotStanding?.lot?.sellingPrice?.display
+  const bidCount = lotStanding?.lot?.bidCount
+  const { saleArtwork, lot } = lotStanding
 
   const displayBidCount = (): string | undefined => {
     if (isSmallScreen) {
@@ -25,7 +24,7 @@ export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding 
 
   return (
     saleArtwork &&
-    lotState && (
+    lot && (
       <Lot saleArtwork={saleArtwork} isSmallScreen={smallScreen}>
         <Flex flexDirection="row" justifyContent="flex-end">
           <Text variant="caption">{sellingPrice}</Text>
@@ -35,7 +34,7 @@ export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding 
           </Text>
         </Flex>
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
-          {!isLAI && lotStanding?.isHighestBidder && lotStanding.lotState.reserveStatus === "ReserveNotMet" ? (
+          {!timelySale.isLAI && lotStanding?.isHighestBidder && lotStanding.lot.reserveStatus === "ReserveNotMet" ? (
             <ReserveNotMet />
           ) : lotStanding?.isHighestBidder ? (
             <HighestBid />
@@ -52,7 +51,7 @@ export const ActiveLotFragmentContainer = createFragmentContainer(ActiveLot, {
   lotStanding: graphql`
     fragment ActiveLot_lotStanding on AuctionsLotStanding {
       isHighestBidder
-      lotState {
+      lot {
         internalID
         bidCount
         reserveStatus
@@ -60,7 +59,7 @@ export const ActiveLotFragmentContainer = createFragmentContainer(ActiveLot, {
         askingPrice: onlineAskingPrice {
           display
         }
-        sellingPrice: floorSellingPrice {
+        sellingPrice {
           display
         }
       }
