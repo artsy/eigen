@@ -117,7 +117,7 @@ class MyBids extends React.Component<MyBidsProps> {
                     <Join separator={<Separator my={1} />}>
                       {!!showNoBids && (
                         <Text color="black60" py={1} textAlign="center">
-                          You haven't placed any bids on this sale
+                          You haven't placed any bids on this sale.
                         </Text>
                       )}
                       {activeLotStandings.map((ls) => {
