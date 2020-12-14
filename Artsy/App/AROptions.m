@@ -7,6 +7,7 @@ static NSDictionary *options = nil;
 // Up here is the NSUserDefault set, and sent into Emission
 
 // UI Tweaks
+NSString *const AROptionsBidManagement = @"AROptionsBidManagement";
 NSString *const AROptionsEnableMyCollection = @"AROptionsEnableMyCollection";
 NSString *const AROptionsLoadingScreenAlpha = @"AROptionsLoadingScreenAlpha";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
@@ -45,7 +46,6 @@ NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebVie
          AROptionsEnableMyCollection: @"Enable new MyCollection view",
          AROptionsPriceTransparency: @"Price Transparency",
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
-         AROptionsBidManagement: @"Enable Bid Management (a.k.a My Bids)",
          AROptionsUseReactNativeWebView: @"Use react native webviews",
          AROptionsNewInsightsPage: @"Enable artist insights page",
         };
