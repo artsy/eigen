@@ -7,7 +7,7 @@ export const NoMessages: React.FC = () => {
     navigate(`/`)
   }
   return (
-    <Flex mt={3}>
+    <Flex mt={3} mx={2}>
       <Text variant="title" textAlign="center" fontWeight="normal">
         Keep track of your conversations with galleries
       </Text>
