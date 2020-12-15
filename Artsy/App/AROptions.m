@@ -46,7 +46,6 @@ NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebVie
          AROptionsEnableMyCollection: @"Enable new MyCollection view",
          AROptionsPriceTransparency: @"Price Transparency",
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
-         AROptionsBidManagement: @"Enable Bid Management (a.k.a My Bids)",
          AROptionsUseReactNativeWebView: @"Use react native webviews",
          AROptionsNewInsightsPage: @"Enable artist insights page",
         };
