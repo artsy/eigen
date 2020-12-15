@@ -1,9 +1,11 @@
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import { Lot_saleArtwork } from "__generated__/Lot_saleArtwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { Box, Flex, Text, Touchable } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import track from "react-tracking"
 
 interface Props {
   saleArtwork: Lot_saleArtwork
@@ -15,14 +17,24 @@ interface Props {
 }
 
 class Lot extends React.Component<Props> {
+  handleTap() {
+    track({
+      action: ActionType.tappedArtworkGroup,
+      // context_module: ContextModule [inboxActiveBids]
+      context_screen_owner_type: OwnerType.inboxBids,
+      destination_screen_owner_type: OwnerType.artwork,
+      destination_screen_owner_id: this.props?.saleArtwork?.artwork?.internalID,
+      destination_screen_owner_slug: this.props?.saleArtwork?.artwork?.slug,
+      type: "thumbnail",
+    })
+    navigate(this.props?.saleArtwork?.artwork?.href!)
+  }
+
   render() {
     const { saleArtwork, subtitle, children, ArtworkBadge, isSmallScreen } = this.props
 
     return (
-      <Touchable
-        onPress={() => navigate(saleArtwork?.artwork?.href as string)}
-        style={{ marginHorizontal: 0, width: "100%" }}
-      >
+      <Touchable onPress={() => this.handleTap()} style={{ marginHorizontal: 0, width: "100%" }}>
         <Flex flexDirection="row">
           <Flex width="50%">
             <Flex flexDirection="row">
@@ -60,11 +72,13 @@ export const LotFragmentContainer = createFragmentContainer(Lot, {
     fragment Lot_saleArtwork on SaleArtwork {
       lotLabel
       artwork {
+        internalID
         artistNames
         href
         image {
           url(version: "medium")
         }
+        slug
       }
     }
   `,

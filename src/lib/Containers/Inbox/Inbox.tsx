@@ -120,14 +120,16 @@ export class Inbox extends React.Component<Props, State> {
   }
 
   handleNavigationTabTap = (index: number) => {
+    // we are determining which tab is clicked based on the index.
+    // The index maps to hard-coded values so if that changes the map should be updated.
+
+    // follow up on why inboxBids isn't available on ContextModule
+    const tabs = [OwnerType.inboxBids, ContextModule.inboxInquiries]
+
     track({
       action: ActionType.tappedNavigationTab,
-      // ContextModule: index === 0 ? myBids : inboxInquiries
-      context_module: ContextModule,
-      context_screen_owner_type: OwnerType.inbox,
-      // What does the owner id represent here?
-      context_screen_owner_id: index,
-      context_screen_owner_slug: "string",
+      context_module: tabs[index],
+      context_screen_owner_type: tabs[index],
     })
   }
 

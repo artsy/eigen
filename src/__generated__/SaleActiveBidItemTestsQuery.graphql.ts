@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a19d999a622fe4ba38deeb9622e3ad44 */
+/* @relayHash 8346198585f11e8157a40bef0e2551da */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,11 +33,13 @@ query SaleActiveBidItemTestsQuery {
 fragment Lot_saleArtwork on SaleArtwork {
   lotLabel
   artwork {
+    internalID
     artistNames
     href
     image {
       url(version: "medium")
     }
+    slug
     id
   }
 }
@@ -276,6 +278,13 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "internalID",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "artistNames",
                         "storageKey": null
                       },
@@ -308,6 +317,13 @@ return {
                             "storageKey": "url(version:\"medium\")"
                           }
                         ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "slug",
                         "storageKey": null
                       },
                       (v1/*: any*/)
@@ -347,7 +363,7 @@ return {
     ]
   },
   "params": {
-    "id": "a19d999a622fe4ba38deeb9622e3ad44",
+    "id": "8346198585f11e8157a40bef0e2551da",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -410,6 +426,8 @@ return {
           "type": "Image"
         },
         "me.lotStandings.saleArtwork.artwork.image.url": (v5/*: any*/),
+        "me.lotStandings.saleArtwork.artwork.internalID": (v3/*: any*/),
+        "me.lotStandings.saleArtwork.artwork.slug": (v3/*: any*/),
         "me.lotStandings.saleArtwork.counts": {
           "enumValues": null,
           "nullable": true,

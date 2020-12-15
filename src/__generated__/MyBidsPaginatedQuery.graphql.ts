@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash aef4a1dae22242e0098af3eb8a8d4bc6 */
+/* @relayHash a31afb091013e360d9659c8c9720a3ec */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -87,11 +87,13 @@ fragment ClosedLot_lotStanding on AuctionsLotStanding {
 fragment Lot_saleArtwork on SaleArtwork {
   lotLabel
   artwork {
+    internalID
     artistNames
     href
     image {
       url(version: "medium")
     }
+    slug
     id
   }
 }
@@ -219,6 +221,13 @@ v5 = {
   "storageKey": null
 },
 v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -412,6 +421,7 @@ return {
                             "name": "artwork",
                             "plural": false,
                             "selections": [
+                              (v1/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -444,6 +454,7 @@ return {
                                 ],
                                 "storageKey": null
                               },
+                              (v6/*: any*/),
                               (v2/*: any*/)
                             ],
                             "storageKey": null
@@ -479,14 +490,8 @@ return {
                                 "storageKey": null
                               },
                               (v5/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "slug",
-                                "storageKey": null
-                              },
                               (v6/*: any*/),
+                              (v7/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -513,7 +518,7 @@ return {
                                 "name": "partner",
                                 "plural": false,
                                 "selections": [
-                                  (v6/*: any*/),
+                                  (v7/*: any*/),
                                   (v2/*: any*/)
                                 ],
                                 "storageKey": null
@@ -624,7 +629,7 @@ return {
     ]
   },
   "params": {
-    "id": "aef4a1dae22242e0098af3eb8a8d4bc6",
+    "id": "a31afb091013e360d9659c8c9720a3ec",
     "metadata": {},
     "name": "MyBidsPaginatedQuery",
     "operationKind": "query",

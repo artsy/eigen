@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 16fc5d9cde3dc6463831a9b94630dda6 */
+/* @relayHash dbb32fc038562e312c2583da3e25d20f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -147,11 +147,13 @@ fragment Inbox_me on Me {
 fragment Lot_saleArtwork on SaleArtwork {
   lotLabel
   artwork {
+    internalID
     artistNames
     href
     image {
       url(version: "medium")
     }
+    slug
     id
   }
 }
@@ -340,6 +342,13 @@ v14 = {
   "args": null,
   "kind": "ScalarField",
   "name": "href",
+  "storageKey": null
+},
+v15 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 };
 return {
@@ -719,6 +728,7 @@ return {
                             "name": "artwork",
                             "plural": false,
                             "selections": [
+                              (v3/*: any*/),
                               (v8/*: any*/),
                               (v14/*: any*/),
                               {
@@ -745,6 +755,7 @@ return {
                                 ],
                                 "storageKey": null
                               },
+                              (v15/*: any*/),
                               (v5/*: any*/)
                             ],
                             "storageKey": null
@@ -780,13 +791,7 @@ return {
                                 "storageKey": null
                               },
                               (v14/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "slug",
-                                "storageKey": null
-                              },
+                              (v15/*: any*/),
                               (v4/*: any*/),
                               (v10/*: any*/),
                               {
@@ -878,7 +883,7 @@ return {
     ]
   },
   "params": {
-    "id": "16fc5d9cde3dc6463831a9b94630dda6",
+    "id": "dbb32fc038562e312c2583da3e25d20f",
     "metadata": {},
     "name": "InboxQuery",
     "operationKind": "query",

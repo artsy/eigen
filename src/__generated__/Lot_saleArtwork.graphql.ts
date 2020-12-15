@@ -7,11 +7,13 @@ import { FragmentRefs } from "relay-runtime";
 export type Lot_saleArtwork = {
     readonly lotLabel: string | null;
     readonly artwork: {
+        readonly internalID: string;
         readonly artistNames: string | null;
         readonly href: string | null;
         readonly image: {
             readonly url: string | null;
         } | null;
+        readonly slug: string;
     } | null;
     readonly " $refType": "Lot_saleArtwork";
 };
@@ -44,6 +46,13 @@ const node: ReaderFragment = {
       "name": "artwork",
       "plural": false,
       "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "internalID",
+          "storageKey": null
+        },
         {
           "alias": null,
           "args": null,
@@ -81,6 +90,13 @@ const node: ReaderFragment = {
             }
           ],
           "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "slug",
+          "storageKey": null
         }
       ],
       "storageKey": null
@@ -89,5 +105,5 @@ const node: ReaderFragment = {
   "type": "SaleArtwork",
   "abstractKey": null
 };
-(node as any).hash = '7362f1283efd28a8c41e0cd2bec8909b';
+(node as any).hash = 'faba5fc5663f570bf73bc79e70fae42d';
 export default node;

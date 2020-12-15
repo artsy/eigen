@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b3948e84c2e18d7ae9b300cbde0eb3b9 */
+/* @relayHash 4e6f3b903a3b86c7e926fd85434baccb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,11 +33,13 @@ query SaleActiveBidsTestsQuery(
 fragment Lot_saleArtwork on SaleArtwork {
   lotLabel
   artwork {
+    internalID
     artistNames
     href
     image {
       url(version: "medium")
     }
+    slug
     id
   }
 }
@@ -113,18 +115,25 @@ v3 = [
   }
 ],
 v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v5 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v5 = {
+v6 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "BidderPosition"
 },
-v6 = {
+v7 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -282,6 +291,13 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "internalID",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "artistNames",
                         "storageKey": null
                       },
@@ -316,18 +332,13 @@ return {
                         ],
                         "storageKey": null
                       },
+                      (v4/*: any*/),
                       (v2/*: any*/)
                     ],
                     "storageKey": null
                   },
                   (v2/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "slug",
-                    "storageKey": null
-                  }
+                  (v4/*: any*/)
                 ],
                 "storageKey": null
               },
@@ -360,7 +371,7 @@ return {
     ]
   },
   "params": {
-    "id": "b3948e84c2e18d7ae9b300cbde0eb3b9",
+    "id": "4e6f3b903a3b86c7e926fd85434baccb",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -369,38 +380,38 @@ return {
           "plural": false,
           "type": "Me"
         },
-        "me.id": (v4/*: any*/),
+        "me.id": (v5/*: any*/),
         "me.lotStandings": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "LotStanding"
         },
-        "me.lotStandings.activeBid": (v5/*: any*/),
-        "me.lotStandings.activeBid.id": (v4/*: any*/),
+        "me.lotStandings.activeBid": (v6/*: any*/),
+        "me.lotStandings.activeBid.id": (v5/*: any*/),
         "me.lotStandings.activeBid.isWinning": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Boolean"
         },
-        "me.lotStandings.mostRecentBid": (v5/*: any*/),
-        "me.lotStandings.mostRecentBid.id": (v4/*: any*/),
+        "me.lotStandings.mostRecentBid": (v6/*: any*/),
+        "me.lotStandings.mostRecentBid.id": (v5/*: any*/),
         "me.lotStandings.mostRecentBid.maxBid": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "BidderPositionMaxBid"
         },
-        "me.lotStandings.mostRecentBid.maxBid.display": (v6/*: any*/),
+        "me.lotStandings.mostRecentBid.maxBid.display": (v7/*: any*/),
         "me.lotStandings.sale": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Sale"
         },
-        "me.lotStandings.sale.id": (v4/*: any*/),
-        "me.lotStandings.sale.liveStartAt": (v6/*: any*/),
+        "me.lotStandings.sale.id": (v5/*: any*/),
+        "me.lotStandings.sale.liveStartAt": (v7/*: any*/),
         "me.lotStandings.saleArtwork": {
           "enumValues": null,
           "nullable": true,
@@ -413,16 +424,18 @@ return {
           "plural": false,
           "type": "Artwork"
         },
-        "me.lotStandings.saleArtwork.artwork.artistNames": (v6/*: any*/),
-        "me.lotStandings.saleArtwork.artwork.href": (v6/*: any*/),
-        "me.lotStandings.saleArtwork.artwork.id": (v4/*: any*/),
+        "me.lotStandings.saleArtwork.artwork.artistNames": (v7/*: any*/),
+        "me.lotStandings.saleArtwork.artwork.href": (v7/*: any*/),
+        "me.lotStandings.saleArtwork.artwork.id": (v5/*: any*/),
         "me.lotStandings.saleArtwork.artwork.image": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Image"
         },
-        "me.lotStandings.saleArtwork.artwork.image.url": (v6/*: any*/),
+        "me.lotStandings.saleArtwork.artwork.image.url": (v7/*: any*/),
+        "me.lotStandings.saleArtwork.artwork.internalID": (v5/*: any*/),
+        "me.lotStandings.saleArtwork.artwork.slug": (v5/*: any*/),
         "me.lotStandings.saleArtwork.counts": {
           "enumValues": null,
           "nullable": true,
@@ -441,11 +454,11 @@ return {
           "plural": false,
           "type": "SaleArtworkCurrentBid"
         },
-        "me.lotStandings.saleArtwork.currentBid.display": (v6/*: any*/),
-        "me.lotStandings.saleArtwork.id": (v4/*: any*/),
-        "me.lotStandings.saleArtwork.lotLabel": (v6/*: any*/),
-        "me.lotStandings.saleArtwork.reserveStatus": (v6/*: any*/),
-        "me.lotStandings.saleArtwork.slug": (v4/*: any*/)
+        "me.lotStandings.saleArtwork.currentBid.display": (v7/*: any*/),
+        "me.lotStandings.saleArtwork.id": (v5/*: any*/),
+        "me.lotStandings.saleArtwork.lotLabel": (v7/*: any*/),
+        "me.lotStandings.saleArtwork.reserveStatus": (v7/*: any*/),
+        "me.lotStandings.saleArtwork.slug": (v5/*: any*/)
       }
     },
     "name": "SaleActiveBidsTestsQuery",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0d49c3a99f5557713fbc1c9d0a46276b */
+/* @relayHash add62f1b41d8933871d96651813e46e6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,11 +33,13 @@ query SaleActiveBidsRefetchQuery(
 fragment Lot_saleArtwork on SaleArtwork {
   lotLabel
   artwork {
+    internalID
     artistNames
     href
     image {
       url(version: "medium")
     }
+    slug
     id
   }
 }
@@ -111,7 +113,14 @@ v3 = [
     "name": "display",
     "storageKey": null
   }
-];
+],
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -264,6 +273,13 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "internalID",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "artistNames",
                         "storageKey": null
                       },
@@ -298,18 +314,13 @@ return {
                         ],
                         "storageKey": null
                       },
+                      (v4/*: any*/),
                       (v2/*: any*/)
                     ],
                     "storageKey": null
                   },
                   (v2/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "slug",
-                    "storageKey": null
-                  }
+                  (v4/*: any*/)
                 ],
                 "storageKey": null
               },
@@ -342,7 +353,7 @@ return {
     ]
   },
   "params": {
-    "id": "0d49c3a99f5557713fbc1c9d0a46276b",
+    "id": "add62f1b41d8933871d96651813e46e6",
     "metadata": {},
     "name": "SaleActiveBidsRefetchQuery",
     "operationKind": "query",

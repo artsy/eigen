@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash aeeb78eb609b596bd6ec4abb3952ee86 */
+/* @relayHash dc2c9ffe030048c57ee967af28ac91c1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -147,11 +147,13 @@ fragment Inbox_me on Me {
 fragment Lot_saleArtwork on SaleArtwork {
   lotLabel
   artwork {
+    internalID
     artistNames
     href
     image {
       url(version: "medium")
     }
+    slug
     id
   }
 }
@@ -343,48 +345,55 @@ v14 = {
   "storageKey": null
 },
 v15 = {
-  "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "String"
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
 },
 v16 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
-  "type": "ID"
+  "type": "String"
 },
 v17 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
-  "type": "Boolean"
+  "type": "ID"
 },
 v18 = {
   "enumValues": null,
-  "nullable": true,
+  "nullable": false,
   "plural": false,
-  "type": "Money"
+  "type": "Boolean"
 },
 v19 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
-  "type": "String"
+  "type": "Money"
 },
 v20 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
-  "type": "Image"
+  "type": "String"
 },
 v21 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
-  "type": "Boolean"
+  "type": "Image"
 },
 v22 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Boolean"
+},
+v23 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -767,6 +776,7 @@ return {
                             "name": "artwork",
                             "plural": false,
                             "selections": [
+                              (v3/*: any*/),
                               (v8/*: any*/),
                               (v14/*: any*/),
                               {
@@ -793,6 +803,7 @@ return {
                                 ],
                                 "storageKey": null
                               },
+                              (v15/*: any*/),
                               (v5/*: any*/)
                             ],
                             "storageKey": null
@@ -828,13 +839,7 @@ return {
                                 "storageKey": null
                               },
                               (v14/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "slug",
-                                "storageKey": null
-                              },
+                              (v15/*: any*/),
                               (v4/*: any*/),
                               (v10/*: any*/),
                               {
@@ -926,7 +931,7 @@ return {
     ]
   },
   "params": {
-    "id": "aeeb78eb609b596bd6ec4abb3952ee86",
+    "id": "dc2c9ffe030048c57ee967af28ac91c1",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -947,32 +952,32 @@ return {
           "plural": true,
           "type": "AuctionsLotStandingEdge"
         },
-        "me.auctionsLotStandingConnection.edges.cursor": (v15/*: any*/),
+        "me.auctionsLotStandingConnection.edges.cursor": (v16/*: any*/),
         "me.auctionsLotStandingConnection.edges.node": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "AuctionsLotStanding"
         },
-        "me.auctionsLotStandingConnection.edges.node.__typename": (v15/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.id": (v16/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.isHighestBidder": (v17/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.__typename": (v16/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.id": (v17/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.isHighestBidder": (v18/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.lotState": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "AuctionsLotState"
         },
-        "me.auctionsLotStandingConnection.edges.node.lotState.askingPrice": (v18/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.lotState.askingPrice.display": (v19/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lotState.askingPrice": (v19/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lotState.askingPrice.display": (v20/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.lotState.bidCount": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "Int"
         },
-        "me.auctionsLotStandingConnection.edges.node.lotState.id": (v16/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.lotState.internalID": (v16/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lotState.id": (v17/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lotState.internalID": (v17/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.lotState.reserveStatus": {
           "enumValues": [
             "NoReserve",
@@ -983,9 +988,9 @@ return {
           "plural": false,
           "type": "AuctionsReserveStatus"
         },
-        "me.auctionsLotStandingConnection.edges.node.lotState.saleId": (v16/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.lotState.sellingPrice": (v18/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.lotState.sellingPrice.display": (v19/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lotState.saleId": (v17/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lotState.sellingPrice": (v19/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.lotState.sellingPrice.display": (v20/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.lotState.soldStatus": {
           "enumValues": [
             "ForSale",
@@ -1008,13 +1013,15 @@ return {
           "plural": false,
           "type": "Artwork"
         },
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.artwork.artistNames": (v19/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.artwork.href": (v19/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.artwork.id": (v16/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.artwork.image": (v20/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.artwork.image.url": (v19/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.id": (v16/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.lotLabel": (v19/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.artwork.artistNames": (v20/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.artwork.href": (v20/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.artwork.id": (v17/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.artwork.image": (v21/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.artwork.image.url": (v20/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.artwork.internalID": (v17/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.artwork.slug": (v17/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.id": (v17/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.lotLabel": (v20/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.position": {
           "enumValues": null,
           "nullable": true,
@@ -1027,41 +1034,41 @@ return {
           "plural": false,
           "type": "Sale"
         },
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.coverImage": (v20/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.coverImage.url": (v19/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.endAt": (v19/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.href": (v19/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.id": (v16/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.internalID": (v16/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.liveStartAt": (v19/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.name": (v19/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.coverImage": (v21/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.coverImage.url": (v20/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.endAt": (v20/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.href": (v20/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.id": (v17/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.internalID": (v17/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.liveStartAt": (v20/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.name": (v20/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.partner": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Partner"
         },
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.partner.id": (v16/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.partner.name": (v19/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.partner.id": (v17/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.partner.name": (v20/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.registrationStatus": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Bidder"
         },
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.registrationStatus.id": (v16/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.registrationStatus.qualifiedForBidding": (v21/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.requireIdentityVerification": (v21/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.slug": (v16/*: any*/),
-        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.status": (v19/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.registrationStatus.id": (v17/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.registrationStatus.qualifiedForBidding": (v22/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.requireIdentityVerification": (v22/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.slug": (v17/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.sale.status": (v20/*: any*/),
         "me.auctionsLotStandingConnection.pageInfo": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "AuctionsPageInfo"
         },
-        "me.auctionsLotStandingConnection.pageInfo.endCursor": (v19/*: any*/),
-        "me.auctionsLotStandingConnection.pageInfo.hasNextPage": (v17/*: any*/),
+        "me.auctionsLotStandingConnection.pageInfo.endCursor": (v20/*: any*/),
+        "me.auctionsLotStandingConnection.pageInfo.hasNextPage": (v18/*: any*/),
         "me.conversations": {
           "enumValues": null,
           "nullable": true,
@@ -1074,15 +1081,15 @@ return {
           "plural": true,
           "type": "ConversationEdge"
         },
-        "me.conversations.edges.cursor": (v15/*: any*/),
+        "me.conversations.edges.cursor": (v16/*: any*/),
         "me.conversations.edges.node": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Conversation"
         },
-        "me.conversations.edges.node.__typename": (v15/*: any*/),
-        "me.conversations.edges.node.id": (v16/*: any*/),
+        "me.conversations.edges.node.__typename": (v16/*: any*/),
+        "me.conversations.edges.node.id": (v17/*: any*/),
         "me.conversations.edges.node.internalID": {
           "enumValues": null,
           "nullable": true,
@@ -1101,63 +1108,63 @@ return {
           "plural": false,
           "type": "ConversationItemType"
         },
-        "me.conversations.edges.node.items.item.__isNode": (v15/*: any*/),
-        "me.conversations.edges.node.items.item.__typename": (v15/*: any*/),
-        "me.conversations.edges.node.items.item.artistNames": (v19/*: any*/),
-        "me.conversations.edges.node.items.item.coverImage": (v20/*: any*/),
-        "me.conversations.edges.node.items.item.coverImage.url": (v19/*: any*/),
-        "me.conversations.edges.node.items.item.date": (v19/*: any*/),
+        "me.conversations.edges.node.items.item.__isNode": (v16/*: any*/),
+        "me.conversations.edges.node.items.item.__typename": (v16/*: any*/),
+        "me.conversations.edges.node.items.item.artistNames": (v20/*: any*/),
+        "me.conversations.edges.node.items.item.coverImage": (v21/*: any*/),
+        "me.conversations.edges.node.items.item.coverImage.url": (v20/*: any*/),
+        "me.conversations.edges.node.items.item.date": (v20/*: any*/),
         "me.conversations.edges.node.items.item.fair": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Fair"
         },
-        "me.conversations.edges.node.items.item.fair.id": (v16/*: any*/),
-        "me.conversations.edges.node.items.item.fair.name": (v19/*: any*/),
-        "me.conversations.edges.node.items.item.id": (v16/*: any*/),
-        "me.conversations.edges.node.items.item.image": (v20/*: any*/),
-        "me.conversations.edges.node.items.item.image.url": (v19/*: any*/),
-        "me.conversations.edges.node.items.item.name": (v19/*: any*/),
-        "me.conversations.edges.node.items.item.title": (v19/*: any*/),
-        "me.conversations.edges.node.lastMessage": (v19/*: any*/),
-        "me.conversations.edges.node.lastMessageAt": (v19/*: any*/),
-        "me.conversations.edges.node.last_message": (v19/*: any*/),
+        "me.conversations.edges.node.items.item.fair.id": (v17/*: any*/),
+        "me.conversations.edges.node.items.item.fair.name": (v20/*: any*/),
+        "me.conversations.edges.node.items.item.id": (v17/*: any*/),
+        "me.conversations.edges.node.items.item.image": (v21/*: any*/),
+        "me.conversations.edges.node.items.item.image.url": (v20/*: any*/),
+        "me.conversations.edges.node.items.item.name": (v20/*: any*/),
+        "me.conversations.edges.node.items.item.title": (v20/*: any*/),
+        "me.conversations.edges.node.lastMessage": (v20/*: any*/),
+        "me.conversations.edges.node.lastMessageAt": (v20/*: any*/),
+        "me.conversations.edges.node.last_message": (v20/*: any*/),
         "me.conversations.edges.node.messagesConnection": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "MessageConnection"
         },
-        "me.conversations.edges.node.messagesConnection.totalCount": (v22/*: any*/),
+        "me.conversations.edges.node.messagesConnection.totalCount": (v23/*: any*/),
         "me.conversations.edges.node.to": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "ConversationResponder"
         },
-        "me.conversations.edges.node.to.id": (v16/*: any*/),
-        "me.conversations.edges.node.to.name": (v15/*: any*/),
-        "me.conversations.edges.node.unread": (v21/*: any*/),
+        "me.conversations.edges.node.to.id": (v17/*: any*/),
+        "me.conversations.edges.node.to.name": (v16/*: any*/),
+        "me.conversations.edges.node.unread": (v22/*: any*/),
         "me.conversations.pageInfo": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "PageInfo"
         },
-        "me.conversations.pageInfo.endCursor": (v19/*: any*/),
-        "me.conversations.pageInfo.hasNextPage": (v17/*: any*/),
-        "me.conversations.totalUnreadCount": (v22/*: any*/),
-        "me.id": (v16/*: any*/),
-        "me.identityVerified": (v21/*: any*/),
+        "me.conversations.pageInfo.endCursor": (v20/*: any*/),
+        "me.conversations.pageInfo.hasNextPage": (v18/*: any*/),
+        "me.conversations.totalUnreadCount": (v23/*: any*/),
+        "me.id": (v17/*: any*/),
+        "me.identityVerified": (v22/*: any*/),
         "me.pendingIdentityVerification": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "IdentityVerification"
         },
-        "me.pendingIdentityVerification.id": (v16/*: any*/),
-        "me.pendingIdentityVerification.internalID": (v16/*: any*/)
+        "me.pendingIdentityVerification.id": (v17/*: any*/),
+        "me.pendingIdentityVerification.internalID": (v17/*: any*/)
       }
     },
     "name": "InboxTestsQuery",
