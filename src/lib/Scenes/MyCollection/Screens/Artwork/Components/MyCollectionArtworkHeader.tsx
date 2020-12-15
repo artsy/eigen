@@ -61,7 +61,7 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
     } else {
       const screenDimensions = Dimensions.get("screen")
       return (
-        <Flex py={2} backgroundColor="black5">
+        <Flex>
           <ImageCarouselFragmentContainer
             images={images as any /* STRICTNESS_MIGRATION */}
             cardHeight={screenDimensions.width >= 375 ? 340 : 290}
