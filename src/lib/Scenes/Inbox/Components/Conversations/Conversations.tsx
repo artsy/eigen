@@ -32,7 +32,7 @@ export class Conversations extends Component<Props, State> {
     fetching: false,
   }
 
-  fetchData = () => {
+  fetchMoreData = () => {
     const { relay } = this.props
 
     if (relay.hasMore() && !relay.isLoading()) {
@@ -52,7 +52,7 @@ export class Conversations extends Component<Props, State> {
     }
   }
 
-  refreshConversations = (callback?: () => void) => {
+  refetchData = (callback?: () => void) => {
     const { relay } = this.props
     if (!relay.isLoading()) {
       this.setState({ fetching: true })
@@ -95,7 +95,7 @@ export class Conversations extends Component<Props, State> {
             <RefreshControl
               refreshing={this.state.fetching}
               onRefresh={() => {
-                this.refreshConversations()
+                this.refetchData()
               }}
             />
           }
@@ -106,7 +106,7 @@ export class Conversations extends Component<Props, State> {
               <ConversationSnippet conversation={item} onSelected={() => navigate(`conversation/${item.internalID}`)} />
             )
           }}
-          onEndReached={this.fetchData}
+          onEndReached={this.fetchMoreData}
           onEndReachedThreshold={2}
           contentContainerStyle={{ flexGrow: 1, justifyContent: !conversations.length ? "center" : "flex-start" }}
           ListEmptyComponent={<NoMessages />}

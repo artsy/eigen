@@ -29,11 +29,12 @@ export interface MyBidsProps {
 
 type Sale = NonNullable<NonNullable<NonNullable<MyBids_me["bidders"]>[0]>["sale"]>
 
-class MyBids extends React.Component<MyBidsProps> {
+export class MyBids extends React.Component<MyBidsProps> {
   state = {
     fetching: false,
   }
-  refreshMyBids = (callback?: () => void) => {
+  refetchData = (callback?: () => void) => {
+    console.warn("refetching")
     const { relay } = this.props
     if (!relay.isLoading()) {
       this.setState({ fetching: true })
@@ -93,7 +94,7 @@ class MyBids extends React.Component<MyBidsProps> {
           <RefreshControl
             refreshing={this.state.fetching}
             onRefresh={() => {
-              this.refreshMyBids()
+              this.refetchData()
             }}
           />
         }

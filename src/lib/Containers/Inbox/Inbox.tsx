@@ -1,8 +1,8 @@
 import { Inbox_me } from "__generated__/Inbox_me.graphql"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { ConversationsContainer } from "lib/Scenes/Inbox/Components/Conversations/Conversations"
-import { MyBidsContainer } from "lib/Scenes/MyBids/MyBids"
+import { Conversations, ConversationsContainer } from "lib/Scenes/Inbox/Components/Conversations/Conversations"
+import { MyBids, MyBidsContainer } from "lib/Scenes/MyBids/MyBids"
 import { listenToNativeEvents } from "lib/store/NativeModel"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Flex, Separator, Text } from "palette"
@@ -56,91 +56,81 @@ interface Props {
   isVisible: boolean
 }
 
-export class Inbox extends React.Component<Props, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
-  conversations: ConversationsRef
+type RefetchableComponent = React.ComponentType & { refetchData: (cb: () => void) => void }
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  myBids: MyBidsRef
+export const Inbox: React.FC<Props> = ({ isVisible, me, relay }) => {
+  const [isFetching, setFetching] = React.useState<boolean>(false)
+  const [notificationListener, setNotificationListener] = React.useState<EmitterSubscription | null>(null)
 
-  state = {
-    fetchingData: false,
+  // TODO: Maybe this should actually be a useRef
+  const [scrollViewVerticalStart, setScrollViewVerticalStart] = React.useState(0)
+
+  const myBidsRef = React.useRef<RefetchableComponent>(null as any)
+  const conversationsRef = React.useRef<RefetchableComponent>(null as any)
+
+  const [activeTab, setActiveTab] = React.useState<React.MutableRefObject<RefetchableComponent>>(myBidsRef)
+
+  const handleChangeTab = ({ i: tabIndex }: { i: number }) => {
+    if (tabIndex === 0) {
+      setActiveTab(myBidsRef)
+    } else {
+      setActiveTab(conversationsRef)
+    }
   }
 
-  scrollViewVerticalStart = 0
+  const fetchData = () => {
+    console.warn("fetchData", isFetching, activeTab?.current)
+    if (isFetching) {
+      return
+    } else if (!!activeTab?.current) {
+      setFetching(true)
+      activeTab?.current?.refetchData(() => setFetching(false))
+      // also refetch from relay?
+    }
+  }
 
-  listener: EmitterSubscription | null = null
+  const onScrollableTabViewLayout = (layout: LayoutChangeEvent) => {
+    setScrollViewVerticalStart(layout.nativeEvent.layout.y)
+  }
 
-  flatListHeight = 0
-
-  componentDidMount() {
-    this.listener = listenToNativeEvents((event) => {
+  // set up a native event listener on mount; remove it on unmount
+  React.useEffect(() => {
+    const listener = listenToNativeEvents((event) => {
       if (event.type === "NOTIFICATION_RECEIVED") {
-        this.fetchData()
+        fetchData()
       }
     })
-  }
+    setNotificationListener(listener)
+    return () => notificationListener?.remove()
+  }, [])
 
-  componentWillUnmount() {
-    this.listener?.remove()
-  }
-
-  UNSAFE_componentWillReceiveProps(newProps: Props) {
-    if (newProps.isVisible) {
-      this.fetchData()
+  // refetch when becoming visible
+  React.useEffect(() => {
+    console.warn(isVisible)
+    if (isVisible) {
+      fetchData()
     }
-  }
+  }, [isVisible])
 
-  fetchData = () => {
-    if (this.state.fetchingData) {
-      return
-    }
-
-    this.setState({ fetchingData: true })
-
-    if (this.conversations) {
-      this.conversations.refreshConversations(() => {
-        this.setState({ fetchingData: false })
-      })
-    } else if (this.myBids) {
-      this.myBids.refreshMyBids(() => {
-        this.setState({ fetchingData: false })
-      })
-    } else {
-      this.props.relay.refetch({}, null, () => {
-        this.setState({ fetchingData: false })
-      })
-    }
-  }
-
-  onScrollableTabViewLayout = (layout: LayoutChangeEvent) => {
-    this.scrollViewVerticalStart = layout.nativeEvent.layout.y
-  }
-
-  render() {
-    const bottomInset = this.scrollViewVerticalStart
-    return (
-      <ScrollableTabView
-        style={{ paddingTop: 30 }}
-        initialPage={0}
-        renderTabBar={() => <InboxTabs />}
-        contentProps={{
-          contentInset: { bottom: bottomInset },
-          onLayout: this.onScrollableTabViewLayout,
-        }}
-      >
-        <TabWrapper tabLabel="Bids" key="bids" style={{ flexGrow: 1, justifyContent: "center" }}>
-          <MyBidsContainer me={this.props.me} componentRef={(myBids) => (this.myBids = myBids)} />
-        </TabWrapper>
-        <TabWrapper tabLabel="Inquiries" key="inquiries" style={{ flexGrow: 1, justifyContent: "flex-start" }}>
-          <ConversationsContainer
-            me={this.props.me}
-            componentRef={(conversations) => (this.conversations = conversations)}
-          />
-        </TabWrapper>
-      </ScrollableTabView>
-    )
-  }
+  return (
+    <ScrollableTabView
+      style={{ paddingTop: 30 }}
+      initialPage={0}
+      renderTabBar={() => <InboxTabs />}
+      onChangeTab={handleChangeTab}
+      contentProps={{
+        contentInset: { bottom: scrollViewVerticalStart },
+        onLayout: onScrollableTabViewLayout,
+      }}
+    >
+      <TabWrapper tabLabel="Bids" key="bids" style={{ flexGrow: 1, justifyContent: "center" }}>
+        <MyBidsContainer me={me} componentRef={myBidsRef} />
+      </TabWrapper>
+      <TabWrapper tabLabel="Inquiries" key="inquiries" style={{ flexGrow: 1, justifyContent: "flex-start" }}>
+        <ConversationsContainer me={me} componentRef={conversationsRef} />
+      </TabWrapper>
+    </ScrollableTabView>
+  )
 }
 
 export const InboxContainer = createRefetchContainer(
@@ -162,7 +152,7 @@ export const InboxContainer = createRefetchContainer(
   `
 )
 
-export const InboxQueryRenderer: React.FC = () => {
+export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
   return (
     <QueryRenderer<InboxQuery>
       environment={defaultEnvironment}
@@ -175,7 +165,9 @@ export const InboxQueryRenderer: React.FC = () => {
       `}
       cacheConfig={{ force: true }}
       variables={{}}
-      render={renderWithLoadProgress(InboxContainer)}
+      render={(...args) => {
+        return renderWithLoadProgress(InboxContainer, props)(...args)
+      }}
     />
   )
 }
