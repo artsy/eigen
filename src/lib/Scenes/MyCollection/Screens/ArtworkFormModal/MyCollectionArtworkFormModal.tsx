@@ -20,7 +20,7 @@ import { myCollectionEditArtwork } from "../../mutations/myCollectionEditArtwork
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
 
-import { isEqual, uniqueId } from "lodash"
+import { isEqual } from "lodash"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { refreshMyCollection } from "../../MyCollection"
 import { deletedPhotoIDs } from "../../utils/deletedPhotoIDs"
@@ -217,14 +217,13 @@ export async function uploadPhotos(photos: ArtworkFormValues["photos"]) {
   // only recently added photos have a path
   const imagePaths: string[] = photos.map((photo) => photo.path).filter((path): path is string => path !== undefined)
   const externalImageUrls: string[] = []
-  const convectionKey = await getConvectionGeminiKey()
-  const acl = "private"
-  const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
-  const bucket = assetCredentials.policyDocument.conditions.bucket
 
   for (const path of imagePaths) {
-    const uniqueFileName = uniqueId() + ".jpg"
-    const s3 = await uploadFileToS3(path, acl, assetCredentials, uniqueFileName)
+    const convectionKey = await getConvectionGeminiKey()
+    const acl = "private"
+    const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
+    const bucket = assetCredentials.policyDocument.conditions.bucket
+    const s3 = await uploadFileToS3(path, acl, assetCredentials)
     const url = `https://${bucket}.s3.amazonaws.com/${s3.key}`
     externalImageUrls.push(url)
   }
