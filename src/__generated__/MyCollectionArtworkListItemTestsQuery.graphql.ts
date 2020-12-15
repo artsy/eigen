@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 48bfb5a03788e6e1176e56b014179fbe */
+/* @relayHash 41c42ea61d61bbd9f7b0ad746ee2eb47 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionArtworkListItemTestsQueryVariables = {};
@@ -22,7 +22,7 @@ export type MyCollectionArtworkListItemTestsQueryResponse = {
         readonly id: string;
         readonly images: ReadonlyArray<{
             readonly isDefault: boolean | null;
-            readonly url: string | null;
+            readonly imageURL: string | null;
             readonly width: number | null;
             readonly height: number | null;
         } | null> | null;
@@ -61,7 +61,7 @@ query MyCollectionArtworkListItemTestsQuery {
     id
     images {
       isDefault
-      url
+      imageURL
       width
       height
     }
@@ -187,7 +187,7 @@ v13 = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "url",
+      "name": "imageURL",
       "storageKey": null
     },
     (v12/*: any*/),
@@ -351,7 +351,7 @@ return {
     ]
   },
   "params": {
-    "id": "48bfb5a03788e6e1176e56b014179fbe",
+    "id": "41c42ea61d61bbd9f7b0ad746ee2eb47",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -385,13 +385,13 @@ return {
           "type": "Image"
         },
         "artwork.images.height": (v21/*: any*/),
+        "artwork.images.imageURL": (v20/*: any*/),
         "artwork.images.isDefault": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Boolean"
         },
-        "artwork.images.url": (v20/*: any*/),
         "artwork.images.width": (v21/*: any*/),
         "artwork.internalID": (v19/*: any*/),
         "artwork.medium": (v20/*: any*/),

@@ -104,7 +104,7 @@ export const ArtworkMetaProps = graphql`
     id
     images {
       isDefault
-      url
+      imageURL
       width
       height
     }

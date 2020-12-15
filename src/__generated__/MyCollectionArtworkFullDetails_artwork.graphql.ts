@@ -20,7 +20,7 @@ export type MyCollectionArtworkFullDetails_artwork = {
     readonly id: string;
     readonly images: ReadonlyArray<{
         readonly isDefault: boolean | null;
-        readonly url: string | null;
+        readonly imageURL: string | null;
         readonly width: number | null;
         readonly height: number | null;
     } | null> | null;
@@ -165,7 +165,7 @@ return {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
-          "name": "url",
+          "name": "imageURL",
           "storageKey": null
         },
         (v2/*: any*/),
