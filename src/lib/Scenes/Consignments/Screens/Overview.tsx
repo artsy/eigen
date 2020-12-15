@@ -239,13 +239,16 @@ export default class Overview extends React.Component<Props, State> {
     const isPad = Dimensions.get("window").width > 700
 
     return (
-      <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} contentContainerStyle={{ paddingVertical: 40 }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        alwaysBounceVertical={false}
+        contentContainerStyle={{ paddingTop: 40, flex: 1, justifyContent: "space-between" }}
+      >
         <View
           style={{
             alignSelf: "center",
             width: "100%",
             maxWidth: 540,
-            flex: 1,
           }}
         >
           <Box px={2}>
@@ -275,14 +278,16 @@ export default class Overview extends React.Component<Props, State> {
             {...this.state}
           />
           <Spacer mb={isPad ? 80 : 2} />
-          <Flex justifyContent="center" alignItems="center" flexDirection="column">
-            {!!this.state.hasLoaded && (
-              <Button onPress={canSubmit ? this.submitFinalSubmission : undefined} disabled={!canSubmit}>
-                Submit
-              </Button>
-            )}
-          </Flex>
         </View>
+        <Flex px="2" width="100%" maxWidth={540}>
+          <Button
+            block
+            onPress={this.state.hasLoaded && canSubmit ? this.submitFinalSubmission : undefined}
+            disabled={!canSubmit}
+          >
+            Next
+          </Button>
+        </Flex>
       </ScrollView>
     )
   }
