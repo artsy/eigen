@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f0f03d3afc9d2590ee5b7ea72007f45c */
+/* @relayHash 28a8de28c8dfebb4630a97dc9adc0153 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,7 +30,18 @@ export type MyCollectionArtworkQueryResponse = {
             readonly url: string | null;
             readonly width: number | null;
             readonly height: number | null;
-            readonly " $fragmentRefs": FragmentRefs<"ImageCarousel_images">;
+            readonly imageVersions: ReadonlyArray<string | null> | null;
+            readonly deepZoom: {
+                readonly image: {
+                    readonly tileSize: number | null;
+                    readonly url: string | null;
+                    readonly format: string | null;
+                    readonly size: {
+                        readonly width: number | null;
+                        readonly height: number | null;
+                    } | null;
+                } | null;
+            } | null;
         } | null> | null;
         readonly internalID: string;
         readonly medium: string | null;
@@ -78,7 +89,18 @@ query MyCollectionArtworkQuery(
       url
       width
       height
-      ...ImageCarousel_images
+      imageVersions
+      deepZoom {
+        image: Image {
+          tileSize: TileSize
+          url: Url
+          format: Format
+          size: Size {
+            width: Width
+            height: Height
+          }
+        }
+      }
     }
     internalID
     medium
@@ -355,21 +377,110 @@ v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "isDefault",
+  "name": "url",
   "storageKey": null
 },
 v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "url",
+  "name": "width",
   "storageKey": null
 },
 v17 = {
   "alias": null,
   "args": null,
-  "kind": "ScalarField",
-  "name": "width",
+  "concreteType": "Image",
+  "kind": "LinkedField",
+  "name": "images",
+  "plural": true,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "isDefault",
+      "storageKey": null
+    },
+    (v15/*: any*/),
+    (v16/*: any*/),
+    (v13/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "imageVersions",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "DeepZoom",
+      "kind": "LinkedField",
+      "name": "deepZoom",
+      "plural": false,
+      "selections": [
+        {
+          "alias": "image",
+          "args": null,
+          "concreteType": "DeepZoomImage",
+          "kind": "LinkedField",
+          "name": "Image",
+          "plural": false,
+          "selections": [
+            {
+              "alias": "tileSize",
+              "args": null,
+              "kind": "ScalarField",
+              "name": "TileSize",
+              "storageKey": null
+            },
+            {
+              "alias": "url",
+              "args": null,
+              "kind": "ScalarField",
+              "name": "Url",
+              "storageKey": null
+            },
+            {
+              "alias": "format",
+              "args": null,
+              "kind": "ScalarField",
+              "name": "Format",
+              "storageKey": null
+            },
+            {
+              "alias": "size",
+              "args": null,
+              "concreteType": "DeepZoomImageSize",
+              "kind": "LinkedField",
+              "name": "Size",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": "width",
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "Width",
+                  "storageKey": null
+                },
+                {
+                  "alias": "height",
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "Height",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    }
+  ],
   "storageKey": null
 },
 v18 = {
@@ -432,7 +543,7 @@ v25 = {
   "value": 3
 },
 v26 = [
-  (v16/*: any*/)
+  (v15/*: any*/)
 ];
 return {
   "fragment": {
@@ -475,33 +586,14 @@ return {
           (v12/*: any*/),
           (v13/*: any*/),
           (v14/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Image",
-            "kind": "LinkedField",
-            "name": "images",
-            "plural": true,
-            "selections": [
-              (v15/*: any*/),
-              (v16/*: any*/),
-              (v17/*: any*/),
-              (v13/*: any*/),
-              {
-                "args": null,
-                "kind": "FragmentSpread",
-                "name": "ImageCarousel_images"
-              }
-            ],
-            "storageKey": null
-          },
+          (v17/*: any*/),
           (v4/*: any*/),
           (v18/*: any*/),
           (v19/*: any*/),
           (v20/*: any*/),
           (v21/*: any*/),
           (v22/*: any*/),
-          (v17/*: any*/),
+          (v16/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
@@ -798,103 +890,14 @@ return {
           (v12/*: any*/),
           (v13/*: any*/),
           (v14/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Image",
-            "kind": "LinkedField",
-            "name": "images",
-            "plural": true,
-            "selections": [
-              (v15/*: any*/),
-              (v16/*: any*/),
-              (v17/*: any*/),
-              (v13/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "imageVersions",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "DeepZoom",
-                "kind": "LinkedField",
-                "name": "deepZoom",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": "image",
-                    "args": null,
-                    "concreteType": "DeepZoomImage",
-                    "kind": "LinkedField",
-                    "name": "Image",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "alias": "tileSize",
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "TileSize",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": "url",
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "Url",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": "format",
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "Format",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": "size",
-                        "args": null,
-                        "concreteType": "DeepZoomImageSize",
-                        "kind": "LinkedField",
-                        "name": "Size",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "alias": "width",
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "Width",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": "height",
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "Height",
-                            "storageKey": null
-                          }
-                        ],
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          },
+          (v17/*: any*/),
           (v4/*: any*/),
           (v18/*: any*/),
           (v19/*: any*/),
           (v20/*: any*/),
           (v21/*: any*/),
           (v22/*: any*/),
-          (v17/*: any*/),
+          (v16/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -1059,7 +1062,7 @@ return {
     ]
   },
   "params": {
-    "id": "f0f03d3afc9d2590ee5b7ea72007f45c",
+    "id": "28a8de28c8dfebb4630a97dc9adc0153",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",
@@ -1067,5 +1070,5 @@ return {
   }
 };
 })();
-(node as any).hash = '20d97f1c32258e3fd84ef09359adc978';
+(node as any).hash = 'cc7b9b1ef225f2404106f9bf2d85a6a3';
 export default node;
