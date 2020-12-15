@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 28a8de28c8dfebb4630a97dc9adc0153 */
+/* @relayHash e2612f99f0b14715a0ff4b359bd31b48 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,9 +27,10 @@ export type MyCollectionArtworkQueryResponse = {
         readonly id: string;
         readonly images: ReadonlyArray<{
             readonly isDefault: boolean | null;
-            readonly url: string | null;
+            readonly imageURL: string | null;
             readonly width: number | null;
             readonly height: number | null;
+            readonly url: string | null;
             readonly imageVersions: ReadonlyArray<string | null> | null;
             readonly deepZoom: {
                 readonly image: {
@@ -86,9 +87,10 @@ query MyCollectionArtworkQuery(
     id
     images {
       isDefault
-      url
+      imageURL
       width
       height
+      url
       imageVersions
       deepZoom {
         image: Image {
@@ -377,14 +379,14 @@ v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "url",
+  "name": "width",
   "storageKey": null
 },
 v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "width",
+  "name": "url",
   "storageKey": null
 },
 v17 = {
@@ -402,9 +404,16 @@ v17 = {
       "name": "isDefault",
       "storageKey": null
     },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "imageURL",
+      "storageKey": null
+    },
     (v15/*: any*/),
-    (v16/*: any*/),
     (v13/*: any*/),
+    (v16/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -543,7 +552,7 @@ v25 = {
   "value": 3
 },
 v26 = [
-  (v15/*: any*/)
+  (v16/*: any*/)
 ];
 return {
   "fragment": {
@@ -593,7 +602,7 @@ return {
           (v20/*: any*/),
           (v21/*: any*/),
           (v22/*: any*/),
-          (v16/*: any*/),
+          (v15/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
@@ -897,7 +906,7 @@ return {
           (v20/*: any*/),
           (v21/*: any*/),
           (v22/*: any*/),
-          (v16/*: any*/),
+          (v15/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -1062,7 +1071,7 @@ return {
     ]
   },
   "params": {
-    "id": "28a8de28c8dfebb4630a97dc9adc0153",
+    "id": "e2612f99f0b14715a0ff4b359bd31b48",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",
