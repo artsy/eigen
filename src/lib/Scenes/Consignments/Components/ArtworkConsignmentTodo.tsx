@@ -1,16 +1,8 @@
-import { Flex, Sans, Separator } from "palette"
+import { Flex, Separator, Text } from "palette"
 import React from "react"
 import { Image, StyleProp, TouchableOpacity, ViewStyle } from "react-native"
 import styled from "styled-components/native"
 import { ConsignmentSetup } from "../index"
-
-const Background = styled.View`
-  flex: 1;
-  padding-top: 20;
-  padding-bottom: 20;
-  padding-left: 20;
-  padding-right: 20;
-`
 
 const ImageBG = styled.View`
   border-color: black;
@@ -44,72 +36,51 @@ interface TODOProps extends ConsignmentSetup {
   style?: StyleProp<ViewStyle>
 }
 
-const render = (props: TODOProps, canSubmitMetadata: boolean) => (
-  <Background style={props.style}>
-    <Separator />
-    <TouchableOpacity onPress={props.goToArtist}>
-      <Flex flexDirection="row" justifyContent="space-between" py={2}>
-        <Sans size="4">Artist/Designer name</Sans>
-        {props.artist ? DoneButton() : ToDoButton()}
+const TodoButton: React.FC<{ label: string; isComplete: boolean; onPress?(): void }> = ({
+  label,
+  isComplete,
+  onPress,
+}) => {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <Flex flexDirection="row" justifyContent="space-between" py={2} alignItems="center">
+        <Text variant="subtitle">{label}</Text>
+        {isComplete ? DoneButton() : ToDoButton()}
       </Flex>
     </TouchableOpacity>
-
-    <Separator />
-    <TouchableOpacity onPress={props.goToPhotos}>
-      <Flex flexDirection="row" justifyContent="space-between" py={2}>
-        <Sans size="4">Photos</Sans>
-        {props.photos ? DoneButton() : ToDoButton()}
-      </Flex>
-    </TouchableOpacity>
-
-    <Separator />
-    <TouchableOpacity onPress={props.goToMetadata}>
-      <Flex flexDirection="row" justifyContent="space-between" py={2}>
-        <Sans size="4">Work details</Sans>
-        {canSubmitMetadata ? DoneButton() : ToDoButton()}
-      </Flex>
-    </TouchableOpacity>
-
-    <Separator />
-    <TouchableOpacity onPress={props.goToEdition}>
-      <Flex flexDirection="row" justifyContent="space-between" py={2}>
-        <Sans size="4">Edition & Authenticity</Sans>
-        {props.editionScreenViewed ? DoneButton() : ToDoButton()}
-      </Flex>
-    </TouchableOpacity>
-
-    <Separator />
-    <TouchableOpacity onPress={props.goToLocation}>
-      <Flex flexDirection="row" justifyContent="space-between" py={2}>
-        <Sans size="4">Location</Sans>
-        {props.location ? DoneButton() : ToDoButton()}
-      </Flex>
-    </TouchableOpacity>
-
-    <Separator />
-    <TouchableOpacity onPress={props.goToProvenance}>
-      <Flex flexDirection="row" justifyContent="space-between" py={2}>
-        <Sans size="4">Provenance</Sans>
-        {props.provenance ? DoneButton() : ToDoButton()}
-      </Flex>
-    </TouchableOpacity>
-
-    <Separator />
-  </Background>
-)
+  )
+}
 
 export default class ConsignmentTODO extends React.Component<TODOProps> {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  canSubmitMetadata = (props) =>
-    props.metadata &&
-    props.metadata.category &&
-    props.metadata.title &&
-    props.metadata.year &&
-    props.metadata.medium &&
-    props.metadata.height &&
-    props.metadata.width
-
   render() {
-    return render(this.props, this.canSubmitMetadata(this.props))
+    const canSubmitMetadata =
+      this.props.metadata &&
+      this.props.metadata.category &&
+      this.props.metadata.title &&
+      this.props.metadata.year &&
+      this.props.metadata.medium &&
+      this.props.metadata.height &&
+      this.props.metadata.width
+    return (
+      <Flex p="2">
+        <Separator />
+        <TodoButton label="Artist/Designer name" onPress={this.props.goToArtist} isComplete={!!this.props.artist} />
+        <Separator />
+        <TodoButton label="Photos" onPress={this.props.goToPhotos} isComplete={!!this.props.photos} />
+        <Separator />
+        <TodoButton label="Work details" onPress={this.props.goToMetadata} isComplete={!!canSubmitMetadata} />
+        <Separator />
+        <TodoButton
+          label="Edition & Authenticity"
+          onPress={this.props.goToEdition}
+          isComplete={!!this.props.editionScreenViewed}
+        />
+        <Separator />
+        <TodoButton label="Location" onPress={this.props.goToLocation} isComplete={!!this.props.location} />
+        <Separator />
+        <TodoButton label="Provenance" onPress={this.props.goToProvenance} isComplete={!!this.props.provenance} />
+        <Separator />
+      </Flex>
+    )
   }
 }
