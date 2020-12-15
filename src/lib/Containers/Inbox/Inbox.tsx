@@ -1,3 +1,4 @@
+import { ActionType } from "@artsy/cohesion"
 import { Inbox_me } from "__generated__/Inbox_me.graphql"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import { CssTransition } from "lib/Components/Bidding/Components/Animation/CssTransition"
@@ -6,6 +7,8 @@ import { ConversationsContainer } from "lib/Scenes/Inbox/Components/Conversation
 import { MyBidsContainer } from "lib/Scenes/MyBids/MyBids"
 import { listenToNativeEvents } from "lib/store/NativeModel"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { track } from "lib/utils/track"
+import { ActionNames, ActionTypes } from "lib/utils/track/schema"
 import { Flex, Separator, Text } from "palette"
 import React from "react"
 import { EmitterSubscription, LayoutChangeEvent, View, ViewProps } from "react-native"
@@ -63,6 +66,7 @@ interface Props {
   isVisible: boolean
 }
 
+@track()
 export class Inbox extends React.Component<Props, State> {
   // @ts-ignore STRICTNESS_MIGRATION
   conversations: ConversationsRef
@@ -124,6 +128,22 @@ export class Inbox extends React.Component<Props, State> {
     this.scrollViewVerticalStart = layout.nativeEvent.layout.y
   }
 
+  @track((_props, _state, args) => {
+    const index = args[0]
+    const tabs = ["inboxBids", "inboxInquiries"]
+
+    return {
+      action: ActionType.tappedNavigationTab,
+      context_module: tabs[index],
+      context_screen_owner_type: tabs[index],
+      action_type: ActionTypes.Tap,
+      action_name: ActionNames.InboxTab,
+    }
+  })
+  handleNavigationTab(_tabIndex: number) {
+    // no op
+  }
+
   render() {
     const bottomInset = this.scrollViewVerticalStart
     return (
@@ -135,6 +155,7 @@ export class Inbox extends React.Component<Props, State> {
           contentInset: { bottom: bottomInset },
           onLayout: this.onScrollableTabViewLayout,
         }}
+        onChangeTab={({ i }: { i: number }) => this.handleNavigationTab(i)}
       >
         <TabWrapper tabLabel="Bids" key="bids" style={{ flexGrow: 1, justifyContent: "center" }}>
           <MyBidsContainer me={this.props.me} componentRef={(myBids) => (this.myBids = myBids)} />

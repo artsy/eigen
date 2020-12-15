@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0982a688ffc5f2e3347716cb27307fc9 */
+/* @relayHash 9cb9057f90509d58cd955bc06f759ced */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -43,6 +43,12 @@ fragment ActiveLot_lotStanding on AuctionsLotStanding {
   }
   saleArtwork {
     ...Lot_saleArtwork
+    artwork {
+      internalID
+      href
+      slug
+      id
+    }
     sale {
       liveStartAt
       id
@@ -66,6 +72,12 @@ fragment ClosedLot_lotStanding on AuctionsLotStanding {
   }
   saleArtwork {
     ...Lot_saleArtwork
+    artwork {
+      internalID
+      href
+      slug
+      id
+    }
     sale {
       endAt
       status
@@ -79,7 +91,6 @@ fragment Lot_saleArtwork on SaleArtwork {
   lotLabel
   artwork {
     artistNames
-    href
     image {
       url(version: "medium")
     }
@@ -149,6 +160,7 @@ fragment SaleCard_me on Me {
 }
 
 fragment SaleCard_sale on Sale {
+  internalID
   href
   slug
   name
@@ -447,6 +459,7 @@ return {
                 "name": "sale",
                 "plural": false,
                 "selections": [
+                  (v0/*: any*/),
                   (v2/*: any*/),
                   (v3/*: any*/),
                   (v4/*: any*/),
@@ -456,7 +469,6 @@ return {
                   (v8/*: any*/),
                   (v9/*: any*/),
                   (v10/*: any*/),
-                  (v0/*: any*/),
                   (v11/*: any*/),
                   (v1/*: any*/)
                 ],
@@ -588,7 +600,6 @@ return {
                                 "name": "artistNames",
                                 "storageKey": null
                               },
-                              (v2/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -613,7 +624,10 @@ return {
                                 ],
                                 "storageKey": null
                               },
-                              (v1/*: any*/)
+                              (v1/*: any*/),
+                              (v0/*: any*/),
+                              (v2/*: any*/),
+                              (v3/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -629,14 +643,14 @@ return {
                               (v1/*: any*/),
                               (v6/*: any*/),
                               (v11/*: any*/),
+                              (v0/*: any*/),
                               (v2/*: any*/),
                               (v3/*: any*/),
                               (v4/*: any*/),
                               (v7/*: any*/),
                               (v8/*: any*/),
                               (v9/*: any*/),
-                              (v10/*: any*/),
-                              (v0/*: any*/)
+                              (v10/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -716,7 +730,7 @@ return {
     ]
   },
   "params": {
-    "id": "0982a688ffc5f2e3347716cb27307fc9",
+    "id": "9cb9057f90509d58cd955bc06f759ced",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -803,6 +817,8 @@ return {
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.artwork.id": (v15/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.artwork.image": (v19/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.artwork.image.url": (v18/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.artwork.internalID": (v15/*: any*/),
+        "me.auctionsLotStandingConnection.edges.node.saleArtwork.artwork.slug": (v15/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.id": (v15/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.lotLabel": (v18/*: any*/),
         "me.auctionsLotStandingConnection.edges.node.saleArtwork.position": {

@@ -4,6 +4,8 @@ upcoming:
   dev:
     - Analytics tracking for My Collection - pepopowitz, annacarey
     - Fix `isVisible` root view prop to respect tab switches - david, erik, lily
+    - Add slack notification when betas fail - brian
+    - Add analytics tracking for My Bids - ashley, erik, christina
   user_facing:
     -
 

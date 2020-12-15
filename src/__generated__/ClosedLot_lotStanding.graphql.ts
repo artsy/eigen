@@ -19,6 +19,11 @@ export type ClosedLot_lotStanding = {
         } | null;
     };
     readonly saleArtwork: {
+        readonly artwork: {
+            readonly internalID: string;
+            readonly href: string | null;
+            readonly slug: string;
+        } | null;
         readonly sale: {
             readonly endAt: string | null;
             readonly status: string | null;
@@ -35,7 +40,15 @@ export type ClosedLot_lotStanding$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -56,13 +69,7 @@ const node: ReaderFragment = {
       "name": "lot",
       "plural": false,
       "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "internalID",
-          "storageKey": null
-        },
+        (v0/*: any*/),
         {
           "alias": null,
           "args": null,
@@ -123,6 +130,32 @@ const node: ReaderFragment = {
         {
           "alias": null,
           "args": null,
+          "concreteType": "Artwork",
+          "kind": "LinkedField",
+          "name": "artwork",
+          "plural": false,
+          "selections": [
+            (v0/*: any*/),
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "href",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "slug",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
           "concreteType": "Sale",
           "kind": "LinkedField",
           "name": "sale",
@@ -157,5 +190,6 @@ const node: ReaderFragment = {
   "type": "AuctionsLotStanding",
   "abstractKey": null
 };
-(node as any).hash = '3ab56e4e50230ad593b01efa228b3bf3';
+})();
+(node as any).hash = '47a50b528c216b6331947c0d9add8119';
 export default node;

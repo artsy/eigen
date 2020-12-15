@@ -9,9 +9,12 @@ import { NoMessages } from "./NoMessages"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
+import { track } from "lib/utils/track"
+import { ActionNames, ActionTypes } from "lib/utils/track/schema"
 import { color, Flex, Sans, Separator } from "palette"
 
 interface Props {
@@ -21,11 +24,14 @@ interface Props {
   onRefresh?: () => any
 }
 
+type Item = NonNullable<NonNullable<NonNullable<Conversations_me["conversations"]>["edges"]>[0]>["node"]
+
 interface State {
   isLoading?: boolean
   fetching: boolean
 }
 
+@track()
 export class Conversations extends Component<Props, State> {
   state = {
     isLoading: false,
@@ -73,6 +79,21 @@ export class Conversations extends Component<Props, State> {
     }
   }
 
+  @track((_props, _state, args: [Item]) => ({
+    action: ActionType.tappedInboxConversation,
+    context_module: ContextModule.inboxInquiries,
+    context_screen_owner_type: OwnerType.inboxInquiries,
+    destination_screen_owner_type: OwnerType.inboxConversation,
+    destination_screen_owner_id: args[0]?.internalID,
+    artwork_id: (args[0]?.items?.[0]?.item as any)?.internalID,
+    partner_id: (args[0]?.items?.[0]?.item as any)?.partner?.internalID,
+    action_type: ActionTypes.Tap,
+    action_name: ActionNames.ConversationSelected,
+  }))
+  handleSelectConversation(item: Item) {
+    navigate(`conversation/${item?.internalID}`)
+  }
+
   render() {
     const conversations = extractNodes(this.props.me.conversations)
 
@@ -102,9 +123,7 @@ export class Conversations extends Component<Props, State> {
           keyExtractor={(item) => item.internalID!}
           ItemSeparatorComponent={() => <Separator mx={2} width="auto" />}
           renderItem={({ item }) => {
-            return (
-              <ConversationSnippet conversation={item} onSelected={() => navigate(`conversation/${item.internalID}`)} />
-            )
+            return <ConversationSnippet conversation={item} onSelected={() => this.handleSelectConversation(item)} />
           }}
           onEndReached={this.fetchData}
           onEndReachedThreshold={2}
@@ -138,6 +157,17 @@ export const ConversationsContainer = createPaginationContainer(
               internalID
               last_message: lastMessage
               ...ConversationSnippet_conversation
+              items {
+                item {
+                  __typename
+                  ... on Artwork {
+                    internalID
+                    partner {
+                      internalID
+                    }
+                  }
+                }
+              }
             }
           }
           totalUnreadCount

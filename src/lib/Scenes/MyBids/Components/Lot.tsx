@@ -1,7 +1,6 @@
 import { Lot_saleArtwork } from "__generated__/Lot_saleArtwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "lib/navigation/navigate"
-import { Box, Flex, Text, Touchable } from "palette"
+import { Box, Flex, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -19,43 +18,38 @@ class Lot extends React.Component<Props> {
     const { saleArtwork, subtitle, children, ArtworkBadge, isSmallScreen } = this.props
 
     return (
-      <Touchable
-        onPress={() => navigate(saleArtwork?.artwork?.href as string)}
-        style={{ marginHorizontal: 0, width: "100%" }}
-      >
-        <Flex flexDirection="row">
-          <Flex width="50%">
-            <Flex flexDirection="row">
-              <Flex mr={isSmallScreen! ? 0.5 : 1}>
-                <OpaqueImageView
-                  width={50}
-                  height={50}
-                  style={{ borderRadius: 2, overflow: "hidden" }}
-                  imageURL={saleArtwork?.artwork?.image?.url}
-                />
-                {!!ArtworkBadge && (
-                  <Box position="absolute" top={-2} left={-5}>
-                    {<ArtworkBadge />}
-                  </Box>
-                )}
-              </Flex>
+      <Flex flexDirection="row">
+        <Flex width="50%">
+          <Flex flexDirection="row">
+            <Flex mr={isSmallScreen! ? 0.5 : 1}>
+              <OpaqueImageView
+                width={50}
+                height={50}
+                style={{ borderRadius: 2, overflow: "hidden" }}
+                imageURL={saleArtwork?.artwork?.image?.url}
+              />
+              {!!ArtworkBadge && (
+                <Box position="absolute" top={-2} left={-5}>
+                  {<ArtworkBadge />}
+                </Box>
+              )}
+            </Flex>
 
-              <Flex alignItems="baseline">
-                <Text variant="caption" numberOfLines={2}>
-                  {saleArtwork?.artwork?.artistNames}
-                </Text>
-                <Text variant="caption" color="black60" numberOfLines={1}>
-                  {subtitle ? subtitle : !!saleArtwork.lotLabel && `Lot ${saleArtwork.lotLabel}`}
-                </Text>
-              </Flex>
+            <Flex alignItems="baseline">
+              <Text variant="caption" numberOfLines={2}>
+                {saleArtwork?.artwork?.artistNames}
+              </Text>
+              <Text variant="caption" color="black60" numberOfLines={1}>
+                {subtitle ? subtitle : !!saleArtwork.lotLabel && `Lot ${saleArtwork.lotLabel}`}
+              </Text>
             </Flex>
           </Flex>
-
-          <Flex width="50%" alignItems="flex-end">
-            {children}
-          </Flex>
         </Flex>
-      </Touchable>
+
+        <Flex width="50%" alignItems="flex-end">
+          {children}
+        </Flex>
+      </Flex>
     )
   }
 }
@@ -66,7 +60,6 @@ export const LotFragmentContainer = createFragmentContainer(Lot, {
       lotLabel
       artwork {
         artistNames
-        href
         image {
           url(version: "medium")
         }

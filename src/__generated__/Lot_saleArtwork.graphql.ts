@@ -8,7 +8,6 @@ export type Lot_saleArtwork = {
     readonly lotLabel: string | null;
     readonly artwork: {
         readonly artistNames: string | null;
-        readonly href: string | null;
         readonly image: {
             readonly url: string | null;
         } | null;
@@ -54,13 +53,6 @@ const node: ReaderFragment = {
         {
           "alias": null,
           "args": null,
-          "kind": "ScalarField",
-          "name": "href",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
           "concreteType": "Image",
           "kind": "LinkedField",
           "name": "image",
@@ -89,5 +81,5 @@ const node: ReaderFragment = {
   "type": "SaleArtwork",
   "abstractKey": null
 };
-(node as any).hash = '7362f1283efd28a8c41e0cd2bec8909b';
+(node as any).hash = '67ed7697ca2bf6eb7b5370c5451c43eb';
 export default node;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0b3f57dd7b39f6f0542ee5864825379e */
+/* @relayHash 3d0bc46ae17c1c39f9dd26fb17107232 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -43,7 +43,6 @@ fragment Lot_saleArtwork on SaleArtwork {
   lotLabel
   artwork {
     artistNames
-    href
     image {
       url(version: "medium")
     }
@@ -693,7 +692,6 @@ return {
                     "plural": false,
                     "selections": [
                       (v7/*: any*/),
-                      (v6/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -773,7 +771,7 @@ return {
     ]
   },
   "params": {
-    "id": "0b3f57dd7b39f6f0542ee5864825379e",
+    "id": "3d0bc46ae17c1c39f9dd26fb17107232",
     "metadata": {},
     "name": "SaleAboveTheFoldQuery",
     "operationKind": "query",
