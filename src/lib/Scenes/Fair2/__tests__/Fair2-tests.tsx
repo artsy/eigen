@@ -87,7 +87,7 @@ describe("Fair2", () => {
 
     expect(wrapper.root.findAllByType(Fair2HeaderFragmentContainer)).toHaveLength(1)
     expect(wrapper.root.findAllByType(Fair2EditorialFragmentContainer)).toHaveLength(1)
-    expect(extractText(wrapper.root)).toMatch("This fair is not open yet")
+    expect(extractText(wrapper.root)).toMatch("This fair is currently unavailable.")
 
     expect(wrapper.root.findAllByType(Fair2CollectionsFragmentContainer)).toHaveLength(0)
     expect(wrapper.root.findAllByType(Tabs)).toHaveLength(0)

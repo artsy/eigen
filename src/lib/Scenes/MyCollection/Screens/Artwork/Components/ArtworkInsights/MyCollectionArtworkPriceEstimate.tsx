@@ -103,11 +103,10 @@ const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimat
         modalContent={
           <>
             <Text>
-              This is an estimated range based on artist, medium, and size, and is not an official valuation for your
-              exact artwork. This is based on 36 months of auction result data.
+              This is an estimated range based on artist, medium, and size (if provided). It is not an official
+              evaluation of your exact artwork. This is based on the last 36 months of auction sale data from top
+              commercial auction houses.
             </Text>
-            <Spacer my={1} />
-            <Text>Last updated Aug 30, 2020.</Text>
           </>
         }
       />

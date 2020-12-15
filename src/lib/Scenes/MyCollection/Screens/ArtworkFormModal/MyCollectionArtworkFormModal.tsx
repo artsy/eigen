@@ -9,7 +9,7 @@ import {
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
 } from "lib/Scenes/Consignments/Submission/geminiUploadToS3"
-import { cleanArtworkPayload } from "lib/Scenes/MyCollection/utils/cleanArtworkPayload"
+import { cleanArtworkPayload, explicitlyClearedFields } from "lib/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Box, Flex } from "palette"
 import React, { useRef, useState } from "react"
@@ -91,6 +91,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
             externalImageUrls,
             costMinor: Number(costMinor),
             ...cleanArtworkPayload(others),
+            ...explicitlyClearedFields(others, dirtyFormCheckValues),
           })
 
           // TODO: Can this logic live in metaphysics as part of edit artwork mutation?

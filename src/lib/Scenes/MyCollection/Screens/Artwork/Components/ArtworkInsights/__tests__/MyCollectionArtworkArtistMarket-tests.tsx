@@ -54,7 +54,7 @@ describe("MyCollectionArtworkArtistMarket", () => {
     })
     expect(wrapper.root.findByType(InfoButton)).toBeDefined()
     const text = extractText(wrapper.root)
-    expect(text).toContain("Artist market")
+    expect(text).toContain("Artist Market Statistics")
     expect(text).toContain("Based on the last 36 months of auction data")
     expect(text).toContain("Avg. Annual Lots Sold")
     expect(text).toContain("Sell-through Rate")
