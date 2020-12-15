@@ -1,5 +1,6 @@
 import { Inbox_me } from "__generated__/Inbox_me.graphql"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
+import { CssTransition } from "lib/Components/Bidding/Components/Animation/CssTransition"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ConversationsContainer } from "lib/Scenes/Inbox/Components/Conversations/Conversations"
 import { MyBidsContainer } from "lib/Scenes/MyBids/MyBids"
@@ -25,19 +26,25 @@ const InboxTabs: React.FC<TabBarProps> = (props) => (
       {props.tabs?.map((name: JSX.Element, page: number) => {
         const isTabActive = props.activeTab === page
         return (
-          <Text
-            mr={2}
+          <CssTransition
+            style={[{ opacity: isTabActive ? 1 : 0.3 }]}
+            animate={["opacity"]}
+            duration={200}
             key={`inbox-tab-${name}`}
-            color={isTabActive ? "black100" : "black30"}
-            variant="largeTitle"
-            onPress={() => {
-              if (!!props.goToPage) {
-                props.goToPage(page)
-              }
-            }}
           >
-            {name}
-          </Text>
+            <Text
+              mr={2}
+              color="black100"
+              variant="largeTitle"
+              onPress={() => {
+                if (!!props.goToPage) {
+                  props.goToPage(page)
+                }
+              }}
+            >
+              {name}
+            </Text>
+          </CssTransition>
         )
       })}
     </Flex>

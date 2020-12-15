@@ -47,8 +47,8 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
         <Spacer my={1} />
 
         <Sans size="4" textAlign="center">
-          {addOrEditLabel} details about your work for a price {"\n"}
-          evaluation and market insights.
+          {addOrEditLabel} details about your artwork to access {"\n"}
+          price and market insights.
         </Sans>
 
         <ScreenMargin>

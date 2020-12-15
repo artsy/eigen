@@ -95,7 +95,7 @@ const MyCollection: React.FC<{
         >
           <Flex pb="200">
             <ZeroState
-              subtitle="Add a work from your collection to access price and market insights."
+              subtitle="Add details about an artwork from your collection to access price and market insights."
               callToAction={<Button onPress={() => setShowModal(true)}>Add artwork</Button>}
             />
           </Flex>

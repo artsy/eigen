@@ -9,7 +9,7 @@ export class NoBids extends React.Component<{ headerText: string }> {
     }
     const { headerText } = this.props
     return (
-      <Flex mt={3}>
+      <Flex mt={3} mx={2}>
         <Text variant="title" textAlign="center" fontWeight="normal">
           {headerText}
         </Text>
