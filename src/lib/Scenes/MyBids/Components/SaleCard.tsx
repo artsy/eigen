@@ -74,7 +74,7 @@ export class SaleCard extends React.Component<{
     return (
       <React.Fragment>
         <Touchable underlayColor="transparent" activeOpacity={0.8} onPress={() => navigate(sale?.href as string)}>
-          <Flex overflow="hidden" borderWidth={1} borderStyle="solid" borderColor="black10" borderRadius={4}>
+          <Flex borderWidth={1} borderStyle="solid" borderColor="black10">
             <OpaqueImageView height={COVER_IMAGE_HEIGHT} imageURL={sale?.coverImage?.url} />
             <Flex style={{ margin: smallScreen! ? 10 : 15 }}>
               {!!sale.partner?.name && (

@@ -60,14 +60,13 @@ const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketP
   return (
     <ScreenMargin>
       <InfoButton
-        title="Artist market"
+        title="Artist Market Statistics"
         subTitle="Based on the last 36 months of auction data"
         modalTitle="Artist Market Insights"
         modalContent={
           <>
             <Text>
-              This data set includes 36 months of auction results from top commercial auction houses and sales hosted on
-              Artsy.
+              These statistics are based on the last 36 months of auction sale data from top commercial auction houses.
             </Text>
           </>
         }

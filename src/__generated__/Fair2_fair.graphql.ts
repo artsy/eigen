@@ -25,7 +25,7 @@ export type Fair2_fair = {
             readonly __typename: string;
         } | null> | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"Fair2Header_fair" | "Fair2Editorial_fair" | "Fair2Collections_fair" | "Fair2Artworks_fair" | "Fair2Exhibitors_fair" | "Fair2FollowedArtistsRail_fair">;
+    readonly " $fragmentRefs": FragmentRefs<"Fair2Header_fair" | "Fair2EmptyState_fair" | "Fair2Editorial_fair" | "Fair2Collections_fair" | "Fair2Artworks_fair" | "Fair2Exhibitors_fair" | "Fair2FollowedArtistsRail_fair">;
     readonly " $refType": "Fair2_fair";
 };
 export type Fair2_fair$data = Fair2_fair;
@@ -186,6 +186,11 @@ return {
     {
       "args": null,
       "kind": "FragmentSpread",
+      "name": "Fair2EmptyState_fair"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
       "name": "Fair2Editorial_fair"
     },
     {
@@ -213,5 +218,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '8fd7cb4f36e5484e4881cd726d7a1ac3';
+(node as any).hash = 'c002b5b463593732dfd033ba6f15156d';
 export default node;

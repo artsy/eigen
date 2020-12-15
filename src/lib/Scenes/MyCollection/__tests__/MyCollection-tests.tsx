@@ -68,7 +68,9 @@ describe("MyCollection", () => {
 
   it("shows zerostate when collection is empty", () => {
     const tree = getZeroStateWrapper()
-    expect(extractText(tree.root)).toContain("Add a work from your collection to access price and market insights")
+    expect(extractText(tree.root)).toContain(
+      "Add details about an artwork from your collection to access price and market insights."
+    )
   })
 
   it("calls proper actions on press", () => {

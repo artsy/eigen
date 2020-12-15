@@ -7,7 +7,7 @@ import { TimelySale } from "../helpers/timely"
 import { HighestBid, Outbid, ReserveNotMet } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
-export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding }, smallScreen: boolean) => {
+export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding }) => {
   const timelySale = TimelySale.create(lotStanding?.saleArtwork?.sale!)
 
   const sellingPrice = lotStanding?.lot?.sellingPrice?.display
@@ -25,7 +25,7 @@ export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding 
   return (
     saleArtwork &&
     lot && (
-      <Lot saleArtwork={saleArtwork} isSmallScreen={smallScreen}>
+      <Lot saleArtwork={saleArtwork} isSmallScreen={isSmallScreen}>
         <Flex flexDirection="row" justifyContent="flex-end">
           <Text variant="caption">{sellingPrice}</Text>
           <Text variant="caption" color="black60">
