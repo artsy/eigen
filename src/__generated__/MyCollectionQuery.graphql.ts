@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e8041746c6666d0dcfc898bc58c36753 */
+/* @relayHash a7c2ee60fecf0fac7cad4fb91e27acd5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,6 +27,7 @@ query MyCollectionQuery {
 }
 
 fragment MyCollectionArtworkListItem_artwork on Artwork {
+  internalID
   artist {
     internalID
     id
@@ -80,7 +81,14 @@ v1 = [
     "name": "sort",
     "value": "CREATED_AT_DESC"
   }
-];
+],
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": [],
@@ -180,6 +188,7 @@ return {
                         "name": "slug",
                         "storageKey": null
                       },
+                      (v2/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -188,13 +197,7 @@ return {
                         "name": "artist",
                         "plural": false,
                         "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "internalID",
-                            "storageKey": null
-                          },
+                          (v2/*: any*/),
                           (v0/*: any*/)
                         ],
                         "storageKey": null
@@ -283,7 +286,7 @@ return {
     ]
   },
   "params": {
-    "id": "e8041746c6666d0dcfc898bc58c36753",
+    "id": "a7c2ee60fecf0fac7cad4fb91e27acd5",
     "metadata": {},
     "name": "MyCollectionQuery",
     "operationKind": "query",

@@ -1,3 +1,4 @@
+import { tappedCollectedArtwork } from "@artsy/cohesion"
 import { MyCollectionArtworkListItemTestsQuery } from "__generated__/MyCollectionArtworkListItemTestsQuery.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
@@ -6,12 +7,15 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Image as RNImage } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionArtworkListItemFragmentContainer, tests } from "../MyCollectionArtworkListItem"
 
 jest.unmock("react-relay")
+jest.mock("react-tracking")
 
 describe("MyCollectionArtworkListItem", () => {
+  const trackEvent = jest.fn()
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionArtworkListItemTestsQuery>
@@ -35,17 +39,28 @@ describe("MyCollectionArtworkListItem", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    const mockTracking = useTracking as jest.Mock
+    mockTracking.mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
   const resolveData = () => {
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Artwork: () => ({
-          slug: "some-slug",
-          medium: "some-medium",
+          internalID: "artwork-id",
+          slug: "artwork-slug",
           artist: {
-            internalID: "some-internal-id",
+            internalID: "artist-id",
           },
+          medium: "artwork medium",
         }),
       })
     )
@@ -62,16 +77,31 @@ describe("MyCollectionArtworkListItem", () => {
     expect(text).toContain("medium")
   })
 
-  it("navigates to artwork detail on click", () => {
+  it("navigates to artwork detail on tap", () => {
     const wrapper = renderWithWrappers(<TestRenderer />)
     resolveData()
     wrapper.root.findByType(tests.TouchElement).props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/my-collection/artwork/some-slug", {
+    expect(navigate).toHaveBeenCalledWith("/my-collection/artwork/artwork-slug", {
       passProps: {
-        artistInternalID: "some-internal-id",
-        medium: "some-medium",
+        artistInternalID: "artist-id",
+        medium: "artwork medium",
       },
     })
+  })
+
+  it("tracks analytics event on tap", () => {
+    const wrapper = renderWithWrappers(<TestRenderer />)
+    resolveData()
+    wrapper.root.findByType(tests.TouchElement).props.onPress()
+
+    expect(trackEvent).toHaveBeenCalledTimes(1)
+    expect(trackEvent).toHaveBeenCalledWith(
+      tappedCollectedArtwork({
+        contextOwnerId: "TODO: make this field optional in cohesion and remove it here",
+        destinationOwnerId: "artwork-id",
+        destinationOwnerSlug: "artwork-slug",
+      })
+    )
   })
 
   it("uses last uploaded image as a fallback when no url is present", () => {

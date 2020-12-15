@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6752f66a690820e185039a0128cc5c3e */
+/* @relayHash 9057c08c7b28131adf12130c770e9b52 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -43,9 +43,10 @@ fragment MyCollectionArtworkFullDetails_artwork on Artwork {
   id
   images {
     isDefault
-    url
+    imageURL
     width
     height
+    internalID
   }
   internalID
   medium
@@ -260,11 +261,12 @@ return {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
-                "name": "url",
+                "name": "imageURL",
                 "storageKey": null
               },
               (v4/*: any*/),
-              (v3/*: any*/)
+              (v3/*: any*/),
+              (v1/*: any*/)
             ],
             "storageKey": null
           },
@@ -311,7 +313,7 @@ return {
     ]
   },
   "params": {
-    "id": "6752f66a690820e185039a0128cc5c3e",
+    "id": "9057c08c7b28131adf12130c770e9b52",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -345,13 +347,19 @@ return {
           "type": "Image"
         },
         "artwork.images.height": (v7/*: any*/),
+        "artwork.images.imageURL": (v6/*: any*/),
+        "artwork.images.internalID": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ID"
+        },
         "artwork.images.isDefault": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Boolean"
         },
-        "artwork.images.url": (v6/*: any*/),
         "artwork.images.width": (v7/*: any*/),
         "artwork.internalID": (v5/*: any*/),
         "artwork.medium": (v6/*: any*/),
