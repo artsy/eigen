@@ -6,7 +6,7 @@ import { AsyncStorage, Dimensions, Route, ScrollView, View, ViewProperties } fro
 import NavigatorIOS from "react-native-navigator-ios"
 
 import { dismissModal } from "lib/navigation/navigate"
-import { Box, Button, color, Flex, Serif, Spacer, Theme } from "palette"
+import { Box, Button, Flex, Spacer, Text } from "palette"
 import { ArtistResult, ConsignmentMetadata, ConsignmentSetup } from "../"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import { createConsignmentSubmission } from "../Submission/createConsignmentSubmission"
@@ -233,69 +233,58 @@ export default class Overview extends React.Component<Props, State> {
     )
 
   render() {
-    const title = "Complete work details to submit"
-    const subtitle = "Provide as much detail as possible so that our partners can best assess your work."
-
     // See https://github.com/artsy/convection/blob/master/app/models/submission.rb for list
     const canSubmit = this.canSubmit()
 
     const isPad = Dimensions.get("window").width > 700
 
     return (
-      <>
-        <Theme>
-          <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} centerContent>
-            <View
-              style={{
-                paddingTop: 10,
-                alignSelf: "center",
-                width: "100%",
-                maxWidth: 540,
-                flex: 1,
-              }}
+      <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} centerContent>
+        <View
+          style={{
+            alignSelf: "center",
+            width: "100%",
+            maxWidth: 540,
+            flex: 1,
+          }}
+        >
+          <Box px={2}>
+            <Text variant="mediumText" style={{ textAlign: isPad ? "center" : "left" }}>
+              Step 1 of 2
+            </Text>
+            <Spacer mb={2} />
+            <Text variant="largeTitle" style={{ textAlign: isPad ? "center" : "left" }}>
+              Add details for your work
+            </Text>
+            <Spacer mb={3} />
+            <Text
+              variant="text"
+              color="black60"
+              style={{ textAlign: isPad ? "center" : "left", marginBottom: isPad ? 80 : 0, marginTop: -15 }}
             >
-              <Box px={2}>
-                <Serif size="6" style={{ textAlign: isPad ? "center" : "left" }}>
-                  {title}
-                </Serif>
-                <Spacer mb={2} />
-                <Serif
-                  size="4"
-                  color={color("black60")}
-                  style={{ textAlign: isPad ? "center" : "left", marginBottom: isPad ? 80 : 0, marginTop: -15 }}
-                >
-                  {subtitle}
-                </Serif>
-              </Box>
-              <TODO
-                goToArtist={this.goToArtistTapped}
-                goToPhotos={this.goToPhotosTapped}
-                goToEdition={this.goToEditionTapped}
-                goToMetadata={this.goToMetadataTapped}
-                goToLocation={this.goToLocationTapped}
-                goToProvenance={this.goToProvenanceTapped}
-                {...this.state}
-              />
-              <Spacer mb={isPad ? 80 : 2} />
-              <Flex justifyContent="center" alignItems="center" flexDirection="column">
-                {!!this.state.hasLoaded && (
-                  <Button
-                    onPress={canSubmit ? this.submitFinalSubmission : undefined}
-                    disabled={!canSubmit}
-                    haptic="selection"
-                  >
-                    Submit
-                  </Button>
-                )}
-                <Spacer mb={1} />
-                <Button variant="noOutline" onPress={() => dismissModal()}>
-                  Close
-                </Button>
-              </Flex>
-            </View>
-          </ScrollView>
-        </Theme>
-      </>
+              Provide as much detail as possible so that our partners can best assess your work.
+            </Text>
+          </Box>
+          <TODO
+            goToArtist={this.goToArtistTapped}
+            goToPhotos={this.goToPhotosTapped}
+            goToEdition={this.goToEditionTapped}
+            goToMetadata={this.goToMetadataTapped}
+            goToLocation={this.goToLocationTapped}
+            goToProvenance={this.goToProvenanceTapped}
+            {...this.state}
+          />
+          <Spacer mb={isPad ? 80 : 2} />
+          <Flex justifyContent="center" alignItems="center" flexDirection="column">
+            {!!this.state.hasLoaded && (
+              <Button onPress={canSubmit ? this.submitFinalSubmission : undefined} disabled={!canSubmit}>
+                Submit
+              </Button>
+            )}
+            <Spacer mb={1} />
+          </Flex>
+        </View>
+      </ScrollView>
     )
   }
 }
