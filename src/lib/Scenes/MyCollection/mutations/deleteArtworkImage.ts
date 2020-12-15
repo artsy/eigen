@@ -12,12 +12,8 @@ export function deleteArtworkImage(artworkID: string, imageID: string) {
         mutation deleteArtworkImageMutation($input: DeleteArtworkImageInput!) {
           deleteArtworkImage(input: $input) {
             artworkOrError {
-              ... on ArtworkMutationSuccess {
-                artwork {
-                  images {
-                    imageURL
-                  }
-                }
+              ... on ArtworkMutationDeleteSuccess {
+                success
               }
               ... on ArtworkMutationFailure {
                 mutationError {

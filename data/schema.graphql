@@ -1168,15 +1168,6 @@ type ArtistTargetSupply {
 }
 
 type ArtistTargetSupplyMicrofunnel {
-  artworks(
-    # Randomize the order of artworks for display purposes.
-    randomize: Boolean
-
-    # Number of artworks to return
-    size: Int
-  ): [ArtistTargetSupplyMicrofunnelArtwork]
-    @deprecated(reason: "Prefer to use `artworksConnection`. [Will be removed in v2]")
-
   # A list of recently sold artworks.
   artworksConnection(
     after: String
@@ -1188,11 +1179,6 @@ type ArtistTargetSupplyMicrofunnel {
     randomize: Boolean
   ): ArtworkConnection
   metadata: TargetSupplyMicrofunnelMetadata
-}
-
-type ArtistTargetSupplyMicrofunnelArtwork {
-  artwork: Artwork
-  realizedPrice: String
 }
 
 type Artwork implements Node & Searchable & Sellable {
@@ -1368,6 +1354,7 @@ type Artwork implements Node & Searchable & Sellable {
   # in the target supply microfunnel and (currently) queries against hardcoded
   # spreadsheet data.
   realizedPrice: String
+  realizedToEstimate: String
   related(size: Int): [Artwork]
   sale: Sale
   saleArtwork(saleID: String = null): SaleArtwork
@@ -1543,12 +1530,7 @@ type ArtworkMutationFailure {
   mutationError: GravityMutationError
 }
 
-type ArtworkMutationSuccess {
-  artwork: Artwork
-  artworkEdge: ArtworkEdgeInterface
-}
-
-union ArtworkMutationType = ArtworkMutationDeleteSuccess | ArtworkMutationFailure | ArtworkMutationSuccess
+union ArtworkMutationType = ArtworkMutationDeleteSuccess | ArtworkMutationFailure
 
 union ArtworkOrEditionSetType = Artwork | EditionSet
 
@@ -1690,6 +1672,7 @@ type AuctionResult implements Node {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  location: String
   mediumText: String
   organization: String
   priceRealized: AuctionResultPriceRealized

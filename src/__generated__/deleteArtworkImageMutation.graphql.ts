@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0ca70b29c6b8eae53f4ce06a9231c0f1 */
+/* @relayHash 854ac8c3284aad4a8809acda88014a4e */
 
 import { ConcreteRequest } from "relay-runtime";
 export type DeleteArtworkImageInput = {
@@ -15,11 +15,7 @@ export type deleteArtworkImageMutationVariables = {
 export type deleteArtworkImageMutationResponse = {
     readonly deleteArtworkImage: {
         readonly artworkOrError: {
-            readonly artwork?: {
-                readonly images: ReadonlyArray<{
-                    readonly imageURL: string | null;
-                } | null> | null;
-            } | null;
+            readonly success?: boolean | null;
             readonly mutationError?: {
                 readonly message: string | null;
             } | null;
@@ -40,13 +36,8 @@ mutation deleteArtworkImageMutation(
   deleteArtworkImage(input: $input) {
     artworkOrError {
       __typename
-      ... on ArtworkMutationSuccess {
-        artwork {
-          images {
-            imageURL
-          }
-          id
-        }
+      ... on ArtworkMutationDeleteSuccess {
+        success
       }
       ... on ArtworkMutationFailure {
         mutationError {
@@ -74,22 +65,18 @@ v1 = [
   }
 ],
 v2 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "Image",
-  "kind": "LinkedField",
-  "name": "images",
-  "plural": true,
+  "kind": "InlineFragment",
   "selections": [
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "imageURL",
+      "name": "success",
       "storageKey": null
     }
   ],
-  "storageKey": null
+  "type": "ArtworkMutationDeleteSuccess",
+  "abstractKey": null
 },
 v3 = {
   "kind": "InlineFragment",
@@ -139,25 +126,7 @@ return {
             "name": "artworkOrError",
             "plural": false,
             "selections": [
-              {
-                "kind": "InlineFragment",
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "Artwork",
-                    "kind": "LinkedField",
-                    "name": "artwork",
-                    "plural": false,
-                    "selections": [
-                      (v2/*: any*/)
-                    ],
-                    "storageKey": null
-                  }
-                ],
-                "type": "ArtworkMutationSuccess",
-                "abstractKey": null
-              },
+              (v2/*: any*/),
               (v3/*: any*/)
             ],
             "storageKey": null
@@ -198,32 +167,7 @@ return {
                 "name": "__typename",
                 "storageKey": null
               },
-              {
-                "kind": "InlineFragment",
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "Artwork",
-                    "kind": "LinkedField",
-                    "name": "artwork",
-                    "plural": false,
-                    "selections": [
-                      (v2/*: any*/),
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "id",
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": null
-                  }
-                ],
-                "type": "ArtworkMutationSuccess",
-                "abstractKey": null
-              },
+              (v2/*: any*/),
               (v3/*: any*/)
             ],
             "storageKey": null
@@ -234,7 +178,7 @@ return {
     ]
   },
   "params": {
-    "id": "0ca70b29c6b8eae53f4ce06a9231c0f1",
+    "id": "854ac8c3284aad4a8809acda88014a4e",
     "metadata": {},
     "name": "deleteArtworkImageMutation",
     "operationKind": "mutation",
@@ -242,5 +186,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'aa8cd031bc813de566ef31a939459ec4';
+(node as any).hash = 'c33e37969514a50e996505a811a463d5';
 export default node;
