@@ -239,7 +239,7 @@ export default class Overview extends React.Component<Props, State> {
     const isPad = Dimensions.get("window").width > 700
 
     return (
-      <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} centerContent>
+      <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} contentContainerStyle={{ paddingVertical: 40 }}>
         <View
           style={{
             alignSelf: "center",
@@ -252,15 +252,15 @@ export default class Overview extends React.Component<Props, State> {
             <Text variant="mediumText" style={{ textAlign: isPad ? "center" : "left" }}>
               Step 1 of 2
             </Text>
-            <Spacer mb={2} />
+            <Spacer mb={1} />
             <Text variant="largeTitle" style={{ textAlign: isPad ? "center" : "left" }}>
               Add details for your work
             </Text>
-            <Spacer mb={3} />
+            <Spacer mb={1} />
             <Text
               variant="text"
               color="black60"
-              style={{ textAlign: isPad ? "center" : "left", marginBottom: isPad ? 80 : 0, marginTop: -15 }}
+              style={{ textAlign: isPad ? "center" : "left", marginBottom: isPad ? 80 : 0 }}
             >
               Provide as much detail as possible so that our partners can best assess your work.
             </Text>
@@ -281,7 +281,6 @@ export default class Overview extends React.Component<Props, State> {
                 Submit
               </Button>
             )}
-            <Spacer mb={1} />
           </Flex>
         </View>
       </ScrollView>
