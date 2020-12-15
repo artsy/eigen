@@ -1,9 +1,11 @@
 import { MyCollectionArtworkInsights_artwork } from "__generated__/MyCollectionArtworkInsights_artwork.graphql"
 import { MyCollectionArtworkInsights_marketPriceInsights } from "__generated__/MyCollectionArtworkInsights_marketPriceInsights.graphql"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
+import { capitalize } from "lodash"
 import { Separator, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { pluralizeMedium } from "../../../../utils/pluralizeArtworkMedium"
 import { MyCollectionArtworkArtistArticlesFragmentContainer } from "./MyCollectionArtworkArtistArticles"
 import { MyCollectionArtworkArtistAuctionResultsFragmentContainer } from "./MyCollectionArtworkArtistAuctionResults"
 import { MyCollectionArtworkArtistMarketFragmentContainer } from "./MyCollectionArtworkArtistMarket"
@@ -20,7 +22,6 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
   marketPriceInsights,
 }) => {
   const showMarketPriceInsights = Boolean(marketPriceInsights)
-
   return (
     <>
       {showMarketPriceInsights && (
@@ -31,7 +32,8 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
           <ScreenMargin>
             <Text variant="title">Price and market insights</Text>
             <Text variant="small" color="black60">
-              For {artwork.artist?.name || "Unknown Artist"}, {artwork.medium}, size {artwork.sizeBucket}
+              {capitalize(artwork.sizeBucket!)} {pluralizeMedium(artwork.medium!)} by{" "}
+              {artwork.artist?.name || "Unknown Artist"}
             </Text>
           </ScreenMargin>
           <Spacer mt={3} />
