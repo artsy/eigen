@@ -269,7 +269,7 @@ describe("artsy.net routes", () => {
   it("routes to the Show view", () => {
     expect(matchRoute("/show/special-show")).toMatchInlineSnapshot(`
         Object {
-          "module": "Show2",
+          "module": "Show",
           "params": Object {
             "showID": "special-show",
           },

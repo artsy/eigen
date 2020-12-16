@@ -71,7 +71,7 @@ import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
 
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
-import { Show2MoreInfoQueryRenderer, Show2QueryRenderer } from "./Scenes/Show2"
+import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
@@ -410,11 +410,8 @@ export const modules = defineModules({
   Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }),
   SalesNotRootTabView: reactModule(Consignments),
   Search: reactModule(SearchWithTracking, { isRootViewForTabName: "search" }),
-  Show2: reactModule(Show2QueryRenderer, { fullBleed: true }),
-  ShowArtists: reactModule(ShowArtists),
-  ShowArtworks: reactModule(ShowArtworks),
-  Show2MoreInfo: reactModule(Show2MoreInfoQueryRenderer),
-  ShowMoreInfo: reactModule(ShowMoreInfo),
+  Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
+  ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),
