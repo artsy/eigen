@@ -11,6 +11,7 @@ upcoming:
     - Move shows entry point to about tab - mounir
     - Fix image graininess in my collection - brian
     - Fix bug where user profile may fail to load - erik
+    - Fix bug preventing empty values from being saved (my collection) - brian
     - Add improved phone number input - david
 
 releases:
