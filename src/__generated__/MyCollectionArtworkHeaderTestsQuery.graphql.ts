@@ -65,18 +65,25 @@ var v0 = [
   }
 ],
 v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v2 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v2 = {
+v3 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v3 = {
+v4 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -247,17 +254,12 @@ return {
                 "kind": "ScalarField",
                 "name": "isDefault",
                 "storageKey": null
-              }
+              },
+              (v1/*: any*/)
             ],
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "internalID",
-            "storageKey": null
-          },
+          (v1/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -287,9 +289,9 @@ return {
           "plural": false,
           "type": "Artwork"
         },
-        "artwork.artistNames": (v1/*: any*/),
-        "artwork.date": (v1/*: any*/),
-        "artwork.id": (v2/*: any*/),
+        "artwork.artistNames": (v2/*: any*/),
+        "artwork.date": (v2/*: any*/),
+        "artwork.id": (v3/*: any*/),
         "artwork.images": {
           "enumValues": null,
           "nullable": true,

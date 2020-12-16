@@ -10,6 +10,7 @@ export type MyCollectionArtworkImages_artwork = {
         readonly isDefault: boolean | null;
         readonly imageURL: string | null;
         readonly width: number | null;
+        readonly internalID: string | null;
     } | null> | null;
     readonly " $refType": "MyCollectionArtworkImages_artwork";
 };
@@ -62,6 +63,13 @@ const node: ReaderFragment = {
           "kind": "ScalarField",
           "name": "width",
           "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "internalID",
+          "storageKey": null
         }
       ],
       "storageKey": null
@@ -70,5 +78,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '7b416a19f52c8e14e0b0b2e05cba5b31';
+(node as any).hash = '29be7b5ffe21643f7cb0625805d3d8be';
 export default node;

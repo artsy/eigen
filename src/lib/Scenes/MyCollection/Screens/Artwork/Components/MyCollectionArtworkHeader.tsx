@@ -100,6 +100,8 @@ export const MyCollectionArtworkHeaderFragmentContainer = createFragmentContaine
       images {
         ...ImageCarousel_images
         isDefault
+        imageURL
+        internalID
       }
       internalID
       title

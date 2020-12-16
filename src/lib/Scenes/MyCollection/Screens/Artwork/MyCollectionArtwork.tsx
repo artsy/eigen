@@ -107,6 +107,7 @@ export const ArtworkMetaProps = graphql`
       imageURL
       width
       height
+      internalID
     }
     internalID
     medium

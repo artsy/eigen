@@ -33,7 +33,6 @@ export type MyCollectionArtworkQueryResponse = {
             readonly url: string | null;
             readonly imageVersions: ReadonlyArray<string | null> | null;
             readonly deepZoom: {
-                readonly image: {
                     readonly tileSize: number | null;
                     readonly url: string | null;
                     readonly format: string | null;
@@ -44,9 +43,6 @@ export type MyCollectionArtworkQueryResponse = {
                 } | null;
             } | null;
         } | null> | null;
-        readonly internalID: string;
-        readonly medium: string | null;
-        readonly metric: string | null;
         readonly provenance: string | null;
         readonly slug: string;
         readonly title: string | null;
