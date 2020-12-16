@@ -2,7 +2,6 @@ import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArt
 import { ImageCarouselFragmentContainer } from "lib/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Image } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { ArtworkIcon, color, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { Dimensions } from "react-native"
