@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 54e6f7bb04c5351d369508461df9af6e */
+/* @relayHash 75e8dc4c220ebc074869991753c8ed1b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -162,6 +162,11 @@ fragment MyCollectionArtworkArtistMarket_marketPriceInsights on MarketPriceInsig
   demandTrend
 }
 
+fragment MyCollectionArtworkDemandIndex_artwork on Artwork {
+  internalID
+  slug
+}
+
 fragment MyCollectionArtworkDemandIndex_marketPriceInsights on MarketPriceInsights {
   demandRank
 }
@@ -190,6 +195,7 @@ fragment MyCollectionArtworkInsights_artwork on Artwork {
   ...MyCollectionArtworkPriceEstimate_artwork
   ...MyCollectionArtworkArtistAuctionResults_artwork
   ...MyCollectionArtworkArtistArticles_artwork
+  ...MyCollectionArtworkDemandIndex_artwork
 }
 
 fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights {
@@ -958,7 +964,7 @@ return {
     ]
   },
   "params": {
-    "id": "54e6f7bb04c5351d369508461df9af6e",
+    "id": "75e8dc4c220ebc074869991753c8ed1b",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",
