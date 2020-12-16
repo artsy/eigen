@@ -97,7 +97,6 @@ describe("MyCollectionArtworkListItem", () => {
     expect(trackEvent).toHaveBeenCalledTimes(1)
     expect(trackEvent).toHaveBeenCalledWith(
       tappedCollectedArtwork({
-        contextOwnerId: "TODO: make this field optional in cohesion and remove it here",
         destinationOwnerId: "artwork-id",
         destinationOwnerSlug: "artwork-slug",
       })

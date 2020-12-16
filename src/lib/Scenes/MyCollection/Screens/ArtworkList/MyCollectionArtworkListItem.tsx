@@ -58,13 +58,7 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
     <TouchElement
       onPress={() => {
         if (!!artist) {
-          trackEvent(
-            tracks.tappedCollectedArtwork(
-              "TODO: make this field optional in cohesion and remove it here",
-              internalID,
-              slug
-            )
-          )
+          trackEvent(tracks.tappedCollectedArtwork(internalID, slug))
           navigate("/my-collection/artwork/" + slug, {
             passProps: {
               medium,
@@ -135,9 +129,8 @@ export const tests = {
 }
 
 const tracks = {
-  tappedCollectedArtwork: (internalID: string, targetID: string, targetSlug: string) => {
+  tappedCollectedArtwork: (targetID: string, targetSlug: string) => {
     return tappedCollectedArtwork({
-      contextOwnerId: internalID,
       destinationOwnerId: targetID,
       destinationOwnerSlug: targetSlug,
     })

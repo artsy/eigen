@@ -71,7 +71,7 @@
     "cheerio": "0.22.0"
   },
   "dependencies": {
-    "@artsy/cohesion": "^1.67.7",
+    "@artsy/cohesion": "^1.67.8",
     "@mapbox/react-native-mapbox-gl": "6.1.3",
     "@react-native-community/async-storage": "1.6.3",
     "@react-native-community/cameraroll": "1.3.0",
