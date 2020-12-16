@@ -1,7 +1,6 @@
 This update includes a number of bug fixes and improvements, including:
 
-• Adds a new artwork inquiry flow.
-• Improves the conversations tab.
-• Fixes a bug with accessing the City Guide feature.
+• New inbox view including recent auction bids.
+• Fixes a bug causing user profile to fail to load.
 
 Have feedback? Email us at support@artsy.net
