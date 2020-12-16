@@ -66,6 +66,7 @@ RCT_EXPORT_METHOD(pushView:(nonnull NSString *)currentTabStackID viewDescriptor:
         NSString *stackID = currentTabStackID;
         if ([currentlyPresentedVC isKindOfClass:ARModalWithBottomSafeAreaViewController.class]) {
             for(id key in [self.class cachedNavigationStacks]) {
+                // if the nav stack with id `key` is the same instance as the one we're about to push to, then `key` is the stackID we want to set.
                 if ([self.class cachedNavigationStacks][key] == stack) {
                     stackID = key;
                     break;
