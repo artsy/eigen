@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0760ef06e8a74d12fb6d4cb8871deb41 */
+/* @relayHash 2ba5c8bffb0c394c9bce8f14828a28d1 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateMyProfileInput = {
@@ -48,6 +48,19 @@ export type updateMyUserProfileMutationResponse = {
             readonly receivePromotionNotification: boolean | null;
             readonly receivePurchaseNotification: boolean | null;
             readonly receiveSaleOpeningClosingNotification: boolean | null;
+            readonly internalID: string;
+        } | null;
+        readonly userOrError: {
+            readonly mutationError?: {
+                readonly type: string | null;
+                readonly message: string | null;
+                readonly detail: string | null;
+                readonly error: string | null;
+                readonly fieldErrors: ReadonlyArray<{
+                    readonly name: string;
+                    readonly message: string;
+                } | null> | null;
+            } | null;
         } | null;
     } | null;
 };
@@ -74,7 +87,23 @@ mutation updateMyUserProfileMutation(
       receivePromotionNotification
       receivePurchaseNotification
       receiveSaleOpeningClosingNotification
+      internalID
       id
+    }
+    userOrError {
+      __typename
+      ... on UpdateMyProfileMutationFailure {
+        mutationError {
+          type
+          message
+          detail
+          error
+          fieldErrors {
+            name
+            message
+          }
+        }
+      }
     }
   }
 }
@@ -164,6 +193,73 @@ v11 = {
   "kind": "ScalarField",
   "name": "receiveSaleOpeningClosingNotification",
   "storageKey": null
+},
+v12 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v13 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "message",
+  "storageKey": null
+},
+v14 = {
+  "kind": "InlineFragment",
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "GravityMutationError",
+      "kind": "LinkedField",
+      "name": "mutationError",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "type",
+          "storageKey": null
+        },
+        (v13/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "detail",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "error",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "FieldErrorResults",
+          "kind": "LinkedField",
+          "name": "fieldErrors",
+          "plural": true,
+          "selections": [
+            (v3/*: any*/),
+            (v13/*: any*/)
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    }
+  ],
+  "type": "UpdateMyProfileMutationFailure",
+  "abstractKey": null
 };
 return {
   "fragment": {
@@ -197,7 +293,20 @@ return {
               (v8/*: any*/),
               (v9/*: any*/),
               (v10/*: any*/),
-              (v11/*: any*/)
+              (v11/*: any*/),
+              (v12/*: any*/)
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": null,
+            "kind": "LinkedField",
+            "name": "userOrError",
+            "plural": false,
+            "selections": [
+              (v14/*: any*/)
             ],
             "storageKey": null
           }
@@ -240,6 +349,7 @@ return {
               (v9/*: any*/),
               (v10/*: any*/),
               (v11/*: any*/),
+              (v12/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -249,6 +359,25 @@ return {
               }
             ],
             "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": null,
+            "kind": "LinkedField",
+            "name": "userOrError",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "__typename",
+                "storageKey": null
+              },
+              (v14/*: any*/)
+            ],
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -256,7 +385,7 @@ return {
     ]
   },
   "params": {
-    "id": "0760ef06e8a74d12fb6d4cb8871deb41",
+    "id": "2ba5c8bffb0c394c9bce8f14828a28d1",
     "metadata": {},
     "name": "updateMyUserProfileMutation",
     "operationKind": "mutation",
@@ -264,5 +393,5 @@ return {
   }
 };
 })();
-(node as any).hash = '0724a349b5ad8816f761a584027fd23a';
+(node as any).hash = 'e5a448421bc6c70e865df29eef9dd38e';
 export default node;
