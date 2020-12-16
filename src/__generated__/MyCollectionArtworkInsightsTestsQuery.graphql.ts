@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 342acd5544543ef1dd9aa29877e0e579 */
+/* @relayHash 91d29c86d5fcd670e0f9961bac4b7abc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -129,7 +129,9 @@ fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights 
 fragment MyCollectionArtworkPriceEstimate_artwork on Artwork {
   costCurrencyCode
   costMinor
+  internalID
   sizeBucket
+  slug
 }
 
 fragment MyCollectionArtworkPriceEstimate_marketPriceInsights on MarketPriceInsights {
@@ -727,7 +729,7 @@ return {
     ]
   },
   "params": {
-    "id": "342acd5544543ef1dd9aa29877e0e579",
+    "id": "91d29c86d5fcd670e0f9961bac4b7abc",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
