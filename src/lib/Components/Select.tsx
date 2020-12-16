@@ -25,6 +25,7 @@ interface SelectProps<ValueType> {
   showTitleLabel?: boolean
   subTitle?: string
   enableSearch?: boolean
+  maxModalHeight?: number
   onSelectValue(value: ValueType): void
   renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
   renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
@@ -56,7 +57,17 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
   }
 
   render() {
-    const { options, onSelectValue, value, placeholder, enableSearch, title, showTitleLabel, subTitle } = this.props
+    const {
+      options,
+      onSelectValue,
+      value,
+      placeholder,
+      enableSearch,
+      title,
+      showTitleLabel,
+      subTitle,
+      maxModalHeight,
+    } = this.props
 
     const selectedItem = options.find((o) => o.value === value)
     return (
@@ -77,6 +88,7 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
           enableSearch={enableSearch}
           value={value}
           options={options}
+          maxHeight={maxModalHeight}
           onDismiss={this.close.bind(this)}
           onSelectValue={onSelectValue}
           renderItemLabel={this.props.renderItemLabel}
@@ -136,6 +148,7 @@ const SelectModal: React.FC<{
   title: string
   enableSearch?: boolean
   visible: boolean
+  maxHeight?: number
   onDismiss(): any
   onSelectValue(value: unknown): any
   renderItemLabel?(value: SelectOption<unknown>): JSX.Element
@@ -218,6 +231,7 @@ const SelectModal: React.FC<{
     <FancyModal
       visible={props.visible}
       onBackgroundPressed={props.onDismiss}
+      maxHeight={props.maxHeight}
       onModalFinishedClosing={props.onModalFinishedClosing}
     >
       <Flex p="2" pb={15} flexDirection="row" alignItems="center" flexGrow={0}>
