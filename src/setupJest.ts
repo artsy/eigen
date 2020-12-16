@@ -163,7 +163,6 @@ function getNativeModules(): typeof NativeModules {
           AREnableNewPartnerView: false,
           AROptionsNewFirstInquiry: false,
           AROptionsUseReactNativeWebView: false,
-          AROptionsNewShowPage: false,
           AROptionsNewFairPage: false,
           AROptionsNewInsightsPage: false,
         },

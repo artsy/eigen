@@ -266,23 +266,8 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  describe("routes to Show, based on lab option", () => {
-    it("routes to the old Show view when the AROptionsNewShowPage option is false", () => {
-      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: false })
-      expect(matchRoute("/show/special-show")).toMatchInlineSnapshot(`
-        Object {
-          "module": "Show",
-          "params": Object {
-            "showID": "special-show",
-          },
-          "type": "match",
-        }
-      `)
-    })
-
-    it("routes to the new Show view when the AROptionsNewShowPage option is true", () => {
-      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: true })
-      expect(matchRoute("/show/special-show")).toMatchInlineSnapshot(`
+  it("routes to the Show view", () => {
+    expect(matchRoute("/show/special-show")).toMatchInlineSnapshot(`
         Object {
           "module": "Show2",
           "params": Object {
@@ -291,49 +276,6 @@ describe("artsy.net routes", () => {
           "type": "match",
         }
       `)
-    })
-  })
-
-  it("routes to ShowArtworks", () => {
-    expect(matchRoute("/show/blue/artworks")).toMatchInlineSnapshot(`
-      Object {
-        "module": "ShowArtworks",
-        "params": Object {
-          "showID": "blue",
-        },
-        "type": "match",
-      }
-    `)
-    expect(matchRoute("/show/pop-art/artworks")).toMatchInlineSnapshot(`
-      Object {
-        "module": "ShowArtworks",
-        "params": Object {
-          "showID": "pop-art",
-        },
-        "type": "match",
-      }
-    `)
-  })
-
-  it("routes to ShowArtists", () => {
-    expect(matchRoute("/show/blue/artists")).toMatchInlineSnapshot(`
-      Object {
-        "module": "ShowArtists",
-        "params": Object {
-          "showID": "blue",
-        },
-        "type": "match",
-      }
-    `)
-    expect(matchRoute("/show/pop-art/artists")).toMatchInlineSnapshot(`
-      Object {
-        "module": "ShowArtists",
-        "params": Object {
-          "showID": "pop-art",
-        },
-        "type": "match",
-      }
-    `)
   })
 
   it("routes to ShowMoreInfo", () => {

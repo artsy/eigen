@@ -71,8 +71,6 @@ import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
 
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
-import { ShowArtistsQueryRenderer, ShowArtworksQueryRenderer, ShowMoreInfoQueryRenderer } from "./Scenes/Show"
-import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { Show2MoreInfoQueryRenderer, Show2QueryRenderer } from "./Scenes/Show2"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
@@ -191,27 +189,6 @@ const BidderFlow: React.FC<BidderFlowProps> = ({ intent, ...restProps }) => {
     case "register":
       return <RegistrationFlowQueryRenderer {...restProps} />
   }
-}
-
-interface ShowArtistsProps {
-  showID: string
-}
-const ShowArtists: React.FC<ShowArtistsProps> = ({ showID }) => {
-  return <ShowArtistsQueryRenderer showID={showID} />
-}
-
-interface ShowArtworksProps {
-  showID: string
-}
-const ShowArtworks: React.FC<ShowArtworksProps> = ({ showID }) => {
-  return <ShowArtworksQueryRenderer showID={showID} />
-}
-
-interface ShowMoreInfoProps {
-  showID: string
-}
-const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ showID }) => {
-  return <ShowMoreInfoQueryRenderer showID={showID} />
 }
 
 interface FairBoothProps {
@@ -433,7 +410,6 @@ export const modules = defineModules({
   Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }),
   SalesNotRootTabView: reactModule(Consignments),
   Search: reactModule(SearchWithTracking, { isRootViewForTabName: "search" }),
-  Show: reactModule(ShowQueryRenderer),
   Show2: reactModule(Show2QueryRenderer, { fullBleed: true }),
   ShowArtists: reactModule(ShowArtists),
   ShowArtworks: reactModule(ShowArtworks),
