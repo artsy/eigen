@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 91d29c86d5fcd670e0f9961bac4b7abc */
+/* @relayHash fb1627cedfefd1b02e63b74dba86132f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -89,6 +89,11 @@ fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
   }
 }
 
+fragment MyCollectionArtworkArtistMarket_artwork on Artwork {
+  internalID
+  slug
+}
+
 fragment MyCollectionArtworkArtistMarket_marketPriceInsights on MarketPriceInsights {
   annualLotsSold
   annualValueSoldCents
@@ -117,6 +122,7 @@ fragment MyCollectionArtworkInsights_artwork on Artwork {
   ...MyCollectionArtworkPriceEstimate_artwork
   ...MyCollectionArtworkArtistAuctionResults_artwork
   ...MyCollectionArtworkArtistArticles_artwork
+  ...MyCollectionArtworkArtistMarket_artwork
   ...MyCollectionArtworkDemandIndex_artwork
 }
 
@@ -729,7 +735,7 @@ return {
     ]
   },
   "params": {
-    "id": "91d29c86d5fcd670e0f9961bac4b7abc",
+    "id": "fb1627cedfefd1b02e63b74dba86132f",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
