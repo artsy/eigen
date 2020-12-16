@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 61c82a547695c52e6af08b7f3b193de2 */
+/* @relayHash cfa46f75e8c5f546a59b5dc54f77431e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -50,6 +50,8 @@ fragment MyCollectionArtworkHeader_artwork on Artwork {
   images {
     ...ImageCarousel_images
     isDefault
+    imageURL
+    internalID
   }
   internalID
   title
@@ -255,6 +257,13 @@ return {
                 "name": "isDefault",
                 "storageKey": null
               },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "imageURL",
+                "storageKey": null
+              },
               (v1/*: any*/)
             ],
             "storageKey": null
@@ -280,7 +289,7 @@ return {
     ]
   },
   "params": {
-    "id": "61c82a547695c52e6af08b7f3b193de2",
+    "id": "cfa46f75e8c5f546a59b5dc54f77431e",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -310,23 +319,30 @@ return {
           "plural": false,
           "type": "DeepZoomImage"
         },
-        "artwork.images.deepZoom.image.format": (v1/*: any*/),
+        "artwork.images.deepZoom.image.format": (v2/*: any*/),
         "artwork.images.deepZoom.image.size": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "DeepZoomImageSize"
         },
-        "artwork.images.deepZoom.image.size.height": (v3/*: any*/),
-        "artwork.images.deepZoom.image.size.width": (v3/*: any*/),
-        "artwork.images.deepZoom.image.tileSize": (v3/*: any*/),
-        "artwork.images.deepZoom.image.url": (v1/*: any*/),
-        "artwork.images.height": (v3/*: any*/),
+        "artwork.images.deepZoom.image.size.height": (v4/*: any*/),
+        "artwork.images.deepZoom.image.size.width": (v4/*: any*/),
+        "artwork.images.deepZoom.image.tileSize": (v4/*: any*/),
+        "artwork.images.deepZoom.image.url": (v2/*: any*/),
+        "artwork.images.height": (v4/*: any*/),
+        "artwork.images.imageURL": (v2/*: any*/),
         "artwork.images.imageVersions": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "String"
+        },
+        "artwork.images.internalID": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ID"
         },
         "artwork.images.isDefault": {
           "enumValues": null,
@@ -334,10 +350,10 @@ return {
           "plural": false,
           "type": "Boolean"
         },
-        "artwork.images.url": (v1/*: any*/),
-        "artwork.images.width": (v3/*: any*/),
-        "artwork.internalID": (v2/*: any*/),
-        "artwork.title": (v1/*: any*/)
+        "artwork.images.url": (v2/*: any*/),
+        "artwork.images.width": (v4/*: any*/),
+        "artwork.internalID": (v3/*: any*/),
+        "artwork.title": (v2/*: any*/)
       }
     },
     "name": "MyCollectionArtworkHeaderTestsQuery",

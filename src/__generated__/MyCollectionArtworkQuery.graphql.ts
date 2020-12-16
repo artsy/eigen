@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e2612f99f0b14715a0ff4b359bd31b48 */
+/* @relayHash e30fb688ef2e28c768c8a75ec81707ea */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,9 +30,11 @@ export type MyCollectionArtworkQueryResponse = {
             readonly imageURL: string | null;
             readonly width: number | null;
             readonly height: number | null;
+            readonly internalID: string | null;
             readonly url: string | null;
             readonly imageVersions: ReadonlyArray<string | null> | null;
             readonly deepZoom: {
+                readonly image: {
                     readonly tileSize: number | null;
                     readonly url: string | null;
                     readonly format: string | null;
@@ -43,6 +45,9 @@ export type MyCollectionArtworkQueryResponse = {
                 } | null;
             } | null;
         } | null> | null;
+        readonly internalID: string;
+        readonly medium: string | null;
+        readonly metric: string | null;
         readonly provenance: string | null;
         readonly slug: string;
         readonly title: string | null;
@@ -86,6 +91,7 @@ query MyCollectionArtworkQuery(
       imageURL
       width
       height
+      internalID
       url
       imageVersions
       deepZoom {
@@ -208,6 +214,8 @@ fragment MyCollectionArtworkHeader_artwork on Artwork {
   images {
     ...ImageCarousel_images
     isDefault
+    imageURL
+    internalID
   }
   internalID
   title
@@ -409,6 +417,7 @@ v17 = {
     },
     (v15/*: any*/),
     (v13/*: any*/),
+    (v4/*: any*/),
     (v16/*: any*/),
     {
       "alias": null,
@@ -1067,7 +1076,7 @@ return {
     ]
   },
   "params": {
-    "id": "e2612f99f0b14715a0ff4b359bd31b48",
+    "id": "e30fb688ef2e28c768c8a75ec81707ea",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",
