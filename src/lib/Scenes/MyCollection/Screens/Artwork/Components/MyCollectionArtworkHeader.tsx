@@ -1,3 +1,4 @@
+import { tappedCollectedArtworkImages } from "@artsy/cohesion"
 import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
@@ -8,6 +9,7 @@ import { ArtworkIcon, color, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface MyCollectionArtworkHeaderProps {
   artwork: MyCollectionArtworkHeader_artwork
@@ -15,12 +17,14 @@ interface MyCollectionArtworkHeaderProps {
 
 const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (props) => {
   const {
-    artwork: { artistNames, date, images, internalID, title },
+    artwork: { artistNames, date, images, internalID, title, slug },
   } = props
   const dimensions = useScreenDimensions()
   const formattedTitleAndYear = [title, date].filter(Boolean).join(", ")
 
   const defaultImage = images?.find((i) => i?.isDefault) || (images && images[0])
+
+  const { trackEvent } = useTracking()
 
   const isImage = (toCheck: any): toCheck is Image => !!toCheck
 
@@ -84,6 +88,7 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
         disabled={hasImagesStillProcessing(defaultImage, images)}
         onPress={() => {
           navigate(`/my-collection/artwork-images/${internalID}`)
+          trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))
         }}
       >
         {renderMainImageView()}
@@ -127,7 +132,14 @@ export const MyCollectionArtworkHeaderFragmentContainer = createFragmentContaine
         internalID
       }
       internalID
+      slug
       title
     }
   `,
 })
+
+const tracks = {
+  tappedCollectedArtworkImages: (internalID: string, slug: string) => {
+    return tappedCollectedArtworkImages({ contextOwnerId: internalID, contextOwnerSlug: slug })
+  },
+}
