@@ -23,6 +23,7 @@ export type MyCollectionArtwork_sharedProps = {
         readonly imageURL: string | null;
         readonly width: number | null;
         readonly height: number | null;
+        readonly internalID: string | null;
     } | null> | null;
     readonly internalID: string;
     readonly medium: string | null;
@@ -168,7 +169,8 @@ return {
           "storageKey": null
         },
         (v2/*: any*/),
-        (v1/*: any*/)
+        (v1/*: any*/),
+        (v0/*: any*/)
       ],
       "storageKey": null
     },
@@ -214,5 +216,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '54c1e9f10107f8fe4f3f4ddad91f7106';
+(node as any).hash = 'ee2ed6b91946290ebe919132a3dce05c';
 export default node;

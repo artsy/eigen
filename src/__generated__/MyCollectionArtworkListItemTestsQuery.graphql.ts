@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 41c42ea61d61bbd9f7b0ad746ee2eb47 */
+/* @relayHash 4fd853649175533922b8cc0cf18f1a05 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionArtworkListItemTestsQueryVariables = {};
@@ -25,6 +25,7 @@ export type MyCollectionArtworkListItemTestsQueryResponse = {
             readonly imageURL: string | null;
             readonly width: number | null;
             readonly height: number | null;
+            readonly internalID: string | null;
         } | null> | null;
         readonly internalID: string;
         readonly medium: string | null;
@@ -64,6 +65,7 @@ query MyCollectionArtworkListItemTestsQuery {
       imageURL
       width
       height
+      internalID
     }
     internalID
     medium
@@ -191,7 +193,8 @@ v13 = {
       "storageKey": null
     },
     (v12/*: any*/),
-    (v10/*: any*/)
+    (v10/*: any*/),
+    (v1/*: any*/)
   ],
   "storageKey": null
 },
@@ -351,7 +354,7 @@ return {
     ]
   },
   "params": {
-    "id": "41c42ea61d61bbd9f7b0ad746ee2eb47",
+    "id": "4fd853649175533922b8cc0cf18f1a05",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -386,6 +389,12 @@ return {
         },
         "artwork.images.height": (v21/*: any*/),
         "artwork.images.imageURL": (v20/*: any*/),
+        "artwork.images.internalID": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ID"
+        },
         "artwork.images.isDefault": {
           "enumValues": null,
           "nullable": true,

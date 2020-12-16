@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2c0e3407112e82e035956ab439b269b4 */
+/* @relayHash 155433c248a0534f0b4a625b0fb8f874 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,6 +30,7 @@ export type MyCollectionArtworkQueryResponse = {
             readonly imageURL: string | null;
             readonly width: number | null;
             readonly height: number | null;
+            readonly internalID: string | null;
         } | null> | null;
         readonly internalID: string;
         readonly medium: string | null;
@@ -77,6 +78,7 @@ query MyCollectionArtworkQuery(
       imageURL
       width
       height
+      internalID
     }
     internalID
     medium
@@ -170,6 +172,7 @@ fragment MyCollectionArtworkHeader_artwork on Artwork {
     isDefault
     imageURL
     width
+    internalID
   }
   internalID
   title
@@ -363,7 +366,8 @@ v16 = {
       "storageKey": null
     },
     (v15/*: any*/),
-    (v13/*: any*/)
+    (v13/*: any*/),
+    (v4/*: any*/)
   ],
   "storageKey": null
 },
@@ -952,7 +956,7 @@ return {
     ]
   },
   "params": {
-    "id": "2c0e3407112e82e035956ab439b269b4",
+    "id": "155433c248a0534f0b4a625b0fb8f874",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",

@@ -12,6 +12,7 @@ export interface Image {
   height?: number
   isDefault?: boolean
   imageURL?: string
+  internalID?: string
   path?: string
   width?: number
 }

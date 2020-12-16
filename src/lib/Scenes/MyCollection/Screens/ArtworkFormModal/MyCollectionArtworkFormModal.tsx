@@ -21,7 +21,9 @@ import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
 
 import { isEqual } from "lodash"
+import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { refreshMyCollection } from "../../MyCollection"
+import { deletedPhotoIDs } from "../../utils/deletedPhotoIDs"
 import { MyCollectionAdditionalDetailsForm } from "./Screens/MyCollectionArtworkFormAdditionalDetails"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
 import { MyCollectionArtworkFormMain } from "./Screens/MyCollectionArtworkFormMain"
@@ -91,6 +93,11 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
             ...cleanArtworkPayload(others),
             ...explicitlyClearedFields(others, dirtyFormCheckValues),
           })
+
+          const deletedIDs = deletedPhotoIDs(dirtyFormCheckValues.photos, photos)
+          for (const deletedID of deletedIDs) {
+            await deleteArtworkImage(props.artwork.internalID, deletedID)
+          }
         }
         refreshMyCollection()
         props.onSuccess()

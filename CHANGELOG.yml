@@ -13,6 +13,7 @@ upcoming:
     - Fix bug where user profile may fail to load - erik
     - Fix bug preventing empty values from being saved (my collection) - brian
     - Add improved phone number input - david
+    - Add support for deleting photos in my collection - brian. barry
 
 releases:
   - version: 6.7.3

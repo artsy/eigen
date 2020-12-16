@@ -124,6 +124,7 @@ export const MyCollectionArtworkHeaderFragmentContainer = createFragmentContaine
         isDefault
         imageURL
         width
+        internalID
       }
       internalID
       title
