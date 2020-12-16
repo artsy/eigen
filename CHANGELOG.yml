@@ -4,7 +4,7 @@ upcoming:
   dev:
     - Add slack notification when betas fail - brian
     - Enable my bids - lily
-    - Analytics tracking for My Collection - pepopowitz
+    - Analytics tracking for My Collection - pepopowitz, annacarey
   user_facing:
     - Update copy in My Collection - annacarey
     - Fix multi-image upload and add processing state in my collection - brian, barry
