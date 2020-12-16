@@ -59,6 +59,21 @@ RCT_EXPORT_METHOD(pushView:(nonnull NSString *)currentTabStackID viewDescriptor:
         deepLinkVC = vc;
         return;
     }
+    
+    if ([vc isKindOfClass:ARComponentViewController.class]) {
+        ARComponentViewController *reactVC = (ARComponentViewController *)vc;
+        // if we're in a modal, get the modal id from the stack map
+        NSString *stackID = currentTabStackID;
+        if ([currentlyPresentedVC isKindOfClass:ARModalWithBottomSafeAreaViewController.class]) {
+            for(id key in [self.class cachedNavigationStacks]) {
+                if ([self.class cachedNavigationStacks][key] == stack) {
+                    stackID = key;
+                    break;
+                }
+            }
+        }
+        [reactVC setProperty:currentTabStackID forKey:@"navStackID"];
+    }
 
     [stack pushViewController:vc animated:YES];
 }
@@ -401,6 +416,11 @@ static UIViewController *deepLinkVC = nil;
 + (ARNavigationController *)createNavigationStack:(NSString *)stackID rootViewController:(UIViewController *)rootViewController
 {
     @synchronized (self) {
+        if ([rootViewController isKindOfClass:ARComponentViewController.class]) {
+            ARComponentViewController *reactVC = (ARComponentViewController *)rootViewController;
+            [reactVC setProperty:stackID forKey:@"navStackID"];
+        }
+
         ARNavigationController *stack = [[ARNavigationController alloc] initWithRootViewController:rootViewController];
         [self cachedNavigationStacks][stackID] = stack;
         if (deepLinkVC) {
