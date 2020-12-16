@@ -437,7 +437,7 @@ export const modules = defineModules({
   Show2: reactModule(Show2QueryRenderer, { fullBleed: true }),
   ShowArtists: reactModule(ShowArtists),
   ShowArtworks: reactModule(ShowArtworks),
-  Show2MoreInfo: reactModule(Show2MoreInfoQueryRenderer, { fullBleed: true }),
+  Show2MoreInfo: reactModule(Show2MoreInfoQueryRenderer),
   ShowMoreInfo: reactModule(ShowMoreInfo),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
