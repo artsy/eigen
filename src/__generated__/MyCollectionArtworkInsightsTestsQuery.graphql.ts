@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 542b34f55ede0d2be4aa10b0e1bfd284 */
+/* @relayHash 3e5c5ae324304737a658aa76981d5490 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -59,6 +59,8 @@ fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
 }
 
 fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
+  internalID
+  slug
   artist {
     slug
     auctionResultsConnection(first: 3, sort: DATE_DESC) {
@@ -559,6 +561,8 @@ return {
             "name": "costMinor",
             "storageKey": null
           },
+          (v6/*: any*/),
+          (v4/*: any*/),
           (v3/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-artwork-id\")"
@@ -717,7 +721,7 @@ return {
     ]
   },
   "params": {
-    "id": "542b34f55ede0d2be4aa10b0e1bfd284",
+    "id": "3e5c5ae324304737a658aa76981d5490",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -813,8 +817,10 @@ return {
         "artwork.costCurrencyCode": (v9/*: any*/),
         "artwork.costMinor": (v12/*: any*/),
         "artwork.id": (v8/*: any*/),
+        "artwork.internalID": (v8/*: any*/),
         "artwork.medium": (v9/*: any*/),
         "artwork.sizeBucket": (v9/*: any*/),
+        "artwork.slug": (v8/*: any*/),
         "marketPriceInsights": {
           "enumValues": null,
           "nullable": true,
