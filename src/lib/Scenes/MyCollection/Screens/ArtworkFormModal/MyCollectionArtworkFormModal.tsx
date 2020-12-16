@@ -94,7 +94,6 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
             ...explicitlyClearedFields(others, dirtyFormCheckValues),
           })
 
-          // TODO: Can this logic live in metaphysics as part of edit artwork mutation?
           const deletedIDs = deletedPhotoIDs(dirtyFormCheckValues.photos, photos)
           for (const deletedID of deletedIDs) {
             await deleteArtworkImage(props.artwork.internalID, deletedID)
