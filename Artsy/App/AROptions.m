@@ -13,7 +13,6 @@ NSString *const AROptionsLoadingScreenAlpha = @"AROptionsLoadingScreenAlpha";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
 NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
 NSString *const AROptionsArtistSeries = @"AROptionsArtistSeries";
-NSString *const AROptionsNewSalePage = @"AROptionsNewSalePage";
 NSString *const AROptionsNewFirstInquiry = @"AROptionsNewFirstInquiry";
 NSString *const AROptionsNewFairPage = @"AROptionsNewFairPage";
 NSString *const AROptionsNewInsightsPage = @"AROptionsNewInsightsPage";
