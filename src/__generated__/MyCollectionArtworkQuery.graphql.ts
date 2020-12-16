@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0b1f9b0eb129c15a471657fe8cc3724e */
+/* @relayHash ad3326385642cdbc61de31f8c83791e9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -187,6 +187,7 @@ fragment MyCollectionArtworkHeader_artwork on Artwork {
     internalID
   }
   internalID
+  slug
   title
 }
 
@@ -972,7 +973,7 @@ return {
     ]
   },
   "params": {
-    "id": "0b1f9b0eb129c15a471657fe8cc3724e",
+    "id": "ad3326385642cdbc61de31f8c83791e9",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",
