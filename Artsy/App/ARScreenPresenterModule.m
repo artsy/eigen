@@ -72,7 +72,7 @@ RCT_EXPORT_METHOD(pushView:(nonnull NSString *)currentTabStackID viewDescriptor:
                 }
             }
         }
-        [reactVC setProperty:currentTabStackID forKey:@"navStackID"];
+        [reactVC setProperty:stackID forKey:@"navStackID"];
     }
 
     [stack pushViewController:vc animated:YES];
