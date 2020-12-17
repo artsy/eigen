@@ -2,12 +2,7 @@ upcoming:
   version: 6.7.4
   date: TBD
   dev:
-    - Update color scheme - mdole
-    - Allow for multiple artwork images in My Collection - adam
-    - Set price and marketing text dynamically - adam
-    - Migrate floor selling price and online asking price in My Bids to the new type - starsirius
     - Upgrade Mapbox - pavlos
-    - remove new inquiry flow feature flag in favor of echo flag - lily
     - Add slack notification when betas fail - brian
     - Enable my bids - lily
   user_facing:
