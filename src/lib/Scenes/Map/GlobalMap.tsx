@@ -492,8 +492,11 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   onUserLocationUpdate = (location: MapboxGL.Location) => {
+    if (location === null || location.coords === null) {
+      return
+    }
     this.setState({
-      userLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
+      userLocation: GlobalMap.longCoordsToLocation(location.coords),
     })
   }
 
