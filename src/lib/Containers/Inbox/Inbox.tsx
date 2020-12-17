@@ -1,19 +1,60 @@
 import { Inbox_me } from "__generated__/Inbox_me.graphql"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
+import { CssTransition } from "lib/Components/Bidding/Components/Animation/CssTransition"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ConversationsContainer } from "lib/Scenes/Inbox/Components/Conversations/Conversations"
 import { MyBidsContainer } from "lib/Scenes/MyBids/MyBids"
 import { listenToNativeEvents } from "lib/store/NativeModel"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Flex, Spacer, Text } from "palette"
+import { Flex, Separator, Text } from "palette"
 import React from "react"
-import { EmitterSubscription, RefreshControl } from "react-native"
+import { EmitterSubscription, LayoutChangeEvent, View, ViewProps } from "react-native"
+// @ts-expect-error @types file generates duplicate declaration problems
+import ScrollableTabView, { TabBarProps } from "react-native-scrollable-tab-view"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-import styled from "styled-components/native"
 
+// Tabs
+interface TabWrapperProps extends ViewProps {
+  tabLabel: string
+}
+
+const TabWrapper: React.FC<TabWrapperProps> = (props) => <View {...props} />
+
+const InboxTabs: React.FC<TabBarProps> = (props) => (
+  <>
+    <Flex flexDirection="row" px={1.5} mb={2}>
+      {props.tabs?.map((name: JSX.Element, page: number) => {
+        const isTabActive = props.activeTab === page
+        return (
+          <CssTransition
+            style={[{ opacity: isTabActive ? 1 : 0.3 }]}
+            animate={["opacity"]}
+            duration={200}
+            key={`inbox-tab-${name}`}
+          >
+            <Text
+              mr={2}
+              color="black100"
+              variant="largeTitle"
+              onPress={() => {
+                if (!!props.goToPage) {
+                  props.goToPage(page)
+                }
+              }}
+            >
+              {name}
+            </Text>
+          </CssTransition>
+        )
+      })}
+    </Flex>
+    <Separator />
+  </>
+)
+
+// Inbox
 interface State {
   fetchingData: boolean
-  inquiryTabIsSelected: boolean
 }
 
 interface Props {
@@ -22,17 +63,18 @@ interface Props {
   isVisible: boolean
 }
 
-const Container = styled.ScrollView`
-  flex: 1;
-`
 export class Inbox extends React.Component<Props, State> {
   // @ts-ignore STRICTNESS_MIGRATION
   conversations: ConversationsRef
 
+  // @ts-ignore STRICTNESS_MIGRATION
+  myBids: MyBidsRef
+
   state = {
     fetchingData: false,
-    inquiryTabIsSelected: false,
   }
+
+  scrollViewVerticalStart = 0
 
   listener: EmitterSubscription | null = null
 
@@ -67,6 +109,10 @@ export class Inbox extends React.Component<Props, State> {
       this.conversations.refreshConversations(() => {
         this.setState({ fetchingData: false })
       })
+    } else if (this.myBids) {
+      this.myBids.refreshMyBids(() => {
+        this.setState({ fetchingData: false })
+      })
     } else {
       this.props.relay.refetch({}, null, () => {
         this.setState({ fetchingData: false })
@@ -74,40 +120,32 @@ export class Inbox extends React.Component<Props, State> {
     }
   }
 
+  onScrollableTabViewLayout = (layout: LayoutChangeEvent) => {
+    this.scrollViewVerticalStart = layout.nativeEvent.layout.y
+  }
+
   render() {
+    const bottomInset = this.scrollViewVerticalStart
     return (
-      <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
-        <Spacer pb={5} />
-        <Flex flexDirection="row" px={1.5} mb={1}>
-          <Text
-            mr={2}
-            color={this.state.inquiryTabIsSelected ? "black30" : "black100"}
-            onPress={() => {
-              this.setState({ inquiryTabIsSelected: false })
-            }}
-            variant="largeTitle"
-          >
-            Bids
-          </Text>
-          <Text
-            color={this.state.inquiryTabIsSelected ? "black100" : "black30"}
-            onPress={() => {
-              this.setState({ inquiryTabIsSelected: true })
-            }}
-            variant="largeTitle"
-          >
-            Inquiries
-          </Text>
-        </Flex>
-        {this.state.inquiryTabIsSelected ? (
+      <ScrollableTabView
+        style={{ paddingTop: 30 }}
+        initialPage={0}
+        renderTabBar={() => <InboxTabs />}
+        contentProps={{
+          contentInset: { bottom: bottomInset },
+          onLayout: this.onScrollableTabViewLayout,
+        }}
+      >
+        <TabWrapper tabLabel="Bids" key="bids" style={{ flexGrow: 1, justifyContent: "center" }}>
+          <MyBidsContainer me={this.props.me} componentRef={(myBids) => (this.myBids = myBids)} />
+        </TabWrapper>
+        <TabWrapper tabLabel="Inquiries" key="inquiries" style={{ flexGrow: 1, justifyContent: "flex-start" }}>
           <ConversationsContainer
             me={this.props.me}
             componentRef={(conversations) => (this.conversations = conversations)}
           />
-        ) : (
-          <MyBidsContainer me={this.props.me} />
-        )}
-      </Container>
+        </TabWrapper>
+      </ScrollableTabView>
     )
   }
 }

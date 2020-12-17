@@ -7,17 +7,6 @@ import { FragmentRefs } from "relay-runtime";
 export type MyProfile_me = {
     readonly name: string | null;
     readonly labFeatures: ReadonlyArray<string>;
-    readonly auctionsLotStandingConnection: {
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly saleArtwork: {
-                    readonly sale: {
-                        readonly status: string | null;
-                    } | null;
-                } | null;
-            };
-        } | null> | null;
-    };
     readonly followsAndSaves: {
         readonly artworksConnection: {
             readonly edges: ReadonlyArray<{
@@ -57,74 +46,6 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "name": "labFeatures",
       "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "first",
-          "value": 25
-        }
-      ],
-      "concreteType": "AuctionsLotStandingConnection",
-      "kind": "LinkedField",
-      "name": "auctionsLotStandingConnection",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "AuctionsLotStandingEdge",
-          "kind": "LinkedField",
-          "name": "edges",
-          "plural": true,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "AuctionsLotStanding",
-              "kind": "LinkedField",
-              "name": "node",
-              "plural": false,
-              "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "SaleArtwork",
-                  "kind": "LinkedField",
-                  "name": "saleArtwork",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "concreteType": "Sale",
-                      "kind": "LinkedField",
-                      "name": "sale",
-                      "plural": false,
-                      "selections": [
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "status",
-                          "storageKey": null
-                        }
-                      ],
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
-                }
-              ],
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        }
-      ],
-      "storageKey": "auctionsLotStandingConnection(first:25)"
     },
     {
       "alias": null,
@@ -197,5 +118,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '8bde13c4e7b6d6fbc4a025e5a64b2272';
+(node as any).hash = '1e2dca43df112021af17d58cedd0c776';
 export default node;

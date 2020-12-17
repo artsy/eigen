@@ -1,3 +1,6 @@
-This update fixes a bug that affected deep link handling when the app is closed.
+This update includes a number of bug fixes and improvements, including:
+
+• New inbox view including recent auction bids.
+• Fixes a bug causing user profile to fail to load.
 
 Have feedback? Email us at support@artsy.net

@@ -25,11 +25,9 @@ const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexPro
         modalContent={
           <>
             <Text>
-              Overall strength of demand for this artist and medium combination in the art market. Based on 36 months of
-              auction result data including liquidity, sell-through rate, data 3, data 4. 2020.
+              Overall strength of demand for this artist and medium combination. Based on the last 36 months of auction
+              sale data from top commercial auction houses.
             </Text>
-            <Spacer my={1} />
-            <Text>Last updated Aug 30, 2020.</Text>
           </>
         }
       />
@@ -120,7 +118,9 @@ const ProgressBar: React.FC<{ width: number }> = ({ width }) => {
   return (
     <>
       <Box width="100%" position="relative" height={10} left={-6}>
-        <TriangleDown left={pctWidth} position="absolute" />
+        <Box left={pctWidth} position="absolute">
+          <TriangleDown />
+        </Box>
       </Box>
       <Box height={20} width="100%" bg="black5">
         <LinearGradient

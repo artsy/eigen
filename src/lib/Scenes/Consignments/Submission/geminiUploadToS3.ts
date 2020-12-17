@@ -14,7 +14,7 @@ export interface S3UploadResponse {
 declare var FormData: any
 declare var XMLHttpRequest: any
 
-export const uploadFileToS3 = (file: string, acl: string, asset: AssetCredentials) =>
+export const uploadFileToS3 = (file: string, acl: string, asset: AssetCredentials, filename?: string) =>
   new Promise<S3UploadResponse>((resolve, reject) => {
     const formData = new FormData()
     const geminiKey = asset.policyDocument.conditions.geminiKey
@@ -41,7 +41,7 @@ export const uploadFileToS3 = (file: string, acl: string, asset: AssetCredential
     formData.append("file", {
       uri: file,
       type: "image/jpeg",
-      name: "photo.jpg",
+      name: filename ?? "photo.jpg",
     })
 
     // Fetch didn't seem to work, so I had to move to a lower

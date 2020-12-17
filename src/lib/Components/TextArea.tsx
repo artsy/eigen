@@ -24,10 +24,12 @@ export const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => {
       )}
       <StyledTextArea
         {...props}
-        onFocus={() => {
+        onFocus={(e) => {
+          props.onFocus?.(e)
           setBorderColor(color("purple100"))
         }}
-        onBlur={() => {
+        onBlur={(e) => {
+          props.onBlur?.(e)
           setBorderColor(color("black10"))
         }}
         style={{ borderColor }}

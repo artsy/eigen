@@ -8,6 +8,7 @@ import { CreditCardForm } from "../Screens/CreditCardForm"
 import { BidInfoRow } from "./BidInfoRow"
 import { Divider } from "./Divider"
 
+import { bullet } from "palette"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { FlexProps } from "../Elements/Flex"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
@@ -94,7 +95,7 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
   }
 
   private formatCard(token: StripeToken) {
-    return `${token.card.brand} •••• ${token.card.last4}`
+    return `${token.card.brand} ${bullet}${bullet}${bullet}${bullet} ${token.card.last4}`
   }
 
   private formatAddress(address: Address) {

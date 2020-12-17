@@ -10,8 +10,9 @@ export type MyCollectionArtworkHeader_artwork = {
     readonly images: ReadonlyArray<{
         readonly height: number | null;
         readonly isDefault: boolean | null;
-        readonly url: string | null;
+        readonly imageURL: string | null;
         readonly width: number | null;
+        readonly internalID: string | null;
     } | null> | null;
     readonly internalID: string;
     readonly title: string | null;
@@ -25,7 +26,15 @@ export type MyCollectionArtworkHeader_artwork$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -71,7 +80,7 @@ const node: ReaderFragment = {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
-          "name": "url",
+          "name": "imageURL",
           "storageKey": null
         },
         {
@@ -80,17 +89,12 @@ const node: ReaderFragment = {
           "kind": "ScalarField",
           "name": "width",
           "storageKey": null
-        }
+        },
+        (v0/*: any*/)
       ],
       "storageKey": null
     },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "internalID",
-      "storageKey": null
-    },
+    (v0/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -102,5 +106,6 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '482f0b0d9bfa5d2bfd6a35f9af7991bb';
+})();
+(node as any).hash = '795f451361a9142446d36ea529f1637a';
 export default node;

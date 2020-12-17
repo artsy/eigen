@@ -71,12 +71,12 @@ describe("SaleCard", () => {
       }),
       Me: () => ({
         identityVerified: false,
-        pendingIdentityVerification: true,
+        pendingIdentityVerification: { internalID: "idv-id" },
       }),
     })
 
     expect(wrapper.root.findAllByType(RegistrationCTAWrapper)).toHaveLength(1)
-    expect(wrapper.root.findAllByProps({ navLink: "/identity-verification-faq" }).length).toEqual(1)
+    expect(wrapper.root.findAllByProps({ navLink: "/identity-verification/idv-id" }).length).toEqual(1)
   })
 
   it("renders a notice that registration is pending when identity verification is not required, but the user is not yet qualified for bidding", () => {

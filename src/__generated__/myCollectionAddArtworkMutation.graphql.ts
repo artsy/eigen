@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 92fc4e40dd22a46b3383da591f542824 */
+/* @relayHash 88d22a859cc933feee98690a25ca23f1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -89,9 +89,10 @@ fragment MyCollectionArtwork_sharedProps on Artwork {
   id
   images {
     isDefault
-    url
+    imageURL
     width
     height
+    internalID
   }
   internalID
   medium
@@ -390,11 +391,12 @@ return {
                                 "alias": null,
                                 "args": null,
                                 "kind": "ScalarField",
-                                "name": "url",
+                                "name": "imageURL",
                                 "storageKey": null
                               },
                               (v7/*: any*/),
-                              (v6/*: any*/)
+                              (v6/*: any*/),
+                              (v4/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -456,7 +458,7 @@ return {
     ]
   },
   "params": {
-    "id": "92fc4e40dd22a46b3383da591f542824",
+    "id": "88d22a859cc933feee98690a25ca23f1",
     "metadata": {},
     "name": "myCollectionAddArtworkMutation",
     "operationKind": "mutation",

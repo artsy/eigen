@@ -72,7 +72,7 @@ export interface AggregateOption {
   paramValue: string
 }
 
-const defaultArtworksParams = {
+const DEFAULT_ARTWORKS_PARAMS = {
   acquireable: false,
   atAuction: false,
   dimensionRange: "*-*",
@@ -85,16 +85,22 @@ const defaultArtworksParams = {
   includeArtworksByFollowedArtists: false,
 } as FilterParams
 
-const defaultSaleArtworksParams = {
+const DEFAULT_SALE_ARTWORKS_PARAMS = {
   sort: "position",
   estimateRange: "",
 } as FilterParams
 
-const getDefaultParamsByType = (fitlerType: FilterType) => {
-  if (fitlerType === "artwork") {
-    return defaultArtworksParams
-  }
-  return defaultSaleArtworksParams
+const DEFAULT_SHOW_ARTWORKS_PARAMS = {
+  ...DEFAULT_ARTWORKS_PARAMS,
+  sort: "partner_show_position",
+}
+
+const getDefaultParamsByType = (filterType: FilterType) => {
+  return {
+    artwork: DEFAULT_ARTWORKS_PARAMS,
+    saleArtwork: DEFAULT_SALE_ARTWORKS_PARAMS,
+    showArtwork: DEFAULT_SHOW_ARTWORKS_PARAMS,
+  }[filterType]
 }
 
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams, filterType: FilterType) => {

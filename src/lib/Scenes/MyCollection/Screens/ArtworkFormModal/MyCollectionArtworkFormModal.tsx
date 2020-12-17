@@ -9,7 +9,7 @@ import {
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
 } from "lib/Scenes/Consignments/Submission/geminiUploadToS3"
-import { cleanArtworkPayload } from "lib/Scenes/MyCollection/utils/cleanArtworkPayload"
+import { cleanArtworkPayload, explicitlyClearedFields } from "lib/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Box, Flex } from "palette"
 import React, { useRef, useState } from "react"
@@ -21,7 +21,9 @@ import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
 
 import { isEqual } from "lodash"
+import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { refreshMyCollection } from "../../MyCollection"
+import { deletedPhotoIDs } from "../../utils/deletedPhotoIDs"
 import { MyCollectionAdditionalDetailsForm } from "./Screens/MyCollectionArtworkFormAdditionalDetails"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
 import { MyCollectionArtworkFormMain } from "./Screens/MyCollectionArtworkFormMain"
@@ -89,7 +91,13 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
             externalImageUrls,
             costMinor: Number(costMinor),
             ...cleanArtworkPayload(others),
+            ...explicitlyClearedFields(others, dirtyFormCheckValues),
           })
+
+          const deletedIDs = deletedPhotoIDs(dirtyFormCheckValues.photos, photos)
+          for (const deletedID of deletedIDs) {
+            await deleteArtworkImage(props.artwork.internalID, deletedID)
+          }
         }
         refreshMyCollection()
         props.onSuccess()
@@ -208,14 +216,13 @@ export async function uploadPhotos(photos: ArtworkFormValues["photos"]) {
   GlobalStore.actions.myCollection.artwork.setLastUploadedPhoto(photos[0])
   // only recently added photos have a path
   const imagePaths: string[] = photos.map((photo) => photo.path).filter((path): path is string => path !== undefined)
-  const convectionKey = await getConvectionGeminiKey()
-  const acl = "private"
-  const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
-  const bucket = assetCredentials.policyDocument.conditions.bucket
-
   const externalImageUrls: string[] = []
 
   for (const path of imagePaths) {
+    const convectionKey = await getConvectionGeminiKey()
+    const acl = "private"
+    const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
+    const bucket = assetCredentials.policyDocument.conditions.bucket
     const s3 = await uploadFileToS3(path, acl, assetCredentials)
     const url = `https://${bucket}.s3.amazonaws.com/${s3.key}`
     externalImageUrls.push(url)

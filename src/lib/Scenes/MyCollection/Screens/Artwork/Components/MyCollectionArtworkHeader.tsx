@@ -4,7 +4,7 @@ import { navigate } from "lib/navigation/navigate"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Image } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Spacer, Text } from "palette"
+import { ArtworkIcon, color, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -24,6 +24,53 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
 
   const isImage = (toCheck: any): toCheck is Image => !!toCheck
 
+  const imageIsProcessing = (image: Image | null) => {
+    if (!image) {
+      return false
+    }
+
+    const isProcessing = image.height === null
+    return isProcessing
+  }
+
+  const hasImagesStillProcessing = (mainImage: any, imagesToCheck: MyCollectionArtworkHeader_artwork["images"]) => {
+    if (!isImage(mainImage) || imageIsProcessing(mainImage)) {
+      return true
+    }
+
+    if (!imagesToCheck) {
+      return false
+    }
+
+    const concreteImages = imagesToCheck as Image[]
+    const stillProcessing = concreteImages.some((image) => imageIsProcessing(image))
+    return stillProcessing
+  }
+
+  const renderMainImageView = () => {
+    if (!isImage(defaultImage) || imageIsProcessing(defaultImage)) {
+      return (
+        <Flex
+          style={{ height: 300, alignItems: "center", justifyContent: "center", backgroundColor: color("black10") }}
+        >
+          <ArtworkIcon style={{ opacity: 0.6 }} height={100} width={100} />
+          <Text style={{ opacity: 0.6 }}>
+            {images && images?.length > 0 ? "Processing photos" : "Processing photo"}
+          </Text>
+        </Flex>
+      )
+    } else {
+      // TODO: figure out if "normalized" is the correct version
+      return (
+        <OpaqueImageView
+          imageURL={defaultImage.imageURL.replace(":version", "normalized")}
+          height={defaultImage.height * (dimensions.width / defaultImage.width)}
+          width={dimensions.width}
+        />
+      )
+    }
+  }
+
   return (
     <>
       <ScreenMargin>
@@ -32,19 +79,15 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
           {formattedTitleAndYear}
         </Text>
       </ScreenMargin>
-
       <Spacer my={1} />
-
-      <TouchableOpacity onPress={() => navigate(`/my-collection/artwork-images/${internalID}`)}>
-        {!!isImage(defaultImage) && (
-          <OpaqueImageView
-            // TODO: figure out if "normalized" is the correct version
-            imageURL={defaultImage.url.replace(":version", "normalized")}
-            height={defaultImage.height * (dimensions.width / defaultImage.width)}
-            width={dimensions.width}
-          />
-        )}
-        {!!images && (
+      <TouchableOpacity
+        disabled={hasImagesStillProcessing(defaultImage, images)}
+        onPress={() => {
+          navigate(`/my-collection/artwork-images/${internalID}`)
+        }}
+      >
+        {renderMainImageView()}
+        {!!images && !hasImagesStillProcessing(defaultImage, images) && (
           <Flex
             mr={2}
             style={{
@@ -79,8 +122,9 @@ export const MyCollectionArtworkHeaderFragmentContainer = createFragmentContaine
       images {
         height
         isDefault
-        url
+        imageURL
         width
+        internalID
       }
       internalID
       title

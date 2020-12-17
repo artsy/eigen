@@ -30,8 +30,8 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
           modalContent={
             <>
               <Text>
-                This data set includes 36 months of auction results from top commercial auction houses and sales hosted
-                on Artsy.
+                This data set includes the latest lots from auction sales at top commercial auction houses. Lots are
+                updated daily.
               </Text>
             </>
           }

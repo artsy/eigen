@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d55a45b3d1816acfa35868802ae6dea0 */
+/* @relayHash 5860fb11c2582a9971e2751c80bed62e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,8 +34,9 @@ fragment MyCollectionArtworkImages_artwork on Artwork {
   images {
     height
     isDefault
-    url
+    imageURL
     width
+    internalID
   }
 }
 */
@@ -122,7 +123,7 @@ return {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
-                "name": "url",
+                "name": "imageURL",
                 "storageKey": null
               },
               {
@@ -130,6 +131,13 @@ return {
                 "args": null,
                 "kind": "ScalarField",
                 "name": "width",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "internalID",
                 "storageKey": null
               }
             ],
@@ -148,7 +156,7 @@ return {
     ]
   },
   "params": {
-    "id": "d55a45b3d1816acfa35868802ae6dea0",
+    "id": "5860fb11c2582a9971e2751c80bed62e",
     "metadata": {},
     "name": "MyCollectionArtworkImagesQuery",
     "operationKind": "query",

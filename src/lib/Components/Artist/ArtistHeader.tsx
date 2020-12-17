@@ -2,7 +2,7 @@ import { ArtistHeader_artist } from "__generated__/ArtistHeader_artist.graphql"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
 import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"
 import { formatText } from "lib/utils/formatText"
-import { Box, Button, Flex, Sans, Spacer } from "palette"
+import { Box, bullet, Button, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -48,7 +48,7 @@ class Header extends React.Component<Props, State> {
               )}
               <Sans size="3t">
                 {formatText(artist.counts?.artworks ?? 0, "work")}
-                {"  "}•{"  "}
+                {` ${bullet} `}
                 {formatText(artist.counts?.follows ?? 0, "follower")}
               </Sans>
             </Flex>

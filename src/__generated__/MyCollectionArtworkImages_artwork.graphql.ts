@@ -8,8 +8,9 @@ export type MyCollectionArtworkImages_artwork = {
     readonly images: ReadonlyArray<{
         readonly height: number | null;
         readonly isDefault: boolean | null;
-        readonly url: string | null;
+        readonly imageURL: string | null;
         readonly width: number | null;
+        readonly internalID: string | null;
     } | null> | null;
     readonly " $refType": "MyCollectionArtworkImages_artwork";
 };
@@ -53,7 +54,7 @@ const node: ReaderFragment = {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
-          "name": "url",
+          "name": "imageURL",
           "storageKey": null
         },
         {
@@ -61,6 +62,13 @@ const node: ReaderFragment = {
           "args": null,
           "kind": "ScalarField",
           "name": "width",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "internalID",
           "storageKey": null
         }
       ],
@@ -70,5 +78,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = 'a57b8405b948f9508f0af757d3fb74bc';
+(node as any).hash = '29be7b5ffe21643f7cb0625805d3d8be';
 export default node;

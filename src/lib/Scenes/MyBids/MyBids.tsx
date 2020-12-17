@@ -1,13 +1,13 @@
 import { groupBy, mapValues, partition, sortBy } from "lodash"
-import { Flex, Join, Separator, Spacer } from "palette"
+import { Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { RefreshControl, ScrollView } from "react-native"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 import { MyBids_me } from "__generated__/MyBids_me.graphql"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 
-import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
-import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -24,9 +24,36 @@ import { isLotStandingComplete, TimelySale } from "./helpers/timely"
 
 export interface MyBidsProps {
   me: MyBids_me
+  relay: RelayPaginationProp
 }
 
+type Sale = NonNullable<NonNullable<NonNullable<MyBids_me["bidders"]>[0]>["sale"]>
+
 class MyBids extends React.Component<MyBidsProps> {
+  state = {
+    fetching: false,
+  }
+  refreshMyBids = (callback?: () => void) => {
+    const { relay } = this.props
+    if (!relay.isLoading()) {
+      this.setState({ fetching: true })
+      relay.refetchConnection(PAGE_SIZE, (error) => {
+        if (error) {
+          console.error("MyBids/index.tsx #refreshMyBids", error.message)
+          // FIXME: Handle error
+        }
+        if (callback) {
+          callback()
+        }
+        this.setState({ fetching: false })
+      })
+    } else {
+      if (callback) {
+        callback()
+      }
+    }
+  }
+
   render() {
     const { me } = this.props
     const lotStandings = extractNodes(me?.auctionsLotStandingConnection)
@@ -42,111 +69,175 @@ class MyBids extends React.Component<MyBidsProps> {
     // sort each group of lot standings by position (lot number)
     const sortedActiveLots = mapValues(activeBySaleId, (lss) => sortBy(lss, (ls) => ls?.saleArtwork?.position!))
 
-    // sort an ordered list of sale ids by their relevant end time
-    const sortedSaleIds: string[] = sortBy(Object.keys(sortedActiveLots), (saleId) => {
-      const timelySale = TimelySale.create(sortedActiveLots[saleId][0]?.saleArtwork?.sale!)
+    // TODO: create list of all unique sales from lotStandings, bidders, and watchedLots (in the future).
+    // NOTE: bidders should include lotStandings, do we need both?
+
+    // sort an ordered list of sales by their relevant end time
+    const sales: Sale[] = me.bidders?.map((b) => b!.sale!) || []
+    const sortedSales = sortBy(sales, (sale) => {
+      const timelySale = TimelySale.create(sale)
       return moment(timelySale.relevantEnd).unix()
     })
 
-    const noActiveBids = activeStandings.length === 0
-    const noClosedBids = closedStandings.length === 0
+    const hasActiveBids = activeStandings.length > 0
+    const hasClosedBids = closedStandings.length > 0
+    const hasRegistrations = sales.length > 0
+
+    const somethingToShow = hasActiveBids || hasClosedBids || hasRegistrations
 
     return (
-      <Flex flex={1}>
-        <StickyTabPage
-          staticHeaderContent={<></>}
-          tabs={[
-            {
-              title: `Active`,
-              content: (
-                <StickyTabPageScrollView data-test-id="active-section">
-                  <Spacer my={1} />
-
-                  <Join separator={<Spacer my={1} />}>
-                    {!!noActiveBids && <NoBids headerText="You don't have any upcoming bids." />}
-                    {sortedSaleIds.map((saleId) => {
-                      const activeLotStandings = sortedActiveLots[saleId]
-                      const sale = activeLotStandings[0]?.saleArtwork?.sale!
-                      return (
-                        <SaleCardFragmentContainer key={saleId} sale={sale} me={me} smallScreen={isSmallScreen}>
-                          <Join separator={<Separator my={1} />}>
-                            {activeLotStandings.map((ls) => {
-                              if (ls && sale) {
-                                const LotInfoComponent = isLotStandingComplete(ls) ? ClosedLot : ActiveLot
-                                return <LotInfoComponent lotStanding={ls as any} key={ls?.lotState?.internalID} />
-                              }
-                            })}
-                          </Join>
-                        </SaleCardFragmentContainer>
-                      )
-                    })}
-                  </Join>
-                  <Spacer my={2} />
-                </StickyTabPageScrollView>
-              ),
-            },
-            {
-              title: `Closed`,
-              content: (
-                <StickyTabPageScrollView data-test-id="closed-section">
-                  <Flex mt={1}>
-                    {!!noClosedBids && <NoBids headerText="No bidding history" />}
-                    {closedStandings?.map((ls) => {
-                      return (
-                        !!ls && (
-                          <ClosedLot
-                            withTimelyInfo
-                            data-test-id="closed-sale-lot"
-                            lotStanding={ls}
-                            key={ls?.lotState?.internalID}
-                          />
-                        )
-                      )
-                    })}
-                  </Flex>
-                  <Spacer my={2} />
-                </StickyTabPageScrollView>
-              ),
-            },
-          ]}
-        />
-      </Flex>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, justifyContent: !somethingToShow ? "center" : "flex-start" }}
+        stickyHeaderIndices={[0, 2]}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.fetching}
+            onRefresh={() => {
+              this.refreshMyBids()
+            }}
+          />
+        }
+      >
+        {!somethingToShow && <NoBids headerText="Discover works for you at auction." />}
+        {!!hasRegistrations && <BidTitle>Active Bids</BidTitle>}
+        {!!hasRegistrations && (
+          <Flex data-test-id="active-section">
+            <Join separator={<Spacer my={1} />}>
+              {sortedSales.map((sale) => {
+                const activeLotStandings = sortedActiveLots[sale.internalID] || []
+                const showNoBids = !activeLotStandings.length && !!sale.registrationStatus?.qualifiedForBidding
+                return (
+                  <SaleCardFragmentContainer
+                    key={sale.internalID}
+                    sale={sale}
+                    me={me}
+                    smallScreen={isSmallScreen}
+                    hideChildren={!showNoBids && !activeLotStandings.length}
+                  >
+                    <Join separator={<Separator my={1} />}>
+                      {!!showNoBids && (
+                        <Text color="black60" py={1} textAlign="center">
+                          You haven't placed any bids on this sale.
+                        </Text>
+                      )}
+                      {activeLotStandings.map((ls) => {
+                        if (ls && sale) {
+                          const LotInfoComponent = isLotStandingComplete(ls) ? ClosedLot : ActiveLot
+                          return <LotInfoComponent lotStanding={ls} key={ls?.lot?.internalID} />
+                        }
+                      })}
+                    </Join>
+                  </SaleCardFragmentContainer>
+                )
+              })}
+            </Join>
+          </Flex>
+        )}
+        {!!hasClosedBids && <BidTitle>Closed Bids</BidTitle>}
+        {!!hasClosedBids && (
+          <Flex data-test-id="closed-section">
+            <Flex mt={2} px={1.5}>
+              <Join separator={<Separator my={2} />}>
+                {closedStandings?.map((ls) => {
+                  return (
+                    !!ls && (
+                      <ClosedLot
+                        withTimelyInfo
+                        data-test-id="closed-sale-lot"
+                        lotStanding={ls}
+                        key={ls?.lot?.internalID}
+                      />
+                    )
+                  )
+                })}
+              </Join>
+            </Flex>
+          </Flex>
+        )}
+        <Spacer my={2} />
+      </ScrollView>
     )
   }
 }
 
-export const MyBidsContainer = createFragmentContainer(MyBids, {
-  me: graphql`
-    fragment MyBids_me on Me {
-      ...SaleCard_me
-      identityVerified
-      auctionsLotStandingConnection(first: 25) {
-        edges {
-          node {
-            ...ActiveLot_lotStanding
-            ...ClosedLot_lotStanding
-            lotState {
-              internalID
-              saleId
-              soldStatus
+const BidTitle: React.FC<{ topBorder?: boolean }> = (props) => (
+  <Flex bg="white100">
+    <Text variant="subtitle" mx={1.5} my={2}>
+      {props.children}
+    </Text>
+    <Separator />
+  </Flex>
+)
+
+export const MyBidsContainer = createPaginationContainer(
+  MyBids,
+  {
+    me: graphql`
+      fragment MyBids_me on Me
+      @argumentDefinitions(count: { type: "Int", defaultValue: 25 }, cursor: { type: "String", defaultValue: "" }) {
+        ...SaleCard_me
+        identityVerified
+        bidders(active: true) {
+          sale {
+            ...SaleCard_sale
+            registrationStatus {
+              qualifiedForBidding
             }
-            saleArtwork {
-              position
-              sale {
-                ...SaleCard_sale
-                requireIdentityVerification
+            internalID
+            liveStartAt
+            endAt
+            status
+          }
+        }
+        auctionsLotStandingConnection(first: $count, after: $cursor)
+          @connection(key: "MyBids_auctionsLotStandingConnection") {
+          edges {
+            node {
+              ...ActiveLot_lotStanding
+              ...ClosedLot_lotStanding
+              lot {
                 internalID
-                liveStartAt
-                endAt
-                status
+                saleId
+                soldStatus
+              }
+              saleArtwork {
+                position
+                sale {
+                  ...SaleCard_sale
+                  internalID
+                  liveStartAt
+                  endAt
+                  status
+                }
               }
             }
           }
         }
       }
-    }
-  `,
-})
+    `,
+  },
+  {
+    getConnectionFromProps(props) {
+      return props.me && props.me.auctionsLotStandingConnection
+    },
+    getVariables(_props, { count, cursor }, fragmentVariables) {
+      return {
+        // in most cases, for variables other than connection filters like
+        // `first`, `after`, etc. you may want to use the previous values.
+        ...fragmentVariables,
+        count,
+        cursor,
+      }
+    },
+    query: graphql`
+      query MyBidsPaginatedQuery($count: Int!, $cursor: String) {
+        me {
+          ...MyBids_me @arguments(count: $count, cursor: $cursor)
+        }
+      }
+    `,
+  }
+)
 
 export const MyBidsQueryRenderer: React.FC = () => (
   <QueryRenderer<MyBidsQuery>

@@ -5,8 +5,8 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistAbout_artist = {
-    readonly has_metadata: boolean | null;
-    readonly is_display_auction_link: boolean | null;
+    readonly hasMetadata: boolean | null;
+    readonly isDisplayAuctionLink: boolean | null;
     readonly slug: string;
     readonly related: {
         readonly artists: {
@@ -24,7 +24,7 @@ export type ArtistAbout_artist = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"Biography_artist" | "ArtistConsignButton_artist">;
+    readonly " $fragmentRefs": FragmentRefs<"Biography_artist" | "ArtistConsignButton_artist" | "ArtistAboutShows_artist">;
     readonly " $refType": "ArtistAbout_artist";
 };
 export type ArtistAbout_artist$data = ArtistAbout_artist;
@@ -42,14 +42,14 @@ const node: ReaderFragment = {
   "name": "ArtistAbout_artist",
   "selections": [
     {
-      "alias": "has_metadata",
+      "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "hasMetadata",
       "storageKey": null
     },
     {
-      "alias": "is_display_auction_link",
+      "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "isDisplayAuctionLink",
@@ -170,10 +170,15 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "FragmentSpread",
       "name": "ArtistConsignButton_artist"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "ArtistAboutShows_artist"
     }
   ],
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = 'f83a9812ee25ef6aeb7eb17e2e269837';
+(node as any).hash = 'c6d9d5446681e9c00f83659592d8ff3d';
 export default node;

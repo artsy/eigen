@@ -30,7 +30,7 @@ const MyCollectionArtworkImages: React.FC<MyCollectionArtworkImagesProps> = ({ a
           <View key={index}>
             <OpaqueImageView
               // TODO: figure out if "normalized" is the correct version
-              imageURL={image!.url?.replace(":version", "normalized")}
+              imageURL={image!.imageURL?.replace(":version", "normalized")}
               height={(dimensions.width / (image!.width || 1)) * (image!.height || 1)}
               width={dimensions.width}
             />
@@ -48,8 +48,9 @@ const MyCollectionArtworkImagesFragmentContainer = createFragmentContainer(MyCol
       images {
         height
         isDefault
-        url
+        imageURL
         width
+        internalID
       }
     }
   `,

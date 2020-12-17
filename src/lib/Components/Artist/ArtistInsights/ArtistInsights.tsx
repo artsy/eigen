@@ -1,21 +1,29 @@
+import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Join, Separator, Text } from "palette"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
+import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 
-export const ArtistInsights = () => {
+interface ArtistInsightsProps {
+  artist: ArtistInsights_artist
+}
+
+export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
   const MarketStats = () => (
     <>
       {/* Market Stats Hint */}
       <Flex flexDirection="row" alignItems="center">
         <Text variant="title" mr={5}>
-          Market Stats
+          Market stats
         </Text>
         <TouchableOpacity hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}>
           <Image source={require("@images/info.png")} />
         </TouchableOpacity>
       </Flex>
-      <Text variant="caption" color="black60">
+      <Text variant="small" color="black60">
         Last 12 months
       </Text>
       {/* Market Stats Values */}
@@ -39,11 +47,22 @@ export const ArtistInsights = () => {
       </Flex>
     </>
   )
+
   return (
     <StickyTabPageScrollView contentContainerStyle={{ paddingTop: 20 }}>
-      <Join separator={<Separator my={2} />}>
+      <Join separator={<Separator my={2} ml={-2} width={useScreenDimensions().width} />}>
         <MarketStats />
+        <ArtistInsightsAuctionResultsPaginationContainer artist={artist} />
       </Join>
     </StickyTabPageScrollView>
   )
 }
+
+export const ArtistInsightsFragmentContainer = createFragmentContainer(ArtistInsights, {
+  artist: graphql`
+    fragment ArtistInsights_artist on Artist {
+      name
+      ...ArtistInsightsAuctionResults_artist
+    }
+  `,
+})

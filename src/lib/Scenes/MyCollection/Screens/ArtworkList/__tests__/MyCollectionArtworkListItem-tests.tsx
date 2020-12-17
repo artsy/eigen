@@ -38,7 +38,17 @@ describe("MyCollectionArtworkListItem", () => {
   })
 
   const resolveData = () => {
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation))
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Artwork: () => ({
+          slug: "some-slug",
+          medium: "some-medium",
+          artist: {
+            internalID: "some-internal-id",
+          },
+        }),
+      })
+    )
   }
 
   it("renders correct fields", () => {
@@ -56,10 +66,10 @@ describe("MyCollectionArtworkListItem", () => {
     const wrapper = renderWithWrappers(<TestRenderer />)
     resolveData()
     wrapper.root.findByType(tests.TouchElement).props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/my-collection/artwork/<Artwork-mock-id-5>", {
+    expect(navigate).toHaveBeenCalledWith("/my-collection/artwork/some-slug", {
       passProps: {
-        artistInternalID: "<Artist-mock-id-1>",
-        medium: '<mock-value-for-field-"medium">',
+        artistInternalID: "some-internal-id",
+        medium: "some-medium",
       },
     })
   })
