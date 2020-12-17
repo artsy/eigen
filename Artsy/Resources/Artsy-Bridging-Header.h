@@ -16,8 +16,6 @@
 #import "ArtsyAPI+Sales.h"
 #import "ArtsyAPI+Pages.h"
 
-#import "ARSaleArtworkItemWidthDependentModule.h"
-
 #import "ARDefaults.h"
 #import "AROptions.h"
 #import "ARAppConstants.h"
@@ -47,10 +45,6 @@
 #import "Artwork.h"
 #import "Gene.h"
 
-#import "AREmbeddedModelsViewController.h"
-#import "ARArtworkMasonryModule.h"
-#import "ARSaleArtworkItemFlowModule.h"
-#import "ARSaleArtworkItemMasonryModule.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARExternalWebBrowserViewController.h"
 
