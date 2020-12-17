@@ -1,10 +1,8 @@
 import { dimensions, screen } from "lib/data/ScreenSizes/screenSizes"
 import { CircleWhiteCheckIcon } from "lib/Icons/CircleWhiteCheckIcon"
-import { navigate } from "lib/navigation/navigate"
-import { GlobalStore } from "lib/store/GlobalStore"
-import { ProvideScreenTracking, Schema, screenTrack, track } from "lib/utils/track"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Box, color, Flex, Sans, Separator, Serif, space } from "palette"
-import React, { Component, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Dimensions, NativeModules, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 import cities from "../../../../data/cityDataSortedByDisplayPreference.json"
@@ -22,9 +20,15 @@ export const CityPicker: React.FC<Props> = (props) => {
 
   const selectCity = (city: string, index: number) => {
     setSelectedCity(city)
-    GlobalStore.actions.native.setLocalState({ selectedCityIndex: index, selectedCityName: city })
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryUserSelectedCity", { cityIndex: index })
   }
+
+  useEffect(() => {
+    if (selectedCity === null) {
+      return
+    }
+    setSelectedCity(null)
+  }, [selectedCity])
 
   const handleCityList = (screenHeight: number, city: string) => {
     return (
