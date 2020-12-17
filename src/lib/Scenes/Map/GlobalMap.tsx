@@ -205,7 +205,7 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    const { citySlug, relayErrorState } = this.props
+    const { relayErrorState } = this.props
 
     // If there is a new city, enity it and update our map.
     if (nextProps.viewer) {
