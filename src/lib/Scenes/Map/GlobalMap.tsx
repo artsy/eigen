@@ -138,8 +138,8 @@ export class GlobalMap extends React.Component<Props, State> {
     return { lat: coords.latitude, lng: coords.longitude }
   }
 
-  map: MapboxGL.MapView
-  camera: MapboxGL.Camera
+  map: React.RefObject<MapboxGL.MapView>
+  camera: React.RefObject<MapboxGL.Camera>
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   filters: { [key: string]: FilterData }
   hideButtons = new Animated.Value(0)
@@ -152,6 +152,9 @@ export class GlobalMap extends React.Component<Props, State> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
+
+    this.map = React.createRef()
+    this.camera = React.createRef()
 
     const currentLocation = this.props.initialCoordinates || get(this.props, "viewer.city.coordinates")
     this.state = {
@@ -487,17 +490,17 @@ export class GlobalMap extends React.Component<Props, State> {
     )
   }
 
-  onUserLocationUpdate = (location: OSCoordsUpdate) => {
+  onUserLocationUpdate = (location: MapboxGL.Location) => {
     this.setState({
       userLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
     })
   }
 
   onRegionIsChanging = async () => {
-    if (!this.map) {
+    if (!this.map.current) {
       return
     }
-    const zoom = Math.floor(await this.map.getZoom())
+    const zoom = Math.floor((await this.map.current.getZoom()) ?? DefaultZoomLevel)
 
     if (!this.currentZoom) {
       this.currentZoom = zoom
@@ -537,7 +540,7 @@ export class GlobalMap extends React.Component<Props, State> {
   onPressUserPositionButton = () => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const { lat, lng } = this.state.userLocation
-    this.camera.setCamera({
+    this.camera.current?.setCamera({
       centerCoordinate: [lng, lat],
       zoomLevel: DefaultZoomLevel,
       animationDuration: 500,
@@ -621,7 +624,7 @@ export class GlobalMap extends React.Component<Props, State> {
           {({ opacity }: { opacity: number }) => (
             <AnimatedView style={{ flex: 1, opacity }}>
               <MapboxGL.MapView
-                ref={(r) => (this.map = r)}
+                ref={this.map}
                 style={{ width: "100%", height: Dimensions.get("window").height }}
                 {...mapProps}
                 onRegionIsChanging={this.onRegionIsChanging}
@@ -629,7 +632,7 @@ export class GlobalMap extends React.Component<Props, State> {
                 onPress={this.onPressMap}
               >
                 <MapboxGL.Camera
-                  ref={(r) => (this.camera = r)}
+                  ref={this.camera}
                   animationMode="flyTo"
                   minZoomLevel={MinZoomLevel}
                   maxZoomLevel={MaxZoomLevel}
@@ -642,7 +645,7 @@ export class GlobalMap extends React.Component<Props, State> {
                       <PinsShapeLayer
                         filterID={cityTabs[this.state.activeIndex].id}
                         featureCollections={this.state.featureCollections}
-                        onPress={(e: any) => this.handleFeaturePress(e.nativeEvent)}
+                        onPress={(e) => this.handleFeaturePress(e)}
                       />
                     )}
                     <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
@@ -671,7 +674,7 @@ export class GlobalMap extends React.Component<Props, State> {
    * access to the shows that the user has tapped on.
    */
   async handleFeaturePress(event: OnPressEvent) {
-    if (!this.map) {
+    if (!this.map.current) {
       return
     }
     const {
@@ -706,11 +709,11 @@ export class GlobalMap extends React.Component<Props, State> {
     else {
       this.trackPinTap(Schema.ActionNames.ClusteredMapPin, null, Schema.OwnerEntityTypes.Show)
       // Get map zoom level and coordinates of where the user tapped
-      const zoom = Math.floor(await this.map.getZoom())
+      const zoom = Math.floor(await this.map.current.getZoom())
       const [lat, lng] = coordinates
 
       // Get coordinates of the map's current viewport bounds
-      const visibleBounds = await this.map.getVisibleBounds()
+      const visibleBounds = await this.map.current.getVisibleBounds()
       const [ne, sw] = visibleBounds
       const [eastLng, northLat] = ne
       const [westLng, southLat] = sw
