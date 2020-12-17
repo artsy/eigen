@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Add slack notification when betas fail - brian
     - Enable my bids - lily
+    - Fix `isVisible` root view prop to respect tab switches - david, erik, lily
   user_facing:
     - Update copy in My Collection - annacarey
     - Fix multi-image upload and add processing state in my collection - brian, barry
