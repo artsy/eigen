@@ -1,3 +1,4 @@
+import { deleteCollectedArtwork } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
@@ -14,6 +15,7 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { Box, Flex } from "palette"
 import React, { useRef, useState } from "react"
 import { ActionSheetIOS, ActivityIndicator, Alert } from "react-native"
+import { useTracking } from "react-tracking"
 import { myCollectionAddArtwork } from "../../mutations/myCollectionAddArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
 import { myCollectionEditArtwork } from "../../mutations/myCollectionEditArtwork"
@@ -58,6 +60,7 @@ type MyCollectionArtworkFormModalProps = { visible: boolean; onDismiss: () => vo
 )
 
 export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModalProps> = (props) => {
+  const { trackEvent } = useTracking()
   const { formValues, dirtyFormCheckValues } = GlobalStore.useAppState(
     (state) => state.myCollection.artwork.sessionState
   )
@@ -122,6 +125,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
     props.mode === "edit" && props.onDelete
       ? async () => {
           setLoading(true)
+          trackEvent(tracks.deleteCollectedArtwork(props.artwork.internalID, props.artwork.slug))
           try {
             await myCollectionDeleteArtwork(props.artwork.internalID)
             refreshMyCollection()
@@ -229,4 +233,10 @@ export async function uploadPhotos(photos: ArtworkFormValues["photos"]) {
   }
 
   return externalImageUrls
+}
+
+const tracks = {
+  deleteCollectedArtwork: (internalID: string, slug: string) => {
+    return deleteCollectedArtwork({ contextOwnerId: internalID, contextOwnerSlug: slug })
+  },
 }

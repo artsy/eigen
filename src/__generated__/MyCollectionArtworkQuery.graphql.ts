@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 155433c248a0534f0b4a625b0fb8f874 */
+/* @relayHash ad3326385642cdbc61de31f8c83791e9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -123,6 +123,8 @@ fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
 }
 
 fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
+  internalID
+  slug
   artist {
     slug
     auctionResultsConnection(first: 3, sort: DATE_DESC) {
@@ -151,6 +153,11 @@ fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
   }
 }
 
+fragment MyCollectionArtworkArtistMarket_artwork on Artwork {
+  internalID
+  slug
+}
+
 fragment MyCollectionArtworkArtistMarket_marketPriceInsights on MarketPriceInsights {
   annualLotsSold
   annualValueSoldCents
@@ -158,6 +165,11 @@ fragment MyCollectionArtworkArtistMarket_marketPriceInsights on MarketPriceInsig
   medianSaleToEstimateRatio
   liquidityRank
   demandTrend
+}
+
+fragment MyCollectionArtworkDemandIndex_artwork on Artwork {
+  internalID
+  slug
 }
 
 fragment MyCollectionArtworkDemandIndex_marketPriceInsights on MarketPriceInsights {
@@ -175,6 +187,7 @@ fragment MyCollectionArtworkHeader_artwork on Artwork {
     internalID
   }
   internalID
+  slug
   title
 }
 
@@ -188,6 +201,8 @@ fragment MyCollectionArtworkInsights_artwork on Artwork {
   ...MyCollectionArtworkPriceEstimate_artwork
   ...MyCollectionArtworkArtistAuctionResults_artwork
   ...MyCollectionArtworkArtistArticles_artwork
+  ...MyCollectionArtworkArtistMarket_artwork
+  ...MyCollectionArtworkDemandIndex_artwork
 }
 
 fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights {
@@ -216,7 +231,9 @@ fragment MyCollectionArtworkMeta_artwork on Artwork {
 fragment MyCollectionArtworkPriceEstimate_artwork on Artwork {
   costCurrencyCode
   costMinor
+  internalID
   sizeBucket
+  slug
 }
 
 fragment MyCollectionArtworkPriceEstimate_marketPriceInsights on MarketPriceInsights {
@@ -956,7 +973,7 @@ return {
     ]
   },
   "params": {
-    "id": "155433c248a0534f0b4a625b0fb8f874",
+    "id": "ad3326385642cdbc61de31f8c83791e9",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",

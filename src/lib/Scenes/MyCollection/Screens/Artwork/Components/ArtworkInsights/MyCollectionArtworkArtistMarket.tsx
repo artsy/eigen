@@ -1,18 +1,26 @@
+import { ContextModule, OwnerType, tappedInfoBubble } from "@artsy/cohesion"
+import { MyCollectionArtworkArtistMarket_artwork } from "__generated__/MyCollectionArtworkArtistMarket_artwork.graphql"
 import { MyCollectionArtworkArtistMarket_marketPriceInsights } from "__generated__/MyCollectionArtworkArtistMarket_marketPriceInsights.graphql"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { formatCentsToDollars } from "lib/Scenes/MyCollection/utils/formatCentsToDollars"
 import { Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import { Field } from "../Field"
 import { InfoButton } from "./InfoButton"
 
 interface MyCollectionArtworkArtistMarketProps {
+  artwork: MyCollectionArtworkArtistMarket_artwork
   marketPriceInsights: MyCollectionArtworkArtistMarket_marketPriceInsights
 }
 
-const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketProps> = ({ marketPriceInsights }) => {
-  if (!marketPriceInsights) {
+const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketProps> = ({
+  artwork,
+  marketPriceInsights,
+}) => {
+  const { trackEvent } = useTracking()
+  if (!artwork || !marketPriceInsights) {
     return null
   }
 
@@ -70,6 +78,7 @@ const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketP
             </Text>
           </>
         }
+        onPress={() => trackEvent(tracks.tappedInfoBubble(artwork.internalID, artwork.slug))}
       />
 
       <Spacer my={0.5} />
@@ -87,6 +96,12 @@ const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketP
 export const MyCollectionArtworkArtistMarketFragmentContainer = createFragmentContainer(
   MyCollectionArtworkArtistMarket,
   {
+    artwork: graphql`
+      fragment MyCollectionArtworkArtistMarket_artwork on Artwork {
+        internalID
+        slug
+      }
+    `,
     marketPriceInsights: graphql`
       fragment MyCollectionArtworkArtistMarket_marketPriceInsights on MarketPriceInsights {
         annualLotsSold
@@ -99,3 +114,15 @@ export const MyCollectionArtworkArtistMarketFragmentContainer = createFragmentCo
     `,
   }
 )
+
+const tracks = {
+  tappedInfoBubble: (internalID: string, slug: string) => {
+    return tappedInfoBubble({
+      contextModule: ContextModule.myCollectionArtwork,
+      contextScreenOwnerType: OwnerType.myCollectionArtwork,
+      contextScreenOwnerId: internalID,
+      contextScreenOwnerSlug: slug,
+      subject: "artistMarketStatistics",
+    })
+  },
+}

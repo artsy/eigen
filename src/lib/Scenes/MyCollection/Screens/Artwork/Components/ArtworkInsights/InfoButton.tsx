@@ -9,10 +9,11 @@ interface InfoButtonProps {
   title: string
   modalContent: JSX.Element
   modalTitle?: string
+  onPress?: () => void
   subTitle?: string
 }
 
-export const InfoButton: React.FC<InfoButtonProps> = ({ title, subTitle, modalTitle, modalContent }) => {
+export const InfoButton: React.FC<InfoButtonProps> = ({ title, subTitle, modalTitle, modalContent, onPress }) => {
   const [modalVisible, setModalVisible] = useState(false)
 
   return (
@@ -21,7 +22,15 @@ export const InfoButton: React.FC<InfoButtonProps> = ({ title, subTitle, modalTi
         <Text variant="mediumText" mr={0.5}>
           {title}
         </Text>
-        <TouchableOpacity onPress={() => setModalVisible(true)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+        <TouchableOpacity
+          onPress={() => {
+            setModalVisible(true)
+            if (onPress) {
+              onPress()
+            }
+          }}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
           <InfoCircleIcon style={{ top: 2 }} color="black60" />
         </TouchableOpacity>
       </Flex>

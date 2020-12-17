@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 542b34f55ede0d2be4aa10b0e1bfd284 */
+/* @relayHash fb1627cedfefd1b02e63b74dba86132f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -59,6 +59,8 @@ fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
 }
 
 fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
+  internalID
+  slug
   artist {
     slug
     auctionResultsConnection(first: 3, sort: DATE_DESC) {
@@ -87,6 +89,11 @@ fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
   }
 }
 
+fragment MyCollectionArtworkArtistMarket_artwork on Artwork {
+  internalID
+  slug
+}
+
 fragment MyCollectionArtworkArtistMarket_marketPriceInsights on MarketPriceInsights {
   annualLotsSold
   annualValueSoldCents
@@ -94,6 +101,11 @@ fragment MyCollectionArtworkArtistMarket_marketPriceInsights on MarketPriceInsig
   medianSaleToEstimateRatio
   liquidityRank
   demandTrend
+}
+
+fragment MyCollectionArtworkDemandIndex_artwork on Artwork {
+  internalID
+  slug
 }
 
 fragment MyCollectionArtworkDemandIndex_marketPriceInsights on MarketPriceInsights {
@@ -110,6 +122,8 @@ fragment MyCollectionArtworkInsights_artwork on Artwork {
   ...MyCollectionArtworkPriceEstimate_artwork
   ...MyCollectionArtworkArtistAuctionResults_artwork
   ...MyCollectionArtworkArtistArticles_artwork
+  ...MyCollectionArtworkArtistMarket_artwork
+  ...MyCollectionArtworkDemandIndex_artwork
 }
 
 fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights {
@@ -121,7 +135,9 @@ fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights 
 fragment MyCollectionArtworkPriceEstimate_artwork on Artwork {
   costCurrencyCode
   costMinor
+  internalID
   sizeBucket
+  slug
 }
 
 fragment MyCollectionArtworkPriceEstimate_marketPriceInsights on MarketPriceInsights {
@@ -559,6 +575,8 @@ return {
             "name": "costMinor",
             "storageKey": null
           },
+          (v6/*: any*/),
+          (v4/*: any*/),
           (v3/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-artwork-id\")"
@@ -717,7 +735,7 @@ return {
     ]
   },
   "params": {
-    "id": "542b34f55ede0d2be4aa10b0e1bfd284",
+    "id": "fb1627cedfefd1b02e63b74dba86132f",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -813,8 +831,10 @@ return {
         "artwork.costCurrencyCode": (v9/*: any*/),
         "artwork.costMinor": (v12/*: any*/),
         "artwork.id": (v8/*: any*/),
+        "artwork.internalID": (v8/*: any*/),
         "artwork.medium": (v9/*: any*/),
         "artwork.sizeBucket": (v9/*: any*/),
+        "artwork.slug": (v8/*: any*/),
         "marketPriceInsights": {
           "enumValues": null,
           "nullable": true,

@@ -15,6 +15,7 @@ export type MyCollectionArtworkHeader_artwork = {
         readonly internalID: string | null;
     } | null> | null;
     readonly internalID: string;
+    readonly slug: string;
     readonly title: string | null;
     readonly " $refType": "MyCollectionArtworkHeader_artwork";
 };
@@ -99,6 +100,13 @@ return {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "slug",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "title",
       "storageKey": null
     }
@@ -107,5 +115,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '795f451361a9142446d36ea529f1637a';
+(node as any).hash = 'b41f7e8057147e4d4baad3a87aac684e';
 export default node;

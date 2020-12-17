@@ -1,3 +1,4 @@
+import { addCollectedArtwork } from "@artsy/cohesion"
 import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { EventEmitter } from "events"
@@ -14,6 +15,7 @@ import { Box, Button, Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { FlatList, RefreshControl, ScrollView, View } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { useTracking } from "react-tracking"
 import { MyCollectionArtworkFormModal } from "./Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
 import { MyCollectionArtworkListItemFragmentContainer } from "./Screens/ArtworkList/MyCollectionArtworkListItem"
 
@@ -28,6 +30,7 @@ const MyCollection: React.FC<{
   relay: RelayPaginationProp
   me: MyCollection_me
 }> = ({ relay, me }) => {
+  const { trackEvent } = useTracking()
   const [showModal, setShowModal] = useState(false)
 
   const artworks = extractNodes(me?.myCollectionConnection)
@@ -74,6 +77,7 @@ const MyCollection: React.FC<{
         rightButtonText="Add artwork"
         hideBottomDivider
         onRightButtonPress={() => {
+          trackEvent(tracks.addCollectedArtwork())
           GlobalStore.actions.myCollection.artwork.resetForm()
           setShowModal(true)
         }}
@@ -96,7 +100,17 @@ const MyCollection: React.FC<{
           <Flex pb="200">
             <ZeroState
               subtitle="Add details about an artwork from your collection to access price and market insights."
-              callToAction={<Button onPress={() => setShowModal(true)}>Add artwork</Button>}
+              callToAction={
+                <Button
+                  data-test-id="add-artwork-button-zero-state"
+                  onPress={() => {
+                    setShowModal(true)
+                    trackEvent(tracks.addCollectedArtwork())
+                  }}
+                >
+                  Add artwork
+                </Button>
+              }
             />
           </Flex>
         </ScrollView>
@@ -216,4 +230,8 @@ const LoadingSkeleton = () => {
       </Box>
     </>
   )
+}
+
+const tracks = {
+  addCollectedArtwork,
 }
