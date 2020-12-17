@@ -164,24 +164,21 @@ export const GlobalMap: React.FC<Props> = (props) => {
   }, [])
 
   useEffect(() => {
-    // Update the clusterMap if new bucket results
-    if (state.bucketResults) {
-      updateClusterMap()
+    // If there is a new city, enity it and update our map.
+    if (!props.viewer) {
+      return
     }
-  }, [state.bucketResults])
+    // TODO: This is currently really inefficient.
+    const bucketResults = bucketCityResults(props.viewer)
+
+    setState((prev) => ({ ...prev, bucketResults }))
+  }, [props.viewer])
 
   useEffect(() => {
-    // If there is a new city, enity it and update our map.
-    if (props.viewer) {
-      // TODO: This is currently really inefficient.
-      const bucketResults = bucketCityResults(props.viewer)
-
-      setState((prev) => ({ ...prev, bucketResults }))
-      emitFilteredBucketResults()
-      updateShowIdMap()
-      updateClusterMap()
-    }
-  }, [props.viewer])
+    emitFilteredBucketResults()
+    updateShowIdMap()
+    updateClusterMap()
+  }, [state.bucketResults])
 
   useEffect(() => {
     // If the relayErrorState changes, emit a new event.
@@ -677,12 +674,12 @@ export const GlobalMap: React.FC<Props> = (props) => {
           {({ opacity }: { opacity: number }) => (
             <AnimatedView style={{ flex: 1, opacity }}>
               <MapboxGL.MapView
+                ref={mapRef}
                 style={{ width: "100%", height: Dimensions.get("window").height }}
                 {...mapProps}
                 onRegionIsChanging={onRegionIsChanging}
                 onDidFinishRenderingMapFully={onDidFinishRenderingMapFully}
                 onPress={onPressMap}
-                ref={mapRef}
               >
                 <MapboxGL.Camera
                   ref={cameraRef}
