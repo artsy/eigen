@@ -386,12 +386,12 @@ const CGFloat MARGIN = 10;
     [manager stopUpdatingLocation];
 }
 
-- (BOOL)shouldAutorotate;
+- (BOOL)shouldAutorotate
 {
     return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
 }
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations;
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return self.shouldAutorotate ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
