@@ -30,12 +30,12 @@ export const CityPicker: React.FC<Props> = (props) => {
     setSelectedCity(null)
   }, [selectedCity])
 
-  const handleCityList = (screenHeight: number, city: string) => {
+  const handleCityList = (scrnHeight: number, city: string) => {
     return (
       <Serif
         mt={1}
-        size={dimensions(screenHeight)[screen(screenHeight)].cityFontSize}
-        lineHeight={dimensions(screenHeight)[screen(screenHeight)].lineHeight}
+        size={dimensions(scrnHeight)[screen(scrnHeight)].cityFontSize}
+        lineHeight={dimensions(scrnHeight)[screen(scrnHeight)].lineHeight}
       >
         {city}
       </Serif>
