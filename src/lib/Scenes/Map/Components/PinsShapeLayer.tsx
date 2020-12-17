@@ -47,18 +47,20 @@ export const PinsShapeLayer: React.FC<Props> = ({ duration = 300, ...props }) =>
     fadeInAnimations()
   }, [])
 
-  shouldComponentUpdate(nextProps: Props, nextState: State) {
-    const { filterID } = this.props
+  // useEffect(() => {
+  //   const { filterID } = props
 
-    const getFeatures = (props: Props) =>
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      props.featureCollections[filterID].featureCollection.features.map((g) => g.is_followed)
+  //   const getFeatures = (props: Props) =>
+  //     props.featureCollections[filterID].featureCollection.features.map((g) => g.is_followed)
 
-    return (
-      !isEqual(getFeatures(nextProps), getFeatures(this.props)) ||
-      this.state.rendered !== nextState.rendered ||
-      this.props.filterID !== nextProps.filterID
-    )
+  //     return (
+
+  //   //     this.state.rendered !== nextState.rendered ||
+  //   //     this.props.filterID !== nextProps.filterID
+  //   //   )
+  //   // }
+  // }, [props.featureCollections])
+
   const fadeInAnimations = () => {
     setRendered(true)
     Animated.timing(pinOpacity, {

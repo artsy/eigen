@@ -209,10 +209,13 @@ export const GlobalMap: React.FC<Props> = (props) => {
     trackEvent({
       action_name: actionName,
       action_type: Schema.ActionTypes.Tap,
-      owner_id: !!show ? show[0].internalID : "",
-      owner_slug: !!show ? show[0].id : "",
+      owner_id: "",
+      // owner_id: !!show ? show[0].internalID : "",
+      // owner_slug: !!show ? show[0].id : "",
+      owner_slug: "",
       owner_type: !!type ? type : "",
     })
+    console.log("gamooo", { show })
     return null
   }
 
