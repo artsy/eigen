@@ -1,22 +1,14 @@
-import MapboxGL, { CircleLayerStyle, SymbolLayerStyle } from "@react-native-mapbox-gl/maps"
-import { isEqual } from "lodash"
-import React, { Component } from "react"
+import MapboxGL, { CircleLayerStyle, ShapeSourceProps, SymbolLayerStyle } from "@react-native-mapbox-gl/maps"
+import React, { useEffect, useRef, useState } from "react"
 import { Animated, StyleProp } from "react-native"
 import { BucketKey } from "../bucketCityResults"
 import { FilterData } from "../types"
 
 interface Props {
   featureCollections: { [key in BucketKey]: FilterData }
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  onPress?: (nativeEvent) => void
+  onPress?: ShapeSourceProps["onPress"]
   duration?: number
   filterID: BucketKey
-}
-
-interface State {
-  pinOpacity: Animated.Value
-  clusterOpacity: Animated.Value
-  rendered: boolean
 }
 
 const singleShowStyle: StyleProp<SymbolLayerStyle> = {
@@ -46,20 +38,14 @@ const clusterCountStyle: StyleProp<SymbolLayerStyle> = {
   textPitchAlignment: "map",
 }
 
-export class ShapeLayer extends Component<Props, State> {
-  static defaultProps = {
-    duration: 300,
-  }
+export const PinsShapeLayer: React.FC<Props> = ({ duration = 300, ...props }) => {
+  const [rendered, setRendered] = useState(false)
+  const pinOpacity = useRef(new Animated.Value(0)).current
+  const clusterOpacity = useRef(new Animated.Value(0)).current
 
-  state = {
-    pinOpacity: new Animated.Value(0),
-    clusterOpacity: new Animated.Value(0),
-    rendered: false,
-  }
-
-  componentDidMount() {
-    this.fadeInAnimations()
-  }
+  useEffect(() => {
+    fadeInAnimations()
+  }, [])
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
     const { filterID } = this.props
@@ -73,60 +59,53 @@ export class ShapeLayer extends Component<Props, State> {
       this.state.rendered !== nextState.rendered ||
       this.props.filterID !== nextProps.filterID
     )
+  const fadeInAnimations = () => {
+    setRendered(true)
+    Animated.timing(pinOpacity, {
+      toValue: 1,
+      duration,
+      // mapbox opacities are not animatable with native driver for some reason
+      useNativeDriver: false,
+    }).start()
+
+    Animated.timing(clusterOpacity, {
+      toValue: 1,
+      duration,
+      // mapbox opacities are not animatable with native driver for some reason
+      useNativeDriver: false,
+    }).start()
   }
 
-  fadeInAnimations() {
-    this.setState(
-      {
-        pinOpacity: new Animated.Value(0),
-        clusterOpacity: new Animated.Value(0),
-        rendered: true,
-      },
-      () => {
-        Animated.timing(this.state.pinOpacity, {
-          toValue: 1,
-          duration: this.props.duration,
-          // mapbox opacities are not animatable with native driver for some reason
-          useNativeDriver: false,
-        }).start()
-
-        Animated.timing(this.state.clusterOpacity, {
-          toValue: 1,
-          duration: this.props.duration,
-          // mapbox opacities are not animatable with native driver for some reason
-          useNativeDriver: false,
-        }).start()
-      }
-    )
+  const { featureCollections, filterID } = props
+  if (Object.keys(featureCollections).length === 0) {
+    return null
   }
+  const collection = featureCollections[filterID].featureCollection
 
-  render() {
-    const { featureCollections, filterID } = this.props
-    const collection = featureCollections[filterID].featureCollection
-
-    return (
-      <MapboxGL.Animated.ShapeSource
-        id="shows"
-        shape={collection}
-        cluster
-        clusterRadius={50}
-        onPress={this.props.onPress}
-      >
-        <MapboxGL.Animated.SymbolLayer
-          id="singleShow"
-          filter={["!", ["has", "point_count"]]}
-          style={[singleShowStyle, { iconOpacity: this.state.pinOpacity }]}
-        />
-        <MapboxGL.Animated.SymbolLayer id="pointCount" style={clusterCountStyle} />
-        <MapboxGL.Animated.CircleLayer
-          id="clusteredPoints"
-          belowLayerID="pointCount"
-          filter={["has", "point_count"]}
-          style={[clusteredPointsStyle, { circleOpacity: this.state.clusterOpacity }]}
-        />
-      </MapboxGL.Animated.ShapeSource>
-    )
-  }
+  return (
+    <MapboxGL.Animated.ShapeSource
+      id="shows"
+      shape={collection}
+      cluster
+      clusterRadius={50}
+      clusterMaxZoomLevel={14}
+      onPress={props.onPress}
+    >
+      <MapboxGL.Animated.SymbolLayer
+        id="singleShow"
+        filter={["!", ["has", "point_count"]]}
+        // @ts-ignore
+        style={[singleShowStyle, { iconOpacity: pinOpacity }]}
+      />
+      <MapboxGL.Animated.SymbolLayer id="pointCount" style={clusterCountStyle} />
+      <MapboxGL.Animated.CircleLayer
+        id="clusteredPoints"
+        belowLayerID="pointCount"
+        filter={["has", "point_count"]}
+        // @ts-ignore
+        style={[clusteredPointsStyle, { circleOpacity: clusterOpacity }]}
+      />
+    </MapboxGL.Animated.ShapeSource>
+  )
 }
 
-export const PinsShapeLayer = Animated.createAnimatedComponent(ShapeLayer)

@@ -1,4 +1,4 @@
-import MapboxGL, { Point } from "@react-native-mapbox-gl/maps"
+import MapboxGL, { MapViewProps, ShapeSourceProps } from "@react-native-mapbox-gl/maps"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
@@ -7,10 +7,10 @@ import PinSavedSelected from "lib/Icons/PinSavedSelected"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Schema, screenTrack, track } from "lib/utils/track"
-import { get, isEqual, uniq } from "lodash"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { get, uniq } from "lodash"
 import { Box, color, Flex, Sans, Theme } from "palette"
-import React from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Animated, Dimensions, Easing, Image, NativeModules, View } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -26,6 +26,7 @@ import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
 import { Fair, FilterData, RelayErrorState, Show } from "./types"
+import { useTracking } from "react-tracking"
 
 MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
@@ -89,7 +90,7 @@ interface State {
   /** The users's location from core location */
   userLocation: { lat: number; lng: number } | null
   /** A set of GeoJSON features, which right now is our show clusters */
-  featureCollections: { [key in BucketKey]: FilterData } | null
+  featureCollections: { [key in BucketKey]: FilterData } | {}
   /** Has the map fully rendered? */
   mapLoaded: boolean
   /** In the process of saving a show */
@@ -105,7 +106,6 @@ export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfo
 const DefaultZoomLevel = 11
 const MinZoomLevel = 9
 const MaxZoomLevel = 17.5
-const DefaultCameraMode = "flyTo"
 
 const ButtonAnimation = {
   yDelta: -300,
@@ -123,191 +123,112 @@ enum DrawerPosition {
   partiallyRevealed = "partiallyRevealed",
 }
 
-@screenTrack<Props>((props) => {
-  return {
-    context_screen: Schema.PageNames.CityGuideMap,
-    context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
-    context_screen_owner_slug: props.citySlug,
-    context_screen_owner_id: props.citySlug,
-  }
-})
-export class GlobalMap extends React.Component<Props, State> {
-  /** Makes sure we're consistently using { lat, lng } internally */
-  static lngLatArrayToLocation(arr: [number, number] | undefined) {
-    if (!arr || arr.length !== 2) {
-      return undefined
-    }
-    return { lng: arr[0], lat: arr[1] }
-  }
+/** Makes sure we're consistently using { lat, lng } internally */
+const longCoordsToLocation = (coords: { longitude: number; latitude: number }) => {
+  return { lat: coords.latitude, lng: coords.longitude }
+}
 
-  /** Makes sure we're consistently using { lat, lng } internally */
-  static longCoordsToLocation(coords: { longitude: number; latitude: number }) {
-    return { lat: coords.latitude, lng: coords.longitude }
-  }
+export const GlobalMap: React.FC<Props> = (props) => {
+  const currentLocation = props.initialCoordinates || get(props, "viewer.city.coordinates")
+  const [state, setState] = useState<State>({
+    activeShows: [],
+    activeIndex: 0,
+    currentLocation,
+    userLocation: null,
+    bucketResults: emptyBucketResults,
+    featureCollections: {},
+    mapLoaded: false,
+    isSavingShow: false,
+    nearestFeature: null,
+    activePin: null,
+  })
 
-  map: MapboxGL.MapView | null
-  camera: MapboxGL.Camera | null
-  hideButtons = new Animated.Value(0)
-  currentZoom: number
+  const mapRef = useRef<MapboxGL.MapView>(null)
+  const cameraRef = useRef<MapboxGL.Camera>(null)
 
-  shows: { [id: string]: Show } = {}
-  fairs: { [id: string]: Fair } = {}
+  useEffect(() => {
+    updateShowIdMap()
+  }, [])
 
-  stylesheet = {
-    singleShow: {
-      iconImage: ["get", "icon"],
-      iconSize: 0.8,
-    },
+  const hideButtons = useRef(new Animated.Value(0)).current
+  const shows: { [id: string]: Show } = {}
+  const fairs: { [id: string]: Fair } = {}
 
-    clusteredPoints: {
-      circlePitchAlignment: "map",
-      circleColor: "black",
-
-      // prettier-ignore
-      circleRadius: [
-        "step",
-        ["get", "point_count"],
-            15,
-         5, 20,
-        30, 30,
-      ],
-    },
-
-    clusterCount: {
-      textField: "{point_count}",
-      textSize: 14,
-      textColor: "white",
-      textFont: ["Unica77 LL Medium"],
-      textPitchAlignment: "map",
-    },
+  const handleFilterChange = (activeIndex: any) => {
+    setState((prev) => ({ ...prev, activeIndex, activePin: null, activeShows: [] }))
   }
 
-  constructor(props: Props) {
-    super(props)
+  useEffect(() => {
+    EventEmitter.subscribe("filters:change", handleFilterChange)
+    return () => EventEmitter.unsubscribe("filters:change", handleFilterChange)
+  }, [])
 
-    const currentLocation = this.props.initialCoordinates || get(this.props, "viewer.city.coordinates")
-    this.state = {
-      activeShows: [],
-      activeIndex: 0,
-      currentLocation,
-      userLocation: null,
-      bucketResults: emptyBucketResults,
-      featureCollections: null,
-      mapLoaded: false,
-      isSavingShow: false,
-      nearestFeature: null,
-      activePin: null,
-    }
-    this.currentZoom = DefaultZoomLevel
-    this.map = null
-    this.camera = null
-
-    this.updateShowIdMap()
-  }
-
-  handleFilterChange = (activeIndex: any) => {
-    this.setState({ activeIndex, activePin: null, activeShows: [] })
-  }
-
-  resetZoomAndCamera = () => {
-    this.camera?.setCamera({
-      animationMode: DefaultCameraMode,
-      zoomLevel: DefaultZoomLevel,
-      pitch: 0,
-      heading: 0,
-      animationDuration: 1000,
-    })
-  }
-
-  componentDidMount() {
-    EventEmitter.subscribe("filters:change", this.handleFilterChange)
-  }
-
-  componentWillUnmount() {
-    EventEmitter.unsubscribe("filters:change", this.handleFilterChange)
-  }
-
-  componentDidUpdate(_: any, prevState: State) {
+  useEffect(() => {
     // Update the clusterMap if new bucket results
-    if (this.state.bucketResults) {
-      const shouldUpdate = !isEqual(
-        prevState.bucketResults.saved.map((g) => g?.is_followed),
-        this.state.bucketResults.saved.map((g) => g?.is_followed)
-      )
-
-      if (shouldUpdate) {
-        this.updateClusterMap()
-      }
+    if (state.bucketResults) {
+      updateClusterMap()
     }
-  }
+  }, [state.bucketResults])
 
-  UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    const { citySlug, relayErrorState } = this.props
-
-    if (citySlug && citySlug !== nextProps.citySlug) {
-      setTimeout(this.resetZoomAndCamera, 500)
-    }
-
+  useEffect(() => {
     // If there is a new city, enity it and update our map.
-    if (nextProps.viewer) {
+    if (props.viewer) {
       // TODO: This is currently really inefficient.
-      const bucketResults = bucketCityResults(nextProps.viewer)
+      const bucketResults = bucketCityResults(props.viewer)
 
-      this.setState({ bucketResults }, () => {
-        this.emitFilteredBucketResults()
-        this.updateShowIdMap()
-        this.updateClusterMap()
-      })
+      setState((prev) => ({ ...prev, bucketResults }))
+      emitFilteredBucketResults()
+      updateShowIdMap()
+      updateClusterMap()
     }
+  }, [props.viewer])
+
+  useEffect(() => {
     // If the relayErrorState changes, emit a new event.
-    if (!!relayErrorState !== !!nextProps.relayErrorState) {
-      EventEmitter.dispatch("map:error", { relayErrorState: nextProps.relayErrorState })
-    }
+    EventEmitter.dispatch("map:error", { relayErrorState: props.relayErrorState })
+  }, [props.relayErrorState])
 
-    if (nextProps.hideMapButtons !== this.props.hideMapButtons) {
-      if (nextProps.hideMapButtons) {
-        Animated.timing(this.hideButtons, {
-          toValue: 1,
-          duration: ButtonAnimation.duration,
-          easing: ButtonAnimation.easing.moveOut,
-          useNativeDriver: true,
-        }).start()
-      } else {
-        Animated.timing(this.hideButtons, {
-          toValue: 0,
-          duration: ButtonAnimation.duration,
-          easing: ButtonAnimation.easing.moveIn,
-          useNativeDriver: true,
-        }).start()
-      }
+  useEffect(() => {
+    if (props.hideMapButtons) {
+      Animated.timing(hideButtons, {
+        toValue: 1,
+        duration: ButtonAnimation.duration,
+        easing: ButtonAnimation.easing.moveOut,
+        useNativeDriver: true,
+      }).start()
+    } else {
+      Animated.timing(hideButtons, {
+        toValue: 0,
+        duration: ButtonAnimation.duration,
+        easing: ButtonAnimation.easing.moveIn,
+        useNativeDriver: true,
+      }).start()
     }
-  }
+  }, [props.hideMapButtons])
 
-  @track((__, _, args) => {
-    const actionName = args[0]
-    const show = args[1]
-    const type = args[2]
-    return {
+  const { trackEvent } = useTracking()
+
+  const trackPinTap = (actionName: any, show: any, type: any) => {
+    trackEvent({
       action_name: actionName,
       action_type: Schema.ActionTypes.Tap,
       owner_id: !!show ? show[0].internalID : "",
       owner_slug: !!show ? show[0].id : "",
       owner_type: !!type ? type : "",
-    } as any
-  })
-  trackPinTap(_actionName: any, _show: any, _type: any) {
+    })
     return null
   }
 
-  updateClusterMap() {
-    if (!this.props.viewer) {
+  const updateClusterMap = () => {
+    if (!props.viewer) {
       return
     }
 
     const featureCollections: State["featureCollections"] = {}
+
     cityTabs.forEach((tab) => {
-      const shows = tab.getShows(this.state.bucketResults)
-      const fairs = tab.getFairs(this.state.bucketResults)
+      const shows = tab.getShows(state.bucketResults)
+      const fairs = tab.getFairs(state.bucketResults)
       const showData = showsToGeoCityShow(shows)
       const fairData = fairToGeoCityFairs(fairs)
       const data = showData.concat((fairData as any) as Show[])
@@ -321,43 +242,41 @@ export class GlobalMap extends React.Component<Props, State> {
 
       clusterEngine.load(geoJSONFeature.features as any)
 
+      // @ts-ignore
       featureCollections[tab.id] = {
         featureCollection: geoJSONFeature,
         filter: tab.id,
         clusterEngine,
       }
     })
-
-    this.setState({
-      featureCollections,
-    })
+    setState((prev) => ({ ...prev, featureCollections }))
   }
 
-  emitFilteredBucketResults() {
-    if (!this.props.viewer) {
+  const emitFilteredBucketResults = () => {
+    if (!props.viewer) {
       return
     }
 
-    const filter = cityTabs[this.state.activeIndex]
-    const { city } = this.props.viewer
+    const filter = cityTabs[state.activeIndex]
+    const { city } = props.viewer
     const { name: cityName, slug: citySlug, sponsoredContent } = city ?? {}
 
     EventEmitter.dispatch("map:change", {
       filter,
-      buckets: this.state.bucketResults,
+      buckets: state.bucketResults,
       cityName,
       citySlug,
       sponsoredContent,
-      relay: this.props.relay,
+      relay: props.relay,
     })
   }
 
-  updateShowIdMap() {
-    if (!this.props.viewer) {
+  const updateShowIdMap = () => {
+    if (!props.viewer) {
       return
     }
 
-    const { city } = this.props.viewer
+    const { city } = props.viewer
     if (city) {
       const savedUpcomingShows = extractNodes(city.upcomingShows).filter((node) => node.is_followed)
       const shows = extractNodes(city.shows)
@@ -368,7 +287,8 @@ export class GlobalMap extends React.Component<Props, State> {
           return null
         }
 
-        this.shows[node.slug] = node
+        // @ts-ignore
+        shows[node.slug] = node
       })
 
       extractNodes(city.fairs).forEach((node) => {
@@ -376,7 +296,7 @@ export class GlobalMap extends React.Component<Props, State> {
           return null
         }
 
-        this.fairs[node.slug] = {
+        fairs[node.slug] = {
           ...node,
           type: "Fair",
         }
@@ -384,17 +304,16 @@ export class GlobalMap extends React.Component<Props, State> {
     }
   }
 
-  renderSelectedPin() {
-    const { activeShows, activePin } = this.state
-    const {
-      properties: { cluster, type },
-    } = activePin ?? {}
+  const renderSelectedPin = () => {
+    const { activeShows, activePin } = state
+    const { properties } = activePin ?? {}
+    const { cluster, type } = properties ?? {}
 
     if (cluster) {
-      const { nearestFeature } = this.state
+      const { nearestFeature } = state
       const { properties, geometry } = nearestFeature ?? {
         properties: {},
-        geometry: { type: "Point", coordinates: [0, 0] } as GeoJSON.Point,
+        geometry: { type: "Point", coordinates: [0, 0] },
       }
       const [clusterLat, clusterLng] = geometry.coordinates
 
@@ -431,8 +350,8 @@ export class GlobalMap extends React.Component<Props, State> {
       return null
     }
 
-    const lat = item.location.coordinates! /* STRICTNESS_MIGRATION */.lat
-    const lng = item.location.coordinates! /* STRICTNESS_MIGRATION */.lng
+    const lat = item.location.coordinates!.lat
+    const lng = item.location.coordinates!.lng
     const id = item.slug
 
     if (type === "Fair") {
@@ -464,19 +383,19 @@ export class GlobalMap extends React.Component<Props, State> {
     }
   }
 
-  renderShowCard() {
-    const { activeShows } = this.state
+  const renderShowCard = () => {
+    const { activeShows } = state
     const hasShows = activeShows.length > 0
 
     // Check if it's an iPhone with ears (iPhone X, Xr, Xs, etc...)
-    const iPhoneHasEars = this.props.safeAreaInsets.top > 20
 
+    const iPhoneHasEars = props.safeAreaInsets.top > 20
     // We need to update activeShows in case of a mutation (save show)
     const updatedShows: Array<Fair | Show> = activeShows.map((item: any) => {
       if (item.type === "Show") {
-        return this.shows[item.slug]
+        return shows[item.slug]
       } else if (item.type === "Fair") {
-        return this.fairs[item.slug]
+        return fairs[item.slug]
       }
       return item
     })
@@ -509,12 +428,12 @@ export class GlobalMap extends React.Component<Props, State> {
                 <ShowCard
                   shows={updatedShows}
                   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                  relay={this.props.relay}
+                  relay={props.relay}
                   onSaveStarted={() => {
-                    this.setState({ isSavingShow: true })
+                    setState((prev) => ({ ...prev, isSavingShow: true }))
                   }}
                   onSaveEnded={() => {
-                    this.setState({ isSavingShow: false })
+                    setState((prev) => ({ ...prev, isSavingShow: false }))
                   }}
                 />
               )}
@@ -525,171 +444,67 @@ export class GlobalMap extends React.Component<Props, State> {
     )
   }
 
-  onUserLocationUpdate = (feature: MapboxGL.Location) => {
-    this.setState({
-      userLocation: feature.coords && GlobalMap.longCoordsToLocation(feature.coords),
-    })
-  }
-
-  onRegionIsChanging = async () => {
-    if (!this.map) {
+  const onUserLocationUpdate = (location: MapboxGL.Location) => {
+    if (location === null) {
       return
     }
-    const zoom = Math.floor(await this.map.getZoom())
-
-    if (!this.currentZoom) {
-      this.currentZoom = zoom
-    }
-
-    if (this.currentZoom !== zoom) {
-      this.setState({
-        activePin: null,
-      })
-    }
+    setState((prev) => ({ ...prev, userLocation: location?.coords && longCoordsToLocation(location.coords) }))
   }
 
-  onDidFinishRenderingMapFully = () => {
+  const onRegionIsChanging = async () => {
+    if (!mapRef.current) {
+      return
+    }
+
+    setState((prev) => ({
+      ...prev,
+      activePin: null,
+    }))
+  }
+
+  const onDidFinishRenderingMapFully = () => {
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryMapHasRendered", {})
-    this.setState({ mapLoaded: true })
+    setState((prev) => ({ ...prev, mapLoaded: true }))
   }
 
-  onPressMap = () => {
-    if (!this.state.isSavingShow) {
-      this.setState({
-        activeShows: [],
-        activePin: null,
-      })
+  const onPressMap = () => {
+    if (!state.isSavingShow) {
+      setState((prev) => ({ ...prev, activeShows: [], activePin: null }))
     }
   }
 
-  onPressCitySwitcherButton = () => {
-    this.setState({
+  const onPressCitySwitcherButton = () => {
+    setState((prev) => ({
+      ...prev,
       activeShows: [],
       activePin: null,
+    }))
+  }
+
+  const onPressUserPositionButton = () => {
+    const { lat = 0, lng = 0 } = state.userLocation ?? {}
+    cameraRef.current?.setCamera({
+      centerCoordinate: [lng, lat],
+      zoomLevel: DefaultZoomLevel,
+      animationDuration: 500,
     })
   }
 
-  onPressUserPositionButton = () => {
-    const { lat = 0, lng = 0 } = this.state.userLocation ?? {}
-    this.camera?.moveTo([lng, lat], 500)
+  const currentFeatureCollection = (): FilterData => {
+    const filterID = cityTabs[state.activeIndex].id
+    // @ts-ignore
+    return state.featureCollections[filterID as BucketKey]
   }
 
-  onPressPinShapeLayer = (e) => this.handleFeaturePress(e.nativeEvent)
-
-  get currentFeatureCollection(): FilterData {
-    const filterID = cityTabs[this.state.activeIndex].id
-    if (this.state.featureCollections === null) {
-      return {}
-    }
-    return this.state.featureCollections[filterID as BucketKey]
-  }
-
-  // @TODO: Implement tests for this component https://artsyproduct.atlassian.net/browse/LD-564
-  render() {
-    const city = get(this.props, "viewer.city")
-    const { relayErrorState, userLocationWithinCity } = this.props
-    const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || get(city, "coordinates")
-    const { mapLoaded, activeShows, activePin } = this.state
-
-    const mapProps = {
-      showUserLocation: true,
-      styleURL: ArtsyMapStyleURL,
-      userTrackingMode: MapboxGL.UserTrackingModes.Follow,
-      centerCoordinate: [centerLng, centerLat],
-      zoomLevel: DefaultZoomLevel,
-      minZoomLevel: MinZoomLevel,
-      maxZoomLevel: MaxZoomLevel,
-      logoEnabled: !!city,
-      attributionEnabled: false,
-      compassEnabled: false,
-    }
-
-    return (
-      <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: colors["gray-light"] }}>
-        <LoadingScreen
-          source={require("../../../../images/map-bg.png")}
-          resizeMode="cover"
-          style={{ ...this.backgroundImageSize }}
-        />
-        <TopButtonsContainer style={{ top: this.props.safeAreaInsets.top + 12 }}>
-          <Animated.View
-            style={{
-              transform: [
-                {
-                  translateY: this.hideButtons.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0, -(this.props.safeAreaInsets.top + 12 + 50)],
-                  }),
-                },
-              ],
-            }}
-          >
-            <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end" px={3}>
-              <CitySwitcherButton
-                sponsoredContentUrl={this.props.viewer && this.props.viewer.city.sponsoredContent.artGuideUrl}
-                city={city}
-                isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
-                onPress={this.onPressCitySwitcherButton}
-              />
-              {!!(this.state.userLocation && userLocationWithinCity) && (
-                <Box style={{ marginLeft: 10 }}>
-                  <UserPositionButton
-                    highlight={this.state.userLocation === this.state.currentLocation}
-                    onPress={this.onPressUserPositionButton}
-                  />
-                </Box>
-              )}
-            </Flex>
-          </Animated.View>
-        </TopButtonsContainer>
-        <Spring
-          native
-          from={{ opacity: 0 }}
-          to={mapLoaded ? { opacity: 1.0 } : { opacity: 0 }}
-          config={{
-            duration: 300,
-          }}
-          precision={1}
-        >
-          {({ opacity }: any /* STRICTNESS_MIGRATION */) => (
-            <AnimatedView style={{ flex: 1, opacity }}>
-              <MapboxGL.MapView
-                style={{ width: "100%", height: Dimensions.get("window").height }}
-                {...mapProps}
-                onRegionIsChanging={this.onRegionIsChanging}
-                onUserLocationUpdate={this.onUserLocationUpdate}
-                onDidFinishRenderingMapFully={this.onDidFinishRenderingMapFully}
-                onPress={this.onPressMap}
-                ref={(r: any) => (this.map = r)}
-              >
-                {!!city && (
-                  <>
-                    <MapboxGL.Camera ref={(r) => this.camera} />
-                    {!!this.state.featureCollections && (
-                      <PinsShapeLayer
-                        filterID={cityTabs[this.state.activeIndex].id}
-                        featureCollections={this.state.featureCollections}
-                        onPress={(e: any) => this.handleFeaturePress(e.nativeEvent)}
-                      />
-                    )}
-                    <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
-                    {!!mapLoaded && !!activeShows && !!activePin && this.renderSelectedPin()}
-                  </>
-                )}
-              </MapboxGL.MapView>
-            </AnimatedView>
-          )}
-        </Spring>
-      </Flex>
-    )
-  }
-
-  get backgroundImageSize() {
-    const { width, height } = Dimensions.get("window")
-    return {
-      width,
-      height,
-    }
+  const city = get(props, "viewer.city")
+  const { relayErrorState, userLocationWithinCity } = props
+  const { mapLoaded, activeShows, activePin } = state
+  const mapProps: MapViewProps = {
+    styleURL: ArtsyMapStyleURL,
+    userTrackingMode: MapboxGL.UserTrackingModes.Follow,
+    logoEnabled: !!city,
+    attributionEnabled: false,
+    compassEnabled: false,
   }
 
   /**
@@ -697,19 +512,20 @@ export class GlobalMap extends React.Component<Props, State> {
    * What's happening is that we have to replicate a subset of the map's clustering algorithm to get
    * access to the shows that the user has tapped on.
    */
-  async handleFeaturePress(nativeEvent: any) {
-    if (!this.map) {
+  const handleFeaturePress: ShapeSourceProps["onPress"] = async (event) => {
+    if (!mapRef.current) {
       return
     }
+
     const {
-      payload: {
-        properties: { slug, cluster, type },
-        geometry: { coordinates },
-      },
-    } = nativeEvent
+      // @ts-ignore
+      properties: { slug, cluster, type },
+      // @ts-ignore
+      geometry: { coordinates },
+    } = event.features[0]
+    console.log("gamooo", { slug, type, coordinates })
 
-    this.updateDrawerPosition(DrawerPosition.collapsed)
-
+    updateDrawerPosition(DrawerPosition.collapsed)
     let activeShows: Array<Fair | Show> = []
 
     // If the user only taps on the pin we can use the
@@ -719,11 +535,11 @@ export class GlobalMap extends React.Component<Props, State> {
     // maps pins and cards will remain the same for now.
     if (!cluster) {
       if (type === "Show") {
-        activeShows = [this.shows[slug]]
-        this.trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Show)
+        activeShows = [shows[slug]]
+        trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Show)
       } else if (type === "Fair") {
-        activeShows = [this.fairs[slug]]
-        this.trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Fair)
+        activeShows = [fairs[slug]]
+        trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Fair)
       }
     }
 
@@ -733,37 +549,39 @@ export class GlobalMap extends React.Component<Props, State> {
     // 2. Sort them by distance to the user tap coordinates
     // 3. Retrieve points within the cluster and map them back to shows
     else {
-      this.trackPinTap(Schema.ActionNames.ClusteredMapPin, null, Schema.OwnerEntityTypes.Show)
+      trackPinTap(Schema.ActionNames.ClusteredMapPin, null, Schema.OwnerEntityTypes.Show)
       // Get map zoom level and coordinates of where the user tapped
-      const zoom = Math.floor(await this.map.getZoom())
+      const zoom = Math.floor(await mapRef.current.getZoom())
       const [lat, lng] = coordinates
 
       // Get coordinates of the map's current viewport bounds
-      const visibleBounds = await this.map.getVisibleBounds()
+      const visibleBounds = await mapRef.current.getVisibleBounds()
       const [ne, sw] = visibleBounds
       const [eastLng, northLat] = ne
       const [westLng, southLat] = sw
 
-      const clusterEngine = this.currentFeatureCollection.clusterEngine
+      const clusterEngine = currentFeatureCollection().clusterEngine
       const visibleFeatures = clusterEngine.getClusters([westLng, southLat, eastLng, northLat], zoom)
-      const nearestFeature = this.getNearestPointToLatLongInCollection({ lat, lng }, visibleFeatures)
+      const nearestFeature = getNearestPointToLatLongInCollection({ lat, lng }, visibleFeatures)
       const points = clusterEngine.getLeaves(nearestFeature.properties.cluster_id, Infinity)
       activeShows = points.map((a) => a.properties) as any
-      this.setState({
+      setState((prev) => ({
+        ...prev,
         nearestFeature,
-      })
+      }))
     }
 
-    this.setState({
+    setState((prev) => ({
+      ...prev,
       activeShows,
-      activePin: nativeEvent.payload,
-    })
+      activePin: event.features[0],
+    }))
   }
 
-  getNearestPointToLatLongInCollection(
+  const getNearestPointToLatLongInCollection = (
     values: { lat: number; lng: number },
     features: Array<PointFeature<ClusterProperties & AnyProps> | PointFeature<AnyProps>>
-  ) {
+  ) => {
     // https://stackoverflow.com/a/21623206
     function distance(lat1: number, lon1: number, lat2: number, lon2: number) {
       const p = 0.017453292519943295 // Math.PI / 180
@@ -786,12 +604,115 @@ export class GlobalMap extends React.Component<Props, State> {
     return distances[0]
   }
 
-  updateDrawerPosition(position: DrawerPosition) {
+  const updateDrawerPosition = (position: DrawerPosition) => {
     const notificationName = "ARLocalDiscoveryUpdateDrawerPosition"
     NativeModules.ARNotificationsManager.postNotificationName(notificationName, {
       position,
     })
   }
+
+  const backgroundImageSize = () => {
+    const { width, height } = Dimensions.get("window")
+    return { width, height }
+  }
+
+  const { lat: centerLat, lng: centerLng } = props.initialCoordinates || get(city, "coordinates")
+
+  // @TODO: Implement tests for this component https://artsyproduct.atlassian.net/browse/LD-564
+  return (
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.CityGuideMap,
+        context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+        context_screen_owner_slug: props.citySlug,
+        context_screen_owner_id: props.citySlug,
+      }}
+    >
+      <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: colors["gray-light"] }}>
+        <LoadingScreen
+          source={require("../../../../images/map-bg.png")}
+          resizeMode="cover"
+          style={{ ...backgroundImageSize }}
+        />
+        <TopButtonsContainer style={{ top: props.safeAreaInsets.top + 12 }}>
+          <Animated.View
+            style={{
+              transform: [
+                {
+                  translateY: hideButtons.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, -(props.safeAreaInsets.top + 12 + 50)],
+                  }),
+                },
+              ],
+            }}
+          >
+            <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end" px={3}>
+              <CitySwitcherButton
+                sponsoredContentUrl={(props.viewer && props.viewer.city?.sponsoredContent?.artGuideUrl) ?? undefined}
+                city={city}
+                isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
+                onPress={onPressCitySwitcherButton}
+              />
+              {!!(state.userLocation && userLocationWithinCity) && (
+                <Box style={{ marginLeft: 10 }}>
+                  <UserPositionButton
+                    highlight={state.userLocation === state.currentLocation}
+                    onPress={onPressUserPositionButton}
+                  />
+                </Box>
+              )}
+            </Flex>
+          </Animated.View>
+        </TopButtonsContainer>
+        <Spring
+          native
+          from={{ opacity: 0 }}
+          to={mapLoaded ? { opacity: 1.0 } : { opacity: 0 }}
+          config={{
+            duration: 300,
+          }}
+          precision={1}
+        >
+          {({ opacity }: { opacity: number }) => (
+            <AnimatedView style={{ flex: 1, opacity }}>
+              <MapboxGL.MapView
+                style={{ width: "100%", height: Dimensions.get("window").height }}
+                {...mapProps}
+                onRegionIsChanging={onRegionIsChanging}
+                onDidFinishRenderingMapFully={onDidFinishRenderingMapFully}
+                onPress={onPressMap}
+                ref={mapRef}
+              >
+                <MapboxGL.Camera
+                  ref={cameraRef}
+                  animationMode="flyTo"
+                  minZoomLevel={MinZoomLevel}
+                  maxZoomLevel={MaxZoomLevel}
+                  centerCoordinate={[centerLng, centerLat]}
+                />
+                <MapboxGL.UserLocation onUpdate={onUserLocationUpdate} />
+                {!!city && (
+                  <>
+                    {!!state.featureCollections && (
+                      <PinsShapeLayer
+                        filterID={cityTabs[state.activeIndex].id as BucketKey}
+                        // @ts-ignore
+                        featureCollections={state.featureCollections}
+                        onPress={(e) => handleFeaturePress(e)}
+                      />
+                    )}
+                    <ShowCardContainer>{renderShowCard()}</ShowCardContainer>
+                    {!!mapLoaded && !!activeShows && !!activePin && renderSelectedPin()}
+                  </>
+                )}
+              </MapboxGL.MapView>
+            </AnimatedView>
+          )}
+        </Spring>
+      </Flex>
+    </ProvideScreenTracking>
+  )
 }
 
 const SelectedCluster = styled(Flex)`

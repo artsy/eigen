@@ -368,7 +368,7 @@ const CGFloat MARGIN = 10;
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
-    if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
+    if (status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusAuthorizedAlways) {
         [manager startUpdatingLocation];
     } else if (status == kCLAuthorizationStatusNotDetermined) {
         // nop, don't show city picker.
