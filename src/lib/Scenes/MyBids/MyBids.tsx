@@ -33,30 +33,13 @@ class MyBids extends React.Component<MyBidsProps> {
   state = {
     fetching: false,
   }
-  refreshMyBids = (callback?: () => void) => {
+  refreshMyBids = (callback?: () => void, noSpinner?: boolean) => {
     const { relay } = this.props
     if (!relay.isLoading()) {
-      this.setState({ fetching: true })
-      relay.refetchConnection(PAGE_SIZE, (error) => {
-        if (error) {
-          console.error("MyBids/index.tsx #refreshMyBids", error.message)
-          // FIXME: Handle error
-        }
-        if (callback) {
-          callback()
-        }
-        this.setState({ fetching: false })
-      })
-    } else {
-      if (callback) {
-        callback()
+      if (!noSpinner) {
+        this.setState({ fetching: true })
       }
-    }
-  }
 
-  refreshMyBidsWithoutSpinner = (callback?: () => void) => {
-    const { relay } = this.props
-    if (!relay.isLoading()) {
       relay.refetchConnection(PAGE_SIZE, (error) => {
         if (error) {
           console.error("MyBids/index.tsx #refreshMyBids", error.message)
@@ -64,6 +47,9 @@ class MyBids extends React.Component<MyBidsProps> {
         }
         if (callback) {
           callback()
+        }
+        if (!noSpinner) {
+          this.setState({ fetching: false })
         }
       })
     } else {

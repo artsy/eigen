@@ -81,7 +81,6 @@ export class Inbox extends React.Component<Props, State> {
   flatListHeight = 0
 
   componentDidMount() {
-    console.warn("MOUNT", this.props.isVisible)
     this.listener = listenToNativeEvents((event) => {
       if (event.type === "NOTIFICATION_RECEIVED") {
         this.fetchData()
@@ -94,14 +93,12 @@ export class Inbox extends React.Component<Props, State> {
   }
 
   UNSAFE_componentWillReceiveProps(newProps: Props) {
-    console.warn("recieve props", newProps)
     if (newProps.isVisible) {
       this.fetchData()
     }
   }
 
   fetchData = () => {
-    console.warn("FETCH!")
     if (this.state.fetchingData) {
       return
     }
@@ -111,11 +108,11 @@ export class Inbox extends React.Component<Props, State> {
     if (this.conversations) {
       this.conversations.refreshConversations(() => {
         this.setState({ fetchingData: false })
-      })
+      }, true)
     } else if (this.myBids) {
-      this.myBids.refreshMyBidsWithoutSpinner(() => {
+      this.myBids.refreshMyBids(() => {
         this.setState({ fetchingData: false })
-      })
+      }, true)
     } else {
       this.props.relay.refetch({}, null, () => {
         this.setState({ fetchingData: false })

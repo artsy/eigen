@@ -52,10 +52,13 @@ export class Conversations extends Component<Props, State> {
     }
   }
 
-  refreshConversations = (callback?: () => void) => {
+  refreshConversations = (callback?: () => void, noSpinner?: boolean) => {
     const { relay } = this.props
     if (!relay.isLoading()) {
-      this.setState({ fetching: true })
+      if (!noSpinner) {
+        this.setState({ fetching: true })
+      }
+
       relay.refetchConnection(PAGE_SIZE, (error) => {
         if (error) {
           console.error("Conversations/index.tsx #refreshConversations", error.message)
@@ -64,7 +67,9 @@ export class Conversations extends Component<Props, State> {
         if (callback) {
           callback()
         }
-        this.setState({ fetching: false })
+        if (!noSpinner) {
+          this.setState({ fetching: false })
+        }
       })
     } else {
       if (callback) {
