@@ -54,6 +54,25 @@ class MyBids extends React.Component<MyBidsProps> {
     }
   }
 
+  refreshMyBidsWithoutSpinner = (callback?: () => void) => {
+    const { relay } = this.props
+    if (!relay.isLoading()) {
+      relay.refetchConnection(PAGE_SIZE, (error) => {
+        if (error) {
+          console.error("MyBids/index.tsx #refreshMyBids", error.message)
+          // FIXME: Handle error
+        }
+        if (callback) {
+          callback()
+        }
+      })
+    } else {
+      if (callback) {
+        callback()
+      }
+    }
+  }
+
   render() {
     const { me } = this.props
     const lotStandings = extractNodes(me?.auctionsLotStandingConnection)

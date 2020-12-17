@@ -81,6 +81,7 @@ export class Inbox extends React.Component<Props, State> {
   flatListHeight = 0
 
   componentDidMount() {
+    console.warn("MOUNT", this.props.isVisible)
     this.listener = listenToNativeEvents((event) => {
       if (event.type === "NOTIFICATION_RECEIVED") {
         this.fetchData()
@@ -93,12 +94,14 @@ export class Inbox extends React.Component<Props, State> {
   }
 
   UNSAFE_componentWillReceiveProps(newProps: Props) {
+    console.warn("recieve props", newProps)
     if (newProps.isVisible) {
       this.fetchData()
     }
   }
 
   fetchData = () => {
+    console.warn("FETCH!")
     if (this.state.fetchingData) {
       return
     }
@@ -110,7 +113,7 @@ export class Inbox extends React.Component<Props, State> {
         this.setState({ fetchingData: false })
       })
     } else if (this.myBids) {
-      this.myBids.refreshMyBids(() => {
+      this.myBids.refreshMyBidsWithoutSpinner(() => {
         this.setState({ fetchingData: false })
       })
     } else {
@@ -169,7 +172,7 @@ export const InboxContainer = createRefetchContainer(
   `
 )
 
-export const InboxQueryRenderer: React.FC = () => {
+export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
   return (
     <QueryRenderer<InboxQuery>
       environment={defaultEnvironment}
@@ -182,7 +185,9 @@ export const InboxQueryRenderer: React.FC = () => {
       `}
       cacheConfig={{ force: true }}
       variables={{}}
-      render={renderWithLoadProgress(InboxContainer)}
+      render={(...args) => {
+        return renderWithLoadProgress(InboxContainer, props)(...args)
+      }}
     />
   )
 }
