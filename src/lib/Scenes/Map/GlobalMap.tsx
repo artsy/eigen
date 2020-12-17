@@ -166,9 +166,7 @@ export class GlobalMap extends React.Component<Props, State> {
       featureCollections: null,
       mapLoaded: false,
       isSavingShow: false,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       nearestFeature: null,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       activePin: null,
       currentZoom: DefaultZoomLevel,
     }
@@ -178,7 +176,6 @@ export class GlobalMap extends React.Component<Props, State> {
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleFilterChange = (activeIndex) => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.setState({ activeIndex, activePin: null, activeShows: [] })
   }
 
@@ -352,15 +349,19 @@ export class GlobalMap extends React.Component<Props, State> {
 
   renderSelectedPin() {
     const { activeShows, activePin } = this.state
+    if (activePin === null || activePin.properties === null) {
+      return null
+    }
+
     const {
       properties: { cluster, type },
     } = activePin
 
     if (cluster) {
       const {
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         nearestFeature: { properties, geometry },
       } = this.state
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const [clusterLat, clusterLng] = geometry.coordinates
 
       const clusterId = properties.cluster_id.toString()
@@ -508,7 +509,6 @@ export class GlobalMap extends React.Component<Props, State> {
 
     if (this.currentZoom !== zoom) {
       this.setState({
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         activePin: null,
       })
     }
@@ -523,7 +523,6 @@ export class GlobalMap extends React.Component<Props, State> {
     if (!this.state.isSavingShow) {
       this.setState({
         activeShows: [],
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         activePin: null,
       })
     }
@@ -532,7 +531,6 @@ export class GlobalMap extends React.Component<Props, State> {
   onPressCitySwitcherButton = () => {
     this.setState({
       activeShows: [],
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       activePin: null,
     })
   }
@@ -678,7 +676,9 @@ export class GlobalMap extends React.Component<Props, State> {
       return
     }
     const {
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       properties: { slug, cluster, type },
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       geometry: { coordinates },
     } = event.features[0]
 
