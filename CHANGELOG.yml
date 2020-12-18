@@ -15,6 +15,7 @@ upcoming:
     - Fix bug preventing empty values from being saved (my collection) - brian
     - Add improved phone number input - david
     - Add support for deleting photos in my collection - brian. barry
+    - Inbox refreshes when tab is visited - lily
 
 releases:
   - version: 6.7.3
