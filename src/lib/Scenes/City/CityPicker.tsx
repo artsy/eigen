@@ -20,6 +20,8 @@ interface State {
 
 const cityList = cities.map((city) => city.name)
 
+const everything = "42"
+
 @screenTrack(() => ({
   context_screen: Schema.PageNames.CityPicker,
   context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
