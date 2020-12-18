@@ -29,7 +29,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
     <View>
       <ScreenMargin>
         <InfoButton
-          title="Auction Results"
+          title={`Auction Results for ${props?.artwork?.artist?.name}`}
           modalContent={
             <>
               <Text>
@@ -107,6 +107,7 @@ export const MyCollectionArtworkArtistAuctionResultsFragmentContainer = createFr
         slug
         artist {
           slug
+          name
           auctionResultsConnection(
             first: 3
             sort: DATE_DESC # organizations: $organizations # categories: $categories # sizes: $sizes # earliestCreatedYear: $createdAfterYear # latestCreatedYear: $createdBeforeYear # allowEmptyCreatedDates: $allowEmptyCreatedDates

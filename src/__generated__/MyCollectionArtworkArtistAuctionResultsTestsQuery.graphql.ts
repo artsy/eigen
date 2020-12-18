@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 064757c4726ff8c90ce9c5feee413fbc */
+/* @relayHash 38c332eeb62c997e054d513c706b3301 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,6 +31,7 @@ fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
   slug
   artist {
     slug
+    name
     auctionResultsConnection(first: 3, sort: DATE_DESC) {
       edges {
         node {
@@ -151,6 +152,13 @@ return {
             "plural": false,
             "selections": [
               (v2/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "name",
+                "storageKey": null
+              },
               {
                 "alias": null,
                 "args": [
@@ -297,7 +305,7 @@ return {
     ]
   },
   "params": {
-    "id": "064757c4726ff8c90ce9c5feee413fbc",
+    "id": "38c332eeb62c997e054d513c706b3301",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -364,6 +372,7 @@ return {
         "artwork.artist.auctionResultsConnection.edges.node.saleDate": (v4/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.title": (v4/*: any*/),
         "artwork.artist.id": (v5/*: any*/),
+        "artwork.artist.name": (v4/*: any*/),
         "artwork.artist.slug": (v5/*: any*/),
         "artwork.id": (v5/*: any*/),
         "artwork.internalID": (v5/*: any*/),

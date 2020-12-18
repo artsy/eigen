@@ -9,6 +9,7 @@ export type MyCollectionArtworkArtistAuctionResults_artwork = {
     readonly slug: string;
     readonly artist: {
         readonly slug: string;
+        readonly name: string | null;
         readonly auctionResultsConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
@@ -73,6 +74,13 @@ return {
       "plural": false,
       "selections": [
         (v1/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "name",
+          "storageKey": null
+        },
         {
           "alias": null,
           "args": [
@@ -215,5 +223,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '3d00943bd40f20adb05a457801012abc';
+(node as any).hash = 'dc02f16b38b70305764e33e184cba631';
 export default node;

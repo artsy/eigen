@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 10474bb4dd0289a459d14d24c9336d6a */
+/* @relayHash 5c534f656d33b78a04430d5c14c02f12 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,6 +29,7 @@ query MyCollectionArtworkArtistArticlesTestsQuery {
 fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
   artist {
     slug
+    name
     articlesConnection(first: 3, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
       edges {
         node {
@@ -72,16 +73,23 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "name",
   "storageKey": null
 },
 v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v4 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v4 = {
+v5 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -137,6 +145,7 @@ return {
             "plural": false,
             "selections": [
               (v1/*: any*/),
+              (v2/*: any*/),
               {
                 "alias": null,
                 "args": [
@@ -207,14 +216,8 @@ return {
                             "name": "author",
                             "plural": false,
                             "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "name",
-                                "storageKey": null
-                              },
-                              (v2/*: any*/)
+                              (v2/*: any*/),
+                              (v3/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -249,7 +252,7 @@ return {
                             ],
                             "storageKey": null
                           },
-                          (v2/*: any*/)
+                          (v3/*: any*/)
                         ],
                         "storageKey": null
                       }
@@ -259,18 +262,18 @@ return {
                 ],
                 "storageKey": "articlesConnection(first:3,inEditorialFeed:true,sort:\"PUBLISHED_AT_DESC\")"
               },
-              (v2/*: any*/)
+              (v3/*: any*/)
             ],
             "storageKey": null
           },
-          (v2/*: any*/)
+          (v3/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-slug\")"
       }
     ]
   },
   "params": {
-    "id": "10474bb4dd0289a459d14d24c9336d6a",
+    "id": "5c534f656d33b78a04430d5c14c02f12",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -309,24 +312,25 @@ return {
           "plural": false,
           "type": "Author"
         },
-        "artwork.artist.articlesConnection.edges.node.author.id": (v3/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.author.name": (v4/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.href": (v4/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.id": (v3/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.internalID": (v3/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.publishedAt": (v4/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.slug": (v4/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.author.id": (v4/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.author.name": (v5/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.href": (v5/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.id": (v4/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.internalID": (v4/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.publishedAt": (v5/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.slug": (v5/*: any*/),
         "artwork.artist.articlesConnection.edges.node.thumbnailImage": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Image"
         },
-        "artwork.artist.articlesConnection.edges.node.thumbnailImage.url": (v4/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.thumbnailTitle": (v4/*: any*/),
-        "artwork.artist.id": (v3/*: any*/),
-        "artwork.artist.slug": (v3/*: any*/),
-        "artwork.id": (v3/*: any*/)
+        "artwork.artist.articlesConnection.edges.node.thumbnailImage.url": (v5/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.thumbnailTitle": (v5/*: any*/),
+        "artwork.artist.id": (v4/*: any*/),
+        "artwork.artist.name": (v5/*: any*/),
+        "artwork.artist.slug": (v4/*: any*/),
+        "artwork.id": (v4/*: any*/)
       }
     },
     "name": "MyCollectionArtworkArtistArticlesTestsQuery",

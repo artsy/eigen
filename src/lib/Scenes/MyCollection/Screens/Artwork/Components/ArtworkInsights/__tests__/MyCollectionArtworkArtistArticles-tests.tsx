@@ -45,10 +45,16 @@ describe("MyCollectionArtworkArtistArticles", () => {
 
   it("renders without throwing an error", () => {
     const wrapper = renderWithWrappers(<TestRenderer />)
-    resolveData()
+    resolveData({
+      Artwork: () => ({
+        artist: {
+          name: "Banksy",
+        },
+      }),
+    })
     expect(wrapper.root.findByType(Image)).toBeDefined()
     const text = extractText(wrapper.root)
-    expect(text).toContain("Latest Articles")
+    expect(text).toContain("Latest Articles featuring Banksy")
     expect(text).toContain("thumbnailTitle")
     expect(text).toContain("publishedAt")
   })
