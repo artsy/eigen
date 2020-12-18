@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 32344ad8f7bd88916aefd9e981064720 */
+/* @relayHash 064757c4726ff8c90ce9c5feee413fbc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,6 +27,8 @@ query MyCollectionArtworkArtistAuctionResultsTestsQuery {
 }
 
 fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
+  internalID
+  slug
   artist {
     slug
     auctionResultsConnection(first: 3, sort: DATE_DESC) {
@@ -68,16 +70,30 @@ v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "internalID",
   "storageKey": null
 },
 v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v4 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v3 = {
+v5 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
@@ -124,6 +140,8 @@ return {
         "name": "artwork",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -132,13 +150,7 @@ return {
             "name": "artist",
             "plural": false,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "slug",
-                "storageKey": null
-              },
+              (v2/*: any*/),
               {
                 "alias": null,
                 "args": [
@@ -174,13 +186,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "internalID",
-                            "storageKey": null
-                          },
+                          (v1/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -270,7 +276,7 @@ return {
                             ],
                             "storageKey": null
                           },
-                          (v1/*: any*/)
+                          (v3/*: any*/)
                         ],
                         "storageKey": null
                       }
@@ -280,18 +286,18 @@ return {
                 ],
                 "storageKey": "auctionResultsConnection(first:3,sort:\"DATE_DESC\")"
               },
-              (v1/*: any*/)
+              (v3/*: any*/)
             ],
             "storageKey": null
           },
-          (v1/*: any*/)
+          (v3/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-slug\")"
       }
     ]
   },
   "params": {
-    "id": "32344ad8f7bd88916aefd9e981064720",
+    "id": "064757c4726ff8c90ce9c5feee413fbc",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -324,10 +330,10 @@ return {
           "plural": false,
           "type": "AuctionResult"
         },
-        "artwork.artist.auctionResultsConnection.edges.node.dateText": (v2/*: any*/),
-        "artwork.artist.auctionResultsConnection.edges.node.description": (v2/*: any*/),
-        "artwork.artist.auctionResultsConnection.edges.node.dimensionText": (v2/*: any*/),
-        "artwork.artist.auctionResultsConnection.edges.node.id": (v3/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.dateText": (v4/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.description": (v4/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.dimensionText": (v4/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.id": (v5/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.images": {
           "enumValues": null,
           "nullable": true,
@@ -340,8 +346,8 @@ return {
           "plural": false,
           "type": "Image"
         },
-        "artwork.artist.auctionResultsConnection.edges.node.images.thumbnail.url": (v2/*: any*/),
-        "artwork.artist.auctionResultsConnection.edges.node.internalID": (v3/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.images.thumbnail.url": (v4/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.internalID": (v5/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.priceRealized": {
           "enumValues": null,
           "nullable": true,
@@ -354,12 +360,14 @@ return {
           "plural": false,
           "type": "Float"
         },
-        "artwork.artist.auctionResultsConnection.edges.node.priceRealized.display": (v2/*: any*/),
-        "artwork.artist.auctionResultsConnection.edges.node.saleDate": (v2/*: any*/),
-        "artwork.artist.auctionResultsConnection.edges.node.title": (v2/*: any*/),
-        "artwork.artist.id": (v3/*: any*/),
-        "artwork.artist.slug": (v3/*: any*/),
-        "artwork.id": (v3/*: any*/)
+        "artwork.artist.auctionResultsConnection.edges.node.priceRealized.display": (v4/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.saleDate": (v4/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.title": (v4/*: any*/),
+        "artwork.artist.id": (v5/*: any*/),
+        "artwork.artist.slug": (v5/*: any*/),
+        "artwork.id": (v5/*: any*/),
+        "artwork.internalID": (v5/*: any*/),
+        "artwork.slug": (v5/*: any*/)
       }
     },
     "name": "MyCollectionArtworkArtistAuctionResultsTestsQuery",

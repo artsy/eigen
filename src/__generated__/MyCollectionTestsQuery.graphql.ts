@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d3da9611a5ea7ccdc86d28bdb162f258 */
+/* @relayHash e5566ac02aaf5aac9a5451f12bd75217 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,6 +27,7 @@ query MyCollectionTestsQuery {
 }
 
 fragment MyCollectionArtworkListItem_artwork on Artwork {
+  internalID
   artist {
     internalID
     id
@@ -82,18 +83,25 @@ v1 = [
   }
 ],
 v2 = {
-  "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "ID"
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
 },
 v3 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
-  "type": "String"
+  "type": "ID"
 },
 v4 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "String"
+},
+v5 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -198,6 +206,7 @@ return {
                         "name": "slug",
                         "storageKey": null
                       },
+                      (v2/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -206,13 +215,7 @@ return {
                         "name": "artist",
                         "plural": false,
                         "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "internalID",
-                            "storageKey": null
-                          },
+                          (v2/*: any*/),
                           (v0/*: any*/)
                         ],
                         "storageKey": null
@@ -301,7 +304,7 @@ return {
     ]
   },
   "params": {
-    "id": "d3da9611a5ea7ccdc86d28bdb162f258",
+    "id": "e5566ac02aaf5aac9a5451f12bd75217",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -310,7 +313,7 @@ return {
           "plural": false,
           "type": "Me"
         },
-        "me.id": (v2/*: any*/),
+        "me.id": (v3/*: any*/),
         "me.myCollectionConnection": {
           "enumValues": null,
           "nullable": true,
@@ -323,24 +326,24 @@ return {
           "plural": true,
           "type": "MyCollectionEdge"
         },
-        "me.myCollectionConnection.edges.cursor": (v3/*: any*/),
+        "me.myCollectionConnection.edges.cursor": (v4/*: any*/),
         "me.myCollectionConnection.edges.node": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Artwork"
         },
-        "me.myCollectionConnection.edges.node.__typename": (v3/*: any*/),
+        "me.myCollectionConnection.edges.node.__typename": (v4/*: any*/),
         "me.myCollectionConnection.edges.node.artist": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Artist"
         },
-        "me.myCollectionConnection.edges.node.artist.id": (v2/*: any*/),
-        "me.myCollectionConnection.edges.node.artist.internalID": (v2/*: any*/),
-        "me.myCollectionConnection.edges.node.artistNames": (v4/*: any*/),
-        "me.myCollectionConnection.edges.node.id": (v2/*: any*/),
+        "me.myCollectionConnection.edges.node.artist.id": (v3/*: any*/),
+        "me.myCollectionConnection.edges.node.artist.internalID": (v3/*: any*/),
+        "me.myCollectionConnection.edges.node.artistNames": (v5/*: any*/),
+        "me.myCollectionConnection.edges.node.id": (v3/*: any*/),
         "me.myCollectionConnection.edges.node.images": {
           "enumValues": null,
           "nullable": true,
@@ -353,17 +356,18 @@ return {
           "plural": false,
           "type": "Boolean"
         },
-        "me.myCollectionConnection.edges.node.images.url": (v4/*: any*/),
-        "me.myCollectionConnection.edges.node.medium": (v4/*: any*/),
-        "me.myCollectionConnection.edges.node.slug": (v2/*: any*/),
-        "me.myCollectionConnection.edges.node.title": (v4/*: any*/),
+        "me.myCollectionConnection.edges.node.images.url": (v5/*: any*/),
+        "me.myCollectionConnection.edges.node.internalID": (v3/*: any*/),
+        "me.myCollectionConnection.edges.node.medium": (v5/*: any*/),
+        "me.myCollectionConnection.edges.node.slug": (v3/*: any*/),
+        "me.myCollectionConnection.edges.node.title": (v5/*: any*/),
         "me.myCollectionConnection.pageInfo": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "PageInfo"
         },
-        "me.myCollectionConnection.pageInfo.endCursor": (v4/*: any*/),
+        "me.myCollectionConnection.pageInfo.endCursor": (v5/*: any*/),
         "me.myCollectionConnection.pageInfo.hasNextPage": {
           "enumValues": null,
           "nullable": false,

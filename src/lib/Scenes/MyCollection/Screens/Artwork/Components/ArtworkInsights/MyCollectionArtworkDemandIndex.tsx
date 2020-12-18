@@ -1,3 +1,5 @@
+import { ContextModule, OwnerType, tappedInfoBubble } from "@artsy/cohesion"
+import { MyCollectionArtworkDemandIndex_artwork } from "__generated__/MyCollectionArtworkDemandIndex_artwork.graphql"
 import { MyCollectionArtworkDemandIndex_marketPriceInsights } from "__generated__/MyCollectionArtworkDemandIndex_marketPriceInsights.graphql"
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
@@ -5,14 +7,20 @@ import { Box, Flex, Spacer, Text } from "palette"
 import React from "react"
 import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import { InfoButton } from "./InfoButton"
 
 interface MyCollectionArtworkDemandIndexProps {
+  artwork: MyCollectionArtworkDemandIndex_artwork
   marketPriceInsights: MyCollectionArtworkDemandIndex_marketPriceInsights
 }
 
-const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexProps> = ({ marketPriceInsights }) => {
-  if (!marketPriceInsights) {
+const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexProps> = ({
+  artwork,
+  marketPriceInsights,
+}) => {
+  const { trackEvent } = useTracking()
+  if (!artwork || !marketPriceInsights) {
     return null
   }
 
@@ -30,6 +38,7 @@ const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexPro
             </Text>
           </>
         }
+        onPress={() => trackEvent(tracks.tappedInfoBubble(artwork?.internalID, artwork?.slug))}
       />
 
       <Spacer my={0.5} />
@@ -143,9 +152,27 @@ export const MyCollectionArtworkDemandIndexFragmentContainer = createFragmentCon
       demandRank
     }
   `,
+  artwork: graphql`
+    fragment MyCollectionArtworkDemandIndex_artwork on Artwork {
+      internalID
+      slug
+    }
+  `,
 })
 
 export const tests = {
   DemandRankScale,
   DemandRankDetails,
+}
+
+const tracks = {
+  tappedInfoBubble: (internalID: string, slug: string) => {
+    return tappedInfoBubble({
+      contextModule: ContextModule.myCollectionArtwork,
+      contextScreenOwnerType: OwnerType.myCollectionArtwork,
+      contextScreenOwnerId: internalID,
+      contextScreenOwnerSlug: slug,
+      subject: "demandIndex",
+    })
+  },
 }

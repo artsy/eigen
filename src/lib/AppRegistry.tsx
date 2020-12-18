@@ -77,7 +77,7 @@ import { Show2MoreInfoQueryRenderer, Show2QueryRenderer } from "./Scenes/Show2"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
-import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
+import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
@@ -86,7 +86,7 @@ import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, GlobalStoreProvider } from "./store/GlobalStore"
+import { GlobalStore, GlobalStoreProvider, useSelectedTab } from "./store/GlobalStore"
 import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 
@@ -311,9 +311,20 @@ class PageWrapper extends React.Component<PageWrapperProps> {
 }
 
 function register(screenName: string, Component: React.ComponentType<any>, options?: PageWrapperProps) {
+  const ComponentWithVisibility = (props: any) => {
+    // if we're in a modal, just pass isVisible through
+    const currentTab = useSelectedTab()
+    let isVisible = props.isVisible
+    if (BottomTabOption[props.navStackID as BottomTabType]) {
+      // otherwise, make sure it respects the current tab
+      isVisible = isVisible && currentTab === props.navStackID
+    }
+    return <Component {...{ ...props, isVisible }} />
+  }
+
   const WrappedComponent = (props: any) => (
     <PageWrapper {...options}>
-      <Component {...props} />
+      <ComponentWithVisibility {...props} />
     </PageWrapper>
   )
   AppRegistry.registerComponent(screenName, () => WrappedComponent)
