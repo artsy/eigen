@@ -97,7 +97,7 @@ const MyCollection: React.FC<{
           }
           contentContainerStyle={{ flex: 1 }}
         >
-          <Flex pb="200">
+          <Flex>
             <ZeroState
               subtitle="Add details about an artwork from your collection to access price and market insights."
               callToAction={
