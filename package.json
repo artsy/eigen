@@ -177,6 +177,7 @@
     "jest": "25.2.7",
     "jest-raw-loader": "1.0.1",
     "jest-styled-components": "7.0.0-2",
+    "jest-watch-typeahead": "^0.6.1",
     "json5": "2.1.0",
     "klaw-sync": "6.0.0",
     "lint-staged": "10.1.7",
