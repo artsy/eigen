@@ -93,41 +93,15 @@ export class Inbox extends React.Component<Props, State> {
   componentDidMount() {
     this.listener = listenToNativeEvents((event) => {
       if (event.type === "NOTIFICATION_RECEIVED") {
-        this.fetchData()
+        // TODO: Figure out this one, maybe in the individual components
+        // or maybe set a 'force refetch' state, pass into the isActiveTab prop (with a better name), and then unset it
+        // this.fetchData()
       }
     })
   }
 
   componentWillUnmount() {
     this.listener?.remove()
-  }
-
-  UNSAFE_componentWillReceiveProps(newProps: Props) {
-    if (newProps.isVisible) {
-      this.fetchData()
-    }
-  }
-
-  fetchData = () => {
-    if (this.state.fetchingData) {
-      return
-    }
-
-    this.setState({ fetchingData: true })
-
-    if (this.conversations) {
-      this.conversations.refreshConversations(() => {
-        this.setState({ fetchingData: false })
-      })
-    } else if (this.myBids) {
-      this.myBids.refreshMyBids(() => {
-        this.setState({ fetchingData: false })
-      })
-    } else {
-      this.props.relay.refetch({}, null, () => {
-        this.setState({ fetchingData: false })
-      })
-    }
   }
 
   onScrollableTabViewLayout = (layout: LayoutChangeEvent) => {
