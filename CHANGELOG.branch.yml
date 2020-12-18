@@ -17,6 +17,6 @@
 
 this_branch:
   dev:
-    -
+    - doing magic
   user_facing:
     -

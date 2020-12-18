@@ -12,6 +12,8 @@ end
 installing_pods = ARGV.include?('install') || ARGV.include?('update')
 
 
+magic = 1
+
 source 'https://github.com/artsy/Specs.git'
 source 'https://cdn.cocoapods.org/'
 
