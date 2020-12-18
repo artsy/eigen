@@ -16,7 +16,7 @@ function sh(command, cwd) {
 
 sh("echo wow!")
 sh("touch testfile")
-sh("cat CHANGELOG.branch.yml > testfile")
+sh("cat CHANGELOG.branch.yml >> testfile")
 sh("git add testfile")
 sh("cp CHANGELOG.branch.tmp.yml CHANGELOG.branch.yml")
 sh("git add CHANGELOG.branch.yml")
