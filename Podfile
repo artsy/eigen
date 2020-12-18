@@ -38,7 +38,7 @@ $ReactNativeMapboxGLIOSVersion = '~> 6.3'
 
 # mapbox needs credentials in `~/.netrc`, so we put them there and then remove them in post_install
 $netrc_path = File.expand_path('~/.netrc')
-$netrc_exists = File.exists?($netrc_path)
+$user_already_had_netrc_file = File.exists?($netrc_path)
 def add_mapbox_creds
   File.open($netrc_path, 'a+') { |f|
     f.write("""machine api.mapbox.com
@@ -48,7 +48,7 @@ password #{ENV['MAPBOX_DOWNLOAD_TOKEN']}
   }
 end
 def remove_mapbox_creds
-  if $netrc_exists
+  if $user_already_had_netrc_file
     contents = File.read($netrc_path)
     matches = contents.to_enum(:scan, /machine api\.mapbox\.com.*\n.*\n.*\n/).map { Regexp.last_match }
     return if matches == nil or matches.length == 0
