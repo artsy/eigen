@@ -230,7 +230,7 @@
   },
   "husky": {
     "hooks": {
-      "post-merge": "pull-lock",
+      "post-merge": "yarn pull-lock",
       "pre-commit": "lint-staged",
       "pre-push": "yarn type-check",
       "pre-merge-commit": "echo wow"
