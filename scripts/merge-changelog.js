@@ -17,4 +17,4 @@ function sh(command, cwd) {
 sh("echo wow!")
 sh("touch testfile")
 sh("git add testfile")
-sh("git commit -m 'merge changelog'")
+// sh("git commit -m 'merge changelog'")
