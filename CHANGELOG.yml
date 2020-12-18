@@ -3,8 +3,6 @@ upcoming:
   date: TBD
   dev:
     - Upgrade Mapbox - pavlos
-    - Add slack notification when betas fail - brian
-    - Enable my bids - lily
     - Analytics tracking for My Collection - pepopowitz, annacarey
     - Fix `isVisible` root view prop to respect tab switches - david, erik, lily
   user_facing:
