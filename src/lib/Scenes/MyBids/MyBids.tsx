@@ -41,7 +41,6 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
       if (withSpinner) {
         setIsFetching(true)
       }
-      console.warn("RC")
       relay.refetchConnection(PAGE_SIZE, (error) => {
         if (error) {
           console.error("MyBids/index.tsx #refreshMyBids", error.message)
