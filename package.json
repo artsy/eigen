@@ -233,7 +233,7 @@
       "post-merge": "yarn pull-lock",
       "pre-commit": "lint-staged",
       "pre-push": "yarn type-check",
-      "pre-merge-commit": "echo wow"
+      "pre-merge-commit": "./scripts/merge-changelog.js"
     }
   },
   "pull-lock": {
