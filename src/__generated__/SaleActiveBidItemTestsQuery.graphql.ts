@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a19d999a622fe4ba38deeb9622e3ad44 */
+/* @relayHash 4d01895037e4bfff6f6bf183734476ed */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,7 +34,6 @@ fragment Lot_saleArtwork on SaleArtwork {
   lotLabel
   artwork {
     artistNames
-    href
     image {
       url(version: "medium")
     }
@@ -282,13 +281,6 @@ return {
                       {
                         "alias": null,
                         "args": null,
-                        "kind": "ScalarField",
-                        "name": "href",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
                         "concreteType": "Image",
                         "kind": "LinkedField",
                         "name": "image",
@@ -347,7 +339,7 @@ return {
     ]
   },
   "params": {
-    "id": "a19d999a622fe4ba38deeb9622e3ad44",
+    "id": "4d01895037e4bfff6f6bf183734476ed",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -401,7 +393,6 @@ return {
           "type": "Artwork"
         },
         "me.lotStandings.saleArtwork.artwork.artistNames": (v5/*: any*/),
-        "me.lotStandings.saleArtwork.artwork.href": (v5/*: any*/),
         "me.lotStandings.saleArtwork.artwork.id": (v3/*: any*/),
         "me.lotStandings.saleArtwork.artwork.image": {
           "enumValues": null,

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4c9734522705abd7c9f8096112bfa7e9 */
+/* @relayHash 2a355ddd2fdf5c722798cca29a24a724 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -118,6 +118,22 @@ fragment Conversations_me on Me {
         internalID
         last_message: lastMessage
         ...ConversationSnippet_conversation
+        items {
+          item {
+            __typename
+            ... on Artwork {
+              internalID
+              partner {
+                internalID
+                id
+              }
+            }
+            ... on Node {
+              __isNode: __typename
+              id
+            }
+          }
+        }
         id
         __typename
       }
@@ -188,6 +204,10 @@ v4 = {
   "storageKey": null
 },
 v5 = [
+  (v4/*: any*/),
+  (v0/*: any*/)
+],
+v6 = [
   {
     "kind": "Literal",
     "name": "after",
@@ -199,18 +219,18 @@ v5 = [
     "value": 10
   }
 ],
-v6 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v7 = [
-  (v6/*: any*/),
+v8 = [
+  (v7/*: any*/),
   (v0/*: any*/)
 ],
-v8 = {
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -426,10 +446,7 @@ return {
                     "kind": "LinkedField",
                     "name": "node",
                     "plural": false,
-                    "selections": [
-                      (v4/*: any*/),
-                      (v0/*: any*/)
-                    ],
+                    "selections": (v5/*: any*/),
                     "storageKey": null
                   }
                 ],
@@ -440,7 +457,7 @@ return {
           },
           {
             "alias": "conversations",
-            "args": (v5/*: any*/),
+            "args": (v6/*: any*/),
             "concreteType": "ConversationConnection",
             "kind": "LinkedField",
             "name": "conversationsConnection",
@@ -502,7 +519,7 @@ return {
                         "kind": "LinkedField",
                         "name": "to",
                         "plural": false,
-                        "selections": (v7/*: any*/),
+                        "selections": (v8/*: any*/),
                         "storageKey": null
                       },
                       {
@@ -542,7 +559,7 @@ return {
                             "name": "item",
                             "plural": false,
                             "selections": [
-                              (v8/*: any*/),
+                              (v9/*: any*/),
                               {
                                 "kind": "InlineFragment",
                                 "selections": [
@@ -567,7 +584,18 @@ return {
                                     "name": "artistNames",
                                     "storageKey": null
                                   },
-                                  (v3/*: any*/)
+                                  (v3/*: any*/),
+                                  (v4/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Partner",
+                                    "kind": "LinkedField",
+                                    "name": "partner",
+                                    "plural": false,
+                                    "selections": (v5/*: any*/),
+                                    "storageKey": null
+                                  }
                                 ],
                                 "type": "Artwork",
                                 "abstractKey": null
@@ -582,10 +610,10 @@ return {
                                     "kind": "LinkedField",
                                     "name": "fair",
                                     "plural": false,
-                                    "selections": (v7/*: any*/),
+                                    "selections": (v8/*: any*/),
                                     "storageKey": null
                                   },
-                                  (v6/*: any*/),
+                                  (v7/*: any*/),
                                   {
                                     "alias": null,
                                     "args": null,
@@ -633,7 +661,7 @@ return {
                         "storageKey": null
                       },
                       (v0/*: any*/),
-                      (v8/*: any*/)
+                      (v9/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -659,7 +687,7 @@ return {
           },
           {
             "alias": "conversations",
-            "args": (v5/*: any*/),
+            "args": (v6/*: any*/),
             "filters": null,
             "handle": "connection",
             "key": "Conversations_conversations",
@@ -673,7 +701,7 @@ return {
     ]
   },
   "params": {
-    "id": "4c9734522705abd7c9f8096112bfa7e9",
+    "id": "2a355ddd2fdf5c722798cca29a24a724",
     "metadata": {},
     "name": "InboxOldRefetchQuery",
     "operationKind": "query",

@@ -14,6 +14,19 @@ export type Conversations_me = {
             readonly node: {
                 readonly internalID: string | null;
                 readonly last_message: string | null;
+                readonly items: ReadonlyArray<{
+                    readonly item: ({
+                        readonly __typename: "Artwork";
+                        readonly internalID: string;
+                        readonly partner: {
+                            readonly internalID: string;
+                        } | null;
+                    } | {
+                        /*This will never be '%other', but we need some
+                        value in case none of the concrete values match.*/
+                        readonly __typename: "%other";
+                    }) | null;
+                } | null> | null;
                 readonly " $fragmentRefs": FragmentRefs<"ConversationSnippet_conversation">;
             } | null;
         } | null> | null;
@@ -29,7 +42,22 @@ export type Conversations_me$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [
     {
       "defaultValue": 10,
@@ -106,13 +134,7 @@ const node: ReaderFragment = {
               "name": "node",
               "plural": false,
               "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "internalID",
-                  "storageKey": null
-                },
+                (v0/*: any*/),
                 {
                   "alias": "last_message",
                   "args": null,
@@ -123,10 +145,47 @@ const node: ReaderFragment = {
                 {
                   "alias": null,
                   "args": null,
-                  "kind": "ScalarField",
-                  "name": "__typename",
+                  "concreteType": "ConversationItem",
+                  "kind": "LinkedField",
+                  "name": "items",
+                  "plural": true,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "concreteType": null,
+                      "kind": "LinkedField",
+                      "name": "item",
+                      "plural": false,
+                      "selections": [
+                        (v1/*: any*/),
+                        {
+                          "kind": "InlineFragment",
+                          "selections": [
+                            (v0/*: any*/),
+                            {
+                              "alias": null,
+                              "args": null,
+                              "concreteType": "Partner",
+                              "kind": "LinkedField",
+                              "name": "partner",
+                              "plural": false,
+                              "selections": [
+                                (v0/*: any*/)
+                              ],
+                              "storageKey": null
+                            }
+                          ],
+                          "type": "Artwork",
+                          "abstractKey": null
+                        }
+                      ],
+                      "storageKey": null
+                    }
+                  ],
                   "storageKey": null
                 },
+                (v1/*: any*/),
                 {
                   "args": null,
                   "kind": "FragmentSpread",
@@ -159,5 +218,6 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '0d2da821e2aa49377db73294aa91e31b';
+})();
+(node as any).hash = 'f47deadb2cba4b412e6fb91376890bd5';
 export default node;
