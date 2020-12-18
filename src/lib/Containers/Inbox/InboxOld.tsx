@@ -143,7 +143,7 @@ export const InboxOldContainer = createRefetchContainer(
   `
 )
 
-export const InboxOldQueryRenderer: React.FC = () => {
+export const InboxOldQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
   return (
     <QueryRenderer<InboxOldQuery>
       environment={defaultEnvironment}
@@ -156,7 +156,7 @@ export const InboxOldQueryRenderer: React.FC = () => {
       `}
       cacheConfig={{ force: true }}
       variables={{}}
-      render={renderWithLoadProgress(InboxOldContainer)}
+      render={(...args) => renderWithLoadProgress(InboxOldContainer, props)(...args)}
     />
   )
 }
