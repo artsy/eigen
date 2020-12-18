@@ -131,7 +131,7 @@ interface PartnerLocationsProps {
 }
 const PartnerLocations: React.FC<PartnerLocationsProps> = (props) => <PartnerLocationsQueryRenderer {...props} />
 
-const Inbox: React.FC<{}> = screenTrack<{}>(() => {
+const Inbox: React.FC<{ isVisible: boolean }> = screenTrack<{}>(() => {
   return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
 })((props) => <InboxWrapper {...props} />)
 
