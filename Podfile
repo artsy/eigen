@@ -35,7 +35,9 @@ require 'fileutils'
 
 $ReactNativeMapboxGLIOSVersion = '~> 6.3'
 
-
+if !ENV['MAPBOX_DOWNLOAD_TOKEN']
+  raise "You need a MAPBOX_DOWNLOAD_TOKEN in your .env.shared file.\nIf you work at artsy, check 1password.\nOtherwise create your own in the mapbox dashboard. https://docs.mapbox.com/ios/maps/guides/install"
+end
 # mapbox needs credentials in `~/.netrc`, so we put them there and then remove them in post_install
 $netrc_path = File.expand_path('~/.netrc')
 $user_already_had_netrc_file = File.exists?($netrc_path)
