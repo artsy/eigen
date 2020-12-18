@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Analytics tracking for My Collection - pepopowitz, annacarey
     - Fix `isVisible` root view prop to respect tab switches - david, erik, lily
+    - Surface alert message for users with no email client setup - annacarey
   user_facing:
     -
 
