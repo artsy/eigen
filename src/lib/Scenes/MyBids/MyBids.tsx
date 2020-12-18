@@ -26,153 +26,152 @@ import { isLotStandingComplete, TimelySale } from "./helpers/timely"
 
 export interface MyBidsProps {
   me: MyBids_me
+  isActiveTab: boolean
   relay: RelayPaginationProp
 }
 
 type Sale = NonNullable<NonNullable<NonNullable<MyBids_me["bidders"]>[0]>["sale"]>
 
-class MyBids extends React.Component<MyBidsProps> {
-  state = {
-    fetching: false,
-  }
-  refreshMyBids = (callback?: () => void) => {
-    const { relay } = this.props
+const MyBids: React.FC<MyBidsProps> = (props) => {
+  const [isFetching, setIsFetching] = React.useState<boolean>(false)
+  const { relay, isActiveTab, me } = props
+
+  const refreshMyBids = (withSpinner: boolean = false) => {
     if (!relay.isLoading()) {
-      this.setState({ fetching: true })
+      if (withSpinner) {
+        setIsFetching(true)
+      }
+      console.warn("RC")
       relay.refetchConnection(PAGE_SIZE, (error) => {
         if (error) {
           console.error("MyBids/index.tsx #refreshMyBids", error.message)
           // FIXME: Handle error
         }
-        if (callback) {
-          callback()
-        }
-        this.setState({ fetching: false })
+        setIsFetching(false)
       })
-    } else {
-      if (callback) {
-        callback()
-      }
     }
   }
 
-  render() {
-    const { me } = this.props
-    const lotStandings = extractNodes(me?.auctionsLotStandingConnection)
+  React.useEffect(() => {
+    if (isActiveTab) {
+      refreshMyBids()
+    }
+  }, [isActiveTab])
 
-    const [activeStandings, closedStandings] = partition(
-      lotStandings.filter((ls) => !!ls),
-      (ls) => !TimelySale.create(ls?.saleArtwork?.sale!).isClosed
-    )
+  const lotStandings = extractNodes(me?.auctionsLotStandingConnection)
 
-    // group active lot standings by sale id
-    const activeBySaleId = groupBy(activeStandings, (ls) => ls?.saleArtwork?.sale?.internalID)
+  const [activeStandings, closedStandings] = partition(
+    lotStandings.filter((ls) => !!ls),
+    (ls) => !TimelySale.create(ls?.saleArtwork?.sale!).isClosed
+  )
 
-    // sort each group of lot standings by position (lot number)
-    const sortedActiveLots = mapValues(activeBySaleId, (lss) => sortBy(lss, (ls) => ls?.saleArtwork?.position!))
+  // group active lot standings by sale id
+  const activeBySaleId = groupBy(activeStandings, (ls) => ls?.saleArtwork?.sale?.internalID)
 
-    // TODO: create list of all unique sales from lotStandings, bidders, and watchedLots (in the future).
-    // NOTE: bidders should include lotStandings, do we need both?
+  // sort each group of lot standings by position (lot number)
+  const sortedActiveLots = mapValues(activeBySaleId, (lss) => sortBy(lss, (ls) => ls?.saleArtwork?.position!))
 
-    // sort an ordered list of sales by their relevant end time
-    const sales: Sale[] = me.bidders?.map((b) => b!.sale!) || []
-    const sortedSales = sortBy(sales, (sale) => {
-      const timelySale = TimelySale.create(sale)
-      return moment(timelySale.relevantEnd).unix()
-    })
+  // TODO: create list of all unique sales from lotStandings, bidders, and watchedLots (in the future).
+  // NOTE: bidders should include lotStandings, do we need both?
 
-    const hasActiveBids = activeStandings.length > 0
-    const hasClosedBids = closedStandings.length > 0
-    const hasRegistrations = sales.length > 0
+  // sort an ordered list of sales by their relevant end time
+  const sales: Sale[] = me.bidders?.map((b) => b!.sale!) || []
+  const sortedSales = sortBy(sales, (sale) => {
+    const timelySale = TimelySale.create(sale)
+    return moment(timelySale.relevantEnd).unix()
+  })
 
-    const somethingToShow = hasActiveBids || hasClosedBids || hasRegistrations
+  const hasActiveBids = activeStandings.length > 0
+  const hasClosedBids = closedStandings.length > 0
+  const hasRegistrations = sales.length > 0
 
-    return (
-      <ProvideScreenTrackingWithCohesionSchema
-        info={{
-          action: ActionType.screen,
-          context_screen_owner_type: OwnerType.inboxBids,
-          // TODO: How to correctly pass the screen that was in view before the Inbox tab was tapped?
-          // context_screen_referrer_type: ,
-        }}
+  const somethingToShow = hasActiveBids || hasClosedBids || hasRegistrations
+
+  return (
+    <ProvideScreenTrackingWithCohesionSchema
+      info={{
+        action: ActionType.screen,
+        context_screen_owner_type: OwnerType.inboxBids,
+        // TODO: How to correctly pass the screen that was in view before the Inbox tab was tapped?
+        // context_screen_referrer_type: ,
+      }}
+    >
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, justifyContent: !somethingToShow ? "center" : "flex-start" }}
+        stickyHeaderIndices={[0, 2]}
+        refreshControl={
+          <RefreshControl
+            refreshing={isFetching}
+            onRefresh={() => {
+              refreshMyBids(true)
+            }}
+          />
+        }
       >
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1, justifyContent: !somethingToShow ? "center" : "flex-start" }}
-          stickyHeaderIndices={[0, 2]}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.fetching}
-              onRefresh={() => {
-                this.refreshMyBids()
-              }}
-            />
-          }
-        >
-          {!somethingToShow && <NoBids headerText="Discover works for you at auction." />}
-          {!!hasRegistrations && <BidTitle>Active Bids</BidTitle>}
-          {!!hasRegistrations && (
-            <Flex data-test-id="active-section">
-              <Join separator={<Spacer my={1} />}>
-                {sortedSales.map((sale) => {
-                  const activeLotStandings = sortedActiveLots[sale.internalID] || []
-                  const showNoBids = !activeLotStandings.length && !!sale.registrationStatus?.qualifiedForBidding
+        {!somethingToShow && <NoBids headerText="Discover works for you at auction." />}
+        {!!hasRegistrations && <BidTitle>Active Bids</BidTitle>}
+        {!!hasRegistrations && (
+          <Flex data-test-id="active-section">
+            <Join separator={<Spacer my={1} />}>
+              {sortedSales.map((sale) => {
+                const activeLotStandings = sortedActiveLots[sale.internalID] || []
+                const showNoBids = !activeLotStandings.length && !!sale.registrationStatus?.qualifiedForBidding
+                return (
+                  <SaleCardFragmentContainer
+                    key={sale.internalID}
+                    sale={sale}
+                    me={me}
+                    smallScreen={isSmallScreen}
+                    hideChildren={!showNoBids && !activeLotStandings.length}
+                  >
+                    <Join separator={<Separator my={1} />}>
+                      {!!showNoBids && (
+                        <Text color="black60" py={1} textAlign="center">
+                          You haven't placed any bids on this sale
+                        </Text>
+                      )}
+                      {activeLotStandings.map((ls) => {
+                        // Note: Occasionally, during live bidding, closed lots appear in active sales
+                        if (ls && sale) {
+                          return isLotStandingComplete(ls) ? (
+                            <ClosedLot inActiveSale lotStanding={ls} key={ls?.lot?.internalID} />
+                          ) : (
+                            <ActiveLot lotStanding={ls} key={ls?.lot?.internalID} />
+                          )
+                        }
+                      })}
+                    </Join>
+                  </SaleCardFragmentContainer>
+                )
+              })}
+            </Join>
+          </Flex>
+        )}
+        {!!hasClosedBids && <BidTitle>Closed Bids</BidTitle>}
+        {!!hasClosedBids && (
+          <Flex data-test-id="closed-section">
+            <Flex mt={2} px={1.5}>
+              <Join separator={<Separator my={2} />}>
+                {closedStandings?.map((ls) => {
                   return (
-                    <SaleCardFragmentContainer
-                      key={sale.internalID}
-                      sale={sale}
-                      me={me}
-                      smallScreen={isSmallScreen}
-                      hideChildren={!showNoBids && !activeLotStandings.length}
-                    >
-                      <Join separator={<Separator my={1} />}>
-                        {!!showNoBids && (
-                          <Text color="black60" py={1} textAlign="center">
-                            You haven't placed any bids on this sale
-                          </Text>
-                        )}
-                        {activeLotStandings.map((ls) => {
-                          // Note: Occasionally, during live bidding, closed lots appear in active sales
-                          if (ls && sale) {
-                            return isLotStandingComplete(ls) ? (
-                              <ClosedLot inActiveSale lotStanding={ls} key={ls?.lot?.internalID} />
-                            ) : (
-                              <ActiveLot lotStanding={ls} key={ls?.lot?.internalID} />
-                            )
-                          }
-                        })}
-                      </Join>
-                    </SaleCardFragmentContainer>
+                    !!ls && (
+                      <ClosedLot
+                        withTimelyInfo
+                        data-test-id="closed-sale-lot"
+                        lotStanding={ls}
+                        key={ls?.lot?.internalID}
+                      />
+                    )
                   )
                 })}
               </Join>
             </Flex>
-          )}
-          {!!hasClosedBids && <BidTitle>Closed Bids</BidTitle>}
-          {!!hasClosedBids && (
-            <Flex data-test-id="closed-section">
-              <Flex mt={2} px={1.5}>
-                <Join separator={<Separator my={2} />}>
-                  {closedStandings?.map((ls) => {
-                    return (
-                      !!ls && (
-                        <ClosedLot
-                          withTimelyInfo
-                          data-test-id="closed-sale-lot"
-                          lotStanding={ls}
-                          key={ls?.lot?.internalID}
-                        />
-                      )
-                    )
-                  })}
-                </Join>
-              </Flex>
-            </Flex>
-          )}
-          <Spacer my={2} />
-        </ScrollView>
-      </ProvideScreenTrackingWithCohesionSchema>
-    )
-  }
+          </Flex>
+        )}
+        <Spacer my={2} />
+      </ScrollView>
+    </ProvideScreenTrackingWithCohesionSchema>
+  )
 }
 
 const BidTitle: React.FC<{ topBorder?: boolean }> = (props) => (

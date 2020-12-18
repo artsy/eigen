@@ -55,9 +55,14 @@ const InboxTabs: React.FC<TabBarProps> = (props) => (
   </>
 )
 
+enum Tab {
+  bids = "bids",
+  inquiries = "inquiries",
+}
 // Inbox
 interface State {
   fetchingData: boolean
+  activeTab: Tab
 }
 
 interface Props {
@@ -76,6 +81,7 @@ export class Inbox extends React.Component<Props, State> {
 
   state = {
     fetchingData: false,
+    activeTab: Tab.bids,
   }
 
   scrollViewVerticalStart = 0
@@ -140,8 +146,9 @@ export class Inbox extends React.Component<Props, State> {
       action_name: ActionNames.InboxTab,
     }
   })
-  handleNavigationTab(_tabIndex: number) {
-    // no op
+  handleNavigationTab(tabIndex: number) {
+    const newTab: Tab = tabIndex === 0 ? Tab.bids : Tab.inquiries
+    this.setState({ activeTab: newTab })
   }
 
   render() {
@@ -158,12 +165,12 @@ export class Inbox extends React.Component<Props, State> {
         onChangeTab={({ i }: { i: number }) => this.handleNavigationTab(i)}
       >
         <TabWrapper tabLabel="Bids" key="bids" style={{ flexGrow: 1, justifyContent: "center" }}>
-          <MyBidsContainer me={this.props.me} componentRef={(myBids) => (this.myBids = myBids)} />
+          <MyBidsContainer isActiveTab={this.props.isVisible && this.state.activeTab === Tab.bids} me={this.props.me} />
         </TabWrapper>
         <TabWrapper tabLabel="Inquiries" key="inquiries" style={{ flexGrow: 1, justifyContent: "flex-start" }}>
           <ConversationsContainer
             me={this.props.me}
-            componentRef={(conversations) => (this.conversations = conversations)}
+            isActiveTab={this.props.isVisible && this.state.activeTab === Tab.inquiries}
           />
         </TabWrapper>
       </ScrollableTabView>
