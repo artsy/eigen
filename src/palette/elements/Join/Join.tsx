@@ -1,7 +1,10 @@
+import { flattenChildren } from "lib/utils/flattenChildren"
 import React from "react"
 
 interface JoinProps {
   separator: React.ReactElement
+  /** Flatten out nested fragments. Useful for Joins with conditional rendering */
+  flatten?: boolean
 }
 
 /**
@@ -24,8 +27,8 @@ interface JoinProps {
  * <SomeComponent/>
  * <child3/>
  */
-export const Join: React.FC<JoinProps> = ({ separator, children }) => {
-  const childArray = React.Children.toArray(children)
+export const Join: React.FC<JoinProps> = ({ separator, children, flatten = false }) => {
+  const childArray = flatten ? flattenChildren(children) : React.Children.toArray(children)
 
   return childArray.reduce((acc, curr, currentIndex) => {
     acc.push(
