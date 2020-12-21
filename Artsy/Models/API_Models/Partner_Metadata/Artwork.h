@@ -6,7 +6,6 @@
 #import "ARHeartStatus.h"
 #import "ARUserActivity.h"
 
-#import <KSDeferred/KSDeferred.h>
 #import <Mantle/Mantle.h>
 
 // TODO: Add support ARFollowable for following status
@@ -114,24 +113,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (ARHeartStatus)heartStatus;
 
-/// Gets an update from the server and updates itself, triggers defers from onArtworkUpdate
-- (void)updateSaleArtwork;
-
-/// Adds a callback when the artwork has been update, does not trigger said update.
-- (KSPromise *)onArtworkUpdate:(nullable void (^)(void))success
-                       failure:(nullable void (^)(NSError *error))failure;
-- (KSPromise *)onSaleArtworkUpdate:(nullable void (^)(SaleArtwork *saleArtwork))success
-                           failure:(nullable void (^)(NSError *error))failure;
-- (KSPromise *)onSaleArtworkUpdate:(nullable void (^)(SaleArtwork *saleArtwork))success
-                           failure:(nullable void (^)(NSError *error))failure
-                       allowCached:(BOOL)allowCached;
-- (KSPromise *)onFairUpdate:(nullable void (^)(Fair *fair))success
-                    failure:(nullable void (^)(NSError *error))failure;
-- (KSPromise *)onPartnerShowUpdate:(nullable void (^)(PartnerShow *show))success
-                           failure:(nullable void (^)(NSError *error))failure;
-
 - (void)setFollowState:(BOOL)state success:(nullable void (^)(id))success failure:(nullable void (^)(NSError *))failure;
-- (void)getFavoriteStatus:(nullable void (^)(ARHeartStatus status))success failure:(nullable void (^)(NSError *error))failure;
 
 - (BOOL)canViewInRoom;
 - (BOOL)hasWidth;

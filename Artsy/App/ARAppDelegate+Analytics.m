@@ -15,7 +15,6 @@
 #import "ARUserManager.h"
 #import "Fair.h"
 #import "FairOrganizer.h"
-#import "FeaturedLink.h"
 #import "Gene.h"
 #import "Partner.h"
 #import "PartnerShow.h"

@@ -71,7 +71,6 @@
 #pragma mark - Artwork Favorites (items in the saved-artwork collection)
 
 + (NSURLRequest *)newSetArtworkFavoriteRequestForArtwork:(Artwork *)artwork status:(BOOL)status;
-+ (NSURLRequest *)newArtworksFromUsersFavoritesRequestWithCursor:(NSString *)cursor;
 + (NSURLRequest *)newCheckFavoriteStatusRequestForArtwork:(Artwork *)artwork;
 + (NSURLRequest *)newCheckFavoriteStatusRequestForArtworks:(NSArray *)artworks;
 

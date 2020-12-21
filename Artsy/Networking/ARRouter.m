@@ -499,19 +499,6 @@ static NSString *hostFromString(NSString *string)
                         parameters:@{ @"user_id" : [User currentUser].userID ?: @"" }];
 }
 
-
-+ (NSURLRequest *)newArtworksFromUsersFavoritesRequestWithCursor:(NSString *)cursor
-{
-    NSString *query;
-    if ([cursor length] > 0) {
-        query = [self graphQueryForFavoritesAfter:cursor];
-    } else {
-        query = [self graphQueryForFavorites];
-    }
-
-    return [self graphQLRequestForQuery:query];
-}
-
 + (NSURLRequest *)newCheckFavoriteStatusRequestForArtwork:(Artwork *)artwork
 {
     return [self newCheckFavoriteStatusRequestForArtworks:@[ artwork ]];

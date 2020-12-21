@@ -30,9 +30,6 @@
 #import "ARSystemTime.h"
 #import "ARDispatchManager.h"
 #import "ARLogger.h"
-#import "FeaturedLink.h"
-#import "OrderedSet.h"
-#import "ArtsyAPI+OrderedSets.h"
 #import "ARAuthValidator.h"
 
 #import "UIDevice-Hardware.h"

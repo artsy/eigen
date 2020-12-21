@@ -15,22 +15,7 @@
     return [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
 }
 
-+ (NSString *)graphQLQueryForFavoriteArtworksAndPositionParam:(NSString *)pageString
-{
-    return [NSString stringWithFormat:[self graphQLFileNamed:@"favorites"], pageString];
-}
-
 #pragma mark - Public Functions
-
-+ (NSString *)graphQueryForFavorites
-{
-    return [self graphQLQueryForFavoriteArtworksAndPositionParam:@"first: 15"];
-}
-
-+ (NSString *)graphQueryForFavoritesAfter:(NSString *)cursor
-{
-    return [self graphQLQueryForFavoriteArtworksAndPositionParam:[NSString stringWithFormat:@"first: 15, after: \"%@\"", cursor]];
-}
 
 + (NSString *)graphQLQueryForLiveSaleStaticData:(NSString *)saleID role:(NSString *)causalityRole
 {

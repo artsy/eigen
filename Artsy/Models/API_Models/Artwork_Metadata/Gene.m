@@ -1,6 +1,4 @@
-#import "ArtsyAPI+Artworks.h"
 #import "ArtsyAPI+Following.h"
-#import "ArtsyAPI+Genes.h"
 #import "User.h"
 #import "Gene.h"
 #import <UIKit/UIScreen.h>
