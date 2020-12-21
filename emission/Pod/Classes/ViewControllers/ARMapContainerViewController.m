@@ -386,13 +386,13 @@ const CGFloat MARGIN = 10;
     [manager stopUpdatingLocation];
 }
 
+#if TARGET_IPHONE_SIMULATOR
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-#if TARGET_IPHONE_SIMULATOR
     // if there is a failure, just pick a city on the simulator and pretend that's the city that is returned
     [self locationManager:manager didUpdateLocations:@[[[ARCity cities] objectAtIndex:2].epicenter]];
-#endif
 }
+#endif
 
 - (BOOL)shouldAutorotate
 {
