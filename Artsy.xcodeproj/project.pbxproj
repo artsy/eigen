@@ -136,12 +136,6 @@
 		499A588E16658CAA004B0E2F /* Partner.m in Sources */ = {isa = PBXBuildFile; fileRef = 499A588D16658CAA004B0E2F /* Partner.m */; };
 		499A5894166683AC004B0E2F /* Artist.m in Sources */ = {isa = PBXBuildFile; fileRef = 499A5893166683AB004B0E2F /* Artist.m */; };
 		49A76D0817592C96001D4B81 /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A76D0717592C96001D4B81 /* SearchResult.m */; };
-		49A77235165ADB9400BC6FD3 /* ARFeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A77224165ADB9300BC6FD3 /* ARFeedItem.m */; };
-		49A77236165ADB9400BC6FD3 /* ARFollowFairFeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A77226165ADB9300BC6FD3 /* ARFollowFairFeedItem.m */; };
-		49A77237165ADB9400BC6FD3 /* ARPartnerShowFeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A77228165ADB9300BC6FD3 /* ARPartnerShowFeedItem.m */; };
-		49A77238165ADB9400BC6FD3 /* ARPublishedArtworkSetFeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7722A165ADB9300BC6FD3 /* ARPublishedArtworkSetFeedItem.m */; };
-		49A77239165ADB9400BC6FD3 /* ARRepostFeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7722C165ADB9300BC6FD3 /* ARRepostFeedItem.m */; };
-		49A7723A165ADB9400BC6FD3 /* ARSavedArtworkSetFeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A7722E165ADB9300BC6FD3 /* ARSavedArtworkSetFeedItem.m */; };
 		49BA7E0E1655ABE600C06572 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49BA7E0C1655ABE600C06572 /* InfoPlist.strings */; };
 		49BA7E141655ABE600C06572 /* ARAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BA7E131655ABE600C06572 /* ARAppDelegate.m */; };
 		49EC62181778AF100020D648 /* PartnerShow.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EC62171778AF100020D648 /* PartnerShow.m */; };
@@ -785,8 +779,6 @@
 		4953E8361668179500A09726 /* PostImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostImage.h; sourceTree = "<group>"; };
 		4953E8371668179500A09726 /* PostImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostImage.m; sourceTree = "<group>"; };
 		4981FB46169F6A16004D9CDD /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
-		499A580A165AEC39004B0E2F /* ARFollowArtistFeedItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFollowArtistFeedItem.h; sourceTree = "<group>"; };
-		499A580B165AEC39004B0E2F /* ARFollowArtistFeedItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFollowArtistFeedItem.m; sourceTree = "<group>"; };
 		499A5879166561E8004B0E2F /* ARFeedConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeedConstants.h; sourceTree = "<group>"; };
 		499A587A166561E8004B0E2F /* ARFeedConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFeedConstants.m; sourceTree = "<group>"; };
 		499A588C16658CA9004B0E2F /* Partner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Partner.h; sourceTree = "<group>"; };
@@ -800,18 +792,6 @@
 		499C8CF41694D2D100039D32 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		49A76D0617592C96001D4B81 /* SearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResult.h; sourceTree = "<group>"; };
 		49A76D0717592C96001D4B81 /* SearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResult.m; sourceTree = "<group>"; };
-		49A77223165ADB9300BC6FD3 /* ARFeedItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeedItem.h; sourceTree = "<group>"; };
-		49A77224165ADB9300BC6FD3 /* ARFeedItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFeedItem.m; sourceTree = "<group>"; };
-		49A77225165ADB9300BC6FD3 /* ARFollowFairFeedItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFollowFairFeedItem.h; sourceTree = "<group>"; };
-		49A77226165ADB9300BC6FD3 /* ARFollowFairFeedItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFollowFairFeedItem.m; sourceTree = "<group>"; };
-		49A77227165ADB9300BC6FD3 /* ARPartnerShowFeedItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPartnerShowFeedItem.h; sourceTree = "<group>"; };
-		49A77228165ADB9300BC6FD3 /* ARPartnerShowFeedItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPartnerShowFeedItem.m; sourceTree = "<group>"; };
-		49A77229165ADB9300BC6FD3 /* ARPublishedArtworkSetFeedItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPublishedArtworkSetFeedItem.h; sourceTree = "<group>"; };
-		49A7722A165ADB9300BC6FD3 /* ARPublishedArtworkSetFeedItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPublishedArtworkSetFeedItem.m; sourceTree = "<group>"; };
-		49A7722B165ADB9300BC6FD3 /* ARRepostFeedItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRepostFeedItem.h; sourceTree = "<group>"; };
-		49A7722C165ADB9300BC6FD3 /* ARRepostFeedItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRepostFeedItem.m; sourceTree = "<group>"; };
-		49A7722D165ADB9300BC6FD3 /* ARSavedArtworkSetFeedItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSavedArtworkSetFeedItem.h; sourceTree = "<group>"; };
-		49A7722E165ADB9300BC6FD3 /* ARSavedArtworkSetFeedItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSavedArtworkSetFeedItem.m; sourceTree = "<group>"; };
 		49BA7DFF1655ABE600C06572 /* Artsy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Artsy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49BA7E031655ABE600C06572 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		49BA7E051655ABE600C06572 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1086,7 +1066,6 @@
 		605191961C7526200002E11A /* navigation_more_arrow_vertical@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigation_more_arrow_vertical@2x.png"; sourceTree = "<group>"; };
 		605191981C7760500002E11A /* ArtsyAPI+Pages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Pages.h"; sourceTree = "<group>"; };
 		605191991C7760500002E11A /* ArtsyAPI+Pages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Pages.m"; sourceTree = "<group>"; };
-		60567B2A167F8F9E009D205A /* ARFeedItems.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARFeedItems.h; sourceTree = "<group>"; };
 		605B11B317CFE7CC00334196 /* ARTermsAndConditionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARTermsAndConditionsView.h; path = "../2_-_Calls_to_Action/Views/ARTermsAndConditionsView.h"; sourceTree = "<group>"; };
 		605B11B417CFE7CC00334196 /* ARTermsAndConditionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARTermsAndConditionsView.m; path = "../2_-_Calls_to_Action/Views/ARTermsAndConditionsView.m"; sourceTree = "<group>"; };
 		60647C651A8BB9AE00A45247 /* BuyersPremium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyersPremium.h; sourceTree = "<group>"; };
@@ -1889,28 +1868,6 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
-		49A77222165ADB9300BC6FD3 /* Feed_Items */ = {
-			isa = PBXGroup;
-			children = (
-				60567B2A167F8F9E009D205A /* ARFeedItems.h */,
-				49A77223165ADB9300BC6FD3 /* ARFeedItem.h */,
-				49A77224165ADB9300BC6FD3 /* ARFeedItem.m */,
-				49A77225165ADB9300BC6FD3 /* ARFollowFairFeedItem.h */,
-				49A77226165ADB9300BC6FD3 /* ARFollowFairFeedItem.m */,
-				499A580A165AEC39004B0E2F /* ARFollowArtistFeedItem.h */,
-				499A580B165AEC39004B0E2F /* ARFollowArtistFeedItem.m */,
-				49A77227165ADB9300BC6FD3 /* ARPartnerShowFeedItem.h */,
-				49A77228165ADB9300BC6FD3 /* ARPartnerShowFeedItem.m */,
-				49A77229165ADB9300BC6FD3 /* ARPublishedArtworkSetFeedItem.h */,
-				49A7722A165ADB9300BC6FD3 /* ARPublishedArtworkSetFeedItem.m */,
-				49A7722B165ADB9300BC6FD3 /* ARRepostFeedItem.h */,
-				49A7722C165ADB9300BC6FD3 /* ARRepostFeedItem.m */,
-				49A7722D165ADB9300BC6FD3 /* ARSavedArtworkSetFeedItem.h */,
-				49A7722E165ADB9300BC6FD3 /* ARSavedArtworkSetFeedItem.m */,
-			);
-			path = Feed_Items;
-			sourceTree = "<group>";
-		};
 		49A7723E165ADBF700BC6FD3 /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -2685,7 +2642,6 @@
 				60B6F14E16639607007C9587 /* API Models */,
 				4953E8341668022E00A09726 /* Protocols */,
 				60903CD9175DE136002AB800 /* Feed Item Models */,
-				49A77222165ADB9300BC6FD3 /* Feed_Items */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3842,13 +3798,7 @@
 				6088B75417D1DBAC00E4BB67 /* ARAnalyticsConstants.m in Sources */,
 				3CF144AE18E460EF00B1A764 /* ArtsyAPI+SystemTime.m in Sources */,
 				83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */,
-				49A77235165ADB9400BC6FD3 /* ARFeedItem.m in Sources */,
 				60ED312B1C8F76CB0071DD89 /* LiveAuctionViewModel.swift in Sources */,
-				49A77236165ADB9400BC6FD3 /* ARFollowFairFeedItem.m in Sources */,
-				49A77237165ADB9400BC6FD3 /* ARPartnerShowFeedItem.m in Sources */,
-				49A77238165ADB9400BC6FD3 /* ARPublishedArtworkSetFeedItem.m in Sources */,
-				49A77239165ADB9400BC6FD3 /* ARRepostFeedItem.m in Sources */,
-				49A7723A165ADB9400BC6FD3 /* ARSavedArtworkSetFeedItem.m in Sources */,
 				229364D31EC65CDC00D2045E /* SaleStatusView.swift in Sources */,
 				0C93322A1BA1FA6B00F3CE95 /* ARUserActivity.m in Sources */,
 				602F034C1CB291EC008A999D /* StoryboardImages.swift in Sources */,
