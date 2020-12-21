@@ -216,7 +216,6 @@
 		5E50987D18F82FCF001AC704 /* AROfflineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E50987C18F82FCF001AC704 /* AROfflineView.m */; };
 		5E55295D1F1FC7A500455F8F /* ARRouter+GraphQL.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E55295C1F1FC7A500455F8F /* ARRouter+GraphQL.m */; };
 		5E55CAB31D9D8014005D0D73 /* LiveAuctionLotBidHistoryGestureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E55CAB21D9D8014005D0D73 /* LiveAuctionLotBidHistoryGestureController.swift */; };
-		5E5B841F1C52DEC40005CBC7 /* AuctionOrdering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5B841E1C52DEC40005CBC7 /* AuctionOrdering.swift */; };
 		5E5F495E1D00BC7700E7CD6E /* LiveAuctionLotCollectionViewLayoutType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5F495D1D00BC7700E7CD6E /* LiveAuctionLotCollectionViewLayoutType.swift */; };
 		5E5F49601D00BF3D00E7CD6E /* LiveAuctionPlainLotCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5F495F1D00BF3D00E7CD6E /* LiveAuctionPlainLotCollectionViewLayout.swift */; };
 		5E6A16931C98A914004DB29B /* LiveAuctionStateManagerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6A16921C98A914004DB29B /* LiveAuctionStateManagerSpec.swift */; };
@@ -224,7 +223,6 @@
 		5E6BA6EA1C56B5D700B942C1 /* CircularCancelButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6BA6E81C56B5D700B942C1 /* CircularCancelButton.png */; };
 		5E6CBB011DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E6CBB001DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.m */; };
 		5E6CBB031DB54BC000988CDF /* AROnboardingPersonalizationGeneImageStateReconcilerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E6CBB021DB54BC000988CDF /* AROnboardingPersonalizationGeneImageStateReconcilerTests.m */; };
-		5E7081D31E4CFC2800F320C9 /* AuctionLotStandingsNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7081D21E4CFC2800F320C9 /* AuctionLotStandingsNetworkModel.swift */; };
 		5E7081D51E4D27A900F320C9 /* AuctionLotStandingsNetworkModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7081D41E4D27A900F320C9 /* AuctionLotStandingsNetworkModelSpec.swift */; };
 		5E70AA8E1DF5C7B1002847E9 /* LiveAuctionCurrentLotCTAPositionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E70AA8D1DF5C7B1002847E9 /* LiveAuctionCurrentLotCTAPositionManager.swift */; };
 		5E70AA911DF5D506002847E9 /* LiveAuctionCurrentLotCTAPositionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E70AA8F1DF5D4FE002847E9 /* LiveAuctionCurrentLotCTAPositionManagerTests.swift */; };
@@ -258,8 +256,6 @@
 		5EA250661C4EE95B001E4950 /* NSArray+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA250651C4EE95B001E4950 /* NSArray+Additions.m */; };
 		5EA7BC291C600144009C52C9 /* AuctionSaleNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA7BC281C600144009C52C9 /* AuctionSaleNetworkModel.swift */; };
 		5EA7BC391C612454009C52C9 /* AuctionBiddersNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA7BC301C612454009C52C9 /* AuctionBiddersNetworkModel.swift */; };
-		5EA7BC3A1C612454009C52C9 /* AuctionSaleArtworksNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA7BC311C612454009C52C9 /* AuctionSaleArtworksNetworkModel.swift */; };
-		5EA7BC3F1C612577009C52C9 /* AuctionNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA7BC3E1C612577009C52C9 /* AuctionNetworkModel.swift */; };
 		5EACFAC71C750B22004112FF /* ARSaleArtworkFlowCollectionViewCellTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EACFAC61C750B22004112FF /* ARSaleArtworkFlowCollectionViewCellTests.m */; };
 		5EACFAC91C750E2F004112FF /* SaleArtworkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EACFAC81C750E2F004112FF /* SaleArtworkViewModel.swift */; };
 		5EACFACB1C752771004112FF /* SaleArtworkViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EACFACA1C752771004112FF /* SaleArtworkViewModelTests.swift */; };
@@ -282,7 +278,6 @@
 		5EF8407A1CEB7DAA006248D7 /* LiveAuctionLotImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF840791CEB7DAA006248D7 /* LiveAuctionLotImageCollectionViewCell.swift */; };
 		5EF8407E1CECDFFD006248D7 /* LiveAuctionLotCollectionViewLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8407D1CECDFFD006248D7 /* LiveAuctionLotCollectionViewLayoutAttributes.swift */; };
 		5EF840801CED0C5F006248D7 /* LiveAuctionFancyLotCollectionViewLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8407F1CED0C5F006248D7 /* LiveAuctionFancyLotCollectionViewLayoutTests.swift */; };
-		5EF9E1141C56CEDB00CD80DB /* AuctionRefineSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF9E1131C56CEDB00CD80DB /* AuctionRefineSettings.swift */; };
 		5EF9E1171C56D0B900CD80DB /* AuctionRefineCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */; };
 		5EF9E1181C56D0B900CD80DB /* AuctionRefineCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */; };
 		5EFB45721F2280CE00328A6B /* favorites.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 5EFB45711F2280CE00328A6B /* favorites.graphql */; };
@@ -470,7 +465,6 @@
 		B3ECE8301819D1E6009F5C5B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B3ECE82E1819D1E6009F5C5B /* InfoPlist.strings */; };
 		B3ECE83C1819D1FD009F5C5B /* SaleArtworkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B3ECE83B1819D1FD009F5C5B /* SaleArtworkTests.m */; };
 		B3EFC6391815B41C00F23540 /* BidderPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EFC6381815B41C00F23540 /* BidderPosition.m */; };
-		B63EC346244F49EE000C507E /* AuctionUserNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63EC345244F49EE000C507E /* AuctionUserNetworkModel.swift */; };
 		B91C4D8E24F6893F00F5F177 /* ARScreenPresenterModule.m in Sources */ = {isa = PBXBuildFile; fileRef = B91C4D8D24F6893F00F5F177 /* ARScreenPresenterModule.m */; };
 		B9A039462553FE47002E010D /* ARModalWithBottomSafeAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A039452553FE47002E010D /* ARModalWithBottomSafeAreaViewController.m */; };
 		B9A0395C25540810002E010D /* UIView+ScrollToTop.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A0395B25540810002E010D /* UIView+ScrollToTop.m */; };
@@ -927,7 +921,6 @@
 		5E55295B1F1FC7A500455F8F /* ARRouter+GraphQL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARRouter+GraphQL.h"; sourceTree = "<group>"; };
 		5E55295C1F1FC7A500455F8F /* ARRouter+GraphQL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARRouter+GraphQL.m"; sourceTree = "<group>"; };
 		5E55CAB21D9D8014005D0D73 /* LiveAuctionLotBidHistoryGestureController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotBidHistoryGestureController.swift; path = Live_Auctions/LiveAuctionLotBidHistoryGestureController.swift; sourceTree = "<group>"; };
-		5E5B841E1C52DEC40005CBC7 /* AuctionOrdering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionOrdering.swift; path = Auction/AuctionOrdering.swift; sourceTree = "<group>"; };
 		5E5F495D1D00BC7700E7CD6E /* LiveAuctionLotCollectionViewLayoutType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotCollectionViewLayoutType.swift; path = Live_Auctions/Views/LiveAuctionLotCollectionViewLayoutType.swift; sourceTree = "<group>"; };
 		5E5F495F1D00BF3D00E7CD6E /* LiveAuctionPlainLotCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionPlainLotCollectionViewLayout.swift; sourceTree = "<group>"; };
 		5E6A16921C98A914004DB29B /* LiveAuctionStateManagerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionStateManagerSpec.swift; path = ../../Artsy/View_Controllers/Live_Auctions/LiveAuctionStateManagerSpec.swift; sourceTree = "<group>"; };
@@ -937,7 +930,6 @@
 		5E6CBAFF1DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingPersonalizationGeneImageStateReconciler.h; sourceTree = "<group>"; };
 		5E6CBB001DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingPersonalizationGeneImageStateReconciler.m; sourceTree = "<group>"; };
 		5E6CBB021DB54BC000988CDF /* AROnboardingPersonalizationGeneImageStateReconcilerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingPersonalizationGeneImageStateReconcilerTests.m; sourceTree = "<group>"; };
-		5E7081D21E4CFC2800F320C9 /* AuctionLotStandingsNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionLotStandingsNetworkModel.swift; path = Auction/AuctionLotStandingsNetworkModel.swift; sourceTree = "<group>"; };
 		5E7081D41E4D27A900F320C9 /* AuctionLotStandingsNetworkModelSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionLotStandingsNetworkModelSpec.swift; sourceTree = "<group>"; };
 		5E70AA8D1DF5C7B1002847E9 /* LiveAuctionCurrentLotCTAPositionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionCurrentLotCTAPositionManager.swift; sourceTree = "<group>"; };
 		5E70AA8F1DF5D4FE002847E9 /* LiveAuctionCurrentLotCTAPositionManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionCurrentLotCTAPositionManagerTests.swift; sourceTree = "<group>"; };
@@ -975,8 +967,6 @@
 		5EA250651C4EE95B001E4950 /* NSArray+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Additions.m"; sourceTree = "<group>"; };
 		5EA7BC281C600144009C52C9 /* AuctionSaleNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionSaleNetworkModel.swift; path = Auction/AuctionSaleNetworkModel.swift; sourceTree = "<group>"; };
 		5EA7BC301C612454009C52C9 /* AuctionBiddersNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionBiddersNetworkModel.swift; path = Auction/AuctionBiddersNetworkModel.swift; sourceTree = "<group>"; };
-		5EA7BC311C612454009C52C9 /* AuctionSaleArtworksNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionSaleArtworksNetworkModel.swift; path = Auction/AuctionSaleArtworksNetworkModel.swift; sourceTree = "<group>"; };
-		5EA7BC3E1C612577009C52C9 /* AuctionNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionNetworkModel.swift; path = Auction/AuctionNetworkModel.swift; sourceTree = "<group>"; };
 		5EACFAC61C750B22004112FF /* ARSaleArtworkFlowCollectionViewCellTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARSaleArtworkFlowCollectionViewCellTests.m; path = Auctions/ARSaleArtworkFlowCollectionViewCellTests.m; sourceTree = "<group>"; };
 		5EACFAC81C750E2F004112FF /* SaleArtworkViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaleArtworkViewModel.swift; path = Auction/SaleArtworkViewModel.swift; sourceTree = "<group>"; };
 		5EACFACA1C752771004112FF /* SaleArtworkViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaleArtworkViewModelTests.swift; sourceTree = "<group>"; };
@@ -1002,7 +992,6 @@
 		5EF840791CEB7DAA006248D7 /* LiveAuctionLotImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotImageCollectionViewCell.swift; path = Live_Auctions/Views/LiveAuctionLotImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		5EF8407D1CECDFFD006248D7 /* LiveAuctionLotCollectionViewLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotCollectionViewLayoutAttributes.swift; path = Live_Auctions/Views/LiveAuctionLotCollectionViewLayoutAttributes.swift; sourceTree = "<group>"; };
 		5EF8407F1CED0C5F006248D7 /* LiveAuctionFancyLotCollectionViewLayoutTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionFancyLotCollectionViewLayoutTests.swift; path = Live_Auction/LiveAuctionFancyLotCollectionViewLayoutTests.swift; sourceTree = "<group>"; };
-		5EF9E1131C56CEDB00CD80DB /* AuctionRefineSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionRefineSettings.swift; path = Auction/AuctionRefineSettings.swift; sourceTree = "<group>"; };
 		5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AuctionRefineCheck.png; sourceTree = "<group>"; };
 		5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AuctionRefineCheck@2x.png"; sourceTree = "<group>"; };
 		5EFABE211F26816000662FEC /* ARFavoritesNetworkModel+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARFavoritesNetworkModel+Private.h"; sourceTree = "<group>"; };
@@ -1297,7 +1286,6 @@
 		B3ECE83B1819D1FD009F5C5B /* SaleArtworkTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaleArtworkTests.m; sourceTree = "<group>"; };
 		B3EFC6371815B41C00F23540 /* BidderPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BidderPosition.h; sourceTree = "<group>"; };
 		B3EFC6381815B41C00F23540 /* BidderPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BidderPosition.m; sourceTree = "<group>"; };
-		B63EC345244F49EE000C507E /* AuctionUserNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionUserNetworkModel.swift; path = Auction/AuctionUserNetworkModel.swift; sourceTree = "<group>"; };
 		B91C4D8C24F6893F00F5F177 /* ARScreenPresenterModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARScreenPresenterModule.h; sourceTree = "<group>"; };
 		B91C4D8D24F6893F00F5F177 /* ARScreenPresenterModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARScreenPresenterModule.m; sourceTree = "<group>"; };
 		B9A039442553FE47002E010D /* ARModalWithBottomSafeAreaViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARModalWithBottomSafeAreaViewController.h; sourceTree = "<group>"; };
@@ -2101,8 +2089,6 @@
 				5102616E1BBE8324002AB8BB /* ARAuctionWebViewController.m */,
 				5EA7BC2A1C60024D009C52C9 /* Networking */,
 				60C1C3111C5F9C6500EC98EE /* Auction Presentation */,
-				5EF9E1131C56CEDB00CD80DB /* AuctionRefineSettings.swift */,
-				5E5B841E1C52DEC40005CBC7 /* AuctionOrdering.swift */,
 				51DCC6C71C60E26800455309 /* AuctionInformationViewController.swift */,
 			);
 			name = Auction;
@@ -2135,12 +2121,8 @@
 		5EA7BC2A1C60024D009C52C9 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				B63EC345244F49EE000C507E /* AuctionUserNetworkModel.swift */,
-				5EA7BC3E1C612577009C52C9 /* AuctionNetworkModel.swift */,
 				5EA7BC281C600144009C52C9 /* AuctionSaleNetworkModel.swift */,
 				5EA7BC301C612454009C52C9 /* AuctionBiddersNetworkModel.swift */,
-				5E7081D21E4CFC2800F320C9 /* AuctionLotStandingsNetworkModel.swift */,
-				5EA7BC311C612454009C52C9 /* AuctionSaleArtworksNetworkModel.swift */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
@@ -3890,7 +3872,6 @@
 				4191F43F1C8745D90054F823 /* ARAnalyticsVisualizer.m in Sources */,
 				3C7880BC18B9081C00595E30 /* ARNotificationView.m in Sources */,
 				60863E471D0B49AE0053B51C /* ArtsyAPI+HEAD.m in Sources */,
-				5EA7BC3F1C612577009C52C9 /* AuctionNetworkModel.swift in Sources */,
 				5EBA3E831DFF4CCB005B4BEE /* ARTwoWayDictionaryTransformer.m in Sources */,
 				1CC9EB971CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.m in Sources */,
 				B9A29FE023EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */,
@@ -3939,7 +3920,6 @@
 				CB42B64F181092480069A801 /* ARCountdownView.m in Sources */,
 				5E8585F91CF743D800B2B487 /* LiveAuctionSaleLotsDataSource.swift in Sources */,
 				E676B2EB18D0CC330057B4E1 /* ARURLItemProvider.m in Sources */,
-				5EF9E1141C56CEDB00CD80DB /* AuctionRefineSettings.swift in Sources */,
 				5E288EA91CC0219A00A974AA /* LotListCollectionViewCell+Private.swift in Sources */,
 				60A49F601676559300B9B95D /* ARNetworkConstants.m in Sources */,
 				E61446B0195A1CDC00BFB7C3 /* ARFavoritesNetworkModel.m in Sources */,
@@ -3972,7 +3952,6 @@
 				5E956E571CD24700005C2332 /* StarscreamExtensions.swift in Sources */,
 				601EC3291FAA6C6E00DD0CC4 /* ARAdminTableViewController.m in Sources */,
 				609A82FB17A1147800AFDF13 /* ARNavigationTransition.m in Sources */,
-				5EA7BC3A1C612454009C52C9 /* AuctionSaleArtworksNetworkModel.swift in Sources */,
 				CB6CE8E524F424E700ED2843 /* ARInternalWebViewManager.m in Sources */,
 				5E79FCBA1C768108003D5D65 /* ARNvagiationButton+Swift.swift in Sources */,
 				600EE29E16B3003F002E9F9A /* ARNavigationButton.m in Sources */,
@@ -3994,7 +3973,6 @@
 				3C35CC80189FF20D00E3D8DE /* ArtsyAPI+OrderedSets.m in Sources */,
 				5E8585F71CF61E8F00B2B487 /* PanDirectionGestureRecognizer.swift in Sources */,
 				516CDA691BB55B54001C02B2 /* UIViewController+WithLoadedData.m in Sources */,
-				5E7081D31E4CFC2800F320C9 /* AuctionLotStandingsNetworkModel.swift in Sources */,
 				60A309A81AC999DE000783C1 /* ARInternalShareValidator.m in Sources */,
 				B316E2F418170DF40086CCDB /* SaleArtwork.m in Sources */,
 				60BCE1101FF2B8A500071AA6 /* ARAugmentedFloorBasedVIRViewController.m in Sources */,
@@ -4038,7 +4016,6 @@
 				E61446AC195A1CDC00BFB7C3 /* ARArtistFavoritesNetworkModel.m in Sources */,
 				5E6CBB011DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.m in Sources */,
 				3C35CC7B189FF05E00E3D8DE /* OrderedSet.m in Sources */,
-				5E5B841F1C52DEC40005CBC7 /* AuctionOrdering.swift in Sources */,
 				7F9C7EF22221FE2900F6967E /* AREigenMapContainerViewController.m in Sources */,
 				60903CC4175CE21A002AB800 /* AROptions.m in Sources */,
 				60903CCB175CE766002AB800 /* ARAdminSettingsViewController.m in Sources */,
@@ -4082,7 +4059,6 @@
 				60CC97351EC3203D00793566 /* ARSentryAnalyticsProvider.m in Sources */,
 				5E47F35B1C4444A900EC0751 /* SaleViewModel.swift in Sources */,
 				60BC92F31BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m in Sources */,
-				B63EC346244F49EE000C507E /* AuctionUserNetworkModel.swift in Sources */,
 				3CCCC8A21899B412008015DD /* ArtsyAPI+Fairs.m in Sources */,
 				E667F12C18EC889F00503F50 /* ARLogFormatter.m in Sources */,
 				342F961978DD1D771928472A /* UIDevice-Hardware.m in Sources */,

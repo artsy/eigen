@@ -140,32 +140,6 @@ class SaleViewModel: NSObject {
         return (min: self.smallestLowEstimate, max: self.largestLowEstimate)
     }
 
-    func refinedSaleArtworks(_ refineSettings: AuctionRefineSettings) -> [SaleArtworkViewModel] {
-        return refineSettings.ordering.sortSaleArtworks(saleArtworks)
-            .filter(SaleArtwork.includedInRefineSettings(refineSettings))
-            .map { SaleArtworkViewModel(saleArtwork: $0 ) }
-    }
-
-    func subtitleForRefineSettings(_ refineSettings: AuctionRefineSettings, defaultRefineSettings: AuctionRefineSettings) -> String {
-        let numberOfLots = refinedSaleArtworks(refineSettings).count
-        var subtitle = "\(numberOfLots) Lots"
-
-        switch refineSettings.ordering {
-        case .LotNumber: break
-        default:
-            subtitle += "・\(refineSettings.ordering.rawValue)"
-        }
-
-        if let priceRange = refineSettings.priceRange,
-            let defaultPriceRange = defaultRefineSettings.priceRange,
-            priceRange.min != defaultPriceRange.min ||
-            priceRange.max != defaultPriceRange.max {
-            subtitle += formattedStringForPriceRange(priceRange)
-        }
-
-        return subtitle
-    }
-
     func formattedStringForPriceRange(_ range: PriceRange) -> String {
         let min = range.min.roundCentsToNearestThousandAndFormat(currencySymbol)
         let max = range.max.roundCentsToNearestThousandAndFormat(currencySymbol)
@@ -180,22 +154,6 @@ extension SaleViewModel {
     func registerSaleAsActiveActivity(_ viewController: UIViewController?) {
         viewController?.userActivity = ARUserActivity(forEntity: sale)
         viewController?.userActivity?.becomeCurrent()
-    }
-}
-
-
-extension SaleArtwork: AuctionOrderable {
-    var bids: Int {
-        return bidCount as? Int ?? 0
-    }
-
-    var artistSortableID: String {
-        return artwork.artist?.sortableID ?? ""
-    }
-
-    var currentBid: Int {
-        guard let saleHighestBid = self.saleHighestBid else { return 0 }
-        return saleHighestBid.cents as! Int
     }
 }
 
@@ -216,17 +174,6 @@ private extension SaleViewModel {
     var lowEstimates: [Int] {
         return saleArtworks.compactMap { saleArtwork in
             return Int(truncating: saleArtwork.lowEstimateCents ?? 0)
-        }
-    }
-}
-
-private extension SaleArtwork {
-    class func includedInRefineSettings(_ refineSettings: AuctionRefineSettings) -> (SaleArtwork) -> Bool {
-        return { saleArtwork in
-            // Includes iff the sale artwork's low estimate is within the range, inclusive.
-            let (min, max) = (refineSettings.priceRange?.min ?? 0, refineSettings.priceRange?.max ?? 0)
-
-            return (min...max) ~= (saleArtwork.lowEstimateCents as? Int ?? 0)
         }
     }
 }
