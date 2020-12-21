@@ -40,6 +40,12 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
     </Sans>
   )
 
+  const headerMeta = meta && (
+    <Sans ellipsizeMode="tail" numberOfLines={1} size="2" color="black60">
+      {meta}
+    </Sans>
+  )
+
   return (
     <Flex flexDirection="row" justifyContent="space-between" flexWrap="nowrap" {...remainderProps}>
       {!!(imageUrl || initials) && (
@@ -60,12 +66,9 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
         </Flex>
       ) : (
         <Flex justifyContent="space-between" width={0} flexGrow={1} flexDirection="row">
-          <Flex>
+          <Flex alignSelf="center">
             {headerName}
-
-            <Sans ellipsizeMode="tail" numberOfLines={1} size="2" color="black60">
-              {meta ? meta : ""}
-            </Sans>
+            {headerMeta}
           </Flex>
           {followButton}
         </Flex>
