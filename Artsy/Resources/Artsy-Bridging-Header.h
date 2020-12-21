@@ -102,7 +102,6 @@
 #import <ORStackView/ORTagBasedAutoStackView.h>
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import <SDWebImage/UIImageView+WebCache.h>
-#import <SSFadingScrollView/SSFadingScrollView.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import "UIDevice-Hardware.h"

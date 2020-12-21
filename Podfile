@@ -55,18 +55,13 @@ target 'Artsy' do
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
   pod 'EDColor'
-  pod 'SSFadingScrollView', git: 'https://github.com/alloy/SSFadingScrollView.git', branch: 'add-axial-support'
 
   # Core owned by Artsy
   pod 'ORStackView', '2.0.3'
   pod 'UIView+BooleanAnimations'
   pod 'Aerodramus', '2.0.0'
 
-  # Custom CollectionView Layouts
-  pod 'ARCollectionViewMasonryLayout', git: 'https://github.com/ashfurrow/ARCollectionViewMasonryLayout'
-
   # Language Enhancements
-  pod 'KSDeferred'
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
 
