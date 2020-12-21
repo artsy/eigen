@@ -140,7 +140,6 @@
 		512AB35C1BD7C82F00F92B9A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06E44EB8170235D8001B2EBF /* MessageUI.framework */; };
 		5142071A1BB1B5D2000CC01C /* ARStubbedFavoritesNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 514207191BB1B5D2000CC01C /* ARStubbedFavoritesNetworkModel.m */; };
 		514E56491BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 514E56481BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.m */; };
-		516CDA631BB32B6A001C02B2 /* ARSpotlight.m in Sources */ = {isa = PBXBuildFile; fileRef = 516CDA621BB32B6A001C02B2 /* ARSpotlight.m */; };
 		516CDA691BB55B54001C02B2 /* UIViewController+WithLoadedData.m in Sources */ = {isa = PBXBuildFile; fileRef = 516CDA681BB55B54001C02B2 /* UIViewController+WithLoadedData.m */; };
 		516CDA6C1BB56611001C02B2 /* UIViewController+ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 516CDA6B1BB56611001C02B2 /* UIViewController+ARUserActivity.m */; };
 		518B421E1B57CF7100210A02 /* AttentionIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 518B421D1B57CF7100210A02 /* AttentionIcon@2x.png */; };
@@ -791,8 +790,6 @@
 		514207191BB1B5D2000CC01C /* ARStubbedFavoritesNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARStubbedFavoritesNetworkModel.m; sourceTree = "<group>"; };
 		514E56471BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppActivityContinuationDelegate.h; sourceTree = "<group>"; };
 		514E56481BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppActivityContinuationDelegate.m; sourceTree = "<group>"; };
-		516CDA611BB32B6A001C02B2 /* ARSpotlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSpotlight.h; sourceTree = "<group>"; };
-		516CDA621BB32B6A001C02B2 /* ARSpotlight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSpotlight.m; sourceTree = "<group>"; };
 		516CDA671BB55B54001C02B2 /* UIViewController+WithLoadedData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WithLoadedData.h"; sourceTree = "<group>"; };
 		516CDA681BB55B54001C02B2 /* UIViewController+WithLoadedData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WithLoadedData.m"; sourceTree = "<group>"; };
 		516CDA6A1BB56611001C02B2 /* UIViewController+ARUserActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ARUserActivity.h"; sourceTree = "<group>"; };
@@ -2729,8 +2726,6 @@
 		60A0E9FA1C5106EB002754A8 /* App UIActivities + Search */ = {
 			isa = PBXGroup;
 			children = (
-				516CDA611BB32B6A001C02B2 /* ARSpotlight.h */,
-				516CDA621BB32B6A001C02B2 /* ARSpotlight.m */,
 				0C9332281BA1FA6B00F3CE95 /* ARUserActivity.h */,
 				0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */,
 				514E56471BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.h */,
@@ -3805,7 +3800,6 @@
 				6099F907178F24750004EF04 /* ARDefaultNavigationTransition.m in Sources */,
 				60ED31251C8F76800071DD89 /* LiveAuctionLotViewModel.swift in Sources */,
 				3CB37D97192246B500089A1D /* ArtsyAPI+ErrorHandlers.m in Sources */,
-				516CDA631BB32B6A001C02B2 /* ARSpotlight.m in Sources */,
 				5E26AF801CE66A7E00C67B7C /* Stringify.swift in Sources */,
 				E676B2EE18D11A9B0057B4E1 /* ARImageItemProvider.m in Sources */,
 				60928D761FE8481F007AE5D1 /* ARAdminSentryBreadcrumbViewController.m in Sources */,

@@ -4,7 +4,7 @@
 #import "SaleArtwork.h"
 #import "ARShareableObject.h"
 #import "ARHeartStatus.h"
-#import "ARSpotlight.h"
+#import "ARUserActivity.h"
 
 #import <KSDeferred/KSDeferred.h>
 #import <Mantle/Mantle.h>
@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, ARDimensionMetric) {
 NS_ASSUME_NONNULL_BEGIN
 
 
-@interface Artwork : MTLModel <ARPostAttachment, MTLJSONSerializing, ARHasImageBaseURL, ARShareableObject, ARSpotlightMetadataProvider>
+@interface Artwork : MTLModel <ARPostAttachment, MTLJSONSerializing, ARHasImageBaseURL, ARShareableObject, ARContinuityMetadataProvider>
 
 @property (nonatomic, copy) NSString *artworkID;
 @property (nonatomic, copy) NSString *artworkUUID;

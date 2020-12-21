@@ -1,14 +1,14 @@
 #import "ARFollowable.h"
 #import "ARShareableObject.h"
 #import "ARHasImageBaseURL.h"
-#import "ARSpotlight.h"
+#import "ARUserActivity.h"
 
 #import <Mantle/Mantle.h>
 
 @class AFHTTPRequestOperation;
 
 
-@interface Artist : MTLModel <MTLJSONSerializing, ARFollowable, ARShareableObject, ARHasImageURLs, ARSpotlightMetadataProvider>
+@interface Artist : MTLModel <MTLJSONSerializing, ARFollowable, ARShareableObject, ARHasImageURLs, ARContinuityMetadataProvider>
 
 @property (readonly, nonatomic, copy) NSString *artistID;
 @property (readonly, nonatomic, copy) NSString *uuid;

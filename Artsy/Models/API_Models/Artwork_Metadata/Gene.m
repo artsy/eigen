@@ -1,7 +1,6 @@
 #import "ArtsyAPI+Artworks.h"
 #import "ArtsyAPI+Following.h"
 #import "ArtsyAPI+Genes.h"
-#import "ARSpotlight.h"
 #import "User.h"
 #import "Gene.h"
 #import <UIKit/UIScreen.h>
@@ -94,7 +93,6 @@
     [ArtsyAPI setFavoriteStatus:state forGene:self success:^(id response) {
         __strong typeof (wself) sself = wself;
         sself.followed = state;
-        [ARSpotlight addToSpotlightIndex:state entity:self];
         if (success) {
             success(response);
         }

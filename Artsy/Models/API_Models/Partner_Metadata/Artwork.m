@@ -7,7 +7,6 @@
 #import "ArtsyAPI+Sales.h"
 #import "ARDefaults.h"
 #import "ARValueTransformer.h"
-#import "ARSpotlight.h"
 #import "Fair.h"
 #import "Partner.h"
 #import "User.h"
@@ -472,8 +471,6 @@
         if (!self) { return; }
 
         sself->_heartStatus = state? ARHeartStatusYes : ARHeartStatusNo;
-
-        [ARSpotlight addToSpotlightIndex:state entity:self];
 
         if (success) {
             success(response);

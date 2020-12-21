@@ -24,7 +24,6 @@
 #import "ARNetworkConstants.h"
 #import "ArtsyAPI+Private.h"
 #import "ARFileUtils.h"
-#import "ARSpotlight.h"
 #import "ARWebViewCacheHost.h"
 #import "ARAppStatus.h"
 #import "Artsy-Swift.h"
@@ -274,7 +273,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     ar_dispatch_main_queue(^{
         if ([User currentUser]) {
-            [ARSpotlight indexAllUsersFavorites];
             [self setupAdminTools];
         }
 

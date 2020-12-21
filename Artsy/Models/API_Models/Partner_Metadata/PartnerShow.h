@@ -1,13 +1,13 @@
 #import <Mantle/Mantle.h>
 
 #import "ARShareableObject.h"
-#import "ARSpotlight.h"
+#import "ARUserActivity.h"
 
 @class Partner, Fair, Location;
 @class AFHTTPRequestOperation;
 
 
-@interface PartnerShow : MTLModel <MTLJSONSerializing, ARShareableObject, ARSpotlightMetadataProvider>
+@interface PartnerShow : MTLModel <MTLJSONSerializing, ARShareableObject, ARContinuityMetadataProvider>
 
 @property (nonatomic, strong, readonly) Partner *partner;
 @property (nonatomic, strong, readonly) Fair *fair;
