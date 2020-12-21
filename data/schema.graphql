@@ -1622,20 +1622,18 @@ type Attachment {
 type AttributionClass {
   # A globally unique ID.
   id: ID!
-
-  # Descriptive phrase used as companion for attribution class name display
-  info: String
+  info: String @deprecated(reason: "Prefer `shortDescription`")
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
 
-  # Long descriptive phrase used as companion for short_description
+  # Long description (can include multiple sentences) for attribution class
   longDescription: String
 
   # Shortest form of attribution class display
   name: String
 
-  # Longer version of attribution class display
+  # Short descriptive phrase for attribution class without punctuation
   shortDescription: String
 }
 
