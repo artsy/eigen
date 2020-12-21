@@ -3,7 +3,7 @@ import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { navigate } from "lib/navigation/navigate"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, Flex, Spacer, Text } from "palette"
+import { Box, Flex, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -22,6 +22,9 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
 
   return (
     <ScreenMargin>
+      <Box my={3}>
+        <Separator />
+      </Box>
       <Text variant="mediumText" mb="1">
         Latest Articles
       </Text>

@@ -28,6 +28,9 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
   return (
     <View>
       <ScreenMargin>
+        <Box my={3}>
+          <Separator />
+        </Box>
         <InfoButton
           title="Auction Results"
           modalContent={
@@ -90,10 +93,6 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
           />
         </Box>
       </ScreenMargin>
-
-      <Box my={3}>
-        <Separator />
-      </Box>
     </View>
   )
 }
