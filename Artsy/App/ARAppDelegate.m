@@ -12,7 +12,6 @@
 #import "ARAppDelegate+Analytics.h"
 #import "ARAppDelegate+Emission.h"
 #import "ARAppDelegate+Echo.h"
-#import "ARAppDelegate+TestScenarios.h"
 #import "ARAppNotificationsDelegate.h"
 #import "ARAppConstants.h"
 #import "ARFonts.h"
@@ -111,10 +110,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    if ([[NSProcessInfo processInfo] environment][@"TEST_SCENARIO"]) {
-        [self setupIntegrationTests];
-    }
-
     self.echo = [[ArtsyEcho alloc] init];
     [self setupEcho];
 

@@ -5,6 +5,5 @@
 + (NSString *)graphQueryForFavorites;
 + (NSString *)graphQueryForFavoritesAfter:(NSString *)cursor;
 + (NSString *)graphQLQueryForLiveSaleStaticData:(NSString *)saleID role:(NSString *)causalityRole;
-+ (NSString *)graphQueryForConversations;
 
 @end

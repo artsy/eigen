@@ -769,11 +769,6 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"DELETE" path:[NSString stringWithFormat:ARDeleteDeviceURL, token]];
 }
 
-+ (NSURLRequest *)newTotalUnreadMessagesCountRequest
-{
-    return [self graphQLRequestForQuery:[self graphQueryForConversations]];
-}
-
 + (NSURLRequest *)salesWithArtworkRequest:(NSString *)artworkID
 {
     NSDictionary *params = @{ @"artwork[]" : artworkID };

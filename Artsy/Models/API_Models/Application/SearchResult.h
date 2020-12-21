@@ -13,5 +13,5 @@
 
 + (BOOL)searchResultIsSupported:(NSDictionary *)dict;
 - (NSURLRequest *)imageRequest;
-- (Class)model;
+
 @end
