@@ -5,7 +5,7 @@ upcoming:
     - Analytics tracking for My Collection - pepopowitz, annacarey
     - Fix `isVisible` root view prop to respect tab switches - david, erik, lily
   user_facing:
-    -
+    - Fix logout alert not showing up on changing password - brian
 
 releases:
   - version: 6.7.4
