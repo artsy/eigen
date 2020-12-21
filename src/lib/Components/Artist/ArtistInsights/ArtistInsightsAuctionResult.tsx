@@ -95,7 +95,7 @@ const ArtistInsightsAuctionResult: React.FC<Props> = ({ auctionResult }) => {
               </Flex>
             ) : (
               <Text variant="mediumText" style={{ width: 70 }} textAlign="right">
-                {isFromPastMonth ? "Awaiting results" : auctionResult.boughtIn === true ? "Bought in" : "Not available"}
+                {auctionResult.boughtIn === true ? "Bought in" : isFromPastMonth ? "Awaiting results" : "Not available"}
               </Text>
             )}
           </Flex>
