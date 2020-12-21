@@ -7,7 +7,7 @@ upcoming:
     - Add slack notification when betas fail - brian
     - Add analytics tracking for My Bids - ashley, erik, christina
   user_facing:
-    -
+    - Fix layout in My Collection artwork form AdditionalDetails screen - david
 
 releases:
   - version: 6.7.4
