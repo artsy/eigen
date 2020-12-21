@@ -42,7 +42,6 @@
 
 
 // Views
-#import "ARButtonWithImage.h"
 #import "ARAppStatus.h"
 
 #import <react-native-config/ReactNativeConfig.h>

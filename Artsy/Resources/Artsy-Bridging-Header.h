@@ -63,7 +63,6 @@
 #import "ARSerifNavigationViewController.h"
 
 #import "ARTextView.h"
-#import "ARCollapsableTextView.h"
 #import "ARFonts.h"
 #import "ARCustomEigenLabels.h"
 
