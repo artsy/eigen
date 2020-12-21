@@ -15,7 +15,6 @@ NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
 NSString *const AROptionsArtistSeries = @"AROptionsArtistSeries";
 NSString *const AROptionsNewSalePage = @"AROptionsNewSalePage";
 NSString *const AROptionsNewFirstInquiry = @"AROptionsNewFirstInquiry";
-NSString *const AROptionsNewShowPage = @"AROptionsNewShowPage";
 NSString *const AROptionsNewFairPage = @"AROptionsNewFairPage";
 NSString *const AROptionsNewInsightsPage = @"AROptionsNewInsightsPage";
 

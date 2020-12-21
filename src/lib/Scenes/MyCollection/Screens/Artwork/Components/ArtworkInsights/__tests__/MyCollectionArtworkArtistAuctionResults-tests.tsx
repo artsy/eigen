@@ -62,6 +62,7 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
     const wrapper = renderWithWrappers(<TestRenderer />)
     resolveData({
       Artist: () => ({
+        name: "Banksy",
         auctionResultsConnection: {
           edges: [
             {
@@ -79,7 +80,7 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
     })
     expect(wrapper.root.findByType(OpaqueImageView)).toBeDefined()
     const text = extractText(wrapper.root)
-    expect(text).toContain("Auction Results")
+    expect(text).toContain("Auction Results for Banksy")
     expect(text).toContain("title")
     expect(text).toContain(`Sold`)
     expect(text).toContain("4.00")

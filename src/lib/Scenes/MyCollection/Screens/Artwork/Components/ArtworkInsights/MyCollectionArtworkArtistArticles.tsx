@@ -26,7 +26,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
         <Separator />
       </Box>
       <Text variant="mediumText" mb="1">
-        Latest Articles
+        Latest Articles featuring {artist?.name}
       </Text>
 
       {articleEdges.map(({ thumbnailTitle, slug, publishedAt, internalID, thumbnailImage }) => {
@@ -68,6 +68,7 @@ export const MyCollectionArtworkArtistArticlesFragmentContainer = createFragment
       fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
         artist {
           slug
+          name
           articlesConnection(first: 3, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
             edges {
               node {
