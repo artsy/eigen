@@ -10,7 +10,7 @@ export type MyCollectionArtworkInsights_artwork = {
     readonly artist: {
         readonly name: string | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkPriceEstimate_artwork" | "MyCollectionArtworkArtistAuctionResults_artwork" | "MyCollectionArtworkArtistArticles_artwork">;
+    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkPriceEstimate_artwork" | "MyCollectionArtworkArtistAuctionResults_artwork" | "MyCollectionArtworkArtistArticles_artwork" | "MyCollectionArtworkArtistMarket_artwork" | "MyCollectionArtworkDemandIndex_artwork">;
     readonly " $refType": "MyCollectionArtworkInsights_artwork";
 };
 export type MyCollectionArtworkInsights_artwork$data = MyCollectionArtworkInsights_artwork;
@@ -73,10 +73,20 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "FragmentSpread",
       "name": "MyCollectionArtworkArtistArticles_artwork"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "MyCollectionArtworkArtistMarket_artwork"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "MyCollectionArtworkDemandIndex_artwork"
     }
   ],
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = 'faf7c4ad8187d4927c70c0a9a55e4476';
+(node as any).hash = '318c35a08f5c19b7fdf4b9a3a899a06b';
 export default node;

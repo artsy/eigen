@@ -21,6 +21,11 @@ export type ActiveLot_lotStanding = {
         } | null;
     };
     readonly saleArtwork: {
+        readonly artwork: {
+            readonly internalID: string;
+            readonly href: string | null;
+            readonly slug: string;
+        } | null;
         readonly sale: {
             readonly liveStartAt: string | null;
         } | null;
@@ -37,7 +42,14 @@ export type ActiveLot_lotStanding$key = {
 
 
 const node: ReaderFragment = (function(){
-var v0 = [
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v1 = [
   {
     "alias": null,
     "args": null,
@@ -67,13 +79,7 @@ return {
       "name": "lot",
       "plural": false,
       "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "internalID",
-          "storageKey": null
-        },
+        (v0/*: any*/),
         {
           "alias": null,
           "args": null,
@@ -102,7 +108,7 @@ return {
           "kind": "LinkedField",
           "name": "onlineAskingPrice",
           "plural": false,
-          "selections": (v0/*: any*/),
+          "selections": (v1/*: any*/),
           "storageKey": null
         },
         {
@@ -112,7 +118,7 @@ return {
           "kind": "LinkedField",
           "name": "sellingPrice",
           "plural": false,
-          "selections": (v0/*: any*/),
+          "selections": (v1/*: any*/),
           "storageKey": null
         }
       ],
@@ -126,6 +132,32 @@ return {
       "name": "saleArtwork",
       "plural": false,
       "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "Artwork",
+          "kind": "LinkedField",
+          "name": "artwork",
+          "plural": false,
+          "selections": [
+            (v0/*: any*/),
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "href",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "slug",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
         {
           "alias": null,
           "args": null,
@@ -157,5 +189,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '73cf6b7591e59069730b37b2e13e69b2';
+(node as any).hash = '61a73dc602ab0bcd7240f8c606937f9a';
 export default node;

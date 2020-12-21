@@ -1,3 +1,4 @@
+import { editCollectedArtwork } from "@artsy/cohesion"
 import {
   MyCollectionArtworkQuery,
   MyCollectionArtworkQueryResponse,
@@ -15,6 +16,7 @@ import { Button, Flex, Join, Spacer } from "palette"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
+import { useTracking } from "react-tracking"
 import { MyCollectionArtworkFormModal } from "../ArtworkFormModal/MyCollectionArtworkFormModal"
 import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
@@ -26,6 +28,7 @@ export interface MyCollectionArtworkProps {
 }
 
 export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwork, marketPriceInsights }) => {
+  const { trackEvent } = useTracking()
   const [showModal, setShowModal] = useState(false)
 
   return (
@@ -44,6 +47,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
       <FancyModalHeader
         rightButtonText="Edit"
         onRightButtonPress={() => {
+          trackEvent(tracks.editCollectedArtwork(artwork.internalID, artwork.slug))
           GlobalStore.actions.myCollection.artwork.startEditingArtwork(artwork as any)
           setShowModal(true)
         }}
@@ -217,4 +221,10 @@ const LoadingSkeleton = () => {
 
 export const tests = {
   MyCollectionArtwork,
+}
+
+const tracks = {
+  editCollectedArtwork: (internalID: string, slug: string) => {
+    return editCollectedArtwork({ contextOwnerId: internalID, contextOwnerSlug: slug })
+  },
 }

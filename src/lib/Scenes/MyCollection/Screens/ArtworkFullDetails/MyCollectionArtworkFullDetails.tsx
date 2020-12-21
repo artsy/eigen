@@ -1,3 +1,4 @@
+import { editCollectedArtwork } from "@artsy/cohesion"
 import { MyCollectionArtworkFullDetails_artwork } from "__generated__/MyCollectionArtworkFullDetails_artwork.graphql"
 import { MyCollectionArtworkFullDetailsQuery } from "__generated__/MyCollectionArtworkFullDetailsQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
@@ -9,16 +10,19 @@ import { Flex, Spacer } from "palette"
 import React, { useState } from "react"
 import { ActivityIndicator } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { useTracking } from "react-tracking"
 import { MyCollectionArtworkMetaFragmentContainer } from "../Artwork/Components/MyCollectionArtworkMeta"
 import { MyCollectionArtworkFormModal } from "../ArtworkFormModal/MyCollectionArtworkFormModal"
 
 const MyCollectionArtworkFullDetails: React.FC<{ artwork: MyCollectionArtworkFullDetails_artwork }> = (props) => {
+  const { trackEvent } = useTracking()
   const [showModal, setShowModal] = useState(false)
   return (
     <Flex>
       <FancyModalHeader
         rightButtonText="Edit"
         onRightButtonPress={() => {
+          trackEvent(tracks.editCollectedArtwork(props.artwork.internalID, props.artwork.slug))
           GlobalStore.actions.myCollection.artwork.startEditingArtwork(props.artwork as any)
           setShowModal(true)
         }}
@@ -56,6 +60,8 @@ export const MyCollectionArtworkFullDetailsContainer = createFragmentContainer(M
     fragment MyCollectionArtworkFullDetails_artwork on Artwork {
       ...MyCollectionArtwork_sharedProps @relay(mask: false)
       ...MyCollectionArtworkMeta_artwork
+      internalID
+      slug
     }
   `,
 })
@@ -89,4 +95,10 @@ export const MyCollectionArtworkFullDetailsQueryRenderer: React.FC<{
       })}
     />
   )
+}
+
+const tracks = {
+  editCollectedArtwork: (internalID: string, slug: string) => {
+    return editCollectedArtwork({ contextOwnerId: internalID, contextOwnerSlug: slug })
+  },
 }

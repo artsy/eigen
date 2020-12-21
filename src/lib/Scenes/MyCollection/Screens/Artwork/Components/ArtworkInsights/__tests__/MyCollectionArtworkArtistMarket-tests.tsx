@@ -1,21 +1,28 @@
+import { ContextModule, OwnerType, tappedInfoBubble } from "@artsy/cohesion"
 import { MyCollectionArtworkArtistMarketTestsQuery } from "__generated__/MyCollectionArtworkArtistMarketTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { InfoButton } from "../InfoButton"
 import { MyCollectionArtworkArtistMarketFragmentContainer } from "../MyCollectionArtworkArtistMarket"
 
 jest.unmock("react-relay")
+jest.mock("react-tracking")
 
 describe("MyCollectionArtworkArtistMarket", () => {
+  const trackEvent = jest.fn()
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionArtworkArtistMarketTestsQuery>
       environment={mockEnvironment}
       query={graphql`
         query MyCollectionArtworkArtistMarketTestsQuery @relay_test_operation {
+          artwork(id: "foo") {
+            ...MyCollectionArtworkArtistMarket_artwork
+          }
           marketPriceInsights(artistId: "some-artist-id", medium: "painting") {
             ...MyCollectionArtworkArtistMarket_marketPriceInsights
           }
@@ -23,8 +30,13 @@ describe("MyCollectionArtworkArtistMarket", () => {
       `}
       variables={{}}
       render={({ props }) => {
-        if (props?.marketPriceInsights) {
-          return <MyCollectionArtworkArtistMarketFragmentContainer marketPriceInsights={props.marketPriceInsights} />
+        if (props?.artwork && props?.marketPriceInsights) {
+          return (
+            <MyCollectionArtworkArtistMarketFragmentContainer
+              artwork={props.artwork}
+              marketPriceInsights={props.marketPriceInsights}
+            />
+          )
         }
         return null
       }}
@@ -33,6 +45,16 @@ describe("MyCollectionArtworkArtistMarket", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    const mockTracking = useTracking as jest.Mock
+    mockTracking.mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
   const resolveData = (passedProps = {}) => {
@@ -69,5 +91,27 @@ describe("MyCollectionArtworkArtistMarket", () => {
     expect(text).toContain("Very High")
     expect(text).toContain("1-Year Trend")
     expect(text).toContain("Flat")
+  })
+
+  it("tracks analytics event when info button is tapped", () => {
+    const wrapper = renderWithWrappers(<TestRenderer />)
+    resolveData({
+      Artwork: () => ({
+        internalID: "artwork-id",
+        slug: "artwork-slug",
+      }),
+    })
+    wrapper.root.findByType(InfoButton).props.onPress()
+
+    expect(trackEvent).toHaveBeenCalledTimes(1)
+    expect(trackEvent).toHaveBeenCalledWith(
+      tappedInfoBubble({
+        contextModule: ContextModule.myCollectionArtwork,
+        contextScreenOwnerType: OwnerType.myCollectionArtwork,
+        subject: "artistMarketStatistics",
+        contextScreenOwnerId: "artwork-id",
+        contextScreenOwnerSlug: "artwork-slug",
+      })
+    )
   })
 })

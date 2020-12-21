@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType, tappedInfoBubble } from "@artsy/cohesion"
 import { MyCollectionArtworkPriceEstimate_artwork } from "__generated__/MyCollectionArtworkPriceEstimate_artwork.graphql"
 import { MyCollectionArtworkPriceEstimate_marketPriceInsights } from "__generated__/MyCollectionArtworkPriceEstimate_marketPriceInsights.graphql"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
@@ -5,6 +6,7 @@ import { formatCentsToDollars } from "lib/Scenes/MyCollection/utils/formatCentsT
 import { Flex, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import { Field } from "../Field"
 import { InfoButton } from "./InfoButton"
 
@@ -79,7 +81,8 @@ const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimat
   artwork,
   marketPriceInsights,
 }) => {
-  if (!marketPriceInsights) {
+  const { trackEvent } = useTracking()
+  if (!artwork || !marketPriceInsights) {
     return null
   }
 
@@ -109,6 +112,7 @@ const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimat
             </Text>
           </>
         }
+        onPress={() => trackEvent(tracks.tappedInfoBubble(artwork.internalID, artwork.slug))}
       />
       <Spacer my={0.5} />
 
@@ -137,7 +141,9 @@ export const MyCollectionArtworkPriceEstimateFragmentContainer = createFragmentC
       fragment MyCollectionArtworkPriceEstimate_artwork on Artwork {
         costCurrencyCode
         costMinor
+        internalID
         sizeBucket
+        slug
       }
     `,
     marketPriceInsights: graphql`
@@ -160,3 +166,15 @@ export const MyCollectionArtworkPriceEstimateFragmentContainer = createFragmentC
     `,
   }
 )
+
+const tracks = {
+  tappedInfoBubble: (internalID: string, slug: string) => {
+    return tappedInfoBubble({
+      contextModule: ContextModule.myCollectionArtwork,
+      contextScreenOwnerType: OwnerType.myCollectionArtwork,
+      contextScreenOwnerId: internalID,
+      contextScreenOwnerSlug: slug,
+      subject: "priceEstimate",
+    })
+  },
+}

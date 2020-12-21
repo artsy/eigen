@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType, tappedInfoBubble } from "@artsy/cohesion"
 import { MyCollectionArtworkArtistAuctionResults_artwork } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -9,6 +10,7 @@ import { Box, Flex, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import { InfoButton } from "./InfoButton"
 
 interface MyCollectionArtworkArtistAuctionResultsProps {
@@ -16,6 +18,7 @@ interface MyCollectionArtworkArtistAuctionResultsProps {
 }
 
 const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtistAuctionResultsProps> = (props) => {
+  const { trackEvent } = useTracking()
   const results = extractNodes(props?.artwork?.artist?.auctionResultsConnection)
 
   if (!results.length) {
@@ -35,6 +38,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
               </Text>
             </>
           }
+          onPress={() => trackEvent(tracks.tappedInfoBubble(props?.artwork?.internalID, props?.artwork?.slug))}
         />
 
         <Spacer my={0.5} />
@@ -99,6 +103,8 @@ export const MyCollectionArtworkArtistAuctionResultsFragmentContainer = createFr
   {
     artwork: graphql`
       fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
+        internalID
+        slug
         artist {
           slug
           auctionResultsConnection(
@@ -130,3 +136,15 @@ export const MyCollectionArtworkArtistAuctionResultsFragmentContainer = createFr
     `,
   }
 )
+
+const tracks = {
+  tappedInfoBubble: (internalID: string, slug: string) => {
+    return tappedInfoBubble({
+      contextModule: ContextModule.myCollectionArtwork,
+      contextScreenOwnerType: OwnerType.myCollectionArtwork,
+      contextScreenOwnerId: internalID,
+      contextScreenOwnerSlug: slug,
+      subject: "auctionResults",
+    })
+  },
+}

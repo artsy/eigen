@@ -155,6 +155,7 @@ export enum OwnerEntityTypes {
   Gallery = "Gallery",
   Gene = "Gene",
   Home = "home",
+  Inbox = "Inbox",
   Fair = "Fair",
   Fair2MoreInfo = "moreInfo",
   Partner = "Partner",
@@ -262,6 +263,7 @@ export enum ActionNames {
   ConversationLink = "conversationLinkUsed",
   InquiryCancel = "inquiryCancel",
   InquirySend = "inquirySend",
+  InboxTab = "inboxTab",
 
   /**
    *  Saves And Follows Events

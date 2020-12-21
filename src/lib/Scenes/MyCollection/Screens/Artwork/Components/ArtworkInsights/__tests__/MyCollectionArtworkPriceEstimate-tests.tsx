@@ -1,15 +1,19 @@
+import { ContextModule, OwnerType, tappedInfoBubble } from "@artsy/cohesion"
 import { MyCollectionArtworkPriceEstimateTestsQuery } from "__generated__/MyCollectionArtworkPriceEstimateTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { InfoButton } from "../InfoButton"
 import { MyCollectionArtworkPriceEstimateFragmentContainer } from "../MyCollectionArtworkPriceEstimate"
 
 jest.unmock("react-relay")
+jest.mock("react-tracking")
 
 describe("MyCollectionArtworkPriceEstimate", () => {
+  const trackEvent = jest.fn()
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionArtworkPriceEstimateTestsQuery>
@@ -41,6 +45,16 @@ describe("MyCollectionArtworkPriceEstimate", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    const mockTracking = useTracking as jest.Mock
+    mockTracking.mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
   const resolveData = (passedProps = {}) => {
@@ -72,5 +86,27 @@ describe("MyCollectionArtworkPriceEstimate", () => {
     expect(text).toContain("$2 – $6")
     expect(text).toContain("Your price paid for this work")
     expect(text).toContain("USD 2000")
+  })
+
+  it("tracks analytics event when info button is tapped", () => {
+    const wrapper = renderWithWrappers(<TestRenderer />)
+    resolveData({
+      Artwork: () => ({
+        internalID: "artwork-id",
+        slug: "artwork-slug",
+      }),
+    })
+    wrapper.root.findByType(InfoButton).props.onPress()
+
+    expect(trackEvent).toHaveBeenCalledTimes(1)
+    expect(trackEvent).toHaveBeenCalledWith(
+      tappedInfoBubble({
+        contextModule: ContextModule.myCollectionArtwork,
+        contextScreenOwnerType: OwnerType.myCollectionArtwork,
+        subject: "priceEstimate",
+        contextScreenOwnerId: "artwork-id",
+        contextScreenOwnerSlug: "artwork-slug",
+      })
+    )
   })
 })

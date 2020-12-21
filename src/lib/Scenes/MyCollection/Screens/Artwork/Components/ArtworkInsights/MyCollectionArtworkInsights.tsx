@@ -35,7 +35,10 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
             </Text>
           </ScreenMargin>
           <Spacer mt={3} />
-          <MyCollectionArtworkDemandIndexFragmentContainer marketPriceInsights={marketPriceInsights} />
+          <MyCollectionArtworkDemandIndexFragmentContainer
+            artwork={artwork}
+            marketPriceInsights={marketPriceInsights}
+          />
           <ScreenMargin my={3}>
             <Separator />
           </ScreenMargin>
@@ -46,7 +49,10 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
           <ScreenMargin mt={2} mb={3}>
             <Separator />
           </ScreenMargin>
-          <MyCollectionArtworkArtistMarketFragmentContainer marketPriceInsights={marketPriceInsights} />
+          <MyCollectionArtworkArtistMarketFragmentContainer
+            artwork={artwork}
+            marketPriceInsights={marketPriceInsights}
+          />
           <ScreenMargin mt={2} mb={3}>
             <Separator />
           </ScreenMargin>
@@ -70,6 +76,8 @@ export const MyCollectionArtworkInsightsFragmentContainer = createFragmentContai
       ...MyCollectionArtworkPriceEstimate_artwork
       ...MyCollectionArtworkArtistAuctionResults_artwork
       ...MyCollectionArtworkArtistArticles_artwork
+      ...MyCollectionArtworkArtistMarket_artwork
+      ...MyCollectionArtworkDemandIndex_artwork
     }
   `,
   marketPriceInsights: graphql`

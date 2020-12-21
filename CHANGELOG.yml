@@ -1,22 +1,31 @@
 upcoming:
-  version: 6.7.4
+  version: 6.7.5
   date: TBD
   dev:
+    - Analytics tracking for My Collection - pepopowitz, annacarey
+    - Fix `isVisible` root view prop to respect tab switches - david, erik, lily
     - Add slack notification when betas fail - brian
-    - Enable my bids - lily
+    - Add analytics tracking for My Bids - ashley, erik, christina
   user_facing:
-    - Update copy in My Collection - annacarey
-    - Fix multi-image upload and add processing state in my collection - brian, barry
-    - Add auction lots history to artist insights tab - mounir, pavlos
-    - Move shows entry point to about tab - mounir
-    - Fix image graininess in my collection - brian
-    - Fix bug where user profile may fail to load - erik
-    - Fix bug preventing empty values from being saved (my collection) - brian
-    - Add improved phone number input - david
-    - Add support for deleting photos in my collection - brian, barry
     - Fix layout in My Collection artwork form AdditionalDetails screen - david
 
 releases:
+  - version: 6.7.4
+    date: Dec 17, 2020
+    dev:
+     - Add slack notification when betas fail - brian
+     - Enable my bids - lily
+    user_facing:
+     - Update copy in My Collection - annacarey
+     - Fix multi-image upload and add processing state in my collection - brian, barry
+     - Add auction lots history to artist insights tab - mounir, pavlos
+     - Move shows entry point to about tab - mounir
+     - Fix image graininess in my collection - brian
+     - Fix bug where user profile may fail to load - erik
+     - Fix bug preventing empty values from being saved (my collection) - brian
+     - Add improved phone number input - david
+     - Add support for deleting photos in my collection - brian. barry
+
   - version: 6.7.3
     date: Dec 8, 2020
     dev:

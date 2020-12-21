@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0d49c3a99f5557713fbc1c9d0a46276b */
+/* @relayHash bfae3cd8f883a0cf653540f258239622 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,7 +34,6 @@ fragment Lot_saleArtwork on SaleArtwork {
   lotLabel
   artwork {
     artistNames
-    href
     image {
       url(version: "medium")
     }
@@ -270,13 +269,6 @@ return {
                       {
                         "alias": null,
                         "args": null,
-                        "kind": "ScalarField",
-                        "name": "href",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
                         "concreteType": "Image",
                         "kind": "LinkedField",
                         "name": "image",
@@ -342,7 +334,7 @@ return {
     ]
   },
   "params": {
-    "id": "0d49c3a99f5557713fbc1c9d0a46276b",
+    "id": "bfae3cd8f883a0cf653540f258239622",
     "metadata": {},
     "name": "SaleActiveBidsRefetchQuery",
     "operationKind": "query",

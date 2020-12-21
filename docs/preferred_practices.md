@@ -115,7 +115,7 @@ _Most_ interactions are made through a "SwitchBoard" to open links. Other intera
 
 ### Analytics
 
-There is [extensive inline documentation](https://github.com/artsy/emission/blob/7a4eb922cee70c621c9938bfda1db460e65414fc/src/lib/utils/track.ts#L175-L359) in our tracking code, including examples.
+There is [extensive inline documentation](https://github.com/artsy/eigen/blob/3281cd9ba54b1d316b68375f46389974a22a0091/src/lib/utils/track/index.tsx#L10-L212) in our tracking code, including examples.
 
 ### Miscellaneous
 

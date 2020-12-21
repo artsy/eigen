@@ -1,3 +1,4 @@
+import { tappedCollectedArtworkImages } from "@artsy/cohesion"
 import { MyCollectionArtworkHeaderTestsQuery } from "__generated__/MyCollectionArtworkHeaderTestsQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
@@ -8,6 +9,7 @@ import { ArtworkIcon } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkHeaderFragmentContainer } from "../MyCollectionArtworkHeader"
 
@@ -35,8 +37,21 @@ describe("MyCollectionArtworkHeader", () => {
     />
   )
 
+  const trackEvent = jest.fn()
+
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+
+    const mockTracking = useTracking as jest.Mock
+    mockTracking.mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
   const getWrapper = (mockResolvers = {}) => {
@@ -71,6 +86,20 @@ describe("MyCollectionArtworkHeader", () => {
     })
     wrapper.root.findAllByType(TouchableOpacity)[0].props.onPress()
     expect(navigate).toHaveBeenCalledWith("/my-collection/artwork-images/1234")
+  })
+
+  it("fires the analytics tracking event when image is pressed", () => {
+    const wrapper = getWrapper({
+      Artwork: () => ({
+        internalID: "someInternalId",
+        slug: "someSlug",
+      }),
+    })
+    wrapper.root.findAllByType(TouchableOpacity)[0].props.onPress()
+    expect(trackEvent).toHaveBeenCalledTimes(1)
+    expect(trackEvent).toHaveBeenCalledWith(
+      tappedCollectedArtworkImages({ contextOwnerId: "someInternalId", contextOwnerSlug: "someSlug" })
+    )
   })
 
   it("shows a processing state when image data is incomplete", () => {

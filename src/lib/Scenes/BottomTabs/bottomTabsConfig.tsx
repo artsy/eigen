@@ -16,7 +16,7 @@ export const bottomTabsConfig: {
   },
   inbox: {
     route: "/inbox",
-    analyticsDescription: "messages",
+    analyticsDescription: "inbox",
   },
   sell: {
     route: "/sales",
