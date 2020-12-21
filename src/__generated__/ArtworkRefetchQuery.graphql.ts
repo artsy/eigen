@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8ad3f45a09d9e2389f5cd547ac141af0 */
+/* @relayHash 6f660da1e90a8dae9fd451c8cbf1800c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -130,6 +130,9 @@ fragment ArtworkDetails_artwork on Artwork {
   manufacturer
   image_rights: imageRights
   canRequestLotConditionsReport
+  mediumType {
+    __typename
+  }
 }
 
 fragment ArtworkExtraLinks_artwork on Artwork {
@@ -2327,6 +2330,18 @@ return {
               }
             ],
             "storageKey": "artistSeriesConnection(first:1)"
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ArtworkMedium",
+            "kind": "LinkedField",
+            "name": "mediumType",
+            "plural": false,
+            "selections": [
+              (v33/*: any*/)
+            ],
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -2334,7 +2349,7 @@ return {
     ]
   },
   "params": {
-    "id": "8ad3f45a09d9e2389f5cd547ac141af0",
+    "id": "6f660da1e90a8dae9fd451c8cbf1800c",
     "metadata": {},
     "name": "ArtworkRefetchQuery",
     "operationKind": "query",
