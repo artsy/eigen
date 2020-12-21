@@ -6,7 +6,7 @@ import { navigate } from "lib/navigation/navigate"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { extractNodes } from "lib/utils/extractNodes"
 import { DateTime } from "luxon"
-import { Box, Flex, Separator, Spacer, Text } from "palette"
+import { Box, Flex, NoArtworkIcon, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -57,7 +57,19 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
                   <Box my={0.5}>
                     <Flex flexDirection="row">
                       <Box pr={1}>
-                        <OpaqueImageView imageURL={images?.thumbnail?.url} width={80} height={60} />
+                        {images?.thumbnail?.url ? (
+                          <OpaqueImageView imageURL={images?.thumbnail?.url} width={80} height={60} />
+                        ) : (
+                          <Flex
+                            width={60}
+                            height={60}
+                            backgroundColor="black10"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            <NoArtworkIcon width={28} height={28} opacity={0.3} />
+                          </Flex>
+                        )}
                       </Box>
                       <Box pr={1} maxWidth="80%">
                         <Flex flexDirection="row">
