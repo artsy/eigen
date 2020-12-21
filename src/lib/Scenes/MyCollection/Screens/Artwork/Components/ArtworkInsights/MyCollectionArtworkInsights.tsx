@@ -53,9 +53,6 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
             artwork={artwork}
             marketPriceInsights={marketPriceInsights}
           />
-          <ScreenMargin mt={2} mb={3}>
-            <Separator />
-          </ScreenMargin>
         </>
       )}
 
