@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5bed2d5e758704b1cb3a204831165026 */
+/* @relayHash e95371724d6510f34d5afe283595007b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,6 +27,7 @@ query MyCollectionArtworkMetaTestsQuery {
 }
 
 fragment MyCollectionArtworkMeta_artwork on Artwork {
+  slug
   internalID
   artistNames
   category
@@ -105,6 +106,13 @@ return {
         "name": "artwork",
         "plural": false,
         "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "slug",
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": null,
@@ -216,7 +224,7 @@ return {
     ]
   },
   "params": {
-    "id": "5bed2d5e758704b1cb3a204831165026",
+    "id": "e95371724d6510f34d5afe283595007b",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -243,6 +251,7 @@ return {
         "artwork.internalID": (v2/*: any*/),
         "artwork.medium": (v1/*: any*/),
         "artwork.metric": (v1/*: any*/),
+        "artwork.slug": (v2/*: any*/),
         "artwork.title": (v1/*: any*/),
         "artwork.width": (v1/*: any*/)
       }

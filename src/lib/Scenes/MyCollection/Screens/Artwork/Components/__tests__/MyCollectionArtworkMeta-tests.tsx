@@ -38,6 +38,7 @@ describe("MyCollectionArtworkMeta", () => {
   })
 
   const sharedArtworkProps: Omit<MyCollectionArtworkMeta_artwork, " $refType"> = {
+    slug: "some slug",
     artistNames: "some artist name",
     category: "Painting",
     costMinor: 200,

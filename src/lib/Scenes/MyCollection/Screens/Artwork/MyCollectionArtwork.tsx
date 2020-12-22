@@ -1,4 +1,4 @@
-import { editCollectedArtwork } from "@artsy/cohesion"
+import { ActionType, ContextModule, editCollectedArtwork, OwnerType, tappedSell, TappedShowMore } from "@artsy/cohesion"
 import {
   MyCollectionArtworkQuery,
   MyCollectionArtworkQueryResponse,
@@ -60,7 +60,15 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
         <WhySell />
 
         <ScreenMargin>
-          <Button size="large" block onPress={() => navigate("/consign/submission")} data-test-id="SubmitButton">
+          <Button
+            size="large"
+            block
+            onPress={() => {
+              trackEvent(tracks.tappedSellArtwork(artwork.internalID, artwork.slug, "Submit this work"))
+              navigate("/consign/submission")
+            }}
+            data-test-id="SubmitButton"
+          >
             Submit this work
           </Button>
 
@@ -70,7 +78,10 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
             size="large"
             variant="secondaryGray"
             block
-            onPress={() => navigate("/sales")}
+            onPress={() => {
+              trackEvent(tracks.tappedShowMore(artwork.internalID, artwork.slug, "Learn More"))
+              navigate("/sales")
+            }}
             data-test-id="LearnMoreButton"
           >
             Learn more
@@ -226,5 +237,25 @@ export const tests = {
 const tracks = {
   editCollectedArtwork: (internalID: string, slug: string) => {
     return editCollectedArtwork({ contextOwnerId: internalID, contextOwnerSlug: slug })
+  },
+  tappedSellArtwork: (internalID: string, slug: string, subject: string) => {
+    return tappedSell({
+      contextModule: ContextModule.sellFooter,
+      contextScreenOwnerType: OwnerType.myCollectionArtwork,
+      contextScreenOwnerId: internalID,
+      contextScreenOwnerSlug: slug,
+      subject,
+    })
+  },
+  tappedShowMore: (internalID: string, slug: string, subject: string) => {
+    const tappedShowMore: TappedShowMore = {
+      action: ActionType.tappedShowMore,
+      context_module: ContextModule.sellFooter,
+      context_screen_owner_type: OwnerType.myCollectionArtwork,
+      context_screen_owner_id: internalID,
+      context_screen_owner_slug: slug,
+      subject,
+    }
+    return tappedShowMore
   },
 }
