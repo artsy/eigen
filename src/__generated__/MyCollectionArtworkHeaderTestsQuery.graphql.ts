@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9edf7ba9d9dfd4003fd9709fbd9608db */
+/* @relayHash d08a1b05da100966a9dda5a5510436ec */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,7 +34,6 @@ fragment MyCollectionArtworkHeader_artwork on Artwork {
     isDefault
     imageURL
     width
-    internalID
   }
   internalID
   slug
@@ -51,25 +50,18 @@ var v0 = [
   }
 ],
 v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-},
-v2 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v3 = {
+v2 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v4 = {
+v3 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -165,12 +157,17 @@ return {
                 "kind": "ScalarField",
                 "name": "width",
                 "storageKey": null
-              },
-              (v1/*: any*/)
+              }
             ],
             "storageKey": null
           },
-          (v1/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "internalID",
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": null,
@@ -198,7 +195,7 @@ return {
     ]
   },
   "params": {
-    "id": "9edf7ba9d9dfd4003fd9709fbd9608db",
+    "id": "d08a1b05da100966a9dda5a5510436ec",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -207,33 +204,26 @@ return {
           "plural": false,
           "type": "Artwork"
         },
-        "artwork.artistNames": (v2/*: any*/),
-        "artwork.date": (v2/*: any*/),
-        "artwork.id": (v3/*: any*/),
+        "artwork.artistNames": (v1/*: any*/),
+        "artwork.date": (v1/*: any*/),
+        "artwork.id": (v2/*: any*/),
         "artwork.images": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "Image"
         },
-        "artwork.images.height": (v4/*: any*/),
-        "artwork.images.imageURL": (v2/*: any*/),
-        "artwork.images.internalID": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "ID"
-        },
+        "artwork.images.height": (v3/*: any*/),
+        "artwork.images.imageURL": (v1/*: any*/),
         "artwork.images.isDefault": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Boolean"
         },
-        "artwork.images.width": (v4/*: any*/),
-        "artwork.internalID": (v3/*: any*/),
-        "artwork.slug": (v3/*: any*/),
-        "artwork.title": (v2/*: any*/)
+        "artwork.images.width": (v3/*: any*/),
+        "artwork.internalID": (v2/*: any*/),
+        "artwork.title": (v1/*: any*/)
       }
     },
     "name": "MyCollectionArtworkHeaderTestsQuery",

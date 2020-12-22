@@ -23,7 +23,6 @@ export type MyCollectionArtworkFullDetails_artwork = {
         readonly imageURL: string | null;
         readonly width: number | null;
         readonly height: number | null;
-        readonly internalID: string | null;
     } | null> | null;
     readonly internalID: string;
     readonly medium: string | null;
@@ -170,8 +169,7 @@ return {
           "storageKey": null
         },
         (v2/*: any*/),
-        (v1/*: any*/),
-        (v0/*: any*/)
+        (v1/*: any*/)
       ],
       "storageKey": null
     },

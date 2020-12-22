@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7fd0084c3582a2721c9b3926ab823509 */
+/* @relayHash df6e5e8ff240a0a6e7c6f41692ae0195 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -50,7 +50,6 @@ fragment MyCollectionArtworkFullDetails_artwork on Artwork {
     imageURL
     width
     height
-    internalID
   }
   internalID
   medium
@@ -258,8 +257,7 @@ return {
                 "storageKey": null
               },
               (v5/*: any*/),
-              (v4/*: any*/),
-              (v2/*: any*/)
+              (v4/*: any*/)
             ],
             "storageKey": null
           },
@@ -306,7 +304,7 @@ return {
     ]
   },
   "params": {
-    "id": "7fd0084c3582a2721c9b3926ab823509",
+    "id": "df6e5e8ff240a0a6e7c6f41692ae0195",
     "metadata": {},
     "name": "MyCollectionArtworkFullDetailsQuery",
     "operationKind": "query",
