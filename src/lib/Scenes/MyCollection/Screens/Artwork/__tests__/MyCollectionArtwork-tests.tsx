@@ -46,7 +46,8 @@ describe("MyCollectionArtworkDetail", () => {
 
   describe("artwork detail behavior", () => {
     it("renders correct components", () => {
-      const wrapper = getWrapper()
+      const artworkProps = { artwork: { internalID: "someInternalId" } }
+      const wrapper = getWrapper(artworkProps)
       expect(wrapper.root.findByType(MyCollectionArtworkHeaderFragmentContainer)).toBeDefined()
       expect(wrapper.root.findByType(MyCollectionArtworkMetaFragmentContainer)).toBeDefined()
       expect(wrapper.root.findByType(MyCollectionArtworkInsightsFragmentContainer)).toBeDefined()
@@ -75,13 +76,15 @@ describe("MyCollectionArtworkDetail", () => {
     })
 
     it("navigates to consign submission when submit button is pressed", () => {
-      const wrapper = getWrapper()
+      const artworkProps = { artwork: { internalID: "someInternalId" } }
+      const wrapper = getWrapper(artworkProps)
       wrapper.root.findByProps({ "data-test-id": "SubmitButton" }).props.onPress()
       expect(navigate).toHaveBeenCalledWith("/consign/submission")
     })
 
     it("navigates to sales page when learn more button is pressed", () => {
-      const wrapper = getWrapper()
+      const artworkProps = { artwork: { internalID: "someInternalId" } }
+      const wrapper = getWrapper(artworkProps)
       wrapper.root.findByProps({ "data-test-id": "LearnMoreButton" }).props.onPress()
       expect(navigate).toHaveBeenCalledWith("/sales")
     })
