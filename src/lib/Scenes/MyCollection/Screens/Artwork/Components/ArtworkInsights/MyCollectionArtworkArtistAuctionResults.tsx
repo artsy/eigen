@@ -69,6 +69,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
         <Separator />
         <Box pt={3}>
           <CaretButton
+            data-test-id="AuctionsResultsButton"
             onPress={() => navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-results`)}
             text="Explore auction results"
           />
