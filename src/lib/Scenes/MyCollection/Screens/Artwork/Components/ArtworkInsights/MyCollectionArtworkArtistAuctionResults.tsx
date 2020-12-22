@@ -157,7 +157,7 @@ export const MyCollectionArtworkArtistAuctionResultsFragmentContainer = createFr
 const tracks = {
   tappedInfoBubble: (internalID: string, slug: string) => {
     return tappedInfoBubble({
-      contextModule: ContextModule.myCollectionArtwork,
+      contextModule: ContextModule.auctionResults,
       contextScreenOwnerType: OwnerType.myCollectionArtwork,
       contextScreenOwnerId: internalID,
       contextScreenOwnerSlug: slug,
@@ -167,7 +167,7 @@ const tracks = {
   tappedShowMore: (internalID: string, slug: string, subject: string) => {
     const tappedShowMore: TappedShowMore = {
       action: ActionType.tappedShowMore,
-      context_module: ContextModule.myCollectionArtwork,
+      context_module: ContextModule.auctionResults,
       context_screen_owner_type: OwnerType.myCollectionArtwork,
       context_screen_owner_id: internalID,
       context_screen_owner_slug: slug,

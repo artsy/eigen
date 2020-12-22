@@ -101,7 +101,7 @@ describe("MyCollectionArtworkDetail", () => {
       expect(trackEvent).toHaveBeenCalledTimes(1)
       expect(trackEvent).toHaveBeenCalledWith(
         tappedSell({
-          contextModule: ContextModule.myCollectionArtwork,
+          contextModule: ContextModule.sellFooter,
           contextScreenOwnerType: OwnerType.myCollectionArtwork,
           contextScreenOwnerId: "someInternalId",
           contextScreenOwnerSlug: "someSlug",
@@ -120,7 +120,7 @@ describe("MyCollectionArtworkDetail", () => {
       expect(trackEvent).toHaveBeenCalledTimes(1)
       expect(trackEvent).toHaveBeenCalledWith({
         action: ActionType.tappedShowMore,
-        context_module: ContextModule.myCollectionArtwork,
+        context_module: ContextModule.sellFooter,
         context_screen_owner_type: OwnerType.myCollectionArtwork,
         context_screen_owner_id: "someInternalId",
         context_screen_owner_slug: "someSlug",

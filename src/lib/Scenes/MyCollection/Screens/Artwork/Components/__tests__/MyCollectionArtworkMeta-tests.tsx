@@ -140,7 +140,7 @@ describe("MyCollectionArtworkMeta", () => {
       expect(trackEvent).toHaveBeenCalledTimes(1)
       expect(trackEvent).toHaveBeenCalledWith({
         action: ActionType.tappedShowMore,
-        context_module: ContextModule.myCollectionArtwork,
+        context_module: ContextModule.artworkMetadata,
         context_screen_owner_type: OwnerType.myCollectionArtwork,
         context_screen_owner_id: "some-internal-id",
         context_screen_owner_slug: "some-slug",

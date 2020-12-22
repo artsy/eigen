@@ -250,7 +250,7 @@ const tracks = {
   },
   tappedSellArtwork: (internalID: string, slug: string, subject: string) => {
     return tappedSell({
-      contextModule: ContextModule.myCollectionArtwork,
+      contextModule: ContextModule.sellFooter,
       contextScreenOwnerType: OwnerType.myCollectionArtwork,
       contextScreenOwnerId: internalID,
       contextScreenOwnerSlug: slug,
@@ -260,7 +260,7 @@ const tracks = {
   tappedShowMore: (internalID: string, slug: string, subject: string) => {
     const tappedShowMore: TappedShowMore = {
       action: ActionType.tappedShowMore,
-      context_module: ContextModule.myCollectionArtwork,
+      context_module: ContextModule.sellFooter,
       context_screen_owner_type: OwnerType.myCollectionArtwork,
       context_screen_owner_id: internalID,
       context_screen_owner_slug: slug,

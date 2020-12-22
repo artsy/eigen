@@ -126,7 +126,7 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
     expect(trackEvent).toHaveBeenCalledTimes(1)
     expect(trackEvent).toHaveBeenCalledWith(
       tappedInfoBubble({
-        contextModule: ContextModule.myCollectionArtwork,
+        contextModule: ContextModule.auctionResults,
         contextScreenOwnerType: OwnerType.myCollectionArtwork,
         subject: "auctionResults",
         contextScreenOwnerId: "artwork-id",
@@ -148,7 +148,7 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
     expect(trackEvent).toHaveBeenCalledTimes(1)
     expect(trackEvent).toHaveBeenCalledWith({
       action: ActionType.tappedShowMore,
-      context_module: ContextModule.myCollectionArtwork,
+      context_module: ContextModule.auctionResults,
       context_screen_owner_type: OwnerType.myCollectionArtwork,
       context_screen_owner_id: "artwork-id",
       context_screen_owner_slug: "artwork-slug",
