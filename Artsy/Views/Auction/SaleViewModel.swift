@@ -4,17 +4,15 @@ class SaleViewModel: NSObject {
     fileprivate let sale: Sale
     fileprivate let me: User
     fileprivate let saleArtworks: [SaleArtwork]
-    fileprivate var lotStandings: [LotStanding]
     let promotedSaleArtworks: [SaleArtwork]?
 
     var bidders: [Bidder]
 
-    init(sale: Sale, saleArtworks: [SaleArtwork], promotedSaleArtworks: [SaleArtwork]? = nil, bidders: [Bidder], lotStandings: [LotStanding], me: User) {
+    init(sale: Sale, saleArtworks: [SaleArtwork], promotedSaleArtworks: [SaleArtwork]? = nil, bidders: [Bidder], me: User) {
         self.sale = sale
         self.saleArtworks = saleArtworks
         self.promotedSaleArtworks = promotedSaleArtworks
         self.bidders = bidders
-        self.lotStandings = lotStandings
         self.me = me
     }
 
@@ -23,24 +21,6 @@ class SaleViewModel: NSObject {
         case .closed: return true
         default: return false
         }
-    }
-
-    var hasLotStandings: Bool {
-        return lotStandings.isNotEmpty
-    }
-
-    var numberOfLotStandings: Int {
-        return lotStandings.count
-    }
-
-    func lotStanding(at index: Int) -> LotStanding {
-        precondition(0..<numberOfLotStandings ~= index, "Index exceeds bounds of lotStandings")
-
-        return lotStandings[index]
-    }
-
-    func updateLotStandings(_ lotStandings: [LotStanding]) {
-        self.lotStandings = lotStandings
     }
 
     var requireIdentityVerification: Bool {

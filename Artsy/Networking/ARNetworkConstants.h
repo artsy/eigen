@@ -34,7 +34,6 @@ extern NSString *const ARAddArtworkToFavoritesURLFormat;
 extern NSString *const ARFavoritesURL;
 extern NSString *const ARSalesForArtworkURL;
 extern NSString *const ARMyBiddersURL;
-extern NSString *const ARMyLotStandingsURL;
 extern NSString *const ARBidderPositionsForSaleAndArtworkURL;
 extern NSString *const ARSaleArtworkForSaleAndArtworkURLFormat;
 extern NSString *const ARSaleURLFormat;

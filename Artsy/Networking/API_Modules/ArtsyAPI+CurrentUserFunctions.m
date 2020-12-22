@@ -3,7 +3,6 @@
 #import "ARUserManager.h"
 #import "ARRouter.h"
 #import "User.h"
-#import "LotStanding.h"
 #import "Bidder.h"
 
 @implementation ArtsyAPI (CurrentUserFunctions)
@@ -44,12 +43,6 @@
 
     NSURLRequest *request = [ARRouter biddersRequestForSale:saleID];
     [self getRequest:request parseIntoAnArrayOfClass:[Bidder class] success:success failure:failure];
-}
-
-+ (void)getCurrentUserLotStandingsForSale:(NSString *)saleID success:(void (^)(NSArray<LotStanding *> *))success failure:(void (^)(NSError *error))failure
-{
-    NSURLRequest *request = [ARRouter lotStandingsRequestForSaleID:saleID];
-    [self getRequest:request parseIntoAnArrayOfClass:[LotStanding class] success:success failure:failure];
 }
 
 @end

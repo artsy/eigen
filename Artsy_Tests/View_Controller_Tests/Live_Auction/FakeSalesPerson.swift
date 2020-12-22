@@ -29,8 +29,8 @@ class Test_SaleViewModel: SaleViewModel {
     override var currencySymbol: String { return "$" }
     override var auctionState: ARAuctionState { return stubbedAuctionState }
 
-    override init(sale: Sale, saleArtworks: [SaleArtwork], promotedSaleArtworks: [SaleArtwork]?, bidders: [Bidder], lotStandings: [LotStanding], me: User) {
-        super.init(sale: sale, saleArtworks: saleArtworks, promotedSaleArtworks: promotedSaleArtworks, bidders: bidders, lotStandings: lotStandings, me: me)
+    override init(sale: Sale, saleArtworks: [SaleArtwork], promotedSaleArtworks: [SaleArtwork]?, bidders: [Bidder], me: User) {
+        super.init(sale: sale, saleArtworks: saleArtworks, promotedSaleArtworks: promotedSaleArtworks, bidders: bidders, me: me)
     }
 }
 
