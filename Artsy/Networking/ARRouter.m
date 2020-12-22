@@ -439,55 +439,6 @@ static NSString *hostFromString(NSString *string)
 }
 
 #pragma mark -
-#pragma mark Feed
-
-+ (NSURLRequest *)newFairShowFeedRequestWithFair:(Fair *)fair partnerID:(NSString *)partnerID cursor:(NSString *)cursor pageSize:(NSInteger)size
-{
-    NSMutableDictionary *params = [@{ @"size" : @(size) } mutableCopy];
-    if (cursor) [params setObject:cursor forKey:@"cursor"];
-    if (partnerID) [params setObject:partnerID forKey:@"partner"];
-
-    NSString *path = NSStringWithFormat(ARNewFairShowsURLFormat, fair.fairID);
-    return [self requestWithMethod:@"GET" path:path parameters:params];
-}
-
-+ (NSURLRequest *)newPostsRequestForProfileID:(NSString *)profileID WithCursor:(NSString *)cursor pageSize:(NSInteger)size
-{
-    NSString *url = [NSString stringWithFormat:ARProfileFeedURLFormat, profileID];
-    NSMutableDictionary *params = [@{ @"size" : @(size) } mutableCopy];
-    if (cursor) [params setObject:cursor forKey:@"cursor"];
-    return [self requestWithMethod:@"GET" path:url parameters:params];
-}
-
-+ (NSURLRequest *)newPostsRequestForProfile:(Profile *)profile WithCursor:(NSString *)cursor pageSize:(NSInteger)size
-{
-    return [ARRouter newPostsRequestForProfileID:profile.profileID WithCursor:cursor pageSize:size];
-}
-
-+ (NSURLRequest *)newPostsRequestForFairOrganizer:(FairOrganizer *)fairOrganizer WithCursor:(NSString *)cursor pageSize:(NSInteger)size
-{
-    return [ARRouter newPostsRequestForProfileID:fairOrganizer.profileID WithCursor:cursor pageSize:size];
-}
-
-#pragma mark -
-#pragma mark Artworks
-
-+ (NSURLRequest *)newArtworksRelatedToArtwork:(Artwork *)artwork inFairRequest:(Fair *)fair
-{
-    NSDictionary *params = @{ @"artwork" : @[ artwork.artworkID ] };
-    NSString *address = [NSString stringWithFormat:ARNewRelatedArtworksURLFormat, @"fair", fair.fairID];
-    return [self requestWithMethod:@"GET" path:address parameters:params];
-}
-
-+ (NSURLRequest *)createBidderPositionsForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID maxBidAmountCents:(NSInteger)maxBidAmountCents
-{
-    NSDictionary *params = @{ @"sale_id" : saleID,
-                              @"artwork_id" : artworkID,
-                              @"max_bid_amount_cents" : @(maxBidAmountCents) };
-    return [self requestWithMethod:@"POST" path:ARBidderPositionsForSaleAndArtworkURL parameters:params];
-}
-
-#pragma mark -
 #pragma mark Artwork Favorites (items in the saved-artwork collection)
 
 + (NSURLRequest *)newSetArtworkFavoriteRequestForArtwork:(Artwork *)artwork status:(BOOL)status
@@ -617,11 +568,6 @@ static NSString *hostFromString(NSString *string)
 
 #pragma mark - Genes
 
-+ (NSURLRequest *)newGenesFromPersonalCollectionAtPage:(NSInteger)page
-{
-    return [self requestWithMethod:@"GET" path:ARFollowGenesURL parameters:@{ @"page" : @(page) }];
-}
-
 + (NSURLRequest *)newFollowingRequestForGene:(Gene *)gene
 {
     return [self newFollowingRequestForGenes:@[ gene ]];
@@ -648,12 +594,6 @@ static NSString *hostFromString(NSString *string)
 #pragma mark - Shows
 
 #pragma mark - Models
-
-+ (NSURLRequest *)newPostInfoRequestWithID:(NSString *)postID
-{
-    NSString *url = [NSString stringWithFormat:ARPostInformationURLFormat, postID];
-    return [self requestWithMethod:@"GET" path:url parameters:nil];
-}
 
 + (NSURLRequest *)newProfileInfoRequestWithID:(NSString *)profileID
 {
@@ -682,26 +622,6 @@ static NSString *hostFromString(NSString *string)
                               @"exclude_ids" : geneIDsToExclude };
 
     return [self requestWithMethod:@"GET" path:ARNewGeneSearchURL parameters:params];
-}
-
-+ (NSURLRequest *)directImageRequestForModel:(Class)model andSlug:(NSString *)slug
-{
-    // Note: should these be moved to network constants?
-
-    NSDictionary *paths = @{
-        @"Artwork" : @"/api/v1/artwork/%@/default_image.jpg",
-        @"Artist" : @"/api/v1/artist/%@/image",
-        @"Gene" : @"/api/v1/gene/%@/image",
-        @"Fair" : @"/api/v1/profile/%@/image/square140",
-        @"Tag" : @"/api/v1/tag/%@/image",
-        @"Profile" : @"/api/v1/profile/%@/image",
-        @"SiteFeature" : @"/api/v1/feature/%@/image",
-        @"PartnerShow" : @"/api/v1/partner_show/%@/default_image.jpg",
-    };
-
-    NSString *key = NSStringFromClass(model);
-    NSString *path = [NSString stringWithFormat:paths[key], slug];
-    return [self requestWithMethod:@"GET" path:path parameters:nil];
 }
 
 #pragma mark -
@@ -754,19 +674,6 @@ static NSString *hostFromString(NSString *string)
 + (NSURLRequest *)newDeleteDeviceRequest:(NSString *)token
 {
     return [self requestWithMethod:@"DELETE" path:[NSString stringWithFormat:ARDeleteDeviceURL, token]];
-}
-
-+ (NSURLRequest *)salesWithArtworkRequest:(NSString *)artworkID
-{
-    NSDictionary *params = @{ @"artwork[]" : artworkID };
-    return [self requestWithMethod:@"GET" path:ARSalesForArtworkURL parameters:params];
-}
-
-+ (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID page:(NSInteger)page pageSize:(NSInteger)pageSize
-{
-    NSString *url = [NSString stringWithFormat:ARSaleArtworksURLFormat, saleID];
-    return [self requestWithMethod:@"GET" path:url parameters:@{ @"size" : @(pageSize),
-                                                                 @"page" : @(page) }];
 }
 
 + (NSURLRequest *)liveSaleStateRequest:(NSString *)saleID host:(NSString *)host
@@ -825,11 +732,6 @@ static NSString *hostFromString(NSString *string)
     return [self graphQLRequestForQuery:query];
 }
 
-+ (NSURLRequest *)biddersRequest
-{
-    return [self biddersRequestForSale:nil];
-}
-
 + (NSURLRequest *)biddersRequestForSale:(NSString *)saleID
 {
     NSDictionary *params;
@@ -840,60 +742,12 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARMyBiddersURL parameters:params];
 }
 
-+ (NSURLRequest *)bidderPositionsRequestForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID
-{
-    NSDictionary *params = @{ @"sale_id" : saleID,
-                              @"artwork_id" : artworkID };
-    return [self requestWithMethod:@"GET" path:ARBidderPositionsForSaleAndArtworkURL parameters:params];
-}
-
-+ (NSURLRequest *)saleArtworkRequestForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID
-{
-    NSString *path = [NSString stringWithFormat:ARSaleArtworkForSaleAndArtworkURLFormat, saleID, artworkID];
-    NSMutableURLRequest *req = [self requestWithMethod:@"GET" path:path parameters:nil];
-    req.cachePolicy = NSURLRequestReloadIgnoringCacheData;
-    return req;
-}
-
 + (NSURLRequest *)requestForSaleID:(NSString *)saleID
 {
     NSString *path = [NSString stringWithFormat:ARSaleURLFormat, saleID];
     NSMutableURLRequest *req = [self requestWithMethod:@"GET" path:path parameters:nil];
     req.cachePolicy = NSURLRequestReloadIgnoringCacheData;
     return req;
-}
-
-+ (NSURLRequest *)orderedSetsWithOwnerType:(NSString *)ownerType andID:(NSString *)ownerID
-{
-    ownerType = ownerType ?: @"";
-    NSDictionary *params = @{ @"owner_type" : ownerType,
-                              @"owner_id" : ownerID,
-                              @"sort" : @"key",
-                              @"mobile" : @"true",
-                              @"published" : @"true" };
-    return [self requestWithMethod:@"GET" path:AROrderedSetsURL parameters:params];
-}
-
-+ (NSURLRequest *)orderedSetsWithKey:(NSString *)key
-{
-    NSDictionary *params = @{ @"key" : key,
-                              @"sort" : @"key",
-                              @"mobile" : @"true",
-                              @"published" : @"true" };
-    return [self requestWithMethod:@"GET" path:AROrderedSetsURL parameters:params];
-}
-
-+ (NSURLRequest *)orderedSetItems:(NSString *)orderedSetID
-{
-    NSString *url = [NSString stringWithFormat:AROrderedSetItemsURLFormat, orderedSetID];
-    return [self requestWithMethod:@"GET" path:url parameters:nil];
-}
-
-+ (NSURLRequest *)orderedSetItems:(NSString *)orderedSetID atPage:(NSInteger)page
-{
-    NSString *url = [NSString stringWithFormat:AROrderedSetItemsURLFormat, orderedSetID];
-    return [self requestWithMethod:@"GET" path:url parameters:@{ @"page" : @(page),
-                                                                 @"size" : @10 }];
 }
 
 + (NSURLRequest *)newSystemTimeRequest

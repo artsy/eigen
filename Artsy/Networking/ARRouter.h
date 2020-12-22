@@ -57,17 +57,6 @@
 + (NSURLRequest *)newMyUnfollowProfileRequest:(NSString *)profileID;
 + (NSURLRequest *)newFollowingProfilesRequestWithFair:(Fair *)fair;
 
-#pragma mark - Feed
-
-+ (NSURLRequest *)newFairShowFeedRequestWithFair:(Fair *)fair partnerID:(NSString *)partnerID cursor:(NSString *)cursor pageSize:(NSInteger)size;
-+ (NSURLRequest *)newPostsRequestForProfileID:(NSString *)profileID WithCursor:(NSString *)cursor pageSize:(NSInteger)size;
-+ (NSURLRequest *)newPostsRequestForProfile:(Profile *)profile WithCursor:(NSString *)cursor pageSize:(NSInteger)size;
-+ (NSURLRequest *)newPostsRequestForFairOrganizer:(FairOrganizer *)fairOrganizer WithCursor:(NSString *)cursor pageSize:(NSInteger)size;
-
-#pragma mark - Artworks
-
-+ (NSURLRequest *)newArtworksRelatedToArtwork:(Artwork *)artwork inFairRequest:(Fair *)fair;
-
 #pragma mark - Artwork Favorites (items in the saved-artwork collection)
 
 + (NSURLRequest *)newSetArtworkFavoriteRequestForArtwork:(Artwork *)artwork status:(BOOL)status;
@@ -93,7 +82,6 @@
 
 #pragma mark - Genes
 
-+ (NSURLRequest *)newGenesFromPersonalCollectionAtPage:(NSInteger)page;
 + (NSURLRequest *)newFollowingRequestForGene:(Gene *)gene;
 + (NSURLRequest *)newFollowGeneRequest:(Gene *)gene;
 + (NSURLRequest *)newUnfollowGeneRequest:(Gene *)gene;
@@ -101,15 +89,12 @@
 
 #pragma mark - Models
 
-+ (NSURLRequest *)newPostInfoRequestWithID:(NSString *)postID;
 + (NSURLRequest *)newProfileInfoRequestWithID:(NSString *)profileID;
 
-#pragma mark - Search
+#pragma mark - Search (Onboarding)
 
 + (NSURLRequest *)newArtistSearchRequestWithQuery:(NSString *)query excluding:(NSArray *)artistsToExclude;
 + (NSURLRequest *)newGeneSearchRequestWithQuery:(NSString *)query excluding:(NSArray *)genesToExclude;
-
-+ (NSURLRequest *)directImageRequestForModel:(Class)model andSlug:(NSString *)slug;
 
 #pragma mark - Fairs
 
@@ -117,30 +102,17 @@
 
 #pragma mark - Auctions
 
-+ (NSURLRequest *)salesWithArtworkRequest:(NSString *)artworkID;
-+ (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID page:(NSInteger)page pageSize:(NSInteger)pageSize;
 + (NSURLRequest *)liveSaleStateRequest:(NSString *)saleID host:(NSString *)host;
 
 // Send in role as nil for when a user is logged out
 + (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID role:(NSString *)role;
 
-+ (NSURLRequest *)biddersRequest;
 + (NSURLRequest *)biddersRequestForSale:(NSString *)saleID;
-+ (NSURLRequest *)createBidderPositionsForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID maxBidAmountCents:(NSInteger)maxBidAmountCents;
-+ (NSURLRequest *)bidderPositionsRequestForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID;
-+ (NSURLRequest *)saleArtworkRequestForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID;
 + (NSURLRequest *)requestForSaleID:(NSString *)saleID;
 
 + (NSString *)baseCausalitySocketURLString;
 
-#pragma mark - Ordered Sets
-
-+ (NSURLRequest *)orderedSetsWithOwnerType:(NSString *)ownerType andID:(NSString *)ownerID;
-+ (NSURLRequest *)orderedSetsWithKey:(NSString *)key;
-+ (NSURLRequest *)orderedSetItems:(NSString *)orderedSetID;
-+ (NSURLRequest *)orderedSetItems:(NSString *)orderedSetID atPage:(NSInteger)page;
-
-#pragma mark - Recommendations
+#pragma mark - Notifications
 
 + (NSURLRequest *)markNotificationsAsReadRequest;
 
