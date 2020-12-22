@@ -1,6 +1,5 @@
 #import "ARNavigationButtonsViewController.h"
 #import "ARNavigationButton.h"
-#import "ARButtonWithImage.h"
 
 SpecBegin(ARNavigationButtonsViewController);
 
@@ -62,12 +61,6 @@ describe(@"creating buttons", ^{
                 ARNavigationButtonPropertiesKey: @{
                     @"backgroundColor": UIColor.redColor
                 }
-            },
-            @{
-                ARNavigationButtonClassKey: ARButtonWithImage.class,
-                ARNavigationButtonPropertiesKey: @{
-                    @"title": NSNull.null,
-                }
             }
         ];
 
@@ -82,36 +75,10 @@ describe(@"creating buttons", ^{
         expect(firstButton).to.beKindOf(ARNavigationButton.class);
     });
 
-    it(@"should allow different button classes", ^{
-        UIButton *secondButton = vc.navigationButtons[1];
-
-        expect(secondButton).to.beKindOf(ARButtonWithImage.class);
-    });
-
     it(@"should set properties of the buttons", ^{
         UIButton *firstButton = vc.navigationButtons.firstObject;
 
         expect(firstButton.backgroundColor).to.equal(UIColor.redColor);
-    });
-
-    it(@"should treat NSNull as nil", ^{
-        ARButtonWithImage *secondButton = vc.navigationButtons[1];
-
-        expect(secondButton.title).to.beNil();
-    });
-
-    it(@"should allow updates", ^{
-        vc.buttonDescriptions = @[];
-
-        expect(vc.navigationButtons).to.beEmpty();
-
-        vc.buttonDescriptions = @[
-            @{
-                ARNavigationButtonClassKey: ARButtonWithImage.class
-            }
-        ];
-
-        expect(vc.navigationButtons).to.haveCountOf(1);
     });
 });
 
