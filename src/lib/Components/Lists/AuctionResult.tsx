@@ -1,4 +1,4 @@
-import { ArtistInsightsAuctionResult_auctionResult } from "__generated__/ArtistInsightsAuctionResult_auctionResult.graphql"
+import { AuctionResult_auctionResult } from "__generated__/AuctionResult_auctionResult.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { capitalize } from "lodash"
 import moment from "moment"
@@ -7,10 +7,10 @@ import React, { useCallback } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  auctionResult: ArtistInsightsAuctionResult_auctionResult
+  auctionResult: AuctionResult_auctionResult
 }
 
-const ArtistInsightsAuctionResult: React.FC<Props> = ({ auctionResult }) => {
+const AuctionResult: React.FC<Props> = ({ auctionResult }) => {
   const now = moment()
 
   const isFromPastMonth = auctionResult.saleDate
@@ -48,11 +48,11 @@ const ArtistInsightsAuctionResult: React.FC<Props> = ({ auctionResult }) => {
         {/* Sale Artwork Details */}
         <Flex pl={15} flex={1} flexDirection="row" justifyContent="space-between">
           <Flex flex={3}>
-            <Flex flexDirection="row">
-              <Text variant="title" numberOfLines={1} style={{ flexShrink: 1 }}>
+            <Flex flexDirection="row" mb={0.5}>
+              <Text variant="subtitle" numberOfLines={1} style={{ flexShrink: 1 }}>
                 {auctionResult.title}
               </Text>
-              <Text variant="title" numberOfLines={1}>
+              <Text variant="subtitle" numberOfLines={1}>
                 , {auctionResult.dateText}
               </Text>
             </Flex>
@@ -75,7 +75,7 @@ const ArtistInsightsAuctionResult: React.FC<Props> = ({ auctionResult }) => {
           <Flex alignItems="flex-end" pl={15}>
             {!!auctionResult.priceRealized?.display && !!auctionResult.currency ? (
               <Flex alignItems="flex-end">
-                <Text variant="mediumText">
+                <Text variant="subtitle" fontWeight="bold">
                   {(auctionResult.priceRealized?.display ?? "").replace(`${auctionResult.currency} `, "")}
                 </Text>
                 {!!ratio && (
@@ -85,7 +85,7 @@ const ArtistInsightsAuctionResult: React.FC<Props> = ({ auctionResult }) => {
                       width="100%"
                       height="100%"
                       backgroundColor={ratioColor(ratio)}
-                      opacity={0.05}
+                      opacity={0.1}
                     />
                     <Text variant="mediumText" color={ratioColor(ratio)} px="5px">
                       {ratio.toFixed(2)}x
@@ -94,9 +94,15 @@ const ArtistInsightsAuctionResult: React.FC<Props> = ({ auctionResult }) => {
                 )}
               </Flex>
             ) : (
-              <Text variant="mediumText" style={{ width: 70 }} textAlign="right">
-                {isFromPastMonth ? "Awaiting results" : auctionResult.boughtIn === true ? "Bought in" : "Not available"}
-              </Text>
+              <Flex alignItems="flex-end">
+                <Text variant="subtitle" fontWeight="bold" style={{ width: 70 }} textAlign="right">
+                  {isFromPastMonth
+                    ? "Awaiting results"
+                    : auctionResult.boughtIn === true
+                    ? "Bought in"
+                    : "Not available"}
+                </Text>
+              </Flex>
             )}
           </Flex>
         </Flex>
@@ -116,9 +122,9 @@ const ratioColor = (ratio: number) => {
   return "black60"
 }
 
-export const ArtistInsightsAuctionResultFragmentContainer = createFragmentContainer(ArtistInsightsAuctionResult, {
+export const AuctionResultFragmentContainer = createFragmentContainer(AuctionResult, {
   auctionResult: graphql`
-    fragment ArtistInsightsAuctionResult_auctionResult on AuctionResult {
+    fragment AuctionResult_auctionResult on AuctionResult {
       currency
       dateText
       id

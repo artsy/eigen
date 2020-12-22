@@ -7,7 +7,7 @@ import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
-import { ArtistInsightsAuctionResultFragmentContainer } from "./ArtistInsightsAuctionResult"
+import { AuctionResultFragmentContainer } from "../../Lists/AuctionResult"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist
@@ -35,7 +35,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
     <FlatList
       data={auctionResults}
       keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <ArtistInsightsAuctionResultFragmentContainer auctionResult={item} />}
+      renderItem={({ item }) => <AuctionResultFragmentContainer auctionResult={item} />}
       ListHeaderComponent={() => (
         <Flex px={2}>
           <Text variant="title">Auction results</Text>
@@ -45,7 +45,11 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
           <Separator mt="2" />
         </Flex>
       )}
-      ItemSeparatorComponent={() => <Separator />}
+      ItemSeparatorComponent={() => (
+        <Flex px={2}>
+          <Separator />
+        </Flex>
+      )}
       style={{ width: useScreenDimensions().width, left: -20 }}
       onEndReached={loadMoreAuctionResults}
       ListFooterComponent={loadingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null}
@@ -69,7 +73,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
           edges {
             node {
               id
-              ...ArtistInsightsAuctionResult_auctionResult
+              ...AuctionResult_auctionResult
             }
           }
         }

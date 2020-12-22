@@ -21,8 +21,10 @@ export type MyCollectionArtworkArtistAuctionResults_artwork = {
                             readonly url: string | null;
                         } | null;
                     } | null;
+                    readonly categoryText: string | null;
                     readonly description: string | null;
                     readonly dateText: string | null;
+                    readonly location: string | null;
                     readonly saleDate: string | null;
                     readonly priceRealized: {
                         readonly display: string | null;
@@ -164,6 +166,13 @@ return {
                       "alias": null,
                       "args": null,
                       "kind": "ScalarField",
+                      "name": "categoryText",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
                       "name": "description",
                       "storageKey": null
                     },
@@ -172,6 +181,13 @@ return {
                       "args": null,
                       "kind": "ScalarField",
                       "name": "dateText",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "location",
                       "storageKey": null
                     },
                     {
@@ -223,5 +239,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'dc02f16b38b70305764e33e184cba631';
+(node as any).hash = 'e510b42b573567a4e56ebfe8ba453e81';
 export default node;

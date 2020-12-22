@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 060e4bf98f396f19f1da4d62c02059f6 */
+/* @relayHash 4e2e311c8ef0f2a6675307d6b49cb1ff */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,7 +26,24 @@ query ArtistInsightsAuctionResultsTestsQuery {
   }
 }
 
-fragment ArtistInsightsAuctionResult_auctionResult on AuctionResult {
+fragment ArtistInsightsAuctionResults_artist on Artist {
+  auctionResultsConnection(first: 10, sort: DATE_DESC) {
+    edges {
+      node {
+        id
+        ...AuctionResult_auctionResult
+        __typename
+      }
+      cursor
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+fragment AuctionResult_auctionResult on AuctionResult {
   currency
   dateText
   id
@@ -50,23 +67,6 @@ fragment ArtistInsightsAuctionResult_auctionResult on AuctionResult {
   }
   saleDate
   title
-}
-
-fragment ArtistInsightsAuctionResults_artist on Artist {
-  auctionResultsConnection(first: 10, sort: DATE_DESC) {
-    edges {
-      node {
-        id
-        ...ArtistInsightsAuctionResult_auctionResult
-        __typename
-      }
-      cursor
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-  }
 }
 */
 
@@ -407,7 +407,7 @@ return {
     ]
   },
   "params": {
-    "id": "060e4bf98f396f19f1da4d62c02059f6",
+    "id": "4e2e311c8ef0f2a6675307d6b49cb1ff",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {

@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtistInsightsAuctionResult_auctionResult = {
+export type AuctionResult_auctionResult = {
     readonly currency: string | null;
     readonly dateText: string | null;
     readonly id: string;
@@ -28,12 +28,12 @@ export type ArtistInsightsAuctionResult_auctionResult = {
     } | null;
     readonly saleDate: string | null;
     readonly title: string | null;
-    readonly " $refType": "ArtistInsightsAuctionResult_auctionResult";
+    readonly " $refType": "AuctionResult_auctionResult";
 };
-export type ArtistInsightsAuctionResult_auctionResult$data = ArtistInsightsAuctionResult_auctionResult;
-export type ArtistInsightsAuctionResult_auctionResult$key = {
-    readonly " $data"?: ArtistInsightsAuctionResult_auctionResult$data;
-    readonly " $fragmentRefs": FragmentRefs<"ArtistInsightsAuctionResult_auctionResult">;
+export type AuctionResult_auctionResult$data = AuctionResult_auctionResult;
+export type AuctionResult_auctionResult$key = {
+    readonly " $data"?: AuctionResult_auctionResult$data;
+    readonly " $fragmentRefs": FragmentRefs<"AuctionResult_auctionResult">;
 };
 
 
@@ -42,7 +42,7 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "ArtistInsightsAuctionResult_auctionResult",
+  "name": "AuctionResult_auctionResult",
   "selections": [
     {
       "alias": null,
@@ -203,5 +203,5 @@ const node: ReaderFragment = {
   "type": "AuctionResult",
   "abstractKey": null
 };
-(node as any).hash = 'f9de04270a923bfd6d1926d17fbb9958';
+(node as any).hash = '32ea7fae93748b956187feefc9517af4';
 export default node;

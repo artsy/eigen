@@ -50,47 +50,57 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
           onPress={() => navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-results`)}
           data-test-id="AuctionsResultsButton"
         >
-          <Box mr={2}>
-            {results.map(({ title, saleDate, priceRealized, internalID, images }) => {
+          <Box>
+            {results.map(({ title, saleDate, categoryText, location, priceRealized, internalID, images }, index) => {
               const dateOfSale = DateTime.fromISO(saleDate as string).toLocaleString(DateTime.DATE_MED)
               const salePrice = priceRealized?.centsUSD === 0 ? null : priceRealized?.display
 
               return (
-                <Box my={0.5} key={internalID}>
-                  <Box my={0.5}>
-                    <Flex flexDirection="row">
-                      <Box pr={1}>
-                        {images?.thumbnail?.url ? (
-                          <OpaqueImageView imageURL={images?.thumbnail?.url} width={80} height={60} />
-                        ) : (
-                          <Flex
-                            width={60}
-                            height={60}
-                            backgroundColor="black10"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            <NoArtworkIcon width={28} height={28} opacity={0.3} />
+                <>
+                  {index > 0 && <Separator />}
+                  <Box my={0.5} key={internalID}>
+                    <Box my={2}>
+                      <Flex flexDirection="row">
+                        <Box pr={1.5}>
+                          {images?.thumbnail?.url ? (
+                            <OpaqueImageView imageURL={images?.thumbnail?.url} width={80} height={60} />
+                          ) : (
+                            <Flex
+                              width={60}
+                              height={60}
+                              backgroundColor="black10"
+                              alignItems="center"
+                              justifyContent="center"
+                            >
+                              <NoArtworkIcon width={28} height={28} opacity={0.3} />
+                            </Flex>
+                          )}
+                        </Box>
+                        <Box pr={1} flexGrow={1} maxWidth="80%">
+                          <Flex flexDirection="row">
+                            <Text fontSize={16} style={{ flexShrink: 1 }}>
+                              {title}
+                            </Text>
                           </Flex>
-                        )}
-                      </Box>
-                      <Box pr={1} maxWidth="80%">
-                        <Flex flexDirection="row">
-                          <Text style={{ flexShrink: 1 }}>{title}</Text>
-                        </Flex>
-                        <Text color="black60" my={0.5}>
-                          Sold {dateOfSale}
-                        </Text>
-
-                        {!!salePrice && (
-                          <Box>
-                            <Text>{salePrice}</Text>
-                          </Box>
-                        )}
-                      </Box>
-                    </Flex>
+                          <Text color="black60" mt={0.5}>
+                            {categoryText}
+                          </Text>
+                          <Text color="black60">
+                            {dateOfSale}
+                            {!!location && <Text> • {location}</Text>}
+                          </Text>
+                        </Box>
+                        <Box>
+                          {!!salePrice && (
+                            <Text fontSize={16} fontWeight="bold">
+                              {salePrice}
+                            </Text>
+                          )}
+                        </Box>
+                      </Flex>
+                    </Box>
                   </Box>
-                </Box>
+                </>
               )
             })}
           </Box>
@@ -133,8 +143,10 @@ export const MyCollectionArtworkArtistAuctionResultsFragmentContainer = createFr
                     url
                   }
                 }
+                categoryText
                 description
                 dateText
+                location
                 saleDate
                 priceRealized {
                   display

@@ -6,7 +6,7 @@ import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { mockEnvironmentPayload } from "../../../../tests/mockEnvironmentPayload"
-import { ArtistInsightsAuctionResultFragmentContainer } from "../ArtistInsightsAuctionResult"
+import { AuctionResultFragmentContainer } from "../../../Lists/AuctionResult"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "../ArtistInsightsAuctionResults"
 
 jest.unmock("react-relay")
@@ -46,6 +46,6 @@ describe("ArtistInsightsAuctionResults", () => {
     })
 
     expect(tree.findAllByType(FlatList).length).toEqual(1)
-    expect(tree.findAllByType(ArtistInsightsAuctionResultFragmentContainer).length).toEqual(5)
+    expect(tree.findAllByType(AuctionResultFragmentContainer).length).toEqual(5)
   })
 })

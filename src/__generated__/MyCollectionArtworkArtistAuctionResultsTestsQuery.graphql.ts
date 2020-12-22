@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 38c332eeb62c997e054d513c706b3301 */
+/* @relayHash 0c2a09ba8c01b441d0df44c4a0334ff3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -43,8 +43,10 @@ fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
               url
             }
           }
+          categoryText
           description
           dateText
+          location
           saleDate
           priceRealized {
             display
@@ -242,6 +244,13 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
+                            "name": "categoryText",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "description",
                             "storageKey": null
                           },
@@ -250,6 +259,13 @@ return {
                             "args": null,
                             "kind": "ScalarField",
                             "name": "dateText",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "location",
                             "storageKey": null
                           },
                           {
@@ -305,7 +321,7 @@ return {
     ]
   },
   "params": {
-    "id": "38c332eeb62c997e054d513c706b3301",
+    "id": "0c2a09ba8c01b441d0df44c4a0334ff3",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -338,6 +354,7 @@ return {
           "plural": false,
           "type": "AuctionResult"
         },
+        "artwork.artist.auctionResultsConnection.edges.node.categoryText": (v4/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.dateText": (v4/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.description": (v4/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.dimensionText": (v4/*: any*/),
@@ -356,6 +373,7 @@ return {
         },
         "artwork.artist.auctionResultsConnection.edges.node.images.thumbnail.url": (v4/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.internalID": (v5/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.location": (v4/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.priceRealized": {
           "enumValues": null,
           "nullable": true,
