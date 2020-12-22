@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d18f12b56c51992bb20affa726f56f38 */
+/* @relayHash 1250282a771749d64a60808964b14425 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -96,6 +96,32 @@ query MyCollectionArtworkQuery(
   }
 }
 
+fragment AuctionResult_auctionResult on AuctionResult {
+  currency
+  dateText
+  id
+  images {
+    thumbnail {
+      url(version: "square140")
+      height
+      width
+      aspectRatio
+    }
+  }
+  estimate {
+    low
+  }
+  mediumText
+  organization
+  boughtIn
+  priceRealized {
+    display
+    cents
+  }
+  saleDate
+  title
+}
+
 fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
   artist {
     slug
@@ -132,24 +158,8 @@ fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
     auctionResultsConnection(first: 3, sort: DATE_DESC) {
       edges {
         node {
-          internalID
-          title
-          dimensionText
-          images {
-            thumbnail {
-              url
-            }
-          }
-          categoryText
-          description
-          dateText
-          location
-          saleDate
-          priceRealized {
-            display
-            centsUSD
-          }
           id
+          ...AuctionResult_auctionResult
         }
       }
     }
@@ -450,16 +460,7 @@ v24 = {
   "kind": "Literal",
   "name": "first",
   "value": 3
-},
-v25 = [
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "url",
-    "storageKey": null
-  }
-];
+};
 return {
   "fragment": {
     "argumentDefinitions": [
@@ -608,13 +609,19 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v4/*: any*/),
-                          (v21/*: any*/),
+                          (v14/*: any*/),
                           {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "dimensionText",
+                            "name": "currency",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "dateText",
                             "storageKey": null
                           },
                           {
@@ -632,7 +639,48 @@ return {
                                 "kind": "LinkedField",
                                 "name": "thumbnail",
                                 "plural": false,
-                                "selections": (v25/*: any*/),
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": [
+                                      {
+                                        "kind": "Literal",
+                                        "name": "version",
+                                        "value": "square140"
+                                      }
+                                    ],
+                                    "kind": "ScalarField",
+                                    "name": "url",
+                                    "storageKey": "url(version:\"square140\")"
+                                  },
+                                  (v13/*: any*/),
+                                  (v15/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "aspectRatio",
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "AuctionLotEstimate",
+                            "kind": "LinkedField",
+                            "name": "estimate",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "low",
                                 "storageKey": null
                               }
                             ],
@@ -642,35 +690,21 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "categoryText",
+                            "name": "mediumText",
                             "storageKey": null
                           },
                           {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "description",
+                            "name": "organization",
                             "storageKey": null
                           },
                           {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "dateText",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "location",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "saleDate",
+                            "name": "boughtIn",
                             "storageKey": null
                           },
                           {
@@ -692,13 +726,20 @@ return {
                                 "alias": null,
                                 "args": null,
                                 "kind": "ScalarField",
-                                "name": "centsUSD",
+                                "name": "cents",
                                 "storageKey": null
                               }
                             ],
                             "storageKey": null
                           },
-                          (v14/*: any*/)
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "saleDate",
+                            "storageKey": null
+                          },
+                          (v21/*: any*/)
                         ],
                         "storageKey": null
                       }
@@ -793,7 +834,15 @@ return {
                             "kind": "LinkedField",
                             "name": "thumbnailImage",
                             "plural": false,
-                            "selections": (v25/*: any*/),
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "url",
+                                "storageKey": null
+                              }
+                            ],
                             "storageKey": null
                           },
                           (v14/*: any*/)
@@ -991,7 +1040,7 @@ return {
     ]
   },
   "params": {
-    "id": "d18f12b56c51992bb20affa726f56f38",
+    "id": "1250282a771749d64a60808964b14425",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",
