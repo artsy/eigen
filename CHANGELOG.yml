@@ -5,6 +5,7 @@ upcoming:
     - Upgrade Mapbox - pavlos
     - Analytics tracking for My Collection - pepopowitz, annacarey
     - Fix `isVisible` root view prop to respect tab switches - david, erik, lily
+    - Change logic for Auction Insights Result - pavlos
     - Add slack notification when betas fail - brian
     - Add analytics tracking for My Bids - ashley, erik, christina
   user_facing:
