@@ -6,6 +6,7 @@ gem 'cocoapods', '~> 1.7.2'
 gem 'cocoapods-check'
 gem 'psych' # So our Podfile.lock is consistent
 gem 'down'
+gem 'dotenv'
 
 group :development do
   gem 'lowdown' # For handling notifications + certs
