@@ -3,9 +3,11 @@ import { InquirySuccessNotification } from "lib/Scenes/Artwork/Components/Commer
 import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryTypes } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
+import { Schema } from "lib/utils/track"
 import { Button, ButtonVariant } from "palette"
 import React, { useContext, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import { InquiryModalFragmentContainer } from "./InquiryModal"
 export interface InquiryButtonsProps {
   artwork: InquiryButtons_artwork
@@ -20,6 +22,7 @@ export interface InquiryButtonsState {
 
 const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork }) => {
   const [modalVisibility, setModalVisibility] = useState(false)
+  const tracking = useTracking()
   const [notificationVisibility, setNotificationVisibility] = useState(false)
   const { dispatch } = useContext(ArtworkInquiryContext)
   const dispatchAction = (buttonText: string) => {
@@ -37,7 +40,22 @@ const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork }) => {
         modalVisible={notificationVisibility}
         toggleNotification={(state: boolean) => setNotificationVisibility(state)}
       />
-      <Button onPress={() => dispatchAction(InquiryOptions.ContactGallery)} size="large" block width={100}>
+      <Button
+        onPress={() => {
+          tracking.trackEvent({
+            action_name: Schema.ActionNames.ContactGallery,
+            action_type: Schema.ActionTypes.Tap,
+            context_module: Schema.ContextModules.CommercialButtons,
+            context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+            context_screen_owner_slug: artwork.slug,
+            context_screen_owner_id: artwork.internalID,
+          })
+          dispatchAction(InquiryOptions.ContactGallery)
+        }}
+        size="large"
+        block
+        width={100}
+      >
         {InquiryOptions.ContactGallery}
       </Button>
       <InquiryModalFragmentContainer
@@ -64,6 +82,7 @@ export const InquiryButtonsFragmentContainer = createFragmentContainer(InquiryBu
         width
         height
       }
+      slug
       internalID
       isPriceHidden
       title
