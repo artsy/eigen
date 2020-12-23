@@ -1,5 +1,6 @@
 import React from "react"
-import { TouchableHighlight, TouchableHighlightProps } from "react-native"
+import { GestureResponderEvent, TouchableHighlight, TouchableHighlightProps } from "react-native"
+import { TouchableWithoutFeedback } from "react-native-gesture-handler"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 
 import { color } from "../../helpers"
@@ -8,6 +9,7 @@ import { Flex } from "../Flex"
 interface ExtraTouchableProps {
   flex?: number
   haptic?: HapticFeedbackTypes | true
+  noFeedback?: boolean
 }
 
 /**
@@ -20,25 +22,31 @@ export const Touchable: React.FC<TouchableHighlightProps & ExtraTouchableProps> 
   children,
   flex,
   haptic,
+  noFeedback,
   onPress,
   ...props
-}) => (
-  <TouchableHighlight
-    underlayColor={color("white100")}
-    activeOpacity={0.8}
-    {...props}
-    onPress={(evt) => {
-      if (onPress === undefined) {
-        return
-      }
+}) => {
+  const inner = <Flex flex={flex}>{children}</Flex>
 
-      if (haptic !== undefined) {
-        Haptic.trigger(haptic === true ? "impactLight" : haptic)
-      }
+  const onPressWrapped = (evt: GestureResponderEvent) => {
+    if (onPress === undefined) {
+      return
+    }
 
-      onPress(evt)
-    }}
-  >
-    <Flex flex={flex}>{children}</Flex>
-  </TouchableHighlight>
-)
+    if (haptic !== undefined) {
+      Haptic.trigger(haptic === true ? "impactLight" : haptic)
+    }
+
+    onPress(evt)
+  }
+
+  return noFeedback ? (
+    <TouchableWithoutFeedback {...props} onPress={onPressWrapped}>
+      {inner}
+    </TouchableWithoutFeedback>
+  ) : (
+    <TouchableHighlight underlayColor={color("white100")} activeOpacity={0.8} {...props} onPress={onPressWrapped}>
+      {inner}
+    </TouchableHighlight>
+  )
+}

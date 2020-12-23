@@ -131,14 +131,14 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
               </UtilButton>
             </TouchableWithoutFeedback>
           )}
-          <TouchableWithoutFeedback onPress={() => this.props.shareOnPress()}>
+          <Touchable noFeedback haptic onPress={() => this.props.shareOnPress()}>
             <UtilButton>
               <Box mr={0.5}>
                 <ShareIcon />
               </Box>
               <Sans size="3">Share</Sans>
             </UtilButton>
-          </TouchableWithoutFeedback>
+          </Touchable>
         </Flex>
       </View>
     )
