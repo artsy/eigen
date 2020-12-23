@@ -10,6 +10,7 @@ export type InquiryButtons_artwork = {
         readonly width: number | null;
         readonly height: number | null;
     } | null;
+    readonly slug: string;
     readonly internalID: string;
     readonly isPriceHidden: boolean | null;
     readonly title: string | null;
@@ -73,6 +74,13 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
       "storageKey": null
     },
     {
@@ -187,5 +195,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = 'f9d9ba45dc76c4b3b16b963fba41c09e';
+(node as any).hash = '20624e28cbdf76077307a81c3e1d8011';
 export default node;
