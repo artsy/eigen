@@ -15,10 +15,6 @@
     "object-literal-sort-keys": false,
     "ordered-imports": true,
     "relay-operation-generics": [true, { "artifactDirectory": "__generated__", "makeRelative": false }],
-    "strict-boolean-expressions": {
-      "severity": "warn",
-      "options": [true, "ignore-rhs"]
-    },
     "switch-default": false,
     "use-wrapped-components": true,
     "variable-name": [true, "allow-pascal-case", "allow-leading-underscore"]

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c7eefbb6fd7876631a78682a781bc8e1 */
+/* @relayHash ea432b91fc2f31a78fde11fe5476039f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -105,6 +105,9 @@ fragment ArtworkDetails_artwork on Artwork {
   manufacturer
   image_rights: imageRights
   canRequestLotConditionsReport
+  mediumType {
+    __typename
+  }
 }
 
 fragment ArtworkGridItem_artwork on Artwork {
@@ -1393,6 +1396,18 @@ return {
             "storageKey": null
           },
           (v4/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ArtworkMedium",
+            "kind": "LinkedField",
+            "name": "mediumType",
+            "plural": false,
+            "selections": [
+              (v14/*: any*/)
+            ],
+            "storageKey": null
+          },
           (v2/*: any*/),
           (v7/*: any*/)
         ],
@@ -1401,7 +1416,7 @@ return {
     ]
   },
   "params": {
-    "id": "c7eefbb6fd7876631a78682a781bc8e1",
+    "id": "ea432b91fc2f31a78fde11fe5476039f",
     "metadata": {},
     "name": "ArtworkBelowTheFoldQuery",
     "operationKind": "query",

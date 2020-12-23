@@ -2,6 +2,7 @@ upcoming:
   version: 6.7.5
   date: TBD
   dev:
+    - Upgrade Mapbox - pavlos
     - Analytics tracking for My Collection - pepopowitz, annacarey
     - Fix `isVisible` root view prop to respect tab switches - david, erik, lily
     - Add slack notification when betas fail - brian

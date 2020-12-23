@@ -31,27 +31,6 @@ export interface MapTab {
   getFairs: (buckets: BucketResults) => Fair[]
 }
 
-/** A GeoJSON feature used by MapBox internally */
-export interface MapGeoFeature {
-  geometry: {
-    type: string
-    coordinates?: [number, number] | undefined
-  }
-  properties: {
-    zoomLevel: number
-    isUserInteraction: boolean
-    visibleBounds?: Array<number[] | null> | null
-    heading: number
-    pitch: number
-    animated: boolean
-    cluster: boolean
-    type: string | any
-    cluster_id: number
-    point_count: number | string
-  }
-  type: string | any
-}
-
 /** Interface for the current state of Relay queries/errors. */
 export interface RelayErrorState {
   isRetrying: boolean
@@ -59,27 +38,8 @@ export interface RelayErrorState {
   error: Error
 }
 
-export interface MapGeoFeatureCollection {
-  type: "FeatureCollection"
-  features: MapGeoFeature[]
-  filter: string
-}
-
-/** Comes in from the OS via the MapBox onUserLocationUpdate */
-export interface OSCoordsUpdate {
-  timestamp: number
-  coords: {
-    accuracy: number
-    speed: number
-    latitude: number
-    longitude: number
-    heading: number
-    altitude: number
-  }
-}
-
 export interface FilterData {
   filter: string
-  featureCollection: MapGeoFeatureCollection
+  featureCollection: GeoJSON.FeatureCollection
   clusterEngine: Supercluster
 }

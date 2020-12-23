@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8ad3f45a09d9e2389f5cd547ac141af0 */
+/* @relayHash ede90a0de6f35b82f9f417e651dc0eb4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -130,6 +130,9 @@ fragment ArtworkDetails_artwork on Artwork {
   manufacturer
   image_rights: imageRights
   canRequestLotConditionsReport
+  mediumType {
+    __typename
+  }
 }
 
 fragment ArtworkExtraLinks_artwork on Artwork {
@@ -667,6 +670,7 @@ fragment InquiryButtons_artwork on Artwork {
     width
     height
   }
+  slug
   internalID
   isPriceHidden
   title
@@ -690,6 +694,7 @@ fragment InquiryButtons_artwork on Artwork {
 fragment InquiryModal_artwork on Artwork {
   ...CollapsibleArtworkDetails_artwork
   internalID
+  slug
   inquiryQuestions {
     internalID
     question
@@ -2327,6 +2332,18 @@ return {
               }
             ],
             "storageKey": "artistSeriesConnection(first:1)"
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ArtworkMedium",
+            "kind": "LinkedField",
+            "name": "mediumType",
+            "plural": false,
+            "selections": [
+              (v33/*: any*/)
+            ],
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -2334,7 +2351,7 @@ return {
     ]
   },
   "params": {
-    "id": "8ad3f45a09d9e2389f5cd547ac141af0",
+    "id": "ede90a0de6f35b82f9f417e651dc0eb4",
     "metadata": {},
     "name": "ArtworkRefetchQuery",
     "operationKind": "query",

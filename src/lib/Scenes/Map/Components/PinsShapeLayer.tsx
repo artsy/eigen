@@ -1,15 +1,13 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import Mapbox from "@mapbox/react-native-mapbox-gl"
+import MapboxGL, { CircleLayerStyle, ShapeSourceProps, SymbolLayerStyle } from "@react-native-mapbox-gl/maps"
 import { isEqual } from "lodash"
 import React, { Component } from "react"
-import { Animated } from "react-native"
+import { Animated, StyleProp } from "react-native"
 import { BucketKey } from "../bucketCityResults"
-import { FilterData, MapGeoFeatureCollection } from "../types"
+import { FilterData } from "../types"
 
 interface Props {
   featureCollections: { [key in BucketKey]: FilterData } | {}
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  onPress?: (nativeEvent) => void
+  onPress?: ShapeSourceProps["onPress"]
   duration?: number
   filterID: string
 }
@@ -20,7 +18,7 @@ interface State {
   rendered: boolean
 }
 
-export class ShapeLayer extends Component<Props, State> {
+export class PinsShapeLayer extends Component<Props, State> {
   static defaultProps = {
     duration: 300,
   }
@@ -31,35 +29,32 @@ export class ShapeLayer extends Component<Props, State> {
     rendered: false,
   }
 
-  stylesheet = Mapbox.StyleSheet.create({
-    singleShow: {
-      iconImage: Mapbox.StyleSheet.identity("icon"),
-      iconSize: 0.8,
-    },
+  singleShowStyle: StyleProp<SymbolLayerStyle> = {
+    iconImage: ["get", "icon"],
+    iconSize: 0.8,
+  }
 
-    clusteredPoints: {
-      circlePitchAlignment: "map",
-      circleColor: "black",
+  clusteredPointsStyle: StyleProp<CircleLayerStyle> = {
+    circlePitchAlignment: "map",
+    circleColor: "black",
 
-      circleRadius: Mapbox.StyleSheet.source(
-        [
-          [0, 15],
-          [5, 20],
-          [30, 30],
+    // prettier-ignore
+    circleRadius: [
+          "step",
+          ["get", "point_count"],
+              15,
+           5, 20,
+          30, 30,
         ],
-        "point_count",
-        Mapbox.InterpolationMode.Exponential
-      ),
-    },
+  }
 
-    clusterCount: {
-      textField: "{point_count}",
-      textSize: 14,
-      textColor: "white",
-      textFont: ["Unica77 LL Medium"],
-      textPitchAlignment: "map",
-    },
-  })
+  clusterCountStyle: StyleProp<SymbolLayerStyle> = {
+    textField: "{point_count}",
+    textSize: 14,
+    textColor: "white",
+    textFont: ["Unica77 LL Medium"],
+    textPitchAlignment: "map",
+  }
 
   componentDidMount() {
     this.fadeInAnimations()
@@ -110,28 +105,29 @@ export class ShapeLayer extends Component<Props, State> {
     const collection: MapGeoFeatureCollection = featureCollections[filterID].featureCollection
 
     return (
-      <Mapbox.Animated.ShapeSource
+      <MapboxGL.Animated.ShapeSource
         id="shows"
         shape={collection}
         cluster
         clusterRadius={50}
         onPress={this.props.onPress}
       >
-        <Mapbox.Animated.SymbolLayer
+        <MapboxGL.Animated.SymbolLayer
           id="singleShow"
-          filter={["!has", "point_count"]}
-          style={[this.stylesheet.singleShow, { iconOpacity: this.state.pinOpacity }]}
+          filter={["!", ["has", "point_count"]]}
+          // @ts-ignore
+          style={[this.singleShowStyle, { iconOpacity: this.state.pinOpacity }]}
         />
-        <Mapbox.Animated.SymbolLayer id="pointCount" style={this.stylesheet.clusterCount} />
-        <Mapbox.Animated.CircleLayer
+        <MapboxGL.Animated.SymbolLayer id="pointCount" style={this.clusterCountStyle} />
+        <MapboxGL.Animated.CircleLayer
           id="clusteredPoints"
           belowLayerID="pointCount"
           filter={["has", "point_count"]}
-          style={[this.stylesheet.clusteredPoints, { circleOpacity: this.state.clusterOpacity }]}
+          // @ts-ignore
+          style={[this.clusteredPointsStyle, { circleOpacity: this.state.clusterOpacity }]}
         />
-      </Mapbox.Animated.ShapeSource>
+      </MapboxGL.Animated.ShapeSource>
     )
   }
 }
 
-export const PinsShapeLayer = Animated.createAnimatedComponent(ShapeLayer)

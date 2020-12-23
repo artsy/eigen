@@ -60,6 +60,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       ? new RouteMatcher("/artist/:artistID/shows", "ArtistShows")
       : null,
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
+    new RouteMatcher("/artwork/:artworkID/medium", "ArtworkMedium"),
     new RouteMatcher("/artist/:artistID/auction-results", "WebView", ({ artistID }) => ({
       url: `/artist/${artistID}/auction-results`,
     })),
