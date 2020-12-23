@@ -447,7 +447,7 @@ const Main: React.FC<{}> = track()(({}) => {
   const onboardingState = GlobalStore.useAppState((state) => state.native.sessionState.onboardingState)
 
   if (!isHydrated) {
-    return <View></View>
+    return <View />
   }
   if (!isLoggedIn || onboardingState === "incomplete") {
     return <NativeViewController viewName="Onboarding" />
