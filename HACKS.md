@@ -45,6 +45,13 @@
 
   For some reason CircleCI kept giving an error when running tests `TypeError: stacktraceParser.parse is not a function`. Once I moved the require higher up, things started working again.
 
+- hardcode mapbox version to at least 6.3.0 using $ReactNativeMapboxGLIOSVersion
+
+  When @react-native-mapbox-gl/maps uses mapbox-ios at least 6.3.0
+
+  Version 6.3 added support for Xcode 12 and iOS 14. Without this hardcoding we get version 5.7. Let's keep the hardcode, at least until they give us at least that version with the npm package.
+  To check which version comes with, either remove `$ReactNativeMapboxGLIOSVersion` and after `pod install` check the `Podfile.lock` for version, or look on github https://github.com/react-native-mapbox-gl/maps/blob/master/CHANGELOG.md for versions bundle with an npm version.
+
 - exporting MockResolverContext (@types/relay-test-utils patch-package)
 
   Not really needed to be removed, unless it causes problems.

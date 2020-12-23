@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7d023c8dbc2561bc397f430c5c99e33f */
+/* @relayHash 0a6ab0474b06f3096e6c9c98582a58a3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -73,6 +73,7 @@ fragment InquiryButtons_artwork on Artwork {
     width
     height
   }
+  slug
   internalID
   isPriceHidden
   title
@@ -96,6 +97,7 @@ fragment InquiryButtons_artwork on Artwork {
 fragment InquiryModal_artwork on Artwork {
   ...CollapsibleArtworkDetails_artwork
   internalID
+  slug
   inquiryQuestions {
     internalID
     question
@@ -247,6 +249,13 @@ return {
                 "storageKey": null
               }
             ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "slug",
             "storageKey": null
           },
           (v2/*: any*/),
@@ -432,7 +441,7 @@ return {
     ]
   },
   "params": {
-    "id": "7d023c8dbc2561bc397f430c5c99e33f",
+    "id": "0a6ab0474b06f3096e6c9c98582a58a3",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -512,6 +521,7 @@ return {
         "artwork.saleMessage": (v7/*: any*/),
         "artwork.signatureInfo": (v8/*: any*/),
         "artwork.signatureInfo.details": (v7/*: any*/),
+        "artwork.slug": (v6/*: any*/),
         "artwork.title": (v7/*: any*/)
       }
     },

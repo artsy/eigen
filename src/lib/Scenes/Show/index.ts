@@ -1,4 +1,2 @@
-export { ShowContainer as default } from "./Show"
-export { ShowArtistsQueryRenderer } from "./Screens/ShowArtists"
-export { ShowArtworksQueryRenderer } from "./Screens/ShowArtworks"
-export { ShowMoreInfoQueryRenderer } from "./Screens/MoreInfo"
+export { ShowQueryRenderer } from "./Show"
+export { ShowMoreInfoQueryRenderer } from "./Screens/ShowMoreInfo"

@@ -20,4 +20,8 @@ module.exports = {
     "\\.graphql$": "jest-raw-loader",
   },
   transformIgnorePatterns: ["node_modules/(?!(react-native(-.*)?/(@react-native-community/.*))?|react-navigation|@react-navigation/.*)"],
+  watchPlugins: [
+    "jest-watch-typeahead/filename",
+    "jest-watch-typeahead/testname",
+  ],
 }

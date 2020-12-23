@@ -60,6 +60,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       ? new RouteMatcher("/artist/:artistID/shows", "ArtistShows")
       : null,
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
+    new RouteMatcher("/artwork/:artworkID/medium", "ArtworkMedium"),
     new RouteMatcher("/artist/:artistID/auction-results", "WebView", ({ artistID }) => ({
       url: `/artist/${artistID}/auction-results`,
     })),
@@ -81,11 +82,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/auction-faq", "AuctionFAQ"),
     new RouteMatcher("/auction/:id/bid/:artwork_id", "AuctionBidArtwork"),
     new RouteMatcher("/gene/:geneID", "Gene"),
-    ...(getCurrentEmissionState().options.AROptionsNewShowPage
-      ? [new RouteMatcher("/show/:showID", "Show2"), new RouteMatcher("/show/:showID/info", "Show2MoreInfo")]
-      : [new RouteMatcher("/show/:showID", "Show"), new RouteMatcher("/show/:showID/info", "ShowMoreInfo")]),
-    new RouteMatcher("/show/:showID/artworks", "ShowArtworks"),
-    new RouteMatcher("/show/:showID/artists", "ShowArtists"),
+    new RouteMatcher("/show/:showID", "Show"),
+    new RouteMatcher("/show/:showID/info", "ShowMoreInfo"),
 
     new RouteMatcher("/inquiry/:artworkID", "Inquiry"),
     new RouteMatcher("/viewing-rooms", "ViewingRooms"),

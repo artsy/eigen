@@ -1330,7 +1330,7 @@ type Artwork implements Node & Searchable & Sellable {
   # Represents the "**medium type**", such as _Painting_. (This field is also
   # commonly referred to as just "medium", but should not be confused with the
   # artwork attribute called `medium`.)
-  mediumType: MediumType
+  mediumType: ArtworkMedium
   meta: ArtworkMeta
 
   # The unit of length of the artwork, expressed in `in` or `cm`
@@ -1520,6 +1520,17 @@ type ArtworkLayer {
   type: String
 }
 
+# Collection of fields that describe medium type, such as _Painting_. (This field
+# is also commonly referred to as just "medium", but should not be confused with
+# the artwork attribute called `medium`.)
+type ArtworkMedium {
+  # Long descriptive phrase
+  longDescription: String
+
+  # Shortest form of medium type display
+  name: String
+}
+
 type ArtworkMeta {
   description(limit: Int = 155): String
   image: String
@@ -1611,20 +1622,18 @@ type Attachment {
 type AttributionClass {
   # A globally unique ID.
   id: ID!
-
-  # Descriptive phrase used as companion for attribution class name display
-  info: String
+  info: String @deprecated(reason: "Prefer `shortDescription`")
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
 
-  # Long descriptive phrase used as companion for short_description
+  # Long description (can include multiple sentences) for attribution class
   longDescription: String
 
   # Shortest form of attribution class display
   name: String
 
-  # Longer version of attribution class display
+  # Short descriptive phrase for attribution class without punctuation
   shortDescription: String
 }
 
@@ -6986,6 +6995,9 @@ type Me implements Node {
   # A list of the current user’s credit cards
   creditCards(after: String, before: String, first: Int, last: Int): CreditCardConnection
   email: String
+
+  # Frequency of marketing emails.
+  emailFrequency: String
   followsAndSaves: FollowsAndSaves
   hasCreditCards: Boolean
   hasPassword: Boolean!
@@ -7118,23 +7130,6 @@ type Me implements Node {
 
   # A count of unread notifications.
   unreadNotificationsCount: Int!
-}
-
-# Collection of fields that describe medium type, such as _Painting_. (This field
-# is also commonly referred to as just "medium", but should not be confused with
-# the artwork attribute called `medium`.)
-type MediumType {
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-
-  # Long descriptive phrase
-  longDescription: String
-
-  # Shortest form of medium type display
-  name: String
 }
 
 # A message in a conversation.
@@ -8356,8 +8351,8 @@ type Query {
   # List of all artwork attribution classes
   artworkAttributionClasses: [AttributionClass]
 
-  # List of all artwork medium types
-  artworkMediumTypes: [MediumType]
+  # List of all artwork mediums
+  artworkMediums: [ArtworkMedium]
 
   # A list of Artworks
   artworks(
@@ -10283,6 +10278,9 @@ input UpdateMyProfileInput {
   # The given email of the user.
   email: String
 
+  # Frequency of marketing emails.
+  emailFrequency: String
+
   # The given location of the user as structured data
   location: EditableLocation
 
@@ -10605,8 +10603,8 @@ type Viewer {
   # List of all artwork attribution classes
   artworkAttributionClasses: [AttributionClass]
 
-  # List of all artwork medium types
-  artworkMediumTypes: [MediumType]
+  # List of all artwork mediums
+  artworkMediums: [ArtworkMedium]
 
   # A list of Artworks
   artworks(

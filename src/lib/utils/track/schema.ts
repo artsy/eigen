@@ -127,9 +127,6 @@ export enum PageNames {
   SavesAndFollows = "SavesAndFollows",
   Search = "Search",
   Sell = "Sell",
-  ShowAllArtists = "ShowAllArtists",
-  ShowAllArtworks = "ShowAllArtworks",
-  ShowPage = "Show",
   ViewingRoom = "ViewingRoom",
   ViewingRoomArtworkPage = "ViewingRoomArtworkPage",
   ViewingRoomArtworks = "ViewingRoomArtworks",
@@ -137,8 +134,8 @@ export enum PageNames {
   WorksForYou = "WorksForYou",
   Fair2Page = "Fair",
   Fair2MoreInfoPage = "moreInfo",
-  Show2Page = "Show",
-  Show2MoreInfoPage = "moreInfo",
+  ShowPage = "Show",
+  ShowMoreInfoPage = "moreInfo",
 }
 
 export enum OwnerEntityTypes {
@@ -155,6 +152,7 @@ export enum OwnerEntityTypes {
   Gallery = "Gallery",
   Gene = "Gene",
   Home = "home",
+  Inbox = "Inbox",
   Fair = "Fair",
   Fair2MoreInfo = "moreInfo",
   Partner = "Partner",
@@ -262,6 +260,7 @@ export enum ActionNames {
   ConversationLink = "conversationLinkUsed",
   InquiryCancel = "inquiryCancel",
   InquirySend = "inquirySend",
+  InboxTab = "inboxTab",
 
   /**
    *  Saves And Follows Events

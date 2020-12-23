@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e8be2f48fec9453a791b05a33a926cd8 */
+/* @relayHash 98a9216d5a239cd5ccab3b249c8151ee */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -46,6 +46,7 @@ fragment SaleCard_me on Me {
 }
 
 fragment SaleCard_sale on Sale {
+  internalID
   href
   slug
   name
@@ -85,29 +86,36 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "internalID",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "id",
   "storageKey": null
 },
 v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v5 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v5 = {
+v6 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Boolean"
 },
-v6 = {
+v7 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -185,18 +193,12 @@ return {
             "name": "pendingIdentityVerification",
             "plural": false,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "internalID",
-                "storageKey": null
-              },
-              (v2/*: any*/)
+              (v2/*: any*/),
+              (v3/*: any*/)
             ],
             "storageKey": null
           },
-          (v2/*: any*/)
+          (v3/*: any*/)
         ],
         "storageKey": null
       },
@@ -208,6 +210,7 @@ return {
         "name": "sale",
         "plural": false,
         "selections": [
+          (v2/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -222,7 +225,7 @@ return {
             "name": "slug",
             "storageKey": null
           },
-          (v3/*: any*/),
+          (v4/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -263,8 +266,8 @@ return {
             "name": "partner",
             "plural": false,
             "selections": [
-              (v3/*: any*/),
-              (v2/*: any*/)
+              (v4/*: any*/),
+              (v3/*: any*/)
             ],
             "storageKey": null
           },
@@ -283,7 +286,7 @@ return {
                 "name": "qualifiedForBidding",
                 "storageKey": null
               },
-              (v2/*: any*/)
+              (v3/*: any*/)
             ],
             "storageKey": null
           },
@@ -294,14 +297,14 @@ return {
             "name": "requireIdentityVerification",
             "storageKey": null
           },
-          (v2/*: any*/)
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "e8be2f48fec9453a791b05a33a926cd8",
+    "id": "98a9216d5a239cd5ccab3b249c8151ee",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -310,16 +313,16 @@ return {
           "plural": false,
           "type": "Me"
         },
-        "me.id": (v4/*: any*/),
-        "me.identityVerified": (v5/*: any*/),
+        "me.id": (v5/*: any*/),
+        "me.identityVerified": (v6/*: any*/),
         "me.pendingIdentityVerification": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "IdentityVerification"
         },
-        "me.pendingIdentityVerification.id": (v4/*: any*/),
-        "me.pendingIdentityVerification.internalID": (v4/*: any*/),
+        "me.pendingIdentityVerification.id": (v5/*: any*/),
+        "me.pendingIdentityVerification.internalID": (v5/*: any*/),
         "sale": {
           "enumValues": null,
           "nullable": true,
@@ -332,30 +335,31 @@ return {
           "plural": false,
           "type": "Image"
         },
-        "sale.coverImage.url": (v6/*: any*/),
-        "sale.endAt": (v6/*: any*/),
-        "sale.href": (v6/*: any*/),
-        "sale.id": (v4/*: any*/),
-        "sale.liveStartAt": (v6/*: any*/),
-        "sale.name": (v6/*: any*/),
+        "sale.coverImage.url": (v7/*: any*/),
+        "sale.endAt": (v7/*: any*/),
+        "sale.href": (v7/*: any*/),
+        "sale.id": (v5/*: any*/),
+        "sale.internalID": (v5/*: any*/),
+        "sale.liveStartAt": (v7/*: any*/),
+        "sale.name": (v7/*: any*/),
         "sale.partner": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Partner"
         },
-        "sale.partner.id": (v4/*: any*/),
-        "sale.partner.name": (v6/*: any*/),
+        "sale.partner.id": (v5/*: any*/),
+        "sale.partner.name": (v7/*: any*/),
         "sale.registrationStatus": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Bidder"
         },
-        "sale.registrationStatus.id": (v4/*: any*/),
-        "sale.registrationStatus.qualifiedForBidding": (v5/*: any*/),
-        "sale.requireIdentityVerification": (v5/*: any*/),
-        "sale.slug": (v4/*: any*/)
+        "sale.registrationStatus.id": (v5/*: any*/),
+        "sale.registrationStatus.qualifiedForBidding": (v6/*: any*/),
+        "sale.requireIdentityVerification": (v6/*: any*/),
+        "sale.slug": (v5/*: any*/)
       }
     },
     "name": "SaleCardTestsQuery",

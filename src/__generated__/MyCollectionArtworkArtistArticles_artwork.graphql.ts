@@ -7,6 +7,7 @@ import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkArtistArticles_artwork = {
     readonly artist: {
         readonly slug: string;
+        readonly name: string | null;
         readonly articlesConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
@@ -42,6 +43,13 @@ var v0 = {
   "kind": "ScalarField",
   "name": "slug",
   "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
 };
 return {
   "argumentDefinitions": [],
@@ -58,6 +66,7 @@ return {
       "plural": false,
       "selections": [
         (v0/*: any*/),
+        (v1/*: any*/),
         {
           "alias": null,
           "args": [
@@ -128,13 +137,7 @@ return {
                       "name": "author",
                       "plural": false,
                       "selections": [
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "name",
-                          "storageKey": null
-                        }
+                        (v1/*: any*/)
                       ],
                       "storageKey": null
                     },
@@ -186,5 +189,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'ff2eb4e9aab66c5f0211b9ff7f3548ab';
+(node as any).hash = '0e857b0be8c6e538ac60c40dc2b5e602';
 export default node;

@@ -8,6 +8,7 @@ export type UpdateMyProfileInput = {
     clientMutationId?: string | null;
     collectorLevel?: number | null;
     email?: string | null;
+    emailFrequency?: string | null;
     location?: EditableLocation | null;
     name?: string | null;
     password?: string | null;

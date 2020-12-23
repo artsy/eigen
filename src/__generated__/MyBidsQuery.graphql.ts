@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash fbe430c67d12b229483211d4b74eefa4 */
+/* @relayHash 83b52952a848c7997f1eca2743aa4892 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -43,6 +43,12 @@ fragment ActiveLot_lotStanding on AuctionsLotStanding {
   }
   saleArtwork {
     ...Lot_saleArtwork
+    artwork {
+      internalID
+      href
+      slug
+      id
+    }
     sale {
       liveStartAt
       id
@@ -66,6 +72,12 @@ fragment ClosedLot_lotStanding on AuctionsLotStanding {
   }
   saleArtwork {
     ...Lot_saleArtwork
+    artwork {
+      internalID
+      href
+      slug
+      id
+    }
     sale {
       endAt
       status
@@ -79,7 +91,6 @@ fragment Lot_saleArtwork on SaleArtwork {
   lotLabel
   artwork {
     artistNames
-    href
     image {
       url(version: "medium")
     }
@@ -149,6 +160,7 @@ fragment SaleCard_me on Me {
 }
 
 fragment SaleCard_sale on Sale {
+  internalID
   href
   slug
   name
@@ -387,6 +399,7 @@ return {
                 "name": "sale",
                 "plural": false,
                 "selections": [
+                  (v0/*: any*/),
                   (v2/*: any*/),
                   (v3/*: any*/),
                   (v4/*: any*/),
@@ -396,7 +409,6 @@ return {
                   (v8/*: any*/),
                   (v9/*: any*/),
                   (v10/*: any*/),
-                  (v0/*: any*/),
                   (v11/*: any*/),
                   (v1/*: any*/)
                 ],
@@ -528,7 +540,6 @@ return {
                                 "name": "artistNames",
                                 "storageKey": null
                               },
-                              (v2/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -553,7 +564,10 @@ return {
                                 ],
                                 "storageKey": null
                               },
-                              (v1/*: any*/)
+                              (v1/*: any*/),
+                              (v0/*: any*/),
+                              (v2/*: any*/),
+                              (v3/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -569,14 +583,14 @@ return {
                               (v1/*: any*/),
                               (v6/*: any*/),
                               (v11/*: any*/),
+                              (v0/*: any*/),
                               (v2/*: any*/),
                               (v3/*: any*/),
                               (v4/*: any*/),
                               (v7/*: any*/),
                               (v8/*: any*/),
                               (v9/*: any*/),
-                              (v10/*: any*/),
-                              (v0/*: any*/)
+                              (v10/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -656,7 +670,7 @@ return {
     ]
   },
   "params": {
-    "id": "fbe430c67d12b229483211d4b74eefa4",
+    "id": "83b52952a848c7997f1eca2743aa4892",
     "metadata": {},
     "name": "MyBidsQuery",
     "operationKind": "query",
