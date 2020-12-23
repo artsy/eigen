@@ -4,9 +4,9 @@ import { ArtistSeriesMetaFollowMutation } from "__generated__/ArtistSeriesMetaFo
 import { ReadMore } from "lib/Components/ReadMore"
 import { navigate } from "lib/navigation/navigate"
 import { truncatedTextLimit } from "lib/utils/hardware"
-import { EntityHeader, Sans, Spacer } from "palette"
+import { EntityHeader, Sans, Spacer, Touchable } from "palette"
 import React, { useRef } from "react"
-import { TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
+import { TouchableOpacity, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -87,14 +87,15 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
             name={artist.name!}
             imageUrl={artist.image?.url!}
             FollowButton={
-              <TouchableWithoutFeedback
+              <Touchable
                 onPress={() => followOrUnfollowArtist(artist)}
                 hitSlop={{ top: 20, left: 20, bottom: 20, right: 20 }}
+                haptic="selection"
               >
                 <Sans style={{ textDecorationLine: "underline" }} size="3">
                   {artist.isFollowed ? "Following" : "Follow"}
                 </Sans>
-              </TouchableWithoutFeedback>
+              </Touchable>
             }
           />
           <Spacer my={0.5} />

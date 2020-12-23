@@ -77,6 +77,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
                 navigate("/consign/submission")
               }}
               data-test-id="SubmitButton"
+              haptic="selection"
             >
               Submit this work
             </Button>

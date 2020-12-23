@@ -5,9 +5,9 @@ import {
 import { navigate } from "lib/navigation/navigate"
 import { ArtistSeriesMeta, ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { EntityHeader } from "palette"
+import { EntityHeader, Touchable } from "palette"
 import React from "react"
-import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"
+import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
@@ -99,7 +99,7 @@ describe("Artist Series Meta", () => {
 
   it("tracks unfollows", () => {
     const wrapper = getWrapper()
-    const followButton = wrapper.root.findAllByType(EntityHeader)[0].findAllByType(TouchableWithoutFeedback)[0]
+    const followButton = wrapper.root.findAllByType(EntityHeader)[0].findAllByType(Touchable)[0]
     followButton.props.onPress()
     expect(trackEvent).toHaveBeenCalledWith({
       action: "unfollowedArtist",
