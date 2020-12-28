@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, TappedShowMore } from "@artsy/cohesion"
 import { MyCollectionArtworkArtistArticles_artwork } from "__generated__/MyCollectionArtworkArtistArticles_artwork.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { navigate } from "lib/navigation/navigate"
@@ -7,6 +8,7 @@ import { Box, Flex, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface MyCollectionArtworkArtistArticlesProps {
   artwork: MyCollectionArtworkArtistArticles_artwork
@@ -15,6 +17,7 @@ interface MyCollectionArtworkArtistArticlesProps {
 const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArticlesProps> = (props) => {
   const artist = props?.artwork?.artist!
   const articleEdges = extractNodes(artist?.articlesConnection)
+  const { trackEvent } = useTracking()
 
   if (!articleEdges.length) {
     return null
@@ -55,7 +58,13 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
       <Spacer my={1} />
 
       <Box>
-        <CaretButton onPress={() => navigate(`/artist/${artist?.slug}/articles`)} text="See all articles" />
+        <CaretButton
+          onPress={() => {
+            trackEvent(tracks.tappedShowMore(props.artwork.internalID, props.artwork.slug, "See all articles"))
+            navigate(`/artist/${artist?.slug}/articles`)
+          }}
+          text="See all articles"
+        />
       </Box>
     </ScreenMargin>
   )
@@ -66,6 +75,8 @@ export const MyCollectionArtworkArtistArticlesFragmentContainer = createFragment
   {
     artwork: graphql`
       fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
+        internalID
+        slug
         artist {
           slug
           name
@@ -92,3 +103,17 @@ export const MyCollectionArtworkArtistArticlesFragmentContainer = createFragment
     `,
   }
 )
+
+const tracks = {
+  tappedShowMore: (internalID: string, slug: string, subject: string) => {
+    const tappedShowMore: TappedShowMore = {
+      action: ActionType.tappedShowMore,
+      context_module: ContextModule.relatedArticles,
+      context_screen_owner_type: OwnerType.myCollectionArtwork,
+      context_screen_owner_id: internalID,
+      context_screen_owner_slug: slug,
+      subject,
+    }
+    return tappedShowMore
+  },
+}

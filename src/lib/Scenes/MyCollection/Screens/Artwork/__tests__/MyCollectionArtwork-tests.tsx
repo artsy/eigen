@@ -1,4 +1,4 @@
-import { editCollectedArtwork } from "@artsy/cohesion"
+import { ActionType, ContextModule, editCollectedArtwork, OwnerType, tappedSell } from "@artsy/cohesion"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { navigate } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
@@ -46,7 +46,8 @@ describe("MyCollectionArtworkDetail", () => {
 
   describe("artwork detail behavior", () => {
     it("renders correct components", () => {
-      const wrapper = getWrapper()
+      const artworkProps = { artwork: { internalID: "someInternalId" } }
+      const wrapper = getWrapper(artworkProps)
       expect(wrapper.root.findByType(MyCollectionArtworkHeaderFragmentContainer)).toBeDefined()
       expect(wrapper.root.findByType(MyCollectionArtworkMetaFragmentContainer)).toBeDefined()
       expect(wrapper.root.findByType(MyCollectionArtworkInsightsFragmentContainer)).toBeDefined()
@@ -61,6 +62,22 @@ describe("MyCollectionArtworkDetail", () => {
       expect(spy).toHaveBeenCalledWith(artworkProps.artwork)
     })
 
+    it("navigates to consign submission when submit button is pressed", () => {
+      const artworkProps = { artwork: { internalID: "someInternalId" } }
+      const wrapper = getWrapper(artworkProps)
+      wrapper.root.findByProps({ "data-test-id": "SubmitButton" }).props.onPress()
+      expect(navigate).toHaveBeenCalledWith("/consign/submission")
+    })
+
+    it("navigates to sales page when learn more button is pressed", () => {
+      const artworkProps = { artwork: { internalID: "someInternalId" } }
+      const wrapper = getWrapper(artworkProps)
+      wrapper.root.findByProps({ "data-test-id": "LearnMoreButton" }).props.onPress()
+      expect(navigate).toHaveBeenCalledWith("/sales")
+    })
+
+    // Analytics
+
     it("tracks an analytics event when edit button is pressed", () => {
       const artworkProps = { artwork: { internalID: "someInternalId", slug: "someSlug" } }
       GlobalStore.actions.myCollection.artwork.startEditingArtwork = jest.fn() as any
@@ -74,16 +91,41 @@ describe("MyCollectionArtworkDetail", () => {
       )
     })
 
-    it("navigates to consign submission when submit button is pressed", () => {
-      const wrapper = getWrapper()
+    it("tracks an analytics event submit button is pressed", () => {
+      const artworkProps = { artwork: { internalID: "someInternalId", slug: "someSlug" } }
+      GlobalStore.actions.myCollection.artwork.startEditingArtwork = jest.fn() as any
+
+      const wrapper = getWrapper(artworkProps)
       wrapper.root.findByProps({ "data-test-id": "SubmitButton" }).props.onPress()
-      expect(navigate).toHaveBeenCalledWith("/consign/submission")
+
+      expect(trackEvent).toHaveBeenCalledTimes(1)
+      expect(trackEvent).toHaveBeenCalledWith(
+        tappedSell({
+          contextModule: ContextModule.sellFooter,
+          contextScreenOwnerType: OwnerType.myCollectionArtwork,
+          contextScreenOwnerId: "someInternalId",
+          contextScreenOwnerSlug: "someSlug",
+          subject: "Submit this work",
+        })
+      )
     })
 
-    it("navigates to sales page when learn more button is pressed", () => {
-      const wrapper = getWrapper()
+    it("tracks an analytics event learn more button is pressed", () => {
+      const artworkProps = { artwork: { internalID: "someInternalId", slug: "someSlug" } }
+      GlobalStore.actions.myCollection.artwork.startEditingArtwork = jest.fn() as any
+
+      const wrapper = getWrapper(artworkProps)
       wrapper.root.findByProps({ "data-test-id": "LearnMoreButton" }).props.onPress()
-      expect(navigate).toHaveBeenCalledWith("/sales")
+
+      expect(trackEvent).toHaveBeenCalledTimes(1)
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: ActionType.tappedShowMore,
+        context_module: ContextModule.sellFooter,
+        context_screen_owner_type: OwnerType.myCollectionArtwork,
+        context_screen_owner_id: "someInternalId",
+        context_screen_owner_slug: "someSlug",
+        subject: "Learn More",
+      })
     })
   })
 })

@@ -1,4 +1,4 @@
-import { addCollectedArtwork } from "@artsy/cohesion"
+import { ActionType, addCollectedArtwork, OwnerType } from "@artsy/cohesion"
 import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { EventEmitter } from "events"
@@ -11,6 +11,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { Box, Button, Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { FlatList, RefreshControl, ScrollView, View } from "react-native"
@@ -66,75 +67,82 @@ const MyCollection: React.FC<{
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <MyCollectionArtworkFormModal
-        mode="add"
-        visible={showModal}
-        onDismiss={() => setShowModal(false)}
-        onSuccess={() => setShowModal(false)}
-      />
-      <FancyModalHeader
-        rightButtonText="Add artwork"
-        hideBottomDivider
-        onRightButtonPress={() => {
-          trackEvent(tracks.addCollectedArtwork())
-          GlobalStore.actions.myCollection.artwork.resetForm()
-          setShowModal(true)
-        }}
-      ></FancyModalHeader>
-      <Text variant="largeTitle" ml={2} mb={2}>
-        My Collection
-      </Text>
-      {artworks.length === 0 ? (
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefreshing}
-              onRefresh={() => {
-                refreshMyCollection()
-              }}
-            />
-          }
-          contentContainerStyle={{ flex: 1 }}
-        >
-          <Flex>
-            <ZeroState
-              subtitle="Add details about an artwork from your collection to access price and market insights."
-              callToAction={
-                <Button
-                  data-test-id="add-artwork-button-zero-state"
-                  onPress={() => {
-                    setShowModal(true)
-                    trackEvent(tracks.addCollectedArtwork())
-                  }}
-                >
-                  Add artwork
-                </Button>
-              }
-            />
-          </Flex>
-        </ScrollView>
-      ) : (
-        <FlatList
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefreshing}
-              onRefresh={() => {
-                refreshMyCollection()
-              }}
-            />
-          }
-          data={artworks}
-          showsVerticalScrollIndicator={false}
-          ItemSeparatorComponent={() => <Separator />}
-          keyExtractor={(node) => node.id}
-          onScroll={isCloseToBottom(fetchNextPage)}
-          renderItem={({ item }) => {
-            return <MyCollectionArtworkListItemFragmentContainer artwork={item} />
-          }}
+    <ProvideScreenTrackingWithCohesionSchema
+      info={{
+        action: ActionType.screen,
+        context_screen_owner_type: OwnerType.myCollection,
+      }}
+    >
+      <View style={{ flex: 1 }}>
+        <MyCollectionArtworkFormModal
+          mode="add"
+          visible={showModal}
+          onDismiss={() => setShowModal(false)}
+          onSuccess={() => setShowModal(false)}
         />
-      )}
-    </View>
+        <FancyModalHeader
+          rightButtonText="Add artwork"
+          hideBottomDivider
+          onRightButtonPress={() => {
+            trackEvent(tracks.addCollectedArtwork())
+            GlobalStore.actions.myCollection.artwork.resetForm()
+            setShowModal(true)
+          }}
+        ></FancyModalHeader>
+        <Text variant="largeTitle" ml={2} mb={2}>
+          My Collection
+        </Text>
+        {artworks.length === 0 ? (
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={() => {
+                  refreshMyCollection()
+                }}
+              />
+            }
+            contentContainerStyle={{ flex: 1 }}
+          >
+            <Flex>
+              <ZeroState
+                subtitle="Add details about an artwork from your collection to access price and market insights."
+                callToAction={
+                  <Button
+                    data-test-id="add-artwork-button-zero-state"
+                    onPress={() => {
+                      setShowModal(true)
+                      trackEvent(tracks.addCollectedArtwork())
+                    }}
+                  >
+                    Add artwork
+                  </Button>
+                }
+              />
+            </Flex>
+          </ScrollView>
+        ) : (
+          <FlatList
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={() => {
+                  refreshMyCollection()
+                }}
+              />
+            }
+            data={artworks}
+            showsVerticalScrollIndicator={false}
+            ItemSeparatorComponent={() => <Separator />}
+            keyExtractor={(node) => node.id}
+            onScroll={isCloseToBottom(fetchNextPage)}
+            renderItem={({ item }) => {
+              return <MyCollectionArtworkListItemFragmentContainer artwork={item} />
+            }}
+          />
+        )}
+      </View>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
