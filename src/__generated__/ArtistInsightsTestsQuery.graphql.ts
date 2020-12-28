@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2814683178a8cf8893817007457734c1 */
+/* @relayHash 193c980a2d37ba41f37e9b8f26e0acef */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,10 +27,12 @@ query ArtistInsightsTestsQuery {
 }
 
 fragment ArtistInsightsAuctionResults_artist on Artist {
+  slug
   auctionResultsConnection(first: 10, sort: DATE_DESC) {
     edges {
       node {
         id
+        internalID
         ...AuctionResult_auctionResult
         __typename
       }
@@ -52,6 +54,7 @@ fragment AuctionResult_auctionResult on AuctionResult {
   currency
   dateText
   id
+  internalID
   images {
     thumbnail {
       url(version: "square140")
@@ -182,6 +185,13 @@ return {
           },
           {
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "slug",
+            "storageKey": null
+          },
+          {
+            "alias": null,
             "args": (v1/*: any*/),
             "concreteType": "AuctionResultConnection",
             "kind": "LinkedField",
@@ -205,6 +215,13 @@ return {
                     "plural": false,
                     "selections": [
                       (v2/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "internalID",
+                        "storageKey": null
+                      },
                       {
                         "alias": null,
                         "args": null,
@@ -419,7 +436,7 @@ return {
     ]
   },
   "params": {
-    "id": "2814683178a8cf8893817007457734c1",
+    "id": "193c980a2d37ba41f37e9b8f26e0acef",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
@@ -485,6 +502,7 @@ return {
         "artist.auctionResultsConnection.edges.node.images.thumbnail.height": (v7/*: any*/),
         "artist.auctionResultsConnection.edges.node.images.thumbnail.url": (v4/*: any*/),
         "artist.auctionResultsConnection.edges.node.images.thumbnail.width": (v7/*: any*/),
+        "artist.auctionResultsConnection.edges.node.internalID": (v6/*: any*/),
         "artist.auctionResultsConnection.edges.node.mediumText": (v4/*: any*/),
         "artist.auctionResultsConnection.edges.node.organization": (v4/*: any*/),
         "artist.auctionResultsConnection.edges.node.priceRealized": {
@@ -511,7 +529,8 @@ return {
           "type": "Boolean"
         },
         "artist.id": (v6/*: any*/),
-        "artist.name": (v4/*: any*/)
+        "artist.name": (v4/*: any*/),
+        "artist.slug": (v6/*: any*/)
       }
     },
     "name": "ArtistInsightsTestsQuery",
