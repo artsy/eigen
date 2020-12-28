@@ -68,7 +68,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
       }
 
       // The user successfully updated their password
-      return alert(
+      alert(
         "Password Changed",
         "Your password has been changed successfully. Use your new password to log in.",
         [
