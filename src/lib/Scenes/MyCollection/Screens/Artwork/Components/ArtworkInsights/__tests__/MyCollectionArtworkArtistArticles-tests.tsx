@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { MyCollectionArtworkArtistArticlesTestsQuery } from "__generated__/MyCollectionArtworkArtistArticlesTestsQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { navigate } from "lib/navigation/navigate"
@@ -6,12 +7,15 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionArtworkArtistArticlesFragmentContainer } from "../MyCollectionArtworkArtistArticles"
 
 jest.unmock("react-relay")
+jest.mock("react-tracking")
 
 describe("MyCollectionArtworkArtistArticles", () => {
+  const trackEvent = jest.fn()
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionArtworkArtistArticlesTestsQuery>
@@ -35,6 +39,16 @@ describe("MyCollectionArtworkArtistArticles", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    const mockTracking = useTracking as jest.Mock
+    mockTracking.mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
   const resolveData = (passedProps = {}) => {
@@ -75,5 +89,28 @@ describe("MyCollectionArtworkArtistArticles", () => {
     })
     wrapper.root.findAllByType(CaretButton)[0].props.onPress()
     expect(navigate).toHaveBeenCalledWith("/artist/artist-slug/articles")
+  })
+
+  it("tracks taps on all articles button", () => {
+    const wrapper = renderWithWrappers(<TestRenderer />)
+    resolveData({
+      Artwork: () => ({
+        internalID: "some-id",
+        slug: "some-slug",
+      }),
+      Artist: () => ({
+        slug: "artist-slug",
+      }),
+    })
+    wrapper.root.findAllByType(CaretButton)[0].props.onPress()
+    expect(trackEvent).toHaveBeenCalledTimes(1)
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: ActionType.tappedShowMore,
+      context_module: ContextModule.relatedArticles,
+      context_screen_owner_type: OwnerType.myCollectionArtwork,
+      context_screen_owner_id: "some-id",
+      context_screen_owner_slug: "some-slug",
+      subject: "See all articles",
+    })
   })
 })

@@ -5,6 +5,8 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkArtistArticles_artwork = {
+    readonly internalID: string;
+    readonly slug: string;
     readonly artist: {
         readonly slug: string;
         readonly name: string | null;
@@ -41,10 +43,17 @@ var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "internalID",
   "storageKey": null
 },
 v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -57,6 +66,8 @@ return {
   "metadata": null,
   "name": "MyCollectionArtworkArtistArticles_artwork",
   "selections": [
+    (v0/*: any*/),
+    (v1/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -65,8 +76,8 @@ return {
       "name": "artist",
       "plural": false,
       "selections": [
-        (v0/*: any*/),
         (v1/*: any*/),
+        (v2/*: any*/),
         {
           "alias": null,
           "args": [
@@ -107,14 +118,8 @@ return {
                   "name": "node",
                   "plural": false,
                   "selections": [
+                    (v1/*: any*/),
                     (v0/*: any*/),
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "internalID",
-                      "storageKey": null
-                    },
                     {
                       "alias": null,
                       "args": null,
@@ -137,7 +142,7 @@ return {
                       "name": "author",
                       "plural": false,
                       "selections": [
-                        (v1/*: any*/)
+                        (v2/*: any*/)
                       ],
                       "storageKey": null
                     },
@@ -189,5 +194,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '0e857b0be8c6e538ac60c40dc2b5e602';
+(node as any).hash = 'f78acdccca4fb6a057ede81d4f1cef0b';
 export default node;
