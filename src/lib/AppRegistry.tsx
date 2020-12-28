@@ -74,6 +74,7 @@ import { Search } from "./Scenes/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
+import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
@@ -358,6 +359,7 @@ export const modules = defineModules({
   Auctions: reactModule(SalesQueryRenderer),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
+  AuctionResult: reactModule(AuctionResultQueryRenderer),
   AuctionRegistration: nativeModule({ alwaysPresentModally: true }),
   AuctionBidArtwork: nativeModule({ alwaysPresentModally: true }),
   BidFlow: reactModule(BidderFlow),

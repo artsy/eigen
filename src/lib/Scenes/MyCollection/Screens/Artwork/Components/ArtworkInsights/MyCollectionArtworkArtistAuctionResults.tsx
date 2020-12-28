@@ -49,7 +49,12 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
         <FlatList
           data={auctionResults}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <AuctionResultFragmentContainer auctionResult={item} />}
+          renderItem={({ item }) => (
+            <AuctionResultFragmentContainer
+              auctionResult={item}
+              onPress={() => navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-result/${item.internalID}`)}
+            />
+          )}
           ListHeaderComponent={() => (
             <Flex px={2}>
               <Text variant="title">Auction results</Text>
@@ -96,6 +101,7 @@ export const MyCollectionArtworkArtistAuctionResultsFragmentContainer = createFr
             edges {
               node {
                 id
+                internalID
                 ...AuctionResult_auctionResult
               }
             }

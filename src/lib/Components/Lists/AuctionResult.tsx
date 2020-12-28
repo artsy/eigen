@@ -8,9 +8,10 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
   auctionResult: AuctionResult_auctionResult
+  onPress: () => void
 }
 
-const AuctionResult: React.FC<Props> = ({ auctionResult }) => {
+const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
   const now = moment()
 
   const isFromPastMonth = auctionResult.saleDate
@@ -27,12 +28,7 @@ const AuctionResult: React.FC<Props> = ({ auctionResult }) => {
   const ratio = getRatio()
 
   return (
-    <Touchable
-      underlayColor={color("black5")}
-      onPress={() => {
-        console.log("do nothing")
-      }}
-    >
+    <Touchable underlayColor={color("black5")} onPress={onPress}>
       <Flex height={100} py="2" px={2} flexDirection="row">
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
@@ -128,6 +124,7 @@ export const AuctionResultFragmentContainer = createFragmentContainer(AuctionRes
       currency
       dateText
       id
+      internalID
       images {
         thumbnail {
           url(version: "square140")
