@@ -16,7 +16,7 @@ class AuctionInformationViewControllerSpec: QuickSpec {
 
 
         var sale: Sale! = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "Sotheby’s Boundless Contemporary", "saleDescription": description, "startDate": past, "endDate": future ], error: Void())
-        var saleViewModel: SaleViewModel! = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], lotStandings: [], me: User())
+        var saleViewModel: SaleViewModel! = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], me: User())
 
         let markdown = "# Other Requests\n## Can you tell me the worth of my artwork?\n\nArtsy does not provide appraisal or authentication services for individual sellers. We recommend reaching out to professional dealers, galleries, and auction houses for assistance.\n\nFor any further questions, please contact [support@artsy.net](mailto:support@artsy.net)."
 
@@ -44,7 +44,7 @@ class AuctionInformationViewControllerSpec: QuickSpec {
         xcontext("a current sale") {
             beforeEach {
                 sale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "Sotheby’s Boundless Contemporary", "saleDescription": description, "startDate": past, "endDate": future ], error: Void())
-                saleViewModel = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], lotStandings: [], me: User())
+                saleViewModel = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], me: User())
                 commonSetup()
             }
 
@@ -58,7 +58,7 @@ class AuctionInformationViewControllerSpec: QuickSpec {
 
             it("shows a button for buyer's premium when needed") {
                 let sale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "Sotheby’s Boundless Contemporary", "saleDescription": description, "startDate": past, "endDate": future, "buyersPremium" : [] ], error: Void())
-                let saleViewModel = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], lotStandings: [], me: User())
+                let saleViewModel = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], me: User())
                 informationController = AuctionInformationViewController(saleViewModel: saleViewModel)
                 navigationController = ARSerifNavigationViewController(rootViewController: informationController)
                 for entry in informationController.FAQEntries {
@@ -83,7 +83,7 @@ class AuctionInformationViewControllerSpec: QuickSpec {
         context("a closed sale") {
             beforeEach {
                 sale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "Sotheby’s Boundless Contemporary", "saleDescription": description, "startDate": past, "endDate": past2 ], error: Void())
-                saleViewModel = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], lotStandings: [], me: User())
+                saleViewModel = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], me: User())
                 commonSetup()
             }
 

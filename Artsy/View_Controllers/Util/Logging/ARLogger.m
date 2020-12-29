@@ -6,7 +6,6 @@
 #import "ARFonts.h"
 #import "ARHTTPRequestOperationLogger.h"
 #import "ARLogFormatter.h"
-#import "ARDeveloperOptions.h"
 
 #import <EDColor/EDColor.h>
 
@@ -15,7 +14,7 @@
 + (BOOL)shouldLogNetworkRequests;
 {
 #ifdef DEBUG
-    return ![ARDeveloperOptions options][@"suppress_network_logs"];
+    return YES;
 #else
     return NO;
 #endif

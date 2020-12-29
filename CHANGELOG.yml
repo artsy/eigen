@@ -8,6 +8,7 @@ upcoming:
     - Change logic for Auction Insights Result - pavlos
     - Add slack notification when betas fail - brian
     - Add analytics tracking for My Bids - ashley, erik, christina
+    - Removes unused native code - ash
     - More analytics for My Collection - brian
   user_facing:
     - Fix logout alert not showing up on changing password - brian
