@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0bc8d417d428f25316f18afe74ba4bcf */
+/* @relayHash ca5f3c4e8af6d4726f2f1559aff73609 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -71,6 +71,7 @@ fragment ArtistInsightsAuctionResults_artist on Artist {
 
 fragment ArtistInsights_artist on Artist {
   name
+  internalID
   ...ArtistInsightsAuctionResults_artist
 }
 */
@@ -178,6 +179,13 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "name",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "internalID",
             "storageKey": null
           },
           {
@@ -419,7 +427,7 @@ return {
     ]
   },
   "params": {
-    "id": "0bc8d417d428f25316f18afe74ba4bcf",
+    "id": "ca5f3c4e8af6d4726f2f1559aff73609",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
@@ -511,6 +519,7 @@ return {
           "type": "Boolean"
         },
         "artist.id": (v6/*: any*/),
+        "artist.internalID": (v6/*: any*/),
         "artist.name": (v4/*: any*/)
       }
     },
