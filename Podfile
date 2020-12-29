@@ -83,12 +83,12 @@ target 'Artsy' do
   pod 'SDWebImage', '>= 3.7.2' # 3.7.2 contains a fix that allows you to not force decoding each image, which uses lots of memory
 
   # Core
-  pod 'ARGenericTableViewController', git: 'https://github.com/orta/ARGenericTableViewController.git'
+  pod 'ARGenericTableViewController', git: 'https://github.com/artsy/ARGenericTableViewController.git'
   pod 'CocoaLumberjack', '2.4.0'
   pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
   pod 'FXBlurView'
-  pod 'ISO8601DateFormatter', git: 'https://github.com/orta/iso-8601-date-formatter'
-  pod 'JLRoutes', git: 'https://github.com/orta/JLRoutes.git'
+  pod 'ISO8601DateFormatter', git: 'https://github.com/artsy/iso-8601-date-formatter'
+  pod 'JLRoutes', git: 'https://github.com/artsy/JLRoutes.git'
   pod 'JSDecoupledAppDelegate'
   pod 'Mantle', '1.5.6'
   pod 'MMMarkdown', '0.4'
@@ -115,8 +115,8 @@ target 'Artsy' do
 
   pod 'Emission', path: './emission', :inhibit_warnings => false
 
-  # For Stripe integration with Emission. Using Ash's fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
-  pod 'Pulley', git: 'https://github.com/brainbicycle/Pulley.git', branch: 'master'
+  # For Stripe integration with Emission. Using a fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
+  pod 'Pulley', git: 'https://github.com/artsy/Pulley.git', branch: 'master'
 
   # Facebook
   pod 'FBSDKCoreKit', '~> 8.0.0'
@@ -133,7 +133,7 @@ target 'Artsy' do
 
   # Swift pods 🎉
   pod 'Then'
-  pod 'Interstellar/Core', git: 'https://github.com/ashfurrow/Interstellar.git', branch: 'observable-unsubscribe'
+  pod 'Interstellar/Core', git: 'https://github.com/artsy/Interstellar.git', branch: 'observable-unsubscribe'
   pod 'Starscream'
   pod 'SwiftyJSON'
 

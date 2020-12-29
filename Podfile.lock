@@ -552,7 +552,7 @@ DEPENDENCIES:
   - AFOAuth1Client (from `https://github.com/artsy/AFOAuth1Client.git`, tag `0.4.0-subspec-fix`)
   - Analytics
   - ARAnalytics/Segmentio
-  - ARGenericTableViewController (from `https://github.com/orta/ARGenericTableViewController.git`)
+  - ARGenericTableViewController (from `https://github.com/artsy/ARGenericTableViewController.git`)
   - "Artsy+UIColors"
   - "Artsy+UIFonts"
   - "Artsy+UILabels"
@@ -594,9 +594,9 @@ DEPENDENCIES:
   - Forgeries/Mocks
   - FXBlurView
   - glog (from `./node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - Interstellar/Core (from `https://github.com/ashfurrow/Interstellar.git`, branch `observable-unsubscribe`)
-  - ISO8601DateFormatter (from `https://github.com/orta/iso-8601-date-formatter`)
-  - JLRoutes (from `https://github.com/orta/JLRoutes.git`)
+  - Interstellar/Core (from `https://github.com/artsy/Interstellar.git`, branch `observable-unsubscribe`)
+  - ISO8601DateFormatter (from `https://github.com/artsy/iso-8601-date-formatter`)
+  - JLRoutes (from `https://github.com/artsy/JLRoutes.git`)
   - JSDecoupledAppDelegate
   - JWTDecode
   - Mantle (= 1.5.6)
@@ -611,7 +611,7 @@ DEPENDENCIES:
   - OHHTTPStubs
   - ORKeyboardReactingApplication
   - ORStackView (= 2.0.3)
-  - Pulley (from `https://github.com/brainbicycle/Pulley.git`, branch `master`)
+  - Pulley (from `https://github.com/artsy/Pulley.git`, branch `master`)
   - Quick (= 2.0.0)
   - RCTRequired (from `./node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `./node_modules/react-native/Libraries/TypeSafety`)
@@ -738,7 +738,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/artsy/AFOAuth1Client.git
     :tag: 0.4.0-subspec-fix
   ARGenericTableViewController:
-    :git: https://github.com/orta/ARGenericTableViewController.git
+    :git: https://github.com/artsy/ARGenericTableViewController.git
   BVLinearGradient:
     :path: node_modules/react-native-linear-gradient
   DoubleConversion:
@@ -758,14 +758,14 @@ EXTERNAL SOURCES:
     :podspec: "./node_modules/react-native/third-party-podspecs/glog.podspec"
   Interstellar:
     :branch: observable-unsubscribe
-    :git: https://github.com/ashfurrow/Interstellar.git
+    :git: https://github.com/artsy/Interstellar.git
   ISO8601DateFormatter:
-    :git: https://github.com/orta/iso-8601-date-formatter
+    :git: https://github.com/artsy/iso-8601-date-formatter
   JLRoutes:
-    :git: https://github.com/orta/JLRoutes.git
+    :git: https://github.com/artsy/JLRoutes.git
   Pulley:
     :branch: master
-    :git: https://github.com/brainbicycle/Pulley.git
+    :git: https://github.com/artsy/Pulley.git
   RCTRequired:
     :path: "./node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
@@ -855,22 +855,22 @@ CHECKOUT OPTIONS:
     :tag: 0.4.0-subspec-fix
   ARGenericTableViewController:
     :commit: f4c9028754558e196ab9c5111dcd3a4229c5bedf
-    :git: https://github.com/orta/ARGenericTableViewController.git
+    :git: https://github.com/artsy/ARGenericTableViewController.git
   FLKAutoLayout:
     :commit: 44a277d21d4fa104589703a34a4d82647414f435
     :git: https://github.com/artsy/FLKAutoLayout.git
   Interstellar:
     :commit: ca22646f5a8449795fba3d3436a045da0aeb5949
-    :git: https://github.com/ashfurrow/Interstellar.git
+    :git: https://github.com/artsy/Interstellar.git
   ISO8601DateFormatter:
     :commit: 1a48b819c85903ded669e74e476aceffebf311fc
-    :git: https://github.com/orta/iso-8601-date-formatter
+    :git: https://github.com/artsy/iso-8601-date-formatter
   JLRoutes:
     :commit: 5a6df1a795766a4d3e586508e86ec9271d3ef3d9
-    :git: https://github.com/orta/JLRoutes.git
+    :git: https://github.com/artsy/JLRoutes.git
   Pulley:
     :commit: f677b18b332ea3798dc379879dbc0d038efd3ccc
-    :git: https://github.com/brainbicycle/Pulley.git
+    :git: https://github.com/artsy/Pulley.git
 
 SPEC CHECKSUMS:
   "@react-native-mapbox-gl-mapbox-static": 7ab93cffee38c24fa367e5d3ea3f0334d35d3d06
@@ -992,6 +992,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 7049d42961120e7434cfe9eebf68e94b55857d57
+PODFILE CHECKSUM: 059f1c6c66d6afbb55df1080532345e3e4741a46
 
 COCOAPODS: 1.7.5
