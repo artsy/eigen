@@ -194,7 +194,8 @@ lane :notify_if_new_license_agreement do
   client.team_id = '479887'
   messages = Spaceship::Tunes.client.fetch_program_license_agreement_messages
 
-  if !messages.empty?
+  # ignore membership expiration warnings, auto-renew should take care of
+  if !messages.empty? and !messages[0].include? "membership expiration"
     message = <<~MSG
                 :apple: :handshake: :pencil:
                 There is a new developer program agreement that needs to be signed to continue shipping!
