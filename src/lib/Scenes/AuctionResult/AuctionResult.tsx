@@ -331,13 +331,44 @@ export const AuctionResultQueryRenderer: React.FC<{
 }
 
 const LoadingSkeleton = () => {
+  const fields = []
+  for (let i = 0; i < 8; i++) {
+    fields.push(
+      <Flex flexDirection="row" justifyContent="space-between" mb={2} key={i}>
+        <PlaceholderBox width={80 + Math.round(Math.random() * 80)} height={20} />
+        <PlaceholderBox width={80 + Math.round(Math.random() * 80)} height={20} />
+      </Flex>
+    )
+  }
   return (
-    <>
-      <Spacer mb={6} />
+    <Flex mx={2}>
+      <Spacer height={70} />
 
-      {/* Artist Name */}
-      <PlaceholderBox width={300} height={30} />
+      <Flex flexDirection="row">
+        {/* Image */}
+        <PlaceholderBox width={60} height={80} />
+        <Flex ml={2} mt={1}>
+          {/* Artist name */}
+          <PlaceholderBox width={100} height={20} />
+          <Spacer mb={1} />
+          {/* Artwork name */}
+          <PlaceholderBox width={150} height={25} />
+        </Flex>
+      </Flex>
+      <Spacer mb={4} />
+      {/* "Realized price" */}
+      <PlaceholderBox width={100} height={15} />
       <Spacer mb={1} />
-    </>
+      {/* Price */}
+      <PlaceholderBox width={120} height={40} />
+      <Spacer mb={1} />
+      {/* Ratio */}
+      <PlaceholderBox width={200} height={20} />
+      <Spacer mb={4} />
+      {/* "Stats" */}
+      <PlaceholderBox width={60} height={30} />
+      <Spacer mb={2} />
+      {fields}
+    </Flex>
   )
 }
