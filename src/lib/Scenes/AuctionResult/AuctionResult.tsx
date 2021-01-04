@@ -5,56 +5,93 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import moment from "moment"
 import { Box, Flex, Separator, Spacer, Text } from "palette"
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { Animated, ScrollView, ScrollViewProps } from "react-native"
+import React, { useCallback, useEffect, useMemo, useRef } from "react"
+import { Animated, Image, NativeScrollEvent, NativeSyntheticEvent, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 
-const useStickyScrollHeader = ({ header, showAtScrollOffset }: { header: JSX.Element; showAtScrollOffset: number }) => {
-  const [isVisible, setIsVisible] = useState(false)
-  const entrance = useRef(new Animated.Value(0)).current
+const useStickyScrollHeader = ({ header }: { header: JSX.Element; showAtScrollOffset: number }) => {
+  const scrollAnim = new Animated.Value(0)
+  const fadeInStart = 90
+  const fadeInEnd = 100
+  const snapAnim = new Animated.Value(0)
+  const scrollEndTimer = useRef()
+  const translateYNumber = useRef(0)
+  scrollAnim.addListener(({ value }) => {
+    console.log(value)
+    translateYNumber.current = value
+  })
   const headerElement = useMemo(
     () => (
       <Animated.View
-        pointerEvents={isVisible ? undefined : "none"}
+        pointerEvents={
+          translateYNumber?.current !== undefined && translateYNumber.current < fadeInStart ? undefined : "none"
+        }
         style={{
           position: "absolute",
           top: 0,
           width: "100%",
-          opacity: entrance,
-          transform: [
-            {
-              translateY: entrance.interpolate({
-                inputRange: [0, 1],
-                outputRange: [-20, 0],
-              }),
-            },
-          ],
+          opacity: Animated.add(scrollAnim, snapAnim).interpolate({
+            inputRange: [fadeInStart, fadeInEnd],
+            outputRange: [0, 1],
+            extrapolate: "clamp",
+          }),
         }}
       >
         {header}
       </Animated.View>
     ),
-    [header, isVisible]
+    [header, scrollAnim]
   )
 
-  const onScroll = useCallback<NonNullable<ScrollViewProps["onScroll"]>>((e) => {
-    setIsVisible(e.nativeEvent.contentOffset.y >= showAtScrollOffset)
-  }, [])
-
-  useEffect(() => {
-    Animated.spring(entrance, {
-      toValue: isVisible ? 1 : 0,
+  const onScroll = Animated.event(
+    [
+      {
+        nativeEvent: {
+          contentOffset: { y: scrollAnim },
+        },
+      },
+    ],
+    {
       useNativeDriver: true,
-      bounciness: -7,
-      speed: 13,
-    }).start()
-  }, [isVisible])
+    }
+  )
+
+  const handleSnap = (offsetY: number) => {
+    // const offsetY = nativeEvent.contentOffset.y
+    if (offsetY > fadeInStart && offsetY < fadeInEnd) {
+      const toValue =
+        offsetY - fadeInStart < (fadeInEnd - fadeInStart) / 2 ? fadeInStart - offsetY : fadeInEnd - offsetY
+      Animated.timing(snapAnim, {
+        toValue,
+        duration: 100,
+        useNativeDriver: true,
+      }).start()
+    }
+  }
+
+  // nasty workaround to figure out scrollEnd
+  // https://medium.com/appandflow/react-native-collapsible-navbar-e51a049b560a
+  const onScrollEndDrag = (evt: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const offsetY = evt.nativeEvent.contentOffset.y
+    scrollEndTimer.current = setTimeout(() => {
+      handleSnap(offsetY)
+    }, 250)
+  }
 
   return {
     headerElement,
     scrollProps: {
+      onMomentumScrollBegin: (e) => {
+        if (scrollEndTimer) {
+          clearTimeout(scrollEndTimer.current)
+        }
+      },
+      onMomentumScrollEnd: (evt: NativeSyntheticEvent<NativeScrollEvent>) =>
+        handleSnap(evt.nativeEvent.contentOffset.y),
       onScroll,
+      onScrollEndDrag,
       scrollEventThreshold: 100,
     },
   }
@@ -70,7 +107,9 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     header: (
       <Flex backgroundColor="white">
         <FancyModalHeader>
-          {auctionResult?.title}, {auctionResult?.dateText}
+          <Text variant="title">
+            {auctionResult?.title}, {auctionResult?.dateText}
+          </Text>
         </FancyModalHeader>
       </Flex>
     ),
@@ -96,11 +135,13 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
 
   const stats = []
   const makeRow = (label: string, value: string, fullWidth?: boolean) => (
-    <Flex key={label} mb={2}>
-      <Separator mb={2} />
+    <Flex key={label} mb={1}>
+      <Flex style={{ opacity: 0.5 }}>
+        <Separator mb={1} />
+      </Flex>
       {fullWidth ? (
         <Flex>
-          <Text color="black60" mb={2}>
+          <Text color="black60" mb={1}>
             {label}
           </Text>
           <Text>{value}</Text>
@@ -124,11 +165,14 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   if (auctionResult?.mediumText) {
     stats.push(makeRow("Medium", auctionResult.mediumText))
   }
+  if (auctionResult?.dimensionText) {
+    stats.push(makeRow("Dimensions", auctionResult.dimensionText))
+  }
   if (auctionResult?.dateText) {
     stats.push(makeRow("Year created", auctionResult.dateText))
   }
   if (auctionResult?.saleDate) {
-    stats.push(makeRow("Sale date", auctionResult.saleDate))
+    stats.push(makeRow("Sale date", moment(auctionResult.saleDate).format("MMM D, YYYY")))
   }
   if (auctionResult?.organization) {
     stats.push(makeRow("Auction house", auctionResult.organization))
@@ -143,11 +187,22 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     stats.push(makeRow("Description", auctionResult.description, true))
   }
 
+  const hasSalePrice = !!auctionResult?.priceRealized?.display && !!auctionResult.currency
+  const now = moment()
+  const isFromPastMonth = auctionResult?.saleDate
+    ? moment(auctionResult.saleDate).isAfter(now.subtract(1, "month"))
+    : false
+  const salePriceMessage = isFromPastMonth
+    ? "Awaiting results"
+    : auctionResult?.boughtIn === true
+    ? "Bought in"
+    : "Not available"
+
   return (
     <>
-      <ScrollView {...scrollProps}>
+      <Animated.ScrollView {...scrollProps}>
         <FancyModalHeader hideBottomDivider />
-        <Box px={2} pb={1}>
+        <Box px={2} pb={4}>
           <Flex mt={1} mb={4} style={{ flexDirection: "row" }}>
             {!!auctionResult?.images?.thumbnail?.url ? (
               <OpaqueImageView width={60} height={80} imageURL={auctionResult?.images?.thumbnail?.url} />
@@ -156,19 +211,26 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             )}
             <Flex justifyContent="center" ml={2}>
               <Text variant="mediumText">{artist?.name}</Text>
-              <Text variant="subtitle">
+              <Text variant="title">
                 {auctionResult?.title}, {auctionResult?.dateText}
               </Text>
             </Flex>
           </Flex>
-          <Text variant="subtitle" mb={1}>
-            Realized price
-          </Text>
+          {!!hasSalePrice && (
+            <Flex flexDirection="row">
+              <Text variant="title" mb={1} mr={1}>
+                Realized price
+              </Text>
+              <TouchableOpacity style={{ top: 1 }} hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                <Image source={require("@images/info.png")} />
+              </TouchableOpacity>
+            </Flex>
+          )}
           <Text variant="largeTitle">
-            {auctionResult?.priceRealized?.display} {auctionResult?.currency}
+            {hasSalePrice ? `${auctionResult?.priceRealized?.display} ${auctionResult?.currency}` : salePriceMessage}
           </Text>
           {!!ratio && (
-            <Flex flexDirection="row">
+            <Flex flexDirection="row" mt={1}>
               <Flex borderRadius={2} overflow="hidden">
                 <Flex
                   position="absolute"
@@ -185,18 +247,17 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
                     })`}
                 </Text>
               </Flex>
-              <Text variant="text" color="black60">
-                {" "}
+              <Text variant="text" color="black60" ml={1}>
                 low estimate
               </Text>
             </Flex>
           )}
-          <Text variant="subtitle" mt={4} mb={1}>
+          <Text variant="title" mt={4} mb={1}>
             Stats
           </Text>
           {stats}
         </Box>
-      </ScrollView>
+      </Animated.ScrollView>
       {headerElement}
     </>
   )
