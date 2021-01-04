@@ -75,6 +75,15 @@ describe("artsy.net routes", () => {
         "type": "match",
       }
     `)
+    expect(matchRoute("/artist/more%26more")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artist",
+        "params": Object {
+          "artistID": "more&more",
+        },
+        "type": "match",
+      }
+    `)
     expect(matchRoute("artist/josef-albers?utm_medium=social&utm_source=instagram-story&utm_campaign=dp."))
       .toMatchInlineSnapshot(`
       Object {
@@ -118,6 +127,15 @@ describe("artsy.net routes", () => {
         "module": "Artwork",
         "params": Object {
           "artworkID": "yayoi-kusama-red-pumpkin",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("/artwork/more%26more")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artwork",
+        "params": Object {
+          "artworkID": "more&more",
         },
         "type": "match",
       }
