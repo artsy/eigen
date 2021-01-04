@@ -43,7 +43,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
-  return (
+  return props.salesModule.results.length ? (
     <View>
       <Flex pl="2" pr="2">
         <SectionTitle
@@ -114,7 +114,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
         }}
       />
     </View>
-  )
+  ) : null
 }
 
 export const SalesRailFragmentContainer = createFragmentContainer(SalesRail, {

@@ -35,7 +35,7 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
-  return (
+  return props.fairsModule.results.length > 0 ? (
     <View>
       <Flex pl="2" pr="2">
         <SectionTitle title="Featured fairs" subtitle="See works in top art fairs" />
@@ -100,7 +100,7 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
         }}
       />
     </View>
-  )
+  ) : null
 }
 
 export const FairsRailFragmentContainer = createFragmentContainer(FairsRail, {
