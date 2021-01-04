@@ -7,16 +7,22 @@ import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import moment from "moment"
 import { Box, Flex, Separator, Spacer, Text } from "palette"
-import React, { useCallback, useEffect, useMemo, useRef } from "react"
+import React, { useCallback, useMemo, useRef } from "react"
 import { Animated, Image, NativeScrollEvent, NativeSyntheticEvent, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 
-const useStickyScrollHeader = ({ header }: { header: JSX.Element; showAtScrollOffset: number }) => {
+const useStickyScrollHeader = ({
+  header,
+  fadeInStart = 90,
+  fadeInEnd = 100,
+}: {
+  header: JSX.Element
+  fadeInStart?: number
+  fadeInEnd?: number
+}) => {
   const scrollAnim = new Animated.Value(0)
-  const fadeInStart = 90
-  const fadeInEnd = 100
   const snapAnim = new Animated.Value(0)
-  const scrollEndTimer = useRef()
+  const scrollEndTimer = useRef(setTimeout(() => null, 0))
   const translateYNumber = useRef(0)
   scrollAnim.addListener(({ value }) => {
     console.log(value)
@@ -59,7 +65,6 @@ const useStickyScrollHeader = ({ header }: { header: JSX.Element; showAtScrollOf
   )
 
   const handleSnap = (offsetY: number) => {
-    // const offsetY = nativeEvent.contentOffset.y
     if (offsetY > fadeInStart && offsetY < fadeInEnd) {
       const toValue =
         offsetY - fadeInStart < (fadeInEnd - fadeInStart) / 2 ? fadeInStart - offsetY : fadeInEnd - offsetY
@@ -83,8 +88,8 @@ const useStickyScrollHeader = ({ header }: { header: JSX.Element; showAtScrollOf
   return {
     headerElement,
     scrollProps: {
-      onMomentumScrollBegin: (e) => {
-        if (scrollEndTimer) {
+      onMomentumScrollBegin: () => {
+        if (scrollEndTimer.current !== undefined) {
           clearTimeout(scrollEndTimer.current)
         }
       },
@@ -113,7 +118,6 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
         </FancyModalHeader>
       </Flex>
     ),
-    showAtScrollOffset: 100,
   })
 
   const getRatio = useCallback(() => {
