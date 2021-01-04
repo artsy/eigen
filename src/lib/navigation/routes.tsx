@@ -8,7 +8,7 @@ import { RouteMatcher } from "./RouteMatcher"
 export function matchRoute(
   url: string
 ): { type: "match"; module: AppModule; params: object } | { type: "external_url"; url: string } {
-  const parsed = parse(url)
+  const parsed = parse(decodeURIComponent(url))
   const pathParts = parsed.pathname?.split(/\/+/).filter(Boolean) ?? []
   const queryParams: object = parsed.query ? parseQueryString(parsed.query) : {}
 
