@@ -1,14 +1,14 @@
 import { ActionType, ContextModule, OwnerType, tappedInfoBubble, TappedShowMore } from "@artsy/cohesion"
 import { MyCollectionArtworkArtistAuctionResults_artwork } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResult"
 import { navigate } from "lib/navigation/navigate"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { extractNodes } from "lib/utils/extractNodes"
-import { DateTime } from "luxon"
-import { Box, Flex, NoArtworkIcon, Separator, Spacer, Text } from "palette"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Box, Flex, Separator, Spacer, Text } from "palette"
 import React from "react"
-import { TouchableWithoutFeedback, View } from "react-native"
+import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { InfoButton } from "./InfoButton"
@@ -19,9 +19,9 @@ interface MyCollectionArtworkArtistAuctionResultsProps {
 
 const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtistAuctionResultsProps> = (props) => {
   const { trackEvent } = useTracking()
-  const results = extractNodes(props?.artwork?.artist?.auctionResultsConnection)
+  const auctionResults = extractNodes(props?.artwork?.artist?.auctionResultsConnection)
 
-  if (!results.length) {
+  if (!auctionResults.length) {
     return null
   }
 
@@ -46,60 +46,30 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
 
         <Spacer my={0.5} />
 
-        <TouchableWithoutFeedback
-          onPress={() => navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-results`)}
-          data-test-id="AuctionsResultsButton"
-        >
-          <Box mr={2}>
-            {results.map(({ title, saleDate, priceRealized, internalID, images }) => {
-              const dateOfSale = DateTime.fromISO(saleDate as string).toLocaleString(DateTime.DATE_MED)
-              const salePrice = priceRealized?.centsUSD === 0 ? null : priceRealized?.display
-
-              return (
-                <Box my={0.5} key={internalID}>
-                  <Box my={0.5}>
-                    <Flex flexDirection="row">
-                      <Box pr={1}>
-                        {images?.thumbnail?.url ? (
-                          <OpaqueImageView imageURL={images?.thumbnail?.url} width={80} height={60} />
-                        ) : (
-                          <Flex
-                            width={60}
-                            height={60}
-                            backgroundColor="black10"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            <NoArtworkIcon width={28} height={28} opacity={0.3} />
-                          </Flex>
-                        )}
-                      </Box>
-                      <Box pr={1} maxWidth="80%">
-                        <Flex flexDirection="row">
-                          <Text style={{ flexShrink: 1 }}>{title}</Text>
-                        </Flex>
-                        <Text color="black60" my={0.5}>
-                          Sold {dateOfSale}
-                        </Text>
-
-                        {!!salePrice && (
-                          <Box>
-                            <Text>{salePrice}</Text>
-                          </Box>
-                        )}
-                      </Box>
-                    </Flex>
-                  </Box>
-                </Box>
-              )
-            })}
-          </Box>
-        </TouchableWithoutFeedback>
-
-        <Spacer my={1} />
-
-        <Box>
+        <FlatList
+          data={auctionResults}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <AuctionResultFragmentContainer auctionResult={item} />}
+          ListHeaderComponent={() => (
+            <Flex px={2}>
+              <Text variant="title">Auction results</Text>
+              <Text variant="small" color="black60">
+                Sorted by most recent sale date
+              </Text>
+              <Separator mt="2" />
+            </Flex>
+          )}
+          ItemSeparatorComponent={() => (
+            <Flex px={2}>
+              <Separator />
+            </Flex>
+          )}
+          style={{ width: useScreenDimensions().width, left: -20 }}
+        />
+        <Separator />
+        <Box pt={3}>
           <CaretButton
+            data-test-id="AuctionsResultsButton"
             onPress={() => {
               trackEvent(
                 tracks.tappedShowMore(props.artwork?.internalID, props.artwork?.slug, "Explore auction results")
@@ -130,21 +100,8 @@ export const MyCollectionArtworkArtistAuctionResultsFragmentContainer = createFr
           ) {
             edges {
               node {
-                internalID
-                title
-                dimensionText
-                images {
-                  thumbnail {
-                    url
-                  }
-                }
-                description
-                dateText
-                saleDate
-                priceRealized {
-                  display
-                  centsUSD
-                }
+                id
+                ...AuctionResult_auctionResult
               }
             }
           }

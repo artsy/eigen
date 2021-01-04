@@ -130,4 +130,3 @@ export class PinsShapeLayer extends Component<Props, State> {
     )
   }
 }
-

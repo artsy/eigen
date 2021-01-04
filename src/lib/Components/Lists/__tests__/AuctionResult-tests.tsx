@@ -1,4 +1,4 @@
-import { ArtistInsightsAuctionResultTestsQuery } from "__generated__/ArtistInsightsAuctionResultTestsQuery.graphql"
+import { AuctionResultTestsQuery } from "__generated__/AuctionResultTestsQuery.graphql"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { extractNodes } from "lib/utils/extractNodes"
 import moment from "moment"
@@ -6,26 +6,26 @@ import { Text } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { mockEnvironmentPayload } from "../../../../tests/mockEnvironmentPayload"
-import { ArtistInsightsAuctionResultFragmentContainer } from "../ArtistInsightsAuctionResult"
+import { mockEnvironmentPayload } from "../../../tests/mockEnvironmentPayload"
+import { AuctionResultFragmentContainer } from "../AuctionResult"
 
 jest.unmock("react-relay")
 
-describe("ArtistInsightsAuctionResults", () => {
+describe("AuctionResults", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   const TestRenderer = () => (
-    <QueryRenderer<ArtistInsightsAuctionResultTestsQuery>
+    <QueryRenderer<AuctionResultTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query ArtistInsightsAuctionResultTestsQuery @relay_test_operation {
+        query AuctionResultTestsQuery @relay_test_operation {
           artist(id: "some-id") {
             auctionResultsConnection(first: 1) {
               edges {
                 node {
                   id
-                  ...ArtistInsightsAuctionResult_auctionResult
+                  ...AuctionResult_auctionResult
                 }
               }
             }
@@ -36,7 +36,7 @@ describe("ArtistInsightsAuctionResults", () => {
       render={({ props }) => {
         if (props?.artist) {
           const results = extractNodes(props.artist.auctionResultsConnection)
-          return <ArtistInsightsAuctionResultFragmentContainer auctionResult={results[0]} />
+          return <AuctionResultFragmentContainer auctionResult={results[0]} />
         }
         return null
       }}

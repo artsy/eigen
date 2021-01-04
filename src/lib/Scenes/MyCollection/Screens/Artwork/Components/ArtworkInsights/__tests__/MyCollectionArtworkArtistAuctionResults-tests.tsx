@@ -82,7 +82,6 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
     const text = extractText(wrapper.root)
     expect(text).toContain("Auction Results for Banksy")
     expect(text).toContain("title")
-    expect(text).toContain(`Sold`)
     expect(text).toContain("4.00")
     expect(text).toContain("Explore auction results")
   })

@@ -9,7 +9,7 @@ export type ArtistInsightsAuctionResults_artist = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
-                readonly " $fragmentRefs": FragmentRefs<"ArtistInsightsAuctionResult_auctionResult">;
+                readonly " $fragmentRefs": FragmentRefs<"AuctionResult_auctionResult">;
             } | null;
         } | null> | null;
     } | null;
@@ -103,7 +103,7 @@ const node: ReaderFragment = {
                 {
                   "args": null,
                   "kind": "FragmentSpread",
-                  "name": "ArtistInsightsAuctionResult_auctionResult"
+                  "name": "AuctionResult_auctionResult"
                 }
               ],
               "storageKey": null
@@ -150,5 +150,5 @@ const node: ReaderFragment = {
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = '9277fb0d39b751cb7c5b279d5a7ff20c';
+(node as any).hash = 'f707eba5d61481ecf444d2d401675ab1';
 export default node;
