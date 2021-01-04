@@ -1,9 +1,6 @@
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import "ArtsyOHHTTPAPI.h"
 
-#import "ARFilteredStackTrace.h"
-
-
 /// This is borrowed from AFNetworking: https://github.com/AFNetworking/AFNetworking/blob/4f3c694920ed0f5d3a8e180aacaf3af40c2efb4a/AFNetworking/AFURLResponseSerialization.m#L63-L86
 /// Our JSON response serializing within Eigen removes null values via `removesKeysWithNullValues` and our stubs need to replicate that behaviour.
 static id ARJSONObjectByRemovingKeysWithNullValues(id JSONObject, NSJSONReadingOptions readingOptions) {
@@ -90,20 +87,6 @@ static id ARJSONObjectByRemovingKeysWithNullValues(id JSONObject, NSJSONReadingO
         static NSArray *whiteList = nil;
         if (whiteList == nil) whiteList = @[ [NSBundle mainBundle], [NSBundle bundleForClass:ArtsyOHHTTPAPI.class] ];
 
-        NSArray *stackTrace = ARFilteredStackTraceWithWhiteList(1, whiteList, ^BOOL(BOOL blockInvocation,
-                                                                                    BOOL objcMethod,
-                                                                                    BOOL classMethod,
-                                                                                    NSString *className,
-                                                                                    NSString *methodOrFunction) {
-            return !(
-                     ([className isEqualToString:@"ArtsyAPI"] && [methodOrFunction hasPrefix:@"getRequest:parseInto"])
-                     || [methodOrFunction hasPrefix:@"ar_dispatch"]
-                     || [methodOrFunction isEqualToString:@"main"]
-                     );
-        });
-        NSAssert(stackTrace.count > 0, @"Stack trace empty, might need more white-listing.");
-
-
         NSDictionary *mainThreadDictionary = [[NSThread mainThread] threadDictionary];
         id spectaExample = mainThreadDictionary[@"SPTCurrentSpec"] ?: mainThreadDictionary[@"NimbleEnvironment"];
         id expectaMatcher = [[NSThread mainThread] threadDictionary][@"EXP_currentMatcher"];
@@ -114,7 +97,6 @@ static id ARJSONObjectByRemovingKeysWithNullValues(id JSONObject, NSJSONReadingO
 
         printf("Un-stubbed URL: %s\n", request.URL.absoluteString.UTF8String);
         printf("You should use: [OHHTTPStubs stubJSONResponseAtPath:@\"%s\" withResponse:@{}];\n", request.URL.path.UTF8String);
-        printf("   Stack trace: %s\n\n\n\n", [stackTrace componentsJoinedByString:@"\n                "].UTF8String);
 
         NSAssert(NO, @"Raising an exception which will fail the test, please handle this. Route: %@", request.URL.path);
 

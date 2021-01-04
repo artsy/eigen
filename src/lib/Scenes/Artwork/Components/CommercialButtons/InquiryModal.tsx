@@ -7,11 +7,13 @@ import ChevronIcon from "lib/Icons/ChevronIcon"
 import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { LocationWithDetails } from "lib/utils/googleMaps"
+import { Schema } from "lib/utils/track"
 import { Box, color, Flex, Separator, space, Text } from "palette"
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { SubmitInquiryRequest } from "../Mutation/SubmitInquiryRequest"
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
@@ -137,12 +139,12 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const { toggleVisibility, modalIsVisible, relay, onMutationSuccessful } = props
   const questions = artwork?.inquiryQuestions!
   const scrollViewRef = useRef<ScrollView>(null)
-
+  const tracking = useTracking()
   const [addMessageYCoordinate, setAddMessageYCoordinate] = useState<number>(0)
 
   const { state, dispatch } = useContext(ArtworkInquiryContext)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
-  const [errorMessageVisibility, setErrorMessageVisibility] = useState(false)
+  const [mutationError, setMutationError] = useState(false)
   const selectShippingLocation = (locationDetails: LocationWithDetails) =>
     dispatch({ type: "selectShippingLocation", payload: locationDetails })
   const setMessage = (message: string) => dispatch({ type: "setMessage", payload: message })
@@ -156,9 +158,27 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
     scrollViewRef.current?.scrollTo({ y: addMessageYCoordinate })
   }, [addMessageYCoordinate])
 
+  const handleErrorTracking = () => {
+    tracking.trackEvent({
+      action_type: Schema.ActionTypes.Fail,
+      action_name: Schema.ActionNames.InquirySend,
+      owner_type: Schema.OwnerEntityTypes.Artwork,
+      owner_id: artwork.internalID,
+      owner_slug: artwork.slug,
+    })
+  }
+
   useEffect(() => {
     if (mutationSuccessful) {
       resetAndExit()
+
+      tracking.trackEvent({
+        action_type: Schema.ActionTypes.Success,
+        action_name: Schema.ActionNames.InquirySend,
+        owner_type: Schema.OwnerEntityTypes.Artwork,
+        owner_id: artwork.internalID,
+        owner_slug: artwork.slug,
+      })
 
       const delayNotification = setTimeout(() => {
         onMutationSuccessful(true)
@@ -175,17 +195,38 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
       <FancyModalHeader
         leftButtonText="Cancel"
         onLeftButtonPress={() => {
+          tracking.trackEvent({
+            action_type: Schema.ActionTypes.Tap,
+            action_name: Schema.ActionNames.InquiryCancel,
+            owner_type: Schema.OwnerEntityTypes.Artwork,
+            owner_id: artwork.internalID,
+            owner_slug: artwork.slug,
+          })
           resetAndExit()
         }}
         rightButtonText="Send"
         rightButtonDisabled={state.inquiryQuestions.length === 0 && !state.message}
         onRightButtonPress={() => {
-          SubmitInquiryRequest(relay.environment, artwork, state, setMutationSuccessful, setErrorMessageVisibility)
+          tracking.trackEvent({
+            action_type: Schema.ActionTypes.Tap,
+            action_name: Schema.ActionNames.InquirySend,
+            owner_type: Schema.OwnerEntityTypes.Artwork,
+            owner_id: artwork.internalID,
+            owner_slug: artwork.slug,
+          })
+          SubmitInquiryRequest(
+            relay.environment,
+            artwork,
+            state,
+            setMutationSuccessful,
+            setMutationError,
+            handleErrorTracking
+          )
         }}
       >
         {state.inquiryType}
       </FancyModalHeader>
-      {!!errorMessageVisibility && (
+      {!!mutationError && (
         <ErrorMessageFlex bg="red100" py={1} alignItems="center">
           <Text variant="small" color="white">
             Sorry, we were unable to send this message. Please try again.
@@ -247,6 +288,7 @@ export const InquiryModalFragmentContainer = createFragmentContainer(InquiryModa
     fragment InquiryModal_artwork on Artwork {
       ...CollapsibleArtworkDetails_artwork
       internalID
+      slug
       inquiryQuestions {
         internalID
         question

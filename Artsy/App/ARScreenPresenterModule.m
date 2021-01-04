@@ -225,11 +225,7 @@ RCT_EXPORT_METHOD(popToRootAndScrollToTop:(nonnull NSString *)stackID
         NSURL *URL = [ARRouter resolveRelativeUrl:path];
         return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:nil];
     } else {
-        if ([[[ARAppDelegate sharedInstance] echo] isFeatureEnabled:AROptionsNewSalePage] == YES) {
-            return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Auction" initialProperties:@{ @"saleID": saleID }];
-        } else {
-            return [[AuctionViewController alloc] initWithSaleID:saleID];
-        }
+        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Auction" initialProperties:@{ @"saleID": saleID }];
     }
 }
 

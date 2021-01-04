@@ -1,14 +1,14 @@
 #import "ARFollowable.h"
 #import "ARShareableObject.h"
 #import "ARHasImageBaseURL.h"
-#import "ARSpotlight.h"
+#import "ARUserActivity.h"
 
 #import <Mantle/Mantle.h>
 
 @class AFHTTPRequestOperation;
 
 
-@interface Gene : MTLModel <MTLJSONSerializing, ARFollowable, ARShareableObject, ARHasImageBaseURL, ARSpotlightMetadataProvider>
+@interface Gene : MTLModel <MTLJSONSerializing, ARFollowable, ARShareableObject, ARHasImageBaseURL, ARContinuityMetadataProvider>
 
 @property (readonly, nonatomic, copy) NSString *name;
 @property (readonly, nonatomic, copy) NSString *geneID;

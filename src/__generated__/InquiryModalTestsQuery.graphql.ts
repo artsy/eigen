@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c82621c499a0b99320f61c85018e8a27 */
+/* @relayHash 654245f17495f929962d938a0917cf2a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -66,6 +66,7 @@ fragment CollapsibleArtworkDetails_artwork on Artwork {
 fragment InquiryModal_artwork on Artwork {
   ...CollapsibleArtworkDetails_artwork
   internalID
+  slug
   inquiryQuestions {
     internalID
     question
@@ -346,6 +347,13 @@ return {
           {
             "alias": null,
             "args": null,
+            "kind": "ScalarField",
+            "name": "slug",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": "InquiryQuestion",
             "kind": "LinkedField",
             "name": "inquiryQuestions",
@@ -370,7 +378,7 @@ return {
     ]
   },
   "params": {
-    "id": "c82621c499a0b99320f61c85018e8a27",
+    "id": "654245f17495f929962d938a0917cf2a",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -435,6 +443,7 @@ return {
         "artwork.saleMessage": (v4/*: any*/),
         "artwork.signatureInfo": (v6/*: any*/),
         "artwork.signatureInfo.details": (v4/*: any*/),
+        "artwork.slug": (v5/*: any*/),
         "artwork.title": (v4/*: any*/)
       }
     },

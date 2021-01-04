@@ -86,7 +86,7 @@ static AREmission *_sharedInstance = nil;
     [self.notificationsManagerModule updateState:state];
 }
 
--(NSString *)stateStringForKey:(NSString *)stateKey
+- (NSString *)stateStringForKey:(NSString *)stateKey
 {
     NSString *result = [self.notificationsManagerModule.state valueForKey:stateKey];
     if (result && ![result isKindOfClass:NSString.class]) {

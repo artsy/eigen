@@ -36,7 +36,7 @@ export default function useAppState({ onForeground, onBackground }: AppStateProp
     return () => {
       AppState.removeEventListener("change", _handleAppStateChange)
     }
-  }, [appState.current])
+  }, [appState.current, onForeground, onBackground])
 
   return { appState: appState.current }
 }

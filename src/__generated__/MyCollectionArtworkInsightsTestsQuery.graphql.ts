@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4fdfd1538326f1bea87de7254d788dc1 */
+/* @relayHash 3b2c1f9375dd10f67329d56df512a1cb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -59,6 +59,8 @@ fragment AuctionResult_auctionResult on AuctionResult {
 }
 
 fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
+  internalID
+  slug
   artist {
     slug
     name
@@ -814,7 +816,7 @@ return {
     ]
   },
   "params": {
-    "id": "4fdfd1538326f1bea87de7254d788dc1",
+    "id": "3b2c1f9375dd10f67329d56df512a1cb",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {

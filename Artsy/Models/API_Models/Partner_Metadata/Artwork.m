@@ -1,13 +1,11 @@
 #import "Artwork.h"
 
 #import "Artist.h"
-#import "ArtsyAPI+Artworks.h"
 #import "ArtsyAPI+Following.h"
 #import "ArtsyAPI+RelatedModels.h"
 #import "ArtsyAPI+Sales.h"
 #import "ARDefaults.h"
 #import "ARValueTransformer.h"
-#import "ARSpotlight.h"
 #import "Fair.h"
 #import "Partner.h"
 #import "User.h"
@@ -51,11 +49,6 @@
     // If we give these as properties they can cause
     // chaos with Mantle & State Resotoration.
 
-    KSDeferred *_artworkUpdateDeferred;
-    KSDeferred *_saleArtworkUpdateDeferred;
-    KSDeferred *_favDeferred;
-    KSDeferred *_fairDeferred;
-    KSDeferred *_partnerShowDeferred;
     enum ARHeartStatus _heartStatus;
     Fair *_fair;
 
@@ -317,153 +310,6 @@
     return [self.provenance length] || [self.exhibitionHistory length] || [self.signature length] || [self.additionalInfo length] || [self.literature length];
 }
 
-- (KSPromise *)onArtworkUpdate:(nullable void (^)(void))success failure:(nullable void (^)(NSError *error))failure
-{
-    __weak typeof(self) wself = self;
-
-    if (!_artworkUpdateDeferred) {
-        _artworkUpdateDeferred = [KSDeferred defer];
-    }
-
-    return [_artworkUpdateDeferred.promise then:^(id value) {
-        if (success) { success(); }
-        return self;
-
-    } error:^id(NSError *error) {
-        if (failure) { failure(error); }
-
-        __strong typeof (wself) sself = wself;
-        ARErrorLog(@"Failed fetching full JSON for artwork %@. Error: %@", sself.artworkID, error.localizedDescription);
-        return error;
-    }];
-}
-
-- (KSDeferred *)deferredSaleArtworkUpdate
-{
-    if (!_saleArtworkUpdateDeferred) {
-        _saleArtworkUpdateDeferred = [KSDeferred defer];
-    }
-    return _saleArtworkUpdateDeferred;
-}
-
-- (void)resetDeferredSaleArtworkUpdate;
-{
-    _saleArtworkUpdateDeferred = nil;
-}
-
-- (void)updateSaleArtwork
-{
-    __weak typeof(self) wself = self;
-    NSString *artworkID = self.artworkID;
-    KSDeferred *deferred = [self deferredSaleArtworkUpdate];
-
-    [ArtsyAPI getSalesWithArtwork:self.artworkID success:^(NSArray *sales) {
-
-        // assume artwork can only be in one auction at most
-        Sale *auction = nil;
-        for (Sale *sale in sales) {
-            if (sale.isAuction) {
-                auction = sale;
-            }
-            break;
-        }
-
-        if (auction) {
-            __strong typeof (wself) sself = wself;
-            [ArtsyAPI getAuctionArtworkWithSale:auction.saleID artwork:sself.artworkID success:^(SaleArtwork *saleArtwork) {
-                saleArtwork.auction = auction;
-                [deferred resolveWithValue:saleArtwork];
-
-            } failure:^(NSError *error) {
-                ARErrorLog(@"Error fetching auction details for artwork %@: %@", artworkID, error.localizedDescription);
-                [deferred rejectWithError:error];
-            }];
-        } else {
-            [deferred resolveWithValue:nil];
-        }
-
-    } failure:^(NSError *error) {
-        [deferred rejectWithError:error];
-        ARErrorLog(@"Error fetching sales for artwork %@: %@", artworkID, error.localizedDescription);
-    }];
-}
-
-- (KSPromise *)onSaleArtworkUpdate:(nullable void (^)(SaleArtwork *saleArtwork))success
-                           failure:(nullable void (^)(NSError *error))failure
-{
-    return [self onSaleArtworkUpdate:success failure:failure allowCached:YES];
-}
-
-- (KSPromise *)onSaleArtworkUpdate:(nullable void (^)(SaleArtwork *saleArtwork))success
-                           failure:(nullable void (^)(NSError *error))failure
-                       allowCached:(BOOL)allowCached;
-{
-    KSDeferred *deferred = [self deferredSaleArtworkUpdate];
-
-    // If the work is not done yet, consider the incoming data to be uncached.
-    if (!allowCached && deferred.promise.fulfilled) {
-        [self resetDeferredSaleArtworkUpdate];
-        deferred = [self deferredSaleArtworkUpdate];
-    }
-
-    return [deferred.promise then:^(id value) {
-        if (success) {
-            success(value);
-        }
-        return self;
-    } error:^id(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-        return error;
-    }];
-}
-
-- (KSDeferred *)deferredFairUpdate
-{
-    if (!_fairDeferred) {
-        _fairDeferred = [KSDeferred defer];
-    }
-    return _fairDeferred;
-}
-
-- (KSPromise *)onFairUpdate:(nullable void (^)(Fair *))success failure:(nullable void (^)(NSError *))failure
-{
-    KSDeferred *deferred = [self deferredFairUpdate];
-    return [deferred.promise then:^(id value) {
-        self.fair = value;
-        if (success) {
-            success(value);
-        }
-        return self;
-    } error:^id(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-        return error;
-    }];
-}
-
-- (KSDeferred *)deferredPartnerShowUpdate;
-{
-    if (!_partnerShowDeferred) {
-        _partnerShowDeferred = [KSDeferred defer];
-    }
-    return _partnerShowDeferred;
-}
-
-- (KSPromise *)onPartnerShowUpdate:(nullable void (^)(PartnerShow *show))success failure:(nullable void (^)(NSError *error))failure;
-{
-    KSDeferred *deferred = self.deferredPartnerShowUpdate;
-    return [deferred.promise then:^(PartnerShow *show) {
-        success(show);
-        return self;
-    } error:^(NSError *error) {
-        if (failure) failure(error);
-        return error;
-    }];
-}
-
 - (void)setFollowState:(BOOL)state success:(nullable void (^)(id))success failure:(nullable void (^)(NSError *))failure
 {
     __weak typeof(self) wself = self;
@@ -472,8 +318,6 @@
         if (!self) { return; }
 
         sself->_heartStatus = state? ARHeartStatusYes : ARHeartStatusNo;
-
-        [ARSpotlight addToSpotlightIndex:state entity:self];
 
         if (success) {
             success(response);
@@ -487,46 +331,6 @@
         if (failure) {
             failure(error);
         }
-    }];
-}
-
-
-- (void)getFavoriteStatus:(nullable void (^)(ARHeartStatus status))success failure:(nullable void (^)(NSError *error))failure
-{
-    __weak typeof(self) wself = self;
-
-    if (!_favDeferred) {
-        KSDeferred *deferred = [KSDeferred defer];
-        [ArtsyAPI checkFavoriteStatusForArtwork:self success:^(BOOL status) {
-            __strong typeof (wself) sself = wself;
-            if (!sself) { return; }
-
-            sself->_heartStatus = status ? ARHeartStatusYes : ARHeartStatusNo;
-
-            [deferred resolveWithValue:@(status)];
-        } failure:^(NSError *error) {
-            [deferred rejectWithError:error];
-        }];
-
-        _favDeferred = deferred;
-    }
-
-    [_favDeferred.promise then:^(id value) {
-        __strong typeof (wself) sself = wself;
-
-        success(sself.heartStatus);
-        return self;
-    } error:^(NSError *error) {
-        // Its a 404 if you have no artworks
-        __strong typeof (wself) sself = wself;
-        NSHTTPURLResponse *response = [error userInfo][AFNetworkingOperationFailingURLResponseErrorKey];
-        if (response.statusCode == 404) {
-            success(ARHeartStatusNo);
-        } else {
-            ARErrorLog(@"Failed fetching favorite status for artwork %@. Error: %@", sself.artworkID, error.localizedDescription);
-            failure(error);
-        }
-        return error;
     }];
 }
 

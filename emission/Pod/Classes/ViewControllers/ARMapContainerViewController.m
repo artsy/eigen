@@ -368,7 +368,7 @@ const CGFloat MARGIN = 10;
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
-    if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
+    if (status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusAuthorizedAlways) {
         [manager startUpdatingLocation];
     } else if (status == kCLAuthorizationStatusNotDetermined) {
         // nop, don't show city picker.
@@ -386,12 +386,20 @@ const CGFloat MARGIN = 10;
     [manager stopUpdatingLocation];
 }
 
-- (BOOL)shouldAutorotate;
+#if TARGET_IPHONE_SIMULATOR
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    // if there is a failure, just pick a city on the simulator and pretend that's the city that is returned
+    [self locationManager:manager didUpdateLocations:@[[[ARCity cities] objectAtIndex:2].epicenter]];
+}
+#endif
+
+- (BOOL)shouldAutorotate
 {
     return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
 }
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations;
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return self.shouldAutorotate ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }

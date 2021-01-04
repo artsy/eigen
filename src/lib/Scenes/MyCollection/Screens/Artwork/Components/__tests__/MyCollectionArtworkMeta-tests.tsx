@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { MyCollectionArtworkMeta_artwork } from "__generated__/MyCollectionArtworkMeta_artwork.graphql"
 import { MyCollectionArtworkMetaTestsQuery } from "__generated__/MyCollectionArtworkMetaTestsQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
@@ -6,12 +7,15 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionArtworkMetaFragmentContainer } from "../MyCollectionArtworkMeta"
 
 jest.unmock("react-relay")
+jest.mock("react-tracking")
 
 describe("MyCollectionArtworkMeta", () => {
+  const trackEvent = jest.fn()
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = (passedProps: { viewAll: boolean }) => (
     <QueryRenderer<MyCollectionArtworkMetaTestsQuery>
@@ -35,10 +39,21 @@ describe("MyCollectionArtworkMeta", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    const mockTracking = useTracking as jest.Mock
+    mockTracking.mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
   const sharedArtworkProps: Omit<MyCollectionArtworkMeta_artwork, " $refType"> = {
-    artistNames: "some artist name",
+    slug: "some-slug",
+    artistNames: "some-artist-name",
     category: "Painting",
     costMinor: 200,
     costCurrencyCode: "USD",
@@ -96,7 +111,7 @@ describe("MyCollectionArtworkMeta", () => {
 
         const text = extractText(wrapper.root)
         expect(text).toContain("Artist")
-        expect(text).toContain("some artist name")
+        expect(text).toContain("some-artist-name")
         expect(text).toContain("Title")
         expect(text).toContain("some title")
         expect(text).toContain("Year created")
@@ -113,6 +128,23 @@ describe("MyCollectionArtworkMeta", () => {
         expect(text).toContain("1")
         expect(text).toContain("Price paid")
         expect(text).toContain("200 USD")
+      })
+    })
+  })
+
+  describe("analytics", () => {
+    it("tracks taps on `View more`", () => {
+      const wrapper = renderWithWrappers(<TestRenderer viewAll={false} />)
+      resolveData()
+      wrapper.root.findByType(CaretButton).props.onPress()
+      expect(trackEvent).toHaveBeenCalledTimes(1)
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: ActionType.tappedShowMore,
+        context_module: ContextModule.artworkMetadata,
+        context_screen_owner_type: OwnerType.myCollectionArtwork,
+        context_screen_owner_id: "some-internal-id",
+        context_screen_owner_slug: "some-slug",
+        subject: "View more",
       })
     })
   })

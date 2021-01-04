@@ -96,10 +96,10 @@ const AuctionResult: React.FC<Props> = ({ auctionResult }) => {
             ) : (
               <Flex alignItems="flex-end">
                 <Text variant="subtitle" fontWeight="bold" style={{ width: 70 }} textAlign="right">
-                  {isFromPastMonth
-                    ? "Awaiting results"
-                    : auctionResult.boughtIn === true
+                  {auctionResult.boughtIn === true
                     ? "Bought in"
+                    : isFromPastMonth
+                    ? "Awaiting results"
                     : "Not available"}
                 </Text>
               </Flex>

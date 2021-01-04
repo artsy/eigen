@@ -7,6 +7,11 @@ unless using_bundler
   exit(1)
 end
 
+
+require 'dotenv'
+Dotenv.load('.env.shared')
+
+
 # We need to scope the side-effects of downloading Emission's NPM podspecs to
 # only cases where we are actually installing pods.
 installing_pods = ARGV.include?('install') || ARGV.include?('update')
@@ -28,6 +33,42 @@ require 'json'
 require 'fileutils'
 
 
+$ReactNativeMapboxGLIOSVersion = '~> 6.3'
+
+if !ENV['MAPBOX_DOWNLOAD_TOKEN']
+  raise "You need a MAPBOX_DOWNLOAD_TOKEN in your .env.shared file.\nIf you work at artsy, check 1password.\nOtherwise create your own in the mapbox dashboard. https://docs.mapbox.com/ios/maps/guides/install"
+end
+# mapbox needs credentials in `~/.netrc`, so we put them there and then remove them in post_install
+$netrc_path = File.expand_path('~/.netrc')
+$user_already_had_netrc_file = File.exists?($netrc_path)
+def add_mapbox_creds
+  File.open($netrc_path, 'a+') { |f|
+    f.write("""machine api.mapbox.com
+login mapbox
+password #{ENV['MAPBOX_DOWNLOAD_TOKEN']}
+""")
+  }
+end
+def remove_mapbox_creds
+  if $user_already_had_netrc_file
+    contents = File.read($netrc_path)
+    matches = contents.to_enum(:scan, /machine api\.mapbox\.com.*\n.*\n.*\n/).map { Regexp.last_match }
+    return if matches == nil or matches.length == 0
+    last_match = matches.last
+    File.open($netrc_path, 'w') { |f|
+      cleaned = last_match.pre_match + last_match.post_match
+      f.write(cleaned)
+    }
+  else
+    File.delete($netrc_path)
+  end
+end
+
+
+# pre_install
+add_mapbox_creds
+
+
 target 'Artsy' do
   config = use_native_modules!
   use_react_native!(
@@ -42,12 +83,12 @@ target 'Artsy' do
   pod 'SDWebImage', '>= 3.7.2' # 3.7.2 contains a fix that allows you to not force decoding each image, which uses lots of memory
 
   # Core
-  pod 'ARGenericTableViewController', git: 'https://github.com/orta/ARGenericTableViewController.git'
+  pod 'ARGenericTableViewController', git: 'https://github.com/artsy/ARGenericTableViewController.git'
   pod 'CocoaLumberjack', '2.4.0'
   pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
   pod 'FXBlurView'
-  pod 'ISO8601DateFormatter', git: 'https://github.com/orta/iso-8601-date-formatter'
-  pod 'JLRoutes', git: 'https://github.com/orta/JLRoutes.git'
+  pod 'ISO8601DateFormatter', git: 'https://github.com/artsy/iso-8601-date-formatter'
+  pod 'JLRoutes', git: 'https://github.com/artsy/JLRoutes.git'
   pod 'JSDecoupledAppDelegate'
   pod 'Mantle', '1.5.6'
   pod 'MMMarkdown', '0.4'
@@ -55,18 +96,13 @@ target 'Artsy' do
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
   pod 'EDColor'
-  pod 'SSFadingScrollView', git: 'https://github.com/alloy/SSFadingScrollView.git', branch: 'add-axial-support'
 
   # Core owned by Artsy
   pod 'ORStackView', '2.0.3'
   pod 'UIView+BooleanAnimations'
   pod 'Aerodramus', '2.0.0'
 
-  # Custom CollectionView Layouts
-  pod 'ARCollectionViewMasonryLayout', git: 'https://github.com/ashfurrow/ARCollectionViewMasonryLayout'
-
   # Language Enhancements
-  pod 'KSDeferred'
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
 
@@ -77,10 +113,10 @@ target 'Artsy' do
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
-  pod 'Emission', path: './emission'
+  pod 'Emission', path: './emission', :inhibit_warnings => false
 
-  # For Stripe integration with Emission. Using Ash's fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
-  pod 'Pulley', git: 'https://github.com/brainbicycle/Pulley.git', branch: 'master'
+  # For Stripe integration with Emission. Using a fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
+  pod 'Pulley', git: 'https://github.com/artsy/Pulley.git', branch: 'master'
 
   # Facebook
   pod 'FBSDKCoreKit', '~> 8.0.0'
@@ -97,7 +133,7 @@ target 'Artsy' do
 
   # Swift pods 🎉
   pod 'Then'
-  pod 'Interstellar/Core', git: 'https://github.com/ashfurrow/Interstellar.git', branch: 'observable-unsubscribe'
+  pod 'Interstellar/Core', git: 'https://github.com/artsy/Interstellar.git', branch: 'observable-unsubscribe'
   pod 'Starscream'
   pod 'SwiftyJSON'
 
@@ -129,6 +165,9 @@ end
 use_flipper!
 post_install do |installer|
   flipper_post_install(installer)
+
+  remove_mapbox_creds
+
   # So we can show some of this stuff in the Admin panel
   emission_podspec_json = installer.pod_targets.find { |f| f.name == 'Emission' }.specs[0].to_json
   File.write('Pods/Local Podspecs/Emission.podspec.json', emission_podspec_json)

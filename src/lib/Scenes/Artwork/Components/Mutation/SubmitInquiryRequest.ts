@@ -8,7 +8,8 @@ export const SubmitInquiryRequest = (
   inquireable: any,
   inquiryState: ArtworkInquiryContextState,
   setMutationSuccessful: (arg0: boolean) => void,
-  showErrorMessage?: any
+  setMutationError: (arg0: boolean) => void,
+  trackError: () => void
 ) => {
   const formattedQuestions = inquiryState.inquiryQuestions.map((q: InquiryQuestionInput) => {
     if (q.questionID === "shipping_quote" && inquiryState.shippingLocation) {
@@ -30,7 +31,8 @@ export const SubmitInquiryRequest = (
 
   return commitMutation<SubmitInquiryRequestMutation>(environment, {
     onError: () => {
-      showErrorMessage(true)
+      trackError()
+      setMutationError(true)
     },
     onCompleted: () => {
       setMutationSuccessful(true)

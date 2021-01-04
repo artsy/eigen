@@ -15,7 +15,7 @@ class SaleViewModelTests: QuickSpec {
             let url = "http://example.com"
             sale.setValue(["wide": url] as NSDictionary, forKey: "imageURLs")
 
-            let subject = SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: [], lotStandings: [], me: User())
+            let subject = SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: [], me: User())
 
             expect(subject.backgroundImageURL?.absoluteString) == url
         }
@@ -24,39 +24,13 @@ class SaleViewModelTests: QuickSpec {
             let url = "http://example.com"
             sale.profile = try! Profile(dictionary:  ["iconURLs": ["square": url]], error: Void())
 
-            let subject = SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: [], lotStandings: [], me: User())
+            let subject = SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: [], me: User())
 
             expect(subject.profileImageURL?.absoluteString) == url
         }
 
-        describe("pruning items when refining") {
-            var subject: SaleViewModel!
-
-            beforeEach {
-                subject = SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: [], lotStandings: [], me: User())
-            }
-
-            it("includes high and low inclusive") {
-                let refinedArtworks = subject.refinedSaleArtworks(AuctionRefineSettings(ordering: .LotNumber, priceRange: (min: 500, max: 1500), saleViewModel: subject))
-
-                expect(refinedArtworks.count) == 2
-            }
-
-            it("excludes low low estimates") {
-                let refinedArtworks = subject.refinedSaleArtworks(AuctionRefineSettings(ordering: .LotNumber, priceRange: (min: 1000, max: 1500), saleViewModel: subject))
-
-                expect(refinedArtworks.count) == 1
-            }
-
-            it("excludes high low estimates") {
-                let refinedArtworks = subject.refinedSaleArtworks(AuctionRefineSettings(ordering: .LotNumber, priceRange: (min: 500, max: 1000), saleViewModel: subject))
-
-                expect(refinedArtworks.count) == 1
-            }
-        }
-
         it("calculates a lowEstimate range") {
-            let subject = SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: [], lotStandings: [], me: User())
+            let subject = SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: [], me: User())
 
             let range = subject.lowEstimateRange
 
@@ -66,34 +40,34 @@ class SaleViewModelTests: QuickSpec {
 
         it("calculates a lowEstimate range when a lowEstimate is nil") {
             let nilInfestedSaleArtworks = saleArtworks + [testSaleArtworkEstimateAt(nil)]
-            let subject = SaleViewModel(sale: sale, saleArtworks: nilInfestedSaleArtworks, bidders: [], lotStandings: [], me: User())
+            let subject = SaleViewModel(sale: sale, saleArtworks: nilInfestedSaleArtworks, bidders: [], me: User())
 
             expect(subject.lowEstimateRange).notTo( raiseException() )
         }
 
         it("calculates a lowEstimate range when all lowEstimates are nil") {
-            let subject = SaleViewModel(sale: sale, saleArtworks: [testSaleArtworkEstimateAt(nil)], bidders: [], lotStandings: [], me: User())
+            let subject = SaleViewModel(sale: sale, saleArtworks: [testSaleArtworkEstimateAt(nil)], bidders: [], me: User())
 
             expect(subject.lowEstimateRange).notTo( raiseException() )
         }
 
         it("deals with auctions that have not started ") {
             let sale = testSaleWithDates(NSDate.distantFuture as NSDate, end: NSDate.distantFuture as NSDate)
-            let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], lotStandings: [], me: User())
+            let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], me: User())
 
             expect(subject.saleAvailability).to( equal(  SaleAvailabilityState.notYetOpen ) )
         }
 
         it("deals with auctions that have finished ") {
             let sale = testSaleWithDates(NSDate.distantPast as NSDate, end: NSDate.distantPast as NSDate)
-            let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], lotStandings: [], me: User())
+            let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], me: User())
 
             expect(subject.saleAvailability).to( equal( SaleAvailabilityState.closed ) )
         }
 
         it("deals with auctions that are active ") {
             let sale = testSaleWithDates(NSDate.distantPast as NSDate, end: NSDate.distantFuture as NSDate)
-            let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], lotStandings: [], me: User())
+            let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], me: User())
 
             expect(subject.saleAvailability).to( equal( SaleAvailabilityState.active(liveAuctionDate: nil) ) )
         }
@@ -104,7 +78,7 @@ class SaleViewModelTests: QuickSpec {
 
             let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast, "endDate": NSDate.distantFuture, "liveAuctionStartDate": soon, "saleState": NSNumber(value: SaleStatePreview.rawValue)], error: Void())
 
-            let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], lotStandings: [], me: User())
+            let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], me: User())
 
             expect(subject.saleAvailability).to( equal( SaleAvailabilityState.active(liveAuctionDate: soon as Date) ) )
         }
@@ -114,7 +88,7 @@ class SaleViewModelTests: QuickSpec {
 
             let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast, "endDate": NSDate.distantFuture, "liveAuctionStartDate": before, "saleState": NSNumber(value: SaleStateOpen.rawValue)], error: Void())
 
-            let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], lotStandings: [], me: User())
+            let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], me: User())
 
             expect(subject.isRunningALiveAuction) == true
             expect(subject.shouldShowLiveInterface) == true
@@ -126,21 +100,9 @@ class SaleViewModelTests: QuickSpec {
 
             let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast, "endDate": end, "liveAuctionStartDate": before, "saleState": NSNumber(value: SaleStateClosed.rawValue)], error: Void())
 
-            let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], lotStandings: [], me: User())
+            let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [], me: User())
 
             expect(subject.shouldShowLiveInterface) == false
-        }
-
-        it("returns false for hasLotStandings for empty standings") {
-            let subject = SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: [], lotStandings: [], me: User())
-
-            expect(subject.hasLotStandings) == false
-        }
-
-        it("returns true for hasLotStandings for non-empty standings") {
-            let subject = SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: [], lotStandings: [LotStanding()], me: User())
-
-            expect(subject.hasLotStandings) == true
         }
     }
 }

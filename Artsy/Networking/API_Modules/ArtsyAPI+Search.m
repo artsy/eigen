@@ -4,8 +4,6 @@
 #import "Artist.h"
 #import "Gene.h"
 #import "ARRouter.h"
-#import "SearchResult.h"
-#import "SearchSuggestion.h"
 
 #import "MTLModel+JSON.h"
 #import "AFHTTPRequestOperation+JSON.h"

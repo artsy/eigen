@@ -1,7 +1,6 @@
 #import "ARSlideshowViewController.h"
 
 #import "ARSlideshowView.h"
-#import "ARDeveloperOptions.h"
 
 #import "UIDevice-Hardware.h"
 
@@ -12,7 +11,6 @@
 @interface ARSlideshowViewController ()
 @property (nonatomic, readonly) NSArray *slides;
 @property (nonatomic) ARSlideshowView *view;
-@property (nonatomic, assign, readonly) BOOL isDeveloper;
 @end
 
 
@@ -28,7 +26,6 @@
     }
 
     _slides = slides;
-    _isDeveloper = [[ARDeveloperOptions options] isDeveloper];
 
     return self;
 }
@@ -58,13 +55,7 @@
 
 - (void)runSlideshow
 {
-    // devs get it fast
-    if (self.isDeveloper) {
-        [self performSelector:@selector(nextSlide) withObject:nil afterDelay:0.1];
-
-    } else {
-        [self performSelector:@selector(nextSlide) withObject:nil afterDelay:0.6];
-    }
+    [self performSelector:@selector(nextSlide) withObject:nil afterDelay:0.6];
 }
 
 - (void)nextSlide
@@ -80,7 +71,6 @@
     NSInteger slidesLeft = self.slides.count - currentSlide;
     CGFloat delay = 0.6 + (0.1 * slidesLeft);
 
-    delay = self.isDeveloper ? 0.1 : delay;
     [self performSelector:@selector(nextSlide) withObject:nil afterDelay:delay];
 }
 

@@ -4,7 +4,6 @@
 #import "ARAppConstants.h"
 #import "ARStandardDateFormatter.h"
 #import "NSDate+DateRange.h"
-#import "ARPartnerShowFeedItem.h"
 #import "ARFileUtils.h"
 #import "FairOrganizer.h"
 #import "PartnerShow.h"

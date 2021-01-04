@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType, tappedInfoBubble } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, tappedInfoBubble, TappedShowMore } from "@artsy/cohesion"
 import { MyCollectionArtworkArtistAuctionResults_artwork } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResult"
@@ -70,7 +70,12 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
         <Box pt={3}>
           <CaretButton
             data-test-id="AuctionsResultsButton"
-            onPress={() => navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-results`)}
+            onPress={() => {
+              trackEvent(
+                tracks.tappedShowMore(props.artwork?.internalID, props.artwork?.slug, "Explore auction results")
+              )
+              navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-results`)
+            }}
             text="Explore auction results"
           />
         </Box>
@@ -109,11 +114,22 @@ export const MyCollectionArtworkArtistAuctionResultsFragmentContainer = createFr
 const tracks = {
   tappedInfoBubble: (internalID: string, slug: string) => {
     return tappedInfoBubble({
-      contextModule: ContextModule.myCollectionArtwork,
+      contextModule: ContextModule.auctionResults,
       contextScreenOwnerType: OwnerType.myCollectionArtwork,
       contextScreenOwnerId: internalID,
       contextScreenOwnerSlug: slug,
       subject: "auctionResults",
     })
+  },
+  tappedShowMore: (internalID: string, slug: string, subject: string) => {
+    const tappedShowMore: TappedShowMore = {
+      action: ActionType.tappedShowMore,
+      context_module: ContextModule.auctionResults,
+      context_screen_owner_type: OwnerType.myCollectionArtwork,
+      context_screen_owner_id: internalID,
+      context_screen_owner_slug: slug,
+      subject,
+    }
+    return tappedShowMore
   },
 }
