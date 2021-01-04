@@ -107,7 +107,7 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
   )
 }
 
-const ratioColor = (ratio: number) => {
+export const ratioColor = (ratio: number) => {
   if (ratio >= 1.05) {
     return "green100"
   }
