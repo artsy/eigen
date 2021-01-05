@@ -43,11 +43,11 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
 
   return (
     <View>
+      {props.fairsModule.results.length ? <FairHeader /> : null}
       <CardRailFlatList<FairItem>
         listRef={listRef}
         data={props.fairsModule.results}
         ListEmptyComponent={() => <React.Fragment />}
-        ListHeaderComponent={() => (props.fairsModule.results.length ? <FairHeader /> : null)}
         renderItem={({ item: result, index }) => {
           // Fairs are expected to always have >= 2 artworks and a hero image.
           // We can make assumptions about this in UI layout, but should still
