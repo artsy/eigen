@@ -266,7 +266,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     @objc func moreInfo() {
         guard let sale = saleNetworkModel.sale else { return }
 
-        let saleVM = SaleViewModel(sale: sale, saleArtworks: [], bidders: biddersNetworkModel.bidders, lotStandings: [], me: User.current())
+        let saleVM = SaleViewModel(sale: sale, saleArtworks: [], bidders: biddersNetworkModel.bidders, me: User.current())
 
         let saleInfoVC = AuctionInformationViewController(saleViewModel: saleVM)
         saleInfoVC.titleViewDelegate = self

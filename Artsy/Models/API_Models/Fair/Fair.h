@@ -1,4 +1,4 @@
-#import "ARSpotlight.h"
+#import "ARUserActivity.h"
 #import "Partner.h"
 #import "FairOrganizer.h"
 

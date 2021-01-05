@@ -4,7 +4,7 @@
 
 @implementation UIViewController (ARUserActivity)
 
-- (void)setAr_userActivityEntity:(id<ARSpotlightMetadataProvider>)entity;
+- (void)setAr_userActivityEntity:(id<ARContinuityMetadataProvider>)entity;
 {
     __weak typeof (self) wself = self;
     [self ar_withLoadedData:^{

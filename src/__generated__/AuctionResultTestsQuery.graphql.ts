@@ -1,7 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
+<<<<<<< HEAD:src/__generated__/AuctionResultTestsQuery.graphql.ts
 /* @relayHash b7ed95d863889f418d87237f834a752e */
+=======
+/* @relayHash 1d582fc173b03f57f4fa5b87381f2f23 */
+>>>>>>> master:src/__generated__/ArtistInsightsAuctionResultTestsQuery.graphql.ts
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -385,7 +389,11 @@ return {
     ]
   },
   "params": {
+<<<<<<< HEAD:src/__generated__/AuctionResultTestsQuery.graphql.ts
     "id": "b7ed95d863889f418d87237f834a752e",
+=======
+    "id": "1d582fc173b03f57f4fa5b87381f2f23",
+>>>>>>> master:src/__generated__/ArtistInsightsAuctionResultTestsQuery.graphql.ts
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {

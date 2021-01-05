@@ -1,10 +1,10 @@
 import { dimensions, screen } from "lib/data/ScreenSizes/screenSizes"
 import { CircleWhiteCheckIcon } from "lib/Icons/CircleWhiteCheckIcon"
-import { navigate } from "lib/navigation/navigate"
-import { Schema, screenTrack, track } from "lib/utils/track"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, color, Flex, Sans, Separator, Serif, space } from "palette"
-import React, { Component } from "react"
-import { Dimensions, NativeModules, TouchableOpacity } from "react-native"
+import React, { useEffect, useState } from "react"
+import { NativeModules, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 import cities from "../../../../data/cityDataSortedByDisplayPreference.json"
 import { BMWSponsorship } from "../City/CityBMWSponsorship"
@@ -14,76 +14,46 @@ interface Props {
   sponsoredContentUrl?: string
 }
 
-interface State {
-  selectedCity: string | null
-}
-
 const cityList = cities.map((city) => city.name)
 
-@screenTrack(() => ({
-  context_screen: Schema.PageNames.CityPicker,
-  context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
-}))
-export class CityPicker extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
+export const CityPicker: React.FC<Props> = (props) => {
+  const [selectedCity, setSelectedCity] = useState<string | null>(props.selectedCity)
 
-    this.state = {
-      selectedCity: props.selectedCity,
-    }
-  }
-
-  clearSelectedCityState() {
-    this.setState({ selectedCity: null })
-  }
-
-  selectCity(city: string, index: number) {
-    this.setState({ selectedCity: city }, this.clearSelectedCityState)
+  const selectCity = (city: string, index: number) => {
+    setSelectedCity(city)
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryUserSelectedCity", { cityIndex: index })
   }
 
-  handleLogo(screenHeight: number) {
-    return (
-      <Sans size={dimensions(screenHeight)[screen(screenHeight)].logoFontSize} weight="medium" ml={2} mt={2}>
-        Presented in partnership with BMW
-      </Sans>
-    )
-  }
+  useEffect(() => {
+    if (selectedCity === null) {
+      return
+    }
+    setSelectedCity(null)
+  }, [selectedCity])
 
-  handleCityList(screenHeight: number, city: string) {
+  const handleCityList = (scrnHeight: number, city: string) => {
     return (
       <Serif
         mt={1}
-        size={dimensions(screenHeight)[screen(screenHeight)].cityFontSize}
-        lineHeight={dimensions(screenHeight)[screen(screenHeight)].lineHeight}
+        size={dimensions(scrnHeight)[screen(scrnHeight)].cityFontSize}
+        lineHeight={dimensions(scrnHeight)[screen(scrnHeight)].lineHeight}
       >
         {city}
       </Serif>
     )
   }
 
-  @track(() => {
-    return {
-      action_name: Schema.ActionNames.BMWLogo,
-      action_type: Schema.ActionTypes.Tap,
-    } as any
-  })
-  navigateToBMWArtGuide() {
-    const { sponsoredContentUrl } = this.props
-
-    /** Here we default to the hardcoded url as on the City Picker's inital load City is undefined
-     *  and therefore does not have a sponsoredContentUrl property on City
-     */
-    navigate(sponsoredContentUrl || "https://www.bmw-arts-design.com/bmw_art_guide")
-  }
+  const { height: screenHeight } = useScreenDimensions()
+  const { sponsoredContentUrl } = props
 
   // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
-  render() {
-    const { selectedCity } = this.state
-    const { height: screenHeight } = Dimensions.get("window")
-    const { sponsoredContentUrl } = this.props
-
-    return (
+  return (
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.CityPicker,
+        context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+      }}
+    >
       <Overlay bounces={false} showsVerticalScrollIndicator={false}>
         <Box ml={2}>
           <Sans size="3" weight="medium">
@@ -93,9 +63,9 @@ export class CityPicker extends Component<Props, State> {
         <Box mx={2}>
           {cityList.map((city, i) => (
             <Box key={i}>
-              <TouchableOpacity onPress={() => this.selectCity(city, i)}>
+              <TouchableOpacity onPress={() => selectCity(city, i)}>
                 <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                  {this.handleCityList(screenHeight, city)}
+                  {handleCityList(screenHeight, city)}
                   {selectedCity === city && (
                     <Box mb={2} mt={2}>
                       <CircleWhiteCheckIcon width={26} height={26} />
@@ -111,8 +81,8 @@ export class CityPicker extends Component<Props, State> {
           </LogoContainer>
         </Box>
       </Overlay>
-    )
-  }
+    </ProvideScreenTracking>
+  )
 }
 
 const Overlay = styled.ScrollView`

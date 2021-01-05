@@ -211,5 +211,9 @@ const node: ReaderFragment = {
   "type": "AuctionResult",
   "abstractKey": null
 };
+<<<<<<< HEAD:src/__generated__/AuctionResult_auctionResult.graphql.ts
 (node as any).hash = '09489d07ebc10408b00b027665c371ab';
+=======
+(node as any).hash = '32ea7fae93748b956187feefc9517af4';
+>>>>>>> master:src/__generated__/ArtistInsightsAuctionResult_auctionResult.graphql.ts
 export default node;

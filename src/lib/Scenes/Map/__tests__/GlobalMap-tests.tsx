@@ -4,7 +4,7 @@ import { graphql } from "react-relay"
 import { GlobalMapContainer } from "../GlobalMap"
 
 jest.unmock("react-relay")
-jest.mock("@mapbox/react-native-mapbox-gl", () => ({
+jest.mock("@react-native-mapbox-gl/maps", () => ({
   StyleSheet: {
     create: jest.fn(),
     identity: jest.fn(),

@@ -3,7 +3,6 @@
 #import "ARLogger.h"
 #import "ARMacros.h"
 #import "LiveBidder.h"
-#import "ARDeveloperOptions.h"
 
 
 @implementation LiveEvent

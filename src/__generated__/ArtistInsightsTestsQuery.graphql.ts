@@ -1,7 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
+<<<<<<< HEAD
 /* @relayHash 193c980a2d37ba41f37e9b8f26e0acef */
+=======
+/* @relayHash 2814683178a8cf8893817007457734c1 */
+>>>>>>> master
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,12 +31,18 @@ query ArtistInsightsTestsQuery {
 }
 
 fragment ArtistInsightsAuctionResults_artist on Artist {
+<<<<<<< HEAD
   slug
+=======
+>>>>>>> master
   auctionResultsConnection(first: 10, sort: DATE_DESC) {
     edges {
       node {
         id
+<<<<<<< HEAD
         internalID
+=======
+>>>>>>> master
         ...AuctionResult_auctionResult
         __typename
       }
@@ -436,7 +446,11 @@ return {
     ]
   },
   "params": {
+<<<<<<< HEAD
     "id": "193c980a2d37ba41f37e9b8f26e0acef",
+=======
+    "id": "2814683178a8cf8893817007457734c1",
+>>>>>>> master
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {

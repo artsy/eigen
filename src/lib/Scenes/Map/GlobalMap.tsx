@@ -1,5 +1,4 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import Mapbox from "@mapbox/react-native-mapbox-gl"
+import MapboxGL, { OnPressEvent } from "@react-native-mapbox-gl/maps"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
@@ -18,7 +17,7 @@ import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 // @ts-ignore
 import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
-import Supercluster from "supercluster"
+import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
 import { cityTabs } from "../City/cityTabs"
 import { bucketCityResults, BucketKey, BucketResults, emptyBucketResults } from "./bucketCityResults"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
@@ -26,14 +25,10 @@ import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { Fair, FilterData, MapGeoFeature, OSCoordsUpdate, RelayErrorState, Show } from "./types"
+import { Fair, FilterData, RelayErrorState, Show } from "./types"
 
-Mapbox.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
+MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
-const Map: React.ComponentType<any /* STRICTNESS_MIGRATION */> = styled(Mapbox.MapView)`
-  height: ${Dimensions.get("window").height};
-  width: 100%;
-`
 const AnimatedView = animated(View)
 
 const ShowCardContainer = styled(Box)`
@@ -100,9 +95,9 @@ interface State {
   /** In the process of saving a show */
   isSavingShow: boolean
   /** Cluster map data used to populate selected cluster annotation */
-  nearestFeature: MapGeoFeature
+  nearestFeature: PointFeature<ClusterProperties & AnyProps> | PointFeature<AnyProps> | null
   /** Cluster map data used currently in view window */
-  activePin: MapGeoFeature
+  activePin: GeoJSON.Feature | null
   /** Current map zoom level */
   currentZoom: number
 }
@@ -112,7 +107,6 @@ export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfo
 const DefaultZoomLevel = 11
 const MinZoomLevel = 9
 const MaxZoomLevel = 17.5
-const DefaultCameraMode = 1 // https://github.com/nitaliano/react-native-mapbox-gl/blob/master/ios/RCTMGL/CameraMode.m
 
 const ButtonAnimation = {
   yDelta: -300,
@@ -140,19 +134,12 @@ enum DrawerPosition {
 })
 export class GlobalMap extends React.Component<Props, State> {
   /** Makes sure we're consistently using { lat, lng } internally */
-  static lngLatArrayToLocation(arr: [number, number] | undefined) {
-    if (!arr || arr.length !== 2) {
-      return undefined
-    }
-    return { lng: arr[0], lat: arr[1] }
-  }
-
-  /** Makes sure we're consistently using { lat, lng } internally */
   static longCoordsToLocation(coords: { longitude: number; latitude: number }) {
     return { lat: coords.latitude, lng: coords.longitude }
   }
 
-  map: Mapbox.MapView
+  map: React.RefObject<MapboxGL.MapView>
+  camera: React.RefObject<MapboxGL.Camera>
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   filters: { [key: string]: FilterData }
   hideButtons = new Animated.Value(0)
@@ -162,39 +149,12 @@ export class GlobalMap extends React.Component<Props, State> {
   shows: { [id: string]: Show } = {}
   fairs: { [id: string]: Fair } = {}
 
-  stylesheet = Mapbox.StyleSheet.create({
-    singleShow: {
-      iconImage: Mapbox.StyleSheet.identity("icon"),
-      iconSize: 0.8,
-    },
-
-    clusteredPoints: {
-      circlePitchAlignment: "map",
-      circleColor: "black",
-
-      circleRadius: Mapbox.StyleSheet.source(
-        [
-          [0, 15],
-          [5, 20],
-          [30, 30],
-        ],
-        "point_count",
-        Mapbox.InterpolationMode.Exponential
-      ),
-    },
-
-    clusterCount: {
-      textField: "{point_count}",
-      textSize: 14,
-      textColor: "white",
-      textFont: ["Unica77 LL Medium"],
-      textPitchAlignment: "map",
-    },
-  })
-
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
+
+    this.map = React.createRef()
+    this.camera = React.createRef()
 
     const currentLocation = this.props.initialCoordinates || get(this.props, "viewer.city.coordinates")
     this.state = {
@@ -206,9 +166,7 @@ export class GlobalMap extends React.Component<Props, State> {
       featureCollections: null,
       mapLoaded: false,
       isSavingShow: false,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       nearestFeature: null,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       activePin: null,
       currentZoom: DefaultZoomLevel,
     }
@@ -218,20 +176,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   handleFilterChange = (activeIndex) => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.setState({ activeIndex, activePin: null, activeShows: [] })
-  }
-
-  resetZoomAndCamera = () => {
-    if (this.map) {
-      this.map.setCamera({
-        mode: DefaultCameraMode,
-        zoom: DefaultZoomLevel,
-        pitch: 0,
-        heading: 0,
-        duration: 1000,
-      })
-    }
   }
 
   componentDidMount() {
@@ -260,11 +205,7 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    const { citySlug, relayErrorState } = this.props
-
-    if (citySlug && citySlug !== nextProps.citySlug) {
-      setTimeout(this.resetZoomAndCamera, 500)
-    }
+    const { relayErrorState } = this.props
 
     // If there is a new city, enity it and update our map.
     if (nextProps.viewer) {
@@ -408,15 +349,19 @@ export class GlobalMap extends React.Component<Props, State> {
 
   renderSelectedPin() {
     const { activeShows, activePin } = this.state
+    if (activePin === null || activePin.properties === null) {
+      return null
+    }
+
     const {
       properties: { cluster, type },
     } = activePin
 
     if (cluster) {
       const {
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         nearestFeature: { properties, geometry },
       } = this.state
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const [clusterLat, clusterLng] = geometry.coordinates
 
       const clusterId = properties.cluster_id.toString()
@@ -430,13 +375,18 @@ export class GlobalMap extends React.Component<Props, State> {
         clusterLat &&
         clusterLng &&
         pointCount && (
-          <Mapbox.PointAnnotation key={clusterId} id={clusterId} selected={true} coordinate={[clusterLat, clusterLng]}>
+          <MapboxGL.PointAnnotation
+            key={clusterId}
+            id={clusterId}
+            selected={true}
+            coordinate={[clusterLat, clusterLng]}
+          >
             <SelectedCluster width={radius} height={radius}>
               <Sans size="3" weight="medium" color={color("white100")}>
                 {pointCount}
               </Sans>
             </SelectedCluster>
-          </Mapbox.PointAnnotation>
+          </MapboxGL.PointAnnotation>
         )
       )
     }
@@ -456,9 +406,9 @@ export class GlobalMap extends React.Component<Props, State> {
         lat &&
         lng &&
         id && (
-          <Mapbox.PointAnnotation key={id} id={id} coordinate={[lng, lat]}>
+          <MapboxGL.PointAnnotation key={id} id={id} coordinate={[lng, lat]}>
             <PinFairSelected />
-          </Mapbox.PointAnnotation>
+          </MapboxGL.PointAnnotation>
         )
       )
     } else if (type === "Show") {
@@ -468,13 +418,13 @@ export class GlobalMap extends React.Component<Props, State> {
         lat &&
         lng &&
         id && (
-          <Mapbox.PointAnnotation key={id} id={id} selected={true} coordinate={[lng, lat]}>
+          <MapboxGL.PointAnnotation key={id} id={id} selected={true} coordinate={[lng, lat]}>
             {isSaved ? (
               <PinSavedSelected pinHeight={45} pinWidth={45} />
             ) : (
               <Pin pinHeight={45} pinWidth={45} selected={true} />
             )}
-          </Mapbox.PointAnnotation>
+          </MapboxGL.PointAnnotation>
         )
       )
     }
@@ -541,17 +491,21 @@ export class GlobalMap extends React.Component<Props, State> {
     )
   }
 
-  onUserLocationUpdate = (location: OSCoordsUpdate) => {
+  onUserLocationUpdate = (location: MapboxGL.Location) => {
+    if (!location || !location.coords) {
+      return
+    }
+
     this.setState({
-      userLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
+      userLocation: GlobalMap.longCoordsToLocation(location.coords),
     })
   }
 
   onRegionIsChanging = async () => {
-    if (!this.map) {
+    if (!this.map.current) {
       return
     }
-    const zoom = Math.floor(await this.map.getZoom())
+    const zoom = Math.floor((await this.map.current.getZoom()) ?? DefaultZoomLevel)
 
     if (!this.currentZoom) {
       this.currentZoom = zoom
@@ -559,7 +513,6 @@ export class GlobalMap extends React.Component<Props, State> {
 
     if (this.currentZoom !== zoom) {
       this.setState({
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         activePin: null,
       })
     }
@@ -574,7 +527,6 @@ export class GlobalMap extends React.Component<Props, State> {
     if (!this.state.isSavingShow) {
       this.setState({
         activeShows: [],
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         activePin: null,
       })
     }
@@ -583,7 +535,6 @@ export class GlobalMap extends React.Component<Props, State> {
   onPressCitySwitcherButton = () => {
     this.setState({
       activeShows: [],
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       activePin: null,
     })
   }
@@ -591,16 +542,11 @@ export class GlobalMap extends React.Component<Props, State> {
   onPressUserPositionButton = () => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const { lat, lng } = this.state.userLocation
-    this.map.moveTo([lng, lat], 500)
-  }
-
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  onPressPinShapeLayer = (e) => this.handleFeaturePress(e.nativeEvent)
-
-  storeMapRef = (c: any) => {
-    if (c) {
-      this.map = c
-    }
+    this.camera.current?.setCamera({
+      centerCoordinate: [lng, lat],
+      zoomLevel: DefaultZoomLevel,
+      animationDuration: 500,
+    })
   }
 
   get currentFeatureCollection(): FilterData {
@@ -619,7 +565,7 @@ export class GlobalMap extends React.Component<Props, State> {
     const mapProps = {
       showUserLocation: true,
       styleURL: ArtsyMapStyleURL,
-      userTrackingMode: Mapbox.UserTrackingModes.Follow,
+      userTrackingMode: MapboxGL.UserTrackingModes.Follow,
       centerCoordinate: [centerLng, centerLat],
       zoomLevel: DefaultZoomLevel,
       minZoomLevel: MinZoomLevel,
@@ -677,30 +623,38 @@ export class GlobalMap extends React.Component<Props, State> {
           }}
           precision={1}
         >
-          {({ opacity }: any /* STRICTNESS_MIGRATION */) => (
+          {({ opacity }: { opacity: number }) => (
             <AnimatedView style={{ flex: 1, opacity }}>
-              <Map
+              <MapboxGL.MapView
+                ref={this.map}
+                style={{ width: "100%", height: Dimensions.get("window").height }}
                 {...mapProps}
                 onRegionIsChanging={this.onRegionIsChanging}
-                onUserLocationUpdate={this.onUserLocationUpdate}
                 onDidFinishRenderingMapFully={this.onDidFinishRenderingMapFully}
                 onPress={this.onPressMap}
-                ref={this.storeMapRef}
               >
+                <MapboxGL.Camera
+                  ref={this.camera}
+                  animationMode="flyTo"
+                  minZoomLevel={MinZoomLevel}
+                  maxZoomLevel={MaxZoomLevel}
+                  centerCoordinate={[centerLng, centerLat]}
+                />
+                <MapboxGL.UserLocation onUpdate={this.onUserLocationUpdate} />
                 {!!city && (
                   <>
                     {!!this.state.featureCollections && (
                       <PinsShapeLayer
                         filterID={cityTabs[this.state.activeIndex].id}
                         featureCollections={this.state.featureCollections}
-                        onPress={(e: any) => this.handleFeaturePress(e.nativeEvent)}
+                        onPress={(e) => this.handleFeaturePress(e)}
                       />
                     )}
                     <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
                     {!!mapLoaded && !!activeShows && !!activePin && this.renderSelectedPin()}
                   </>
                 )}
-              </Map>
+              </MapboxGL.MapView>
             </AnimatedView>
           )}
         </Spring>
@@ -721,16 +675,16 @@ export class GlobalMap extends React.Component<Props, State> {
    * What's happening is that we have to replicate a subset of the map's clustering algorithm to get
    * access to the shows that the user has tapped on.
    */
-  async handleFeaturePress(nativeEvent: any) {
-    if (!this.map) {
+  async handleFeaturePress(event: OnPressEvent) {
+    if (!this.map.current) {
       return
     }
     const {
-      payload: {
-        properties: { slug, cluster, type },
-        geometry: { coordinates },
-      },
-    } = nativeEvent
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+      properties: { slug, cluster, type },
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+      geometry: { coordinates },
+    } = event.features[0]
 
     this.updateDrawerPosition(DrawerPosition.collapsed)
 
@@ -759,11 +713,11 @@ export class GlobalMap extends React.Component<Props, State> {
     else {
       this.trackPinTap(Schema.ActionNames.ClusteredMapPin, null, Schema.OwnerEntityTypes.Show)
       // Get map zoom level and coordinates of where the user tapped
-      const zoom = Math.floor(await this.map.getZoom())
+      const zoom = Math.floor(await this.map.current.getZoom())
       const [lat, lng] = coordinates
 
       // Get coordinates of the map's current viewport bounds
-      const visibleBounds = await this.map.getVisibleBounds()
+      const visibleBounds = await this.map.current.getVisibleBounds()
       const [ne, sw] = visibleBounds
       const [eastLng, northLat] = ne
       const [westLng, southLat] = sw
@@ -780,14 +734,13 @@ export class GlobalMap extends React.Component<Props, State> {
 
     this.setState({
       activeShows,
-      activePin: nativeEvent.payload,
+      activePin: event.features[0],
     })
   }
 
   getNearestPointToLatLongInCollection(values: { lat: number; lng: number }, features: any[]) {
     // https://stackoverflow.com/a/21623206
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    function distance(lat1, lon1, lat2, lon2) {
+    function distance(lat1: number, lon1: number, lat2: number, lon2: number) {
       const p = 0.017453292519943295 // Math.PI / 180
       const c = Math.cos
       const a = 0.5 - c((lat2 - lat1) * p) / 2 + (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2

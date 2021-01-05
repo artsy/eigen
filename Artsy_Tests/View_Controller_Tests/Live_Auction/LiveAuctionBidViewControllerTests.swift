@@ -22,24 +22,6 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
             OHHTTPStubs.stubJSONResponse(forHost: "metaphysics*.artsy.net", withResponse: [:])
         }
 
-        it("looks right on phones") {
-            let devices: [ARDeviceType] = [.phone4, .phone6]
-            for device in devices {
-                ARTestContext.use(device) {
-                    subject = StoryboardScene.LiveAuctions.instantiateBid()
-
-                    let fakeSalesPerson = stub_auctionSalesPerson()
-                    let lotVM = fakeSalesPerson.lotViewModelForIndex(0)
-
-                    cacheColoredImageForURL(lotVM.urlForProfile)
-                    subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM, salesPerson: fakeSalesPerson)
-
-                    expect(subject).to(haveValidSnapshot(named: "bidding_on_\(device.rawValue)", usesDrawRect: true))
-
-                }
-            }
-        }
-
         describe("updating") {
             var lotVM: Test_LiveAuctionLotViewModel!
             var salesPerson: Stub_LiveAuctionsSalesPerson!

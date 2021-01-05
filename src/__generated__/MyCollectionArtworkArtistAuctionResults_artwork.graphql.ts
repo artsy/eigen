@@ -14,7 +14,10 @@ export type MyCollectionArtworkArtistAuctionResults_artwork = {
             readonly edges: ReadonlyArray<{
                 readonly node: {
                     readonly id: string;
+<<<<<<< HEAD
                     readonly internalID: string;
+=======
+>>>>>>> master
                     readonly " $fragmentRefs": FragmentRefs<"AuctionResult_auctionResult">;
                 } | null;
             } | null> | null;
@@ -35,13 +38,6 @@ var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-},
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "slug",
   "storageKey": null
 };
@@ -51,8 +47,14 @@ return {
   "metadata": null,
   "name": "MyCollectionArtworkArtistAuctionResults_artwork",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
+      "storageKey": null
+    },
     (v0/*: any*/),
-    (v1/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -61,7 +63,7 @@ return {
       "name": "artist",
       "plural": false,
       "selections": [
-        (v1/*: any*/),
+        (v0/*: any*/),
         {
           "alias": null,
           "args": null,
@@ -111,7 +113,10 @@ return {
                       "name": "id",
                       "storageKey": null
                     },
+<<<<<<< HEAD
                     (v0/*: any*/),
+=======
+>>>>>>> master
                     {
                       "args": null,
                       "kind": "FragmentSpread",
@@ -134,5 +139,9 @@ return {
   "abstractKey": null
 };
 })();
+<<<<<<< HEAD
 (node as any).hash = '2ae87f46d1b38f9b26baf45c714f8d46';
+=======
+(node as any).hash = '95464275e6fc83e3ea71dd7e3977012c';
+>>>>>>> master
 export default node;

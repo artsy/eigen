@@ -10,7 +10,10 @@ export type ArtistInsightsAuctionResults_artist = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
+<<<<<<< HEAD
                 readonly internalID: string;
+=======
+>>>>>>> master
                 readonly " $fragmentRefs": FragmentRefs<"AuctionResult_auctionResult">;
             } | null;
         } | null> | null;
@@ -166,5 +169,9 @@ const node: ReaderFragment = {
   "type": "Artist",
   "abstractKey": null
 };
+<<<<<<< HEAD
 (node as any).hash = 'e64452a8224c01ba6fbc85f375fd68bf';
+=======
+(node as any).hash = 'f707eba5d61481ecf444d2d401675ab1';
+>>>>>>> master
 export default node;

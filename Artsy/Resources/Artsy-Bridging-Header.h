@@ -16,8 +16,6 @@
 #import "ArtsyAPI+Sales.h"
 #import "ArtsyAPI+Pages.h"
 
-#import "ARSaleArtworkItemWidthDependentModule.h"
-
 #import "ARDefaults.h"
 #import "AROptions.h"
 #import "ARAppConstants.h"
@@ -32,7 +30,6 @@
 // Models.
 #import "Sale.h"
 #import "SaleArtwork.h"
-#import "LotStanding.h"
 #import "Artwork.h"
 #import "Artist.h"
 #import "Profile.h"
@@ -47,10 +44,6 @@
 #import "Artwork.h"
 #import "Gene.h"
 
-#import "AREmbeddedModelsViewController.h"
-#import "ARArtworkMasonryModule.h"
-#import "ARSaleArtworkItemFlowModule.h"
-#import "ARSaleArtworkItemMasonryModule.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARExternalWebBrowserViewController.h"
 
@@ -69,7 +62,6 @@
 #import "ARSerifNavigationViewController.h"
 
 #import "ARTextView.h"
-#import "ARCollapsableTextView.h"
 #import "ARFonts.h"
 #import "ARCustomEigenLabels.h"
 
@@ -86,7 +78,6 @@
 #import "AROfflineView.h"
 #import "ARBidButton.h"
 #import "ARSystemTime.h"
-#import "ARDeveloperOptions.h"
 
 #import "ORStackView+ArtsyViews.h"
 #import <CommonCrypto/CommonHMAC.h>
@@ -110,7 +101,6 @@
 #import <ORStackView/ORTagBasedAutoStackView.h>
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import <SDWebImage/UIImageView+WebCache.h>
-#import <SSFadingScrollView/SSFadingScrollView.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import "UIDevice-Hardware.h"

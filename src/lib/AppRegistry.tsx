@@ -18,6 +18,7 @@ import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSe
 import { ArtistShows2QueryRenderer } from "./Scenes/ArtistShows/ArtistShows2"
 import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
+import { ArtworkMediumQueryRenderer } from "./Scenes/ArtworkMedium"
 import { CityView } from "./Scenes/City"
 import { CityBMWListQueryRenderer } from "./Scenes/City/CityBMWList"
 import { CityFairListQueryRenderer } from "./Scenes/City/CityFairList"
@@ -353,6 +354,7 @@ export const modules = defineModules({
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
   Artwork: reactModule(Artwork),
+  ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   Auction: nativeModule(),
   Auction2: reactModule(SaleQueryRenderer, { fullBleed: true }),
@@ -447,7 +449,7 @@ const Main: React.FC<{}> = track()(({}) => {
   const onboardingState = GlobalStore.useAppState((state) => state.native.sessionState.onboardingState)
 
   if (!isHydrated) {
-    return <View></View>
+    return <View />
   }
   if (!isLoggedIn || onboardingState === "incomplete") {
     return <NativeViewController viewName="Onboarding" />
