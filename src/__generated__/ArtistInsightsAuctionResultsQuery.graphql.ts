@@ -1,11 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-<<<<<<< HEAD
 /* @relayHash 0736e6ab5fe27a1447cec6ca404b01f7 */
-=======
-/* @relayHash 09a48aff347a4c106a1f4e451fa943d7 */
->>>>>>> master
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -42,18 +38,12 @@ query ArtistInsightsAuctionResultsQuery(
 }
 
 fragment ArtistInsightsAuctionResults_artist_1RfMLO on Artist {
-<<<<<<< HEAD
   slug
-=======
->>>>>>> master
   auctionResultsConnection(first: $count, after: $cursor, sort: $sort) {
     edges {
       node {
         id
-<<<<<<< HEAD
         internalID
-=======
->>>>>>> master
         ...AuctionResult_auctionResult
         __typename
       }
@@ -463,11 +453,7 @@ return {
     ]
   },
   "params": {
-<<<<<<< HEAD
     "id": "0736e6ab5fe27a1447cec6ca404b01f7",
-=======
-    "id": "09a48aff347a4c106a1f4e451fa943d7",
->>>>>>> master
     "metadata": {},
     "name": "ArtistInsightsAuctionResultsQuery",
     "operationKind": "query",

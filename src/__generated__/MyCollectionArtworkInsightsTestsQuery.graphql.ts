@@ -1,11 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-<<<<<<< HEAD
-/* @relayHash 9f097fd3f2d3694efd188e82961166e4 */
-=======
-/* @relayHash 3b2c1f9375dd10f67329d56df512a1cb */
->>>>>>> master
+/* @relayHash 481f2e29dd796c37536c1f653f13e86d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -40,10 +36,7 @@ fragment AuctionResult_auctionResult on AuctionResult {
   currency
   dateText
   id
-<<<<<<< HEAD
   internalID
-=======
->>>>>>> master
   images {
     thumbnail {
       url(version: "square140")
@@ -105,10 +98,7 @@ fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
       edges {
         node {
           id
-<<<<<<< HEAD
           internalID
-=======
->>>>>>> master
           ...AuctionResult_auctionResult
         }
       }
@@ -388,10 +378,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v3/*: any*/),
-<<<<<<< HEAD
                           (v6/*: any*/),
-=======
->>>>>>> master
                           {
                             "alias": null,
                             "args": null,
@@ -832,11 +819,7 @@ return {
     ]
   },
   "params": {
-<<<<<<< HEAD
-    "id": "9f097fd3f2d3694efd188e82961166e4",
-=======
-    "id": "3b2c1f9375dd10f67329d56df512a1cb",
->>>>>>> master
+    "id": "481f2e29dd796c37536c1f653f13e86d",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -935,10 +918,7 @@ return {
         "artwork.artist.auctionResultsConnection.edges.node.images.thumbnail.height": (v11/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.images.thumbnail.url": (v8/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.images.thumbnail.width": (v11/*: any*/),
-<<<<<<< HEAD
         "artwork.artist.auctionResultsConnection.edges.node.internalID": (v7/*: any*/),
-=======
->>>>>>> master
         "artwork.artist.auctionResultsConnection.edges.node.mediumText": (v8/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.organization": (v8/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.priceRealized": {
