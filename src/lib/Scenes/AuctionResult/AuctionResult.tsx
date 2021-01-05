@@ -10,6 +10,7 @@ import { Box, Flex, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useMemo, useRef } from "react"
 import { Animated, Image, NativeScrollEvent, NativeSyntheticEvent, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
+import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
 const useStickyScrollHeader = ({
   header,
@@ -243,7 +244,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
                   backgroundColor={ratioColor(ratio)}
                   opacity={0.1}
                 />
-                <Text variant="mediumText" color={ratioColor(ratio)} px="5px">
+                <Text testID="ratio" variant="mediumText" color={ratioColor(ratio)} px="5px">
                   {ratio.toFixed(2)}x{" "}
                   {!!difference &&
                     `(${difference > 0 ? "+" : ""}${new Intl.NumberFormat().format(difference)} ${
@@ -270,10 +271,11 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
 export const AuctionResultQueryRenderer: React.FC<{
   auctionResultInternalID: string
   artistID: string
-}> = ({ auctionResultInternalID, artistID }) => {
+  environment: RelayModernEnvironment
+}> = ({ auctionResultInternalID, artistID, environment }) => {
   return (
     <QueryRenderer<AuctionResultQuery>
-      environment={defaultEnvironment}
+      environment={environment || defaultEnvironment}
       query={graphql`
         query AuctionResultQuery($auctionResultInternalID: String!, $artistID: String!) {
           auctionResult(id: $auctionResultInternalID) {
@@ -331,9 +333,9 @@ export const AuctionResultQueryRenderer: React.FC<{
 }
 
 const LoadingSkeleton = () => {
-  const fields = []
+  const stats = []
   for (let i = 0; i < 8; i++) {
-    fields.push(
+    stats.push(
       <Flex flexDirection="row" justifyContent="space-between" mb={2} key={i}>
         <PlaceholderBox width={80 + Math.round(Math.random() * 80)} height={20} />
         <PlaceholderBox width={80 + Math.round(Math.random() * 80)} height={20} />
@@ -368,7 +370,7 @@ const LoadingSkeleton = () => {
       {/* "Stats" */}
       <PlaceholderBox width={60} height={30} />
       <Spacer mb={2} />
-      {fields}
+      {stats}
     </Flex>
   )
 }
