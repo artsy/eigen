@@ -21,6 +21,9 @@ export type SaleActiveBidItem_lotStanding = {
         readonly currentBid: {
             readonly display: string | null;
         } | null;
+        readonly artwork: {
+            readonly href: string | null;
+        } | null;
         readonly " $fragmentRefs": FragmentRefs<"Lot_saleArtwork">;
     } | null;
     readonly sale: {
@@ -135,6 +138,24 @@ return {
           "storageKey": null
         },
         {
+          "alias": null,
+          "args": null,
+          "concreteType": "Artwork",
+          "kind": "LinkedField",
+          "name": "artwork",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "href",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
           "args": null,
           "kind": "FragmentSpread",
           "name": "Lot_saleArtwork"
@@ -165,5 +186,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'd302e29f49b91841ad1c497eed64f66f';
+(node as any).hash = '2860939b4f5e1c6d7ca54e2db34d37d2';
 export default node;
