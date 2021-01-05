@@ -655,8 +655,8 @@ describe("Applying filters on Artworks", () => {
   })
 })
 
-describe("Filter modal navigation flow", () => {
-  it("allows users to navigate forward to sort screen from filter screen", () => {
+describe("AnimatedArtworkFilterButton", () => {
+  it("Shows Sort & Filter when no text prop is available", () => {
     const tree = renderWithWrappers(
       <ArtworkFilterContext.Provider
         value={{
@@ -669,5 +669,20 @@ describe("Filter modal navigation flow", () => {
     )
 
     expect(tree.root.findAllByType(Sans)[0].props.children).toEqual("Sort & Filter")
+  })
+
+  it("Shows text when text prop is available", () => {
+    const tree = renderWithWrappers(
+      <ArtworkFilterContext.Provider
+        value={{
+          state,
+          dispatch: jest.fn(),
+        }}
+      >
+        <AnimatedArtworkFilterButton text="Filter Text" isVisible onPress={jest.fn()} />
+      </ArtworkFilterContext.Provider>
+    )
+
+    expect(tree.root.findAllByType(Sans)[0].props.children).toEqual("Filter Text")
   })
 })

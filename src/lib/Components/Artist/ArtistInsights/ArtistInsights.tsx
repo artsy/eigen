@@ -89,6 +89,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
           onPress={() => {
             // show filters modal
           }}
+          text="Filter auction results"
         />
       </Flex>
     </ArtworkFilterGlobalStateProvider>

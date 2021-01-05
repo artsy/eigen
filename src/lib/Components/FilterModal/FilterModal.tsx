@@ -427,9 +427,15 @@ export const FilterArtworkButton = styled(Flex)`
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.12);
 `
 
-export const AnimatedArtworkFilterButton: React.FC<{ isVisible: boolean; onPress: () => void }> = ({
+interface AnimatedArtworkFilterButtonProps {
+  isVisible: boolean
+  onPress: () => void
+  text?: string
+}
+export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonProps> = ({
   isVisible,
   onPress,
+  text,
 }) => {
   const { state } = useContext(ArtworkFilterContext)
 
@@ -458,7 +464,7 @@ export const AnimatedArtworkFilterButton: React.FC<{ isVisible: boolean; onPress
       <FilterArtworkButton px="2" style={roundedButtonStyle}>
         <FilterIcon fill="white100" />
         <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
-          Sort & Filter
+          {text || "Sort & Filter"}
         </Sans>
         {getFiltersCount() > 0 && (
           <>
