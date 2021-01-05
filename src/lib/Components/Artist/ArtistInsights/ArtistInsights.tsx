@@ -1,17 +1,44 @@
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
+import { AnimatedArtworkFilterButton } from "lib/Components/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Join, Separator, Text } from "palette"
-import React from "react"
-import { Image, TouchableOpacity } from "react-native"
+import React, { useState } from "react"
+import { Image, NativeScrollEvent, NativeSyntheticEvent, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { ReactElement } from "simple-markdown"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 
 interface ArtistInsightsProps {
   artist: ArtistInsights_artist
 }
 
+export interface ViewableItems {
+  viewableItems?: ViewToken[]
+}
+
+interface ViewToken {
+  item?: ReactElement
+  key?: string
+  index?: number | null
+  isViewable?: boolean
+  section?: any
+}
+
+const FILTER_BUTTON_OFFSET = 100
 export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
+  const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false)
+
+  // Show or hide floating filter button depending on the scroll position
+  const onScrollEndDrag = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (event.nativeEvent.targetContentOffset.y > FILTER_BUTTON_OFFSET) {
+      setIsFilterButtonVisible(true)
+      return
+    }
+    setIsFilterButtonVisible(false)
+  }
+
   const MarketStats = () => (
     <>
       {/* Market Stats Hint */}
@@ -49,12 +76,22 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
   )
 
   return (
-    <StickyTabPageScrollView contentContainerStyle={{ paddingTop: 20 }}>
-      <Join separator={<Separator my={2} ml={-2} width={useScreenDimensions().width} />}>
-        <MarketStats />
-        <ArtistInsightsAuctionResultsPaginationContainer artist={artist} />
-      </Join>
-    </StickyTabPageScrollView>
+    <ArtworkFilterGlobalStateProvider>
+      <StickyTabPageScrollView contentContainerStyle={{ paddingTop: 20 }} onScrollEndDrag={onScrollEndDrag}>
+        <Join separator={<Separator my={2} ml={-2} width={useScreenDimensions().width} />}>
+          <MarketStats />
+          <ArtistInsightsAuctionResultsPaginationContainer artist={artist} />
+        </Join>
+      </StickyTabPageScrollView>
+      <Flex position="absolute" width="100%" bottom={0}>
+        <AnimatedArtworkFilterButton
+          isVisible={isFilterButtonVisible}
+          onPress={() => {
+            // show filters modal
+          }}
+        />
+      </Flex>
+    </ArtworkFilterGlobalStateProvider>
   )
 }
 
