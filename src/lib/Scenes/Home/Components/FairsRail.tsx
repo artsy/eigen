@@ -35,15 +35,19 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
+  const FairHeader = () => (
+    <Flex pl="2" pr="2">
+      <SectionTitle title="Featured fairs" subtitle="See works in top art fairs" />
+    </Flex>
+  )
+
   return (
     <View>
-      <Flex pl="2" pr="2">
-        <SectionTitle title="Featured fairs" subtitle="See works in top art fairs" />
-      </Flex>
-
       <CardRailFlatList<FairItem>
         listRef={listRef}
         data={props.fairsModule.results}
+        ListEmptyComponent={() => <React.Fragment />}
+        ListHeaderComponent={() => (props.fairsModule.results.length ? <FairHeader /> : null)}
         renderItem={({ item: result, index }) => {
           // Fairs are expected to always have >= 2 artworks and a hero image.
           // We can make assumptions about this in UI layout, but should still
