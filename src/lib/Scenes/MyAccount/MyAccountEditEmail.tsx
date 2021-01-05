@@ -3,7 +3,7 @@ import { Input } from "lib/Components/Input/Input"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Spacer } from "palette"
+import { Spacer, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { string } from "yup"
@@ -12,23 +12,23 @@ import { MyAccountFieldEditScreen, MyAccountFieldEditScreenPlaceholder } from ".
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
 // TODO: This should be a dictionary with input name as key, message as value
-interface InputError {
-  key: "server" | "email" | "pass"
-  message: string
+interface FieldError {
+  email?: string
+  password?: string
+  server?: string
 }
 
 const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp }> = ({ me }) => {
   const [email, setEmail] = useState<string>(me.email ?? "")
   const [password, setPassword] = useState<string>("")
 
-  const [receivedError, setReceivedError] = useState<InputError | undefined>(undefined)
+  const [receivedError, setReceivedError] = useState<FieldError | undefined>(undefined)
 
   useEffect(() => {
     setReceivedError(undefined)
   }, [email])
 
-  const isEmailValid = Boolean(email && string().email().isValidSync(email))
-
+  const isEmailValid = Boolean(email && email !== me.email && string().email().isValidSync(email))
   const editScreenRef = useRef<MyAccountFieldEditScreen>(null)
 
   return (
@@ -38,26 +38,18 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
       canSave={isEmailValid}
       onSave={async (dismiss) => {
         try {
-          const response = await updateMyUserProfile({ email, password })
+          await updateMyUserProfile({ email, password })
           dismiss()
         } catch (e) {
-          console.log("EmailPass error", e)
-
           if (e.fieldErrors) {
             // input specific errors
-            for (const fieldError of e.fieldErrors) {
-              console.log(fieldError)
-            }
-          } else if (e.message) {
+            const formattedErrors = formatGravityErrors(e.fieldErrors)
+            setReceivedError(formattedErrors)
+          } else {
             setReceivedError({
-              name: "serverError",
-              er,
+              server: e.message,
             })
           }
-
-          // need to handle both form specific errors and server errors
-          //
-          setReceivedError(e)
         }
       }}
     >
@@ -75,22 +67,40 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
             editScreenRef.current?.save()
           }
         }}
-        error={receivedError}
+        error={receivedError?.email}
       />
       <Spacer my={0.5} />
       <Input
         autoCompleteType="password"
-        autoFocus
         onChangeText={setPassword}
         placeholder="Password"
         secureTextEntry
         enableClearButton
         title="Confirm password"
         value={password}
-        error={""}
+        error={receivedError?.password}
       />
+      <Text color="red100" variant="small" mt={1}>
+        {receivedError?.server}
+      </Text>
     </MyAccountFieldEditScreen>
   )
+}
+
+interface GravityFieldErrors {
+  fieldErrors: GravityFieldError[]
+}
+interface GravityFieldError {
+  name: "email" | "password" | "server"
+  message: string
+}
+
+const formatGravityErrors = ({ fieldErrors }: GravityFieldErrors) => {
+  const formatted: FieldError = {}
+  fieldErrors.map((err) => {
+    formatted[err.name] = err.message
+  })
+  return formatted
 }
 
 const MyAccountEditEmailPlaceholder: React.FC<{}> = ({}) => {
