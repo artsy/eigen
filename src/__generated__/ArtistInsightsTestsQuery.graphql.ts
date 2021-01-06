@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2814683178a8cf8893817007457734c1 */
+/* @relayHash fd7fc874bd9f87114780c47fea2a39c5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -45,6 +45,8 @@ fragment ArtistInsightsAuctionResults_artist on Artist {
 
 fragment ArtistInsights_artist on Artist {
   name
+  id
+  slug
   ...ArtistInsightsAuctionResults_artist
 }
 
@@ -83,7 +85,14 @@ var v0 = [
     "value": "some-id"
   }
 ],
-v1 = [
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v2 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -95,13 +104,6 @@ v1 = [
     "value": "DATE_DESC"
   }
 ],
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
 v3 = {
   "enumValues": null,
   "nullable": false,
@@ -180,9 +182,17 @@ return {
             "name": "name",
             "storageKey": null
           },
+          (v1/*: any*/),
           {
             "alias": null,
-            "args": (v1/*: any*/),
+            "args": null,
+            "kind": "ScalarField",
+            "name": "slug",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": (v2/*: any*/),
             "concreteType": "AuctionResultConnection",
             "kind": "LinkedField",
             "name": "auctionResultsConnection",
@@ -204,7 +214,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v2/*: any*/),
+                      (v1/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -403,7 +413,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v1/*: any*/),
+            "args": (v2/*: any*/),
             "filters": [
               "sort"
             ],
@@ -411,15 +421,14 @@ return {
             "key": "artist_auctionResultsConnection",
             "kind": "LinkedHandle",
             "name": "auctionResultsConnection"
-          },
-          (v2/*: any*/)
+          }
         ],
         "storageKey": "artist(id:\"some-id\")"
       }
     ]
   },
   "params": {
-    "id": "2814683178a8cf8893817007457734c1",
+    "id": "fd7fc874bd9f87114780c47fea2a39c5",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
@@ -511,7 +520,8 @@ return {
           "type": "Boolean"
         },
         "artist.id": (v6/*: any*/),
-        "artist.name": (v4/*: any*/)
+        "artist.name": (v4/*: any*/),
+        "artist.slug": (v6/*: any*/)
       }
     },
     "name": "ArtistInsightsTestsQuery",

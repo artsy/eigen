@@ -40,18 +40,26 @@ import { FancyModal } from "../FancyModal/FancyModal"
 interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
   exitModal?: () => void
-  navigator?: NavigatorIOS
+  id: string
   initiallyAppliedFilters?: FilterArray
   isFilterArtworksModalVisible: boolean
-  id: string
-  slug: string
   mode: FilterModalMode
+  navigator?: NavigatorIOS
+  slug: string
+  title?: string
 }
 
-export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
+export const FilterModalNavigator: React.FC<FilterModalProps> = ({
+  closeModal,
+  exitModal,
+  id,
+  isFilterArtworksModalVisible,
+  mode,
+  slug,
+  title = "Filter",
+}) => {
   const tracking = useTracking()
 
-  const { closeModal, exitModal, isFilterArtworksModalVisible, id, slug, mode } = props
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const handleClosingModal = () => {
@@ -108,7 +116,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
           navigationBarHidden={true}
           initialRoute={{
             component: FilterOptions,
-            passProps: { closeModal, id, slug, mode },
+            passProps: { closeModal, id, slug, mode, title },
             title: "",
           }}
           style={{ flex: 1 }}
@@ -205,20 +213,20 @@ export enum FilterModalMode {
   SaleArtworks = "SaleArtworks",
   Fair = "Fair",
   Show = "Show",
+  AuctionResults = "AuctionResults",
 }
 
 interface FilterOptionsProps {
   closeModal: () => void
-  navigator: NavigatorIOS
   id: string
-  slug: string
   mode: FilterModalMode
+  navigator: NavigatorIOS
+  slug: string
+  title: string
 }
 
-export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
+export const FilterOptions: React.FC<FilterOptionsProps> = ({ closeModal, id, mode, navigator, slug, title }) => {
   const tracking = useTracking()
-  const { closeModal, navigator, id, slug, mode } = props
-
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const selectedOptions = useSelectedOptionsDisplay()
@@ -270,7 +278,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = (props) => {
       <Flex flexGrow={0} flexDirection="row" justifyContent="space-between">
         <Flex position="absolute" width="100%" height={67} justifyContent="center" alignItems="center">
           <Sans size="4" weight="medium">
-            Filter
+            {title}
           </Sans>
         </Flex>
         <Flex alignItems="flex-end" mt={0.5} mb={2}>
@@ -350,6 +358,9 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
         filterOptionToDisplayConfigMap.viewAs,
         filterOptionToDisplayConfigMap.estimateRange,
       ]
+
+    case FilterModalMode.AuctionResults:
+      return []
 
     default:
       return [filterOptionToDisplayConfigMap.sortArtworks, filterOptionToDisplayConfigMap.waysToBuy]
@@ -435,7 +446,7 @@ interface AnimatedArtworkFilterButtonProps {
 export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonProps> = ({
   isVisible,
   onPress,
-  text,
+  text = "Sort & Filter",
 }) => {
   const { state } = useContext(ArtworkFilterContext)
 
@@ -464,7 +475,7 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
       <FilterArtworkButton px="2" style={roundedButtonStyle}>
         <FilterIcon fill="white100" />
         <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
-          {text || "Sort & Filter"}
+          {text}
         </Sans>
         {getFiltersCount() > 0 && (
           <>

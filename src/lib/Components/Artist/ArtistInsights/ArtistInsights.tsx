@@ -1,5 +1,5 @@
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
-import { AnimatedArtworkFilterButton } from "lib/Components/FilterModal"
+import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -29,6 +29,15 @@ interface ViewToken {
 const FILTER_BUTTON_OFFSET = 100
 export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false)
+  const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
+
+  const openFilterModal = () => {
+    setIsFilterModalVisible(true)
+  }
+
+  const closeFilterModal = () => {
+    setIsFilterModalVisible(false)
+  }
 
   // Show or hide floating filter button depending on the scroll position
   const onScrollEndDrag = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -83,15 +92,22 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
           <ArtistInsightsAuctionResultsPaginationContainer artist={artist} />
         </Join>
       </StickyTabPageScrollView>
-      <Flex position="absolute" width="100%" bottom={0}>
-        <AnimatedArtworkFilterButton
-          isVisible={isFilterButtonVisible}
-          onPress={() => {
-            // show filters modal
-          }}
-          text="Filter auction results"
-        />
-      </Flex>
+
+      <AnimatedArtworkFilterButton
+        isVisible={isFilterButtonVisible}
+        onPress={openFilterModal}
+        text="Filter auction results"
+      />
+
+      <FilterModalNavigator
+        isFilterArtworksModalVisible={isFilterModalVisible}
+        id={artist.id}
+        slug={artist.slug}
+        mode={FilterModalMode.AuctionResults}
+        exitModal={closeFilterModal}
+        closeModal={closeFilterModal}
+        title="Filter auction results"
+      />
     </ArtworkFilterGlobalStateProvider>
   )
 }
@@ -100,6 +116,8 @@ export const ArtistInsightsFragmentContainer = createFragmentContainer(ArtistIns
   artist: graphql`
     fragment ArtistInsights_artist on Artist {
       name
+      id
+      slug
       ...ArtistInsightsAuctionResults_artist
     }
   `,
