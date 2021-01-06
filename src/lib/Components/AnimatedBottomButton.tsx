@@ -40,7 +40,7 @@ export const AnimatedBottomButton: React.FC<AnimatedBottomButtonProps> = ({
 
   return (
     <BottomButtonContainer style={{ transform: [{ translateY: topOffset }] }}>
-      <Touchable haptic="selection" activeOpacity={0.8} onPress={onPress} style={buttonStyles}>
+      <Touchable haptic="selection" onPress={onPress} style={buttonStyles}>
         {children}
       </Touchable>
     </BottomButtonContainer>
