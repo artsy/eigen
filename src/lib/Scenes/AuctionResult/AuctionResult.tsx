@@ -9,8 +9,14 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import moment from "moment"
 import { Box, Flex, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useMemo, useRef } from "react"
-import { Animated, Image, NativeScrollEvent, NativeSyntheticEvent, TouchableOpacity } from "react-native"
-import { TouchableWithoutFeedback } from "react-native-gesture-handler"
+import {
+  Animated,
+  Image,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
