@@ -63,8 +63,8 @@ describe("availableTabs", () => {
     })
     expect(tree.root.findAllByType(ArtistHeaderFragmentContainer)).toHaveLength(1)
     expect(tree.root.findAllByType(StickyTab)).toHaveLength(1)
-    expect(extractText(tree.root)).toMatchInlineSnapshot(
-      `"There aren’t any works available by the artist at this time. Follow to receive notifications when new works are added.Artworks"`
+    expect(extractText(tree.root)).toContain(
+      "There aren’t any works available by the artist at this time. Follow to receive notifications when new works are added"
     )
   })
 
