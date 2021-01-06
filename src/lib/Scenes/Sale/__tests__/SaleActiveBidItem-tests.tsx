@@ -1,8 +1,10 @@
 import { SaleActiveBidItemTestsQuery } from "__generated__/SaleActiveBidItemTestsQuery.graphql"
+import { navigate } from "lib/navigation/navigate"
 import { HighestBid, Outbid, ReserveNotMet } from "lib/Scenes/MyBids/Components/BiddingStatuses"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
+import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { extractText } from "../../../tests/extractText"
@@ -29,6 +31,9 @@ describe("SaleActiveBidItem", () => {
       },
       currentBid: {
         display: "CHF 375",
+      },
+      artwork: {
+        href: "artwork-href",
       },
     },
     sale: {
@@ -60,6 +65,28 @@ describe("SaleActiveBidItem", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+  })
+
+  it("navigates to the sale artwork screen on press", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+
+    const highestBidLot = {
+      ...lotStanding,
+      activeBid: {
+        isWinning: true,
+      },
+    }
+    const mockProps = {
+      Me: () => ({
+        lotStandings: [highestBidLot],
+      }),
+    }
+
+    mockEnvironmentPayload(mockEnvironment, mockProps)
+
+    const button = tree.root.findAllByType(TouchableOpacity)[0]
+    button.props.onPress()
+    expect(navigate).toBeCalledWith("artwork-href")
   })
 
   it("renders highest bid if a lot is the highest bid", () => {
