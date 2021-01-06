@@ -15,7 +15,7 @@ interface Props {
   relay: RelayProp
 }
 
-const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
+export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
   const { trackEvent } = useTracking()
 
   const [isFollowedChanging, setIsFollowedChanging] = useState<boolean>(false)
