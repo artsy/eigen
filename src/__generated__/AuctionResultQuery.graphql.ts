@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 94ee6c183f6e82b4dfcc2da0a31f55ad */
+/* @relayHash 04ef7e7cb90f7d41e365d8ad1375901f */
 
 import { ConcreteRequest } from "relay-runtime";
 export type AuctionResultQueryVariables = {
@@ -48,6 +48,7 @@ export type AuctionResultQueryResponse = {
     } | null;
     readonly artist: {
         readonly name: string | null;
+        readonly href: string | null;
     } | null;
 };
 export type AuctionResultQuery = {
@@ -102,6 +103,7 @@ query AuctionResultQuery(
   }
   artist(id: $artistID) {
     name
+    href
     id
   }
 }
@@ -364,6 +366,13 @@ v25 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "href",
+  "storageKey": null
+},
+v26 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 };
@@ -413,7 +422,8 @@ return {
         "name": "artist",
         "plural": false,
         "selections": [
-          (v24/*: any*/)
+          (v24/*: any*/),
+          (v25/*: any*/)
         ],
         "storageKey": null
       }
@@ -455,7 +465,7 @@ return {
           (v20/*: any*/),
           (v21/*: any*/),
           (v22/*: any*/),
-          (v25/*: any*/)
+          (v26/*: any*/)
         ],
         "storageKey": null
       },
@@ -468,14 +478,15 @@ return {
         "plural": false,
         "selections": [
           (v24/*: any*/),
-          (v25/*: any*/)
+          (v25/*: any*/),
+          (v26/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "94ee6c183f6e82b4dfcc2da0a31f55ad",
+    "id": "04ef7e7cb90f7d41e365d8ad1375901f",
     "metadata": {},
     "name": "AuctionResultQuery",
     "operationKind": "query",
@@ -483,5 +494,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'b2cd99e5903c544a185d87a245c42a29';
+(node as any).hash = '38f6a969b1adf21e0148d9daeb402eb1';
 export default node;

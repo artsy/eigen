@@ -1,10 +1,8 @@
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import moment from "moment"
 import React from "react"
-import { Animated, ScrollView } from "react-native"
-import { graphql, QueryRenderer } from "react-relay"
+import { ScrollView } from "react-native"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { AuctionResultQueryRenderer } from "../AuctionResult"
 

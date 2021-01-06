@@ -2,6 +2,7 @@ import { AuctionResultQuery, AuctionResultQueryResponse } from "__generated__/Au
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ratioColor } from "lib/Components/Lists/AuctionResult"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -9,6 +10,7 @@ import moment from "moment"
 import { Box, Flex, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useMemo, useRef } from "react"
 import { Animated, Image, NativeScrollEvent, NativeSyntheticEvent, TouchableOpacity } from "react-native"
+import { TouchableWithoutFeedback } from "react-native-gesture-handler"
 import { graphql, QueryRenderer } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
@@ -215,7 +217,9 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
               <Box style={{ height: 80, width: 60 }} backgroundColor="black10" />
             )}
             <Flex justifyContent="center" ml={2}>
-              <Text variant="mediumText">{artist?.name}</Text>
+              <TouchableWithoutFeedback onPress={() => artist?.href && navigate(artist.href)}>
+                <Text variant="mediumText">{artist?.name}</Text>
+              </TouchableWithoutFeedback>
               <Text variant="title">
                 {auctionResult?.title}, {auctionResult?.dateText}
               </Text>
@@ -317,6 +321,7 @@ export const AuctionResultQueryRenderer: React.FC<{
           }
           artist(id: $artistID) {
             name
+            href
           }
         }
       `}
