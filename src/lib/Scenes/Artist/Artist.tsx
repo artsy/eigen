@@ -35,29 +35,29 @@ export const Artist: React.FC<{
     (artistAboveTheFold.counts?.articles ?? 0) > 0 ||
     (artistAboveTheFold.counts?.related_artists ?? 0) > 0
 
-  // if (displayAboutSection) {
-  //   tabs.push({
-  //     title: "About",
-  //     content: artistBelowTheFold ? <ArtistAboutContainer artist={artistBelowTheFold} /> : <LoadingPage />,
-  //   })
-  // }
+  if (displayAboutSection) {
+    tabs.push({
+      title: "About",
+      content: artistBelowTheFold ? <ArtistAboutContainer artist={artistBelowTheFold} /> : <LoadingPage />,
+    })
+  }
 
-  // if ((artistAboveTheFold.counts?.artworks ?? 0) > 0) {
-  //   tabs.push({
-  //     title: "Artworks",
-  //     initial: true,
-  //     content: <ArtistArtworks artist={artistAboveTheFold} />,
-  //   })
-  // }
+  if ((artistAboveTheFold.counts?.artworks ?? 0) > 0) {
+    tabs.push({
+      title: "Artworks",
+      initial: true,
+      content: <ArtistArtworks artist={artistAboveTheFold} />,
+    })
+  }
 
   const isArtistInsightsEnabled = getCurrentEmissionState().options.AROptionsNewInsightsPage
 
-  // if ((artistAboveTheFold.counts?.partner_shows ?? 0) > 0 && !isArtistInsightsEnabled) {
-  //   tabs.push({
-  //     title: "Shows",
-  //     content: artistBelowTheFold ? <ArtistShows artist={artistBelowTheFold} /> : <LoadingPage />,
-  //   })
-  // }
+  if ((artistAboveTheFold.counts?.partner_shows ?? 0) > 0 && !isArtistInsightsEnabled) {
+    tabs.push({
+      title: "Shows",
+      content: artistBelowTheFold ? <ArtistShows artist={artistBelowTheFold} /> : <LoadingPage />,
+    })
+  }
 
   if (isArtistInsightsEnabled) {
     tabs.push({

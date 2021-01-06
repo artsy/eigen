@@ -252,7 +252,12 @@ export const reducer = (
 }
 
 const getSortDefaultValueByFilterType = (filterType: FilterType) => {
-  return { artwork: "-decayed_merch", saleArtwork: "position", showArtwork: "partner_show_position" }[filterType]
+  return {
+    artwork: "-decayed_merch",
+    saleArtwork: "position",
+    showArtwork: "partner_show_position",
+    auctionResult: "DATE_DESC",
+  }[filterType]
 }
 
 export const ParamDefaultValues = {
@@ -316,6 +321,11 @@ export const selectedOptionsUnion = ({
       paramName: FilterParamName.sort,
       paramValue: "partner_show_position",
       displayText: "Gallery Curated",
+    },
+    auctionResult: {
+      paramName: FilterParamName.sort,
+      paramValue: "DATE_DESC",
+      displayText: "Most recent sale date",
     },
   }[filterType]
 
@@ -423,7 +433,7 @@ export const ArtworkFilterGlobalStateProvider = ({ children }: any /* STRICTNESS
   return <ArtworkFilterContext.Provider value={{ state, dispatch }}>{children}</ArtworkFilterContext.Provider>
 }
 
-export type FilterType = "artwork" | "saleArtwork" | "showArtwork"
+export type FilterType = "artwork" | "saleArtwork" | "showArtwork" | "auctionResult"
 
 export interface FilterCounts {
   total: number | null

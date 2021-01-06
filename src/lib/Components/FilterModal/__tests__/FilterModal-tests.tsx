@@ -204,6 +204,7 @@ describe("Filter modal navigation flow", () => {
           mode={FilterModalMode.Collection}
           closeModal={jest.fn()}
           navigator={mockNavigator as any}
+          title="Filter"
         />
       </ArtworkFilterContext.Provider>
     )
@@ -265,6 +266,7 @@ describe("Filter modal navigation flow", () => {
           mode={FilterModalMode.Collection}
           closeModal={jest.fn()}
           navigator={mockNavigator as any}
+          title="Filter"
         />
       </ArtworkFilterContext.Provider>
     )

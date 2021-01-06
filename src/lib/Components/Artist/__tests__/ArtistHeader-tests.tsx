@@ -1,7 +1,7 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 
-import Header from "../ArtistHeader"
+import { ArtistHeaderFragmentContainer } from "../ArtistHeader"
 
 it("renders without throwing an error", () => {
   const artist = {
@@ -14,5 +14,5 @@ it("renders without throwing an error", () => {
       follows: 22,
     },
   }
-  renderWithWrappers(<Header artist={artist as any} />)
+  renderWithWrappers(<ArtistHeaderFragmentContainer artist={artist as any} />)
 })
