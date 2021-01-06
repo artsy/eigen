@@ -19,6 +19,7 @@ upcoming:
     - Fix layout in My Collection artwork form AdditionalDetails screen - david
     - Make active bids clickable - anna, mounir
     - Fix empty state featured fairs rail on homepage - anna, mounir
+    - Add filter button and screen to the ArtistInsights AuctionResults - mounir
 
 releases:
   - version: 6.7.4
