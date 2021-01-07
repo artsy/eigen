@@ -8,7 +8,7 @@ import {
 } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import { ArtistAboutContainer } from "lib/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
-import ArtistHeader from "lib/Components/Artist/ArtistHeader"
+import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
 import { ArtistInsightsFragmentContainer } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
 import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
@@ -90,7 +90,10 @@ export const Artist: React.FC<{
       }}
     >
       <Flex style={{ flex: 1 }}>
-        <StickyTabPage staticHeaderContent={<ArtistHeader artist={artistAboveTheFold!} />} tabs={tabs} />
+        <StickyTabPage
+          staticHeaderContent={<ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />}
+          tabs={tabs}
+        />
       </Flex>
     </ProvideScreenTracking>
   )

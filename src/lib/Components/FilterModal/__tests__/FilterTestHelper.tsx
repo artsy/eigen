@@ -25,6 +25,7 @@ export const MockFilterScreen = ({ initialState }: InitialState) => {
           closeModal={closeModalMock}
           navigator={mockNavigator as any}
           mode={FilterModalMode.ArtistArtworks}
+          title="Filter"
         />
       </ArtworkFilterContext.Provider>
     </Theme>
