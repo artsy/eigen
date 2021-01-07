@@ -30,5 +30,5 @@ export const sendEmailWithMailTo = (mailToString: string) => {
 }
 
 const showEmailAlert = (emailAddress: string) => {
-  Alert.alert("No email configured", `You can email ${emailAddress} to get answers to your questions.`)
+  Alert.alert("No email configured", `Please email ${emailAddress} for assistance.`)
 }
