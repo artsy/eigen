@@ -8,6 +8,7 @@ export type Fair2Editorial_fair = {
     readonly internalID: string;
     readonly slug: string;
     readonly articles: {
+        readonly totalCount: number | null;
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
@@ -74,6 +75,13 @@ return {
       "name": "articlesConnection",
       "plural": false,
       "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "totalCount",
+          "storageKey": null
+        },
         {
           "alias": null,
           "args": null,
@@ -158,5 +166,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'd47cd5b9abff86ad81dc2d90c8c865fa';
+(node as any).hash = 'dac0eae3e760a3bbaeb2e7c71d1822e6';
 export default node;
