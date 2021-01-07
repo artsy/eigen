@@ -35,9 +35,21 @@ export const Fair2Editorial: React.FC<Fair2EditorialProps> = ({ fair, ...rest })
 
   return (
     <Box {...rest}>
-      <Text mx={2} mb={2} variant="subtitle">
-        Related Reading
-      </Text>
+      <Box mx={2} mb={2} display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
+        <Text variant="subtitle">Related Reading</Text>
+
+        {(fair.articles.totalCount ?? 0) > 5 && (
+          <Touchable
+            onPress={() => {
+              navigate(`/fair/${fair.slug}/articles`)
+            }}
+          >
+            <Text variant="text" color="black60">
+              View all
+            </Text>
+          </Touchable>
+        )}
+      </Box>
 
       {(fair.articles.edges || []).map((edge) => {
         const article = edge!.node!
@@ -80,6 +92,7 @@ export const Fair2EditorialFragmentContainer = createFragmentContainer(Fair2Edit
       internalID
       slug
       articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
+        totalCount
         edges {
           node {
             id

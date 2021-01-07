@@ -18,6 +18,7 @@ export function handleFairRouting(result: MatchResult): MatchResult {
     Fair: "Fair2",
     FairArtworks: "Fair2",
     FairMoreInfo: "Fair2MoreInfo",
+    FairArticles: "Fair2Articles",
     FairArtists: "Fair2",
     FairExhibitors: "Fair2",
     FairBMWArtActivation: "FairBMWArtActivation",
