@@ -33,7 +33,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
         PAGE_SIZE,
         (error) => {
           if (error) {
-            throw new Error("ArtistArtworks/ArtistArtworks filter error: " + error.message)
+            throw new Error("ArtistInsights/ArtistAuctionResults filter error: " + error.message)
           }
         },
         filterParams
