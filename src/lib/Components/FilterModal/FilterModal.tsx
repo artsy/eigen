@@ -395,16 +395,16 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
   switch (mode) {
     case FilterModalMode.SaleArtworks:
       return [
-        filterOptionToDisplayConfigMap.sortSaleArtworks,
+        filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.viewAs,
         filterOptionToDisplayConfigMap.estimateRange,
       ]
 
     case FilterModalMode.AuctionResults:
-      return []
+      return [filterOptionToDisplayConfigMap.sort]
 
     default:
-      return [filterOptionToDisplayConfigMap.sortArtworks, filterOptionToDisplayConfigMap.waysToBuy]
+      return [filterOptionToDisplayConfigMap.sort, filterOptionToDisplayConfigMap.waysToBuy]
   }
 }
 
@@ -613,12 +613,7 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "priceRange",
     ScreenComponent: "PriceRangeOptionsScreen",
   },
-  sortArtworks: {
-    displayText: FilterDisplayName.sort,
-    filterType: "sort",
-    ScreenComponent: "SortOptionsScreen",
-  },
-  sortSaleArtworks: {
+  sort: {
     displayText: FilterDisplayName.sort,
     filterType: "sort",
     ScreenComponent: "SortOptionsScreen",

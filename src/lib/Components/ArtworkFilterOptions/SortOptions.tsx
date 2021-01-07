@@ -103,6 +103,24 @@ export const ORDERED_SALE_ARTWORK_SORTS: FilterData[] = [
   },
 ]
 
+export const ORDERED_AUCTION_RESULTS_SORTS: FilterData[] = [
+  {
+    displayText: "Most recent sale date",
+    paramName: FilterParamName.sort,
+    paramValue: "DATE_DESC",
+  },
+  {
+    displayText: "Estimate",
+    paramName: FilterParamName.sort,
+    paramValue: "ESTIMATE_AND_DATE_DESC",
+  },
+  {
+    displayText: "Sale price",
+    paramName: FilterParamName.sort,
+    paramValue: "PRICE_AND_DATE_DESC",
+  },
+]
+
 export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const filterType = state.filterType
@@ -114,7 +132,7 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation
     artwork: [DEFAULT_ARTWORK_SORT, ...ORDERED_ARTWORK_SORTS],
     saleArtwork: ORDERED_SALE_ARTWORK_SORTS,
     showArtwork: [GALLERY_CURATED_ARTWORK_SORT, DEFAULT_ARTWORK_SORT, ...ORDERED_ARTWORK_SORTS],
-    auctionResult: [],
+    auctionResult: ORDERED_AUCTION_RESULTS_SORTS,
   }[filterType]
 
   const selectOption = (option: FilterData) => {

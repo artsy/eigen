@@ -214,4 +214,27 @@ describe("Sort Options Screen", () => {
       expect(selectedRow.findAllByType(CheckIcon)).toHaveLength(1)
     })
   })
+
+  describe("filterType of auctionResults", () => {
+    it("has the correct options", () => {
+      state = {
+        selectedFilters: [],
+        appliedFilters: [],
+        previouslyAppliedFilters: [],
+        applyFilters: false,
+        aggregations: [],
+        filterType: "auctionResult",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
+      }
+
+      const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
+      const selectedRow = selectedSortOption(tree)
+
+      expect(extractText(selectedRow)).toEqual("Most recent sale date")
+      expect(selectedRow.findAllByType(CheckIcon)).toHaveLength(1)
+    })
+  })
 })
