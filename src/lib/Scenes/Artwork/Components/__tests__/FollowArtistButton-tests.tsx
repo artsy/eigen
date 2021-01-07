@@ -4,8 +4,9 @@ import { FollowArtistButtonTestsQueryRawResponse } from "__generated__/FollowArt
 import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
-import { Theme, Touchable } from "palette"
+import { Theme } from "palette"
 import React from "react"
+import { TouchableWithoutFeedback } from "react-native"
 import { graphql, RelayProp } from "react-relay"
 import { FollowArtistButton, FollowArtistButtonFragmentContainer } from "../FollowArtistButton"
 
@@ -22,9 +23,9 @@ describe("FollowArtistButton", () => {
         />
       </Theme>
     )
-    expect(component.find(Touchable).length).toEqual(1)
+    expect(component.find(TouchableWithoutFeedback).length).toEqual(1)
 
-    expect(component.find(Touchable).at(0).render().text()).toMatchInlineSnapshot(`"Follow"`)
+    expect(component.find(TouchableWithoutFeedback).at(0).render().text()).toMatchInlineSnapshot(`"Follow"`)
   })
 
   describe("Following an artist", () => {
@@ -66,15 +67,15 @@ describe("FollowArtistButton", () => {
         mockFollowResults: unfollowResponse,
       })
 
-      const followButton = followArtistButton.find(Touchable).at(0)
+      const followButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
       expect(followButton.text()).toMatchInlineSnapshot(`"Following"`)
 
-      await followArtistButton.find(Touchable).at(0).props().onPress()
+      await followArtistButton.find(TouchableWithoutFeedback).at(0).props().onPress()
 
       await flushPromiseQueue()
       followArtistButton.update()
 
-      const updatedFollowButton = followArtistButton.find(Touchable).at(0)
+      const updatedFollowButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
       expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Follow"`)
     })
 
@@ -86,15 +87,15 @@ describe("FollowArtistButton", () => {
         mockFollowResults: followResponse,
       })
 
-      const followButton = followArtistButton.find(Touchable).at(0)
+      const followButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
       expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
 
-      await followArtistButton.find(Touchable).at(0).props().onPress()
+      await followArtistButton.find(TouchableWithoutFeedback).at(0).props().onPress()
 
       await flushPromiseQueue()
       followArtistButton.update()
 
-      const updatedFollowButton = followArtistButton.find(Touchable).at(0)
+      const updatedFollowButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
       expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Following"`)
     })
 
@@ -117,15 +118,15 @@ describe("FollowArtistButton", () => {
         },
       })
 
-      const followButton = followArtistButton.find(Touchable).at(0)
+      const followButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
       expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
 
-      await followArtistButton.find(Touchable).at(0).props().onPress()
+      await followArtistButton.find(TouchableWithoutFeedback).at(0).props().onPress()
 
       await flushPromiseQueue()
       followArtistButton.update()
 
-      const updatedFollowButton = followArtistButton.find(Touchable).at(0)
+      const updatedFollowButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
       expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Follow"`)
     })
   })
