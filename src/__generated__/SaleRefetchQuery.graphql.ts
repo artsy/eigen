@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 628809bb81723520a686e9be1e823054 */
+/* @relayHash 6a2a285e24685f8bf25e925e9dce895f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -43,7 +43,6 @@ fragment Lot_saleArtwork on SaleArtwork {
   lotLabel
   artwork {
     artistNames
-    href
     image {
       url(version: "medium")
     }
@@ -89,6 +88,10 @@ fragment SaleActiveBidItem_lotStanding on LotStanding {
     }
     currentBid {
       display
+    }
+    artwork {
+      href
+      id
     }
     ...Lot_saleArtwork
     id
@@ -589,7 +592,6 @@ return {
                   },
                   (v7/*: any*/),
                   (v9/*: any*/),
-                  (v10/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -598,8 +600,9 @@ return {
                     "name": "artwork",
                     "plural": false,
                     "selections": [
-                      (v4/*: any*/),
                       (v3/*: any*/),
+                      (v2/*: any*/),
+                      (v4/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -623,11 +626,11 @@ return {
                           }
                         ],
                         "storageKey": null
-                      },
-                      (v2/*: any*/)
+                      }
                     ],
                     "storageKey": null
                   },
+                  (v10/*: any*/),
                   (v2/*: any*/),
                   (v6/*: any*/)
                 ],
@@ -773,7 +776,7 @@ return {
     ]
   },
   "params": {
-    "id": "628809bb81723520a686e9be1e823054",
+    "id": "6a2a285e24685f8bf25e925e9dce895f",
     "metadata": {},
     "name": "SaleRefetchQuery",
     "operationKind": "query",

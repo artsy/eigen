@@ -8,7 +8,7 @@ export const lotInActiveSale: (lotStanding: {
   return !!status && ["open", "preview"].includes(status.toLowerCase())
 }
 
-/** Whether the lot has been completed, regardless of the sale's closed status */
+/** Whether the lot has been completed, regardless of the sale's closed status. Lot is no longer for sale, either it has been sold or is no longer available for bidding. */
 export const isLotStandingComplete: (lotStanding: { lot?: { soldStatus?: string } }) => boolean = (lotStanding) =>
   !!(lotStanding.lot?.soldStatus && ["sold", "passed"].includes(lotStanding.lot.soldStatus?.toLowerCase()))
 

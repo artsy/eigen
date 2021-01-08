@@ -6,6 +6,7 @@
 #import "Gene.h"
 #import "PartnerShow.h"
 #import "Partner.h"
+#import "ARRouter.h"
 #import "Sale.h"
 #import "Location.h"
 
@@ -26,7 +27,7 @@ NSString *const ARUserActivityTypeSale = @"net.artsy.artsy.sale";
 
 // Do NOT assign a relatedUniqueIdentifier to the attribute set when combining with a user activity.
 // This needs to be done because of: https://forums.developer.apple.com/message/28220#28220
-+ (instancetype)activityForEntity:(id<ARSpotlightMetadataProvider>)entity;
++ (instancetype)activityForEntity:(id<ARContinuityMetadataProvider>)entity;
 {
     NSString *type = nil;
     if ([entity isKindOfClass:Artwork.class]) {
@@ -47,20 +48,9 @@ NSString *const ARUserActivityTypeSale = @"net.artsy.artsy.sale";
 
     ARUserActivity *activity = [[ARUserActivity alloc] initWithActivityType:type];
     activity.title = entity.name;
-    activity.webpageURL = [ARSpotlight webpageURLForEntity:entity];
+    activity.webpageURL =  [[ARRouter baseWebURL] URLByAppendingPathComponent:entity.publicArtsyPath];
     activity.userInfo = @{@"id" : entity.publicArtsyID};
-
-    if ([ARSpotlight isSpotlightAvailable]) {
-        activity.eligibleForPublicIndexing = YES;
-        activity.eligibleForSearch = YES;
-        activity.eligibleForHandoff = YES;
-
-        activity.contentAttributeSet = [ARSpotlight searchAttributesForEntity:entity
-                                                            includeIdentifier:NO
-                                                                   completion:^(CSSearchableItemAttributeSet *attributeSet) {
-            [activity updateContentAttributeSet:attributeSet];
-                                                                   }];
-    }
+    activity.eligibleForHandoff = YES;
 
     // Specifically when we have shows, we want to attach location data when it's
     // available to make it show up in recommendations around the OS

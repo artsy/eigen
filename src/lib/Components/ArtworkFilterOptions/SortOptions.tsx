@@ -115,6 +115,7 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigator 
     artwork: [DEFAULT_ARTWORK_SORT, ...ORDERED_ARTWORK_SORTS],
     saleArtwork: ORDERED_SALE_ARTWORK_SORTS,
     showArtwork: [GALLERY_CURATED_ARTWORK_SORT, DEFAULT_ARTWORK_SORT, ...ORDERED_ARTWORK_SORTS],
+    auctionResult: [],
   }[filterType]
 
   const selectOption = (option: FilterData) => {

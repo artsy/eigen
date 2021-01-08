@@ -1,19 +1,36 @@
 import { ArtistInsightsAuctionResultsTestsQuery } from "__generated__/ArtistInsightsAuctionResultsTestsQuery.graphql"
 import { mockEdges } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { mockEnvironmentPayload } from "../../../../tests/mockEnvironmentPayload"
-import { ArtistInsightsAuctionResultFragmentContainer } from "../ArtistInsightsAuctionResult"
+import { AuctionResultFragmentContainer } from "../../../Lists/AuctionResult"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "../ArtistInsightsAuctionResults"
 
 jest.unmock("react-relay")
 
 describe("ArtistInsightsAuctionResults", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
+  let getState: () => ArtworkFilterContextState
+
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+    getState = () => ({
+      selectedFilters: [],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: [],
+      filterType: "auctionResult",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+    })
+  })
 
   const TestRenderer = () => (
     <QueryRenderer<ArtistInsightsAuctionResultsTestsQuery>
@@ -28,7 +45,11 @@ describe("ArtistInsightsAuctionResults", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.artist) {
-          return <ArtistInsightsAuctionResultsPaginationContainer artist={props.artist} />
+          return (
+            <ArtworkFilterContext.Provider value={{ state: getState(), dispatch: jest.fn() }}>
+              <ArtistInsightsAuctionResultsPaginationContainer artist={props.artist} />
+            </ArtworkFilterContext.Provider>
+          )
         }
         return null
       }}
@@ -46,6 +67,6 @@ describe("ArtistInsightsAuctionResults", () => {
     })
 
     expect(tree.findAllByType(FlatList).length).toEqual(1)
-    expect(tree.findAllByType(ArtistInsightsAuctionResultFragmentContainer).length).toEqual(5)
+    expect(tree.findAllByType(AuctionResultFragmentContainer).length).toEqual(5)
   })
 })

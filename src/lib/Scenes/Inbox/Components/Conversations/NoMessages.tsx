@@ -1,11 +1,23 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { navigate } from "lib/navigation/navigate"
 import { Button, Flex, Text } from "palette"
 import React from "react"
+import { useTracking } from "react-tracking"
 
 export const NoMessages: React.FC = () => {
+  const tracking = useTracking()
+  const noMessagesButtonText = " Explore works"
+
   const handleViewWorks = () => {
+    tracking.trackEvent({
+      action: ActionType.tappedShowMore,
+      context_module: ContextModule.inboxInquiries,
+      context_screen_owner_type: OwnerType.inboxInquiries,
+      subject: noMessagesButtonText,
+    })
     navigate(`/`)
   }
+
   return (
     <Flex mt={3} mx={2}>
       <Text variant="title" textAlign="center" fontWeight="normal">
@@ -16,8 +28,13 @@ export const NoMessages: React.FC = () => {
         inquiries.
       </Text>
       <Flex width="100%" justifyContent="center" flexDirection="row">
-        <Button variant="primaryBlack" onPress={handleViewWorks}>
-          Explore works
+        <Button
+          variant="primaryBlack"
+          onPress={() => {
+            handleViewWorks()
+          }}
+        >
+          {noMessagesButtonText}
         </Button>
       </Flex>
     </Flex>

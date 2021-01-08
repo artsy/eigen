@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1f330a01a6b3359136c587cf2572cd41 */
+/* @relayHash 13a81a7a3717ee77293be23c96b3e860 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -78,6 +78,22 @@ fragment Conversations_me on Me {
         internalID
         last_message: lastMessage
         ...ConversationSnippet_conversation
+        items {
+          item {
+            __typename
+            ... on Artwork {
+              internalID
+              partner {
+                internalID
+                id
+              }
+            }
+            ... on Node {
+              __isNode: __typename
+              id
+            }
+          }
+        }
         id
         __typename
       }
@@ -105,28 +121,35 @@ v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "internalID",
   "storageKey": null
 },
 v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v3 = [
-  (v1/*: any*/),
-  (v2/*: any*/)
+v4 = [
+  (v2/*: any*/),
+  (v3/*: any*/)
 ],
-v4 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v5 = [
+v6 = [
   {
     "alias": null,
     "args": null,
@@ -135,31 +158,31 @@ v5 = [
     "storageKey": null
   }
 ],
-v6 = {
+v7 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "String"
 },
-v7 = {
+v8 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v8 = {
+v9 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v9 = {
+v10 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Image"
 },
-v10 = {
+v11 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -255,13 +278,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "internalID",
-                        "storageKey": null
-                      },
+                      (v1/*: any*/),
                       {
                         "alias": "last_message",
                         "args": null,
@@ -276,7 +293,7 @@ return {
                         "kind": "LinkedField",
                         "name": "to",
                         "plural": false,
-                        "selections": (v3/*: any*/),
+                        "selections": (v4/*: any*/),
                         "storageKey": null
                       },
                       {
@@ -316,7 +333,7 @@ return {
                             "name": "item",
                             "plural": false,
                             "selections": [
-                              (v4/*: any*/),
+                              (v5/*: any*/),
                               {
                                 "kind": "InlineFragment",
                                 "selections": [
@@ -348,7 +365,21 @@ return {
                                     "kind": "LinkedField",
                                     "name": "image",
                                     "plural": false,
-                                    "selections": (v5/*: any*/),
+                                    "selections": (v6/*: any*/),
+                                    "storageKey": null
+                                  },
+                                  (v1/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Partner",
+                                    "kind": "LinkedField",
+                                    "name": "partner",
+                                    "plural": false,
+                                    "selections": [
+                                      (v1/*: any*/),
+                                      (v3/*: any*/)
+                                    ],
                                     "storageKey": null
                                   }
                                 ],
@@ -365,10 +396,10 @@ return {
                                     "kind": "LinkedField",
                                     "name": "fair",
                                     "plural": false,
-                                    "selections": (v3/*: any*/),
+                                    "selections": (v4/*: any*/),
                                     "storageKey": null
                                   },
-                                  (v1/*: any*/),
+                                  (v2/*: any*/),
                                   {
                                     "alias": null,
                                     "args": null,
@@ -376,7 +407,7 @@ return {
                                     "kind": "LinkedField",
                                     "name": "coverImage",
                                     "plural": false,
-                                    "selections": (v5/*: any*/),
+                                    "selections": (v6/*: any*/),
                                     "storageKey": null
                                   }
                                 ],
@@ -386,7 +417,7 @@ return {
                               {
                                 "kind": "InlineFragment",
                                 "selections": [
-                                  (v2/*: any*/)
+                                  (v3/*: any*/)
                                 ],
                                 "type": "Node",
                                 "abstractKey": "__isNode"
@@ -415,8 +446,8 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v2/*: any*/),
-                      (v4/*: any*/)
+                      (v3/*: any*/),
+                      (v5/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -449,14 +480,14 @@ return {
             "kind": "LinkedHandle",
             "name": "conversationsConnection"
           },
-          (v2/*: any*/)
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "1f330a01a6b3359136c587cf2572cd41",
+    "id": "13a81a7a3717ee77293be23c96b3e860",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -477,15 +508,15 @@ return {
           "plural": true,
           "type": "ConversationEdge"
         },
-        "me.conversations.edges.cursor": (v6/*: any*/),
+        "me.conversations.edges.cursor": (v7/*: any*/),
         "me.conversations.edges.node": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Conversation"
         },
-        "me.conversations.edges.node.__typename": (v6/*: any*/),
-        "me.conversations.edges.node.id": (v7/*: any*/),
+        "me.conversations.edges.node.__typename": (v7/*: any*/),
+        "me.conversations.edges.node.id": (v8/*: any*/),
         "me.conversations.edges.node.internalID": {
           "enumValues": null,
           "nullable": true,
@@ -504,43 +535,52 @@ return {
           "plural": false,
           "type": "ConversationItemType"
         },
-        "me.conversations.edges.node.items.item.__isNode": (v6/*: any*/),
-        "me.conversations.edges.node.items.item.__typename": (v6/*: any*/),
-        "me.conversations.edges.node.items.item.artistNames": (v8/*: any*/),
-        "me.conversations.edges.node.items.item.coverImage": (v9/*: any*/),
-        "me.conversations.edges.node.items.item.coverImage.url": (v8/*: any*/),
-        "me.conversations.edges.node.items.item.date": (v8/*: any*/),
+        "me.conversations.edges.node.items.item.__isNode": (v7/*: any*/),
+        "me.conversations.edges.node.items.item.__typename": (v7/*: any*/),
+        "me.conversations.edges.node.items.item.artistNames": (v9/*: any*/),
+        "me.conversations.edges.node.items.item.coverImage": (v10/*: any*/),
+        "me.conversations.edges.node.items.item.coverImage.url": (v9/*: any*/),
+        "me.conversations.edges.node.items.item.date": (v9/*: any*/),
         "me.conversations.edges.node.items.item.fair": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Fair"
         },
-        "me.conversations.edges.node.items.item.fair.id": (v7/*: any*/),
-        "me.conversations.edges.node.items.item.fair.name": (v8/*: any*/),
-        "me.conversations.edges.node.items.item.id": (v7/*: any*/),
-        "me.conversations.edges.node.items.item.image": (v9/*: any*/),
-        "me.conversations.edges.node.items.item.image.url": (v8/*: any*/),
-        "me.conversations.edges.node.items.item.name": (v8/*: any*/),
-        "me.conversations.edges.node.items.item.title": (v8/*: any*/),
-        "me.conversations.edges.node.lastMessage": (v8/*: any*/),
-        "me.conversations.edges.node.lastMessageAt": (v8/*: any*/),
-        "me.conversations.edges.node.last_message": (v8/*: any*/),
+        "me.conversations.edges.node.items.item.fair.id": (v8/*: any*/),
+        "me.conversations.edges.node.items.item.fair.name": (v9/*: any*/),
+        "me.conversations.edges.node.items.item.id": (v8/*: any*/),
+        "me.conversations.edges.node.items.item.image": (v10/*: any*/),
+        "me.conversations.edges.node.items.item.image.url": (v9/*: any*/),
+        "me.conversations.edges.node.items.item.internalID": (v8/*: any*/),
+        "me.conversations.edges.node.items.item.name": (v9/*: any*/),
+        "me.conversations.edges.node.items.item.partner": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Partner"
+        },
+        "me.conversations.edges.node.items.item.partner.id": (v8/*: any*/),
+        "me.conversations.edges.node.items.item.partner.internalID": (v8/*: any*/),
+        "me.conversations.edges.node.items.item.title": (v9/*: any*/),
+        "me.conversations.edges.node.lastMessage": (v9/*: any*/),
+        "me.conversations.edges.node.lastMessageAt": (v9/*: any*/),
+        "me.conversations.edges.node.last_message": (v9/*: any*/),
         "me.conversations.edges.node.messagesConnection": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "MessageConnection"
         },
-        "me.conversations.edges.node.messagesConnection.totalCount": (v10/*: any*/),
+        "me.conversations.edges.node.messagesConnection.totalCount": (v11/*: any*/),
         "me.conversations.edges.node.to": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "ConversationResponder"
         },
-        "me.conversations.edges.node.to.id": (v7/*: any*/),
-        "me.conversations.edges.node.to.name": (v6/*: any*/),
+        "me.conversations.edges.node.to.id": (v8/*: any*/),
+        "me.conversations.edges.node.to.name": (v7/*: any*/),
         "me.conversations.edges.node.unread": {
           "enumValues": null,
           "nullable": true,
@@ -553,15 +593,15 @@ return {
           "plural": false,
           "type": "PageInfo"
         },
-        "me.conversations.pageInfo.endCursor": (v8/*: any*/),
+        "me.conversations.pageInfo.endCursor": (v9/*: any*/),
         "me.conversations.pageInfo.hasNextPage": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "Boolean"
         },
-        "me.conversations.totalUnreadCount": (v10/*: any*/),
-        "me.id": (v7/*: any*/)
+        "me.conversations.totalUnreadCount": (v11/*: any*/),
+        "me.id": (v8/*: any*/)
       }
     },
     "name": "ConversationsTestsQuery",

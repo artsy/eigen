@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 10474bb4dd0289a459d14d24c9336d6a */
+/* @relayHash 124ed00fd7ca13d78edc680f014942ac */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,8 +27,11 @@ query MyCollectionArtworkArtistArticlesTestsQuery {
 }
 
 fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
+  internalID
+  slug
   artist {
     slug
+    name
     articlesConnection(first: 3, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
       edges {
         node {
@@ -65,23 +68,37 @@ v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "internalID",
   "storageKey": null
 },
 v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "slug",
   "storageKey": null
 },
 v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v5 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v4 = {
+v6 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -128,6 +145,8 @@ return {
         "name": "artwork",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -136,7 +155,8 @@ return {
             "name": "artist",
             "plural": false,
             "selections": [
-              (v1/*: any*/),
+              (v2/*: any*/),
+              (v3/*: any*/),
               {
                 "alias": null,
                 "args": [
@@ -177,14 +197,8 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
+                          (v2/*: any*/),
                           (v1/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "internalID",
-                            "storageKey": null
-                          },
                           {
                             "alias": null,
                             "args": null,
@@ -207,14 +221,8 @@ return {
                             "name": "author",
                             "plural": false,
                             "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "name",
-                                "storageKey": null
-                              },
-                              (v2/*: any*/)
+                              (v3/*: any*/),
+                              (v4/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -249,7 +257,7 @@ return {
                             ],
                             "storageKey": null
                           },
-                          (v2/*: any*/)
+                          (v4/*: any*/)
                         ],
                         "storageKey": null
                       }
@@ -259,18 +267,18 @@ return {
                 ],
                 "storageKey": "articlesConnection(first:3,inEditorialFeed:true,sort:\"PUBLISHED_AT_DESC\")"
               },
-              (v2/*: any*/)
+              (v4/*: any*/)
             ],
             "storageKey": null
           },
-          (v2/*: any*/)
+          (v4/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-slug\")"
       }
     ]
   },
   "params": {
-    "id": "10474bb4dd0289a459d14d24c9336d6a",
+    "id": "124ed00fd7ca13d78edc680f014942ac",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -309,24 +317,27 @@ return {
           "plural": false,
           "type": "Author"
         },
-        "artwork.artist.articlesConnection.edges.node.author.id": (v3/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.author.name": (v4/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.href": (v4/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.id": (v3/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.internalID": (v3/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.publishedAt": (v4/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.slug": (v4/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.author.id": (v5/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.author.name": (v6/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.href": (v6/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.id": (v5/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.internalID": (v5/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.publishedAt": (v6/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.slug": (v6/*: any*/),
         "artwork.artist.articlesConnection.edges.node.thumbnailImage": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Image"
         },
-        "artwork.artist.articlesConnection.edges.node.thumbnailImage.url": (v4/*: any*/),
-        "artwork.artist.articlesConnection.edges.node.thumbnailTitle": (v4/*: any*/),
-        "artwork.artist.id": (v3/*: any*/),
-        "artwork.artist.slug": (v3/*: any*/),
-        "artwork.id": (v3/*: any*/)
+        "artwork.artist.articlesConnection.edges.node.thumbnailImage.url": (v6/*: any*/),
+        "artwork.artist.articlesConnection.edges.node.thumbnailTitle": (v6/*: any*/),
+        "artwork.artist.id": (v5/*: any*/),
+        "artwork.artist.name": (v6/*: any*/),
+        "artwork.artist.slug": (v5/*: any*/),
+        "artwork.id": (v5/*: any*/),
+        "artwork.internalID": (v5/*: any*/),
+        "artwork.slug": (v5/*: any*/)
       }
     },
     "name": "MyCollectionArtworkArtistArticlesTestsQuery",

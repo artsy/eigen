@@ -5,6 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SaleCard_sale = {
+    readonly internalID: string;
     readonly href: string | null;
     readonly slug: string;
     readonly name: string | null;
@@ -44,6 +45,13 @@ return {
   "metadata": null,
   "name": "SaleCard_sale",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": null,
@@ -133,5 +141,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '4b1ba1befc97b6489b2ab29776d15825';
+(node as any).hash = '070271f93d6c74b9109e942f7675a8be';
 export default node;

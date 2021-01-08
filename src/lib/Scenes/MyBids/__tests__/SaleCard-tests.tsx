@@ -5,6 +5,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { CompleteRegistrationCTAWrapper } from "../Components/CompleteRegistrationCTAWrapper"
 import { RegistrationCTAWrapper, SaleCard, SaleCardFragmentContainer } from "../Components/SaleCard"
 
 jest.unmock("react-relay")
@@ -63,7 +64,7 @@ describe("SaleCard", () => {
     expect(wrapper.root.findAllByType(RegistrationCTAWrapper)).toHaveLength(0)
   })
 
-  it("renders a link to identity-verification-faq when the sale requires identity verification and the user is not yet verified", () => {
+  it("renders a link to user's pending identity verification", () => {
     const wrapper = getWrapper({
       Sale: () => ({
         registrationStatus: { qualifiedForBidding: false },
@@ -75,7 +76,7 @@ describe("SaleCard", () => {
       }),
     })
 
-    expect(wrapper.root.findAllByType(RegistrationCTAWrapper)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(CompleteRegistrationCTAWrapper)).toHaveLength(1)
     expect(wrapper.root.findAllByProps({ navLink: "/identity-verification/idv-id" }).length).toEqual(1)
   })
 

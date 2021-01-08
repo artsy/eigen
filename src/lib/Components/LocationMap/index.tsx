@@ -1,5 +1,4 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import Mapbox from "@mapbox/react-native-mapbox-gl"
+import MapboxGL from "@react-native-mapbox-gl/maps"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import { Pin } from "lib/Icons/Pin"
 import { ArtsyMapStyleURL } from "lib/Scenes/Map/GlobalMap"
@@ -10,11 +9,7 @@ import Config from "react-native-config"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-Mapbox.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
-
-const Map: React.ComponentType<any /* STRICTNESS_MIGRATION */> = styled(Mapbox.MapView)`
-  height: 120;
-`
+MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
 const MapWrapper = styled(Flex)`
   border-width: 1px;
@@ -216,19 +211,19 @@ export class LocationMap extends React.Component<Props> {
     return (
       <TouchableOpacity onPress={() => tappedOnMap(lat, lng, address, summary, partnerName, city, postalCode)}>
         <MapWrapper>
-          <Map
+          <MapboxGL.MapView
+            style={{ height: 120 }}
             key={lng}
             styleURL={ArtsyMapStyleURL}
-            centerCoordinate={[lng, lat]}
-            zoomLevel={14}
             logoEnabled={false}
             scrollEnabled={false}
             attributionEnabled={false}
           >
-            <Mapbox.PointAnnotation id={internalID} coordinate={[lng, lat]}>
+            <MapboxGL.Camera centerCoordinate={[lng, lat]} zoomLevel={14} />
+            <MapboxGL.PointAnnotation id={internalID} coordinate={[lng, lat]}>
               <Pin />
-            </Mapbox.PointAnnotation>
-          </Map>
+            </MapboxGL.PointAnnotation>
+          </MapboxGL.MapView>
           {renderAddress()}
         </MapWrapper>
       </TouchableOpacity>

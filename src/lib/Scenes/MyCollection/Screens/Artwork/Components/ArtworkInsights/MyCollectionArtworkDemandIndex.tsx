@@ -131,7 +131,7 @@ const ProgressBar: React.FC<{ width: number }> = ({ width }) => {
           <TriangleDown />
         </Box>
       </Box>
-      <Box height={20} width="100%" bg="black5">
+      <Box height={24} width="100%" bg="black5">
         <LinearGradient
           colors={["rgba(243, 240, 248, 2.6)", `rgba(110, 30, 255, ${opacity})`]}
           start={{ x: 0, y: 0 }}

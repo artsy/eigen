@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 33cd4daf0734f348e68c18dcf595a9b7 */
+/* @relayHash 09a48aff347a4c106a1f4e451fa943d7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,7 +37,24 @@ query ArtistInsightsAuctionResultsQuery(
   }
 }
 
-fragment ArtistInsightsAuctionResult_auctionResult on AuctionResult {
+fragment ArtistInsightsAuctionResults_artist_1RfMLO on Artist {
+  auctionResultsConnection(first: $count, after: $cursor, sort: $sort) {
+    edges {
+      node {
+        id
+        ...AuctionResult_auctionResult
+        __typename
+      }
+      cursor
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+fragment AuctionResult_auctionResult on AuctionResult {
   currency
   dateText
   id
@@ -61,23 +78,6 @@ fragment ArtistInsightsAuctionResult_auctionResult on AuctionResult {
   }
   saleDate
   title
-}
-
-fragment ArtistInsightsAuctionResults_artist_1RfMLO on Artist {
-  auctionResultsConnection(first: $count, after: $cursor, sort: $sort) {
-    edges {
-      node {
-        id
-        ...ArtistInsightsAuctionResult_auctionResult
-        __typename
-      }
-      cursor
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-  }
 }
 */
 
@@ -436,7 +436,7 @@ return {
     ]
   },
   "params": {
-    "id": "33cd4daf0734f348e68c18dcf595a9b7",
+    "id": "09a48aff347a4c106a1f4e451fa943d7",
     "metadata": {},
     "name": "ArtistInsightsAuctionResultsQuery",
     "operationKind": "query",

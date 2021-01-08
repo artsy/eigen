@@ -1,5 +1,5 @@
 #import <Mantle/Mantle.h>
-#import "ARSpotlight.h"
+#import "ARUserActivity.h"
 
 @class BuyersPremium, Profile;
 @class AFHTTPRequestOperation;
@@ -10,7 +10,7 @@ typedef enum: NSUInteger {
     SaleStateClosed,
 } SaleState;
 
-@interface Sale : MTLModel <MTLJSONSerializing, ARSpotlightMetadataProvider>
+@interface Sale : MTLModel <MTLJSONSerializing, ARContinuityMetadataProvider>
 
 @property (nonatomic, copy, readonly) NSString *name;
 @property (nonatomic, copy, readonly) NSString *saleID;

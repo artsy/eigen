@@ -75,6 +75,41 @@ describe("artsy.net routes", () => {
         "type": "match",
       }
     `)
+    expect(matchRoute("/artist/more%26more")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artist",
+        "params": Object {
+          "artistID": "more&more",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("artist/josef-albers?utm_medium=social&utm_source=instagram-story&utm_campaign=dp."))
+      .toMatchInlineSnapshot(`
+      Object {
+        "module": "Artist",
+        "params": Object {
+          "artistID": "josef-albers",
+          "utm_campaign": "dp.",
+          "utm_medium": "social",
+          "utm_source": "instagram-story",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("/artist/josef-albers%3Futm_medium%3Dsocial%26utm_source%3Dinstagram-story%26utm_campaign%3Ddp."))
+      .toMatchInlineSnapshot(`
+      Object {
+        "module": "Artist",
+        "params": Object {
+          "artistID": "josef-albers",
+          "utm_campaign": "dp.",
+          "utm_medium": "social",
+          "utm_source": "instagram-story",
+        },
+        "type": "match",
+      }
+    `)
   })
 
   it("routes to Artwork", () => {
@@ -92,6 +127,45 @@ describe("artsy.net routes", () => {
         "module": "Artwork",
         "params": Object {
           "artworkID": "yayoi-kusama-red-pumpkin",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("/artwork/more%26more")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artwork",
+        "params": Object {
+          "artworkID": "more&more",
+        },
+        "type": "match",
+      }
+    `)
+    expect(
+      matchRoute("/artwork/yayoi-kusama-red-pumpkin?utm_medium=social&utm_source=instagram-story&utm_campaign=dp.")
+    ).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artwork",
+        "params": Object {
+          "artworkID": "yayoi-kusama-red-pumpkin",
+          "utm_campaign": "dp.",
+          "utm_medium": "social",
+          "utm_source": "instagram-story",
+        },
+        "type": "match",
+      }
+    `)
+    expect(
+      matchRoute(
+        "/artwork/yayoi-kusama-red-pumpkin%3Futm_medium%3Dsocial%26utm_source%3Dinstagram-story%26utm_campaign%3Ddp."
+      )
+    ).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artwork",
+        "params": Object {
+          "artworkID": "yayoi-kusama-red-pumpkin",
+          "utm_campaign": "dp.",
+          "utm_medium": "social",
+          "utm_source": "instagram-story",
         },
         "type": "match",
       }
@@ -266,10 +340,8 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  describe("routes to Show, based on lab option", () => {
-    it("routes to the old Show view when the AROptionsNewShowPage option is false", () => {
-      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: false })
-      expect(matchRoute("/show/special-show")).toMatchInlineSnapshot(`
+  it("routes to the Show view", () => {
+    expect(matchRoute("/show/special-show")).toMatchInlineSnapshot(`
         Object {
           "module": "Show",
           "params": Object {
@@ -278,62 +350,6 @@ describe("artsy.net routes", () => {
           "type": "match",
         }
       `)
-    })
-
-    it("routes to the new Show view when the AROptionsNewShowPage option is true", () => {
-      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewShowPage: true })
-      expect(matchRoute("/show/special-show")).toMatchInlineSnapshot(`
-        Object {
-          "module": "Show2",
-          "params": Object {
-            "showID": "special-show",
-          },
-          "type": "match",
-        }
-      `)
-    })
-  })
-
-  it("routes to ShowArtworks", () => {
-    expect(matchRoute("/show/blue/artworks")).toMatchInlineSnapshot(`
-      Object {
-        "module": "ShowArtworks",
-        "params": Object {
-          "showID": "blue",
-        },
-        "type": "match",
-      }
-    `)
-    expect(matchRoute("/show/pop-art/artworks")).toMatchInlineSnapshot(`
-      Object {
-        "module": "ShowArtworks",
-        "params": Object {
-          "showID": "pop-art",
-        },
-        "type": "match",
-      }
-    `)
-  })
-
-  it("routes to ShowArtists", () => {
-    expect(matchRoute("/show/blue/artists")).toMatchInlineSnapshot(`
-      Object {
-        "module": "ShowArtists",
-        "params": Object {
-          "showID": "blue",
-        },
-        "type": "match",
-      }
-    `)
-    expect(matchRoute("/show/pop-art/artists")).toMatchInlineSnapshot(`
-      Object {
-        "module": "ShowArtists",
-        "params": Object {
-          "showID": "pop-art",
-        },
-        "type": "match",
-      }
-    `)
   })
 
   it("routes to ShowMoreInfo", () => {

@@ -1,4 +1,5 @@
 PODS:
+  - "@react-native-mapbox-gl-mapbox-static (6.3.0)"
   - Aerodramus (2.0.0):
     - ISO8601DateFormatter
   - AFNetworkActivityLogger (2.0.4):
@@ -24,7 +25,6 @@ PODS:
   - ARAnalytics/Segmentio (5.0.1):
     - Analytics (>= 3)
     - ARAnalytics/CoreIOS
-  - ARCollectionViewMasonryLayout (2.3.0)
   - ARGenericTableViewController (1.0.2)
   - "Artsy+UIColors (3.1.0)"
   - "Artsy+UIFonts (3.3.3)"
@@ -65,7 +65,7 @@ PODS:
     - React-cxxreact (= 0.63.3)
     - react-native-cameraroll (= 1.3.0)
     - react-native-geolocation (= 2.0.2)
-    - react-native-mapbox-gl (= 6.1.3)
+    - react-native-mapbox-gl (= 8.1.0-rc.9)
     - react-native-navigator-ios (= 1.0.0)
     - react-native-netinfo (= 4.6.1)
     - React-RCTActionSheet (= 0.63.3)
@@ -199,10 +199,12 @@ PODS:
   - JLRoutes (2.0.0)
   - JSDecoupledAppDelegate (1.2.0)
   - JWTDecode (2.0.0)
-  - KSDeferred (0.2.0)
   - Mantle (1.5.6):
     - Mantle/extobjc (= 1.5.6)
   - Mantle/extobjc (1.5.6)
+  - Mapbox-iOS-SDK (6.3.0):
+    - MapboxMobileEvents (~> 0.10.4)
+  - MapboxMobileEvents (0.10.7)
   - MARKRangeSlider (1.0.1)
   - MMMarkdown (0.4)
   - MultiDelegate (0.0.2)
@@ -398,8 +400,23 @@ PODS:
     - React
   - react-native-geolocation (2.0.2):
     - React
-  - react-native-mapbox-gl (6.1.3):
+  - react-native-mapbox-gl (8.1.0-rc.9):
+    - "@react-native-mapbox-gl-mapbox-static (~> 6.3)"
+    - Mapbox-iOS-SDK (~> 6.3)
     - React
+    - React-Core
+    - react-native-mapbox-gl/DynamicLibrary (= 8.1.0-rc.9)
+    - react-native-mapbox-gl/StaticLibraryFixer (= 8.1.0-rc.9)
+  - react-native-mapbox-gl/DynamicLibrary (8.1.0-rc.9):
+    - "@react-native-mapbox-gl-mapbox-static (~> 6.3)"
+    - Mapbox-iOS-SDK (~> 6.3)
+    - React
+    - React-Core
+  - react-native-mapbox-gl/StaticLibraryFixer (8.1.0-rc.9):
+    - "@react-native-mapbox-gl-mapbox-static (~> 6.3)"
+    - Mapbox-iOS-SDK (~> 6.3)
+    - React
+    - React-Core
   - react-native-navigator-ios (1.0.0):
     - React
   - react-native-netinfo (4.6.1):
@@ -508,7 +525,6 @@ PODS:
     - Sentry/Core (= 4.4.3)
   - Sentry/Core (4.4.3)
   - Specta (1.0.5)
-  - SSFadingScrollView (1.1.0)
   - Starscream (3.0.4)
   - Stripe (14.0.1)
   - SwiftyJSON (4.0.0)
@@ -536,8 +552,7 @@ DEPENDENCIES:
   - AFOAuth1Client (from `https://github.com/artsy/AFOAuth1Client.git`, tag `0.4.0-subspec-fix`)
   - Analytics
   - ARAnalytics/Segmentio
-  - ARCollectionViewMasonryLayout (from `https://github.com/ashfurrow/ARCollectionViewMasonryLayout`)
-  - ARGenericTableViewController (from `https://github.com/orta/ARGenericTableViewController.git`)
+  - ARGenericTableViewController (from `https://github.com/artsy/ARGenericTableViewController.git`)
   - "Artsy+UIColors"
   - "Artsy+UIFonts"
   - "Artsy+UILabels"
@@ -579,12 +594,11 @@ DEPENDENCIES:
   - Forgeries/Mocks
   - FXBlurView
   - glog (from `./node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - Interstellar/Core (from `https://github.com/ashfurrow/Interstellar.git`, branch `observable-unsubscribe`)
-  - ISO8601DateFormatter (from `https://github.com/orta/iso-8601-date-formatter`)
-  - JLRoutes (from `https://github.com/orta/JLRoutes.git`)
+  - Interstellar/Core (from `https://github.com/artsy/Interstellar.git`, branch `observable-unsubscribe`)
+  - ISO8601DateFormatter (from `https://github.com/artsy/iso-8601-date-formatter`)
+  - JLRoutes (from `https://github.com/artsy/JLRoutes.git`)
   - JSDecoupledAppDelegate
   - JWTDecode
-  - KSDeferred
   - Mantle (= 1.5.6)
   - MARKRangeSlider
   - MMMarkdown (= 0.4)
@@ -597,7 +611,7 @@ DEPENDENCIES:
   - OHHTTPStubs
   - ORKeyboardReactingApplication
   - ORStackView (= 2.0.3)
-  - Pulley (from `https://github.com/brainbicycle/Pulley.git`, branch `master`)
+  - Pulley (from `https://github.com/artsy/Pulley.git`, branch `master`)
   - Quick (= 2.0.0)
   - RCTRequired (from `./node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `./node_modules/react-native/Libraries/TypeSafety`)
@@ -614,7 +628,7 @@ DEPENDENCIES:
   - "react-native-cameraroll (from `node_modules/@react-native-community/cameraroll`)"
   - react-native-config (from `node_modules/react-native-config`)
   - "react-native-geolocation (from `node_modules/@react-native-community/geolocation`)"
-  - "react-native-mapbox-gl (from `node_modules/@mapbox/react-native-mapbox-gl`)"
+  - "react-native-mapbox-gl (from `node_modules/@react-native-mapbox-gl/maps`)"
   - react-native-navigator-ios (from `node_modules/react-native-navigator-ios`)
   - "react-native-netinfo (from `node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `node_modules/react-native-safe-area-context`)
@@ -643,7 +657,6 @@ DEPENDENCIES:
   - SailthruMobile
   - SDWebImage (>= 3.7.2)
   - Specta
-  - SSFadingScrollView (from `https://github.com/alloy/SSFadingScrollView.git`, branch `add-axial-support`)
   - Starscream
   - SwiftyJSON
   - Then
@@ -655,6 +668,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://cdn.cocoapods.org/:
+    - "@react-native-mapbox-gl-mapbox-static"
     - AFNetworkActivityLogger
     - AFNetworking
     - Analytics
@@ -682,8 +696,9 @@ SPEC REPOS:
     - INTUAnimationEngine
     - JSDecoupledAppDelegate
     - JWTDecode
-    - KSDeferred
     - Mantle
+    - Mapbox-iOS-SDK
+    - MapboxMobileEvents
     - MARKRangeSlider
     - MMMarkdown
     - MultiDelegate
@@ -722,10 +737,8 @@ EXTERNAL SOURCES:
   AFOAuth1Client:
     :git: https://github.com/artsy/AFOAuth1Client.git
     :tag: 0.4.0-subspec-fix
-  ARCollectionViewMasonryLayout:
-    :git: https://github.com/ashfurrow/ARCollectionViewMasonryLayout
   ARGenericTableViewController:
-    :git: https://github.com/orta/ARGenericTableViewController.git
+    :git: https://github.com/artsy/ARGenericTableViewController.git
   BVLinearGradient:
     :path: node_modules/react-native-linear-gradient
   DoubleConversion:
@@ -745,14 +758,14 @@ EXTERNAL SOURCES:
     :podspec: "./node_modules/react-native/third-party-podspecs/glog.podspec"
   Interstellar:
     :branch: observable-unsubscribe
-    :git: https://github.com/ashfurrow/Interstellar.git
+    :git: https://github.com/artsy/Interstellar.git
   ISO8601DateFormatter:
-    :git: https://github.com/orta/iso-8601-date-formatter
+    :git: https://github.com/artsy/iso-8601-date-formatter
   JLRoutes:
-    :git: https://github.com/orta/JLRoutes.git
+    :git: https://github.com/artsy/JLRoutes.git
   Pulley:
     :branch: master
-    :git: https://github.com/brainbicycle/Pulley.git
+    :git: https://github.com/artsy/Pulley.git
   RCTRequired:
     :path: "./node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
@@ -780,7 +793,7 @@ EXTERNAL SOURCES:
   react-native-geolocation:
     :path: "node_modules/@react-native-community/geolocation"
   react-native-mapbox-gl:
-    :path: "node_modules/@mapbox/react-native-mapbox-gl"
+    :path: "node_modules/@react-native-mapbox-gl/maps"
   react-native-navigator-ios:
     :path: node_modules/react-native-navigator-ios
   react-native-netinfo:
@@ -831,9 +844,6 @@ EXTERNAL SOURCES:
     :path: "node_modules/@sentry/react-native"
   RNSVG:
     :path: node_modules/react-native-svg
-  SSFadingScrollView:
-    :branch: add-axial-support
-    :git: https://github.com/alloy/SSFadingScrollView.git
   tipsi-stripe:
     :path: node_modules/tipsi-stripe
   Yoga:
@@ -843,39 +853,33 @@ CHECKOUT OPTIONS:
   AFOAuth1Client:
     :git: https://github.com/artsy/AFOAuth1Client.git
     :tag: 0.4.0-subspec-fix
-  ARCollectionViewMasonryLayout:
-    :commit: f22180d0267567fd3db62f903eaef1119b5c1f2d
-    :git: https://github.com/ashfurrow/ARCollectionViewMasonryLayout
   ARGenericTableViewController:
     :commit: f4c9028754558e196ab9c5111dcd3a4229c5bedf
-    :git: https://github.com/orta/ARGenericTableViewController.git
+    :git: https://github.com/artsy/ARGenericTableViewController.git
   FLKAutoLayout:
     :commit: 44a277d21d4fa104589703a34a4d82647414f435
     :git: https://github.com/artsy/FLKAutoLayout.git
   Interstellar:
     :commit: ca22646f5a8449795fba3d3436a045da0aeb5949
-    :git: https://github.com/ashfurrow/Interstellar.git
+    :git: https://github.com/artsy/Interstellar.git
   ISO8601DateFormatter:
     :commit: 1a48b819c85903ded669e74e476aceffebf311fc
-    :git: https://github.com/orta/iso-8601-date-formatter
+    :git: https://github.com/artsy/iso-8601-date-formatter
   JLRoutes:
     :commit: 5a6df1a795766a4d3e586508e86ec9271d3ef3d9
-    :git: https://github.com/orta/JLRoutes.git
+    :git: https://github.com/artsy/JLRoutes.git
   Pulley:
     :commit: f677b18b332ea3798dc379879dbc0d038efd3ccc
-    :git: https://github.com/brainbicycle/Pulley.git
-  SSFadingScrollView:
-    :commit: 3920e3582e46c9fe23b0d1200e28614ebd66d801
-    :git: https://github.com/alloy/SSFadingScrollView.git
+    :git: https://github.com/artsy/Pulley.git
 
 SPEC CHECKSUMS:
+  "@react-native-mapbox-gl-mapbox-static": 7ab93cffee38c24fa367e5d3ea3f0334d35d3d06
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 8dd5f9b9691e09186393069a12cc3b5ed7c8b511
   AFOAuth1Client: 155a6237e57987cac18dac2ccd17cea5d324ad1a
   Analytics: 6541ce337e99d9f7a2240a8b3953940a7be5f998
   ARAnalytics: 896e530551168721fbb8852e044b8afb9baffdde
-  ARCollectionViewMasonryLayout: 97cb468434b546b79a98c7c0908447ff803eb85e
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   "Artsy+UIColors": 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   "Artsy+UIFonts": 597c44f264aead6bdc21898b690addd90e14edbd
@@ -889,7 +893,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 5c5fb14e43f9ddc811185e8f17e11ab03a98dc09
+  Emission: cb9fd158eac9aa56e44a65b15e7a525c1ce11a48
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": dcff217eef506dabd6dfdc7864ea2da321fafbb8
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
@@ -916,8 +920,9 @@ SPEC CHECKSUMS:
   JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
-  KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
+  Mapbox-iOS-SDK: 2563ed87ead6ec08f1c2090873977b8a7be335a8
+  MapboxMobileEvents: d0a581dedd8f47411cc65ea520b965e83914316e
   MARKRangeSlider: dbf0878b03e921b52e4ef1e7766c1a8affb0c577
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
@@ -945,7 +950,7 @@ SPEC CHECKSUMS:
   react-native-cameraroll: 463aff54e37cff27ea76eb792e6f1fa43b876320
   react-native-config: 47fd4132d931f84aca9c31f302c3c867a8560b11
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
-  react-native-mapbox-gl: d0ac3b81a6cadbd7cadc80891da72e3e85379350
+  react-native-mapbox-gl: eeed4fa8fffea96f77a9eecbc63f88eddb0d2e58
   react-native-navigator-ios: 93db84cc26b6f8d776e1f504c56082f593efcd09
   react-native-netinfo: a59d8426a8484f739fe3a95dd6ad5af1435db05f
   react-native-safe-area-context: 79fea126c6830c85f65947c223a5e3058a666937
@@ -975,7 +980,6 @@ SPEC CHECKSUMS:
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   Sentry: 14bdd673870e8cf64932b149fad5bbbf39a9b390
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
-  SSFadingScrollView: a2f142312afad23585e354a41a6ed337045e1aa3
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   Stripe: 4305b646743612854819fb5d5cf67aaeb93577c0
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
@@ -988,6 +992,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 872157d0f969a68e0fe9d70e1ce0095b013a9ba7
+PODFILE CHECKSUM: 059f1c6c66d6afbb55df1080532345e3e4741a46
 
 COCOAPODS: 1.7.5

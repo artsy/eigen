@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a19d999a622fe4ba38deeb9622e3ad44 */
+/* @relayHash 9533d72f958050791bff97bfe3c7b62d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,7 +34,6 @@ fragment Lot_saleArtwork on SaleArtwork {
   lotLabel
   artwork {
     artistNames
-    href
     image {
       url(version: "medium")
     }
@@ -60,6 +59,10 @@ fragment SaleActiveBidItem_lotStanding on LotStanding {
     }
     currentBid {
       display
+    }
+    artwork {
+      href
+      id
     }
     ...Lot_saleArtwork
     id
@@ -260,13 +263,6 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "lotLabel",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
                     "concreteType": "Artwork",
                     "kind": "LinkedField",
                     "name": "artwork",
@@ -276,14 +272,15 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "artistNames",
+                        "name": "href",
                         "storageKey": null
                       },
+                      (v1/*: any*/),
                       {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "href",
+                        "name": "artistNames",
                         "storageKey": null
                       },
                       {
@@ -309,9 +306,15 @@ return {
                           }
                         ],
                         "storageKey": null
-                      },
-                      (v1/*: any*/)
+                      }
                     ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "lotLabel",
                     "storageKey": null
                   },
                   (v1/*: any*/)
@@ -347,7 +350,7 @@ return {
     ]
   },
   "params": {
-    "id": "a19d999a622fe4ba38deeb9622e3ad44",
+    "id": "9533d72f958050791bff97bfe3c7b62d",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {

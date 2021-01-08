@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6812eb997e5b2c60c8ddc198fcbee870 */
+/* @relayHash a0c335ae79e10fb8bd25d513741d89b0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -84,6 +84,22 @@ fragment Conversations_me_1G22uz on Me {
         internalID
         last_message: lastMessage
         ...ConversationSnippet_conversation
+        items {
+          item {
+            __typename
+            ... on Artwork {
+              internalID
+              partner {
+                internalID
+                id
+              }
+            }
+            ... on Node {
+              __isNode: __typename
+              id
+            }
+          }
+        }
         id
         __typename
       }
@@ -123,28 +139,35 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "internalID",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v4 = [
-  (v2/*: any*/),
-  (v3/*: any*/)
+v5 = [
+  (v3/*: any*/),
+  (v4/*: any*/)
 ],
-v5 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v6 = [
+v7 = [
   {
     "alias": null,
     "args": null,
@@ -254,13 +277,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "internalID",
-                        "storageKey": null
-                      },
+                      (v2/*: any*/),
                       {
                         "alias": "last_message",
                         "args": null,
@@ -275,7 +292,7 @@ return {
                         "kind": "LinkedField",
                         "name": "to",
                         "plural": false,
-                        "selections": (v4/*: any*/),
+                        "selections": (v5/*: any*/),
                         "storageKey": null
                       },
                       {
@@ -315,7 +332,7 @@ return {
                             "name": "item",
                             "plural": false,
                             "selections": [
-                              (v5/*: any*/),
+                              (v6/*: any*/),
                               {
                                 "kind": "InlineFragment",
                                 "selections": [
@@ -347,7 +364,21 @@ return {
                                     "kind": "LinkedField",
                                     "name": "image",
                                     "plural": false,
-                                    "selections": (v6/*: any*/),
+                                    "selections": (v7/*: any*/),
+                                    "storageKey": null
+                                  },
+                                  (v2/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Partner",
+                                    "kind": "LinkedField",
+                                    "name": "partner",
+                                    "plural": false,
+                                    "selections": [
+                                      (v2/*: any*/),
+                                      (v4/*: any*/)
+                                    ],
                                     "storageKey": null
                                   }
                                 ],
@@ -364,10 +395,10 @@ return {
                                     "kind": "LinkedField",
                                     "name": "fair",
                                     "plural": false,
-                                    "selections": (v4/*: any*/),
+                                    "selections": (v5/*: any*/),
                                     "storageKey": null
                                   },
-                                  (v2/*: any*/),
+                                  (v3/*: any*/),
                                   {
                                     "alias": null,
                                     "args": null,
@@ -375,7 +406,7 @@ return {
                                     "kind": "LinkedField",
                                     "name": "coverImage",
                                     "plural": false,
-                                    "selections": (v6/*: any*/),
+                                    "selections": (v7/*: any*/),
                                     "storageKey": null
                                   }
                                 ],
@@ -385,7 +416,7 @@ return {
                               {
                                 "kind": "InlineFragment",
                                 "selections": [
-                                  (v3/*: any*/)
+                                  (v4/*: any*/)
                                 ],
                                 "type": "Node",
                                 "abstractKey": "__isNode"
@@ -414,8 +445,8 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v3/*: any*/),
-                      (v5/*: any*/)
+                      (v4/*: any*/),
+                      (v6/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -448,14 +479,14 @@ return {
             "kind": "LinkedHandle",
             "name": "conversationsConnection"
           },
-          (v3/*: any*/)
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "6812eb997e5b2c60c8ddc198fcbee870",
+    "id": "a0c335ae79e10fb8bd25d513741d89b0",
     "metadata": {},
     "name": "ConversationsQuery",
     "operationKind": "query",

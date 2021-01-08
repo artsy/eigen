@@ -63,15 +63,13 @@ jest.mock("@sentry/react-native", () => ({ captureMessage() {} }))
 // Needing to mock react-native-scrollable-tab-view due to Flow issue
 jest.mock("react-native-scrollable-tab-view", () => jest.fn(() => null))
 
-jest.mock("@mapbox/react-native-mapbox-gl", () => ({
+jest.mock("@react-native-mapbox-gl/maps", () => ({
   MapView: () => null,
   StyleURL: {
     Light: null,
   },
   setAccessToken: () => jest.fn(),
-  StyleSheet: {
-    create: () => jest.fn(),
-  },
+  StyleSheet: {},
   ShapeSource: () => null,
   SymbolLayer: () => null,
 }))
@@ -106,7 +104,6 @@ mockedModule("./lib/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueIm
 // Artist tests
 mockedModule("./lib/Components/Artist/ArtistShows/ArtistShows.tsx", "ArtistShows")
 mockedModule("./lib/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "ArtistArtworks")
-mockedModule("./lib/Components/Artist/ArtistHeader.tsx", "ArtistHeader")
 
 // Gene tests
 mockedModule("./lib/Components/Gene/Header.tsx", "Header")
@@ -163,7 +160,6 @@ function getNativeModules(): typeof NativeModules {
           AREnableNewPartnerView: false,
           AROptionsNewFirstInquiry: false,
           AROptionsUseReactNativeWebView: false,
-          AROptionsNewShowPage: false,
           AROptionsNewFairPage: false,
           AROptionsNewInsightsPage: false,
         },

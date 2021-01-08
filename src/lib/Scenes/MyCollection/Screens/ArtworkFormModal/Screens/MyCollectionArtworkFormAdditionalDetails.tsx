@@ -7,7 +7,6 @@ import { TextArea } from "lib/Components/TextArea"
 import { Flex, Join, Sans, space, Spacer } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native-gesture-handler"
-import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtworkFormModalScreen } from "../MyCollectionArtworkFormModal"
 
@@ -21,10 +20,10 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
   const pricePaidCurrencyInputRef = useRef<Select<string>>(null)
 
   return (
-    <ScrollView>
+    <Flex style={{ flex: 1 }}>
       <FancyModalHeader onLeftButtonPress={() => navigation.goBack()}>Additional Details</FancyModalHeader>
-      <Flex mt={2}>
-        <ScreenMargin>
+      <ScrollView style={{ flex: 1 }}>
+        <Flex p={2}>
           <Join separator={<Spacer my={1} />}>
             <Input
               title="Title"
@@ -118,9 +117,9 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
               data-test-id="CurrencyInput"
             />
           </Join>
-        </ScreenMargin>
-      </Flex>
-    </ScrollView>
+        </Flex>
+      </ScrollView>
+    </Flex>
   )
 }
 

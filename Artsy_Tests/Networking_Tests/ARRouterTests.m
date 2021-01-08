@@ -147,36 +147,10 @@ describe(@"User-Agent", ^{
     });
 
     it(@"is contained in requests sent out from router", ^{
-        NSURLRequest *request = [ARRouter newGenesFromPersonalCollectionAtPage:0];
+        NSURLRequest *request = [ARRouter newSystemTimeRequest];
         expect(request.allHTTPHeaderFields[@"User-Agent"]).to.equal(userAgent);
     });
 });
-
-//describe(@"sending eigen uuids to martsy/force", ^{
-//    __block id userMock;
-//    after(^{
-//        [userMock stopMocking];
-//    });
-//
-//    it(@"logged in users don't send the uuid", ^{
-//        id userMock = [OCMockObject niceMockForClass:[User class]];
-//        [[[userMock stub] andReturnValue:@(NO)] isLocalTemporaryUser];
-//        [ARRouter setup];
-//
-//        NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://www.artsy.net"]];
-//        expect([request valueForHTTPHeaderField:AREigenLocalTemporaryUserIDHeader]).to.beFalsy();
-//    });
-//
-//    it(@"other websites dont get the uuid", ^{
-//        id userMock = [OCMockObject niceMockForClass:[User class]];
-//        [[[userMock stub] andReturnValue:@(YES)] isLocalTemporaryUser];
-//
-//        [ARRouter setup];
-//
-//        NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://orta.io"]];
-//        expect([request valueForHTTPHeaderField:AREigenLocalTemporaryUserIDHeader]).to.beFalsy();
-//    });
-//});
 
 describe(@"baseWebURL", ^{
     beforeEach(^{

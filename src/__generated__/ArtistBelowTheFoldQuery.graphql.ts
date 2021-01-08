@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 28fb7a81c8bcad9a8d1c1e7717c7a3ba */
+/* @relayHash 500888d510e9e7d2fb969eec5a3a2843 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -120,38 +120,12 @@ fragment ArtistConsignButton_artist on Artist {
   }
 }
 
-fragment ArtistInsightsAuctionResult_auctionResult on AuctionResult {
-  currency
-  dateText
-  id
-  images {
-    thumbnail {
-      url(version: "square140")
-      height
-      width
-      aspectRatio
-    }
-  }
-  estimate {
-    low
-  }
-  mediumText
-  organization
-  boughtIn
-  priceRealized {
-    display
-    cents
-  }
-  saleDate
-  title
-}
-
 fragment ArtistInsightsAuctionResults_artist on Artist {
   auctionResultsConnection(first: 10, sort: DATE_DESC) {
     edges {
       node {
         id
-        ...ArtistInsightsAuctionResult_auctionResult
+        ...AuctionResult_auctionResult
         __typename
       }
       cursor
@@ -165,6 +139,8 @@ fragment ArtistInsightsAuctionResults_artist on Artist {
 
 fragment ArtistInsights_artist on Artist {
   name
+  id
+  slug
   ...ArtistInsightsAuctionResults_artist
 }
 
@@ -211,6 +187,32 @@ fragment ArtistShows_artist on Artist {
       }
     }
   }
+}
+
+fragment AuctionResult_auctionResult on AuctionResult {
+  currency
+  dateText
+  id
+  images {
+    thumbnail {
+      url(version: "square140")
+      height
+      width
+      aspectRatio
+    }
+  }
+  estimate {
+    low
+  }
+  mediumText
+  organization
+  boughtIn
+  priceRealized {
+    display
+    cents
+  }
+  saleDate
+  title
 }
 
 fragment Biography_artist on Artist {
@@ -854,6 +856,7 @@ return {
             ],
             "storageKey": "articlesConnection(first:10)"
           },
+          (v5/*: any*/),
           {
             "alias": null,
             "args": (v12/*: any*/),
@@ -1080,7 +1083,6 @@ return {
             "kind": "LinkedHandle",
             "name": "auctionResultsConnection"
           },
-          (v5/*: any*/),
           {
             "condition": "isPad",
             "kind": "Condition",
@@ -1121,7 +1123,7 @@ return {
     ]
   },
   "params": {
-    "id": "28fb7a81c8bcad9a8d1c1e7717c7a3ba",
+    "id": "500888d510e9e7d2fb969eec5a3a2843",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",

@@ -154,11 +154,6 @@ private extension PrivateFunctions {
         let existingEventIds = Set(lot.eventIDs)
         let newEvents = lotEvents.filter { existingEventIds.contains($0["eventId"] as? String ?? "") == false }
 
-        if ARDeveloperOptions.keyExists("log_live_events" as NSCopying) {
-            for event in newEvents {
-                print("Event: \(event)\n\n")
-            }
-        }
         _debugAllEventsSignal.update(newEvents)
 
         // TODO: is this a good idea? This will remove events we don't know yet

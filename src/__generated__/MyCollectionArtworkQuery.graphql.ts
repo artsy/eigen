@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ad3326385642cdbc61de31f8c83791e9 */
+/* @relayHash 03b3e5f11ed4375cf3d3eeda88229808 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -96,9 +96,38 @@ query MyCollectionArtworkQuery(
   }
 }
 
+fragment AuctionResult_auctionResult on AuctionResult {
+  currency
+  dateText
+  id
+  images {
+    thumbnail {
+      url(version: "square140")
+      height
+      width
+      aspectRatio
+    }
+  }
+  estimate {
+    low
+  }
+  mediumText
+  organization
+  boughtIn
+  priceRealized {
+    display
+    cents
+  }
+  saleDate
+  title
+}
+
 fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
+  internalID
+  slug
   artist {
     slug
+    name
     articlesConnection(first: 3, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
       edges {
         node {
@@ -127,25 +156,12 @@ fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
   slug
   artist {
     slug
+    name
     auctionResultsConnection(first: 3, sort: DATE_DESC) {
       edges {
         node {
-          internalID
-          title
-          dimensionText
-          images {
-            thumbnail {
-              url
-            }
-          }
-          description
-          dateText
-          saleDate
-          priceRealized {
-            display
-            centsUSD
-          }
           id
+          ...AuctionResult_auctionResult
         }
       }
     }
@@ -212,6 +228,7 @@ fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights 
 }
 
 fragment MyCollectionArtworkMeta_artwork on Artwork {
+  slug
   internalID
   artistNames
   category
@@ -446,16 +463,7 @@ v24 = {
   "kind": "Literal",
   "name": "first",
   "value": 3
-},
-v25 = [
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "url",
-    "storageKey": null
-  }
-];
+};
 return {
   "fragment": {
     "argumentDefinitions": [
@@ -604,13 +612,19 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v4/*: any*/),
-                          (v21/*: any*/),
+                          (v14/*: any*/),
                           {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "dimensionText",
+                            "name": "currency",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "dateText",
                             "storageKey": null
                           },
                           {
@@ -628,7 +642,48 @@ return {
                                 "kind": "LinkedField",
                                 "name": "thumbnail",
                                 "plural": false,
-                                "selections": (v25/*: any*/),
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": [
+                                      {
+                                        "kind": "Literal",
+                                        "name": "version",
+                                        "value": "square140"
+                                      }
+                                    ],
+                                    "kind": "ScalarField",
+                                    "name": "url",
+                                    "storageKey": "url(version:\"square140\")"
+                                  },
+                                  (v13/*: any*/),
+                                  (v15/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "aspectRatio",
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "AuctionLotEstimate",
+                            "kind": "LinkedField",
+                            "name": "estimate",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "low",
                                 "storageKey": null
                               }
                             ],
@@ -638,21 +693,21 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "description",
+                            "name": "mediumText",
                             "storageKey": null
                           },
                           {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "dateText",
+                            "name": "organization",
                             "storageKey": null
                           },
                           {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "saleDate",
+                            "name": "boughtIn",
                             "storageKey": null
                           },
                           {
@@ -674,13 +729,20 @@ return {
                                 "alias": null,
                                 "args": null,
                                 "kind": "ScalarField",
-                                "name": "centsUSD",
+                                "name": "cents",
                                 "storageKey": null
                               }
                             ],
                             "storageKey": null
                           },
-                          (v14/*: any*/)
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "saleDate",
+                            "storageKey": null
+                          },
+                          (v21/*: any*/)
                         ],
                         "storageKey": null
                       }
@@ -775,7 +837,15 @@ return {
                             "kind": "LinkedField",
                             "name": "thumbnailImage",
                             "plural": false,
-                            "selections": (v25/*: any*/),
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "url",
+                                "storageKey": null
+                              }
+                            ],
                             "storageKey": null
                           },
                           (v14/*: any*/)
@@ -973,7 +1043,7 @@ return {
     ]
   },
   "params": {
-    "id": "ad3326385642cdbc61de31f8c83791e9",
+    "id": "03b3e5f11ed4375cf3d3eeda88229808",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",

@@ -8,7 +8,9 @@ import { extractText } from "lib/tests/extractText"
 import { FairsRailFragmentContainer } from "../FairsRail"
 
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
+import { Text } from "palette"
 import { useTracking } from "react-tracking"
 import HomeAnalytics from "../../homeAnalytics"
 
@@ -18,6 +20,10 @@ const artworkNode = {
   node: {
     image: { url: "https://example.com/image.jpg" },
   },
+}
+
+const emptyFairsModule: Omit<FairsRail_fairsModule, " $refType"> = {
+  results: [],
 }
 const fairsModule: Omit<FairsRail_fairsModule, " $refType"> = {
   results: [
@@ -64,6 +70,20 @@ const fairsModule: Omit<FairsRail_fairsModule, " $refType"> = {
 
 it("renders without throwing an error", () => {
   renderWithWrappers(<FairsRailFragmentContainer fairsModule={fairsModule as any} scrollRef={mockScrollRef} />)
+})
+
+it("renders results when there are fairs returned", () => {
+  const tree = renderWithWrappers(
+    <FairsRailFragmentContainer fairsModule={fairsModule as any} scrollRef={mockScrollRef} />
+  )
+  expect(tree.root.findAllByType(Text)[0].props.children).toMatch("Featured fairs")
+})
+
+it("does not render results when there are no fairs returned", () => {
+  const tree = renderWithWrappers(
+    <FairsRailFragmentContainer fairsModule={emptyFairsModule as any} scrollRef={mockScrollRef} />
+  )
+  expect(tree.root.findAllByType(SectionTitle).length).toEqual(0)
 })
 
 it("renders without throwing an error when missing artworks", () => {
