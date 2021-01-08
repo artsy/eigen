@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3e52c6e966b11b1599d6c63e03c6a414 */
+/* @relayHash d589c76834a62464989078d46f7a56a9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -860,7 +860,7 @@ return {
             ],
             "storageKey": "articlesConnection(first:10)"
           },
-          (v5/*: any*/),
+          (v6/*: any*/),
           {
             "alias": null,
             "args": (v13/*: any*/),
@@ -1088,7 +1088,6 @@ return {
             "kind": "LinkedHandle",
             "name": "auctionResultsConnection"
           },
-          (v6/*: any*/),
           {
             "condition": "isPad",
             "kind": "Condition",
@@ -1129,7 +1128,7 @@ return {
     ]
   },
   "params": {
-    "id": "3e52c6e966b11b1599d6c63e03c6a414",
+    "id": "d589c76834a62464989078d46f7a56a9",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",

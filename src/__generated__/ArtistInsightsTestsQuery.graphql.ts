@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash fd7fc874bd9f87114780c47fea2a39c5 */
+/* @relayHash 7db74f7d25e355deeac3b6c4922ddd07 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -186,13 +186,6 @@ return {
             "storageKey": null
           },
           (v1/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "slug",
-            "storageKey": null
-          },
           {
             "alias": null,
             "args": null,
@@ -445,7 +438,7 @@ return {
     ]
   },
   "params": {
-    "id": "fd7fc874bd9f87114780c47fea2a39c5",
+    "id": "7db74f7d25e355deeac3b6c4922ddd07",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
