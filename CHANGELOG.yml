@@ -5,6 +5,7 @@ upcoming:
     -
   user_facing:
     - Add filter button and screen to the ArtistInsights AuctionResults - mounir
+    - Allow users to indicate works in MyCollection as editions without marking edition size or number - anna
 
 releases:
   - version: 6.7.5
