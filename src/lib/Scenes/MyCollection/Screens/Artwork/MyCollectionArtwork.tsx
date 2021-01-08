@@ -31,7 +31,7 @@ export interface MyCollectionArtworkProps {
 export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwork, marketPriceInsights }) => {
   const { trackEvent } = useTracking()
   const [showModal, setShowModal] = useState(false)
-  console.log("artwork", artwork)
+
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={{
