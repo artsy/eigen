@@ -121,9 +121,12 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     header: (
       <Flex backgroundColor="white">
         <FancyModalHeader>
-          <Text variant="title">
-            {auctionResult?.title}, {auctionResult?.dateText}
-          </Text>
+          <Flex flex={1} pl={6} pr={4} pt={0.5} flexDirection="row">
+            <Text variant="subtitle" numberOfLines={1} style={{ flexShrink: 1 }}>
+              {auctionResult?.title}
+            </Text>
+            {!!auctionResult?.dateText && <Text variant="subtitle">, {auctionResult?.dateText}</Text>}
+          </Flex>
         </FancyModalHeader>
       </Flex>
     ),
@@ -222,12 +225,13 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             ) : (
               <Box style={{ height: 80, width: 60 }} backgroundColor="black10" />
             )}
-            <Flex justifyContent="center" ml={2}>
+            <Flex justifyContent="center" flex={1} ml={2}>
               <TouchableWithoutFeedback onPress={() => artist?.href && navigate(artist.href)}>
                 <Text variant="mediumText">{artist?.name}</Text>
               </TouchableWithoutFeedback>
               <Text variant="title">
-                {auctionResult?.title}, {auctionResult?.dateText}
+                {auctionResult?.title}
+                {!!auctionResult?.dateText && `, ${auctionResult?.dateText}`}
               </Text>
             </Flex>
           </Flex>

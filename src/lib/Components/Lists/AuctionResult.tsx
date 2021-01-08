@@ -48,9 +48,11 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
               <Text variant="subtitle" numberOfLines={1} style={{ flexShrink: 1 }}>
                 {auctionResult.title}
               </Text>
-              <Text variant="subtitle" numberOfLines={1}>
-                , {auctionResult.dateText}
-              </Text>
+              {!!auctionResult.dateText && auctionResult.dateText !== "" && (
+                <Text variant="subtitle" numberOfLines={1}>
+                  , {auctionResult.dateText}
+                </Text>
+              )}
             </Flex>
             {!!auctionResult.mediumText && (
               <Text variant="small" color="black60" numberOfLines={1}>
