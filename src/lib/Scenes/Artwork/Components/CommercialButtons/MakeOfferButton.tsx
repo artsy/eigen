@@ -121,6 +121,7 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
         block
         width={100}
         variant={this.props.variant}
+        haptic="selection"
       >
         Make offer
       </Button>

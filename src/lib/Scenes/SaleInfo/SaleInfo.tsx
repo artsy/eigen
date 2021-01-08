@@ -8,11 +8,12 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import moment from "moment"
 import { Flex, Join, Sans, Separator, Text } from "palette"
 import React, { useEffect, useRef } from "react"
-import { Linking, PanResponder, ScrollView, View } from "react-native"
+import { PanResponder, ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { StyledWebView } from "lib/Components/StyledWebView"
+import { sendEmail } from "lib/utils/sendEmail"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { navigate } from "../../navigation/navigate"
 import { PlaceholderBox } from "../../utils/placeholders"
@@ -39,10 +40,7 @@ const AuctionSupport = () => {
       <MenuItem
         title="Contact us for help"
         onPress={() => {
-          // PS: Opening Using Linking to open mail works only on real device on iOS
-          Linking.openURL("mailto:specialist@artsy.net").catch((error) => {
-            console.log(error)
-          })
+          sendEmail("specialist@artsy.net")
         }}
       />
     </Flex>

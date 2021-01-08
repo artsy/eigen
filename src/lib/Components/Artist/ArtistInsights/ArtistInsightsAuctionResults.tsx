@@ -2,9 +2,11 @@ import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsight
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
 import { navigate } from "lib/navigation/navigate"
+import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Separator, Text } from "palette"
-import React, { useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
@@ -16,6 +18,30 @@ interface Props {
 }
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
+  const { state, dispatch } = useContext(ArtworkFilterContext)
+  const filterParams = filterArtworksParams(state.appliedFilters, "auctionResult")
+
+  useEffect(() => {
+    dispatch({
+      type: "setFilterType",
+      payload: "auctionResult",
+    })
+  }, [])
+
+  useEffect(() => {
+    if (state.applyFilters) {
+      relay.refetchConnection(
+        PAGE_SIZE,
+        (error) => {
+          if (error) {
+            throw new Error("ArtistInsights/ArtistAuctionResults filter error: " + error.message)
+          }
+        },
+        filterParams
+      )
+    }
+  }, [state.appliedFilters])
+
   const auctionResults = extractNodes(artist.auctionResultsConnection)
   const [loadingMoreData, setLoadingMoreData] = useState(false)
 

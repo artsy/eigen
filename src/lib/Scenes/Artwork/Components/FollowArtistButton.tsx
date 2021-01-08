@@ -1,9 +1,8 @@
 import { FollowArtistButton_artist } from "__generated__/FollowArtistButton_artist.graphql"
 import { FollowArtistButtonMutation } from "__generated__/FollowArtistButtonMutation.graphql"
 import { Schema, track } from "lib/utils/track"
-import { Sans } from "palette"
+import { Sans, Touchable } from "palette"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface Props {
@@ -58,11 +57,11 @@ export class FollowArtistButton extends React.Component<Props> {
   render() {
     const followButtonText = this.props.artist.is_followed ? "Following" : "Follow"
     return (
-      <TouchableWithoutFeedback onPress={() => this.handleFollowArtist()}>
+      <Touchable onPress={() => this.handleFollowArtist()} haptic="selection" noFeedback>
         <Sans color="black60" weight="medium" size="3t">
           {followButtonText}
         </Sans>
-      </TouchableWithoutFeedback>
+      </Touchable>
     )
   }
 }

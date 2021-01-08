@@ -13,45 +13,41 @@ interface Props {
   artist: ArtistShows_artist
 }
 
-class Shows extends React.Component<Props> {
-  render() {
-    const currentShows = extractNodes(this.props.artist.currentShows)
-    const upcomingShows = extractNodes(this.props.artist.upcomingShows)
-    const currentAndUpcomingShows = [...currentShows, ...upcomingShows]
+const Shows: React.FC<Props> = ({ artist }) => {
+  const currentShows = extractNodes(artist.currentShows)
+  const upcomingShows = extractNodes(artist.upcomingShows)
+  const currentAndUpcomingShows = [...currentShows, ...upcomingShows]
 
-    const pastLargeShows = extractNodes(this.props.artist.pastLargeShows)
-    const pastSmallShows = extractNodes(this.props.artist.pastSmallShows)
-    const pastShows = pastLargeShows.length ? pastLargeShows : pastSmallShows
-    return (
-      <StickyTabPageScrollView>
-        <Stack spacing={3} py={2}>
-          {!!currentAndUpcomingShows.length && (
-            <View>
-              <SectionTitle title="Current & Upcoming Shows" />
-              <VariableSizeShowsList showSize="large" shows={currentAndUpcomingShows} />
-            </View>
-          )}
-          {!!pastShows.length && (
-            <View>
-              <SectionTitle title="Past Shows" />
-              {this.pastShowsList()}
-            </View>
-          )}
-        </Stack>
-      </StickyTabPageScrollView>
-    )
-  }
+  const pastLargeShows = extractNodes(artist.pastLargeShows)
+  const pastSmallShows = extractNodes(artist.pastSmallShows)
+  const pastShows = pastLargeShows.length ? pastLargeShows : pastSmallShows
 
-  pastShowsList() {
-    // TODO: Use `this.props.relay.getVariables().isPad` when this gets merged: https://github.com/facebook/relay/pull/1868
-    if (this.props.artist.pastLargeShows) {
-      return <VariableSizeShowsList showSize={"medium"} shows={extractNodes(this.props.artist.pastLargeShows)} />
+  const pastShowsList = () => {
+    // TODO: Use `relay.getVariables().isPad` when this gets merged: https://github.com/facebook/relay/pull/1868
+    if (artist.pastLargeShows) {
+      return <VariableSizeShowsList showSize={"medium"} shows={extractNodes(artist.pastLargeShows)} />
     } else {
-      return (
-        <SmallList shows={extractNodes(this.props.artist.pastSmallShows)} style={{ marginTop: -8, marginBottom: 50 }} />
-      )
+      return <SmallList shows={extractNodes(artist.pastSmallShows)} style={{ marginTop: -8, marginBottom: 50 }} />
     }
   }
+  return (
+    <StickyTabPageScrollView>
+      <Stack spacing={3} py={2}>
+        {!!currentAndUpcomingShows.length && (
+          <View>
+            <SectionTitle title="Current & Upcoming Shows" />
+            <VariableSizeShowsList showSize="large" shows={currentAndUpcomingShows} />
+          </View>
+        )}
+        {!!pastShows.length && (
+          <View>
+            <SectionTitle title="Past Shows" />
+            {pastShowsList()}
+          </View>
+        )}
+      </Stack>
+    </StickyTabPageScrollView>
+  )
 }
 
 export default createFragmentContainer(Shows, {

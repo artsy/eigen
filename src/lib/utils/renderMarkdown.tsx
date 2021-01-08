@@ -3,8 +3,9 @@ import { navigate } from "lib/navigation/navigate"
 import _ from "lodash"
 import { color, Sans, Separator, Serif, space, Text } from "palette"
 import React from "react"
-import { Linking, Text as RNText, View } from "react-native"
+import { Text as RNText, View } from "react-native"
 import SimpleMarkdown, { ParserRule, ParserRules, ReactNodeOutput } from "simple-markdown"
+import { sendEmailWithMailTo } from "./sendEmail"
 
 interface OurReactRule extends Partial<ParserRule> {
   // simpler typings here, for better intellisense
@@ -48,15 +49,7 @@ export function defaultRules({
         state.withinText = true
         const openUrl = (url: string) => {
           if (node.target.startsWith("mailto:")) {
-            Linking.canOpenURL(url)
-              .then((supported) => {
-                if (!supported) {
-                  console.log("Unable to handle URL: " + url)
-                } else {
-                  return Linking.openURL(url)
-                }
-              })
-              .catch((err) => console.error("An error occurred", err))
+            sendEmailWithMailTo(url)
           } else if (modal) {
             navigate(url, { modal: true })
           } else {

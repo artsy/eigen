@@ -141,6 +141,8 @@ fragment ArtistInsightsAuctionResults_artist on Artist {
 
 fragment ArtistInsights_artist on Artist {
   name
+  id
+  slug
   ...ArtistInsightsAuctionResults_artist
 }
 
@@ -858,6 +860,7 @@ return {
             ],
             "storageKey": "articlesConnection(first:10)"
           },
+          (v5/*: any*/),
           {
             "alias": null,
             "args": (v13/*: any*/),

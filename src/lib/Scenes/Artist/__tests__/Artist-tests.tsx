@@ -1,5 +1,5 @@
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
-import ArtistHeader from "lib/Components/Artist/ArtistHeader"
+import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
 import { ArtistInsights } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
 import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
 import { StickyTab } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
@@ -61,10 +61,10 @@ describe("availableTabs", () => {
         }
       },
     })
-    expect(tree.root.findAllByType(ArtistHeader)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtistHeaderFragmentContainer)).toHaveLength(1)
     expect(tree.root.findAllByType(StickyTab)).toHaveLength(1)
-    expect(extractText(tree.root)).toMatchInlineSnapshot(
-      `"There aren’t any works available by the artist at this time. Follow to receive notifications when new works are added.Artworks"`
+    expect(extractText(tree.root)).toContain(
+      "There aren’t any works available by the artist at this time. Follow to receive notifications when new works are added"
     )
   })
 
@@ -78,7 +78,7 @@ describe("availableTabs", () => {
         }
       },
     })
-    expect(tree.root.findAllByType(ArtistHeader)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtistHeaderFragmentContainer)).toHaveLength(1)
     expect(tree.root.findAllByType(StickyTab)).toHaveLength(1)
     expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(0)
     // it only shows below the fold

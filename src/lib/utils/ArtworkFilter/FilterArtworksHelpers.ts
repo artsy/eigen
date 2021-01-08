@@ -95,11 +95,16 @@ const DEFAULT_SHOW_ARTWORKS_PARAMS = {
   sort: "partner_show_position",
 }
 
+const DEFAULT_AUCTION_RESULT_PARAMS = {
+  sort: "DATE_DESC",
+} as FilterParams
+
 const getDefaultParamsByType = (filterType: FilterType) => {
   return {
     artwork: DEFAULT_ARTWORKS_PARAMS,
     saleArtwork: DEFAULT_SALE_ARTWORKS_PARAMS,
     showArtwork: DEFAULT_SHOW_ARTWORKS_PARAMS,
+    auctionResult: DEFAULT_AUCTION_RESULT_PARAMS,
   }[filterType]
 }
 
