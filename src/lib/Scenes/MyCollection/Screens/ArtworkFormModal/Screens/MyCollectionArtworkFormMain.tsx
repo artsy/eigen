@@ -37,7 +37,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
       false
     )
   }
-
+  console.log("isDirty", isFormDirty())
   return (
     <>
       <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => route.params.onDismiss()}>

@@ -41,6 +41,34 @@ describe("MyCollectionArtworkFormAdditionalDetails", () => {
     expect(wrapper.root.findByProps({ "data-test-id": "EditionNumberInput" }).props.defaultValue).toBe("1")
   })
 
+  it("checks the the edition checkbox when checked by user", () => {
+    useFormikContextMock.mockImplementation(() => ({
+      handleBlur: jest.fn(),
+      handleChange: jest.fn(),
+      values: {},
+    }))
+
+    const wrapper = renderWithWrappers(mockAdditionalDetailsForm)
+    wrapper.root.findByType(Checkbox).props.onPress()
+    expect(wrapper.root.findByType(Checkbox).props.checked).toBe(true)
+  })
+
+  it("unchecks the the edition checkbox when unchecked by user", () => {
+    useFormikContextMock.mockImplementation(() => ({
+      handleBlur: jest.fn(),
+      handleChange: jest.fn(),
+      values: {
+        editionSize: "10x30x10",
+        editionNumber: "1",
+      },
+    }))
+
+    const wrapper = renderWithWrappers(mockAdditionalDetailsForm)
+    expect(wrapper.root.findByType(Checkbox).props.checked).toBe(true)
+    wrapper.root.findByType(Checkbox).props.onPress()
+    expect(wrapper.root.findByType(Checkbox).props.checked).toBe(false)
+  })
+
   it("renders correct fields", () => {
     const wrapper = renderWithWrappers(mockAdditionalDetailsForm)
 

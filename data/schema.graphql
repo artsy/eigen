@@ -1293,6 +1293,7 @@ type Artwork implements Node & Searchable & Sellable {
   isBuyNowable: Boolean
   isComparableWithAuctionResults: Boolean
   isDownloadable: Boolean
+  isEdition: Boolean
   isEmbeddableVideo: Boolean
   isForSale: Boolean
   isHangable: Boolean
@@ -7122,6 +7123,31 @@ type Me implements Node {
 
   # A list of the current user’s recently viewed artworks.
   recentlyViewedArtworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  saleRegistrationsConnection(
+    after: String
+    before: String
+    first: Int
+
+    #
+    #         Only return sales matching specified ids.
+    #         Accepts list of ids.
+    #
+    ids: [String]
+
+    # Limit by auction.
+    isAuction: Boolean = true
+    last: Int
+
+    # Limit by live status.
+    live: Boolean = true
+
+    # Limit by published status.
+    published: Boolean = true
+
+    # Returns sales the user has registered for if true, returns sales the user has not registered for if false.
+    registered: Boolean
+    sort: SaleSorts
+  ): SaleRegistrationConnection
   secondFactors(kinds: [SecondFactorKind]): [SecondFactor]
   type: String
 
@@ -7412,6 +7438,7 @@ input MyCollectionCreateArtworkInput {
   editionSize: String
   externalImageUrls: [String]
   height: String
+  isEdition: Boolean
   medium: String!
   metric: String
   provenance: String
@@ -7456,6 +7483,7 @@ input MyCollectionUpdateArtworkInput {
   editionSize: String
   externalImageUrls: [String]
   height: String
+  isEdition: Boolean
   medium: String
   metric: String
   provenance: String
@@ -9361,6 +9389,36 @@ type SaleEdge {
 
   # The item at the end of the edge
   node: Sale
+}
+
+type SaleRegistration {
+  bidder: Bidder
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  isRegistered: Boolean
+  sale: Sale
+}
+
+# A connection to a list of items.
+type SaleRegistrationConnection {
+  # A list of edges.
+  edges: [SaleRegistrationEdge]
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+}
+
+# An edge in a connection.
+type SaleRegistrationEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: SaleRegistration
 }
 
 enum SaleSorts {
