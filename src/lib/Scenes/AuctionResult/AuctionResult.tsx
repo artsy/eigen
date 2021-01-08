@@ -34,7 +34,6 @@ const useStickyScrollHeader = ({
   const scrollEndTimer = useRef(setTimeout(() => null, 0))
   const translateYNumber = useRef(0)
   scrollAnim.addListener(({ value }) => {
-    console.log(value)
     translateYNumber.current = value
   })
   const headerElement = useMemo(
@@ -208,11 +207,8 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   const isFromPastMonth = auctionResult?.saleDate
     ? moment(auctionResult.saleDate).isAfter(now.subtract(1, "month"))
     : false
-  const salePriceMessage = isFromPastMonth
-    ? "Awaiting results"
-    : auctionResult?.boughtIn === true
-    ? "Bought in"
-    : "Not available"
+  const salePriceMessage =
+    auctionResult?.boughtIn === true ? "Bought in" : isFromPastMonth ? "Awaiting results" : "Not available"
 
   return (
     <>
