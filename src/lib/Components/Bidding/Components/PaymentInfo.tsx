@@ -1,20 +1,18 @@
 import React from "react"
 import { View } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
-
-import { BillingAddress } from "../Screens/BillingAddress"
-import { CreditCardForm } from "../Screens/CreditCardForm"
 
 import { BidInfoRow } from "./BidInfoRow"
 import { Divider } from "./Divider"
 
+import { StackScreenProps } from "@react-navigation/stack"
+import { BidFlowStackProps } from "lib/Containers/BidFlow"
 import { bullet } from "palette"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { FlexProps } from "../Elements/Flex"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 
 interface PaymentInfoProps extends FlexProps {
-  navigator?: NavigatorIOS
+  navigation?: StackScreenProps<BidFlowStackProps, "ConfirmBidScreen">["navigation"]
   onCreditCardAdded: (t: StripeToken, p: PaymentCardTextFieldParams) => void
   onBillingAddressAdded: (values: Address) => void
   billingAddress?: Address
@@ -29,31 +27,36 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
   }
 
   presentCreditCardForm() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.navigator.push({
-      component: CreditCardForm,
-      title: "",
-      passProps: {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        onSubmit: (token, params) => this.onCreditCardAdded(token, params),
-        params: this.props.creditCardFormParams,
-        navigator: this.props.navigator,
-      },
+    this.props.navigation?.navigate("CreditCardForm", {
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+      onSubmit: (token, params) => this.onCreditCardAdded(token, params),
+      params: this.props.creditCardFormParams,
     })
+    // // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    // this.props.navigator.push({
+    //   component: CreditCardForm,
+    //   title: "",
+    //   passProps: {
+    //     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    //     onSubmit: (token, params) => this.onCreditCardAdded(token, params),
+    //     params: this.props.creditCardFormParams,
+    //     navigator: this.props.navigator,
+    //   },
+    // })
   }
 
   presentBillingAddressForm() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.navigator.push({
-      component: BillingAddress,
-      title: "",
-      passProps: {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        onSubmit: (address) => this.onBillingAddressAdded(address),
-        billingAddress: this.props.billingAddress,
-        navigator: this.props.navigator,
-      },
-    })
+    // // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    // this.props.navigator.push({
+    //   component: BillingAddress,
+    //   title: "",
+    //   passProps: {
+    //     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    //     onSubmit: (address) => this.onBillingAddressAdded(address),
+    //     billingAddress: this.props.billingAddress,
+    //     navigator: this.props.navigator,
+    //   },
+    // })
   }
 
   onCreditCardAdded(token: StripeToken, params: PaymentCardTextFieldParams) {

@@ -10,7 +10,6 @@ export type SelectMaxBid_sale_artwork = {
         readonly display: string | null;
         readonly cents: number | null;
     } | null> | null;
-    readonly " $fragmentRefs": FragmentRefs<"ConfirmBid_sale_artwork">;
     readonly " $refType": "SelectMaxBid_sale_artwork";
 };
 export type SelectMaxBid_sale_artwork$data = SelectMaxBid_sale_artwork;
@@ -64,15 +63,10 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": "increments(useMyMaxBid:true)"
-    },
-    {
-      "args": null,
-      "kind": "FragmentSpread",
-      "name": "ConfirmBid_sale_artwork"
     }
   ],
   "type": "SaleArtwork",
   "abstractKey": null
 };
-(node as any).hash = 'da3f4c5b318013c4b3203bcd274c23bb';
+(node as any).hash = 'e4d51cf6fec281b1b67f75659d15afa3';
 export default node;

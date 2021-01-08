@@ -1,6 +1,5 @@
 import React from "react"
 import { View } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { dismissModal, navigate } from "lib/navigation/navigate"
@@ -16,17 +15,18 @@ import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
 import { BidderPositionResult } from "../types"
 
+import { StackScreenProps } from "@react-navigation/stack"
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
+import { BidFlowStackProps } from "lib/Containers/BidFlow"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 
-interface BidResultProps {
+interface BidResultProps extends StackScreenProps<BidFlowStackProps, "BidResultScreen"> {
   sale_artwork: BidResult_sale_artwork
-  bidderPositionResult: BidderPositionResult
-  navigator: NavigatorIOS
-  refreshBidderInfo?: () => void
-  refreshSaleArtwork?: () => void
+  // bidderPositionResult: BidderPositionResult
+  // refreshBidderInfo?: () => void
+  // refreshSaleArtwork?: () => void
 }
 
 const messageForPollingTimeout = {
@@ -46,22 +46,22 @@ const Icons = {
 export class BidResult extends React.Component<BidResultProps> {
   onPressBidAgain = () => {
     // refetch bidder information so your registration status is up to date
-    if (this.props.refreshBidderInfo) {
-      this.props.refreshBidderInfo()
+    if (this.props.route.params?.refreshBidderInfo) {
+      this.props.route.params?.refreshBidderInfo()
     }
 
     // fetch the latest increments for the select max bid screen
-    if (this.props.refreshSaleArtwork) {
-      this.props.refreshSaleArtwork()
+    if (this.props.route.params?.refreshSaleArtwork) {
+      this.props.route.params?.refreshSaleArtwork()
     }
 
     // pushing to MaxBidScreen creates a circular relay reference but this works
     // TODO: correct the screen transition animation
-    this.props.navigator.popToTop()
+    this.props.navigation.popToTop()
   }
 
   exitBidFlow = async () => {
-    if (this.props.bidderPositionResult.status === "LIVE_BIDDING_STARTED") {
+    if (this.props.route.params?.bidderPositionResult.status === "LIVE_BIDDING_STARTED") {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const saleSlug = this.props.sale_artwork.sale.slug
       const url = `${getCurrentEmissionState().predictionURL}/${saleSlug}`
@@ -72,7 +72,8 @@ export class BidResult extends React.Component<BidResultProps> {
   }
 
   render() {
-    const { sale_artwork, bidderPositionResult } = this.props
+    const { sale_artwork, route } = this.props
+    const { bidderPositionResult } = route.params!
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const { liveStartAt, endAt } = sale_artwork.sale
     const { status, message_header, message_description_md } = bidderPositionResult

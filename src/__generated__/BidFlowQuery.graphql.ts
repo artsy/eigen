@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ede3d5d49bccebe50e263ec437040d19 */
+/* @relayHash 39dd324d5d07a8e3ff9848646c095bb5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -45,11 +45,13 @@ query BidFlowQuery(
 }
 
 fragment BidFlow_me on Me {
-  ...SelectMaxBid_me
+  ...ConfirmBid_me
 }
 
 fragment BidFlow_sale_artwork on SaleArtwork {
   ...SelectMaxBid_sale_artwork
+  ...ConfirmBid_sale_artwork
+  ...BidResult_sale_artwork
 }
 
 fragment BidResult_sale_artwork on SaleArtwork {
@@ -96,17 +98,12 @@ fragment ConfirmBid_sale_artwork on SaleArtwork {
   ...BidResult_sale_artwork
 }
 
-fragment SelectMaxBid_me on Me {
-  ...ConfirmBid_me
-}
-
 fragment SelectMaxBid_sale_artwork on SaleArtwork {
   id
   increments(useMyMaxBid: true) {
     display
     cents
   }
-  ...ConfirmBid_sale_artwork
 }
 */
 
@@ -439,7 +436,7 @@ return {
     ]
   },
   "params": {
-    "id": "ede3d5d49bccebe50e263ec437040d19",
+    "id": "39dd324d5d07a8e3ff9848646c095bb5",
     "metadata": {},
     "name": "BidFlowQuery",
     "operationKind": "query",

@@ -1,21 +1,22 @@
 import { Fonts } from "lib/data/fonts"
 import { Box, Button, Sans, Serif } from "palette"
 import React, { Component } from "react"
-import { ScrollView, StyleSheet, View } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
+import { ScrollView, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe, { PaymentCardTextField, StripeToken } from "tipsi-stripe"
 
+import { StackScreenProps } from "@react-navigation/stack"
 import BottomAlignedButtonWrapper from "lib/Components/Buttons/BottomAlignedButtonWrapper"
-import { BackButton } from "../Components/BackButton"
+import { BidFlowStackProps } from "lib/Containers/BidFlow"
+import { isPad } from "lib/utils/hardware"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
 import { Title } from "../Components/Title"
+import { Image } from "../Elements/Image"
 import { theme } from "../Elements/Theme"
 import { PaymentCardTextFieldParams } from "../types"
 
-interface CreditCardFormProps {
-  navigator?: NavigatorIOS
+interface CreditCardFormProps extends StackScreenProps<BidFlowStackProps, "CreditCardForm"> {
   params?: PaymentCardTextFieldParams
   onSubmit: (t: StripeToken, p: PaymentCardTextFieldParams) => void
 }
@@ -60,8 +61,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
       const token = await stripe.createTokenWithCard({ ...params })
       this.props.onSubmit(token, this.state.params)
       this.setState({ isLoading: false })
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      this.props.navigator.pop()
+      this.props.navigation.goBack()
     } catch (error) {
       console.error("CreditCardForm.tsx", error)
       this.setState({ isError: true, isLoading: false })
@@ -105,10 +105,15 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
           onPress={this.state.valid ? () => this.tokenizeCardAndSubmit() : null}
           buttonComponent={buttonComponent}
         >
-          <BackButton
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            navigator={this.props.navigator}
-          />
+          <TouchableWithoutFeedback onPress={this.props.navigation.goBack}>
+            <Image
+              position="absolute"
+              top={isPad() ? "10px" : "14px"}
+              left={isPad() ? "20px" : "10px"}
+              source={require("../../../../../images/angle-left.png")}
+              style={{ zIndex: 10 }} // Here the style prop is intentionally used to avoid making zIndex too handy.
+            />
+          </TouchableWithoutFeedback>
           <ScrollView scrollEnabled={false}>
             <Container m={0}>
               <View>

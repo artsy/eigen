@@ -2,7 +2,6 @@ import { get, isEmpty } from "lodash"
 import { Box, Button, Serif } from "palette"
 import React from "react"
 import { Image, NativeModules, ScrollView, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { PayloadError } from "relay-runtime"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -16,15 +15,14 @@ import { PaymentInfo } from "lib/Components/Bidding/Components/PaymentInfo"
 import { Timer } from "lib/Components/Bidding/Components/Timer"
 import { Title } from "lib/Components/Bidding/Components/Title"
 import { Flex } from "lib/Components/Bidding/Elements/Flex"
-import { BidResultScreen } from "lib/Components/Bidding/Screens/BidResult"
 import { bidderPositionQuery } from "lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
 import { PriceSummary } from "lib/Components/Bidding/Screens/ConfirmBid/PriceSummary"
-import { SelectMaxBidEdit } from "lib/Components/Bidding/Screens/SelectMaxBidEdit"
 import { Address, Bid, PaymentCardTextFieldParams, StripeToken } from "lib/Components/Bidding/types"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { navigate } from "lib/navigation/navigate"
 import { Schema, screenTrack, track } from "lib/utils/track"
 
+import { StackScreenProps } from "@react-navigation/stack"
 import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
 import { ConfirmBid_me } from "__generated__/ConfirmBid_me.graphql"
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
@@ -35,6 +33,7 @@ import {
 import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
 import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { Modal } from "lib/Components/Modal"
+import { BidFlowStackProps } from "lib/Containers/BidFlow"
 import { partnerName } from "lib/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
 
@@ -44,14 +43,10 @@ type BidderPositionResult = NonNullable<
 
 stripe.setOptions({ publishableKey: getCurrentEmissionState().stripePublishableKey })
 
-export interface ConfirmBidProps extends ViewProperties {
+export interface ConfirmBidProps extends ViewProperties, StackScreenProps<BidFlowStackProps, "ConfirmBidScreen"> {
   sale_artwork: ConfirmBid_sale_artwork
   me: ConfirmBid_me
   relay: RelayRefetchProp
-  navigator?: NavigatorIOS
-  refreshSaleArtwork?: () => void
-  increments: any
-  selectedBidIndex: number
 }
 
 interface ConfirmBidState {
@@ -103,7 +98,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       isLoading: false,
       requiresCheckbox,
       requiresPaymentInformation,
-      selectedBidIndex: this.props.selectedBidIndex,
+      selectedBidIndex: this.props.route.params?.selectedBidIndex || 0,
       errorModalVisible: false,
       errorModalDetailText: "",
     }
@@ -392,29 +387,30 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   goBackToSelectMaxBid() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.navigator.push({
-      component: SelectMaxBidEdit,
-      title: "",
-      passProps: {
-        increments: this.props.increments,
-        selectedBidIndex: this.state.selectedBidIndex,
-        updateSelectedBid: this.updateSelectedBid.bind(this),
-      },
-    })
+    this.props.navigation.goBack()
+    // this.props.navigation.navigate("SelectMaxBidEdit", {
+    //   increments: this.props.increments,
+    //   selectedBidIndex: this.state.selectedBidIndex,
+    //   updateSelectedBid: this.updateSelectedBid.bind(this),
+    // })
+    // // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    // this.props.navigator.push({
+    //   component: SelectMaxBidEdit,
+    //   title: "",
+    //   passProps: {
+    //     increments: this.props.increments,
+    //     selectedBidIndex: this.state.selectedBidIndex,
+    //     updateSelectedBid: this.updateSelectedBid.bind(this),
+    //   },
+    // })
   }
 
   presentErrorResult(error: Error | ReadonlyArray<PayloadError>) {
     console.error(error)
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.navigator.push({
-      component: BidResultScreen,
-      title: "",
-      passProps: {
-        sale_artwork: this.props.sale_artwork,
-        bidderPositionResult: resultForNetworkError,
-      },
+    this.props.navigation.navigate("BidResultScreen", {
+      sale_artwork: this.props.route.params?.sale_artwork,
+      bidderPositionResult: resultForNetworkError,
     })
 
     this.setState({ isLoading: false })
@@ -432,17 +428,23 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       ARAuctionID: this.props.sale_artwork.sale.slug,
     })
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.navigator.push({
-      component: BidResultScreen,
-      title: "",
-      passProps: {
-        sale_artwork: this.props.sale_artwork,
-        bidderPositionResult,
-        refreshBidderInfo: this.refreshBidderInfo,
-        refreshSaleArtwork: this.props.refreshSaleArtwork,
-      },
+    this.props.navigation.navigate("BidResultScreen", {
+      sale_artwork: this.props.route.params?.sale_artwork,
+      bidderPositionResult,
+      refreshBidderInfo: this.refreshBidderInfo,
+      refreshSaleArtwork: this.props.route.params?.refreshSaleArtwork,
     })
+    // // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    // this.props.navigator.push({
+    //   component: BidResultScreen,
+    //   title: "",
+    //   passProps: {
+    //     sale_artwork: this.props.sale_artwork,
+    //     bidderPositionResult,
+    //     refreshBidderInfo: this.refreshBidderInfo,
+    //     refreshSaleArtwork: this.props.refreshSaleArtwork,
+    //   },
+    // })
 
     this.setState({ isLoading: false })
   }
@@ -530,7 +532,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
               {requiresPaymentInformation ? (
                 <PaymentInfo
-                  navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+                  navigation={isLoading ? ({ navigate: () => null } as any) : this.props.navigation}
                   onCreditCardAdded={this.onCreditCardAdded.bind(this)}
                   onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
                   billingAddress={this.state.billingAddress}
@@ -606,7 +608,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   private selectedBid(): Bid {
-    return this.props.increments[this.state.selectedBidIndex]
+    return this.props.route.params?.increments[this.state.selectedBidIndex]
   }
 
   private determineDisplayRequirements(bidders: ReadonlyArray<any>, hasQualifiedCreditCards: boolean) {

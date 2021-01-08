@@ -5,7 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type BidFlow_me = {
-    readonly " $fragmentRefs": FragmentRefs<"SelectMaxBid_me">;
+    readonly " $fragmentRefs": FragmentRefs<"ConfirmBid_me">;
     readonly " $refType": "BidFlow_me";
 };
 export type BidFlow_me$data = BidFlow_me;
@@ -25,11 +25,11 @@ const node: ReaderFragment = {
     {
       "args": null,
       "kind": "FragmentSpread",
-      "name": "SelectMaxBid_me"
+      "name": "ConfirmBid_me"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'd6b2136c99c5ca1a381cce7811303d1f';
+(node as any).hash = '430301d999e7055295d9e8957f39f1d3';
 export default node;
