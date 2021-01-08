@@ -1,6 +1,7 @@
 import _ from "lodash"
+import { Touchable } from "palette"
 import React, { useEffect, useMemo } from "react"
-import { Animated, StyleProp, TouchableHighlight, ViewStyle } from "react-native"
+import { Animated, StyleProp, ViewStyle } from "react-native"
 import styled from "styled-components/native"
 
 export const BottomButtonContainer = styled(Animated.View)`
@@ -39,9 +40,9 @@ export const AnimatedBottomButton: React.FC<AnimatedBottomButtonProps> = ({
 
   return (
     <BottomButtonContainer style={{ transform: [{ translateY: topOffset }] }}>
-      <TouchableHighlight activeOpacity={0.8} onPress={onPress} style={buttonStyles}>
+      <Touchable haptic="selection" onPress={onPress} style={buttonStyles}>
         {children}
-      </TouchableHighlight>
+      </Touchable>
     </BottomButtonContainer>
   )
 }
