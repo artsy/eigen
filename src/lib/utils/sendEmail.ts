@@ -17,7 +17,6 @@ export const sendEmailWithMailTo = (mailToString: string) => {
   const emailAddress = mailToString.split(":")[1].split("?")[0]
   Linking.canOpenURL(mailToString)
     .then((canOpenURL) => {
-      console.log("canOpenURL", canOpenURL)
       if (canOpenURL) {
         Linking.openURL(mailToString)
       } else {

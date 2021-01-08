@@ -20,7 +20,7 @@ describe("sendEmail", () => {
       expect(Alert.alert).toHaveBeenCalledTimes(1)
       expect(Alert.alert).toHaveBeenCalledWith(
         "No email configured",
-        "You can email specialist@artsy.net to get answers to your questions."
+        "Please email specialist@artsy.net for assistance."
       )
     })
   })
