@@ -32,17 +32,23 @@ import {
 } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
 import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
 import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
+import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
 import { Modal } from "lib/Components/Modal"
 import { BidFlowStackProps } from "lib/Containers/BidFlow"
 import { partnerName } from "lib/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
 
-type BidderPositionResult = NonNullable<
+export type BidderPositionResult = NonNullable<
   NonNullable<ConfirmBidCreateBidderPositionMutationResponse["createBidderPosition"]>["result"]
 >
 
 stripe.setOptions({ publishableKey: getCurrentEmissionState().stripePublishableKey })
 
+export interface ConfirmBidParamProps {
+  increments: SelectMaxBid_sale_artwork["increments"]
+  selectedBidIndex: number
+  refreshSaleArtwork: () => void
+}
 export interface ConfirmBidProps extends ViewProperties, StackScreenProps<BidFlowStackProps, "ConfirmBidScreen"> {
   sale_artwork: ConfirmBid_sale_artwork
   me: ConfirmBid_me
@@ -65,6 +71,7 @@ interface ConfirmBidState {
 const MAX_POLL_ATTEMPTS = 20
 
 const resultForNetworkError = {
+  status: "ERROR",
   message_header: "An error occurred",
   message_description_md: "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
 }
@@ -98,7 +105,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       isLoading: false,
       requiresCheckbox,
       requiresPaymentInformation,
-      selectedBidIndex: this.props.route.params?.selectedBidIndex || 0,
+      selectedBidIndex: this.props.route.params.selectedBidIndex,
       errorModalVisible: false,
       errorModalDetailText: "",
     }
@@ -310,13 +317,16 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   verifyBidderPosition(results: ConfirmBidCreateBidderPositionMutationResponse) {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const { result } = results.createBidderPosition
+    const { result } = results.createBidderPosition!
 
-    if (result.status === "SUCCESS") {
-      this.bidPlacedSuccessfully(result.position.internalID)
-    } else {
-      this.presentBidResult(result)
+    if (result) {
+      if (result.status === "SUCCESS") {
+        if (result?.position?.internalID) {
+          this.bidPlacedSuccessfully(result.position.internalID)
+        }
+      } else {
+        this.presentBidResult(result as BidderPositionResult)
+      }
     }
   }
 
@@ -344,7 +354,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
       this.pollCount += 1
     } else {
-      this.presentBidResult(bidder_position)
+      this.presentBidResult(bidder_position as BidderPositionResult)
     }
   }
 
@@ -409,8 +419,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     console.error(error)
 
     this.props.navigation.navigate("BidResultScreen", {
-      sale_artwork: this.props.route.params?.sale_artwork,
-      bidderPositionResult: resultForNetworkError,
+      bidderPositionResult: resultForNetworkError as any,
     })
 
     this.setState({ isLoading: false })
@@ -429,10 +438,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     })
 
     this.props.navigation.navigate("BidResultScreen", {
-      sale_artwork: this.props.route.params?.sale_artwork,
       bidderPositionResult,
       refreshBidderInfo: this.refreshBidderInfo,
-      refreshSaleArtwork: this.props.route.params?.refreshSaleArtwork,
+      refreshSaleArtwork: this.props.route.params!.refreshSaleArtwork,
     })
     // // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     // this.props.navigator.push({
@@ -607,8 +615,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     )
   }
 
-  private selectedBid(): Bid {
-    return this.props.route.params?.increments[this.state.selectedBidIndex]
+  private selectedBid() {
+    return this.props.route.params!.increments![this.state.selectedBidIndex] as Bid
   }
 
   private determineDisplayRequirements(bidders: ReadonlyArray<any>, hasQualifiedCreditCards: boolean) {

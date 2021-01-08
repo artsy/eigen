@@ -25,6 +25,8 @@ import { Input, InputProps } from "../Components/Input"
 import { Title } from "../Components/Title"
 import { Address, Country } from "../types"
 
+import { StackScreenProps } from "@react-navigation/stack"
+import { BidFlowStackProps } from "lib/Containers/BidFlow"
 import { SelectCountry } from "./SelectCountry"
 
 interface StyledInputInterface {
@@ -53,11 +55,13 @@ const StyledInput: React.FC<StyledInputProps> = ({ label, errorMessage, onLayout
 
 const iOSAccessoryViewHeight = 60
 
-interface BillingAddressProps {
+export interface BillingAddressParamsProps {
   onSubmit?: (values: Address) => void
   navigator?: NavigatorIOS
   billingAddress?: Address
 }
+
+interface BillingAddressProps extends StackScreenProps<BidFlowStackProps, "BillingAddressScreen"> {}
 
 interface BillingAddressState {
   values: Address
@@ -76,7 +80,7 @@ interface BillingAddressState {
   context_screen: Schema.PageNames.BidFlowBillingAddressPage,
   context_screen_owner_type: null,
 })
-export class BillingAddress extends React.Component<BillingAddressProps, BillingAddressState> {
+export class BillingAddressScreen extends React.Component<BillingAddressProps, BillingAddressState> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private addressLine1: StyledInputInterface
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

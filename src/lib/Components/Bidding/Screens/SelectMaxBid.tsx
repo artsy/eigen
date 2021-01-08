@@ -62,7 +62,6 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
 
   onPressNext = () => {
     this.props.navigation.navigate("ConfirmBidScreen", {
-      ...this.props,
       increments: this.props.sale_artwork.increments,
       selectedBidIndex: this.state.selectedBidIndex,
       refreshSaleArtwork: this.refreshSaleArtwork,

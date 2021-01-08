@@ -1,28 +1,30 @@
 import { Fonts } from "lib/data/fonts"
 import { Box, Button, Sans, Serif } from "palette"
 import React, { Component } from "react"
-import { ScrollView, StyleSheet, View } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
+import { ScrollView, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe, { PaymentCardTextField, StripeToken } from "tipsi-stripe"
 
+import { StackScreenProps } from "@react-navigation/stack"
 import BottomAlignedButtonWrapper from "lib/Components/Buttons/BottomAlignedButtonWrapper"
-import { BackButton } from "../Components/BackButton"
+import { BidFlowStackProps } from "lib/Containers/BidFlow"
+import { isPad } from "lib/utils/hardware"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
 import { Title } from "../Components/Title"
+import { Image } from "../Elements/Image"
 import { theme } from "../Elements/Theme"
 import { PaymentCardTextFieldParams } from "../types"
 
-interface CreditCardFormProps {
-  navigator?: NavigatorIOS
-  params?: PaymentCardTextFieldParams
+export interface CreditCardFormParamsProps {
   onSubmit: (t: StripeToken, p: PaymentCardTextFieldParams) => void
+  params: PaymentCardTextFieldParams | undefined
 }
+interface CreditCardFormProps extends StackScreenProps<BidFlowStackProps, "CreditCardForm"> {}
 
 interface CreditCardFormState {
-  valid: boolean
-  params: PaymentCardTextFieldParams
+  isValid: boolean | null
+  params: PaymentCardTextFieldParams | undefined
   isLoading: boolean
   isError: boolean
 }
@@ -30,13 +32,10 @@ interface CreditCardFormState {
 export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFormState> {
   private paymentInfo: PaymentCardTextField
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  constructor(props) {
+  constructor(props: CreditCardFormProps) {
     super(props)
-
     this.paymentInfo = (React as any).createRef()
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.state = { valid: null, params: { ...this.props.params }, isLoading: false, isError: false }
+    this.state = { isValid: null, params: this.props.route.params.params, isLoading: false, isError: false }
   }
 
   componentDidMount() {
@@ -46,9 +45,8 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
     }
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  handleFieldParamsChange = (valid, params: PaymentCardTextFieldParams) => {
-    this.setState({ valid, params })
+  handleFieldParamsChange = (isValid: boolean, params: PaymentCardTextFieldParams) => {
+    this.setState({ isValid, params })
   }
 
   tokenizeCardAndSubmit = async () => {
@@ -58,10 +56,9 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
 
     try {
       const token = await stripe.createTokenWithCard({ ...params })
-      this.props.onSubmit(token, this.state.params)
+      this.props.route.params.onSubmit(token, this.state.params!)
       this.setState({ isLoading: false })
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      this.props.navigator.pop()
+      this.props.navigation.goBack()
     } catch (error) {
       console.error("CreditCardForm.tsx", error)
       this.setState({ isError: true, isLoading: false })
@@ -72,12 +69,12 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
     const buttonComponent = (
       <Box m={4}>
         <Button
-          disabled={!this.state.valid}
+          disabled={!this.state.isValid}
           loading={this.state.isLoading}
           block
           width={100}
           // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          onPress={this.state.valid ? () => this.tokenizeCardAndSubmit() : null}
+          onPress={this.state.isValid ? () => this.tokenizeCardAndSubmit() : null}
         >
           Add credit card
         </Button>
@@ -102,13 +99,18 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
       <BiddingThemeProvider>
         <BottomAlignedButtonWrapper
           // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          onPress={this.state.valid ? () => this.tokenizeCardAndSubmit() : null}
+          onPress={this.state.isValid ? () => this.tokenizeCardAndSubmit() : null}
           buttonComponent={buttonComponent}
         >
-          <BackButton
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            navigator={this.props.navigator}
-          />
+          <TouchableWithoutFeedback onPress={this.props.navigation.goBack}>
+            <Image
+              position="absolute"
+              top={isPad() ? "10px" : "14px"}
+              left={isPad() ? "20px" : "10px"}
+              source={require("../../../../../images/angle-left.png")}
+              style={{ zIndex: 10 }} // Here the style prop is intentionally used to avoid making zIndex too handy.
+            />
+          </TouchableWithoutFeedback>
           <ScrollView scrollEnabled={false}>
             <Container m={0}>
               <View>

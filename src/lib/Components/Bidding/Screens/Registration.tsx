@@ -344,7 +344,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             {!!requiresPaymentInformation && (
               <>
                 <PaymentInfo
-                  navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+                  navigator={isLoading ? undefined : this.props.navigator}
                   onCreditCardAdded={this.onCreditCardAdded.bind(this)}
                   onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
                   billingAddress={this.state.billingAddress}

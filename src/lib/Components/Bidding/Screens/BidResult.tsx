@@ -13,20 +13,22 @@ import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
-import { BidderPositionResult } from "../types"
 
 import { StackScreenProps } from "@react-navigation/stack"
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 import { BidFlowStackProps } from "lib/Containers/BidFlow"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { BidderPositionResult } from "./ConfirmBid/index"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 
+export interface BidResultParamsProps {
+  bidderPositionResult: BidderPositionResult
+  refreshBidderInfo?: () => void
+  refreshSaleArtwork?: () => void
+}
 interface BidResultProps extends StackScreenProps<BidFlowStackProps, "BidResultScreen"> {
   sale_artwork: BidResult_sale_artwork
-  // bidderPositionResult: BidderPositionResult
-  // refreshBidderInfo?: () => void
-  // refreshSaleArtwork?: () => void
 }
 
 const messageForPollingTimeout = {
@@ -74,8 +76,7 @@ export class BidResult extends React.Component<BidResultProps> {
   render() {
     const { sale_artwork, route } = this.props
     const { bidderPositionResult } = route.params!
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const { liveStartAt, endAt } = sale_artwork.sale
+    const { liveStartAt, endAt } = sale_artwork.sale!
     const { status, message_header, message_description_md } = bidderPositionResult
 
     return (
@@ -94,10 +95,10 @@ export class BidResult extends React.Component<BidResultProps> {
               </Title>
               {status !== "WINNING" && (
                 <Markdown mb={5}>
-                  {status === "PENDING" ? messageForPollingTimeout.description : message_description_md}
+                  {status === "PENDING" ? messageForPollingTimeout.description : message_description_md || ""}
                 </Markdown>
               )}
-              {!!this.shouldDisplayTimer(status) && <Timer liveStartsAt={liveStartAt} endsAt={endAt} />}
+              {!!this.shouldDisplayTimer(status) && <Timer liveStartsAt={liveStartAt!} endsAt={endAt!} />}
             </Flex>
           </View>
           {this.canBidAgain(status) ? (
