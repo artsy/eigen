@@ -8,9 +8,10 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
   auctionResult: AuctionResult_auctionResult
+  onPress: () => void
 }
 
-const AuctionResult: React.FC<Props> = ({ auctionResult }) => {
+const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
   const now = moment()
 
   const isFromPastMonth = auctionResult.saleDate
@@ -27,12 +28,7 @@ const AuctionResult: React.FC<Props> = ({ auctionResult }) => {
   const ratio = getRatio()
 
   return (
-    <Touchable
-      underlayColor={color("black5")}
-      onPress={() => {
-        console.log("do nothing")
-      }}
-    >
+    <Touchable underlayColor={color("black5")} onPress={onPress}>
       <Flex height={100} py="2" px={2} flexDirection="row">
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
@@ -52,9 +48,11 @@ const AuctionResult: React.FC<Props> = ({ auctionResult }) => {
               <Text variant="subtitle" numberOfLines={1} style={{ flexShrink: 1 }}>
                 {auctionResult.title}
               </Text>
-              <Text variant="subtitle" numberOfLines={1}>
-                , {auctionResult.dateText}
-              </Text>
+              {!!auctionResult.dateText && auctionResult.dateText !== "" && (
+                <Text variant="subtitle" numberOfLines={1}>
+                  , {auctionResult.dateText}
+                </Text>
+              )}
             </Flex>
             {!!auctionResult.mediumText && (
               <Text variant="small" color="black60" numberOfLines={1}>
@@ -111,7 +109,7 @@ const AuctionResult: React.FC<Props> = ({ auctionResult }) => {
   )
 }
 
-const ratioColor = (ratio: number) => {
+export const ratioColor = (ratio: number) => {
   if (ratio >= 1.05) {
     return "green100"
   }
@@ -128,6 +126,7 @@ export const AuctionResultFragmentContainer = createFragmentContainer(AuctionRes
       currency
       dateText
       id
+      internalID
       images {
         thumbnail {
           url(version: "square140")

@@ -6,6 +6,7 @@ upcoming:
     - Fix `isVisible` root view prop to respect tab switches - david, erik, lily
     - Surface alert message for users with no email client setup - annacarey, pavlos
   user_facing:
+    - Add auction result screen - adam
     - Add filter button and screen to the ArtistInsights AuctionResults - mounir
 
 releases:

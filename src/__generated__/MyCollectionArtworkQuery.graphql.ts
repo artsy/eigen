@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 03b3e5f11ed4375cf3d3eeda88229808 */
+/* @relayHash d8a1dd309140e33e40bf8d018e997b8e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -100,6 +100,7 @@ fragment AuctionResult_auctionResult on AuctionResult {
   currency
   dateText
   id
+  internalID
   images {
     thumbnail {
       url(version: "square140")
@@ -161,6 +162,7 @@ fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
       edges {
         node {
           id
+          internalID
           ...AuctionResult_auctionResult
         }
       }
@@ -613,6 +615,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v14/*: any*/),
+                          (v4/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -1043,7 +1046,7 @@ return {
     ]
   },
   "params": {
-    "id": "03b3e5f11ed4375cf3d3eeda88229808",
+    "id": "d8a1dd309140e33e40bf8d018e997b8e",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",

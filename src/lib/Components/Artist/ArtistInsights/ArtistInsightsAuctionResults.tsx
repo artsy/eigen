@@ -1,6 +1,7 @@
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
+import { navigate } from "lib/navigation/navigate"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -61,7 +62,12 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
     <FlatList
       data={auctionResults}
       keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <AuctionResultFragmentContainer auctionResult={item} />}
+      renderItem={({ item }) => (
+        <AuctionResultFragmentContainer
+          auctionResult={item}
+          onPress={() => navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)}
+        />
+      )}
       ListHeaderComponent={() => (
         <Flex px={2}>
           <Text variant="title">Auction results</Text>
@@ -94,11 +100,13 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         cursor: { type: "String" }
         sort: { type: "AuctionResultSorts", defaultValue: DATE_DESC }
       ) {
+        slug
         auctionResultsConnection(first: $count, after: $cursor, sort: $sort)
           @connection(key: "artist_auctionResultsConnection") {
           edges {
             node {
               id
+              internalID
               ...AuctionResult_auctionResult
             }
           }

@@ -8,6 +8,7 @@ export type AuctionResult_auctionResult = {
     readonly currency: string | null;
     readonly dateText: string | null;
     readonly id: string;
+    readonly internalID: string;
     readonly images: {
         readonly thumbnail: {
             readonly url: string | null;
@@ -63,6 +64,13 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "ScalarField",
       "name": "id",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
       "storageKey": null
     },
     {
@@ -203,5 +211,5 @@ const node: ReaderFragment = {
   "type": "AuctionResult",
   "abstractKey": null
 };
-(node as any).hash = '32ea7fae93748b956187feefc9517af4';
+(node as any).hash = '09489d07ebc10408b00b027665c371ab';
 export default node;

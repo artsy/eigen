@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 09a48aff347a4c106a1f4e451fa943d7 */
+/* @relayHash 0736e6ab5fe27a1447cec6ca404b01f7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -38,10 +38,12 @@ query ArtistInsightsAuctionResultsQuery(
 }
 
 fragment ArtistInsightsAuctionResults_artist_1RfMLO on Artist {
+  slug
   auctionResultsConnection(first: $count, after: $cursor, sort: $sort) {
     edges {
       node {
         id
+        internalID
         ...AuctionResult_auctionResult
         __typename
       }
@@ -58,6 +60,7 @@ fragment AuctionResult_auctionResult on AuctionResult {
   currency
   dateText
   id
+  internalID
   images {
     thumbnail {
       url(version: "square140")
@@ -199,6 +202,13 @@ return {
         "selections": [
           {
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "slug",
+            "storageKey": null
+          },
+          {
+            "alias": null,
             "args": (v6/*: any*/),
             "concreteType": "AuctionResultConnection",
             "kind": "LinkedField",
@@ -222,6 +232,13 @@ return {
                     "plural": false,
                     "selections": [
                       (v7/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "internalID",
+                        "storageKey": null
+                      },
                       {
                         "alias": null,
                         "args": null,
@@ -436,7 +453,7 @@ return {
     ]
   },
   "params": {
-    "id": "09a48aff347a4c106a1f4e451fa943d7",
+    "id": "0736e6ab5fe27a1447cec6ca404b01f7",
     "metadata": {},
     "name": "ArtistInsightsAuctionResultsQuery",
     "operationKind": "query",
