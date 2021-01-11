@@ -91,6 +91,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
         longestText="Following"
         loading={isFollowedChanging}
         size="small"
+        haptic="selection"
       >
         {partner.profile?.isFollowed ? "Following" : "Follow"}
       </Button>

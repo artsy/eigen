@@ -55,7 +55,6 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
           }}
         />
       </Flex>
-
       <CardRailFlatList<Sale>
         listRef={listRef}
         data={props.salesModule.results}

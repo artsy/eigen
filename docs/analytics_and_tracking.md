@@ -1,20 +1,6 @@
-## Top level (AppRegistry)
+### Use cohesion for all new tracking code
 
-Make sure to register a new screen/component using `trackWrap`
-
-Now we have a function `trackWrap` that can wrap all components when we register them. So **use**:
-
-```typescript
-AppRegistry.registerComponent("Inquiry", trackWrap(Inquiry))
-```
-
-**instead of**:
-
-```typescript
-AppRegistry.registerComponent("Inquiry", () => Inquiry)
-```
-
-This will make sure that `Inquiry` is wrapped properly with the tracking context it's needed, regardless of it being a func or a class component.
+Use [cohesion](https://github.com/artsy/cohesion) events and helpers for all new tracking code. Cohesion is an artsy library for keeping analytics across our applications _cohesive_, it defines schemas, events and helpers for tracking code. It was recently adopted in Eigen so there still exists a lot of tracking code and helpers not using cohesion, all new tracking code should use cohesion if at all possible.
 
 ## Inside React components
 
@@ -50,9 +36,16 @@ This will minimize the tracking code sprinkled over the component code to just o
 export const MyFuncComp: React.FC<Props> = (props) => {
   const id = 42
   return (
-    <ProvideScreenTracking info={tracks.context(id, "aSlug")}>
+    <ProvideScreenTrackingWithCohesionSchema
+      info={{
+        action: ActionType.screen,
+        context_screen_owner_type: OwnerType.myCollectionArtwork,
+        context_screen_owner_id: artwork.internalID,
+        context_screen_owner_slug: artwork.slug,
+      }}
+    >
       <View />
-    </ProvideScreenTracking>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 ```

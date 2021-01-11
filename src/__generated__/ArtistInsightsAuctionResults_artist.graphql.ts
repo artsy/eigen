@@ -5,11 +5,13 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistInsightsAuctionResults_artist = {
+    readonly slug: string;
     readonly auctionResultsConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
-                readonly " $fragmentRefs": FragmentRefs<"ArtistInsightsAuctionResult_auctionResult">;
+                readonly internalID: string;
+                readonly " $fragmentRefs": FragmentRefs<"AuctionResult_auctionResult">;
             } | null;
         } | null> | null;
     } | null;
@@ -57,6 +59,13 @@ const node: ReaderFragment = {
   "name": "ArtistInsightsAuctionResults_artist",
   "selections": [
     {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
+      "storageKey": null
+    },
+    {
       "alias": "auctionResultsConnection",
       "args": [
         {
@@ -97,13 +106,20 @@ const node: ReaderFragment = {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
+                  "name": "internalID",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
                 },
                 {
                   "args": null,
                   "kind": "FragmentSpread",
-                  "name": "ArtistInsightsAuctionResult_auctionResult"
+                  "name": "AuctionResult_auctionResult"
                 }
               ],
               "storageKey": null
@@ -150,5 +166,5 @@ const node: ReaderFragment = {
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = '9277fb0d39b751cb7c5b279d5a7ff20c';
+(node as any).hash = 'e64452a8224c01ba6fbc85f375fd68bf';
 export default node;

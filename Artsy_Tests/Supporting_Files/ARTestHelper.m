@@ -2,7 +2,6 @@
 
 #import "ARLogger.h"
 #import "ARRouter.h"
-#import "ARSpotlight.h"
 #import "ARUserManager.h"
 
 #import <SDWebImage/SDWebImageManager.h>
@@ -28,9 +27,6 @@
 
     [ARDefaults setup];
     [ARRouter setup];
-
-    // Disable this so that no actual changes are made to the index as side-effects of favoriting entities.
-    [ARSpotlight disableIndexing];
 
     // Shared Web Credentials involve async processes that trigger OS alerts and are generally hard to deal with.
     // The related ARUserManager methods can still be invoked, they will just silently do nothing.

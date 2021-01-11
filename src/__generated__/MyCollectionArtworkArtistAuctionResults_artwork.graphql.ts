@@ -13,21 +13,9 @@ export type MyCollectionArtworkArtistAuctionResults_artwork = {
         readonly auctionResultsConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
+                    readonly id: string;
                     readonly internalID: string;
-                    readonly title: string | null;
-                    readonly dimensionText: string | null;
-                    readonly images: {
-                        readonly thumbnail: {
-                            readonly url: string | null;
-                        } | null;
-                    } | null;
-                    readonly description: string | null;
-                    readonly dateText: string | null;
-                    readonly saleDate: string | null;
-                    readonly priceRealized: {
-                        readonly display: string | null;
-                        readonly centsUSD: number | null;
-                    } | null;
+                    readonly " $fragmentRefs": FragmentRefs<"AuctionResult_auctionResult">;
                 } | null;
             } | null> | null;
         } | null;
@@ -116,95 +104,18 @@ return {
                   "name": "node",
                   "plural": false,
                   "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "id",
+                      "storageKey": null
+                    },
                     (v0/*: any*/),
                     {
-                      "alias": null,
                       "args": null,
-                      "kind": "ScalarField",
-                      "name": "title",
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "dimensionText",
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "concreteType": "AuctionLotImages",
-                      "kind": "LinkedField",
-                      "name": "images",
-                      "plural": false,
-                      "selections": [
-                        {
-                          "alias": null,
-                          "args": null,
-                          "concreteType": "Image",
-                          "kind": "LinkedField",
-                          "name": "thumbnail",
-                          "plural": false,
-                          "selections": [
-                            {
-                              "alias": null,
-                              "args": null,
-                              "kind": "ScalarField",
-                              "name": "url",
-                              "storageKey": null
-                            }
-                          ],
-                          "storageKey": null
-                        }
-                      ],
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "description",
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "dateText",
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "saleDate",
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "concreteType": "AuctionResultPriceRealized",
-                      "kind": "LinkedField",
-                      "name": "priceRealized",
-                      "plural": false,
-                      "selections": [
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "display",
-                          "storageKey": null
-                        },
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "centsUSD",
-                          "storageKey": null
-                        }
-                      ],
-                      "storageKey": null
+                      "kind": "FragmentSpread",
+                      "name": "AuctionResult_auctionResult"
                     }
                   ],
                   "storageKey": null
@@ -223,5 +134,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'dc02f16b38b70305764e33e184cba631';
+(node as any).hash = '2ae87f46d1b38f9b26baf45c714f8d46';
 export default node;

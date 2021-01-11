@@ -2,6 +2,38 @@ import Interstellar
 @testable
 import Artsy
 
+let pendingBidder = try! Bidder(dictionary: ["qualifiedForBidding": false, "bidderID": "123456"], error: Void())
+let qualifiedBidder = try! Bidder(dictionary: ["qualifiedForBidding": true, "bidderID": "123456"], error: Void())
+
+var dateMock: AnyObject?
+var systemDateMock: AnyObject?
+
+func freezeTime(_ now: Date = Date(), work: () -> ()) {
+    freezeTime(now)
+    work()
+    unfreezeTime()
+}
+
+func freezeTime(_ now: Date = Date()) {
+    dateMock = ARTestContext.freezeTime(now)
+    systemDateMock = ARTestContext.freezeSystemTime(now)
+}
+
+func unfreezeTime() {
+    dateMock?.stopMocking()
+    systemDateMock?.stopMocking()
+}
+
+class Test_SaleViewModel: SaleViewModel {
+    var stubbedAuctionState: ARAuctionState = []
+    override var currencySymbol: String { return "$" }
+    override var auctionState: ARAuctionState { return stubbedAuctionState }
+
+    override init(sale: Sale, saleArtworks: [SaleArtwork], promotedSaleArtworks: [SaleArtwork]?, bidders: [Bidder], me: User) {
+        super.init(sale: sale, saleArtworks: saleArtworks, promotedSaleArtworks: promotedSaleArtworks, bidders: bidders, me: me)
+    }
+}
+
 func stub_auctionSale() -> LiveSale {
     let stateFetcher = Stubbed_StaticDataFetcher()
     return stateFetcher.fetchStaticData().peek()!.sale

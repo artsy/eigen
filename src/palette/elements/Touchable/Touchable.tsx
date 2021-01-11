@@ -1,6 +1,10 @@
 import React from "react"
-import { GestureResponderEvent, TouchableHighlight, TouchableHighlightProps } from "react-native"
-import { TouchableWithoutFeedback } from "react-native-gesture-handler"
+import {
+  GestureResponderEvent,
+  TouchableHighlight,
+  TouchableHighlightProps,
+  TouchableWithoutFeedback,
+} from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 
 import { color } from "../../helpers"

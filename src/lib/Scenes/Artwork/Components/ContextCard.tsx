@@ -111,6 +111,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
         size="small"
         longestText="Following"
         loading={isSaving}
+        haptic="selection"
       >
         {isFollowed ? "Following" : "Follow"}
       </Button>

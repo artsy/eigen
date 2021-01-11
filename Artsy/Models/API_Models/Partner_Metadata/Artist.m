@@ -1,10 +1,8 @@
 #import "Artist.h"
 
-#import "ArtsyAPI+Artworks.h"
 #import "ArtsyAPI+Following.h"
 #import "ArtsyAPI+RelatedModels.h"
 #import "ARNetworkConstants.h"
-#import "ARSpotlight.h"
 #import "User.h"
 
 
@@ -80,7 +78,6 @@
     [ArtsyAPI setFavoriteStatus:state forArtist:self success:^(id response) {
         __strong typeof (wself) sself = wself;
         sself.followed = state;
-        [ARSpotlight addToSpotlightIndex:state entity:self];
         if (success) {
             success(response);
         }

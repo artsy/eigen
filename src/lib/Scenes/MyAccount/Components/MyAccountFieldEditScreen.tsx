@@ -103,10 +103,14 @@ export const MyAccountFieldEditScreen = React.forwardRef<
             <LoadingModal
               isVisible
               onDismiss={() => {
-                if (afterLoadingAlert.current) {
-                  Alert.alert(...afterLoadingAlert.current)
-                  afterLoadingAlert.current = undefined
-                }
+                // Workaround for an iOS 14 issue, modal onDismiss is being called while the
+                // view still appears to be in the hierarchy
+                setTimeout(() => {
+                  if (afterLoadingAlert.current) {
+                    Alert.alert(...afterLoadingAlert.current)
+                    afterLoadingAlert.current = undefined
+                  }
+                }, 150)
               }}
             />
           )}

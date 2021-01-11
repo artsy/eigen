@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3d0bc46ae17c1c39f9dd26fb17107232 */
+/* @relayHash e123a1d6effa89423d725d38b2dbfccb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -88,6 +88,10 @@ fragment SaleActiveBidItem_lotStanding on LotStanding {
     }
     currentBid {
       display
+    }
+    artwork {
+      href
+      id
     }
     ...Lot_saleArtwork
     id
@@ -682,7 +686,6 @@ return {
                   },
                   (v8/*: any*/),
                   (v10/*: any*/),
-                  (v11/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -691,6 +694,8 @@ return {
                     "name": "artwork",
                     "plural": false,
                     "selections": [
+                      (v6/*: any*/),
+                      (v5/*: any*/),
                       (v7/*: any*/),
                       {
                         "alias": null,
@@ -715,11 +720,11 @@ return {
                           }
                         ],
                         "storageKey": null
-                      },
-                      (v5/*: any*/)
+                      }
                     ],
                     "storageKey": null
                   },
+                  (v11/*: any*/),
                   (v5/*: any*/),
                   (v2/*: any*/)
                 ],
@@ -771,7 +776,7 @@ return {
     ]
   },
   "params": {
-    "id": "3d0bc46ae17c1c39f9dd26fb17107232",
+    "id": "e123a1d6effa89423d725d38b2dbfccb",
     "metadata": {},
     "name": "SaleAboveTheFoldQuery",
     "operationKind": "query",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 33cd4daf0734f348e68c18dcf595a9b7 */
+/* @relayHash 0736e6ab5fe27a1447cec6ca404b01f7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,10 +37,30 @@ query ArtistInsightsAuctionResultsQuery(
   }
 }
 
-fragment ArtistInsightsAuctionResult_auctionResult on AuctionResult {
+fragment ArtistInsightsAuctionResults_artist_1RfMLO on Artist {
+  slug
+  auctionResultsConnection(first: $count, after: $cursor, sort: $sort) {
+    edges {
+      node {
+        id
+        internalID
+        ...AuctionResult_auctionResult
+        __typename
+      }
+      cursor
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+fragment AuctionResult_auctionResult on AuctionResult {
   currency
   dateText
   id
+  internalID
   images {
     thumbnail {
       url(version: "square140")
@@ -61,23 +81,6 @@ fragment ArtistInsightsAuctionResult_auctionResult on AuctionResult {
   }
   saleDate
   title
-}
-
-fragment ArtistInsightsAuctionResults_artist_1RfMLO on Artist {
-  auctionResultsConnection(first: $count, after: $cursor, sort: $sort) {
-    edges {
-      node {
-        id
-        ...ArtistInsightsAuctionResult_auctionResult
-        __typename
-      }
-      cursor
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-  }
 }
 */
 
@@ -199,6 +202,13 @@ return {
         "selections": [
           {
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "slug",
+            "storageKey": null
+          },
+          {
+            "alias": null,
             "args": (v6/*: any*/),
             "concreteType": "AuctionResultConnection",
             "kind": "LinkedField",
@@ -222,6 +232,13 @@ return {
                     "plural": false,
                     "selections": [
                       (v7/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "internalID",
+                        "storageKey": null
+                      },
                       {
                         "alias": null,
                         "args": null,
@@ -436,7 +453,7 @@ return {
     ]
   },
   "params": {
-    "id": "33cd4daf0734f348e68c18dcf595a9b7",
+    "id": "0736e6ab5fe27a1447cec6ca404b01f7",
     "metadata": {},
     "name": "ArtistInsightsAuctionResultsQuery",
     "operationKind": "query",

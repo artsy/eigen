@@ -1,4 +1,4 @@
-#import "ARFeedItems.h"
+#import "Fair.h"
 
 SpecBegin(Fair);
 

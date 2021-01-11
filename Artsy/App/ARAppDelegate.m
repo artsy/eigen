@@ -12,7 +12,6 @@
 #import "ARAppDelegate+Analytics.h"
 #import "ARAppDelegate+Emission.h"
 #import "ARAppDelegate+Echo.h"
-#import "ARAppDelegate+TestScenarios.h"
 #import "ARAppNotificationsDelegate.h"
 #import "ARAppConstants.h"
 #import "ARFonts.h"
@@ -25,16 +24,12 @@
 #import "ARNetworkConstants.h"
 #import "ArtsyAPI+Private.h"
 #import "ARFileUtils.h"
-#import "ARSpotlight.h"
 #import "ARWebViewCacheHost.h"
 #import "ARAppStatus.h"
 #import "Artsy-Swift.h"
 #import "ARSystemTime.h"
 #import "ARDispatchManager.h"
 #import "ARLogger.h"
-#import "FeaturedLink.h"
-#import "OrderedSet.h"
-#import "ArtsyAPI+OrderedSets.h"
 #import "ARAuthValidator.h"
 
 #import "UIDevice-Hardware.h"
@@ -111,10 +106,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    if ([[NSProcessInfo processInfo] environment][@"TEST_SCENARIO"]) {
-        [self setupIntegrationTests];
-    }
-
     self.echo = [[ArtsyEcho alloc] init];
     [self setupEcho];
 
@@ -279,7 +270,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     ar_dispatch_main_queue(^{
         if ([User currentUser]) {
-            [ARSpotlight indexAllUsersFavorites];
             [self setupAdminTools];
         }
 

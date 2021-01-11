@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash feb8e0f3a2c6955da5b860b52c7728ef */
+/* @relayHash 5a1b9a84b5a333d475511e385f2ab9f5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -59,6 +59,10 @@ fragment SaleActiveBidItem_lotStanding on LotStanding {
     }
     currentBid {
       display
+    }
+    artwork {
+      href
+      id
     }
     ...Lot_saleArtwork
     id
@@ -265,18 +269,19 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "lotLabel",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
                     "concreteType": "Artwork",
                     "kind": "LinkedField",
                     "name": "artwork",
                     "plural": false,
                     "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "href",
+                        "storageKey": null
+                      },
+                      (v2/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -307,9 +312,15 @@ return {
                           }
                         ],
                         "storageKey": null
-                      },
-                      (v2/*: any*/)
+                      }
                     ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "lotLabel",
                     "storageKey": null
                   },
                   (v2/*: any*/),
@@ -352,7 +363,7 @@ return {
     ]
   },
   "params": {
-    "id": "feb8e0f3a2c6955da5b860b52c7728ef",
+    "id": "5a1b9a84b5a333d475511e385f2ab9f5",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -406,6 +417,7 @@ return {
           "type": "Artwork"
         },
         "me.lotStandings.saleArtwork.artwork.artistNames": (v6/*: any*/),
+        "me.lotStandings.saleArtwork.artwork.href": (v6/*: any*/),
         "me.lotStandings.saleArtwork.artwork.id": (v4/*: any*/),
         "me.lotStandings.saleArtwork.artwork.image": {
           "enumValues": null,

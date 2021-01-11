@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash bfae3cd8f883a0cf653540f258239622 */
+/* @relayHash 633067a3776a9c6285530722ab70f5e0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -59,6 +59,10 @@ fragment SaleActiveBidItem_lotStanding on LotStanding {
     }
     currentBid {
       display
+    }
+    artwork {
+      href
+      id
     }
     ...Lot_saleArtwork
     id
@@ -247,18 +251,19 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "lotLabel",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
                     "concreteType": "Artwork",
                     "kind": "LinkedField",
                     "name": "artwork",
                     "plural": false,
                     "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "href",
+                        "storageKey": null
+                      },
+                      (v2/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -289,9 +294,15 @@ return {
                           }
                         ],
                         "storageKey": null
-                      },
-                      (v2/*: any*/)
+                      }
                     ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "lotLabel",
                     "storageKey": null
                   },
                   (v2/*: any*/),
@@ -334,7 +345,7 @@ return {
     ]
   },
   "params": {
-    "id": "bfae3cd8f883a0cf653540f258239622",
+    "id": "633067a3776a9c6285530722ab70f5e0",
     "metadata": {},
     "name": "SaleActiveBidsRefetchQuery",
     "operationKind": "query",

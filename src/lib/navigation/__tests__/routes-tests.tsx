@@ -75,6 +75,41 @@ describe("artsy.net routes", () => {
         "type": "match",
       }
     `)
+    expect(matchRoute("/artist/more%26more")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artist",
+        "params": Object {
+          "artistID": "more&more",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("artist/josef-albers?utm_medium=social&utm_source=instagram-story&utm_campaign=dp."))
+      .toMatchInlineSnapshot(`
+      Object {
+        "module": "Artist",
+        "params": Object {
+          "artistID": "josef-albers",
+          "utm_campaign": "dp.",
+          "utm_medium": "social",
+          "utm_source": "instagram-story",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("/artist/josef-albers%3Futm_medium%3Dsocial%26utm_source%3Dinstagram-story%26utm_campaign%3Ddp."))
+      .toMatchInlineSnapshot(`
+      Object {
+        "module": "Artist",
+        "params": Object {
+          "artistID": "josef-albers",
+          "utm_campaign": "dp.",
+          "utm_medium": "social",
+          "utm_source": "instagram-story",
+        },
+        "type": "match",
+      }
+    `)
   })
 
   it("routes to Artwork", () => {
@@ -92,6 +127,45 @@ describe("artsy.net routes", () => {
         "module": "Artwork",
         "params": Object {
           "artworkID": "yayoi-kusama-red-pumpkin",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("/artwork/more%26more")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artwork",
+        "params": Object {
+          "artworkID": "more&more",
+        },
+        "type": "match",
+      }
+    `)
+    expect(
+      matchRoute("/artwork/yayoi-kusama-red-pumpkin?utm_medium=social&utm_source=instagram-story&utm_campaign=dp.")
+    ).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artwork",
+        "params": Object {
+          "artworkID": "yayoi-kusama-red-pumpkin",
+          "utm_campaign": "dp.",
+          "utm_medium": "social",
+          "utm_source": "instagram-story",
+        },
+        "type": "match",
+      }
+    `)
+    expect(
+      matchRoute(
+        "/artwork/yayoi-kusama-red-pumpkin%3Futm_medium%3Dsocial%26utm_source%3Dinstagram-story%26utm_campaign%3Ddp."
+      )
+    ).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artwork",
+        "params": Object {
+          "artworkID": "yayoi-kusama-red-pumpkin",
+          "utm_campaign": "dp.",
+          "utm_medium": "social",
+          "utm_source": "instagram-story",
         },
         "type": "match",
       }

@@ -8,7 +8,7 @@ import { RouteMatcher } from "./RouteMatcher"
 export function matchRoute(
   url: string
 ): { type: "match"; module: AppModule; params: object } | { type: "external_url"; url: string } {
-  const parsed = parse(url)
+  const parsed = parse(decodeURIComponent(url))
   const pathParts = parsed.pathname?.split(/\/+/).filter(Boolean) ?? []
   const queryParams: object = parsed.query ? parseQueryString(parsed.query) : {}
 
@@ -64,6 +64,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/artist/:artistID/auction-results", "WebView", ({ artistID }) => ({
       url: `/artist/${artistID}/auction-results`,
     })),
+    new RouteMatcher("/artist/:artistID/auction-result/:auctionResultInternalID", "AuctionResult"),
     new RouteMatcher("/artist/:artistID/artist-series", "FullArtistSeriesList"),
     new RouteMatcher("/artist/:artistID/articles", "WebView", (params) => ({
       url: "/artist/" + params.artistID + "/articles",
