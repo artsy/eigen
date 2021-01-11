@@ -89,6 +89,7 @@ export default class Artist extends React.Component<Props, State> {
               flexGrow: 1,
               marginLeft: 20,
               marginRight: 20,
+              marginTop: 20,
             }}
           >
             <SearchResults<ArtistResult>

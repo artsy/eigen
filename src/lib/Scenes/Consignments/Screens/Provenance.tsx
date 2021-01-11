@@ -42,7 +42,7 @@ export default class Provenance extends React.Component<Props, State> {
             style={{
               marginLeft: 20,
               marginRight: 20,
-              marginTop: 20,
+              marginTop: 40,
               maxHeight: 600,
               flexDirection: "row-reverse",
             }}
