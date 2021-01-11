@@ -102,6 +102,7 @@ fragment AuctionResult_auctionResult on AuctionResult {
   currency
   dateText
   id
+  internalID
   images {
     thumbnail {
       url(version: "square140")
@@ -163,6 +164,7 @@ fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
       edges {
         node {
           id
+          internalID
           ...AuctionResult_auctionResult
         }
       }
@@ -623,6 +625,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v14/*: any*/),
+                          (v4/*: any*/),
                           {
                             "alias": null,
                             "args": null,
