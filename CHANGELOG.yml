@@ -8,6 +8,7 @@ upcoming:
   user_facing:
     - Add auction result screen - adam
     - Add filter button and screen to the ArtistInsights AuctionResults - mounir
+    - Add SitcyScrollHeader and Skeleton to Past Shows screen - adam
 
 releases:
   - version: 6.7.5
