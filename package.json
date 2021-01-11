@@ -231,7 +231,6 @@
   "husky": {
     "hooks": {
       "post-merge": "yarn pull-lock",
-      "pre-push": "yarn type-check",
       "pre-merge-commit": "./scripts/merge-changelog.js"
     }
   },
