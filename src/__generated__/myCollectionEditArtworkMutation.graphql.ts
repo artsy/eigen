@@ -18,6 +18,7 @@ export type MyCollectionUpdateArtworkInput = {
     editionSize?: string | null;
     externalImageUrls?: Array<string | null> | null;
     height?: string | null;
+    isEdition?: boolean | null;
     medium?: string | null;
     metric?: string | null;
     provenance?: string | null;
