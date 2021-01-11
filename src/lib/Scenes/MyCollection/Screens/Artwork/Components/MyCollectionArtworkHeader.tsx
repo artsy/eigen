@@ -6,18 +6,20 @@ import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Image } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { ArtworkIcon, color, Flex, Spacer, Text } from "palette"
-import React from "react"
+import React, { useEffect } from "react"
 import { TouchableOpacity } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface MyCollectionArtworkHeaderProps {
   artwork: MyCollectionArtworkHeader_artwork
+  relay: RelayRefetchProp
 }
 
 const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (props) => {
   const {
     artwork: { artistNames, date, images, internalID, title, slug },
+    relay,
   } = props
   const dimensions = useScreenDimensions()
   const formattedTitleAndYear = [title, date].filter(Boolean).join(", ")
@@ -25,6 +27,28 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
   const defaultImage = images?.find((i) => i?.isDefault) || (images && images[0])
 
   const { trackEvent } = useTracking()
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null
+    if (!isImage(defaultImage) || imageIsProcessing(defaultImage)) {
+      interval = setInterval(() => {
+        relay.refetch(
+          {
+            artworkID: slug,
+          },
+          null,
+          null,
+          { force: true }
+        )
+      }, 1000)
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval)
+      }
+    }
+  }, [])
 
   const isImage = (toCheck: any): toCheck is Image => !!toCheck
 
@@ -64,10 +88,10 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
         </Flex>
       )
     } else {
-      // TODO: figure out if "normalized" is the correct version
       return (
         <OpaqueImageView
           imageURL={defaultImage.imageURL.replace(":version", "normalized")}
+          useRawURL
           height={defaultImage.height * (dimensions.width / defaultImage.width)}
           width={dimensions.width}
         />
@@ -119,24 +143,45 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
   )
 }
 
-export const MyCollectionArtworkHeaderFragmentContainer = createFragmentContainer(MyCollectionArtworkHeader, {
-  artwork: graphql`
-    fragment MyCollectionArtworkHeader_artwork on Artwork {
-      artistNames
-      date
-      images {
-        height
-        isDefault
-        imageURL
-        width
+export const MyCollectionArtworkHeaderRefetchContainer = createRefetchContainer(
+  MyCollectionArtworkHeader,
+  {
+    artwork: graphql`
+      fragment MyCollectionArtworkHeader_artwork on Artwork {
+        artistNames
+        date
+        images {
+          height
+          isDefault
+          imageURL
+          width
+          internalID
+        }
         internalID
+        slug
+        title
       }
-      internalID
-      slug
-      title
+    `,
+  },
+  graphql`
+    query MyCollectionArtworkHeaderRefetchQuery($artworkID: String!) {
+      artwork(id: $artworkID) {
+        artistNames
+        date
+        images {
+          height
+          isDefault
+          imageURL
+          width
+          internalID
+        }
+        internalID
+        slug
+        title
+      }
     }
-  `,
-})
+  `
+)
 
 const tracks = {
   tappedCollectedArtworkImages: (internalID: string, slug: string) => {

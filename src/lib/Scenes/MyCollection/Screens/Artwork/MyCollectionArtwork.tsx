@@ -19,7 +19,7 @@ import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkFormModal } from "../ArtworkFormModal/MyCollectionArtworkFormModal"
-import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
+import { MyCollectionArtworkHeaderRefetchContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
 import { WhySell } from "./Components/WhySell"
 
@@ -63,7 +63,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
           hideBottomDivider
         />
         <Join separator={<Spacer my={1} />}>
-          <MyCollectionArtworkHeaderFragmentContainer artwork={artwork} />
+          <MyCollectionArtworkHeaderRefetchContainer artwork={artwork} />
           <MyCollectionArtworkMetaFragmentContainer artwork={artwork} />
           <MyCollectionArtworkInsightsFragmentContainer artwork={artwork} marketPriceInsights={marketPriceInsights} />
           <WhySell />
@@ -171,6 +171,7 @@ export const MyCollectionArtworkQueryRenderer: React.FC<{
         artistInternalID,
         medium,
       }}
+      cacheConfig={{ force: true }}
       render={renderWithPlaceholder({
         Container: MyCollectionArtwork,
         renderPlaceholder: LoadingSkeleton,
