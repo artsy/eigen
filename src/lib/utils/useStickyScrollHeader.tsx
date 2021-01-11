@@ -1,12 +1,19 @@
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { Flex, Text } from "palette"
 import React, { useMemo, useRef } from "react"
 import { Animated, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 
+const DEFAULT_FADE_IN_START = 90
+const FADE_LENGTH = 10
+
 export const useStickyScrollHeader = ({
   header,
-  fadeInStart = 90,
-  fadeInEnd = 100,
+  headerText,
+  fadeInStart = DEFAULT_FADE_IN_START,
+  fadeInEnd,
 }: {
-  header: JSX.Element
+  header?: JSX.Element
+  headerText?: string
   fadeInStart?: number
   fadeInEnd?: number
 }) => {
@@ -17,6 +24,24 @@ export const useStickyScrollHeader = ({
   scrollAnim.addListener(({ value }) => {
     translateYNumber.current = value
   })
+  fadeInEnd = fadeInEnd || fadeInStart + FADE_LENGTH
+  header =
+    !header && !!headerText ? (
+      <Flex backgroundColor="white">
+        <FancyModalHeader>
+          <Flex flex={1} pt={0.5} flexDirection="row">
+            <Text variant="subtitle" numberOfLines={1} style={{ flexShrink: 1 }}>
+              {headerText}
+            </Text>
+          </Flex>
+        </FancyModalHeader>
+      </Flex>
+    ) : (
+      <Flex backgroundColor="white">
+        <FancyModalHeader>{header}</FancyModalHeader>
+      </Flex>
+    )
+
   const headerElement = useMemo(
     () => (
       <Animated.View
@@ -88,5 +113,6 @@ export const useStickyScrollHeader = ({
       onScrollEndDrag,
       scrollEventThreshold: 100,
     },
+    scrollAnim,
   }
 }
