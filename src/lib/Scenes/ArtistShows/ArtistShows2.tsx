@@ -1,12 +1,14 @@
 import { ArtistShows2_artist } from "__generated__/ArtistShows2_artist.graphql"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { useStickyScrollHeader } from "lib/utils/useStickyScrollHeader"
 import { Flex, Spacer, Spinner, Text } from "palette"
 import React, { useState } from "react"
-import { FlatList, RefreshControl, StyleSheet, ViewStyle } from "react-native"
+import { Animated, FlatList, RefreshControl, StyleSheet, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { ArtistShows2Query } from "../../../__generated__/ArtistShows2Query.graphql"
 import { ArtistShowFragmentContainer } from "../../Components/Artist/ArtistShows/ArtistShow"
@@ -17,10 +19,24 @@ interface Props {
 }
 
 const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
-  const top = useScreenDimensions().safeAreaInsets.top + 50
+  const top = useScreenDimensions().safeAreaInsets.top + 20
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isFetchingMoreData, setIsFetchingMoreData] = useState(false)
   const pastShows = extractNodes(artist.pastShows)
+
+  const { headerElement, scrollProps } = useStickyScrollHeader({
+    header: (
+      <Flex backgroundColor="white">
+        <FancyModalHeader>
+          <Flex flex={1} pt={0.5} flexDirection="row">
+            <Text variant="subtitle" numberOfLines={1} style={{ flexShrink: 1 }}>
+              {artist.name} – Past Shows
+            </Text>
+          </Flex>
+        </FancyModalHeader>
+      </Flex>
+    ),
+  })
 
   const handleRefresh = () => {
     setIsRefreshing(true)
@@ -46,35 +62,39 @@ const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
   }
 
   return (
-    <FlatList
-      data={pastShows}
-      ListHeaderComponent={() => {
-        return (
-          <>
-            <Text variant="mediumText" ml="2px">
-              {artist.name}
-            </Text>
-            <Text variant="largeTitle" mb={2}>
-              Past Shows
-            </Text>
-          </>
-        )
-      }}
-      renderItem={({ item }) => <ArtistShowFragmentContainer show={item} styles={showStyles} />}
-      keyExtractor={({ id }) => id}
-      onEndReachedThreshold={0.2}
-      ItemSeparatorComponent={() => <Spacer height={20} />}
-      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-      contentContainerStyle={{ paddingTop: top, paddingBottom: 20, paddingHorizontal: 20 }}
-      ListFooterComponent={
-        isFetchingMoreData ? (
-          <Flex my={2} alignItems="center" justifyContent="center">
-            <Spinner />
-          </Flex>
-        ) : null
-      }
-      onEndReached={loadMore}
-    />
+    <>
+      <Animated.FlatList
+        data={pastShows}
+        ListHeaderComponent={() => {
+          return (
+            <>
+              <Text variant="mediumText" ml="2px" mb={0.5}>
+                {artist.name}
+              </Text>
+              <Text variant="largeTitle" mb={2}>
+                Past Shows
+              </Text>
+            </>
+          )
+        }}
+        renderItem={({ item }) => <ArtistShowFragmentContainer show={item} styles={showStyles} />}
+        keyExtractor={({ id }) => id}
+        onEndReachedThreshold={0.2}
+        ItemSeparatorComponent={() => <Spacer height={20} />}
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+        contentContainerStyle={{ paddingTop: top, paddingBottom: 20, paddingHorizontal: 20 }}
+        ListFooterComponent={
+          isFetchingMoreData ? (
+            <Flex my={2} alignItems="center" justifyContent="center">
+              <Spinner />
+            </Flex>
+          ) : null
+        }
+        onEndReached={loadMore}
+        {...scrollProps}
+      />
+      {headerElement}
+    </>
   )
 }
 
