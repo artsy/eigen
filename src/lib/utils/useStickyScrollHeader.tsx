@@ -24,7 +24,7 @@ export const useStickyScrollHeader = ({
   scrollAnim.addListener(({ value }) => {
     translateYNumber.current = value
   })
-  fadeInEnd = fadeInEnd || fadeInStart + FADE_LENGTH
+  const calculatedFadeInEnd: number = !!fadeInEnd ? fadeInEnd : fadeInStart + FADE_LENGTH
   header =
     !header && !!headerText ? (
       <Flex backgroundColor="white">
@@ -53,7 +53,7 @@ export const useStickyScrollHeader = ({
           top: 0,
           width: "100%",
           opacity: Animated.add(scrollAnim, snapAnim).interpolate({
-            inputRange: [fadeInStart, fadeInEnd],
+            inputRange: [fadeInStart, calculatedFadeInEnd],
             outputRange: [0, 1],
             extrapolate: "clamp",
           }),
@@ -79,9 +79,11 @@ export const useStickyScrollHeader = ({
   )
 
   const handleSnap = (offsetY: number) => {
-    if (offsetY > fadeInStart && offsetY < fadeInEnd) {
+    if (offsetY > fadeInStart && offsetY < calculatedFadeInEnd) {
       const toValue =
-        offsetY - fadeInStart < (fadeInEnd - fadeInStart) / 2 ? fadeInStart - offsetY : fadeInEnd - offsetY
+        offsetY - fadeInStart < (calculatedFadeInEnd - fadeInStart) / 2
+          ? fadeInStart - offsetY
+          : calculatedFadeInEnd - offsetY
       Animated.timing(snapAnim, {
         toValue,
         duration: 100,
