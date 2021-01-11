@@ -284,6 +284,7 @@ export default class Overview extends React.Component<Props, State> {
             block
             onPress={this.state.hasLoaded && canSubmit ? this.submitFinalSubmission : undefined}
             disabled={!canSubmit}
+            haptic="selection"
           >
             Next
           </Button>
