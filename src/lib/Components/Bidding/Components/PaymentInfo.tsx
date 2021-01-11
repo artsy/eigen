@@ -10,7 +10,7 @@ import { bullet } from "palette"
 import NavigatorIOS from "react-native-navigator-ios"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { FlexProps } from "../Elements/Flex"
-import { BillingAddressScreen } from "../Screens/BillingAddress"
+import { BillingAddress } from "../Screens/BillingAddress"
 import { CreditCardForm } from "../Screens/CreditCardForm"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 
@@ -56,7 +56,7 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
     // TODO: Remove once we migration Registration.tsx to also use react-navigation
     if (this.props.navigator) {
       this.props.navigator.push({
-        component: BillingAddressScreen,
+        component: BillingAddress,
         title: "",
         passProps: {
           // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

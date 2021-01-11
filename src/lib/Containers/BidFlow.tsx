@@ -3,8 +3,10 @@ import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
 import { BidFlow_sale_artwork } from "__generated__/BidFlow_sale_artwork.graphql"
 import { BidFlowQuery } from "__generated__/BidFlowQuery.graphql"
 import { BidResultParamsProps, BidResultScreen } from "lib/Components/Bidding/Screens/BidResult"
-import { BillingAddressParamsProps, BillingAddressScreen } from "lib/Components/Bidding/Screens/BillingAddress"
+import { BillingAddressParamsProps, BillingAddressScreen } from "lib/Components/Bidding/Screens/BillingAddress2"
 import { CreditCardForm, CreditCardFormParamsProps } from "lib/Components/Bidding/Screens/CreditCardForm2"
+import { SelectCountryParamProps } from "lib/Components/Bidding/Screens/SelectCountry2"
+import { SelectCountry } from "lib/Components/Bidding/Screens/SelectCountry2"
 // import { SelectMaxBidEdit } from "lib/Components/Bidding/Screens/SelectMaxBidEdit"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -13,7 +15,7 @@ import { ViewProperties } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { BidFlow_me } from "../../__generated__/BidFlow_me.graphql"
 import { TimeOffsetProvider } from "../Components/Bidding/Context/TimeOffsetProvider"
-import { ConfirmBidScreen } from "../Components/Bidding/Screens/ConfirmBid/index"
+import { ConfirmBidParamProps, ConfirmBidScreen } from "../Components/Bidding/Screens/ConfirmBid/index"
 import { MaxBidScreen, MaxBidScreenProps } from "../Components/Bidding/Screens/SelectMaxBid"
 
 interface BidFlowProps extends ViewProperties {
@@ -25,11 +27,12 @@ interface BidFlowProps extends ViewProperties {
 // tslint:disable-next-line:interface-over-type-literal
 export type BidFlowStackProps = {
   MaxBidScreen: MaxBidScreenProps
-  ConfirmBidScreen: any
+  ConfirmBidScreen: ConfirmBidParamProps
   CreditCardForm: CreditCardFormParamsProps
   SelectMaxBidEdit: any
   BidResultScreen: BidResultParamsProps
   BillingAddressScreen: BillingAddressParamsProps
+  SelectCountryScreen: SelectCountryParamProps
 }
 
 const Stack = createStackNavigator<BidFlowStackProps>()
@@ -59,6 +62,10 @@ export const BidFlow: React.FC<BidFlowProps> = (props) => {
     <BillingAddressScreen {...navProps} />
   )
 
+  const SelectCountryStackScreen = (navProps: StackScreenProps<BidFlowStackProps, "SelectCountryScreen">) => (
+    <SelectCountry {...navProps} />
+  )
+
   return (
     <NavigationContainer>
       <TimeOffsetProvider>
@@ -78,6 +85,7 @@ export const BidFlow: React.FC<BidFlowProps> = (props) => {
           <Stack.Screen name="CreditCardForm" component={CreditCardFormStackScreen} />
           <Stack.Screen name="BidResultScreen" component={BidResultScreenStackScreen} />
           <Stack.Screen name="BillingAddressScreen" component={BillingAddressStackScreen} />
+          <Stack.Screen name="SelectCountryScreen" component={SelectCountryStackScreen} />
           {/* <Stack.Screen name="SelectMaxBidEdit" component={SelectMaxBidEditStackScreen} /> */}
         </Stack.Navigator>
       </TimeOffsetProvider>

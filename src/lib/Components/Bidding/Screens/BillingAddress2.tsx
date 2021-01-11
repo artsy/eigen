@@ -12,20 +12,20 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
 } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 
 import { Flex } from "../Elements/Flex"
 
 import { validatePresence } from "../Validators"
 
-import { BackButton } from "../Components/BackButton"
+import { BackButton } from "../Components/BackButton2"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
 import { Input, InputProps } from "../Components/Input"
 import { Title } from "../Components/Title"
 import { Address, Country } from "../types"
 
-import { SelectCountry } from "./SelectCountry"
+import { StackScreenProps } from "@react-navigation/stack"
+import { BidFlowStackProps } from "lib/Containers/BidFlow"
 
 interface StyledInputInterface {
   /** The object which styled components wraps */
@@ -53,11 +53,12 @@ const StyledInput: React.FC<StyledInputProps> = ({ label, errorMessage, onLayout
 
 const iOSAccessoryViewHeight = 60
 
-interface BillingAddressProps {
+export interface BillingAddressParamsProps {
   onSubmit?: (values: Address) => void
-  navigator?: NavigatorIOS
   billingAddress?: Address
 }
+
+interface BillingAddressProps extends StackScreenProps<BidFlowStackProps, "BillingAddressScreen"> {}
 
 interface BillingAddressState {
   values: Address
@@ -76,7 +77,7 @@ interface BillingAddressState {
   context_screen: Schema.PageNames.BidFlowBillingAddressPage,
   context_screen_owner_type: null,
 })
-export class BillingAddress extends React.Component<BillingAddressProps, BillingAddressState> {
+export class BillingAddressScreen extends React.Component<BillingAddressProps, BillingAddressState> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   private addressLine1: StyledInputInterface
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -120,7 +121,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
     this.state = {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      values: { ...this.props.billingAddress },
+      values: { ...this.props.route.params.billingAddress },
       errors: {},
     }
   }
@@ -174,21 +175,14 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     action_name: Schema.ActionNames.BidFlowSaveBillingAddress,
   })
   submitValidAddress() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.onSubmit(this.state.values)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.navigator.pop()
+    this.props.route.params.onSubmit?.(this.state.values)
+    this.props.navigation.goBack()
   }
 
   presentSelectCountry() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.navigator.push({
-      component: SelectCountry,
-      title: "",
-      passProps: {
-        country: this.state.values.country,
-        onCountrySelected: this.onCountrySelected.bind(this),
-      },
+    this.props.navigation.push("SelectCountryScreen", {
+      country: this.state.values.country,
+      onCountrySelected: this.onCountrySelected.bind(this),
     })
   }
 
@@ -209,10 +203,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     return (
       <BiddingThemeProvider>
         <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={this.verticalOffset} style={{ flex: 1 }}>
-          <BackButton
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            navigator={this.props.navigator}
-          />
+          <BackButton navigation={this.props.navigation} />
           <ScrollView ref={(scrollView) => (this.scrollView = scrollView as any)}>
             <Container>
               <Title mt={0} mb={6}>
