@@ -106,7 +106,7 @@
     "react-native-safe-area-context": "^3.1.8",
     "react-native-screens": "^2.13.0",
     "react-native-scrollable-tab-view": "1.0.0",
-    "react-native-share": "4.1.0",
+    "react-native-share": "5.1.0",
     "react-native-svg": "9.13.3",
     "react-native-webview": "^10.8.3",
     "react-relay": "^10.0.1",
