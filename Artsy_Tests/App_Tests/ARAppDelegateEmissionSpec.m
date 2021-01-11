@@ -11,6 +11,7 @@ it(@"makes sure that settings are merged correctly", ^{
         @"AREnableBuyNowFlow": @(YES),
         @"AROptionsArtistSeries": @(NO),
         @"AROptionsNewFirstInquiry": @(NO)
+        @"AROptionsInquiryCheckout": @(NO)
     };
 
     NSDictionary *labOptionsConfig = @{
@@ -30,6 +31,7 @@ it(@"makes sure that settings are merged correctly", ^{
       @"AROptionsPriceTransparency": @(NO),
       @"AROptionsArtistSeries": @(NO),
       @"AROptionsNewFirstInquiry": @(NO)
+      @"AROptionsInquiryCheckout": @(NO)
     });
 });
 
