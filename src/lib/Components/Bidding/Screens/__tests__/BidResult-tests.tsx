@@ -10,9 +10,7 @@ import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { BidderPositionResult } from "../../types"
 import { BidResult } from "../BidResult"
 
-const popToTop = jest.fn()
-const mockNavigator = { popToTop }
-
+const popToTopMock = jest.fn()
 const refreshBidderInfoMock = jest.fn()
 const refreshSaleArtworkInfoMock = jest.fn()
 
@@ -51,6 +49,17 @@ const saleArtwork: BidResult_sale_artwork = ({
   },
 } as any) as BidResult_sale_artwork
 
+const getNavMock = (params: object = {}) => ({
+  navigation: {
+    navigate: jest.fn(),
+    goBack: jest.fn(),
+    popToTop: popToTopMock,
+  },
+  route: {
+    params,
+  },
+})
+
 describe("BidResult component", () => {
   Date.now = jest.fn(() => 1525983752116)
   jest.useFakeTimers()
@@ -61,11 +70,12 @@ describe("BidResult component", () => {
       renderWithWrappers(
         <BiddingThemeProvider>
           <BidResult
-            refreshBidderInfo={refreshBidderInfoMock}
-            refreshSaleArtwork={refreshSaleArtworkInfoMock}
-            bidderPositionResult={Statuses.winning}
             sale_artwork={saleArtwork}
-            navigator={jest.fn() as any}
+            {...(getNavMock({
+              bidderPositionResult: Statuses.winning,
+              refreshBidderInfo: refreshBidderInfoMock,
+              refreshSaleArtwork: refreshSaleArtworkInfoMock,
+            }) as any)}
           />
         </BiddingThemeProvider>
       )
@@ -74,11 +84,12 @@ describe("BidResult component", () => {
     it("renders a timer", () => {
       const component = shallow(
         <BidResult
-          refreshBidderInfo={refreshBidderInfoMock}
-          refreshSaleArtwork={refreshSaleArtworkInfoMock}
-          bidderPositionResult={Statuses.winning}
           sale_artwork={saleArtwork}
-          navigator={jest.fn() as any}
+          {...(getNavMock({
+            bidderPositionResult: Statuses.winning,
+            refreshBidderInfo: refreshBidderInfoMock,
+            refreshSaleArtwork: refreshSaleArtworkInfoMock,
+          }) as any)}
         />
       )
 
@@ -89,11 +100,12 @@ describe("BidResult component", () => {
       const bidResult = renderWithWrappers(
         <BiddingThemeProvider>
           <BidResult
-            refreshBidderInfo={refreshBidderInfoMock}
-            refreshSaleArtwork={refreshSaleArtworkInfoMock}
-            bidderPositionResult={Statuses.winning}
             sale_artwork={saleArtwork}
-            navigator={jest.fn() as any}
+            {...(getNavMock({
+              bidderPositionResult: Statuses.winning,
+              refreshBidderInfo: refreshBidderInfoMock,
+              refreshSaleArtwork: refreshSaleArtworkInfoMock,
+            }) as any)}
           />
         </BiddingThemeProvider>
       )
@@ -112,11 +124,12 @@ describe("BidResult component", () => {
       renderWithWrappers(
         <BiddingThemeProvider>
           <BidResult
-            refreshBidderInfo={refreshBidderInfoMock}
-            refreshSaleArtwork={refreshSaleArtworkInfoMock}
-            bidderPositionResult={Statuses.outbid}
             sale_artwork={saleArtwork}
-            navigator={jest.fn() as any}
+            {...(getNavMock({
+              bidderPositionResult: Statuses.outbid,
+              refreshBidderInfo: refreshBidderInfoMock,
+              refreshSaleArtwork: refreshSaleArtworkInfoMock,
+            }) as any)}
           />
         </BiddingThemeProvider>
       )
@@ -125,11 +138,12 @@ describe("BidResult component", () => {
     it("renders timer and error message", () => {
       const component = shallow(
         <BidResult
-          refreshBidderInfo={refreshBidderInfoMock}
-          refreshSaleArtwork={refreshSaleArtworkInfoMock}
-          bidderPositionResult={Statuses.outbid}
           sale_artwork={saleArtwork}
-          navigator={jest.fn() as any}
+          {...(getNavMock({
+            bidderPositionResult: Statuses.outbid,
+            refreshBidderInfo: refreshBidderInfoMock,
+            refreshSaleArtwork: refreshSaleArtworkInfoMock,
+          }) as any)}
         />
       )
 
@@ -140,11 +154,12 @@ describe("BidResult component", () => {
       const bidResult = renderWithWrappers(
         <BiddingThemeProvider>
           <BidResult
-            refreshBidderInfo={refreshBidderInfoMock}
-            refreshSaleArtwork={refreshSaleArtworkInfoMock}
-            bidderPositionResult={Statuses.outbid}
             sale_artwork={saleArtwork}
-            navigator={mockNavigator as any}
+            {...(getNavMock({
+              bidderPositionResult: Statuses.outbid,
+              refreshBidderInfo: refreshBidderInfoMock,
+              refreshSaleArtwork: refreshSaleArtworkInfoMock,
+            }) as any)}
           />
         </BiddingThemeProvider>
       )
@@ -153,7 +168,7 @@ describe("BidResult component", () => {
       expect(refreshBidderInfoMock).toHaveBeenCalled()
       expect(refreshSaleArtworkInfoMock).toHaveBeenCalled()
 
-      expect(popToTop).toHaveBeenCalled()
+      expect(popToTopMock).toHaveBeenCalled()
     })
   })
 
@@ -163,11 +178,12 @@ describe("BidResult component", () => {
       renderWithWrappers(
         <BiddingThemeProvider>
           <BidResult
-            refreshBidderInfo={refreshBidderInfoMock}
-            refreshSaleArtwork={refreshSaleArtworkInfoMock}
-            bidderPositionResult={Statuses.live_bidding_started}
             sale_artwork={saleArtwork}
-            navigator={jest.fn() as any}
+            {...(getNavMock({
+              bidderPositionResult: Statuses.live_bidding_started,
+              refreshBidderInfo: refreshBidderInfoMock,
+              refreshSaleArtwork: refreshSaleArtworkInfoMock,
+            }) as any)}
           />
         </BiddingThemeProvider>
       )
@@ -176,11 +192,12 @@ describe("BidResult component", () => {
     it("doesn't render timer", () => {
       const component = shallow(
         <BidResult
-          refreshBidderInfo={refreshBidderInfoMock}
-          refreshSaleArtwork={refreshSaleArtworkInfoMock}
-          bidderPositionResult={Statuses.live_bidding_started}
           sale_artwork={saleArtwork}
-          navigator={jest.fn() as any}
+          {...(getNavMock({
+            bidderPositionResult: Statuses.live_bidding_started,
+            refreshBidderInfo: refreshBidderInfoMock,
+            refreshSaleArtwork: refreshSaleArtworkInfoMock,
+          }) as any)}
         />
       )
 
@@ -194,11 +211,12 @@ describe("BidResult component", () => {
       const bidResult = renderWithWrappers(
         <BiddingThemeProvider>
           <BidResult
-            refreshBidderInfo={refreshBidderInfoMock}
-            refreshSaleArtwork={refreshSaleArtworkInfoMock}
-            bidderPositionResult={Statuses.live_bidding_started}
             sale_artwork={saleArtwork}
-            navigator={jest.fn() as any}
+            {...(getNavMock({
+              bidderPositionResult: Statuses.live_bidding_started,
+              refreshBidderInfo: refreshBidderInfoMock,
+              refreshSaleArtwork: refreshSaleArtworkInfoMock,
+            }) as any)}
           />
         </BiddingThemeProvider>
       )

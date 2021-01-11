@@ -50,10 +50,6 @@ export const BidFlow: React.FC<BidFlowProps> = (props) => {
     <CreditCardForm {...navProps} />
   )
 
-  // const SelectMaxBidEditStackScreen = (navProps: StackScreenProps<BidFlowStackProps, "SelectMaxBidEdit">) => (
-  // <SelectMaxBidEdit {...navProps} />
-  // )
-
   const BidResultScreenStackScreen = (navProps: StackScreenProps<BidFlowStackProps, "BidResultScreen">) => (
     <BidResultScreen sale_artwork={props.sale_artwork} {...navProps} />
   )
@@ -76,17 +72,12 @@ export const BidFlow: React.FC<BidFlowProps> = (props) => {
             cardStyle: { backgroundColor: "white" },
           }}
         >
-          <Stack.Screen
-            name="MaxBidScreen"
-            component={MaxBidStackScreen}
-            // initialParams={{ sale_artwork: props.sale_artwork, me: props.me }}
-          />
+          <Stack.Screen name="MaxBidScreen" component={MaxBidStackScreen} />
           <Stack.Screen name="ConfirmBidScreen" component={ConfirmBidScreenStackScreen} />
           <Stack.Screen name="CreditCardForm" component={CreditCardFormStackScreen} />
           <Stack.Screen name="BidResultScreen" component={BidResultScreenStackScreen} />
           <Stack.Screen name="BillingAddressScreen" component={BillingAddressStackScreen} />
           <Stack.Screen name="SelectCountryScreen" component={SelectCountryStackScreen} />
-          {/* <Stack.Screen name="SelectMaxBidEdit" component={SelectMaxBidEditStackScreen} /> */}
         </Stack.Navigator>
       </TimeOffsetProvider>
     </NavigationContainer>

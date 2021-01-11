@@ -44,7 +44,6 @@ import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.g
 import { ConfirmBidCreateBidderPositionMutationResponse } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
 import { ConfirmBidCreateCreditCardMutationResponse } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
 import { ConfirmBidUpdateUserMutationResponse } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
-import { FakeNavigator } from "lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { Modal } from "lib/Components/Modal"
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -53,7 +52,6 @@ import { waitUntil } from "lib/tests/waitUntil"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { Address } from "../../types"
-import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 let nextStep
@@ -354,35 +352,6 @@ describe("when pressing bid button", () => {
         )
       })
     })
-  })
-})
-
-describe("editing bid amount", () => {
-  it("allows you to go to the max bid edit screen and select a new max bid", () => {
-    const fakeNavigator = new FakeNavigator()
-    const fakeNavigatorProps = {
-      ...initialPropsForRegisteredUser,
-      navigator: fakeNavigator,
-    }
-    fakeNavigator.push({ component: ConfirmBid, id: "", title: "", passProps: fakeNavigatorProps })
-
-    const component = mountConfirmBidComponent({ ...initialPropsForRegisteredUser, navigator: fakeNavigator })
-
-    const selectMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
-
-    expect(selectMaxBidRow.findAllByType(Serif)[1].props.children).toEqual("$45,000")
-
-    selectMaxBidRow.instance.props.onPress()
-
-    const editScreen = fakeNavigator.nextStep().root.findByType(SelectMaxBidEdit)
-
-    expect(editScreen.props.selectedBidIndex).toEqual(0)
-
-    editScreen.instance.setState({ selectedBidIndex: 1 })
-    editScreen.findByType(Button).props.onPress()
-
-    const updatedBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
-    expect(updatedBidRow.findAllByType(Serif)[1].props.children).toEqual("$46,000")
   })
 })
 
