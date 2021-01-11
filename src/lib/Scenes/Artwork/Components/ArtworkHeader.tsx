@@ -1,16 +1,16 @@
 import { ArtworkHeader_artwork } from "__generated__/ArtworkHeader_artwork.graphql"
+import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Flex, Spacer } from "palette"
 import React, { useState } from "react"
 // @ts-ignore
 import Share from "react-native-share"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import RNFetchBlob from "rn-fetch-blob"
 import { ArtworkActionsFragmentContainer as ArtworkActions, shareContent } from "./ArtworkActions"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./ArtworkTombstone"
 import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
-import { useTracking } from "react-tracking"
-import { Schema } from "lib/utils/track"
 
 interface ArtworkHeaderProps {
   artwork: ArtworkHeader_artwork
