@@ -15,6 +15,7 @@ describe("MyCollectionArtworkFormAdditionalDetails", () => {
     useFormikContextMock.mockImplementation(() => ({
       handleBlur: jest.fn(),
       handleChange: jest.fn(),
+      setFieldValue: jest.fn(),
       values: {
         medium: "Painting",
       },
@@ -28,14 +29,15 @@ describe("MyCollectionArtworkFormAdditionalDetails", () => {
     useFormikContextMock.mockImplementation(() => ({
       handleBlur: jest.fn(),
       handleChange: jest.fn(),
+      setFieldValue: jest.fn(),
       values: {
         editionSize: "10x30x10",
         editionNumber: "1",
+        isEdition: true,
       },
     }))
 
     const wrapper = renderWithWrappers(mockAdditionalDetailsForm)
-
     expect(wrapper.root.findByType(Checkbox).props.checked).toBe(true)
     expect(wrapper.root.findByProps({ "data-test-id": "EditionSizeInput" }).props.defaultValue).toBe("10x30x10")
     expect(wrapper.root.findByProps({ "data-test-id": "EditionNumberInput" }).props.defaultValue).toBe("1")
@@ -45,6 +47,7 @@ describe("MyCollectionArtworkFormAdditionalDetails", () => {
     useFormikContextMock.mockImplementation(() => ({
       handleBlur: jest.fn(),
       handleChange: jest.fn(),
+      setFieldValue: jest.fn(),
       values: {},
     }))
 
@@ -57,9 +60,9 @@ describe("MyCollectionArtworkFormAdditionalDetails", () => {
     useFormikContextMock.mockImplementation(() => ({
       handleBlur: jest.fn(),
       handleChange: jest.fn(),
+      setFieldValue: jest.fn(),
       values: {
-        editionSize: "10x30x10",
-        editionNumber: "1",
+        isEdition: true,
       },
     }))
 
