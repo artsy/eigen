@@ -5,6 +5,8 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistAboutShows_artist = {
+    readonly name: string | null;
+    readonly slug: string;
     readonly currentShows: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -88,6 +90,20 @@ return {
   "name": "ArtistAboutShows_artist",
   "selections": [
     {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "name",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
+      "storageKey": null
+    },
+    {
       "alias": "currentShows",
       "args": [
         (v0/*: any*/),
@@ -147,5 +163,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'e6580eebc2233e258a2006f1715bc570';
+(node as any).hash = 'aba257bd31058e7c06b62c1a320fa0c6';
 export default node;

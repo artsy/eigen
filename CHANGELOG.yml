@@ -11,6 +11,7 @@ upcoming:
     - Fix layout in My Collection artwork form AdditionalDetails screen - david
     - Add auction result screen - adam
     - Add filter button and screen to the ArtistInsights AuctionResults - mounir
+    - Wire up `See all past shows` button - adam
 
 releases:
   - version: 6.7.5
