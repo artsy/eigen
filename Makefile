@@ -162,6 +162,8 @@ flip_table:
 	# sometimes this fails on first try even with -rf
 	# but a second try takes it home
 	if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then rm -rf ~/Library/Developer/Xcode/DerivedData; fi
+	@echo 'Clear gradle cache'
+	cd android; ./gradlew clean cleanBuildCache; cd -
 	@echo 'Clear relay, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
 	rm -rf $(TMPDIR)/RelayFindGraphQLTags-*
 	rm -rf .jest
