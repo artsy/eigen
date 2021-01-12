@@ -1,10 +1,3 @@
 import { AppRegistry } from 'react-native'
-import { Text } from 'react-native'
-
-
-const App = () => (
-  <Text>Android!!</Text>
-)
-
-
+import {App} from './src/lib/AndroidApp'
 AppRegistry.registerComponent("Artsy", () => App)
