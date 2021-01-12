@@ -116,3 +116,17 @@ test-results.xml
 xcode_test_raw.log
 
 .recordingSnapshots
+
+# Android/IntelliJ
+#
+build/
+.idea
+.gradle
+local.properties
+*.iml
+
+# BUCK
+buck-out/
+\.buckd/
+*.keystore
+!debug.keystore
