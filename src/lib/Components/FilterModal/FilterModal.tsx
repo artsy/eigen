@@ -432,6 +432,9 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
     case FilterModalMode.SaleArtworks:
       sortOrder = SaleArtworksFiltersSorted
       break
+    case FilterModalMode.AuctionResults:
+      sortOrder = AuctionResultsFiltersSorted
+      break
   }
 
   const leftParam = left.filterType
@@ -677,3 +680,5 @@ const FairFiltersSorted: FilterScreen[] = [
   "institution",
 ]
 const SaleArtworksFiltersSorted: FilterScreen[] = ["sort", "viewAs", "estimateRange", "artistIDs", "medium"]
+
+const AuctionResultsFiltersSorted: FilterScreen[] = ["sort"]
