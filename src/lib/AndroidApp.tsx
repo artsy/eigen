@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { Animated, StyleSheet, Text, View } from "react-native"
+import Config from "react-native-config"
 import { ScrollView } from "react-native-gesture-handler"
 import { RectButton } from "react-native-gesture-handler"
 import Swipeable from "react-native-gesture-handler/Swipeable"
@@ -38,5 +39,6 @@ export const App = () => (
     <Text>Android!!</Text>
     <AppleStyleSwipeableRow />
     <Text>Android!!</Text>
+    <Text>our id is: {Config.ARTSY_FACEBOOK_APP_ID}</Text>
   </ScrollView>
 )
