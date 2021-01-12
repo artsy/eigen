@@ -52,15 +52,18 @@ const TodoButton: React.FC<{ label: string; isComplete: boolean; onPress?(): voi
 }
 
 export default class ConsignmentTODO extends React.Component<TODOProps> {
+  canSubmitMetadata(props: TODOProps) {
+    return (
+      props.metadata &&
+      props.metadata.category &&
+      props.metadata.title &&
+      props.metadata.year &&
+      props.metadata.medium &&
+      props.metadata.height &&
+      props.metadata.width
+    )
+  }
   render() {
-    const canSubmitMetadata =
-      this.props.metadata &&
-      this.props.metadata.category &&
-      this.props.metadata.title &&
-      this.props.metadata.year &&
-      this.props.metadata.medium &&
-      this.props.metadata.height &&
-      this.props.metadata.width
     return (
       <Flex p="2">
         <Separator />
@@ -68,7 +71,11 @@ export default class ConsignmentTODO extends React.Component<TODOProps> {
         <Separator />
         <TodoButton label="Photos" onPress={this.props.goToPhotos} isComplete={!!this.props.photos} />
         <Separator />
-        <TodoButton label="Work details" onPress={this.props.goToMetadata} isComplete={!!canSubmitMetadata} />
+        <TodoButton
+          label="Work details"
+          onPress={this.props.goToMetadata}
+          isComplete={!!this.canSubmitMetadata(this.props)}
+        />
         <Separator />
         <TodoButton
           label="Edition & Authenticity"
