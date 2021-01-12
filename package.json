@@ -23,7 +23,7 @@
     "generate-cities-objc": "node scripts/generate-cities-objc.js",
     "generate-graphql-query-map": "node scripts/generate-graphql-query-map.js > emission/Pod/Classes/GraphQL/ARGraphQLQueryMap.generated.objc",
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
-    "android": "ENVFILE=.env.shared react-native run-android",
+    "android": "react-native run-android",
     "lint-fix": "yarn lint -- --fix",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "open-sim": "open -a Simulator",
