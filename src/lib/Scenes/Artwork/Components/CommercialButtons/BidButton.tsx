@@ -96,7 +96,7 @@ export class BidButton extends React.Component<BidButtonProps> {
       <>
         {!registrationStatus && (
           <>
-            <Button width={100} block size="large" mt={1} onPress={() => this.redirectToRegister()}>
+            <Button width={100} block size="large" mt={1} onPress={() => this.redirectToRegister()} haptic="selection">
               Register to bid
             </Button>
             {needsIdentityVerification && (
@@ -203,7 +203,7 @@ export class BidButton extends React.Component<BidButtonProps> {
 
       return (
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        <Button width={100} size="large" block onPress={() => this.redirectToBid(incrementCents)}>
+        <Button width={100} size="large" block onPress={() => this.redirectToBid(incrementCents)} haptic="selection">
           {hasBid ? "Increase max bid" : "Bid"}
         </Button>
       )

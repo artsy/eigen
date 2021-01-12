@@ -34,6 +34,7 @@ const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({ me, sale, con
             )
             navigate(`/auction-registration/${sale.slug}`)
           }}
+          haptic="selection"
         >
           Register to bid
         </Button>

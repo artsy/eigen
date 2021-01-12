@@ -83,7 +83,7 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
       return <MakeOfferButtonFragmentContainer artwork={artwork} editionSetID={this.props.editionSetID} />
     } else if (isInquireable && !newFirstInquiry) {
       return (
-        <Button onPress={() => this.handleInquiry()} size="large" block width={100}>
+        <Button onPress={() => this.handleInquiry()} size="large" block width={100} haptic="selection">
           Contact gallery
         </Button>
       )

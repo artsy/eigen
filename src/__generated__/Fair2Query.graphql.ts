@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7e16c8073f6254211d28a5fa5e547372 */
+/* @relayHash d4a403b484ca255737539575f6242f9d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -134,6 +134,7 @@ fragment Fair2Editorial_fair on Fair {
   internalID
   slug
   articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
+    totalCount
     edges {
       node {
         id
@@ -763,6 +764,13 @@ return {
                     "storageKey": null
                   }
                 ],
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "totalCount",
                 "storageKey": null
               }
             ],
@@ -1617,7 +1625,7 @@ return {
     ]
   },
   "params": {
-    "id": "7e16c8073f6254211d28a5fa5e547372",
+    "id": "d4a403b484ca255737539575f6242f9d",
     "metadata": {},
     "name": "Fair2Query",
     "operationKind": "query",

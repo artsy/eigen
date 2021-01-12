@@ -86,6 +86,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
             block
             onPress={formik.handleSubmit}
             data-test-id="CompleteButton"
+            haptic="selection"
           >
             {modalType === "edit" ? "Save changes" : "Complete"}
           </Button>

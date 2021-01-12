@@ -48,6 +48,7 @@ import {
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
 import { Fair2QueryRenderer } from "./Scenes/Fair2/Fair2"
 import { Fair2AllFollowedArtistsQueryRenderer } from "./Scenes/Fair2/Fair2AllFollowedArtists"
+import { Fair2ArticlesQueryRenderer } from "./Scenes/Fair2/Fair2Articles"
 import { Fair2MoreInfoQueryRenderer } from "./Scenes/Fair2/Fair2MoreInfo"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
@@ -75,6 +76,7 @@ import { Search } from "./Scenes/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
+import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
@@ -360,6 +362,7 @@ export const modules = defineModules({
   Auctions: reactModule(SalesQueryRenderer),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
+  AuctionResult: reactModule(AuctionResultQueryRenderer),
   AuctionRegistration: nativeModule({ alwaysPresentModally: true }),
   AuctionBidArtwork: nativeModule({ alwaysPresentModally: true }),
   BidFlow: reactModule(BidderFlow),
@@ -379,6 +382,7 @@ export const modules = defineModules({
   Fair: reactModule(FairQueryRenderer, { fullBleed: true }),
   Fair2: reactModule(Fair2QueryRenderer, { fullBleed: true }),
   Fair2MoreInfo: reactModule(Fair2MoreInfoQueryRenderer),
+  Fair2Articles: reactModule(Fair2ArticlesQueryRenderer),
   Fair2AllFollowedArtists: reactModule(Fair2AllFollowedArtistsQueryRenderer),
   FairArtists: reactModule(FairArtists),
   FairArtworks: reactModule(FairArtworks),

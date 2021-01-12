@@ -64,6 +64,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/artist/:artistID/auction-results", "WebView", ({ artistID }) => ({
       url: `/artist/${artistID}/auction-results`,
     })),
+    new RouteMatcher("/artist/:artistID/auction-result/:auctionResultInternalID", "AuctionResult"),
     new RouteMatcher("/artist/:artistID/artist-series", "FullArtistSeriesList"),
     new RouteMatcher("/artist/:artistID/articles", "WebView", (params) => ({
       url: "/artist/" + params.artistID + "/articles",
@@ -131,6 +132,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/fair/:fairID/artists", "FairArtists"),
     new RouteMatcher("/fair/:fairID/exhibitors", "FairExhibitors"),
     new RouteMatcher("/fair/:fairID/info", "FairMoreInfo"),
+    new RouteMatcher("/fair/:fairID/articles", "Fair2Articles"),
     new RouteMatcher("/fair/:fairID/bmw-sponsored-content", "FairBMWArtActivation"),
     new RouteMatcher("/fair/:fairID/followedArtists", "Fair2AllFollowedArtists"),
 

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash fd7fc874bd9f87114780c47fea2a39c5 */
+/* @relayHash 7db74f7d25e355deeac3b6c4922ddd07 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,10 +27,12 @@ query ArtistInsightsTestsQuery {
 }
 
 fragment ArtistInsightsAuctionResults_artist on Artist {
+  slug
   auctionResultsConnection(first: 10, sort: DATE_DESC) {
     edges {
       node {
         id
+        internalID
         ...AuctionResult_auctionResult
         __typename
       }
@@ -54,6 +56,7 @@ fragment AuctionResult_auctionResult on AuctionResult {
   currency
   dateText
   id
+  internalID
   images {
     thumbnail {
       url(version: "square140")
@@ -215,6 +218,13 @@ return {
                     "plural": false,
                     "selections": [
                       (v1/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "internalID",
+                        "storageKey": null
+                      },
                       {
                         "alias": null,
                         "args": null,
@@ -428,7 +438,7 @@ return {
     ]
   },
   "params": {
-    "id": "fd7fc874bd9f87114780c47fea2a39c5",
+    "id": "7db74f7d25e355deeac3b6c4922ddd07",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
@@ -494,6 +504,7 @@ return {
         "artist.auctionResultsConnection.edges.node.images.thumbnail.height": (v7/*: any*/),
         "artist.auctionResultsConnection.edges.node.images.thumbnail.url": (v4/*: any*/),
         "artist.auctionResultsConnection.edges.node.images.thumbnail.width": (v7/*: any*/),
+        "artist.auctionResultsConnection.edges.node.internalID": (v6/*: any*/),
         "artist.auctionResultsConnection.edges.node.mediumText": (v4/*: any*/),
         "artist.auctionResultsConnection.edges.node.organization": (v4/*: any*/),
         "artist.auctionResultsConnection.edges.node.priceRealized": {

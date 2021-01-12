@@ -16,6 +16,7 @@ import { useSpringValue } from "./useSpringValue"
 export interface ImageCarouselProps {
   images: ImageCarousel_images
   cardHeight: number
+  onImageIndexChange?: (imageIndex: number) => void
 }
 
 /**
@@ -26,7 +27,7 @@ export interface ImageCarouselProps {
  */
 export const ImageCarousel = (props: ImageCarouselProps) => {
   const screenDimensions = useScreenDimensions()
-  const { cardHeight } = props
+  const { cardHeight, onImageIndexChange } = props
 
   const embeddedCardBoundingBox = { width: screenDimensions.width, height: isPad() ? 460 : cardHeight }
 
@@ -69,7 +70,7 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
     return result
   }, [props.images])
 
-  const context = useNewImageCarouselContext({ images })
+  const context = useNewImageCarouselContext({ images, onImageIndexChange })
 
   context.fullScreenState.useUpdates()
 

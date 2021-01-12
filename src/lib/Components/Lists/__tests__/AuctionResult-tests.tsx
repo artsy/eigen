@@ -36,7 +36,7 @@ describe("AuctionResults", () => {
       render={({ props }) => {
         if (props?.artist) {
           const results = extractNodes(props.artist.auctionResultsConnection)
-          return <AuctionResultFragmentContainer auctionResult={results[0]} />
+          return <AuctionResultFragmentContainer auctionResult={results[0]} onPress={() => null} />
         }
         return null
       }}

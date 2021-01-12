@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 39b97b79fdcc32cc24ddeca3599b78e0 */
+/* @relayHash b5ebe93610716846ace9ed97bcbe20a3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,6 +34,7 @@ fragment Fair2Editorial_fair on Fair {
   internalID
   slug
   articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
+    totalCount
     edges {
       node {
         id
@@ -164,6 +165,13 @@ return {
               {
                 "alias": null,
                 "args": null,
+                "kind": "ScalarField",
+                "name": "totalCount",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
                 "concreteType": "ArticleEdge",
                 "kind": "LinkedField",
                 "name": "edges",
@@ -241,7 +249,7 @@ return {
     ]
   },
   "params": {
-    "id": "39b97b79fdcc32cc24ddeca3599b78e0",
+    "id": "b5ebe93610716846ace9ed97bcbe20a3",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": {
@@ -281,6 +289,12 @@ return {
         },
         "fair.articles.edges.node.thumbnailImage.src": (v5/*: any*/),
         "fair.articles.edges.node.title": (v5/*: any*/),
+        "fair.articles.totalCount": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Int"
+        },
         "fair.id": (v6/*: any*/),
         "fair.internalID": (v6/*: any*/),
         "fair.slug": (v6/*: any*/)

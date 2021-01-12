@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e679015ebad2a640cb7ab67dc70a6108 */
+/* @relayHash e7e03baa797b12533f132bdddfbb709e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -48,6 +48,8 @@ fragment Articles_articles on Article {
 }
 
 fragment ArtistAboutShows_artist on Artist {
+  name
+  slug
   currentShows: showsConnection(status: "running", first: 10) {
     edges {
       node {
@@ -803,7 +805,7 @@ return {
     ]
   },
   "params": {
-    "id": "e679015ebad2a640cb7ab67dc70a6108",
+    "id": "e7e03baa797b12533f132bdddfbb709e",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": (v10/*: any*/),

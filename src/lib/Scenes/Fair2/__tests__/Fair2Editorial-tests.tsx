@@ -50,6 +50,7 @@ describe("Fair2Editorial", () => {
     const wrapper = getWrapper({
       Fair: () => ({
         articles: {
+          totalCount: 2,
           edges: [
             {
               node: {
@@ -96,6 +97,7 @@ describe("Fair2Editorial", () => {
         internalID: "def123",
         slug: "art-basel-hong-kong-2020",
         articles: {
+          totalCount: 2,
           edges: [
             {
               node: {
