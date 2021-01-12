@@ -3,6 +3,7 @@ import { CommercialButtons_me } from "__generated__/CommercialButtons_me.graphql
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import { navigate } from "lib/navigation/navigate"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { Button, Spacer } from "palette"
 import React from "react"
@@ -11,7 +12,7 @@ import { BidButtonFragmentContainer } from "./BidButton"
 import { BuyNowButtonFragmentContainer } from "./BuyNowButton"
 import { InquiryButtonsFragmentContainer } from "./InquiryButtons"
 import { MakeOfferButtonFragmentContainer } from "./MakeOfferButton"
-import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
+
 
 export interface CommercialButtonProps {
   artwork: CommercialButtons_artwork
