@@ -12,7 +12,7 @@ import TODO from "../Components/ArtworkConsignmentTodo"
 import { createConsignmentSubmission } from "../Submission/createConsignmentSubmission"
 import { updateConsignmentSubmission } from "../Submission/updateConsignmentSubmission"
 import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
-import Confirmation from "./Confirmation"
+import { ConfirmContactInfoQueryRenderer } from "./ConfirmContactInfo"
 import Artist from "./ConsignmentsArtist"
 import Edition from "./Edition"
 import Location from "./Location"
@@ -184,7 +184,10 @@ export default class Overview extends React.Component<Props, State> {
     // Confirmation will ask to see how the submission process has worked in 1 second
     const submissionRequestValidationCheck = () => this.state.hasSubmittedSuccessfully
     // Show confirmation screen
-    this.props.navigator.push({ component: Confirmation, passProps: { submissionRequestValidationCheck } })
+    this.props.navigator.push({
+      component: ConfirmContactInfoQueryRenderer,
+      passProps: { submissionRequestValidationCheck },
+    })
   }
 
   exitModal = () => dismissModal()
@@ -242,7 +245,7 @@ export default class Overview extends React.Component<Props, State> {
       <ScrollView
         style={{ flex: 1 }}
         alwaysBounceVertical={false}
-        contentContainerStyle={{ paddingTop: 40, flex: 1, justifyContent: "space-between" }}
+        contentContainerStyle={{ paddingVertical: 40, justifyContent: "center" }}
       >
         <View
           style={{

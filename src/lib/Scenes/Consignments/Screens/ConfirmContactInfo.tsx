@@ -1,32 +1,62 @@
+import { captureException } from "@sentry/react-native"
 import { ConfirmContactInfo_me } from "__generated__/ConfirmContactInfo_me.graphql"
 import { ConfirmContactInfoQuery } from "__generated__/ConfirmContactInfoQuery.graphql"
 import { Input } from "lib/Components/Input/Input"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { updateMyUserProfile } from "lib/Scenes/MyAccount/updateMyUserProfile"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Spacer, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { ActivityIndicator, ScrollView, View } from "react-native"
+import { ActivityIndicator, Alert, ScrollView, View } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
+import Confirmation from "./Confirmation"
 
-const ConfirmContactInfo: React.FC<{ me: ConfirmContactInfo_me | null }> = ({ me }) => {
+const ConfirmContactInfo: React.FC<{
+  me: ConfirmContactInfo_me | null
+
+  submissionRequestValidationCheck: () => boolean
+  navigator: NavigatorIOS
+}> = ({ me, submissionRequestValidationCheck, navigator }) => {
   const { width, height } = useScreenDimensions()
   const isPad = width > 700
   const [phoneNumber, setPhoneNumber] = useState(me?.phone)
   const [isInputFocused, setIsInputFocused] = useState(false)
   const inputRef = useRef<Input>(null)
+  const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
     setPhoneNumber(me?.phone)
   }, [me?.phone])
 
+  const submit = async () => {
+    setSubmitting(true)
+    try {
+      await updateMyUserProfile({ phone: phoneNumber })
+      navigator.push({
+        component: Confirmation,
+        passProps: { submissionRequestValidationCheck },
+      })
+    } catch (e) {
+      if (__DEV__) {
+        console.error(e)
+      } else {
+        captureException(e)
+        Alert.alert("Something went wrong")
+      }
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
     <BottomAlignedButton
       buttonText="Submit"
-      disabled={!Boolean(me && phoneNumber)}
-      onPress={() => console.warn("submitty")}
+      disabled={!Boolean(me && phoneNumber) || submitting}
+      onPress={submit}
       showSeparator={isInputFocused}
     >
       <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} contentContainerStyle={{ paddingVertical: 40 }}>
@@ -65,6 +95,7 @@ const ConfirmContactInfo: React.FC<{ me: ConfirmContactInfo_me | null }> = ({ me
                 onChangeText={setPhoneNumber}
                 onFocus={() => setIsInputFocused(true)}
                 onBlur={() => setIsInputFocused(false)}
+                disabled={submitting}
               />
             ) : (
               <ActivityIndicator />
@@ -86,12 +117,16 @@ const ConfirmContactInfoContainer = createFragmentContainer(ConfirmContactInfo, 
   `,
 })
 
-export const ConfirmContactInfoQueryRenderer: React.FC = () => {
+export const ConfirmContactInfoQueryRenderer: React.FC<{
+  navigator: NavigatorIOS
+  submissionRequestValidationCheck: () => boolean
+}> = (props) => {
   return (
     <QueryRenderer<ConfirmContactInfoQuery>
       render={renderWithPlaceholder({
         Container: ConfirmContactInfoContainer,
-        renderPlaceholder: () => <ConfirmContactInfo me={null} />,
+        initialProps: props,
+        renderPlaceholder: () => <ConfirmContactInfo me={null} {...props} />,
       })}
       query={graphql`
         query ConfirmContactInfoQuery {
