@@ -398,21 +398,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   goBackToSelectMaxBid() {
     this.props.navigation.goBack()
-    // this.props.navigation.navigate("SelectMaxBidEdit", {
-    //   increments: this.props.increments,
-    //   selectedBidIndex: this.state.selectedBidIndex,
-    //   updateSelectedBid: this.updateSelectedBid.bind(this),
-    // })
-    // // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    // this.props.navigator.push({
-    //   component: SelectMaxBidEdit,
-    //   title: "",
-    //   passProps: {
-    //     increments: this.props.increments,
-    //     selectedBidIndex: this.state.selectedBidIndex,
-    //     updateSelectedBid: this.updateSelectedBid.bind(this),
-    //   },
-    // })
   }
 
   presentErrorResult(error: Error | ReadonlyArray<PayloadError>) {
@@ -437,22 +422,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       ARAuctionID: this.props.sale_artwork.sale.slug,
     })
 
+    console.log("=========")
+    console.log(bidderPositionResult)
     this.props.navigation.navigate("BidResultScreen", {
       bidderPositionResult,
       refreshBidderInfo: this.refreshBidderInfo,
       refreshSaleArtwork: this.props.route.params!.refreshSaleArtwork,
     })
-    // // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    // this.props.navigator.push({
-    //   component: BidResultScreen,
-    //   title: "",
-    //   passProps: {
-    //     sale_artwork: this.props.sale_artwork,
-    //     bidderPositionResult,
-    //     refreshBidderInfo: this.refreshBidderInfo,
-    //     refreshSaleArtwork: this.props.refreshSaleArtwork,
-    //   },
-    // })
 
     this.setState({ isLoading: false })
   }
