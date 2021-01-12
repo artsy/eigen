@@ -170,8 +170,8 @@ flip_table:
 	rm -rf emission/Pod/Assets/Emission*
 	rm -rf emission/Pod/Assets/assets
 	@echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
-	bundle exec pod install --repo-update
 	$(MAKE) update_echo
+	bundle exec pod install --repo-update
 
 # Clear global and local caches and build files
 flip_table_extreme:
