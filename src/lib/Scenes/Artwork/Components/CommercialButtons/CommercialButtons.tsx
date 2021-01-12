@@ -11,6 +11,7 @@ import { BidButtonFragmentContainer } from "./BidButton"
 import { BuyNowButtonFragmentContainer } from "./BuyNowButton"
 import { InquiryButtonsFragmentContainer } from "./InquiryButtons"
 import { MakeOfferButtonFragmentContainer } from "./MakeOfferButton"
+import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 
 export interface CommercialButtonProps {
   artwork: CommercialButtons_artwork
@@ -84,7 +85,7 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
     } else if (isInquireable && !newFirstInquiry) {
       return (
         <Button onPress={() => this.handleInquiry()} size="large" block width={100} haptic>
-          Contact gallery
+          {InquiryOptions.ContactGallery}
         </Button>
       )
     } else if (isInquireable && newFirstInquiry) {
