@@ -64,4 +64,13 @@ describe("AuctionResult", () => {
     expect(extractText(tree.root)).toContain("Bought in")
     expect(tree.root.findAllByProps({ testID: "ratio" })).toHaveLength(0)
   })
+
+  it("shows the correct sale date", () => {
+    const tree = renderAuctionResult({
+      AuctionResult: () => ({
+        saleDate: "2021-01-11T18:00:00-06:00",
+      }),
+    })
+    expect(extractText(tree.root.findByProps({ testID: "saleDate" }))).toContain("Jan 12, 2021")
+  })
 })
