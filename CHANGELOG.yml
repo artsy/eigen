@@ -8,6 +8,7 @@ upcoming:
   user_facing:
     - Add auction result screen - adam
     - Add filter button and screen to the ArtistInsights AuctionResults - mounir
+    - Add phone number confirmation step to consignments flow - david
 
 releases:
   - version: 6.7.5
