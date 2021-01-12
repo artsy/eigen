@@ -41,11 +41,11 @@ const ConfirmContactInfo: React.FC<{
         passProps: { submissionRequestValidationCheck },
       })
     } catch (e) {
-      if (__DEV__) {
+      if (__DEV__ && !__TEST__) {
         console.error(e)
       } else {
-        captureException(e)
         Alert.alert("Something went wrong")
+        captureException(e)
       }
     } finally {
       setSubmitting(false)
