@@ -62,7 +62,7 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
 
             {!!auctionResult.saleDate && (
               <Text variant="small" color="black60" numberOfLines={1}>
-                {moment(auctionResult.saleDate).format("MMM D, YYYY")}
+                {moment(auctionResult.saleDate).utc().format("MMM D, YYYY")}
                 {` ${bullet} `}
                 {auctionResult.organization}
               </Text>

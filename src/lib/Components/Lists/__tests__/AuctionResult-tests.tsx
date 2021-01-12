@@ -110,7 +110,7 @@ describe("AuctionResults", () => {
     expect(tree.findAllByType(Text)[4].props.children).toBe("Bought in")
   })
 
-  it("renders auction result when auction results are not available", () => {
+  it("renders sale date correctly", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
     mockEnvironmentPayload(mockEnvironment, {
       Artist: () => ({
@@ -118,11 +118,7 @@ describe("AuctionResults", () => {
           edges: [
             {
               node: {
-                priceRealized: {
-                  display: null,
-                },
-                saleDate: moment().subtract(2, "months").toISOString(),
-                boughtIn: false,
+                saleDate: "2021-01-11T18:00:00-06:00",
               },
             },
           ],
@@ -130,6 +126,6 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findAllByType(Text)[4].props.children).toBe("Not available")
+    expect(tree.findAllByType(Text)[3].props.children).toContain("Jan 12, 2021")
   })
 })
