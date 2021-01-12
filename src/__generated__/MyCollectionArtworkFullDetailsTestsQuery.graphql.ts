@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0564e1f59acacacd1f3910c84ec50fcd */
+/* @relayHash 8c60d07ed8e12fe3cb60d63bc7d70b1d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -49,6 +49,7 @@ fragment MyCollectionArtworkFullDetails_artwork on Artwork {
     internalID
   }
   internalID
+  isEdition
   medium
   metric
   provenance
@@ -130,6 +131,12 @@ v7 = {
   "nullable": true,
   "plural": false,
   "type": "Int"
+},
+v8 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Boolean"
 };
 return {
   "fragment": {
@@ -276,6 +283,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "isEdition",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "medium",
             "storageKey": null
           },
@@ -314,7 +328,7 @@ return {
     ]
   },
   "params": {
-    "id": "0564e1f59acacacd1f3910c84ec50fcd",
+    "id": "8c60d07ed8e12fe3cb60d63bc7d70b1d",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -355,14 +369,10 @@ return {
           "plural": false,
           "type": "ID"
         },
-        "artwork.images.isDefault": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Boolean"
-        },
+        "artwork.images.isDefault": (v8/*: any*/),
         "artwork.images.width": (v7/*: any*/),
         "artwork.internalID": (v5/*: any*/),
+        "artwork.isEdition": (v8/*: any*/),
         "artwork.medium": (v6/*: any*/),
         "artwork.metric": (v6/*: any*/),
         "artwork.provenance": (v6/*: any*/),

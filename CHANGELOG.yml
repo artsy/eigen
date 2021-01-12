@@ -11,6 +11,7 @@ upcoming:
     - Fix layout in My Collection artwork form AdditionalDetails screen - david
     - Add auction result screen - adam
     - Add filter button and screen to the ArtistInsights AuctionResults - mounir
+    - Allow users to indicate works in MyCollection as editions without marking edition size or number - anna
     - Wire up `See all past shows` button - adam
 
 releases:

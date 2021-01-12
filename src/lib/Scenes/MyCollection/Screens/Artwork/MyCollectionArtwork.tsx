@@ -136,6 +136,7 @@ export const ArtworkMetaProps = graphql`
       internalID
     }
     internalID
+    isEdition
     medium
     metric
     provenance

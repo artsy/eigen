@@ -55,6 +55,7 @@ describe("explicitlyClearedFields", () => {
         medium: "some-medium",
         category: "some-category",
         editionNumber: "some-edition-number",
+        isEdition: false,
         title: "some-title",
         artistSearchResult: {} as any,
         costMinor: "some",

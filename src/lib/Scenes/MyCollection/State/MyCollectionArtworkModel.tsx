@@ -29,6 +29,7 @@ export interface ArtworkFormValues {
   editionSize: string
   editionNumber: string
   height: string
+  isEdition: boolean
   medium: string
   metric: Metric
   photos: Image[]
@@ -49,6 +50,7 @@ export const initialFormValues: ArtworkFormValues = {
   editionSize: "",
   editionNumber: "",
   height: "",
+  isEdition: false,
   medium: "",
   metric: "",
   photos: [],
@@ -203,6 +205,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       editionSize: artwork.editionSize,
       editionNumber: artwork.editionNumber,
       height: artwork.height,
+      isEdition: artwork.isEdition,
       medium: artwork.medium,
       metric: artwork.metric,
       photos: artwork.images,
