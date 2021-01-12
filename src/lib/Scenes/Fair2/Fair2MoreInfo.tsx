@@ -5,7 +5,6 @@ import { Markdown } from "lib/Components/Markdown"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { shouldShowFairBMWArtActivationLink } from "lib/Scenes/Fair/Screens/FairBMWArtActivation"
 import { defaultRules } from "lib/utils/renderMarkdown"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
@@ -13,6 +12,7 @@ import { Box, ChevronIcon, Flex, Spacer, Text, Theme } from "palette"
 import React from "react"
 import { ScrollView, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { shouldShowFairBMWArtActivationLink } from "./FairBMWArtActivation"
 
 interface Fair2MoreInfoQueryRendererProps {
   fairID: string

@@ -126,15 +126,14 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     new RouteMatcher("/partner-locations/:partnerID", "PartnerLocations"),
 
-    new RouteMatcher("/fair/:fairID", "Fair"),
-    __DEV__ && new RouteMatcher("/fair2/:fairID", "Fair2"),
-    new RouteMatcher("/fair/:fairID/artworks", "FairArtworks"),
-    new RouteMatcher("/fair/:fairID/artists", "FairArtists"),
-    new RouteMatcher("/fair/:fairID/exhibitors", "FairExhibitors"),
-    new RouteMatcher("/fair/:fairID/info", "FairMoreInfo"),
+    new RouteMatcher("/fair/:fairID", "Fair2"),
+    new RouteMatcher("/fair/:fairID/artworks", "Fair2"),
+    new RouteMatcher("/fair/:fairID/artists", "Fair2"),
+    new RouteMatcher("/fair/:fairID/exhibitors", "Fair2"),
+    new RouteMatcher("/fair/:fairID/info", "Fair2MoreInfo"),
     new RouteMatcher("/fair/:fairID/articles", "Fair2Articles"),
-    new RouteMatcher("/fair/:fairID/bmw-sponsored-content", "FairBMWArtActivation"),
     new RouteMatcher("/fair/:fairID/followedArtists", "Fair2AllFollowedArtists"),
+    new RouteMatcher("/fair/:fairID/bmw-sponsored-content", "FairBMWArtActivation"),
 
     new RouteMatcher("/city/:citySlug/:section", "CitySectionList"),
     new RouteMatcher("/city-fair/:citySlug", "CityFairList"),

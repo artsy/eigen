@@ -1,8 +1,7 @@
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { fairFixture } from "lib/Scenes/Fair/__fixtures__"
-import { Fair, FairContainer, FairPlaceholder } from "lib/Scenes/Fair/Fair"
-import { Fair2FragmentContainer } from "lib/Scenes/Fair2/Fair2"
+import { Fair2, Fair2FragmentContainer, Fair2Placeholder } from "lib/Scenes/Fair2/Fair2"
 import { PartnerContainer } from "lib/Scenes/Partner"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -64,14 +63,14 @@ describe("VanityURLEntity", () => {
         },
       })
     })
-    const fairComponent = tree.root.findByType(Fair)
+    const fairComponent = tree.root.findByType(Fair2)
     expect(fairComponent).toBeDefined()
   })
 
   describe("rendering a profile", () => {
     it("shows a fair placeholder when entityType is fair", () => {
       const tree = renderWithWrappers(<TestRenderer entity="fair" slugType="profileID" slug="some-fair" />)
-      const fairPlaceholder = tree.root.findByType(FairPlaceholder)
+      const fairPlaceholder = tree.root.findByType(Fair2Placeholder)
       expect(fairPlaceholder).toBeDefined()
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -149,7 +148,7 @@ describe("VanityURLEntity", () => {
           },
         })
       })
-      const fairComponent = tree.root.findByType(FairContainer)
+      const fairComponent = tree.root.findByType(Fair2FragmentContainer)
       expect(fairComponent).toBeDefined()
     })
 
@@ -221,7 +220,7 @@ describe("VanityURLEntity", () => {
         },
       })
     })
-    const fairComponent = tree.root.findByType(FairContainer)
+    const fairComponent = tree.root.findByType(Fair2FragmentContainer)
     expect(fairComponent).toBeDefined()
   })
 })

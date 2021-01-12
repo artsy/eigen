@@ -1,7 +1,0 @@
-export { FairContainer as default } from "./Fair"
-export { FairBoothQueryRenderer } from "./Screens/FairBooth"
-export { FairArtworksQueryRenderer } from "./Screens/FairArtworks"
-export { FairArtistsQueryRenderer } from "./Screens/FairArtists"
-export { FairExhibitorsQueryRenderer } from "./Screens/FairExhibitors"
-export { FairMoreInfoQueryRenderer } from "./Screens/FairMoreInfo"
-export { FairBMWArtActivationQueryRenderer } from "./Screens/FairBMWArtActivation"
