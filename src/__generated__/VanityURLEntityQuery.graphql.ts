@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 70680471f6fa24cf5742a1fcf1f82622 */
+/* @relayHash 5d3ab99350a52779596838f0d48aa6af */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -96,7 +96,7 @@ fragment ArtworkTileRailCard_artwork on Artwork {
   saleMessage
 }
 
-fragment Fair2Artworks_fair on Fair {
+fragment FairArtworks_fair on Fair {
   slug
   internalID
   fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
@@ -128,7 +128,7 @@ fragment Fair2Artworks_fair on Fair {
   }
 }
 
-fragment Fair2Collections_fair on Fair {
+fragment FairCollections_fair on Fair {
   internalID
   slug
   marketingCollections(size: 5) {
@@ -150,7 +150,7 @@ fragment Fair2Collections_fair on Fair {
   }
 }
 
-fragment Fair2Editorial_fair on Fair {
+fragment FairEditorial_fair on Fair {
   internalID
   slug
   articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
@@ -171,12 +171,12 @@ fragment Fair2Editorial_fair on Fair {
   }
 }
 
-fragment Fair2EmptyState_fair on Fair {
+fragment FairEmptyState_fair on Fair {
   isActive
   endAt
 }
 
-fragment Fair2ExhibitorRail_show on Show {
+fragment FairExhibitorRail_show on Show {
   internalID
   slug
   href
@@ -242,7 +242,7 @@ fragment Fair2ExhibitorRail_show on Show {
   }
 }
 
-fragment Fair2Exhibitors_fair on Fair {
+fragment FairExhibitors_fair on Fair {
   internalID
   slug
   exhibitors: showsConnection(first: 30, sort: FEATURED_ASC) {
@@ -265,7 +265,7 @@ fragment Fair2Exhibitors_fair on Fair {
             id
           }
         }
-        ...Fair2ExhibitorRail_show
+        ...FairExhibitorRail_show
         __typename
       }
       cursor
@@ -277,7 +277,7 @@ fragment Fair2Exhibitors_fair on Fair {
   }
 }
 
-fragment Fair2FollowedArtistsRail_fair on Fair {
+fragment FairFollowedArtistsRail_fair on Fair {
   internalID
   slug
   followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
@@ -293,7 +293,7 @@ fragment Fair2FollowedArtistsRail_fair on Fair {
   }
 }
 
-fragment Fair2Header_fair on Fair {
+fragment FairHeader_fair on Fair {
   about
   summary
   name
@@ -326,16 +326,16 @@ fragment Fair2Header_fair on Fair {
   fairLinks: links(format: MARKDOWN)
   fairTickets: tickets(format: MARKDOWN)
   fairContact: contact(format: MARKDOWN)
-  ...Fair2Timing_fair
+  ...FairTiming_fair
 }
 
-fragment Fair2Timing_fair on Fair {
+fragment FairTiming_fair on Fair {
   exhibitionPeriod
   startAt
   endAt
 }
 
-fragment Fair2_fair on Fair {
+fragment Fair_fair on Fair {
   internalID
   slug
   isActive
@@ -358,13 +358,13 @@ fragment Fair2_fair on Fair {
     }
     id
   }
-  ...Fair2Header_fair
-  ...Fair2EmptyState_fair
-  ...Fair2Editorial_fair
-  ...Fair2Collections_fair
-  ...Fair2Artworks_fair
-  ...Fair2Exhibitors_fair
-  ...Fair2FollowedArtistsRail_fair
+  ...FairHeader_fair
+  ...FairEmptyState_fair
+  ...FairEditorial_fair
+  ...FairCollections_fair
+  ...FairArtworks_fair
+  ...FairExhibitors_fair
+  ...FairFollowedArtistsRail_fair
 }
 
 fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
@@ -582,7 +582,7 @@ fragment VanityURLEntity_fairOrPartner on VanityURLEntityType {
   __typename
   ... on Fair {
     slug
-    ...Fair2_fair
+    ...Fair_fair
   }
   ... on Partner {
     ...Partner_partner
@@ -1941,7 +1941,7 @@ return {
                 "args": (v36/*: any*/),
                 "filters": (v39/*: any*/),
                 "handle": "connection",
-                "key": "Fair2ExhibitorsQuery_exhibitors",
+                "key": "FairExhibitorsQuery_exhibitors",
                 "kind": "LinkedHandle",
                 "name": "showsConnection"
               }
@@ -2377,7 +2377,7 @@ return {
     ]
   },
   "params": {
-    "id": "70680471f6fa24cf5742a1fcf1f82622",
+    "id": "5d3ab99350a52779596838f0d48aa6af",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",

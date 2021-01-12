@@ -147,7 +147,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = ({
                   break
                 case FilterModalMode.Fair:
                   trackChangeFilters(
-                    PageNames.Fair2Page,
+                    PageNames.FairPage,
                     OwnerEntityTypes.Fair,
                     appliedFiltersParams,
                     changedFiltersParams(appliedFiltersParams, state.selectedFilters)
@@ -300,7 +300,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = ({ closeModal, id, mo
                 trackClear(PageNames.ArtistSeriesPage, OwnerEntityTypes.ArtistSeries)
                 break
               case "Fair":
-                trackClear(PageNames.Fair2Page, OwnerEntityTypes.Fair)
+                trackClear(PageNames.FairPage, OwnerEntityTypes.Fair)
                 break
             }
 

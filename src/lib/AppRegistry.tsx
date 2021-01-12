@@ -37,11 +37,11 @@ import { FadeIn } from "./Components/FadeIn"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { NativeViewController } from "./Components/NativeViewController"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
-import { Fair2QueryRenderer } from "./Scenes/Fair2/Fair2"
-import { Fair2AllFollowedArtistsQueryRenderer } from "./Scenes/Fair2/Fair2AllFollowedArtists"
-import { Fair2ArticlesQueryRenderer } from "./Scenes/Fair2/Fair2Articles"
-import { Fair2MoreInfoQueryRenderer } from "./Scenes/Fair2/Fair2MoreInfo"
-import { FairBMWArtActivationQueryRenderer } from "./Scenes/Fair2/FairBMWArtActivation"
+import { FairQueryRenderer } from "./Scenes/Fair/Fair"
+import { FairAllFollowedArtistsQueryRenderer } from "./Scenes/Fair/FairAllFollowedArtists"
+import { FairArticlesQueryRenderer } from "./Scenes/Fair/FairArticles"
+import { FairBMWArtActivationQueryRenderer } from "./Scenes/Fair/FairBMWArtActivation"
+import { FairMoreInfoQueryRenderer } from "./Scenes/Fair/FairMoreInfo"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
@@ -326,10 +326,10 @@ export const modules = defineModules({
     hasOwnModalCloseButton: true,
   }),
   Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
-  Fair2: reactModule(Fair2QueryRenderer, { fullBleed: true }),
-  Fair2MoreInfo: reactModule(Fair2MoreInfoQueryRenderer),
-  Fair2Articles: reactModule(Fair2ArticlesQueryRenderer),
-  Fair2AllFollowedArtists: reactModule(Fair2AllFollowedArtistsQueryRenderer),
+  Fair: reactModule(FairQueryRenderer, { fullBleed: true }),
+  FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
+  FairArticles: reactModule(FairArticlesQueryRenderer),
+  FairAllFollowedArtists: reactModule(FairAllFollowedArtistsQueryRenderer),
   FairBMWArtActivation: reactModule(FairBMWArtActivationQueryRenderer, { fullBleed: true }),
   Favorites: reactModule(Favorites),
   Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),

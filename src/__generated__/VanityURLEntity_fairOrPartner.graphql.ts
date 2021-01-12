@@ -7,7 +7,7 @@ import { FragmentRefs } from "relay-runtime";
 export type VanityURLEntity_fairOrPartner = {
     readonly __typename: "Fair";
     readonly slug: string;
-    readonly " $fragmentRefs": FragmentRefs<"Fair2_fair">;
+    readonly " $fragmentRefs": FragmentRefs<"Fair_fair">;
     readonly " $refType": "VanityURLEntity_fairOrPartner";
 } | {
     readonly __typename: "Partner";
@@ -53,7 +53,7 @@ const node: ReaderFragment = {
         {
           "args": null,
           "kind": "FragmentSpread",
-          "name": "Fair2_fair"
+          "name": "Fair_fair"
         }
       ],
       "type": "Fair",
@@ -75,5 +75,5 @@ const node: ReaderFragment = {
   "type": "VanityURLEntityType",
   "abstractKey": "__isVanityURLEntityType"
 };
-(node as any).hash = 'cf995e901f80963fc9e19fecdc2b131b';
+(node as any).hash = '390ae282c3c418c11c6295a43866b292';
 export default node;

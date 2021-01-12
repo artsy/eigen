@@ -8,7 +8,7 @@ import { Flex, Spinner } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { Fair2FragmentContainer, Fair2Placeholder, Fair2QueryRenderer } from "../Fair2/Fair2"
+import { FairFragmentContainer, FairPlaceholder, FairQueryRenderer } from "../Fair/Fair"
 import { PartnerContainer } from "../Partner"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
@@ -19,7 +19,7 @@ interface EntityProps {
 
 const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug }) => {
   if (fairOrPartner.__typename === "Fair") {
-    return <Fair2FragmentContainer fair={fairOrPartner} />
+    return <FairFragmentContainer fair={fairOrPartner} />
   } else if (fairOrPartner.__typename === "Partner") {
     const { safeAreaInsets } = useScreenDimensions()
     return (
@@ -38,7 +38,7 @@ const VanityURLEntityFragmentContainer = createFragmentContainer(VanityURLEntity
       __typename
       ... on Fair {
         slug
-        ...Fair2_fair
+        ...Fair_fair
       }
       ... on Partner {
         ...Partner_partner
@@ -55,7 +55,7 @@ interface RendererProps {
 
 export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugType, slug }) => {
   if (slugType === "fairID") {
-    return <Fair2QueryRenderer fairID={slug} />
+    return <FairQueryRenderer fairID={slug} />
   } else {
     const { safeAreaInsets } = useScreenDimensions()
     return (
@@ -74,7 +74,7 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
           renderPlaceholder: () => {
             switch (entity) {
               case "fair":
-                return <Fair2Placeholder />
+                return <FairPlaceholder />
               case "partner":
                 return (
                   <View style={{ flex: 1, top: safeAreaInsets.top ?? 0 }}>
