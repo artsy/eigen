@@ -2,7 +2,6 @@ import { AuctionResultTestsQuery } from "__generated__/AuctionResultTestsQuery.g
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { extractNodes } from "lib/utils/extractNodes"
 import moment from "moment"
-import { Text } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -62,7 +61,7 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findAllByType(Text)[4].props.children).toBe("$one gazillion")
+    expect(tree.findByProps({ testID: "price" }).props.children).toBe("$one gazillion")
   })
 
   it("renders auction result when auction results are not available yet", () => {
@@ -84,7 +83,7 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findAllByType(Text)[4].props.children).toBe("Awaiting results")
+    expect(tree.findByProps({ testID: "price" }).props.children).toBe("Awaiting results")
   })
 
   it("renders auction result when auction result is `bought in`", () => {
@@ -107,7 +106,7 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findAllByType(Text)[4].props.children).toBe("Bought in")
+    expect(tree.findByProps({ testID: "price" }).props.children).toBe("Bought in")
   })
 
   it("renders sale date correctly", () => {
@@ -126,6 +125,6 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findAllByType(Text)[3].props.children).toContain("Jan 12, 2021")
+    expect(tree.findByProps({ testID: "saleInfo" }).props.children).toContain("Jan 12, 2021")
   })
 })
