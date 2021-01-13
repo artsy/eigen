@@ -1,3 +1,4 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import {
   ArtworkFilterContext,
   FilterData,
@@ -5,12 +6,10 @@ import {
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext } from "react"
-import NavigatorIOS from "react-native-navigator-ios"
+import { FilterModalNavigationStack } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface SortOptionsScreenProps {
-  navigator: NavigatorIOS
-}
+interface SortOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "SortOptionsScreen"> {}
 
 // Sorting types
 enum ArtworkSorts {
@@ -104,7 +103,25 @@ export const ORDERED_SALE_ARTWORK_SORTS: FilterData[] = [
   },
 ]
 
-export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigator }) => {
+export const ORDERED_AUCTION_RESULTS_SORTS: FilterData[] = [
+  {
+    displayText: "Most recent sale date",
+    paramName: FilterParamName.sort,
+    paramValue: "DATE_DESC",
+  },
+  {
+    displayText: "Estimate",
+    paramName: FilterParamName.sort,
+    paramValue: "ESTIMATE_AND_DATE_DESC",
+  },
+  {
+    displayText: "Sale price",
+    paramName: FilterParamName.sort,
+    paramValue: "PRICE_AND_DATE_DESC",
+  },
+]
+
+export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const filterType = state.filterType
 
@@ -115,7 +132,7 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigator 
     artwork: [DEFAULT_ARTWORK_SORT, ...ORDERED_ARTWORK_SORTS],
     saleArtwork: ORDERED_SALE_ARTWORK_SORTS,
     showArtwork: [GALLERY_CURATED_ARTWORK_SORT, DEFAULT_ARTWORK_SORT, ...ORDERED_ARTWORK_SORTS],
-    auctionResult: [],
+    auctionResult: ORDERED_AUCTION_RESULTS_SORTS,
   }[filterType]
 
   const selectOption = (option: FilterData) => {
@@ -135,7 +152,7 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigator 
       filterHeaderText={FilterDisplayName.sort}
       filterOptions={filterOptions}
       selectedOption={selectedOption}
-      navigator={navigator}
+      navigation={navigation}
     />
   )
 }

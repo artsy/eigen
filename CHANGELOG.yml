@@ -6,6 +6,7 @@ upcoming:
     - Fix `isVisible` root view prop to respect tab switches - david, erik, lily
     - Add android app shell - pavlos, cx
     - Surface alert message for users with no email client setup - annacarey, pavlos
+    - Refactor filters modal to use react-navigation - mounir
   user_facing:
     - Add sharing on Instagram - pavlos
     - Fix a layout bug (double separator) in My Collection Artwork Details
@@ -15,6 +16,7 @@ upcoming:
     - Allow users to indicate works in MyCollection as editions without marking edition size or number - anna
     - Wire up `See all past shows` button - adam
     - Display sale date correctly on auction results - pepopowitz, ana lisa
+    - Add Sort filter to AuctionResults - mounir
 
 releases:
   - version: 6.7.5

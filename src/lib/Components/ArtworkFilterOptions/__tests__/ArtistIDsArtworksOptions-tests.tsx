@@ -13,6 +13,7 @@ import { FakeNavigator as MockNavigator } from "../../Bidding/__tests__/Helpers/
 import { ArtistIDsArtworksOptionsScreen } from "../ArtistIDsArtworksOptions"
 import { FilterToggleButton } from "../FilterToggleButton"
 import { OptionListItem } from "../MultiSelectOption"
+import { getEssentialProps } from "./helper"
 
 describe("Artist options screen", () => {
   let mockNavigator: MockNavigator
@@ -69,7 +70,7 @@ describe("Artist options screen", () => {
     return selectedOptions
   }
 
-  const MockArtistScreen = ({ initialState, navigator }: any) => {
+  const MockArtistScreen = ({ initialState }: any) => {
     const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
     return (
@@ -79,7 +80,7 @@ describe("Artist options screen", () => {
           dispatch,
         }}
       >
-        <ArtistIDsArtworksOptionsScreen navigator={navigator} />
+        <ArtistIDsArtworksOptionsScreen {...getEssentialProps()} />
       </ArtworkFilterContext.Provider>
     )
   }
