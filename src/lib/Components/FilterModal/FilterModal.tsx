@@ -69,14 +69,14 @@ export enum FilterModalMode {
   AuctionResults = "AuctionResults",
 }
 
-interface FilterOptionsProps {
-  closeModal: () => void
-  id: string
-  mode: FilterModalMode
-  navigation: StackScreenProps<FilterModalNavigationStack, "FilterModalScreen">["navigation"]
-  slug: string
-  title: string
-}
+// interface FilterOptionsProps {
+//   closeModal: () => void
+//   id: string
+//   mode: FilterModalMode
+//   navigation: StackScreenProps<FilterModalNavigationStack, "FilterOptionsScreen">["navigation"]
+//   slug: string
+//   title: string
+// }
 
 interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
@@ -93,7 +93,7 @@ interface FilterModalProps extends ViewProperties {
 // see src/lib/Scenes/MyCollection/Screens/ArtworkFormModal/MyCollectionArtworkFormModal.tsx#L35
 // tslint:disable-next-line:interface-over-type-literal
 export type FilterModalNavigationStack = {
-  FilterModalScreen: FIlterModalScreenParams
+  FilterOptionsScreen: FilterOptionsScreenParams
   ArtistIDsOptionsScreen: undefined
   ColorOptionsScreen: undefined
   SizeOptionsScreen: undefined
@@ -111,60 +111,14 @@ export type FilterModalNavigationStack = {
 const Stack = createStackNavigator<FilterModalNavigationStack>()
 
 export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
-  const { dispatch } = useContext(ArtworkFilterContext)
+  const tracking = useTracking()
+  const { dispatch, state } = useContext(ArtworkFilterContext)
+  const { exitModal, id, mode, slug, closeModal } = props
 
   const handleClosingModal = () => {
     dispatch({ type: "resetFilters" })
-    props.closeModal?.()
+    closeModal?.()
   }
-
-  return (
-    <NavigationContainer>
-      <FancyModal visible={props.isFilterArtworksModalVisible} onBackgroundPressed={handleClosingModal} maxHeight={550}>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-            safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
-            cardStyle: { backgroundColor: "white" },
-          }}
-        >
-          <Stack.Screen name="FilterModalScreen" component={FilterModalScreen} initialParams={props} />
-          <Stack.Screen name="ArtistIDsOptionsScreen" component={ArtistIDsOptionsScreen} />
-          <Stack.Screen name="ColorOptionsScreen" component={ColorOptionsScreen} />
-          <Stack.Screen name="SizeOptionsScreen" component={SizeOptionsScreen} />
-          <Stack.Screen name="EstimateRangeOptionsScreen" component={EstimateRangeOptionsScreen} />
-          <Stack.Screen name="GalleryOptionsScreen" component={GalleryOptionsScreen} />
-          <Stack.Screen name="InstitutionOptionsScreen" component={InstitutionOptionsScreen} />
-          <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} />
-          <Stack.Screen name="MediumOptionsScreen" component={MediumOptionsScreen} />
-          <Stack.Screen name="PriceRangeOptionsScreen" component={PriceRangeOptionsScreen} />
-          <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
-          <Stack.Screen name="ViewAsOptionsScreen" component={ViewAsOptionsScreen} />
-          <Stack.Screen name="WaysToBuyOptionsScreen" component={WaysToBuyOptionsScreen} />
-        </Stack.Navigator>
-      </FancyModal>
-    </NavigationContainer>
-  )
-}
-
-interface FIlterModalScreenParams {
-  closeModal: () => void
-  exitModal: () => void
-  id: string
-  initiallyAppliedFilters?: FilterArray
-  mode: FilterModalMode
-  slug: string
-  title?: string
-}
-
-export const FilterModalScreen: React.FC<StackScreenProps<FilterModalNavigationStack, "FilterModalScreen">> = ({
-  navigation,
-  route,
-}) => {
-  const { closeModal, exitModal, id, mode, slug, title = "Filter" } = route.params
-  const tracking = useTracking()
-
-  const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const applyFilters = () => {
     dispatch({ type: "applyFilters" })
@@ -209,73 +163,113 @@ export const FilterModalScreen: React.FC<StackScreenProps<FilterModalNavigationS
     state.selectedFilters.length > 0 || (state.previouslyAppliedFilters.length === 0 && state.appliedFilters.length > 0)
 
   return (
-    <View style={{ flex: 1 }}>
-      <FilterOptions closeModal={closeModal} id={id} slug={slug} mode={mode} title={title} navigation={navigation} />
-      <Separator my={0} />
-      <ApplyButtonContainer>
-        <ApplyButton
-          disabled={!isApplyButtonEnabled}
-          onPress={() => {
-            const appliedFiltersParams = filterArtworksParams(state.appliedFilters, state.filterType)
-            // TODO: Update to use cohesion
-            switch (mode) {
-              case FilterModalMode.Collection:
-                trackChangeFilters(
-                  PageNames.Collection,
-                  OwnerEntityTypes.Collection,
-                  appliedFiltersParams,
-                  changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                )
-                break
-              case FilterModalMode.ArtistArtworks:
-                trackChangeFilters(
-                  PageNames.ArtistPage,
-                  OwnerEntityTypes.Artist,
-                  appliedFiltersParams,
-                  changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                )
-                break
-              case FilterModalMode.Fair:
-                trackChangeFilters(
-                  PageNames.Fair2Page,
-                  OwnerEntityTypes.Fair,
-                  appliedFiltersParams,
-                  changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                )
-                break
-              case FilterModalMode.SaleArtworks:
-                trackChangeFilters(
-                  PageNames.Auction,
-                  OwnerEntityTypes.Auction,
-                  appliedFiltersParams,
-                  changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                )
-                break
-              case FilterModalMode.Show:
-                trackChangeFilters(
-                  PageNames.ShowPage,
-                  OwnerEntityTypes.Show,
-                  appliedFiltersParams,
-                  changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                )
-                break
-            }
-            applyFilters()
-          }}
-          block
-          width={100}
-          variant="primaryBlack"
-          size="large"
-        >
-          {getApplyButtonCount()}
-        </ApplyButton>
-      </ApplyButtonContainer>
-    </View>
+    <NavigationContainer>
+      <FancyModal visible={props.isFilterArtworksModalVisible} onBackgroundPressed={handleClosingModal} maxHeight={550}>
+        <View style={{ flex: 1 }}>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+              safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
+              cardStyle: { backgroundColor: "white" },
+            }}
+          >
+            <Stack.Screen name="FilterOptionsScreen" component={FilterOptionsScreen} initialParams={props} />
+            <Stack.Screen name="ArtistIDsOptionsScreen" component={ArtistIDsOptionsScreen} />
+            <Stack.Screen name="ColorOptionsScreen" component={ColorOptionsScreen} />
+            <Stack.Screen name="SizeOptionsScreen" component={SizeOptionsScreen} />
+            <Stack.Screen name="EstimateRangeOptionsScreen" component={EstimateRangeOptionsScreen} />
+            <Stack.Screen name="GalleryOptionsScreen" component={GalleryOptionsScreen} />
+            <Stack.Screen name="InstitutionOptionsScreen" component={InstitutionOptionsScreen} />
+            <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} />
+            <Stack.Screen name="MediumOptionsScreen" component={MediumOptionsScreen} />
+            <Stack.Screen name="PriceRangeOptionsScreen" component={PriceRangeOptionsScreen} />
+            <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
+            <Stack.Screen name="ViewAsOptionsScreen" component={ViewAsOptionsScreen} />
+            <Stack.Screen name="WaysToBuyOptionsScreen" component={WaysToBuyOptionsScreen} />
+          </Stack.Navigator>
+
+          <Separator my={0} />
+          <ApplyButtonContainer>
+            <ApplyButton
+              disabled={!isApplyButtonEnabled}
+              onPress={() => {
+                const appliedFiltersParams = filterArtworksParams(state.appliedFilters, state.filterType)
+                // TODO: Update to use cohesion
+                switch (mode) {
+                  case FilterModalMode.Collection:
+                    trackChangeFilters(
+                      PageNames.Collection,
+                      OwnerEntityTypes.Collection,
+                      appliedFiltersParams,
+                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+                    )
+                    break
+                  case FilterModalMode.ArtistArtworks:
+                    trackChangeFilters(
+                      PageNames.ArtistPage,
+                      OwnerEntityTypes.Artist,
+                      appliedFiltersParams,
+                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+                    )
+                    break
+                  case FilterModalMode.Fair:
+                    trackChangeFilters(
+                      PageNames.Fair2Page,
+                      OwnerEntityTypes.Fair,
+                      appliedFiltersParams,
+                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+                    )
+                    break
+                  case FilterModalMode.SaleArtworks:
+                    trackChangeFilters(
+                      PageNames.Auction,
+                      OwnerEntityTypes.Auction,
+                      appliedFiltersParams,
+                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+                    )
+                    break
+                  case FilterModalMode.Show:
+                    trackChangeFilters(
+                      PageNames.ShowPage,
+                      OwnerEntityTypes.Show,
+                      appliedFiltersParams,
+                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+                    )
+                    break
+                }
+                applyFilters()
+              }}
+              block
+              width={100}
+              variant="primaryBlack"
+              size="large"
+            >
+              {getApplyButtonCount()}
+            </ApplyButton>
+          </ApplyButtonContainer>
+        </View>
+      </FancyModal>
+    </NavigationContainer>
   )
 }
 
-export const FilterOptions: React.FC<FilterOptionsProps> = ({ closeModal, id, mode, navigation, slug, title }) => {
+interface FilterOptionsScreenParams {
+  closeModal: () => void
+  exitModal: () => void
+  id: string
+  initiallyAppliedFilters?: FilterArray
+  mode: FilterModalMode
+  slug: string
+  title?: string
+}
+
+export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigationStack, "FilterOptionsScreen">> = ({
+  navigation,
+  route,
+}) => {
   const tracking = useTracking()
+  const { closeModal, id, mode, slug, title = "Filter" } = route.params
+
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const selectedOptions = useSelectedOptionsDisplay()
