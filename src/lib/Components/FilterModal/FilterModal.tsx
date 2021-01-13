@@ -24,6 +24,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
 import { ArtistIDsOptionsScreen } from "../ArtworkFilterOptions/ArtistIDsOptionsScreen"
+import { CategoriesOptionsScreen } from "../ArtworkFilterOptions/CategoriesOptions"
 import { ColorOption, ColorOptionsScreen } from "../ArtworkFilterOptions/ColorOptions"
 import { colorHexMap } from "../ArtworkFilterOptions/ColorSwatch"
 import { EstimateRangeOptionsScreen } from "../ArtworkFilterOptions/EstimateRangeOptions"
@@ -42,6 +43,7 @@ export type FilterScreen =
   | "artistIDs"
   | "artistsIFollow"
   | "color"
+  | "categories"
   | "dimensionRange"
   | "estimateRange"
   | "gallery"
@@ -68,15 +70,6 @@ export enum FilterModalMode {
   Show = "Show",
   AuctionResults = "AuctionResults",
 }
-
-// interface FilterOptionsProps {
-//   closeModal: () => void
-//   id: string
-//   mode: FilterModalMode
-//   navigation: StackScreenProps<FilterModalNavigationStack, "FilterOptionsScreen">["navigation"]
-//   slug: string
-//   title: string
-// }
 
 interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
@@ -106,6 +99,7 @@ export type FilterModalNavigationStack = {
   SortOptionsScreen: undefined
   ViewAsOptionsScreen: undefined
   WaysToBuyOptionsScreen: undefined
+  CategoriesOptionsScreen: undefined
 }
 
 const Stack = createStackNavigator<FilterModalNavigationStack>()
@@ -186,6 +180,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
             <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
             <Stack.Screen name="ViewAsOptionsScreen" component={ViewAsOptionsScreen} />
             <Stack.Screen name="WaysToBuyOptionsScreen" component={WaysToBuyOptionsScreen} />
+            <Stack.Screen name="CategoriesOptionsScreen" component={CategoriesOptionsScreen} />
           </Stack.Navigator>
 
           <Separator my={0} />
@@ -365,10 +360,12 @@ export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigatio
               <TouchableOptionListItemRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
                 <OptionListItem>
                   <Flex p={2} pr="15px" flexDirection="row" justifyContent="space-between" flexGrow={1}>
-                    <Sans size="3t" color="black100">
-                      {item.displayText}
-                    </Sans>
-                    <Flex flexDirection="row" alignItems="center">
+                    <Flex flex={1}>
+                      <Sans size="3t" color="black100">
+                        {item.displayText}
+                      </Sans>
+                    </Flex>
+                    <Flex flexDirection="row" alignItems="center" justifyContent="flex-end" flex={1}>
                       <OptionDetail
                         currentOption={selectedOption({
                           selectedOptions,
@@ -401,7 +398,7 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
       ]
 
     case FilterModalMode.AuctionResults:
-      return [filterOptionToDisplayConfigMap.sort]
+      return [filterOptionToDisplayConfigMap.sort, filterOptionToDisplayConfigMap.categories]
 
     default:
       return [filterOptionToDisplayConfigMap.sort, filterOptionToDisplayConfigMap.waysToBuy]
@@ -450,7 +447,11 @@ const OptionDetail: React.FC<{ currentOption: any; filterType: any }> = ({ curre
   if (filterType === FilterParamName.color && currentOption !== "All") {
     return <ColorSwatch colorOption={currentOption} />
   } else {
-    return <CurrentOption size="3t">{currentOption}</CurrentOption>
+    return (
+      <CurrentOption size="3t" ellipsizeMode="tail" numberOfLines={1}>
+        {currentOption}
+      </CurrentOption>
+    )
   }
 }
 
@@ -581,6 +582,11 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "color",
     ScreenComponent: "ColorOptionsScreen",
   },
+  categories: {
+    displayText: FilterDisplayName.categories,
+    filterType: "categories",
+    ScreenComponent: "CategoriesOptionsScreen",
+  },
   dimensionRange: {
     displayText: FilterDisplayName.size,
     filterType: "dimensionRange",
@@ -681,4 +687,4 @@ const FairFiltersSorted: FilterScreen[] = [
 ]
 const SaleArtworksFiltersSorted: FilterScreen[] = ["sort", "viewAs", "estimateRange", "artistIDs", "medium"]
 
-const AuctionResultsFiltersSorted: FilterScreen[] = ["sort"]
+const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories"]
