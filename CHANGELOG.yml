@@ -6,6 +6,7 @@ upcoming:
     - Fix `isVisible` root view prop to respect tab switches - david, erik, lily
     - Add android app shell - pavlos, cx
     - Surface alert message for users with no email client setup - annacarey, pavlos
+    - Remove unused deps - pavlos
   user_facing:
     - Add sharing on Instagram - pavlos
     - Fix a layout bug (double separator) in My Collection Artwork Details
