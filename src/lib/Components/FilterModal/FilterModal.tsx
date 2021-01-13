@@ -214,7 +214,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                     break
                   case FilterModalMode.Fair:
                     trackChangeFilters(
-                      PageNames.Fair2Page,
+                      PageNames.FairPage,
                       OwnerEntityTypes.Fair,
                       appliedFiltersParams,
                       changedFiltersParams(appliedFiltersParams, state.selectedFilters)
