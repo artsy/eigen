@@ -91,7 +91,8 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
       return (
         <OpaqueImageView
           imageURL={defaultImage.imageURL.replace(":version", "normalized")}
-          useRawURL
+          useRawURL={true}
+          retryFailedURLs={true}
           height={defaultImage.height * (dimensions.width / defaultImage.width)}
           width={dimensions.width}
         />

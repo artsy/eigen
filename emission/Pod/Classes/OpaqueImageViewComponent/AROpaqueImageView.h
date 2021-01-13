@@ -5,5 +5,6 @@
 @property (nonatomic, strong, readwrite) UIColor *placeholderBackgroundColor;
 @property (nonatomic, assign, readwrite) BOOL noAnimation;
 @property (nonatomic, assign, readwrite) BOOL failSilently;
+@property (nonatomic, assign, readwrite) BOOL retryFailedURLs;
 @property (nonatomic, assign, readwrite) BOOL highPriority;
 @end
