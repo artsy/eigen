@@ -30,7 +30,7 @@ it(@"makes sure that settings are merged correctly", ^{
       @"AROptionsDisableNativeLiveAuctions": @(YES),
       @"AROptionsPriceTransparency": @(NO),
       @"AROptionsArtistSeries": @(NO),
-      @"AROptionsNewFirstInquiry": @(NO)
+      @"AROptionsNewFirstInquiry": @(NO),
       @"AROptionsInquiryCheckout": @(NO)
     });
 });
