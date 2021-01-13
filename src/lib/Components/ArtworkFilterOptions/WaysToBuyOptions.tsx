@@ -1,3 +1,4 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import {
   ArtworkFilterContext,
   FilterData,
@@ -5,14 +6,12 @@ import {
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext } from "react"
-import NavigatorIOS from "react-native-navigator-ios"
+import { FilterModalNavigationStack } from "../FilterModal"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
-interface WaysToBuyOptionsScreenProps {
-  navigator: NavigatorIOS
-}
+interface WaysToBuyOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "WaysToBuyOptionsScreen"> {}
 
-export const WaysToBuyOptionsScreen: React.FC<WaysToBuyOptionsScreenProps> = ({ navigator }) => {
+export const WaysToBuyOptionsScreen: React.FC<WaysToBuyOptionsScreenProps> = ({ navigation }) => {
   const { dispatch } = useContext(ArtworkFilterContext)
   const selectedOptions = useSelectedOptionsDisplay()
 
@@ -52,7 +51,7 @@ export const WaysToBuyOptionsScreen: React.FC<WaysToBuyOptionsScreenProps> = ({ 
       onSelect={selectOption}
       filterHeaderText={FilterDisplayName.waysToBuy}
       filterOptions={sortedOptions}
-      navigator={navigator}
+      navigation={navigation}
     />
   )
 }

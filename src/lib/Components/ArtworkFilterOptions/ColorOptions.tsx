@@ -1,3 +1,4 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import {
   ArtworkFilterContext,
   FilterData,
@@ -15,9 +16,9 @@ import { floor } from "lodash"
 import { Flex } from "palette"
 import React, { useContext, useState } from "react"
 import { LayoutChangeEvent, TouchableOpacity, View } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
+import { FilterModalNavigationStack } from "../FilterModal"
 import { ColorSwatch } from "./ColorSwatch"
 
 // Color types
@@ -58,9 +59,7 @@ export const OrderedColorFilters: ColorOption[] = [
   "pink",
 ]
 
-interface ColorOptionsScreenProps {
-  navigator: NavigatorIOS
-}
+interface ColorOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "ColorOptionsScreen"> {}
 
 const colorSort = (left: FilterData, right: FilterData): number => {
   const leftParam = left.displayText as ColorOption
@@ -76,7 +75,7 @@ const INTER_ITEM_SPACE = isPad() ? 40 : 20
 const SIDE_MARGIN = isPad() ? 32 : 16
 const FLEX_MARGIN = SIDE_MARGIN - INTER_ITEM_SPACE / 2
 
-export const ColorOptionsScreen: React.FC<ColorOptionsScreenProps> = ({ navigator }) => {
+export const ColorOptionsScreen: React.FC<ColorOptionsScreenProps> = ({ navigation }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const [itemSize, setItemSize] = useState(0)
 
@@ -118,7 +117,7 @@ export const ColorOptionsScreen: React.FC<ColorOptionsScreenProps> = ({ navigato
   }
 
   const handleBackNavigation = () => {
-    navigator.pop()
+    navigation.goBack()
   }
 
   // TODO: Fix layout for <14 colors (2 full rows)

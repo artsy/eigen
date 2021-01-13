@@ -1,3 +1,4 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import {
   ArtworkFilterContext,
   FilterData,
@@ -5,12 +6,10 @@ import {
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext } from "react"
-import NavigatorIOS from "react-native-navigator-ios"
+import { FilterModalNavigationStack } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface SortOptionsScreenProps {
-  navigator: NavigatorIOS
-}
+interface SortOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "SortOptionsScreen"> {}
 
 // Sorting types
 enum ArtworkSorts {
@@ -104,7 +103,7 @@ export const ORDERED_SALE_ARTWORK_SORTS: FilterData[] = [
   },
 ]
 
-export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigator }) => {
+export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const filterType = state.filterType
 
@@ -135,7 +134,7 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigator 
       filterHeaderText={FilterDisplayName.sort}
       filterOptions={filterOptions}
       selectedOption={selectedOption}
-      navigator={navigator}
+      navigation={navigation}
     />
   )
 }

@@ -139,7 +139,6 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
           <Stack.Screen name="MediumOptionsScreen" component={MediumOptionsScreen} />
           <Stack.Screen name="PriceRangeOptionsScreen" component={PriceRangeOptionsScreen} />
           <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
-          <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
           <Stack.Screen name="ViewAsOptionsScreen" component={ViewAsOptionsScreen} />
           <Stack.Screen name="WaysToBuyOptionsScreen" component={WaysToBuyOptionsScreen} />
         </Stack.Navigator>
