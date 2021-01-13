@@ -13,6 +13,11 @@ before_all do
 end
 
 lane :ship_beta do
+  # ship_beta_ios
+  ship_beta_android
+end
+
+lane :ship_beta_ios do
   changelog_yaml = File.read('../CHANGELOG.yml')
   changelog_data = YAML.safe_load(changelog_yaml)
 
@@ -133,6 +138,10 @@ lane :ship_beta do
         itc_provider: 'ArtsyInc',
         distribute_external: true,
         groups: ['Artsy']
+end
+
+lane :ship_beta_android do
+  puts "wow"
 end
 
 lane :promote_beta do
