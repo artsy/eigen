@@ -10,10 +10,10 @@ const emptyProps = { navigator: {} as any, route: {} as any }
 
 describe("callbacks", () => {
   it("calls pop when done is tapped", () => {
-    const navigator: any = { push: jest.fn() }
+    const navigator: any = { popToTop: jest.fn() }
     const confirmation = new Confirmation({ navigator, route: {} })
     confirmation.restart()
-    expect(navigator.push).toHaveBeenCalled()
+    expect(navigator.popToTop).toHaveBeenCalled()
   })
 
   it("dismisses modal when done is tapped", () => {
