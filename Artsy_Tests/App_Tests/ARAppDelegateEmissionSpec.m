@@ -10,7 +10,7 @@ it(@"makes sure that settings are merged correctly", ^{
         @"ARDisableReactNativeBidFlow": @(NO),
         @"AREnableBuyNowFlow": @(YES),
         @"AROptionsArtistSeries": @(NO),
-        @"AROptionsNewFirstInquiry": @(NO)
+        @"AROptionsNewFirstInquiry": @(NO),
         @"AROptionsInquiryCheckout": @(NO)
     };
 
