@@ -4,17 +4,15 @@ import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArt
 import { Box, CheckIcon, Theme } from "palette"
 import React from "react"
 import { ReactTestRenderer } from "react-test-renderer"
-import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { ArtworkFilterContext, ArtworkFilterContextState } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { InnerOptionListItem, OptionListItem } from "../SingleSelectOption"
 import { SortOptionsScreen } from "../SortOptions"
+import { getEssentialProps } from "./helper"
 
 describe("Sort Options Screen", () => {
-  let mockNavigator: MockNavigator
   let state: ArtworkFilterContextState
 
   beforeEach(() => {
-    mockNavigator = new MockNavigator()
     state = {
       selectedFilters: [],
       appliedFilters: [],
@@ -38,7 +36,7 @@ describe("Sort Options Screen", () => {
             dispatch: jest.fn(),
           }}
         >
-          <SortOptionsScreen navigator={mockNavigator as any} />
+          <SortOptionsScreen {...getEssentialProps()} />
         </ArtworkFilterContext.Provider>
       </Theme>
     )
