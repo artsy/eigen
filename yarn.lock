@@ -11198,10 +11198,6 @@ react-native-localize@^2.0.1:
   version "1.0.0"
   resolved "https://github.com/artsy/react-native-navigator-ios#695725296669114ceeed76bba218fd91cde381c1"
 
-react-native-parallax-scroll-view@orta/react-native-parallax-scroll-view:
-  version "0.18.2"
-  resolved "https://codeload.github.com/orta/react-native-parallax-scroll-view/tar.gz/3c4c94ec493b64a6e10840c7457515e37762a5dc"
-
 react-native-reanimated@^1.13.1:
   version "1.13.1"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.13.1.tgz#c370c32cc4d447ae896cb029bb9c6a2f7608c5b4"
