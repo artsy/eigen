@@ -1083,7 +1083,8 @@ return {
             "alias": null,
             "args": (v13/*: any*/),
             "filters": [
-              "sort"
+              "sort",
+              "categories"
             ],
             "handle": "connection",
             "key": "artist_auctionResultsConnection",

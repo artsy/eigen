@@ -12,6 +12,7 @@ import { compact, forOwn, groupBy, sortBy } from "lodash"
 export enum FilterParamName {
   artistIDs = "artistIDs",
   artistsIFollow = "includeArtworksByFollowedArtists",
+  categories = "categories",
   color = "color",
   estimateRange = "estimateRange",
   gallery = "partnerID",
@@ -38,6 +39,7 @@ export enum FilterDisplayName {
   artistIDs = "Artists",
   artistsIFollow = "Artist",
   color = "Color",
+  categories = "Medium",
   estimateRange = "Price/estimate range",
   gallery = "Gallery",
   institution = "Institution",
@@ -75,6 +77,7 @@ export interface AggregateOption {
 const DEFAULT_ARTWORKS_PARAMS = {
   acquireable: false,
   atAuction: false,
+  categories: undefined, // TO check
   dimensionRange: "*-*",
   estimateRange: "",
   inquireableOnly: false,

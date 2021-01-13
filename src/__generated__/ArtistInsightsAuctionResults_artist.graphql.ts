@@ -28,6 +28,11 @@ export type ArtistInsightsAuctionResults_artist$key = {
 const node: ReaderFragment = {
   "argumentDefinitions": [
     {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "categories"
+    },
+    {
       "defaultValue": 10,
       "kind": "LocalArgument",
       "name": "count"
@@ -68,6 +73,11 @@ const node: ReaderFragment = {
     {
       "alias": "auctionResultsConnection",
       "args": [
+        {
+          "kind": "Variable",
+          "name": "categories",
+          "variableName": "categories"
+        },
         {
           "kind": "Variable",
           "name": "sort",
@@ -166,5 +176,5 @@ const node: ReaderFragment = {
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = 'e64452a8224c01ba6fbc85f375fd68bf';
+(node as any).hash = '8216d527ccc953ef82d4660f585f4d4d';
 export default node;
