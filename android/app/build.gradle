@@ -1,7 +1,7 @@
 apply plugin: "com.android.application"
 project.ext.envConfigFiles = [
     debug: ".env.shared",
-    release: ".env.shared",
+    release: System.getenv('CI') == "true" ? ".env.ci" : ".env.shared",
 ]
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
