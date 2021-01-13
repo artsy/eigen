@@ -93,7 +93,6 @@
     "lodash": "4.17.19",
     "moment": "2.24.0",
     "moment-timezone": "0.5.25",
-    "prop-types": "15.7.2",
     "query-string": "4.3.4",
     "react": "16.13.1",
     "react-native": "0.63.3",

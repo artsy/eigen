@@ -1,6 +1,5 @@
 import { TimeOffsetProviderQuery } from "__generated__/TimeOffsetProviderQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import * as PropTypes from "prop-types"
 import * as React from "react"
 import { fetchQuery, graphql } from "relay-runtime"
 
@@ -67,10 +66,6 @@ export const getOffsetBetweenGravityClock = async () => {
 }
 
 export class TimeOffsetProvider extends React.Component {
-  static childContextTypes = {
-    timeOffsetInMilliSeconds: PropTypes.number,
-  }
-
   state = {
     timeOffsetInMilliSeconds: 0,
   }

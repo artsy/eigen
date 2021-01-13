@@ -2,7 +2,6 @@ import { SimpleTicker, StateManager as CountdownStateManager } from "lib/Compone
 import { CountdownProps } from "lib/Components/Countdown/CountdownTimer"
 import moment from "moment-timezone"
 import { Flex, Sans } from "palette"
-import * as PropTypes from "prop-types"
 import React from "react"
 
 // Possible states for an auction:
@@ -119,10 +118,6 @@ interface TimeOffsetProviderProps {
 }
 
 export class TimeOffsetProvider extends React.Component<TimeOffsetProviderProps> {
-  static contextTypes = {
-    timeOffsetInMilliSeconds: PropTypes.number,
-  }
-
   render() {
     return React.cloneElement(this.props.children, this.context || {})
   }
