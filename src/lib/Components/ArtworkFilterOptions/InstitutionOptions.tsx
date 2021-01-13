@@ -1,3 +1,4 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import {
   ArtworkFilterContext,
   FilterData,
@@ -11,14 +12,13 @@ import {
   FilterParamName,
 } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext } from "react"
-import NavigatorIOS from "react-native-navigator-ios"
+import { FilterModalNavigationStack } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface InstitutionOptionsScreenProps {
-  navigator: NavigatorIOS
-}
+interface InstitutionOptionsScreenProps
+  extends StackScreenProps<FilterModalNavigationStack, "InstitutionOptionsScreen"> {}
 
-export const InstitutionOptionsScreen: React.FC<InstitutionOptionsScreenProps> = ({ navigator }) => {
+export const InstitutionOptionsScreen: React.FC<InstitutionOptionsScreenProps> = ({ navigation }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const paramName = FilterParamName.institution
@@ -55,7 +55,7 @@ export const InstitutionOptionsScreen: React.FC<InstitutionOptionsScreenProps> =
       filterHeaderText={FilterDisplayName.institution}
       filterOptions={displayOptions}
       selectedOption={selectedOption}
-      navigator={navigator}
+      navigation={navigation}
     />
   )
 }

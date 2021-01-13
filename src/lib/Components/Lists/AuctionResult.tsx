@@ -61,8 +61,8 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
             )}
 
             {!!auctionResult.saleDate && (
-              <Text variant="small" color="black60" numberOfLines={1}>
-                {moment(auctionResult.saleDate).format("MMM D, YYYY")}
+              <Text variant="small" color="black60" numberOfLines={1} testID="saleInfo">
+                {moment(auctionResult.saleDate).utc().format("MMM D, YYYY")}
                 {` ${bullet} `}
                 {auctionResult.organization}
               </Text>
@@ -73,7 +73,7 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
           <Flex alignItems="flex-end" pl={15}>
             {!!auctionResult.priceRealized?.display && !!auctionResult.currency ? (
               <Flex alignItems="flex-end">
-                <Text variant="subtitle" fontWeight="bold">
+                <Text variant="subtitle" fontWeight="bold" testID="price">
                   {(auctionResult.priceRealized?.display ?? "").replace(`${auctionResult.currency} `, "")}
                 </Text>
                 {!!ratio && (
@@ -93,7 +93,7 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
               </Flex>
             ) : (
               <Flex alignItems="flex-end">
-                <Text variant="subtitle" fontWeight="bold" style={{ width: 70 }} textAlign="right">
+                <Text variant="subtitle" fontWeight="bold" style={{ width: 70 }} textAlign="right" testID="price">
                   {auctionResult.boughtIn === true
                     ? "Bought in"
                     : isFromPastMonth

@@ -1,3 +1,4 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import {
   ArtworkFilterContext,
   FilterData,
@@ -10,14 +11,12 @@ import {
   ViewAsValues,
 } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext } from "react"
-import NavigatorIOS from "react-native-navigator-ios"
+import { FilterModalNavigationStack } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface Props {
-  navigator: NavigatorIOS
-}
+interface ViewAsOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "WaysToBuyOptionsScreen"> {}
 
-export const ViewAsOptionsScreen: React.FC<Props> = ({ navigator }) => {
+export const ViewAsOptionsScreen: React.FC<ViewAsOptionsScreenProps> = ({ navigation }) => {
   const { dispatch } = useContext(ArtworkFilterContext)
 
   const paramName = FilterParamName.viewAs
@@ -47,7 +46,7 @@ export const ViewAsOptionsScreen: React.FC<Props> = ({ navigator }) => {
       filterHeaderText={FilterDisplayName.viewAs}
       filterOptions={viewAsOptions}
       selectedOption={selectedOption}
-      navigator={navigator}
+      navigation={navigation}
     />
   )
 }

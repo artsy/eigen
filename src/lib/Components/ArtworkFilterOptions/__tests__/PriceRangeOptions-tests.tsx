@@ -4,7 +4,6 @@ import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArt
 import { Box, Theme } from "palette"
 import React from "react"
 import { ReactTestRenderer } from "react-test-renderer"
-import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 
 import {
   Aggregations,
@@ -13,6 +12,7 @@ import {
 } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { PriceRangeOptionsScreen } from "../PriceRangeOptions"
 import { InnerOptionListItem, OptionListItem } from "../SingleSelectOption"
+import { getEssentialProps } from "./helper"
 
 const aggregations: Aggregations = [
   {
@@ -53,11 +53,9 @@ const aggregations: Aggregations = [
 ]
 
 describe("Price Range Options Screen", () => {
-  let mockNavigator: MockNavigator
   let state: ArtworkFilterContextState
 
   beforeEach(() => {
-    mockNavigator = new MockNavigator()
     state = {
       selectedFilters: [],
       appliedFilters: [],
@@ -81,7 +79,7 @@ describe("Price Range Options Screen", () => {
             dispatch: null as any,
           }}
         >
-          <PriceRangeOptionsScreen navigator={mockNavigator as any} />
+          <PriceRangeOptionsScreen {...getEssentialProps()} />
         </ArtworkFilterContext.Provider>
       </Theme>
     )
