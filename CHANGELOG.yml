@@ -13,6 +13,7 @@ upcoming:
     - Add filter button and screen to the ArtistInsights AuctionResults - mounir
     - Allow users to indicate works in MyCollection as editions without marking edition size or number - anna
     - Wire up `See all past shows` button - adam
+    - Display sale date correctly on auction results - pepopowitz, ana lisa
 
 releases:
   - version: 6.7.5
