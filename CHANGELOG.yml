@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Analytics tracking for My Collection - pepopowitz, annacarey
     - Fix `isVisible` root view prop to respect tab switches - david, erik, lily
+    - Add android app shell - pavlos, cx
     - Surface alert message for users with no email client setup - annacarey, pavlos
   user_facing:
     - Add sharing on Instagram - pavlos
