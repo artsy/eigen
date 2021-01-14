@@ -15,6 +15,7 @@ export type MakeOfferModal_artwork = {
             readonly cm: string | null;
         } | null;
     } | null> | null;
+    readonly " $fragmentRefs": FragmentRefs<"CollapsibleArtworkDetails_artwork">;
     readonly " $refType": "MakeOfferModal_artwork";
 };
 export type MakeOfferModal_artwork$data = MakeOfferModal_artwork;
@@ -94,10 +95,15 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": null
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "CollapsibleArtworkDetails_artwork"
     }
   ],
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '34622dc79f3853c13ab4155d5ce05a2d';
+(node as any).hash = '1b6e3942a4d22b535be499722fa14d99';
 export default node;

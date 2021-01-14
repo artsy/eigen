@@ -99,7 +99,7 @@ export default class Composer extends React.Component<Props, State> {
           <StyledKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={safeAreaInsets.top}>
             {this.props.children}
             <Flex flexDirection="column">
-              <InquiryMakeOfferButton item={this.props.item} />
+              {this.props.item?.__typename === "Artwork" && <InquiryMakeOfferButton item={this.props.item} />}
               <Container active={this.state.active}>
                 <TextInput
                   placeholder={"Type your message woo"}
