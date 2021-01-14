@@ -3,6 +3,7 @@
 require 'yaml'
 require 'spaceship'
 require 'fileutils'
+require 'json'
 
 APP_ID = 'net.artsy.artsy'
 
@@ -13,11 +14,19 @@ before_all do
 end
 
 lane :ship_beta do
-  # ship_beta_ios
+  ship_beta_ios
   ship_beta_android
 end
 
+app_json_path = "../app.json"
+app_json = JSON.parse(File.read(app_json_path))
+
+app_plist = "../Artsy/App_Resources/Artsy-Info.plist"
+sticker_plist = "../Artsy Stickers/Info.plist"
+
 lane :ship_beta_ios do
+  set_build_version_ios
+
   changelog_yaml = File.read('../CHANGELOG.yml')
   changelog_data = YAML.safe_load(changelog_yaml)
 
@@ -140,8 +149,46 @@ lane :ship_beta_ios do
         groups: ['Artsy']
 end
 
+lane :update_version_string do
+  new_version = prompt(text: "What is the new human-readable release version?")
+  app_json['version'] = new_version
+  File.open(app_json_path, 'w') do |file|
+    file.puts JSON.pretty_generate(app_json)
+  end
+end
+
+date_str = DateTime.now.strftime("%Y.%m.%d.%H")
+lane :set_build_version_ios do
+  system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']} \" #{app_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']} \" #{sticker_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" #{app_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" #{sticker_plist}")
+end
+
+build_gradle = "../android/app/build.gradle"
+lane :set_build_version_android do
+  contents = File.read(build_gradle)
+
+  version_code = contents.match("versionCode (.*)").captures[0]
+  contents = contents.gsub(/(versionCode) (.*)/, "\\1 #{version_code.to_i+1}")
+  contents = contents.gsub(/(versionName) .*/, "\\1 \"#{app_json['version']}-#{date_str}\"")
+
+  File.open(build_gradle, 'w') do |file|
+    file.puts contents
+  end
+end
+
 lane :ship_beta_android do
-  puts "wow"
+  set_build_version_android
+
+  gradle(
+    task: "bundle",
+    build_type: "Release",
+    project_dir: "android/",
+  )
+  upload_to_play_store(
+    track: "alpha",
+  )
 end
 
 lane :promote_beta do
