@@ -37,19 +37,11 @@ import { FadeIn } from "./Components/FadeIn"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { NativeViewController } from "./Components/NativeViewController"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
-import {
-  FairArtistsQueryRenderer,
-  FairArtworksQueryRenderer,
-  FairBMWArtActivationQueryRenderer,
-  FairBoothQueryRenderer,
-  FairExhibitorsQueryRenderer,
-  FairMoreInfoQueryRenderer,
-} from "./Scenes/Fair"
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
-import { Fair2QueryRenderer } from "./Scenes/Fair2/Fair2"
-import { Fair2AllFollowedArtistsQueryRenderer } from "./Scenes/Fair2/Fair2AllFollowedArtists"
-import { Fair2ArticlesQueryRenderer } from "./Scenes/Fair2/Fair2Articles"
-import { Fair2MoreInfoQueryRenderer } from "./Scenes/Fair2/Fair2MoreInfo"
+import { FairAllFollowedArtistsQueryRenderer } from "./Scenes/Fair/FairAllFollowedArtists"
+import { FairArticlesQueryRenderer } from "./Scenes/Fair/FairArticles"
+import { FairBMWArtActivationQueryRenderer } from "./Scenes/Fair/FairBMWArtActivation"
+import { FairMoreInfoQueryRenderer } from "./Scenes/Fair/FairMoreInfo"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
@@ -194,51 +186,6 @@ const BidderFlow: React.FC<BidderFlowProps> = ({ intent, ...restProps }) => {
   }
 }
 
-interface FairBoothProps {
-  fairBoothID: string
-}
-
-const FairBooth: React.FC<FairBoothProps> = ({ fairBoothID }) => {
-  return <FairBoothQueryRenderer showID={fairBoothID} />
-}
-
-interface FairArtistsProps {
-  fairID: string
-}
-
-const FairArtists: React.FC<FairArtistsProps> = screenTrack<FairArtistsProps>((props) => {
-  return {
-    context_screen: Schema.PageNames.FairAllArtistsPage,
-    context_screen_owner_slug: props.fairID,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-  }
-})(({ fairID }) => {
-  return <FairArtistsQueryRenderer fairID={fairID} />
-})
-
-interface FairArtworksProps {
-  fairID: string
-}
-
-const FairArtworks: React.FC<FairArtworksProps> = ({ fairID }) => {
-  return <FairArtworksQueryRenderer fairID={fairID} />
-}
-
-interface FairExhibitorsProps {
-  fairID: string
-}
-
-const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fairID }) => {
-  return <FairExhibitorsQueryRenderer fairID={fairID} />
-}
-
-interface FairBMWArtActivationProps {
-  fairID: string
-}
-const FairBMWArtActivation: React.FC<FairBMWArtActivationProps> = ({ fairID }) => {
-  return <FairBMWArtActivationQueryRenderer fairID={fairID} />
-}
-
 interface SearchWithTrackingProps {
   safeAreaInsets: SafeAreaInsets
 }
@@ -380,16 +327,10 @@ export const modules = defineModules({
   }),
   Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
   Fair: reactModule(FairQueryRenderer, { fullBleed: true }),
-  Fair2: reactModule(Fair2QueryRenderer, { fullBleed: true }),
-  Fair2MoreInfo: reactModule(Fair2MoreInfoQueryRenderer),
-  Fair2Articles: reactModule(Fair2ArticlesQueryRenderer),
-  Fair2AllFollowedArtists: reactModule(Fair2AllFollowedArtistsQueryRenderer),
-  FairArtists: reactModule(FairArtists),
-  FairArtworks: reactModule(FairArtworks),
-  FairBMWArtActivation: reactModule(FairBMWArtActivation, { fullBleed: true }),
-  FairBooth: reactModule(FairBooth),
-  FairExhibitors: reactModule(FairExhibitors),
   FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
+  FairArticles: reactModule(FairArticlesQueryRenderer),
+  FairAllFollowedArtists: reactModule(FairAllFollowedArtistsQueryRenderer),
+  FairBMWArtActivation: reactModule(FairBMWArtActivationQueryRenderer, { fullBleed: true }),
   Favorites: reactModule(Favorites),
   Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
   FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
