@@ -52,17 +52,17 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
 
   const isImage = (toCheck: any): toCheck is Image => !!toCheck
 
-  const imageIsProcessing = (image: Image | null) => {
+  const imageIsProcessing = (image: Image | null, soughtVersion: string) => {
     if (!image) {
       return false
     }
 
-    const isProcessing = image.height === null
+    const isProcessing = !image.imageVersions.includes(soughtVersion)
     return isProcessing
   }
 
   const hasImagesStillProcessing = (mainImage: any, imagesToCheck: MyCollectionArtworkHeader_artwork["images"]) => {
-    if (!isImage(mainImage) || imageIsProcessing(mainImage)) {
+    if (!isImage(mainImage) || imageIsProcessing(mainImage, "normalized")) {
       return true
     }
 
@@ -71,12 +71,12 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
     }
 
     const concreteImages = imagesToCheck as Image[]
-    const stillProcessing = concreteImages.some((image) => imageIsProcessing(image))
+    const stillProcessing = concreteImages.some((image) => imageIsProcessing(image, "normalized"))
     return stillProcessing
   }
 
   const renderMainImageView = () => {
-    if (!isImage(defaultImage) || imageIsProcessing(defaultImage)) {
+    if (!isImage(defaultImage) || imageIsProcessing(defaultImage, "normalized")) {
       return (
         <Flex
           style={{ height: 300, alignItems: "center", justifyContent: "center", backgroundColor: color("black10") }}
@@ -157,6 +157,7 @@ export const MyCollectionArtworkHeaderRefetchContainer = createRefetchContainer(
           imageURL
           width
           internalID
+          imageVersions
         }
         internalID
         slug
@@ -175,6 +176,7 @@ export const MyCollectionArtworkHeaderRefetchContainer = createRefetchContainer(
           imageURL
           width
           internalID
+          imageVersions
         }
         internalID
         slug

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash dfe2e5456710ccb64ce6f55cba1da1a2 */
+/* @relayHash 87dffd4db22ee1f4dba34506eff18a3e */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionArtworkHeaderRefetchQueryVariables = {
@@ -17,6 +17,7 @@ export type MyCollectionArtworkHeaderRefetchQueryResponse = {
             readonly imageURL: string | null;
             readonly width: number | null;
             readonly internalID: string | null;
+            readonly imageVersions: ReadonlyArray<string | null> | null;
         } | null> | null;
         readonly internalID: string;
         readonly slug: string;
@@ -43,6 +44,7 @@ query MyCollectionArtworkHeaderRefetchQuery(
       imageURL
       width
       internalID
+      imageVersions
     }
     internalID
     slug
@@ -124,7 +126,14 @@ v5 = {
       "name": "width",
       "storageKey": null
     },
-    (v4/*: any*/)
+    (v4/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "imageVersions",
+      "storageKey": null
+    }
   ],
   "storageKey": null
 },
@@ -203,7 +212,7 @@ return {
     ]
   },
   "params": {
-    "id": "dfe2e5456710ccb64ce6f55cba1da1a2",
+    "id": "87dffd4db22ee1f4dba34506eff18a3e",
     "metadata": {},
     "name": "MyCollectionArtworkHeaderRefetchQuery",
     "operationKind": "query",
@@ -211,5 +220,5 @@ return {
   }
 };
 })();
-(node as any).hash = '30984e96fe546241e40f53e9e6b17b22';
+(node as any).hash = '46a8e156f6bd0894d312af8825f02b9c';
 export default node;
