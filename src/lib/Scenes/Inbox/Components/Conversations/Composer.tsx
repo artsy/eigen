@@ -1,12 +1,13 @@
 import React from "react"
 import { Dimensions, TextInput, TouchableWithoutFeedback } from "react-native"
 
+import { Conversation_me } from "__generated__/Conversation_me.graphql"
 import colors from "lib/data/colors"
-import { Button, color, themeProps } from "palette"
-import styled from "styled-components/native"
-
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
+import { Button, color, Flex, themeProps } from "palette"
+import styled from "styled-components/native"
+import { InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -28,11 +29,13 @@ const StyledKeyboardAvoidingView = styled.KeyboardAvoidingView`
   flex: 1;
   ${isPad ? "width: 708; align-self: center;" : ""};
 `
+type Item = NonNullable<NonNullable<NonNullable<Conversation_me["conversation"]>["items"]>[0]>["item"]
 
 interface Props {
   disabled?: boolean
   onSubmit?: (text: string) => any
   value?: string
+  item: Item
 }
 
 interface State {
@@ -95,26 +98,29 @@ export default class Composer extends React.Component<Props, State> {
         {({ safeAreaInsets }) => (
           <StyledKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={safeAreaInsets.top}>
             {this.props.children}
-            <Container active={this.state.active}>
-              <TextInput
-                placeholder={"Type your message"}
-                placeholderTextColor={colors["gray-semibold"]}
-                keyboardAppearance={"dark"}
-                onEndEditing={() => this.setState({ active: false })}
-                onFocus={() => this.setState({ active: this.input.isFocused() })}
-                onChangeText={(text) => this.setState({ text })}
-                ref={(input) => (this.input = input)}
-                style={inputStyles}
-                multiline={true}
-                value={this.state.text || undefined}
-                autoFocus={typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
-              />
-              <TouchableWithoutFeedback disabled={disableSendButton} onPress={this.submitText.bind(this)}>
-                <Button ml={1} disabled={!!disableSendButton}>
-                  Send
-                </Button>
-              </TouchableWithoutFeedback>
-            </Container>
+            <Flex flexDirection="column">
+              <InquiryMakeOfferButton item={this.props.item} />
+              <Container active={this.state.active}>
+                <TextInput
+                  placeholder={"Type your message woo"}
+                  placeholderTextColor={colors["gray-semibold"]}
+                  keyboardAppearance={"dark"}
+                  onEndEditing={() => this.setState({ active: false })}
+                  onFocus={() => this.setState({ active: this.input.isFocused() })}
+                  onChangeText={(text) => this.setState({ text })}
+                  ref={(input) => (this.input = input)}
+                  style={inputStyles}
+                  multiline={true}
+                  value={this.state.text || undefined}
+                  autoFocus={typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
+                />
+                <TouchableWithoutFeedback disabled={disableSendButton} onPress={this.submitText.bind(this)}>
+                  <Button ml={1} disabled={!!disableSendButton}>
+                    Send
+                  </Button>
+                </TouchableWithoutFeedback>
+              </Container>
+            </Flex>
           </StyledKeyboardAvoidingView>
         )}
       </ScreenDimensionsContext.Consumer>
