@@ -103,10 +103,6 @@ export const ORDERED_SALE_ARTWORK_SORTS: FilterData[] = [
   },
 ]
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> df68e591e (feat: add sort filter type to auctionResults filters)
 export const ORDERED_AUCTION_RESULTS_SORTS: FilterData[] = [
   {
     displayText: "Most recent sale date",
@@ -125,11 +121,6 @@ export const ORDERED_AUCTION_RESULTS_SORTS: FilterData[] = [
   },
 ]
 
-<<<<<<< HEAD
-=======
->>>>>>> 326ab798f (refactor(FilterModal): use react-navigation instead of react-native-navigator-ios for sort options screens)
-=======
->>>>>>> df68e591e (feat: add sort filter type to auctionResults filters)
 export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const filterType = state.filterType
