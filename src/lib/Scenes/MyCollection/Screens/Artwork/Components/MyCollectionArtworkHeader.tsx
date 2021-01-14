@@ -30,7 +30,7 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null
-    if (!isImage(defaultImage) || imageIsProcessing(defaultImage)) {
+    if (!isImage(defaultImage) || hasImagesStillProcessing(defaultImage, images)) {
       interval = setInterval(() => {
         relay.refetch(
           {
