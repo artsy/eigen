@@ -202,7 +202,6 @@ lane :promote_beta do
   puts "Let's deliver beta #{beta.train_version} (#{beta.build_version}) with build number #{latest_testflight_build_number}."
   deliver(
     build_number: latest_testflight_build_number,
-    submit_for_review: true,
     force: true, # Skip HTMl report verification
     skip_screenshots: true,
     skip_binary_upload: true,
