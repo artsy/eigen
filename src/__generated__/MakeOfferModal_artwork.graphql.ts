@@ -5,13 +5,6 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MakeOfferModal_artwork = {
-    readonly internalID: string;
-    readonly slug: string;
-    readonly image: {
-        readonly url: string | null;
-    } | null;
-    readonly artist_names: string | null;
-    readonly title: string | null;
     readonly editionSets: ReadonlyArray<{
         readonly id: string;
         readonly internalID: string;
@@ -32,60 +25,12 @@ export type MakeOfferModal_artwork$key = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
   "name": "MakeOfferModal_artwork",
   "selections": [
-    (v0/*: any*/),
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "slug",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "Image",
-      "kind": "LinkedField",
-      "name": "image",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "url",
-          "storageKey": null
-        }
-      ],
-      "storageKey": null
-    },
-    {
-      "alias": "artist_names",
-      "args": null,
-      "kind": "ScalarField",
-      "name": "artistNames",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "title",
-      "storageKey": null
-    },
     {
       "alias": null,
       "args": null,
@@ -101,7 +46,13 @@ return {
           "name": "id",
           "storageKey": null
         },
-        (v0/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "internalID",
+          "storageKey": null
+        },
         {
           "alias": null,
           "args": null,
@@ -148,6 +99,5 @@ return {
   "type": "Artwork",
   "abstractKey": null
 };
-})();
-(node as any).hash = '1b6ee3090eb29342baa681551403d55b';
+(node as any).hash = '34622dc79f3853c13ab4155d5ce05a2d';
 export default node;
