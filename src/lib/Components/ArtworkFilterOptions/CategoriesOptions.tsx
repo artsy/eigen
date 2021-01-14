@@ -1,6 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterContext, FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { xor } from "lodash"
 import React, { useContext, useState } from "react"
 import { FilterModalNavigationStack } from "../FilterModal"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
@@ -44,9 +45,18 @@ export const CATEGORIES_OPTIONS: FilterData[] = [
 export const CategoriesOptionsScreen: React.FC<ArtistIDsArtworksOptionsScreenProps> = ({ navigation }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
-  const oldSelectedCategories = state.appliedFilters.find((filter) => filter.paramName === FilterParamName.categories)
-    ?.paramValue as string[] | undefined
-  const [selectedOptions, setSelectedOptions] = useState(oldSelectedCategories || [])
+  const oldAppliedFilterCategories = state.appliedFilters.find(
+    (filter) => filter.paramName === FilterParamName.categories
+  )?.paramValue as string[] | undefined
+
+  const oldSelectedFilterCategories = state.selectedFilters.find(
+    (filter) => filter.paramName === FilterParamName.categories
+  )?.paramValue as string[] | undefined
+
+  // Get the Symmetric difference of the previously applied filters and the ones that were selected but not yet applied
+  // Read more about Symmetric difference here https://en.wikipedia.org/wiki/Symmetric_difference
+  const initialState = xor(oldAppliedFilterCategories, oldSelectedFilterCategories)
+  const [selectedOptions, setSelectedOptions] = useState(initialState)
 
   const toggleOption = (option: FilterData) => {
     let updatedParamValue: string[]

@@ -175,6 +175,18 @@ export const selectedOption = ({
 }) => {
   const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
 
+  if (filterScreen === "categories") {
+    const selectedCategoriesValues = selectedOptions.find((filter) => filter.paramName === FilterParamName.categories)
+      ?.paramValue as string[] | undefined
+    if (selectedCategoriesValues) {
+      const numSelectedCategoriesToDisplay = selectedCategoriesValues.length
+      if (numSelectedCategoriesToDisplay === 1) {
+        return selectedCategoriesValues[0]
+      }
+      return `${selectedCategoriesValues[0]}, ${numSelectedCategoriesToDisplay - 1} more`
+    }
+    return "All"
+  }
   if (filterScreen === "waysToBuy") {
     const waysToBuyFilterNames = [
       FilterParamName.waysToBuyBuy,
