@@ -6,6 +6,7 @@ import { Image } from "react-native-svg"
 
 import { MakeOfferModal_artwork } from "__generated__/MakeOfferModal_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { CollapsibleArtworkDetails } from "lib/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface MakeOfferModalProps {
@@ -38,18 +39,7 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
           {" "}
           Make sure the artwork below matches the intended work you're making an offer on.
         </Text>
-        <BorderBox flexDirection="row" justifyContent="space-between" alignItems="center" my={2}>
-          <Flex>
-            <OpaqueImageView imageURL={artwork.image.url} width={40} height={40} />
-            <Flex flexDirection="column">
-              <Text variant="caption">{artwork.artist_names}</Text>
-              <Text color="black60" variant="small">
-                {artwork.title}
-              </Text>
-            </Flex>
-          </Flex>
-          <AlertIcon />
-        </BorderBox>
+        <CollapsibleArtworkDetails artwork={artwork} />
         <Button size="large" variant="primaryBlack" block width={100} mb={1}>
           Confirm
         </Button>
@@ -64,13 +54,6 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
 export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOfferModal, {
   artwork: graphql`
     fragment MakeOfferModal_artwork on Artwork {
-      internalID
-      slug
-      image {
-        url
-      }
-      artist_names: artistNames
-      title
       editionSets {
         id
         internalID

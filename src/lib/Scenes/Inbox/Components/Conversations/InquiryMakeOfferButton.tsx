@@ -22,7 +22,6 @@ const ShadowSeparator = styled(Separator)`
 export const InquiryMakeOfferButton: React.FC<InquiryMakeOfferButtonProps> = ({ item }) => {
   // export const InquiryMakeOfferButton: React.FC = () => {
   const [modalVisibility, setModalVisibility] = useState(false)
-  console.warn("button", item)
 
   return (
     <>

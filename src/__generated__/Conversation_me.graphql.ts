@@ -10,7 +10,7 @@ export type Conversation_me = {
             readonly item: ({
                 readonly __typename: "Artwork";
                 readonly href: string | null;
-                readonly " $fragmentRefs": FragmentRefs<"MakeOfferModal_artwork">;
+                readonly " $fragmentRefs": FragmentRefs<"MakeOfferModal_artwork" | "CollapsibleArtworkDetails_artwork">;
             } | {
                 readonly __typename: "Show";
                 readonly href: string | null;
@@ -106,6 +106,11 @@ return {
                       "args": null,
                       "kind": "FragmentSpread",
                       "name": "MakeOfferModal_artwork"
+                    },
+                    {
+                      "args": null,
+                      "kind": "FragmentSpread",
+                      "name": "CollapsibleArtworkDetails_artwork"
                     }
                   ],
                   "type": "Artwork",
@@ -202,5 +207,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '35706675ea6c088f23b7546964222011';
+(node as any).hash = '003f399fab11519e2eca4a34abde2cc0';
 export default node;
