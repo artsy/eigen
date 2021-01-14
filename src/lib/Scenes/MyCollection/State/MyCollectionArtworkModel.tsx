@@ -15,7 +15,7 @@ export interface Image {
   internalID?: string
   path?: string
   width?: number
-  imageVersions: string[]
+  imageVersions?: string[]
 }
 
 export interface ArtworkFormValues {

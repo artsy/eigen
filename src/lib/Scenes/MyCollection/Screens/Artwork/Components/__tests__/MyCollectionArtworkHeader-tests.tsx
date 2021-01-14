@@ -11,7 +11,7 @@ import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-import { MyCollectionArtworkHeaderFragmentContainer } from "../MyCollectionArtworkHeader"
+import { MyCollectionArtworkHeaderRefetchContainer } from "../MyCollectionArtworkHeader"
 
 jest.unmock("react-relay")
 
@@ -30,7 +30,7 @@ describe("MyCollectionArtworkHeader", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.artwork) {
-          return <MyCollectionArtworkHeaderFragmentContainer artwork={props.artwork} />
+          return <MyCollectionArtworkHeaderRefetchContainer artwork={props.artwork} />
         }
         return null
       }}

@@ -57,7 +57,7 @@ const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (pro
       return false
     }
 
-    const isProcessing = !image.imageVersions.includes(soughtVersion)
+    const isProcessing = !image.imageVersions?.includes(soughtVersion)
     return isProcessing
   }
 
