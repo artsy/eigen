@@ -53,12 +53,12 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   const difference = getDifference()
 
   const stats = []
-  const makeRow = (label: string, value: string, fullWidth?: boolean) => (
+  const makeRow = (label: string, value: string, options?: { fullWidth?: boolean; testID?: string }) => (
     <Flex key={label} mb={1}>
       <Flex style={{ opacity: 0.5 }}>
         <Separator mb={1} />
       </Flex>
-      {fullWidth ? (
+      {options?.fullWidth ? (
         <Flex>
           <Text color="black60" mb={1}>
             {label}
@@ -69,7 +69,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
         <Flex flexDirection="row" justifyContent="space-between">
           <Text color="black60">{label}</Text>
           <Flex maxWidth="80%">
-            <Text pl={2} textAlign="right">
+            <Text pl={2} textAlign="right" testID={options?.testID}>
               {value}
             </Text>
           </Flex>
@@ -91,7 +91,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     stats.push(makeRow("Year created", auctionResult.dateText))
   }
   if (auctionResult?.saleDate) {
-    stats.push(makeRow("Sale date", moment(auctionResult.saleDate).format("MMM D, YYYY")))
+    stats.push(makeRow("Sale date", moment(auctionResult.saleDate).utc().format("MMM D, YYYY"), { testID: "saleDate" }))
   }
   if (auctionResult?.organization) {
     stats.push(makeRow("Auction house", auctionResult.organization))
@@ -103,7 +103,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     stats.push(makeRow("Sale location", auctionResult.location))
   }
   if (auctionResult?.description) {
-    stats.push(makeRow("Description", auctionResult.description, true))
+    stats.push(makeRow("Description", auctionResult.description, { fullWidth: true }))
   }
 
   const hasSalePrice = !!auctionResult?.priceRealized?.display && !!auctionResult.currency

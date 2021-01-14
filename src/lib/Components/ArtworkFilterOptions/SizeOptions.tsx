@@ -1,3 +1,4 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import {
   ArtworkFilterContext,
   FilterData,
@@ -11,14 +12,12 @@ import {
   FilterParamName,
 } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext } from "react"
-import NavigatorIOS from "react-native-navigator-ios"
+import { FilterModalNavigationStack } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface SizeOptionsScreenProps {
-  navigator: NavigatorIOS
-}
+interface SizeOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "SizeOptionsScreen"> {}
 
-export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigator }) => {
+export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const paramName = FilterParamName.size
@@ -53,7 +52,7 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigator 
       filterHeaderText={FilterDisplayName.size}
       filterOptions={displayOptions}
       selectedOption={selectedOption}
-      navigator={navigator}
+      navigation={navigation}
     />
   )
 }

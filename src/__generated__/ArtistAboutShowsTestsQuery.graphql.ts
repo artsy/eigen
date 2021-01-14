@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7577822d85a8a9401515c5976318898a */
+/* @relayHash 137076c8f8a7ac61e6d52c76c3dec9b3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -45,6 +45,8 @@ query ArtistAboutShowsTestsQuery(
 }
 
 fragment ArtistAboutShows_artist on Artist {
+  name
+  slug
   currentShows: showsConnection(status: "running", first: 10) {
     edges {
       node {
@@ -153,7 +155,14 @@ v6 = {
   "name": "name",
   "storageKey": null
 },
-v7 = [
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v8 = [
   {
     "alias": null,
     "args": null,
@@ -171,13 +180,7 @@ v7 = [
         "plural": false,
         "selections": [
           (v4/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "slug",
-            "storageKey": null
-          },
+          (v7/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -312,61 +315,61 @@ v7 = [
     "storageKey": null
   }
 ],
-v8 = {
+v9 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "ShowConnection"
 },
-v9 = {
+v10 = {
   "enumValues": null,
   "nullable": true,
   "plural": true,
   "type": "ShowEdge"
 },
-v10 = {
+v11 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Show"
 },
-v11 = {
+v12 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Image"
 },
-v12 = {
+v13 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v13 = {
+v14 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v14 = {
+v15 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Boolean"
 },
-v15 = {
+v16 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Location"
 },
-v16 = {
+v17 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "PartnerTypes"
 },
-v17 = {
+v18 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
@@ -445,6 +448,8 @@ return {
         "name": "artist",
         "plural": false,
         "selections": [
+          (v6/*: any*/),
+          (v7/*: any*/),
           {
             "alias": "currentShows",
             "args": (v3/*: any*/),
@@ -452,7 +457,7 @@ return {
             "kind": "LinkedField",
             "name": "showsConnection",
             "plural": false,
-            "selections": (v7/*: any*/),
+            "selections": (v8/*: any*/),
             "storageKey": "showsConnection(first:10,status:\"running\")"
           },
           {
@@ -469,7 +474,7 @@ return {
             "kind": "LinkedField",
             "name": "showsConnection",
             "plural": false,
-            "selections": (v7/*: any*/),
+            "selections": (v8/*: any*/),
             "storageKey": "showsConnection(first:10,status:\"upcoming\")"
           },
           {
@@ -490,7 +495,7 @@ return {
             "kind": "LinkedField",
             "name": "showsConnection",
             "plural": false,
-            "selections": (v7/*: any*/),
+            "selections": (v8/*: any*/),
             "storageKey": "showsConnection(first:3,status:\"closed\")"
           },
           (v4/*: any*/)
@@ -500,7 +505,7 @@ return {
     ]
   },
   "params": {
-    "id": "7577822d85a8a9401515c5976318898a",
+    "id": "137076c8f8a7ac61e6d52c76c3dec9b3",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
@@ -509,73 +514,75 @@ return {
           "plural": false,
           "type": "Artist"
         },
-        "artist.currentShows": (v8/*: any*/),
-        "artist.currentShows.edges": (v9/*: any*/),
-        "artist.currentShows.edges.node": (v10/*: any*/),
-        "artist.currentShows.edges.node.cover_image": (v11/*: any*/),
-        "artist.currentShows.edges.node.cover_image.url": (v12/*: any*/),
-        "artist.currentShows.edges.node.exhibition_period": (v12/*: any*/),
-        "artist.currentShows.edges.node.href": (v12/*: any*/),
-        "artist.currentShows.edges.node.id": (v13/*: any*/),
-        "artist.currentShows.edges.node.is_fair_booth": (v14/*: any*/),
-        "artist.currentShows.edges.node.kind": (v12/*: any*/),
-        "artist.currentShows.edges.node.location": (v15/*: any*/),
-        "artist.currentShows.edges.node.location.city": (v12/*: any*/),
-        "artist.currentShows.edges.node.location.id": (v13/*: any*/),
-        "artist.currentShows.edges.node.name": (v12/*: any*/),
-        "artist.currentShows.edges.node.partner": (v16/*: any*/),
-        "artist.currentShows.edges.node.partner.__isNode": (v17/*: any*/),
-        "artist.currentShows.edges.node.partner.__typename": (v17/*: any*/),
-        "artist.currentShows.edges.node.partner.id": (v13/*: any*/),
-        "artist.currentShows.edges.node.partner.name": (v12/*: any*/),
-        "artist.currentShows.edges.node.slug": (v13/*: any*/),
-        "artist.currentShows.edges.node.status": (v12/*: any*/),
-        "artist.currentShows.edges.node.status_update": (v12/*: any*/),
-        "artist.id": (v13/*: any*/),
-        "artist.pastShows": (v8/*: any*/),
-        "artist.pastShows.edges": (v9/*: any*/),
-        "artist.pastShows.edges.node": (v10/*: any*/),
-        "artist.pastShows.edges.node.cover_image": (v11/*: any*/),
-        "artist.pastShows.edges.node.cover_image.url": (v12/*: any*/),
-        "artist.pastShows.edges.node.exhibition_period": (v12/*: any*/),
-        "artist.pastShows.edges.node.href": (v12/*: any*/),
-        "artist.pastShows.edges.node.id": (v13/*: any*/),
-        "artist.pastShows.edges.node.is_fair_booth": (v14/*: any*/),
-        "artist.pastShows.edges.node.kind": (v12/*: any*/),
-        "artist.pastShows.edges.node.location": (v15/*: any*/),
-        "artist.pastShows.edges.node.location.city": (v12/*: any*/),
-        "artist.pastShows.edges.node.location.id": (v13/*: any*/),
-        "artist.pastShows.edges.node.name": (v12/*: any*/),
-        "artist.pastShows.edges.node.partner": (v16/*: any*/),
-        "artist.pastShows.edges.node.partner.__isNode": (v17/*: any*/),
-        "artist.pastShows.edges.node.partner.__typename": (v17/*: any*/),
-        "artist.pastShows.edges.node.partner.id": (v13/*: any*/),
-        "artist.pastShows.edges.node.partner.name": (v12/*: any*/),
-        "artist.pastShows.edges.node.slug": (v13/*: any*/),
-        "artist.pastShows.edges.node.status": (v12/*: any*/),
-        "artist.pastShows.edges.node.status_update": (v12/*: any*/),
-        "artist.upcomingShows": (v8/*: any*/),
-        "artist.upcomingShows.edges": (v9/*: any*/),
-        "artist.upcomingShows.edges.node": (v10/*: any*/),
-        "artist.upcomingShows.edges.node.cover_image": (v11/*: any*/),
-        "artist.upcomingShows.edges.node.cover_image.url": (v12/*: any*/),
-        "artist.upcomingShows.edges.node.exhibition_period": (v12/*: any*/),
-        "artist.upcomingShows.edges.node.href": (v12/*: any*/),
-        "artist.upcomingShows.edges.node.id": (v13/*: any*/),
-        "artist.upcomingShows.edges.node.is_fair_booth": (v14/*: any*/),
-        "artist.upcomingShows.edges.node.kind": (v12/*: any*/),
-        "artist.upcomingShows.edges.node.location": (v15/*: any*/),
-        "artist.upcomingShows.edges.node.location.city": (v12/*: any*/),
-        "artist.upcomingShows.edges.node.location.id": (v13/*: any*/),
-        "artist.upcomingShows.edges.node.name": (v12/*: any*/),
-        "artist.upcomingShows.edges.node.partner": (v16/*: any*/),
-        "artist.upcomingShows.edges.node.partner.__isNode": (v17/*: any*/),
-        "artist.upcomingShows.edges.node.partner.__typename": (v17/*: any*/),
-        "artist.upcomingShows.edges.node.partner.id": (v13/*: any*/),
-        "artist.upcomingShows.edges.node.partner.name": (v12/*: any*/),
-        "artist.upcomingShows.edges.node.slug": (v13/*: any*/),
-        "artist.upcomingShows.edges.node.status": (v12/*: any*/),
-        "artist.upcomingShows.edges.node.status_update": (v12/*: any*/)
+        "artist.currentShows": (v9/*: any*/),
+        "artist.currentShows.edges": (v10/*: any*/),
+        "artist.currentShows.edges.node": (v11/*: any*/),
+        "artist.currentShows.edges.node.cover_image": (v12/*: any*/),
+        "artist.currentShows.edges.node.cover_image.url": (v13/*: any*/),
+        "artist.currentShows.edges.node.exhibition_period": (v13/*: any*/),
+        "artist.currentShows.edges.node.href": (v13/*: any*/),
+        "artist.currentShows.edges.node.id": (v14/*: any*/),
+        "artist.currentShows.edges.node.is_fair_booth": (v15/*: any*/),
+        "artist.currentShows.edges.node.kind": (v13/*: any*/),
+        "artist.currentShows.edges.node.location": (v16/*: any*/),
+        "artist.currentShows.edges.node.location.city": (v13/*: any*/),
+        "artist.currentShows.edges.node.location.id": (v14/*: any*/),
+        "artist.currentShows.edges.node.name": (v13/*: any*/),
+        "artist.currentShows.edges.node.partner": (v17/*: any*/),
+        "artist.currentShows.edges.node.partner.__isNode": (v18/*: any*/),
+        "artist.currentShows.edges.node.partner.__typename": (v18/*: any*/),
+        "artist.currentShows.edges.node.partner.id": (v14/*: any*/),
+        "artist.currentShows.edges.node.partner.name": (v13/*: any*/),
+        "artist.currentShows.edges.node.slug": (v14/*: any*/),
+        "artist.currentShows.edges.node.status": (v13/*: any*/),
+        "artist.currentShows.edges.node.status_update": (v13/*: any*/),
+        "artist.id": (v14/*: any*/),
+        "artist.name": (v13/*: any*/),
+        "artist.pastShows": (v9/*: any*/),
+        "artist.pastShows.edges": (v10/*: any*/),
+        "artist.pastShows.edges.node": (v11/*: any*/),
+        "artist.pastShows.edges.node.cover_image": (v12/*: any*/),
+        "artist.pastShows.edges.node.cover_image.url": (v13/*: any*/),
+        "artist.pastShows.edges.node.exhibition_period": (v13/*: any*/),
+        "artist.pastShows.edges.node.href": (v13/*: any*/),
+        "artist.pastShows.edges.node.id": (v14/*: any*/),
+        "artist.pastShows.edges.node.is_fair_booth": (v15/*: any*/),
+        "artist.pastShows.edges.node.kind": (v13/*: any*/),
+        "artist.pastShows.edges.node.location": (v16/*: any*/),
+        "artist.pastShows.edges.node.location.city": (v13/*: any*/),
+        "artist.pastShows.edges.node.location.id": (v14/*: any*/),
+        "artist.pastShows.edges.node.name": (v13/*: any*/),
+        "artist.pastShows.edges.node.partner": (v17/*: any*/),
+        "artist.pastShows.edges.node.partner.__isNode": (v18/*: any*/),
+        "artist.pastShows.edges.node.partner.__typename": (v18/*: any*/),
+        "artist.pastShows.edges.node.partner.id": (v14/*: any*/),
+        "artist.pastShows.edges.node.partner.name": (v13/*: any*/),
+        "artist.pastShows.edges.node.slug": (v14/*: any*/),
+        "artist.pastShows.edges.node.status": (v13/*: any*/),
+        "artist.pastShows.edges.node.status_update": (v13/*: any*/),
+        "artist.slug": (v14/*: any*/),
+        "artist.upcomingShows": (v9/*: any*/),
+        "artist.upcomingShows.edges": (v10/*: any*/),
+        "artist.upcomingShows.edges.node": (v11/*: any*/),
+        "artist.upcomingShows.edges.node.cover_image": (v12/*: any*/),
+        "artist.upcomingShows.edges.node.cover_image.url": (v13/*: any*/),
+        "artist.upcomingShows.edges.node.exhibition_period": (v13/*: any*/),
+        "artist.upcomingShows.edges.node.href": (v13/*: any*/),
+        "artist.upcomingShows.edges.node.id": (v14/*: any*/),
+        "artist.upcomingShows.edges.node.is_fair_booth": (v15/*: any*/),
+        "artist.upcomingShows.edges.node.kind": (v13/*: any*/),
+        "artist.upcomingShows.edges.node.location": (v16/*: any*/),
+        "artist.upcomingShows.edges.node.location.city": (v13/*: any*/),
+        "artist.upcomingShows.edges.node.location.id": (v14/*: any*/),
+        "artist.upcomingShows.edges.node.name": (v13/*: any*/),
+        "artist.upcomingShows.edges.node.partner": (v17/*: any*/),
+        "artist.upcomingShows.edges.node.partner.__isNode": (v18/*: any*/),
+        "artist.upcomingShows.edges.node.partner.__typename": (v18/*: any*/),
+        "artist.upcomingShows.edges.node.partner.id": (v14/*: any*/),
+        "artist.upcomingShows.edges.node.partner.name": (v13/*: any*/),
+        "artist.upcomingShows.edges.node.slug": (v14/*: any*/),
+        "artist.upcomingShows.edges.node.status": (v13/*: any*/),
+        "artist.upcomingShows.edges.node.status_update": (v13/*: any*/)
       }
     },
     "name": "ArtistAboutShowsTestsQuery",
