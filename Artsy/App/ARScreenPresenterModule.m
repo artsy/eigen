@@ -338,27 +338,30 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
         // But in case there is severe RAM or disk pressure, the image might already be evicted from the cache.
         // In the rare occurence that a cache lookup fails, download the image into the cache first.
         SDWebImageManager *manager = [SDWebImageManager sharedManager];
-        if ([manager cachedImageExistsForURL:url]) {
-            NSString *key = [manager cacheKeyForURL:url];
-            UIImage *image = [manager.imageCache imageFromDiskCacheForKey:key];
-            // TODO: Verify that this _does_ actually get a cache hit most often.
-            gotImageBlock(image);
-        } else {
-            [manager downloadImageWithURL:url options:(SDWebImageHighPriority) progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-                if (finished && !error) {
+        NSString *key = [manager cacheKeyForURL:url];
+        [manager.imageCache containsImageForKey:key cacheType:SDImageCacheTypeAll completion:^(SDImageCacheType containsCacheType) {
+            if (containsCacheType != SDImageCacheTypeNone) {
+                [manager.imageCache queryImageForKey:key options:0 context:nil cacheType:containsCacheType completion:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
+                    // TODO: Verify that this _does_ actually get a cache hit most often.
                     gotImageBlock(image);
-                } else {
-                    // Errors are unlikely to happen, but we should handle them just in case.
-                    // This represents both an image cache-miss _and_ a failure to
-                    // download the image on its own. Very unlikely.
-                    NSLog(@"[ARAppDelegate+Emission] Couldn't download image for AR VIR (%@, %@): %@", artworkSlug, imageURL, error);
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Failed to Load Image" message:@"We could not download the image to present in View-in-Room." preferredStyle:UIAlertControllerStyleAlert];
-                    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                    [alert addAction:defaultAction];
-                    [[self.class currentlyPresentedVC] presentViewController:alert animated:YES completion:nil];
-                }
-            }];
-        }
+                }];
+            } else {
+                [manager loadImageWithURL:url options:SDWebImageHighPriority progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
+                    if (finished && !error) {
+                        gotImageBlock(image);
+                    } else {
+                        // Errors are unlikely to happen, but we should handle them just in case.
+                        // This represents both an image cache-miss _and_ a failure to
+                        // download the image on its own. Very unlikely.
+                        NSLog(@"[ARAppDelegate+Emission] Couldn't download image for AR VIR (%@, %@): %@", artworkSlug, imageURL, error);
+                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Failed to Load Image" message:@"We could not download the image to present in View-in-Room." preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                        [alert addAction:defaultAction];
+                        [[self.class currentlyPresentedVC] presentViewController:alert animated:YES completion:nil];
+                    }
+                }];
+            }
+        }];
     }];
 }
 

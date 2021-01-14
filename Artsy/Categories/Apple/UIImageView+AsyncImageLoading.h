@@ -7,7 +7,7 @@
 
 - (void)ar_setImageWithURL:(NSURL *)url;
 
-- (void)ar_setImageWithURL:(NSURL *)url completed:(SDWebImageCompletionBlock)completed;
+- (void)ar_setImageWithURL:(NSURL *)url completed:(SDExternalCompletionBlock)completed;
 
 - (void)ar_setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder;
 
