@@ -1,20 +1,16 @@
+import { MakeOfferModal_artwork } from "__generated__/MakeOfferModal_artwork.graphql"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { AlertIcon, BorderBox, Button, Flex, Text } from "palette"
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
-import { Image } from "react-native-svg"
-
-import { MakeOfferModal_artwork } from "__generated__/MakeOfferModal_artwork.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { CollapsibleArtworkDetails } from "lib/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails } from "lib/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
+import { BorderBox, Button, Flex, Text } from "palette"
+import React from "react"
+import { createFragmentContainer, graphql } from "react-relay"
 
 interface MakeOfferModalProps {
   // closeModal?: () => void
   // exitModal?: () => void
   toggleVisibility: () => void
   modalIsVisible: boolean
-  // item: MakeOfferModal_item
   artwork: MakeOfferModal_artwork
 }
 
@@ -39,7 +35,9 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
           {" "}
           Make sure the artwork below matches the intended work you're making an offer on.
         </Text>
-        <CollapsibleArtworkDetails artwork={artwork} />
+        <BorderBox borderBottom="none" p={0} my={2}>
+          <CollapsibleArtworkDetails artwork={artwork} />
+        </BorderBox>
         <Button size="large" variant="primaryBlack" block width={100} mb={1}>
           Confirm
         </Button>
@@ -54,6 +52,7 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
 export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOfferModal, {
   artwork: graphql`
     fragment MakeOfferModal_artwork on Artwork {
+      ...CollapsibleArtworkDetails_artwork
       editionSets {
         id
         internalID

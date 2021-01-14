@@ -43,7 +43,7 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
   return artwork ? (
     <>
       <TouchableOpacity onPress={() => toggleExpanded()}>
-        <Flex flexDirection="row" padding={2}>
+        <Flex flexDirection="row" padding={2} alignItems="center">
           {!!artwork.image && (
             <OpaqueImageView
               height={40}
