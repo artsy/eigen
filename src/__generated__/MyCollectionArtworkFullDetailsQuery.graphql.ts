@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c702208787d367baa1635c802d552701 */
+/* @relayHash ad851963adbc94d8b4e7c468b2b94750 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -53,6 +53,7 @@ fragment MyCollectionArtworkFullDetails_artwork on Artwork {
     internalID
   }
   internalID
+  isEdition
   medium
   metric
   provenance
@@ -269,6 +270,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "isEdition",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "medium",
             "storageKey": null
           },
@@ -307,7 +315,7 @@ return {
     ]
   },
   "params": {
-    "id": "c702208787d367baa1635c802d552701",
+    "id": "ad851963adbc94d8b4e7c468b2b94750",
     "metadata": {},
     "name": "MyCollectionArtworkFullDetailsQuery",
     "operationKind": "query",

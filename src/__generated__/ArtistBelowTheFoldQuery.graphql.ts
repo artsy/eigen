@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d589c76834a62464989078d46f7a56a9 */
+/* @relayHash 8fb1543c8793b338b8f74ac002eac646 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -52,6 +52,8 @@ fragment Articles_articles on Article {
 }
 
 fragment ArtistAboutShows_artist on Artist {
+  name
+  slug
   currentShows: showsConnection(status: "running", first: 10) {
     edges {
       node {
@@ -1081,7 +1083,8 @@ return {
             "alias": null,
             "args": (v13/*: any*/),
             "filters": [
-              "sort"
+              "sort",
+              "sizes"
             ],
             "handle": "connection",
             "key": "artist_auctionResultsConnection",
@@ -1128,7 +1131,7 @@ return {
     ]
   },
   "params": {
-    "id": "d589c76834a62464989078d46f7a56a9",
+    "id": "8fb1543c8793b338b8f74ac002eac646",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",

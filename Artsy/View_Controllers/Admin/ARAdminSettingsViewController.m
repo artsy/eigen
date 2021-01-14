@@ -124,8 +124,8 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 - (ARCellData *)generateFair2
 {
-    return [self tappableCellDataWithTitle:@"→ Fair2" selection:^{
-        [[AREmission sharedInstance] navigate:@"/fair2/art-basel-hong-kong-2019"];
+    return [self tappableCellDataWithTitle:@"→ Fair" selection:^{
+        [[AREmission sharedInstance] navigate:@"/fair/frieze-new-york-2019"];
     }];
 }
 

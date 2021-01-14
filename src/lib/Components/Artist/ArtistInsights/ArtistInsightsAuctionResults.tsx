@@ -1,4 +1,5 @@
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
+import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
 import { navigate } from "lib/navigation/navigate"
@@ -6,9 +7,10 @@ import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStor
 import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Separator, Text } from "palette"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useCallback, useContext, useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import styled from "styled-components/native"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
 import { AuctionResultFragmentContainer } from "../../Lists/AuctionResult"
 
@@ -45,6 +47,13 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
   const auctionResults = extractNodes(artist.auctionResultsConnection)
   const [loadingMoreData, setLoadingMoreData] = useState(false)
 
+  const getSortDescription = useCallback(() => {
+    const sortMode = ORDERED_AUCTION_RESULTS_SORTS.find((sort) => sort.paramValue === filterParams?.sort)
+    if (sortMode) {
+      return sortMode.displayText
+    }
+  }, [filterParams])
+
   const loadMoreAuctionResults = () => {
     if (!relay.hasMore() || relay.isLoading()) {
       return
@@ -71,9 +80,9 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
       ListHeaderComponent={() => (
         <Flex px={2}>
           <Text variant="title">Auction results</Text>
-          <Text variant="small" color="black60">
-            Sorted by most recent sale date
-          </Text>
+          <SortMode variant="small" color="black60">
+            Sorted by {getSortDescription()?.toLowerCase()}
+          </SortMode>
           <Separator mt="2" />
         </Flex>
       )}
@@ -90,6 +99,8 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
   )
 }
 
+export const SortMode = styled(Text)``
+
 export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationContainer(
   ArtistInsightsAuctionResults,
   {
@@ -99,9 +110,10 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
         sort: { type: "AuctionResultSorts", defaultValue: DATE_DESC }
+        sizes: { type: "[ArtworkSizes]" }
       ) {
         slug
-        auctionResultsConnection(first: $count, after: $cursor, sort: $sort)
+        auctionResultsConnection(first: $count, after: $cursor, sort: $sort, sizes: $sizes)
           @connection(key: "artist_auctionResultsConnection") {
           edges {
             node {
@@ -130,10 +142,11 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         $count: Int!
         $cursor: String
         $sort: AuctionResultSorts
+        $sizes: [ArtworkSizes]
         $artistID: String!
       ) {
         artist(id: $artistID) {
-          ...ArtistInsightsAuctionResults_artist @arguments(count: $count, cursor: $cursor, sort: $sort)
+          ...ArtistInsightsAuctionResults_artist @arguments(count: $count, cursor: $cursor, sort: $sort, sizes: $sizes)
         }
       }
     `,
