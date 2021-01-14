@@ -158,6 +158,7 @@ export const ArtistShows2PaginationContainer = createPaginationContainer(
 export const ArtistShows2QueryRenderer: React.FC<{ artistID: string }> = ({ artistID }) => {
   return (
     <QueryRenderer<ArtistShows2Query>
+      cacheConfig={{ force: true }}
       environment={defaultEnvironment}
       query={graphql`
         query ArtistShows2Query($artistID: String!) {
