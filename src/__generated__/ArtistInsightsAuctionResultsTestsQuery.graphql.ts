@@ -410,7 +410,8 @@ return {
             "alias": null,
             "args": (v1/*: any*/),
             "filters": [
-              "sort"
+              "sort",
+              "sizes"
             ],
             "handle": "connection",
             "key": "artist_auctionResultsConnection",

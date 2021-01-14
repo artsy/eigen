@@ -9,18 +9,20 @@ import styled from "styled-components/native"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
 
 interface MultiSelectOptionScreenProps {
-  navigation: StackNavigationProp<ParamListBase>
   filterHeaderText: string
-  onSelect: (filterData: FilterData, updatedValue: boolean) => void
   filterOptions: FilterData[]
+  ListHeaderComponent?: React.ReactElement
+  navigation: StackNavigationProp<ParamListBase>
+  onSelect: (filterData: FilterData, updatedValue: boolean) => void
   selectedOptions: string[] | undefined
 }
 
 export const MultiSelectCheckOptionScreen: React.FC<MultiSelectOptionScreenProps> = ({
   filterHeaderText,
-  onSelect,
   filterOptions,
+  ListHeaderComponent,
   navigation,
+  onSelect,
   selectedOptions,
 }) => {
   const handleBackNavigation = () => {
@@ -40,6 +42,7 @@ export const MultiSelectCheckOptionScreen: React.FC<MultiSelectOptionScreenProps
       <Flex mb={120}>
         <FlatList
           initialNumToRender={4}
+          ListHeaderComponent={ListHeaderComponent}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
           ItemSeparatorComponent={() => <Separator />}

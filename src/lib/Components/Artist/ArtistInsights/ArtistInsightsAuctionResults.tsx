@@ -110,9 +110,10 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
         sort: { type: "AuctionResultSorts", defaultValue: DATE_DESC }
+        sizes: { type: "[ArtworkSizes]" }
       ) {
         slug
-        auctionResultsConnection(first: $count, after: $cursor, sort: $sort)
+        auctionResultsConnection(first: $count, after: $cursor, sort: $sort, sizes: $sizes)
           @connection(key: "artist_auctionResultsConnection") {
           edges {
             node {
@@ -141,10 +142,11 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         $count: Int!
         $cursor: String
         $sort: AuctionResultSorts
+        $sizes: [ArtworkSizes]
         $artistID: String!
       ) {
         artist(id: $artistID) {
-          ...ArtistInsightsAuctionResults_artist @arguments(count: $count, cursor: $cursor, sort: $sort)
+          ...ArtistInsightsAuctionResults_artist @arguments(count: $count, cursor: $cursor, sort: $sort, sizes: $sizes)
         }
       }
     `,
