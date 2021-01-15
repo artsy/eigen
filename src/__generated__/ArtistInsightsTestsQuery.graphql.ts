@@ -426,7 +426,8 @@ return {
             "args": (v2/*: any*/),
             "filters": [
               "sort",
-              "sizes"
+              "sizes",
+              "categories"
             ],
             "handle": "connection",
             "key": "artist_auctionResultsConnection",

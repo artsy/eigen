@@ -12,6 +12,7 @@ import { capitalize, compact, forOwn, groupBy, sortBy } from "lodash"
 export enum FilterParamName {
   artistIDs = "artistIDs",
   artistsIFollow = "includeArtworksByFollowedArtists",
+  categories = "categories",
   color = "color",
   estimateRange = "estimateRange",
   gallery = "partnerID",
@@ -39,6 +40,7 @@ export enum FilterDisplayName {
   artistIDs = "Artists",
   artistsIFollow = "Artist",
   color = "Color",
+  categories = "Medium",
   estimateRange = "Price/estimate range",
   gallery = "Gallery",
   institution = "Institution",
@@ -77,6 +79,7 @@ export interface AggregateOption {
 const DEFAULT_ARTWORKS_PARAMS = {
   acquireable: false,
   atAuction: false,
+  categories: undefined, // TO check
   dimensionRange: "*-*",
   estimateRange: "",
   inquireableOnly: false,
@@ -174,6 +177,20 @@ export const selectedOption = ({
   aggregations: Aggregations
 }) => {
   const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
+
+  if (filterScreen === "categories") {
+    const selectedCategoriesValues = selectedOptions.find((filter) => filter.paramName === FilterParamName.categories)
+      ?.paramValue as string[] | undefined
+
+    if (selectedCategoriesValues?.length) {
+      const numSelectedCategoriesToDisplay = selectedCategoriesValues.length
+      if (numSelectedCategoriesToDisplay === 1) {
+        return selectedCategoriesValues[0]
+      }
+      return `${selectedCategoriesValues[0]}, ${numSelectedCategoriesToDisplay - 1} more`
+    }
+    return "All"
+  }
 
   if (filterScreen === "sizes") {
     const selectedSizesValues = selectedOptions.find((filter) => filter.paramName === FilterParamName.sizes)

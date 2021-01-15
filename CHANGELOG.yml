@@ -19,6 +19,7 @@ upcoming:
     - Wire up `See all past shows` button - adam
     - Display sale date correctly on auction results - pepopowitz, ana lisa
     - Add Sort filter to AuctionResults - mounir
+    - Add Categories filter to AuctionResults - mounir
     - Add Size filter to AuctionResults - mounir
 
 releases:
