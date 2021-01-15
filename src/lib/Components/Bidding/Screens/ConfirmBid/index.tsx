@@ -74,7 +74,7 @@ const resultForNetworkError = {
   status: "ERROR",
   message_header: "An error occurred",
   message_description_md: "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
-}
+} as BidderPositionResult
 
 @screenTrack({
   context_screen: Schema.PageNames.BidFlowConfirmBidPage,
@@ -404,7 +404,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     console.error(error)
 
     this.props.navigation.navigate("BidResultScreen", {
-      bidderPositionResult: resultForNetworkError as any,
+      bidderPositionResult: resultForNetworkError,
     })
 
     this.setState({ isLoading: false })
@@ -422,8 +422,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       ARAuctionID: this.props.sale_artwork.sale.slug,
     })
 
-    console.log("=========")
-    console.log(bidderPositionResult)
     this.props.navigation.navigate("BidResultScreen", {
       bidderPositionResult,
       refreshBidderInfo: this.refreshBidderInfo,
