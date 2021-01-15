@@ -2,19 +2,11 @@ WORKSPACE = Artsy.xcworkspace
 SCHEME = Artsy
 SCHEME_INTEGRATION_TESTS = 'Artsy Integration Tests'
 CONFIGURATION = Beta
-APP_PLIST = Artsy/App_Resources/Artsy-Info.plist
-STICKER_PLIST = Artsy\ Stickers/Info.plist
-PLIST_BUDDY = /usr/libexec/PlistBuddy
 DEVICE_HOST = platform='iOS Simulator',OS='14.2',name='iPhone 12 Pro'
 # Disable warnings as errors for now, because we’re currently not getting the same errors during dev as deploy.
 # OTHER_CFLAGS = OTHER_CFLAGS="\$$(inherited) -Werror"
 
-GIT_COMMIT_REV = $(shell git log -n1 --format='%h')
-GIT_COMMIT_SHA = $(shell git log -n1 --format='%H')
-GIT_REMOTE_ORIGIN_URL = $(shell git config --get remote.origin.url)
-
 DATE_MONTH = $(shell date "+%e %h" | tr "[:lower:]" "[:upper:]")
-DATE_VERSION = $(shell date "+%Y.%m.%d.%H")
 
 LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 BRANCH = $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
@@ -46,7 +38,7 @@ certs:
 	@echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
 	bundle exec match appstore
 
-distribute: set_git_properties setup_fastlane_env
+distribute: setup_fastlane_env
 	brew update
 	brew tap getsentry/tools
 	brew install sentry-cli
@@ -54,8 +46,7 @@ distribute: set_git_properties setup_fastlane_env
 	bundle exec fastlane ship_beta
 
 setup_fastlane_env:
-	rm -f Gemfile.lock Gemfile
-	cp fastlane/Gemfile .
+	rm -f Gemfile.lock
 	bundle install
 
 ### General Xcode tooling
@@ -112,11 +103,6 @@ stamp_date:
 	config/stamp --input Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-Small-40.png --output Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-Small-40.png --text "$(DATE_MONTH)"
 	config/stamp --input Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-Small-40@2x.png --output Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-Small-40@2x.png --text "$(DATE_MONTH)"
 	config/stamp --input Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-Small-40@2x-1.png --output Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-Small-40@2x-1.png --text "$(DATE_MONTH)"
-
-set_git_properties:
-	$(PLIST_BUDDY) -c "Set GITCommitRev $(GIT_COMMIT_REV)" $(APP_PLIST)
-	$(PLIST_BUDDY) -c "Set GITCommitSha $(GIT_COMMIT_SHA)" $(APP_PLIST)
-	$(PLIST_BUDDY) -c "Set GITRemoteOriginURL $(GIT_REMOTE_ORIGIN_URL)" $(APP_PLIST)
 
 update_echo:
 	# The @ prevents the command from being printed to console logs.
