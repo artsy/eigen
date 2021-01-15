@@ -9,6 +9,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 export interface CollapsibleArtworkDetailsProps {
   artwork: CollapsibleArtworkDetails_artwork
+  hasSeparator?: boolean
 }
 
 const artworkDetailItems = (artwork: CollapsibleArtworkDetails_artwork) => {
@@ -29,7 +30,10 @@ const artworkDetailItems = (artwork: CollapsibleArtworkDetails_artwork) => {
   return items.filter((i) => i.value != null && i.value !== "")
 }
 
-export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps> = ({ artwork }) => {
+export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps> = ({
+  artwork,
+  hasSeparator = true,
+}) => {
   const [isExpanded, setExpanded] = useState(false)
   const toggleExpanded = () => {
     LayoutAnimation.configureNext({
@@ -71,7 +75,7 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
           </Join>
         </Flex>
       </Collapse>
-      <Separator />
+      {hasSeparator && <Separator />}
     </>
   ) : null
 }

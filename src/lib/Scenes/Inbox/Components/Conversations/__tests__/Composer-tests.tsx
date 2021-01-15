@@ -7,6 +7,7 @@ import { TouchableWithoutFeedback } from "react-native"
 jest.unmock("react-tracking")
 
 import Composer from "../Composer"
+import { InquiryMakeOfferButton } from "../InquiryMakeOfferButton"
 
 it("renders without throwing a error", () => {
   renderWithWrappers(<Composer />)
@@ -31,5 +32,54 @@ describe("regarding the send button", () => {
     tree.root.findByType(TextInput).props.onChangeText(text)
     tree.root.findByType(TouchableWithoutFeedback).props.onPress()
     expect(onSubmit).toBeCalledWith(text)
+  })
+})
+
+const artwork = {
+  __typename: "Artwork",
+  // href: "artsy.net/artwork",
+  // image: {
+  //   url:
+  //   width: "40px",
+  //   height: "40px",
+  // },
+  // internalID: "12345",
+  // title: "Some artwork",
+  // date: "",
+  // saleMessage:
+  // attributionClass {
+  //   name
+  // }
+  // category
+  // manufacturer
+  // publisher
+  // medium
+  // conditionDescription {
+  //   details
+  // }
+  // certificateOfAuthenticity {
+  //   details
+  // }
+  // framed {
+  //   details
+  // }
+  // dimensions {
+  //   in
+  //   cm
+  // }
+  // signatureInfo {
+  //   details
+  // }
+}
+
+describe("regarding the make offer button", () => {
+  it("renders the inquiry make offer button if inquiry item is an artwork", () => {
+    const tree = renderWithWrappers(<Composer item={{ __typename: "Artwork" }} />)
+    expect(tree.root.findAllByType(Button).length).toEqual(2)
+  })
+
+  it("doesn't render the inquiry make offer button if inquiry item is an artwork", () => {
+    const tree = renderWithWrappers(<Composer item={{ __typename: "Fair" }} />)
+    expect(tree.root.findAllByType(Button).length).toEqual(1)
   })
 })
