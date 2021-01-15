@@ -117,7 +117,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v3-gems-{{ checksum "Gemfile.lock" }}
+            - v4-gems-{{ checksum "Gemfile.lock" }}
       - run:
           name: Bundle install
           command: bundle check || bundle install
@@ -125,7 +125,7 @@ commands:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
       - save_cache:
-          key: v3-gems-{{ checksum "Gemfile.lock" }}
+          key: v4-gems-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
   install-cocoapods:
