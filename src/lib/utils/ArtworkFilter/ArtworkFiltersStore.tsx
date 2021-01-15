@@ -252,7 +252,12 @@ export const reducer = (
 }
 
 const getSortDefaultValueByFilterType = (filterType: FilterType) => {
-  return { artwork: "-decayed_merch", saleArtwork: "position", showArtwork: "partner_show_position" }[filterType]
+  return {
+    artwork: "-decayed_merch",
+    saleArtwork: "position",
+    showArtwork: "partner_show_position",
+    auctionResult: "DATE_DESC",
+  }[filterType]
 }
 
 export const ParamDefaultValues = {
@@ -260,10 +265,13 @@ export const ParamDefaultValues = {
   artistIDs: [],
   atAuction: false,
   color: undefined,
+  categories: undefined,
   dimensionRange: "*-*",
+  earliestCreatedYear: undefined,
   estimateRange: "",
   includeArtworksByFollowedArtists: false,
   inquireableOnly: false,
+  latestCreatedYear: undefined,
   majorPeriods: undefined,
   medium: "*",
   offerable: false,
@@ -271,6 +279,7 @@ export const ParamDefaultValues = {
   priceRange: "*-*",
   sortArtworks: "-decayed_merch",
   sortSaleArtworks: "position",
+  sizes: undefined,
   viewAs: ViewAsValues.Grid,
 }
 
@@ -279,16 +288,20 @@ const defaultCommonFilterOptions: Record<FilterParamName, string | boolean | und
   artistIDs: ParamDefaultValues.artistIDs,
   atAuction: ParamDefaultValues.atAuction,
   color: ParamDefaultValues.color,
+  categories: ParamDefaultValues.categories,
   dimensionRange: ParamDefaultValues.dimensionRange,
+  earliestCreatedYear: ParamDefaultValues.earliestCreatedYear,
   estimateRange: ParamDefaultValues.estimateRange,
   includeArtworksByFollowedArtists: ParamDefaultValues.includeArtworksByFollowedArtists,
   inquireableOnly: ParamDefaultValues.inquireableOnly,
+  latestCreatedYear: ParamDefaultValues.latestCreatedYear,
   majorPeriods: ParamDefaultValues.majorPeriods,
   medium: ParamDefaultValues.medium,
   offerable: ParamDefaultValues.offerable,
   partnerID: ParamDefaultValues.partnerID,
   priceRange: ParamDefaultValues.priceRange,
   sort: ParamDefaultValues.sortArtworks,
+  sizes: ParamDefaultValues.sizes,
   viewAs: ParamDefaultValues.viewAs,
 }
 
@@ -316,6 +329,11 @@ export const selectedOptionsUnion = ({
       paramName: FilterParamName.sort,
       paramValue: "partner_show_position",
       displayText: "Gallery Curated",
+    },
+    auctionResult: {
+      paramName: FilterParamName.sort,
+      paramValue: "DATE_DESC",
+      displayText: "Most recent sale date",
     },
   }[filterType]
 
@@ -423,7 +441,7 @@ export const ArtworkFilterGlobalStateProvider = ({ children }: any /* STRICTNESS
   return <ArtworkFilterContext.Provider value={{ state, dispatch }}>{children}</ArtworkFilterContext.Provider>
 }
 
-export type FilterType = "artwork" | "saleArtwork" | "showArtwork"
+export type FilterType = "artwork" | "saleArtwork" | "showArtwork" | "auctionResult"
 
 export interface FilterCounts {
   total: number | null
@@ -443,7 +461,7 @@ export interface ArtworkFilterContextState {
 export interface FilterData {
   readonly displayText: string
   readonly paramName: FilterParamName
-  paramValue?: string | boolean | string[]
+  paramValue?: string | number | boolean | string[]
   filterKey?: string // gallery and institution share a paramName so need to distinguish
   count?: number | null // aggregations count
 }
@@ -519,6 +537,8 @@ export type AggregationName =
   | "PRICE_RANGE"
   | "FOLLOWED_ARTISTS"
   | "ARTIST"
+  | "earliestCreatedYear"
+  | "latestCreatedYear"
 
 export type Aggregations = Array<{
   slice: AggregationName

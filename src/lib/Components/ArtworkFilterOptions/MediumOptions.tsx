@@ -1,3 +1,4 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import {
   ArtworkFilterContext,
   FilterData,
@@ -11,14 +12,12 @@ import {
   FilterParamName,
 } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext } from "react"
-import NavigatorIOS from "react-native-navigator-ios"
+import { FilterModalNavigationStack } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface MediumOptionsScreenProps {
-  navigator: NavigatorIOS
-}
+interface MediumOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "MediumOptionsScreen"> {}
 
-export const MediumOptionsScreen: React.FC<MediumOptionsScreenProps> = ({ navigator }) => {
+export const MediumOptionsScreen: React.FC<MediumOptionsScreenProps> = ({ navigation }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const paramName = FilterParamName.medium
@@ -59,7 +58,7 @@ export const MediumOptionsScreen: React.FC<MediumOptionsScreenProps> = ({ naviga
       filterHeaderText={FilterDisplayName.medium}
       filterOptions={displayOptions}
       selectedOption={selectedOption}
-      navigator={navigator}
+      navigation={navigation}
       withExtraPadding
     />
   )

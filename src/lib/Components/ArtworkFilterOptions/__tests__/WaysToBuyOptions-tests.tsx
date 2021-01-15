@@ -4,7 +4,6 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { Switch } from "react-native"
-import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { OptionListItem as FilterModalOptionListItem } from "../../../../lib/Components/FilterModal"
 import {
   ArtworkFilterContext,
@@ -13,13 +12,12 @@ import {
 } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { OptionListItem } from "../MultiSelectOption"
 import { WaysToBuyOptionsScreen } from "../WaysToBuyOptions"
+import { getEssentialProps } from "./helper"
 
 describe("Ways to Buy Options Screen", () => {
   let state: ArtworkFilterContextState
-  let mockNavigator: MockNavigator
 
   beforeEach(() => {
-    mockNavigator = new MockNavigator()
     state = {
       selectedFilters: [],
       appliedFilters: [],
@@ -44,7 +42,7 @@ describe("Ways to Buy Options Screen", () => {
           dispatch,
         }}
       >
-        <WaysToBuyOptionsScreen navigator={mockNavigator as any} />
+        <WaysToBuyOptionsScreen {...getEssentialProps()} />
       </ArtworkFilterContext.Provider>
     )
   }

@@ -1,13 +1,13 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterContext, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { AggregateOption, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Sans, Separator } from "palette"
 import React, { useContext } from "react"
-import NavigatorIOS from "react-native-navigator-ios"
+import { FilterModalNavigationStack } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface PriceRangeOptionsScreenProps {
-  navigator: NavigatorIOS
-}
+interface PriceRangeOptionsScreenProps
+  extends StackScreenProps<FilterModalNavigationStack, "EstimateRangeOptionsScreen"> {}
 
 const EstimateRanges = [
   { paramValue: "", paramDisplay: "All" },
@@ -18,7 +18,7 @@ const EstimateRanges = [
   { paramValue: "5000000-*", paramDisplay: "$50,000+" },
 ]
 
-export const EstimateRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigator }) => {
+export const EstimateRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
   const { dispatch } = useContext(ArtworkFilterContext)
 
   const paramName = FilterParamName.estimateRange
@@ -57,7 +57,7 @@ export const EstimateRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> 
           <Separator />
         </>
       }
-      navigator={navigator}
+      navigation={navigation}
       onSelect={selectOption}
       selectedOption={selectedOption}
     />

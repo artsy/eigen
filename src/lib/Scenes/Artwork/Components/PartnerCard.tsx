@@ -122,6 +122,7 @@ export class PartnerCard extends React.Component<Props, State> {
                   size="small"
                   longestText="Following"
                   loading={isFollowedChanging}
+                  haptic="selection"
                 >
                   {partner!.profile.is_followed ? "Following" : "Follow"}
                 </Button>

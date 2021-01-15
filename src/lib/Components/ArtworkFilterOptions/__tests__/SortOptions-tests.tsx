@@ -4,17 +4,15 @@ import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArt
 import { Box, CheckIcon, Theme } from "palette"
 import React from "react"
 import { ReactTestRenderer } from "react-test-renderer"
-import { FakeNavigator as MockNavigator } from "../../../../lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { ArtworkFilterContext, ArtworkFilterContextState } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { InnerOptionListItem, OptionListItem } from "../SingleSelectOption"
 import { SortOptionsScreen } from "../SortOptions"
+import { getEssentialProps } from "./helper"
 
 describe("Sort Options Screen", () => {
-  let mockNavigator: MockNavigator
   let state: ArtworkFilterContextState
 
   beforeEach(() => {
-    mockNavigator = new MockNavigator()
     state = {
       selectedFilters: [],
       appliedFilters: [],
@@ -38,7 +36,7 @@ describe("Sort Options Screen", () => {
             dispatch: jest.fn(),
           }}
         >
-          <SortOptionsScreen navigator={mockNavigator as any} />
+          <SortOptionsScreen {...getEssentialProps()} />
         </ArtworkFilterContext.Provider>
       </Theme>
     )
@@ -213,6 +211,29 @@ describe("Sort Options Screen", () => {
       const selectedRow = selectedSortOption(tree)
 
       expect(extractText(selectedRow)).toEqual("Gallery Curated")
+      expect(selectedRow.findAllByType(CheckIcon)).toHaveLength(1)
+    })
+  })
+
+  describe("filterType of auctionResults", () => {
+    it("has the correct options", () => {
+      state = {
+        selectedFilters: [],
+        appliedFilters: [],
+        previouslyAppliedFilters: [],
+        applyFilters: false,
+        aggregations: [],
+        filterType: "auctionResult",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
+      }
+
+      const tree = renderWithWrappers(<MockSortScreen initialState={state} />)
+      const selectedRow = selectedSortOption(tree)
+
+      expect(extractText(selectedRow)).toEqual("Most recent sale date")
       expect(selectedRow.findAllByType(CheckIcon)).toHaveLength(1)
     })
   })

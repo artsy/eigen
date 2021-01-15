@@ -64,6 +64,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/artist/:artistID/auction-results", "WebView", ({ artistID }) => ({
       url: `/artist/${artistID}/auction-results`,
     })),
+    new RouteMatcher("/artist/:artistID/auction-result/:auctionResultInternalID", "AuctionResult"),
     new RouteMatcher("/artist/:artistID/artist-series", "FullArtistSeriesList"),
     new RouteMatcher("/artist/:artistID/articles", "WebView", (params) => ({
       url: "/artist/" + params.artistID + "/articles",
@@ -126,13 +127,13 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/partner-locations/:partnerID", "PartnerLocations"),
 
     new RouteMatcher("/fair/:fairID", "Fair"),
-    __DEV__ && new RouteMatcher("/fair2/:fairID", "Fair2"),
-    new RouteMatcher("/fair/:fairID/artworks", "FairArtworks"),
-    new RouteMatcher("/fair/:fairID/artists", "FairArtists"),
-    new RouteMatcher("/fair/:fairID/exhibitors", "FairExhibitors"),
+    new RouteMatcher("/fair/:fairID/artworks", "Fair"),
+    new RouteMatcher("/fair/:fairID/artists", "Fair"),
+    new RouteMatcher("/fair/:fairID/exhibitors", "Fair"),
     new RouteMatcher("/fair/:fairID/info", "FairMoreInfo"),
+    new RouteMatcher("/fair/:fairID/articles", "FairArticles"),
+    new RouteMatcher("/fair/:fairID/followedArtists", "FairAllFollowedArtists"),
     new RouteMatcher("/fair/:fairID/bmw-sponsored-content", "FairBMWArtActivation"),
-    new RouteMatcher("/fair/:fairID/followedArtists", "Fair2AllFollowedArtists"),
 
     new RouteMatcher("/city/:citySlug/:section", "CitySectionList"),
     new RouteMatcher("/city-fair/:citySlug", "CityFairList"),

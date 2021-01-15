@@ -1,26 +1,51 @@
 upcoming:
-  version: 6.7.5
+  version: 6.7.6
   date: TBD
   dev:
-    - Upgrade Mapbox - pavlos
     - Analytics tracking for My Collection - pepopowitz, annacarey
     - Fix `isVisible` root view prop to respect tab switches - david, erik, lily
-    - Change logic for Auction Insights Result - pavlos
-    - Add slack notification when betas fail - brian
-    - Add analytics tracking for My Bids - ashley, erik, christina
-    - Removes unused native code - ash
-    - More analytics for My Collection - brian
-    - Points to Artsy forks only - ash
-    - Fix crash on entering city guide - brian
+    - Add android app shell - pavlos, cx
+    - Surface alert message for users with no email client setup - annacarey, pavlos
+    - Adds lab option for inquiry checkout - lily
+    - Refactor filters modal to use react-navigation - mounir
+
   user_facing:
-    - Fix logout alert not showing up on changing password - brian
+    - Add sharing on Instagram - pavlos
     - Fix a layout bug (double separator) in My Collection Artwork Details
-    - Fix a layout bug (double separator) in My Collection Artwork Details - adam
     - Fix layout in My Collection artwork form AdditionalDetails screen - david
-    - Make active bids clickable - anna, mounir
-    - Fix empty state featured fairs rail on homepage - anna, mounir
+    - Add auction result screen - adam
+    - Add filter button and screen to the ArtistInsights AuctionResults - mounir
+    - Allow users to indicate works in MyCollection as editions without marking edition size or number - anna
+    - Wire up `See all past shows` button - adam
+    - Display sale date correctly on auction results - pepopowitz, ana lisa
+    - Add Sort filter to AuctionResults - mounir
+    - Add Categories filter to AuctionResults - mounir
+    - Add Size filter to AuctionResults - mounir
+    - Add Year filter to AuctionResults - mounir
 
 releases:
+  - version: 6.7.5
+    date: Jan 07, 2021
+    dev:
+      - Upgrade Mapbox - pavlos
+      - Analytics tracking for My Collection - pepopowitz, annacarey
+      - Fix `isVisible` root view prop to respect tab switches - david, erik, lily
+      - Change logic for Auction Insights Result - pavlos
+      - Add slack notification when betas fail - brian
+      - Add analytics tracking for My Bids - ashley, erik, christina
+      - Removes unused native code - ash
+      - More analytics for My Collection - brian
+      - Points to Artsy forks only - ash
+      - Fix crash on entering city guide - brian
+      - Simplify useStickyScrollheader - adam
+    user_facing:
+      - Fix logout alert not showing up on changing password - brian
+      - Fix a layout bug (double separator) in My Collection Artwork Details
+      - Fix a layout bug (double separator) in My Collection Artwork Details - adam
+      - Fix layout in My Collection artwork form AdditionalDetails screen - david
+      - Make active bids clickable - anna, mounir
+      - Fix empty state featured fairs rail on homepage - anna, mounir
+
   - version: 6.7.4
     date: Dec 17, 2020
     dev:

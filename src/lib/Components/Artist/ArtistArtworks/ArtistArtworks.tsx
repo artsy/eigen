@@ -375,21 +375,21 @@ export default createPaginationContainer(
         node(id: $id) {
           ... on Artist {
             ...ArtistArtworks_artist
-            @arguments(
-              count: $count
-              cursor: $cursor
-              sort: $sort
-              medium: $medium
-              color: $color
-              partnerID: $partnerID
-              priceRange: $priceRange
-              dimensionRange: $dimensionRange
-              majorPeriods: $majorPeriods
-              acquireable: $acquireable
-              inquireableOnly: $inquireableOnly
-              atAuction: $atAuction
-              offerable: $offerable
-            )
+              @arguments(
+                count: $count
+                cursor: $cursor
+                sort: $sort
+                medium: $medium
+                color: $color
+                partnerID: $partnerID
+                priceRange: $priceRange
+                dimensionRange: $dimensionRange
+                majorPeriods: $majorPeriods
+                acquireable: $acquireable
+                inquireableOnly: $inquireableOnly
+                atAuction: $atAuction
+                offerable: $offerable
+              )
           }
         }
       }

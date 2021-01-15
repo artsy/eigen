@@ -1,15 +1,15 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterContext, FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { aggregationForFilter, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext, useState } from "react"
-import NavigatorIOS from "react-native-navigator-ios"
+import { FilterModalNavigationStack } from "../FilterModal"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 
-interface ArtistIDsSaleArtworksOptionsScreenProps {
-  navigator: NavigatorIOS
-}
+interface ArtistIDsSaleArtworksOptionsScreenProps
+  extends StackScreenProps<FilterModalNavigationStack, "ArtistIDsOptionsScreen"> {}
 
 export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksOptionsScreenProps> = ({
-  navigator,
+  navigation,
 }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const paramName = FilterParamName.artistIDs
@@ -129,7 +129,7 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksO
       filterHeaderText={FilterDisplayName.artistIDs}
       filterOptions={displayOptions}
       selectedOptions={selectedOptions}
-      navigator={navigator}
+      navigation={navigation}
     />
   )
 }

@@ -5,10 +5,17 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistInsightsAuctionResults_artist = {
+    readonly birthday: string | null;
+    readonly slug: string;
     readonly auctionResultsConnection: {
+        readonly createdYearRange: {
+            readonly startAt: number | null;
+            readonly endAt: number | null;
+        } | null;
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
+                readonly internalID: string;
                 readonly " $fragmentRefs": FragmentRefs<"AuctionResult_auctionResult">;
             } | null;
         } | null> | null;
@@ -26,6 +33,11 @@ export type ArtistInsightsAuctionResults_artist$key = {
 const node: ReaderFragment = {
   "argumentDefinitions": [
     {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "categories"
+    },
+    {
       "defaultValue": 10,
       "kind": "LocalArgument",
       "name": "count"
@@ -34,6 +46,21 @@ const node: ReaderFragment = {
       "defaultValue": null,
       "kind": "LocalArgument",
       "name": "cursor"
+    },
+    {
+      "defaultValue": 1000,
+      "kind": "LocalArgument",
+      "name": "earliestCreatedYear"
+    },
+    {
+      "defaultValue": 2050,
+      "kind": "LocalArgument",
+      "name": "latestCreatedYear"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "sizes"
     },
     {
       "defaultValue": "DATE_DESC",
@@ -57,8 +84,42 @@ const node: ReaderFragment = {
   "name": "ArtistInsightsAuctionResults_artist",
   "selections": [
     {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "birthday",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
+      "storageKey": null
+    },
+    {
       "alias": "auctionResultsConnection",
       "args": [
+        {
+          "kind": "Variable",
+          "name": "categories",
+          "variableName": "categories"
+        },
+        {
+          "kind": "Variable",
+          "name": "earliestCreatedYear",
+          "variableName": "earliestCreatedYear"
+        },
+        {
+          "kind": "Variable",
+          "name": "latestCreatedYear",
+          "variableName": "latestCreatedYear"
+        },
+        {
+          "kind": "Variable",
+          "name": "sizes",
+          "variableName": "sizes"
+        },
         {
           "kind": "Variable",
           "name": "sort",
@@ -70,6 +131,31 @@ const node: ReaderFragment = {
       "name": "__artist_auctionResultsConnection_connection",
       "plural": false,
       "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "YearRange",
+          "kind": "LinkedField",
+          "name": "createdYearRange",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "startAt",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "endAt",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
         {
           "alias": null,
           "args": null,
@@ -91,6 +177,13 @@ const node: ReaderFragment = {
                   "args": null,
                   "kind": "ScalarField",
                   "name": "id",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "internalID",
                   "storageKey": null
                 },
                 {
@@ -150,5 +243,5 @@ const node: ReaderFragment = {
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = 'f707eba5d61481ecf444d2d401675ab1';
+(node as any).hash = '16d1202417ec6350f8ce426ed0b4e3af';
 export default node;

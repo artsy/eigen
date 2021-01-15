@@ -18,9 +18,7 @@ import {
 import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Sans, Theme } from "palette"
 import { useTracking } from "react-tracking"
-import { FakeNavigator as MockNavigator } from "../../Bidding/__tests__/Helpers/FakeNavigator"
-import { FancyModalHeader } from "../../FancyModal/FancyModalHeader"
-import { closeModalMock, MockFilterScreen } from "../__tests__/FilterTestHelper"
+import { closeModalMock, getEssentialProps, MockFilterScreen, navigateMock } from "../__tests__/FilterTestHelper"
 import {
   AnimatedArtworkFilterButton,
   ApplyButton,
@@ -29,11 +27,10 @@ import {
   CurrentOption,
   FilterModalMode,
   FilterModalNavigator,
-  FilterOptions,
+  FilterOptionsScreen,
   TouchableOptionListItemRow,
 } from "../FilterModal"
 
-let mockNavigator: MockNavigator
 let state: ArtworkFilterContextState
 const exitModalMock = jest.fn()
 const trackEvent = jest.fn()
@@ -46,7 +43,6 @@ beforeEach(() => {
       trackEvent,
     }
   })
-  mockNavigator = new MockNavigator()
   state = {
     selectedFilters: [],
     appliedFilters: [],
@@ -198,12 +194,10 @@ describe("Filter modal navigation flow", () => {
           dispatch: jest.fn(),
         }}
       >
-        <FilterOptions
-          id="id"
-          slug="slug"
-          mode={FilterModalMode.Collection}
-          closeModal={jest.fn()}
-          navigator={mockNavigator as any}
+        <FilterOptionsScreen
+          {...getEssentialProps({
+            mode: FilterModalMode.Collection,
+          })}
         />
       </ArtworkFilterContext.Provider>
     )
@@ -212,35 +206,7 @@ describe("Filter modal navigation flow", () => {
     const instance = filterScreen.root.findAllByType(TouchableOptionListItemRow)[0]
 
     act(() => instance.props.onPress())
-
-    const nextRoute = mockNavigator.nextRoute()
-
-    const nextScreen = renderWithWrappers(
-      <ArtworkFilterContext.Provider
-        value={{
-          state,
-          dispatch: jest.fn(),
-        }}
-      >
-        {React.createElement(
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          nextRoute.component,
-          {
-            ...nextRoute.passProps,
-            nextScreen: true,
-            navigator: MockNavigator,
-            relay: {
-              environment: null,
-            },
-          }
-        )}
-      </ArtworkFilterContext.Provider>
-    )
-
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const getNextScreenTitle = (component) => component.root.findByType(FancyModalHeader).props.children
-
-    expect(getNextScreenTitle(nextScreen)).toEqual("Sort by")
+    expect(navigateMock).toBeCalledWith("SortOptionsScreen")
   })
 
   it("allows users to navigate forward to medium screen from filter screen", () => {
@@ -259,12 +225,10 @@ describe("Filter modal navigation flow", () => {
           dispatch: null,
         }}
       >
-        <FilterOptions
-          id="id"
-          slug="slug"
-          mode={FilterModalMode.Collection}
-          closeModal={jest.fn()}
-          navigator={mockNavigator as any}
+        <FilterOptionsScreen
+          {...getEssentialProps({
+            mode: FilterModalMode.Collection,
+          })}
         />
       </ArtworkFilterContext.Provider>
     )
@@ -274,41 +238,7 @@ describe("Filter modal navigation flow", () => {
 
     act(() => instance.props.onPress())
 
-    const nextRoute = mockNavigator.nextRoute()
-
-    const nextScreen = renderWithWrappers(
-      <ArtworkFilterContext.Provider
-        value={{
-          state,
-          aggregations: mockAggregations,
-          filterType: "artwork",
-          counts: {
-            total: null,
-            followedArtists: null,
-          },
-
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          dispatch: null,
-        }}
-      >
-        {React.createElement(
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          nextRoute.component,
-          {
-            ...nextRoute.passProps,
-            nextScreen: true,
-            navigator: MockNavigator,
-            relay: {
-              environment: null,
-            },
-          }
-        )}
-      </ArtworkFilterContext.Provider>
-    )
-
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const getNextScreenTitle = (component) => component.root.findAllByType(Sans)[0].props.children
-    expect(getNextScreenTitle(nextScreen)).toEqual("Medium")
+    expect(navigateMock).toBeCalledWith("MediumOptionsScreen")
   })
 
   it("allows users to exit filter modal screen when selecting close icon", () => {
@@ -655,8 +585,8 @@ describe("Applying filters on Artworks", () => {
   })
 })
 
-describe("Filter modal navigation flow", () => {
-  it("allows users to navigate forward to sort screen from filter screen", () => {
+describe("AnimatedArtworkFilterButton", () => {
+  it("Shows Sort & Filter when no text prop is available", () => {
     const tree = renderWithWrappers(
       <ArtworkFilterContext.Provider
         value={{
@@ -669,5 +599,20 @@ describe("Filter modal navigation flow", () => {
     )
 
     expect(tree.root.findAllByType(Sans)[0].props.children).toEqual("Sort & Filter")
+  })
+
+  it("Shows text when text prop is available", () => {
+    const tree = renderWithWrappers(
+      <ArtworkFilterContext.Provider
+        value={{
+          state,
+          dispatch: jest.fn(),
+        }}
+      >
+        <AnimatedArtworkFilterButton text="Filter Text" isVisible onPress={jest.fn()} />
+      </ArtworkFilterContext.Provider>
+    )
+
+    expect(tree.root.findAllByType(Sans)[0].props.children).toEqual("Filter Text")
   })
 })

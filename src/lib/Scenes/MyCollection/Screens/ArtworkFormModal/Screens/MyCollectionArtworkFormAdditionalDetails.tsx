@@ -15,9 +15,13 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
 }) => {
   const { formik } = useArtworkForm()
   const formikValues = formik?.values
-  const hasEditionNumber: boolean = !!formikValues?.editionNumber!
-  const [isEdition, setIsEdition] = useState(hasEditionNumber)
+  const [isEdition, setIsEdition] = useState(formikValues?.isEdition)
   const pricePaidCurrencyInputRef = useRef<Select<string>>(null)
+
+  const handleEditionChange = (editionStatus: boolean) => {
+    setIsEdition(editionStatus)
+    formik.setFieldValue("isEdition", editionStatus)
+  }
 
   return (
     <Flex style={{ flex: 1 }}>
@@ -44,9 +48,9 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
             />
 
             <Checkbox
-              onPress={() => setIsEdition(!isEdition)}
+              onPress={() => handleEditionChange(!isEdition)}
               data-test-id="EditionCheckbox"
-              checked={hasEditionNumber}
+              checked={isEdition}
               // disabled={isLoading}
             >
               <Sans size="3" color="black60">

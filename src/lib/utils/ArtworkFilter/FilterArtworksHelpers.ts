@@ -6,13 +6,16 @@ import {
   FilterCounts,
   FilterType,
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { compact, forOwn, groupBy, sortBy } from "lodash"
+import { capitalize, compact, forOwn, groupBy, sortBy } from "lodash"
 
 // General filter types and objects
 export enum FilterParamName {
   artistIDs = "artistIDs",
   artistsIFollow = "includeArtworksByFollowedArtists",
+  categories = "categories",
   color = "color",
+  earliestCreatedYear = "earliestCreatedYear",
+  latestCreatedYear = "latestCreatedYear",
   estimateRange = "estimateRange",
   gallery = "partnerID",
   institution = "partnerID",
@@ -20,6 +23,7 @@ export enum FilterParamName {
   priceRange = "priceRange",
   size = "dimensionRange",
   sort = "sort",
+  sizes = "sizes",
   timePeriod = "majorPeriods",
   viewAs = "viewAs",
   waysToBuyBid = "atAuction",
@@ -30,7 +34,7 @@ export enum FilterParamName {
 
 // Types for the parameters passed to Relay
 export type FilterParams = {
-  [Name in FilterParamName]: string | boolean | undefined | string[]
+  [Name in FilterParamName]: string | number | boolean | undefined | string[]
 }
 
 export enum FilterDisplayName {
@@ -38,15 +42,18 @@ export enum FilterDisplayName {
   artistIDs = "Artists",
   artistsIFollow = "Artist",
   color = "Color",
+  categories = "Medium",
   estimateRange = "Price/estimate range",
   gallery = "Gallery",
   institution = "Institution",
   medium = "Medium",
   priceRange = "Price",
   size = "Size",
+  sizes = "Size",
   sort = "Sort by",
   timePeriod = "Time period",
   viewAs = "View as",
+  year = "Year created",
   waysToBuy = "Ways to buy",
 }
 
@@ -75,6 +82,7 @@ export interface AggregateOption {
 const DEFAULT_ARTWORKS_PARAMS = {
   acquireable: false,
   atAuction: false,
+  categories: undefined, // TO check
   dimensionRange: "*-*",
   estimateRange: "",
   inquireableOnly: false,
@@ -95,11 +103,17 @@ const DEFAULT_SHOW_ARTWORKS_PARAMS = {
   sort: "partner_show_position",
 }
 
+const DEFAULT_AUCTION_RESULT_PARAMS = {
+  sort: "DATE_DESC",
+  sizes: undefined,
+} as FilterParams
+
 const getDefaultParamsByType = (filterType: FilterType) => {
   return {
     artwork: DEFAULT_ARTWORKS_PARAMS,
     saleArtwork: DEFAULT_SALE_ARTWORKS_PARAMS,
     showArtwork: DEFAULT_SHOW_ARTWORKS_PARAMS,
+    auctionResult: DEFAULT_AUCTION_RESULT_PARAMS,
   }[filterType]
 }
 
@@ -166,6 +180,48 @@ export const selectedOption = ({
   aggregations: Aggregations
 }) => {
   const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
+
+  if (filterScreen === "categories") {
+    const selectedCategoriesValues = selectedOptions.find((filter) => filter.paramName === FilterParamName.categories)
+      ?.paramValue as string[] | undefined
+
+    if (selectedCategoriesValues?.length) {
+      const numSelectedCategoriesToDisplay = selectedCategoriesValues.length
+      if (numSelectedCategoriesToDisplay === 1) {
+        return selectedCategoriesValues[0]
+      }
+      return `${selectedCategoriesValues[0]}, ${numSelectedCategoriesToDisplay - 1} more`
+    }
+    return "All"
+  }
+
+  if (filterScreen === "sizes") {
+    const selectedSizesValues = selectedOptions.find((filter) => filter.paramName === FilterParamName.sizes)
+      ?.paramValue as string[] | undefined
+    if (selectedSizesValues?.length) {
+      const numSelectedSizesToDisplay = selectedSizesValues.length
+      const firstSelectedSize = capitalize(selectedSizesValues[0].toLowerCase())
+      if (numSelectedSizesToDisplay === 1) {
+        return firstSelectedSize
+      }
+      return `${firstSelectedSize}, ${numSelectedSizesToDisplay - 1} more`
+    }
+    return "All"
+  }
+
+  if (filterScreen === "year") {
+    const selectedEarliestCreatedYear = selectedOptions.find(
+      (filter) => filter.paramName === FilterParamName.earliestCreatedYear
+    )?.paramValue
+    const selectedLatestCreatedYear = selectedOptions.find(
+      (filter) => filter.paramName === FilterParamName.latestCreatedYear
+    )?.paramValue
+
+    if (selectedEarliestCreatedYear && selectedLatestCreatedYear) {
+      return `${selectedEarliestCreatedYear} - ${selectedLatestCreatedYear}`
+    }
+    return "All"
+  }
 
   if (filterScreen === "waysToBuy") {
     const waysToBuyFilterNames = [
@@ -268,6 +324,8 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   priceRange: "PRICE_RANGE",
   artistsIFollow: "FOLLOWED_ARTISTS",
   artistIDs: "ARTIST",
+  earliestCreatedYear: "earliestCreatedYear",
+  latestCreatedYear: "latestCreatedYear",
 }
 
 export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {

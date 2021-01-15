@@ -1,4 +1,5 @@
 import { ArtistAboutShows_artist } from "__generated__/ArtistAboutShows_artist.graphql"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Button, Flex, Spacer, Text } from "palette"
 import React from "react"
@@ -29,7 +30,7 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
     return (
       <Flex>
         <Text variant="subtitle" mb={1}>
-          Shows featuring Nicolas Party
+          Shows featuring {artist.name}
         </Text>
         <FlatList
           data={shownShows}
@@ -59,10 +60,7 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
         {!!pastShows.length && (
           <Button
             variant={"secondaryGray"}
-            onPress={() => {
-              // We navigate to the past shows screen
-              console.log("do nothing")
-            }}
+            onPress={() => navigate(`/artist/${artist?.slug!}/shows`)}
             size="medium"
             block
           >
@@ -80,6 +78,8 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
 export const ArtistAboutShowsFragmentContainer = createFragmentContainer(ArtistAboutShows, {
   artist: graphql`
     fragment ArtistAboutShows_artist on Artist {
+      name
+      slug
       currentShows: showsConnection(status: "running", first: 10) {
         edges {
           node {

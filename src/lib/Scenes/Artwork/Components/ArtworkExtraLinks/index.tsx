@@ -3,10 +3,11 @@ import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import { navigate } from "lib/navigation/navigate"
 import { partnerName } from "lib/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
 import { useSelectedTab } from "lib/store/GlobalStore"
+import { sendEmail } from "lib/utils/sendEmail"
 import { Schema, track } from "lib/utils/track"
 import { Sans, Spacer } from "palette"
 import React from "react"
-import { Linking, Text, View } from "react-native"
+import { Text, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -32,7 +33,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
     const mailtoSubject = `Inquiry on ${artwork.title}`.concat(
       artwork.artist && artwork.artist.name ? ` by ${artwork.artist.name}` : ""
     )
-    Linking.openURL(`mailto:${emailAddress}?subject=${mailtoSubject}`)
+    sendEmail(emailAddress, { subject: mailtoSubject })
   }
 
   @track({

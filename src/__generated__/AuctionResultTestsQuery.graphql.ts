@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1d582fc173b03f57f4fa5b87381f2f23 */
+/* @relayHash b7ed95d863889f418d87237f834a752e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -44,6 +44,7 @@ fragment AuctionResult_auctionResult on AuctionResult {
   currency
   dateText
   id
+  internalID
   images {
     thumbnail {
       url(version: "square140")
@@ -230,6 +231,13 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "internalID",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "AuctionLotImages",
                         "kind": "LinkedField",
                         "name": "images",
@@ -377,7 +385,7 @@ return {
     ]
   },
   "params": {
-    "id": "1d582fc173b03f57f4fa5b87381f2f23",
+    "id": "b7ed95d863889f418d87237f834a752e",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
@@ -441,6 +449,7 @@ return {
         "artist.auctionResultsConnection.edges.node.images.thumbnail.height": (v6/*: any*/),
         "artist.auctionResultsConnection.edges.node.images.thumbnail.url": (v3/*: any*/),
         "artist.auctionResultsConnection.edges.node.images.thumbnail.width": (v6/*: any*/),
+        "artist.auctionResultsConnection.edges.node.internalID": (v5/*: any*/),
         "artist.auctionResultsConnection.edges.node.mediumText": (v3/*: any*/),
         "artist.auctionResultsConnection.edges.node.organization": (v3/*: any*/),
         "artist.auctionResultsConnection.edges.node.priceRealized": {

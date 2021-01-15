@@ -2,7 +2,6 @@ import { AuctionResultTestsQuery } from "__generated__/AuctionResultTestsQuery.g
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { extractNodes } from "lib/utils/extractNodes"
 import moment from "moment"
-import { Text } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -36,7 +35,7 @@ describe("AuctionResults", () => {
       render={({ props }) => {
         if (props?.artist) {
           const results = extractNodes(props.artist.auctionResultsConnection)
-          return <AuctionResultFragmentContainer auctionResult={results[0]} />
+          return <AuctionResultFragmentContainer auctionResult={results[0]} onPress={() => null} />
         }
         return null
       }}
@@ -62,7 +61,7 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findAllByType(Text)[4].props.children).toBe("$one gazillion")
+    expect(tree.findByProps({ testID: "price" }).props.children).toBe("$one gazillion")
   })
 
   it("renders auction result when auction results are not available yet", () => {
@@ -84,7 +83,7 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findAllByType(Text)[4].props.children).toBe("Awaiting results")
+    expect(tree.findByProps({ testID: "price" }).props.children).toBe("Awaiting results")
   })
 
   it("renders auction result when auction result is `bought in`", () => {
@@ -107,10 +106,10 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findAllByType(Text)[4].props.children).toBe("Bought in")
+    expect(tree.findByProps({ testID: "price" }).props.children).toBe("Bought in")
   })
 
-  it("renders auction result when auction results are not available", () => {
+  it("renders sale date correctly", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
     mockEnvironmentPayload(mockEnvironment, {
       Artist: () => ({
@@ -118,11 +117,7 @@ describe("AuctionResults", () => {
           edges: [
             {
               node: {
-                priceRealized: {
-                  display: null,
-                },
-                saleDate: moment().subtract(2, "months").toISOString(),
-                boughtIn: false,
+                saleDate: "2021-01-11T18:00:00-06:00",
               },
             },
           ],
@@ -130,6 +125,6 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findAllByType(Text)[4].props.children).toBe("Not available")
+    expect(tree.findByProps({ testID: "saleInfo" }).props.children).toContain("Jan 12, 2021")
   })
 })

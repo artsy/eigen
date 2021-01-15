@@ -1,12 +1,32 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterContext, reducer } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Theme } from "palette"
 import React from "react"
-import { FakeNavigator as MockNavigator } from "../../Bidding/__tests__/Helpers/FakeNavigator"
-import { FilterModalMode, FilterOptions } from "../FilterModal"
+import { FilterModalMode, FilterModalNavigationStack, FilterOptionsScreen } from "../FilterModal"
 
-const mockNavigator = new MockNavigator()
 export const closeModalMock = jest.fn()
+export const navigateMock = jest.fn()
+
+export const getEssentialProps = (params: {} = {}) =>
+  (({
+    navigation: {
+      navigate: navigateMock,
+    },
+    route: {
+      params: {
+        closeModal: closeModalMock,
+        exitModal: jest.fn(),
+        id: "id",
+        initiallyAppliedFilters: [],
+        mode: FilterModalMode.ArtistArtworks,
+        slug: "slug",
+        title: "Filter",
+        ...params,
+      },
+    },
+    // navigation
+  } as unknown) as StackScreenProps<FilterModalNavigationStack, "FilterOptionsScreen">)
 
 export const MockFilterScreen = ({ initialState }: InitialState) => {
   const [filterState, dispatch] = React.useReducer(reducer, initialState)
@@ -19,13 +39,7 @@ export const MockFilterScreen = ({ initialState }: InitialState) => {
           dispatch,
         }}
       >
-        <FilterOptions
-          id="id"
-          slug="slug"
-          closeModal={closeModalMock}
-          navigator={mockNavigator as any}
-          mode={FilterModalMode.ArtistArtworks}
-        />
+        <FilterOptionsScreen {...getEssentialProps()} />
       </ArtworkFilterContext.Provider>
     </Theme>
   )
