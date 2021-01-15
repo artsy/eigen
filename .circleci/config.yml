@@ -146,18 +146,32 @@ commands:
             # this changes after pod install because we don't instal dev tools on CI
             # so we save it to the cache to avoid comparison errors with Pods/Manifest.lock
             - Podfile.lock
-  build-app:
+  build-app-ios:
     steps:
       - restore_cache:
           keys:
             - v9-app_build-{{ checksum ".manifests/app_build" }}
       - run:
           name: Build App
-          command: ls derived_data || make ci
+          command: ls derived_data || make ci-ios
       - save_cache:
           key: v9-app_build-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
+            - node_modules/react-native-config
+  build-app-android:
+    steps:
+      - restore_cache:
+          keys:
+            - v9-app_build-{{ checksum ".manifests/app_build" }}
+      - run:
+          name: Build App
+          command: make ci-android
+      - save_cache:
+          key: v9-app_build-{{ checksum ".manifests/app_build" }}
+          paths:
+            - android/build
+            - android/app/build
             - node_modules/react-native-config
 
 jobs:
@@ -237,7 +251,7 @@ jobs:
             - .manifests
             - emission/Pod/Assets
 
-  build-test-app:
+  build-test-app-ios:
     environment:
       UPLOAD_IOS_SNAPSHOT_BUCKET_NAME: eigen-ci
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
@@ -277,7 +291,7 @@ jobs:
       - install-node-modules
       - install-gems
       - install-cocoapods
-      - build-app
+      - build-app-ios
       - run:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || make ci-test
@@ -305,7 +319,56 @@ jobs:
           branch: beta
       - run:
           name: Deploy if beta
-          command: make deploy_if_beta_branch
+          command: make deploy_if_beta_branch_ios
+
+  build-test-app-android:
+    environment:
+      UPLOAD_IOS_SNAPSHOT_BUCKET_NAME: eigen-ci
+      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+
+    docker:
+      - image: circleci/android:api-29-node
+
+    steps:
+      - attach_workspace:
+          at: ../workspace
+      - restore_cache:
+          keys:
+            - v6-test-success-{{ checksum "../workspace/.manifests/native_code" }}
+      # we can quit the build early if there were no native code changes
+      # and we're not on the beta branch
+      # - run:
+      # name: Quit early if possible
+      # command: |
+      # if test $CIRCLE_BRANCH != beta && ls xcode_test_raw.log
+      # then
+      # circleci step halt
+      # fi
+      - run:
+          name: Clear project dir
+          command: |
+            rm -rf /Users/distiller/project
+      - checkout
+      - attach_workspace:
+          at: .
+      - install-node
+      - setup-env-file
+      - run:
+          name: Create secret json file
+          command: echo $ANDROID_SECRET_JSON_CONTENT > android-secret.json
+      - install-node-modules
+      - install-gems
+      - build-app-android
+
+      - run:
+          name: Danger
+          command: bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
+
+      - await-previous-builds:
+          branch: beta
+      - run:
+          name: Deploy if beta
+          command: make deploy_if_beta_branch_android
 
   promote-beta-to-app-store:
     environment:
@@ -363,7 +426,15 @@ workflows:
             branches:
               only:
                 - beta
-      - build-test-app:
+      - build-test-app-ios:
+          filters:
+            branches:
+              ignore:
+                - app_store_submission
+          requires:
+            - build-test-js
+            - horizon/block
+      - build-test-app-android:
           filters:
             branches:
               ignore:
@@ -377,4 +448,5 @@ workflows:
               only:
                 - beta
           requires:
-            - build-test-app
+            - build-test-app-ios
+            - build-test-app-android

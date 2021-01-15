@@ -7,3 +7,4 @@ itc_team_id "479887"
 
 # android
 package_name "net.artsy.app"
+json_key_file "./android-secret.json"

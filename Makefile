@@ -38,11 +38,19 @@ certs:
 	@echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
 	bundle exec match appstore
 
-distribute: setup_fastlane_env
+distribute_setup: setup_fastlane_env
 	brew update
 	brew tap getsentry/tools
 	brew install sentry-cli
 	bundle exec fastlane update_plugins
+
+distribute_ios: distribute_setup
+	bundle exec fastlane ship_beta_ios
+
+distribute_android: distribute_setup
+	bundle exec fastlane ship_beta_android
+
+distribute: distribute_setup
 	bundle exec fastlane ship_beta
 
 setup_fastlane_env:
@@ -54,8 +62,11 @@ setup_fastlane_env:
 build:
 	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration '$(CONFIGURATION)' -sdk iphonesimulator build -destination $(DEVICE_HOST) $(DERIVED_DATA) | tee ./xcode_build_raw.log | bundle exec xcpretty -c
 
-build-for-tests:
+build-for-tests-ios:
 	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug -sdk iphonesimulator build -destination $(DEVICE_HOST) $(DERIVED_DATA) | tee ./xcode_build_raw.log | bundle exec xcpretty -c
+
+build-for-tests-android:
+	echo wow great
 
 test:
 	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug test -sdk iphonesimulator -destination $(DEVICE_HOST) $(DERIVED_DATA) $(OTHER_CFLAGS) | bundle exec second_curtain 2>&1 | tee ./xcode_test_raw.log  | bundle exec xcpretty -c --test --report junit --output ./test-results.xml
@@ -66,14 +77,23 @@ uitest:
 
 ### CI
 
-ci:
-	if [ "$(LOCAL_BRANCH)" != "beta" ] && [ "$(LOCAL_BRANCH)" != "app_store_submission" ]; then make build-for-tests; else echo "Skipping test build on beta deploy."; fi
+ci-ios:
+	if [ "$(LOCAL_BRANCH)" != "beta" ] && [ "$(LOCAL_BRANCH)" != "app_store_submission" ]; then make build-for-tests-ios; else echo "Skipping test build on beta deploy."; fi
+
+ci-android:
+	if [ "$(LOCAL_BRANCH)" != "beta" ] && [ "$(LOCAL_BRANCH)" != "app_store_submission" ]; then make build-for-tests-android; else echo "Skipping test build on beta deploy."; fi
 
 ci-test:
 	if [ "$(LOCAL_BRANCH)" != "beta" ] && [ "$(LOCAL_BRANCH)" != "app_store_submission" ]; then make test; else echo "Skipping test run on beta deploy."; fi
 
 deploy_if_beta_branch:
 	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make distribute; fi
+
+deploy_if_beta_branch_ios:
+	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make distribute_ios; fi
+
+deploy_if_beta_branch_android:
+	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make distribute_android; fi
 
 deploy:
 	git push origin "$(LOCAL_BRANCH):beta" -f --no-verify
