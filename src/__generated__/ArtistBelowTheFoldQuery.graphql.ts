@@ -1084,6 +1084,7 @@ return {
             "args": (v13/*: any*/),
             "filters": [
               "sort",
+              "sizes",
               "categories"
             ],
             "handle": "connection",

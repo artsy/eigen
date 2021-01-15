@@ -6,7 +6,7 @@ import {
   FilterCounts,
   FilterType,
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { compact, forOwn, groupBy, sortBy } from "lodash"
+import { capitalize, compact, forOwn, groupBy, sortBy } from "lodash"
 
 // General filter types and objects
 export enum FilterParamName {
@@ -21,6 +21,7 @@ export enum FilterParamName {
   priceRange = "priceRange",
   size = "dimensionRange",
   sort = "sort",
+  sizes = "sizes",
   timePeriod = "majorPeriods",
   viewAs = "viewAs",
   waysToBuyBid = "atAuction",
@@ -46,6 +47,7 @@ export enum FilterDisplayName {
   medium = "Medium",
   priceRange = "Price",
   size = "Size",
+  sizes = "Size",
   sort = "Sort by",
   timePeriod = "Time period",
   viewAs = "View as",
@@ -100,6 +102,7 @@ const DEFAULT_SHOW_ARTWORKS_PARAMS = {
 
 const DEFAULT_AUCTION_RESULT_PARAMS = {
   sort: "DATE_DESC",
+  sizes: undefined,
 } as FilterParams
 
 const getDefaultParamsByType = (filterType: FilterType) => {
@@ -178,7 +181,8 @@ export const selectedOption = ({
   if (filterScreen === "categories") {
     const selectedCategoriesValues = selectedOptions.find((filter) => filter.paramName === FilterParamName.categories)
       ?.paramValue as string[] | undefined
-    if (selectedCategoriesValues) {
+
+    if (selectedCategoriesValues?.length) {
       const numSelectedCategoriesToDisplay = selectedCategoriesValues.length
       if (numSelectedCategoriesToDisplay === 1) {
         return selectedCategoriesValues[0]
@@ -187,6 +191,21 @@ export const selectedOption = ({
     }
     return "All"
   }
+
+  if (filterScreen === "sizes") {
+    const selectedSizesValues = selectedOptions.find((filter) => filter.paramName === FilterParamName.sizes)
+      ?.paramValue as string[] | undefined
+    if (selectedSizesValues?.length) {
+      const numSelectedSizesToDisplay = selectedSizesValues.length
+      const firstSelectedSize = capitalize(selectedSizesValues[0].toLowerCase())
+      if (numSelectedSizesToDisplay === 1) {
+        return firstSelectedSize
+      }
+      return `${firstSelectedSize}, ${numSelectedSizesToDisplay - 1} more`
+    }
+    return "All"
+  }
+
   if (filterScreen === "waysToBuy") {
     const waysToBuyFilterNames = [
       FilterParamName.waysToBuyBuy,

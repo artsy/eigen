@@ -1,15 +1,17 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0c592249b6e293c66c95da5d3131c7f1 */
+/* @relayHash 42819f2d79be5edfaa573de024be909d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type ArtworkSizes = "LARGE" | "MEDIUM" | "SMALL" | "%future added value";
 export type AuctionResultSorts = "DATE_DESC" | "ESTIMATE_AND_DATE_DESC" | "PRICE_AND_DATE_DESC" | "%future added value";
 export type ArtistInsightsAuctionResultsQueryVariables = {
     count: number;
     cursor?: string | null;
     sort?: AuctionResultSorts | null;
+    sizes?: Array<ArtworkSizes | null> | null;
     categories?: Array<string | null> | null;
     artistID: string;
 };
@@ -30,18 +32,19 @@ query ArtistInsightsAuctionResultsQuery(
   $count: Int!
   $cursor: String
   $sort: AuctionResultSorts
+  $sizes: [ArtworkSizes]
   $categories: [String]
   $artistID: String!
 ) {
   artist(id: $artistID) {
-    ...ArtistInsightsAuctionResults_artist_3p69hi
+    ...ArtistInsightsAuctionResults_artist_1h0nbq
     id
   }
 }
 
-fragment ArtistInsightsAuctionResults_artist_3p69hi on Artist {
+fragment ArtistInsightsAuctionResults_artist_1h0nbq on Artist {
   slug
-  auctionResultsConnection(first: $count, after: $cursor, sort: $sort, categories: $categories) {
+  auctionResultsConnection(first: $count, after: $cursor, sort: $sort, sizes: $sizes, categories: $categories) {
     edges {
       node {
         id
@@ -110,40 +113,51 @@ v3 = {
 v4 = {
   "defaultValue": null,
   "kind": "LocalArgument",
+  "name": "sizes"
+},
+v5 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
   "name": "sort"
 },
-v5 = [
+v6 = [
   {
     "kind": "Variable",
     "name": "id",
     "variableName": "artistID"
   }
 ],
-v6 = {
+v7 = {
   "kind": "Variable",
   "name": "categories",
   "variableName": "categories"
 },
-v7 = {
+v8 = {
+  "kind": "Variable",
+  "name": "sizes",
+  "variableName": "sizes"
+},
+v9 = {
   "kind": "Variable",
   "name": "sort",
   "variableName": "sort"
 },
-v8 = [
+v10 = [
   {
     "kind": "Variable",
     "name": "after",
     "variableName": "cursor"
   },
-  (v6/*: any*/),
+  (v7/*: any*/),
   {
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
   },
-  (v7/*: any*/)
+  (v8/*: any*/),
+  (v9/*: any*/)
 ],
-v9 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -157,7 +171,8 @@ return {
       (v1/*: any*/),
       (v2/*: any*/),
       (v3/*: any*/),
-      (v4/*: any*/)
+      (v4/*: any*/),
+      (v5/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
@@ -165,7 +180,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v5/*: any*/),
+        "args": (v6/*: any*/),
         "concreteType": "Artist",
         "kind": "LinkedField",
         "name": "artist",
@@ -173,7 +188,7 @@ return {
         "selections": [
           {
             "args": [
-              (v6/*: any*/),
+              (v7/*: any*/),
               {
                 "kind": "Variable",
                 "name": "count",
@@ -184,7 +199,8 @@ return {
                 "name": "cursor",
                 "variableName": "cursor"
               },
-              (v7/*: any*/)
+              (v8/*: any*/),
+              (v9/*: any*/)
             ],
             "kind": "FragmentSpread",
             "name": "ArtistInsightsAuctionResults_artist"
@@ -201,6 +217,7 @@ return {
     "argumentDefinitions": [
       (v2/*: any*/),
       (v3/*: any*/),
+      (v5/*: any*/),
       (v4/*: any*/),
       (v1/*: any*/),
       (v0/*: any*/)
@@ -210,7 +227,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v5/*: any*/),
+        "args": (v6/*: any*/),
         "concreteType": "Artist",
         "kind": "LinkedField",
         "name": "artist",
@@ -225,7 +242,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v8/*: any*/),
+            "args": (v10/*: any*/),
             "concreteType": "AuctionResultConnection",
             "kind": "LinkedField",
             "name": "auctionResultsConnection",
@@ -247,7 +264,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v9/*: any*/),
+                      (v11/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -453,9 +470,10 @@ return {
           },
           {
             "alias": null,
-            "args": (v8/*: any*/),
+            "args": (v10/*: any*/),
             "filters": [
               "sort",
+              "sizes",
               "categories"
             ],
             "handle": "connection",
@@ -463,14 +481,14 @@ return {
             "kind": "LinkedHandle",
             "name": "auctionResultsConnection"
           },
-          (v9/*: any*/)
+          (v11/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "0c592249b6e293c66c95da5d3131c7f1",
+    "id": "42819f2d79be5edfaa573de024be909d",
     "metadata": {},
     "name": "ArtistInsightsAuctionResultsQuery",
     "operationKind": "query",
@@ -478,5 +496,5 @@ return {
   }
 };
 })();
-(node as any).hash = '4600ed1816247c2a50c3b755e745c6b3';
+(node as any).hash = 'f6a1690494804759b2ffbbdf56ef1621';
 export default node;

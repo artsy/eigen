@@ -33,6 +33,7 @@ import { InstitutionOptionsScreen } from "../ArtworkFilterOptions/InstitutionOpt
 import { MediumOptionsScreen } from "../ArtworkFilterOptions/MediumOptions"
 import { PriceRangeOptionsScreen } from "../ArtworkFilterOptions/PriceRangeOptions"
 import { SizeOptionsScreen } from "../ArtworkFilterOptions/SizeOptions"
+import { SizesOptionsScreen } from "../ArtworkFilterOptions/SizesOptions"
 import { SortOptionsScreen } from "../ArtworkFilterOptions/SortOptions"
 import { TimePeriodOptionsScreen } from "../ArtworkFilterOptions/TimePeriodOptions"
 import { ViewAsOptionsScreen } from "../ArtworkFilterOptions/ViewAsOptions"
@@ -52,6 +53,7 @@ export type FilterScreen =
   | "medium"
   | "priceRange"
   | "sort"
+  | "sizes"
   | "viewAs"
   | "waysToBuy"
 
@@ -86,17 +88,18 @@ interface FilterModalProps extends ViewProperties {
 // see src/lib/Scenes/MyCollection/Screens/ArtworkFormModal/MyCollectionArtworkFormModal.tsx#L35
 // tslint:disable-next-line:interface-over-type-literal
 export type FilterModalNavigationStack = {
-  FilterOptionsScreen: FilterOptionsScreenParams
   ArtistIDsOptionsScreen: undefined
   ColorOptionsScreen: undefined
-  SizeOptionsScreen: undefined
   EstimateRangeOptionsScreen: undefined
+  FilterOptionsScreen: FilterOptionsScreenParams
   GalleryOptionsScreen: undefined
   InstitutionOptionsScreen: undefined
-  TimePeriodOptionsScreen: undefined
   MediumOptionsScreen: undefined
   PriceRangeOptionsScreen: undefined
+  SizeOptionsScreen: undefined
+  SizesOptionsScreen: undefined
   SortOptionsScreen: undefined
+  TimePeriodOptionsScreen: undefined
   ViewAsOptionsScreen: undefined
   WaysToBuyOptionsScreen: undefined
   CategoriesOptionsScreen: undefined
@@ -170,14 +173,15 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
             <Stack.Screen name="FilterOptionsScreen" component={FilterOptionsScreen} initialParams={props} />
             <Stack.Screen name="ArtistIDsOptionsScreen" component={ArtistIDsOptionsScreen} />
             <Stack.Screen name="ColorOptionsScreen" component={ColorOptionsScreen} />
-            <Stack.Screen name="SizeOptionsScreen" component={SizeOptionsScreen} />
             <Stack.Screen name="EstimateRangeOptionsScreen" component={EstimateRangeOptionsScreen} />
             <Stack.Screen name="GalleryOptionsScreen" component={GalleryOptionsScreen} />
             <Stack.Screen name="InstitutionOptionsScreen" component={InstitutionOptionsScreen} />
-            <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} />
             <Stack.Screen name="MediumOptionsScreen" component={MediumOptionsScreen} />
             <Stack.Screen name="PriceRangeOptionsScreen" component={PriceRangeOptionsScreen} />
+            <Stack.Screen name="SizeOptionsScreen" component={SizeOptionsScreen} />
+            <Stack.Screen name="SizesOptionsScreen" component={SizesOptionsScreen} />
             <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
+            <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} />
             <Stack.Screen name="ViewAsOptionsScreen" component={ViewAsOptionsScreen} />
             <Stack.Screen name="WaysToBuyOptionsScreen" component={WaysToBuyOptionsScreen} />
             <Stack.Screen name="CategoriesOptionsScreen" component={CategoriesOptionsScreen} />
@@ -209,7 +213,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                     break
                   case FilterModalMode.Fair:
                     trackChangeFilters(
-                      PageNames.Fair2Page,
+                      PageNames.FairPage,
                       OwnerEntityTypes.Fair,
                       appliedFiltersParams,
                       changedFiltersParams(appliedFiltersParams, state.selectedFilters)
@@ -336,7 +340,7 @@ export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigatio
                 trackClear(PageNames.ArtistSeriesPage, OwnerEntityTypes.ArtistSeries)
                 break
               case "Fair":
-                trackClear(PageNames.Fair2Page, OwnerEntityTypes.Fair)
+                trackClear(PageNames.FairPage, OwnerEntityTypes.Fair)
                 break
             }
 
@@ -398,7 +402,11 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
       ]
 
     case FilterModalMode.AuctionResults:
-      return [filterOptionToDisplayConfigMap.sort, filterOptionToDisplayConfigMap.categories]
+      return [
+        filterOptionToDisplayConfigMap.sort,
+        filterOptionToDisplayConfigMap.categories,
+        filterOptionToDisplayConfigMap.sizes,
+      ]
 
     default:
       return [filterOptionToDisplayConfigMap.sort, filterOptionToDisplayConfigMap.waysToBuy]
@@ -627,6 +635,11 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "sort",
     ScreenComponent: "SortOptionsScreen",
   },
+  sizes: {
+    displayText: FilterDisplayName.sizes,
+    filterType: "sizes",
+    ScreenComponent: "SizesOptionsScreen",
+  },
   viewAs: {
     displayText: FilterDisplayName.viewAs,
     filterType: "viewAs",
@@ -687,4 +700,4 @@ const FairFiltersSorted: FilterScreen[] = [
 ]
 const SaleArtworksFiltersSorted: FilterScreen[] = ["sort", "viewAs", "estimateRange", "artistIDs", "medium"]
 
-const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories"]
+const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories", "sizes"]

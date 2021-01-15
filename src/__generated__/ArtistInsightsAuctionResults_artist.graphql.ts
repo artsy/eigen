@@ -43,6 +43,11 @@ const node: ReaderFragment = {
       "name": "cursor"
     },
     {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "sizes"
+    },
+    {
       "defaultValue": "DATE_DESC",
       "kind": "LocalArgument",
       "name": "sort"
@@ -77,6 +82,11 @@ const node: ReaderFragment = {
           "kind": "Variable",
           "name": "categories",
           "variableName": "categories"
+        },
+        {
+          "kind": "Variable",
+          "name": "sizes",
+          "variableName": "sizes"
         },
         {
           "kind": "Variable",
@@ -176,5 +186,5 @@ const node: ReaderFragment = {
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = '8216d527ccc953ef82d4660f585f4d4d';
+(node as any).hash = '3cd85ab4e7ee003c0a644933e71c685d';
 export default node;

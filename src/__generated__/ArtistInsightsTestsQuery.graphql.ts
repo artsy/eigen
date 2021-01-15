@@ -426,6 +426,7 @@ return {
             "args": (v2/*: any*/),
             "filters": [
               "sort",
+              "sizes",
               "categories"
             ],
             "handle": "connection",

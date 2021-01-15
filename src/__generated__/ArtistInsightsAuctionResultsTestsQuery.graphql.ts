@@ -411,6 +411,7 @@ return {
             "args": (v1/*: any*/),
             "filters": [
               "sort",
+              "sizes",
               "categories"
             ],
             "handle": "connection",

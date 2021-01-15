@@ -277,6 +277,7 @@ export const ParamDefaultValues = {
   priceRange: "*-*",
   sortArtworks: "-decayed_merch",
   sortSaleArtworks: "position",
+  sizes: undefined,
   viewAs: ViewAsValues.Grid,
 }
 
@@ -296,6 +297,7 @@ const defaultCommonFilterOptions: Record<FilterParamName, string | boolean | und
   partnerID: ParamDefaultValues.partnerID,
   priceRange: ParamDefaultValues.priceRange,
   sort: ParamDefaultValues.sortArtworks,
+  sizes: ParamDefaultValues.sizes,
   viewAs: ParamDefaultValues.viewAs,
 }
 

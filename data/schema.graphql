@@ -1208,7 +1208,7 @@ type Artwork implements Node & Searchable & Sellable {
   # artwork attribute called `medium`.)
   category: String @deprecated(reason: "Prefer to use `mediumType`.")
 
-  # Returns the display label and detail for artwork certificate of authenticity
+  # Returns the display label and detail when artwork has a certificate of authenticity
   certificateOfAuthenticity: ArtworkInfoRow
   collectingInstitution: String
   conditionDescription: ArtworkInfoRow
