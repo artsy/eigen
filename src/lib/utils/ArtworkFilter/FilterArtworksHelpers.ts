@@ -14,6 +14,8 @@ export enum FilterParamName {
   artistsIFollow = "includeArtworksByFollowedArtists",
   categories = "categories",
   color = "color",
+  earliestCreatedYear = "earliestCreatedYear",
+  latestCreatedYear = "latestCreatedYear",
   estimateRange = "estimateRange",
   gallery = "partnerID",
   institution = "partnerID",
@@ -32,7 +34,7 @@ export enum FilterParamName {
 
 // Types for the parameters passed to Relay
 export type FilterParams = {
-  [Name in FilterParamName]: string | boolean | undefined | string[]
+  [Name in FilterParamName]: string | number | boolean | undefined | string[]
 }
 
 export enum FilterDisplayName {
@@ -51,6 +53,7 @@ export enum FilterDisplayName {
   sort = "Sort by",
   timePeriod = "Time period",
   viewAs = "View as",
+  year = "Year created",
   waysToBuy = "Ways to buy",
 }
 
@@ -206,6 +209,20 @@ export const selectedOption = ({
     return "All"
   }
 
+  if (filterScreen === "year") {
+    const selectedEarliestCreatedYear = selectedOptions.find(
+      (filter) => filter.paramName === FilterParamName.earliestCreatedYear
+    )?.paramValue
+    const selectedLatestCreatedYear = selectedOptions.find(
+      (filter) => filter.paramName === FilterParamName.latestCreatedYear
+    )?.paramValue
+
+    if (selectedEarliestCreatedYear && selectedLatestCreatedYear) {
+      return `${selectedEarliestCreatedYear} - ${selectedLatestCreatedYear}`
+    }
+    return "All"
+  }
+
   if (filterScreen === "waysToBuy") {
     const waysToBuyFilterNames = [
       FilterParamName.waysToBuyBuy,
@@ -307,6 +324,8 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   priceRange: "PRICE_RANGE",
   artistsIFollow: "FOLLOWED_ARTISTS",
   artistIDs: "ARTIST",
+  earliestCreatedYear: "earliestCreatedYear",
+  latestCreatedYear: "latestCreatedYear",
 }
 
 export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {
