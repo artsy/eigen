@@ -16,7 +16,7 @@ interface MyCollectionArtworkHeaderProps {
   relay: RelayRefetchProp
 }
 
-const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (props) => {
+export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (props) => {
   const {
     artwork: { artistNames, date, images, internalID, title, slug },
     relay,
