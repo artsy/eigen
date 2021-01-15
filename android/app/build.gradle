@@ -143,6 +143,10 @@ android {
         versionName "1.0.0.-2021.01.14.16"
 
         multiDexEnabled true
+
+        buildConfigField "String", "GITCommitRev", '"4f76194c"'
+        buildConfigField "String", "GITCommitSha", '"4f76194c59abf0a505458f8b9c61d1aeb35181a8"'
+        buildConfigField "String", "GITRemoteOriginURL", '"https://github.com/artsy/eigen.gi"'
     }
     splits {
         abi {

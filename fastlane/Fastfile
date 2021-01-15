@@ -159,8 +159,8 @@ end
 
 date_str = DateTime.now.strftime("%Y.%m.%d.%H")
 lane :set_build_version_ios do
-  system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']} \" #{app_plist}")
-  system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']} \" #{sticker_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" #{app_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" #{sticker_plist}")
   system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" #{app_plist}")
   system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" #{sticker_plist}")
 end
@@ -172,6 +172,27 @@ lane :set_build_version_android do
   version_code = contents.match("versionCode (.*)").captures[0]
   contents = contents.gsub(/(versionCode) (.*)/, "\\1 #{version_code.to_i+1}")
   contents = contents.gsub(/(versionName) .*/, "\\1 \"#{app_json['version']}-#{date_str}\"")
+
+  File.open(build_gradle, 'w') do |file|
+    file.puts contents
+  end
+end
+
+git_commit_rev = `git log -n1 --format='%h'`.chomp
+git_commit_sha = `git log -n1 --format='%H'`.chomp
+git_remote_origin_url = `git config --get remote.origin.url`.chomp
+lane :set_git_properties_ios do
+  system("/usr/libexec/PlistBuddy -c \"Set GITCommitRev #{git_commit_rev}\" #{app_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set GITCommitSha #{git_commit_sha}\" #{app_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set GITRemoteOriginURL #{git_remote_origin_url}\" #{app_plist}")
+end
+
+lane :set_git_properties_android do
+  contents = File.read(build_gradle)
+
+  contents = contents.gsub(/(GITCommitRev.* '").*("')/, "\\1#{git_commit_rev}\\2")
+  contents = contents.gsub(/(GITCommitSha.* '").*("')/, "\\1#{git_commit_sha}\\2")
+  contents = contents.gsub(/(GITRemoteOriginURL.* '").*("')/, "\\1#{git_remote_origin_url}\\2")
 
   File.open(build_gradle, 'w') do |file|
     file.puts contents
