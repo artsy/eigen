@@ -22,6 +22,7 @@ upcoming:
     - Add Categories filter to AuctionResults - mounir
     - Add Size filter to AuctionResults - mounir
     - Add Year filter to AuctionResults - mounir
+    - Poll and refetch images when images are processing (my collection) - brian
 
 releases:
   - version: 6.7.5
