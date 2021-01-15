@@ -129,3 +129,4 @@ buck-out/
 \.buckd/
 *.keystore
 !debug.keystore
+android-secret.json
