@@ -67,6 +67,34 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
     })
   }
 
+  // We are using the same logic used in Force but it might be useful
+  // to adjust metaphysics to support aggregations like other filters in the app
+  useEffect(() => {
+    dispatch({
+      type: "setAggregations",
+      payload: [
+        {
+          slice: "earliestCreatedYear",
+          counts: [
+            {
+              value: artist.auctionResultsConnection?.createdYearRange?.startAt || artist.birthday,
+              name: "earliestCreatedYear",
+            },
+          ],
+        },
+        {
+          slice: "latestCreatedYear",
+          counts: [
+            {
+              value: artist.auctionResultsConnection?.createdYearRange?.endAt || new Date().getFullYear(),
+              name: "latestCreatedYear",
+            },
+          ],
+        },
+      ],
+    })
+  }, [])
+
   return (
     <FlatList
       data={auctionResults}
@@ -112,10 +140,24 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         sort: { type: "AuctionResultSorts", defaultValue: DATE_DESC }
         sizes: { type: "[ArtworkSizes]" }
         categories: { type: "[String]" }
+        earliestCreatedYear: { type: "Int", defaultValue: 1000 }
+        latestCreatedYear: { type: "Int", defaultValue: 2050 }
       ) {
+        birthday
         slug
-        auctionResultsConnection(first: $count, after: $cursor, sort: $sort, sizes: $sizes, categories: $categories)
-          @connection(key: "artist_auctionResultsConnection") {
+        auctionResultsConnection(
+          first: $count
+          after: $cursor
+          sort: $sort
+          sizes: $sizes
+          categories: $categories
+          earliestCreatedYear: $earliestCreatedYear
+          latestCreatedYear: $latestCreatedYear
+        ) @connection(key: "artist_auctionResultsConnection") {
+          createdYearRange {
+            startAt
+            endAt
+          }
           edges {
             node {
               id
@@ -146,10 +188,20 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         $sizes: [ArtworkSizes]
         $categories: [String]
         $artistID: String!
+        $latestCreatedYear: Int
+        $earliestCreatedYear: Int
       ) {
         artist(id: $artistID) {
           ...ArtistInsightsAuctionResults_artist
-            @arguments(count: $count, cursor: $cursor, sort: $sort, sizes: $sizes, categories: $categories)
+            @arguments(
+              count: $count
+              cursor: $cursor
+              sort: $sort
+              sizes: $sizes
+              earliestCreatedYear: $earliestCreatedYear
+              latestCreatedYear: $latestCreatedYear
+              categories: $categories
+            )
         }
       }
     `,

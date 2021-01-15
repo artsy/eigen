@@ -267,9 +267,11 @@ export const ParamDefaultValues = {
   color: undefined,
   categories: undefined,
   dimensionRange: "*-*",
+  earliestCreatedYear: undefined,
   estimateRange: "",
   includeArtworksByFollowedArtists: false,
   inquireableOnly: false,
+  latestCreatedYear: undefined,
   majorPeriods: undefined,
   medium: "*",
   offerable: false,
@@ -288,9 +290,11 @@ const defaultCommonFilterOptions: Record<FilterParamName, string | boolean | und
   color: ParamDefaultValues.color,
   categories: ParamDefaultValues.categories,
   dimensionRange: ParamDefaultValues.dimensionRange,
+  earliestCreatedYear: ParamDefaultValues.earliestCreatedYear,
   estimateRange: ParamDefaultValues.estimateRange,
   includeArtworksByFollowedArtists: ParamDefaultValues.includeArtworksByFollowedArtists,
   inquireableOnly: ParamDefaultValues.inquireableOnly,
+  latestCreatedYear: ParamDefaultValues.latestCreatedYear,
   majorPeriods: ParamDefaultValues.majorPeriods,
   medium: ParamDefaultValues.medium,
   offerable: ParamDefaultValues.offerable,
@@ -457,7 +461,7 @@ export interface ArtworkFilterContextState {
 export interface FilterData {
   readonly displayText: string
   readonly paramName: FilterParamName
-  paramValue?: string | boolean | string[]
+  paramValue?: string | number | boolean | string[]
   filterKey?: string // gallery and institution share a paramName so need to distinguish
   count?: number | null // aggregations count
 }
@@ -533,6 +537,8 @@ export type AggregationName =
   | "PRICE_RANGE"
   | "FOLLOWED_ARTISTS"
   | "ARTIST"
+  | "earliestCreatedYear"
+  | "latestCreatedYear"
 
 export type Aggregations = Array<{
   slice: AggregationName

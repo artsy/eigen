@@ -38,6 +38,7 @@ import { SortOptionsScreen } from "../ArtworkFilterOptions/SortOptions"
 import { TimePeriodOptionsScreen } from "../ArtworkFilterOptions/TimePeriodOptions"
 import { ViewAsOptionsScreen } from "../ArtworkFilterOptions/ViewAsOptions"
 import { WaysToBuyOptionsScreen } from "../ArtworkFilterOptions/WaysToBuyOptions"
+import { YearOptionsScreen } from "../ArtworkFilterOptions/YearOptions"
 import { FancyModal } from "../FancyModal/FancyModal"
 
 export type FilterScreen =
@@ -55,6 +56,7 @@ export type FilterScreen =
   | "sort"
   | "sizes"
   | "viewAs"
+  | "year"
   | "waysToBuy"
 
 export interface FilterDisplayConfig {
@@ -101,6 +103,7 @@ export type FilterModalNavigationStack = {
   SortOptionsScreen: undefined
   TimePeriodOptionsScreen: undefined
   ViewAsOptionsScreen: undefined
+  YearOptionsScreen: undefined
   WaysToBuyOptionsScreen: undefined
   CategoriesOptionsScreen: undefined
 }
@@ -141,6 +144,19 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
 
   const getApplyButtonCount = () => {
     let selectedFiltersSum = state.selectedFilters.length
+
+    // For Auction results, the earliestCreatedYear and latestCreatedYear filters behave like one
+    if (state.filterType === "auctionResult") {
+      const hasEarliestCreatedYearFilterEnabled = !!state.selectedFilters.find(
+        (filter) => filter.paramName === FilterParamName.earliestCreatedYear
+      )
+      const hasLatestCreatedYearFilterEnabled = !!state.selectedFilters.find(
+        (filter) => filter.paramName === FilterParamName.latestCreatedYear
+      )
+      if (hasEarliestCreatedYearFilterEnabled && hasLatestCreatedYearFilterEnabled) {
+        --selectedFiltersSum
+      }
+    }
 
     // For Sale Artworks, the artistsIDs and the includeArtworksByFollowedArtists filters behave like one
     if (state.filterType === "saleArtwork") {
@@ -183,6 +199,14 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
             <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
             <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} />
             <Stack.Screen name="ViewAsOptionsScreen" component={ViewAsOptionsScreen} />
+            <Stack.Screen
+              name="YearOptionsScreen"
+              component={YearOptionsScreen}
+              options={{
+                // Avoid PanResponser conflicts between the slider and the slide back gesture
+                gestureEnabled: false,
+              }}
+            />
             <Stack.Screen name="WaysToBuyOptionsScreen" component={WaysToBuyOptionsScreen} />
             <Stack.Screen name="CategoriesOptionsScreen" component={CategoriesOptionsScreen} />
           </Stack.Navigator>
@@ -406,6 +430,7 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.categories,
         filterOptionToDisplayConfigMap.sizes,
+        filterOptionToDisplayConfigMap.year,
       ]
 
     default:
@@ -506,6 +531,20 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
   const getFiltersCount = () => {
     let selectedFiltersSum = state.appliedFilters.length
 
+    // the earliest created year and the latest created year are different fileters but they behave as one
+    // therefore we need to decrement the number of filters by one when they are active
+    if (state.filterType === "auctionResult") {
+      const hasEarliestCreatedYearFilterEnabled = !!state.appliedFilters.find(
+        (filter) => filter.paramName === FilterParamName.earliestCreatedYear
+      )
+      const hasLatestCreatedYearFilterEnabled = !!state.appliedFilters.find(
+        (filter) => filter.paramName === FilterParamName.latestCreatedYear
+      )
+
+      if (hasEarliestCreatedYearFilterEnabled || hasLatestCreatedYearFilterEnabled) {
+        --selectedFiltersSum
+      }
+    }
     // For Sale Artworks, the artistsIDs and the includeArtworksByFollowedArtists filters behave like one
     // Therefore we need to decrement the number of filters by one to give the user the impression they are one
     if (state.filterType === "saleArtwork") {
@@ -577,6 +616,8 @@ const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string
   PRICE_RANGE: FilterParamName.priceRange,
   FOLLOWED_ARTISTS: "artistsIFollow",
   ARTIST: "artistIDs",
+  earliestCreatedYear: "earliestCreatedYear",
+  latestCreatedYear: "earliestCreatedYear",
 }
 
 export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
@@ -645,6 +686,11 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "viewAs",
     ScreenComponent: "ViewAsOptionsScreen",
   },
+  year: {
+    displayText: FilterDisplayName.year,
+    filterType: "year",
+    ScreenComponent: "YearOptionsScreen",
+  },
   waysToBuy: {
     displayText: FilterDisplayName.waysToBuy,
     filterType: "waysToBuy",
@@ -700,4 +746,4 @@ const FairFiltersSorted: FilterScreen[] = [
 ]
 const SaleArtworksFiltersSorted: FilterScreen[] = ["sort", "viewAs", "estimateRange", "artistIDs", "medium"]
 
-const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories", "sizes"]
+const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories", "sizes", "year"]

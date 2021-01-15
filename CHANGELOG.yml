@@ -21,6 +21,7 @@ upcoming:
     - Add Sort filter to AuctionResults - mounir
     - Add Categories filter to AuctionResults - mounir
     - Add Size filter to AuctionResults - mounir
+    - Add Year filter to AuctionResults - mounir
 
 releases:
   - version: 6.7.5
