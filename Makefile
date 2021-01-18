@@ -171,8 +171,9 @@ flip_table:
 	@echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
 	rm -rf emission/Pod/Assets/Emission*
 	rm -rf emission/Pod/Assets/assets
-	@echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
 	$(MAKE) update_echo
+	@echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
+	yarn install
 	bundle exec pod install --repo-update
 
 # Clear global and local caches and build files
