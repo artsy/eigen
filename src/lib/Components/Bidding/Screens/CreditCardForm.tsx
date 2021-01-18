@@ -1,8 +1,8 @@
 import { Fonts } from "lib/data/fonts"
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Box, Button, Sans, Serif } from "palette"
 import React, { Component } from "react"
 import { ScrollView, StyleSheet, View } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe, { PaymentCardTextField, StripeToken } from "tipsi-stripe"
 

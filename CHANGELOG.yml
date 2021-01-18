@@ -8,6 +8,7 @@ upcoming:
     - Surface alert message for users with no email client setup - annacarey, pavlos
     - Adds lab option for inquiry checkout - lily
     - Refactor filters modal to use react-navigation - mounir
+    - Replace NavigatorIOS with react-navigation shim - david
 
   user_facing:
     - Add sharing on Instagram - pavlos

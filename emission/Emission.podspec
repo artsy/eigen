@@ -69,7 +69,6 @@ podspec = Pod::Spec.new do |s|
     '../node_modules/@react-native-mapbox-gl/maps/react-native-mapbox-gl.podspec',
     '../node_modules/@sentry/react-native/RNSentry.podspec',
     '../node_modules/react-native-svg/RNSVG.podspec',
-    '../node_modules/react-native-navigator-ios/react-native-navigator-ios.podspec',
     '../node_modules/@react-native-community/cameraroll/react-native-cameraroll.podspec',
     '../node_modules/@react-native-community/netinfo/react-native-netinfo.podspec',
     '../node_modules/@react-native-community/geolocation/react-native-geolocation.podspec'

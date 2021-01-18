@@ -1,8 +1,8 @@
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { get, isEmpty } from "lodash"
 import { Box, Button, Serif } from "palette"
 import React from "react"
 import { Image, NativeModules, ScrollView, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { PayloadError } from "relay-runtime"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

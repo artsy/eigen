@@ -1,6 +1,6 @@
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
 import { ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 import { RegistrationFlow_me } from "__generated__/RegistrationFlow_me.graphql"
@@ -20,13 +20,10 @@ const RegistrationFlow: React.FC<RegistrationFlowProps> = (props) => {
   return (
     <TimeOffsetProvider>
       <NavigatorIOS
-        navigationBarHidden={true}
         initialRoute={{
           component: RegistrationScreen,
-          title: "", // title is required, though we don't use it because our navigation bar is hidden.
           passProps: props,
         }}
-        style={{ flex: 1 }}
       />
     </TimeOffsetProvider>
   )

@@ -6,7 +6,6 @@ import { ConsignmentMetadata } from "../../index"
 import Metadata from "../Metadata"
 
 const nav = {} as any
-const route = {} as any
 
 const exampleMetadata: ConsignmentMetadata = {
   title: "My Work",
@@ -24,12 +23,12 @@ const exampleMetadata: ConsignmentMetadata = {
 describe("state", () => {
   it("is set up with empty consignment metadata", () => {
     const consignmentMetadata = {} as ConsignmentMetadata
-    const tree = renderWithWrappers(<Metadata navigator={nav} route={route} metadata={consignmentMetadata} />)
+    const tree = renderWithWrappers(<Metadata navigator={nav} metadata={consignmentMetadata} />)
     expect(tree.root.findByProps({ testID: "consigments-metatdata-title" }).props.text.value).toBeFalsy()
   })
 
   it("is set up with filled consignment metadata", () => {
-    const tree = renderWithWrappers(<Metadata navigator={nav} route={route} metadata={exampleMetadata} />)
+    const tree = renderWithWrappers(<Metadata navigator={nav} metadata={exampleMetadata} />)
 
     expect(tree.root.findByProps({ testID: "consigments-metatdata-title" }).props.text.value).toBeTruthy()
   })

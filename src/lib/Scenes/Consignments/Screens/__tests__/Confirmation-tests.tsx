@@ -11,7 +11,7 @@ const emptyProps = { navigator: {} as any, route: {} as any }
 describe("callbacks", () => {
   it("calls pop when done is tapped", () => {
     const navigator: any = { push: jest.fn() }
-    const confirmation = new Confirmation({ navigator, route: {} })
+    const confirmation = new Confirmation({ navigator })
     confirmation.restart()
     expect(navigator.push).toHaveBeenCalled()
   })
