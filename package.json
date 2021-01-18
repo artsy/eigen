@@ -105,7 +105,7 @@
     "react-native-image-crop-picker": "0.35.1",
     "react-native-linear-gradient": "2.5.6",
     "react-native-localize": "^2.0.1",
-    "react-native-parallax-scroll-view": "orta/react-native-parallax-scroll-view",
+    "react-native-navigator-ios": "https://github.com/artsy/react-native-navigator-ios#license_podspec",
     "react-native-reanimated": "^1.13.1",
     "react-native-safe-area-context": "^3.1.8",
     "react-native-screens": "^2.13.0",
