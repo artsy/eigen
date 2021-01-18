@@ -1,6 +1,6 @@
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
 import { View } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { dismissModal, navigate } from "lib/navigation/navigate"

@@ -1,5 +1,6 @@
 import CameraRoll from "@react-native-community/cameraroll"
 import { triggerCamera } from "lib/NativeModules/triggerCamera"
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Box, Sans, Spacer } from "palette"
 import React from "react"
@@ -10,12 +11,10 @@ import {
   NativeModules,
   NativeScrollEvent,
   NativeSyntheticEvent,
-  Route,
   ScrollView,
   View,
   ViewProperties,
 } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import ImageSelection, { ImageData } from "../Components/ImageSelection"
 import { ConsignmentSetup } from "../index"
@@ -24,7 +23,6 @@ const { ARCocoaConstantsModule, ARTakeCameraPhotoModule } = NativeModules
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
-  route: Route
   setup: ConsignmentSetup
   updateWithPhotos: (photos: string[]) => void
 }

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d589c76834a62464989078d46f7a56a9 */
+/* @relayHash 64e241dc9b48c71aac0d2e8bc99600ee */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -52,6 +52,8 @@ fragment Articles_articles on Article {
 }
 
 fragment ArtistAboutShows_artist on Artist {
+  name
+  slug
   currentShows: showsConnection(status: "running", first: 10) {
     edges {
       node {
@@ -121,8 +123,13 @@ fragment ArtistConsignButton_artist on Artist {
 }
 
 fragment ArtistInsightsAuctionResults_artist on Artist {
+  birthday
   slug
-  auctionResultsConnection(first: 10, sort: DATE_DESC) {
+  auctionResultsConnection(first: 10, sort: DATE_DESC, earliestCreatedYear: 1000, latestCreatedYear: 2050) {
+    createdYearRange {
+      startAt
+      endAt
+    }
     edges {
       node {
         id
@@ -495,7 +502,17 @@ v12 = {
   "value": "closed"
 },
 v13 = [
+  {
+    "kind": "Literal",
+    "name": "earliestCreatedYear",
+    "value": 1000
+  },
   (v5/*: any*/),
+  {
+    "kind": "Literal",
+    "name": "latestCreatedYear",
+    "value": 2050
+  },
   {
     "kind": "Literal",
     "name": "sort",
@@ -863,12 +880,44 @@ return {
           (v6/*: any*/),
           {
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "birthday",
+            "storageKey": null
+          },
+          {
+            "alias": null,
             "args": (v13/*: any*/),
             "concreteType": "AuctionResultConnection",
             "kind": "LinkedField",
             "name": "auctionResultsConnection",
             "plural": false,
             "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "YearRange",
+                "kind": "LinkedField",
+                "name": "createdYearRange",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "startAt",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "endAt",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              },
               {
                 "alias": null,
                 "args": null,
@@ -1075,13 +1124,17 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "auctionResultsConnection(first:10,sort:\"DATE_DESC\")"
+            "storageKey": "auctionResultsConnection(earliestCreatedYear:1000,first:10,latestCreatedYear:2050,sort:\"DATE_DESC\")"
           },
           {
             "alias": null,
             "args": (v13/*: any*/),
             "filters": [
-              "sort"
+              "sort",
+              "sizes",
+              "categories",
+              "earliestCreatedYear",
+              "latestCreatedYear"
             ],
             "handle": "connection",
             "key": "artist_auctionResultsConnection",
@@ -1128,7 +1181,7 @@ return {
     ]
   },
   "params": {
-    "id": "d589c76834a62464989078d46f7a56a9",
+    "id": "64e241dc9b48c71aac0d2e8bc99600ee",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",

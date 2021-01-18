@@ -6,12 +6,12 @@ import Confirmation, { SubmissionTypes } from "../Confirmation"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
-const emptyProps = { navigator: {} as any, route: {} as any }
+const emptyProps = { navigator: {} as any }
 
 describe("callbacks", () => {
   it("calls pop when done is tapped", () => {
     const navigator: any = { popToTop: jest.fn() }
-    const confirmation = new Confirmation({ navigator, route: {} })
+    const confirmation = new Confirmation({ navigator })
     confirmation.restart()
     expect(navigator.popToTop).toHaveBeenCalled()
   })

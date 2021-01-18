@@ -1,13 +1,14 @@
+import { ParamListBase } from "@react-navigation/native"
+import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Box, CheckIcon, Flex, Sans, Separator } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
 
 interface SingleSelectOptionScreenProps {
-  navigator: NavigatorIOS
+  navigation: StackNavigationProp<ParamListBase>
   filterHeaderText: string
   onSelect: (any: any) => void
   selectedOption: FilterData
@@ -21,12 +22,12 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
   selectedOption,
   onSelect,
   filterOptions,
-  navigator,
+  navigation,
   ListHeaderComponent,
   withExtraPadding = false,
 }) => {
   const handleBackNavigation = () => {
-    navigator.pop()
+    navigation.goBack()
   }
 
   return (

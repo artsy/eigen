@@ -1,3 +1,4 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import {
   ArtworkFilterContext,
   FilterData,
@@ -11,14 +12,12 @@ import {
   FilterParamName,
 } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext } from "react"
-import NavigatorIOS from "react-native-navigator-ios"
+import { FilterModalNavigationStack } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface GalleryOptionsScreenProps {
-  navigator: NavigatorIOS
-}
+interface GalleryOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "GalleryOptionsScreen"> {}
 
-export const GalleryOptionsScreen: React.FC<GalleryOptionsScreenProps> = ({ navigator }) => {
+export const GalleryOptionsScreen: React.FC<GalleryOptionsScreenProps> = ({ navigation }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const paramName = FilterParamName.gallery
@@ -56,7 +55,7 @@ export const GalleryOptionsScreen: React.FC<GalleryOptionsScreenProps> = ({ navi
       filterHeaderText={FilterDisplayName.gallery}
       filterOptions={displayOptions}
       selectedOption={selectedOption}
-      navigator={navigator}
+      navigation={navigation}
     />
   )
 }

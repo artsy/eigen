@@ -57,6 +57,18 @@ jest.mock("./lib/NativeModules/Events.tsx", () => ({
   userHadMeaningfulInteraction: jest.fn(),
 }))
 
+jest.mock("react-native-share", () => ({
+  open: jest.fn(),
+}))
+
+jest.mock("rn-fetch-blob", () => ({
+  fs: {
+    dirs: {
+      DocumentDir: "",
+    },
+  },
+}))
+
 // tslint:disable-next-line:no-empty
 jest.mock("@sentry/react-native", () => ({ captureMessage() {} }))
 
@@ -162,6 +174,7 @@ function getNativeModules(): typeof NativeModules {
           AROptionsUseReactNativeWebView: false,
           AROptionsNewFairPage: false,
           AROptionsNewInsightsPage: false,
+          AROptionsInquiryCheckout: false,
         },
         legacyFairSlugs: ["some-fairs-slug", "some-other-fair-slug"],
         legacyFairProfileSlugs: [],

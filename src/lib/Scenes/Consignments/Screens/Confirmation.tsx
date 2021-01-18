@@ -1,15 +1,14 @@
 import Spinner from "lib/Components/Spinner"
 import { dismissModal, navigate } from "lib/navigation/navigate"
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack } from "lib/utils/track"
 import { Box, Button, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
-import { Route, View, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
+import { View, ViewProperties } from "react-native"
 import styled from "styled-components/native"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
-  route: Route
   /** Used for testing, it's expected to be undefined in prod */
   initialState?: SubmissionTypes
 

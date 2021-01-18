@@ -1,8 +1,8 @@
 import { dismissModal } from "lib/navigation/navigate"
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { CloseIcon, color, Touchable } from "palette"
 import React from "react"
 import { Platform, View } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 import Overview from "../Screens/Overview"
 
 const isIOS13Plus = Platform.OS === "ios" && Number(Platform.Version) >= 13
@@ -10,11 +10,7 @@ const isIOS13Plus = Platform.OS === "ios" && Number(Platform.Version) >= 13
 export const ConsignmentsSubmissionForm: React.FC = () => {
   return (
     <View style={{ flex: 1 }}>
-      <NavigatorIOS
-        initialRoute={{ component: Overview, title: "Overview" }}
-        navigationBarHidden={true}
-        style={{ flex: 1 }}
-      />
+      <NavigatorIOS initialRoute={{ component: Overview }} />
       {/* drag handle for iOS 13 'page sheet' modals */}
       {isIOS13Plus ? (
         <View style={{ position: "absolute", top: 10, left: 0, right: 0, alignItems: "center" }}>

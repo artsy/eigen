@@ -2,8 +2,8 @@ import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { Alert } from "react-native"
 
-import { AsyncStorage, Dimensions, Route, ScrollView, View, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
+import type NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
+import { AsyncStorage, Dimensions, ScrollView, View, ViewProperties } from "react-native"
 
 import { dismissModal } from "lib/navigation/navigate"
 import { Box, Button, Flex, Spacer, Text } from "palette"
@@ -24,7 +24,6 @@ const consignmentsStateKey = "ConsignmentsStoredState"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
-  route: Route // this gets set by NavigatorIOS
   setup: ConsignmentSetup
 }
 
@@ -287,7 +286,7 @@ export default class Overview extends React.Component<Props, State> {
             block
             onPress={this.state.hasLoaded && canSubmit ? this.submitFinalSubmission : undefined}
             disabled={!canSubmit}
-            haptic="selection"
+            haptic
           >
             Next
           </Button>

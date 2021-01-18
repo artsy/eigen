@@ -1,3 +1,4 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import {
   ArtworkFilterContext,
   FilterData,
@@ -10,12 +11,11 @@ import {
   FilterParamName,
 } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React, { useContext } from "react"
-import NavigatorIOS from "react-native-navigator-ios"
+import { FilterModalNavigationStack } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface PriceRangeOptionsScreenProps {
-  navigator: NavigatorIOS
-}
+interface PriceRangeOptionsScreenProps
+  extends StackScreenProps<FilterModalNavigationStack, "PriceRangeOptionsScreen"> {}
 
 const priceRangeDisplayText: Map<string, string> = new Map([
   ["*-*", "All"],
@@ -37,7 +37,7 @@ const priceSort = (left: FilterData, right: FilterData): number => {
   }
 }
 
-export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigator }) => {
+export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const paramName = FilterParamName.priceRange
@@ -70,7 +70,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
       filterHeaderText={FilterDisplayName.priceRange}
       filterOptions={sortedOptions}
       selectedOption={selectedOption}
-      navigator={navigator}
+      navigation={navigation}
     />
   )
 }

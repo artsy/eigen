@@ -3,6 +3,7 @@ import React from "react"
 import { Aggregations, ArtworkFilterContext, reducer } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { InstitutionOptionsScreen } from "../InstitutionOptions"
 import { sharedAggregateFilterValidation, ValidationParams } from "./AggregationOptionCommonValidation"
+import { getEssentialProps } from "./helper"
 
 describe("Institution Options Screen", () => {
   const mockAggregations: Aggregations = [
@@ -28,7 +29,7 @@ describe("Institution Options Screen", () => {
     },
   ]
 
-  const MockInstitutionScreen = ({ initialState, navigator }: any) => {
+  const MockInstitutionScreen = ({ initialState }: any) => {
     const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
     return (
@@ -38,7 +39,7 @@ describe("Institution Options Screen", () => {
           dispatch,
         }}
       >
-        <InstitutionOptionsScreen navigator={navigator} />
+        <InstitutionOptionsScreen {...getEssentialProps()} />
       </ArtworkFilterContext.Provider>
     )
   }

@@ -1,18 +1,17 @@
 import React from "react"
 
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Sans } from "palette"
 import {
   Keyboard,
   LayoutAnimation,
   Picker,
-  Route,
   ScrollView,
   TouchableWithoutFeedback,
   View,
   ViewProperties,
 } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 import { ConsignmentMetadata } from "../"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { Row } from "../Components/FormElements"
@@ -21,7 +20,6 @@ import Toggle from "../Components/Toggle"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
-  route: Route // this gets set by NavigatorIOS
   updateWithMetadata?: (result: ConsignmentMetadata) => void
   metadata: ConsignmentMetadata
 }
