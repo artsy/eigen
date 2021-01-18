@@ -67,6 +67,6 @@ Communicate with other devs that a hotfix will be deployed and they should hold 
 
 ## Run through QA script and release to the app store
 
-Follow the instructions for [deploying to app store](https://github.com/artsy/eigen/blob/master/docs/deploy_to_app_store.md).
+Follow the instructions for [deploying to app store](https://github.com/artsy/eigen/blob/master/docs/deploy_to_app_store.md) and [deploying to play store](https://github.com/artsy/eigen/blob/master/docs/deploy_to_play_store.md).
 
 Make sure to QA the bug fix changes and run through the QA script before releasing to users.

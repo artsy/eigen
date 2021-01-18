@@ -1,6 +1,6 @@
 ## Betas
 
-Deployment to TestFlight is handled by Circle CI. Nightly betas are release automatically, but if you need to deploy something right away, run `make deploy` locally to trigger a beta build on CI. It takes about 45 minutes. There is a blog post on the process [here](http://artsy.github.io/blog/2015/12/15/Automating-Testflight-Deploys/).
+Deployment to TestFlight and Play Store is handled by Circle CI. Nightly betas are release automatically, but if you need to deploy something right away, run `make deploy` locally to trigger a beta build on CI. It takes about 45 minutes. There is a blog post on the process [here](http://artsy.github.io/blog/2015/12/15/Automating-Testflight-Deploys/).
 
 Note that only one beta can be deployed at a time; teams should use [feature flags](./developing_a_feature.md) to avoid the need for having two parallel beta versions.
 
