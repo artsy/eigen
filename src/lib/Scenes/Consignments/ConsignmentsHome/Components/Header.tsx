@@ -33,7 +33,7 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress }) => {
 
       <Spacer mb={2} />
 
-      <Button data-test-id="header-cta" variant="primaryBlack" block onPress={handlePress} haptic="selection">
+      <Button data-test-id="header-cta" variant="primaryBlack" block onPress={handlePress} haptic>
         <Sans size="3" weight="medium">
           Submit a work
         </Sans>

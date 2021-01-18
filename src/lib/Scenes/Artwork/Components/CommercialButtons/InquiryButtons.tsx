@@ -55,6 +55,7 @@ const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork }) => {
         size="large"
         block
         width={100}
+        haptic
       >
         {InquiryOptions.ContactGallery}
       </Button>

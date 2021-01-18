@@ -7,15 +7,24 @@ upcoming:
     - Add android app shell - pavlos, cx
     - Surface alert message for users with no email client setup - annacarey, pavlos
     - Remove unused deps - pavlos
+    - Adds lab option for inquiry checkout - lily
+    - Refactor filters modal to use react-navigation - mounir
+
   user_facing:
     - Add sharing on Instagram - pavlos
     - Fix a layout bug (double separator) in My Collection Artwork Details
     - Fix layout in My Collection artwork form AdditionalDetails screen - david
+    - Fix a layout bug - pavlos
+    - Add some more haptic feedback - annacarey, pavlos
     - Add auction result screen - adam
     - Add filter button and screen to the ArtistInsights AuctionResults - mounir
     - Allow users to indicate works in MyCollection as editions without marking edition size or number - anna
     - Wire up `See all past shows` button - adam
     - Display sale date correctly on auction results - pepopowitz, ana lisa
+    - Add Sort filter to AuctionResults - mounir
+    - Add Categories filter to AuctionResults - mounir
+    - Add Size filter to AuctionResults - mounir
+    - Add Year filter to AuctionResults - mounir
 
 releases:
   - version: 6.7.5
@@ -31,6 +40,7 @@ releases:
       - More analytics for My Collection - brian
       - Points to Artsy forks only - ash
       - Fix crash on entering city guide - brian
+      - Simplify useStickyScrollheader - adam
     user_facing:
       - Fix logout alert not showing up on changing password - brian
       - Fix a layout bug (double separator) in My Collection Artwork Details

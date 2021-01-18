@@ -3,6 +3,7 @@ import { CommercialButtons_me } from "__generated__/CommercialButtons_me.graphql
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import { navigate } from "lib/navigation/navigate"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { Button, Spacer } from "palette"
 import React from "react"
@@ -11,6 +12,7 @@ import { BidButtonFragmentContainer } from "./BidButton"
 import { BuyNowButtonFragmentContainer } from "./BuyNowButton"
 import { InquiryButtonsFragmentContainer } from "./InquiryButtons"
 import { MakeOfferButtonFragmentContainer } from "./MakeOfferButton"
+
 
 export interface CommercialButtonProps {
   artwork: CommercialButtons_artwork
@@ -83,8 +85,8 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
       return <MakeOfferButtonFragmentContainer artwork={artwork} editionSetID={this.props.editionSetID} />
     } else if (isInquireable && !newFirstInquiry) {
       return (
-        <Button onPress={() => this.handleInquiry()} size="large" block width={100} haptic="selection">
-          Contact gallery
+        <Button onPress={() => this.handleInquiry()} size="large" block width={100} haptic>
+          {InquiryOptions.ContactGallery}
         </Button>
       )
     } else if (isInquireable && newFirstInquiry) {

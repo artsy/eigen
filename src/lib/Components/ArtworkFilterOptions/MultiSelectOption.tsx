@@ -1,14 +1,15 @@
+import { ParamListBase } from "@react-navigation/native"
+import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterToggleButton } from "lib/Components/ArtworkFilterOptions/FilterToggleButton"
 import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Box, Flex, Sans, Separator } from "palette"
 import React from "react"
 import { FlatList, TouchableWithoutFeedback } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 import styled from "styled-components/native"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
 
 interface MultiSelectOptionScreenProps {
-  navigator: NavigatorIOS
+  navigation: StackNavigationProp<ParamListBase>
   filterHeaderText: string
   onSelect: (filterData: FilterData, updatedValue: boolean) => void
   filterOptions: FilterData[]
@@ -20,12 +21,12 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   filterHeaderText,
   onSelect,
   filterOptions,
-  navigator,
+  navigation,
   isSelected,
   isDisabled,
 }) => {
   const handleBackNavigation = () => {
-    navigator.pop()
+    navigation.goBack()
   }
 
   const itemIsSelected = (item: FilterData): boolean => {

@@ -10,7 +10,8 @@ it(@"makes sure that settings are merged correctly", ^{
         @"ARDisableReactNativeBidFlow": @(NO),
         @"AREnableBuyNowFlow": @(YES),
         @"AROptionsArtistSeries": @(NO),
-        @"AROptionsNewFirstInquiry": @(NO)
+        @"AROptionsNewFirstInquiry": @(NO),
+        @"AROptionsInquiryCheckout": @(NO)
     };
 
     NSDictionary *labOptionsConfig = @{
@@ -29,7 +30,8 @@ it(@"makes sure that settings are merged correctly", ^{
       @"AROptionsDisableNativeLiveAuctions": @(YES),
       @"AROptionsPriceTransparency": @(NO),
       @"AROptionsArtistSeries": @(NO),
-      @"AROptionsNewFirstInquiry": @(NO)
+      @"AROptionsNewFirstInquiry": @(NO),
+      @"AROptionsInquiryCheckout": @(NO)
     });
 });
 
