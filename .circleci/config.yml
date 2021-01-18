@@ -150,12 +150,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v9-app_build-{{ checksum ".manifests/app_build" }}
+            - v2-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Build App
           command: ls derived_data || make ci-ios
       - save_cache:
-          key: v9-app_build-{{ checksum ".manifests/app_build" }}
+          key: v2-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -163,12 +163,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v9-app_build-{{ checksum ".manifests/app_build" }}
+            - v1-app_build_android-{{ checksum ".manifests/app_build" }}
       - run:
           name: Build App
           command: make ci-android
       - save_cache:
-          key: v9-app_build-{{ checksum ".manifests/app_build" }}
+          key: v1-app_build_android-{{ checksum ".manifests/app_build" }}
           paths:
             - android/build
             - android/app/build
