@@ -18,6 +18,7 @@ upcoming:
     - Add some more haptic feedback - annacarey, pavlos
     - Add auction result screen - adam
     - Add filter button and screen to the ArtistInsights AuctionResults - mounir
+    - Add phone number confirmation step to consignments flow - david
     - Allow users to indicate works in MyCollection as editions without marking edition size or number - anna
     - Wire up `See all past shows` button - adam
     - Display sale date correctly on auction results - pepopowitz, ana lisa

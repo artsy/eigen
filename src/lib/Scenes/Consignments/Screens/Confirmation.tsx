@@ -6,7 +6,6 @@ import { Box, Button, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { View, ViewProperties } from "react-native"
 import styled from "styled-components/native"
-import Welcome from "./Welcome"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
@@ -66,7 +65,7 @@ export default class Confirmation extends React.Component<Props, State> {
     dismissModal()
     navigate("/")
   }
-  restart = () => this.props.navigator.push({ component: Welcome })
+  restart = () => this.props.navigator.popToTop()
 
   progressContent = () => (
     <Flex style={{ flex: 1 }} flexDirection="row" alignItems="center" justifyContent="center">
