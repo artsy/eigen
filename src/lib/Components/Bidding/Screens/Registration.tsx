@@ -1,8 +1,8 @@
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { get, isEmpty } from "lodash"
 import { Box, Button, Sans, Serif } from "palette"
 import React from "react"
 import { NativeModules, ScrollView, View, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"

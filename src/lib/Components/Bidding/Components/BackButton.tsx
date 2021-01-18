@@ -1,7 +1,7 @@
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { isPad } from "lib/utils/hardware"
 import React from "react"
 import { TouchableWithoutFeedback, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 import { Image } from "../Elements/Image"
 
 interface ContainerWithBackButtonProps extends ViewProperties {

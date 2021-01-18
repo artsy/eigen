@@ -9,9 +9,16 @@ export interface BottomAlignedProps extends React.Props<JSX.Element> {
   buttonText: string
   disabled?: boolean
   verticalOffset?: number
+  showSeparator?: boolean
 }
 
-export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({ buttonText, onPress, children, disabled }) => (
+export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({
+  buttonText,
+  onPress,
+  children,
+  disabled,
+  showSeparator = true,
+}) => (
   <KeyboardAvoidingView
     behavior="padding"
     keyboardVerticalOffset={useScreenDimensions().safeAreaInsets.top + ICON_HEIGHT}
@@ -20,7 +27,7 @@ export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({ buttonText, 
     <View key="space-eater" style={{ flexGrow: 1 }}>
       {children}
     </View>
-    <Separator key="separator" />
+    {!!showSeparator && <Separator key="separator" />}
     <Spacer mb={1} />
     <Box px={2}>
       <Button block width="100%" onPress={onPress} disabled={disabled}>

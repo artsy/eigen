@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Serif, Spacer } from "palette"
+import { Box, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { ScrollView, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
@@ -25,9 +25,9 @@ const noResults = (props) => {
     return null
   }
   return (
-    <Serif size="3t" color={color("black60")}>
+    <Sans size="3t" color={color("black60")}>
       {props.noResultsMessage} {props.query}
-    </Serif>
+    </Sans>
   )
 }
 

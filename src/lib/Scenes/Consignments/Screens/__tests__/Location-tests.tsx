@@ -5,6 +5,5 @@ import Location from "../Location"
 
 it("renders without throwing an error", () => {
   const nav = {} as any
-  const route = {} as any
-  renderWithWrappers(<Location navigator={nav} route={route} />)
+  renderWithWrappers(<Location navigator={nav} />)
 })

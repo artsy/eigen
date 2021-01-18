@@ -13,7 +13,6 @@ import { BuyNowButtonFragmentContainer } from "./BuyNowButton"
 import { InquiryButtonsFragmentContainer } from "./InquiryButtons"
 import { MakeOfferButtonFragmentContainer } from "./MakeOfferButton"
 
-
 export interface CommercialButtonProps {
   artwork: CommercialButtons_artwork
   me: CommercialButtons_me
