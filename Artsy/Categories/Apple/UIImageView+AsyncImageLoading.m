@@ -11,7 +11,7 @@
 
 - (void)ar_setImageWithURL:(NSURL *)url
           placeholderImage:(UIImage *)placeholder
-                 completed:(SDWebImageCompletionBlock)completionBlock
+                 completed:(SDExternalCompletionBlock)completionBlock
 {
     if (!placeholder) {
         placeholder = [UIImage imageFromColor:[UIColor artsyGrayRegular]];
@@ -20,12 +20,16 @@
     // In testing provide the ability to do a synchronous fast image cache call
     if (!ARPerformWorkAsynchronously) {
         SDWebImageManager *manager = [SDWebImageManager sharedManager];
-        if ([manager cachedImageExistsForURL:url]) {
-            NSString *key = [manager cacheKeyForURL:url];
-            self.image = [manager.imageCache imageFromDiskCacheForKey:key];
-            if (completionBlock) { completionBlock(self.image, nil, SDImageCacheTypeDisk, url); }
-            return;
-        }
+        NSString *key = [manager cacheKeyForURL:url];
+        [manager.imageCache containsImageForKey:key cacheType:SDImageCacheTypeAll completion:^(SDImageCacheType containsCacheType) {
+            if (containsCacheType != SDImageCacheTypeNone) {
+               [manager.imageCache queryImageForKey:key options:0 context:nil cacheType:containsCacheType completion:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
+                    self.image = image;
+                    completionBlock(self.image, nil, containsCacheType, url);
+                }];
+                return;
+            }
+        }];
     }
 
     if ([ARLogger shouldLogNetworkRequests]) {
@@ -78,7 +82,7 @@
     [self ar_setImageWithURL:url placeholderImage:placeholder completed:nil];
 }
 
-- (void)ar_setImageWithURL:(NSURL *)url completed:(SDWebImageCompletionBlock)completionBlock
+- (void)ar_setImageWithURL:(NSURL *)url completed:(SDExternalCompletionBlock)completionBlock
 {
     [self ar_setImageWithURL:url placeholderImage:nil completed:completionBlock];
 }
