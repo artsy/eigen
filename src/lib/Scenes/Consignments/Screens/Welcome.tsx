@@ -1,15 +1,14 @@
 import { CamIcon, MoneyIcon, OfferIcon, SellIcon } from "lib/Icons/Consignments"
 import { dismissModal } from "lib/navigation/navigate"
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack } from "lib/utils/track"
 import { Box, Button, Flex, Sans, Serif, Spacer, Theme } from "palette"
 import React from "react"
-import { FlatList, Route, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
+import { FlatList, ViewProperties } from "react-native"
 import Overview from "./Overview"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
-  route: Route
 }
 
 const rows = [

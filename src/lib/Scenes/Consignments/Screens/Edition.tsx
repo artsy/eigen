@@ -1,6 +1,6 @@
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
-import { LayoutAnimation, Route, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
+import { LayoutAnimation, ViewProperties } from "react-native"
 import Text from "../Components/TextInput"
 import Toggle from "../Components/Toggle"
 import { ConsignmentSetup } from "../index"
@@ -11,7 +11,6 @@ import { Form, Row } from "../Components/FormElements"
 
 interface Props extends ConsignmentSetup, ViewProperties {
   navigator: NavigatorIOS
-  route: Route
   setup: ConsignmentSetup
   updateWithEdition?: (setup: ConsignmentSetup) => void
 }

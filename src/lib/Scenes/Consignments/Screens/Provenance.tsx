@@ -1,14 +1,13 @@
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Theme } from "palette"
 import React from "react"
-import { Route, View, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
+import { View, ViewProperties } from "react-native"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import TextArea from "../Components/TextArea"
 import { ConsignmentSetup } from "../index"
 
 interface Props extends ConsignmentSetup, ViewProperties {
   navigator: NavigatorIOS
-  route: Route
   updateWithProvenance?: (provenance: string) => void
 }
 

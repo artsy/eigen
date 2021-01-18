@@ -1,14 +1,9 @@
 import Overview from "lib/Scenes/Consignments/Screens/Overview"
-import { Theme } from "palette"
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
-import NavigatorIOS from "react-native-navigator-ios"
 
 export const ConsignmentsSubmissionForm: React.FC = () => {
   const initialRoute = { component: Overview }
 
-  return (
-    <Theme>
-      <NavigatorIOS initialRoute={initialRoute} navigationBarHidden={true} style={{ flex: 1 }} />
-    </Theme>
-  )
+  return <NavigatorIOS initialRoute={initialRoute} />
 }
