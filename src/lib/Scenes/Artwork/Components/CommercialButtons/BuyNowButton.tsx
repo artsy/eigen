@@ -120,7 +120,7 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
         variant={variant}
         block
         width={100}
-        haptic="selection"
+        haptic
       >
         {variant && variant === "secondaryOutline" && artwork.saleMessage
           ? `Buy now ${artwork.saleMessage}`

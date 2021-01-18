@@ -90,7 +90,7 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
               <Touchable
                 onPress={() => followOrUnfollowArtist(artist)}
                 hitSlop={{ top: 20, left: 20, bottom: 20, right: 20 }}
-                haptic="selection"
+                haptic
                 noFeedback
               >
                 <Sans style={{ textDecorationLine: "underline" }} size="3">
