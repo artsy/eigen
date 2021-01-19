@@ -4,6 +4,13 @@ set -euxo pipefail
 
 # Clear local caches and build files
 
+echo 'Clear gradle cache'
+if [ -d node_modules ]; then
+	cd android
+	./gradlew clean cleanBuildCache
+	cd -
+fi
+
 echo 'Clear node modules (┛ಠ_ಠ)┛彡┻━┻'
 rm -rf node_modules
 
@@ -16,11 +23,6 @@ echo 'Clear Xcode derived data (╯°□°)╯︵ ┻━┻'
 if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then
 	rm -rf ~/Library/Developer/Xcode/DerivedData
 fi
-
-echo 'Clear gradle cache'
-cd android
-./gradlew clean cleanBuildCache
-cd -
 
 echo 'Clear relay, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
 rm -rf "$TMPDIR"/RelayFindGraphQLTags-*
