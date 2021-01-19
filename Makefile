@@ -89,17 +89,14 @@ ci-android:
 ci-test:
 	if [ "$(LOCAL_BRANCH)" != "beta" ] && [ "$(LOCAL_BRANCH)" != "app_store_submission" ]; then make test; else echo "Skipping test run on beta deploy."; fi
 
-deploy_if_beta_branch:
-	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make distribute; fi
-
 deploy_if_beta_branch_ios:
-	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make distribute_ios; fi
+	if [ "$(LOCAL_BRANCH)" == "beta-ios" ]; then make distribute_ios; fi
 
 deploy_if_beta_branch_android:
-	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make distribute_android; fi
+	if [ "$(LOCAL_BRANCH)" == "beta-android" ]; then make distribute_android; fi
 
 deploy:
-	git push origin "$(LOCAL_BRANCH):beta" -f --no-verify
+	git push origin "$(LOCAL_BRANCH):beta-android" -f --no-verify
 
 ### App Store Submission
 

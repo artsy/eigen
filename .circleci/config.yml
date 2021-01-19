@@ -270,7 +270,7 @@ jobs:
       - run:
           name: Quit early if possible
           command: |
-            if test $CIRCLE_BRANCH != beta && ls xcode_test_raw.log
+            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
             then
               circleci step halt
             fi
@@ -316,7 +316,7 @@ jobs:
           command: bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
 
       - await-previous-builds:
-          branch: beta
+          branch: beta-ios
       - run:
           name: Deploy if beta
           command: make deploy_if_beta_branch_ios
@@ -353,7 +353,7 @@ jobs:
           command: bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
 
       - await-previous-builds:
-          branch: beta
+          branch: beta-android
       - run:
           name: Deploy if beta
           command: make deploy_if_beta_branch_android
@@ -400,7 +400,7 @@ workflows:
             branches:
               ignore:
                 - master
-                - beta
+                - beta-android
                 - app_store_submission
       - build-test-js:
           filters:
@@ -413,7 +413,7 @@ workflows:
           filters:
             branches:
               only:
-                - beta
+                - beta-android
       - build-test-app-ios:
           filters:
             branches:
