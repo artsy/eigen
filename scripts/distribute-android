@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+make distribute_setup
+bundle exec fastlane ship_beta_android

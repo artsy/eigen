@@ -48,9 +48,6 @@ distribute_setup: setup_fastlane_env
 distribute_ios: distribute_setup
 	bundle exec fastlane ship_beta_ios
 
-distribute_android: distribute_setup
-	bundle exec fastlane ship_beta_android
-
 distribute: distribute_setup
 	bundle exec fastlane ship_beta
 
@@ -98,12 +95,6 @@ ci-test-android:
 
 deploy_if_beta_branch_ios:
 	if [ "${LOCAL_BRANCH}" == "beta-ios" ]; then make distribute_ios; fi
-
-deploy_if_beta_branch_android:
-	if test "${LOCAL_BRANCH}" = "beta-android"; then echo wowww; fi
-	if test "$(LOCAL_BRANCH)" = "beta-android"; then echo wow1; fi
-	if [ "$(LOCAL_BRANCH)" == "beta-android" ]; then echo wow2; fi
-	if [ "${LOCAL_BRANCH}" == "beta-android" ]; then echo wow3; fi
 
 deploy-ios:
 	git push origin "${LOCAL_BRANCH}:beta-ios" -f --no-verify

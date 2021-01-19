@@ -356,7 +356,7 @@ jobs:
           branch: beta-android
       - run:
           name: Deploy if beta
-          command: make deploy_if_beta_branch_android
+          command: ./scripts/deploy-if-beta-branch-android
 
   promote-beta-to-app-store:
     environment:
