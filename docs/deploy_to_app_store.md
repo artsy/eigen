@@ -8,9 +8,9 @@ Eigen's beta pre-submission checklist has [moved into Notion](https://www.notion
 
 ## Preparing to Ship a Final Version
 
-1. Update [`release_notes.txt`](https://github.com/artsy/eigen/blob/master/fastlane/metadata/en-US/release_notes.txt) with the **user-facing** release notes for this version. 
+1. Update [`release_notes.txt`](https://github.com/artsy/eigen/blob/master/fastlane/metadata/en-US/release_notes.txt) with the **user-facing** release notes for this version.
    - See [previous examples](https://github.com/artsy/eigen/commits/master/fastlane/metadata/en-US/release_notes.txt) of release notes.
-   - Share the notes with the #product-collector-experience channel in Slack for feedback. 
+   - Share the notes with the #product-collector-experience channel in Slack for feedback.
    - Commit & push the changes.
 1. Run `make promote_beta_to_submission`. This will submit the **most recent beta** for App Store review
 
@@ -36,5 +36,5 @@ Our App Store releases are done manually, instead of automatically once Apple ap
 1. Run `make next`. This prompts for the next version number. **Use the same version** as the previous step.
 1. Move the release from `upcoming` to `releases` in `CHANGELOG.yml` and add a new, empty entry under `upcoming`. Make sure the `date` is accurate. [Here is a previous commit](https://github.com/artsy/eigen/commit/580db98fa1165e01f81070e9bbc77598a47bcfc9#diff-96801928eca93eea4a5b44f359b868b5).
 1. Add and commit the changed files, typically with `-m "Preparing for development, version X.Y.Z."`.
-1. Run `make deploy` to trigger a new beta. (When we add a new version, the first beta goes through additional TestFlight review by Apple. By trigger the beta now, we go through that review early, and avoid delaying future QA sessions.)
+1. Run `make deploy-ios` to trigger a new beta. (When we add a new version, the first beta goes through additional TestFlight review by Apple. By trigger the beta now, we go through that review early, and avoid delaying future QA sessions.)
 1. PR your changes back into the `master` branch.

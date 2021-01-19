@@ -63,7 +63,7 @@ Commit the version and changelog changes.
 
 Communicate with other devs that a hotfix will be deployed and they should hold off on deploying testflights until a build is submitted for review.
 
-`make deploy`
+`make deploy` (or `make deploy-ios` or `make deploy-android` for individual releases)
 
 ## Run through QA script and release to the app store
 
