@@ -46,7 +46,15 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
         <Button size="large" variant="primaryBlack" block width={100} mb={1}>
           Confirm
         </Button>
-        <Button size="large" variant="secondaryOutline" block width={100}>
+        <Button
+          size="large"
+          variant="secondaryOutline"
+          block
+          width={100}
+          onPress={() => {
+            toggleVisibility()
+          }}
+        >
           Cancel
         </Button>
       </Flex>
