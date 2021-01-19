@@ -5,8 +5,13 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistInsightsAuctionResults_artist = {
+    readonly birthday: string | null;
     readonly slug: string;
     readonly auctionResultsConnection: {
+        readonly createdYearRange: {
+            readonly startAt: number | null;
+            readonly endAt: number | null;
+        } | null;
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
@@ -28,6 +33,11 @@ export type ArtistInsightsAuctionResults_artist$key = {
 const node: ReaderFragment = {
   "argumentDefinitions": [
     {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "categories"
+    },
+    {
       "defaultValue": 10,
       "kind": "LocalArgument",
       "name": "count"
@@ -36,6 +46,16 @@ const node: ReaderFragment = {
       "defaultValue": null,
       "kind": "LocalArgument",
       "name": "cursor"
+    },
+    {
+      "defaultValue": 1000,
+      "kind": "LocalArgument",
+      "name": "earliestCreatedYear"
+    },
+    {
+      "defaultValue": 2050,
+      "kind": "LocalArgument",
+      "name": "latestCreatedYear"
     },
     {
       "defaultValue": null,
@@ -67,12 +87,34 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "birthday",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "slug",
       "storageKey": null
     },
     {
       "alias": "auctionResultsConnection",
       "args": [
+        {
+          "kind": "Variable",
+          "name": "categories",
+          "variableName": "categories"
+        },
+        {
+          "kind": "Variable",
+          "name": "earliestCreatedYear",
+          "variableName": "earliestCreatedYear"
+        },
+        {
+          "kind": "Variable",
+          "name": "latestCreatedYear",
+          "variableName": "latestCreatedYear"
+        },
         {
           "kind": "Variable",
           "name": "sizes",
@@ -89,6 +131,31 @@ const node: ReaderFragment = {
       "name": "__artist_auctionResultsConnection_connection",
       "plural": false,
       "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "YearRange",
+          "kind": "LinkedField",
+          "name": "createdYearRange",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "startAt",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "endAt",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
         {
           "alias": null,
           "args": null,
@@ -176,5 +243,5 @@ const node: ReaderFragment = {
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = 'b44dbfda15ee58e45a30db6a779b5478';
+(node as any).hash = '16d1202417ec6350f8ce426ed0b4e3af';
 export default node;

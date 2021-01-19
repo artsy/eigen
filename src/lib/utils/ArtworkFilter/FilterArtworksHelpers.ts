@@ -12,7 +12,10 @@ import { capitalize, compact, forOwn, groupBy, sortBy } from "lodash"
 export enum FilterParamName {
   artistIDs = "artistIDs",
   artistsIFollow = "includeArtworksByFollowedArtists",
+  categories = "categories",
   color = "color",
+  earliestCreatedYear = "earliestCreatedYear",
+  latestCreatedYear = "latestCreatedYear",
   estimateRange = "estimateRange",
   gallery = "partnerID",
   institution = "partnerID",
@@ -31,7 +34,7 @@ export enum FilterParamName {
 
 // Types for the parameters passed to Relay
 export type FilterParams = {
-  [Name in FilterParamName]: string | boolean | undefined | string[]
+  [Name in FilterParamName]: string | number | boolean | undefined | string[]
 }
 
 export enum FilterDisplayName {
@@ -39,6 +42,7 @@ export enum FilterDisplayName {
   artistIDs = "Artists",
   artistsIFollow = "Artist",
   color = "Color",
+  categories = "Medium",
   estimateRange = "Price/estimate range",
   gallery = "Gallery",
   institution = "Institution",
@@ -49,6 +53,7 @@ export enum FilterDisplayName {
   sort = "Sort by",
   timePeriod = "Time period",
   viewAs = "View as",
+  year = "Year created",
   waysToBuy = "Ways to buy",
 }
 
@@ -77,6 +82,7 @@ export interface AggregateOption {
 const DEFAULT_ARTWORKS_PARAMS = {
   acquireable: false,
   atAuction: false,
+  categories: undefined, // TO check
   dimensionRange: "*-*",
   estimateRange: "",
   inquireableOnly: false,
@@ -175,6 +181,20 @@ export const selectedOption = ({
 }) => {
   const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
 
+  if (filterScreen === "categories") {
+    const selectedCategoriesValues = selectedOptions.find((filter) => filter.paramName === FilterParamName.categories)
+      ?.paramValue as string[] | undefined
+
+    if (selectedCategoriesValues?.length) {
+      const numSelectedCategoriesToDisplay = selectedCategoriesValues.length
+      if (numSelectedCategoriesToDisplay === 1) {
+        return selectedCategoriesValues[0]
+      }
+      return `${selectedCategoriesValues[0]}, ${numSelectedCategoriesToDisplay - 1} more`
+    }
+    return "All"
+  }
+
   if (filterScreen === "sizes") {
     const selectedSizesValues = selectedOptions.find((filter) => filter.paramName === FilterParamName.sizes)
       ?.paramValue as string[] | undefined
@@ -185,6 +205,20 @@ export const selectedOption = ({
         return firstSelectedSize
       }
       return `${firstSelectedSize}, ${numSelectedSizesToDisplay - 1} more`
+    }
+    return "All"
+  }
+
+  if (filterScreen === "year") {
+    const selectedEarliestCreatedYear = selectedOptions.find(
+      (filter) => filter.paramName === FilterParamName.earliestCreatedYear
+    )?.paramValue
+    const selectedLatestCreatedYear = selectedOptions.find(
+      (filter) => filter.paramName === FilterParamName.latestCreatedYear
+    )?.paramValue
+
+    if (selectedEarliestCreatedYear && selectedLatestCreatedYear) {
+      return `${selectedEarliestCreatedYear} - ${selectedLatestCreatedYear}`
     }
     return "All"
   }
@@ -290,6 +324,8 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   priceRange: "PRICE_RANGE",
   artistsIFollow: "FOLLOWED_ARTISTS",
   artistIDs: "ARTIST",
+  earliestCreatedYear: "earliestCreatedYear",
+  latestCreatedYear: "latestCreatedYear",
 }
 
 export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {

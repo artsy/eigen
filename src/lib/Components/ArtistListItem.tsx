@@ -159,6 +159,7 @@ export class ArtistListItem extends React.Component<Props, State> {
                 size="small"
                 loading={isFollowedChanging}
                 longestText="Following"
+                haptic
               >
                 {is_followed ? "Following" : "Follow"}
               </Button>

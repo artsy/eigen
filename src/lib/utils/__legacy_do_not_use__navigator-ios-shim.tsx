@@ -1,0 +1,55 @@
+import { NavigationContainer, NavigationContainerRef, StackActions } from "@react-navigation/native"
+import { createStackNavigator } from "@react-navigation/stack"
+import React from "react"
+import { View } from "react-native"
+
+const Stack = createStackNavigator()
+interface ScreenProps {
+  Component: React.ComponentType<any>
+  props: object
+  navigator: NavigatorIOS
+}
+
+const ScreenWrapper: React.FC<{ route: { params: ScreenProps } }> = (props) => {
+  return (
+    <View style={{ flex: 1, backgroundColor: "white" }}>
+      <props.route.params.Component {...props.route.params.props} navigator={props.route.params.navigator} />
+    </View>
+  )
+}
+
+class NavigatorIOS extends React.Component<{
+  initialRoute: { component: React.ComponentType<any>; passProps?: object }
+}> {
+  navigator: NavigationContainerRef | null = null
+  push(args: { component: React.ComponentType<any>; title?: string; passProps?: object }) {
+    const props: ScreenProps = {
+      Component: args.component,
+      props: args.passProps ?? {},
+      navigator: this,
+    }
+    this.navigator?.dispatch(StackActions.push("screen", props))
+  }
+  pop() {
+    this.navigator?.dispatch(StackActions.pop())
+  }
+  popToTop() {
+    this.navigator?.dispatch(StackActions.popToTop())
+  }
+  render() {
+    const initialScreenParams: ScreenProps = {
+      Component: this.props.initialRoute.component,
+      props: this.props.initialRoute.passProps ?? {},
+      navigator: this,
+    }
+    return (
+      <NavigationContainer ref={(ref) => (this.navigator = ref)}>
+        <Stack.Navigator headerMode="none">
+          <Stack.Screen component={ScreenWrapper} name="screen" initialParams={initialScreenParams}></Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer>
+    )
+  }
+}
+
+export default NavigatorIOS

@@ -1,6 +1,6 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import * as PropTypes from "prop-types"
+import PropTypes from "prop-types"
 import React from "react"
 import { View } from "react-native"
 
@@ -14,7 +14,7 @@ RelayRuntime.fetchQuery = jest.fn()
 const SECONDS = 1000
 const MINUTES = 60 * SECONDS
 
-export class TestConsumer extends React.Component {
+class TestConsumer extends React.Component {
   static contextTypes = {
     timeOffsetInMilliSeconds: PropTypes.number,
   }

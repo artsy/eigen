@@ -8,7 +8,7 @@ const emptyProps = { navigator: {} as any, route: {} as any }
 describe("callbacks", () => {
   it("calls pop when done is tapped", () => {
     const navigator: any = { pop: jest.fn() }
-    const provenance = new Provenance({ navigator, route: {}, updateWithProvenance: jest.fn() })
+    const provenance = new Provenance({ navigator, updateWithProvenance: jest.fn() })
 
     provenance.doneTapped()
 
@@ -18,7 +18,7 @@ describe("callbacks", () => {
   it("calls updateWithProvenance when done is tapped", () => {
     const navigator: any = { pop: jest.fn() }
     const updateWithProvenance = jest.fn()
-    const provenance = new Provenance({ navigator, route: {}, updateWithProvenance })
+    const provenance = new Provenance({ navigator, updateWithProvenance })
 
     provenance.doneTapped()
 
@@ -44,16 +44,14 @@ describe("state", () => {
 
 it("renders without throwing a error", () => {
   const nav = {} as any
-  const route = {} as any
 
-  renderWithWrappers(<Provenance navigator={nav} route={route} />)
+  renderWithWrappers(<Provenance navigator={nav} />)
 })
 
 describe("with an existing state", () => {
   it("renders without throwing a error", () => {
     const nav = {} as any
-    const route = {} as any
 
-    renderWithWrappers(<Provenance navigator={nav} route={route} provenance="Acquired by my father somewhere" />)
+    renderWithWrappers(<Provenance navigator={nav} provenance="Acquired by my father somewhere" />)
   })
 })

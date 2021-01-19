@@ -171,6 +171,8 @@ flip_table:
 	@echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
 	rm -rf emission/Pod/Assets/Emission*
 	rm -rf emission/Pod/Assets/assets
+	@echo 'Install node modules'
+	yarn install
 	@echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
 	$(MAKE) update_echo
 	bundle exec pod install --repo-update
