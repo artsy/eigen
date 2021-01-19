@@ -108,9 +108,6 @@ deploy_if_beta_branch_android:
 deploy-ios:
 	git push origin "${LOCAL_BRANCH}:beta-ios" -f --no-verify
 
-deploy-android:
-	git push origin "${LOCAL_BRANCH}:beta-android" -f --no-verify
-
 deploy: deploy-ios deploy-android
 
 ### App Store Submission
