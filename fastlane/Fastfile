@@ -5,8 +5,6 @@ require 'spaceship'
 require 'fileutils'
 require 'json'
 
-APP_ID = 'net.artsy.artsy'
-
 skip_docs
 
 before_all do
