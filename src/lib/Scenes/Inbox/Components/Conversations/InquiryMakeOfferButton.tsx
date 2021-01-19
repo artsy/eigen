@@ -1,10 +1,7 @@
-import { Conversation_me } from "__generated__/Conversation_me.graphql"
 import { Button, Flex, Separator } from "palette"
 import React, { useState } from "react"
 import styled from "styled-components/native"
 import { MakeOfferModalQueryRenderer as MakeOfferModal } from "./MakeOfferModal"
-
-// type Item = NonNullable<NonNullable<NonNullable<Conversation_me["conversation"]>["items"]>[0]>["item"]
 
 export interface InquiryMakeOfferButtonProps {
   // artwork: InquiryMakeOfferButton_artwork
@@ -20,7 +17,6 @@ const ShadowSeparator = styled(Separator)`
 `
 
 export const InquiryMakeOfferButton: React.FC<InquiryMakeOfferButtonProps> = ({ artworkID }) => {
-  // export const InquiryMakeOfferButton: React.FC = () => {
   const [modalVisibility, setModalVisibility] = useState(false)
 
   return (

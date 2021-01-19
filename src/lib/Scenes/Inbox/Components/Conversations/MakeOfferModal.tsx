@@ -9,8 +9,6 @@ import { BorderBox, Button, Flex, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
-// type Item = NonNullable<NonNullable<NonNullable<Conversation_me["conversation"]>["items"]>[0]>["item"]
-
 interface MakeOfferModalProps {
   toggleVisibility: () => void
   modalIsVisible: boolean
