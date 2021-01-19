@@ -82,7 +82,7 @@ export const MakeOfferModalQueryRenderer: React.FC<{
       }}
       render={renderWithLoadProgress<MakeOfferModalQueryResponse>(({ artwork }) => (
         <MakeOfferModalFragmentContainer
-          artwork={artwork}
+          artwork={artwork!}
           modalIsVisible={modalIsVisible}
           toggleVisibility={toggleVisibility}
         />
