@@ -1,3 +1,4 @@
+# SHELL := /usr/bin/env bash
 WORKSPACE = Artsy.xcworkspace
 SCHEME = Artsy
 SCHEME_INTEGRATION_TESTS = 'Artsy Integration Tests'
@@ -8,7 +9,7 @@ DEVICE_HOST = platform='iOS Simulator',OS='14.2',name='iPhone 12 Pro'
 
 DATE_MONTH = $(shell date "+%e %h" | tr "[:lower:]" "[:upper:]")
 
-LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
+LOCAL_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 BRANCH = $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
 
 ## Lets us use circle caching for build artifacts
