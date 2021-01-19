@@ -4,14 +4,11 @@ import styled from "styled-components/native"
 import { MakeOfferModalQueryRenderer as MakeOfferModal } from "./MakeOfferModal"
 
 export interface InquiryMakeOfferButtonProps {
-  // artwork: InquiryMakeOfferButton_artwork
-  // // EditionSetID is passed down from the edition selected by the user
-  // editionSetID?: string
   artworkID: string
 }
 
 const ShadowSeparator = styled(Separator)`
-  box-shadow: -1px -1px 1px rgba(50, 50, 50, 0.75);
+  box-shadow: 0 -1px 1px rgba(50, 50, 50, 0.1);
   width: 100%;
   height: 0;
 `

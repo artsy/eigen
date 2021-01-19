@@ -1,5 +1,5 @@
 import colors from "lib/data/colors"
-import { useEmissionOption } from "lib/store/GlobalStore"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
 import { Button, color, Flex, themeProps } from "palette"
@@ -33,7 +33,7 @@ interface Props {
   disabled?: boolean
   onSubmit?: (text: string) => any
   value?: string
-  itemID?: string
+  artworkID?: string | null
 }
 
 interface State {
@@ -90,17 +90,19 @@ export default class Composer extends React.Component<Props, State> {
     }
 
     const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
-    const showInquiryMakeOfferButton = useEmissionOption("AROptionsInquiryCheckout")
+    const showInquiryMakeOfferButton = getCurrentEmissionState().options.AROptionsInquiryCheckout
     return (
       <ScreenDimensionsContext.Consumer>
         {({ safeAreaInsets }) => (
           <StyledKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={safeAreaInsets.top}>
             {this.props.children}
             <Flex flexDirection="column">
-              {!!showInquiryMakeOfferButton && <InquiryMakeOfferButton artworkID={this.props.itemID} />}
+              {!!showInquiryMakeOfferButton && this.props.artworkID != null && (
+                <InquiryMakeOfferButton artworkID={this.props.artworkID} />
+              )}
               <Container active={this.state.active}>
                 <TextInput
-                  placeholder={"Type your message woo"}
+                  placeholder={"Type your message"}
                   placeholderTextColor={colors["gray-semibold"]}
                   keyboardAppearance={"dark"}
                   onEndEditing={() => this.setState({ active: false })}

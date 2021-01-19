@@ -142,7 +142,10 @@ export class Conversation extends React.Component<Props, State> {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const partnerName = conversation.to.name
 
-    const item = conversation?.items?.[0]?.item
+    const artworkSlug =
+      conversation?.items?.[0]?.item && conversation?.items?.[0]?.item.__typename === "Artwork"
+        ? conversation?.items?.[0]?.item.slug
+        : null
 
     return (
       <Composer
@@ -151,7 +154,7 @@ export class Conversation extends React.Component<Props, State> {
         ref={(composer) => (this.composer = composer)}
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         value={this.state.failedMessageText}
-        itemID={item.slug}
+        artworkID={artworkSlug}
         onSubmit={(text) => {
           this.setState({ sendingMessage: true, failedMessageText: null })
           sendConversationMessage(
