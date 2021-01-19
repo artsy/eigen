@@ -10,6 +10,7 @@ import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 import { ActionType, OwnerType } from "@artsy/cohesion"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { WatchedLotFragmentContainer as WatchedLot } from "lib/Scenes/MyBids/Components/WatchedLot"
 import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -20,6 +21,7 @@ import {
   ClosedLotFragmentContainer as ClosedLot,
   MyBidsPlaceholder,
   SaleCardFragmentContainer,
+  // WatchedLotFragmentContainer as WatchedLot,
 } from "./Components"
 import { NoBids } from "./Components/NoBids"
 import { isLotStandingComplete, TimelySale } from "./helpers/timely"
@@ -57,7 +59,12 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
     }
   }, [isActiveTab])
 
+  // render() {
+  const { me } = this.props
   const lotStandings = extractNodes(me?.auctionsLotStandingConnection)
+  const watchedLots = extractNodes(me?.watchedLotConnection)
+  console.log("watchedLot1:", me?.watchedLotConnection)
+  console.log("watchedLot1:", watchedLots)
 
   const [activeStandings, closedStandings] = partition(
     lotStandings.filter((ls) => !!ls),
@@ -146,6 +153,9 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
             </Join>
           </Flex>
         )}
+        {watchedLots.map((ls) => {
+          return <WatchedLot lotStanding={ls} key={ls?.internalID!} />
+        })}
         {!!hasClosedBids && <BidTitle>Closed Bids</BidTitle>}
         {!!hasClosedBids && (
           <Flex data-test-id="closed-section">
@@ -223,6 +233,14 @@ export const MyBidsContainer = createPaginationContainer(
                   status
                 }
               }
+            }
+          }
+        }
+        watchedLotConnection(first: $count, after: $cursor) {
+          edges {
+            node {
+              internalID
+              ...WatchedLot_lotStanding
             }
           }
         }
