@@ -4,9 +4,10 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Image } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
+import { useInterval } from "lib/utils/useInterval"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { ArtworkIcon, color, Flex, Spacer, Text } from "palette"
-import React, { useEffect } from "react"
+import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -28,27 +29,18 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
 
   const { trackEvent } = useTracking()
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout | null
+  useInterval(() => {
     if (!isImage(defaultImage) || hasImagesStillProcessing(defaultImage, images)) {
-      interval = setInterval(() => {
-        relay.refetch(
-          {
-            artworkID: slug,
-          },
-          null,
-          null,
-          { force: true }
-        )
-      }, 1000)
+      relay.refetch(
+        {
+          artworkID: slug,
+        },
+        null,
+        null,
+        { force: true }
+      )
     }
-
-    return () => {
-      if (interval) {
-        clearInterval(interval)
-      }
-    }
-  }, [])
+  }, 1000)
 
   const isImage = (toCheck: any): toCheck is Image => !!toCheck
 
@@ -168,19 +160,7 @@ export const MyCollectionArtworkHeaderRefetchContainer = createRefetchContainer(
   graphql`
     query MyCollectionArtworkHeaderRefetchQuery($artworkID: String!) {
       artwork(id: $artworkID) {
-        artistNames
-        date
-        images {
-          height
-          isDefault
-          imageURL
-          width
-          internalID
-          imageVersions
-        }
-        internalID
-        slug
-        title
+        ...MyCollectionArtworkHeader_artwork
       }
     }
   `

@@ -1,27 +1,16 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 87dffd4db22ee1f4dba34506eff18a3e */
+/* @relayHash 4435daf1ae1a23f812d86d665f67712e */
 
 import { ConcreteRequest } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkHeaderRefetchQueryVariables = {
     artworkID: string;
 };
 export type MyCollectionArtworkHeaderRefetchQueryResponse = {
     readonly artwork: {
-        readonly artistNames: string | null;
-        readonly date: string | null;
-        readonly images: ReadonlyArray<{
-            readonly height: number | null;
-            readonly isDefault: boolean | null;
-            readonly imageURL: string | null;
-            readonly width: number | null;
-            readonly internalID: string | null;
-            readonly imageVersions: ReadonlyArray<string | null> | null;
-        } | null> | null;
-        readonly internalID: string;
-        readonly slug: string;
-        readonly title: string | null;
+        readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkHeader_artwork">;
     } | null;
 };
 export type MyCollectionArtworkHeaderRefetchQuery = {
@@ -36,21 +25,25 @@ query MyCollectionArtworkHeaderRefetchQuery(
   $artworkID: String!
 ) {
   artwork(id: $artworkID) {
-    artistNames
-    date
-    images {
-      height
-      isDefault
-      imageURL
-      width
-      internalID
-      imageVersions
-    }
-    internalID
-    slug
-    title
+    ...MyCollectionArtworkHeader_artwork
     id
   }
+}
+
+fragment MyCollectionArtworkHeader_artwork on Artwork {
+  artistNames
+  date
+  images {
+    height
+    isDefault
+    imageURL
+    width
+    internalID
+    imageVersions
+  }
+  internalID
+  slug
+  title
 }
 */
 
@@ -73,82 +66,7 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "artistNames",
-  "storageKey": null
-},
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "date",
-  "storageKey": null
-},
-v4 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "internalID",
-  "storageKey": null
-},
-v5 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "Image",
-  "kind": "LinkedField",
-  "name": "images",
-  "plural": true,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "height",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "isDefault",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "imageURL",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "width",
-      "storageKey": null
-    },
-    (v4/*: any*/),
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "imageVersions",
-      "storageKey": null
-    }
-  ],
-  "storageKey": null
-},
-v6 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "slug",
-  "storageKey": null
-},
-v7 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "title",
   "storageKey": null
 };
 return {
@@ -166,12 +84,11 @@ return {
         "name": "artwork",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
-          (v5/*: any*/),
-          (v4/*: any*/),
-          (v6/*: any*/),
-          (v7/*: any*/)
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "MyCollectionArtworkHeader_artwork"
+          }
         ],
         "storageKey": null
       }
@@ -193,12 +110,82 @@ return {
         "name": "artwork",
         "plural": false,
         "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "artistNames",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "date",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "images",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "height",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "isDefault",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "imageURL",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "width",
+                "storageKey": null
+              },
+              (v2/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "imageVersions",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
           (v2/*: any*/),
-          (v3/*: any*/),
-          (v5/*: any*/),
-          (v4/*: any*/),
-          (v6/*: any*/),
-          (v7/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "slug",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "title",
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": null,
@@ -212,7 +199,7 @@ return {
     ]
   },
   "params": {
-    "id": "87dffd4db22ee1f4dba34506eff18a3e",
+    "id": "4435daf1ae1a23f812d86d665f67712e",
     "metadata": {},
     "name": "MyCollectionArtworkHeaderRefetchQuery",
     "operationKind": "query",
@@ -220,5 +207,5 @@ return {
   }
 };
 })();
-(node as any).hash = '46a8e156f6bd0894d312af8825f02b9c';
+(node as any).hash = 'c6330f266ee9fac1eff64f045343fcae';
 export default node;
