@@ -1,3 +1,4 @@
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
@@ -35,13 +36,15 @@ describe("regarding the send button", () => {
 })
 
 describe("regarding the make offer button", () => {
-  it("renders the inquiry make offer button if inquiry item is an artwork", () => {
-    const tree = renderWithWrappers(<Composer item={{ __typename: "Artwork" }} />)
+  it("renders the inquiry make offer button if inquiry checkout flag is true", () => {
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsInquiryCheckout: true })
+    const tree = renderWithWrappers(<Composer />)
     expect(tree.root.findAllByType(Button).length).toEqual(2)
   })
 
   it("doesn't render the inquiry make offer button if inquiry item is not an artwork", () => {
-    const tree = renderWithWrappers(<Composer item={{ __typename: "Fair" }} />)
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsInquiryCheckout: false })
+    const tree = renderWithWrappers(<Composer />)
     expect(tree.root.findAllByType(Button).length).toEqual(1)
   })
 })

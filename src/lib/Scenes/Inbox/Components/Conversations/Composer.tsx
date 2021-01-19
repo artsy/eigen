@@ -1,11 +1,10 @@
-import React from "react"
-import { Dimensions, TextInput, TouchableWithoutFeedback } from "react-native"
-
-import { Conversation_me } from "__generated__/Conversation_me.graphql"
 import colors from "lib/data/colors"
+import { useEmissionOption } from "lib/store/GlobalStore"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
 import { Button, color, Flex, themeProps } from "palette"
+import React from "react"
+import { Dimensions, TextInput, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 import { InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
 
@@ -29,7 +28,6 @@ const StyledKeyboardAvoidingView = styled.KeyboardAvoidingView`
   flex: 1;
   ${isPad ? "width: 708; align-self: center;" : ""};
 `
-type Item = NonNullable<NonNullable<NonNullable<Conversation_me["conversation"]>["items"]>[0]>["item"]
 
 interface Props {
   disabled?: boolean
@@ -92,16 +90,14 @@ export default class Composer extends React.Component<Props, State> {
     }
 
     const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
-
+    const showInquiryMakeOfferButton = useEmissionOption("AROptionsInquiryCheckout")
     return (
       <ScreenDimensionsContext.Consumer>
         {({ safeAreaInsets }) => (
           <StyledKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={safeAreaInsets.top}>
             {this.props.children}
             <Flex flexDirection="column">
-              {!!this.props.item && this.props.item?.__typename === "Artwork" && (
-                <InquiryMakeOfferButton artworkID={this.props.itemID} />
-              )}
+              {!!showInquiryMakeOfferButton && <InquiryMakeOfferButton artworkID={this.props.itemID} />}
               <Container active={this.state.active}>
                 <TextInput
                   placeholder={"Type your message woo"}
