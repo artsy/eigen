@@ -8,6 +8,10 @@ You'll need [Node](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/) i
 
 Currently we require developers to use Xcode 12, with the latest version (12.2.0) recommended. You can find all versions of Xcode from [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
 
+### Android Studio Version
+
+Currently we use Android Studio 4.1.1. You can download it from [here](https://developer.android.com/studio#downloads).
+
 ### Clone
 
 Follow the instructions in [the README](https://github.com/artsy/eigen).

@@ -66,7 +66,10 @@ build-for-tests-ios:
 	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug -sdk iphonesimulator build -destination $(DEVICE_HOST) $(DERIVED_DATA) | tee ./xcode_build_raw.log | bundle exec xcpretty -c
 
 build-for-tests-android:
-	echo wow great
+	cd android
+	# ./gradlew test
+	# For now, we don't have any native tests, let's just return 0
+	exit 0
 
 test:
 	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug test -sdk iphonesimulator -destination $(DEVICE_HOST) $(DERIVED_DATA) $(OTHER_CFLAGS) | bundle exec second_curtain 2>&1 | tee ./xcode_test_raw.log  | bundle exec xcpretty -c --test --report junit --output ./test-results.xml
