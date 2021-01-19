@@ -1,7 +1,7 @@
 import { ViewingRoomsList_query$key } from "__generated__/ViewingRoomsList_query.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
-import LoadFailureView from "lib/Components/LoadFailureView"
+import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { PAGE_SIZE } from "lib/data/constants"
 import { extractNodes } from "lib/utils/extractNodes"

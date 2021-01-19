@@ -138,7 +138,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
               onPress={handleFollowChange}
               size="small"
               longestText="Following"
-              haptic="selection"
+              haptic
             >
               {artist.isFollowed ? "Following" : "Follow"}
             </Button>

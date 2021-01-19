@@ -2,7 +2,7 @@ import { SimpleTicker, StateManager as CountdownStateManager } from "lib/Compone
 import { CountdownProps } from "lib/Components/Countdown/CountdownTimer"
 import moment from "moment-timezone"
 import { Flex, Sans } from "palette"
-import * as PropTypes from "prop-types"
+import PropTypes from "prop-types"
 import React from "react"
 
 // Possible states for an auction:

@@ -1,9 +1,9 @@
 import React from "react"
 import { SearchResults } from "../Components/SearchResults"
 
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { LocationIcon } from "palette"
-import { Route, View, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
+import { View, ViewProperties } from "react-native"
 import { ConsignmentSetup, LocationResult } from "../index"
 
 import { stringify } from "qs"
@@ -15,7 +15,6 @@ import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 
 interface Props extends ConsignmentSetup, ViewProperties {
   navigator: NavigatorIOS
-  route: Route
   updateWithResult?: (city: string, state: string, country: string) => void
 }
 
@@ -114,6 +113,7 @@ export default class Location extends React.Component<Props, State> {
               flexGrow: 1,
               marginLeft: 20,
               marginRight: 20,
+              marginTop: 20,
             }}
           >
             <SearchResults<LocationResult>

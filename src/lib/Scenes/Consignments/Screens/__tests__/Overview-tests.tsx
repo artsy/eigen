@@ -20,7 +20,7 @@ const route = {} as any
 const anything = expect.anything
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(<Overview navigator={nav} route={route} setup={{}} />)
+  renderWithWrappers(<Overview navigator={nav} setup={{}} />)
 })
 
 describe("Opening the right page", () => {

@@ -11,8 +11,6 @@ import * as _ from "lodash"
 import { Box, Button, Sans } from "palette"
 import React from "react"
 import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import ParallaxScrollView from "react-native-parallax-scroll-view"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "../Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import About from "../Components/Gene/About"
@@ -60,12 +58,6 @@ const track: Track<Props, State> = _track
  *   - The sticky refine, when scrolled up _gains_ a 64px margin
  *     this is so it can reach all the way of the screen, and fit
  *     the sticky header's mini title inside it.
- *
- *   - We use a fork of react-native-parallax-scroll-view which has access
- *     to change the style component of the header, as well as a well-ordered
- *     API for inserting a component into the tree. This is used so that the
- *     sticky refine section will _always_ be at a specific index, making sure
- *     the `stickyHeaderIndices` is always at the right index.
  *
  */
 @track()
