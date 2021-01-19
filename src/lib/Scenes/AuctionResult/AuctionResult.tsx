@@ -78,7 +78,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     stats.push(makeRow("Estimate range", `${estimate.display} ${currency}`))
   }
   if (auctionResult?.mediumText) {
-    stats.push(makeRow("Medium", auctionResult.mediumText))
+    stats.push(makeRow("Medium", capitalize(auctionResult.mediumText)))
   }
   if (auctionResult?.dimensionText) {
     stats.push(makeRow("Dimensions", auctionResult.dimensionText))
@@ -262,7 +262,7 @@ const LoadingSkeleton = () => {
 
       <Flex flexDirection="row">
         {/* Image */}
-        <PlaceholderBox width={60} height={80} />
+        <PlaceholderBox width={80} height={80} />
         <Flex ml={2} mt={1}>
           {/* Artist name */}
           <PlaceholderBox width={100} height={20} />
