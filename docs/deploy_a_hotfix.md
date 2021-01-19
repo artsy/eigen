@@ -28,7 +28,7 @@ We will want to checkout the tag 6.4.4-2020.5.11.15:
 
 Since the hotfix branch is a past release the app version will need to be updated to submit to apple. The next release version can be found in app store connect and is generally the previous release's version number incremented by 1. In this example it is 6.4.5
 
-`make next`
+`./scripts/next`
 
 `What is the new human-readable release version? 6.4.5`
 

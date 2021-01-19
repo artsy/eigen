@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+./scripts/setup-distribute
+bundle exec fastlane ship_beta_ios

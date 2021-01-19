@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 
-LOCAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+source ./scripts/source-for-bash-env
 
 if [ "${LOCAL_BRANCH}" == "beta-ios" ]; then
 	./scripts/distribute-ios

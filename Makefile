@@ -1,4 +1,3 @@
-SHELL := /usr/bin/env bash
 WORKSPACE = Artsy.xcworkspace
 SCHEME = Artsy
 SCHEME_INTEGRATION_TESTS = 'Artsy Integration Tests'
@@ -9,21 +8,11 @@ DEVICE_HOST = platform='iOS Simulator',OS='14.2',name='iPhone 12 Pro'
 
 DATE_MONTH = $(shell date "+%e %h" | tr "[:lower:]" "[:upper:]")
 
-LOCAL_BRANCH := $(git rev-parse --abbrev-ref HEAD)
 BRANCH = $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
 
 ## Lets us use circle caching for build artifacts
 DERIVED_DATA = -derivedDataPath derived_data
 RESULT_BUNDLE = -resultBundlePath derived_data/result_bundle
-
-.PHONY: all build ci test oss pr artsy
-
-all: ci
-
-### Aliases
-
-next:
-	bundle e fastlane update_version_string
 
 ### General setup
 
@@ -38,12 +27,6 @@ artsy:
 certs:
 	@echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
 	bundle exec match appstore
-
-distribute_ios: distribute_setup
-	bundle exec fastlane ship_beta_ios
-
-distribute: distribute_setup
-	bundle exec fastlane ship_beta
 
 ### General Xcode tooling
 
@@ -109,12 +92,6 @@ stamp_date:
 	config/stamp --input Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-Small-40@2x.png --output Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-Small-40@2x.png --text "$(DATE_MONTH)"
 	config/stamp --input Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-Small-40@2x-1.png --output Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-Small-40@2x-1.png --text "$(DATE_MONTH)"
 
-update_echo:
-	# The @ prevents the command from being printed to console logs.
-	# Touch both files so dotenv will work.
-	@curl https://echo.artsy.net/Echo.json > Artsy/App/EchoNew.json
-	yarn prettier -w Artsy/App/EchoNew.json
-
 storyboards:
 	swiftgen storyboards Artsy --output Artsy/Tooling/Generated/StoryboardConstants.swift
 	swiftgen images Artsy --output Artsy/Tooling/Generated/StoryboardImages.swift
@@ -129,33 +106,3 @@ push:
 
 fpush:
 	if [ "${LOCAL_BRANCH}" == "master" ]; then echo "In master, not pushing"; else git push origin ${LOCAL_BRANCH}:$(BRANCH) --force --no-verify; fi
-
-# Clear local caches and build files
-flip_table:
-	@echo 'Clear node modules (┛ಠ_ಠ)┛彡┻━┻'
-	rm -rf node_modules
-	@echo 'Clear cocoapods directory (ノಠ益ಠ)ノ彡┻━┻'
-	rm -rf Pods
-	@echo 'Clear Xcode derived data (╯°□°)╯︵ ┻━┻'
-	# sometimes this fails on first try even with -rf
-	# but a second try takes it home
-	if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then rm -rf ~/Library/Developer/Xcode/DerivedData; fi
-	@echo 'Clear gradle cache'
-	cd android; ./gradlew clean cleanBuildCache; cd -
-	@echo 'Clear relay, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
-	rm -rf $(TMPDIR)/RelayFindGraphQLTags-*
-	rm -rf .jest
-	rm -rf $(TMPDIR)/metro* .metro
-	@echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
-	rm -rf emission/Pod/Assets/Emission*
-	rm -rf emission/Pod/Assets/assets
-	@echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
-	$(MAKE) update_echo
-	bundle exec pod install --repo-update
-
-# Clear global and local caches and build files
-flip_table_extreme:
-	@echo 'Clean global yarn & pod caches (┛✧Д✧))┛彡┻━┻'
-	yarn cache clean
-	bundle exec pod cache clean --all
-	$(MAKE) flip_table

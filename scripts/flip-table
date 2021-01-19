@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+# Clear local caches and build files
+
+echo 'Clear node modules (┛ಠ_ಠ)┛彡┻━┻'
+rm -rf node_modules
+
+echo 'Clear cocoapods directory (ノಠ益ಠ)ノ彡┻━┻'
+rm -rf Pods
+
+echo 'Clear Xcode derived data (╯°□°)╯︵ ┻━┻'
+# sometimes this fails on first try even with -rf
+# but a second try takes it home
+if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then
+	rm -rf ~/Library/Developer/Xcode/DerivedData
+fi
+
+echo 'Clear gradle cache'
+cd android
+./gradlew clean cleanBuildCache
+cd -
+
+echo 'Clear relay, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
+rm -rf "$TMPDIR"/RelayFindGraphQLTags-*
+rm -rf .jest
+rm -rf "$TMPDIR"/metro* .metro
+
+echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
+rm -rf emission/Pod/Assets/Emission*
+rm -rf emission/Pod/Assets/assets
+
+echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
+yarn install
+
+./scripts/update-echo
+
+bundle exec pod install --repo-update

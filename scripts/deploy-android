@@ -2,6 +2,6 @@
 set -euxo pipefail
 
 
-LOCAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+source ./scripts/source-for-bash-env
 
 git push origin "$LOCAL_BRANCH:beta-android" -f --no-verify
