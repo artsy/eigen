@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+LOCAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+git push origin "$LOCAL_BRANCH:beta-ios" -f --no-verify

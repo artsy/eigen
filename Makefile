@@ -39,21 +39,11 @@ certs:
 	@echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
 	bundle exec match appstore
 
-distribute_setup: setup_fastlane_env
-	brew update
-	brew tap getsentry/tools
-	brew install sentry-cli
-	bundle exec fastlane update_plugins
-
 distribute_ios: distribute_setup
 	bundle exec fastlane ship_beta_ios
 
 distribute: distribute_setup
 	bundle exec fastlane ship_beta
-
-setup_fastlane_env:
-	rm -f Gemfile.lock
-	bundle install
 
 ### General Xcode tooling
 
@@ -92,14 +82,6 @@ ci-test-ios:
 
 ci-test-android:
 	if [ "${LOCAL_BRANCH}" != "beta-android" ] && [ "${LOCAL_BRANCH}" != "app_store_submission" ]; then make test-android; else echo "Skipping test run on beta deploy."; fi
-
-deploy_if_beta_branch_ios:
-	if [ "${LOCAL_BRANCH}" == "beta-ios" ]; then make distribute_ios; fi
-
-deploy-ios:
-	git push origin "${LOCAL_BRANCH}:beta-ios" -f --no-verify
-
-deploy: deploy-ios deploy-android
 
 ### App Store Submission
 

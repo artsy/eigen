@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+LOCAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+if [ "${LOCAL_BRANCH}" == "beta-ios" ]; then
+	./scripts/distribute-ios
+fi

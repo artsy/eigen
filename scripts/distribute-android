@@ -2,5 +2,5 @@
 set -euxo pipefail
 
 
-make distribute_setup
+./scripts/setup-distribute
 bundle exec fastlane ship_beta_android

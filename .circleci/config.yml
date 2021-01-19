@@ -190,7 +190,7 @@ jobs:
           command: make notify_if_new_license_agreement
       - run:
           name: Deploy beta
-          command: make deploy
+          command: ./scripts/deploy
 
   update-metaphysics:
     executor:
@@ -319,7 +319,7 @@ jobs:
           branch: beta-ios
       - run:
           name: Deploy if beta
-          command: make deploy_if_beta_branch_ios
+          command: ./scripts/deploy-if-beta-branch-ios
 
   build-test-app-android:
     environment:
