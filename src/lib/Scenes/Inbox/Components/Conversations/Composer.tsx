@@ -35,7 +35,7 @@ interface Props {
   disabled?: boolean
   onSubmit?: (text: string) => any
   value?: string
-  item?: Item
+  itemID?: string
 }
 
 interface State {
@@ -100,7 +100,7 @@ export default class Composer extends React.Component<Props, State> {
             {this.props.children}
             <Flex flexDirection="column">
               {!!this.props.item && this.props.item?.__typename === "Artwork" && (
-                <InquiryMakeOfferButton item={this.props.item} />
+                <InquiryMakeOfferButton artworkID={this.props.itemID} />
               )}
               <Container active={this.state.active}>
                 <TextInput
