@@ -1,4 +1,4 @@
-# SHELL := /usr/bin/env bash
+SHELL := /usr/bin/env bash
 WORKSPACE = Artsy.xcworkspace
 SCHEME = Artsy
 SCHEME_INTEGRATION_TESTS = 'Artsy Integration Tests'
@@ -100,6 +100,7 @@ deploy_if_beta_branch_ios:
 	if [ "${LOCAL_BRANCH}" == "beta-ios" ]; then make distribute_ios; fi
 
 deploy_if_beta_branch_android:
+	# if test "${LOCAL_BRANCH}" == "beta-android"; then echo wowww; fi
 	if [ "${LOCAL_BRANCH}" == "beta-android" ]; then make distribute_android; fi
 
 deploy-ios:
