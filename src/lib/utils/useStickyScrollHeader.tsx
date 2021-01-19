@@ -57,6 +57,15 @@ export const useStickyScrollHeader = ({
             outputRange: [0, 1],
             extrapolate: "clamp",
           }),
+          transform: [
+            {
+              translateY: Animated.add(scrollAnim, snapAnim).interpolate({
+                inputRange: [fadeInStart, calculatedFadeInEnd],
+                outputRange: [20, 0],
+                extrapolate: "clamp",
+              }),
+            },
+          ],
         }}
       >
         {header}
