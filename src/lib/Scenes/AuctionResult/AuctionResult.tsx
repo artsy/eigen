@@ -122,7 +122,10 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
               <Box style={{ height: 80, width: 60 }} backgroundColor="black10" />
             )}
             <Flex justifyContent="center" flex={1} ml={2}>
-              <TouchableWithoutFeedback onPress={() => artist?.href && navigate(artist.href)}>
+              <TouchableWithoutFeedback
+                onPress={() => artist?.href && navigate(artist.href)}
+                hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+              >
                 <Text variant="mediumText">{artist?.name}</Text>
               </TouchableWithoutFeedback>
               <Text variant="title">
