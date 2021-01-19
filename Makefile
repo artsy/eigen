@@ -9,7 +9,7 @@ DEVICE_HOST = platform='iOS Simulator',OS='14.2',name='iPhone 12 Pro'
 
 DATE_MONTH = $(shell date "+%e %h" | tr "[:lower:]" "[:upper:]")
 
-LOCAL_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
+LOCAL_BRANCH := $(git rev-parse --abbrev-ref HEAD)
 BRANCH = $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
 
 ## Lets us use circle caching for build artifacts
@@ -100,8 +100,10 @@ deploy_if_beta_branch_ios:
 	if [ "${LOCAL_BRANCH}" == "beta-ios" ]; then make distribute_ios; fi
 
 deploy_if_beta_branch_android:
-	# if test "${LOCAL_BRANCH}" == "beta-android"; then echo wowww; fi
-	if [ "${LOCAL_BRANCH}" == "beta-android" ]; then make distribute_android; fi
+	if test "${LOCAL_BRANCH}" = "beta-android"; then echo wowww; fi
+	if test "$(LOCAL_BRANCH)" = "beta-android"; then echo wow1; fi
+	if [ "$(LOCAL_BRANCH)" == "beta-android" ]; then echo wow2; fi
+	if [ "${LOCAL_BRANCH}" == "beta-android" ]; then echo wow3; fi
 
 deploy-ios:
 	git push origin "${LOCAL_BRANCH}:beta-ios" -f --no-verify
