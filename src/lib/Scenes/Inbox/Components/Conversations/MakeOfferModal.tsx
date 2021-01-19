@@ -1,14 +1,20 @@
 import { MakeOfferModal_artwork } from "__generated__/MakeOfferModal_artwork.graphql"
+import { MakeOfferModalQuery } from "__generated__/MakeOfferModalQuery.graphql"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails } from "lib/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { BorderBox, Button, Flex, Text } from "palette"
 import React from "react"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+
+// type Item = NonNullable<NonNullable<NonNullable<Conversation_me["conversation"]>["items"]>[0]>["item"]
 
 interface MakeOfferModalProps {
   toggleVisibility: () => void
   modalIsVisible: boolean
+  artwork: MakeOfferModal_artwork
 }
 
 export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
@@ -50,10 +56,32 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
   )
 }
 
-// export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOfferModal, {
-//   artwork: graphql`
-//     fragment MakeOfferModal_artwork on Artwork {
-//       ...CollapsibleArtworkDetails_artwork
-//     }
-//   `,
-// })
+export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOfferModal, {
+  artwork: graphql`
+    fragment MakeOfferModal_artwork on Artwork {
+      ...CollapsibleArtworkDetails_artwork
+    }
+  `,
+})
+
+export const MakeOfferModalQueryRenderer: React.FC<{
+  artworkID: string
+}> = (props) => {
+  const { artworkID } = props
+  return (
+    <QueryRenderer<MakeOfferModalQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query MakeOfferModalQuery($artworkID: String!) {
+          artwork(id: $artworkID) {
+            ...MakeOfferModal_artwork
+          }
+        }
+      `}
+      variables={{
+        artworkID,
+      }}
+      render={renderWithLoadProgress(MakeOfferModalFragmentContainer)}
+    />
+  )
+}

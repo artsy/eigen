@@ -2,15 +2,15 @@ import { Conversation_me } from "__generated__/Conversation_me.graphql"
 import { Button, Flex, Separator } from "palette"
 import React, { useState } from "react"
 import styled from "styled-components/native"
-import { MakeOfferModal } from "./MakeOfferModal"
+import { MakeOfferModalQueryRenderer as MakeOfferModal } from "./MakeOfferModal"
 
-type Item = NonNullable<NonNullable<NonNullable<Conversation_me["conversation"]>["items"]>[0]>["item"]
+// type Item = NonNullable<NonNullable<NonNullable<Conversation_me["conversation"]>["items"]>[0]>["item"]
 
 export interface InquiryMakeOfferButtonProps {
   // artwork: InquiryMakeOfferButton_artwork
   // // EditionSetID is passed down from the edition selected by the user
   // editionSetID?: string
-  item: Item
+  artworkID: string
 }
 
 const ShadowSeparator = styled(Separator)`
@@ -19,7 +19,7 @@ const ShadowSeparator = styled(Separator)`
   height: 0;
 `
 
-export const InquiryMakeOfferButton: React.FC<InquiryMakeOfferButtonProps> = ({ item }) => {
+export const InquiryMakeOfferButton: React.FC<InquiryMakeOfferButtonProps> = ({ artworkID }) => {
   // export const InquiryMakeOfferButton: React.FC = () => {
   const [modalVisibility, setModalVisibility] = useState(false)
 
@@ -40,7 +40,7 @@ export const InquiryMakeOfferButton: React.FC<InquiryMakeOfferButtonProps> = ({ 
         </Button>
       </Flex>
       <MakeOfferModal
-        artwork={item}
+        artworkID={artworkID}
         toggleVisibility={() => setModalVisibility(!modalVisibility)}
         modalIsVisible={modalVisibility}
       />

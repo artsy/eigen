@@ -10,7 +10,7 @@ export type Conversation_me = {
             readonly item: ({
                 readonly __typename: "Artwork";
                 readonly href: string | null;
-                readonly " $fragmentRefs": FragmentRefs<"CollapsibleArtworkDetails_artwork">;
+                readonly slug: string;
             } | {
                 readonly __typename: "Show";
                 readonly href: string | null;
@@ -103,9 +103,11 @@ return {
                   "selections": [
                     (v0/*: any*/),
                     {
+                      "alias": null,
                       "args": null,
-                      "kind": "FragmentSpread",
-                      "name": "CollapsibleArtworkDetails_artwork"
+                      "kind": "ScalarField",
+                      "name": "slug",
+                      "storageKey": null
                     }
                   ],
                   "type": "Artwork",
@@ -202,5 +204,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'd2b3fdcd002cf5bb3894a2b14a53fa6f';
+(node as any).hash = '7416664765d5665693a643c35d881392';
 export default node;
