@@ -1,6 +1,6 @@
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
 import { ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
@@ -23,13 +23,10 @@ class BidFlow extends React.Component<BidFlowProps> {
     return (
       <TimeOffsetProvider>
         <NavigatorIOS
-          navigationBarHidden={true}
           initialRoute={{
             component: MaxBidScreen,
-            title: "", // title is required, though we don't use it because our navigation bar is hidden.
             passProps: this.props,
           }}
-          style={{ flex: 1 }}
         />
       </TimeOffsetProvider>
     )

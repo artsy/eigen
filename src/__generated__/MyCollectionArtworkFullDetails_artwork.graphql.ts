@@ -26,6 +26,7 @@ export type MyCollectionArtworkFullDetails_artwork = {
         readonly internalID: string | null;
     } | null> | null;
     readonly internalID: string;
+    readonly isEdition: boolean | null;
     readonly medium: string | null;
     readonly metric: string | null;
     readonly provenance: string | null;
@@ -176,6 +177,13 @@ return {
       "storageKey": null
     },
     (v0/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "isEdition",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": null,

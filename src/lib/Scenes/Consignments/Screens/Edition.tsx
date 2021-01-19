@@ -1,17 +1,16 @@
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
-import { LayoutAnimation, Route, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
+import { LayoutAnimation, ViewProperties } from "react-native"
 import Text from "../Components/TextInput"
 import Toggle from "../Components/Toggle"
 import { ConsignmentSetup } from "../index"
 
-import { Flex, Serif, Spacer, Theme } from "palette"
+import { Flex, Sans, Spacer, Theme } from "palette"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { Form, Row } from "../Components/FormElements"
 
 interface Props extends ConsignmentSetup, ViewProperties {
   navigator: NavigatorIOS
-  route: Route
   setup: ConsignmentSetup
   updateWithEdition?: (setup: ConsignmentSetup) => void
 }
@@ -60,7 +59,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
             <Form>
               <Flex justifyContent="space-between" alignItems="center" flexDirection="row" flexWrap="nowrap">
                 <Flex style={{ flex: 1 }}>
-                  <Serif size="5">Is this an edition?</Serif>
+                  <Sans size="4">Is this an edition?</Sans>
                 </Flex>
                 <Toggle selected={!!this.state.editionInfo} left="Yes" right="No" onPress={this.updateEdition} />
               </Flex>
@@ -90,7 +89,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
               ) : null}
               <Flex justifyContent="space-between" alignItems="center" flexDirection="row" flexWrap="nowrap">
                 <Flex style={{ flex: 1 }}>
-                  <Serif size="5">Is this work signed?</Serif>
+                  <Sans size="4">Is this work signed?</Sans>
                 </Flex>
                 <Toggle
                   selected={this.state.signed! /* STRICTNESS_MIGRATION */}
@@ -102,7 +101,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
               <Spacer mb={2} />
               <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
                 <Flex style={{ flex: 1 }}>
-                  <Serif size="5">Do you have a certificate of authenticity?</Serif>
+                  <Sans size="4">Do you have a certificate of authenticity?</Sans>
                 </Flex>
                 <Spacer mr={2} />
                 <Toggle

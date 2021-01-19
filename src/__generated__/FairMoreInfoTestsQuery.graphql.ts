@@ -1,40 +1,77 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 21d8ec4ea76fb5e8b71f3045b76905a0 */
+/* @relayHash ee2a60a2db8666e23a65520be213660e */
 
 import { ConcreteRequest } from "relay-runtime";
-export type FairMoreInfoTestsQueryVariables = {};
+import { FragmentRefs } from "relay-runtime";
+export type FairMoreInfoTestsQueryVariables = {
+    fairID: string;
+};
 export type FairMoreInfoTestsQueryResponse = {
     readonly fair: {
-        readonly links: string | null;
-        readonly about: string | null;
-        readonly ticketsLink: string | null;
+        readonly " $fragmentRefs": FragmentRefs<"FairMoreInfo_fair">;
     } | null;
-};
-export type FairMoreInfoTestsQueryRawResponse = {
-    readonly fair: ({
-        readonly links: string | null;
-        readonly about: string | null;
-        readonly ticketsLink: string | null;
-        readonly id: string;
-    }) | null;
 };
 export type FairMoreInfoTestsQuery = {
     readonly response: FairMoreInfoTestsQueryResponse;
     readonly variables: FairMoreInfoTestsQueryVariables;
-    readonly rawResponse: FairMoreInfoTestsQueryRawResponse;
 };
 
 
 
 /*
-query FairMoreInfoTestsQuery {
-  fair(id: "sofa-chicago-2018") {
-    links
-    about
-    ticketsLink
+query FairMoreInfoTestsQuery(
+  $fairID: String!
+) {
+  fair(id: $fairID) {
+    ...FairMoreInfo_fair
     id
+  }
+}
+
+fragment FairMoreInfo_fair on Fair {
+  internalID
+  slug
+  about
+  name
+  tagline
+  profile {
+    name
+    id
+  }
+  location {
+    ...LocationMap_location
+    coordinates {
+      lat
+      lng
+    }
+    summary
+    id
+  }
+  sponsoredContent {
+    activationText
+    pressReleaseUrl
+  }
+  ticketsLink
+  fairHours: hours(format: MARKDOWN)
+  fairLinks: links(format: MARKDOWN)
+  fairTickets: tickets(format: MARKDOWN)
+  summary
+  fairContact: contact(format: MARKDOWN)
+}
+
+fragment LocationMap_location on Location {
+  id
+  internalID
+  city
+  address
+  address2
+  postalCode
+  summary
+  coordinates {
+    lat
+    lng
   }
 }
 */
@@ -42,52 +79,93 @@ query FairMoreInfoTestsQuery {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "Literal",
-    "name": "id",
-    "value": "sofa-chicago-2018"
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "fairID"
   }
 ],
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "links",
-  "storageKey": null
-},
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "id",
+    "variableName": "fairID"
+  }
+],
 v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "about",
+  "name": "internalID",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "ticketsLink",
+  "name": "name",
   "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "summary",
+  "storageKey": null
+},
+v6 = [
+  {
+    "kind": "Literal",
+    "name": "format",
+    "value": "MARKDOWN"
+  }
+],
+v7 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
+},
+v8 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v9 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Float"
 };
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "FairMoreInfoTestsQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "Fair",
         "kind": "LinkedField",
         "name": "fair",
         "plural": false,
         "selections": [
-          (v1/*: any*/),
-          (v2/*: any*/),
-          (v3/*: any*/)
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "FairMoreInfo_fair"
+          }
         ],
-        "storageKey": "fair(id:\"sofa-chicago-2018\")"
+        "storageKey": null
       }
     ],
     "type": "Query",
@@ -95,41 +173,254 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "FairMoreInfoTestsQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "Fair",
         "kind": "LinkedField",
         "name": "fair",
         "plural": false,
         "selections": [
-          (v1/*: any*/),
           (v2/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "slug",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "about",
+            "storageKey": null
+          },
           (v3/*: any*/),
           {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "id",
+            "name": "tagline",
             "storageKey": null
-          }
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Profile",
+            "kind": "LinkedField",
+            "name": "profile",
+            "plural": false,
+            "selections": [
+              (v3/*: any*/),
+              (v4/*: any*/)
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Location",
+            "kind": "LinkedField",
+            "name": "location",
+            "plural": false,
+            "selections": [
+              (v4/*: any*/),
+              (v2/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "city",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "address",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "address2",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "postalCode",
+                "storageKey": null
+              },
+              (v5/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "LatLng",
+                "kind": "LinkedField",
+                "name": "coordinates",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "lat",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "lng",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "FairSponsoredContent",
+            "kind": "LinkedField",
+            "name": "sponsoredContent",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "activationText",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "pressReleaseUrl",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "ticketsLink",
+            "storageKey": null
+          },
+          {
+            "alias": "fairHours",
+            "args": (v6/*: any*/),
+            "kind": "ScalarField",
+            "name": "hours",
+            "storageKey": "hours(format:\"MARKDOWN\")"
+          },
+          {
+            "alias": "fairLinks",
+            "args": (v6/*: any*/),
+            "kind": "ScalarField",
+            "name": "links",
+            "storageKey": "links(format:\"MARKDOWN\")"
+          },
+          {
+            "alias": "fairTickets",
+            "args": (v6/*: any*/),
+            "kind": "ScalarField",
+            "name": "tickets",
+            "storageKey": "tickets(format:\"MARKDOWN\")"
+          },
+          (v5/*: any*/),
+          {
+            "alias": "fairContact",
+            "args": (v6/*: any*/),
+            "kind": "ScalarField",
+            "name": "contact",
+            "storageKey": "contact(format:\"MARKDOWN\")"
+          },
+          (v4/*: any*/)
         ],
-        "storageKey": "fair(id:\"sofa-chicago-2018\")"
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "21d8ec4ea76fb5e8b71f3045b76905a0",
-    "metadata": {},
+    "id": "ee2a60a2db8666e23a65520be213660e",
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "fair": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Fair"
+        },
+        "fair.about": (v7/*: any*/),
+        "fair.fairContact": (v7/*: any*/),
+        "fair.fairHours": (v7/*: any*/),
+        "fair.fairLinks": (v7/*: any*/),
+        "fair.fairTickets": (v7/*: any*/),
+        "fair.id": (v8/*: any*/),
+        "fair.internalID": (v8/*: any*/),
+        "fair.location": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Location"
+        },
+        "fair.location.address": (v7/*: any*/),
+        "fair.location.address2": (v7/*: any*/),
+        "fair.location.city": (v7/*: any*/),
+        "fair.location.coordinates": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "LatLng"
+        },
+        "fair.location.coordinates.lat": (v9/*: any*/),
+        "fair.location.coordinates.lng": (v9/*: any*/),
+        "fair.location.id": (v8/*: any*/),
+        "fair.location.internalID": (v8/*: any*/),
+        "fair.location.postalCode": (v7/*: any*/),
+        "fair.location.summary": (v7/*: any*/),
+        "fair.name": (v7/*: any*/),
+        "fair.profile": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Profile"
+        },
+        "fair.profile.id": (v8/*: any*/),
+        "fair.profile.name": (v7/*: any*/),
+        "fair.slug": (v8/*: any*/),
+        "fair.sponsoredContent": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "FairSponsoredContent"
+        },
+        "fair.sponsoredContent.activationText": (v7/*: any*/),
+        "fair.sponsoredContent.pressReleaseUrl": (v7/*: any*/),
+        "fair.summary": (v7/*: any*/),
+        "fair.tagline": (v7/*: any*/),
+        "fair.ticketsLink": (v7/*: any*/)
+      }
+    },
     "name": "FairMoreInfoTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '45ad79039297fa8a746e34a2075ce76d';
+(node as any).hash = 'd167f0751ddd5dd102fe48feb743168a';
 export default node;

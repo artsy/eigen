@@ -11,12 +11,11 @@ import Overview from "../Overview"
 
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 const nav = {} as any
-const route = {} as any
 
 beforeEach(jest.resetAllMocks)
 
 it("calls the draft created event", () => {
-  const overviewComponent = shallow(<Overview navigator={nav} route={route} setup={{ submissionID: "123" }} />).dive()
+  const overviewComponent = shallow(<Overview navigator={nav} setup={{ submissionID: "123" }} />).dive()
   const overview = overviewComponent.dive().instance()
 
   overview.submissionDraftCreated()
@@ -32,7 +31,7 @@ it("calls the draft created event", () => {
 })
 
 it("calls the draft created event", () => {
-  const overviewComponent = shallow(<Overview navigator={nav} route={route} setup={{ submissionID: "123" }} />).dive()
+  const overviewComponent = shallow(<Overview navigator={nav} setup={{ submissionID: "123" }} />).dive()
   const overview = overviewComponent.dive().instance()
 
   overview.submissionDraftSubmitted()

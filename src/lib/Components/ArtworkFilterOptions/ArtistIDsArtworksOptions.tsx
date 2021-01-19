@@ -1,3 +1,4 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import {
   AggregationName,
   ArtworkFilterContext,
@@ -7,14 +8,13 @@ import {
 import { aggregationForFilter, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { sortBy } from "lodash"
 import React, { useContext } from "react"
-import NavigatorIOS from "react-native-navigator-ios"
+import { FilterModalNavigationStack } from "../FilterModal"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
-interface ArtistIDsArtworksOptionsScreenProps {
-  navigator: NavigatorIOS
-}
+interface ArtistIDsArtworksOptionsScreenProps
+  extends StackScreenProps<FilterModalNavigationStack, "ArtistIDsOptionsScreen"> {}
 
-export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsScreenProps> = ({ navigator }) => {
+export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsScreenProps> = ({ navigation }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
   const selectedOptions = useSelectedOptionsDisplay()
 
@@ -87,7 +87,7 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
       filterHeaderText={FilterDisplayName.artistIDs}
       filterOptions={allOptions}
       onSelect={selectOption}
-      navigator={navigator}
+      navigation={navigation}
       isSelected={itemIsSelected}
       isDisabled={itemIsDisabled}
     />

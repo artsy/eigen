@@ -1208,7 +1208,7 @@ type Artwork implements Node & Searchable & Sellable {
   # artwork attribute called `medium`.)
   category: String @deprecated(reason: "Prefer to use `mediumType`.")
 
-  # Returns the display label and detail for artwork certificate of authenticity
+  # Returns the display label and detail when artwork has a certificate of authenticity
   certificateOfAuthenticity: ArtworkInfoRow
   collectingInstitution: String
   conditionDescription: ArtworkInfoRow
@@ -1293,6 +1293,7 @@ type Artwork implements Node & Searchable & Sellable {
   isBuyNowable: Boolean
   isComparableWithAuctionResults: Boolean
   isDownloadable: Boolean
+  isEdition: Boolean
   isEmbeddableVideo: Boolean
   isForSale: Boolean
   isHangable: Boolean
@@ -6714,6 +6715,32 @@ type LocationEdge {
 
 scalar Long
 
+type Lot {
+  internalID: String
+  lot: AuctionsLotState!
+  saleArtwork: SaleArtwork
+}
+
+# A connection to a list of items.
+type LotConnection {
+  # A list of edges.
+  edges: [LotEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type LotEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Lot
+}
+
 type LotStanding {
   # Your bid if it is currently winning
   activeBid: BidderPosition
@@ -6940,6 +6967,8 @@ type MarketPriceInsights {
 }
 
 type Me implements Node {
+  addressConnection(after: String, before: String, first: Int, last: Int): UserAddressConnection
+
   # A list of the current user’s inquiry requests
   artworkInquiriesConnection(after: String, before: String, first: Int, last: Int): ArtworkInquiryConnection
   auctionsLotStandingConnection(after: String, before: String, first: Int, last: Int): AuctionsLotStandingConnection!
@@ -7122,6 +7151,31 @@ type Me implements Node {
 
   # A list of the current user’s recently viewed artworks.
   recentlyViewedArtworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  saleRegistrationsConnection(
+    after: String
+    before: String
+    first: Int
+
+    #
+    #         Only return sales matching specified ids.
+    #         Accepts list of ids.
+    #
+    ids: [String]
+
+    # Limit by auction.
+    isAuction: Boolean = true
+    last: Int
+
+    # Limit by live status.
+    live: Boolean = true
+
+    # Limit by published status.
+    published: Boolean = true
+
+    # Returns sales the user has registered for if true, returns sales the user has not registered for if false.
+    registered: Boolean
+    sort: SaleSorts
+  ): SaleRegistrationConnection
   secondFactors(kinds: [SecondFactorKind]): [SecondFactor]
   type: String
 
@@ -7130,6 +7184,7 @@ type Me implements Node {
 
   # A count of unread notifications.
   unreadNotificationsCount: Int!
+  watchedLotConnection(after: String, before: String, first: Int, last: Int): LotConnection!
 }
 
 # A message in a conversation.
@@ -7412,6 +7467,7 @@ input MyCollectionCreateArtworkInput {
   editionSize: String
   externalImageUrls: [String]
   height: String
+  isEdition: Boolean
   medium: String!
   metric: String
   provenance: String
@@ -7456,6 +7512,7 @@ input MyCollectionUpdateArtworkInput {
   editionSize: String
   externalImageUrls: [String]
   height: String
+  isEdition: Boolean
   medium: String
   metric: String
   provenance: String
@@ -8213,6 +8270,22 @@ type Query {
 
   # List enabled Two-Factor Authentication factors
   _unused_gravity_secondFactors(kinds: [SecondFactorKind!] = [app, sms, backup]): [SecondFactor!]!
+
+  # List of user's saved addresses
+  _unused_gravity_userAddressConnection(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    userId: ID!
+  ): UserAddressConnection
 
   # List viewing rooms
   _unused_gravity_viewingRoomsConnection(
@@ -9363,6 +9436,36 @@ type SaleEdge {
   node: Sale
 }
 
+type SaleRegistration {
+  bidder: Bidder
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  isRegistered: Boolean
+  sale: Sale
+}
+
+# A connection to a list of items.
+type SaleRegistrationConnection {
+  # A list of edges.
+  edges: [SaleRegistrationEdge]
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+}
+
+# An edge in a connection.
+type SaleRegistrationEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: SaleRegistration
+}
+
 enum SaleSorts {
   _ID_ASC
   _ID_DESC
@@ -10494,6 +10597,63 @@ type User {
 
   # Check whether a user exists by email address before creating an account.
   userAlreadyExists: Boolean
+}
+
+# User saved address
+type UserAddress {
+  # Address line 1
+  addressLine1: String!
+
+  # Address line 2
+  addressLine2: String
+
+  # Address line 3
+  addressLine3: String
+
+  # City
+  city: String!
+
+  # Country
+  country: String!
+
+  # Is default address
+  isDefault: Boolean!
+
+  # Name on addreess
+  name: String
+
+  # Phone number
+  phoneNumber: String
+
+  # Postal Code
+  postalCode: String
+
+  # Region
+  region: String
+}
+
+# The connection type for UserAddress.
+type UserAddressConnection {
+  # A list of edges.
+  edges: [UserAddressEdge]
+
+  # A list of nodes.
+  nodes: [UserAddress]
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # Total count of matching nodes, before pagination
+  totalCount: Int!
+}
+
+# An edge in a connection.
+type UserAddressEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: UserAddress
 }
 
 # A connection to a list of items.

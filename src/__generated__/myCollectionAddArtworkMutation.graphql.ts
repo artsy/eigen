@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 88d22a859cc933feee98690a25ca23f1 */
+/* @relayHash 32ac002019818b8aeeb31357c5cc43cb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -17,6 +17,7 @@ export type MyCollectionCreateArtworkInput = {
     editionSize?: string | null;
     externalImageUrls?: Array<string | null> | null;
     height?: string | null;
+    isEdition?: boolean | null;
     medium: string;
     metric?: string | null;
     provenance?: string | null;
@@ -95,6 +96,7 @@ fragment MyCollectionArtwork_sharedProps on Artwork {
     internalID
   }
   internalID
+  isEdition
   medium
   metric
   provenance
@@ -405,6 +407,13 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
+                            "name": "isEdition",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "medium",
                             "storageKey": null
                           },
@@ -458,7 +467,7 @@ return {
     ]
   },
   "params": {
-    "id": "88d22a859cc933feee98690a25ca23f1",
+    "id": "32ac002019818b8aeeb31357c5cc43cb",
     "metadata": {},
     "name": "myCollectionAddArtworkMutation",
     "operationKind": "mutation",

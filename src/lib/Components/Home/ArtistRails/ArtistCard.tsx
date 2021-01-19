@@ -114,7 +114,7 @@ export class ArtistCard extends React.Component<Props, State> {
                 size="small"
                 block
                 loading={this.state.processingChange}
-                haptic="selection"
+                haptic
               >
                 {this.state.following ? "Following" : "Follow"}
               </Button>

@@ -3,6 +3,7 @@ import React from "react"
 import { Aggregations, ArtworkFilterContext, reducer } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { TimePeriodOptionsScreen } from "../TimePeriodOptions"
 import { sharedAggregateFilterValidation, ValidationParams } from "./AggregationOptionCommonValidation"
+import { getEssentialProps } from "./helper"
 
 describe("Time Period Options Screen", () => {
   const mockAggregations: Aggregations = [
@@ -43,7 +44,7 @@ describe("Time Period Options Screen", () => {
     },
   ]
 
-  const MockTimePeriodScreen = ({ initialState, navigator }: any) => {
+  const MockTimePeriodScreen = ({ initialState }: any) => {
     const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
     return (
@@ -53,7 +54,7 @@ describe("Time Period Options Screen", () => {
           dispatch,
         }}
       >
-        <TimePeriodOptionsScreen navigator={navigator} />
+        <TimePeriodOptionsScreen {...getEssentialProps()} />
       </ArtworkFilterContext.Provider>
     )
   }

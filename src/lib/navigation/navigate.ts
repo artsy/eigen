@@ -2,7 +2,6 @@ import { AppModule, modules, ViewOptions } from "lib/AppRegistry"
 import { GlobalStore, unsafe__getSelectedTab } from "lib/store/GlobalStore"
 import { Linking, NativeModules } from "react-native"
 import { matchRoute } from "./routes"
-import { handleFairRouting } from "./util"
 
 export interface ViewDescriptor extends ViewOptions {
   type: "react" | "native"
@@ -11,19 +10,11 @@ export interface ViewDescriptor extends ViewOptions {
 }
 
 export async function navigate(url: string, options: { modal?: boolean; passProps?: object } = {}) {
-  let result = matchRoute(url)
+  const result = matchRoute(url)
 
   if (result.type === "external_url") {
     Linking.openURL(result.url)
     return
-  }
-
-  // Conditional routing for fairs depends on the `:fairID` param,
-  // so pulled that out into a separate method. Can be removed
-  // when the old fair view is fully deprecated.
-  // @ts-ignore
-  if (result.type === "match" && !!result.params.fairID) {
-    result = handleFairRouting(result)
   }
 
   const module = modules[result.module]

@@ -877,10 +877,10 @@ describe("artsy.net routes", () => {
   })
 
   describe("Fair routing", () => {
-    it("routes to FairArtworks", () => {
+    it("routes to Fair", () => {
       expect(matchRoute("/fair/red/artworks")).toMatchInlineSnapshot(`
               Object {
-                "module": "FairArtworks",
+                "module": "Fair",
                 "params": Object {
                   "fairID": "red",
                 },
@@ -889,7 +889,7 @@ describe("artsy.net routes", () => {
           `)
       expect(matchRoute("/fair/blue/artworks")).toMatchInlineSnapshot(`
               Object {
-                "module": "FairArtworks",
+                "module": "Fair",
                 "params": Object {
                   "fairID": "blue",
                 },
@@ -919,10 +919,10 @@ describe("artsy.net routes", () => {
           `)
     })
 
-    it("routes to FairArtists", () => {
+    it("routes to Fair", () => {
       expect(matchRoute("/fair/red/artists")).toMatchInlineSnapshot(`
               Object {
-                "module": "FairArtists",
+                "module": "Fair",
                 "params": Object {
                   "fairID": "red",
                 },
@@ -931,7 +931,7 @@ describe("artsy.net routes", () => {
           `)
       expect(matchRoute("/fair/blue/artists")).toMatchInlineSnapshot(`
               Object {
-                "module": "FairArtists",
+                "module": "Fair",
                 "params": Object {
                   "fairID": "blue",
                 },
@@ -940,10 +940,10 @@ describe("artsy.net routes", () => {
           `)
     })
 
-    it("routes to FairExhibitors", () => {
+    it("routes to Fair", () => {
       expect(matchRoute("/fair/red/exhibitors")).toMatchInlineSnapshot(`
               Object {
-                "module": "FairExhibitors",
+                "module": "Fair",
                 "params": Object {
                   "fairID": "red",
                 },
@@ -952,7 +952,7 @@ describe("artsy.net routes", () => {
           `)
       expect(matchRoute("/fair/blue/exhibitors")).toMatchInlineSnapshot(`
               Object {
-                "module": "FairExhibitors",
+                "module": "Fair",
                 "params": Object {
                   "fairID": "blue",
                 },

@@ -162,6 +162,8 @@ flip_table:
 	# sometimes this fails on first try even with -rf
 	# but a second try takes it home
 	if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then rm -rf ~/Library/Developer/Xcode/DerivedData; fi
+	@echo 'Clear gradle cache'
+	cd android; ./gradlew clean cleanBuildCache; cd -
 	@echo 'Clear relay, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
 	rm -rf $(TMPDIR)/RelayFindGraphQLTags-*
 	rm -rf .jest
@@ -169,9 +171,11 @@ flip_table:
 	@echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
 	rm -rf emission/Pod/Assets/Emission*
 	rm -rf emission/Pod/Assets/assets
+	@echo 'Install node modules'
+	yarn install
 	@echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
-	bundle exec pod install --repo-update
 	$(MAKE) update_echo
+	bundle exec pod install --repo-update
 
 # Clear global and local caches and build files
 flip_table_extreme:

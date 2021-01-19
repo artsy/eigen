@@ -1,7 +1,7 @@
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
-import LoadFailureView from "lib/Components/LoadFailureView"
+import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { navigate } from "lib/navigation/navigate"
 import { cm2in } from "lib/utils/conversions"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"

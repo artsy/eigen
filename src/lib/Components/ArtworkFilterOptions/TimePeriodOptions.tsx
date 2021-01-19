@@ -1,3 +1,4 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import {
   ArtworkFilterContext,
   FilterData,
@@ -7,14 +8,13 @@ import {
 import { aggregationForFilter, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import _ from "lodash"
 import React, { useContext } from "react"
-import NavigatorIOS from "react-native-navigator-ios"
+import { FilterModalNavigationStack } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface TimePeriodOptionsScreenProps {
-  navigator: NavigatorIOS
-}
+interface TimePeriodOptionsScreenProps
+  extends StackScreenProps<FilterModalNavigationStack, "TimePeriodOptionsScreen"> {}
 
-export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = ({ navigator }) => {
+export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = ({ navigation }) => {
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   // TODO: a lot of redundant types, see if we can clean up
@@ -67,7 +67,7 @@ export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = (
       filterHeaderText={FilterDisplayName.timePeriod}
       filterOptions={filterOptions}
       selectedOption={selectedOption}
-      navigator={navigator}
+      navigation={navigation}
     />
   )
 }

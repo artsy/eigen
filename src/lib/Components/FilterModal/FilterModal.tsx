@@ -1,3 +1,5 @@
+import { NavigationContainer } from "@react-navigation/native"
+import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
 import {
   AggregationName,
   ArtworkFilterContext,
@@ -18,11 +20,11 @@ import _ from "lodash"
 import { ArrowRightIcon, Box, Button, CloseIcon, color, FilterIcon, Flex, Sans, Separator } from "palette"
 import React, { useContext } from "react"
 import { FlatList, TouchableOpacity, View, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
 import { ArtistIDsOptionsScreen } from "../ArtworkFilterOptions/ArtistIDsOptionsScreen"
+import { CategoriesOptionsScreen } from "../ArtworkFilterOptions/CategoriesOptions"
 import { ColorOption, ColorOptionsScreen } from "../ArtworkFilterOptions/ColorOptions"
 import { colorHexMap } from "../ArtworkFilterOptions/ColorSwatch"
 import { EstimateRangeOptionsScreen } from "../ArtworkFilterOptions/EstimateRangeOptions"
@@ -31,11 +33,47 @@ import { InstitutionOptionsScreen } from "../ArtworkFilterOptions/InstitutionOpt
 import { MediumOptionsScreen } from "../ArtworkFilterOptions/MediumOptions"
 import { PriceRangeOptionsScreen } from "../ArtworkFilterOptions/PriceRangeOptions"
 import { SizeOptionsScreen } from "../ArtworkFilterOptions/SizeOptions"
+import { SizesOptionsScreen } from "../ArtworkFilterOptions/SizesOptions"
 import { SortOptionsScreen } from "../ArtworkFilterOptions/SortOptions"
 import { TimePeriodOptionsScreen } from "../ArtworkFilterOptions/TimePeriodOptions"
 import { ViewAsOptionsScreen } from "../ArtworkFilterOptions/ViewAsOptions"
 import { WaysToBuyOptionsScreen } from "../ArtworkFilterOptions/WaysToBuyOptions"
+import { YearOptionsScreen } from "../ArtworkFilterOptions/YearOptions"
 import { FancyModal } from "../FancyModal/FancyModal"
+
+export type FilterScreen =
+  | "artistIDs"
+  | "artistsIFollow"
+  | "color"
+  | "categories"
+  | "dimensionRange"
+  | "estimateRange"
+  | "gallery"
+  | "institution"
+  | "majorPeriods"
+  | "medium"
+  | "priceRange"
+  | "sort"
+  | "sizes"
+  | "viewAs"
+  | "year"
+  | "waysToBuy"
+
+export interface FilterDisplayConfig {
+  filterType: FilterScreen
+  displayText: string
+  ScreenComponent: keyof FilterModalNavigationStack
+}
+
+export enum FilterModalMode {
+  ArtistArtworks = "ArtistArtworks",
+  ArtistSeries = "ArtistSeries",
+  Collection = "Collection",
+  SaleArtworks = "SaleArtworks",
+  Fair = "Fair",
+  Show = "Show",
+  AuctionResults = "AuctionResults",
+}
 
 interface FilterModalProps extends ViewProperties {
   closeModal?: () => void
@@ -44,23 +82,38 @@ interface FilterModalProps extends ViewProperties {
   initiallyAppliedFilters?: FilterArray
   isFilterArtworksModalVisible: boolean
   mode: FilterModalMode
-  navigator?: NavigatorIOS
   slug: string
   title?: string
 }
 
-export const FilterModalNavigator: React.FC<FilterModalProps> = ({
-  closeModal,
-  exitModal,
-  id,
-  isFilterArtworksModalVisible,
-  mode,
-  slug,
-  title = "Filter",
-}) => {
-  const tracking = useTracking()
+// This needs to be a `type` rather than an `interface`
+// see src/lib/Scenes/MyCollection/Screens/ArtworkFormModal/MyCollectionArtworkFormModal.tsx#L35
+// tslint:disable-next-line:interface-over-type-literal
+export type FilterModalNavigationStack = {
+  ArtistIDsOptionsScreen: undefined
+  ColorOptionsScreen: undefined
+  EstimateRangeOptionsScreen: undefined
+  FilterOptionsScreen: FilterOptionsScreenParams
+  GalleryOptionsScreen: undefined
+  InstitutionOptionsScreen: undefined
+  MediumOptionsScreen: undefined
+  PriceRangeOptionsScreen: undefined
+  SizeOptionsScreen: undefined
+  SizesOptionsScreen: undefined
+  SortOptionsScreen: undefined
+  TimePeriodOptionsScreen: undefined
+  ViewAsOptionsScreen: undefined
+  YearOptionsScreen: undefined
+  WaysToBuyOptionsScreen: undefined
+  CategoriesOptionsScreen: undefined
+}
 
+const Stack = createStackNavigator<FilterModalNavigationStack>()
+
+export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
+  const tracking = useTracking()
   const { dispatch, state } = useContext(ArtworkFilterContext)
+  const { exitModal, id, mode, slug, closeModal } = props
 
   const handleClosingModal = () => {
     dispatch({ type: "resetFilters" })
@@ -92,6 +145,19 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = ({
   const getApplyButtonCount = () => {
     let selectedFiltersSum = state.selectedFilters.length
 
+    // For Auction results, the earliestCreatedYear and latestCreatedYear filters behave like one
+    if (state.filterType === "auctionResult") {
+      const hasEarliestCreatedYearFilterEnabled = !!state.selectedFilters.find(
+        (filter) => filter.paramName === FilterParamName.earliestCreatedYear
+      )
+      const hasLatestCreatedYearFilterEnabled = !!state.selectedFilters.find(
+        (filter) => filter.paramName === FilterParamName.latestCreatedYear
+      )
+      if (hasEarliestCreatedYearFilterEnabled && hasLatestCreatedYearFilterEnabled) {
+        --selectedFiltersSum
+      }
+    }
+
     // For Sale Artworks, the artistsIDs and the includeArtworksByFollowedArtists filters behave like one
     if (state.filterType === "saleArtwork") {
       const hasArtistsIFollow = !!state.selectedFilters.find(
@@ -110,131 +176,129 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = ({
     state.selectedFilters.length > 0 || (state.previouslyAppliedFilters.length === 0 && state.appliedFilters.length > 0)
 
   return (
-    <FancyModal visible={isFilterArtworksModalVisible} onBackgroundPressed={handleClosingModal} maxHeight={550}>
-      <View style={{ flex: 1 }}>
-        <NavigatorIOS
-          navigationBarHidden={true}
-          initialRoute={{
-            component: FilterOptions,
-            passProps: { closeModal, id, slug, mode, title },
-            title: "",
-          }}
-          style={{ flex: 1 }}
-        />
-        <Separator my={0} />
-        <ApplyButtonContainer>
-          <ApplyButton
-            disabled={!isApplyButtonEnabled}
-            onPress={() => {
-              const appliedFiltersParams = filterArtworksParams(state.appliedFilters, state.filterType)
-              // TODO: Update to use cohesion
-              switch (mode) {
-                case FilterModalMode.Collection:
-                  trackChangeFilters(
-                    PageNames.Collection,
-                    OwnerEntityTypes.Collection,
-                    appliedFiltersParams,
-                    changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                  )
-                  break
-                case FilterModalMode.ArtistArtworks:
-                  trackChangeFilters(
-                    PageNames.ArtistPage,
-                    OwnerEntityTypes.Artist,
-                    appliedFiltersParams,
-                    changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                  )
-                  break
-                case FilterModalMode.Fair:
-                  trackChangeFilters(
-                    PageNames.Fair2Page,
-                    OwnerEntityTypes.Fair,
-                    appliedFiltersParams,
-                    changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                  )
-                  break
-                case FilterModalMode.SaleArtworks:
-                  trackChangeFilters(
-                    PageNames.Auction,
-                    OwnerEntityTypes.Auction,
-                    appliedFiltersParams,
-                    changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                  )
-                  break
-                case FilterModalMode.Show:
-                  trackChangeFilters(
-                    PageNames.ShowPage,
-                    OwnerEntityTypes.Show,
-                    appliedFiltersParams,
-                    changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                  )
-                  break
-              }
-              applyFilters()
+    <NavigationContainer>
+      <FancyModal visible={props.isFilterArtworksModalVisible} onBackgroundPressed={handleClosingModal} maxHeight={550}>
+        <View style={{ flex: 1 }}>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+              safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
+              cardStyle: { backgroundColor: "white" },
             }}
-            block
-            width={100}
-            variant="primaryBlack"
-            size="large"
           >
-            {getApplyButtonCount()}
-          </ApplyButton>
-        </ApplyButtonContainer>
-      </View>
-    </FancyModal>
+            <Stack.Screen name="FilterOptionsScreen" component={FilterOptionsScreen} initialParams={props} />
+            <Stack.Screen name="ArtistIDsOptionsScreen" component={ArtistIDsOptionsScreen} />
+            <Stack.Screen name="ColorOptionsScreen" component={ColorOptionsScreen} />
+            <Stack.Screen name="EstimateRangeOptionsScreen" component={EstimateRangeOptionsScreen} />
+            <Stack.Screen name="GalleryOptionsScreen" component={GalleryOptionsScreen} />
+            <Stack.Screen name="InstitutionOptionsScreen" component={InstitutionOptionsScreen} />
+            <Stack.Screen name="MediumOptionsScreen" component={MediumOptionsScreen} />
+            <Stack.Screen name="PriceRangeOptionsScreen" component={PriceRangeOptionsScreen} />
+            <Stack.Screen name="SizeOptionsScreen" component={SizeOptionsScreen} />
+            <Stack.Screen name="SizesOptionsScreen" component={SizesOptionsScreen} />
+            <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
+            <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} />
+            <Stack.Screen name="ViewAsOptionsScreen" component={ViewAsOptionsScreen} />
+            <Stack.Screen
+              name="YearOptionsScreen"
+              component={YearOptionsScreen}
+              options={{
+                // Avoid PanResponser conflicts between the slider and the slide back gesture
+                gestureEnabled: false,
+              }}
+            />
+            <Stack.Screen name="WaysToBuyOptionsScreen" component={WaysToBuyOptionsScreen} />
+            <Stack.Screen name="CategoriesOptionsScreen" component={CategoriesOptionsScreen} />
+          </Stack.Navigator>
+
+          <Separator my={0} />
+          <ApplyButtonContainer>
+            <ApplyButton
+              disabled={!isApplyButtonEnabled}
+              onPress={() => {
+                const appliedFiltersParams = filterArtworksParams(state.appliedFilters, state.filterType)
+                // TODO: Update to use cohesion
+                switch (mode) {
+                  case FilterModalMode.Collection:
+                    trackChangeFilters(
+                      PageNames.Collection,
+                      OwnerEntityTypes.Collection,
+                      appliedFiltersParams,
+                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+                    )
+                    break
+                  case FilterModalMode.ArtistArtworks:
+                    trackChangeFilters(
+                      PageNames.ArtistPage,
+                      OwnerEntityTypes.Artist,
+                      appliedFiltersParams,
+                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+                    )
+                    break
+                  case FilterModalMode.Fair:
+                    trackChangeFilters(
+                      PageNames.FairPage,
+                      OwnerEntityTypes.Fair,
+                      appliedFiltersParams,
+                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+                    )
+                    break
+                  case FilterModalMode.SaleArtworks:
+                    trackChangeFilters(
+                      PageNames.Auction,
+                      OwnerEntityTypes.Auction,
+                      appliedFiltersParams,
+                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+                    )
+                    break
+                  case FilterModalMode.Show:
+                    trackChangeFilters(
+                      PageNames.ShowPage,
+                      OwnerEntityTypes.Show,
+                      appliedFiltersParams,
+                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+                    )
+                    break
+                }
+                applyFilters()
+              }}
+              block
+              width={100}
+              variant="primaryBlack"
+              size="large"
+            >
+              {getApplyButtonCount()}
+            </ApplyButton>
+          </ApplyButtonContainer>
+        </View>
+      </FancyModal>
+    </NavigationContainer>
   )
 }
 
-export type FilterScreen =
-  | "artistIDs"
-  | "artistsIFollow"
-  | "color"
-  | "dimensionRange"
-  | "estimateRange"
-  | "gallery"
-  | "institution"
-  | "majorPeriods"
-  | "medium"
-  | "priceRange"
-  | "sort"
-  | "viewAs"
-  | "waysToBuy"
-
-export interface FilterDisplayConfig {
-  filterType: FilterScreen
-  displayText: string
-  ScreenComponent: React.FC<any>
-}
-
-export enum FilterModalMode {
-  ArtistArtworks = "ArtistArtworks",
-  ArtistSeries = "ArtistSeries",
-  Collection = "Collection",
-  SaleArtworks = "SaleArtworks",
-  Fair = "Fair",
-  Show = "Show",
-  AuctionResults = "AuctionResults",
-}
-
-interface FilterOptionsProps {
+interface FilterOptionsScreenParams {
   closeModal: () => void
+  exitModal: () => void
   id: string
+  initiallyAppliedFilters?: FilterArray
   mode: FilterModalMode
-  navigator: NavigatorIOS
   slug: string
-  title: string
+  title?: string
 }
 
-export const FilterOptions: React.FC<FilterOptionsProps> = ({ closeModal, id, mode, navigator, slug, title }) => {
+export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigationStack, "FilterOptionsScreen">> = ({
+  navigation,
+  route,
+}) => {
   const tracking = useTracking()
+  const { closeModal, id, mode, slug, title = "Filter" } = route.params
+
   const { dispatch, state } = useContext(ArtworkFilterContext)
 
   const selectedOptions = useSelectedOptionsDisplay()
 
-  const navigateToNextFilterScreen = (NextComponent: any /* STRICTNESS_MIGRATION */) => {
-    navigator.push({
-      component: NextComponent,
-    })
+  const navigateToNextFilterScreen = (screenName: keyof FilterModalNavigationStack) => {
+    navigation.navigate(screenName)
   }
 
   const concreteAggregations = state.aggregations ?? []
@@ -300,7 +364,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = ({ closeModal, id, mo
                 trackClear(PageNames.ArtistSeriesPage, OwnerEntityTypes.ArtistSeries)
                 break
               case "Fair":
-                trackClear(PageNames.Fair2Page, OwnerEntityTypes.Fair)
+                trackClear(PageNames.FairPage, OwnerEntityTypes.Fair)
                 break
             }
 
@@ -324,10 +388,12 @@ export const FilterOptions: React.FC<FilterOptionsProps> = ({ closeModal, id, mo
               <TouchableOptionListItemRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
                 <OptionListItem>
                   <Flex p={2} pr="15px" flexDirection="row" justifyContent="space-between" flexGrow={1}>
-                    <Sans size="3t" color="black100">
-                      {item.displayText}
-                    </Sans>
-                    <Flex flexDirection="row" alignItems="center">
+                    <Flex flex={1}>
+                      <Sans size="3t" color="black100">
+                        {item.displayText}
+                      </Sans>
+                    </Flex>
+                    <Flex flexDirection="row" alignItems="center" justifyContent="flex-end" flex={1}>
                       <OptionDetail
                         currentOption={selectedOption({
                           selectedOptions,
@@ -354,16 +420,21 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
   switch (mode) {
     case FilterModalMode.SaleArtworks:
       return [
-        filterOptionToDisplayConfigMap.sortSaleArtworks,
+        filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.viewAs,
         filterOptionToDisplayConfigMap.estimateRange,
       ]
 
     case FilterModalMode.AuctionResults:
-      return []
+      return [
+        filterOptionToDisplayConfigMap.sort,
+        filterOptionToDisplayConfigMap.categories,
+        filterOptionToDisplayConfigMap.sizes,
+        filterOptionToDisplayConfigMap.year,
+      ]
 
     default:
-      return [filterOptionToDisplayConfigMap.sortArtworks, filterOptionToDisplayConfigMap.waysToBuy]
+      return [filterOptionToDisplayConfigMap.sort, filterOptionToDisplayConfigMap.waysToBuy]
   }
 }
 
@@ -391,6 +462,9 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
     case FilterModalMode.SaleArtworks:
       sortOrder = SaleArtworksFiltersSorted
       break
+    case FilterModalMode.AuctionResults:
+      sortOrder = AuctionResultsFiltersSorted
+      break
   }
 
   const leftParam = left.filterType
@@ -406,7 +480,11 @@ const OptionDetail: React.FC<{ currentOption: any; filterType: any }> = ({ curre
   if (filterType === FilterParamName.color && currentOption !== "All") {
     return <ColorSwatch colorOption={currentOption} />
   } else {
-    return <CurrentOption size="3t">{currentOption}</CurrentOption>
+    return (
+      <CurrentOption size="3t" ellipsizeMode="tail" numberOfLines={1}>
+        {currentOption}
+      </CurrentOption>
+    )
   }
 }
 
@@ -453,6 +531,20 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
   const getFiltersCount = () => {
     let selectedFiltersSum = state.appliedFilters.length
 
+    // the earliest created year and the latest created year are different fileters but they behave as one
+    // therefore we need to decrement the number of filters by one when they are active
+    if (state.filterType === "auctionResult") {
+      const hasEarliestCreatedYearFilterEnabled = !!state.appliedFilters.find(
+        (filter) => filter.paramName === FilterParamName.earliestCreatedYear
+      )
+      const hasLatestCreatedYearFilterEnabled = !!state.appliedFilters.find(
+        (filter) => filter.paramName === FilterParamName.latestCreatedYear
+      )
+
+      if (hasEarliestCreatedYearFilterEnabled || hasLatestCreatedYearFilterEnabled) {
+        --selectedFiltersSum
+      }
+    }
     // For Sale Artworks, the artistsIDs and the includeArtworksByFollowedArtists filters behave like one
     // Therefore we need to decrement the number of filters by one to give the user the impression they are one
     if (state.filterType === "saleArtwork") {
@@ -524,73 +616,85 @@ const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string
   PRICE_RANGE: FilterParamName.priceRange,
   FOLLOWED_ARTISTS: "artistsIFollow",
   ARTIST: "artistIDs",
+  earliestCreatedYear: "earliestCreatedYear",
+  latestCreatedYear: "earliestCreatedYear",
 }
 
 export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
   artistIDs: {
     displayText: FilterDisplayName.artistIDs,
     filterType: "artistIDs",
-    ScreenComponent: ArtistIDsOptionsScreen,
+    ScreenComponent: "ArtistIDsOptionsScreen",
   },
   color: {
     displayText: FilterDisplayName.color,
     filterType: "color",
-    ScreenComponent: ColorOptionsScreen,
+    ScreenComponent: "ColorOptionsScreen",
+  },
+  categories: {
+    displayText: FilterDisplayName.categories,
+    filterType: "categories",
+    ScreenComponent: "CategoriesOptionsScreen",
   },
   dimensionRange: {
     displayText: FilterDisplayName.size,
     filterType: "dimensionRange",
-    ScreenComponent: SizeOptionsScreen,
+    ScreenComponent: "SizeOptionsScreen",
   },
   estimateRange: {
     displayText: FilterDisplayName.estimateRange,
     filterType: "estimateRange",
-    ScreenComponent: EstimateRangeOptionsScreen,
+    ScreenComponent: "EstimateRangeOptionsScreen",
   },
   gallery: {
     displayText: FilterDisplayName.gallery,
     filterType: "gallery",
-    ScreenComponent: GalleryOptionsScreen,
+    ScreenComponent: "GalleryOptionsScreen",
   },
   institution: {
     displayText: FilterDisplayName.institution,
     filterType: "institution",
-    ScreenComponent: InstitutionOptionsScreen,
+    ScreenComponent: "InstitutionOptionsScreen",
   },
   majorPeriods: {
     displayText: FilterDisplayName.timePeriod,
     filterType: "majorPeriods",
-    ScreenComponent: TimePeriodOptionsScreen,
+    ScreenComponent: "TimePeriodOptionsScreen",
   },
   medium: {
     displayText: FilterDisplayName.medium,
     filterType: "medium",
-    ScreenComponent: MediumOptionsScreen,
+    ScreenComponent: "MediumOptionsScreen",
   },
   priceRange: {
     displayText: FilterDisplayName.priceRange,
     filterType: "priceRange",
-    ScreenComponent: PriceRangeOptionsScreen,
+    ScreenComponent: "PriceRangeOptionsScreen",
   },
-  sortArtworks: {
+  sort: {
     displayText: FilterDisplayName.sort,
     filterType: "sort",
-    ScreenComponent: SortOptionsScreen,
+    ScreenComponent: "SortOptionsScreen",
   },
-  sortSaleArtworks: {
-    displayText: FilterDisplayName.sort,
-    filterType: "sort",
-    ScreenComponent: SortOptionsScreen,
+  sizes: {
+    displayText: FilterDisplayName.sizes,
+    filterType: "sizes",
+    ScreenComponent: "SizesOptionsScreen",
   },
   viewAs: {
     displayText: FilterDisplayName.viewAs,
     filterType: "viewAs",
-    ScreenComponent: ViewAsOptionsScreen,
+    ScreenComponent: "ViewAsOptionsScreen",
+  },
+  year: {
+    displayText: FilterDisplayName.year,
+    filterType: "year",
+    ScreenComponent: "YearOptionsScreen",
   },
   waysToBuy: {
     displayText: FilterDisplayName.waysToBuy,
     filterType: "waysToBuy",
-    ScreenComponent: WaysToBuyOptionsScreen,
+    ScreenComponent: "WaysToBuyOptionsScreen",
   },
 }
 
@@ -641,3 +745,5 @@ const FairFiltersSorted: FilterScreen[] = [
   "institution",
 ]
 const SaleArtworksFiltersSorted: FilterScreen[] = ["sort", "viewAs", "estimateRange", "artistIDs", "medium"]
+
+const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories", "sizes", "year"]

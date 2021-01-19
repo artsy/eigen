@@ -1,11 +1,11 @@
 import Artist from "../ConsignmentsArtist"
 
-const emptyProps = { navigator: {} as any, route: {} as any }
+const emptyProps = { navigator: {} as any }
 
 describe("callbacks", () => {
   it("calls pop when done is tapped", () => {
     const navigator: any = { pop: jest.fn() }
-    const artist = new Artist({ navigator, route: {} })
+    const artist = new Artist({ navigator })
     artist.doneTapped()
     expect(navigator.pop).toHaveBeenCalled()
   })
@@ -13,7 +13,7 @@ describe("callbacks", () => {
   it("calls nav.pop & updateWithResult when a result is tapped", () => {
     const navigator: any = { pop: jest.fn() }
     const updateWithArtist = jest.fn()
-    const artist = new Artist({ navigator, route: {}, updateWithArtist })
+    const artist = new Artist({ navigator, updateWithArtist })
 
     artist.artistSelected({} as any)
 
