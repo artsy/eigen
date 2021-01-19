@@ -33,6 +33,11 @@ export type ArtistInsightsAuctionResults_artist$key = {
 const node: ReaderFragment = {
   "argumentDefinitions": [
     {
+      "defaultValue": true,
+      "kind": "LocalArgument",
+      "name": "allowEmptyCreatedDates"
+    },
+    {
       "defaultValue": null,
       "kind": "LocalArgument",
       "name": "categories"
@@ -100,6 +105,11 @@ const node: ReaderFragment = {
     {
       "alias": "auctionResultsConnection",
       "args": [
+        {
+          "kind": "Variable",
+          "name": "allowEmptyCreatedDates",
+          "variableName": "allowEmptyCreatedDates"
+        },
         {
           "kind": "Variable",
           "name": "categories",
@@ -243,5 +253,5 @@ const node: ReaderFragment = {
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = '16d1202417ec6350f8ce426ed0b4e3af';
+(node as any).hash = '8084969a2b90f4c83c81e5d7a9d2efed';
 export default node;
