@@ -2,7 +2,7 @@ import { Conversation_me } from "__generated__/Conversation_me.graphql"
 import { Button, Flex, Separator } from "palette"
 import React, { useState } from "react"
 import styled from "styled-components/native"
-import { MakeOfferModalFragmentContainer as MakeOfferModal } from "./MakeOfferModal"
+import { MakeOfferModal } from "./MakeOfferModal"
 
 type Item = NonNullable<NonNullable<NonNullable<Conversation_me["conversation"]>["items"]>[0]>["item"]
 

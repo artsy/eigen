@@ -220,7 +220,6 @@ export const ConversationFragmentContainer = createFragmentContainer(Conversatio
             __typename
             ... on Artwork {
               href
-              ...MakeOfferModal_artwork
               ...CollapsibleArtworkDetails_artwork
             }
             ... on Show {
