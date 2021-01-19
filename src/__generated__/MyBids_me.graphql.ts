@@ -41,6 +41,14 @@ export type MyBids_me = {
             };
         } | null> | null;
     };
+    readonly watchedLotConnection: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly internalID: string | null;
+                readonly " $fragmentRefs": FragmentRefs<"WatchedLot_lotStanding">;
+            } | null;
+        } | null> | null;
+    };
     readonly " $fragmentRefs": FragmentRefs<"SaleCard_me">;
     readonly " $refType": "MyBids_me";
 };
@@ -315,6 +323,56 @@ return {
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "after",
+          "variableName": "cursor"
+        },
+        {
+          "kind": "Variable",
+          "name": "first",
+          "variableName": "count"
+        }
+      ],
+      "concreteType": "LotConnection",
+      "kind": "LinkedField",
+      "name": "watchedLotConnection",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "LotEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "Lot",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                (v0/*: any*/),
+                {
+                  "args": null,
+                  "kind": "FragmentSpread",
+                  "name": "WatchedLot_lotStanding"
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
       "args": null,
       "kind": "FragmentSpread",
       "name": "SaleCard_me"
@@ -324,5 +382,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '3b7393a5d5db8d2f7c959fea97ac9530';
+(node as any).hash = 'c1a6e016370b569784ec5bbfb0a82941';
 export default node;
