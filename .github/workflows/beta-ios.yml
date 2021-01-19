@@ -1,9 +1,9 @@
 # CircleCI doesn't automatically run builds on the beta branch (only master and PRs)
 # so this is a github action to force it to do so.
-name: Trigger beta release
+name: Trigger beta iOS release
 on:
   push:
-    branches: [beta]
+    branches: [beta-ios]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,5 +13,5 @@ jobs:
           curl \
             -X POST \
             --header "Content-Type: application/json" \
-            -d '{"branch": "beta"}' \
+            -d '{"branch": "beta-ios"}' \
             https://circleci.com/api/v1.1/project/github/artsy/eigen/build?circle-token=${{ secrets.CircleToken }}

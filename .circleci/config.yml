@@ -294,7 +294,7 @@ jobs:
       - build-app-ios
       - run:
           name: Run tests if native code has changed
-          command: ls xcode_test_raw.log || make ci-test
+          command: ls xcode_test_raw.log || make ci-test-ios
       - save_cache:
           key: v6-test-success-{{ checksum ".manifests/native_code" }}
           paths:

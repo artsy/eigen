@@ -67,12 +67,15 @@ build-for-tests-ios:
 
 build-for-tests-android:
 	npx jetifier
-	# cd android; ./gradlew test; cd -
-	# For now, we don't have any native tests, let's just build it.
 	cd android; ./gradlew buildRelease; cd -
 
-test:
+test-ios:
 	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug test -sdk iphonesimulator -destination $(DEVICE_HOST) $(DERIVED_DATA) $(OTHER_CFLAGS) | bundle exec second_curtain 2>&1 | tee ./xcode_test_raw.log  | bundle exec xcpretty -c --test --report junit --output ./test-results.xml
+
+test-android:
+	# cd android; ./gradlew test; cd -
+	# For now, we don't have any native tests, let's just return 0.
+	exit 0
 
 # This is currently not being called from our CI yaml file [!]
 uitest:
@@ -81,13 +84,16 @@ uitest:
 ### CI
 
 ci-ios:
-	if [ "$(LOCAL_BRANCH)" != "beta" ] && [ "$(LOCAL_BRANCH)" != "app_store_submission" ]; then make build-for-tests-ios; else echo "Skipping test build on beta deploy."; fi
+	if [ "$(LOCAL_BRANCH)" != "beta-ios" ] && [ "$(LOCAL_BRANCH)" != "app_store_submission" ]; then make build-for-tests-ios; else echo "Skipping test build on beta deploy."; fi
 
 ci-android:
-	if [ "$(LOCAL_BRANCH)" != "beta" ] && [ "$(LOCAL_BRANCH)" != "app_store_submission" ]; then make build-for-tests-android; else echo "Skipping test build on beta deploy."; fi
+	if [ "$(LOCAL_BRANCH)" != "beta-android" ] && [ "$(LOCAL_BRANCH)" != "app_store_submission" ]; then make build-for-tests-android; else echo "Skipping test build on beta deploy."; fi
 
-ci-test:
-	if [ "$(LOCAL_BRANCH)" != "beta" ] && [ "$(LOCAL_BRANCH)" != "app_store_submission" ]; then make test; else echo "Skipping test run on beta deploy."; fi
+ci-test-ios:
+	if [ "$(LOCAL_BRANCH)" != "beta-ios" ] && [ "$(LOCAL_BRANCH)" != "app_store_submission" ]; then make test-ios; else echo "Skipping test run on beta deploy."; fi
+
+ci-test-android:
+	if [ "$(LOCAL_BRANCH)" != "beta-android" ] && [ "$(LOCAL_BRANCH)" != "app_store_submission" ]; then make test-android; else echo "Skipping test run on beta deploy."; fi
 
 deploy_if_beta_branch_ios:
 	if [ "$(LOCAL_BRANCH)" == "beta-ios" ]; then make distribute_ios; fi
@@ -95,7 +101,10 @@ deploy_if_beta_branch_ios:
 deploy_if_beta_branch_android:
 	if [ "$(LOCAL_BRANCH)" == "beta-android" ]; then make distribute_android; fi
 
-deploy:
+deploy-ios:
+	git push origin "$(LOCAL_BRANCH):beta-ios" -f --no-verify
+
+deploy-android:
 	git push origin "$(LOCAL_BRANCH):beta-android" -f --no-verify
 
 ### App Store Submission
