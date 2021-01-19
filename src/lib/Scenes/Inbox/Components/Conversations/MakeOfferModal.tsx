@@ -1,5 +1,5 @@
 import { MakeOfferModal_artwork } from "__generated__/MakeOfferModal_artwork.graphql"
-import { MakeOfferModalQuery } from "__generated__/MakeOfferModalQuery.graphql"
+import { MakeOfferModalQuery, MakeOfferModalQueryResponse } from "__generated__/MakeOfferModalQuery.graphql"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -64,8 +64,9 @@ export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOffer
 
 export const MakeOfferModalQueryRenderer: React.FC<{
   artworkID: string
-}> = (props) => {
-  const { artworkID } = props
+  modalIsVisible: boolean
+  toggleVisibility: () => void
+}> = ({ artworkID, toggleVisibility, modalIsVisible }) => {
   return (
     <QueryRenderer<MakeOfferModalQuery>
       environment={defaultEnvironment}
@@ -79,7 +80,13 @@ export const MakeOfferModalQueryRenderer: React.FC<{
       variables={{
         artworkID,
       }}
-      render={renderWithLoadProgress(MakeOfferModalFragmentContainer)}
+      render={renderWithLoadProgress<MakeOfferModalQueryResponse>(({ artwork }) => (
+        <MakeOfferModalFragmentContainer
+          artwork={artwork}
+          modalIsVisible={modalIsVisible}
+          toggleVisibility={toggleVisibility}
+        />
+      ))}
     />
   )
 }
