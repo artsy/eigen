@@ -4,11 +4,12 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { useElasticOverscroll } from "lib/utils/useElasticOverscroll"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { useStickyScrollHeader } from "lib/utils/useStickyScrollHeader"
 import { Flex, Spacer, Spinner, Text } from "palette"
 import React, { useState } from "react"
-import { Animated, StyleSheet, ViewStyle } from "react-native"
+import { Animated, StyleSheet, View, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { ArtistShows2Query } from "../../../__generated__/ArtistShows2Query.graphql"
 import { ArtistShowFragmentContainer } from "../../Components/Artist/ArtistShows/ArtistShow"
@@ -19,7 +20,7 @@ interface Props {
 }
 
 const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
-  const top = useScreenDimensions().safeAreaInsets.top + 20
+  const top = 60
   const [isFetchingMoreData, setIsFetchingMoreData] = useState(false)
   const pastShows = extractNodes(artist.pastShows)
 
@@ -27,6 +28,17 @@ const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
     headerText: `${artist.name} – Past Shows`,
     fadeInStart: 50,
   })
+  const view = (
+    <View>
+      <Text variant="mediumText" ml="2px" mb={0.5}>
+        {artist.name}
+      </Text>
+      <Text variant="largeTitle" mb={2}>
+        Past Shows
+      </Text>
+    </View>
+  )
+  const { header } = useElasticOverscroll(view, scrollAnim)
 
   const loadMore = () => {
     if (!relay.hasMore() || relay.isLoading()) {
@@ -41,35 +53,11 @@ const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
     })
   }
 
-  const translateY = scrollAnim.interpolate({
-    inputRange: [-1, 0, 1],
-    outputRange: [-0.5, 0, 0],
-  })
-
   return (
     <>
       <Animated.FlatList
         data={pastShows}
-        ListHeaderComponent={() => {
-          return (
-            <Animated.View
-              style={{
-                transform: [
-                  {
-                    translateY,
-                  },
-                ],
-              }}
-            >
-              <Text variant="mediumText" ml="2px" mb={0.5}>
-                {artist.name}
-              </Text>
-              <Text variant="largeTitle" mb={2}>
-                Past Shows
-              </Text>
-            </Animated.View>
-          )
-        }}
+        ListHeaderComponent={() => header}
         renderItem={({ item }) => <ArtistShowFragmentContainer show={item} styles={showStyles} />}
         keyExtractor={({ id }) => id}
         onEndReachedThreshold={0.2}
