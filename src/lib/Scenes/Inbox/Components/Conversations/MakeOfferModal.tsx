@@ -9,14 +9,18 @@ import { createFragmentContainer, graphql } from "react-relay"
 interface MakeOfferModalProps {
   toggleVisibility: () => void
   modalIsVisible: boolean
-  artwork: MakeOfferModal_artwork
 }
 
 export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
   const { toggleVisibility, modalIsVisible, artwork } = props
 
   return (
-    <FancyModal visible={modalIsVisible} onBackgroundPressed={() => {}}>
+    <FancyModal
+      visible={modalIsVisible}
+      onBackgroundPressed={() => {
+        toggleVisibility()
+      }}
+    >
       <FancyModalHeader
         onLeftButtonPress={() => {
           toggleVisibility()
@@ -46,10 +50,10 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
   )
 }
 
-export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOfferModal, {
-  artwork: graphql`
-    fragment MakeOfferModal_artwork on Artwork {
-      ...CollapsibleArtworkDetails_artwork
-    }
-  `,
-})
+// export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOfferModal, {
+//   artwork: graphql`
+//     fragment MakeOfferModal_artwork on Artwork {
+//       ...CollapsibleArtworkDetails_artwork
+//     }
+//   `,
+// })

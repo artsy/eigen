@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 582d80a5154a062648c9f54ad5fb49fb */
+/* @relayHash 198550efc3c0ec2af3cacbbb3b5fbea5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -90,7 +90,6 @@ fragment Conversation_me on Me {
         __typename
         ... on Artwork {
           href
-          ...MakeOfferModal_artwork
           ...CollapsibleArtworkDetails_artwork
         }
         ... on Show {
@@ -127,10 +126,6 @@ fragment FileDownload_attachment on Attachment {
 fragment ImagePreview_attachment on Attachment {
   downloadURL
   ...AttachmentPreview_attachment
-}
-
-fragment MakeOfferModal_artwork on Artwork {
-  ...CollapsibleArtworkDetails_artwork
 }
 
 fragment Message_message on Message {
@@ -888,7 +883,7 @@ return {
     ]
   },
   "params": {
-    "id": "582d80a5154a062648c9f54ad5fb49fb",
+    "id": "198550efc3c0ec2af3cacbbb3b5fbea5",
     "metadata": {},
     "name": "ConversationQuery",
     "operationKind": "query",
