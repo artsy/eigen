@@ -4,7 +4,7 @@ upcoming:
   dev:
     -
   user_facing:
-    -
+    - Refresh inbox automatically upon revisiting - erik, lily
 
 releases:
   - version: 6.7.6
