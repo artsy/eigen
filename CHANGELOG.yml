@@ -10,6 +10,7 @@ upcoming:
     - Adds lab option for inquiry checkout - lily
     - Refactor filters modal to use react-navigation - mounir
     - Replace NavigatorIOS with react-navigation shim - david
+    - Add basic log-in flow for android - david
 
   user_facing:
     - Add sharing on Instagram - pavlos
