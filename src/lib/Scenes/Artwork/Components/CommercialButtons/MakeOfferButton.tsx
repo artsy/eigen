@@ -13,6 +13,7 @@ export interface MakeOfferButtonProps {
   // EditionSetID is passed down from the edition selected by the user
   editionSetID: string | null
   variant?: ButtonVariant
+  buttonText?: string
 }
 
 export interface State {
@@ -123,7 +124,7 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
         variant={this.props.variant}
         haptic
       >
-        Make offer
+        {this.props.buttonText ? this.props.buttonText : "Make offer"}
       </Button>
     )
   }
