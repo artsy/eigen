@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native"
 import { Input } from "lib/Components/Input/Input"
 import { Stack } from "lib/Components/Stack"
 import { GlobalStore } from "lib/store/GlobalStore"
@@ -11,7 +10,6 @@ import { LogInStore } from "./LogInStore"
 export const LogInEnterPassword: React.FC = () => {
   const { setPassword } = LogInStore.useStoreActions((store) => store)
   const { password, email } = LogInStore.useStoreState((store) => store)
-  const nav = useNavigation()
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag" style={{ flex: 1 }}>
@@ -36,14 +34,12 @@ export const LogInEnterPassword: React.FC = () => {
           disabled={password.trim().length < 8}
           onPress={async () => {
             if (
-              await GlobalStore.actions.auth.signIn({
+              !(await GlobalStore.actions.auth.signIn({
                 email,
                 password,
-              })
+              }))
             ) {
-              nav.reset({
-                routes: [{ name: "Main" }],
-              })
+              console.error("Couldn't log in, check your email/pass and try again?")
             }
           }}
         >
