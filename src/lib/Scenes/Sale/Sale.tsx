@@ -19,7 +19,7 @@ import { useInterval } from "lib/utils/useInterval"
 import { usePrevious } from "lib/utils/usePrevious"
 import _, { times } from "lodash"
 import moment from "moment"
-import { Box, Flex, Join, Spacer } from "palette"
+import { Box, Flex, Join, Spacer, Text } from "palette"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Animated, FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -171,12 +171,15 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     {
       key: SALE_LOTS_LIST,
       content: below ? (
-        <SaleLotsListContainer
-          saleArtworksConnection={below}
-          saleID={sale.internalID}
-          saleSlug={sale.slug}
-          scrollToTop={scrollToTop}
-        />
+        <>
+          <Text>{below.totals?.counts?.total}</Text>
+          <SaleLotsListContainer
+            saleArtworksConnection={below}
+            saleID={sale.internalID}
+            saleSlug={sale.slug}
+            scrollToTop={scrollToTop}
+          />
+        </>
       ) : (
         // Since most likely this part of the screen will be already loaded when the user
         // reaches it, there is no need to create the fancy placeholders here
@@ -355,6 +358,11 @@ export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayMo
                 # query SaleBelowTheFoldQuery($saleID: String!, $saleSlug: ID!) {
                 query SaleBelowTheFoldQuery($saleID: ID) {
                   ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleID)
+                  totals: saleArtworksConnection(saleID: "5ff4d32b5022f600116cc40e", aggregations: [TOTAL]) {
+                    counts {
+                      total
+                    }
+                  }
                 }
               `,
               variables: { saleID },
