@@ -135,24 +135,26 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
     artist: graphql`
       fragment ArtistInsightsAuctionResults_artist on Artist
       @argumentDefinitions(
+        allowEmptyCreatedDates: { type: "Boolean", defaultValue: true }
+        categories: { type: "[String]" }
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
-        sort: { type: "AuctionResultSorts", defaultValue: DATE_DESC }
-        sizes: { type: "[ArtworkSizes]" }
-        categories: { type: "[String]" }
         earliestCreatedYear: { type: "Int", defaultValue: 1000 }
         latestCreatedYear: { type: "Int", defaultValue: 2050 }
+        sizes: { type: "[ArtworkSizes]" }
+        sort: { type: "AuctionResultSorts", defaultValue: DATE_DESC }
       ) {
         birthday
         slug
         auctionResultsConnection(
-          first: $count
           after: $cursor
-          sort: $sort
-          sizes: $sizes
+          allowEmptyCreatedDates: $allowEmptyCreatedDates
           categories: $categories
           earliestCreatedYear: $earliestCreatedYear
+          first: $count
           latestCreatedYear: $latestCreatedYear
+          sizes: $sizes
+          sort: $sort
         ) @connection(key: "artist_auctionResultsConnection") {
           createdYearRange {
             startAt
@@ -182,25 +184,27 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
     },
     query: graphql`
       query ArtistInsightsAuctionResultsQuery(
+        $allowEmptyCreatedDates: Boolean
+        $artistID: String!
+        $categories: [String]
         $count: Int!
         $cursor: String
-        $sort: AuctionResultSorts
-        $sizes: [ArtworkSizes]
-        $categories: [String]
-        $artistID: String!
-        $latestCreatedYear: Int
         $earliestCreatedYear: Int
+        $latestCreatedYear: Int
+        $sizes: [ArtworkSizes]
+        $sort: AuctionResultSorts
       ) {
         artist(id: $artistID) {
           ...ArtistInsightsAuctionResults_artist
             @arguments(
+              allowEmptyCreatedDates: $allowEmptyCreatedDates
+              categories: $categories
               count: $count
               cursor: $cursor
-              sort: $sort
-              sizes: $sizes
               earliestCreatedYear: $earliestCreatedYear
               latestCreatedYear: $latestCreatedYear
-              categories: $categories
+              sizes: $sizes
+              sort: $sort
             )
         }
       }

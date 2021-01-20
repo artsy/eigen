@@ -1,21 +1,22 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 562d43473df1b4a1a802acf1c76c80ce */
+/* @relayHash ab141f76ee3930bd7d661b94b0f40bde */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtworkSizes = "LARGE" | "MEDIUM" | "SMALL" | "%future added value";
 export type AuctionResultSorts = "DATE_DESC" | "ESTIMATE_AND_DATE_DESC" | "PRICE_AND_DATE_DESC" | "%future added value";
 export type ArtistInsightsAuctionResultsQueryVariables = {
+    allowEmptyCreatedDates?: boolean | null;
+    artistID: string;
+    categories?: Array<string | null> | null;
     count: number;
     cursor?: string | null;
-    sort?: AuctionResultSorts | null;
-    sizes?: Array<ArtworkSizes | null> | null;
-    categories?: Array<string | null> | null;
-    artistID: string;
-    latestCreatedYear?: number | null;
     earliestCreatedYear?: number | null;
+    latestCreatedYear?: number | null;
+    sizes?: Array<ArtworkSizes | null> | null;
+    sort?: AuctionResultSorts | null;
 };
 export type ArtistInsightsAuctionResultsQueryResponse = {
     readonly artist: {
@@ -31,25 +32,26 @@ export type ArtistInsightsAuctionResultsQuery = {
 
 /*
 query ArtistInsightsAuctionResultsQuery(
+  $allowEmptyCreatedDates: Boolean
+  $artistID: String!
+  $categories: [String]
   $count: Int!
   $cursor: String
-  $sort: AuctionResultSorts
-  $sizes: [ArtworkSizes]
-  $categories: [String]
-  $artistID: String!
-  $latestCreatedYear: Int
   $earliestCreatedYear: Int
+  $latestCreatedYear: Int
+  $sizes: [ArtworkSizes]
+  $sort: AuctionResultSorts
 ) {
   artist(id: $artistID) {
-    ...ArtistInsightsAuctionResults_artist_zM738
+    ...ArtistInsightsAuctionResults_artist_4szhbQ
     id
   }
 }
 
-fragment ArtistInsightsAuctionResults_artist_zM738 on Artist {
+fragment ArtistInsightsAuctionResults_artist_4szhbQ on Artist {
   birthday
   slug
-  auctionResultsConnection(first: $count, after: $cursor, sort: $sort, sizes: $sizes, categories: $categories, earliestCreatedYear: $earliestCreatedYear, latestCreatedYear: $latestCreatedYear) {
+  auctionResultsConnection(after: $cursor, allowEmptyCreatedDates: $allowEmptyCreatedDates, categories: $categories, earliestCreatedYear: $earliestCreatedYear, first: $count, latestCreatedYear: $latestCreatedYear, sizes: $sizes, sort: $sort) {
     createdYearRange {
       startAt
       endAt
@@ -99,96 +101,109 @@ fragment AuctionResult_auctionResult on AuctionResult {
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "artistID"
-},
-v1 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "categories"
-},
-v2 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "count"
-},
-v3 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "cursor"
-},
-v4 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "earliestCreatedYear"
-},
-v5 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "latestCreatedYear"
-},
-v6 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "sizes"
-},
-v7 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "sort"
-},
-v8 = [
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "allowEmptyCreatedDates"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "artistID"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "categories"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "count"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "cursor"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "earliestCreatedYear"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "latestCreatedYear"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "sizes"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "sort"
+  }
+],
+v1 = [
   {
     "kind": "Variable",
     "name": "id",
     "variableName": "artistID"
   }
 ],
-v9 = {
+v2 = {
+  "kind": "Variable",
+  "name": "allowEmptyCreatedDates",
+  "variableName": "allowEmptyCreatedDates"
+},
+v3 = {
   "kind": "Variable",
   "name": "categories",
   "variableName": "categories"
 },
-v10 = {
+v4 = {
   "kind": "Variable",
   "name": "earliestCreatedYear",
   "variableName": "earliestCreatedYear"
 },
-v11 = {
+v5 = {
   "kind": "Variable",
   "name": "latestCreatedYear",
   "variableName": "latestCreatedYear"
 },
-v12 = {
+v6 = {
   "kind": "Variable",
   "name": "sizes",
   "variableName": "sizes"
 },
-v13 = {
+v7 = {
   "kind": "Variable",
   "name": "sort",
   "variableName": "sort"
 },
-v14 = [
+v8 = [
   {
     "kind": "Variable",
     "name": "after",
     "variableName": "cursor"
   },
-  (v9/*: any*/),
-  (v10/*: any*/),
+  (v2/*: any*/),
+  (v3/*: any*/),
+  (v4/*: any*/),
   {
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
   },
-  (v11/*: any*/),
-  (v12/*: any*/),
-  (v13/*: any*/)
+  (v5/*: any*/),
+  (v6/*: any*/),
+  (v7/*: any*/)
 ],
-v15 = {
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -197,23 +212,14 @@ v15 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": [
-      (v0/*: any*/),
-      (v1/*: any*/),
-      (v2/*: any*/),
-      (v3/*: any*/),
-      (v4/*: any*/),
-      (v5/*: any*/),
-      (v6/*: any*/),
-      (v7/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "ArtistInsightsAuctionResultsQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v8/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "Artist",
         "kind": "LinkedField",
         "name": "artist",
@@ -221,7 +227,8 @@ return {
         "selections": [
           {
             "args": [
-              (v9/*: any*/),
+              (v2/*: any*/),
+              (v3/*: any*/),
               {
                 "kind": "Variable",
                 "name": "count",
@@ -232,10 +239,10 @@ return {
                 "name": "cursor",
                 "variableName": "cursor"
               },
-              (v10/*: any*/),
-              (v11/*: any*/),
-              (v12/*: any*/),
-              (v13/*: any*/)
+              (v4/*: any*/),
+              (v5/*: any*/),
+              (v6/*: any*/),
+              (v7/*: any*/)
             ],
             "kind": "FragmentSpread",
             "name": "ArtistInsightsAuctionResults_artist"
@@ -249,22 +256,13 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [
-      (v2/*: any*/),
-      (v3/*: any*/),
-      (v7/*: any*/),
-      (v6/*: any*/),
-      (v1/*: any*/),
-      (v0/*: any*/),
-      (v5/*: any*/),
-      (v4/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "ArtistInsightsAuctionResultsQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v8/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "Artist",
         "kind": "LinkedField",
         "name": "artist",
@@ -286,7 +284,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v14/*: any*/),
+            "args": (v8/*: any*/),
             "concreteType": "AuctionResultConnection",
             "kind": "LinkedField",
             "name": "auctionResultsConnection",
@@ -333,7 +331,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v15/*: any*/),
+                      (v9/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -539,27 +537,28 @@ return {
           },
           {
             "alias": null,
-            "args": (v14/*: any*/),
+            "args": (v8/*: any*/),
             "filters": [
-              "sort",
-              "sizes",
+              "allowEmptyCreatedDates",
               "categories",
               "earliestCreatedYear",
-              "latestCreatedYear"
+              "latestCreatedYear",
+              "sizes",
+              "sort"
             ],
             "handle": "connection",
             "key": "artist_auctionResultsConnection",
             "kind": "LinkedHandle",
             "name": "auctionResultsConnection"
           },
-          (v15/*: any*/)
+          (v9/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "562d43473df1b4a1a802acf1c76c80ce",
+    "id": "ab141f76ee3930bd7d661b94b0f40bde",
     "metadata": {},
     "name": "ArtistInsightsAuctionResultsQuery",
     "operationKind": "query",
@@ -567,5 +566,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'c5bb02006ed432200203d7e98eeb2148';
+(node as any).hash = 'd16fe0589c28aa3d0aee5dfb80a7a475';
 export default node;

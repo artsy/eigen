@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 64e241dc9b48c71aac0d2e8bc99600ee */
+/* @relayHash cf65fc45c703a6d9c56418738d7c2846 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -125,7 +125,7 @@ fragment ArtistConsignButton_artist on Artist {
 fragment ArtistInsightsAuctionResults_artist on Artist {
   birthday
   slug
-  auctionResultsConnection(first: 10, sort: DATE_DESC, earliestCreatedYear: 1000, latestCreatedYear: 2050) {
+  auctionResultsConnection(allowEmptyCreatedDates: true, earliestCreatedYear: 1000, first: 10, latestCreatedYear: 2050, sort: DATE_DESC) {
     createdYearRange {
       startAt
       endAt
@@ -502,6 +502,11 @@ v12 = {
   "value": "closed"
 },
 v13 = [
+  {
+    "kind": "Literal",
+    "name": "allowEmptyCreatedDates",
+    "value": true
+  },
   {
     "kind": "Literal",
     "name": "earliestCreatedYear",
@@ -1124,17 +1129,18 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "auctionResultsConnection(earliestCreatedYear:1000,first:10,latestCreatedYear:2050,sort:\"DATE_DESC\")"
+            "storageKey": "auctionResultsConnection(allowEmptyCreatedDates:true,earliestCreatedYear:1000,first:10,latestCreatedYear:2050,sort:\"DATE_DESC\")"
           },
           {
             "alias": null,
             "args": (v13/*: any*/),
             "filters": [
-              "sort",
-              "sizes",
+              "allowEmptyCreatedDates",
               "categories",
               "earliestCreatedYear",
-              "latestCreatedYear"
+              "latestCreatedYear",
+              "sizes",
+              "sort"
             ],
             "handle": "connection",
             "key": "artist_auctionResultsConnection",
@@ -1181,7 +1187,7 @@ return {
     ]
   },
   "params": {
-    "id": "64e241dc9b48c71aac0d2e8bc99600ee",
+    "id": "cf65fc45c703a6d9c56418738d7c2846",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",

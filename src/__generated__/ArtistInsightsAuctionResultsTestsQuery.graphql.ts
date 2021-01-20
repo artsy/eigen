@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4bbe299ea8d2e060872e1682cac23d5d */
+/* @relayHash 571910566eb4e4a99ed1e07a9edf163c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,7 +29,7 @@ query ArtistInsightsAuctionResultsTestsQuery {
 fragment ArtistInsightsAuctionResults_artist on Artist {
   birthday
   slug
-  auctionResultsConnection(first: 10, sort: DATE_DESC, earliestCreatedYear: 1000, latestCreatedYear: 2050) {
+  auctionResultsConnection(allowEmptyCreatedDates: true, earliestCreatedYear: 1000, first: 10, latestCreatedYear: 2050, sort: DATE_DESC) {
     createdYearRange {
       startAt
       endAt
@@ -87,6 +87,11 @@ var v0 = [
   }
 ],
 v1 = [
+  {
+    "kind": "Literal",
+    "name": "allowEmptyCreatedDates",
+    "value": true
+  },
   {
     "kind": "Literal",
     "name": "earliestCreatedYear",
@@ -451,17 +456,18 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "auctionResultsConnection(earliestCreatedYear:1000,first:10,latestCreatedYear:2050,sort:\"DATE_DESC\")"
+            "storageKey": "auctionResultsConnection(allowEmptyCreatedDates:true,earliestCreatedYear:1000,first:10,latestCreatedYear:2050,sort:\"DATE_DESC\")"
           },
           {
             "alias": null,
             "args": (v1/*: any*/),
             "filters": [
-              "sort",
-              "sizes",
+              "allowEmptyCreatedDates",
               "categories",
               "earliestCreatedYear",
-              "latestCreatedYear"
+              "latestCreatedYear",
+              "sizes",
+              "sort"
             ],
             "handle": "connection",
             "key": "artist_auctionResultsConnection",
@@ -475,7 +481,7 @@ return {
     ]
   },
   "params": {
-    "id": "4bbe299ea8d2e060872e1682cac23d5d",
+    "id": "571910566eb4e4a99ed1e07a9edf163c",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
