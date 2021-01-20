@@ -1,10 +1,12 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
 import { SaleArtworkGridItem_saleArtwork } from "__generated__/SaleArtworkGridItem_saleArtwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
 import { Box, Flex, Sans, Spacer } from "palette"
 import { Touchable } from "palette"
-import React from "react"
+import React, { useContext } from "react"
 import { StyleSheet, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -37,6 +39,8 @@ export const SaleArtworkGridItem: React.FC<ArtworkProps> = ({
   contextScreenOwnerType,
 }) => {
   const tracking = useTracking()
+  const filterContext = useContext(ArtworkFilterContext)
+  const filterParams = filterArtworksParams(filterContext?.state?.appliedFilters)
 
   const artwork = saleArtwork.artwork!
 
@@ -55,6 +59,9 @@ export const SaleArtworkGridItem: React.FC<ArtworkProps> = ({
         contextScreenOwnerSlug,
         destinationScreenOwnerId: artwork.internalID,
         destinationScreenOwnerSlug: artwork.slug,
+        position: itemIndex,
+        // This is always a string; types are incorrect
+        sort: String(filterParams?.sort),
       })
 
       trackTap ? trackTap(artwork.slug, itemIndex) : tracking.trackEvent(genericTapEvent)
