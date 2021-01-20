@@ -29,6 +29,7 @@ upcoming:
     - Add Year filter to AuctionResults - mounir
     - Add StickyScrollHeader and Skeleton to Past Shows screen - adam
     - Add a useElasticOverscroll hook and use in Past Shows screen - adam
+    - Add inquiry checkout button and modal - lily
 
 releases:
   - version: 6.7.5
