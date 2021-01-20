@@ -1,16 +1,8 @@
 import React from "react"
 
-import {
-  LayoutChangeEvent,
-  PixelRatio,
-  processColor,
-  requireNativeComponent,
-  StyleSheet,
-  View,
-  ViewProps,
-} from "react-native"
+import { LayoutChangeEvent, PixelRatio, processColor, StyleSheet, ViewProps } from "react-native"
 
-import colors from "lib/data/colors"
+import FastImage from "react-native-fast-image"
 import { createGeminiUrl } from "./createGeminiUrl"
 
 interface Props extends ViewProps {
@@ -63,12 +55,7 @@ interface State {
   width?: number
   height?: number
 }
-
-export default class OpaqueImageView extends React.Component<Props, State> {
-  static defaultProps: Props = {
-    placeholderBackgroundColor: colors["gray-regular"],
-  }
-
+export default class ArtsyImageView extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
@@ -97,6 +84,15 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     }
   }
 
+  onLayout = (event: LayoutChangeEvent) => {
+    const { width, height } = event.nativeEvent.layout
+    const scale = PixelRatio.get()
+    this.setState({
+      width: width * scale,
+      height: height * scale,
+    })
+  }
+
   imageURL() {
     const { imageURL, useRawURL } = this.props
 
@@ -113,16 +109,7 @@ export default class OpaqueImageView extends React.Component<Props, State> {
       })
     }
 
-    return null
-  }
-
-  onLayout = (event: LayoutChangeEvent) => {
-    const { width, height } = event.nativeEvent.layout
-    const scale = PixelRatio.get()
-    this.setState({
-      width: width * scale,
-      height: height * scale,
-    })
+    return undefined
   }
 
   render() {
@@ -148,8 +135,18 @@ export default class OpaqueImageView extends React.Component<Props, State> {
       backgroundColorStyle = { backgroundColor: props.placeholderBackgroundColor }
     }
 
-    return <NativeOpaqueImageView style={[style, backgroundColorStyle]} {...remainderProps} />
+    const resolvedURL = isLaidOut ? this.imageURL() : undefined
+    // TODO: Fix `any` cast
+    return (
+      <FastImage
+        source={{
+          uri: resolvedURL,
+          priority: FastImage.priority.normal,
+        }}
+        onLayout={this.onLayout}
+        style={[style as any, backgroundColorStyle]}
+        {...remainderProps}
+      />
+    )
   }
 }
-
-const NativeOpaqueImageView = requireNativeComponent("AROpaqueImageView") as typeof View
