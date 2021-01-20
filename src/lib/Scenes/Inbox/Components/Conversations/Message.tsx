@@ -1,24 +1,20 @@
 import { Message_message } from "__generated__/Message_message.graphql"
-
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { navigate } from "lib/navigation/navigate"
+import { Schema, Track, track as _track } from "lib/utils/track"
+import { compact } from "lodash"
 import { BoxProps, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
-import { NativeModules, View } from "react-native"
+import { View } from "react-native"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Hyperlink from "react-native-hyperlink"
 import { createFragmentContainer } from "react-relay"
+import { graphql } from "relay-runtime"
 import styled from "styled-components/native"
-
-import { navigate } from "lib/navigation/navigate"
-
 import { FileDownloadFragmentContainer as FileDownload } from "./Preview/Attachment/FileDownload"
 import ImagePreview from "./Preview/Attachment/ImagePreview"
 import PDFPreview from "./Preview/Attachment/PDFPreview"
 import { TimeSince } from "./TimeSince"
-
-import { Schema, Track, track as _track } from "lib/utils/track"
-import { graphql } from "relay-runtime"
-
-import { compact } from "lodash"
 
 const AttachmentContainer = styled(View)`
   border-radius: 15px;
@@ -45,7 +41,7 @@ export class Message extends React.Component<Props> {
     // download progress bar on.
     const previewAttachment = (reactNodeHandle: number, attachmentID: string) => {
       const attachment = compact(attachments).find(({ internalID }) => internalID === attachmentID)!
-      NativeModules.ARScreenPresenterModule.presentMediaPreviewController(
+      ArtsyNativeModules.ARScreenPresenterModule.presentMediaPreviewController(
         reactNodeHandle,
         attachment.downloadURL,
         attachment.contentType,

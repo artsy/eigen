@@ -1,4 +1,5 @@
-import { NativeModules, Platform } from "react-native"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { Platform } from "react-native"
 import { openPicker } from "react-native-image-crop-picker"
 import { requestPhotos } from "../requestPhotos"
 
@@ -14,7 +15,7 @@ describe("requestPhotos", () => {
         get: () => 15,
       })
       const mockRequestPhotos = jest.fn()
-      NativeModules.ARPHPhotoPickerModule.requestPhotos = mockRequestPhotos
+      ArtsyNativeModules.ARPHPhotoPickerModule.requestPhotos = mockRequestPhotos
       requestPhotos()
       expect(mockRequestPhotos).toHaveBeenCalled()
     })

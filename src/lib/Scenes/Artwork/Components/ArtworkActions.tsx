@@ -1,5 +1,6 @@
 import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"
 import { cm2in } from "lib/utils/conversions"
 import { Schema, track } from "lib/utils/track"
@@ -18,7 +19,7 @@ import {
   Touchable,
 } from "palette"
 import React from "react"
-import { NativeModules, TouchableWithoutFeedback, View } from "react-native"
+import { TouchableWithoutFeedback, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
@@ -88,7 +89,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     const heightIn = cm2in(heightCm!)
     const widthIn = cm2in(widthCm!)
 
-    NativeModules.ARScreenPresenterModule.presentAugmentedRealityVIR(image?.url!, widthIn, heightIn, slug, id)
+    ArtsyNativeModules.ARScreenPresenterModule.presentAugmentedRealityVIR(image?.url!, widthIn, heightIn, slug, id)
   }
 
   render() {
@@ -121,7 +122,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
             </Touchable>
           )}
 
-          {!!(NativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
+          {!!(ArtsyNativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
             <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
               <UtilButton pr={3}>
                 <Box mr={0.5}>

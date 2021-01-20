@@ -1,11 +1,9 @@
 import { Input } from "lib/Components/Input/Input"
-import React, { useEffect, useState } from "react"
-
-import { Flex, Separator } from "palette"
-
 import { Stack } from "lib/Components/Stack"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
-import { NativeModules } from "react-native"
+import { Flex, Separator } from "palette"
+import React, { useEffect, useState } from "react"
 import { MyAccountFieldEditScreen, MyAccountFieldEditScreenProps } from "./Components/MyAccountFieldEditScreen"
 
 export const MyAccountEditPassword: React.FC<{}> = ({}) => {
@@ -74,7 +72,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
         [
           {
             text: "OK",
-            onPress: () => NativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
+            onPress: () => ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
           },
         ],
         { cancelable: false }

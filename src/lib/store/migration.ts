@@ -1,5 +1,6 @@
 // easy-peasy ships with a fork of immer so let's use that instead of adding another copy of immer to our bundle.
 import { produce } from "immer-peasy"
+import echoLaunchJSON from "../../../Artsy/App/EchoNew.json"
 
 /**
  * IMPORTANT
@@ -11,9 +12,10 @@ export const Versions = {
   AddConsignments: 2,
   RenameConsignmentsToMyCollection: 3,
   RemoveMyCollectionNavigationState: 4,
+  AddAuthAndConfigState: 5,
 }
 
-export const CURRENT_APP_VERSION = Versions.RemoveMyCollectionNavigationState
+export const CURRENT_APP_VERSION = Versions.AddAuthAndConfigState
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -34,6 +36,19 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.RemoveMyCollectionNavigationState]: (state) => {
     delete state.myCollection.navigation
+  },
+  [Versions.AddAuthAndConfigState]: (state) => {
+    state.auth = {
+      userID: null,
+      userAccessToken: null,
+      userAccessTokenExpiresIn: null,
+      xAppToken: null,
+      xApptokenExpiresIn: null,
+    }
+    state.config = {
+      echoState: echoLaunchJSON,
+      adminFeatureFlagOverrides: {},
+    }
   },
 }
 
