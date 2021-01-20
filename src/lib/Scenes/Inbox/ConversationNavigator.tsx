@@ -3,7 +3,7 @@ import React from "react"
 import { ConversationQueryRenderer as Conversation } from "./Screens/Conversation"
 
 export const ConversationNavigator: React.FC<{ conversationID: string }> = ({ conversationID }) => {
-  const initialRoute = { component: Conversation, passProps: { conversationID } }
+  const initialRoute = { component: Conversation, passProps: { conversationID }, title: "" }
 
   return <NavigatorIOS initialRoute={initialRoute} />
 }

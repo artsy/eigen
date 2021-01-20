@@ -6,6 +6,20 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Conversation_me = {
     readonly conversation: {
+        readonly items: ReadonlyArray<{
+            readonly item: ({
+                readonly __typename: "Artwork";
+                readonly href: string | null;
+                readonly slug: string;
+            } | {
+                readonly __typename: "Show";
+                readonly href: string | null;
+            } | {
+                /*This will never be '%other', but we need some
+                value in case none of the concrete values match.*/
+                readonly __typename: "%other";
+            }) | null;
+        } | null> | null;
         readonly internalID: string | null;
         readonly id: string;
         readonly lastMessageID: string | null;
@@ -28,7 +42,15 @@ export type Conversation_me$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "href",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [
     {
       "kind": "RootArgument",
@@ -53,6 +75,58 @@ const node: ReaderFragment = {
       "name": "conversation",
       "plural": false,
       "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "ConversationItem",
+          "kind": "LinkedField",
+          "name": "items",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": null,
+              "kind": "LinkedField",
+              "name": "item",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
+                  "storageKey": null
+                },
+                {
+                  "kind": "InlineFragment",
+                  "selections": [
+                    (v0/*: any*/),
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "slug",
+                      "storageKey": null
+                    }
+                  ],
+                  "type": "Artwork",
+                  "abstractKey": null
+                },
+                {
+                  "kind": "InlineFragment",
+                  "selections": [
+                    (v0/*: any*/)
+                  ],
+                  "type": "Show",
+                  "abstractKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
         {
           "alias": null,
           "args": null,
@@ -129,5 +203,6 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '453817fb6e16a3de8ec1ba95936c0a8a';
+})();
+(node as any).hash = '7416664765d5665693a643c35d881392';
 export default node;

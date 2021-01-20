@@ -2,15 +2,22 @@ import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterContext, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { aggregationForFilter, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import { color, Flex, Text } from "palette"
+import { Box, CheckIcon, color, Flex, Separator, Text } from "palette"
 import React, { useContext, useState } from "react"
+import { TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
+import { FilterData } from "../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { useScreenDimensions } from "../../utils/useScreenDimensions"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
 import { FilterModalNavigationStack } from "../FilterModal"
-import { CustomLabel } from "./MultiSliderCustomLabel"
 
 interface YearOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "YearOptionsScreen"> {}
+
+export const ALLOW_EMPTY_CREATED_DATES_FILTER: FilterData = {
+  displayText: "Include lots without year created info",
+  paramName: FilterParamName.allowEmptyCreatedDates,
+  paramValue: true,
+}
 
 export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation }) => {
   const screenWidth = useScreenDimensions().width
@@ -32,10 +39,21 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
     (option) => option.paramName === FilterParamName.latestCreatedYear
   )?.paramValue
 
+  const appliedAllowEmptyCreatedDates = state.appliedFilters.find(
+    (option) => option.paramName === FilterParamName.allowEmptyCreatedDates
+  )?.paramValue as boolean
+  const selectedAllowEmptyCreatedDates = state.selectedFilters.find(
+    (option) => option.paramName === FilterParamName.allowEmptyCreatedDates
+  )?.paramValue as boolean
+
   const [sliderValues, setSliderValues] = useState([
     appliedEarliestCreatedYear || artistEarliestCreatedYear,
     appliedLatestCreatedYear || artistLatestCreatedYear,
   ])
+
+  const [allowEmptyCreatedDates, setAllowEmptyCreatedDates] = useState<boolean>(
+    selectedAllowEmptyCreatedDates ?? appliedAllowEmptyCreatedDates ?? true
+  )
 
   const onValuesChangeFinish = (values: number[]) => {
     const earliestCreatedYear = values[0]
@@ -60,14 +78,27 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
     })
   }
 
+  const handleAllowEmptyCreatedDatesPress = () => {
+    dispatch({
+      type: "selectFilters",
+      payload: {
+        displayText: ALLOW_EMPTY_CREATED_DATES_FILTER.displayText,
+        paramValue: !allowEmptyCreatedDates,
+        paramName: FilterParamName.allowEmptyCreatedDates,
+      },
+    })
+
+    setAllowEmptyCreatedDates(!allowEmptyCreatedDates)
+  }
+
   return (
     <Flex flexGrow={1}>
       <FancyModalHeader onLeftButtonPress={navigation.goBack}>Year created</FancyModalHeader>
-      <Flex flexGrow={1} p={2}>
-        <YearText variant="text" mb={15}>
-          {sliderValues[0]} - {sliderValues[1]}{" "}
+      <Flex flexGrow={1} py={2}>
+        <YearText variant="text" mb={15} mx={2}>
+          {sliderValues[0]} - {sliderValues[1]}
         </YearText>
-        <Flex alignItems="center">
+        <Flex alignItems="center" mx={2}>
           <MultiSlider
             values={[Number(sliderValues[0]), Number(sliderValues[1])]}
             sliderLength={screenWidth - 60}
@@ -78,7 +109,7 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
             step={1}
             allowOverlap
             snapped
-            customLabel={CustomLabel}
+            customMarker={CustomMarker}
             selectedStyle={{
               backgroundColor: "black",
               height: 5,
@@ -92,11 +123,53 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
             }}
           />
         </Flex>
+        <Separator mt={2} />
+        <OptionItem
+          onPress={handleAllowEmptyCreatedDatesPress}
+          text={ALLOW_EMPTY_CREATED_DATES_FILTER.displayText}
+          selected={allowEmptyCreatedDates}
+        />
       </Flex>
     </Flex>
   )
 }
 
+interface OptionItemProps {
+  onPress: () => void
+  text: string
+  selected: boolean
+}
+
+export const OptionItem = ({ onPress, text, selected }: OptionItemProps) => (
+  <TouchableOpacity
+    onPress={onPress}
+    style={{ borderTopWidth: 1, borderBottomWidth: 1, borderColor: color("black10") }}
+  >
+    <Flex flexGrow={1} justifyContent="space-between" flexDirection="row" height={60}>
+      <Flex flexDirection="row" justifyContent="space-between" flexGrow={1} alignItems="center" pl={2} pr={2}>
+        <Text variant="text">{text}</Text>
+        {!!selected && (
+          <Box mb={0.1}>
+            <CheckIcon fill="black100" />
+          </Box>
+        )}
+      </Flex>
+    </Flex>
+  </TouchableOpacity>
+)
+
 export const YearText = styled(Text)`
   margin-bottom: 15;
+`
+
+const CustomMarker = () => <BlackCircle />
+
+export const BlackCircle = styled(View)`
+  height: 24;
+  width: 24;
+  top: 2;
+  border-radius: 12;
+  background-color: ${color("black100")};
+  border-width: 2;
+  border-color: ${color("white100")};
 `
