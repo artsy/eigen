@@ -41,7 +41,6 @@ export const AuthModel: AuthModel = {
       // TODO: handle expiry
       return xAppToken
     }
-    console.warn("Store state", context.getStoreState())
     const { gravityBaseURL, gravitySecret, gravityKey } = context.getStoreState().config.sessionState
     const result = await fetch(
       `${gravityBaseURL}/api/v1/xapp_token?${stringify({
