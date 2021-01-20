@@ -39,6 +39,8 @@ export const LogInEmail: React.FC = () => {
           onPress={async () => {
             if (await GlobalStore.actions.auth.userExists({ email })) {
               nav.navigate("LogInEnterPassword")
+            } else {
+              console.warn("No user found with that email address")
             }
           }}
         >
