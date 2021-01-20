@@ -268,7 +268,7 @@ type AnalyticsPartnerStats {
     @deprecated(reason: "Use pageview for refactored time series bucket code")
   partnerId: String!
 
-  # Artworks, shows, or artists ranked by views. Capped at 20 by the underlying sql query.
+  # Artworks, shows, viewing rooms, or artists ranked by views. Capped at 20 by the underlying sql query.
   rankedStats(
     # Returns the elements in the list that come after the specified cursor.
     after: String
@@ -449,9 +449,9 @@ enum AnalyticsQueryPeriodEnum {
   SIXTEEN_WEEKS
 }
 
-union AnalyticsRankedEntityUnion = Artist | Artwork | Show
+union AnalyticsRankedEntityUnion = Artist | Artwork | Show | ViewingRoom
 
-# Top artworks, shows, or artists from a partner
+# Top artworks, shows, viewing rooms, or artists from a partner
 type AnalyticsRankedStats {
   entity: AnalyticsRankedEntityUnion
   period: AnalyticsQueryPeriodEnum!
@@ -489,10 +489,13 @@ enum AnalyticsRankedStatsObjectTypeEnum {
 
   # Show
   SHOW
+
+  # ViewingRoom
+  VIEWING_ROOM
 }
 
-# An artwork, artist, or show
-union AnalyticsRankedStatsUnion = AnalyticsArtist | AnalyticsArtwork | AnalyticsShow
+# An artwork, artist, show, or viewing room
+union AnalyticsRankedStatsUnion = AnalyticsArtist | AnalyticsArtwork | AnalyticsShow | AnalyticsViewingRoom
 
 type AnalyticsShow {
   entityId: String!
@@ -502,6 +505,10 @@ type AnalyticsShow {
 type AnalyticsUserStats {
   totalPurchaseCount: Int!
   userId: String!
+}
+
+type AnalyticsViewingRoom {
+  entityId: String!
 }
 
 type AnalyticsVisitorsByCountry {
@@ -8634,6 +8641,24 @@ type Query {
     status: EventStatus
   ): [Fair]
 
+  # A list of fairs
+  fairsConnection(
+    after: String
+    before: String
+    fairOrganizerID: String
+    first: Int
+    hasFullFeature: Boolean
+    hasHomepageSection: Boolean
+    hasListing: Boolean
+
+    # Only return fairs matching specified IDs. Accepts list of IDs.
+    ids: [String]
+    last: Int
+    near: Near
+    sort: FairSorts
+    status: EventStatus
+  ): FairConnection
+
   # A Feature
   feature(
     # The slug or ID of the Feature
@@ -10875,6 +10900,24 @@ type Viewer {
     sort: FairSorts
     status: EventStatus
   ): [Fair]
+
+  # A list of fairs
+  fairsConnection(
+    after: String
+    before: String
+    fairOrganizerID: String
+    first: Int
+    hasFullFeature: Boolean
+    hasHomepageSection: Boolean
+    hasListing: Boolean
+
+    # Only return fairs matching specified IDs. Accepts list of IDs.
+    ids: [String]
+    last: Int
+    near: Near
+    sort: FairSorts
+    status: EventStatus
+  ): FairConnection
 
   # A Feature
   feature(
