@@ -42,6 +42,7 @@ RCT_EXPORT_VIEW_PROPERTY(noAnimation, BOOL)
 // when the load fails
 RCT_EXPORT_VIEW_PROPERTY(failSilently, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(highPriority, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(retryFailedURLs, BOOL)
 
 - (UIView *)view;
 {

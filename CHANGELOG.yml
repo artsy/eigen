@@ -5,6 +5,8 @@ upcoming:
     -
   user_facing:
     - Refresh inbox automatically upon revisiting - erik, lily
+    - Poll and refetch images when images are processing (my collection) - brian
+
 
 releases:
   - version: 6.7.6
