@@ -8,6 +8,7 @@ describe("deletedPhotoIDs", () => {
       isDefault: false,
       height: 10,
       width: 10,
+      imageVersions: ["normalized"],
     }
   }
 
@@ -16,6 +17,7 @@ describe("deletedPhotoIDs", () => {
       isDefault: false,
       height: 10,
       width: 10,
+      imageVersions: ["normalized"],
     }
   }
 

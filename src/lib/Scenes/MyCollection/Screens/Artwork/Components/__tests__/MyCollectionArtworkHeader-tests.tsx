@@ -1,4 +1,5 @@
 import { tappedCollectedArtworkImages } from "@artsy/cohesion"
+import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import { MyCollectionArtworkHeaderTestsQuery } from "__generated__/MyCollectionArtworkHeaderTestsQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
@@ -11,9 +12,14 @@ import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-import { MyCollectionArtworkHeaderFragmentContainer } from "../MyCollectionArtworkHeader"
+import { MyCollectionArtworkHeader, MyCollectionArtworkHeaderRefetchContainer } from "../MyCollectionArtworkHeader"
 
 jest.unmock("react-relay")
+
+let fakeRelay: {
+  refetch: jest.Mock
+  push: jest.Mock
+}
 
 describe("MyCollectionArtworkHeader", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -30,7 +36,7 @@ describe("MyCollectionArtworkHeader", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.artwork) {
-          return <MyCollectionArtworkHeaderFragmentContainer artwork={props.artwork} />
+          return <MyCollectionArtworkHeaderRefetchContainer artwork={props.artwork} />
         }
         return null
       }}
@@ -41,17 +47,25 @@ describe("MyCollectionArtworkHeader", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-
+    fakeRelay = {
+      refetch: jest.fn(),
+    } as any
     const mockTracking = useTracking as jest.Mock
     mockTracking.mockImplementation(() => {
       return {
         trackEvent,
       }
     })
+    jest.useFakeTimers()
   })
 
   afterEach(() => {
+    trackEvent.mockClear()
+  })
+
+  afterAll(() => {
     jest.clearAllMocks()
+    jest.useRealTimers()
   })
 
   const getWrapper = (mockResolvers = {}) => {
@@ -120,5 +134,34 @@ describe("MyCollectionArtworkHeader", () => {
     expect(wrapper.root.findAllByType(OpaqueImageView)).toHaveLength(0)
     expect(wrapper.root.findByType(ArtworkIcon)).toBeDefined()
     expect(extractText(wrapper.root)).toContain("Processing photo")
+  })
+
+  it("polls for updated images when image data is incomplete", () => {
+    const processingArtwork: MyCollectionArtworkHeader_artwork = {
+      " $refType": "MyCollectionArtworkHeader_artwork",
+      internalID: "some-id",
+      slug: "some-slug",
+      artistNames: "some artist name",
+      date: "Jan 20th",
+      images: [
+        {
+          imageURL: "some/url",
+          height: null,
+          width: null,
+          isDefault: true,
+          internalID: "some-id",
+          imageVersions: null,
+        },
+      ],
+      title: "some title",
+    }
+    const tree = renderWithWrappers(<MyCollectionArtworkHeader artwork={processingArtwork} relay={fakeRelay as any} />)
+    expect(tree.root.findAllByType(OpaqueImageView)).toHaveLength(0)
+    expect(tree.root.findByType(ArtworkIcon)).toBeDefined()
+    expect(extractText(tree.root)).toContain("Processing photo")
+
+    jest.advanceTimersByTime(1000)
+
+    expect(fakeRelay.refetch).toHaveBeenCalled()
   })
 })
