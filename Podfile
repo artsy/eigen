@@ -80,7 +80,7 @@ target 'Artsy' do
   pod 'AFNetworking', '~> 2.5', subspecs: %w[Reachability Serialization Security NSURLSession NSURLConnection]
   pod 'AFOAuth1Client', git: 'https://github.com/artsy/AFOAuth1Client.git', tag: '0.4.0-subspec-fix'
   pod 'AFNetworkActivityLogger'
-  pod 'SDWebImage', '5.8'
+  pod 'SDWebImage', '5.8.3'
 
   # Core
   pod 'ARGenericTableViewController', git: 'https://github.com/artsy/ARGenericTableViewController.git'

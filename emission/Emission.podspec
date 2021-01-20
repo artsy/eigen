@@ -39,7 +39,7 @@ podspec = Pod::Spec.new do |s|
   s.dependency 'ISO8601DateFormatter'
 
   # To ensure a consistent image cache between app/lib
-  s.dependency 'SDWebImage', '5.8'
+  s.dependency 'SDWebImage', '5.8.3'
 
   # For custom animations in DeepZoomOverlay
   s.dependency 'INTUAnimationEngine'
