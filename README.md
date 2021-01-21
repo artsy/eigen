@@ -18,7 +18,7 @@ Get setup [here](docs/getting_started.md). Further documentation can be found in
 
 ### Work at Artsy?
 
-Instead of `make oss` below, run `make artsy`. You will need [awscli](https://formulae.brew.sh/formula/awscli) to get our ENV vars.
+Instead of `./scripts/setup-env-for-oss` below, run `./scripts/setup-env-for-artsy`. You will need [awscli](https://formulae.brew.sh/formula/awscli) to get our ENV vars.
 
 The file `Artsy/App/EchoNew.json` is not checked in (a sample file is included for OSS contributors). When you run `pod install`, the latest `EchoNew.json` file will be downloaded for you. See note in `Podfile`.
 
@@ -40,7 +40,7 @@ cd eigen
 gem install bundler
 bundle install --without development
 
-make oss # or make artsy
+./scripts/setup-env-for-oss # or ./scripts/setup-env-for-artsy
 
 bundle exec pod install --repo-update
 open Artsy.xcworkspace

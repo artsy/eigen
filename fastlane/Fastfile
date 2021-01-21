@@ -210,7 +210,7 @@ lane :ship_beta_android do
   )
 end
 
-lane :promote_beta do
+lane :promote_beta_ios do
   client = Spaceship::Tunes.login(ENV['FASTLANE_USERNAME'], ENV['FASTLANE_PASSWORD'])
   client.team_id = '479887'
   app = Spaceship::Tunes::Application.find('net.artsy.artsy')
