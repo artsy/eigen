@@ -2,5 +2,5 @@
 set -euxo pipefail
 
 
-./scripts/setup-distribute
+./scripts/setup-distribute-macos
 bundle exec fastlane ship_beta_ios
