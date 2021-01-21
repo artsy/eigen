@@ -27,8 +27,8 @@ export const reducer = (
   switch (action.type) {
     case "applyFilters":
       let multiOptionFilters = unionBy(
-        artworkFilterState.selectedFilters,
         artworkFilterState.previouslyAppliedFilters,
+        artworkFilterState.selectedFilters,
         "paramName"
       )
 
@@ -262,10 +262,11 @@ const getSortDefaultValueByFilterType = (filterType: FilterType) => {
 
 export const ParamDefaultValues = {
   acquireable: false,
+  allowEmptyCreatedDates: true,
   artistIDs: [],
   atAuction: false,
-  color: undefined,
   categories: undefined,
+  color: undefined,
   dimensionRange: "*-*",
   earliestCreatedYear: undefined,
   estimateRange: "",
@@ -277,18 +278,19 @@ export const ParamDefaultValues = {
   offerable: false,
   partnerID: undefined,
   priceRange: "*-*",
+  sizes: undefined,
   sortArtworks: "-decayed_merch",
   sortSaleArtworks: "position",
-  sizes: undefined,
   viewAs: ViewAsValues.Grid,
 }
 
 const defaultCommonFilterOptions: Record<FilterParamName, string | boolean | undefined | string[]> = {
   acquireable: ParamDefaultValues.acquireable,
+  allowEmptyCreatedDates: ParamDefaultValues.allowEmptyCreatedDates,
   artistIDs: ParamDefaultValues.artistIDs,
   atAuction: ParamDefaultValues.atAuction,
-  color: ParamDefaultValues.color,
   categories: ParamDefaultValues.categories,
+  color: ParamDefaultValues.color,
   dimensionRange: ParamDefaultValues.dimensionRange,
   earliestCreatedYear: ParamDefaultValues.earliestCreatedYear,
   estimateRange: ParamDefaultValues.estimateRange,
@@ -300,8 +302,8 @@ const defaultCommonFilterOptions: Record<FilterParamName, string | boolean | und
   offerable: ParamDefaultValues.offerable,
   partnerID: ParamDefaultValues.partnerID,
   priceRange: ParamDefaultValues.priceRange,
-  sort: ParamDefaultValues.sortArtworks,
   sizes: ParamDefaultValues.sizes,
+  sort: ParamDefaultValues.sortArtworks,
   viewAs: ParamDefaultValues.viewAs,
 }
 

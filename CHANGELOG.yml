@@ -1,37 +1,46 @@
 upcoming:
-  version: 6.7.6
+  version: 6.7.7
   date: TBD
   dev:
-    - Analytics tracking for My Collection - pepopowitz, annacarey
-    - Fix `isVisible` root view prop to respect tab switches - david, erik, lily
-    - Add android app shell - pavlos, cx
-    - Surface alert message for users with no email client setup - annacarey, pavlos
-    - Remove unused deps - pavlos
-    - Adds lab option for inquiry checkout - lily
-    - Refactor filters modal to use react-navigation - mounir
-    - Replace NavigatorIOS with react-navigation shim - david
+    - remove unused files and scripts - pavlos
     - Add basic log-in flow for android - david
-
   user_facing:
-    - Add sharing on Instagram - pavlos
-    - Fix a layout bug (double separator) in My Collection Artwork Details
-    - Fix layout in My Collection artwork form AdditionalDetails screen - david
-    - Fix a layout bug - pavlos
-    - Add some more haptic feedback - annacarey, pavlos
-    - Add auction result screen - adam
-    - Add filter button and screen to the ArtistInsights AuctionResults - mounir
-    - Add phone number confirmation step to consignments flow - david
-    - Allow users to indicate works in MyCollection as editions without marking edition size or number - anna
-    - Wire up `See all past shows` button - adam
-    - Display sale date correctly on auction results - pepopowitz, ana lisa
-    - Add Sort filter to AuctionResults - mounir
-    - Add Categories filter to AuctionResults - mounir
-    - Add Size filter to AuctionResults - mounir
-    - Add Year filter to AuctionResults - mounir
-    - Add StickyScrollHeader and Skeleton to Past Shows screen - adam
-    - Add a useElasticOverscroll hook and use in Past Shows screen - adam
+    - Refresh inbox automatically upon revisiting - erik, lily
+    - Poll and refetch images when images are processing (my collection) - brian
+
 
 releases:
+  - version: 6.7.6
+    date: Jan 20, 2021
+    dev:
+      - Analytics tracking for My Collection - pepopowitz, annacarey
+      - Fix `isVisible` root view prop to respect tab switches - david, erik, lily
+      - Add android app shell - pavlos, cx
+      - Surface alert message for users with no email client setup - annacarey, pavlos
+      - Remove unused deps - pavlos
+      - Adds lab option for inquiry checkout - lily
+      - Refactor filters modal to use react-navigation - mounir
+      - Replace NavigatorIOS with react-navigation shim - david
+
+    user_facing:
+      - Add sharing on Instagram - pavlos
+      - Fix a layout bug (double separator) in My Collection Artwork Details
+      - Fix layout in My Collection artwork form AdditionalDetails screen - david
+      - Fix a layout bug - pavlos
+      - Add some more haptic feedback - annacarey, pavlos
+      - Add auction result screen - adam
+      - Add filter button and screen to the ArtistInsights AuctionResults - mounir
+      - Add phone number confirmation step to consignments flow - david
+      - Allow users to indicate works in MyCollection as editions without marking edition size or number - anna
+      - Wire up `See all past shows` button - adam
+      - Display sale date correctly on auction results - pepopowitz, ana lisa
+      - Add Sort filter to AuctionResults - mounir
+      - Add Categories filter to AuctionResults - mounir
+      - Add Size filter to AuctionResults - mounir
+      - Add Year filter to AuctionResults - mounir
+      - Add StickyScrollHeader and Skeleton to Past Shows screen - adam
+      - Add a useElasticOverscroll hook and use in Past Shows screen - adam
+
   - version: 6.7.5
     date: Jan 07, 2021
     dev:

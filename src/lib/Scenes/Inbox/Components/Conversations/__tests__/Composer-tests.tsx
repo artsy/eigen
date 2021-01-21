@@ -1,3 +1,4 @@
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
@@ -5,6 +6,7 @@ import { TextInput } from "react-native"
 import { TouchableWithoutFeedback } from "react-native"
 
 jest.unmock("react-tracking")
+jest.unmock("react-relay")
 
 import Composer from "../Composer"
 
@@ -31,5 +33,25 @@ describe("regarding the send button", () => {
     tree.root.findByType(TextInput).props.onChangeText(text)
     tree.root.findByType(TouchableWithoutFeedback).props.onPress()
     expect(onSubmit).toBeCalledWith(text)
+  })
+})
+
+describe("regarding the make offer button", () => {
+  it("renders the inquiry make offer button if inquiry checkout flag is true and artwork ID is  not null", () => {
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsInquiryCheckout: true })
+    const tree = renderWithWrappers(<Composer artworkID="12234" />)
+    expect(tree.root.findAllByType(Button).length).toEqual(2)
+  })
+
+  it("renders the inquiry make offer button if inquiry checkout flag is true but artwork ID is null", () => {
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsInquiryCheckout: true })
+    const tree = renderWithWrappers(<Composer artworkID={null} />)
+    expect(tree.root.findAllByType(Button).length).toEqual(1)
+  })
+
+  it("doesn't render the inquiry make offer button if inquiry item is not an artwork", () => {
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsInquiryCheckout: false })
+    const tree = renderWithWrappers(<Composer />)
+    expect(tree.root.findAllByType(Button).length).toEqual(1)
   })
 })

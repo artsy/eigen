@@ -1,26 +1,30 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2d511ab900be1af2e9ebb13cb6adfb16 */
+/* @relayHash 4435daf1ae1a23f812d86d665f67712e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionArtworkHeaderTestsQueryVariables = {};
-export type MyCollectionArtworkHeaderTestsQueryResponse = {
+export type MyCollectionArtworkHeaderRefetchQueryVariables = {
+    artworkID: string;
+};
+export type MyCollectionArtworkHeaderRefetchQueryResponse = {
     readonly artwork: {
         readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkHeader_artwork">;
     } | null;
 };
-export type MyCollectionArtworkHeaderTestsQuery = {
-    readonly response: MyCollectionArtworkHeaderTestsQueryResponse;
-    readonly variables: MyCollectionArtworkHeaderTestsQueryVariables;
+export type MyCollectionArtworkHeaderRefetchQuery = {
+    readonly response: MyCollectionArtworkHeaderRefetchQueryResponse;
+    readonly variables: MyCollectionArtworkHeaderRefetchQueryVariables;
 };
 
 
 
 /*
-query MyCollectionArtworkHeaderTestsQuery {
-  artwork(id: "some-slug") {
+query MyCollectionArtworkHeaderRefetchQuery(
+  $artworkID: String!
+) {
+  artwork(id: $artworkID) {
     ...MyCollectionArtworkHeader_artwork
     id
   }
@@ -46,46 +50,35 @@ fragment MyCollectionArtworkHeader_artwork on Artwork {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "Literal",
-    "name": "id",
-    "value": "some-slug"
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "artworkID"
   }
 ],
-v1 = {
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "id",
+    "variableName": "artworkID"
+  }
+],
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
   "storageKey": null
-},
-v2 = {
-  "enumValues": null,
-  "nullable": true,
-  "plural": false,
-  "type": "String"
-},
-v3 = {
-  "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "ID"
-},
-v4 = {
-  "enumValues": null,
-  "nullable": true,
-  "plural": false,
-  "type": "Int"
 };
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyCollectionArtworkHeaderTestsQuery",
+    "name": "MyCollectionArtworkHeaderRefetchQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "Artwork",
         "kind": "LinkedField",
         "name": "artwork",
@@ -97,7 +90,7 @@ return {
             "name": "MyCollectionArtworkHeader_artwork"
           }
         ],
-        "storageKey": "artwork(id:\"some-slug\")"
+        "storageKey": null
       }
     ],
     "type": "Query",
@@ -105,13 +98,13 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "MyCollectionArtworkHeaderTestsQuery",
+    "name": "MyCollectionArtworkHeaderRefetchQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "Artwork",
         "kind": "LinkedField",
         "name": "artwork",
@@ -167,7 +160,7 @@ return {
                 "name": "width",
                 "storageKey": null
               },
-              (v1/*: any*/),
+              (v2/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -178,7 +171,7 @@ return {
             ],
             "storageKey": null
           },
-          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -201,60 +194,18 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "artwork(id:\"some-slug\")"
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "2d511ab900be1af2e9ebb13cb6adfb16",
-    "metadata": {
-      "relayTestingSelectionTypeInfo": {
-        "artwork": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Artwork"
-        },
-        "artwork.artistNames": (v2/*: any*/),
-        "artwork.date": (v2/*: any*/),
-        "artwork.id": (v3/*: any*/),
-        "artwork.images": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": true,
-          "type": "Image"
-        },
-        "artwork.images.height": (v4/*: any*/),
-        "artwork.images.imageURL": (v2/*: any*/),
-        "artwork.images.imageVersions": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": true,
-          "type": "String"
-        },
-        "artwork.images.internalID": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "ID"
-        },
-        "artwork.images.isDefault": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Boolean"
-        },
-        "artwork.images.width": (v4/*: any*/),
-        "artwork.internalID": (v3/*: any*/),
-        "artwork.slug": (v3/*: any*/),
-        "artwork.title": (v2/*: any*/)
-      }
-    },
-    "name": "MyCollectionArtworkHeaderTestsQuery",
+    "id": "4435daf1ae1a23f812d86d665f67712e",
+    "metadata": {},
+    "name": "MyCollectionArtworkHeaderRefetchQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'f973d28ccb9233e48337c162c0d8daa6';
+(node as any).hash = 'c6330f266ee9fac1eff64f045343fcae';
 export default node;
