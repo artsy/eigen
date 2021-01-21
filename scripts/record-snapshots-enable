@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
 SWIFT_FILE=Pods/Nimble-Snapshots/HaveValidSnapshot.swift
 
 OBJ_H_FILE=Pods/Expecta+Snapshots/EXPMatchers+FBSnapshotTest.h

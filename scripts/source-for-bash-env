@@ -3,3 +3,11 @@ set -euxo pipefail
 
 
 LOCAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+export LOCAL_BRANCH
+
+# ios
+export WORKSPACE="Artsy.xcworkspace"
+export SCHEME="Artsy"
+export DEVICE_HOST="platform='iOS Simulator',OS='14.2',name='iPhone 12 Pro'"
+export DERIVED_DATA_PATH="derived_data"
+export CONFIGURATION="Beta"

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+npx jetifier
+cd android
+./gradlew buildRelease
+cd -

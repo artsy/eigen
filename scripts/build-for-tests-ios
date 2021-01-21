@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+source ./scripts/source-for-bash-env
+
+set -o pipefail && xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Debug -sdk iphonesimulator build -destination "$DEVICE_HOST" -derivedDataPath "$DERIVED_DATA_PATH" |
+	tee ./xcode_build_raw.log |
+	bundle exec xcpretty -c
