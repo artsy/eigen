@@ -431,12 +431,17 @@ workflows:
           requires:
             - build-test-js
             - horizon/block
-      - update-metaphysics:
+      - update-metaphysics-from-ios:
           filters:
             branches:
               only:
                 - beta-ios
-                - beta-android
           requires:
             - build-test-app-ios
+      - update-metaphysics-from-android:
+          filters:
+            branches:
+              only:
+                - beta-android
+          requires:
             - build-test-app-android
