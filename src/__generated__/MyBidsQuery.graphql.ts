@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3fb76e36d3854fbc9035372bd0fcf4cb */
+/* @relayHash 07ea6850ede0ea7deec967ebc7e4dc94 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -199,13 +199,9 @@ fragment WatchedLot_lotStanding on Lot {
     id
   }
   saleArtwork {
-    lotLabel
+    ...Lot_saleArtwork
     artwork {
       href
-      artistNames
-      image {
-        url(version: "medium")
-      }
       id
     }
     sale {
@@ -765,10 +761,10 @@ return {
                             "name": "artwork",
                             "plural": false,
                             "selections": [
-                              (v2/*: any*/),
                               (v18/*: any*/),
                               (v19/*: any*/),
-                              (v1/*: any*/)
+                              (v1/*: any*/),
+                              (v2/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -807,7 +803,7 @@ return {
     ]
   },
   "params": {
-    "id": "3fb76e36d3854fbc9035372bd0fcf4cb",
+    "id": "07ea6850ede0ea7deec967ebc7e4dc94",
     "metadata": {},
     "name": "MyBidsQuery",
     "operationKind": "query",

@@ -15,19 +15,15 @@ export type WatchedLot_lotStanding = {
         readonly soldStatus: AuctionsSoldStatus;
     };
     readonly saleArtwork: {
-        readonly lotLabel: string | null;
         readonly artwork: {
             readonly href: string | null;
-            readonly artistNames: string | null;
-            readonly image: {
-                readonly url: string | null;
-            } | null;
         } | null;
         readonly sale: {
             readonly liveStartAt: string | null;
             readonly endAt: string | null;
             readonly status: string | null;
         } | null;
+        readonly " $fragmentRefs": FragmentRefs<"Lot_saleArtwork">;
     } | null;
     readonly " $refType": "WatchedLot_lotStanding";
 };
@@ -106,13 +102,6 @@ const node: ReaderFragment = {
         {
           "alias": null,
           "args": null,
-          "kind": "ScalarField",
-          "name": "lotLabel",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
           "concreteType": "Artwork",
           "kind": "LinkedField",
           "name": "artwork",
@@ -123,37 +112,6 @@ const node: ReaderFragment = {
               "args": null,
               "kind": "ScalarField",
               "name": "href",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "artistNames",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "Image",
-              "kind": "LinkedField",
-              "name": "image",
-              "plural": false,
-              "selections": [
-                {
-                  "alias": null,
-                  "args": [
-                    {
-                      "kind": "Literal",
-                      "name": "version",
-                      "value": "medium"
-                    }
-                  ],
-                  "kind": "ScalarField",
-                  "name": "url",
-                  "storageKey": "url(version:\"medium\")"
-                }
-              ],
               "storageKey": null
             }
           ],
@@ -190,6 +148,11 @@ const node: ReaderFragment = {
             }
           ],
           "storageKey": null
+        },
+        {
+          "args": null,
+          "kind": "FragmentSpread",
+          "name": "Lot_saleArtwork"
         }
       ],
       "storageKey": null
@@ -198,5 +161,5 @@ const node: ReaderFragment = {
   "type": "Lot",
   "abstractKey": null
 };
-(node as any).hash = '3b5c0bff9c763a3733f102165b36ad3f';
+(node as any).hash = 'cf52387a1947d05e5302aad4e3d64390';
 export default node;

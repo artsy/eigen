@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 801616c9a83eb519029b8e3fd5cc3c3b */
+/* @relayHash 97fec28d8655e5590ca36c868c07da02 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -281,13 +281,9 @@ fragment WatchedLot_lotStanding on Lot {
     id
   }
   saleArtwork {
-    lotLabel
+    ...Lot_saleArtwork
     artwork {
       href
-      artistNames
-      image {
-        url(version: "medium")
-      }
       id
     }
     sale {
@@ -1074,10 +1070,10 @@ return {
                             "name": "artwork",
                             "plural": false,
                             "selections": [
-                              (v13/*: any*/),
                               (v8/*: any*/),
                               (v27/*: any*/),
-                              (v5/*: any*/)
+                              (v5/*: any*/),
+                              (v13/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -1116,7 +1112,7 @@ return {
     ]
   },
   "params": {
-    "id": "801616c9a83eb519029b8e3fd5cc3c3b",
+    "id": "97fec28d8655e5590ca36c868c07da02",
     "metadata": {},
     "name": "InboxQuery",
     "operationKind": "query",

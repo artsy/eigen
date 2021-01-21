@@ -1,4 +1,4 @@
-import { ArrowDownCircleFillIcon, ArrowUpCircleFillIcon, Text } from "palette"
+import { ArrowDownCircleFillIcon, ArrowUpCircleFillIcon, Text, TopEstablishedIcon } from "palette"
 import { ExclamationMarkCircleFill } from "palette/svgs/sf"
 import React from "react"
 
@@ -48,4 +48,15 @@ export const Passed = () => (
   <Text variant="caption" color="black60">
     Passed
   </Text>
+)
+
+export const WatchingLot = () => (
+  <>
+    {/* Place holder until we get the correct icon */}
+    <TopEstablishedIcon fill="black60" />
+    <Text variant="caption" color="black60">
+      {" "}
+      Watched Lot
+    </Text>
+  </>
 )
