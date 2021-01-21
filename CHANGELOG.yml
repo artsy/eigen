@@ -7,7 +7,7 @@ upcoming:
   user_facing:
     - Refresh inbox automatically upon revisiting - erik, lily
     - Poll and refetch images when images are processing (my collection) - brian
-
+    - Hide artist insights tab when no auction results are available - mounir
 
 releases:
   - version: 6.7.6

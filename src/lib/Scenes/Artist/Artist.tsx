@@ -24,6 +24,7 @@ import React from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import { extractNodes } from "../../utils/extractNodes"
 
 export const Artist: React.FC<{
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
@@ -59,7 +60,7 @@ export const Artist: React.FC<{
     })
   }
 
-  if (isArtistInsightsEnabled) {
+  if (isArtistInsightsEnabled && extractNodes(artistAboveTheFold?.auctionResultsConnection).length > 0) {
     tabs.push({
       title: "Insights",
       content: artistBelowTheFold ? <ArtistInsightsFragmentContainer artist={artistBelowTheFold} /> : <LoadingPage />,
@@ -122,6 +123,13 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artist
               }
               ...ArtistHeader_artist
               ...ArtistArtworks_artist
+              auctionResultsConnection(first: 1) {
+                edges {
+                  node {
+                    internalID
+                  }
+                }
+              }
             }
           }
         `,
