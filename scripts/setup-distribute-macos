@@ -6,4 +6,4 @@ set -euxo pipefail
 brew update
 brew tap getsentry/tools
 brew install sentry-cli
-bundle exec fastlane update_plugin
+bundle exec fastlane update_plugins
