@@ -327,23 +327,20 @@ jest.mock("@react-native-community/async-storage", () => {
     __resetState() {
       state = {}
     },
-    setItem(key: string, val: any) {
+    async setItem(key: string, val: any) {
       state[key] = val
-      return Promise.resolve()
     },
-    getItem(key: string) {
-      return Promise.resolve(state[key])
+    async getItem(key: string) {
+      return state[key]
     },
-    removeItem(key: string) {
+    async removeItem(key: string) {
       delete state[key]
-      return Promise.resolve()
     },
-    clear() {
+    async clear() {
       state = {}
-      return Promise.resolve()
     },
-    getAllKeys() {
-      return Promise.resolve(Object.keys(state))
+    async getAllKeys() {
+      return Object.keys(state)
     },
     mergeItem() {
       throw new Error("mock version of mergeItem not yet implemented")
@@ -354,8 +351,10 @@ jest.mock("@react-native-community/async-storage", () => {
     multiMerge() {
       throw new Error("mock version of multiMerge not yet implemented")
     },
-    multiRemove() {
-      throw new Error("mock version of multiRemove not yet implemented")
+    async multiRemove(keys: string[]) {
+      keys.forEach((k) => {
+        delete state[k]
+      })
     },
     multiSet() {
       throw new Error("mock version of multiSet not yet implemented")

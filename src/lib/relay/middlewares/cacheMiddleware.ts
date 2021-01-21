@@ -1,4 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
+import { Platform } from "react-native"
 import { MiddlewareNextFn } from "react-relay-network-modern/node8"
 import * as cache from "../../NativeModules/GraphQLQueryCache"
 import { GraphQLRequest } from "./types"
@@ -20,8 +21,13 @@ export const cacheMiddleware = () => {
       }
     }
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    cache.set(queryID, variables, null)
+    if (Platform.OS === "ios") {
+      // TODO: figure out if we can remove this branch
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+      cache.set(queryID, variables, null)
+    } else {
+      cache.clear(queryID!, variables)
+    }
 
     // Get query body either from local queryMap or
     // send queryID to metaphysics
@@ -56,16 +62,14 @@ export const cacheMiddleware = () => {
     }
 
     const clearCache = () => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      cache.clear(queryID, req.variables)
+      cache.clear(queryID!, req.variables)
     }
 
     if (response.status >= 200 && response.status < 300) {
       if (isQuery) {
         // Don't cache responses with errors in them (GraphQL responses are always 200, even if they contain errors).
         if (response.json.errors === undefined) {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          cache.set(queryID, req.variables, JSON.stringify(response.json), req.cacheConfig.emissionCacheTTLSeconds)
+          cache.set(queryID!, req.variables, JSON.stringify(response.json), req.cacheConfig.emissionCacheTTLSeconds)
         } else {
           clearCache()
           return response
