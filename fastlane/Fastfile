@@ -165,11 +165,14 @@ end
 
 build_gradle = "../android/app/build.gradle"
 lane :set_build_version_android do
+  currentVersionCode = google_play_track_version_codes(
+    track: "alpha",
+  ).first
+
   contents = File.read(build_gradle)
 
-  version_code = contents.match("versionCode (.*)").captures[0]
-  contents = contents.gsub(/(versionCode) (.*)/, "\\1 #{version_code.to_i+1}")
-  contents = contents.gsub(/(versionName) .*/, "\\1 \"#{app_json['version']}-#{date_str}\"")
+  contents = contents.gsub(/(versionCode) (.*)/, "\\1 #{currentVersionCode+1}")
+  contents = contents.gsub(/(versionName) .*/, "\\1 \"#{app_json['version']}\"")
 
   File.open(build_gradle, 'w') do |file|
     file.puts contents
@@ -178,7 +181,7 @@ end
 
 git_commit_rev = `git log -n1 --format='%h'`.chomp
 git_commit_sha = `git log -n1 --format='%H'`.chomp
-git_commit_date_str = DateTime(`git log -n1 --format='%ct'`.chomp).iso8601
+git_commit_date_str = DateTime.parse(`git log -n1 --format='%ci'`.chomp).iso8601
 git_remote_origin_url = `git config --get remote.origin.url`.chomp
 lane :set_git_properties_ios do
   system("/usr/libexec/PlistBuddy -c \"Set GITCommitRev #{git_commit_rev}\" #{app_plist}")
