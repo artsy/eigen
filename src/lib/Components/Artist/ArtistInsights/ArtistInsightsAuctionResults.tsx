@@ -1,12 +1,13 @@
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
+import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
 import { navigate } from "lib/navigation/navigate"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Flex, Separator, Text } from "palette"
+import { Box, Flex, Separator, Text } from "palette"
 import React, { useCallback, useContext, useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -95,6 +96,14 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
     })
   }, [])
 
+  if (!auctionResults.length) {
+    return (
+      <Box my="80px">
+        <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} />
+      </Box>
+    )
+  }
+
   return (
     <FlatList
       data={auctionResults}
@@ -146,6 +155,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
       ) {
         birthday
         slug
+        id
         auctionResultsConnection(
           after: $cursor
           allowEmptyCreatedDates: $allowEmptyCreatedDates
