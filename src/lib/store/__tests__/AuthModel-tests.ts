@@ -86,7 +86,7 @@ describe("AuthModel", () => {
       expect(result).toBe(true)
     })
 
-    it("returns false if repsonse is 404", async () => {
+    it("returns false if response is 404", async () => {
       mockFetchResponseOnce({ status: 404 })
       const result = await GlobalStore.actions.auth.userExists({ email: "user@example.com" })
 
