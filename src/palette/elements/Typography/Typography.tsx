@@ -96,6 +96,7 @@ function createStyledText<P extends StyledTextProps>(fontType: keyof FontFamily)
         )
       }
 
+      // @ts-expect-error FIXME: type error w/ size definition
       const fontMetrics = themeProps.typeSizes[fontType][size]
 
       if (fontMetrics === null) {

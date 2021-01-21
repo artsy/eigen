@@ -11,6 +11,8 @@ import {
 } from "@artsy/palette-tokens/dist/text"
 import { ResponsiveValue, Theme, TLengthStyledSystem } from "styled-system"
 
+export { TextFontSize } from "@artsy/palette-tokens/dist/text"
+
 /**
  * font-families
  */

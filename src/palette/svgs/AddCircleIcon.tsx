@@ -1,5 +1,5 @@
 import React from "react"
-import { color } from "../helpers"
+import { color } from "../Theme"
 import { Icon, IconProps, Path } from "./Icon"
 
 /** AddCircleIcon */
