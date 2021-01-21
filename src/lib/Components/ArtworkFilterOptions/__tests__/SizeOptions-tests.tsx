@@ -3,6 +3,7 @@ import React from "react"
 import { Aggregations, ArtworkFilterContext, reducer } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { SizeOptionsScreen } from "../SizeOptions"
 import { sharedAggregateFilterValidation, ValidationParams } from "./AggregationOptionCommonValidation"
+import { getEssentialProps } from "./helper"
 
 describe("Size Options Screen", () => {
   const mockAggregations: Aggregations = [
@@ -33,7 +34,7 @@ describe("Size Options Screen", () => {
     },
   ]
 
-  const MockSizeScreen = ({ initialState, navigator }: any) => {
+  const MockSizeScreen = ({ initialState }: any) => {
     const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
     return (
@@ -43,7 +44,7 @@ describe("Size Options Screen", () => {
           dispatch,
         }}
       >
-        <SizeOptionsScreen navigator={navigator} />
+        <SizeOptionsScreen {...getEssentialProps()} />
       </ArtworkFilterContext.Provider>
     )
   }

@@ -27,8 +27,8 @@ export const reducer = (
   switch (action.type) {
     case "applyFilters":
       let multiOptionFilters = unionBy(
-        artworkFilterState.selectedFilters,
         artworkFilterState.previouslyAppliedFilters,
+        artworkFilterState.selectedFilters,
         "paramName"
       )
 
@@ -262,18 +262,23 @@ const getSortDefaultValueByFilterType = (filterType: FilterType) => {
 
 export const ParamDefaultValues = {
   acquireable: false,
+  allowEmptyCreatedDates: true,
   artistIDs: [],
   atAuction: false,
+  categories: undefined,
   color: undefined,
   dimensionRange: "*-*",
+  earliestCreatedYear: undefined,
   estimateRange: "",
   includeArtworksByFollowedArtists: false,
   inquireableOnly: false,
+  latestCreatedYear: undefined,
   majorPeriods: undefined,
   medium: "*",
   offerable: false,
   partnerID: undefined,
   priceRange: "*-*",
+  sizes: undefined,
   sortArtworks: "-decayed_merch",
   sortSaleArtworks: "position",
   viewAs: ViewAsValues.Grid,
@@ -281,18 +286,23 @@ export const ParamDefaultValues = {
 
 const defaultCommonFilterOptions: Record<FilterParamName, string | boolean | undefined | string[]> = {
   acquireable: ParamDefaultValues.acquireable,
+  allowEmptyCreatedDates: ParamDefaultValues.allowEmptyCreatedDates,
   artistIDs: ParamDefaultValues.artistIDs,
   atAuction: ParamDefaultValues.atAuction,
+  categories: ParamDefaultValues.categories,
   color: ParamDefaultValues.color,
   dimensionRange: ParamDefaultValues.dimensionRange,
+  earliestCreatedYear: ParamDefaultValues.earliestCreatedYear,
   estimateRange: ParamDefaultValues.estimateRange,
   includeArtworksByFollowedArtists: ParamDefaultValues.includeArtworksByFollowedArtists,
   inquireableOnly: ParamDefaultValues.inquireableOnly,
+  latestCreatedYear: ParamDefaultValues.latestCreatedYear,
   majorPeriods: ParamDefaultValues.majorPeriods,
   medium: ParamDefaultValues.medium,
   offerable: ParamDefaultValues.offerable,
   partnerID: ParamDefaultValues.partnerID,
   priceRange: ParamDefaultValues.priceRange,
+  sizes: ParamDefaultValues.sizes,
   sort: ParamDefaultValues.sortArtworks,
   viewAs: ParamDefaultValues.viewAs,
 }
@@ -453,7 +463,7 @@ export interface ArtworkFilterContextState {
 export interface FilterData {
   readonly displayText: string
   readonly paramName: FilterParamName
-  paramValue?: string | boolean | string[]
+  paramValue?: string | number | boolean | string[]
   filterKey?: string // gallery and institution share a paramName so need to distinguish
   count?: number | null // aggregations count
 }
@@ -529,6 +539,8 @@ export type AggregationName =
   | "PRICE_RANGE"
   | "FOLLOWED_ARTISTS"
   | "ARTIST"
+  | "earliestCreatedYear"
+  | "latestCreatedYear"
 
 export type Aggregations = Array<{
   slice: AggregationName

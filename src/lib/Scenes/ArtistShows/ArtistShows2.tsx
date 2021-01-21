@@ -2,11 +2,13 @@ import { ArtistShows2_artist } from "__generated__/ArtistShows2_artist.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
+import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { useElasticOverscroll } from "lib/utils/useElasticOverscroll"
+import { useStickyScrollHeader } from "lib/utils/useStickyScrollHeader"
 import { Flex, Spacer, Spinner, Text } from "palette"
 import React, { useState } from "react"
-import { FlatList, RefreshControl, StyleSheet, ViewStyle } from "react-native"
+import { Animated, StyleSheet, View, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { ArtistShows2Query } from "../../../__generated__/ArtistShows2Query.graphql"
 import { ArtistShowFragmentContainer } from "../../Components/Artist/ArtistShows/ArtistShow"
@@ -17,20 +19,25 @@ interface Props {
 }
 
 const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
-  const top = useScreenDimensions().safeAreaInsets.top + 50
-  const [isRefreshing, setIsRefreshing] = useState(false)
+  const top = 60
   const [isFetchingMoreData, setIsFetchingMoreData] = useState(false)
   const pastShows = extractNodes(artist.pastShows)
 
-  const handleRefresh = () => {
-    setIsRefreshing(true)
-    relay.refetchConnection(PAGE_SIZE, (error) => {
-      if (error) {
-        console.log(error.message)
-      }
-      setIsRefreshing(false)
-    })
-  }
+  const { headerElement, scrollProps, scrollAnim } = useStickyScrollHeader({
+    headerText: `${artist.name} – Past Shows`,
+    fadeInStart: 50,
+  })
+  const view = (
+    <View>
+      <Text variant="mediumText" ml="2px" mb={0.5}>
+        {artist.name}
+      </Text>
+      <Text variant="largeTitle" mb={2}>
+        Past Shows
+      </Text>
+    </View>
+  )
+  const { header } = useElasticOverscroll(view, scrollAnim)
 
   const loadMore = () => {
     if (!relay.hasMore() || relay.isLoading()) {
@@ -46,35 +53,27 @@ const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
   }
 
   return (
-    <FlatList
-      data={pastShows}
-      ListHeaderComponent={() => {
-        return (
-          <>
-            <Text variant="mediumText" ml="2px">
-              {artist.name}
-            </Text>
-            <Text variant="largeTitle" mb={2}>
-              Past Shows
-            </Text>
-          </>
-        )
-      }}
-      renderItem={({ item }) => <ArtistShowFragmentContainer show={item} styles={showStyles} />}
-      keyExtractor={({ id }) => id}
-      onEndReachedThreshold={0.2}
-      ItemSeparatorComponent={() => <Spacer height={20} />}
-      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-      contentContainerStyle={{ paddingTop: top, paddingBottom: 20, paddingHorizontal: 20 }}
-      ListFooterComponent={
-        isFetchingMoreData ? (
-          <Flex my={2} alignItems="center" justifyContent="center">
-            <Spinner />
-          </Flex>
-        ) : null
-      }
-      onEndReached={loadMore}
-    />
+    <>
+      <Animated.FlatList
+        data={pastShows}
+        ListHeaderComponent={() => header}
+        renderItem={({ item }) => <ArtistShowFragmentContainer show={item} styles={showStyles} />}
+        keyExtractor={({ id }) => id}
+        onEndReachedThreshold={0.2}
+        ItemSeparatorComponent={() => <Spacer height={20} />}
+        contentContainerStyle={{ paddingTop: top, paddingBottom: 20, paddingHorizontal: 20 }}
+        ListFooterComponent={
+          isFetchingMoreData ? (
+            <Flex my={2} alignItems="center" justifyContent="center">
+              <Spinner />
+            </Flex>
+          ) : null
+        }
+        onEndReached={loadMore}
+        {...scrollProps}
+      />
+      {headerElement}
+    </>
   )
 }
 
@@ -146,6 +145,7 @@ export const ArtistShows2PaginationContainer = createPaginationContainer(
 export const ArtistShows2QueryRenderer: React.FC<{ artistID: string }> = ({ artistID }) => {
   return (
     <QueryRenderer<ArtistShows2Query>
+      cacheConfig={{ force: true }}
       environment={defaultEnvironment}
       query={graphql`
         query ArtistShows2Query($artistID: String!) {
@@ -157,9 +157,42 @@ export const ArtistShows2QueryRenderer: React.FC<{ artistID: string }> = ({ arti
       `}
       render={renderWithPlaceholder({
         Container: ArtistShows2PaginationContainer,
-        renderPlaceholder: () => <Text variant="largeTitle">Placeholder</Text>,
+        renderPlaceholder: LoadingSkeleton,
       })}
       variables={{ artistID }}
     />
+  )
+}
+
+const LoadingSkeleton = () => {
+  const shows = []
+  for (let i = 0; i < 6; i++) {
+    shows.push(
+      <Flex flexDirection="row" justifyContent="flex-start" mb={2} key={i}>
+        <PlaceholderBox width={82} height={82} marginRight={15} />
+        <Flex>
+          <PlaceholderBox width={80 + Math.round(Math.random() * 80)} height={15} />
+          <Spacer mb={0.5} />
+          <PlaceholderBox width={200 + Math.round(Math.random() * 100)} height={15} />
+          <Spacer mb={0.5} />
+          <PlaceholderBox width={60 + Math.round(Math.random() * 60)} height={15} />
+          <Spacer mb={0.5} />
+          <PlaceholderBox width={100 + Math.round(Math.random() * 100)} height={15} />
+        </Flex>
+      </Flex>
+    )
+  }
+  return (
+    <Flex mx={2}>
+      <Spacer height={70} />
+
+      {/* Artist name */}
+      <PlaceholderBox width={100} height={15} />
+      <Spacer mb={0.5} />
+      {/* "Past Shows" */}
+      <PlaceholderBox width={120} height={30} />
+      <Spacer mb={2} />
+      {shows}
+    </Flex>
   )
 }

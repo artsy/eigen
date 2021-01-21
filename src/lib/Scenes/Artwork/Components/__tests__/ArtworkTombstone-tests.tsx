@@ -1,13 +1,13 @@
+import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { navigate } from "lib/navigation/navigate"
 import { Theme } from "palette"
 import React from "react"
-import { NativeModules, TouchableWithoutFeedback } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 import { ArtworkTombstone } from "../ArtworkTombstone"
-
-import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
-import { navigate } from "lib/navigation/navigate"
 
 describe("ArtworkTombstone", () => {
   it("renders fields correctly", () => {
@@ -62,7 +62,7 @@ describe("ArtworkTombstone", () => {
 
   describe("for a user not in the US", () => {
     it("renders dimensions in centimeters", () => {
-      NativeModules.ARCocoaConstantsModule.CurrentLocale = "fr_FR"
+      ArtsyNativeModules.ARCocoaConstantsModule.CurrentLocale = "fr_FR"
       const component = mount(
         <Theme>
           <ArtworkTombstone artwork={artworkTombstoneArtwork} />
@@ -74,7 +74,7 @@ describe("ArtworkTombstone", () => {
 
   describe("for a US based user", () => {
     it("renders dimensions in inches", () => {
-      NativeModules.ARCocoaConstantsModule.CurrentLocale = "en_US"
+      ArtsyNativeModules.ARCocoaConstantsModule.CurrentLocale = "en_US"
       const component = mount(
         <Theme>
           <ArtworkTombstone artwork={artworkTombstoneArtwork} />

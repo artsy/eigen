@@ -1,3 +1,8 @@
-This update includes a number of small improvements and bug fixes.
+This update includes a number of bug fixes and improvements, including:
+
+• Adds the ability to share on Instagram
+• Improves the experience of submitting for consignment
+• Improves the experience of viewing past shows
+• Fixes various layout bugs
 
 Have feedback? Email us at support@artsy.net

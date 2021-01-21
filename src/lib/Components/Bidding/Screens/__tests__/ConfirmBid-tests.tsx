@@ -2,31 +2,46 @@ jest.mock("lib/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
 }))
 
+import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
+import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
+import { ConfirmBidCreateBidderPositionMutationResponse } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
+import { ConfirmBidCreateCreditCardMutationResponse } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
+import { ConfirmBidUpdateUserMutationResponse } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
+import { FakeNavigator } from "lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
+import { bidderPositionQuery } from "lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
+import { Modal } from "lib/Components/Modal"
+import Spinner from "lib/Components/Spinner"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { waitUntil } from "lib/tests/waitUntil"
 import { merge } from "lodash"
 import { Button, Sans, Serif } from "palette"
 import React from "react"
-import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
 import "react-native"
-
+import { Text, TouchableWithoutFeedback } from "react-native"
+import relay from "react-relay"
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+import stripe from "tipsi-stripe"
 import { LinkText } from "../../../Text/LinkText"
+import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { BidInfoRow } from "../../Components/BidInfoRow"
 import { Checkbox } from "../../Components/Checkbox"
-
+import { Address } from "../../types"
 import { BidResultScreen } from "../BidResult"
 import { BillingAddress } from "../BillingAddress"
 import { ConfirmBid, ConfirmBidProps } from "../ConfirmBid"
 import { CreditCardForm } from "../CreditCardForm"
+import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
 
 jest.mock("lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () => ({
   bidderPositionQuery: jest.fn(),
 }))
-import { bidderPositionQuery } from "lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
 const bidderPositionQueryMock = bidderPositionQuery as jest.Mock<any>
 
 // This lets us import the actual react-relay module, and replace specific functions within it with mocks.
 jest.unmock("react-relay")
-import relay from "react-relay"
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
@@ -36,31 +51,13 @@ jest.mock("tipsi-stripe", () => ({
   paymentRequestWithCardForm: jest.fn(),
   createTokenWithCard: jest.fn(),
 }))
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import stripe from "tipsi-stripe"
-
-import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
-import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
-import { ConfirmBidCreateBidderPositionMutationResponse } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
-import { ConfirmBidCreateCreditCardMutationResponse } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
-import { ConfirmBidUpdateUserMutationResponse } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
-import { FakeNavigator } from "lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
-import { Modal } from "lib/Components/Modal"
-import Spinner from "lib/Components/Spinner"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { waitUntil } from "lib/tests/waitUntil"
-
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
-import { Address } from "../../types"
-import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 let nextStep
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const mockNavigator = { push: (route) => (nextStep = route) }
 jest.useFakeTimers()
-const mockPostNotificationName = NativeModules.ARNotificationsManager.postNotificationName as jest.Mock
+const mockPostNotificationName = ArtsyNativeModules.ARNotificationsManager.postNotificationName as jest.Mock
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const findPlaceBidButton = (component) => {

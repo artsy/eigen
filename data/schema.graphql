@@ -268,7 +268,7 @@ type AnalyticsPartnerStats {
     @deprecated(reason: "Use pageview for refactored time series bucket code")
   partnerId: String!
 
-  # Artworks, shows, or artists ranked by views. Capped at 20 by the underlying sql query.
+  # Artworks, shows, viewing rooms, or artists ranked by views. Capped at 20 by the underlying sql query.
   rankedStats(
     # Returns the elements in the list that come after the specified cursor.
     after: String
@@ -449,9 +449,9 @@ enum AnalyticsQueryPeriodEnum {
   SIXTEEN_WEEKS
 }
 
-union AnalyticsRankedEntityUnion = Artist | Artwork | Show
+union AnalyticsRankedEntityUnion = Artist | Artwork | Show | ViewingRoom
 
-# Top artworks, shows, or artists from a partner
+# Top artworks, shows, viewing rooms, or artists from a partner
 type AnalyticsRankedStats {
   entity: AnalyticsRankedEntityUnion
   period: AnalyticsQueryPeriodEnum!
@@ -489,10 +489,13 @@ enum AnalyticsRankedStatsObjectTypeEnum {
 
   # Show
   SHOW
+
+  # ViewingRoom
+  VIEWING_ROOM
 }
 
-# An artwork, artist, or show
-union AnalyticsRankedStatsUnion = AnalyticsArtist | AnalyticsArtwork | AnalyticsShow
+# An artwork, artist, show, or viewing room
+union AnalyticsRankedStatsUnion = AnalyticsArtist | AnalyticsArtwork | AnalyticsShow | AnalyticsViewingRoom
 
 type AnalyticsShow {
   entityId: String!
@@ -502,6 +505,10 @@ type AnalyticsShow {
 type AnalyticsUserStats {
   totalPurchaseCount: Int!
   userId: String!
+}
+
+type AnalyticsViewingRoom {
+  entityId: String!
 }
 
 type AnalyticsVisitorsByCountry {
@@ -1208,7 +1215,7 @@ type Artwork implements Node & Searchable & Sellable {
   # artwork attribute called `medium`.)
   category: String @deprecated(reason: "Prefer to use `mediumType`.")
 
-  # Returns the display label and detail for artwork certificate of authenticity
+  # Returns the display label and detail when artwork has a certificate of authenticity
   certificateOfAuthenticity: ArtworkInfoRow
   collectingInstitution: String
   conditionDescription: ArtworkInfoRow
@@ -6715,6 +6722,32 @@ type LocationEdge {
 
 scalar Long
 
+type Lot {
+  internalID: String
+  lot: AuctionsLotState!
+  saleArtwork: SaleArtwork
+}
+
+# A connection to a list of items.
+type LotConnection {
+  # A list of edges.
+  edges: [LotEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type LotEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Lot
+}
+
 type LotStanding {
   # Your bid if it is currently winning
   activeBid: BidderPosition
@@ -6941,6 +6974,8 @@ type MarketPriceInsights {
 }
 
 type Me implements Node {
+  addressConnection(after: String, before: String, first: Int, last: Int): UserAddressConnection
+
   # A list of the current user’s inquiry requests
   artworkInquiriesConnection(after: String, before: String, first: Int, last: Int): ArtworkInquiryConnection
   auctionsLotStandingConnection(after: String, before: String, first: Int, last: Int): AuctionsLotStandingConnection!
@@ -7156,6 +7191,7 @@ type Me implements Node {
 
   # A count of unread notifications.
   unreadNotificationsCount: Int!
+  watchedLotConnection(after: String, before: String, first: Int, last: Int): LotConnection!
 }
 
 # A message in a conversation.
@@ -8242,6 +8278,22 @@ type Query {
   # List enabled Two-Factor Authentication factors
   _unused_gravity_secondFactors(kinds: [SecondFactorKind!] = [app, sms, backup]): [SecondFactor!]!
 
+  # List of user's saved addresses
+  _unused_gravity_userAddressConnection(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    userId: ID!
+  ): UserAddressConnection
+
   # List viewing rooms
   _unused_gravity_viewingRoomsConnection(
     # Returns the elements in the list that come after the specified cursor.
@@ -8588,6 +8640,24 @@ type Query {
     sort: FairSorts
     status: EventStatus
   ): [Fair]
+
+  # A list of fairs
+  fairsConnection(
+    after: String
+    before: String
+    fairOrganizerID: String
+    first: Int
+    hasFullFeature: Boolean
+    hasHomepageSection: Boolean
+    hasListing: Boolean
+
+    # Only return fairs matching specified IDs. Accepts list of IDs.
+    ids: [String]
+    last: Int
+    near: Near
+    sort: FairSorts
+    status: EventStatus
+  ): FairConnection
 
   # A Feature
   feature(
@@ -10554,6 +10624,63 @@ type User {
   userAlreadyExists: Boolean
 }
 
+# User saved address
+type UserAddress {
+  # Address line 1
+  addressLine1: String!
+
+  # Address line 2
+  addressLine2: String
+
+  # Address line 3
+  addressLine3: String
+
+  # City
+  city: String!
+
+  # Country
+  country: String!
+
+  # Is default address
+  isDefault: Boolean!
+
+  # Name on addreess
+  name: String
+
+  # Phone number
+  phoneNumber: String
+
+  # Postal Code
+  postalCode: String
+
+  # Region
+  region: String
+}
+
+# The connection type for UserAddress.
+type UserAddressConnection {
+  # A list of edges.
+  edges: [UserAddressEdge]
+
+  # A list of nodes.
+  nodes: [UserAddress]
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # Total count of matching nodes, before pagination
+  totalCount: Int!
+}
+
+# An edge in a connection.
+type UserAddressEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: UserAddress
+}
+
 # A connection to a list of items.
 type UserConnection {
   # A list of edges.
@@ -10773,6 +10900,24 @@ type Viewer {
     sort: FairSorts
     status: EventStatus
   ): [Fair]
+
+  # A list of fairs
+  fairsConnection(
+    after: String
+    before: String
+    fairOrganizerID: String
+    first: Int
+    hasFullFeature: Boolean
+    hasHomepageSection: Boolean
+    hasListing: Boolean
+
+    # Only return fairs matching specified IDs. Accepts list of IDs.
+    ids: [String]
+    last: Int
+    near: Near
+    sort: FairSorts
+    status: EventStatus
+  ): FairConnection
 
   # A Feature
   feature(

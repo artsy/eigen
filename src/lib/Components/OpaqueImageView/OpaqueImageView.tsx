@@ -23,6 +23,13 @@ interface Props extends ViewProps {
    */
   useRawURL?: boolean
 
+  /**
+   * By default SDWebImage will not attempt to refetch
+   * imageURLs that previously failed
+   * Use this option to override that behavior and refetch
+   */
+  retryFailedURLs?: boolean
+
   /** The background color for the image view */
   placeholderBackgroundColor?: string
 

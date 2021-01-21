@@ -8,12 +8,12 @@ import Messages from "lib/Scenes/Inbox/Components/Conversations/Messages"
 import { sendConversationMessage } from "lib/Scenes/Inbox/Components/Conversations/SendConversationMessage"
 import { updateConversation } from "lib/Scenes/Inbox/Components/Conversations/UpdateConversation"
 import { GlobalStore } from "lib/store/GlobalStore"
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { color, Flex, Text, Touchable } from "palette"
 import React from "react"
 import { View } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 import Svg, { Path } from "react-native-svg"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import styled from "styled-components/native"
@@ -142,6 +142,11 @@ export class Conversation extends React.Component<Props, State> {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const partnerName = conversation.to.name
 
+    const artworkSlug =
+      conversation?.items?.[0]?.item && conversation?.items?.[0]?.item.__typename === "Artwork"
+        ? conversation?.items?.[0]?.item.slug
+        : null
+
     return (
       <Composer
         disabled={this.state.sendingMessage || !this.state.isConnected}
@@ -149,6 +154,7 @@ export class Conversation extends React.Component<Props, State> {
         ref={(composer) => (this.composer = composer)}
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         value={this.state.failedMessageText}
+        artworkID={artworkSlug}
         onSubmit={(text) => {
           this.setState({ sendingMessage: true, failedMessageText: null })
           sendConversationMessage(
@@ -212,6 +218,18 @@ export const ConversationFragmentContainer = createFragmentContainer(Conversatio
   me: graphql`
     fragment Conversation_me on Me {
       conversation(id: $conversationID) {
+        items {
+          item {
+            __typename
+            ... on Artwork {
+              href
+              slug
+            }
+            ... on Show {
+              href
+            }
+          }
+        }
         internalID
         id
         lastMessageID

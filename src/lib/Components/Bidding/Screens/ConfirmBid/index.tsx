@@ -1,13 +1,12 @@
-import { get, isEmpty } from "lodash"
-import { Box, Button, Serif } from "palette"
-import React from "react"
-import { Image, NativeModules, ScrollView, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
-import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
-import { PayloadError } from "relay-runtime"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import stripe from "tipsi-stripe"
-
+import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
+import { ConfirmBid_me } from "__generated__/ConfirmBid_me.graphql"
+import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
+import {
+  ConfirmBidCreateBidderPositionMutation,
+  ConfirmBidCreateBidderPositionMutationResponse,
+} from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
+import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
+import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { BiddingThemeProvider } from "lib/Components/Bidding/Components/BiddingThemeProvider"
 import { BidInfoRow } from "lib/Components/Bidding/Components/BidInfoRow"
 import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
@@ -21,22 +20,22 @@ import { bidderPositionQuery } from "lib/Components/Bidding/Screens/ConfirmBid/B
 import { PriceSummary } from "lib/Components/Bidding/Screens/ConfirmBid/PriceSummary"
 import { SelectMaxBidEdit } from "lib/Components/Bidding/Screens/SelectMaxBidEdit"
 import { Address, Bid, PaymentCardTextFieldParams, StripeToken } from "lib/Components/Bidding/types"
-import { LinkText } from "lib/Components/Text/LinkText"
-import { navigate } from "lib/navigation/navigate"
-import { Schema, screenTrack, track } from "lib/utils/track"
-
-import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
-import { ConfirmBid_me } from "__generated__/ConfirmBid_me.graphql"
-import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
-import {
-  ConfirmBidCreateBidderPositionMutation,
-  ConfirmBidCreateBidderPositionMutationResponse,
-} from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
-import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
-import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { Modal } from "lib/Components/Modal"
+import { LinkText } from "lib/Components/Text/LinkText"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { navigate } from "lib/navigation/navigate"
 import { partnerName } from "lib/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
+import { Schema, screenTrack, track } from "lib/utils/track"
+import { get, isEmpty } from "lodash"
+import { Box, Button, Serif } from "palette"
+import React from "react"
+import { Image, ScrollView, ViewProperties } from "react-native"
+import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { PayloadError } from "relay-runtime"
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+import stripe from "tipsi-stripe"
 
 type BidderPositionResult = NonNullable<
   NonNullable<ConfirmBidCreateBidderPositionMutationResponse["createBidderPosition"]>["result"]
@@ -421,13 +420,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   presentBidResult(bidderPositionResult: BidderPositionResult) {
-    NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkBidUpdated", {
+    ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkBidUpdated", {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       ARAuctionID: this.props.sale_artwork.sale.slug,
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       ARAuctionArtworkID: this.props.sale_artwork.artwork.slug,
     })
-    NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
+    ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       ARAuctionID: this.props.sale_artwork.sale.slug,
     })

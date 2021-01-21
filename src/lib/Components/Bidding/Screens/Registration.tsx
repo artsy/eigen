@@ -1,35 +1,30 @@
+import { Registration_me } from "__generated__/Registration_me.graphql"
+import { Registration_sale } from "__generated__/Registration_sale.graphql"
+import { RegistrationCreateBidderMutation } from "__generated__/RegistrationCreateBidderMutation.graphql"
+import { RegistrationCreateCreditCardMutation } from "__generated__/RegistrationCreateCreditCardMutation.graphql"
+import { RegistrationUpdateUserMutation } from "__generated__/RegistrationUpdateUserMutation.graphql"
+import { Modal } from "lib/Components/Modal"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { navigate } from "lib/navigation/navigate"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
+import { bidderNeedsIdentityVerification } from "lib/utils/auction"
+import { Schema, screenTrack } from "lib/utils/track"
 import { get, isEmpty } from "lodash"
 import { Box, Button, Sans, Serif } from "palette"
 import React from "react"
-import { NativeModules, ScrollView, View, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
+import { ScrollView, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
-
-import { bidderNeedsIdentityVerification } from "lib/utils/auction"
-import { Schema, screenTrack } from "lib/utils/track"
-
-import { navigate } from "lib/navigation/navigate"
-
-import { Flex } from "../Elements/Flex"
-
-import { Modal } from "lib/Components/Modal"
 import { LinkText } from "../../Text/LinkText"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Checkbox } from "../Components/Checkbox"
 import { PaymentInfo } from "../Components/PaymentInfo"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
+import { Flex } from "../Elements/Flex"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
-
-import { Registration_me } from "__generated__/Registration_me.graphql"
-import { Registration_sale } from "__generated__/Registration_sale.graphql"
-
-import { RegistrationCreateBidderMutation } from "__generated__/RegistrationCreateBidderMutation.graphql"
-import { RegistrationCreateCreditCardMutation } from "__generated__/RegistrationCreateCreditCardMutation.graphql"
-import { RegistrationUpdateUserMutation } from "__generated__/RegistrationUpdateUserMutation.graphql"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
 stripe.setOptions({ publishableKey: getCurrentEmissionState().stripePublishableKey })
@@ -268,7 +263,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   presentRegistrationSuccess({ createBidder }) {
-    NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
+    ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
       ARAuctionID: this.props.sale.slug,
     })
 

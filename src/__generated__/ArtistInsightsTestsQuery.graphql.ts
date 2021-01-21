@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7db74f7d25e355deeac3b6c4922ddd07 */
+/* @relayHash a14197adb67bcdb4b3382028aa667c7f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,8 +27,13 @@ query ArtistInsightsTestsQuery {
 }
 
 fragment ArtistInsightsAuctionResults_artist on Artist {
+  birthday
   slug
-  auctionResultsConnection(first: 10, sort: DATE_DESC) {
+  auctionResultsConnection(allowEmptyCreatedDates: true, earliestCreatedYear: 1000, first: 10, latestCreatedYear: 2050, sort: DATE_DESC) {
+    createdYearRange {
+      startAt
+      endAt
+    }
     edges {
       node {
         id
@@ -98,8 +103,23 @@ v1 = {
 v2 = [
   {
     "kind": "Literal",
+    "name": "allowEmptyCreatedDates",
+    "value": true
+  },
+  {
+    "kind": "Literal",
+    "name": "earliestCreatedYear",
+    "value": 1000
+  },
+  {
+    "kind": "Literal",
     "name": "first",
     "value": 10
+  },
+  {
+    "kind": "Literal",
+    "name": "latestCreatedYear",
+    "value": 2050
   },
   {
     "kind": "Literal",
@@ -109,13 +129,13 @@ v2 = [
 ],
 v3 = {
   "enumValues": null,
-  "nullable": false,
+  "nullable": true,
   "plural": false,
-  "type": "String"
+  "type": "Int"
 },
 v4 = {
   "enumValues": null,
-  "nullable": true,
+  "nullable": false,
   "plural": false,
   "type": "String"
 },
@@ -123,19 +143,19 @@ v5 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
-  "type": "Float"
+  "type": "String"
 },
 v6 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Float"
+},
+v7 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
-},
-v7 = {
-  "enumValues": null,
-  "nullable": true,
-  "plural": false,
-  "type": "Int"
 };
 return {
   "fragment": {
@@ -195,12 +215,44 @@ return {
           },
           {
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "birthday",
+            "storageKey": null
+          },
+          {
+            "alias": null,
             "args": (v2/*: any*/),
             "concreteType": "AuctionResultConnection",
             "kind": "LinkedField",
             "name": "auctionResultsConnection",
             "plural": false,
             "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "YearRange",
+                "kind": "LinkedField",
+                "name": "createdYearRange",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "startAt",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "endAt",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              },
               {
                 "alias": null,
                 "args": null,
@@ -419,12 +471,17 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "auctionResultsConnection(first:10,sort:\"DATE_DESC\")"
+            "storageKey": "auctionResultsConnection(allowEmptyCreatedDates:true,earliestCreatedYear:1000,first:10,latestCreatedYear:2050,sort:\"DATE_DESC\")"
           },
           {
             "alias": null,
             "args": (v2/*: any*/),
             "filters": [
+              "allowEmptyCreatedDates",
+              "categories",
+              "earliestCreatedYear",
+              "latestCreatedYear",
+              "sizes",
               "sort"
             ],
             "handle": "connection",
@@ -438,7 +495,7 @@ return {
     ]
   },
   "params": {
-    "id": "7db74f7d25e355deeac3b6c4922ddd07",
+    "id": "a14197adb67bcdb4b3382028aa667c7f",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
@@ -453,36 +510,44 @@ return {
           "plural": false,
           "type": "AuctionResultConnection"
         },
+        "artist.auctionResultsConnection.createdYearRange": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "YearRange"
+        },
+        "artist.auctionResultsConnection.createdYearRange.endAt": (v3/*: any*/),
+        "artist.auctionResultsConnection.createdYearRange.startAt": (v3/*: any*/),
         "artist.auctionResultsConnection.edges": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "AuctionResultEdge"
         },
-        "artist.auctionResultsConnection.edges.cursor": (v3/*: any*/),
+        "artist.auctionResultsConnection.edges.cursor": (v4/*: any*/),
         "artist.auctionResultsConnection.edges.node": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "AuctionResult"
         },
-        "artist.auctionResultsConnection.edges.node.__typename": (v3/*: any*/),
+        "artist.auctionResultsConnection.edges.node.__typename": (v4/*: any*/),
         "artist.auctionResultsConnection.edges.node.boughtIn": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Boolean"
         },
-        "artist.auctionResultsConnection.edges.node.currency": (v4/*: any*/),
-        "artist.auctionResultsConnection.edges.node.dateText": (v4/*: any*/),
+        "artist.auctionResultsConnection.edges.node.currency": (v5/*: any*/),
+        "artist.auctionResultsConnection.edges.node.dateText": (v5/*: any*/),
         "artist.auctionResultsConnection.edges.node.estimate": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "AuctionLotEstimate"
         },
-        "artist.auctionResultsConnection.edges.node.estimate.low": (v5/*: any*/),
-        "artist.auctionResultsConnection.edges.node.id": (v6/*: any*/),
+        "artist.auctionResultsConnection.edges.node.estimate.low": (v6/*: any*/),
+        "artist.auctionResultsConnection.edges.node.id": (v7/*: any*/),
         "artist.auctionResultsConnection.edges.node.images": {
           "enumValues": null,
           "nullable": true,
@@ -501,38 +566,39 @@ return {
           "plural": false,
           "type": "Float"
         },
-        "artist.auctionResultsConnection.edges.node.images.thumbnail.height": (v7/*: any*/),
-        "artist.auctionResultsConnection.edges.node.images.thumbnail.url": (v4/*: any*/),
-        "artist.auctionResultsConnection.edges.node.images.thumbnail.width": (v7/*: any*/),
-        "artist.auctionResultsConnection.edges.node.internalID": (v6/*: any*/),
-        "artist.auctionResultsConnection.edges.node.mediumText": (v4/*: any*/),
-        "artist.auctionResultsConnection.edges.node.organization": (v4/*: any*/),
+        "artist.auctionResultsConnection.edges.node.images.thumbnail.height": (v3/*: any*/),
+        "artist.auctionResultsConnection.edges.node.images.thumbnail.url": (v5/*: any*/),
+        "artist.auctionResultsConnection.edges.node.images.thumbnail.width": (v3/*: any*/),
+        "artist.auctionResultsConnection.edges.node.internalID": (v7/*: any*/),
+        "artist.auctionResultsConnection.edges.node.mediumText": (v5/*: any*/),
+        "artist.auctionResultsConnection.edges.node.organization": (v5/*: any*/),
         "artist.auctionResultsConnection.edges.node.priceRealized": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "AuctionResultPriceRealized"
         },
-        "artist.auctionResultsConnection.edges.node.priceRealized.cents": (v5/*: any*/),
-        "artist.auctionResultsConnection.edges.node.priceRealized.display": (v4/*: any*/),
-        "artist.auctionResultsConnection.edges.node.saleDate": (v4/*: any*/),
-        "artist.auctionResultsConnection.edges.node.title": (v4/*: any*/),
+        "artist.auctionResultsConnection.edges.node.priceRealized.cents": (v6/*: any*/),
+        "artist.auctionResultsConnection.edges.node.priceRealized.display": (v5/*: any*/),
+        "artist.auctionResultsConnection.edges.node.saleDate": (v5/*: any*/),
+        "artist.auctionResultsConnection.edges.node.title": (v5/*: any*/),
         "artist.auctionResultsConnection.pageInfo": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "PageInfo"
         },
-        "artist.auctionResultsConnection.pageInfo.endCursor": (v4/*: any*/),
+        "artist.auctionResultsConnection.pageInfo.endCursor": (v5/*: any*/),
         "artist.auctionResultsConnection.pageInfo.hasNextPage": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "Boolean"
         },
-        "artist.id": (v6/*: any*/),
-        "artist.name": (v4/*: any*/),
-        "artist.slug": (v6/*: any*/)
+        "artist.birthday": (v5/*: any*/),
+        "artist.id": (v7/*: any*/),
+        "artist.name": (v5/*: any*/),
+        "artist.slug": (v7/*: any*/)
       }
     },
     "name": "ArtistInsightsTestsQuery",

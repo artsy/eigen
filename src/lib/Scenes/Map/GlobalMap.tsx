@@ -4,6 +4,7 @@ import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
 import PinFairSelected from "lib/Icons/PinFairSelected"
 import PinSavedSelected from "lib/Icons/PinSavedSelected"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -11,7 +12,7 @@ import { Schema, screenTrack, track } from "lib/utils/track"
 import { get, isEqual, uniq } from "lodash"
 import { Box, color, Flex, Sans, Theme } from "palette"
 import React from "react"
-import { Animated, Dimensions, Easing, Image, NativeModules, View } from "react-native"
+import { Animated, Dimensions, Easing, Image, View } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 // @ts-ignore
@@ -519,7 +520,7 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   onDidFinishRenderingMapFully = () => {
-    NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryMapHasRendered", {})
+    ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryMapHasRendered", {})
     this.setState({ mapLoaded: true })
   }
 
@@ -763,7 +764,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
   updateDrawerPosition(position: DrawerPosition) {
     const notificationName = "ARLocalDiscoveryUpdateDrawerPosition"
-    NativeModules.ARNotificationsManager.postNotificationName(notificationName, {
+    ArtsyNativeModules.ARNotificationsManager.postNotificationName(notificationName, {
       position,
     })
   }

@@ -1,10 +1,10 @@
-import React from "react"
-
 import { SwitchMenu } from "lib/Components/SwitchMenu"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Sans } from "palette"
-import { NativeModules, Switch } from "react-native"
+import React from "react"
+import { Switch } from "react-native"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import {
@@ -18,7 +18,7 @@ jest.mock("lib/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
 }))
 
-const mockFetchNotificationPermissions = NativeModules.ARTemporaryAPIModule
+const mockFetchNotificationPermissions = ArtsyNativeModules.ARTemporaryAPIModule
   .fetchNotificationPermissions as jest.Mock<any>
 
 jest.unmock("react-relay")

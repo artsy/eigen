@@ -12,8 +12,9 @@ export const PhoneInput = React.forwardRef<
   Input,
   {
     onChange?: (value: string) => void
+    maxModalHeight?: number
   } & Omit<InputProps, "onChange">
->(({ value, onChange, onChangeText, ...rest }, outerRef) => {
+>(({ value, onChange, onChangeText, maxModalHeight, ...rest }, outerRef) => {
   const innerRef = useRef<Input | null>()
   const initialValues = cleanUserPhoneNumber(value ?? "")
 
@@ -30,7 +31,7 @@ export const PhoneInput = React.forwardRef<
       isFirstRun.current = false
       return
     }
-    const newValue = `+${dialCode} ${phoneNumber}`
+    const newValue = phoneNumber ? `+${dialCode} ${phoneNumber}` : ""
     onChangeText?.(newValue)
     onChange?.(newValue)
   }, [phoneNumber, dialCode])
@@ -61,6 +62,7 @@ export const PhoneInput = React.forwardRef<
           options={countryOptions}
           enableSearch
           value={countryCode}
+          maxModalHeight={maxModalHeight}
           onModalFinishedClosing={() => {
             innerRef.current?.focus()
           }}

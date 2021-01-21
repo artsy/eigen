@@ -1,11 +1,11 @@
 import { ConsignmentsArtistQuery } from "__generated__/ConsignmentsArtistQuery.graphql"
 import { defaultEnvironment as environment } from "lib/relay/createEnvironment"
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { extractNodes } from "lib/utils/extractNodes"
 import { throttle } from "lodash"
 import { Theme } from "palette"
 import React from "react"
-import { Dimensions, Route, View, ViewProperties } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
+import { Dimensions, View, ViewProperties } from "react-native"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { SearchResults } from "../Components/SearchResults"
@@ -13,7 +13,6 @@ import { ArtistResult, ConsignmentSetup } from "../index"
 
 interface Props extends ConsignmentSetup, ViewProperties {
   navigator: NavigatorIOS
-  route: Route
   updateWithArtist?: (result: ArtistResult) => void
 }
 
@@ -89,6 +88,7 @@ export default class Artist extends React.Component<Props, State> {
               flexGrow: 1,
               marginLeft: 20,
               marginRight: 20,
+              marginTop: 20,
             }}
           >
             <SearchResults<ArtistResult>

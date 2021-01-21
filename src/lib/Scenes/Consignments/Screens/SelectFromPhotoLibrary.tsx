@@ -1,30 +1,28 @@
 import CameraRoll from "@react-native-community/cameraroll"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { triggerCamera } from "lib/NativeModules/triggerCamera"
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, Serif, Spacer } from "palette"
+import { Box, Sans, Spacer } from "palette"
 import React from "react"
 import {
   Alert,
   Dimensions,
   Linking,
-  NativeModules,
   NativeScrollEvent,
   NativeSyntheticEvent,
-  Route,
   ScrollView,
   View,
   ViewProperties,
 } from "react-native"
-import NavigatorIOS from "react-native-navigator-ios"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import ImageSelection, { ImageData } from "../Components/ImageSelection"
 import { ConsignmentSetup } from "../index"
 
-const { ARCocoaConstantsModule, ARTakeCameraPhotoModule } = NativeModules
+const { ARCocoaConstantsModule, ARTakeCameraPhotoModule } = ArtsyNativeModules
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
-  route: Route
   setup: ConsignmentSetup
   updateWithPhotos: (photos: string[]) => void
 }
@@ -204,9 +202,9 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
         <ScrollView style={{ flex: 1 }} scrollsToTop={true} onScroll={this.onScroll} scrollEventThrottle={50}>
           <View style={{ paddingTop: 40 }}>
             <Box px={2}>
-              <Serif size="4" style={{ textAlign: "center" }}>
+              <Sans size="4" style={{ textAlign: "center" }}>
                 Please add photos of the work. We suggest including the front and back as well as the signature.
-              </Serif>
+              </Sans>
             </Box>
             <Spacer mb={2} />
             <ImageSelection

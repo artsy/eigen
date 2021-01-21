@@ -2108,6 +2108,11 @@
     yeoman-environment "^2.3.4"
     yeoman-generator "^3.1.1"
 
+"@ptomasroos/react-native-multi-slider@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@ptomasroos/react-native-multi-slider/-/react-native-multi-slider-2.2.2.tgz#35a97fb8c355627c6a2ded010b360ac5728b44ad"
+  integrity sha512-HWyCnRD3Z3SbHK2FLWYmBBqd1B4iXipeKv1+AK0FoY/CElEDTEixHE8hN60TsqxalPrznn798LE2Q4tHuCiyaA==
+
 "@react-native-community/async-storage@1.6.3":
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.6.3.tgz#1a713e8c5cacd543ab8539080a5ce57ad917da88"
@@ -11182,10 +11187,6 @@ react-native-localize@^2.0.1:
 "react-native-navigator-ios@https://github.com/artsy/react-native-navigator-ios#license_podspec":
   version "1.0.0"
   resolved "https://github.com/artsy/react-native-navigator-ios#695725296669114ceeed76bba218fd91cde381c1"
-
-react-native-parallax-scroll-view@orta/react-native-parallax-scroll-view:
-  version "0.18.2"
-  resolved "https://codeload.github.com/orta/react-native-parallax-scroll-view/tar.gz/3c4c94ec493b64a6e10840c7457515e37762a5dc"
 
 react-native-reanimated@^1.13.1:
   version "1.13.1"

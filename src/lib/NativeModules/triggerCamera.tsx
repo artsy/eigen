@@ -1,5 +1,5 @@
-import { findNodeHandle, NativeModules } from "react-native"
-const { ARTakeCameraPhotoModule } = NativeModules
+import { findNodeHandle } from "react-native"
+import { ArtsyNativeModules } from "./ArtsyNativeModules"
 
 export async function triggerCamera(component: React.Component<any, any>): Promise<any> {
   let reactTag
@@ -9,5 +9,5 @@ export async function triggerCamera(component: React.Component<any, any>): Promi
     console.error("could not find tag for the component calling ARTakeCameraPhotoModule.triggerCameraModal")
     return
   }
-  return ARTakeCameraPhotoModule.triggerCameraModal(reactTag)
+  return ArtsyNativeModules.ARTakeCameraPhotoModule.triggerCameraModal(reactTag)
 }

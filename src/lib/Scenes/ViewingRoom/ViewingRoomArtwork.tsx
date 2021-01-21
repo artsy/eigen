@@ -1,19 +1,20 @@
-import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
-import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
-import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
-import LoadFailureView from "lib/Components/LoadFailureView"
+import { LoadFailureView } from "lib/Components/LoadFailureView"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { cm2in } from "lib/utils/conversions"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
-import { Box, Button, EyeOpenedIcon, Flex, Sans, Separator, Spacer, Text } from "palette"
-import { LargeCard, Touchable } from "palette"
+import { Box, Button, EyeOpenedIcon, Flex, LargeCard, Sans, Separator, Spacer, Text, Touchable } from "palette"
 import React from "react"
-import { FlatList, NativeModules, ScrollView, TouchableWithoutFeedback } from "react-native"
+import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
 import { graphql, useFragment, useQuery } from "relay-hooks"
+
+import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
+import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
+import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
 import { ImageCarousel } from "../Artwork/Components/ImageCarousel/ImageCarousel"
 import { tagForStatus } from "./Components/ViewingRoomsListItem"
 
@@ -75,7 +76,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (p
   const viewInAR = () => {
     const [widthIn, heightIn] = [selectedArtwork.widthCm!, selectedArtwork.heightCm!].map(cm2in)
 
-    NativeModules.ARScreenPresenterModule.presentAugmentedRealityVIR(
+    ArtsyNativeModules.ARScreenPresenterModule.presentAugmentedRealityVIR(
       selectedArtwork.image!.url!,
       widthIn,
       heightIn,
@@ -95,7 +96,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (p
       <ScrollView>
         <Flex>
           <ImageCarousel images={[selectedArtwork.images![0]] as any} cardHeight={screenHeight} />
-          {!!(NativeModules.ARCocoaConstantsModule.AREnabled && selectedArtwork.isHangable) && (
+          {!!(ArtsyNativeModules.ARCocoaConstantsModule.AREnabled && selectedArtwork.isHangable) && (
             <Flex
               position="absolute"
               bottom="1"

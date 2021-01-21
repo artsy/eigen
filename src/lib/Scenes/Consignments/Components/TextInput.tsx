@@ -32,8 +32,8 @@ interface State {
 const Input = styled.TextInput`
   height: 40;
   color: ${color("black100")};
-  font-family: "${Fonts.GaramondRegular}";
-  font-size: 20;
+  font-family: "${Fonts.Unica77LLRegular}";
+  font-size: 16;
   flex: 1;
 `
 
@@ -52,8 +52,8 @@ const ReadOnlyInput = (props: TextInputProps) => (
   <Text
     style={{
       color: color("black100"),
-      fontFamily: Fonts.GaramondRegular,
-      fontSize: 20,
+      fontFamily: Fonts.Unica77LLRegular,
+      fontSize: 16,
       paddingTop: 8,
     }}
   >

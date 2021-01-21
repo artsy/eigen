@@ -1,4 +1,5 @@
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
+import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
 import { navigate } from "lib/navigation/navigate"
@@ -6,9 +7,10 @@ import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStor
 import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Separator, Text } from "palette"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useCallback, useContext, useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import styled from "styled-components/native"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
 import { AuctionResultFragmentContainer } from "../../Lists/AuctionResult"
 
@@ -45,6 +47,13 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
   const auctionResults = extractNodes(artist.auctionResultsConnection)
   const [loadingMoreData, setLoadingMoreData] = useState(false)
 
+  const getSortDescription = useCallback(() => {
+    const sortMode = ORDERED_AUCTION_RESULTS_SORTS.find((sort) => sort.paramValue === filterParams?.sort)
+    if (sortMode) {
+      return sortMode.displayText
+    }
+  }, [filterParams])
+
   const loadMoreAuctionResults = () => {
     if (!relay.hasMore() || relay.isLoading()) {
       return
@@ -57,6 +66,34 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
       setLoadingMoreData(false)
     })
   }
+
+  // We are using the same logic used in Force but it might be useful
+  // to adjust metaphysics to support aggregations like other filters in the app
+  useEffect(() => {
+    dispatch({
+      type: "setAggregations",
+      payload: [
+        {
+          slice: "earliestCreatedYear",
+          counts: [
+            {
+              value: artist.auctionResultsConnection?.createdYearRange?.startAt || artist.birthday,
+              name: "earliestCreatedYear",
+            },
+          ],
+        },
+        {
+          slice: "latestCreatedYear",
+          counts: [
+            {
+              value: artist.auctionResultsConnection?.createdYearRange?.endAt || new Date().getFullYear(),
+              name: "latestCreatedYear",
+            },
+          ],
+        },
+      ],
+    })
+  }, [])
 
   return (
     <FlatList
@@ -71,9 +108,9 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
       ListHeaderComponent={() => (
         <Flex px={2}>
           <Text variant="title">Auction results</Text>
-          <Text variant="small" color="black60">
-            Sorted by most recent sale date
-          </Text>
+          <SortMode variant="small" color="black60">
+            Sorted by {getSortDescription()?.toLowerCase()}
+          </SortMode>
           <Separator mt="2" />
         </Flex>
       )}
@@ -90,19 +127,39 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
   )
 }
 
+export const SortMode = styled(Text)``
+
 export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationContainer(
   ArtistInsightsAuctionResults,
   {
     artist: graphql`
       fragment ArtistInsightsAuctionResults_artist on Artist
       @argumentDefinitions(
+        allowEmptyCreatedDates: { type: "Boolean", defaultValue: true }
+        categories: { type: "[String]" }
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
+        earliestCreatedYear: { type: "Int", defaultValue: 1000 }
+        latestCreatedYear: { type: "Int", defaultValue: 2050 }
+        sizes: { type: "[ArtworkSizes]" }
         sort: { type: "AuctionResultSorts", defaultValue: DATE_DESC }
       ) {
+        birthday
         slug
-        auctionResultsConnection(first: $count, after: $cursor, sort: $sort)
-          @connection(key: "artist_auctionResultsConnection") {
+        auctionResultsConnection(
+          after: $cursor
+          allowEmptyCreatedDates: $allowEmptyCreatedDates
+          categories: $categories
+          earliestCreatedYear: $earliestCreatedYear
+          first: $count
+          latestCreatedYear: $latestCreatedYear
+          sizes: $sizes
+          sort: $sort
+        ) @connection(key: "artist_auctionResultsConnection") {
+          createdYearRange {
+            startAt
+            endAt
+          }
           edges {
             node {
               id
@@ -127,13 +184,28 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
     },
     query: graphql`
       query ArtistInsightsAuctionResultsQuery(
+        $allowEmptyCreatedDates: Boolean
+        $artistID: String!
+        $categories: [String]
         $count: Int!
         $cursor: String
+        $earliestCreatedYear: Int
+        $latestCreatedYear: Int
+        $sizes: [ArtworkSizes]
         $sort: AuctionResultSorts
-        $artistID: String!
       ) {
         artist(id: $artistID) {
-          ...ArtistInsightsAuctionResults_artist @arguments(count: $count, cursor: $cursor, sort: $sort)
+          ...ArtistInsightsAuctionResults_artist
+            @arguments(
+              allowEmptyCreatedDates: $allowEmptyCreatedDates
+              categories: $categories
+              count: $count
+              cursor: $cursor
+              earliestCreatedYear: $earliestCreatedYear
+              latestCreatedYear: $latestCreatedYear
+              sizes: $sizes
+              sort: $sort
+            )
         }
       }
     `,

@@ -12,7 +12,6 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *
     CGFloat width = destinationSize.width * scaleFactor;
     CGFloat height = destinationSize.height * scaleFactor;
     NSCAssert(width != 0 && height != 0, @"Resizing an image to %fx%f makes no sense.", width, height);
-
     CGColorSpaceRef colourSpace = CGColorSpaceCreateDeviceRGB();
     CGContextRef context = CGBitmapContextCreate(NULL,
                                                  width,
@@ -103,8 +102,14 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *
     if (!isInCache) {
       self.backgroundColor = self.placeholderBackgroundColor;
     }
+
+
+    SDWebImageOptions options = 0;
+    options = options | (self.retryFailedURLs ? SDWebImageRetryFailed : 0);
+    options = options | (self.highPriority ? SDWebImageHighPriority : 0);
+
     self.downloadOperation = [manager downloadImageWithURL:self.imageURL
-                                                   options:self.highPriority ? SDWebImageHighPriority : 0
+                                                   options:options
                                                   progress:nil
                                                  completed:^(UIImage *image,
                                                              NSError *error,

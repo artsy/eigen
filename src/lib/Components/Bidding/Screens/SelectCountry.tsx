@@ -1,9 +1,9 @@
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Serif } from "palette"
 import { stringify } from "qs"
 import React from "react"
 import { ActivityIndicator, ScrollView, TouchableWithoutFeedback } from "react-native"
 import Config from "react-native-config"
-import NavigatorIOS from "react-native-navigator-ios"
 
 import { Flex } from "../Elements/Flex"
 

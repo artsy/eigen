@@ -1,7 +1,6 @@
-import { action, createTypedHooks, StoreProvider } from "easy-peasy"
-import { createStore } from "easy-peasy"
+import { action, createStore, createTypedHooks, StoreProvider } from "easy-peasy"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import React from "react"
-import { NativeModules } from "react-native"
 import { Action, Middleware } from "redux"
 import { GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { EmissionOptions } from "./NativeModel"
@@ -105,7 +104,7 @@ export function useEmissionOption(key: keyof EmissionOptions) {
 
 export function getCurrentEmissionState() {
   // on initial load globalStoreInstance might be undefined
-  return globalStoreInstance?.getState().native.sessionState ?? NativeModules.ARNotificationsManager.nativeState
+  return globalStoreInstance?.getState().native.sessionState ?? ArtsyNativeModules.ARNotificationsManager.nativeState
 }
 
 /**

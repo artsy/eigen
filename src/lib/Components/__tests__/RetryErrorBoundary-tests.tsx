@@ -2,7 +2,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 
-import LoadFailureView from "../LoadFailureView"
+import { LoadFailureView } from "../LoadFailureView"
 import { RetryErrorBoundary } from "../RetryErrorBoundary"
 
 const consoleError = console.error

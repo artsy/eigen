@@ -4,7 +4,7 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Join, Separator, Text } from "palette"
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import { Image, NativeScrollEvent, NativeSyntheticEvent, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ReactElement } from "simple-markdown"
@@ -40,13 +40,13 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
   }
 
   // Show or hide floating filter button depending on the scroll position
-  const onScrollEndDrag = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+  const onScrollEndDrag = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (event.nativeEvent.targetContentOffset.y > FILTER_BUTTON_OFFSET) {
       setIsFilterButtonVisible(true)
       return
     }
     setIsFilterButtonVisible(false)
-  }
+  }, [])
 
   const MarketStats = () => (
     <>
@@ -90,6 +90,15 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
         <Join separator={<Separator my={2} ml={-2} width={useScreenDimensions().width} />}>
           <MarketStats />
           <ArtistInsightsAuctionResultsPaginationContainer artist={artist} />
+          <FilterModalNavigator
+            isFilterArtworksModalVisible={isFilterModalVisible}
+            id={artist.id}
+            slug={artist.slug}
+            mode={FilterModalMode.AuctionResults}
+            exitModal={closeFilterModal}
+            closeModal={closeFilterModal}
+            title="Filter auction results"
+          />
         </Join>
       </StickyTabPageScrollView>
 
@@ -97,16 +106,6 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
         isVisible={isFilterButtonVisible}
         onPress={openFilterModal}
         text="Filter auction results"
-      />
-
-      <FilterModalNavigator
-        isFilterArtworksModalVisible={isFilterModalVisible}
-        id={artist.id}
-        slug={artist.slug}
-        mode={FilterModalMode.AuctionResults}
-        exitModal={closeFilterModal}
-        closeModal={closeFilterModal}
-        title="Filter auction results"
       />
     </ArtworkFilterGlobalStateProvider>
   )

@@ -19,8 +19,8 @@ const Placeholder = styled.Text`
   position: absolute;
   z-index: -1;
   color: ${color("black60")};
-  font-family: "${fonts["garamond-regular"]}";
-  font-size: 20;
+  font-family: "${fonts["unica77ll-regular"]}";
+  font-size: 16;
   margin-top: 5px;
   width: 100%;
 `
@@ -29,8 +29,8 @@ const Input = styled.TextInput`
   height: 100%;
   background-color: transparent;
   color: ${color("black100")};
-  font-family: "${fonts["garamond-regular"]}";
-  font-size: 20;
+  font-family: "${fonts["unica77ll-regular"]}";
+  font-size: 16;
   flex: 1;
 `
 

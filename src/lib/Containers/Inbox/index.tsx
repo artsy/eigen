@@ -6,8 +6,12 @@ import { InboxOldQueryRenderer } from "./InboxOld"
 /**
  * A wrapper containing the logic for whether to display our new inbox
  */
-export const InboxWrapper: React.FC = () => {
+export const InboxWrapper: React.FC<{ isVisible: boolean }> = ({ isVisible }) => {
   const shouldDisplayMyBids = getCurrentEmissionState().options.AROptionsBidManagement
 
-  return shouldDisplayMyBids ? <InboxQueryRenderer /> : <InboxOldQueryRenderer />
+  return shouldDisplayMyBids ? (
+    <InboxQueryRenderer isVisible={isVisible} />
+  ) : (
+    <InboxOldQueryRenderer isVisible={isVisible} />
+  )
 }

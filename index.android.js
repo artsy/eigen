@@ -1,6 +1,7 @@
 global.__TEST__ = false
 require("react-native-gesture-handler")
 require("react-native-screens").enableScreens()
-import { AppRegistry } from 'react-native'
-import {App} from './src/lib/AndroidApp'
+const { AppRegistry } = require('react-native')
+
+const {App} = require('./src/lib/AndroidApp')
 AppRegistry.registerComponent("Artsy", () => App)
