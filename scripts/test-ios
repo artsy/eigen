@@ -4,7 +4,7 @@ set -euxo pipefail
 
 source ./scripts/source-for-bash-env
 
-set -o pipefail && xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Debug test -sdk iphonesimulator -destination "$DEVICE_HOST" -derivedDataPath "$DERIVED_DATA_PATH" "$OTHER_CFLAGS" |
+xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Debug test -sdk iphonesimulator -destination platform="$DEVICE_HOST_PLAT",OS="$DEVICE_HOST_OS",name="$DEVICE_HOST_NAME" -derivedDataPath "$DERIVED_DATA_PATH" "$OTHER_CFLAGS" |
 	bundle exec second_curtain 2>&1 |
 	tee ./xcode_test_raw.log |
 	bundle exec xcpretty -c --test --report junit --output ./test-results.xml
