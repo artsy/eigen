@@ -6,21 +6,6 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type AuctionsSoldStatus = "ForSale" | "Passed" | "Sold" | "%future added value";
 export type WatchedLot_lotStanding = {
-    readonly internalID: string | null;
-    readonly saleArtwork: {
-        readonly id: string;
-        readonly lotLabel: string | null;
-        readonly artwork: {
-            readonly href: string | null;
-            readonly artist: {
-                readonly name: string | null;
-            } | null;
-            readonly myLotStanding: ReadonlyArray<{
-                readonly isHighestBidder: boolean | null;
-                readonly isLeadingBidder: boolean | null;
-            }> | null;
-        } | null;
-    } | null;
     readonly lot: {
         readonly internalID: string;
         readonly bidCount: number;
@@ -29,6 +14,21 @@ export type WatchedLot_lotStanding = {
         } | null;
         readonly soldStatus: AuctionsSoldStatus;
     };
+    readonly saleArtwork: {
+        readonly lotLabel: string | null;
+        readonly artwork: {
+            readonly href: string | null;
+            readonly artistNames: string | null;
+            readonly image: {
+                readonly url: string | null;
+            } | null;
+        } | null;
+        readonly sale: {
+            readonly liveStartAt: string | null;
+            readonly endAt: string | null;
+            readonly status: string | null;
+        } | null;
+    } | null;
     readonly " $refType": "WatchedLot_lotStanding";
 };
 export type WatchedLot_lotStanding$data = WatchedLot_lotStanding;
@@ -39,107 +39,12 @@ export type WatchedLot_lotStanding$key = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
   "name": "WatchedLot_lotStanding",
   "selections": [
-    (v0/*: any*/),
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "SaleArtwork",
-      "kind": "LinkedField",
-      "name": "saleArtwork",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "id",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "lotLabel",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "Artwork",
-          "kind": "LinkedField",
-          "name": "artwork",
-          "plural": false,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "href",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "Artist",
-              "kind": "LinkedField",
-              "name": "artist",
-              "plural": false,
-              "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "name",
-                  "storageKey": null
-                }
-              ],
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "LotStanding",
-              "kind": "LinkedField",
-              "name": "myLotStanding",
-              "plural": true,
-              "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "isHighestBidder",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "isLeadingBidder",
-                  "storageKey": null
-                }
-              ],
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        }
-      ],
-      "storageKey": null
-    },
     {
       "alias": null,
       "args": null,
@@ -148,7 +53,13 @@ return {
       "name": "lot",
       "plural": false,
       "selections": [
-        (v0/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "internalID",
+          "storageKey": null
+        },
         {
           "alias": null,
           "args": null,
@@ -183,11 +94,109 @@ return {
         }
       ],
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "SaleArtwork",
+      "kind": "LinkedField",
+      "name": "saleArtwork",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "lotLabel",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "Artwork",
+          "kind": "LinkedField",
+          "name": "artwork",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "href",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "artistNames",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "Image",
+              "kind": "LinkedField",
+              "name": "image",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": [
+                    {
+                      "kind": "Literal",
+                      "name": "version",
+                      "value": "medium"
+                    }
+                  ],
+                  "kind": "ScalarField",
+                  "name": "url",
+                  "storageKey": "url(version:\"medium\")"
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "Sale",
+          "kind": "LinkedField",
+          "name": "sale",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "liveStartAt",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "endAt",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "status",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
     }
   ],
   "type": "Lot",
   "abstractKey": null
 };
-})();
-(node as any).hash = 'a6c0e37b5cf3c39b4c87e71eeafa2a8f';
+(node as any).hash = '3b5c0bff9c763a3733f102165b36ad3f';
 export default node;
