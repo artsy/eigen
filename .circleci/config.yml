@@ -190,7 +190,7 @@ jobs:
           command: ./scripts/notify-if-new-license-agreement
       - run:
           name: Deploy beta
-          command: ./scripts/deploy
+          command: ./scripts/deploy-both
 
   update-metaphysics:
     executor:
