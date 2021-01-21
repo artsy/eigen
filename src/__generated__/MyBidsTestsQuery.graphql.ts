@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash fac0c0dca931bd0129831f7e91b11962 */
+/* @relayHash 028f97851ed861f0f72ef60a2f49a0f3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -199,13 +199,9 @@ fragment WatchedLot_lotStanding on Lot {
     id
   }
   saleArtwork {
-    lotLabel
+    ...Lot_saleArtwork
     artwork {
       href
-      artistNames
-      image {
-        url(version: "medium")
-      }
       id
     }
     sale {
@@ -859,10 +855,10 @@ return {
                             "name": "artwork",
                             "plural": false,
                             "selections": [
-                              (v2/*: any*/),
                               (v18/*: any*/),
                               (v19/*: any*/),
-                              (v1/*: any*/)
+                              (v1/*: any*/),
+                              (v2/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -901,7 +897,7 @@ return {
     ]
   },
   "params": {
-    "id": "fac0c0dca931bd0129831f7e91b11962",
+    "id": "028f97851ed861f0f72ef60a2f49a0f3",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
