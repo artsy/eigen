@@ -1,12 +1,13 @@
 import { OwnerType } from "@artsy/cohesion"
 import { SaleLotsList_saleArtworksConnection } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
+import { SaleLotsList_unfilteredSaleArtworksConnection } from "__generated__/SaleLotsList_unfilteredSaleArtworksConnection.graphql"
 import { ORDERED_SALE_ARTWORK_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams, FilterParamName, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
-import { Box, color, Flex, Sans } from "palette"
+import { Box, color, Flex, Sans, Text } from "palette"
 import React, { useCallback, useContext, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -16,6 +17,7 @@ import { SaleArtworkListContainer } from "./SaleArtworkList"
 
 interface Props {
   saleArtworksConnection: SaleLotsList_saleArtworksConnection
+  unfilteredSaleArtworksConnection: SaleLotsList_unfilteredSaleArtworksConnection
   relay: RelayPaginationProp
   saleID: string
   saleSlug: string
@@ -51,7 +53,14 @@ export const SaleLotsListSortMode = ({
   )
 }
 
-export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, saleID, saleSlug, scrollToTop }) => {
+export const SaleLotsList: React.FC<Props> = ({
+  saleArtworksConnection,
+  unfilteredSaleArtworksConnection,
+  relay,
+  saleID,
+  saleSlug,
+  scrollToTop,
+}) => {
   const { state, dispatch } = useContext(ArtworkFilterContext)
   const [totalCount, setTotalCount] = useState<number | null>(null)
   const tracking = useTracking()
@@ -124,6 +133,14 @@ export const SaleLotsList: React.FC<Props> = ({ saleArtworksConnection, relay, s
     })
   }
 
+  if (unfilteredSaleArtworksConnection.counts?.total === 0) {
+    return (
+      <Box my="80px">
+        <Text>REPLACE ME WITH MINI COMPONENT</Text>
+      </Box>
+    )
+  }
+
   if (!saleArtworksConnection.saleArtworksConnection?.edges?.length) {
     return (
       <Box my="80px">
@@ -173,6 +190,13 @@ export const FilterDescription = styled(Sans)`
 export const SaleLotsListContainer = createPaginationContainer(
   SaleLotsList,
   {
+    unfilteredSaleArtworksConnection: graphql`
+      fragment SaleLotsList_unfilteredSaleArtworksConnection on SaleArtworksConnection {
+        counts {
+          total
+        }
+      }
+    `,
     saleArtworksConnection: graphql`
       fragment SaleLotsList_saleArtworksConnection on Query
       @argumentDefinitions(

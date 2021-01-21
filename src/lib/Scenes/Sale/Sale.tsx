@@ -171,15 +171,13 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     {
       key: SALE_LOTS_LIST,
       content: below ? (
-        <>
-          <Text>{below.totals?.counts?.total}</Text>
-          <SaleLotsListContainer
-            saleArtworksConnection={below}
-            saleID={sale.internalID}
-            saleSlug={sale.slug}
-            scrollToTop={scrollToTop}
-          />
-        </>
+        <SaleLotsListContainer
+          saleArtworksConnection={below}
+          unfilteredSaleArtworksConnection={below.unfilteredSaleArtworksConnection}
+          saleID={sale.internalID}
+          saleSlug={sale.slug}
+          scrollToTop={scrollToTop}
+        />
       ) : (
         // Since most likely this part of the screen will be already loaded when the user
         // reaches it, there is no need to create the fancy placeholders here
@@ -358,7 +356,8 @@ export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayMo
                 # query SaleBelowTheFoldQuery($saleID: String!, $saleSlug: ID!) {
                 query SaleBelowTheFoldQuery($saleID: ID) {
                   ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleID)
-                  totals: saleArtworksConnection(saleID: "5ff4d32b5022f600116cc40e", aggregations: [TOTAL]) {
+                  unfilteredSaleArtworksConnection: saleArtworksConnection(saleID: $saleID, aggregations: [TOTAL]) {
+                    ...SaleLotsList_unfilteredSaleArtworksConnection
                     counts {
                       total
                     }
