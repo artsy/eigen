@@ -192,7 +192,20 @@ jobs:
           name: Deploy beta
           command: ./scripts/deploy-both
 
-  update-metaphysics:
+  update-metaphysics-ios:
+    executor:
+      name: node/default
+      tag: "14.13.1"
+    steps:
+      - checkout
+      - generate-checksums
+      - install-node-modules
+      - generate-query-map
+      - run:
+          name: Update metaphysics
+          command: yarn update-metaphysics
+
+  update-metaphysics-android:
     executor:
       name: node/default
       tag: "14.13.1"
