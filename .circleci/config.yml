@@ -153,7 +153,7 @@ commands:
             - v2-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Build App
-          command: ls derived_data || make ci-ios
+          command: ls derived_data || ./scripts/ci-ios
       - save_cache:
           key: v2-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
@@ -166,7 +166,7 @@ commands:
             - v1-app_build_android-{{ checksum ".manifests/app_build" }}
       - run:
           name: Build App
-          command: make ci-android
+          command: ./scripts/ci-android
       - save_cache:
           key: v1-app_build_android-{{ checksum ".manifests/app_build" }}
           paths:
@@ -294,7 +294,7 @@ jobs:
       - build-app-ios
       - run:
           name: Run tests if native code has changed
-          command: ls xcode_test_raw.log || make ci-test-ios
+          command: ls xcode_test_raw.log || ./scripts/ci-test-ios
       - save_cache:
           key: v6-test-success-{{ checksum ".manifests/native_code" }}
           paths:
@@ -370,7 +370,7 @@ jobs:
           branch: app_store_submission
       - run:
           name: Promote if app_store_submission
-          command: make promote_if_app_store_submission_branch
+          command: ./scripts/promote-if-appstore-submission-branch
 
 workflows:
   version: 2
