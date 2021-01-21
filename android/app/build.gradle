@@ -144,9 +144,10 @@ android {
 
         multiDexEnabled true
 
-        buildConfigField "String", "GITCommitRev", '"4f76194c"'
-        buildConfigField "String", "GITCommitSha", '"4f76194c59abf0a505458f8b9c61d1aeb35181a8"'
-        buildConfigField "String", "GITRemoteOriginURL", '"https://github.com/artsy/eigen.gi"'
+        buildConfigField "String", "GITCommitRev", '"c77772ee1"'
+        buildConfigField "String", "GITCommitSha", '"c77772ee1f32093109049504f7865f9737ad8474"'
+        buildConfigField "String", "GITCommitDate", '"2021-01-21T15:08:22+04:00"'
+        buildConfigField "String", "GITRemoteOriginURL", '"https://github.com/artsy/eigen.git"'
     }
     splits {
         abi {
