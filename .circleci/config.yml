@@ -400,6 +400,7 @@ workflows:
             branches:
               ignore:
                 - master
+                - beta-ios
                 - beta-android
                 - app_store_submission
       - build-test-js:
@@ -434,7 +435,8 @@ workflows:
           filters:
             branches:
               only:
-                - beta
+                - beta-ios
+                - beta-android
           requires:
             - build-test-app-ios
             - build-test-app-android

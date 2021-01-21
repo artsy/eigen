@@ -3,6 +3,8 @@ set -euxo pipefail
 
 
 npx jetifier
+yarn relay
+
 cd android
 ./gradlew buildRelease
 cd -

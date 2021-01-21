@@ -204,6 +204,8 @@ lane :set_git_properties_android do
 end
 
 lane :ship_beta_android do
+  sh("yarn relay")
+
   set_build_version_android
 
   gradle(
