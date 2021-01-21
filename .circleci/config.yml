@@ -192,7 +192,7 @@ jobs:
           name: Deploy beta
           command: ./scripts/deploy-both
 
-  update-metaphysics-ios:
+  update-metaphysics-from-ios:
     executor:
       name: node/default
       tag: "14.13.1"
@@ -205,7 +205,7 @@ jobs:
           name: Update metaphysics
           command: yarn update-metaphysics
 
-  update-metaphysics-android:
+  update-metaphysics-from-android:
     executor:
       name: node/default
       tag: "14.13.1"
