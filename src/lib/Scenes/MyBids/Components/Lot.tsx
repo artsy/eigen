@@ -16,6 +16,7 @@ interface Props {
 class Lot extends React.Component<Props> {
   render() {
     const { saleArtwork, subtitle, children, ArtworkBadge, isSmallScreen } = this.props
+    console.log("🚀 ~ ", JSON.stringify(saleArtwork, null, 4))
 
     return (
       <Flex flexDirection="row">
