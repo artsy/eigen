@@ -79,7 +79,7 @@ describe("AuthModel", () => {
       )
     })
 
-    it("returns true if repsonse is 200", async () => {
+    it("returns true if response is 200", async () => {
       mockFetchResponseOnce({ status: 200 })
       const result = await GlobalStore.actions.auth.userExists({ email: "user@example.com" })
 
