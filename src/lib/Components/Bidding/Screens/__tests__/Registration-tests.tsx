@@ -1,23 +1,28 @@
 import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
+import { RegistrationResult, RegistrationStatus } from "lib/Components/Bidding/Screens/RegistrationResult"
+import { Modal } from "lib/Components/Modal"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+// FIXME: Uncomment when x'd test is reenabled
+// import { LinkText } from "../../../Text/LinkText"
+import { mockTimezone } from "lib/tests/mockTimezone"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button, Sans, Serif } from "palette"
 import React from "react"
-import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
+import { Text, TouchableWithoutFeedback } from "react-native"
+import relay from "react-relay"
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+import stripe from "tipsi-stripe"
+import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { BidInfoRow } from "../../Components/BidInfoRow"
 import { Checkbox } from "../../Components/Checkbox"
+import { Address } from "../../types"
 import { BillingAddress } from "../BillingAddress"
 import { CreditCardForm } from "../CreditCardForm"
 import { Registration } from "../Registration"
 
-// FIXME: Uncomment when x'd test is reenabled
-// import { LinkText } from "../../../Text/LinkText"
-
-import { mockTimezone } from "lib/tests/mockTimezone"
-
 // This lets us import the actual react-relay module, and replace specific functions within it with mocks.
 jest.unmock("react-relay")
-import relay from "react-relay"
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
@@ -27,20 +32,13 @@ jest.mock("tipsi-stripe", () => ({
   paymentRequestWithCardForm: jest.fn(),
   createTokenWithCard: jest.fn(),
 }))
-import { RegistrationResult, RegistrationStatus } from "lib/Components/Bidding/Screens/RegistrationResult"
-import { Modal } from "lib/Components/Modal"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import stripe from "tipsi-stripe"
-import { Address } from "../../types"
-
-import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 let nextStep
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const mockNavigator = { push: (route) => (nextStep = route), pop: () => null }
 jest.useFakeTimers()
-const mockPostNotificationName = NativeModules.ARNotificationsManager.postNotificationName
+const mockPostNotificationName = ArtsyNativeModules.ARNotificationsManager.postNotificationName
 
 beforeEach(() => {
   Date.now = jest.fn(() => 1525983752116)

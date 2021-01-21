@@ -1,10 +1,11 @@
 import { dimensions, screen } from "lib/data/ScreenSizes/screenSizes"
 import { CircleWhiteCheckIcon } from "lib/Icons/CircleWhiteCheckIcon"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, color, Flex, Sans, Separator, Serif, space } from "palette"
 import React, { useEffect, useState } from "react"
-import { NativeModules, TouchableOpacity } from "react-native"
+import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 import cities from "../../../../data/cityDataSortedByDisplayPreference.json"
 import { BMWSponsorship } from "../City/CityBMWSponsorship"
@@ -21,7 +22,9 @@ export const CityPicker: React.FC<Props> = (props) => {
 
   const selectCity = (city: string, index: number) => {
     setSelectedCity(city)
-    NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryUserSelectedCity", { cityIndex: index })
+    ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryUserSelectedCity", {
+      cityIndex: index,
+    })
   }
 
   useEffect(() => {

@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - remove unused files and scripts - pavlos
+    - Add basic log-in flow for android - david
   user_facing:
     - Refresh inbox automatically upon revisiting - erik, lily
     - Poll and refetch images when images are processing (my collection) - brian

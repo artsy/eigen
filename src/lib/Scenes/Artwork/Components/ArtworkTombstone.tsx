@@ -1,9 +1,10 @@
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { Schema, track } from "lib/utils/track"
 import { Box, Flex, Sans, Spacer } from "palette"
 import React from "react"
-import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
+import { Text, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { FollowArtistButtonFragmentContainer as FollowArtistButton } from "./FollowArtistButton"
 
@@ -168,7 +169,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
         )}
         {!!artwork.dimensions! /* STRICTNESS_MIGRATION */.in && !!artwork.dimensions! /* STRICTNESS_MIGRATION */.cm && (
           <Sans color="black60" size="3">
-            {NativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
+            {ArtsyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
               ? artwork.dimensions! /* STRICTNESS_MIGRATION */.in
               : artwork.dimensions! /* STRICTNESS_MIGRATION */.cm}
           </Sans>

@@ -1,4 +1,5 @@
 import CameraRoll from "@react-native-community/cameraroll"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { triggerCamera } from "lib/NativeModules/triggerCamera"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -8,7 +9,6 @@ import {
   Alert,
   Dimensions,
   Linking,
-  NativeModules,
   NativeScrollEvent,
   NativeSyntheticEvent,
   ScrollView,
@@ -19,7 +19,7 @@ import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import ImageSelection, { ImageData } from "../Components/ImageSelection"
 import { ConsignmentSetup } from "../index"
 
-const { ARCocoaConstantsModule, ARTakeCameraPhotoModule } = NativeModules
+const { ARCocoaConstantsModule, ARTakeCameraPhotoModule } = ArtsyNativeModules
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS

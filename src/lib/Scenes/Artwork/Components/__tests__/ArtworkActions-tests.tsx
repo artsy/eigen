@@ -1,11 +1,12 @@
 import { ArtworkActionsTestsQueryRawResponse } from "__generated__/ArtworkActionsTestsQuery.graphql"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { shallow } from "enzyme"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { BellIcon, Sans } from "palette"
 import React from "react"
-import { NativeModules, TouchableWithoutFeedback } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 import { graphql } from "react-relay"
 import { ArtworkActions, ArtworkActionsFragmentContainer, shareContent } from "../ArtworkActions"
 
@@ -102,7 +103,7 @@ describe("ArtworkActions", () => {
 
   describe("without AR enabled", () => {
     it("does not show the View in Room option if the phone does not have AREnabled", () => {
-      NativeModules.ARCocoaConstantsModule.AREnabled = false
+      ArtsyNativeModules.ARCocoaConstantsModule.AREnabled = false
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const component = shallow(<ArtworkActions artwork={artworkActionsArtwork} />)
       expect(component.find(Sans).length).toEqual(2)

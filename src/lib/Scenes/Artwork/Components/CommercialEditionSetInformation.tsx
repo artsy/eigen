@@ -1,7 +1,8 @@
 import { CommercialEditionSetInformation_artwork } from "__generated__/CommercialEditionSetInformation_artwork.graphql"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { Box, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
-import { NativeModules, TouchableWithoutFeedback } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
@@ -72,7 +73,9 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
               <TouchableWithoutFeedback key={id} onPress={() => this.selectEdition(internalID)}>
                 <EditionSelector px={2} height={26} mt={1} mr={1} selected={selected}>
                   <Sans size="2" weight="medium" color="black100">
-                    {NativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US" ? dimensions.in : dimensions.cm}
+                    {ArtsyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
+                      ? dimensions.in
+                      : dimensions.cm}
                   </Sans>
                 </EditionSelector>
               </TouchableWithoutFeedback>

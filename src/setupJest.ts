@@ -413,14 +413,14 @@ jest.mock("react-native-gesture-handler", () => {
 })
 
 jest.mock("react-native-config", () => ({
-  ARTSY_API_CLIENT_SECRET: "-",
-  ARTSY_API_CLIENT_KEY: "-",
-  ARTSY_FACEBOOK_APP_ID: "-",
-  SEGMENT_PRODUCTION_WRITE_KEY: "-",
-  SEGMENT_STAGING_WRITE_KEY: "-",
-  SENTRY_PRODUCTION_DSN: "-",
-  SENTRY_STAGING_DSN: "-",
-  GOOGLE_MAPS_API_KEY: "-",
-  MAPBOX_API_CLIENT_KEY: "-",
-  SAILTHRU_KEY: "-",
+  ARTSY_API_CLIENT_SECRET: "artsy_api_client_secret",
+  ARTSY_API_CLIENT_KEY: "artsy_api_client_key",
+  ARTSY_FACEBOOK_APP_ID: "artsy_facebook_app_id",
+  SEGMENT_PRODUCTION_WRITE_KEY: "segment_production_write_key",
+  SEGMENT_STAGING_WRITE_KEY: "segment_staging_write_key",
+  SENTRY_PRODUCTION_DSN: "sentry_production_dsn",
+  SENTRY_STAGING_DSN: "sentry_staging_dsn",
+  GOOGLE_MAPS_API_KEY: "google_maps_api_key",
+  MAPBOX_API_CLIENT_KEY: "mapbox_api_client_key",
+  SAILTHRU_KEY: "sailthru_key",
 }))

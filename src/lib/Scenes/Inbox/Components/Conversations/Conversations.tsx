@@ -28,7 +28,7 @@ interface Props {
 type Item = NonNullable<NonNullable<NonNullable<Conversations_me["conversations"]>["edges"]>[0]>["node"]
 
 // @track()
-export const Conversations: React.FC<Props> = React.forwardRef((props) => {
+export const Conversations: React.FC<Props> = (props) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isFetching, setIsFetching] = React.useState<boolean>(false)
   const { trackEvent } = useTracking()
@@ -128,7 +128,7 @@ export const Conversations: React.FC<Props> = React.forwardRef((props) => {
       )}
     </View>
   )
-})
+}
 
 /* @track()
 
