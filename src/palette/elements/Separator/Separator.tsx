@@ -2,8 +2,8 @@
 import React from "react"
 
 import { space, SpaceProps, width, WidthProps } from "styled-system"
-import { color } from "../../Theme"
 import { styled as primitives } from "../../platform/primitives"
+import { color } from "../../Theme"
 
 export interface SeparatorProps extends SpaceProps, WidthProps {}
 
