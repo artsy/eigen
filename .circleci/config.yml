@@ -341,9 +341,6 @@ jobs:
           at: .
       - install-node
       - setup-env-file
-      - run:
-          name: Create secret json file
-          command: echo $ANDROID_SECRET_JSON_CONTENT > android-secret.json
       - install-node-modules
       - install-gems
       - build-app-android
