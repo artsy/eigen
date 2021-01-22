@@ -416,6 +416,8 @@ PODS:
     - Mapbox-iOS-SDK (~> 6.3)
     - React
     - React-Core
+  - react-native-navigator-ios (1.0.0):
+    - React
   - react-native-netinfo (4.6.1):
     - React
   - react-native-safe-area-context (3.1.8):
@@ -630,6 +632,7 @@ DEPENDENCIES:
   - react-native-config (from `node_modules/react-native-config`)
   - "react-native-geolocation (from `node_modules/@react-native-community/geolocation`)"
   - "react-native-mapbox-gl (from `node_modules/@react-native-mapbox-gl/maps`)"
+  - react-native-navigator-ios (from `node_modules/react-native-navigator-ios`)
   - "react-native-netinfo (from `node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `node_modules/react-native-safe-area-context`)
   - react-native-webview (from `node_modules/react-native-webview`)
@@ -796,6 +799,8 @@ EXTERNAL SOURCES:
     :path: "node_modules/@react-native-community/geolocation"
   react-native-mapbox-gl:
     :path: "node_modules/@react-native-mapbox-gl/maps"
+  react-native-navigator-ios:
+    :path: node_modules/react-native-navigator-ios
   react-native-netinfo:
     :path: "node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
@@ -955,6 +960,7 @@ SPEC CHECKSUMS:
   react-native-config: 47fd4132d931f84aca9c31f302c3c867a8560b11
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
   react-native-mapbox-gl: eeed4fa8fffea96f77a9eecbc63f88eddb0d2e58
+  react-native-navigator-ios: 93db84cc26b6f8d776e1f504c56082f593efcd09
   react-native-netinfo: a59d8426a8484f739fe3a95dd6ad5af1435db05f
   react-native-safe-area-context: 79fea126c6830c85f65947c223a5e3058a666937
   react-native-webview: 598605cd213f5096e695f5b33fbee210a47e60ab
@@ -997,6 +1003,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 059f1c6c66d6afbb55df1080532345e3e4741a46
+PODFILE CHECKSUM: ecaa4435eaeb71170729511abce6ff067bfd9bcd
 
 COCOAPODS: 1.7.5
