@@ -192,20 +192,7 @@ jobs:
           name: Deploy beta
           command: ./scripts/deploy-both
 
-  update-metaphysics-from-ios:
-    executor:
-      name: node/default
-      tag: "14.13.1"
-    steps:
-      - checkout
-      - generate-checksums
-      - install-node-modules
-      - generate-query-map
-      - run:
-          name: Update metaphysics
-          command: yarn update-metaphysics
-
-  update-metaphysics-from-android:
+  update-metaphysics:
     executor:
       name: node/default
       tag: "14.13.1"
@@ -427,6 +414,7 @@ workflows:
           filters:
             branches:
               only:
+                - beta-ios
                 - beta-android
       - build-test-app-ios:
           filters:
@@ -446,17 +434,12 @@ workflows:
           requires:
             - build-test-js
             - horizon/block
-      - update-metaphysics-from-ios:
+      - update-metaphysics:
           filters:
             branches:
               only:
                 - beta-ios
-          requires:
-            - build-test-app-ios
-      - update-metaphysics-from-android:
-          filters:
-            branches:
-              only:
                 - beta-android
           requires:
+            - build-test-app-ios
             - build-test-app-android
