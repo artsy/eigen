@@ -7,7 +7,7 @@ import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams, FilterParamName, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
-import { Box, color, Flex, Sans, Text } from "palette"
+import { Box, color, Flex, Sans } from "palette"
 import React, { useCallback, useContext, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -17,7 +17,7 @@ import { SaleArtworkListContainer } from "./SaleArtworkList"
 
 interface Props {
   saleArtworksConnection: SaleLotsList_saleArtworksConnection
-  unfilteredSaleArtworksConnection: SaleLotsList_unfilteredSaleArtworksConnection
+  unfilteredSaleArtworksConnection: SaleLotsList_unfilteredSaleArtworksConnection | null
   relay: RelayPaginationProp
   saleID: string
   saleSlug: string
@@ -133,7 +133,7 @@ export const SaleLotsList: React.FC<Props> = ({
     })
   }
 
-  if (unfilteredSaleArtworksConnection.counts?.total === 0) {
+  if (unfilteredSaleArtworksConnection?.counts?.total === 0) {
     return null
   }
 
