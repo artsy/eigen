@@ -253,7 +253,6 @@ jobs:
 
   build-test-app-ios:
     environment:
-      UPLOAD_IOS_SNAPSHOT_BUCKET_NAME: eigen-ci
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
 
     macos:
@@ -323,7 +322,6 @@ jobs:
 
   build-test-app-android:
     environment:
-      UPLOAD_IOS_SNAPSHOT_BUCKET_NAME: eigen-ci
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
 
     docker:
