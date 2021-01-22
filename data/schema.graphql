@@ -1356,6 +1356,9 @@ type Artwork implements Node & Searchable & Sellable {
   priceCurrency: String
   priceIncludesTax: Boolean
   priceIncludesTaxDisplay: String
+
+  # The price paid for the artwork in a user's 'my collection'
+  pricePaid: Money
   pricingContext: AnalyticsPricingContext
   provenance(format: Format): String
 
