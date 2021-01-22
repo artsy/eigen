@@ -204,8 +204,8 @@ lane :set_git_properties_android do
 end
 
 lane :ship_beta_android do
-  sh("npx jetifier")
   sh("yarn relay")
+  sh("npx jetifier")
 
   set_build_version_android
 
