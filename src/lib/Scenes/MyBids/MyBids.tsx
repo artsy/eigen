@@ -59,18 +59,29 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
     }
   }, [isActiveTab])
 
-  // render() {
-  const { me } = this.props
   const lotStandings = extractNodes(me?.auctionsLotStandingConnection)
   const watchedLots = extractNodes(me?.watchedLotConnection)
-  console.log("watchedLot1:", me?.watchedLotConnection)
-  console.log("watchedLot1:", watchedLots)
+  const activeAndClosedLotIDs: Array<Sale["internalID"]> = []
+  const arrayOfDedupedWatchedLotIDs: string[] = []
+  lotStandings.filter((ls) => {
+    activeAndClosedLotIDs.push(ls?.lot?.internalID!)
+  })
+
+  const deduplicatedWatchedLots = watchedLots.filter((watchedLot) => {
+    // check that a watched lot is neither an active nor a closed lot
+    if (!activeAndClosedLotIDs.includes(watchedLot?.internalID!)) {
+      // create an array of watched lot ids that are de-duplicated from bidded on lots
+      arrayOfDedupedWatchedLotIDs.push(watchedLot?.internalID!)
+    }
+    return !activeAndClosedLotIDs.includes(watchedLot?.internalID!)
+  })
 
   const [activeStandings, closedStandings] = partition(
-    lotStandings.filter((ls) => !!ls),
+    [...lotStandings, ...deduplicatedWatchedLots].filter((ls) => {
+      return !!ls
+    }),
     (ls) => !TimelySale.create(ls?.saleArtwork?.sale!).isClosed
   )
-
   // group active lot standings by sale id
   const activeBySaleId = groupBy(activeStandings, (ls) => ls?.saleArtwork?.sale?.internalID)
 
@@ -91,7 +102,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
   const hasClosedBids = closedStandings.length > 0
   const hasRegistrations = sales.length > 0
 
-  const somethingToShow = hasActiveBids || hasClosedBids || hasRegistrations
+  const somethingToShow = hasActiveBids || hasClosedBids || hasRegistrations // should include a check for watched lots
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -121,6 +132,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
             <Join separator={<Spacer my={1} />}>
               {sortedSales.map((sale) => {
                 const activeLotStandings = sortedActiveLots[sale.internalID] || []
+                // or check for the watched lots id which has a differ data shape
                 const showNoBids = !activeLotStandings.length && !!sale.registrationStatus?.qualifiedForBidding
                 return (
                   <SaleCardFragmentContainer
@@ -137,6 +149,10 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
                         </Text>
                       )}
                       {activeLotStandings.map((ls) => {
+                        // TODO: Once causality stitched to MP data errors are resolved we can bring this component back
+                        // if (ls && arrayOfDedupedWatchedLotIDs.includes(ls?.lot?.internalID!)) {
+                        //   return <WatchedLot lotStanding={ls} key={ls?.lot?.internalID!} />
+                        // }
                         // Note: Occasionally, during live bidding, closed lots appear in active sales
                         if (ls && sale) {
                           return isLotStandingComplete(ls) ? (
@@ -153,9 +169,6 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
             </Join>
           </Flex>
         )}
-        {watchedLots.map((ls) => {
-          return <WatchedLot lotStanding={ls} key={ls?.internalID!} />
-        })}
         {!!hasClosedBids && <BidTitle>Closed Bids</BidTitle>}
         {!!hasClosedBids && (
           <Flex data-test-id="closed-section">
@@ -224,6 +237,10 @@ export const MyBidsContainer = createPaginationContainer(
                 soldStatus
               }
               saleArtwork {
+                artwork {
+                  slug
+                  internalID
+                }
                 position
                 sale {
                   ...SaleCard_sale
@@ -236,11 +253,22 @@ export const MyBidsContainer = createPaginationContainer(
             }
           }
         }
-        watchedLotConnection(first: $count, after: $cursor) {
+        watchedLotConnection(first: 20, after: $cursor) {
           edges {
             node {
               internalID
               ...WatchedLot_lotStanding
+              saleArtwork {
+                __id
+                position
+                sale {
+                  ...SaleCard_sale
+                  internalID
+                  liveStartAt
+                  endAt
+                  # status
+                }
+              }
             }
           }
         }

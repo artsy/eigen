@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2b1558163be616a95d327b5aed302441 */
+/* @relayHash a4213fd2167c3904a20261a83dc060b0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -210,6 +210,11 @@ fragment MyBids_me on Me {
           id
         }
         saleArtwork {
+          artwork {
+            slug
+            internalID
+            id
+          }
           position
           sale {
             ...SaleCard_sale
@@ -231,11 +236,22 @@ fragment MyBids_me on Me {
       hasNextPage
     }
   }
-  watchedLotConnection(first: 25, after: "") {
+  watchedLotConnection(first: 20, after: "") {
     edges {
       node {
         internalID
         ...WatchedLot_lotStanding
+        saleArtwork {
+          position
+          sale {
+            ...SaleCard_sale
+            internalID
+            liveStartAt
+            endAt
+            id
+          }
+          id
+        }
       }
     }
   }
@@ -537,6 +553,13 @@ v27 = {
       "storageKey": "url(version:\"medium\")"
     }
   ],
+  "storageKey": null
+},
+v28 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "position",
   "storageKey": null
 };
 return {
@@ -971,13 +994,7 @@ return {
                             "storageKey": null
                           },
                           (v5/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "position",
-                            "storageKey": null
-                          }
+                          (v28/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -1014,7 +1031,14 @@ return {
           },
           {
             "alias": null,
-            "args": (v21/*: any*/),
+            "args": [
+              (v0/*: any*/),
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 20
+              }
+            ],
             "concreteType": "LotConnection",
             "kind": "LinkedField",
             "name": "watchedLotConnection",
@@ -1088,11 +1112,32 @@ return {
                               (v15/*: any*/),
                               (v16/*: any*/),
                               (v20/*: any*/),
-                              (v5/*: any*/)
+                              (v5/*: any*/),
+                              (v3/*: any*/),
+                              (v13/*: any*/),
+                              (v14/*: any*/),
+                              (v4/*: any*/),
+                              (v11/*: any*/),
+                              (v17/*: any*/),
+                              (v18/*: any*/),
+                              (v19/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v5/*: any*/)
+                          (v5/*: any*/),
+                          (v28/*: any*/),
+                          {
+                            "kind": "ClientExtension",
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "__id",
+                                "storageKey": null
+                              }
+                            ]
+                          }
                         ],
                         "storageKey": null
                       }
@@ -1103,7 +1148,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "watchedLotConnection(after:\"\",first:25)"
+            "storageKey": "watchedLotConnection(after:\"\",first:20)"
           },
           (v5/*: any*/)
         ],
@@ -1112,7 +1157,7 @@ return {
     ]
   },
   "params": {
-    "id": "2b1558163be616a95d327b5aed302441",
+    "id": "a4213fd2167c3904a20261a83dc060b0",
     "metadata": {},
     "name": "InboxRefetchQuery",
     "operationKind": "query",

@@ -146,6 +146,7 @@ describe("My Bids", () => {
     expect(activeLots[0]).toContain("Passed")
   })
 
+  // TODO: This needs to be updated to test for when there no active, closed, or watched lot standings
   it("renders the empty view when there are no lot standings", () => {
     const wrapper = getWrapper({
       Me: () => ({

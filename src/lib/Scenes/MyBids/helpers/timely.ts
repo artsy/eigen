@@ -27,9 +27,9 @@ export class TimelySale {
   private liveStartAt: string
 
   constructor(sale: SaleWithTimes) {
-    this.status = sale.status!
-    this.endAt = sale.endAt!
-    this.liveStartAt = sale.liveStartAt!
+    this.status = sale?.status
+    this.endAt = sale?.endAt!
+    this.liveStartAt = sale?.liveStartAt!
   }
 
   get isLAI() {
