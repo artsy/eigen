@@ -433,6 +433,7 @@ workflows:
             branches:
               ignore:
                 - app_store_submission
+                - beta-android
           requires:
             - build-test-js
             - horizon/block
@@ -441,6 +442,7 @@ workflows:
             branches:
               ignore:
                 - app_store_submission
+                - beta-ios
           requires:
             - build-test-js
             - horizon/block
