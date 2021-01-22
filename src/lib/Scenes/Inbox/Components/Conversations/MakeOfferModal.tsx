@@ -4,9 +4,11 @@ import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails } from "lib/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
+import { MakeOfferButtonFragmentContainer as MakeOfferButton } from "lib/Scenes/Artwork/Components/CommercialButtons/MakeOfferButton"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { BorderBox, Button, Flex, Text } from "palette"
 import React from "react"
+import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface MakeOfferModalProps {
@@ -19,11 +21,11 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
   const { toggleVisibility, modalIsVisible, artwork } = props
 
   return (
-    <FancyModal
-      visible={modalIsVisible}
-      onBackgroundPressed={() => {
-        toggleVisibility()
-      }}
+    <View
+    // visible={modalIsVisible}
+    // onBackgroundPressed={() => {
+    //   toggleVisibility()
+    // }}
     >
       <FancyModalHeader
         onLeftButtonPress={() => {
@@ -43,10 +45,9 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
         <BorderBox p={0} my={2}>
           <CollapsibleArtworkDetails hasSeparator={false} artwork={artwork} />
         </BorderBox>
-        <Button size="large" variant="primaryBlack" block width={100} mb={1}>
-          Confirm
-        </Button>
+        <MakeOfferButton variant="primaryBlack" buttonText="Confirm" artwork={artwork} />
         <Button
+          mt={1}
           size="large"
           variant="secondaryOutline"
           block
@@ -58,7 +59,7 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
           Cancel
         </Button>
       </Flex>
-    </FancyModal>
+    </View>
   )
 }
 
@@ -66,6 +67,7 @@ export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOffer
   artwork: graphql`
     fragment MakeOfferModal_artwork on Artwork {
       ...CollapsibleArtworkDetails_artwork
+      ...MakeOfferButton_artwork
     }
   `,
 })

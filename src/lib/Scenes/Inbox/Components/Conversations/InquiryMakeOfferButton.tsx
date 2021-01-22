@@ -1,3 +1,4 @@
+import { navigate } from "lib/navigation/navigate"
 import { Button, Flex, Separator } from "palette"
 import React, { useState } from "react"
 import styled from "styled-components/native"
@@ -22,7 +23,7 @@ export const InquiryMakeOfferButton: React.FC<InquiryMakeOfferButtonProps> = ({ 
       <Flex p={1.5}>
         <Button
           onPress={() => {
-            setModalVisibility(true)
+            navigate(`make-offer/${artworkID}`, { modal: true })
           }}
           size="large"
           variant="primaryBlack"
@@ -32,11 +33,6 @@ export const InquiryMakeOfferButton: React.FC<InquiryMakeOfferButtonProps> = ({ 
           Make Offer
         </Button>
       </Flex>
-      <MakeOfferModal
-        artworkID={artworkID}
-        toggleVisibility={() => setModalVisibility(!modalVisibility)}
-        modalIsVisible={modalVisibility}
-      />
     </>
   )
 }

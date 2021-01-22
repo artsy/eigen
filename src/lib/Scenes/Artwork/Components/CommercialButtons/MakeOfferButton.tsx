@@ -18,6 +18,8 @@ export interface MakeOfferButtonProps {
 
 export interface State {
   isCommittingCreateOfferOrderMutation: boolean
+  showCheckoutFlowModal: boolean
+  orderUrl: string | null
 }
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -27,23 +29,27 @@ const track: Track<MakeOfferButtonProps, State> = _track
 export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State> {
   state = {
     isCommittingCreateOfferOrderMutation: false,
+    showCheckoutFlowModal: false,
+    orderUrl: null,
   }
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   onMutationError(error) {
-    Alert.alert("Sorry, we couldn't process the request.", "Please try again or contact orders@artsy.net for help.", [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "Retry",
-        onPress: () => {
-          this.handleCreateOfferOrder()
+    setTimeout(() => {
+      Alert.alert("Sorry, we couldn't process the request.", "Please try again or contact orders@artsy.net for help.", [
+        {
+          text: "Cancel",
+          style: "cancel",
         },
-      },
-    ])
-    console.log("src/lib/Scenes/Artwork/Components/MakeOfferButton.tsx", error)
+        {
+          text: "Retry",
+          onPress: () => {
+            this.handleCreateOfferOrder()
+          },
+        },
+      ])
+      console.log("src/lib/Scenes/Artwork/Components/MakeOfferButton.tsx", error)
+    }, 2000)
   }
 
   @track({
