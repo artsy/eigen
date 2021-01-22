@@ -2,12 +2,12 @@ upcoming:
   version: 6.7.7
   date: TBD
   dev:
-    - remove unused files and scripts - pavlos
+    - Remove unused files and scripts - pavlos
     - Add basic log-in flow for android - david
+    - Add android ci for testing PRs and deploying betas - pavlos, david
   user_facing:
     - Refresh inbox automatically upon revisiting - erik, lily
     - Poll and refetch images when images are processing (my collection) - brian
-
 
 releases:
   - version: 6.7.6
