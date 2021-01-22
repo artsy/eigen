@@ -1,6 +1,8 @@
 import { action, createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import React from "react"
+import { Platform } from "react-native"
+import Config from "react-native-config"
 import { Action, Middleware } from "redux"
 import { GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { EmissionOptions } from "./NativeModel"
@@ -103,8 +105,49 @@ export function useEmissionOption(key: keyof EmissionOptions) {
 }
 
 export function getCurrentEmissionState() {
-  // on initial load globalStoreInstance might be undefined
-  return globalStoreInstance?.getState().native.sessionState ?? ArtsyNativeModules.ARNotificationsManager.nativeState
+  const state = globalStoreInstance?.getState() ?? null
+  if (Platform.OS === "ios") {
+    return state?.native.sessionState ?? ArtsyNativeModules.ARNotificationsManager.nativeState
+  }
+
+  const androidData: GlobalStoreModel["native"]["sessionState"] = {
+    authenticationToken: state?.auth.userAccessToken!,
+    deviceId: "Android", // TODO: get better device info
+    env: "staging", // TODO: add production support
+    gravityURL: state?.config.sessionState.gravityBaseURL,
+    launchCount: 1, // TODO: add support for this somehow??
+    legacyFairProfileSlugs: [], // TODO: take from echo
+    legacyFairSlugs: [], // TODO: take from echo
+    metaphysicsURL: state?.config.sessionState.metaphysicsBaseURL,
+    onboardingState: "none", // not used on android
+    options: {
+      // TODO: store options in easy-peasy
+      AROptionsBidManagement: false,
+      AROptionsEnableMyCollection: false,
+      AROptionsLotConditionReport: false,
+      AROptionsPriceTransparency: false,
+      AROptionsViewingRooms: false,
+      AROptionsNewSalePage: false,
+      AREnableViewingRooms: false,
+      AROptionsArtistSeries: false,
+      ipad_vir: false,
+      iphone_vir: false,
+      ARDisableReactNativeBidFlow: false,
+      AREnableNewPartnerView: false,
+      AROptionsNewFirstInquiry: false,
+      AROptionsUseReactNativeWebView: false,
+      AROptionsNewFairPage: false,
+      AROptionsNewInsightsPage: false,
+      AROptionsInquiryCheckout: false,
+    },
+    predictionURL: state?.config.sessionState.predictionBaseURL,
+    sentryDSN: Config.SENTRY_STAGING_DSN,
+    stripePublishableKey: "stripePublishableKey", // TODO: take key from echo config
+    userAgent: "eigen android", // TODO: proper user agent
+    userID: state?.auth.userID!,
+    webURL: state?.config.sessionState.webURL,
+  }
+  return androidData
 }
 
 /**
