@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3fa078cd29a078081909cf7c16a5358a */
+/* @relayHash 529f0a3da3f170f5454ab6542eac22f6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,6 +29,7 @@ query MyCollectionArtworkDemandIndexTestsQuery {
   }
   marketPriceInsights(artistId: "some-artist-id", medium: "painting") {
     ...MyCollectionArtworkDemandIndex_marketPriceInsights
+    id
   }
 }
 
@@ -63,6 +64,13 @@ v1 = [
   }
 ],
 v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v3 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
@@ -139,13 +147,7 @@ return {
             "name": "slug",
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "id",
-            "storageKey": null
-          }
+          (v2/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-artwork-id\")"
       },
@@ -163,14 +165,15 @@ return {
             "kind": "ScalarField",
             "name": "demandRank",
             "storageKey": null
-          }
+          },
+          (v2/*: any*/)
         ],
         "storageKey": "marketPriceInsights(artistId:\"some-artist-id\",medium:\"painting\")"
       }
     ]
   },
   "params": {
-    "id": "3fa078cd29a078081909cf7c16a5358a",
+    "id": "529f0a3da3f170f5454ab6542eac22f6",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -179,9 +182,9 @@ return {
           "plural": false,
           "type": "Artwork"
         },
-        "artwork.id": (v2/*: any*/),
-        "artwork.internalID": (v2/*: any*/),
-        "artwork.slug": (v2/*: any*/),
+        "artwork.id": (v3/*: any*/),
+        "artwork.internalID": (v3/*: any*/),
+        "artwork.slug": (v3/*: any*/),
         "marketPriceInsights": {
           "enumValues": null,
           "nullable": true,
@@ -193,7 +196,8 @@ return {
           "nullable": true,
           "plural": false,
           "type": "Float"
-        }
+        },
+        "marketPriceInsights.id": (v3/*: any*/)
       }
     },
     "name": "MyCollectionArtworkDemandIndexTestsQuery",

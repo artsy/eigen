@@ -6955,11 +6955,13 @@ type MarketPriceInsights {
   demandRank: Float
   demandTrend: Float
   highRangeCents: BigInt
+  id: ID!
   largeHighRangeCents: BigInt
   largeLowRangeCents: BigInt
   largeMidRangeCents: BigInt
   liquidityRank: Float
   lowRangeCents: BigInt
+  medianSaleOverEstimatePercentage: Int
   medianSaleToEstimateRatio: Float
   medium: String
   mediumHighRangeCents: BigInt
