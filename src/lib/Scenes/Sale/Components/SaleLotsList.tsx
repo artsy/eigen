@@ -134,11 +134,7 @@ export const SaleLotsList: React.FC<Props> = ({
   }
 
   if (unfilteredSaleArtworksConnection.counts?.total === 0) {
-    return (
-      <Box my="80px">
-        <Text>REPLACE ME WITH MINI COMPONENT</Text>
-      </Box>
-    )
+    return null
   }
 
   if (!saleArtworksConnection.saleArtworksConnection?.edges?.length) {
