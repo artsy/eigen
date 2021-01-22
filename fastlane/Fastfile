@@ -58,7 +58,7 @@ lane :ship_beta_ios do
 
   root = File.expand_path('..', __dir__)
   bundle_version = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'Artsy/App_Resources/Artsy-Info.plist')}`.strip
-  tag_and_push(tag: "#{latest_version}-#{bundle_version}")
+  tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
 
   # First make individual dSYM archives available to the sentry-cli tool.
   sentry_version = latest_version
@@ -169,14 +169,19 @@ lane :set_build_version_android do
     track: "alpha",
   ).first
 
+  nextVersionName = app_json['version']
+  nextVersionCode = currentVersionCode+1
+
   contents = File.read(build_gradle)
 
-  contents = contents.gsub(/(versionCode) (.*)/, "\\1 #{currentVersionCode+1}")
-  contents = contents.gsub(/(versionName) .*/, "\\1 \"#{app_json['version']}\"")
+  contents = contents.gsub(/(versionName) .*/, "\\1 \"#{nextVersionName}\"")
+  contents = contents.gsub(/(versionCode) (.*)/, "\\1 #{nextVersionCode}")
 
   File.open(build_gradle, 'w') do |file|
     file.puts contents
   end
+
+  [nextVersionName, nextVersionCode]
 end
 
 git_commit_rev = `git log -n1 --format='%h'`.chomp
@@ -207,7 +212,8 @@ lane :ship_beta_android do
   sh("yarn jetifier")
   sh("yarn relay")
 
-  set_build_version_android
+  vname, vcode = set_build_version_android
+  tag_and_push(tag: "android-#{vname}-#{vcode}")
 
   gradle(
     task: "bundle",
@@ -268,7 +274,7 @@ lane :promote_beta_ios do
   end
   build_version = detruncated_components.join('.')
 
-  tag_and_push(tag: "#{beta.train_version}-#{build_version}-submission")
+  tag_and_push(tag: "ios-#{beta.train_version}-#{build_version}-submission")
   puts 'All done.'
 end
 
@@ -326,7 +332,7 @@ lane :tag_and_push do |options|
 end
 
 error do |lane, exception|
- if lane == :ship_beta
+ if lane == :ship_beta or lane == :ship_beta_ios or lane == :ship_beta_android
   notify_beta_failed(exception: exception)
  end
 end
