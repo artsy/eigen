@@ -28,6 +28,10 @@ export type MyBids_me = {
                     readonly soldStatus: AuctionsSoldStatus;
                 };
                 readonly saleArtwork: {
+                    readonly artwork: {
+                        readonly slug: string;
+                        readonly internalID: string;
+                    } | null;
                     readonly position: number | null;
                     readonly sale: {
                         readonly internalID: string;
@@ -45,6 +49,16 @@ export type MyBids_me = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly internalID: string | null;
+                readonly saleArtwork: {
+                    readonly __id: string;
+                    readonly position: number | null;
+                    readonly sale: {
+                        readonly internalID: string;
+                        readonly liveStartAt: string | null;
+                        readonly endAt: string | null;
+                        readonly " $fragmentRefs": FragmentRefs<"SaleCard_sale">;
+                    } | null;
+                } | null;
                 readonly " $fragmentRefs": FragmentRefs<"WatchedLot_lotStanding">;
             } | null;
         } | null> | null;
@@ -93,6 +107,13 @@ v4 = {
   "args": null,
   "kind": "FragmentSpread",
   "name": "SaleCard_sale"
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "position",
+  "storageKey": null
 };
 return {
   "argumentDefinitions": [
@@ -241,10 +262,23 @@ return {
                     {
                       "alias": null,
                       "args": null,
-                      "kind": "ScalarField",
-                      "name": "position",
+                      "concreteType": "Artwork",
+                      "kind": "LinkedField",
+                      "name": "artwork",
+                      "plural": false,
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "slug",
+                          "storageKey": null
+                        },
+                        (v0/*: any*/)
+                      ],
                       "storageKey": null
                     },
+                    (v5/*: any*/),
                     {
                       "alias": null,
                       "args": null,
@@ -331,9 +365,9 @@ return {
           "variableName": "cursor"
         },
         {
-          "kind": "Variable",
+          "kind": "Literal",
           "name": "first",
-          "variableName": "count"
+          "value": 20
         }
       ],
       "concreteType": "LotConnection",
@@ -359,6 +393,45 @@ return {
               "selections": [
                 (v0/*: any*/),
                 {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "SaleArtwork",
+                  "kind": "LinkedField",
+                  "name": "saleArtwork",
+                  "plural": false,
+                  "selections": [
+                    (v5/*: any*/),
+                    {
+                      "alias": null,
+                      "args": null,
+                      "concreteType": "Sale",
+                      "kind": "LinkedField",
+                      "name": "sale",
+                      "plural": false,
+                      "selections": [
+                        (v0/*: any*/),
+                        (v1/*: any*/),
+                        (v2/*: any*/),
+                        (v4/*: any*/)
+                      ],
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ClientExtension",
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "__id",
+                          "storageKey": null
+                        }
+                      ]
+                    }
+                  ],
+                  "storageKey": null
+                },
+                {
                   "args": null,
                   "kind": "FragmentSpread",
                   "name": "WatchedLot_lotStanding"
@@ -382,5 +455,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'c1a6e016370b569784ec5bbfb0a82941';
+(node as any).hash = '9e3c85dfc042f572c6359c89b526677a';
 export default node;
