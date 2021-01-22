@@ -11184,10 +11184,6 @@ react-native-localize@^2.0.1:
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-2.0.1.tgz#a5bf2f2910260ac2574d5ca5d5f95dc8bbc4ac1f"
   integrity sha512-Tuf26iH7/pHd+yCAORD2EPLhkHdGTMEUXMiiKb4Pz69dE48R7C+MA30EqubE6qTlvAs6gHM+2E5dzLAxcGH5UA==
 
-"react-native-navigator-ios@https://github.com/artsy/react-native-navigator-ios#license_podspec":
-  version "1.0.0"
-  resolved "https://github.com/artsy/react-native-navigator-ios#695725296669114ceeed76bba218fd91cde381c1"
-
 react-native-reanimated@^1.13.1:
   version "1.13.1"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.13.1.tgz#c370c32cc4d447ae896cb029bb9c6a2f7608c5b4"
