@@ -17,7 +17,7 @@ import { SaleArtworkListContainer } from "./SaleArtworkList"
 
 interface Props {
   saleArtworksConnection: SaleLotsList_saleArtworksConnection
-  unfilteredSaleArtworksConnection: SaleLotsList_unfilteredSaleArtworksConnection | null
+  unfilteredSaleArtworksConnection: SaleLotsList_unfilteredSaleArtworksConnection
   relay: RelayPaginationProp
   saleID: string
   saleSlug: string
