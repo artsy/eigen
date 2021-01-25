@@ -6,7 +6,7 @@ oss:
 	./scripts/setup-env-for-oss
 
 artsy:
-	./scripts/setup-env-for-oss
+	./scripts/setup-env-for-artsy
 
 
 # Deploy betas
