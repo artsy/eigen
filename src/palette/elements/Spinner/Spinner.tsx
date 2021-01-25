@@ -2,7 +2,7 @@
 import React from "react"
 import { Animated, Easing } from "react-native"
 import styled from "styled-components/native"
-import { color } from "../../helpers"
+import { color } from "../../Theme"
 import { Color } from "../../Theme"
 
 export interface SpinnerProps {

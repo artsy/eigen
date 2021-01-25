@@ -1,5 +1,5 @@
 import React from "react"
-import { color } from "../helpers/color"
+import { color } from "../Theme"
 import { G, Icon, IconProps, Path } from "./Icon"
 
 /** PageViews Icon */

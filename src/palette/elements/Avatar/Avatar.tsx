@@ -1,8 +1,8 @@
 import React, { FunctionComponent, ImgHTMLAttributes } from "react"
 import { Image } from "react-native"
 import { borderRadius } from "styled-system"
-import { color } from "../../helpers/color"
 import { styledWrapper } from "../../platform/primitives"
+import { color } from "../../Theme"
 import { Flex } from "../Flex"
 import { Text, TextFontSize } from "../Text"
 
