@@ -1,5 +1,6 @@
 import tokens from "@artsy/palette-tokens"
 import React from "react"
+import { TEXT_FONTS } from "./elements/Text/tokens"
 import { fontFamily } from "./platform/fonts/fontFamily"
 import { ThemeProvider } from "./platform/primitives"
 
@@ -12,6 +13,7 @@ export * from "@artsy/palette-tokens"
 export const themeProps = {
   ...tokens,
   fontFamily,
+  fonts: TEXT_FONTS,
 }
 
 /**

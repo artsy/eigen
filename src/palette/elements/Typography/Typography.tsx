@@ -96,16 +96,22 @@ function createStyledText<P extends StyledTextProps>(fontType: keyof FontFamily)
         )
       }
 
-      // @ts-expect-error FIXME: type error w/ size definition
-      const fontMetrics = themeProps.typeSizes[fontType][size]
+      const fontMetrics = themeProps.typeSizes[fontType as "sans"][size as "4"]
 
-      if (fontMetrics === null) {
+      if (fontMetrics == null) {
         throw new Error(`"${size}" is not a valid size for ${fontType}`)
       }
 
-      return <BaseText style={[_style, { fontFamily: fontFamilyString, ...fontMetrics }]} {...textProps} />
+      return <BaseText style={[_style, { fontFamily: fontFamilyString, ...stripPx(fontMetrics) }]} {...textProps} />
     }
   )``
+}
+
+function stripPx(fontMetrics: { fontSize: string; lineHeight: string }): { fontSize: number; lineHeight: number } {
+  return {
+    fontSize: Number(fontMetrics.fontSize.replace("px", "")),
+    lineHeight: Number(fontMetrics.lineHeight.replace("px", "")),
+  }
 }
 
 /**
