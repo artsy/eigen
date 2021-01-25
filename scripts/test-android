@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+# cd android
+# ./gradlew test
+# cd -
+# For now, we don't have any native tests, let's just return 0.
+exit 0

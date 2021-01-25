@@ -2,7 +2,7 @@
 
 #### Artsy Beta Sign-up
 
-To get started, ask in any Slack channel "where is the eigen beta?" and Slack will respond with a invitation link to TestFlight.
+To get started, ask in any Slack channel `eigen beta?` and Slack will respond with a invitation link to TestFlight and Play Store beta.
 
 With that done, you should see this:
 

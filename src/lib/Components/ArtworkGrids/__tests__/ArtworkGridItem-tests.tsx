@@ -1,15 +1,34 @@
-import "react-native"
-
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import React from "react"
-
-import Artwork from "../ArtworkGridItem"
-
 import { OwnerType } from "@artsy/cohesion"
 import { extractText } from "lib/tests/extractText"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { ArtworkFilterContext, reducer } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Touchable } from "palette"
+import React from "react"
+import "react-native"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
+import Artwork from "../ArtworkGridItem"
+
+const ArtworkWithProviders = (props: any) => {
+  const [state, dispatch] = React.useReducer(reducer, {
+    selectedFilters: [],
+    appliedFilters: [],
+    previouslyAppliedFilters: [],
+    applyFilters: true,
+    aggregations: [],
+    filterType: "artwork",
+    counts: {
+      total: null,
+      followedArtists: null,
+    },
+  })
+
+  return (
+    <ArtworkFilterContext.Provider value={{ state, dispatch }}>
+      <Artwork {...props} />
+    </ArtworkFilterContext.Provider>
+  )
+}
 
 describe("tracking", () => {
   const trackEvent = jest.fn()
@@ -37,14 +56,14 @@ describe("tracking", () => {
 
   it("sends a tracking event when contextScreenOwnerType is included", () => {
     const rendered = renderWithWrappers(
-      <Artwork
-        artwork={artworkProps() as any}
+      <ArtworkWithProviders
+        artwork={artworkProps()}
         contextScreenOwnerType={OwnerType.artist}
         contextScreenOwnerId="abc124"
         contextScreenOwnerSlug="andy-warhol"
+        itemIndex={0}
       />
     )
-
     const touchableArtwork = rendered.root.findByType(Touchable)
     act(() => touchableArtwork.props.onPress())
     expect(trackEvent).toBeCalledWith({
@@ -56,6 +75,8 @@ describe("tracking", () => {
       destination_screen_owner_id: "abc1234",
       destination_screen_owner_slug: "cool-artwork",
       destination_screen_owner_type: "artwork",
+      position: 0,
+      sort: "-decayed_merch",
       type: "thumbnail",
     })
   })

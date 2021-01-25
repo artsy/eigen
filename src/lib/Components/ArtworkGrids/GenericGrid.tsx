@@ -129,33 +129,35 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
     const sectionedArtworks = this.sectionedArtworks()
     const sections = []
     const { contextModule, trackingFlow, trackTap } = this.props
-    for (let i = 0; i < this.state.sectionCount; i++) {
+
+    for (let column = 0; column < this.state.sectionCount; column++) {
       const artworkComponents = []
-      const artworks = sectionedArtworks[i]
-      for (let j = 0; j < artworks.length; j++) {
-        const artwork = artworks[j]
+      const artworks = sectionedArtworks[column]
+      for (let row = 0; row < artworks.length; row++) {
+        const artwork = artworks[row]
+        const itemIndex = row * this.state.sectionCount + column
         artworkComponents.push(
           <Artwork
             artwork={artwork}
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            key={artwork.id + i + j}
+            key={artwork.id + column + row}
             trackingFlow={trackingFlow}
             contextModule={contextModule}
-            itemIndex={j}
+            itemIndex={itemIndex}
             trackTap={trackTap}
           />
         )
-        if (j < artworks.length - 1) {
-          artworkComponents.push(<View style={spacerStyle} key={"spacer-" + j} accessibilityLabel="Spacer View" />)
+        if (row < artworks.length - 1) {
+          artworkComponents.push(<View style={spacerStyle} key={"spacer-" + row} accessibilityLabel="Spacer View" />)
         }
       }
 
       const sectionSpecificStyle = {
         width: this.state.sectionDimension,
-        marginRight: i === this.state.sectionCount - 1 ? 0 : this.props.sectionMargin,
+        marginRight: column === this.state.sectionCount - 1 ? 0 : this.props.sectionMargin,
       }
       sections.push(
-        <View style={[styles.section, sectionSpecificStyle]} key={i} accessibilityLabel={"Section " + i}>
+        <View style={[styles.section, sectionSpecificStyle]} key={column} accessibilityLabel={"Section " + column}>
           {artworkComponents}
         </View>
       )

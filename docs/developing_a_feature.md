@@ -93,7 +93,7 @@ When it comes time to release to users you will need to replace your lab option 
 
 Any code on the Emission (React Native) side using your option can stay the same if the option still has the same name.
 
-If you make Echo changes, you can update the local bundled copy of the echo settings by running `make update_echo` in Eigen. This is done automatically when running `pod install`.
+If you make Echo changes, you can update the local bundled copy of the echo settings by running `./scripts/update-echo` in Eigen. This is done automatically when running `pod install`.
 
 ## QAing
 

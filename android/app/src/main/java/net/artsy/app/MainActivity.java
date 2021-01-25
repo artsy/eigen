@@ -1,4 +1,4 @@
-package com.artsy;
+package net.artsy.app;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

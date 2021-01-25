@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+./scripts/deploy-ios
+./scripts/deploy-android
