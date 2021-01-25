@@ -26,7 +26,7 @@ interface ViewToken {
   section?: any
 }
 
-const FILTER_BUTTON_OFFSET = 100
+const FILTER_BUTTON_OFFSET = 50
 export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
