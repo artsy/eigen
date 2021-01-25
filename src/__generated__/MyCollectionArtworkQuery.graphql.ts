@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0d6f192b7da9496903e9d0d653f416c5 */
+/* @relayHash 8d81a4e30b2df734cec421e1277763fb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -95,7 +95,6 @@ query MyCollectionArtworkQuery(
   }
   marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
     ...MyCollectionArtworkInsights_marketPriceInsights
-    id
   }
 }
 
@@ -1075,15 +1074,14 @@ return {
             "kind": "ScalarField",
             "name": "demandTrend",
             "storageKey": null
-          },
-          (v14/*: any*/)
+          }
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "0d6f192b7da9496903e9d0d653f416c5",
+    "id": "8d81a4e30b2df734cec421e1277763fb",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",
