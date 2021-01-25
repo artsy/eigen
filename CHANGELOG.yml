@@ -8,6 +8,7 @@ upcoming:
     - Refresh inbox automatically upon revisiting - erik, lily
     - Poll and refetch images when images are processing (my collection) - brian
     - Make AuctionResults not available text fit in one line - mounir
+    - Show filter button when there are less than 2 auction results available - mounir
 
 
 releases:
