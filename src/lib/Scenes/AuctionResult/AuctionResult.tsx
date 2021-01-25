@@ -8,7 +8,7 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useStickyScrollHeader } from "lib/utils/useStickyScrollHeader"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { Box, color, Flex, NoArtworkIcon, Separator, Spacer, Text, TEXT_FONTS } from "palette"
+import { Box, Flex, NoArtworkIcon, Separator, Spacer, Text, TEXT_FONTS } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import { Animated, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -81,7 +81,6 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             multiline
             scrollEnabled={false}
             style={{
-              color: color("black100"),
               fontFamily: TEXT_FONTS.sans,
               fontSize: 14,
             }}
@@ -100,7 +99,6 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
               testID={options?.testID}
               scrollEnabled={false}
               style={{
-                color: color("black100"),
                 fontFamily: TEXT_FONTS.sans,
                 fontSize: 14,
                 textAlign: "right",
