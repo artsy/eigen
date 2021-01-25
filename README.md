@@ -3,7 +3,7 @@
 ### Meta
 
 - **State:** production
-- **Point People:** [@ashfurrow](https://github.com/ashfurrow), [David Sheldrick](https://github.com/ds300)
+- **Point People:** [Brian Beckerle](https://github.com/brainbicycle), [David Sheldrick](https://github.com/ds300)
 - **CI :** [![Build Status](https://circleci.com/gh/artsy/eigen/tree/master.svg?style=shield&circle-token=f7a3e9b08ab306cd01a15da49933c0774d508ecb)](https://circleci.com/gh/artsy/eigen)
 
 This is an [Artsy](https://github.com/artsy) OSS project. Other mobile projects are [Energy](https://github.com/artsy/energy) and [Eidolon](https://github.com/artsy/eidolon), with the retired [Emission](https://github.com/artsy/emission) and [Emergence](https://github.com/artsy/emergence).
@@ -18,7 +18,7 @@ Get setup [here](docs/getting_started.md). Further documentation can be found in
 
 ### Work at Artsy?
 
-Instead of `make oss` below, run `make artsy`. You will need [awscli](https://formulae.brew.sh/formula/awscli) to get our ENV vars.
+Instead of `./scripts/setup-env-for-oss` below, run `./scripts/setup-env-for-artsy`. You will need [awscli](https://formulae.brew.sh/formula/awscli) to get our ENV vars.
 
 The file `Artsy/App/EchoNew.json` is not checked in (a sample file is included for OSS contributors). When you run `pod install`, the latest `EchoNew.json` file will be downloaded for you. See note in `Podfile`.
 
@@ -40,7 +40,7 @@ cd eigen
 gem install bundler
 bundle install --without development
 
-make oss # or make artsy
+./scripts/setup-env-for-oss # or ./scripts/setup-env-for-artsy
 
 bundle exec pod install --repo-update
 open Artsy.xcworkspace

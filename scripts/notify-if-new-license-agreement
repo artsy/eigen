@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+./scripts/setup-fastlane-env
+bundle exec fastlane update_plugins
+bundle exec fastlane notify_if_new_license_agreement

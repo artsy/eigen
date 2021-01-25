@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+touch .env.ci
+cp .env.example .env.shared
