@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+yarn jetifier
+yarn relay
+
+cd android
+./gradlew buildRelease
+cd -

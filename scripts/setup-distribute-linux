@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+./scripts/setup-fastlane-env
+# brew not working in docker/linux in circleci
+# brew update
+# brew tap getsentry/tools
+# brew install sentry-cli
+bundle exec fastlane update_plugins
+
+# install awscli
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip -qq awscliv2.zip
+sudo ./aws/install
+
+# configure awscli
+mkdir -p ~/.aws
+touch ~/.aws/config
+echo "[default]" >> ~/.aws/config
+echo "region = us-east-1" >> ~/.aws/config
+echo "output = json" >> ~/.aws/config

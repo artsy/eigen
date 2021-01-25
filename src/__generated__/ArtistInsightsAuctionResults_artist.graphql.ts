@@ -7,6 +7,7 @@ import { FragmentRefs } from "relay-runtime";
 export type ArtistInsightsAuctionResults_artist = {
     readonly birthday: string | null;
     readonly slug: string;
+    readonly id: string;
     readonly auctionResultsConnection: {
         readonly createdYearRange: {
             readonly startAt: number | null;
@@ -30,7 +31,15 @@ export type ArtistInsightsAuctionResults_artist$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [
     {
       "defaultValue": true,
@@ -102,6 +111,7 @@ const node: ReaderFragment = {
       "name": "slug",
       "storageKey": null
     },
+    (v0/*: any*/),
     {
       "alias": "auctionResultsConnection",
       "args": [
@@ -182,13 +192,7 @@ const node: ReaderFragment = {
               "name": "node",
               "plural": false,
               "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "id",
-                  "storageKey": null
-                },
+                (v0/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -253,5 +257,6 @@ const node: ReaderFragment = {
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = '8084969a2b90f4c83c81e5d7a9d2efed';
+})();
+(node as any).hash = '55260af1dac80bc0b3f1ff6a1bef18c4';
 export default node;

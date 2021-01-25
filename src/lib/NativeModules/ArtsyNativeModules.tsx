@@ -1,4 +1,5 @@
 import { NativeModules as AllNativeModules, Platform } from "react-native"
+import { getLocales, getTimeZone } from "react-native-localize"
 
 const noop: any = (name: string) => () => console.warn(`method ${name} doesn't exist on android yet`)
 
@@ -18,47 +19,12 @@ export const ArtsyNativeModules = Platform.select({
     ARCocoaConstantsModule: {
       UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
       AREnabled: true,
-      CurrentLocale: "en_US",
-      LocalTimeZone: "",
+      CurrentLocale: getLocales()[0].languageTag,
+      LocalTimeZone: getTimeZone(),
     },
 
     ARNotificationsManager: {
-      nativeState: {
-        userAgent: "Jest Unit Tests",
-        env: "test",
-        authenticationToken: "authenticationToken",
-        onboardingState: "complete",
-        gravityURL: "gravityURL",
-        launchCount: 1,
-        metaphysicsURL: "metaphysicsURL",
-        deviceId: "testDevice",
-        predictionURL: "predictionURL",
-        webURL: "webURL",
-        sentryDSN: "sentryDSN",
-        stripePublishableKey: "stripePublishableKey",
-        userID: "userID",
-        options: {
-          AROptionsBidManagement: false,
-          AROptionsEnableMyCollection: false,
-          AROptionsLotConditionReport: false,
-          AROptionsPriceTransparency: false,
-          AROptionsViewingRooms: false,
-          AROptionsNewSalePage: false,
-          AREnableViewingRooms: false,
-          AROptionsArtistSeries: false,
-          ipad_vir: false,
-          iphone_vir: false,
-          ARDisableReactNativeBidFlow: false,
-          AREnableNewPartnerView: false,
-          AROptionsNewFirstInquiry: false,
-          AROptionsUseReactNativeWebView: false,
-          AROptionsNewFairPage: false,
-          AROptionsNewInsightsPage: false,
-          AROptionsInquiryCheckout: false,
-        },
-        legacyFairSlugs: ["some-fairs-slug", "some-other-fair-slug"],
-        legacyFairProfileSlugs: [],
-      },
+      nativeState: null as any,
       postNotificationName: noop("postNotificationName"),
       didFinishBootstrapping: () => null,
     },

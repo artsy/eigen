@@ -218,38 +218,40 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     const artworks = extractNodes(this.props.connection)
     const sectionedArtworks = this.sectionedArtworks()
     const sections: JSX.Element[] = []
-    for (let i = 0; i < (this.props.sectionCount ?? 0); i++) {
+    const columnCount = this.props.sectionCount ?? 0
+    for (let column = 0; column < columnCount; column++) {
       const artworkComponents: JSX.Element[] = []
-      for (let j = 0; j < sectionedArtworks[i].length; j++) {
-        const artwork = sectionedArtworks[i][j]
+      for (let row = 0; row < sectionedArtworks[column].length; row++) {
+        const artwork = sectionedArtworks[column][row]
+        const itemIndex = row * columnCount + column
         artworkComponents.push(
           <Artwork
             contextScreenOwnerType={this.props.contextScreenOwnerType}
             contextScreenOwnerId={this.props.contextScreenOwnerId}
             contextScreenOwnerSlug={this.props.contextScreenOwnerSlug}
             artwork={artwork}
-            key={"artwork-" + j + "-" + artwork.id}
+            key={"artwork-" + itemIndex + "-" + artwork.id}
             hideUrgencyTags={this.props.hideUrgencyTags}
             hidePartner={this.props.hidePartner}
             showLotLabel={this.props.showLotLabel}
+            itemIndex={itemIndex}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
-        if (j < artworks.length - 1) {
+        if (row < artworks.length - 1) {
           artworkComponents.push(
-            <View style={spacerStyle} key={"spacer-" + j + "-" + artwork.id} accessibilityLabel="Spacer View" />
+            <View style={spacerStyle} key={"spacer-" + row + "-" + artwork.id} accessibilityLabel="Spacer View" />
           )
         }
       }
 
       const sectionSpecificStyle = {
         width: this.state.sectionDimension,
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        marginRight: i === this.props.sectionCount - 1 ? 0 : this.props.sectionMargin,
+        marginRight: column === columnCount - 1 ? 0 : this.props.sectionMargin,
       }
 
       sections.push(
-        <View style={[styles.section, sectionSpecificStyle]} key={i} accessibilityLabel={"Section " + i}>
+        <View style={[styles.section, sectionSpecificStyle]} key={column} accessibilityLabel={"Section " + column}>
           {artworkComponents}
         </View>
       )

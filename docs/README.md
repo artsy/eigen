@@ -5,7 +5,6 @@
 ## Getting Started
 
 - [Getting Started](getting_started.md)
-- [Getting Confident](getting_confident.md)
 
 ## Meandering Around
 
@@ -14,6 +13,7 @@
 ## Specific Problems
 
 - [App Store Deployment](deploy_to_app_store.md)
+- [Play Store Deployment](deploy_to_play_store.md)
 - [Beta Deployment](deploy_to_beta.md)
 - [Certificates & Code Signing](certs.md)
 - [Notifications](notifications.md)

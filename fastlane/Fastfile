@@ -3,8 +3,7 @@
 require 'yaml'
 require 'spaceship'
 require 'fileutils'
-
-APP_ID = 'net.artsy.artsy'
+require 'json'
 
 skip_docs
 
@@ -13,6 +12,19 @@ before_all do
 end
 
 lane :ship_beta do
+  ship_beta_ios
+  ship_beta_android
+end
+
+app_json_path = "../app.json"
+app_json = JSON.parse(File.read(app_json_path))
+
+app_plist = "../Artsy/App_Resources/Artsy-Info.plist"
+sticker_plist = "../Artsy Stickers/Info.plist"
+
+lane :ship_beta_ios do
+  set_build_version_ios
+
   changelog_yaml = File.read('../CHANGELOG.yml')
   changelog_data = YAML.safe_load(changelog_yaml)
 
@@ -46,7 +58,7 @@ lane :ship_beta do
 
   root = File.expand_path('..', __dir__)
   bundle_version = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'Artsy/App_Resources/Artsy-Info.plist')}`.strip
-  tag_and_push(tag: "#{latest_version}-#{bundle_version}")
+  tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
 
   # First make individual dSYM archives available to the sentry-cli tool.
   sentry_version = latest_version
@@ -135,7 +147,85 @@ lane :ship_beta do
         groups: ['Artsy']
 end
 
-lane :promote_beta do
+lane :update_version_string do
+  new_version = prompt(text: "What is the new human-readable release version?")
+  app_json['version'] = new_version
+  File.open(app_json_path, 'w') do |file|
+    file.puts JSON.pretty_generate(app_json)
+  end
+end
+
+date_str = DateTime.now.strftime("%Y.%m.%d.%H")
+lane :set_build_version_ios do
+  system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" #{app_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" #{sticker_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" #{app_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" #{sticker_plist}")
+end
+
+build_gradle = "../android/app/build.gradle"
+lane :set_build_version_android do
+  currentVersionCode = google_play_track_version_codes(
+    track: "alpha",
+  ).first
+
+  nextVersionName = app_json['version']
+  nextVersionCode = currentVersionCode+1
+
+  contents = File.read(build_gradle)
+
+  contents = contents.gsub(/(versionName) .*/, "\\1 \"#{nextVersionName}\"")
+  contents = contents.gsub(/(versionCode) (.*)/, "\\1 #{nextVersionCode}")
+
+  File.open(build_gradle, 'w') do |file|
+    file.puts contents
+  end
+
+  [nextVersionName, nextVersionCode]
+end
+
+git_commit_rev = `git log -n1 --format='%h'`.chomp
+git_commit_sha = `git log -n1 --format='%H'`.chomp
+git_commit_date_str = DateTime.parse(`git log -n1 --format='%ci'`.chomp).iso8601
+git_remote_origin_url = `git config --get remote.origin.url`.chomp
+lane :set_git_properties_ios do
+  system("/usr/libexec/PlistBuddy -c \"Set GITCommitRev #{git_commit_rev}\" #{app_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set GITCommitSha #{git_commit_sha}\" #{app_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set GITCommitDate #{git_commit_date_str}\" #{app_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set GITRemoteOriginURL #{git_remote_origin_url}\" #{app_plist}")
+end
+
+lane :set_git_properties_android do
+  contents = File.read(build_gradle)
+
+  contents = contents.gsub(/(GITCommitRev.* '").*("')/, "\\1#{git_commit_rev}\\2")
+  contents = contents.gsub(/(GITCommitSha.* '").*("')/, "\\1#{git_commit_sha}\\2")
+  contents = contents.gsub(/(GITCommitDate.* '").*("')/, "\\1#{git_commit_date_str}\\2")
+  contents = contents.gsub(/(GITRemoteOriginURL.* '").*("')/, "\\1#{git_remote_origin_url}\\2")
+
+  File.open(build_gradle, 'w') do |file|
+    file.puts contents
+  end
+end
+
+lane :ship_beta_android do
+  sh("yarn jetifier")
+  sh("yarn relay")
+
+  vname, vcode = set_build_version_android
+  tag_and_push(tag: "android-#{vname}-#{vcode}")
+
+  gradle(
+    task: "bundle",
+    build_type: "Release",
+    project_dir: "android/",
+  )
+  upload_to_play_store(
+    track: "alpha",
+  )
+end
+
+lane :promote_beta_ios do
   client = Spaceship::Tunes.login(ENV['FASTLANE_USERNAME'], ENV['FASTLANE_PASSWORD'])
   client.team_id = '479887'
   app = Spaceship::Tunes::Application.find('net.artsy.artsy')
@@ -146,7 +236,6 @@ lane :promote_beta do
   puts "Let's deliver beta #{beta.train_version} (#{beta.build_version}) with build number #{latest_testflight_build_number}."
   deliver(
     build_number: latest_testflight_build_number,
-    submit_for_review: true,
     force: true, # Skip HTMl report verification
     skip_screenshots: true,
     skip_binary_upload: true,
@@ -185,7 +274,7 @@ lane :promote_beta do
   end
   build_version = detruncated_components.join('.')
 
-  tag_and_push(tag: "#{beta.train_version}-#{build_version}-submission")
+  tag_and_push(tag: "ios-#{beta.train_version}-#{build_version}-submission")
   puts 'All done.'
 end
 
@@ -243,7 +332,7 @@ lane :tag_and_push do |options|
 end
 
 error do |lane, exception|
- if lane == :ship_beta
+ if lane == :ship_beta or lane == :ship_beta_ios or lane == :ship_beta_android
   notify_beta_failed(exception: exception)
  end
 end

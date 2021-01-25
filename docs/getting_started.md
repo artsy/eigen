@@ -8,6 +8,10 @@ You'll need [Node](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/) i
 
 Currently we require developers to use Xcode 12, with the latest version (12.2.0) recommended. You can find all versions of Xcode from [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
 
+### Android Studio Version
+
+Currently we use Android Studio 4.1.1. You can download it from [here](https://developer.android.com/studio#downloads).
+
 ### Clone
 
 Follow the instructions in [the README](https://github.com/artsy/eigen).
@@ -25,7 +29,7 @@ Tap `cmd + u` to run all tests, use `ctrl + alt + cmd + g` to run the last set y
 You can run tests via the CLI using:
 
 ```sh
-make test
+./scripts/test-ios
 ```
 
 #### Updating snapshots
@@ -35,7 +39,7 @@ these screenshots are checked in to the source control. When you change e.g. the
 button, it calculates the diff between two screenshots and makes the test fail if the delta is above a certain
 threshold.
 
-In order to update existing screenshots, run './scripts/record-snapshots-enable.sh`. This will do some small edits in the `Pods/`directory. After that you can run the tests again, using`cmd+u`. They will fail again but they will generate the new snapshots. Now run the second script `./scripts/record-snapshots-disable.sh`, which will revert the changes. Now run the tests again using `cmd+u` and tests should pass.
+In order to update existing screenshots, run './scripts/record-snapshots-enable`. This will do some small edits in the `Pods/`directory. After that you can run the tests again, using`cmd+u`. They will fail again but they will generate the new snapshots. Now run the second script `./scripts/record-snapshots-disable`, which will revert the changes. Now run the tests again using `cmd+u` and tests should pass.
 
 If you are still having some tests failing, try commenting out the failing line, run the test, and comment in the line again and run again. If that still fails, then try replacing `haveValidSnapshot` with `recordSnapshot`, run test, go back to `haveValidSnapshot`, run test again. Hopefully that would fix all your failing tests.
 
