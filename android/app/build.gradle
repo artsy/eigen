@@ -125,6 +125,8 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
+def password = System.getenv('ANDROID_KEYSTORE_PASSWORD')
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -134,13 +136,18 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.artsy"
+        applicationId "net.artsy.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 7
+        versionName "1.0.0"
 
         multiDexEnabled true
+
+        buildConfigField "String", "GITCommitRev", '"c77772ee1"'
+        buildConfigField "String", "GITCommitSha", '"c77772ee1f32093109049504f7865f9737ad8474"'
+        buildConfigField "String", "GITCommitDate", '"2021-01-21T15:08:22+04:00"'
+        buildConfigField "String", "GITRemoteOriginURL", '"https://github.com/artsy/eigen.git"'
     }
     splits {
         abi {
@@ -157,6 +164,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('release.keystore')
+            storePassword password
+            keyAlias 'release'
+            keyPassword password
+        }
     }
     buildTypes {
         debug {
@@ -165,7 +178,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }

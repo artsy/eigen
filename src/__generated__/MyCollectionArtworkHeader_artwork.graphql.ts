@@ -13,6 +13,7 @@ export type MyCollectionArtworkHeader_artwork = {
         readonly imageURL: string | null;
         readonly width: number | null;
         readonly internalID: string | null;
+        readonly imageVersions: ReadonlyArray<string | null> | null;
     } | null> | null;
     readonly internalID: string;
     readonly slug: string;
@@ -91,7 +92,14 @@ return {
           "name": "width",
           "storageKey": null
         },
-        (v0/*: any*/)
+        (v0/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "imageVersions",
+          "storageKey": null
+        }
       ],
       "storageKey": null
     },
@@ -115,5 +123,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'b41f7e8057147e4d4baad3a87aac684e';
+(node as any).hash = '7732ce0098d72225f6a606addfe9f967';
 export default node;

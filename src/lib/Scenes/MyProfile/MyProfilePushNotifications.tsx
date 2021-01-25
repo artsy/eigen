@@ -1,13 +1,14 @@
 // tslint:disable:no-empty
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "lib/Components/SwitchMenu"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import useAppState from "lib/utils/useAppState"
 import { debounce } from "lodash"
 import { Box, Button, Flex, Join, Sans, Separator } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
-import { ActivityIndicator, Alert, Linking, NativeModules, RefreshControl, ScrollView, View } from "react-native"
+import { ActivityIndicator, Alert, Linking, RefreshControl, ScrollView, View } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { MyProfilePushNotifications_me } from "../../../__generated__/MyProfilePushNotifications_me.graphql"
 import { MyProfilePushNotificationsQuery } from "../../../__generated__/MyProfilePushNotificationsQuery.graphql"
@@ -57,7 +58,7 @@ export const AllowPushNotificationsBanner = () => (
       <Button
         size="large"
         onPress={() => {
-          NativeModules.ARTemporaryAPIModule.requestNotificationPermissions()
+          ArtsyNativeModules.ARTemporaryAPIModule.requestNotificationPermissions()
         }}
       >
         Enable
@@ -102,13 +103,13 @@ export const MyProfilePushNotifications: React.FC<{
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
 
   useEffect(() => {
-    NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
+    ArtsyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
       setNotificationAuthorizationStatus(result)
     })
   }, [])
 
   const onForeground = useCallback(() => {
-    NativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
+    ArtsyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
       setNotificationAuthorizationStatus(result)
     })
   }, [])

@@ -1,10 +1,11 @@
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { unsafe__getSelectedTab } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { GlobalState, useGlobalState } from "lib/utils/useGlobalState"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { color } from "palette"
 import React, { useMemo, useRef, useState } from "react"
-import { NativeModules, View } from "react-native"
+import { View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
 import { useAnimatedValue } from "./reanimatedHelpers"
@@ -82,7 +83,7 @@ export const StickyTabPage: React.FC<{
       Animated.onChange(
         shouldHideBackButton,
         Animated.call([shouldHideBackButton], ([shouldHide]) => {
-          NativeModules.ARScreenPresenterModule.updateShouldHideBackButton(!!shouldHide, unsafe__getSelectedTab())
+          ArtsyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton(!!shouldHide, unsafe__getSelectedTab())
         })
       ),
     []

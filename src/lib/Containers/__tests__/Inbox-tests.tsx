@@ -7,10 +7,10 @@ import { Text } from "palette"
 import React from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { Environment, OperationDescriptor } from "relay-runtime"
+import { OperationDescriptor } from "relay-runtime"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
-import { Inbox as ActualInbox, InboxContainer } from "../Inbox/Inbox"
+import { InboxContainer } from "../Inbox/Inbox"
 
 jest.unmock("react-relay")
 jest.unmock("react-native-scrollable-tab-view")
@@ -62,11 +62,6 @@ const getWrapper = (mockResolvers: MockResolvers = {}) => {
   return wrapper
 }
 
-const emptyMeProps = {
-  lotStandingsExistenceCheck: { edges: [] },
-  conversationsExistenceCheck: { edges: [] },
-}
-
 it("renders without throwing an error", () => {
   getWrapper({})
 })
@@ -82,22 +77,4 @@ it("renders inquiries tab when inquiries tab is selected", async () => {
 
   await press(tree.root, { text: "Inquiries", componentType: Text })
   expect(tree.root.findAllByType(ConversationsContainer).length).toEqual(1)
-})
-
-it("requests a relay refetch when fetchData is called in ZeroState", () => {
-  const relayEmptyProps = {
-    me: emptyMeProps,
-    isVisible: true,
-    relay: {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      environment: null as Environment,
-      refetch: jest.fn(),
-    },
-  }
-
-  const inbox = new ActualInbox(relayEmptyProps as any)
-  inbox.setState = jest.fn()
-
-  inbox.fetchData()
-  expect(relayEmptyProps.relay.refetch).toBeCalled()
 })

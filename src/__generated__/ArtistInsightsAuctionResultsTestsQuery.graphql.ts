@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4bbe299ea8d2e060872e1682cac23d5d */
+/* @relayHash 636f8ce3c9e85f61af14866e6d35c859 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,7 +29,8 @@ query ArtistInsightsAuctionResultsTestsQuery {
 fragment ArtistInsightsAuctionResults_artist on Artist {
   birthday
   slug
-  auctionResultsConnection(first: 10, sort: DATE_DESC, earliestCreatedYear: 1000, latestCreatedYear: 2050) {
+  id
+  auctionResultsConnection(allowEmptyCreatedDates: true, earliestCreatedYear: 1000, first: 10, latestCreatedYear: 2050, sort: DATE_DESC) {
     createdYearRange {
       startAt
       endAt
@@ -86,7 +87,19 @@ var v0 = [
     "value": "some-id"
   }
 ],
-v1 = [
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v2 = [
+  {
+    "kind": "Literal",
+    "name": "allowEmptyCreatedDates",
+    "value": true
+  },
   {
     "kind": "Literal",
     "name": "earliestCreatedYear",
@@ -108,13 +121,6 @@ v1 = [
     "value": "DATE_DESC"
   }
 ],
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
 v3 = {
   "enumValues": null,
   "nullable": true,
@@ -200,9 +206,10 @@ return {
             "name": "slug",
             "storageKey": null
           },
+          (v1/*: any*/),
           {
             "alias": null,
-            "args": (v1/*: any*/),
+            "args": (v2/*: any*/),
             "concreteType": "AuctionResultConnection",
             "kind": "LinkedField",
             "name": "auctionResultsConnection",
@@ -249,7 +256,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v2/*: any*/),
+                      (v1/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -451,31 +458,31 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "auctionResultsConnection(earliestCreatedYear:1000,first:10,latestCreatedYear:2050,sort:\"DATE_DESC\")"
+            "storageKey": "auctionResultsConnection(allowEmptyCreatedDates:true,earliestCreatedYear:1000,first:10,latestCreatedYear:2050,sort:\"DATE_DESC\")"
           },
           {
             "alias": null,
-            "args": (v1/*: any*/),
+            "args": (v2/*: any*/),
             "filters": [
-              "sort",
-              "sizes",
+              "allowEmptyCreatedDates",
               "categories",
               "earliestCreatedYear",
-              "latestCreatedYear"
+              "latestCreatedYear",
+              "sizes",
+              "sort"
             ],
             "handle": "connection",
             "key": "artist_auctionResultsConnection",
             "kind": "LinkedHandle",
             "name": "auctionResultsConnection"
-          },
-          (v2/*: any*/)
+          }
         ],
         "storageKey": "artist(id:\"some-id\")"
       }
     ]
   },
   "params": {
-    "id": "4bbe299ea8d2e060872e1682cac23d5d",
+    "id": "636f8ce3c9e85f61af14866e6d35c859",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {

@@ -1,12 +1,13 @@
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
+import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
 import { navigate } from "lib/navigation/navigate"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Flex, Separator, Text } from "palette"
+import { Box, Flex, Separator, Text } from "palette"
 import React, { useCallback, useContext, useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -95,6 +96,14 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
     })
   }, [])
 
+  if (!auctionResults.length) {
+    return (
+      <Box my="80px">
+        <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} />
+      </Box>
+    )
+  }
+
   return (
     <FlatList
       data={auctionResults}
@@ -135,24 +144,27 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
     artist: graphql`
       fragment ArtistInsightsAuctionResults_artist on Artist
       @argumentDefinitions(
+        allowEmptyCreatedDates: { type: "Boolean", defaultValue: true }
+        categories: { type: "[String]" }
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
-        sort: { type: "AuctionResultSorts", defaultValue: DATE_DESC }
-        sizes: { type: "[ArtworkSizes]" }
-        categories: { type: "[String]" }
         earliestCreatedYear: { type: "Int", defaultValue: 1000 }
         latestCreatedYear: { type: "Int", defaultValue: 2050 }
+        sizes: { type: "[ArtworkSizes]" }
+        sort: { type: "AuctionResultSorts", defaultValue: DATE_DESC }
       ) {
         birthday
         slug
+        id
         auctionResultsConnection(
-          first: $count
           after: $cursor
-          sort: $sort
-          sizes: $sizes
+          allowEmptyCreatedDates: $allowEmptyCreatedDates
           categories: $categories
           earliestCreatedYear: $earliestCreatedYear
+          first: $count
           latestCreatedYear: $latestCreatedYear
+          sizes: $sizes
+          sort: $sort
         ) @connection(key: "artist_auctionResultsConnection") {
           createdYearRange {
             startAt
@@ -182,25 +194,27 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
     },
     query: graphql`
       query ArtistInsightsAuctionResultsQuery(
+        $allowEmptyCreatedDates: Boolean
+        $artistID: String!
+        $categories: [String]
         $count: Int!
         $cursor: String
-        $sort: AuctionResultSorts
-        $sizes: [ArtworkSizes]
-        $categories: [String]
-        $artistID: String!
-        $latestCreatedYear: Int
         $earliestCreatedYear: Int
+        $latestCreatedYear: Int
+        $sizes: [ArtworkSizes]
+        $sort: AuctionResultSorts
       ) {
         artist(id: $artistID) {
           ...ArtistInsightsAuctionResults_artist
             @arguments(
+              allowEmptyCreatedDates: $allowEmptyCreatedDates
+              categories: $categories
               count: $count
               cursor: $cursor
-              sort: $sort
-              sizes: $sizes
               earliestCreatedYear: $earliestCreatedYear
               latestCreatedYear: $latestCreatedYear
-              categories: $categories
+              sizes: $sizes
+              sort: $sort
             )
         }
       }
