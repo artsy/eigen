@@ -1,11 +1,8 @@
-import { useEmissionOption } from "lib/store/GlobalStore"
 import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { Flex, Separator, Spacer, Theme } from "palette"
 import React from "react"
 
 export const HeaderTabsGridPlaceholder: React.FC = () => {
-  const showInsights = useEmissionOption("AROptionsNewInsightsPage")
-
   return (
     <Theme>
       <Flex>
@@ -28,7 +25,6 @@ export const HeaderTabsGridPlaceholder: React.FC = () => {
           <PlaceholderText width={40} />
           <PlaceholderText width={50} />
           <PlaceholderText width={40} />
-          {showInsights ? <PlaceholderText width={40} /> : null}
         </Flex>
         <Spacer mb={1} />
         <Separator />
