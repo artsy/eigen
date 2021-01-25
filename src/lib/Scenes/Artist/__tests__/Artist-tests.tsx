@@ -5,7 +5,6 @@ import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
 import { StickyTab } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
-import { mockEdges } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import _ from "lodash"
 import React from "react"
@@ -143,7 +142,7 @@ describe("availableTabs", () => {
           has_metadata: true,
           counts: { articles: 1, related_artists: 0, artworks: 1, partner_shows: 1 },
           auctionResultsConnection: {
-            edges: mockEdges(5),
+            totalCount: 10,
           },
         }
       },
@@ -164,7 +163,7 @@ describe("availableTabs", () => {
           has_metadata: true,
           counts: { articles: 1, related_artists: 0, artworks: 1, partner_shows: 1 },
           auctionResultsConnection: {
-            edges: [],
+            totalCount: 0,
           },
         }
       },
