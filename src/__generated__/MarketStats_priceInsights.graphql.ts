@@ -8,7 +8,10 @@ export type MarketStats_priceInsights = {
     readonly edges: ReadonlyArray<{
         readonly node: {
             readonly medium: string | null;
+            readonly annualLotsSold: number | null;
             readonly annualValueSoldCents: unknown | null;
+            readonly sellThroughRate: number | null;
+            readonly medianSaleOverEstimatePercentage: number | null;
         } | null;
     } | null> | null;
     readonly " $refType": "MarketStats_priceInsights";
@@ -54,7 +57,28 @@ const node: ReaderFragment = {
               "alias": null,
               "args": null,
               "kind": "ScalarField",
+              "name": "annualLotsSold",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "annualValueSoldCents",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "sellThroughRate",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "medianSaleOverEstimatePercentage",
               "storageKey": null
             }
           ],
@@ -67,5 +91,5 @@ const node: ReaderFragment = {
   "type": "PriceInsightConnection",
   "abstractKey": null
 };
-(node as any).hash = 'f8dd6c3245afd02739ffe2798222422b';
+(node as any).hash = 'd7e02768653426e9cea4eda723021283';
 export default node;

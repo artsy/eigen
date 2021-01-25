@@ -28,8 +28,7 @@ import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvir
 export const Artist: React.FC<{
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
   artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
-  priceInsights?: ArtistBelowTheFoldQuery["response"]["priceInsights"]
-}> = ({ artistAboveTheFold, artistBelowTheFold, priceInsights }) => {
+}> = ({ artistAboveTheFold, artistBelowTheFold }) => {
   const tabs = []
   const displayAboutSection =
     artistAboveTheFold.has_metadata ||
@@ -63,12 +62,7 @@ export const Artist: React.FC<{
   if (isArtistInsightsEnabled && artistAboveTheFold?.auctionResultsConnection?.totalCount) {
     tabs.push({
       title: "Insights",
-      content:
-        artistBelowTheFold && priceInsights ? (
-          <ArtistInsightsFragmentContainer artist={artistBelowTheFold} priceInsights={priceInsights} />
-        ) : (
-          <LoadingPage />
-        ),
+      content: artistBelowTheFold ? <ArtistInsightsFragmentContainer artist={artistBelowTheFold} /> : <LoadingPage />,
     })
   }
 
@@ -110,7 +104,6 @@ interface ArtistQueryRendererProps extends ArtistAboveTheFoldQueryVariables, Art
 }
 
 export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artistID, environment }) => {
-  console.log("sjhsjhsjh", artistID)
   return (
     <AboveTheFoldQueryRenderer<ArtistAboveTheFoldQuery, ArtistBelowTheFoldQuery>
       environment={environment || defaultEnvironment}
@@ -137,21 +130,17 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artist
         `,
         variables: { artistID },
       }}
-      // uh oh. artist ID is the "id" field; priceInsights needs the "internalID" field. How & where can we convert this?
       below={{
         query: graphql`
-          query ArtistBelowTheFoldQuery($artistID: ID!, $artistIDString: String!, $isPad: Boolean!) {
-            artist(id: $artistIDString) {
+          query ArtistBelowTheFoldQuery($artistID: String!, $isPad: Boolean!) {
+            artist(id: $artistID) {
               ...ArtistAbout_artist
               ...ArtistShows_artist
               ...ArtistInsights_artist
             }
-            priceInsights(artistId: $artistID) {
-              ...ArtistInsights_priceInsights
-            }
           }
         `,
-        variables: { artistID, artistIDString: artistID, isPad: isPad() },
+        variables: { artistID, isPad: isPad() },
       }}
       render={{
         renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
@@ -159,13 +148,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artist
           if (!above.artist) {
             throw new Error("no artist data")
           }
-          return (
-            <Artist
-              artistAboveTheFold={above.artist}
-              artistBelowTheFold={below?.artist}
-              priceInsights={below?.priceInsights}
-            />
-          )
+          return <Artist artistAboveTheFold={above.artist} artistBelowTheFold={below?.artist} />
         },
       }}
     />
