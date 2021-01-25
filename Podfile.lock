@@ -416,8 +416,6 @@ PODS:
     - Mapbox-iOS-SDK (~> 6.3)
     - React
     - React-Core
-  - react-native-navigator-ios (1.0.0):
-    - React
   - react-native-netinfo (4.6.1):
     - React
   - react-native-safe-area-context (3.1.8):
