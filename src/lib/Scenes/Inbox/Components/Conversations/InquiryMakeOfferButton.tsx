@@ -15,8 +15,6 @@ const ShadowSeparator = styled(Separator)`
 `
 
 export const InquiryMakeOfferButton: React.FC<InquiryMakeOfferButtonProps> = ({ artworkID }) => {
-  const [modalVisibility, setModalVisibility] = useState(false)
-
   return (
     <>
       <ShadowSeparator />

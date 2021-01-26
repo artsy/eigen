@@ -1,6 +1,6 @@
 import { MakeOfferButton_artwork } from "__generated__/MakeOfferButton_artwork.graphql"
 import { MakeOfferButtonOrderMutation } from "__generated__/MakeOfferButtonOrderMutation.graphql"
-import { navigate } from "lib/navigation/navigate"
+import { dismissModal, navigate } from "lib/navigation/navigate"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { Button, ButtonVariant } from "palette"
 import React from "react"
@@ -106,7 +106,11 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
               if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
                 this.onMutationError(orderOrError.error)
               } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
-                navigate(`/orders/${orderOrError.order.internalID}`, { modal: true })
+                navigate(`/checkout/${orderOrError.order.internalID}`, {
+                  modal: true,
+                  passProps: { artworkID: orderOrError.order.internalID },
+                })
+                // navigate(`checkout/${orderOrError.order.internalID}?artworkID=${orderOrError.order.internalID}`, { modal: true })
               }
             })
           },

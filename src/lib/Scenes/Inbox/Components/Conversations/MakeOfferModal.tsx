@@ -2,6 +2,7 @@ import { MakeOfferModal_artwork } from "__generated__/MakeOfferModal_artwork.gra
 import { MakeOfferModalQuery, MakeOfferModalQueryResponse } from "__generated__/MakeOfferModalQuery.graphql"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { dismissModal } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails } from "lib/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
 import { MakeOfferButtonFragmentContainer as MakeOfferButton } from "lib/Scenes/Artwork/Components/CommercialButtons/MakeOfferButton"
@@ -12,24 +13,17 @@ import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface MakeOfferModalProps {
-  toggleVisibility: () => void
-  modalIsVisible: boolean
   artwork: MakeOfferModal_artwork
 }
 
 export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
-  const { toggleVisibility, modalIsVisible, artwork } = props
+  const { artwork } = props
 
   return (
-    <View
-    // visible={modalIsVisible}
-    // onBackgroundPressed={() => {
-    //   toggleVisibility()
-    // }}
-    >
+    <View>
       <FancyModalHeader
         onLeftButtonPress={() => {
-          toggleVisibility()
+          dismissModal()
         }}
         leftButtonText="Cancel"
         rightButtonDisabled
@@ -53,7 +47,7 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
           block
           width={100}
           onPress={() => {
-            toggleVisibility()
+            dismissModal()
           }}
         >
           Cancel
@@ -76,7 +70,7 @@ export const MakeOfferModalQueryRenderer: React.FC<{
   artworkID: string
   modalIsVisible: boolean
   toggleVisibility: () => void
-}> = ({ artworkID, toggleVisibility, modalIsVisible }) => {
+}> = ({ artworkID }) => {
   return (
     <QueryRenderer<MakeOfferModalQuery>
       environment={defaultEnvironment}
@@ -91,11 +85,7 @@ export const MakeOfferModalQueryRenderer: React.FC<{
         artworkID,
       }}
       render={renderWithLoadProgress<MakeOfferModalQueryResponse>(({ artwork }) => (
-        <MakeOfferModalFragmentContainer
-          artwork={artwork!}
-          modalIsVisible={modalIsVisible}
-          toggleVisibility={toggleVisibility}
-        />
+        <MakeOfferModalFragmentContainer artwork={artwork!} />
       ))}
     />
   )
