@@ -9,7 +9,7 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useStickyScrollHeader } from "lib/utils/useStickyScrollHeader"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { Box, Flex, Separator, Spacer, Text } from "palette"
+import { Box, Flex, NoArtworkIcon, Separator, Spacer, Text, TEXT_FONTS } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import { Animated, Image, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -76,7 +76,16 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           <Text color="black60" mb={1}>
             {label}
           </Text>
-          <Text>{value}</Text>
+          <TextInput
+            editable={false}
+            value={value}
+            multiline
+            scrollEnabled={false}
+            style={{
+              fontFamily: TEXT_FONTS.sans,
+              fontSize: 14,
+            }}
+          />
         </Flex>
       ) : (
         <Flex flexDirection="row" justifyContent="space-between">
@@ -84,9 +93,19 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             {label}
           </Text>
           <Flex width="65%" pl={15}>
-            <Text pl={2} textAlign="right" testID={options?.testID}>
-              {value}
-            </Text>
+            <TextInput
+              editable={false}
+              value={value}
+              multiline
+              testID={options?.testID}
+              scrollEnabled={false}
+              style={{
+                fontFamily: TEXT_FONTS.sans,
+                fontSize: 14,
+                textAlign: "right",
+                paddingLeft: 20,
+              }}
+            />
           </Flex>
         </Flex>
       )}
@@ -153,7 +172,14 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
                 />
               </Flex>
             ) : (
-              <Box style={{ height: CONTAINER_HEIGHT, width: CONTAINER_HEIGHT }} backgroundColor="black10" />
+              <Box
+                style={{ height: CONTAINER_HEIGHT, width: CONTAINER_HEIGHT }}
+                backgroundColor="black10"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <NoArtworkIcon width={28} height={28} opacity={0.3} />
+              </Box>
             )}
             <Flex justifyContent="center" flex={1} ml={2}>
               <TouchableWithoutFeedback
