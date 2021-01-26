@@ -1,14 +1,14 @@
 import { AppModule, modules } from "lib/AppRegistry"
 import { NativeViewController } from "lib/Components/NativeViewController"
+import { NavStack } from "lib/navigation/NavStack"
 import { useSelectedTab } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Text } from "palette"
 import React, { useEffect, useRef } from "react"
 import { Animated, Platform, View } from "react-native"
 import { BottomTabs } from "./BottomTabs"
 import { BottomTabType } from "./BottomTabType"
 
-const NavStack = ({ tabName, rootModuleName }: { tabName: BottomTabType; rootModuleName: AppModule }) => {
+const TabContent = ({ tabName, rootModuleName }: { tabName: BottomTabType; rootModuleName: AppModule }) => {
   if (Platform.OS === "ios") {
     return (
       <NativeViewController
@@ -26,11 +26,7 @@ const NavStack = ({ tabName, rootModuleName }: { tabName: BottomTabType; rootMod
     throw new Error("native module not supported")
   }
 
-  return (
-    <Flex py="6" px="2">
-      <Text variant="title">This tab is called '{tabName}'</Text>
-    </Flex>
-  )
+  return <NavStack rootModuleName={rootModuleName}></NavStack>
 }
 
 export const BottomTabsNavigator = () => {
@@ -40,11 +36,11 @@ export const BottomTabsNavigator = () => {
     <View style={{ flex: 1, paddingBottom: bottom }}>
       <FadeBetween
         views={[
-          <NavStack tabName="home" rootModuleName="Home" />,
-          <NavStack tabName="search" rootModuleName="Search" />,
-          <NavStack tabName="inbox" rootModuleName="Inbox" />,
-          <NavStack tabName="sell" rootModuleName="Sales" />,
-          <NavStack tabName="profile" rootModuleName="MyProfile" />,
+          <TabContent tabName="home" rootModuleName="Home" />,
+          <TabContent tabName="search" rootModuleName="Search" />,
+          <TabContent tabName="inbox" rootModuleName="Inbox" />,
+          <TabContent tabName="sell" rootModuleName="Sales" />,
+          <TabContent tabName="profile" rootModuleName="MyProfile" />,
         ]}
         activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(selectedTab)}
       />
