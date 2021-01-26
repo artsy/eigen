@@ -32,11 +32,25 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
       <Flex height={100} py="2" px={2} flexDirection="row">
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
-          <Flex width={60} height={60} backgroundColor="black10" alignItems="center" justifyContent="center">
+          <Flex
+            width={60}
+            height={60}
+            borderRadius={2}
+            backgroundColor="black10"
+            alignItems="center"
+            justifyContent="center"
+          >
             <NoArtworkIcon width={28} height={28} opacity={0.3} />
           </Flex>
         ) : (
-          <Flex width={60} height={60} backgroundColor="black" alignItems="center" justifyContent="center">
+          <Flex
+            width={60}
+            height={60}
+            borderRadius={2}
+            backgroundColor="black"
+            alignItems="center"
+            justifyContent="center"
+          >
             <OpaqueImageView width={60} height={60} imageURL={auctionResult.images.thumbnail.url} />
           </Flex>
         )}
@@ -93,7 +107,7 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
               </Flex>
             ) : (
               <Flex alignItems="flex-end">
-                <Text variant="subtitle" fontWeight="bold" style={{ width: 70 }} textAlign="right" testID="price">
+                <Text variant="subtitle" fontWeight="bold" style={{ width: 100 }} textAlign="right" testID="price">
                   {auctionResult.boughtIn === true
                     ? "Bought in"
                     : isFromPastMonth

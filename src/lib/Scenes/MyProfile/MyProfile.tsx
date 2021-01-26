@@ -1,6 +1,7 @@
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -9,7 +10,7 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { Flex, Join, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useRef, useState } from "react"
-import { Alert, FlatList, NativeModules, RefreshControl, ScrollView } from "react-native"
+import { Alert, FlatList, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 
@@ -48,7 +49,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       <MenuItem
         title="Send feedback"
         onPress={() => {
-          NativeModules.ARScreenPresenterModule.presentEmailComposer(
+          ArtsyNativeModules.ARScreenPresenterModule.presentEmailComposer(
             "feedback@artsy.net",
             "Feedback from the Artsy app"
           )
@@ -154,7 +155,7 @@ export function confirmLogout() {
     {
       text: "Log out",
       style: "destructive",
-      onPress: () => NativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
+      onPress: () => ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
     },
   ])
 }

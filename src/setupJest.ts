@@ -327,23 +327,20 @@ jest.mock("@react-native-community/async-storage", () => {
     __resetState() {
       state = {}
     },
-    setItem(key: string, val: any) {
+    async setItem(key: string, val: any) {
       state[key] = val
-      return Promise.resolve()
     },
-    getItem(key: string) {
-      return Promise.resolve(state[key])
+    async getItem(key: string) {
+      return state[key]
     },
-    removeItem(key: string) {
+    async removeItem(key: string) {
       delete state[key]
-      return Promise.resolve()
     },
-    clear() {
+    async clear() {
       state = {}
-      return Promise.resolve()
     },
-    getAllKeys() {
-      return Promise.resolve(Object.keys(state))
+    async getAllKeys() {
+      return Object.keys(state)
     },
     mergeItem() {
       throw new Error("mock version of mergeItem not yet implemented")
@@ -354,8 +351,10 @@ jest.mock("@react-native-community/async-storage", () => {
     multiMerge() {
       throw new Error("mock version of multiMerge not yet implemented")
     },
-    multiRemove() {
-      throw new Error("mock version of multiRemove not yet implemented")
+    async multiRemove(keys: string[]) {
+      keys.forEach((k) => {
+        delete state[k]
+      })
     },
     multiSet() {
       throw new Error("mock version of multiSet not yet implemented")
@@ -365,6 +364,15 @@ jest.mock("@react-native-community/async-storage", () => {
 
 jest.mock("react-native-localize", () => ({
   getCountry: jest.fn(() => "US"),
+  getLocales() {
+    return [
+      { countryCode: "US", languageTag: "en-US", languageCode: "en", isRTL: false },
+      { countryCode: "FR", languageTag: "fr-FR", languageCode: "fr", isRTL: false },
+    ]
+  },
+  getTimeZone() {
+    return "America/New_York"
+  },
 }))
 
 jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
@@ -413,14 +421,14 @@ jest.mock("react-native-gesture-handler", () => {
 })
 
 jest.mock("react-native-config", () => ({
-  ARTSY_API_CLIENT_SECRET: "-",
-  ARTSY_API_CLIENT_KEY: "-",
-  ARTSY_FACEBOOK_APP_ID: "-",
-  SEGMENT_PRODUCTION_WRITE_KEY: "-",
-  SEGMENT_STAGING_WRITE_KEY: "-",
-  SENTRY_PRODUCTION_DSN: "-",
-  SENTRY_STAGING_DSN: "-",
-  GOOGLE_MAPS_API_KEY: "-",
-  MAPBOX_API_CLIENT_KEY: "-",
-  SAILTHRU_KEY: "-",
+  ARTSY_API_CLIENT_SECRET: "artsy_api_client_secret",
+  ARTSY_API_CLIENT_KEY: "artsy_api_client_key",
+  ARTSY_FACEBOOK_APP_ID: "artsy_facebook_app_id",
+  SEGMENT_PRODUCTION_WRITE_KEY: "segment_production_write_key",
+  SEGMENT_STAGING_WRITE_KEY: "segment_staging_write_key",
+  SENTRY_PRODUCTION_DSN: "sentry_production_dsn",
+  SENTRY_STAGING_DSN: "sentry_staging_dsn",
+  GOOGLE_MAPS_API_KEY: "google_maps_api_key",
+  MAPBOX_API_CLIENT_KEY: "mapbox_api_client_key",
+  SAILTHRU_KEY: "sailthru_key",
 }))

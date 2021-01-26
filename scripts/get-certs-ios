@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
+bundle exec match appstore

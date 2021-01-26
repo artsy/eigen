@@ -6,12 +6,13 @@ import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import Notification from "lib/Components/WorksForYou/Notification"
 import { PAGE_SIZE } from "lib/data/constants"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Box, Flex, Separator } from "palette"
 import React from "react"
-import { FlatList, NativeModules, RefreshControl } from "react-native"
+import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { postEvent } from "../NativeModules/Events"
 
@@ -39,8 +40,7 @@ export class WorksForYou extends React.Component<Props, State> {
 
   componentDidMount() {
     // Update read status in gravity
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    NativeModules.ARTemporaryAPIModule.markNotificationsRead((error) => {
+    ArtsyNativeModules.ARTemporaryAPIModule.markNotificationsRead((error) => {
       if (error) {
         console.warn(error)
       } else {

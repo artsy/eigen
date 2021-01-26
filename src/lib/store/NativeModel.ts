@@ -1,7 +1,7 @@
 import { Action, action, Thunk, thunk } from "easy-peasy"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { NotificationsManager } from "lib/NativeModules/NotificationsManager"
 import { navigate } from "lib/navigation/navigate"
-import { NativeModules } from "react-native"
 import { GlobalStore } from "./GlobalStore"
 
 // These should match the values in emission/Pod/Classes/EigenCommunications/ARNotificationsManager.m
@@ -73,12 +73,12 @@ export interface NativeModel {
 }
 
 export const NativeModel: NativeModel = {
-  sessionState: NativeModules.ARNotificationsManager.nativeState,
+  sessionState: ArtsyNativeModules.ARNotificationsManager?.nativeState ?? {},
   setLocalState: action((state, nextNativeState) => {
     Object.assign(state.sessionState, nextNativeState)
   }),
   setApplicationIconBadgeNumber: thunk((_actions, count) => {
-    NativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber(count)
+    ArtsyNativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber(count)
   }),
 }
 

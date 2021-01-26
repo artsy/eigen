@@ -1,18 +1,21 @@
 import { AuctionResultQuery, AuctionResultQueryResponse } from "__generated__/AuctionResultQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ratioColor } from "lib/Components/Lists/AuctionResult"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useStickyScrollHeader } from "lib/utils/useStickyScrollHeader"
+import { capitalize } from "lodash"
 import moment from "moment"
-import { Box, Flex, Separator, Spacer, Text } from "palette"
-import React, { useCallback } from "react"
-import { Animated, Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
+import { Box, Flex, NoArtworkIcon, Separator, Spacer, Text, TEXT_FONTS } from "palette"
+import React, { useCallback, useEffect, useState } from "react"
+import { Animated, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import { getImageDimensions } from "../Sale/Components/SaleArtworkListItem"
+
+const CONTAINER_HEIGHT = 80
 
 interface Props {
   artist: AuctionResultQueryResponse["artist"]
@@ -20,6 +23,19 @@ interface Props {
 }
 
 const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
+  const [imageHeight, setImageHeight] = useState<number>(0)
+  const [imageWidth, setImageWidth] = useState<number>(0)
+
+  useEffect(() => {
+    if (auctionResult?.images?.thumbnail?.url) {
+      Image.getSize(auctionResult.images.thumbnail.url, (width, height) => {
+        const imageDimensions = getImageDimensions(height, width, CONTAINER_HEIGHT)
+        setImageHeight(imageDimensions.height)
+        setImageWidth(imageDimensions.width)
+      })
+    }
+  }, [])
+
   const { headerElement, scrollProps } = useStickyScrollHeader({
     header: (
       <Flex flex={1} pl={6} pr={4} pt={0.5} flexDirection="row">
@@ -59,15 +75,36 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           <Text color="black60" mb={1}>
             {label}
           </Text>
-          <Text>{value}</Text>
+          <TextInput
+            editable={false}
+            value={value}
+            multiline
+            scrollEnabled={false}
+            style={{
+              fontFamily: TEXT_FONTS.sans,
+              fontSize: 14,
+            }}
+          />
         </Flex>
       ) : (
         <Flex flexDirection="row" justifyContent="space-between">
-          <Text color="black60">{label}</Text>
-          <Flex maxWidth="80%">
-            <Text pl={2} textAlign="right" testID={options?.testID}>
-              {value}
-            </Text>
+          <Text style={{ width: "35%" }} color="black60">
+            {label}
+          </Text>
+          <Flex width="65%" pl={15}>
+            <TextInput
+              editable={false}
+              value={value}
+              multiline
+              testID={options?.testID}
+              scrollEnabled={false}
+              style={{
+                fontFamily: TEXT_FONTS.sans,
+                fontSize: 14,
+                textAlign: "right",
+                paddingLeft: 20,
+              }}
+            />
           </Flex>
         </Flex>
       )}
@@ -78,7 +115,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     stats.push(makeRow("Estimate range", `${estimate.display} ${currency}`))
   }
   if (auctionResult?.mediumText) {
-    stats.push(makeRow("Medium", auctionResult.mediumText))
+    stats.push(makeRow("Medium", capitalize(auctionResult.mediumText)))
   }
   if (auctionResult?.dimensionText) {
     stats.push(makeRow("Dimensions", auctionResult.dimensionText))
@@ -116,13 +153,28 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
         <FancyModalHeader hideBottomDivider />
         <Box px={2} pb={4}>
           <Flex mt={1} mb={4} style={{ flexDirection: "row" }}>
-            {!!auctionResult?.images?.thumbnail?.url ? (
-              <OpaqueImageView width={60} height={80} imageURL={auctionResult?.images?.thumbnail?.url} />
+            {!!auctionResult?.images?.thumbnail?.url && !!imageHeight && !!imageWidth ? (
+              <Flex height={CONTAINER_HEIGHT} width={CONTAINER_HEIGHT} justifyContent="center">
+                <Image
+                  style={{ height: imageHeight, width: imageWidth }}
+                  source={{ uri: auctionResult?.images?.thumbnail?.url }}
+                />
+              </Flex>
             ) : (
-              <Box style={{ height: 80, width: 60 }} backgroundColor="black10" />
+              <Box
+                style={{ height: CONTAINER_HEIGHT, width: CONTAINER_HEIGHT }}
+                backgroundColor="black10"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <NoArtworkIcon width={28} height={28} opacity={0.3} />
+              </Box>
             )}
             <Flex justifyContent="center" flex={1} ml={2}>
-              <TouchableWithoutFeedback onPress={() => artist?.href && navigate(artist.href)}>
+              <TouchableWithoutFeedback
+                onPress={() => artist?.href && navigate(artist.href)}
+                hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+              >
                 <Text variant="mediumText">{artist?.name}</Text>
               </TouchableWithoutFeedback>
               <Text variant="title">
@@ -248,8 +300,8 @@ const LoadingSkeleton = () => {
   for (let i = 0; i < 8; i++) {
     stats.push(
       <Flex flexDirection="row" justifyContent="space-between" mb={2} key={i}>
-        <PlaceholderBox width={80 + Math.round(Math.random() * 80)} height={20} />
-        <PlaceholderBox width={80 + Math.round(Math.random() * 80)} height={20} />
+        <PlaceholderBox width={CONTAINER_HEIGHT + Math.round(Math.random() * CONTAINER_HEIGHT)} height={20} />
+        <PlaceholderBox width={CONTAINER_HEIGHT + Math.round(Math.random() * CONTAINER_HEIGHT)} height={20} />
       </Flex>
     )
   }
@@ -259,7 +311,7 @@ const LoadingSkeleton = () => {
 
       <Flex flexDirection="row">
         {/* Image */}
-        <PlaceholderBox width={60} height={80} />
+        <PlaceholderBox width={CONTAINER_HEIGHT} height={CONTAINER_HEIGHT} />
         <Flex ml={2} mt={1}>
           {/* Artist name */}
           <PlaceholderBox width={100} height={20} />

@@ -1,7 +1,7 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { Box, Spacer, Text } from ".."
-import { space } from "../../helpers"
+import { space } from "../../Theme"
 import { BoxProps } from "../Box"
 import { CardTag, CardTagProps } from "./CardTag"
 

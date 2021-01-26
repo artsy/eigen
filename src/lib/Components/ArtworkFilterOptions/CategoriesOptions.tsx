@@ -71,9 +71,6 @@ export const CategoriesOptionsScreen: React.FC<ArtistIDsArtworksOptionsScreenPro
 
     setSelectedOptions(updatedParamValue)
 
-    console.log("=======")
-    console.log(updatedParamValue)
-
     dispatch({
       type: "selectFilters",
       payload: {

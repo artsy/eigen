@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+./scripts/distribute-ios
+./scripts/distribute-android

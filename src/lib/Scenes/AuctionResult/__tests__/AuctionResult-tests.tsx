@@ -3,7 +3,7 @@ import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { ScrollView } from "react-native"
+import { Image, ScrollView } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
 import { AuctionResultQueryRenderer } from "../AuctionResult"
 
@@ -26,6 +26,10 @@ describe("AuctionResult", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    const getSizeMock = jest.spyOn(Image, "getSize")
+    getSizeMock.mockImplementation(() => {
+      /* do nothing */
+    })
   })
 
   it("renders without throwing an error", () => {

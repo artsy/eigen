@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+source ./scripts/source-for-bash-env
+
+git push origin "$LOCAL_BRANCH:beta-ios" -f --no-verify

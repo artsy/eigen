@@ -1,4 +1,4 @@
-import { NativeEventEmitter, NativeModules } from "react-native"
-const { ARNotificationsManager } = NativeModules
+import { NativeEventEmitter } from "react-native"
+import { ArtsyNativeModules } from "./ArtsyNativeModules"
 
-export const NotificationsManager = new NativeEventEmitter(ARNotificationsManager as any)
+export const NotificationsManager = new NativeEventEmitter(ArtsyNativeModules.ARNotificationsManager as any)

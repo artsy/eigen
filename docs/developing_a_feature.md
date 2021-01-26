@@ -52,7 +52,7 @@ What do we mean when we say "a new feature should be **put behind** a lab option
 
 ```diff
 
-  NativeModules.ARNotificationsManager = {
+  ArtsyNativeModules.ARNotificationsManager = {
     nativeState: {
       options: {
         AROptionsEnableMyCollection: false,
@@ -93,7 +93,7 @@ When it comes time to release to users you will need to replace your lab option 
 
 Any code on the Emission (React Native) side using your option can stay the same if the option still has the same name.
 
-If you make Echo changes, you can update the local bundled copy of the echo settings by running `make update_echo` in Eigen. This is done automatically when running `pod install`.
+If you make Echo changes, you can update the local bundled copy of the echo settings by running `./scripts/update-echo` in Eigen. This is done automatically when running `pod install`.
 
 ## QAing
 

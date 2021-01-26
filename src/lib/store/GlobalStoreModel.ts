@@ -1,8 +1,10 @@
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { BottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
 import { MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
 import { SearchModel } from "lib/Scenes/Search/SearchModel"
-import { NativeModules } from "react-native"
+import { AuthModel } from "./AuthModel"
+import { ConfigModel } from "./ConfigModel"
 import { CURRENT_APP_VERSION } from "./migration"
 import { NativeModel } from "./NativeModel"
 import { assignDeep } from "./persistence"
@@ -18,6 +20,8 @@ interface GlobalStoreStateModel {
   bottomTabs: BottomTabsModel
   search: SearchModel
   myCollection: MyCollectionModel
+  config: ConfigModel
+  auth: AuthModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
@@ -44,7 +48,7 @@ export const GlobalStoreModel: GlobalStoreModel = {
   didRehydrate: thunkOn(
     (actions) => actions.rehydrate,
     () => {
-      NativeModules.ARNotificationsManager.didFinishBootstrapping()
+      ArtsyNativeModules.ARNotificationsManager.didFinishBootstrapping()
     }
   ),
   sessionState: {
@@ -59,6 +63,8 @@ export const GlobalStoreModel: GlobalStoreModel = {
   bottomTabs: BottomTabsModel,
   search: SearchModel,
   myCollection: MyCollectionModel,
+  config: ConfigModel,
+  auth: AuthModel,
 }
 
 export type GlobalStoreState = State<GlobalStoreModel>

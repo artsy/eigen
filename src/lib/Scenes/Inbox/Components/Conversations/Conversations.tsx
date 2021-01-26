@@ -22,17 +22,18 @@ interface Props {
   relay: RelayPaginationProp
   headerView?: JSX.Element
   onRefresh?: () => any
+  isActiveTab: boolean
 }
 
 type Item = NonNullable<NonNullable<NonNullable<Conversations_me["conversations"]>["edges"]>[0]>["node"]
 
 // @track()
-export const Conversations: React.FC<Props> = React.forwardRef((props) => {
+export const Conversations: React.FC<Props> = (props) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isFetching, setIsFetching] = React.useState<boolean>(false)
   const { trackEvent } = useTracking()
 
-  const { relay } = props
+  const { relay, isActiveTab } = props
 
   const fetchData = () => {
     if (relay.hasMore() && !relay.isLoading()) {
@@ -47,23 +48,18 @@ export const Conversations: React.FC<Props> = React.forwardRef((props) => {
     }
   }
 
-  const refreshConversations = (callback?: () => void) => {
+  const refreshConversations = (withSpinner: boolean = false) => {
     if (!relay.isLoading()) {
-      setIsFetching(true)
+      if (withSpinner) {
+        setIsFetching(true)
+      }
       relay.refetchConnection(PAGE_SIZE, (error) => {
         if (error) {
           console.error("Conversations/index.tsx #refreshConversations", error.message)
           // FIXME: Handle error
         }
-        if (callback) {
-          callback()
-        }
         setIsFetching(false)
       })
-    } else {
-      if (callback) {
-        callback()
-      }
     }
   }
 
@@ -83,6 +79,12 @@ export const Conversations: React.FC<Props> = React.forwardRef((props) => {
       navigate(`conversation/${item?.internalID}`)
     }
   }
+
+  React.useEffect(() => {
+    if (isActiveTab) {
+      refreshConversations()
+    }
+  }, [isActiveTab])
 
   const conversations = extractNodes(props.me.conversations)
 
@@ -105,7 +107,7 @@ export const Conversations: React.FC<Props> = React.forwardRef((props) => {
           <RefreshControl
             refreshing={isFetching}
             onRefresh={() => {
-              refreshConversations()
+              refreshConversations(true)
             }}
           />
         }
@@ -126,7 +128,7 @@ export const Conversations: React.FC<Props> = React.forwardRef((props) => {
       )}
     </View>
   )
-})
+}
 
 /* @track()
 

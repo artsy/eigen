@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+source ./scripts/source-for-bash-env
+
+if [ "${LOCAL_BRANCH}" != "beta-ios" ] && [ "${LOCAL_BRANCH}" != "app_store_submission" ]; then
+	./scripts/build-for-tests-ios
+else
+	echo "Skipping test build on beta deploy."
+fi

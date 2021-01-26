@@ -1,9 +1,10 @@
 import { ScrollableTab } from "lib/Components/ScrollableTabBar"
 import TabBar from "lib/Components/TabBar"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { Box, Button, color, Flex, Sans, Theme } from "palette"
 import React, { Component } from "react"
-import { NativeModules, View } from "react-native"
+import { View } from "react-native"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import ScrollableTabView from "react-native-scrollable-tab-view"
 import { RelayProp } from "react-relay"
@@ -80,7 +81,7 @@ export class CityView extends Component<Props, State> {
         sponsoredContent,
       },
       () => {
-        NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryQueryResponseReceived", {})
+        ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryQueryResponseReceived", {})
       }
     )
   }
@@ -88,7 +89,7 @@ export class CityView extends Component<Props, State> {
   handleError = ({ relayErrorState }: { relayErrorState: RelayErrorState }) => {
     // We have a Relay error; post a notification so that the ARMapContainerViewController can finalize the native UI (ie: show the drawer partially).
     this.setState({ relayErrorState }, () => {
-      NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryQueryResponseReceived", {})
+      ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryQueryResponseReceived", {})
     })
   }
 
@@ -105,7 +106,7 @@ export class CityView extends Component<Props, State> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   setSelectedTab(selectedTab) {
     EventEmitter.dispatch("filters:change", selectedTab.i)
-    NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
+    ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
   }
 
   @track((__, _, args) => {
@@ -165,7 +166,7 @@ export class CityView extends Component<Props, State> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   onScrollViewLayout = (layout) => {
     this.scrollViewVerticalStart = layout.nativeEvent.layout.y
-    NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
+    ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
   }
 
   render() {

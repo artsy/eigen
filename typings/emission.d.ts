@@ -9,7 +9,7 @@ declare module "react-native" {
       appVersion: string
       requestNotificationPermissions(): void
       fetchNotificationPermissions(callback: (error: any, result: PushAuthorizationStatus) => void): void
-      markNotificationsRead(): void
+      markNotificationsRead(callback: (error?: Error) => any): void
       setApplicationIconBadgeNumber(n: number): void
       validateAuthCredentialsAreCorrect(): void
     }

@@ -141,6 +141,9 @@ describe("availableTabs", () => {
         return {
           has_metadata: true,
           counts: { articles: 1, related_artists: 0, artworks: 1, partner_shows: 1 },
+          auctionResultsConnection: {
+            totalCount: 10,
+          },
         }
       },
     })
@@ -149,6 +152,27 @@ describe("availableTabs", () => {
     expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(1)
     expect(tree.root.findAllByType(ArtistShows)).toHaveLength(0)
     expect(tree.root.findAllByType(ArtistInsights)).toHaveLength(1)
+  })
+
+  it("Hide Artist insights tab when AROptionsNewInsightsPage is true and there are no auction results", async () => {
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewInsightsPage: true })
+    const tree = renderWithWrappers(<TestWrapper />)
+    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
+      Artist() {
+        return {
+          has_metadata: true,
+          counts: { articles: 1, related_artists: 0, artworks: 1, partner_shows: 1 },
+          auctionResultsConnection: {
+            totalCount: 0,
+          },
+        }
+      },
+    })
+    expect(tree.root.findAllByType(ArtistArtworks)).toHaveLength(1)
+    mockMostRecentOperation("ArtistBelowTheFoldQuery")
+    expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtistShows)).toHaveLength(0)
+    expect(tree.root.findAllByType(ArtistInsights)).toHaveLength(0)
   })
 
   it("tracks a page view", () => {

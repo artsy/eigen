@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+./scripts/setup-distribute-linux
+
+aws s3 cp s3://artsy-citadel/eigen/release.keystore android/app/release.keystore
+aws s3 cp s3://artsy-citadel/eigen/android-secret.json android-secret.json
+
+bundle exec fastlane ship_beta_android

@@ -1,8 +1,9 @@
 import { LinkText } from "lib/Components/Text/LinkText"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
 import React from "react"
-import { NativeModules, View } from "react-native"
+import { View } from "react-native"
 
 export class PrivacyRequest extends React.Component {
   render() {
@@ -28,7 +29,7 @@ export class PrivacyRequest extends React.Component {
               To submit a personal data request tap the button below or email{" "}
               <LinkText
                 onPress={() =>
-                  NativeModules.ARScreenPresenterModule.presentEmailComposer(
+                  ArtsyNativeModules.ARScreenPresenterModule.presentEmailComposer(
                     "privacy@artsy.net",
                     "Personal Data Request"
                   )
@@ -43,7 +44,7 @@ export class PrivacyRequest extends React.Component {
               size="large"
               mt={1}
               onPress={() =>
-                NativeModules.ARScreenPresenterModule.presentEmailComposer(
+                ArtsyNativeModules.ARScreenPresenterModule.presentEmailComposer(
                   "privacy@artsy.net",
                   "Personal Data Request",
                   "Hello, I'm contacting you to ask that..."
