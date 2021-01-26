@@ -173,6 +173,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
       content: below ? (
         <SaleLotsListContainer
           saleArtworksConnection={below}
+          unfilteredSaleArtworksConnection={below.unfilteredSaleArtworksConnection}
           saleID={sale.internalID}
           saleSlug={sale.slug}
           scrollToTop={scrollToTop}
@@ -355,6 +356,12 @@ export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayMo
                 # query SaleBelowTheFoldQuery($saleID: String!, $saleSlug: ID!) {
                 query SaleBelowTheFoldQuery($saleID: ID) {
                   ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleID)
+                  unfilteredSaleArtworksConnection: saleArtworksConnection(saleID: $saleID, aggregations: [TOTAL]) {
+                    ...SaleLotsList_unfilteredSaleArtworksConnection
+                    counts {
+                      total
+                    }
+                  }
                 }
               `,
               variables: { saleID },

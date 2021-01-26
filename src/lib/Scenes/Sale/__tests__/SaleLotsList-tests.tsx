@@ -34,6 +34,7 @@ describe("SaleLotsListContainer", () => {
             <ArtworkFilterContext.Provider value={{ state: getState(viewAs), dispatch: jest.fn() }}>
               <SaleLotsListContainer
                 saleArtworksConnection={props}
+                unfilteredSaleArtworksConnection={null as any}
                 saleID="sale-id"
                 saleSlug="sale-slug"
                 scrollToTop={jest.fn()}
