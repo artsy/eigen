@@ -7,7 +7,7 @@ import { navigate } from "lib/navigation/navigate"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, Flex, Separator, Text } from "palette"
+import { Box, bullet, Flex, Separator, Text } from "palette"
 import React, { useCallback, useContext, useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -96,6 +96,21 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
     })
   }, [])
 
+  const getListHeaderComponent = () => {
+    const resultsString = Number(artist.auctionResultsConnection?.totalCount) > 1 ? "results" : "result"
+
+    return (
+      <Flex px={2}>
+        <Text variant="title">Auction results</Text>
+        <SortMode variant="small" color="black60">
+          {artist.auctionResultsConnection?.totalCount} {resultsString} {bullet} Sorted by{" "}
+          {getSortDescription()?.toLowerCase()}
+        </SortMode>
+        <Separator mt="2" />
+      </Flex>
+    )
+  }
+
   if (!auctionResults.length) {
     return (
       <Box my="80px">
@@ -114,15 +129,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
           onPress={() => navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)}
         />
       )}
-      ListHeaderComponent={() => (
-        <Flex px={2}>
-          <Text variant="title">Auction results</Text>
-          <SortMode variant="small" color="black60">
-            Sorted by {getSortDescription()?.toLowerCase()}
-          </SortMode>
-          <Separator mt="2" />
-        </Flex>
-      )}
+      ListHeaderComponent={getListHeaderComponent}
       ItemSeparatorComponent={() => (
         <Flex px={2}>
           <Separator />
@@ -170,6 +177,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
             startAt
             endAt
           }
+          totalCount
           edges {
             node {
               id
