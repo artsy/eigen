@@ -630,7 +630,6 @@ DEPENDENCIES:
   - react-native-config (from `node_modules/react-native-config`)
   - "react-native-geolocation (from `node_modules/@react-native-community/geolocation`)"
   - "react-native-mapbox-gl (from `node_modules/@react-native-mapbox-gl/maps`)"
-  - react-native-navigator-ios (from `node_modules/react-native-navigator-ios`)
   - "react-native-netinfo (from `node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `node_modules/react-native-safe-area-context`)
   - react-native-webview (from `node_modules/react-native-webview`)
