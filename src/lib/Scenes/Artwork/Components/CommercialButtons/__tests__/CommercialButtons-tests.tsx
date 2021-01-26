@@ -218,7 +218,12 @@ describe("CommercialButtons", () => {
     MakeOfferButton.props().onPress()
     await flushPromiseQueue()
 
-    expect(navigate).toHaveBeenCalledWith("/orders/makeOfferID", { modal: true })
+    expect(navigate).toHaveBeenCalledWith("/checkout/makeOfferID", {
+      modal: true,
+      passProps: {
+        artworkID: "makeOfferID",
+      },
+    })
   })
 
   it("renders both Buy Now and Bid buttons when isInAuction and isBuyNowable", async () => {
