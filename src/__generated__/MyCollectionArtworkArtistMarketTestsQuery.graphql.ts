@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 91b95c29d773ab51622c8d8118c8d6ff */
+/* @relayHash 4575cdd56c9ec76902c7463ec596f3fb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,7 +29,6 @@ query MyCollectionArtworkArtistMarketTestsQuery {
   }
   marketPriceInsights(artistId: "some-artist-id", medium: "painting") {
     ...MyCollectionArtworkArtistMarket_marketPriceInsights
-    id
   }
 }
 
@@ -69,19 +68,12 @@ v1 = [
   }
 ],
 v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v3 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v4 = {
+v3 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -158,7 +150,13 @@ return {
             "name": "slug",
             "storageKey": null
           },
-          (v2/*: any*/)
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "id",
+            "storageKey": null
+          }
         ],
         "storageKey": "artwork(id:\"foo\")"
       },
@@ -211,15 +209,14 @@ return {
             "kind": "ScalarField",
             "name": "demandTrend",
             "storageKey": null
-          },
-          (v2/*: any*/)
+          }
         ],
         "storageKey": "marketPriceInsights(artistId:\"some-artist-id\",medium:\"painting\")"
       }
     ]
   },
   "params": {
-    "id": "91b95c29d773ab51622c8d8118c8d6ff",
+    "id": "4575cdd56c9ec76902c7463ec596f3fb",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -228,9 +225,9 @@ return {
           "plural": false,
           "type": "Artwork"
         },
-        "artwork.id": (v3/*: any*/),
-        "artwork.internalID": (v3/*: any*/),
-        "artwork.slug": (v3/*: any*/),
+        "artwork.id": (v2/*: any*/),
+        "artwork.internalID": (v2/*: any*/),
+        "artwork.slug": (v2/*: any*/),
         "marketPriceInsights": {
           "enumValues": null,
           "nullable": true,
@@ -249,11 +246,10 @@ return {
           "plural": false,
           "type": "BigInt"
         },
-        "marketPriceInsights.demandTrend": (v4/*: any*/),
-        "marketPriceInsights.id": (v3/*: any*/),
-        "marketPriceInsights.liquidityRank": (v4/*: any*/),
-        "marketPriceInsights.medianSaleToEstimateRatio": (v4/*: any*/),
-        "marketPriceInsights.sellThroughRate": (v4/*: any*/)
+        "marketPriceInsights.demandTrend": (v3/*: any*/),
+        "marketPriceInsights.liquidityRank": (v3/*: any*/),
+        "marketPriceInsights.medianSaleToEstimateRatio": (v3/*: any*/),
+        "marketPriceInsights.sellThroughRate": (v3/*: any*/)
       }
     },
     "name": "MyCollectionArtworkArtistMarketTestsQuery",

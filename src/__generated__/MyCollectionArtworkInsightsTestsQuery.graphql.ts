@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b7dbb3f26482c35111e26139b5172ad5 */
+/* @relayHash 481f2e29dd796c37536c1f653f13e86d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,7 +29,6 @@ query MyCollectionArtworkInsightsTestsQuery {
   }
   marketPriceInsights(artistId: "some-artist-id", medium: "painting") {
     ...MyCollectionArtworkInsights_marketPriceInsights
-    id
   }
 }
 
@@ -813,15 +812,14 @@ return {
             "kind": "ScalarField",
             "name": "demandTrend",
             "storageKey": null
-          },
-          (v3/*: any*/)
+          }
         ],
         "storageKey": "marketPriceInsights(artistId:\"some-artist-id\",medium:\"painting\")"
       }
     ]
   },
   "params": {
-    "id": "b7dbb3f26482c35111e26139b5172ad5",
+    "id": "481f2e29dd796c37536c1f653f13e86d",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -955,7 +953,6 @@ return {
         "marketPriceInsights.demandRank": (v10/*: any*/),
         "marketPriceInsights.demandTrend": (v10/*: any*/),
         "marketPriceInsights.highRangeCents": (v12/*: any*/),
-        "marketPriceInsights.id": (v7/*: any*/),
         "marketPriceInsights.largeHighRangeCents": (v12/*: any*/),
         "marketPriceInsights.largeLowRangeCents": (v12/*: any*/),
         "marketPriceInsights.largeMidRangeCents": (v12/*: any*/),
