@@ -1,6 +1,6 @@
 import React from "react"
-import { color } from "../../helpers"
 import { styledWrapper } from "../../platform/primitives"
+import { color } from "../../Theme"
 import { SansSize } from "../../Theme"
 import { Flex, FlexProps } from "../Flex"
 import { Sans } from "../Typography"

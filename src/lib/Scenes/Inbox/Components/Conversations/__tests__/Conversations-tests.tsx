@@ -29,7 +29,7 @@ describe("messaging inbox", () => {
       variables={{}}
       render={({ error, props }) => {
         if (props?.me) {
-          return <ConversationsContainer me={props.me} />
+          return <ConversationsContainer isActiveTab={true} me={props.me} />
         } else if (error) {
           console.error(error)
         }

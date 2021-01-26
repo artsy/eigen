@@ -1,6 +1,6 @@
 import React from "react"
 import { EMaskUnits } from "react-native-svg"
-import { color } from "../../helpers"
+import { color } from "../../Theme"
 import { Circle, Icon, IconProps, Mask, Path, Rect } from "../Icon"
 
 /** StarCircleFill */

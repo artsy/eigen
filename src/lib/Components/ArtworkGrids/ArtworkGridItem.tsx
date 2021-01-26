@@ -2,11 +2,13 @@ import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
 import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
+import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { getUrgencyTag } from "lib/utils/getUrgencyTag"
 import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
 import { Box, Flex, Sans, Spacer } from "palette"
 import { Touchable } from "palette"
-import React, { useRef } from "react"
+import React, { useContext, useRef } from "react"
 import { StyleSheet, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -48,6 +50,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const itemRef = useRef<any>()
   const tracking = useTracking()
 
+  const filterContext = useContext(ArtworkFilterContext)
+  const filterParams = filterArtworksParams(filterContext?.state?.appliedFilters)
+
   const handleTap = () => {
     trackArtworkTap()
     onPress && artwork.slug ? onPress(artwork.slug) : navigate(artwork.href!)
@@ -63,6 +68,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
         contextScreenOwnerSlug,
         destinationScreenOwnerId: artwork.internalID,
         destinationScreenOwnerSlug: artwork.slug,
+        position: itemIndex,
+        // This is always a string; types are incorrect
+        sort: String(filterParams?.sort),
       })
 
       trackTap ? trackTap(artwork.slug, itemIndex) : tracking.trackEvent(genericTapEvent)

@@ -1,4 +1,4 @@
-import { NativeModules } from "react-native"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { GraphQLResponseErrors, MiddlewareNextFn, RelayNetworkLayerResponse } from "react-relay-network-modern/node8"
 import { checkAuthenticationMiddleware } from "../checkAuthenticationMiddleware"
 import { GraphQLRequest } from "../types"
@@ -21,7 +21,7 @@ describe(checkAuthenticationMiddleware, () => {
 
     const next: MiddlewareNextFn = () => Promise.resolve(relayResponse)
     await middleware(next)(request)
-    expect(NativeModules.ARTemporaryAPIModule.validateAuthCredentialsAreCorrect).toBeCalled()
+    expect(ArtsyNativeModules.ARTemporaryAPIModule.validateAuthCredentialsAreCorrect).toBeCalled()
   })
 
   it("passes through if there is no errors", async () => {

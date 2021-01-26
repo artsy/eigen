@@ -1,8 +1,8 @@
 // @ts-ignore
 import React from "react"
 import { border, BorderProps, space as styledSpace, SpaceProps } from "styled-system"
-import { color, space } from "../../helpers"
 import { styledWrapper } from "../../platform/primitives"
+import { color, space } from "../../Theme"
 import { Flex, FlexProps } from "../Flex"
 
 export interface BorderBoxProps extends FlexProps, BorderProps, SpaceProps {

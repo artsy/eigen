@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+source ./scripts/source-for-bash-env
+
+if [ "${LOCAL_BRANCH}" == "beta-android" ]; then
+	./scripts/distribute-android
+fi

@@ -2,7 +2,7 @@
 
 ## Installation Issues
 
-- Failed `make artsy` with
+- Failed `./scripts/setup-env-for-artsy` with
 
 ```
   You will need to run:
@@ -36,9 +36,9 @@ bundle exec pod update tipsi-stripe
   xcrun: error: SDK "iphoneos" cannot be located
 ```
 
-You need to go to Xcode -> Prreferences -> Locations and select Command Line Tools from the dropdown
+You need to go to Xcode -> Preferences -> Locations and select Command Line Tools from the dropdown
 
-- Failed `make artsy` with
+- Failed `./scripts/setup-env-for-artsy` with
 
 ```
 [!] CocoaPods could not find compatible versions for pod "glog":

@@ -117,7 +117,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v3-gems-{{ checksum "Gemfile.lock" }}
+            - v4-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
       - run:
           name: Bundle install
           command: bundle check || bundle install
@@ -125,7 +125,7 @@ commands:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
       - save_cache:
-          key: v3-gems-{{ checksum "Gemfile.lock" }}
+          key: v4-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
           paths:
             - vendor/bundle
   install-cocoapods:
@@ -138,7 +138,7 @@ commands:
           command: bundle exec pod check --ignore-dev-pods || bundle exec pod install
       - run:
           name: Update echo
-          command: ls Artsy/App/EchoNew.json || make update_echo
+          command: ls Artsy/App/EchoNew.json || ./scripts/update-echo
       - save_cache:
           key: v9-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
@@ -146,18 +146,32 @@ commands:
             # this changes after pod install because we don't instal dev tools on CI
             # so we save it to the cache to avoid comparison errors with Pods/Manifest.lock
             - Podfile.lock
-  build-app:
+  build-app-ios:
     steps:
       - restore_cache:
           keys:
-            - v9-app_build-{{ checksum ".manifests/app_build" }}
+            - v2-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Build App
-          command: ls derived_data || make ci
+          command: ls derived_data || ./scripts/ci-ios
       - save_cache:
-          key: v9-app_build-{{ checksum ".manifests/app_build" }}
+          key: v2-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
+            - node_modules/react-native-config
+  build-app-android:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-app_build_android-{{ checksum ".manifests/app_build" }}
+      - run:
+          name: Build App
+          command: ./scripts/ci-android
+      - save_cache:
+          key: v1-app_build_android-{{ checksum ".manifests/app_build" }}
+          paths:
+            - android/build
+            - android/app/build
             - node_modules/react-native-config
 
 jobs:
@@ -173,10 +187,10 @@ jobs:
       - install-node
       - run:
           name: Notify if new developer agreement
-          command: make notify_if_new_license_agreement
+          command: ./scripts/notify-if-new-license-agreement
       - run:
           name: Deploy beta
-          command: make deploy
+          command: ./scripts/deploy-both
 
   update-metaphysics:
     executor:
@@ -237,9 +251,8 @@ jobs:
             - .manifests
             - emission/Pod/Assets
 
-  build-test-app:
+  build-test-app-ios:
     environment:
-      UPLOAD_IOS_SNAPSHOT_BUCKET_NAME: eigen-ci
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
 
     macos:
@@ -256,7 +269,7 @@ jobs:
       - run:
           name: Quit early if possible
           command: |
-            if test $CIRCLE_BRANCH != beta && ls xcode_test_raw.log
+            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
             then
               circleci step halt
             fi
@@ -277,10 +290,10 @@ jobs:
       - install-node-modules
       - install-gems
       - install-cocoapods
-      - build-app
+      - build-app-ios
       - run:
           name: Run tests if native code has changed
-          command: ls xcode_test_raw.log || make ci-test
+          command: ls xcode_test_raw.log || ./scripts/ci-test-ios
       - save_cache:
           key: v6-test-success-{{ checksum ".manifests/native_code" }}
           paths:
@@ -302,10 +315,43 @@ jobs:
           command: bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
 
       - await-previous-builds:
-          branch: beta
+          branch: beta-ios
       - run:
           name: Deploy if beta
-          command: make deploy_if_beta_branch
+          command: ./scripts/deploy-if-beta-branch-ios
+
+  build-test-app-android:
+    environment:
+      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+
+    docker:
+      - image: circleci/android:api-29-node
+
+    steps:
+      - attach_workspace:
+          at: ../workspace
+      - run:
+          name: Clear project dir
+          command: |
+            rm -rf /Users/distiller/project
+      - checkout
+      - attach_workspace:
+          at: .
+      - install-node
+      - setup-env-file
+      - install-node-modules
+      - install-gems
+      - build-app-android
+
+      - run:
+          name: Danger
+          command: bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
+
+      - await-previous-builds:
+          branch: beta-android
+      - run:
+          name: Deploy if beta
+          command: ./scripts/deploy-if-beta-branch-android
 
   promote-beta-to-app-store:
     environment:
@@ -319,7 +365,7 @@ jobs:
           branch: app_store_submission
       - run:
           name: Promote if app_store_submission
-          command: make promote_if_app_store_submission_branch
+          command: ./scripts/promote-if-appstore-submission-branch
 
 workflows:
   version: 2
@@ -349,7 +395,8 @@ workflows:
             branches:
               ignore:
                 - master
-                - beta
+                - beta-ios
+                - beta-android
                 - app_store_submission
       - build-test-js:
           filters:
@@ -362,12 +409,23 @@ workflows:
           filters:
             branches:
               only:
-                - beta
-      - build-test-app:
+                - beta-ios
+                - beta-android
+      - build-test-app-ios:
           filters:
             branches:
               ignore:
                 - app_store_submission
+                - beta-android
+          requires:
+            - build-test-js
+            - horizon/block
+      - build-test-app-android:
+          filters:
+            branches:
+              ignore:
+                - app_store_submission
+                - beta-ios
           requires:
             - build-test-js
             - horizon/block
@@ -375,6 +433,8 @@ workflows:
           filters:
             branches:
               only:
-                - beta
+                - beta-ios
+                - beta-android
           requires:
-            - build-test-app
+            - build-test-app-ios
+            - build-test-app-android

@@ -11,6 +11,7 @@ import { capitalize, compact, forOwn, groupBy, sortBy } from "lodash"
 // General filter types and objects
 export enum FilterParamName {
   artistIDs = "artistIDs",
+  allowEmptyCreatedDates = "allowEmptyCreatedDates",
   artistsIFollow = "includeArtworksByFollowedArtists",
   categories = "categories",
   color = "color",
@@ -106,6 +107,7 @@ const DEFAULT_SHOW_ARTWORKS_PARAMS = {
 const DEFAULT_AUCTION_RESULT_PARAMS = {
   sort: "DATE_DESC",
   sizes: undefined,
+  allowEmptyCreatedDates: true,
 } as FilterParams
 
 const getDefaultParamsByType = (filterType: FilterType) => {
@@ -119,6 +121,7 @@ const getDefaultParamsByType = (filterType: FilterType) => {
 
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams, filterType: FilterType) => {
   const groupedFilters = groupBy(appliedFilters, "paramName")
+
   Object.keys(groupedFilters).forEach((paramName) => {
     const paramValues = groupedFilters[paramName].map((item) => item.paramValue)
     // If we add more filter options that can take arrays, we would include them here.

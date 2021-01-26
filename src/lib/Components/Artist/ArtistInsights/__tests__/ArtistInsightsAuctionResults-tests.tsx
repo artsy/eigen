@@ -1,4 +1,5 @@
 import { ArtistInsightsAuctionResultsTestsQuery } from "__generated__/ArtistInsightsAuctionResultsTestsQuery.graphql"
+import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { extractText } from "lib/tests/extractText"
 import { mockEdges } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -70,5 +71,18 @@ describe("ArtistInsightsAuctionResults", () => {
     expect(tree.root.findAllByType(FlatList).length).toEqual(1)
     expect(tree.root.findAllByType(AuctionResultFragmentContainer).length).toEqual(5)
     expect(extractText(tree.root.findByType(SortMode))).toBe("Sorted by most recent sale date")
+  })
+
+  it("renders FilteredArtworkGridZeroState when no auction results are available", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+    mockEnvironmentPayload(mockEnvironment, {
+      Artist: () => ({
+        auctionResultsConnection: {
+          edges: [],
+        },
+      }),
+    })
+
+    expect(tree.root.findAllByType(FilteredArtworkGridZeroState).length).toEqual(1)
   })
 })

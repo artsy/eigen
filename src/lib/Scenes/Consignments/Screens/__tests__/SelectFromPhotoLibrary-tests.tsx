@@ -1,16 +1,17 @@
 import CameraRoll from "@react-native-community/cameraroll"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { triggerCamera } from "lib/NativeModules/triggerCamera"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { Alert, Linking, NativeModules } from "react-native"
+import { Alert, Linking } from "react-native"
+import SelectFromPhotoLibrary from "../SelectFromPhotoLibrary"
 
 jest.mock("@react-native-community/cameraroll", () => ({ getPhotos: jest.fn() }))
 
-import SelectFromPhotoLibrary from "../SelectFromPhotoLibrary"
 const realAlert = Alert.alert
 const realLinking = Linking.openURL
 
 jest.mock("lib/NativeModules/triggerCamera", () => ({ triggerCamera: jest.fn() }))
-import { triggerCamera } from "lib/NativeModules/triggerCamera"
 const triggerMock = triggerCamera as jest.Mock<any>
 
 const nav = {} as any
@@ -59,7 +60,7 @@ it("adds new photo to the list, and selects it", () => {
 describe("concerning camera errors", () => {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   let alert: jest.Mock<typeof Alert.alert> = null
-  const { ARTakeCameraPhotoModule } = NativeModules
+  const { ARTakeCameraPhotoModule } = ArtsyNativeModules
 
   beforeEach(() => {
     alert = Alert.alert as any
@@ -107,7 +108,7 @@ describe("concerning camera errors", () => {
     const settingsButton = call[2][1]
     settingsButton.onPress()
     expect(Linking.openURL).toHaveBeenCalledWith(
-      NativeModules.ARCocoaConstantsModule.UIApplicationOpenSettingsURLString
+      ArtsyNativeModules.ARCocoaConstantsModule.UIApplicationOpenSettingsURLString
     )
   })
 

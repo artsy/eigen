@@ -4,7 +4,7 @@ import LinearGradient from "react-native-linear-gradient"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Flex, Sans, Spacer } from ".."
-import { color, space } from "../../helpers"
+import { color, space } from "../../Theme"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface LargeCardProps {

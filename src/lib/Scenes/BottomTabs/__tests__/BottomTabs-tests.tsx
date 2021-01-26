@@ -1,10 +1,10 @@
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { useInterval } from "lib/utils/useInterval"
 import React from "react"
-import { NativeModules } from "react-native"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { BottomTabs } from "../BottomTabs"
 import { BottomTabsButton } from "../BottomTabsButton"
@@ -87,7 +87,7 @@ describe(BottomTabs, () => {
 
     await flushPromiseQueue()
 
-    expect(NativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber).toHaveBeenCalledWith(9)
+    expect(ArtsyNativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber).toHaveBeenCalledWith(9)
   })
 
   it(`fetches the current unread conversation count once in a while`, async () => {

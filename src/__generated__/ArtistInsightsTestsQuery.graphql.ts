@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a8cbc4e5fd6b45b824078d73315bdec3 */
+/* @relayHash 807ecf087293f0495437e6e0510169d0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,7 +29,8 @@ query ArtistInsightsTestsQuery {
 fragment ArtistInsightsAuctionResults_artist on Artist {
   birthday
   slug
-  auctionResultsConnection(first: 10, sort: DATE_DESC, earliestCreatedYear: 1000, latestCreatedYear: 2050) {
+  id
+  auctionResultsConnection(allowEmptyCreatedDates: true, earliestCreatedYear: 1000, first: 10, latestCreatedYear: 2050, sort: DATE_DESC) {
     createdYearRange {
       startAt
       endAt
@@ -101,6 +102,11 @@ v1 = {
   "storageKey": null
 },
 v2 = [
+  {
+    "kind": "Literal",
+    "name": "allowEmptyCreatedDates",
+    "value": true
+  },
   {
     "kind": "Literal",
     "name": "earliestCreatedYear",
@@ -466,17 +472,18 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "auctionResultsConnection(earliestCreatedYear:1000,first:10,latestCreatedYear:2050,sort:\"DATE_DESC\")"
+            "storageKey": "auctionResultsConnection(allowEmptyCreatedDates:true,earliestCreatedYear:1000,first:10,latestCreatedYear:2050,sort:\"DATE_DESC\")"
           },
           {
             "alias": null,
             "args": (v2/*: any*/),
             "filters": [
-              "sort",
-              "sizes",
+              "allowEmptyCreatedDates",
               "categories",
               "earliestCreatedYear",
-              "latestCreatedYear"
+              "latestCreatedYear",
+              "sizes",
+              "sort"
             ],
             "handle": "connection",
             "key": "artist_auctionResultsConnection",
@@ -489,7 +496,7 @@ return {
     ]
   },
   "params": {
-    "id": "a8cbc4e5fd6b45b824078d73315bdec3",
+    "id": "807ecf087293f0495437e6e0510169d0",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
