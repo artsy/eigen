@@ -136,6 +136,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
             <InfoButton
               title={"Auction Results"}
               modalTitle={"Auction Results"}
+              maxModalHeight={310}
               modalContent={renderAuctionResultsModal()}
             />
           </Flex>

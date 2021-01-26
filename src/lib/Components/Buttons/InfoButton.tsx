@@ -9,11 +9,19 @@ interface InfoButtonProps {
   title: string
   modalContent: JSX.Element
   modalTitle?: string
+  maxModalHeight?: number
   onPress?: () => void
   subTitle?: string
 }
 
-export const InfoButton: React.FC<InfoButtonProps> = ({ title, subTitle, modalTitle, modalContent, onPress }) => {
+export const InfoButton: React.FC<InfoButtonProps> = ({
+  title,
+  subTitle,
+  modalTitle,
+  modalContent,
+  maxModalHeight,
+  onPress,
+}) => {
   const [modalVisible, setModalVisible] = useState(false)
 
   return (
@@ -35,8 +43,10 @@ export const InfoButton: React.FC<InfoButtonProps> = ({ title, subTitle, modalTi
         </TouchableOpacity>
       </Flex>
       {!!subTitle && <Text color="black60">{subTitle}</Text>}
-      <FancyModal visible={modalVisible} onBackgroundPressed={() => setModalVisible(false)}>
-        <FancyModalHeader onLeftButtonPress={() => setModalVisible(false)}>{modalTitle ?? title}</FancyModalHeader>
+      <FancyModal visible={modalVisible} maxHeight={maxModalHeight} onBackgroundPressed={() => setModalVisible(false)}>
+        <FancyModalHeader useXButton={true} onLeftButtonPress={() => setModalVisible(false)}>
+          {modalTitle ?? title}
+        </FancyModalHeader>
         <Spacer my={1} />
         <ScreenMargin>{modalContent}</ScreenMargin>
       </FancyModal>

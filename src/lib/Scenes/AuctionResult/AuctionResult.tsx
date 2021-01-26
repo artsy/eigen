@@ -11,7 +11,7 @@ import { capitalize } from "lodash"
 import moment from "moment"
 import { Box, Flex, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
-import { Animated, Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
+import { Animated, Image, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { getImageDimensions } from "../Sale/Components/SaleArtworkListItem"
@@ -173,6 +173,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
               <InfoButton
                 title="Realized price"
                 modalTitle="Realized price"
+                maxModalHeight={180}
                 modalContent={renderRealizedPriceModal()}
               />
             </Flex>
