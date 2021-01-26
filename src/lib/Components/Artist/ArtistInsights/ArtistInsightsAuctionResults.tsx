@@ -7,9 +7,9 @@ import { navigate } from "lib/navigation/navigate"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, Flex, Separator, Text } from "palette"
+import { Box, Flex, InfoCircleIcon, Separator, Text } from "palette"
 import React, { useCallback, useContext, useEffect, useState } from "react"
-import { FlatList } from "react-native"
+import { FlatList, TouchableOpacity } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
@@ -116,7 +116,17 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
       )}
       ListHeaderComponent={() => (
         <Flex px={2}>
-          <Text variant="title">Auction results</Text>
+          <Flex flexDirection="row" alignItems="center">
+            <Text variant="title" mr={1}>
+              Auction results
+            </Text>
+            <TouchableOpacity
+              hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
+              onPress={() => console.log("Something happened")}
+            >
+              <InfoCircleIcon fill="black60" />
+            </TouchableOpacity>
+          </Flex>
           <SortMode variant="small" color="black60">
             Sorted by {getSortDescription()?.toLowerCase()}
           </SortMode>

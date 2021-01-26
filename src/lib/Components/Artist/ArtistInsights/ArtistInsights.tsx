@@ -5,9 +5,9 @@ import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } fr
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { CloseIcon, Flex, Join, Sans, Separator, Spacer, Text } from "palette"
+import { Flex, InfoCircleIcon, Join, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useState } from "react"
-import { Image, NativeScrollEvent, NativeSyntheticEvent, ScrollView, TouchableOpacity } from "react-native"
+import { NativeScrollEvent, NativeSyntheticEvent, ScrollView, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ReactElement } from "simple-markdown"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
@@ -42,6 +42,10 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
     setIsFilterModalVisible(false)
   }
 
+  const handleInfoModal = () => {
+    setIsInfoModalVisible(!isInfoModalVisible)
+  }
+
   // Show or hide floating filter button depending on the scroll position
   const onScrollEndDrag = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (event.nativeEvent.targetContentOffset.y > FILTER_BUTTON_OFFSET) {
@@ -51,9 +55,9 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
     setIsFilterButtonVisible(false)
   }, [])
 
-  const InfoModal = () => (
-    <FancyModal visible={isInfoModalVisible} onBackgroundPressed={() => setIsInfoModalVisible(false)}>
-      <FancyModalHeader useXButton={true} onLeftButtonPress={() => setIsInfoModalVisible(false)}>
+  const renderInfoModal = () => (
+    <FancyModal visible={isInfoModalVisible} onBackgroundPressed={handleInfoModal}>
+      <FancyModalHeader useXButton={true} onLeftButtonPress={handleInfoModal}>
         Market Signals by Medium
       </FancyModalHeader>
       <ScrollView>
@@ -98,19 +102,18 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
     </FancyModal>
   )
 
-  const MarketStats = () => (
+  const renderMarketStats = () => (
     <>
       {/* Market Stats Hint */}
-      <InfoModal />
       <Flex flexDirection="row" alignItems="center">
-        <Text variant="title" mr={5}>
-          Market stats
+        <Text variant="title" mr={1}>
+          Market Signals by Medium
         </Text>
         <TouchableOpacity
           hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
           onPress={() => setIsInfoModalVisible(!isInfoModalVisible)}
         >
-          <Image source={require("@images/info.png")} />
+          <InfoCircleIcon fill="black60" />
         </TouchableOpacity>
       </Flex>
       <Text variant="small" color="black60">
@@ -135,6 +138,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
           <Text variant="largeTitle">90%</Text>
         </Flex>
       </Flex>
+      {renderInfoModal()}
     </>
   )
 
@@ -142,7 +146,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
     <ArtworkFilterGlobalStateProvider>
       <StickyTabPageScrollView contentContainerStyle={{ paddingTop: 20 }} onScrollEndDrag={onScrollEndDrag}>
         <Join separator={<Separator my={2} ml={-2} width={useScreenDimensions().width} />}>
-          <MarketStats />
+          {renderMarketStats()}
           <ArtistInsightsAuctionResultsPaginationContainer artist={artist} />
           <FilterModalNavigator
             isFilterArtworksModalVisible={isFilterModalVisible}
