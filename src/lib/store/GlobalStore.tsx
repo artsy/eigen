@@ -101,7 +101,12 @@ export function useSelectedTab() {
 let globalStoreInstance = createGlobalStore()
 
 export function useEmissionOption(key: keyof EmissionOptions) {
-  return GlobalStore.useAppState((state) => state.native.sessionState.options[key])
+  if (Platform.OS === "ios") {
+    return GlobalStore.useAppState((state) => state.native.sessionState.options[key])
+  }
+
+  // TODO: add feature flags to GlobalStore on android
+  return true
 }
 
 export function getCurrentEmissionState() {

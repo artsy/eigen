@@ -1,6 +1,6 @@
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
-import { AppRegistry, LogBox, View } from "react-native"
+import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
@@ -382,7 +382,9 @@ export const modules = defineModules({
 for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
   if ("Component" in descriptor) {
-    register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed })
+    if (Platform.OS === "ios") {
+      register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed })
+    }
   }
 }
 
@@ -400,4 +402,6 @@ const Main: React.FC<{}> = track()(({}) => {
   return <BottomTabsNavigator />
 })
 
-register("Main", Main, { fullBleed: true })
+if (Platform.OS === "ios") {
+  register("Main", Main, { fullBleed: true })
+}

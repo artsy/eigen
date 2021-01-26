@@ -1,21 +1,35 @@
-import { AppModule } from "lib/AppRegistry"
+import { AppModule, modules } from "lib/AppRegistry"
 import { NativeViewController } from "lib/Components/NativeViewController"
 import { useSelectedTab } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Flex, Text } from "palette"
 import React, { useEffect, useRef } from "react"
-import { Animated, View } from "react-native"
+import { Animated, Platform, View } from "react-native"
 import { BottomTabs } from "./BottomTabs"
 import { BottomTabType } from "./BottomTabType"
 
 const NavStack = ({ tabName, rootModuleName }: { tabName: BottomTabType; rootModuleName: AppModule }) => {
+  if (Platform.OS === "ios") {
+    return (
+      <NativeViewController
+        viewName="TabNavigationStack"
+        viewProps={{
+          tabName,
+          rootModuleName,
+        }}
+      />
+    )
+  }
+
+  const module = modules[rootModuleName]
+  if (module.type === "native") {
+    throw new Error("native module not supported")
+  }
+
   return (
-    <NativeViewController
-      viewName="TabNavigationStack"
-      viewProps={{
-        tabName,
-        rootModuleName,
-      }}
-    />
+    <Flex py="6" px="2">
+      <Text variant="title">This tab is called '{tabName}'</Text>
+    </Flex>
   )
 }
 
