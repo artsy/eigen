@@ -6,7 +6,8 @@ import React, { useState } from "react"
 import { TouchableOpacity } from "react-native"
 
 interface InfoButtonProps {
-  title: string
+  title?: string
+  titleElement?: JSX.Element
   modalContent: JSX.Element
   modalTitle?: string
   maxModalHeight?: number
@@ -16,6 +17,7 @@ interface InfoButtonProps {
 
 export const InfoButton: React.FC<InfoButtonProps> = ({
   title,
+  titleElement,
   subTitle,
   modalTitle,
   modalContent,
@@ -27,9 +29,13 @@ export const InfoButton: React.FC<InfoButtonProps> = ({
   return (
     <>
       <Flex flexDirection="row">
-        <Text variant="title" mr={0.5}>
-          {title}
-        </Text>
+        {titleElement ? (
+          titleElement
+        ) : (
+          <Text variant="mediumText" mr={0.5}>
+            {title}
+          </Text>
+        )}
         <TouchableOpacity
           onPress={() => {
             setModalVisible(true)

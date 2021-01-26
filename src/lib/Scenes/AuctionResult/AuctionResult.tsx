@@ -171,8 +171,12 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           {!!hasSalePrice && (
             <Flex flexDirection="row">
               <InfoButton
-                title="Realized price"
-                modalTitle="Realized price"
+                titleElement={
+                  <Text variant="title" mb={1} mr={0.5}>
+                    Sale Price
+                  </Text>
+                }
+                modalTitle="Sale Price"
                 maxModalHeight={180}
                 modalContent={renderRealizedPriceModal()}
               />

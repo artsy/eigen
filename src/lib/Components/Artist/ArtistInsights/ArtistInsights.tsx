@@ -94,7 +94,11 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
       {/* Market Stats Hint */}
       <Flex flexDirection="row" alignItems="center">
         <InfoButton
-          title={"Market Signals by Medium"}
+          titleElement={
+            <Text variant="title" mr={0.5}>
+              Market Signals by Medium
+            </Text>
+          }
           modalTitle={"Market Signals by Medium"}
           modalContent={renderInfoModal()}
         />
