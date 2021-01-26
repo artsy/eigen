@@ -1,4 +1,5 @@
 import { AuctionResultQuery, AuctionResultQueryResponse } from "__generated__/AuctionResultQuery.graphql"
+import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ratioColor } from "lib/Components/Lists/AuctionResult"
 import { navigate } from "lib/navigation/navigate"
@@ -128,6 +129,16 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   const salePriceMessage =
     auctionResult?.boughtIn === true ? "Bought in" : isFromPastMonth ? "Awaiting results" : "Not available"
 
+  const renderRealizedPriceModal = () => (
+    <>
+      <Text>
+        The sale price includes the hammer price and buyer’s premium, as well as any other additional fees (e.g.,
+        Artist’s Resale Rights).
+      </Text>
+      <Spacer mb={2} />
+    </>
+  )
+
   return (
     <>
       <Animated.ScrollView {...scrollProps}>
@@ -159,12 +170,11 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           </Flex>
           {!!hasSalePrice && (
             <Flex flexDirection="row">
-              <Text variant="title" mb={1} mr={1}>
-                Realized price
-              </Text>
-              <TouchableOpacity style={{ top: 1 }} hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-                <Image source={require("@images/info.png")} />
-              </TouchableOpacity>
+              <InfoButton
+                title="Realized price"
+                modalTitle="Realized price"
+                modalContent={renderRealizedPriceModal()}
+              />
             </Flex>
           )}
           <Text variant="largeTitle">
