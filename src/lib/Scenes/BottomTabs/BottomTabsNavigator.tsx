@@ -1,5 +1,6 @@
 import { AppModule, modules } from "lib/AppRegistry"
 import { NativeViewController } from "lib/Components/NativeViewController"
+import { __unsafe_tabStackNavRefs } from "lib/NativeModules/ARScreenPresenterModule"
 import { NavStack } from "lib/navigation/NavStack"
 import { useSelectedTab } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -26,7 +27,14 @@ const TabContent = ({ tabName, rootModuleName }: { tabName: BottomTabType; rootM
     throw new Error("native module not supported")
   }
 
-  return <NavStack rootModuleName={rootModuleName}></NavStack>
+  return (
+    <NavStack
+      ref={(ref) => {
+        __unsafe_tabStackNavRefs[tabName] = ref
+      }}
+      rootModuleName={rootModuleName}
+    ></NavStack>
+  )
 }
 
 export const BottomTabsNavigator = () => {

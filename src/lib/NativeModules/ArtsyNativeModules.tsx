@@ -1,5 +1,6 @@
 import { NativeModules as AllNativeModules, Platform } from "react-native"
 import { getLocales, getTimeZone } from "react-native-localize"
+import { ARScreenPresenterModule } from "./ARScreenPresenterModule"
 
 const noop: any = (name: string) => () => console.warn(`method ${name} doesn't exist on android yet`)
 
@@ -41,18 +42,6 @@ export const ArtsyNativeModules = Platform.select({
     ARPHPhotoPickerModule: {
       requestPhotos: noop("requestPhotos"),
     },
-    ARScreenPresenterModule: {
-      presentMediaPreviewController: noop("presentMediaPreviewController"),
-      dismissModal: noop("dismissModal"),
-      pushView: noop("pushView"),
-      goBack: noop("goBack"),
-      updateShouldHideBackButton: noop("updateShouldHideBackButton"),
-      presentAugmentedRealityVIR: noop("presentAugmentedRealityVIR"),
-      presentEmailComposer: noop("presentEmailComposer"),
-      popStack: noop("popStack"),
-      popToRootAndScrollToTop: noop("popToRootAndScrollToTop"),
-      popToRootOrScrollToTop: noop("popToRootOrScrollToTop"),
-      presentModal: noop("presentModal"),
-    },
+    ARScreenPresenterModule,
   },
 })
