@@ -14,6 +14,7 @@ upcoming:
     - Show filter button when there are less than 2 auction results available - mounir
     - Hide artist insights tab when no auction results are available - mounir
     - show FilteredArtworkGridZeroState when no results are available  - mounir
+    - Add info modals to artist insights and auction results - brian
 
 releases:
   - version: 6.7.6
