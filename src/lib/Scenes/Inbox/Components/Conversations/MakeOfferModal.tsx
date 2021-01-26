@@ -38,7 +38,7 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
         <BorderBox p={0} my={2}>
           <CollapsibleArtworkDetails hasSeparator={false} artwork={artwork} />
         </BorderBox>
-        <MakeOfferButton variant="primaryBlack" buttonText="Confirm" artwork={artwork} />
+        <MakeOfferButton variant="primaryBlack" buttonText="Confirm" artwork={artwork} editionSetID={null} />
         <Button
           mt={1}
           size="large"
