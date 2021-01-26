@@ -1,8 +1,7 @@
 import { navigate } from "lib/navigation/navigate"
 import { Button, Flex, Separator } from "palette"
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components/native"
-import { MakeOfferModalQueryRenderer as MakeOfferModal } from "./MakeOfferModal"
 
 export interface InquiryMakeOfferButtonProps {
   artworkID: string

@@ -1,4 +1,3 @@
-import { ArtsyWebView } from "lib/Components/ArtsyWebView"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import Spinner from "lib/Components/Spinner"
 import { dismissModal } from "lib/navigation/navigate"
@@ -8,8 +7,8 @@ import React, { useState } from "react"
 import { View } from "react-native"
 import WebView from "react-native-webview"
 
-export const WebCheckoutModal: React.FC<{ props: { orderID: string } }> = (props) => {
-  const webCheckoutUrl = `${getCurrentEmissionState().webURL}/orders/${props.orderID}`
+export const WebCheckoutModal: React.FC<{ props: { orderID: string } }> = (orderID) => {
+  const webCheckoutUrl = `${getCurrentEmissionState().webURL}/orders/${orderID}`
   const paddingTop = useScreenDimensions().safeAreaInsets.top
 
   const [isLoading, setLoading] = useState(false)
