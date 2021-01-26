@@ -19,7 +19,7 @@ export const InfoButton: React.FC<InfoButtonProps> = ({ title, subTitle, modalTi
   return (
     <>
       <Flex flexDirection="row">
-        <Text variant="mediumText" mr={0.5}>
+        <Text variant="title" mr={0.5}>
           {title}
         </Text>
         <TouchableOpacity
@@ -31,7 +31,7 @@ export const InfoButton: React.FC<InfoButtonProps> = ({ title, subTitle, modalTi
           }}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <InfoCircleIcon style={{ top: 2 }} color="black60" />
+          <InfoCircleIcon style={{ top: 3 }} fill="black60" />
         </TouchableOpacity>
       </Flex>
       {!!subTitle && <Text color="black60">{subTitle}</Text>}
