@@ -1,4 +1,5 @@
 import { AuctionResultQuery, AuctionResultQueryResponse } from "__generated__/AuctionResultQuery.graphql"
+import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ratioColor } from "lib/Components/Lists/AuctionResult"
 import { navigate } from "lib/navigation/navigate"
@@ -10,7 +11,7 @@ import { capitalize } from "lodash"
 import moment from "moment"
 import { Box, Flex, NoArtworkIcon, Separator, Spacer, Text, TEXT_FONTS } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
-import { Animated, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
+import { Animated, Image, TextInput, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { getImageDimensions } from "../Sale/Components/SaleArtworkListItem"
@@ -147,6 +148,16 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   const salePriceMessage =
     auctionResult?.boughtIn === true ? "Bought in" : isFromPastMonth ? "Awaiting results" : "Not available"
 
+  const renderRealizedPriceModal = () => (
+    <>
+      <Text>
+        The sale price includes the hammer price and buyer’s premium, as well as any other additional fees (e.g.,
+        Artist’s Resale Rights).
+      </Text>
+      <Spacer mb={2} />
+    </>
+  )
+
   return (
     <>
       <Animated.ScrollView {...scrollProps}>
@@ -185,12 +196,16 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           </Flex>
           {!!hasSalePrice && (
             <Flex flexDirection="row">
-              <Text variant="title" mb={1} mr={1}>
-                Realized price
-              </Text>
-              <TouchableOpacity style={{ top: 1 }} hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-                <Image source={require("@images/info.png")} />
-              </TouchableOpacity>
+              <InfoButton
+                titleElement={
+                  <Text variant="title" mb={1} mr={0.5}>
+                    Sale Price
+                  </Text>
+                }
+                modalTitle="Sale Price"
+                maxModalHeight={180}
+                modalContent={renderRealizedPriceModal()}
+              />
             </Flex>
           )}
           <Text variant="largeTitle">

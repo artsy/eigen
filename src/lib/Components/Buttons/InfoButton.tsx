@@ -6,22 +6,36 @@ import React, { useState } from "react"
 import { TouchableOpacity } from "react-native"
 
 interface InfoButtonProps {
-  title: string
+  title?: string
+  titleElement?: JSX.Element
   modalContent: JSX.Element
   modalTitle?: string
+  maxModalHeight?: number
   onPress?: () => void
   subTitle?: string
 }
 
-export const InfoButton: React.FC<InfoButtonProps> = ({ title, subTitle, modalTitle, modalContent, onPress }) => {
+export const InfoButton: React.FC<InfoButtonProps> = ({
+  title,
+  titleElement,
+  subTitle,
+  modalTitle,
+  modalContent,
+  maxModalHeight,
+  onPress,
+}) => {
   const [modalVisible, setModalVisible] = useState(false)
 
   return (
     <>
       <Flex flexDirection="row">
-        <Text variant="mediumText" mr={0.5}>
-          {title}
-        </Text>
+        {titleElement ? (
+          titleElement
+        ) : (
+          <Text variant="mediumText" mr={0.5}>
+            {title}
+          </Text>
+        )}
         <TouchableOpacity
           onPress={() => {
             setModalVisible(true)
@@ -31,12 +45,14 @@ export const InfoButton: React.FC<InfoButtonProps> = ({ title, subTitle, modalTi
           }}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <InfoCircleIcon style={{ top: 2 }} color="black60" />
+          <InfoCircleIcon style={{ top: 3 }} fill="black60" />
         </TouchableOpacity>
       </Flex>
       {!!subTitle && <Text color="black60">{subTitle}</Text>}
-      <FancyModal visible={modalVisible} onBackgroundPressed={() => setModalVisible(false)}>
-        <FancyModalHeader onLeftButtonPress={() => setModalVisible(false)}>{modalTitle ?? title}</FancyModalHeader>
+      <FancyModal visible={modalVisible} maxHeight={maxModalHeight} onBackgroundPressed={() => setModalVisible(false)}>
+        <FancyModalHeader useXButton={true} onLeftButtonPress={() => setModalVisible(false)}>
+          {modalTitle ?? title}
+        </FancyModalHeader>
         <Spacer my={1} />
         <ScreenMargin>{modalContent}</ScreenMargin>
       </FancyModal>

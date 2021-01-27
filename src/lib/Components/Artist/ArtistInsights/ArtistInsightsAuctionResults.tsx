@@ -1,13 +1,14 @@
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
+import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
 import { navigate } from "lib/navigation/navigate"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, Flex, Separator, Text } from "palette"
+import { Box, Flex, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useContext, useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -96,6 +97,21 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
     })
   }, [])
 
+  const renderAuctionResultsModal = () => (
+    <>
+      <Text>
+        These auction results bring together sale data from top auction houses around the world, including Christies,
+        Sotheby’s, Phillips, Bonhams, and Heritage. Results are updated daily.
+      </Text>
+      <Spacer mb={2} />
+      <Text>
+        Please note that the sale price includes the hammer price and buyer’s premium, as well as any other additional
+        fees (e.g., Artist’s Resale Rights).
+      </Text>
+      <Spacer mb={2} />
+    </>
+  )
+
   if (!auctionResults.length) {
     return (
       <Box my="80px">
@@ -116,7 +132,18 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
       )}
       ListHeaderComponent={() => (
         <Flex px={2}>
-          <Text variant="title">Auction results</Text>
+          <Flex flexDirection="row" alignItems="center">
+            <InfoButton
+              titleElement={
+                <Text variant="title" mr={0.5}>
+                  Auction Results
+                </Text>
+              }
+              modalTitle={"Auction Results"}
+              maxModalHeight={310}
+              modalContent={renderAuctionResultsModal()}
+            />
+          </Flex>
           <SortMode variant="small" color="black60">
             Sorted by {getSortDescription()?.toLowerCase()}
           </SortMode>

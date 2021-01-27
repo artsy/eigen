@@ -1,11 +1,12 @@
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
+import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Join, Separator, Text } from "palette"
+import { Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useState } from "react"
-import { Image, NativeScrollEvent, NativeSyntheticEvent, TouchableOpacity } from "react-native"
+import { NativeScrollEvent, NativeSyntheticEvent, ScrollView } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ReactElement } from "simple-markdown"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
@@ -48,16 +49,59 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
     setIsFilterButtonVisible(false)
   }, [])
 
-  const MarketStats = () => (
+  const renderInfoModal = () => (
+    <ScrollView>
+      <Text>
+        The following data points provide an overview of an artist’s auction market for a specific medium (e.g.,
+        photography, painting) over the past 36 months.
+      </Text>
+      <Spacer mb={2} />
+      <Text>
+        These market signals bring together data from top auction houses around the world, including Christie’s,
+        Sotheby’s, Phillips, Bonhams, and Heritage.
+      </Text>
+      <Spacer mb={2} />
+      <Text>
+        In this data set, please note that the sale price includes the hammer price and buyer’s premium, as well as any
+        other additional fees (e.g., Artist’s Resale Rights).
+      </Text>
+      <Spacer mb={2} />
+      <Text fontWeight={"bold"}>Yearly lots sold</Text>
+      <Spacer mb={1} />
+      <Text>The average number of lots sold per year at auction over the past 36 months.</Text>
+      <Spacer mb={2} />
+      <Text fontWeight={"bold"}>Sell-through rate</Text>
+      <Spacer mb={1} />
+      <Text>The percentage of lots in auctions that sold over the past 36 months.</Text>
+      <Spacer mb={2} />
+      <Text fontWeight={"bold"}>Average sale price</Text>
+      <Spacer mb={1} />
+      <Text>The average sale price of lots sold at auction over the past 36 months.</Text>
+      <Spacer mb={2} />
+      <Text fontWeight={"bold"}>Sale price over estimate</Text>
+      <Spacer mb={1} />
+      <Text lineHeight={50}>
+        The average percentage difference of the sale price over the mid-estimate (the midpoint of the low and high
+        estimates set by the auction house before the auction takes place) for lots sold at auction over the past 36
+        months.
+      </Text>
+      <Spacer mb={2} />
+    </ScrollView>
+  )
+
+  const renderMarketStats = () => (
     <>
       {/* Market Stats Hint */}
       <Flex flexDirection="row" alignItems="center">
-        <Text variant="title" mr={5}>
-          Market stats
-        </Text>
-        <TouchableOpacity hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-          <Image source={require("@images/info.png")} />
-        </TouchableOpacity>
+        <InfoButton
+          titleElement={
+            <Text variant="title" mr={0.5}>
+              Market Signals by Medium
+            </Text>
+          }
+          modalTitle={"Market Signals by Medium"}
+          modalContent={renderInfoModal()}
+        />
       </Flex>
       <Text variant="small" color="black60">
         Last 12 months
@@ -88,7 +132,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
     <ArtworkFilterGlobalStateProvider>
       <StickyTabPageScrollView contentContainerStyle={{ paddingTop: 20 }} onScrollEndDrag={onScrollEndDrag}>
         <Join separator={<Separator my={2} ml={-2} width={useScreenDimensions().width} />}>
-          <MarketStats />
+          {renderMarketStats()}
           <ArtistInsightsAuctionResultsPaginationContainer artist={artist} />
           <FilterModalNavigator
             isFilterArtworksModalVisible={isFilterModalVisible}
