@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
@@ -8,6 +9,7 @@ import { Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useState } from "react"
 import { NativeScrollEvent, NativeSyntheticEvent, ScrollView } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import { ReactElement } from "simple-markdown"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 
@@ -29,14 +31,18 @@ interface ViewToken {
 
 const FILTER_BUTTON_OFFSET = 50
 export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
+  const tracking = useTracking()
+
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
   const openFilterModal = () => {
+    tracking.trackEvent(tracks.openFilter(artist.id, artist.slug))
     setIsFilterModalVisible(true)
   }
 
   const closeFilterModal = () => {
+    tracking.trackEvent(tracks.closeFilter(artist.id, artist.slug))
     setIsFilterModalVisible(false)
   }
 
@@ -99,6 +105,9 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
               Market Signals by Medium
             </Text>
           }
+          trackEvent={() => {
+            tracking.trackEvent(tappedInfoBubble(tracks.tapMarketStatsInfo()))
+          }}
           modalTitle={"Market Signals by Medium"}
           modalContent={renderInfoModal()}
         />
@@ -165,3 +174,32 @@ export const ArtistInsightsFragmentContainer = createFragmentContainer(ArtistIns
     }
   `,
 })
+
+export const tracks = {
+  openFilter: (id: string, slug: string) => {
+    return {
+      action_name: "filter",
+      context_module: ContextModule.auctionResults,
+      context_screen_owner_type: OwnerType.artistInsights,
+      context_screen_owner_id: id,
+      context_screen_owner_slug: slug,
+      action_type: ActionType.commercialFilterParamsChanged,
+    }
+  },
+  closeFilter: (id: string, slug: string) => {
+    return {
+      action_name: "closeFilterWindow",
+      context_module: ContextModule.auctionResults,
+      context_screen_owner_type: OwnerType.artistInsights,
+      context_screen_owner_id: id,
+      context_screen_owner_slug: slug,
+      action_type: ActionType.commercialFilterParamsChanged,
+    }
+  },
+
+  tapMarketStatsInfo: (): TappedInfoBubbleArgs => ({
+    contextModule: ContextModule.auctionResults,
+    contextScreenOwnerType: OwnerType.artistInsights,
+    subject: "artistMarketStatistics",
+  }),
+}

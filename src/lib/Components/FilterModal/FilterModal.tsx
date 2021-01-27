@@ -259,6 +259,14 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                       changedFiltersParams(appliedFiltersParams, state.selectedFilters)
                     )
                     break
+                  case FilterModalMode.AuctionResults:
+                    trackChangeFilters(
+                      PageNames.AuctionResult,
+                      OwnerEntityTypes.AuctionResult,
+                      appliedFiltersParams,
+                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+                    )
+                    break
                 }
                 applyFilters()
               }}
