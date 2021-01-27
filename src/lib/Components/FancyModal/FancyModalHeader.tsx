@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, ArrowRightIcon, Flex, Sans, Separator, space } from "palette"
+import { ArrowLeftIcon, ArrowRightIcon, CloseIcon, Flex, Sans, Separator, space } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
@@ -6,6 +6,7 @@ import styled from "styled-components/native"
 export const FancyModalHeader: React.FC<{
   hideBottomDivider?: boolean
   leftButtonText?: string
+  leftButtonIcon?: "arrow" | "close"
   onLeftButtonPress?: () => void
   rightButtonText?: string
   rightButtonDisabled?: boolean
@@ -14,6 +15,7 @@ export const FancyModalHeader: React.FC<{
   children,
   hideBottomDivider = false,
   leftButtonText,
+  leftButtonIcon,
   onLeftButtonPress,
   rightButtonText,
   rightButtonDisabled,
@@ -28,7 +30,13 @@ export const FancyModalHeader: React.FC<{
               hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
               onPress={() => onLeftButtonPress()}
             >
-              {leftButtonText ? <Sans size="3">{leftButtonText}</Sans> : <ArrowLeftIcon fill="black100" top="2px" />}
+              {leftButtonText ? (
+                <Sans size="3">{leftButtonText}</Sans>
+              ) : leftButtonIcon === "close" ? (
+                <CloseIcon fill="black100" top="2px" />
+              ) : (
+                <ArrowLeftIcon fill="black100" top="2px" />
+              )}
             </LeftButtonContainer>
           )}
         </Flex>
