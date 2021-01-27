@@ -157,6 +157,10 @@ export default class OpaqueImageView extends React.Component<Props, State> {
       backgroundColorStyle = { backgroundColor: props.placeholderBackgroundColor }
     }
 
+    if (React.Children.count(remainderProps.children) > 0) {
+      console.error("Please don't add children to a OpaqueImageView. Doesn't work on android.")
+    }
+
     if (Platform.OS === "ios") {
       return <NativeOpaqueImageView style={[style, backgroundColorStyle]} {...remainderProps} />
     }
