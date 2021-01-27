@@ -1,9 +1,9 @@
 import { NavigationContainer, NavigationContainerRef, StackActions } from "@react-navigation/native"
-import { createStackNavigator } from "@react-navigation/stack"
 import React from "react"
 import { View } from "react-native"
+import { createNativeStackNavigator } from "react-native-screens/native-stack"
 
-const Stack = createStackNavigator()
+const Stack = createNativeStackNavigator()
 interface ScreenProps {
   Component: React.ComponentType<any>
   props: object
@@ -43,8 +43,8 @@ class NavigatorIOS extends React.Component<{
       navigator: this,
     }
     return (
-      <NavigationContainer ref={(ref) => (this.navigator = ref)}>
-        <Stack.Navigator headerMode="none">
+      <NavigationContainer ref={(ref) => (this.navigator = ref)} independent={true}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen component={ScreenWrapper} name="screen" initialParams={initialScreenParams}></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>

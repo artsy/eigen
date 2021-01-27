@@ -172,7 +172,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer independent>
       <FormikProvider value={formik}>
         <FancyModal visible={props.visible} onBackgroundPressed={onDismiss}>
           <Stack.Navigator

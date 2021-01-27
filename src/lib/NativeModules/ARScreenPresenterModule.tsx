@@ -12,8 +12,14 @@ export const __unsafe_tabStackNavRefs: Record<BottomTabType, NavigationContainer
   profile: null,
 }
 
+// tslint:disable-next-line:variable-name
+export const __unsafe_modalStackRef = { current: null as NavigationContainerRef | null }
+
 export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterModule"] = {
-  presentModal(_viewDescriptor: ViewDescriptor) {
+  presentModal(viewDescriptor: ViewDescriptor) {
+    __unsafe_modalStackRef.current?.dispatch(
+      StackActions.push("modal", { rootModuleName: viewDescriptor.moduleName, rootModuleProps: viewDescriptor.props })
+    )
     // _presentModal(viewDescriptor)
   },
   async popToRootAndScrollToTop(selectedTab: BottomTabType) {
@@ -29,7 +35,9 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
     }
   },
   pushView(selectedTab: BottomTabType, viewDescriptor: ViewDescriptor) {
-    __unsafe_tabStackNavRefs[selectedTab]?.dispatch(StackActions.push(viewDescriptor.moduleName, viewDescriptor.props))
+    __unsafe_tabStackNavRefs[selectedTab]?.dispatch(
+      StackActions.push("screen", { moduleName: viewDescriptor.moduleName, props: viewDescriptor.props })
+    )
   },
   popStack(selectedTab: BottomTabType) {
     __unsafe_tabStackNavRefs[selectedTab]?.dispatch(StackActions.pop())
@@ -39,7 +47,7 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
     __unsafe_tabStackNavRefs[selectedTab]?.dispatch(StackActions.pop())
   },
   dismissModal(..._args: any[]) {
-    // _dismissModal()
+    __unsafe_modalStackRef.current?.dispatch(StackActions.pop())
   },
   presentAugmentedRealityVIR: () => {
     console.warn("presentAugmentedRealityVIR not yet supported")
