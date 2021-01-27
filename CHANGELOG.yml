@@ -8,6 +8,7 @@ upcoming:
     - Configure metaphyiscs and relay for android - david
     - Use @artsy/palette-tokens package - justin, david
     - Explicitly tag releases to fix sentry errors - cx
+    - Implement analytics on auction results - mounir
   user_facing:
     - Refresh inbox automatically upon revisiting - erik, lily
     - Poll and refetch images when images are processing (my collection) - brian
@@ -15,6 +16,7 @@ upcoming:
     - Show filter button when there are less than 2 auction results available - mounir
     - Hide artist insights tab when no auction results are available - mounir
     - show FilteredArtworkGridZeroState when no results are available  - mounir
+    - Add info modals to artist insights and auction results - brian
     - Make AuctionResult screen fields selectable  - mounir
     - Add NotArtwork Icon to AuctionResult screen   - mounir
 
