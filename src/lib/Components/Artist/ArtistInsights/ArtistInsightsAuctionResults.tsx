@@ -1,3 +1,11 @@
+import {
+  ActionType,
+  ContextModule,
+  OwnerType,
+  TappedAuctionResultGroup,
+  tappedInfoBubble,
+  TappedInfoBubbleArgs,
+} from "@artsy/cohesion"
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -12,6 +20,7 @@ import { Box, Flex, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useContext, useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
 import { AuctionResultFragmentContainer } from "../../Lists/AuctionResult"
@@ -22,6 +31,7 @@ interface Props {
 }
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
+  const tracking = useTracking()
   const { state, dispatch } = useContext(ArtworkFilterContext)
   const filterParams = filterArtworksParams(state.appliedFilters, "auctionResult")
 
@@ -127,7 +137,10 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
       renderItem={({ item }) => (
         <AuctionResultFragmentContainer
           auctionResult={item}
-          onPress={() => navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)}
+          onPress={() => {
+            tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.id))
+            navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
+          }}
         />
       )}
       ListHeaderComponent={() => (
@@ -139,6 +152,9 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
                   Auction Results
                 </Text>
               }
+              trackEvent={() => {
+                tracking.trackEvent(tappedInfoBubble(tracks.tapAuctionResultsInfo()))
+              }}
               modalTitle={"Auction Results"}
               maxModalHeight={310}
               modalContent={renderAuctionResultsModal()}
@@ -248,3 +264,21 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
     `,
   }
 )
+
+export const tracks = {
+  tapAuctionGroup: (auctionId: string, artistId: string): TappedAuctionResultGroup => ({
+    action: ActionType.tappedAuctionResultGroup,
+    context_module: ContextModule.auctionResults,
+    context_screen_owner_type: OwnerType.artistInsights,
+    context_screen_owner_id: artistId,
+    destination_screen_owner_type: OwnerType.auctionResult,
+    destination_screen_owner_id: auctionId,
+    type: "thumbnail",
+  }),
+
+  tapAuctionResultsInfo: (): TappedInfoBubbleArgs => ({
+    contextModule: ContextModule.auctionResults,
+    contextScreenOwnerType: OwnerType.artistInsights,
+    subject: "auctionResults",
+  }),
+}

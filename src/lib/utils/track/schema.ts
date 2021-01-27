@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 /**
  * Useful notes:
  *  * At the bottom of this file there is an example of how to test track'd code.
@@ -77,7 +78,7 @@ export interface PageView {
   /**
    * The type of entity (owner), E.g. Artist, Artwork, etc.
    */
-  context_screen_owner_type: OwnerEntityTypes | null
+  context_screen_owner_type: OwnerEntityTypes | OwnerType | null
 }
 
 export enum PageNames {
@@ -90,6 +91,7 @@ export enum PageNames {
   ArtworkPage = "Artwork",
   Auction = "Auction",
   AuctionInfo = "AuctionInfo",
+  AuctionResult = "AuctionResult",
   Auctions = "Auctions",
   BidFlowBillingAddressPage = "YourBillingAddress",
   BidFlowConfirmBidPage = "ConfirmYourBid",
@@ -144,6 +146,7 @@ export enum OwnerEntityTypes {
   Artwork = "Artwork",
   AuctionInfo = "AuctionInfo",
   Auction = "Auction",
+  AuctionResult = "AuctionResult",
   CityGuide = "CityGuide",
   Collection = "Collection",
   Consignment = "ConsignmentSubmission",

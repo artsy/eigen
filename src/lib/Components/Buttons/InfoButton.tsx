@@ -6,23 +6,25 @@ import React, { useState } from "react"
 import { TouchableOpacity } from "react-native"
 
 interface InfoButtonProps {
-  title?: string
-  titleElement?: JSX.Element
+  maxModalHeight?: number
   modalContent: JSX.Element
   modalTitle?: string
-  maxModalHeight?: number
   onPress?: () => void
   subTitle?: string
+  title?: string
+  titleElement?: JSX.Element
+  trackEvent?: () => void
 }
 
 export const InfoButton: React.FC<InfoButtonProps> = ({
+  maxModalHeight,
+  modalContent,
+  modalTitle,
+  onPress,
+  subTitle,
   title,
   titleElement,
-  subTitle,
-  modalTitle,
-  modalContent,
-  maxModalHeight,
-  onPress,
+  trackEvent,
 }) => {
   const [modalVisible, setModalVisible] = useState(false)
 
@@ -39,9 +41,8 @@ export const InfoButton: React.FC<InfoButtonProps> = ({
         <TouchableOpacity
           onPress={() => {
             setModalVisible(true)
-            if (onPress) {
-              onPress()
-            }
+            trackEvent?.()
+            onPress?.()
           }}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
