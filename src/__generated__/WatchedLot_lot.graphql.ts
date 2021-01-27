@@ -5,8 +5,8 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type AuctionsSoldStatus = "ForSale" | "Passed" | "Sold" | "%future added value";
-export type WatchedLot_lotStanding = {
-    readonly lot: {
+export type WatchedLot_lot = {
+    readonly lotState: {
         readonly internalID: string;
         readonly bidCount: number;
         readonly sellingPrice: {
@@ -25,12 +25,12 @@ export type WatchedLot_lotStanding = {
         } | null;
         readonly " $fragmentRefs": FragmentRefs<"Lot_saleArtwork">;
     } | null;
-    readonly " $refType": "WatchedLot_lotStanding";
+    readonly " $refType": "WatchedLot_lot";
 };
-export type WatchedLot_lotStanding$data = WatchedLot_lotStanding;
-export type WatchedLot_lotStanding$key = {
-    readonly " $data"?: WatchedLot_lotStanding$data;
-    readonly " $fragmentRefs": FragmentRefs<"WatchedLot_lotStanding">;
+export type WatchedLot_lot$data = WatchedLot_lot;
+export type WatchedLot_lot$key = {
+    readonly " $data"?: WatchedLot_lot$data;
+    readonly " $fragmentRefs": FragmentRefs<"WatchedLot_lot">;
 };
 
 
@@ -39,10 +39,10 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "WatchedLot_lotStanding",
+  "name": "WatchedLot_lot",
   "selections": [
     {
-      "alias": null,
+      "alias": "lotState",
       "args": null,
       "concreteType": "AuctionsLotState",
       "kind": "LinkedField",
@@ -161,5 +161,5 @@ const node: ReaderFragment = {
   "type": "Lot",
   "abstractKey": null
 };
-(node as any).hash = 'cf52387a1947d05e5302aad4e3d64390';
+(node as any).hash = 'ba922cc7885de40a9e2bad9064499ed2';
 export default node;

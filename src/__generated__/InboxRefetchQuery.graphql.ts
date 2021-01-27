@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a4213fd2167c3904a20261a83dc060b0 */
+/* @relayHash 50b1027d5ca13f30b910baacd23b06d9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -185,12 +185,12 @@ fragment MyBids_me on Me {
   identityVerified
   bidders(active: true) {
     sale {
+      internalID
       ...SaleCard_sale
       registrationStatus {
         qualifiedForBidding
         id
       }
-      internalID
       liveStartAt
       endAt
       status
@@ -203,6 +203,7 @@ fragment MyBids_me on Me {
       node {
         ...ActiveLot_lotStanding
         ...ClosedLot_lotStanding
+        __typename
         lot {
           internalID
           saleId
@@ -227,7 +228,6 @@ fragment MyBids_me on Me {
           id
         }
         id
-        __typename
       }
       cursor
     }
@@ -239,19 +239,26 @@ fragment MyBids_me on Me {
   watchedLotConnection(first: 20, after: "") {
     edges {
       node {
-        internalID
-        ...WatchedLot_lotStanding
+        ...WatchedLot_lot
+        __typename
+        lot {
+          internalID
+          id
+        }
         saleArtwork {
+          internalID
           position
           sale {
             ...SaleCard_sale
             internalID
             liveStartAt
             endAt
+            status
             id
           }
           id
         }
+        id
       }
     }
   }
@@ -286,8 +293,8 @@ fragment SaleCard_sale on Sale {
   requireIdentityVerification
 }
 
-fragment WatchedLot_lotStanding on Lot {
-  lot {
+fragment WatchedLot_lot on Lot {
+  lotState: lot {
     internalID
     bidCount
     sellingPrice {
@@ -998,8 +1005,8 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v5/*: any*/),
-                      (v7/*: any*/)
+                      (v7/*: any*/),
+                      (v5/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -1060,9 +1067,8 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v3/*: any*/),
                       {
-                        "alias": null,
+                        "alias": "lotState",
                         "args": null,
                         "concreteType": "AuctionsLotState",
                         "kind": "LinkedField",
@@ -1125,6 +1131,7 @@ return {
                             "storageKey": null
                           },
                           (v5/*: any*/),
+                          (v3/*: any*/),
                           (v28/*: any*/),
                           {
                             "kind": "ClientExtension",
@@ -1140,7 +1147,19 @@ return {
                           }
                         ],
                         "storageKey": null
-                      }
+                      },
+                      (v7/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "AuctionsLotState",
+                        "kind": "LinkedField",
+                        "name": "lot",
+                        "plural": false,
+                        "selections": (v10/*: any*/),
+                        "storageKey": null
+                      },
+                      (v5/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -1157,7 +1176,7 @@ return {
     ]
   },
   "params": {
-    "id": "a4213fd2167c3904a20261a83dc060b0",
+    "id": "50b1027d5ca13f30b910baacd23b06d9",
     "metadata": {},
     "name": "InboxRefetchQuery",
     "operationKind": "query",

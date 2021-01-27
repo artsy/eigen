@@ -1,4 +1,4 @@
-import { WatchedLot_lotStanding } from "__generated__/WatchedLot_lotStanding.graphql"
+import { WatchedLot_lot } from "__generated__/WatchedLot_lot.graphql"
 import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
 import { Flex, Text } from "palette"
 import React from "react"
@@ -12,13 +12,13 @@ import { WatchingLot } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
 interface WatchedLotProps {
-  lotStanding: WatchedLot_lotStanding
+  lot: WatchedLot_lot
 }
 
-export const WatchedLot: React.FC<WatchedLotProps> = ({ lotStanding }) => {
-  const sellingPrice = lotStanding?.lot?.sellingPrice?.display
-  const bidCount = lotStanding?.lot?.bidCount
-  const { saleArtwork, lot } = lotStanding
+export const WatchedLot: React.FC<WatchedLotProps> = ({ lot }) => {
+  const sellingPrice = lot?.lotState?.sellingPrice?.display
+  const bidCount = lot?.lotState?.bidCount
+  const { saleArtwork, lotState } = lot
   // const tracking = useTracking()
 
   const displayBidCount = (): string | undefined => {
@@ -41,10 +41,9 @@ export const WatchedLot: React.FC<WatchedLotProps> = ({ lotStanding }) => {
     // })
     // navigate(saleArtwork?.artwork?.href as string)
   }
-
   return (
     <TouchableOpacity style={{ marginHorizontal: 0, width: "100%" }} onPress={handleLotTap}>
-      <Lot saleArtwork={saleArtwork} isSmallScreen={isSmallScreen}>
+      <Lot saleArtwork={saleArtwork!} isSmallScreen={isSmallScreen}>
         <Flex flexDirection="row" justifyContent="flex-end">
           <Text variant="caption">{sellingPrice}</Text>
           <Text variant="caption" color="black60">
@@ -62,9 +61,9 @@ export const WatchedLot: React.FC<WatchedLotProps> = ({ lotStanding }) => {
 }
 
 export const WatchedLotFragmentContainer = createFragmentContainer(WatchedLot, {
-  lotStanding: graphql`
-    fragment WatchedLot_lotStanding on Lot {
-      lot {
+  lot: graphql`
+    fragment WatchedLot_lot on Lot {
+      lotState: lot {
         internalID
         bidCount
         sellingPrice {
