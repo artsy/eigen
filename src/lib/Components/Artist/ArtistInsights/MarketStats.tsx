@@ -1,12 +1,13 @@
 import { MarketStats_priceInsights } from "__generated__/MarketStats_priceInsights.graphql"
 import { MarketStatsQuery } from "__generated__/MarketStatsQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { formatLargeNumber } from "lib/utils/formatLargeNumber"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Flex, Spacer, Text } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
 
@@ -63,6 +64,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsights }) => {
 
   const priceInsight = priceInsights.edges?.[0]?.node
   const averageValueSold = (priceInsight?.annualValueSoldCents as number) / (priceInsight?.annualLotsSold || 1)
+  const formattedAverageValueSold = formatLargeNumber(averageValueSold)
 
   return (
     <>
@@ -95,7 +97,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsights }) => {
           <Text variant="text">Sell-through rate</Text>
         </Flex>
         <Flex width="50%" mt={2}>
-          <Text variant="largeTitle">${averageValueSold}</Text>
+          <Text variant="largeTitle">${formattedAverageValueSold}</Text>
           <Text variant="text">Average sale price</Text>
         </Flex>
         <Flex width="50%" mt={2}>
