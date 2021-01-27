@@ -61,7 +61,7 @@ lane :ship_beta_ios do
   tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
 
   # First make individual dSYM archives available to the sentry-cli tool.
-  sentry_version = latest_version
+  sentry_version = "#{latest_version}+#{bundle_version}"
   dsym_archive = File.join(root, 'Artsy.app.dSYM.zip')
   dsyms_path = File.join(root, 'dSYMs')
   sh "unzip -d #{dsyms_path} #{dsym_archive}"
