@@ -4,10 +4,11 @@ import { Pin } from "lib/Icons/Pin"
 import { ArtsyMapStyleURL } from "lib/Scenes/Map/GlobalMap"
 import { Box, color, Flex, Text } from "palette"
 import React from "react"
-import { ActionSheetIOS, Clipboard, Linking, TouchableOpacity } from "react-native"
+import { ActionSheetIOS, Linking, TouchableOpacity } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
+import Clipboard from "@react-native-community/clipboard"
 
 MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 

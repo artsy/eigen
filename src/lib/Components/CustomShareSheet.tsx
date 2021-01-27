@@ -25,7 +25,7 @@ export const CustomShareSheet: React.FC<CustomShareSheetProps> = ({ children, vi
 interface CustomShareSheetItemProps {
   title: string
   Icon: React.ReactNode
-  onPress: () => void
+  onPress?: () => void
 }
 
 export const CustomShareSheetItem: React.FC<CustomShareSheetItemProps> = ({ title, Icon, onPress }) => (

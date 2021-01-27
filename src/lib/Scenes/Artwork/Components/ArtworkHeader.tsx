@@ -1,8 +1,9 @@
 import { ArtworkHeader_artwork } from "__generated__/ArtworkHeader_artwork.graphql"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Flex, Spacer } from "palette"
-import React, { useState } from "react"
+import { Box, Flex, FlexProps, InstagramAppIcon, LinkIcon, MoreIcon, Spacer, Text } from "palette"
+import React, { useRef, useState } from "react"
+import ImageColors from "react-native-image-colors"
 // @ts-ignore
 import Share from "react-native-share"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -13,8 +14,9 @@ import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./Artwork
 import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
 import ViewShot from "react-native-view-shot"
 import { useEmissionOption } from "lib/store/GlobalStore"
-import { FancyModal } from "lib/Components/FancyModal/FancyModal"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { Image } from "react-native"
+import { CustomShareSheet, CustomShareSheetItem } from "lib/Components/CustomShareSheet"
+import Clipboard from "@react-native-community/clipboard"
 
 const IGStoryViewShot: React.FC<{ shotRef: any; href: string }> = ({ shotRef, href }) => {
   const { height: screenHeight, width: screenWidth } = useScreenDimensions()
@@ -30,10 +32,8 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const { trackEvent } = useTracking()
   const enableCustomShare = useEmissionOption("AREnableCustomSharesheet")
-  const { height: screenHeight } = useScreenDimensions()
   const shotRef = useRef(null)
-
-  const [shareModalVisible, setShareModalVisible] = useState(false)
+  const [shareSheetVisible, setShareSheetVisible] = useState(false)
 
   const shareArtwork = async () => {
     trackEvent({
@@ -58,6 +58,11 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
       title: details.title,
       urls: [base64Data, details.url],
       message: details.message,
+
+  const shareArtworkCopyLink = async () => {
+    Clipboard.setString(`https://artsy.net${artwork.href!}`)
+    setShareSheetVisible(false)
+  }
 
   const shareArtworkOnInstagramStory = async () => {
     const { title, href, artists } = artwork
@@ -108,7 +113,13 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
       <CustomShareSheet visible={shareSheetVisible} setVisible={setShareSheetVisible}>
         <IGStoryViewShot shotRef={shotRef} href={currentImageUrl} />
 
-        <CustomShareSheetItem title="Instagram Stories" Icon={<ChevronIcon />} onPress={() => {}} />
+        <CustomShareSheetItem
+          title="Instagram Stories"
+          Icon={<InstagramAppIcon />}
+          onPress={() => shareArtworkOnInstagramStory()}
+        />
+        <CustomShareSheetItem title="Copy link" Icon={<LinkIcon />} onPress={() => shareArtworkCopyLink()} />
+        <CustomShareSheetItem title="More" Icon={<MoreIcon />} onPress={() => shareArtwork()} />
       </CustomShareSheet>
     </>
   )
