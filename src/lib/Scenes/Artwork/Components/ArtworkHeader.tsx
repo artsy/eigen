@@ -21,6 +21,19 @@ import Clipboard from "@react-native-community/clipboard"
 const IGStoryViewShot: React.FC<{ shotRef: any; href: string }> = ({ shotRef, href }) => {
   const { height: screenHeight, width: screenWidth } = useScreenDimensions()
 
+    ? {}
+    : {
+        position: "absolute",
+        left: screenWidth + screenHeight,
+        top: screenWidth + screenHeight,
+  return (
+    <Flex {...outerStyleProps}>
+      <ViewShot ref={shotRef} options={{ format: "png", result: "base64" }} style={{ backgroundColor: "orange" }}>
+        </Flex>
+      </ViewShot>
+    </Flex>
+  )
+}
 
 interface ArtworkHeaderProps {
   artwork: ArtworkHeader_artwork
@@ -34,6 +47,8 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   const enableCustomShare = useEmissionOption("AREnableCustomSharesheet")
   const shotRef = useRef(null)
   const [shareSheetVisible, setShareSheetVisible] = useState(false)
+
+  const currentImageUrl = ((artwork.images ?? [])[currentImageIndex]?.url ?? "").replace(":version", "large")
 
   const shareArtwork = async () => {
     trackEvent({
@@ -54,20 +69,29 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
     const base64RawData = await resp.base64()
     const base64Data = `data:image/png;base64,${base64RawData}`
 
-    await Share.open({
-      title: details.title,
-      urls: [base64Data, details.url],
-      message: details.message,
-
-  const shareArtworkCopyLink = async () => {
-    Clipboard.setString(`https://artsy.net${artwork.href!}`)
-    setShareSheetVisible(false)
+    try {
+      const res = await Share.open({
+        title: details.title,
+        urls: [base64Data, details.url],
+        message: details.message,
+      })
+      console.log({ res })
+      // {"res": {"app": "com.facebook.Messenger.ShareExtension", "message": "com.facebook.Messenger.ShareExtension"}}
+    } catch (err) {
+      // didnt use  the ios share . analytics?
+      console.log({ err })
+      //  {"err": [Error: User did not share]}
+    } finally {
+      setShareSheetVisible(false)
+    }
   }
 
   const shareArtworkOnInstagramStory = async () => {
-    const { title, href, artists } = artwork
-    const details = shareContent(title!, href!, artists)
+    const base64RawData = await shotRef.current.capture()
 
+    const url = ((artwork.images ?? [])[currentImageIndex]?.url ?? "").replace(":version", "large")
+
+    const base64Data = `data:image/png;base64,${base64RawData}`
     const colors = await ImageColors.getColors(url, { fallback: "#000000" })
 
     let topColor = "#000000"
@@ -80,7 +104,19 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
       topColor = colors.darkMuted ?? "#000000"
       bottomColor = colors.lightMuted ?? "#000000"
     }
+
+    await Share.shareSingle({
+      social: Share.Social.INSTAGRAM_STORIES,
+      method: Share.InstagramStories.SHARE_STICKER_IMAGE,
+      backgroundTopColor: topColor,
+      backgroundBottomColor: bottomColor,
+      stickerImage: base64Data,
     })
+    setShareSheetVisible(false)
+  }
+
+  const shareArtworkCopyLink = async () => {
+    Clipboard.setString(`https://artsy.net${artwork.href!}`)
     setShareSheetVisible(false)
   }
 
