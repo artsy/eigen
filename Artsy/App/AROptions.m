@@ -17,6 +17,7 @@ NSString *const AROptionsNewFirstInquiry = @"AROptionsNewFirstInquiry";
 NSString *const AROptionsNewFairPage = @"AROptionsNewFairPage";
 NSString *const AROptionsNewInsightsPage = @"AROptionsNewInsightsPage";
 NSString *const AROptionsInquiryCheckout = @"AROptionsInquiryCheckout";
+NSString *const AREnableCustomSharesheet = @"AREnableCustomSharesheet";
 
 // UX changes
 NSString *const AROptionsDisableNativeLiveAuctions = @"AROptionsDisableNativeLiveAuctions";
@@ -48,6 +49,7 @@ NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebVie
          AROptionsUseReactNativeWebView: @"Use react native webviews",
          AROptionsNewInsightsPage: @"Enable artist insights page",
          AROptionsInquiryCheckout: @"Enable inquiry checkout",
+         AREnableCustomSharesheet: @"Enable custom share sheet",
         };
     });
 }

@@ -59,6 +59,7 @@ export interface NativeState {
     AROptionsNewFairPage: boolean
     AROptionsNewInsightsPage: boolean
     AROptionsInquiryCheckout: boolean
+    AREnableCustomSharesheet: boolean
   }
   legacyFairSlugs: string[]
   legacyFairProfileSlugs: string[]
