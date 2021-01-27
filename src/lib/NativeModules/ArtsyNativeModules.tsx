@@ -36,6 +36,7 @@ export const ArtsyNativeModules = Platform.select({
       markNotificationsRead: noop("markNotificationsRead"),
       setApplicationIconBadgeNumber: noop("setApplicationIconBadgeNumber"),
       appVersion: "appVersion",
+      buildVersion: "buildVersion",
     },
     ARPHPhotoPickerModule: {
       requestPhotos: noop("requestPhotos"),
