@@ -175,6 +175,7 @@ function getNativeModules(): typeof NativeModules {
           AROptionsNewFairPage: false,
           AROptionsNewInsightsPage: false,
           AROptionsInquiryCheckout: false,
+          AROptionsSentryErrorDebug: false,
         },
         legacyFairSlugs: ["some-fairs-slug", "some-other-fair-slug"],
         legacyFairProfileSlugs: [],
@@ -190,6 +191,7 @@ function getNativeModules(): typeof NativeModules {
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       appVersion: "appVersion",
+      buildVersion: "buildVersion",
     },
     ARPHPhotoPickerModule: {
       requestPhotos: jest.fn(),
