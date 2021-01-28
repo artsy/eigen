@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType, tappedInfoBubble, TappedShowMore } from "@artsy/cohesion"
 import { MyCollectionArtworkArtistAuctionResults_artwork } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
+import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResult"
 import { navigate } from "lib/navigation/navigate"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
@@ -11,7 +12,6 @@ import React from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { InfoButton } from "./InfoButton"
 
 interface MyCollectionArtworkArtistAuctionResultsProps {
   artwork: MyCollectionArtworkArtistAuctionResults_artwork

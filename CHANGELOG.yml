@@ -7,6 +7,7 @@ upcoming:
     - Add android ci for testing PRs and deploying betas - pavlos, david
     - Configure metaphyiscs and relay for android - david
     - Use @artsy/palette-tokens package - justin, david
+    - Implement analytics on auction results - mounir
   user_facing:
     - Refresh inbox automatically upon revisiting - erik, lily
     - Poll and refetch images when images are processing (my collection) - brian
@@ -15,6 +16,9 @@ upcoming:
     - Hide artist insights tab when no auction results are available - mounir
     - show FilteredArtworkGridZeroState when no results are available  - mounir
     - show total count of auction results  - mounir
+    - Add info modals to artist insights and auction results - brian
+    - Make AuctionResult screen fields selectable  - mounir
+    - Add NotArtwork Icon to AuctionResult screen   - mounir
 
 releases:
   - version: 6.7.6

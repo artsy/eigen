@@ -38,13 +38,14 @@ commands:
           name: "Generate initial checksum manifests"
           command: |
             mkdir .manifests
-            scripts/generate-manifest.js .manifests/native_code '^Podfile' '^Makefile' '^Gemfile' '^emission/' '^Artsy' '^patches/react-native' '^\.env\.example'
             scripts/generate-manifest.js .manifests/node_modules '^yarn\.lock$' '^patches/'
             scripts/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
             scripts/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__tests__|__mocks__|__fixtures__))'
             scripts/generate-manifest.js .manifests/js_test_results '^\.manifests/js_transform' '^data/' '^src/'
             ls -lR emission > .manifests/emission_pod_file_list
             scripts/generate-manifest.js .manifests/cocoapods '^Podfile' '^Gemfile' '^\.manifests/emission_pod_file_list'
+            scripts/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^Podfile' '^Makefile' '^Gemfile' '^emission/' '^Artsy' '^patches/react-native' '^\.env\.example'
+            scripts/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
   setup-env-file:
     steps:
       - run:
@@ -339,13 +340,26 @@ jobs:
           at: .
       - install-node
       - setup-env-file
+      - restore_cache:
+          keys:
+            - v6-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+      - run:
+          name: Quit early if possible
+          command: |
+            if test $CIRCLE_BRANCH != beta-android && ls build-success.log
+            then
+              circleci step halt
+            fi
       - install-node-modules
       - install-gems
       - build-app-android
-
       - run:
-          name: Danger
-          command: bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
+          name: Save success file
+          command: echo yes > 'build-success.log'
+      - save_cache:
+          key: v6-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+          paths:
+            - build-success.log
 
       - await-previous-builds:
           branch: beta-android
