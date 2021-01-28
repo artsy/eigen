@@ -44,7 +44,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
             ],
           }}
         >
-          <View>
+          <View testID="sale-header-hero">
             <OpaqueImageView
               imageURL={sale.coverImage.url}
               style={{
