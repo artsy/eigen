@@ -265,6 +265,7 @@ export const ParamDefaultValues = {
   allowEmptyCreatedDates: true,
   artistIDs: [],
   atAuction: false,
+  attributionClass: undefined,
   categories: undefined,
   color: undefined,
   dimensionRange: "*-*",
@@ -289,6 +290,7 @@ const defaultCommonFilterOptions: Record<FilterParamName, string | boolean | und
   allowEmptyCreatedDates: ParamDefaultValues.allowEmptyCreatedDates,
   artistIDs: ParamDefaultValues.artistIDs,
   atAuction: ParamDefaultValues.atAuction,
+  attributionClass: ParamDefaultValues.attributionClass,
   categories: ParamDefaultValues.categories,
   color: ParamDefaultValues.color,
   dimensionRange: ParamDefaultValues.dimensionRange,
@@ -387,6 +389,7 @@ export const selectedOptionsUnion = ({
       paramValue: false,
       displayText: "Grid",
     },
+    { paramName: FilterParamName.attributionClass, paramValue: "", displayText: "All" },
   ]
 
   // First, naively attempt to union all of the existing filters. Give selectedFilters

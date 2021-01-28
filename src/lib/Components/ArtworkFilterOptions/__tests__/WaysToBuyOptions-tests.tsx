@@ -117,9 +117,8 @@ describe("Ways to Buy Options Screen", () => {
     }
 
     const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
-    const waysToBuyListItem = tree.root.findAllByType(FilterModalOptionListItem)[1]
 
-    expect(extractText(waysToBuyListItem)).toContain("Buy now, Inquire, Bid")
+    expect(extractText(tree.root)).toContain("Buy now, Inquire, Bid")
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
