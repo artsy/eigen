@@ -1,6 +1,7 @@
 import { ContextModule, OwnerType, tappedInfoBubble } from "@artsy/cohesion"
 import { MyCollectionArtworkDemandIndex_artwork } from "__generated__/MyCollectionArtworkDemandIndex_artwork.graphql"
 import { MyCollectionArtworkDemandIndex_marketPriceInsights } from "__generated__/MyCollectionArtworkDemandIndex_marketPriceInsights.graphql"
+import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Box, Flex, Spacer, Text } from "palette"
@@ -8,7 +9,6 @@ import React from "react"
 import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { InfoButton } from "./InfoButton"
 
 interface MyCollectionArtworkDemandIndexProps {
   artwork: MyCollectionArtworkDemandIndex_artwork
