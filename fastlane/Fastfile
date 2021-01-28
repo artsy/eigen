@@ -79,14 +79,14 @@ lane :ship_beta_ios do
     sentry_create_release auth_token: ENV['SentryUploadAuthKey'],
                           org_slug: org_slug,
                           project_slug: project_slug,
-                          version: sentry_version,
+                          version: sentry_release_version,
                           finalize: false
     puts "Created a release for #{project_slug}"
 
     sentry_set_commits auth_token: ENV['SentryUploadAuthKey'],
                        org_slug: org_slug,
                        project_slug: project_slug,
-                       version: sentry_version,
+                       version: sentry_release_version,
                        auto: true
     puts "Associated commits for Sentry release"
 
@@ -103,7 +103,7 @@ lane :ship_beta_ios do
       sentry_upload_file auth_token: ENV['SentryUploadAuthKey'],
                          org_slug: org_slug,
                          project_slug: project_slug,
-                         version: sentry_version,
+                         version: sentry_release_version,
                          dist: bundle_version,
                          file: 'emission/Pod/Assets/Emission.js'
       puts "Uploaded Emission.js for #{project_slug}"
@@ -111,7 +111,7 @@ lane :ship_beta_ios do
       sentry_upload_sourcemap auth_token: ENV['SentryUploadAuthKey'],
                               org_slug: org_slug,
                               project_slug: project_slug,
-                              version: sentry_version,
+                              version: sentry_release_version,
                               dist: bundle_version,
                               sourcemap: 'emission/Pod/Assets/Emission.js.map',
                               rewrite: true
