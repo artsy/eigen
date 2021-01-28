@@ -96,10 +96,10 @@ const IGStoryViewShot: React.FC<IGStoryViewShotProps> = ({ shotRef, href, aspect
           <Spacer mt="2" />
           <OpaqueImageView highPriority imageURL={href} style={{ flex: 1 }} aspectRatio={aspectRatio} />
           <Spacer mt="2" />
-          <Text variant="text" color={text === "dark" ? "black100" : "white100"}>
+          <Text variant="mediumText" color={text === "dark" ? "black100" : "white100"}>
             {artist}
           </Text>
-          <Text variant="text" color={text === "dark" ? "black100" : "white100"}>
+          <Text variant="text" color={text === "dark" ? "black100" : "white100"} opacity={0.6}>
             {title}
           </Text>
         </Flex>
