@@ -1,7 +1,18 @@
 import { ArtworkHeader_artwork } from "__generated__/ArtworkHeader_artwork.graphql"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { ArtsyLogoBlackIcon, Box, Flex, FlexProps, InstagramAppIcon, LinkIcon, MoreIcon, Spacer, Text } from "palette"
+import {
+  ArtsyLogoBlackIcon,
+  Box,
+  Flex,
+  FlexProps,
+  WhatsAppAppIcon,
+  InstagramAppIcon,
+  LinkIcon,
+  MoreIcon,
+  Spacer,
+  Text,
+} from "palette"
 import React, { RefObject, useEffect, useRef, useState } from "react"
 import ImageColors from "react-native-image-colors"
 // @ts-ignore
@@ -205,6 +216,11 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
             title={artwork.title!}
           />
 
+          <CustomShareSheetItem
+            title="WhatsApp"
+            Icon={<WhatsAppAppIcon />}
+            onPress={() => shareArtworkOnInstagramStory()}
+          />
           <CustomShareSheetItem
             title="Instagram Stories"
             Icon={<InstagramAppIcon />}
