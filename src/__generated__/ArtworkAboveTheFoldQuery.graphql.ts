@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9e7a6cd18c9213c4444b4b30cd9c808d */
+/* @relayHash 9e73e330d3dfeb5ee7a72f61dac1bf13 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -94,6 +94,7 @@ fragment ArtworkHeader_artwork on Artwork {
     ...ImageCarousel_images
     url: imageURL
     imageVersions
+    aspectRatio
   }
   title
   href
@@ -1045,6 +1046,13 @@ return {
                   }
                 ],
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "aspectRatio",
+                "storageKey": null
               }
             ],
             "storageKey": null
@@ -1359,7 +1367,7 @@ return {
     ]
   },
   "params": {
-    "id": "9e7a6cd18c9213c4444b4b30cd9c808d",
+    "id": "9e73e330d3dfeb5ee7a72f61dac1bf13",
     "metadata": {},
     "name": "ArtworkAboveTheFoldQuery",
     "operationKind": "query",

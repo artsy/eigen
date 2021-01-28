@@ -8,6 +8,7 @@ export type ArtworkHeader_artwork = {
     readonly images: ReadonlyArray<{
         readonly url: string | null;
         readonly imageVersions: ReadonlyArray<string | null> | null;
+        readonly aspectRatio: number;
         readonly " $fragmentRefs": FragmentRefs<"ImageCarousel_images">;
     } | null> | null;
     readonly title: string | null;
@@ -52,6 +53,13 @@ const node: ReaderFragment = {
           "args": null,
           "kind": "ScalarField",
           "name": "imageVersions",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "aspectRatio",
           "storageKey": null
         },
         {
@@ -108,5 +116,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = 'a3f8d6363822b9ae1d416dd45c52c6a4';
+(node as any).hash = '35bb791b5cf71f93f28f26c0e6db8daa';
 export default node;
