@@ -3,7 +3,7 @@ import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__gener
 import { Action, action, Thunk, thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { getCurrentEmissionState, GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import type { GlobalStoreModel } from "lib/store/GlobalStoreModel"
 import { NativeModules, Platform } from "react-native"
 import { fetchQuery, graphql } from "react-relay"
@@ -74,7 +74,7 @@ function persistDevReloadState(tabType: BottomTabType) {
     AsyncStorage.setItem(
       reloadStateKey,
       JSON.stringify({
-        launchCount: getCurrentEmissionState().launchCount,
+        launchCount,
         selectedTab: tabType,
       })
     )
@@ -96,8 +96,11 @@ async function maybeHandleDevReload() {
   }
   try {
     const { launchCount: previousLaunchCount, selectedTab } = JSON.parse(json)
+    console.log("hjkl", { previousLaunchCount, selectedTab, launchCount })
     if (launchCount === previousLaunchCount) {
       GlobalStore.actions.bottomTabs.switchTab(selectedTab)
+    } else {
+      AsyncStorage.removeItem(reloadStateKey)
     }
   } catch (e) {
     console.error("failed to handle dev reload state")
