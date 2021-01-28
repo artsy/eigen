@@ -18,6 +18,7 @@ upcoming:
     - Add info modals to artist insights and auction results - brian
     - Make AuctionResult screen fields selectable  - mounir
     - Add NotArtwork Icon to AuctionResult screen   - mounir
+    - Add extra bottom padding on artist insights auction results - mounir
 
 releases:
   - version: 6.7.6

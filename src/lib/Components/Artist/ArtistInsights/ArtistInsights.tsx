@@ -139,7 +139,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
 
   return (
     <ArtworkFilterGlobalStateProvider>
-      <StickyTabPageScrollView contentContainerStyle={{ paddingTop: 20 }} onScrollEndDrag={onScrollEndDrag}>
+      <StickyTabPageScrollView contentContainerStyle={{ paddingVertical: 20 }} onScrollEndDrag={onScrollEndDrag}>
         <Join separator={<Separator my={2} ml={-2} width={useScreenDimensions().width} />}>
           {renderMarketStats()}
           <ArtistInsightsAuctionResultsPaginationContainer artist={artist} />
