@@ -1,8 +1,15 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { NavigationContainerProps, NavigationContainerRef } from "@react-navigation/native"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { useEffect, useState } from "react"
+import { NativeModules, Platform } from "react-native"
 
 const NAV_STATE_STORAGE_KEY_PREFIX = "ARNavState:"
+
+const launchCount =
+  Platform.OS === "ios"
+    ? ArtsyNativeModules.ARNotificationsManager.nativeState.launchCount
+    : NativeModules.ArtsyNativeModule.getConstants().launchCount
 
 export type DevReloadResult = { type: "loading" } | { type: "reloaded"; state: any } | { type: "not_reloaded" }
 export function useDevReloadNavState(
@@ -17,8 +24,12 @@ export function useDevReloadNavState(
     AsyncStorage.getItem(NAV_STATE_STORAGE_KEY_PREFIX + id).then((json) => {
       try {
         if (json) {
-          // TODO: if the launchCount increased, don't rehydrate from storage
-          setResult({ type: "reloaded", state: JSON.parse(json) })
+          const { launchCount: previousLaunchCount, ...state } = JSON.parse(json)
+          if (previousLaunchCount === launchCount) {
+            setResult({ type: "reloaded", state })
+          } else {
+            setResult({ type: "not_reloaded" })
+          }
           return
         }
       } catch (e) {
@@ -36,7 +47,7 @@ export function useDevReloadNavState(
       let state: any
       const unlisten = ref.current?.addListener("state", (e) => {
         state = e.data.state
-        AsyncStorage.setItem(NAV_STATE_STORAGE_KEY_PREFIX + id, JSON.stringify(state))
+        AsyncStorage.setItem(NAV_STATE_STORAGE_KEY_PREFIX + id, JSON.stringify({ ...state, launchCount }))
       })
       return () => {
         unlisten?.()

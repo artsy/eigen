@@ -1,9 +1,11 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
 import { Action, action, Thunk, thunk, thunkOn, ThunkOn } from "easy-peasy"
+import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { getCurrentEmissionState, GlobalStore } from "lib/store/GlobalStore"
 import type { GlobalStoreModel } from "lib/store/GlobalStoreModel"
+import { NativeModules, Platform } from "react-native"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
@@ -79,6 +81,11 @@ function persistDevReloadState(tabType: BottomTabType) {
   })
 }
 
+const launchCount =
+  Platform.OS === "ios"
+    ? ArtsyNativeModules.ARNotificationsManager.nativeState.launchCount
+    : NativeModules.ArtsyNativeModule.getConstants().launchCount
+
 async function maybeHandleDevReload() {
   if (!__DEV__) {
     return
@@ -88,8 +95,8 @@ async function maybeHandleDevReload() {
     return
   }
   try {
-    const { launchCount, selectedTab } = JSON.parse(json)
-    if (launchCount === getCurrentEmissionState().launchCount) {
+    const { launchCount: previousLaunchCount, selectedTab } = JSON.parse(json)
+    if (launchCount === previousLaunchCount) {
       GlobalStore.actions.bottomTabs.switchTab(selectedTab)
     }
   } catch (e) {
