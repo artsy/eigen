@@ -22,6 +22,12 @@ Enzyme.configure({ adapter: new Adapter() })
 import diff from "snapshot-diff"
 expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
 
+jest.mock("react-native-screens/native-stack", () => {
+  return {
+    createNativeStackNavigator: require("@react-navigation/stack").createStackNavigator,
+  }
+})
+
 jest.mock("react-tracking")
 import track, { useTracking } from "react-tracking"
 const trackEvent = jest.fn()
@@ -31,6 +37,11 @@ const trackEvent = jest.fn()
     trackEvent,
   }
 })
+jest.mock("tipsi-stripe", () => ({
+  setOptions: jest.fn(),
+  paymentRequestWithCardForm: jest.fn(),
+  createTokenWithCard: jest.fn(),
+}))
 
 // Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
 jest.mock("react-tracking/build/dispatchTrackingEvent")
