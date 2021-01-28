@@ -8,6 +8,7 @@ upcoming:
     - Configure metaphyiscs and relay for android - david
     - Use @artsy/palette-tokens package - justin, david
     - Implement analytics on auction results - mounir
+    - Add increase/decrease icons - pepopowitz
   user_facing:
     - Refresh inbox automatically upon revisiting - erik, lily
     - Poll and refetch images when images are processing (my collection) - brian
