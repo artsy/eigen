@@ -3,7 +3,7 @@ import { MarketStatsQuery } from "__generated__/MarketStatsQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { formatLargeNumber } from "lib/utils/formatLargeNumber"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Flex, Spacer, Text } from "palette"
+import { DecreaseIcon, Flex, IncreaseIcon, Join, Spacer, Text } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -66,6 +66,14 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsights }) => {
   const averageValueSold = (priceInsight?.annualValueSoldCents as number) / (priceInsight?.annualLotsSold || 1)
   const formattedAverageValueSold = formatLargeNumber(averageValueSold)
 
+  let deltaIcon: React.ReactNode
+  const actualMedianSaleOverEstimatePercentage = priceInsight?.medianSaleOverEstimatePercentage || 0
+  if (actualMedianSaleOverEstimatePercentage < 100) {
+    deltaIcon = <DecreaseIcon />
+  } else if (actualMedianSaleOverEstimatePercentage > 100) {
+    deltaIcon = <IncreaseIcon />
+  }
+
   return (
     <>
       <Flex flexDirection="row" alignItems="center">
@@ -101,7 +109,12 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsights }) => {
           <Text variant="text">Average sale price</Text>
         </Flex>
         <Flex width="50%" mt={2}>
-          <Text variant="largeTitle">{priceInsight?.medianSaleOverEstimatePercentage}%</Text>
+          <Flex width="50%" flexDirection="row" alignItems="center">
+            <Join separator={<Spacer mr={0.5} />}>
+              {deltaIcon}
+              <Text variant="largeTitle">{actualMedianSaleOverEstimatePercentage}%</Text>
+            </Join>
+          </Flex>
           <Text variant="text">Sale price over estimate</Text>
         </Flex>
       </Flex>
