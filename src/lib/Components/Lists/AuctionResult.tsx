@@ -21,7 +21,7 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
 
   return (
     <Touchable underlayColor={color("black5")} onPress={onPress}>
-      <Flex height={100} py="2" px={2} flexDirection="row">
+      <Flex py="2" px={2} flexDirection="row">
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
           <Flex
@@ -51,14 +51,10 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
         <Flex pl={15} flex={1} flexDirection="row" justifyContent="space-between">
           <Flex flex={3}>
             <Flex flexDirection="row" mb={0.5}>
-              <Text variant="subtitle" numberOfLines={1} style={{ flexShrink: 1 }}>
+              <Text variant="caption" ellipsizeMode="middle" numberOfLines={2} style={{ flexShrink: 1 }}>
                 {auctionResult.title}
+                {!!auctionResult.dateText && auctionResult.dateText !== "" && `, ${auctionResult.dateText}`}
               </Text>
-              {!!auctionResult.dateText && auctionResult.dateText !== "" && (
-                <Text variant="subtitle" numberOfLines={1}>
-                  , {auctionResult.dateText}
-                </Text>
-              )}
             </Flex>
             {!!auctionResult.mediumText && (
               <Text variant="small" color="black60" numberOfLines={1}>
@@ -79,7 +75,7 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
           <Flex alignItems="flex-end" pl={15}>
             {!!auctionResult.priceRealized?.display && !!auctionResult.currency ? (
               <Flex alignItems="flex-end">
-                <Text variant="subtitle" fontWeight="bold" testID="price">
+                <Text variant="caption" fontWeight="bold" testID="price">
                   {(auctionResult.priceRealized?.display ?? "").replace(`${auctionResult.currency} `, "")}
                 </Text>
                 {!!auctionResult.performance?.mid && (
