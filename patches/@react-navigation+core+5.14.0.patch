@@ -1,0 +1,41 @@
+diff --git a/node_modules/@react-navigation/core/src/BaseNavigationContainer.tsx b/node_modules/@react-navigation/core/src/BaseNavigationContainer.tsx
+index b5e0627..615e6d6 100644
+--- a/node_modules/@react-navigation/core/src/BaseNavigationContainer.tsx
++++ b/node_modules/@react-navigation/core/src/BaseNavigationContainer.tsx
+@@ -166,8 +166,16 @@ const BaseNavigationContainer = React.forwardRef(
+     );
+ 
+     const getRootState = React.useCallback(() => {
+-      return keyedListeners.getState.root?.();
+-    }, [keyedListeners.getState]);
++      // react-navigation bugs out with nested NavigationContainers, even when
++      // you set independent={true}
++      // The `getRootState` and `dangerouslyGetState` ref methods don't work
++      // correctly, it's not clear why. But since we have a 1:1 pairing between
++      // NavigationContainer and Navigator instances, we can just get the state
++      // directly rom the navigator
++      return listeners.focus[0]((navigation) =>
++        navigation.dangerouslyGetState()
++      ).result;
++    }, [listeners]);
+ 
+     const getCurrentRoute = React.useCallback(() => {
+       let state = getRootState();
+@@ -180,6 +188,8 @@ const BaseNavigationContainer = React.forwardRef(
+       return state.routes[state.index];
+     }, [getRootState]);
+ 
++
++
+     const emitter = useEventEmitter<NavigationContainerEventMap>();
+ 
+     const { addOptionsGetter, getCurrentOptions } = useOptionsGetters({});
+@@ -202,7 +212,7 @@ const BaseNavigationContainer = React.forwardRef(
+       dispatch,
+       canGoBack,
+       getRootState,
+-      dangerouslyGetState: () => state,
++      dangerouslyGetState: getRootState,
+       dangerouslyGetParent: () => undefined,
+       getCurrentRoute,
+       getCurrentOptions,

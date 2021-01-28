@@ -29,14 +29,7 @@ const TabContent = ({ tabName, rootModuleName }: { tabName: BottomTabType; rootM
     throw new Error("native module not supported")
   }
 
-  return (
-    <NavStack
-      ref={(ref) => {
-        __unsafe_tabStackNavRefs[tabName] = ref
-      }}
-      rootModuleName={rootModuleName}
-    ></NavStack>
-  )
+  return <NavStack id={tabName} ref={__unsafe_tabStackNavRefs[tabName]} rootModuleName={rootModuleName}></NavStack>
 }
 
 export const BottomTabsNavigator = () => {
