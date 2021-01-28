@@ -58,16 +58,13 @@ export const NavStack = React.forwardRef<
   NavigationContainerRef,
   { id?: string; rootModuleName: AppModule; rootModuleProps?: object }
 >(({ id, rootModuleName, rootModuleProps }, ref) => {
-  const navigationContainerProps = useDevReloadNavState(id, ref as any)
-  if (navigationContainerProps === null) {
-    return null
-  }
+  useDevReloadNavState(id, ref as any)
   const initialParams: ScreenProps = {
     moduleName: rootModuleName,
     props: rootModuleProps,
   }
   return (
-    <NavigationContainer ref={ref} independent {...navigationContainerProps}>
+    <NavigationContainer ref={ref} independent>
       <Stack.Navigator screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "white" } }}>
         <Stack.Screen name="screen" component={ScreenWrapper} initialParams={initialParams} />
       </Stack.Navigator>

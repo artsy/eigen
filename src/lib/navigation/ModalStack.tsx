@@ -8,12 +8,9 @@ import { useDevReloadNavState } from "./useDevReloadNavState"
 const Stack = createNativeStackNavigator()
 
 export const ModalStack: React.FC = ({ children }) => {
-  const navigationContainerProps = useDevReloadNavState("main_modal_stack", __unsafe_mainModalStackRef)
-  if (!navigationContainerProps) {
-    return null
-  }
+  useDevReloadNavState("main_modal_stack", __unsafe_mainModalStackRef)
   return (
-    <NavigationContainer independent={true} ref={__unsafe_mainModalStackRef} {...navigationContainerProps}>
+    <NavigationContainer independent={true} ref={__unsafe_mainModalStackRef}>
       <Stack.Navigator mode="modal" screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "white" } }}>
         <Stack.Screen name="root">{() => children}</Stack.Screen>
         <Stack.Screen name="modal" component={ModalNavStack}></Stack.Screen>
