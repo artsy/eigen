@@ -1221,6 +1221,11 @@ describe("selectedOptionsUnion", () => {
           paramName: "viewAs",
           paramValue: false,
         },
+        {
+          displayText: "All",
+          paramName: "attributionClass",
+          paramValue: "",
+        },
       ])
     })
 
@@ -1312,6 +1317,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "Grid",
           paramName: "viewAs",
           paramValue: false,
+        },
+        {
+          displayText: "All",
+          paramName: "attributionClass",
+          paramValue: "",
         },
       ])
     })
@@ -1414,6 +1424,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "Grid",
           paramName: "viewAs",
           paramValue: false,
+        },
+        {
+          displayText: "All",
+          paramName: "attributionClass",
+          paramValue: "",
         },
       ])
     })
@@ -1528,6 +1543,11 @@ describe("selectedOptionsUnion", () => {
           paramName: "viewAs",
           paramValue: false,
         },
+        {
+          displayText: "All",
+          paramName: "attributionClass",
+          paramValue: "",
+        },
       ])
     })
 
@@ -1631,6 +1651,11 @@ describe("selectedOptionsUnion", () => {
           paramName: "viewAs",
           paramValue: false,
         },
+        {
+          displayText: "All",
+          paramName: "attributionClass",
+          paramValue: "",
+        },
       ])
     })
   })
@@ -1709,6 +1734,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "Grid",
           paramName: "viewAs",
           paramValue: false,
+        },
+        {
+          displayText: "All",
+          paramName: "attributionClass",
+          paramValue: "",
         },
       ])
     })
@@ -1796,6 +1826,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "Grid",
           paramName: "viewAs",
           paramValue: false,
+        },
+        {
+          displayText: "All",
+          paramName: "attributionClass",
+          paramValue: "",
         },
       ])
     })
@@ -1890,6 +1925,11 @@ describe("selectedOptionsUnion", () => {
           paramName: "viewAs",
           paramValue: false,
         },
+        {
+          displayText: "All",
+          paramName: "attributionClass",
+          paramValue: "",
+        },
       ])
     })
   })
@@ -1968,6 +2008,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "Grid",
           paramName: "viewAs",
           paramValue: false,
+        },
+        {
+          displayText: "All",
+          paramName: "attributionClass",
+          paramValue: "",
         },
       ])
     })

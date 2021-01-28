@@ -13,6 +13,7 @@ export enum FilterParamName {
   artistIDs = "artistIDs",
   allowEmptyCreatedDates = "allowEmptyCreatedDates",
   artistsIFollow = "includeArtworksByFollowedArtists",
+  attributionClass = "attributionClass",
   categories = "categories",
   color = "color",
   earliestCreatedYear = "earliestCreatedYear",
@@ -42,6 +43,7 @@ export enum FilterDisplayName {
   // artist = "Artists",
   artistIDs = "Artists",
   artistsIFollow = "Artist",
+  attributionClass = "Rarity",
   color = "Color",
   categories = "Medium",
   estimateRange = "Price/estimate range",
@@ -183,6 +185,22 @@ export const selectedOption = ({
   aggregations: Aggregations
 }) => {
   const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
+
+  if (filterScreen === "attributionClass") {
+    const selectedAttributionClassOption = selectedOptions.find((option) => {
+      return option.paramName === FilterParamName.attributionClass
+    })
+
+    if (
+      selectedAttributionClassOption?.paramValue &&
+      Array.isArray(selectedAttributionClassOption?.paramValue) &&
+      selectedAttributionClassOption?.paramValue.length > 0
+    ) {
+      return selectedAttributionClassOption?.paramValue.map(capitalize).join(", ")
+    }
+
+    return "All"
+  }
 
   if (filterScreen === "categories") {
     const selectedCategoriesValues = selectedOptions.find((filter) => filter.paramName === FilterParamName.categories)
