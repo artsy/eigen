@@ -96,7 +96,6 @@ async function maybeHandleDevReload() {
   }
   try {
     const { launchCount: previousLaunchCount, selectedTab } = JSON.parse(json)
-    console.log("hjkl", { previousLaunchCount, selectedTab, launchCount })
     if (launchCount === previousLaunchCount) {
       GlobalStore.actions.bottomTabs.switchTab(selectedTab)
     } else {
