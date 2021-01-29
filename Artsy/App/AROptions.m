@@ -17,6 +17,7 @@ NSString *const AROptionsNewFirstInquiry = @"AROptionsNewFirstInquiry";
 NSString *const AROptionsNewFairPage = @"AROptionsNewFairPage";
 NSString *const AROptionsNewInsightsPage = @"AROptionsNewInsightsPage";
 NSString *const AROptionsInquiryCheckout = @"AROptionsInquiryCheckout";
+NSString *const AROptionsSentryErrorDebug = @"AROptionsSentryErrorDebug";
 
 // UX changes
 NSString *const AROptionsDisableNativeLiveAuctions = @"AROptionsDisableNativeLiveAuctions";
@@ -40,6 +41,7 @@ NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebVie
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         options = @{
+         AROptionsSentryErrorDebug: @"Enable sentry error button in profile",
          AROptionsDebugARVIR: @"Debug AR View in Room",
          AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
          AROptionsEnableMyCollection: @"Enable new MyCollection view",

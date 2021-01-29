@@ -7,7 +7,9 @@ upcoming:
     - Add android ci for testing PRs and deploying betas - pavlos, david
     - Configure metaphyiscs and relay for android - david
     - Use @artsy/palette-tokens package - justin, david
+    - Explicitly tag releases to fix sentry errors - cx
     - Implement analytics on auction results - mounir
+    - Add increase/decrease icons - pepopowitz
   user_facing:
     - Refresh inbox automatically upon revisiting - erik, lily
     - Poll and refetch images when images are processing (my collection) - brian
@@ -19,6 +21,8 @@ upcoming:
     - Add info modals to artist insights and auction results - brian
     - Make AuctionResult screen fields selectable  - mounir
     - Add NotArtwork Icon to AuctionResult screen   - mounir
+    - Add extra bottom padding on artist insights auction results - mounir
+    - Remove separator from last auction result - mounir
 
 releases:
   - version: 6.7.6

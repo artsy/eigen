@@ -51,7 +51,10 @@ RCT_EXPORT_METHOD(validateAuthCredentialsAreCorrect)
 
 - (NSDictionary *)constantsToExport
 {
-    return @{ @"appVersion" : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] };
+    return @{
+        @"appVersion" : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],
+        @"buildVersion" : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"],
+    };
 }
 
 + (BOOL)requiresMainQueueSetup
