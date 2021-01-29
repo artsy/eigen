@@ -1,11 +1,10 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
 import { Action, action, Thunk, thunk, thunkOn, ThunkOn } from "easy-peasy"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStore } from "lib/store/GlobalStore"
 import type { GlobalStoreModel } from "lib/store/GlobalStoreModel"
-import { NativeModules, Platform } from "react-native"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
@@ -81,10 +80,7 @@ function persistDevReloadState(tabType: BottomTabType) {
   })
 }
 
-const launchCount =
-  Platform.OS === "ios"
-    ? LegacyNativeModules.ARNotificationsManager.nativeState.launchCount
-    : NativeModules.ArtsyNativeModule.getConstants().launchCount
+const launchCount = ArtsyNativeModule.launchCount
 
 async function maybeHandleDevReload() {
   if (!__DEV__) {

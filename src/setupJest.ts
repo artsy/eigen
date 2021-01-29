@@ -207,7 +207,6 @@ function getNativeModules(): typeof NativeModules {
     ARPHPhotoPickerModule: {
       requestPhotos: jest.fn(),
     },
-    Emission: null as never,
     ARScreenPresenterModule: {
       presentMediaPreviewController: jest.fn(),
       dismissModal: jest.fn(),
