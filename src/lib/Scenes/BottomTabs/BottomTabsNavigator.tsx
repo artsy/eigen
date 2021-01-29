@@ -1,8 +1,6 @@
 import { AppModule, modules } from "lib/AppRegistry"
 import { NativeViewController } from "lib/Components/NativeViewController"
 import { __unsafe_tabStackNavRefs } from "lib/NativeModules/ARScreenPresenterModule"
-import { ModalStack } from "lib/navigation/ModalStack"
-// import { ModalStack } from "lib/navigation/ModalStack"
 import { NavStack } from "lib/navigation/NavStack"
 import { useSelectedTab } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -37,19 +35,17 @@ export const BottomTabsNavigator = () => {
   const { bottom } = useScreenDimensions().safeAreaInsets
   return (
     <View style={{ flex: 1, paddingBottom: bottom }}>
-      <ModalStack>
-        <FadeBetween
-          views={[
-            <TabContent tabName="home" rootModuleName="Home" />,
-            <TabContent tabName="search" rootModuleName="Search" />,
-            <TabContent tabName="inbox" rootModuleName="Inbox" />,
-            <TabContent tabName="sell" rootModuleName="Sales" />,
-            <TabContent tabName="profile" rootModuleName="MyProfile" />,
-          ]}
-          activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(selectedTab)}
-        />
-        <BottomTabs />
-      </ModalStack>
+      <FadeBetween
+        views={[
+          <TabContent tabName="home" rootModuleName="Home" />,
+          <TabContent tabName="search" rootModuleName="Search" />,
+          <TabContent tabName="inbox" rootModuleName="Inbox" />,
+          <TabContent tabName="sell" rootModuleName="Sales" />,
+          <TabContent tabName="profile" rootModuleName="MyProfile" />,
+        ]}
+        activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(selectedTab)}
+      />
+      <BottomTabs />
     </View>
   )
 }

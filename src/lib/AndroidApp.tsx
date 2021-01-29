@@ -1,12 +1,12 @@
-import AsyncStorage from "@react-native-community/async-storage"
 import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { View } from "react-native"
-import { TouchableOpacity } from "react-native-gesture-handler"
 import track from "react-tracking"
 import { LogIn } from "./LogIn/LogIn"
+import { ModalStack } from "./navigation/ModalStack"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
+import { AdminMenuWrapper } from "./utils/AdminMenuWrapper"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
 
 const Main: React.FC<{}> = track()(({}) => {
@@ -20,7 +20,11 @@ const Main: React.FC<{}> = track()(({}) => {
     return <LogIn></LogIn>
   }
 
-  return <BottomTabsNavigator></BottomTabsNavigator>
+  return (
+    <ModalStack>
+      <BottomTabsNavigator></BottomTabsNavigator>
+    </ModalStack>
+  )
 })
 
 export const App = () => (
@@ -28,19 +32,11 @@ export const App = () => (
     <ProvideScreenDimensions>
       <Theme>
         <GlobalStoreProvider>
-          <Main />
+          <AdminMenuWrapper>
+            <Main />
+          </AdminMenuWrapper>
         </GlobalStoreProvider>
       </Theme>
     </ProvideScreenDimensions>
-    <View style={{ position: "absolute", bottom: 0, left: 0 }}>
-      <TouchableOpacity
-        onPress={() => {
-          console.warn("deleting everything")
-          AsyncStorage.clear()
-        }}
-      >
-        <View style={{ width: 5, height: 5, backgroundColor: "red" }}></View>
-      </TouchableOpacity>
-    </View>
   </View>
 )
