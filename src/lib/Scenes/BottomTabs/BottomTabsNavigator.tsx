@@ -1,4 +1,4 @@
-import { AppModule, modules } from "lib/AppRegistry"
+import { AppModule } from "lib/AppRegistry"
 import { NativeViewController } from "lib/Components/NativeViewController"
 import { __unsafe_tabStackNavRefs } from "lib/NativeModules/ARScreenPresenterModule"
 import { NavStack } from "lib/navigation/NavStack"
@@ -20,11 +20,6 @@ const TabContent = ({ tabName, rootModuleName }: { tabName: BottomTabType; rootM
         }}
       />
     )
-  }
-
-  const module = modules[rootModuleName]
-  if (module.type === "native") {
-    throw new Error("native module not supported")
   }
 
   return <NavStack id={tabName} ref={__unsafe_tabStackNavRefs[tabName]} rootModuleName={rootModuleName}></NavStack>
