@@ -91,8 +91,6 @@ LogBox.ignoreLogs([
   // RN 0.59.0 ships with this bug, see: https://github.com/facebook/react-native/issues/16376
   "RCTBridge required dispatch_sync to load RCTDevLoadingView. This may lead to deadlocks",
 
-  // The following item exist in node_modules. Once this PR is merged, to make warnings opt-in, we can ignore: https://github.com/facebook/metro/issues/287
-
   "Require cycle:",
 
   // This is for the Artist page, which will likely get redone soon anyway.
