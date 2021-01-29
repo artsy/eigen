@@ -276,6 +276,7 @@ export default createPaginationContainer(
         inquireableOnly: { type: "Boolean" }
         atAuction: { type: "Boolean" }
         offerable: { type: "Boolean" }
+        attributionClass: { type: "[String]" }
       ) {
         id
         slug
@@ -295,6 +296,7 @@ export default createPaginationContainer(
           atAuction: $atAuction
           offerable: $offerable
           aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
+          attributionClass: $attributionClass
         ) @connection(key: "ArtistArtworksGrid_artworks") {
           aggregations {
             slice
@@ -339,20 +341,10 @@ export default createPaginationContainer(
     },
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
+        ...fragmentVariables,
         id: props.artist.id,
         count,
         cursor,
-        sort: fragmentVariables.sort,
-        medium: fragmentVariables.medium,
-        color: fragmentVariables.color,
-        partnerID: fragmentVariables.partnerID,
-        priceRange: fragmentVariables.priceRange,
-        dimensionRange: fragmentVariables.dimensionRange,
-        majorPeriods: fragmentVariables.majorPeriods,
-        acquireable: fragmentVariables.acquireable,
-        inquireableOnly: fragmentVariables.inquireableOnly,
-        atAuction: fragmentVariables.atAuction,
-        offerable: fragmentVariables.offerable,
       }
     },
     query: graphql`
@@ -371,6 +363,7 @@ export default createPaginationContainer(
         $inquireableOnly: Boolean
         $atAuction: Boolean
         $offerable: Boolean
+        $attributionClass: [String]
       ) {
         node(id: $id) {
           ... on Artist {
@@ -389,6 +382,7 @@ export default createPaginationContainer(
                 inquireableOnly: $inquireableOnly
                 atAuction: $atAuction
                 offerable: $offerable
+                attributionClass: $attributionClass
               )
           }
         }

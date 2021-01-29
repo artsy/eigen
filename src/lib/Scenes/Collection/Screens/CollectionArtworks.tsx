@@ -112,6 +112,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         inquireableOnly: { type: "Boolean" }
         atAuction: { type: "Boolean" }
         offerable: { type: "Boolean" }
+        attributionClass: { type: "[String]" }
       ) {
         isDepartment
         slug
@@ -131,6 +132,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
           atAuction: $atAuction
           offerable: $offerable
           aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
+          attributionClass: $attributionClass
         ) @connection(key: "Collection_collectionArtworks") {
           aggregations {
             slice
@@ -163,17 +165,6 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         id: props.collection.slug,
         count,
         cursor,
-        sort: fragmentVariables.sort,
-        medium: fragmentVariables.medium,
-        color: fragmentVariables.color,
-        partnerID: fragmentVariables.partnerID,
-        priceRange: fragmentVariables.priceRange,
-        dimensionRange: fragmentVariables.dimensionRange,
-        majorPeriods: fragmentVariables.majorPeriods,
-        acquireable: fragmentVariables.acquireable,
-        inquireableOnly: fragmentVariables.inquireableOnly,
-        atAuction: fragmentVariables.atAuction,
-        offerable: fragmentVariables.offerable,
       }
     },
     query: graphql`
@@ -192,6 +183,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         $inquireableOnly: Boolean
         $atAuction: Boolean
         $offerable: Boolean
+        $attributionClass: [String]
       ) {
         marketingCollection(slug: $id) {
           ...CollectionArtworks_collection
@@ -209,6 +201,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
               inquireableOnly: $inquireableOnly
               atAuction: $atAuction
               offerable: $offerable
+              attributionClass: $attributionClass
             )
         }
       }

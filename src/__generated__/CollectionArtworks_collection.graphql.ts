@@ -61,6 +61,11 @@ return {
     {
       "defaultValue": null,
       "kind": "LocalArgument",
+      "name": "attributionClass"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
       "name": "color"
     },
     {
@@ -169,6 +174,11 @@ return {
           "kind": "Variable",
           "name": "atAuction",
           "variableName": "atAuction"
+        },
+        {
+          "kind": "Variable",
+          "name": "attributionClass",
+          "variableName": "attributionClass"
         },
         {
           "kind": "Variable",
@@ -364,5 +374,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '6e5763406b3d8c291a27a8364fd47052';
+(node as any).hash = '1e65e47708f32d93e8b7607980305c68';
 export default node;
