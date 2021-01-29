@@ -1,5 +1,7 @@
+import { ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
 import { MarketStats_priceInsights } from "__generated__/MarketStats_priceInsights.graphql"
 import { MarketStatsQuery } from "__generated__/MarketStatsQuery.graphql"
+import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { formatLargeNumber } from "lib/utils/formatLargeNumber"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -8,8 +10,6 @@ import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { InfoButton } from "lib/Components/Buttons/InfoButton"
-import { ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
 
 interface MarketStatsProps {
   priceInsights: MarketStats_priceInsights
