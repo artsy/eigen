@@ -59,7 +59,7 @@ const FadeBetween: React.FC<{ views: JSX.Element[]; activeIndex: number }> = ({ 
       // fade in screen above, then make previous screen transparent
       opacities[activeIndex].setValue(0)
       requestAnimationFrame(() => {
-        Animated.spring(opacities[activeIndex], { toValue: 1, useNativeDriver: false, speed: 100 }).start(() => {
+        Animated.spring(opacities[activeIndex], { toValue: 1, useNativeDriver: true, speed: 100 }).start(() => {
           opacities[lastActiveIndex].setValue(0)
         })
       })
@@ -67,7 +67,7 @@ const FadeBetween: React.FC<{ views: JSX.Element[]; activeIndex: number }> = ({ 
       // make next screen opaque, then fade out screen above
       opacities[activeIndex].setValue(1)
       requestAnimationFrame(() => {
-        Animated.spring(opacities[lastActiveIndex], { toValue: 0, useNativeDriver: false, speed: 100 }).start()
+        Animated.spring(opacities[lastActiveIndex], { toValue: 0, useNativeDriver: true, speed: 100 }).start()
       })
     }
     hasLoaded[activeIndex] = true
