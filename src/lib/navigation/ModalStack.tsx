@@ -1,8 +1,9 @@
-import { NavigationContainer } from "@react-navigation/native"
-import { __unsafe_mainModalStackRef } from "lib/NativeModules/ARScreenPresenterModule"
-import React from "react"
+import { NavigationContainer, NavigationContainerRef, Route } from "@react-navigation/native"
+import { AppModule } from "lib/AppRegistry"
+import { __unsafe_mainModalStackRef, __unsafe_modalNavStackRefs } from "lib/NativeModules/ARScreenPresenterModule"
+import React, { useEffect, useRef } from "react"
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
-import { ModalNavStack } from "./NavStack"
+import { NavStack } from "./NavStack"
 import { useDevReloadNavState } from "./useDevReloadNavState"
 
 const Stack = createNativeStackNavigator()
@@ -16,5 +17,26 @@ export const ModalStack: React.FC = ({ children }) => {
         <Stack.Screen name="modal" component={ModalNavStack}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
+  )
+}
+
+const ModalNavStack: React.FC<{ route: Route<"", { rootModuleName: AppModule; rootModuleProps?: object }> }> = ({
+  route,
+}) => {
+  const ref = useRef<NavigationContainerRef>(null)
+  useEffect(() => {
+    __unsafe_modalNavStackRefs[route.key] = ref
+    return () => {
+      delete __unsafe_modalNavStackRefs[route.key]
+    }
+  }, [])
+
+  return (
+    <NavStack
+      id={route.key}
+      ref={ref}
+      rootModuleName={route.params.rootModuleName}
+      rootModuleProps={route.params.rootModuleProps}
+    />
   )
 }

@@ -1,7 +1,6 @@
-import { NavigationContainer, NavigationContainerRef, Route } from "@react-navigation/native"
+import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { AppModule, modules } from "lib/AppRegistry"
-import { __unsafe_modalNavStackRefs } from "lib/NativeModules/ARScreenPresenterModule"
-import React, { useEffect, useRef } from "react"
+import React from "react"
 import { View } from "react-native"
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { BackButton } from "./BackButton"
@@ -22,35 +21,9 @@ const ScreenWrapper: React.FC<{ route: { params: ScreenProps } }> = ({ route }) 
   }
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
-      {module.options.hidesBackButton ? (
-        <module.Component {...route.params.props} />
-      ) : (
-        <BackButtonPageWrapper>
-          <module.Component {...route.params.props} />
-        </BackButtonPageWrapper>
-      )}
+      <module.Component {...route.params.props} />
+      {!module.options.hidesBackButton && <BackButton />}
     </View>
-  )
-}
-
-export const ModalNavStack: React.FC<{ route: Route<"", { rootModuleName: AppModule; rootModuleProps?: object }> }> = ({
-  route,
-}) => {
-  const ref = useRef<NavigationContainerRef>(null)
-  useEffect(() => {
-    __unsafe_modalNavStackRefs[route.key] = ref
-    return () => {
-      delete __unsafe_modalNavStackRefs[route.key]
-    }
-  }, [])
-
-  return (
-    <NavStack
-      id={route.key}
-      ref={ref}
-      rootModuleName={route.params.rootModuleName}
-      rootModuleProps={route.params.rootModuleProps}
-    />
   )
 }
 
@@ -71,12 +44,3 @@ export const NavStack = React.forwardRef<
     </NavigationContainer>
   )
 })
-
-const BackButtonPageWrapper: React.FC<{}> = ({ children }) => {
-  return (
-    <View style={{ flex: 1 }}>
-      {children}
-      <BackButton />
-    </View>
-  )
-}
