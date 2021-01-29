@@ -28,15 +28,13 @@ const Main: React.FC<{}> = track()(({}) => {
 })
 
 export const App = () => (
-  <View style={{ flex: 1 }}>
-    <ProvideScreenDimensions>
-      <Theme>
-        <GlobalStoreProvider>
-          <AdminMenuWrapper>
-            <Main />
-          </AdminMenuWrapper>
-        </GlobalStoreProvider>
-      </Theme>
-    </ProvideScreenDimensions>
-  </View>
+  <ProvideScreenDimensions>
+    <Theme>
+      <GlobalStoreProvider>
+        <AdminMenuWrapper>
+          <Main />
+        </AdminMenuWrapper>
+      </GlobalStoreProvider>
+    </Theme>
+  </ProvideScreenDimensions>
 )
