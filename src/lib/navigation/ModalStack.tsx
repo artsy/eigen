@@ -4,7 +4,7 @@ import { __unsafe_mainModalStackRef, __unsafe_modalNavStackRefs } from "lib/Nati
 import React, { useEffect, useRef } from "react"
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { NavStack } from "./NavStack"
-import { useDevReloadNavState } from "./useDevReloadNavState"
+import { useReloadedDevNavigationState } from "./useReloadedDevNavigationState"
 
 const Stack = createNativeStackNavigator()
 
@@ -15,9 +15,9 @@ const Stack = createNativeStackNavigator()
  * transitions etc.
  */
 export const ModalStack: React.FC = ({ children }) => {
-  useDevReloadNavState("main_modal_stack", __unsafe_mainModalStackRef)
+  const initialState = useReloadedDevNavigationState("main_modal_stack", __unsafe_mainModalStackRef)
   return (
-    <NavigationContainer independent={true} ref={__unsafe_mainModalStackRef}>
+    <NavigationContainer independent={true} ref={__unsafe_mainModalStackRef} initialState={initialState}>
       <Stack.Navigator mode="modal" screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "white" } }}>
         <Stack.Screen name="root">{() => children}</Stack.Screen>
         <Stack.Screen name="modal" component={ModalNavStack}></Stack.Screen>

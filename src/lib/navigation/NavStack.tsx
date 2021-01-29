@@ -4,7 +4,7 @@ import React from "react"
 import { View } from "react-native"
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { BackButton } from "./BackButton"
-import { useDevReloadNavState } from "./useDevReloadNavState"
+import { useReloadedDevNavigationState } from "./useReloadedDevNavigationState"
 
 const Stack = createNativeStackNavigator()
 
@@ -43,13 +43,13 @@ export const NavStack = React.forwardRef<
   NavigationContainerRef,
   { id?: string; rootModuleName: AppModule; rootModuleProps?: object }
 >(({ id, rootModuleName, rootModuleProps }, ref) => {
-  useDevReloadNavState(id, ref as any)
+  const initialState = useReloadedDevNavigationState(id, ref as any)
   const initialParams: ScreenProps = {
     moduleName: rootModuleName,
     props: rootModuleProps,
   }
   return (
-    <NavigationContainer ref={ref} independent>
+    <NavigationContainer ref={ref} independent initialState={initialState}>
       <Stack.Navigator screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "white" } }}>
         <Stack.Screen name="screen" component={ScreenWrapper} initialParams={initialParams} />
       </Stack.Navigator>

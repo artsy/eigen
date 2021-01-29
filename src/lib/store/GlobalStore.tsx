@@ -1,5 +1,6 @@
 import { action, createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNavigationState"
 import React from "react"
 import { Platform } from "react-native"
 import Config from "react-native-config"
@@ -44,7 +45,8 @@ function createGlobalStore() {
   })
 
   if (!__TEST__) {
-    unpersist().then((state) => {
+    unpersist().then(async (state) => {
+      await loadDevNavigationStateCache()
       store.getActions().rehydrate(state)
     })
   }
