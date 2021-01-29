@@ -1,5 +1,5 @@
 import { LoadFailureView } from "lib/Components/LoadFailureView"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { cm2in } from "lib/utils/conversions"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
@@ -76,7 +76,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (p
   const viewInAR = () => {
     const [widthIn, heightIn] = [selectedArtwork.widthCm!, selectedArtwork.heightCm!].map(cm2in)
 
-    ArtsyNativeModules.ARScreenPresenterModule.presentAugmentedRealityVIR(
+    LegacyNativeModules.ARScreenPresenterModule.presentAugmentedRealityVIR(
       selectedArtwork.image!.url!,
       widthIn,
       heightIn,
@@ -96,7 +96,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (p
       <ScrollView>
         <Flex>
           <ImageCarousel images={[selectedArtwork.images![0]] as any} cardHeight={screenHeight} />
-          {!!(ArtsyNativeModules.ARCocoaConstantsModule.AREnabled && selectedArtwork.isHangable) && (
+          {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && selectedArtwork.isHangable) && (
             <Flex
               position="absolute"
               bottom="1"

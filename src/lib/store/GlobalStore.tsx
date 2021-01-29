@@ -1,5 +1,5 @@
 import { action, createStore, createTypedHooks, StoreProvider } from "easy-peasy"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNavigationState"
 import React from "react"
 import { Platform } from "react-native"
@@ -114,7 +114,7 @@ export function useEmissionOption(key: keyof EmissionOptions) {
 export function getCurrentEmissionState() {
   const state = globalStoreInstance?.getState() ?? null
   if (Platform.OS === "ios") {
-    return state?.native.sessionState ?? ArtsyNativeModules.ARNotificationsManager.nativeState
+    return state?.native.sessionState ?? LegacyNativeModules.ARNotificationsManager.nativeState
   }
 
   const androidData: GlobalStoreModel["native"]["sessionState"] = {

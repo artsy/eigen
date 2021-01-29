@@ -1,8 +1,8 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { NavigationContainerRef } from "@react-navigation/native"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { useEffect } from "react"
-import { Platform } from "react-native"
+import { NativeModules, Platform } from "react-native"
 
 const NAV_STATE_STORAGE_KEY = "ARDevNavState"
 
@@ -17,8 +17,8 @@ let reloadedCache: NavStateCache | null = null
 const currentCache: NavStateCache = {
   launchCount:
     Platform.OS === "ios"
-      ? ArtsyNativeModules.ARNotificationsManager.nativeState.launchCount
-      : ArtsyNativeModules.ArtsyNativeModule.getConstants().launchCount,
+      ? LegacyNativeModules.ARNotificationsManager.nativeState.launchCount
+      : NativeModules.ArtsyNativeModule.getConstants().launchCount,
   stackStates: {},
 }
 

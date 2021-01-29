@@ -11,7 +11,7 @@ import { FakeNavigator } from "lib/Components/Bidding/__tests__/Helpers/FakeNavi
 import { bidderPositionQuery } from "lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
 import { Modal } from "lib/Components/Modal"
 import Spinner from "lib/Components/Spinner"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -57,7 +57,7 @@ let nextStep
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const mockNavigator = { push: (route) => (nextStep = route) }
 jest.useFakeTimers()
-const mockPostNotificationName = ArtsyNativeModules.ARNotificationsManager.postNotificationName as jest.Mock
+const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager.postNotificationName as jest.Mock
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const findPlaceBidButton = (component) => {

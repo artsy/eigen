@@ -1,6 +1,6 @@
 import { dimensions, screen } from "lib/data/ScreenSizes/screenSizes"
 import { CircleWhiteCheckIcon } from "lib/Icons/CircleWhiteCheckIcon"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, color, Flex, Sans, Separator, Serif, space } from "palette"
@@ -22,7 +22,7 @@ export const CityPicker: React.FC<Props> = (props) => {
 
   const selectCity = (city: string, index: number) => {
     setSelectedCity(city)
-    ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryUserSelectedCity", {
+    LegacyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryUserSelectedCity", {
       cityIndex: index,
     })
   }
