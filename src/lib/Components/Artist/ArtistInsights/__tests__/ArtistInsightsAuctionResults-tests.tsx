@@ -63,6 +63,7 @@ describe("ArtistInsightsAuctionResults", () => {
     mockEnvironmentPayload(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
+          totalCount: 5,
           edges: mockEdges(5),
         },
       }),
@@ -70,7 +71,6 @@ describe("ArtistInsightsAuctionResults", () => {
 
     expect(tree.root.findAllByType(FlatList).length).toEqual(1)
     expect(tree.root.findAllByType(AuctionResultFragmentContainer).length).toEqual(5)
-    expect(extractText(tree.root.findByType(SortMode))).toBe("Sorted by most recent sale date")
   })
 
   it("renders FilteredArtworkGridZeroState when no auction results are available", () => {
@@ -78,11 +78,42 @@ describe("ArtistInsightsAuctionResults", () => {
     mockEnvironmentPayload(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
+          totalCount: 0,
           edges: [],
         },
       }),
     })
 
     expect(tree.root.findAllByType(FilteredArtworkGridZeroState).length).toEqual(1)
+  })
+
+  describe("ListHeaderComponent", () => {
+    it("renders the results string when totalCount is equal to 1", () => {
+      const tree = renderWithWrappers(<TestRenderer />)
+      mockEnvironmentPayload(mockEnvironment, {
+        Artist: () => ({
+          auctionResultsConnection: {
+            totalCount: 1,
+            edges: mockEdges(1),
+          },
+        }),
+      })
+
+      expect(extractText(tree.root.findByType(SortMode))).toBe("1 result • Sorted by most recent sale date")
+    })
+
+    it("renders the results string when totalCount is greater than 1", () => {
+      const tree = renderWithWrappers(<TestRenderer />)
+      mockEnvironmentPayload(mockEnvironment, {
+        Artist: () => ({
+          auctionResultsConnection: {
+            totalCount: 10,
+            edges: mockEdges(10),
+          },
+        }),
+      })
+
+      expect(extractText(tree.root.findByType(SortMode))).toBe("10 results • Sorted by most recent sale date")
+    })
   })
 })

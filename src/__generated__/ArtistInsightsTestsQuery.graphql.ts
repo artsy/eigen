@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 807ecf087293f0495437e6e0510169d0 */
+/* @relayHash 0087a93e18efc7bf7dd8fda912fbd064 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -35,6 +35,7 @@ fragment ArtistInsightsAuctionResults_artist on Artist {
       startAt
       endAt
     }
+    totalCount
     edges {
       node {
         id
@@ -252,6 +253,13 @@ return {
                     "storageKey": null
                   }
                 ],
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "totalCount",
                 "storageKey": null
               },
               {
@@ -496,7 +504,7 @@ return {
     ]
   },
   "params": {
-    "id": "807ecf087293f0495437e6e0510169d0",
+    "id": "0087a93e18efc7bf7dd8fda912fbd064",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
@@ -596,6 +604,7 @@ return {
           "plural": false,
           "type": "Boolean"
         },
+        "artist.auctionResultsConnection.totalCount": (v3/*: any*/),
         "artist.birthday": (v5/*: any*/),
         "artist.id": (v7/*: any*/),
         "artist.name": (v5/*: any*/),

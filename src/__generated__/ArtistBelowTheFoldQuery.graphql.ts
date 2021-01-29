@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c366b30b3cf1ab44475f5bfd66f4e615 */
+/* @relayHash 325ddda32940c57f67b01a23b312cda4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -131,6 +131,7 @@ fragment ArtistInsightsAuctionResults_artist on Artist {
       startAt
       endAt
     }
+    totalCount
     edges {
       node {
         id
@@ -927,6 +928,13 @@ return {
               {
                 "alias": null,
                 "args": null,
+                "kind": "ScalarField",
+                "name": "totalCount",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
                 "concreteType": "AuctionResultEdge",
                 "kind": "LinkedField",
                 "name": "edges",
@@ -1188,7 +1196,7 @@ return {
     ]
   },
   "params": {
-    "id": "c366b30b3cf1ab44475f5bfd66f4e615",
+    "id": "325ddda32940c57f67b01a23b312cda4",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",

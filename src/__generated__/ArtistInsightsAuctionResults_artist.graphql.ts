@@ -13,6 +13,7 @@ export type ArtistInsightsAuctionResults_artist = {
             readonly startAt: number | null;
             readonly endAt: number | null;
         } | null;
+        readonly totalCount: number | null;
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
@@ -179,6 +180,13 @@ return {
         {
           "alias": null,
           "args": null,
+          "kind": "ScalarField",
+          "name": "totalCount",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
           "concreteType": "AuctionResultEdge",
           "kind": "LinkedField",
           "name": "edges",
@@ -258,5 +266,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '55260af1dac80bc0b3f1ff6a1bef18c4';
+(node as any).hash = 'd8b668ce7aca0e2eeae96fd01902c647';
 export default node;
