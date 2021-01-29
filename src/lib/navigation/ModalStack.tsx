@@ -8,6 +8,12 @@ import { useDevReloadNavState } from "./useDevReloadNavState"
 
 const Stack = createNativeStackNavigator()
 
+/**
+ * ModalStack is the root navigation stack in the app. The root screen in this stack is
+ * the main app (with bottom tabs, etc), and then whenever we present a modal it gets
+ * pushed on the top of this stack. We use react-native-screens to get native modal presetation
+ * transitions etc.
+ */
 export const ModalStack: React.FC = ({ children }) => {
   useDevReloadNavState("main_modal_stack", __unsafe_mainModalStackRef)
   return (
