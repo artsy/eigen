@@ -1,16 +1,10 @@
-import { useNavigationState, useRoute } from "@react-navigation/native"
 import { ChevronIcon } from "palette"
 import React from "react"
 import { Animated } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import { goBack } from "./navigate"
 
-export const BackButton: React.FC = () => {
-  const myKey = useRoute().key
-  const isRoot = useNavigationState((state) => state.routes[0].key === myKey)
-  if (isRoot) {
-    return null
-  }
+export const BackButton: React.FC<{ onPress?(): void }> = ({ onPress = goBack }) => {
   return (
     <Animated.View
       style={{
@@ -25,11 +19,7 @@ export const BackButton: React.FC = () => {
         justifyContent: "center",
       }}
     >
-      <TouchableOpacity
-        onPress={() => {
-          goBack()
-        }}
-      >
+      <TouchableOpacity onPress={onPress}>
         <ChevronIcon direction="left" />
       </TouchableOpacity>
     </Animated.View>

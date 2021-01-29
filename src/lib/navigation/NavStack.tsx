@@ -1,4 +1,4 @@
-import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
+import { NavigationContainer, NavigationContainerRef, Route, useNavigationState } from "@react-navigation/native"
 import { AppModule, modules } from "lib/AppRegistry"
 import React from "react"
 import { View } from "react-native"
@@ -13,16 +13,20 @@ interface ScreenProps {
   props?: object
 }
 
-const ScreenWrapper: React.FC<{ route: { params: ScreenProps } }> = ({ route }) => {
+const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) => {
   const module = modules[route.params.moduleName]
   if (module.type !== "react") {
     console.warn(route.params.moduleName, { module })
     throw new Error("native modules not supported on android")
   }
+
+  const isRootScreen = useNavigationState((state) => state.routes[0].key === route.key)
+  const showBackButton = !isRootScreen && !module.options.hidesBackButton
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <module.Component {...route.params.props} />
-      {!module.options.hidesBackButton && <BackButton />}
+      {!!showBackButton && <BackButton />}
     </View>
   )
 }
