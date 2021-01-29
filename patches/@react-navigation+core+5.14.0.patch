@@ -13,7 +13,7 @@ index b5e0627..615e6d6 100644
 +      // The `getRootState` and `dangerouslyGetState` ref methods don't work
 +      // correctly, it's not clear why. But since we have a 1:1 pairing between
 +      // NavigationContainer and Navigator instances, we can just get the state
-+      // directly rom the navigator
++      // directly from the navigator
 +      return listeners.focus[0]((navigation) =>
 +        navigation.dangerouslyGetState()
 +      ).result;
