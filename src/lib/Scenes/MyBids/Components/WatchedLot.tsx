@@ -4,7 +4,7 @@ import { Flex, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { WatchingLot } from "./BiddingStatuses"
+import { Watching } from "./BiddingStatuses"
 // import { useTracking } from "react-tracking"
 // import { navigate } from "lib/navigation/navigate"
 // import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
@@ -18,7 +18,7 @@ interface WatchedLotProps {
 export const WatchedLot: React.FC<WatchedLotProps> = ({ lot }) => {
   const sellingPrice = lot?.lotState?.sellingPrice?.display
   const bidCount = lot?.lotState?.bidCount
-  const { saleArtwork, lotState } = lot
+  const { saleArtwork } = lot
   // const tracking = useTracking()
 
   const displayBidCount = (): string | undefined => {
@@ -53,7 +53,7 @@ export const WatchedLot: React.FC<WatchedLotProps> = ({ lot }) => {
         </Flex>
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
           {/* TODO: Add correct icon to Palette for use here */}
-          <WatchingLot />
+          <Watching />
         </Flex>
       </Lot>
     </TouchableOpacity>

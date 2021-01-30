@@ -1,4 +1,4 @@
-import { groupBy, mapValues, partition, sortBy } from "lodash"
+import { groupBy, mapValues, partition, sortBy, unionBy } from "lodash"
 import { Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { RefreshControl, ScrollView } from "react-native"
@@ -23,6 +23,7 @@ import {
   SaleCardFragmentContainer,
   // WatchedLotFragmentContainer as WatchedLot,
 } from "./Components"
+import { LotStatusListItemContainer } from "./Components/LotStatusListItem"
 import { NoBids } from "./Components/NoBids"
 import { isLotStandingComplete, TimelySale } from "./helpers/timely"
 
@@ -33,6 +34,12 @@ export interface MyBidsProps {
 }
 
 type Sale = NonNullable<NonNullable<NonNullable<MyBids_me["bidders"]>[0]>["sale"]>
+
+// export type LotLike = NonNullable<
+//   NonNullable<
+//     NonNullable<NonNullable<MyBids_me["auctionsLotStandingConnection" | "watchedLotConnection"]>["edges"]>[number]
+//   >["node"]
+// >
 
 const MyBids: React.FC<MyBidsProps> = (props) => {
   const [isFetching, setIsFetching] = React.useState<boolean>(false)
@@ -88,11 +95,19 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
   const registeredSales: Sale[] = me.bidders?.map((b) => b!.sale!) || []
 
   // fetch unique sales from all active lots
-  const allSales = activeLots.reduce((acc: Array<{ internalID: string }>, lot) => {
+  const salesFromLots = activeLots.reduce((acc: Array<{ internalID: string }>, lot) => {
     return !!acc.find((sale: { internalID: string }) => sale.internalID === lot.saleArtwork.sale.internalID)
       ? acc
       : [...acc, lot.saleArtwork.sale]
   }, [])
+
+  const allSales = registeredSales.reduce((acc, sale) => {
+    if (!acc.find((existingSale: { internalID: string }) => existingSale.internalID === sale.internalID)) {
+      return [...acc, sale]
+    } else {
+      return acc
+    }
+  }, salesFromLots)
 
   // sort each group of lot standings by position (lot number)
   // The values of this object are displayed to the user under each sale card
@@ -155,20 +170,21 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
                         </Text>
                       )}
                       {sortedActiveLots.map((lot) => {
+                        return <LotStatusListItemContainer lot={lot} />
                         // TODO: Once causality stitched to MP data errors are resolved we can bring this component back
                         // if (ls && arrayOfDedupedWatchedLotIDs.includes(ls?.lot?.internalID!)) {
                         //   return <WatchedLot lotStanding={ls} key={ls?.lot?.internalID!} />
                         // }
                         // Note: Occasionally, during live bidding, closed lots appear in active sales
-                        if (lot && sale) {
-                          return lot.__typename === "Lot" ? (
-                            <WatchedLot lot={lot} key={lot?.lotState?.internalID} />
-                          ) : isLotStandingComplete(lot) ? (
-                            <ClosedLot inActiveSale lotStanding={lot} key={lot?.lot?.internalID} />
-                          ) : (
-                            <ActiveLot lotStanding={lot} key={lot?.lot?.internalID} />
-                          )
-                        }
+                        // if (lot) {
+                        //   return lot.__typename === "Lot" ? (
+                        //     <WatchedLot lot={lot} key={lot?.lot?.internalID} />
+                        //   ) : isLotStandingComplete(lot) ? (
+                        //     <ClosedLot inActiveSale lotStanding={lot} key={lot?.lot?.internalID} />
+                        //   ) : (
+                        //     <ActiveLot lotStanding={lot} key={lot?.lot?.internalID} />
+                        //   )
+                        // }
                       })}
                     </Join>
                   </SaleCardFragmentContainer>
@@ -238,7 +254,7 @@ export const MyBidsContainer = createPaginationContainer(
           @connection(key: "MyBids_auctionsLotStandingConnection") {
           edges {
             node {
-              ...ActiveLot_lotStanding
+              ...LotStatusListItem_lot
               ...ClosedLot_lotStanding
               __typename
               lot {
@@ -247,10 +263,6 @@ export const MyBidsContainer = createPaginationContainer(
                 soldStatus
               }
               saleArtwork {
-                artwork {
-                  slug
-                  internalID
-                }
                 position
                 sale {
                   ...SaleCard_sale
@@ -266,14 +278,12 @@ export const MyBidsContainer = createPaginationContainer(
         watchedLotConnection(first: 20, after: $cursor) {
           edges {
             node {
-              ...WatchedLot_lot
-              __typename
+              ...LotStatusListItem_lot
               lot {
                 internalID
               }
               saleArtwork {
                 internalID
-                __id
                 position
                 sale {
                   ...SaleCard_sale

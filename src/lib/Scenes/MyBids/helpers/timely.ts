@@ -1,16 +1,19 @@
 import moment from "moment-timezone"
 
 /** Whether lot is in one of its pre-closed states */
-export const lotInActiveSale: (lotStanding: {
-  saleArtwork: { sale: { status: string | null } | null } | null
-}) => boolean = (lotStanding) => {
-  const status = lotStanding?.saleArtwork?.sale?.status
-  return !!status && ["open", "preview"].includes(status.toLowerCase())
+export const lotInActiveSale: (lot: { saleArtwork: { sale: { status: string | null } | null } | null }) => boolean = (
+  lot
+) => {
+  const status = lot?.saleArtwork?.sale?.status
+  switch (status?.toLowerCase()) {
+    case "open":
+      return true
+    case "preview":
+      return true
+    default:
+      return false
+  }
 }
-
-/** Whether the lot has been completed, regardless of the sale's closed status. Lot is no longer for sale, either it has been sold or is no longer available for bidding. */
-export const isLotStandingComplete: (lotStanding: { lot?: { soldStatus?: string } }) => boolean = (lotStanding) =>
-  !!(lotStanding.lot?.soldStatus && ["sold", "passed"].includes(lotStanding.lot.soldStatus?.toLowerCase()))
 
 interface SaleWithTimes {
   status?: string | null
@@ -27,7 +30,7 @@ export class TimelySale {
   private liveStartAt: string
 
   constructor(sale: SaleWithTimes) {
-    this.status = sale?.status
+    this.status = sale?.status!
     this.endAt = sale?.endAt!
     this.liveStartAt = sale?.liveStartAt!
   }

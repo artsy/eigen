@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash cb372fe3ca69b00cedc8bace3338f1d4 */
+/* @relayHash 27c11cb78cb8fc3174addf07a4fd75c7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -87,6 +87,18 @@ fragment ClosedLot_lotStanding on AuctionsLotStanding {
   }
 }
 
+fragment LotStatusListItem_lot on LotLike {
+  __isLotLike: __typename
+  type: __typename
+  lot {
+    soldStatus
+    id
+  }
+  ...ActiveLot_lotStanding
+  ...ClosedLot_lotStanding
+  ...WatchedLot_lot
+}
+
 fragment Lot_saleArtwork on SaleArtwork {
   lotLabel
   artwork {
@@ -119,7 +131,7 @@ fragment MyBids_me on Me {
   auctionsLotStandingConnection(first: 25, after: "") {
     edges {
       node {
-        ...ActiveLot_lotStanding
+        ...LotStatusListItem_lot
         ...ClosedLot_lotStanding
         __typename
         lot {
@@ -129,11 +141,6 @@ fragment MyBids_me on Me {
           id
         }
         saleArtwork {
-          artwork {
-            slug
-            internalID
-            id
-          }
           position
           sale {
             ...SaleCard_sale
@@ -157,8 +164,7 @@ fragment MyBids_me on Me {
   watchedLotConnection(first: 20, after: "") {
     edges {
       node {
-        ...WatchedLot_lot
-        __typename
+        ...LotStatusListItem_lot
         lot {
           internalID
           id
@@ -357,33 +363,77 @@ v12 = {
   "storageKey": null
 },
 v13 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "Sale",
+  "kind": "LinkedField",
+  "name": "sale",
+  "plural": false,
+  "selections": [
+    (v0/*: any*/),
+    (v3/*: any*/),
+    (v4/*: any*/),
+    (v5/*: any*/),
+    (v6/*: any*/),
+    (v7/*: any*/),
+    (v8/*: any*/),
+    (v9/*: any*/),
+    (v10/*: any*/),
+    (v11/*: any*/),
+    (v12/*: any*/),
+    (v1/*: any*/)
+  ],
+  "storageKey": null
+},
+v14 = {
   "kind": "Literal",
   "name": "after",
   "value": ""
 },
-v14 = [
-  (v13/*: any*/),
+v15 = [
+  (v14/*: any*/),
   {
     "kind": "Literal",
     "name": "first",
     "value": 25
   }
 ],
-v15 = {
+v16 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "isHighestBidder",
+  "storageKey": null
+},
+v17 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "saleId",
+  "storageKey": null
+},
+v18 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "bidCount",
   "storageKey": null
 },
-v16 = {
+v19 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "reserveStatus",
+  "storageKey": null
+},
+v20 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "soldStatus",
   "storageKey": null
 },
-v17 = [
+v21 = [
   {
     "alias": null,
     "args": null,
@@ -392,31 +442,31 @@ v17 = [
     "storageKey": null
   }
 ],
-v18 = {
+v22 = {
   "alias": null,
   "args": null,
   "concreteType": "Money",
   "kind": "LinkedField",
   "name": "sellingPrice",
   "plural": false,
-  "selections": (v17/*: any*/),
+  "selections": (v21/*: any*/),
   "storageKey": null
 },
-v19 = {
+v23 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "lotLabel",
   "storageKey": null
 },
-v20 = {
+v24 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "artistNames",
   "storageKey": null
 },
-v21 = {
+v25 = {
   "alias": null,
   "args": null,
   "concreteType": "Image",
@@ -440,18 +490,61 @@ v21 = {
   ],
   "storageKey": null
 },
-v22 = {
+v26 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "Artwork",
+  "kind": "LinkedField",
+  "name": "artwork",
+  "plural": false,
+  "selections": [
+    (v24/*: any*/),
+    (v25/*: any*/),
+    (v1/*: any*/),
+    (v0/*: any*/),
+    (v3/*: any*/),
+    (v4/*: any*/)
+  ],
+  "storageKey": null
+},
+v27 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "position",
   "storageKey": null
 },
-v23 = {
-  "alias": null,
+v28 = {
+  "alias": "type",
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
+  "storageKey": null
+},
+v29 = {
+  "alias": "askingPrice",
+  "args": null,
+  "concreteType": "Money",
+  "kind": "LinkedField",
+  "name": "onlineAskingPrice",
+  "plural": false,
+  "selections": (v21/*: any*/),
+  "storageKey": null
+},
+v30 = {
+  "alias": "lotState",
+  "args": null,
+  "concreteType": "AuctionsLotState",
+  "kind": "LinkedField",
+  "name": "lot",
+  "plural": false,
+  "selections": [
+    (v0/*: any*/),
+    (v18/*: any*/),
+    (v22/*: any*/),
+    (v20/*: any*/),
+    (v1/*: any*/)
+  ],
   "storageKey": null
 };
 return {
@@ -526,36 +619,14 @@ return {
             "name": "bidders",
             "plural": true,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "Sale",
-                "kind": "LinkedField",
-                "name": "sale",
-                "plural": false,
-                "selections": [
-                  (v0/*: any*/),
-                  (v3/*: any*/),
-                  (v4/*: any*/),
-                  (v5/*: any*/),
-                  (v6/*: any*/),
-                  (v7/*: any*/),
-                  (v8/*: any*/),
-                  (v9/*: any*/),
-                  (v10/*: any*/),
-                  (v11/*: any*/),
-                  (v12/*: any*/),
-                  (v1/*: any*/)
-                ],
-                "storageKey": null
-              },
+              (v13/*: any*/),
               (v1/*: any*/)
             ],
             "storageKey": "bidders(active:true)"
           },
           {
             "alias": null,
-            "args": (v14/*: any*/),
+            "args": (v15/*: any*/),
             "concreteType": "AuctionsLotStandingConnection",
             "kind": "LinkedField",
             "name": "auctionsLotStandingConnection",
@@ -577,13 +648,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "isHighestBidder",
-                        "storageKey": null
-                      },
+                      (v16/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -593,34 +658,12 @@ return {
                         "plural": false,
                         "selections": [
                           (v0/*: any*/),
-                          (v15/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "reserveStatus",
-                            "storageKey": null
-                          },
-                          (v16/*: any*/),
-                          {
-                            "alias": "askingPrice",
-                            "args": null,
-                            "concreteType": "Money",
-                            "kind": "LinkedField",
-                            "name": "onlineAskingPrice",
-                            "plural": false,
-                            "selections": (v17/*: any*/),
-                            "storageKey": null
-                          },
+                          (v17/*: any*/),
                           (v18/*: any*/),
-                          (v1/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "saleId",
-                            "storageKey": null
-                          }
+                          (v19/*: any*/),
+                          (v20/*: any*/),
+                          (v22/*: any*/),
+                          (v1/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -632,24 +675,8 @@ return {
                         "name": "saleArtwork",
                         "plural": false,
                         "selections": [
-                          (v19/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Artwork",
-                            "kind": "LinkedField",
-                            "name": "artwork",
-                            "plural": false,
-                            "selections": [
-                              (v20/*: any*/),
-                              (v21/*: any*/),
-                              (v1/*: any*/),
-                              (v0/*: any*/),
-                              (v3/*: any*/),
-                              (v4/*: any*/)
-                            ],
-                            "storageKey": null
-                          },
+                          (v23/*: any*/),
+                          (v26/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -658,14 +685,14 @@ return {
                             "name": "sale",
                             "plural": false,
                             "selections": [
-                              (v6/*: any*/),
-                              (v1/*: any*/),
                               (v7/*: any*/),
                               (v12/*: any*/),
+                              (v1/*: any*/),
                               (v0/*: any*/),
                               (v3/*: any*/),
                               (v4/*: any*/),
                               (v5/*: any*/),
+                              (v6/*: any*/),
                               (v8/*: any*/),
                               (v9/*: any*/),
                               (v10/*: any*/),
@@ -674,12 +701,53 @@ return {
                             "storageKey": null
                           },
                           (v1/*: any*/),
-                          (v22/*: any*/)
+                          (v27/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v23/*: any*/),
-                      (v1/*: any*/)
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "__typename",
+                        "storageKey": null
+                      },
+                      (v1/*: any*/),
+                      {
+                        "kind": "InlineFragment",
+                        "selections": [
+                          (v28/*: any*/),
+                          {
+                            "kind": "InlineFragment",
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "AuctionsLotState",
+                                "kind": "LinkedField",
+                                "name": "lot",
+                                "plural": false,
+                                "selections": [
+                                  (v29/*: any*/)
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "type": "AuctionsLotStanding",
+                            "abstractKey": null
+                          },
+                          {
+                            "kind": "InlineFragment",
+                            "selections": [
+                              (v30/*: any*/)
+                            ],
+                            "type": "Lot",
+                            "abstractKey": null
+                          }
+                        ],
+                        "type": "LotLike",
+                        "abstractKey": "__isLotLike"
+                      }
                     ],
                     "storageKey": null
                   },
@@ -723,7 +791,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v14/*: any*/),
+            "args": (v15/*: any*/),
             "filters": null,
             "handle": "connection",
             "key": "MyBids_auctionsLotStandingConnection",
@@ -733,7 +801,7 @@ return {
           {
             "alias": null,
             "args": [
-              (v13/*: any*/),
+              (v14/*: any*/),
               {
                 "kind": "Literal",
                 "name": "first",
@@ -762,19 +830,13 @@ return {
                     "plural": false,
                     "selections": [
                       {
-                        "alias": "lotState",
+                        "alias": null,
                         "args": null,
                         "concreteType": "AuctionsLotState",
                         "kind": "LinkedField",
                         "name": "lot",
                         "plural": false,
-                        "selections": [
-                          (v0/*: any*/),
-                          (v15/*: any*/),
-                          (v18/*: any*/),
-                          (v16/*: any*/),
-                          (v1/*: any*/)
-                        ],
+                        "selections": (v2/*: any*/),
                         "storageKey": null
                       },
                       {
@@ -785,75 +847,106 @@ return {
                         "name": "saleArtwork",
                         "plural": false,
                         "selections": [
-                          (v19/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Artwork",
-                            "kind": "LinkedField",
-                            "name": "artwork",
-                            "plural": false,
-                            "selections": [
-                              (v20/*: any*/),
-                              (v21/*: any*/),
-                              (v1/*: any*/),
-                              (v3/*: any*/)
-                            ],
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Sale",
-                            "kind": "LinkedField",
-                            "name": "sale",
-                            "plural": false,
-                            "selections": [
-                              (v6/*: any*/),
-                              (v7/*: any*/),
-                              (v12/*: any*/),
-                              (v1/*: any*/),
-                              (v0/*: any*/),
-                              (v3/*: any*/),
-                              (v4/*: any*/),
-                              (v5/*: any*/),
-                              (v8/*: any*/),
-                              (v9/*: any*/),
-                              (v10/*: any*/),
-                              (v11/*: any*/)
-                            ],
-                            "storageKey": null
-                          },
-                          (v1/*: any*/),
                           (v0/*: any*/),
-                          (v22/*: any*/),
-                          {
-                            "kind": "ClientExtension",
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "__id",
-                                "storageKey": null
-                              }
-                            ]
-                          }
+                          (v27/*: any*/),
+                          (v13/*: any*/),
+                          (v1/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v23/*: any*/),
+                      (v1/*: any*/),
                       {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "AuctionsLotState",
-                        "kind": "LinkedField",
-                        "name": "lot",
-                        "plural": false,
-                        "selections": (v2/*: any*/),
-                        "storageKey": null
-                      },
-                      (v1/*: any*/)
+                        "kind": "InlineFragment",
+                        "selections": [
+                          (v28/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "AuctionsLotState",
+                            "kind": "LinkedField",
+                            "name": "lot",
+                            "plural": false,
+                            "selections": [
+                              (v20/*: any*/)
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "InlineFragment",
+                            "selections": [
+                              (v16/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "AuctionsLotState",
+                                "kind": "LinkedField",
+                                "name": "lot",
+                                "plural": false,
+                                "selections": [
+                                  (v18/*: any*/),
+                                  (v19/*: any*/),
+                                  (v29/*: any*/),
+                                  (v22/*: any*/),
+                                  (v17/*: any*/)
+                                ],
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "SaleArtwork",
+                                "kind": "LinkedField",
+                                "name": "saleArtwork",
+                                "plural": false,
+                                "selections": [
+                                  (v23/*: any*/),
+                                  (v26/*: any*/)
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "type": "AuctionsLotStanding",
+                            "abstractKey": null
+                          },
+                          {
+                            "kind": "InlineFragment",
+                            "selections": [
+                              (v30/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "SaleArtwork",
+                                "kind": "LinkedField",
+                                "name": "saleArtwork",
+                                "plural": false,
+                                "selections": [
+                                  (v23/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Artwork",
+                                    "kind": "LinkedField",
+                                    "name": "artwork",
+                                    "plural": false,
+                                    "selections": [
+                                      (v24/*: any*/),
+                                      (v25/*: any*/),
+                                      (v1/*: any*/),
+                                      (v3/*: any*/)
+                                    ],
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "type": "Lot",
+                            "abstractKey": null
+                          }
+                        ],
+                        "type": "LotLike",
+                        "abstractKey": "__isLotLike"
+                      }
                     ],
                     "storageKey": null
                   }
@@ -870,7 +963,7 @@ return {
     ]
   },
   "params": {
-    "id": "cb372fe3ca69b00cedc8bace3338f1d4",
+    "id": "27c11cb78cb8fc3174addf07a4fd75c7",
     "metadata": {},
     "name": "MyBidsQuery",
     "operationKind": "query",

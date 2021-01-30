@@ -29,7 +29,7 @@ export type ClosedLot_lotStanding = {
             readonly status: string | null;
         } | null;
         readonly " $fragmentRefs": FragmentRefs<"Lot_saleArtwork">;
-    } | null;
+    };
     readonly " $refType": "ClosedLot_lotStanding";
 };
 export type ClosedLot_lotStanding$data = ClosedLot_lotStanding;

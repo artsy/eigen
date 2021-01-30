@@ -83,6 +83,9 @@ describe("My Bids", () => {
 
         return {
           bidders: [],
+          watchedLotConnection: {
+            edges: [],
+          },
           auctionsLotStandingConnection: {
             edges: [
               {
@@ -122,6 +125,9 @@ describe("My Bids", () => {
               sale,
             },
           ],
+          watchedLotConnection: {
+            edges: [],
+          },
           auctionsLotStandingConnection: {
             edges: [
               {
@@ -151,6 +157,9 @@ describe("My Bids", () => {
     const wrapper = getWrapper({
       Me: () => ({
         bidders: [],
+        watchedLotConnection: {
+          edges: [],
+        },
         auctionsLotStandingConnection: {
           edges: [],
         },
@@ -176,6 +185,9 @@ describe("My Bids", () => {
               },
             },
           ],
+          watchedLotConnection: {
+            edges: [],
+          },
           auctionsLotStandingConnection: {
             edges: [],
           },

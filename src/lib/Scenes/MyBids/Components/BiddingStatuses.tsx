@@ -1,5 +1,5 @@
-import { ArrowDownCircleFillIcon, ArrowUpCircleFillIcon, Text, TopEstablishedIcon } from "palette"
-import { ExclamationMarkCircleFill } from "palette/svgs/sf"
+import { ArrowDownCircleFillIcon, ArrowUpCircleFillIcon, Text } from "palette"
+import { BookmarkFill, ExclamationMarkCircleFill } from "palette/svgs/sf"
 import React from "react"
 
 export const ReserveNotMet = () => (
@@ -50,13 +50,12 @@ export const Passed = () => (
   </Text>
 )
 
-export const WatchingLot = () => (
+export const Watching = () => (
   <>
-    {/* Place holder until we get the correct icon */}
-    <TopEstablishedIcon fill="black60" />
+    <BookmarkFill />
     <Text variant="caption" color="black60">
       {" "}
-      Watched Lot
+      Watching
     </Text>
   </>
 )

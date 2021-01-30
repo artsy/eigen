@@ -29,10 +29,6 @@ export type MyBids_me = {
                     readonly soldStatus: AuctionsSoldStatus;
                 };
                 readonly saleArtwork: {
-                    readonly artwork: {
-                        readonly slug: string;
-                        readonly internalID: string;
-                    } | null;
                     readonly position: number | null;
                     readonly sale: {
                         readonly internalID: string;
@@ -41,21 +37,19 @@ export type MyBids_me = {
                         readonly status: string | null;
                         readonly " $fragmentRefs": FragmentRefs<"SaleCard_sale">;
                     } | null;
-                } | null;
-                readonly " $fragmentRefs": FragmentRefs<"ActiveLot_lotStanding" | "ClosedLot_lotStanding">;
+                };
+                readonly " $fragmentRefs": FragmentRefs<"LotStatusListItem_lot" | "ClosedLot_lotStanding">;
             };
         } | null> | null;
     };
     readonly watchedLotConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly __typename: string;
                 readonly lot: {
                     readonly internalID: string;
                 };
                 readonly saleArtwork: {
                     readonly internalID: string;
-                    readonly __id: string;
                     readonly position: number | null;
                     readonly sale: {
                         readonly internalID: string;
@@ -65,7 +59,7 @@ export type MyBids_me = {
                         readonly " $fragmentRefs": FragmentRefs<"SaleCard_sale">;
                     } | null;
                 } | null;
-                readonly " $fragmentRefs": FragmentRefs<"WatchedLot_lot">;
+                readonly " $fragmentRefs": FragmentRefs<"LotStatusListItem_lot">;
             } | null;
         } | null> | null;
     } | null;
@@ -118,17 +112,10 @@ v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "__typename",
-  "storageKey": null
-},
-v6 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "position",
   "storageKey": null
 },
-v7 = {
+v6 = {
   "alias": null,
   "args": null,
   "concreteType": "Sale",
@@ -143,6 +130,11 @@ v7 = {
     (v4/*: any*/)
   ],
   "storageKey": null
+},
+v7 = {
+  "args": null,
+  "kind": "FragmentSpread",
+  "name": "LotStatusListItem_lot"
 };
 return {
   "argumentDefinitions": [
@@ -254,7 +246,13 @@ return {
               "name": "node",
               "plural": false,
               "selections": [
-                (v5/*: any*/),
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
+                  "storageKey": null
+                },
                 {
                   "alias": null,
                   "args": null,
@@ -289,35 +287,12 @@ return {
                   "name": "saleArtwork",
                   "plural": false,
                   "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "concreteType": "Artwork",
-                      "kind": "LinkedField",
-                      "name": "artwork",
-                      "plural": false,
-                      "selections": [
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "slug",
-                          "storageKey": null
-                        },
-                        (v0/*: any*/)
-                      ],
-                      "storageKey": null
-                    },
-                    (v6/*: any*/),
-                    (v7/*: any*/)
+                    (v5/*: any*/),
+                    (v6/*: any*/)
                   ],
                   "storageKey": null
                 },
-                {
-                  "args": null,
-                  "kind": "FragmentSpread",
-                  "name": "ActiveLot_lotStanding"
-                },
+                (v7/*: any*/),
                 {
                   "args": null,
                   "kind": "FragmentSpread",
@@ -399,7 +374,6 @@ return {
               "name": "node",
               "plural": false,
               "selections": [
-                (v5/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -421,28 +395,12 @@ return {
                   "plural": false,
                   "selections": [
                     (v0/*: any*/),
-                    (v6/*: any*/),
-                    (v7/*: any*/),
-                    {
-                      "kind": "ClientExtension",
-                      "selections": [
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "__id",
-                          "storageKey": null
-                        }
-                      ]
-                    }
+                    (v5/*: any*/),
+                    (v6/*: any*/)
                   ],
                   "storageKey": null
                 },
-                {
-                  "args": null,
-                  "kind": "FragmentSpread",
-                  "name": "WatchedLot_lot"
-                }
+                (v7/*: any*/)
               ],
               "storageKey": null
             }
@@ -462,5 +420,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '9d7c58a318d2cbb2ab6af6136f5bbdd0';
+(node as any).hash = '9d8af8fc27ce86aefaf2a0178b466f40';
 export default node;
