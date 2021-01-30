@@ -30,7 +30,7 @@ export type ActiveLot_lotStanding = {
             readonly liveStartAt: string | null;
         } | null;
         readonly " $fragmentRefs": FragmentRefs<"Lot_saleArtwork">;
-    };
+    } | null;
     readonly " $refType": "ActiveLot_lotStanding";
 };
 export type ActiveLot_lotStanding$data = ActiveLot_lotStanding;

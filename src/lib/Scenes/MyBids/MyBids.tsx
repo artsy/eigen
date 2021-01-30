@@ -1,4 +1,4 @@
-import { groupBy, mapValues, partition, sortBy, unionBy } from "lodash"
+import { groupBy, mapValues, partition, sortBy } from "lodash"
 import { Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { RefreshControl, ScrollView } from "react-native"
@@ -10,14 +10,12 @@ import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 import { ActionType, OwnerType } from "@artsy/cohesion"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { WatchedLotFragmentContainer as WatchedLot } from "lib/Scenes/MyBids/Components/WatchedLot"
 import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import moment from "moment-timezone"
 import {
-  ActiveLotFragmentContainer as ActiveLot,
   ClosedLotFragmentContainer as ClosedLot,
   MyBidsPlaceholder,
   SaleCardFragmentContainer,
@@ -25,21 +23,13 @@ import {
 } from "./Components"
 import { LotStatusListItemContainer } from "./Components/LotStatusListItem"
 import { NoBids } from "./Components/NoBids"
-import { isLotStandingComplete, TimelySale } from "./helpers/timely"
+import { TimelySale } from "./helpers/timely"
 
 export interface MyBidsProps {
   me: MyBids_me
   isActiveTab: boolean
   relay: RelayPaginationProp
 }
-
-type Sale = NonNullable<NonNullable<NonNullable<MyBids_me["bidders"]>[0]>["sale"]>
-
-// export type LotLike = NonNullable<
-//   NonNullable<
-//     NonNullable<NonNullable<MyBids_me["auctionsLotStandingConnection" | "watchedLotConnection"]>["edges"]>[number]
-//   >["node"]
-// >
 
 const MyBids: React.FC<MyBidsProps> = (props) => {
   const [isFetching, setIsFetching] = React.useState<boolean>(false)
@@ -68,62 +58,20 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
 
   const lotStandings = extractNodes(me?.auctionsLotStandingConnection)
   const watchedLots = extractNodes(me?.watchedLotConnection)
-
-  // separate active standings from closed standings
-  const [activeStandings, closedStandings] = partition(
-    lotStandings,
-    (ls) => !TimelySale.create(ls?.saleArtwork?.sale!).isClosed
-  )
-
-  // combine unique watched lots with active standings => `activeLots`
-  const activeLots = watchedLots.reduce(
-    (acc: any[], watchedLot) => {
-      if (!!activeStandings.find((existingLot) => existingLot!.lot!.internalID === watchedLot.lot.internalID)) {
-        return acc
-      } else {
-        return [...acc, watchedLot]
-      }
-    },
-    [...activeStandings]
-  )
-
-  // group active lots by sale id
-  const activeBySaleId = groupBy(activeLots, (ls) => ls?.saleArtwork?.sale?.internalID)
-
   // sort an ordered list of sales by their relevant end time
   // TODO: add these to the allSales below (unique only)
   const registeredSales: Sale[] = me.bidders?.map((b) => b!.sale!) || []
 
-  // fetch unique sales from all active lots
-  const salesFromLots = activeLots.reduce((acc: Array<{ internalID: string }>, lot) => {
-    return !!acc.find((sale: { internalID: string }) => sale.internalID === lot.saleArtwork.sale.internalID)
-      ? acc
-      : [...acc, lot.saleArtwork.sale]
-  }, [])
+  const { activeLotsBySaleId, activeSales: sales, closedStandings } = sortLotsAndSales(
+    watchedLots,
+    lotStandings,
+    registeredSales
+  )
 
-  const allSales = registeredSales.reduce((acc, sale) => {
-    if (!acc.find((existingSale: { internalID: string }) => existingSale.internalID === sale.internalID)) {
-      return [...acc, sale]
-    } else {
-      return acc
-    }
-  }, salesFromLots)
-
-  // sort each group of lot standings by position (lot number)
-  // The values of this object are displayed to the user under each sale card
-  const sortedActiveLotsBySaleId = mapValues(activeBySaleId, (lss) => sortBy(lss, (ls) => ls?.saleArtwork?.position!))
-
-  // sort all mentioned sales by their relevant end time
-  const sortedSales = sortBy(allSales, (sale) => {
-    const timelySale = TimelySale.create(sale)
-    return moment(timelySale.relevantEnd).unix()
-  })
-
-  const hasActiveLots = activeLots.length > 0
   const hasClosedBids = closedStandings.length > 0
-  const hasRegistrations = registeredSales.length > 0
+  const hasActiveSales = sales.length > 0
 
-  const somethingToShow = hasActiveLots || hasClosedBids || hasRegistrations
+  const somethingToShow = hasClosedBids || hasActiveSales
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -147,12 +95,12 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
         }
       >
         {!somethingToShow && <NoBids headerText="Discover works for you at auction." />}
-        {!!hasRegistrations && <BidTitle>Active Bids</BidTitle>}
-        {!!hasRegistrations && (
+        {!!hasActiveSales && <BidTitle>Active Bids</BidTitle>}
+        {!!hasActiveSales && (
           <Flex data-test-id="active-section">
             <Join separator={<Spacer my={1} />}>
-              {sortedSales.map((sale) => {
-                const sortedActiveLots = sortedActiveLotsBySaleId[sale.internalID] || []
+              {sales.map((sale) => {
+                const sortedActiveLots = activeLotsBySaleId[sale.internalID] || []
                 // or check for the watched lots id which has a differ data shape
                 const showNoBids = !sortedActiveLots.length && !!sale.registrationStatus?.qualifiedForBidding
                 return (
@@ -170,21 +118,11 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
                         </Text>
                       )}
                       {sortedActiveLots.map((lot) => {
-                        return <LotStatusListItemContainer lot={lot} />
-                        // TODO: Once causality stitched to MP data errors are resolved we can bring this component back
-                        // if (ls && arrayOfDedupedWatchedLotIDs.includes(ls?.lot?.internalID!)) {
-                        //   return <WatchedLot lotStanding={ls} key={ls?.lot?.internalID!} />
-                        // }
-                        // Note: Occasionally, during live bidding, closed lots appear in active sales
-                        // if (lot) {
-                        //   return lot.__typename === "Lot" ? (
-                        //     <WatchedLot lot={lot} key={lot?.lot?.internalID} />
-                        //   ) : isLotStandingComplete(lot) ? (
-                        //     <ClosedLot inActiveSale lotStanding={lot} key={lot?.lot?.internalID} />
-                        //   ) : (
-                        //     <ActiveLot lotStanding={lot} key={lot?.lot?.internalID} />
-                        //   )
-                        // }
+                        if ("isHighestBidder" in lot) {
+                          return <LotStatusListItemContainer key={lot.lot.internalID} lotStanding={lot} lot={null} />
+                        } else {
+                          return <LotStatusListItemContainer key={lot.lot.internalID} lot={lot} lotStanding={null} />
+                        }
                       })}
                     </Join>
                   </SaleCardFragmentContainer>
@@ -198,16 +136,14 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
           <Flex data-test-id="closed-section">
             <Flex mt={2} px={1.5}>
               <Join separator={<Separator my={2} />}>
-                {closedStandings?.map((ls) => {
+                {closedStandings?.map((lotStanding) => {
                   return (
-                    !!ls && (
-                      <ClosedLot
-                        withTimelyInfo
-                        data-test-id="closed-sale-lot"
-                        lotStanding={ls}
-                        key={ls?.lot?.internalID}
-                      />
-                    )
+                    <LotStatusListItemContainer
+                      saleIsClosed
+                      lotStanding={lotStanding}
+                      lot={null}
+                      key={lotStanding?.lot?.internalID}
+                    />
                   )
                 })}
               </Join>
@@ -254,9 +190,8 @@ export const MyBidsContainer = createPaginationContainer(
           @connection(key: "MyBids_auctionsLotStandingConnection") {
           edges {
             node {
-              ...LotStatusListItem_lot
-              ...ClosedLot_lotStanding
-              __typename
+              isHighestBidder
+              ...LotStatusListItem_lotStanding
               lot {
                 internalID
                 saleId
@@ -339,3 +274,76 @@ export const MyBidsQueryRenderer: React.FC = () => (
     variables={{}}
   />
 )
+
+type Sale = NonNullable<NonNullable<NonNullable<MyBids_me["bidders"]>[0]>["sale"]>
+type LotStanding = NonNullable<
+  NonNullable<NonNullable<NonNullable<MyBids_me["auctionsLotStandingConnection"]>["edges"]>[number]>["node"]
+>
+type WatchedLot = NonNullable<
+  NonNullable<NonNullable<NonNullable<MyBids_me["watchedLotConnection"]>["edges"]>[number]>["node"]
+>
+type LotLike = LotStanding | WatchedLot
+type SortData = (
+  watchedLots: WatchedLot[],
+  lotStandings: LotStanding[],
+  registeredSales: Sale[]
+) => {
+  activeLotsBySaleId: { [saleId: string]: LotLike[] }
+  activeSales: Sale[]
+  closedStandings: LotStanding[]
+}
+
+const sortLotsAndSales: SortData = (watchedLots, lotStandings, registeredSales) => {
+  // separate active standings from closed standings
+  const [activeStandings, closedStandings] = partition(
+    lotStandings,
+    (ls) => !TimelySale.create(ls?.saleArtwork?.sale!).isClosed
+  )
+
+  // combine unique watched lots with active standings => `activeLots`
+  const activeLots = watchedLots.reduce(
+    (acc: any[], watchedLot) => {
+      if (!!activeStandings.find((existingLot) => existingLot!.lot!.internalID === watchedLot.lot.internalID)) {
+        return acc
+      } else {
+        return [...acc, watchedLot]
+      }
+    },
+    [...activeStandings]
+  )
+
+  // group active lots by sale id
+  const activeBySaleId = groupBy(activeLots, (ls) => ls?.saleArtwork?.sale?.internalID)
+
+  // fetch unique sales from all active lots
+  const salesFromLots = activeLots.reduce((acc: Array<{ internalID: string }>, lot) => {
+    return !!acc.find((sale: { internalID: string }) => sale.internalID === lot.saleArtwork.sale.internalID)
+      ? acc
+      : [...acc, lot.saleArtwork.sale]
+  }, [])
+
+  // Combine all unique sales from registrations and active lots
+  const allSales = registeredSales.reduce((acc, sale) => {
+    if (!acc.find((existingSale: { internalID: string }) => existingSale.internalID === sale.internalID)) {
+      return [...acc, sale]
+    } else {
+      return acc
+    }
+  }, salesFromLots)
+
+  // sort each group of lot standings by position (lot number)
+  // The values of this object are displayed to the user under each sale card
+  const activeLotsBySaleId = mapValues(activeBySaleId, (lss) => sortBy(lss, (ls) => ls?.saleArtwork?.position!))
+
+  // sort all sales by their relevant end time
+  const activeSales = sortBy(allSales, (sale) => {
+    const timelySale = TimelySale.create(sale)
+    return moment(timelySale.relevantEnd).unix()
+  })
+
+  return {
+    activeLotsBySaleId,
+    activeSales,
+    closedStandings,
+  }
+}

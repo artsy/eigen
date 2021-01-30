@@ -22,7 +22,7 @@ export type MyBids_me = {
     readonly auctionsLotStandingConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly __typename: string;
+                readonly isHighestBidder: boolean;
                 readonly lot: {
                     readonly internalID: string;
                     readonly saleId: string;
@@ -37,8 +37,8 @@ export type MyBids_me = {
                         readonly status: string | null;
                         readonly " $fragmentRefs": FragmentRefs<"SaleCard_sale">;
                     } | null;
-                };
-                readonly " $fragmentRefs": FragmentRefs<"LotStatusListItem_lot" | "ClosedLot_lotStanding">;
+                } | null;
+                readonly " $fragmentRefs": FragmentRefs<"LotStatusListItem_lotStanding">;
             };
         } | null> | null;
     };
@@ -130,11 +130,6 @@ v6 = {
     (v4/*: any*/)
   ],
   "storageKey": null
-},
-v7 = {
-  "args": null,
-  "kind": "FragmentSpread",
-  "name": "LotStatusListItem_lot"
 };
 return {
   "argumentDefinitions": [
@@ -250,7 +245,7 @@ return {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
-                  "name": "__typename",
+                  "name": "isHighestBidder",
                   "storageKey": null
                 },
                 {
@@ -292,11 +287,17 @@ return {
                   ],
                   "storageKey": null
                 },
-                (v7/*: any*/),
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
+                  "storageKey": null
+                },
                 {
                   "args": null,
                   "kind": "FragmentSpread",
-                  "name": "ClosedLot_lotStanding"
+                  "name": "LotStatusListItem_lotStanding"
                 }
               ],
               "storageKey": null
@@ -400,7 +401,11 @@ return {
                   ],
                   "storageKey": null
                 },
-                (v7/*: any*/)
+                {
+                  "args": null,
+                  "kind": "FragmentSpread",
+                  "name": "LotStatusListItem_lot"
+                }
               ],
               "storageKey": null
             }
@@ -420,5 +425,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '9d8af8fc27ce86aefaf2a0178b466f40';
+(node as any).hash = '5a8fd171d5eea48279f2ee66e688e618';
 export default node;

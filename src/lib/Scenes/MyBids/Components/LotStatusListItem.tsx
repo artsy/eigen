@@ -1,36 +1,31 @@
-import { ActiveLot_lotStanding } from "__generated__/ActiveLot_lotStanding.graphql"
-import { ClosedLot_lotStanding } from "__generated__/ClosedLot_lotStanding.graphql"
 import { LotStatusListItem_lot } from "__generated__/LotStatusListItem_lot.graphql"
-import { MyBids_me } from "__generated__/MyBids_me.graphql"
-import { WatchedLot_lot } from "__generated__/WatchedLot_lot.graphql"
+import { LotStatusListItem_lotStanding } from "__generated__/LotStatusListItem_lotStanding.graphql"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { lotInActiveSale } from "../helpers/timely"
-import { ActiveLot } from "./ActiveLot"
-import { ClosedLot } from "./ClosedLot"
-import { WatchedLot } from "./WatchedLot"
+import { ActiveLotFragmentContainer as ActiveLot } from "./ActiveLot"
+import { ClosedLotFragmentContainer as ClosedLot } from "./ClosedLot"
+import { WatchedLotFragmentContainer as WatchedLot } from "./WatchedLot"
 
 // type LotLike = WatchedLot_lot | LotStanding
 interface Props {
-  lot: LotStatusListItem_lot
+  lot: LotStatusListItem_lot | null
+  lotStanding?: LotStatusListItem_lotStanding | null
+  saleIsClosed?: boolean
 }
 
-function isLotStanding(lot: any): lot is ActiveLot_lotStanding | ClosedLot_lotStanding {
-  return lot.type === "AuctionsLotStanding"
-}
+const completeStatuses = ["sold", "passed"]
 
-function isLot(lot: any): lot is WatchedLot_lot {
-  return lot.type === "Lot"
-}
-
-const LotStatusListItem: React.FC<Props> = ({ lot }) => {
-  const completeStatuses = ["sold", "passed"]
-  const soldStatus = lot?.lot?.soldStatus?.toLowerCase() as string
-  const isComplete = completeStatuses.includes(soldStatus)
-
-  if (isLotStanding(lot)) {
-    return isComplete ? <ClosedLot lotStanding={lot} /> : <ActiveLot lotStanding={lot} />
-  } else if (isLot(lot)) {
+const LotStatusListItem: React.FC<Props> = ({ lot, lotStanding, saleIsClosed = false }) => {
+  if (lotStanding) {
+    const lotState = lotStanding.lot
+    const soldStatus = lotState.soldStatus?.toLowerCase() as string
+    const isComplete = completeStatuses.includes(soldStatus)
+    if (saleIsClosed) {
+      return <ClosedLot withTimelyInfo data-test-id="closed-sale-lot" lotStanding={lotStanding} />
+    } else {
+      return isComplete ? <ClosedLot lotStanding={lotStanding} /> : <ActiveLot lotStanding={lotStanding} />
+    }
+  } else if (lot) {
     return <WatchedLot lot={lot} />
   } else {
     return null
@@ -39,14 +34,17 @@ const LotStatusListItem: React.FC<Props> = ({ lot }) => {
 
 export const LotStatusListItemContainer = createFragmentContainer(LotStatusListItem, {
   lot: graphql`
-    fragment LotStatusListItem_lot on LotLike {
-      type: __typename
+    fragment LotStatusListItem_lot on Lot {
+      ...WatchedLot_lot
+    }
+  `,
+  lotStanding: graphql`
+    fragment LotStatusListItem_lotStanding on AuctionsLotStanding {
+      ...ActiveLot_lotStanding
+      ...ClosedLot_lotStanding
       lot {
         soldStatus
       }
-      ...ActiveLot_lotStanding
-      ...ClosedLot_lotStanding
-      ...WatchedLot_lot
     }
   `,
 })
