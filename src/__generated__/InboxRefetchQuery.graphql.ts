@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3b85e9ed0b976b189eb0948bc9f585b2 */
+/* @relayHash fef933d79e8f1eff37e31d05456ed1f5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -301,7 +301,7 @@ fragment SaleCard_sale on Sale {
 }
 
 fragment WatchedLot_lot on Lot {
-  lotState: lot {
+  lot {
     internalID
     bidCount
     sellingPrice {
@@ -1075,7 +1075,7 @@ return {
                     "plural": false,
                     "selections": [
                       {
-                        "alias": "lotState",
+                        "alias": null,
                         "args": null,
                         "concreteType": "AuctionsLotState",
                         "kind": "LinkedField",
@@ -1143,16 +1143,6 @@ return {
                         ],
                         "storageKey": null
                       },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "AuctionsLotState",
-                        "kind": "LinkedField",
-                        "name": "lot",
-                        "plural": false,
-                        "selections": (v10/*: any*/),
-                        "storageKey": null
-                      },
                       (v5/*: any*/)
                     ],
                     "storageKey": null
@@ -1170,7 +1160,7 @@ return {
     ]
   },
   "params": {
-    "id": "3b85e9ed0b976b189eb0948bc9f585b2",
+    "id": "fef933d79e8f1eff37e31d05456ed1f5",
     "metadata": {},
     "name": "InboxRefetchQuery",
     "operationKind": "query",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7df70f79c2c076d7bc2f908a97540207 */
+/* @relayHash bbb8132d3e4f8c20b392c3a103c017ea */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -225,7 +225,7 @@ fragment SaleCard_sale on Sale {
 }
 
 fragment WatchedLot_lot on Lot {
-  lotState: lot {
+  lot {
     internalID
     bidCount
     sellingPrice {
@@ -278,46 +278,42 @@ v2 = {
   "name": "id",
   "storageKey": null
 },
-v3 = [
-  (v1/*: any*/),
-  (v2/*: any*/)
-],
-v4 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "href",
   "storageKey": null
 },
-v5 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "slug",
   "storageKey": null
 },
-v6 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v7 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "liveStartAt",
   "storageKey": null
 },
-v8 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "endAt",
   "storageKey": null
 },
-v9 = {
+v8 = {
   "alias": null,
   "args": null,
   "concreteType": "Image",
@@ -335,7 +331,7 @@ v9 = {
   ],
   "storageKey": null
 },
-v10 = {
+v9 = {
   "alias": null,
   "args": null,
   "concreteType": "Partner",
@@ -343,12 +339,12 @@ v10 = {
   "name": "partner",
   "plural": false,
   "selections": [
-    (v6/*: any*/),
+    (v5/*: any*/),
     (v2/*: any*/)
   ],
   "storageKey": null
 },
-v11 = {
+v10 = {
   "alias": null,
   "args": null,
   "concreteType": "Bidder",
@@ -367,48 +363,48 @@ v11 = {
   ],
   "storageKey": null
 },
-v12 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "requireIdentityVerification",
   "storageKey": null
 },
-v13 = {
+v12 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "status",
   "storageKey": null
 },
-v14 = {
+v13 = {
   "kind": "Variable",
   "name": "after",
   "variableName": "cursor"
 },
-v15 = [
-  (v14/*: any*/),
+v14 = [
+  (v13/*: any*/),
   {
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
   }
 ],
-v16 = {
+v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "bidCount",
   "storageKey": null
 },
-v17 = {
+v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "soldStatus",
   "storageKey": null
 },
-v18 = [
+v17 = [
   {
     "alias": null,
     "args": null,
@@ -417,31 +413,31 @@ v18 = [
     "storageKey": null
   }
 ],
-v19 = {
+v18 = {
   "alias": null,
   "args": null,
   "concreteType": "Money",
   "kind": "LinkedField",
   "name": "sellingPrice",
   "plural": false,
-  "selections": (v18/*: any*/),
+  "selections": (v17/*: any*/),
   "storageKey": null
 },
-v20 = {
+v19 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "lotLabel",
   "storageKey": null
 },
-v21 = {
+v20 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "artistNames",
   "storageKey": null
 },
-v22 = {
+v21 = {
   "alias": null,
   "args": null,
   "concreteType": "Image",
@@ -465,7 +461,7 @@ v22 = {
   ],
   "storageKey": null
 },
-v23 = {
+v22 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -538,7 +534,10 @@ return {
             "kind": "LinkedField",
             "name": "pendingIdentityVerification",
             "plural": false,
-            "selections": (v3/*: any*/),
+            "selections": [
+              (v1/*: any*/),
+              (v2/*: any*/)
+            ],
             "storageKey": null
           },
           {
@@ -564,6 +563,7 @@ return {
                 "plural": false,
                 "selections": [
                   (v1/*: any*/),
+                  (v3/*: any*/),
                   (v4/*: any*/),
                   (v5/*: any*/),
                   (v6/*: any*/),
@@ -573,7 +573,6 @@ return {
                   (v10/*: any*/),
                   (v11/*: any*/),
                   (v12/*: any*/),
-                  (v13/*: any*/),
                   (v2/*: any*/)
                 ],
                 "storageKey": null
@@ -584,7 +583,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v15/*: any*/),
+            "args": (v14/*: any*/),
             "concreteType": "AuctionsLotStandingConnection",
             "kind": "LinkedField",
             "name": "auctionsLotStandingConnection",
@@ -622,7 +621,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v1/*: any*/),
-                          (v16/*: any*/),
+                          (v15/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -630,7 +629,7 @@ return {
                             "name": "reserveStatus",
                             "storageKey": null
                           },
-                          (v17/*: any*/),
+                          (v16/*: any*/),
                           {
                             "alias": "askingPrice",
                             "args": null,
@@ -638,10 +637,10 @@ return {
                             "kind": "LinkedField",
                             "name": "onlineAskingPrice",
                             "plural": false,
-                            "selections": (v18/*: any*/),
+                            "selections": (v17/*: any*/),
                             "storageKey": null
                           },
-                          (v19/*: any*/),
+                          (v18/*: any*/),
                           (v2/*: any*/),
                           {
                             "alias": null,
@@ -661,7 +660,7 @@ return {
                         "name": "saleArtwork",
                         "plural": false,
                         "selections": [
-                          (v20/*: any*/),
+                          (v19/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -670,12 +669,12 @@ return {
                             "name": "artwork",
                             "plural": false,
                             "selections": [
+                              (v20/*: any*/),
                               (v21/*: any*/),
-                              (v22/*: any*/),
                               (v2/*: any*/),
                               (v1/*: any*/),
-                              (v4/*: any*/),
-                              (v5/*: any*/)
+                              (v3/*: any*/),
+                              (v4/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -687,23 +686,23 @@ return {
                             "name": "sale",
                             "plural": false,
                             "selections": [
-                              (v7/*: any*/),
+                              (v6/*: any*/),
                               (v2/*: any*/),
-                              (v8/*: any*/),
-                              (v13/*: any*/),
+                              (v7/*: any*/),
+                              (v12/*: any*/),
                               (v1/*: any*/),
+                              (v3/*: any*/),
                               (v4/*: any*/),
                               (v5/*: any*/),
-                              (v6/*: any*/),
+                              (v8/*: any*/),
                               (v9/*: any*/),
                               (v10/*: any*/),
-                              (v11/*: any*/),
-                              (v12/*: any*/)
+                              (v11/*: any*/)
                             ],
                             "storageKey": null
                           },
                           (v2/*: any*/),
-                          (v23/*: any*/)
+                          (v22/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -758,7 +757,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v15/*: any*/),
+            "args": (v14/*: any*/),
             "filters": null,
             "handle": "connection",
             "key": "MyBids_auctionsLotStandingConnection",
@@ -768,7 +767,7 @@ return {
           {
             "alias": null,
             "args": [
-              (v14/*: any*/),
+              (v13/*: any*/),
               {
                 "kind": "Literal",
                 "name": "first",
@@ -797,7 +796,7 @@ return {
                     "plural": false,
                     "selections": [
                       {
-                        "alias": "lotState",
+                        "alias": null,
                         "args": null,
                         "concreteType": "AuctionsLotState",
                         "kind": "LinkedField",
@@ -805,9 +804,9 @@ return {
                         "plural": false,
                         "selections": [
                           (v1/*: any*/),
+                          (v15/*: any*/),
+                          (v18/*: any*/),
                           (v16/*: any*/),
-                          (v19/*: any*/),
-                          (v17/*: any*/),
                           (v2/*: any*/)
                         ],
                         "storageKey": null
@@ -820,7 +819,7 @@ return {
                         "name": "saleArtwork",
                         "plural": false,
                         "selections": [
-                          (v20/*: any*/),
+                          (v19/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -829,10 +828,10 @@ return {
                             "name": "artwork",
                             "plural": false,
                             "selections": [
+                              (v20/*: any*/),
                               (v21/*: any*/),
-                              (v22/*: any*/),
                               (v2/*: any*/),
-                              (v4/*: any*/)
+                              (v3/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -844,35 +843,25 @@ return {
                             "name": "sale",
                             "plural": false,
                             "selections": [
+                              (v6/*: any*/),
                               (v7/*: any*/),
-                              (v8/*: any*/),
-                              (v13/*: any*/),
+                              (v12/*: any*/),
                               (v2/*: any*/),
                               (v1/*: any*/),
+                              (v3/*: any*/),
                               (v4/*: any*/),
                               (v5/*: any*/),
-                              (v6/*: any*/),
+                              (v8/*: any*/),
                               (v9/*: any*/),
                               (v10/*: any*/),
-                              (v11/*: any*/),
-                              (v12/*: any*/)
+                              (v11/*: any*/)
                             ],
                             "storageKey": null
                           },
                           (v2/*: any*/),
                           (v1/*: any*/),
-                          (v23/*: any*/)
+                          (v22/*: any*/)
                         ],
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "AuctionsLotState",
-                        "kind": "LinkedField",
-                        "name": "lot",
-                        "plural": false,
-                        "selections": (v3/*: any*/),
                         "storageKey": null
                       },
                       (v2/*: any*/)
@@ -892,7 +881,7 @@ return {
     ]
   },
   "params": {
-    "id": "7df70f79c2c076d7bc2f908a97540207",
+    "id": "bbb8132d3e4f8c20b392c3a103c017ea",
     "metadata": {},
     "name": "MyBidsPaginatedQuery",
     "operationKind": "query",

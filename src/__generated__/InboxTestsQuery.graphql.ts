@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9f87992a6952259332af241901645c0c */
+/* @relayHash cc6780218753ef37f62f5833c2a0f1a2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -301,7 +301,7 @@ fragment SaleCard_sale on Sale {
 }
 
 fragment WatchedLot_lot on Lot {
-  lotState: lot {
+  lot {
     internalID
     bidCount
     sellingPrice {
@@ -1181,7 +1181,7 @@ return {
                     "plural": false,
                     "selections": [
                       {
-                        "alias": "lotState",
+                        "alias": null,
                         "args": null,
                         "concreteType": "AuctionsLotState",
                         "kind": "LinkedField",
@@ -1249,16 +1249,6 @@ return {
                         ],
                         "storageKey": null
                       },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "AuctionsLotState",
-                        "kind": "LinkedField",
-                        "name": "lot",
-                        "plural": false,
-                        "selections": (v10/*: any*/),
-                        "storageKey": null
-                      },
                       (v5/*: any*/)
                     ],
                     "storageKey": null
@@ -1276,7 +1266,7 @@ return {
     ]
   },
   "params": {
-    "id": "9f87992a6952259332af241901645c0c",
+    "id": "cc6780218753ef37f62f5833c2a0f1a2",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -1510,15 +1500,12 @@ return {
         },
         "me.watchedLotConnection.edges.node.id": (v30/*: any*/),
         "me.watchedLotConnection.edges.node.lot": (v32/*: any*/),
+        "me.watchedLotConnection.edges.node.lot.bidCount": (v35/*: any*/),
         "me.watchedLotConnection.edges.node.lot.id": (v30/*: any*/),
         "me.watchedLotConnection.edges.node.lot.internalID": (v30/*: any*/),
-        "me.watchedLotConnection.edges.node.lotState": (v32/*: any*/),
-        "me.watchedLotConnection.edges.node.lotState.bidCount": (v35/*: any*/),
-        "me.watchedLotConnection.edges.node.lotState.id": (v30/*: any*/),
-        "me.watchedLotConnection.edges.node.lotState.internalID": (v30/*: any*/),
-        "me.watchedLotConnection.edges.node.lotState.sellingPrice": (v33/*: any*/),
-        "me.watchedLotConnection.edges.node.lotState.sellingPrice.display": (v34/*: any*/),
-        "me.watchedLotConnection.edges.node.lotState.soldStatus": (v36/*: any*/),
+        "me.watchedLotConnection.edges.node.lot.sellingPrice": (v33/*: any*/),
+        "me.watchedLotConnection.edges.node.lot.sellingPrice.display": (v34/*: any*/),
+        "me.watchedLotConnection.edges.node.lot.soldStatus": (v36/*: any*/),
         "me.watchedLotConnection.edges.node.saleArtwork": (v37/*: any*/),
         "me.watchedLotConnection.edges.node.saleArtwork.artwork": (v38/*: any*/),
         "me.watchedLotConnection.edges.node.saleArtwork.artwork.artistNames": (v34/*: any*/),

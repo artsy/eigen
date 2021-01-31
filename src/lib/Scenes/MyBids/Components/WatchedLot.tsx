@@ -16,9 +16,9 @@ interface WatchedLotProps {
 }
 
 export const WatchedLot: React.FC<WatchedLotProps> = ({ lot }) => {
-  const sellingPrice = lot?.lotState?.sellingPrice?.display
-  const bidCount = lot?.lotState?.bidCount
-  const { saleArtwork } = lot
+  const { saleArtwork, lot: lotState } = lot
+  const bidCount = lotState.bidCount
+  const sellingPrice = lotState?.sellingPrice?.display
   // const tracking = useTracking()
 
   const displayBidCount = (): string | undefined => {
@@ -41,6 +41,7 @@ export const WatchedLot: React.FC<WatchedLotProps> = ({ lot }) => {
     // })
     // navigate(saleArtwork?.artwork?.href as string)
   }
+
   return (
     <TouchableOpacity style={{ marginHorizontal: 0, width: "100%" }} onPress={handleLotTap}>
       <Lot saleArtwork={saleArtwork!} isSmallScreen={isSmallScreen}>
@@ -52,7 +53,6 @@ export const WatchedLot: React.FC<WatchedLotProps> = ({ lot }) => {
           </Text>
         </Flex>
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
-          {/* TODO: Add correct icon to Palette for use here */}
           <Watching />
         </Flex>
       </Lot>
@@ -63,7 +63,7 @@ export const WatchedLot: React.FC<WatchedLotProps> = ({ lot }) => {
 export const WatchedLotFragmentContainer = createFragmentContainer(WatchedLot, {
   lot: graphql`
     fragment WatchedLot_lot on Lot {
-      lotState: lot {
+      lot {
         internalID
         bidCount
         sellingPrice {

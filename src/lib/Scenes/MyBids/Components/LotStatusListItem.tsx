@@ -17,12 +17,12 @@ const completeStatuses = ["sold", "passed"]
 
 const LotStatusListItem: React.FC<Props> = ({ lot, lotStanding, saleIsClosed = false }) => {
   if (lotStanding) {
-    const lotState = lotStanding.lot
-    const soldStatus = lotState.soldStatus?.toLowerCase() as string
-    const isComplete = completeStatuses.includes(soldStatus)
     if (saleIsClosed) {
       return <ClosedLot withTimelyInfo data-test-id="closed-sale-lot" lotStanding={lotStanding} />
     } else {
+      const lotState = lotStanding.lot
+      const soldStatus = lotState.soldStatus?.toLowerCase() as string
+      const isComplete = completeStatuses.includes(soldStatus)
       return isComplete ? <ClosedLot lotStanding={lotStanding} /> : <ActiveLot lotStanding={lotStanding} />
     }
   } else if (lot) {

@@ -6,7 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type AuctionsSoldStatus = "ForSale" | "Passed" | "Sold" | "%future added value";
 export type WatchedLot_lot = {
-    readonly lotState: {
+    readonly lot: {
         readonly internalID: string;
         readonly bidCount: number;
         readonly sellingPrice: {
@@ -42,7 +42,7 @@ const node: ReaderFragment = {
   "name": "WatchedLot_lot",
   "selections": [
     {
-      "alias": "lotState",
+      "alias": null,
       "args": null,
       "concreteType": "AuctionsLotState",
       "kind": "LinkedField",
@@ -161,5 +161,5 @@ const node: ReaderFragment = {
   "type": "Lot",
   "abstractKey": null
 };
-(node as any).hash = 'ba922cc7885de40a9e2bad9064499ed2';
+(node as any).hash = 'aad4c114359ebc65022c54ab9e57c139';
 export default node;
