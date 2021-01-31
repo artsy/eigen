@@ -1,5 +1,4 @@
 #import "ARSentryAnalyticsProvider.h"
-
 #import <Sentry/SentryClient.h>
 #import <Sentry/SentryUser.h>
 #import <Sentry/SentryBreadcrumb.h>
