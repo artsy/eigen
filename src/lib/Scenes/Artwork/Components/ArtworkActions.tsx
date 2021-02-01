@@ -1,7 +1,7 @@
 import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { cm2in } from "lib/utils/conversions"
 import { Schema, track } from "lib/utils/track"
 import { take } from "lodash"
