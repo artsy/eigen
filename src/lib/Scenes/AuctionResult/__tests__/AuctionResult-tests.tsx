@@ -1,3 +1,4 @@
+import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
@@ -42,18 +43,10 @@ describe("AuctionResult", () => {
     expect(tree.root.findAllByType(FancyModalHeader)).toHaveLength(2)
   })
 
-  it("calculates the ratio correctly", () => {
-    const tree = renderAuctionResult({
-      AuctionResult: () => ({
-        estimate: {
-          low: 200,
-        },
-        priceRealized: {
-          cents: 450,
-        },
-      }),
-    })
-    expect(extractText(tree.root.findByProps({ testID: "ratio" }))).toContain("2.25x")
+  it("show the mid-estimate", () => {
+    const tree = renderAuctionResult()
+    expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.value).toEqual("mid-1")
+    expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.shortDescription).toEqual("mid-estimate")
   })
 
   it("shows if a lot was bought in", () => {

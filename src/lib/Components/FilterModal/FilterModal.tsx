@@ -24,6 +24,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
 import { ArtistIDsOptionsScreen } from "../ArtworkFilterOptions/ArtistIDsOptionsScreen"
+import { AttributionClassOptionsScreen } from "../ArtworkFilterOptions/AttributionClassOptions"
 import { CategoriesOptionsScreen } from "../ArtworkFilterOptions/CategoriesOptions"
 import { ColorOption, ColorOptionsScreen } from "../ArtworkFilterOptions/ColorOptions"
 import { colorHexMap } from "../ArtworkFilterOptions/ColorSwatch"
@@ -44,6 +45,7 @@ import { FancyModal } from "../FancyModal/FancyModal"
 export type FilterScreen =
   | "artistIDs"
   | "artistsIFollow"
+  | "attributionClass"
   | "color"
   | "categories"
   | "dimensionRange"
@@ -92,6 +94,7 @@ interface FilterModalProps extends ViewProperties {
 export type FilterModalNavigationStack = {
   ArtistIDsOptionsScreen: undefined
   ColorOptionsScreen: undefined
+  AttributionClassOptionsScreen: undefined
   EstimateRangeOptionsScreen: undefined
   FilterOptionsScreen: FilterOptionsScreenParams
   GalleryOptionsScreen: undefined
@@ -190,6 +193,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
           >
             <Stack.Screen name="FilterOptionsScreen" component={FilterOptionsScreen} initialParams={props} />
             <Stack.Screen name="ArtistIDsOptionsScreen" component={ArtistIDsOptionsScreen} />
+            <Stack.Screen name="AttributionClassOptionsScreen" component={AttributionClassOptionsScreen} />
             <Stack.Screen name="ColorOptionsScreen" component={ColorOptionsScreen} />
             <Stack.Screen name="EstimateRangeOptionsScreen" component={EstimateRangeOptionsScreen} />
             <Stack.Screen name="GalleryOptionsScreen" component={GalleryOptionsScreen} />
@@ -444,7 +448,11 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
       ]
 
     default:
-      return [filterOptionToDisplayConfigMap.sort, filterOptionToDisplayConfigMap.waysToBuy]
+      return [
+        filterOptionToDisplayConfigMap.sort,
+        filterOptionToDisplayConfigMap.waysToBuy,
+        filterOptionToDisplayConfigMap.attributionClass,
+      ]
   }
 }
 
@@ -636,6 +644,11 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "artistIDs",
     ScreenComponent: "ArtistIDsOptionsScreen",
   },
+  attributionClass: {
+    displayText: FilterDisplayName.attributionClass,
+    filterType: "attributionClass",
+    ScreenComponent: "AttributionClassOptionsScreen",
+  },
   color: {
     displayText: FilterDisplayName.color,
     filterType: "color",
@@ -711,6 +724,7 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
 const CollectionFiltersSorted: FilterScreen[] = [
   "sort",
   "medium",
+  "attributionClass",
   "priceRange",
   "waysToBuy",
   "dimensionRange",
@@ -722,6 +736,7 @@ const CollectionFiltersSorted: FilterScreen[] = [
 const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "sort",
   "medium",
+  "attributionClass",
   "priceRange",
   "waysToBuy",
   "gallery",
@@ -733,6 +748,7 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
 const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "sort",
   "medium",
+  "attributionClass",
   "priceRange",
   "waysToBuy",
   "dimensionRange",
@@ -746,6 +762,7 @@ const FairFiltersSorted: FilterScreen[] = [
   "artistIDs",
   "artistsIFollow",
   "medium",
+  "attributionClass",
   "priceRange",
   "waysToBuy",
   "dimensionRange",

@@ -12,6 +12,7 @@ upcoming:
     - Validate CHANGELOG.yml - brian, pavlos, brian, adam, steven, david, mounir
     - Add increase/decrease icons - pepopowitz
     - Add android navigation infra - david, mounir
+    - remove artist insights feature flag in favor of echo flag - mounir
   user_facing:
     - Refresh inbox automatically upon revisiting - erik, lily
     - Poll and refetch images when images are processing (my collection) - brian
@@ -25,6 +26,7 @@ upcoming:
     - Add NotArtwork Icon to AuctionResult screen   - mounir
     - Add extra bottom padding on artist insights auction results - mounir
     - Remove separator from last auction result - mounir
+    - Show mid-estimate performance on auction results - mounir
 
 releases:
   - version: 6.7.6
