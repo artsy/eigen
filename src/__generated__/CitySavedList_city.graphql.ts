@@ -5,7 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CitySavedList_city = {
-    readonly name: string;
+    readonly name: string | null;
     readonly " $refType": "CitySavedList_city";
 };
 export type CitySavedList_city$data = CitySavedList_city;

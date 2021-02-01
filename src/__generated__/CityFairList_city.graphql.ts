@@ -5,7 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CityFairList_city = {
-    readonly slug: string;
+    readonly slug: string | null;
     readonly fairs: {
         readonly edges: ReadonlyArray<{
             readonly node: {
