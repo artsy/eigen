@@ -8,6 +8,16 @@ import { ARScreenPresenterModule } from "./ARScreenPresenterModule"
 
 const noop: any = (name: string) => () => console.warn(`method ${name} doesn't exist on android yet`)
 
+/**
+ * This file is a gateway to our iOS-specific native modules that either
+ *
+ * - have not yet been ported to android
+ * - will never be ported to android
+ * - will be deleted at some point
+ *
+ * When a thing is made available on android, it should be removed from this file and added to ArtsyNativeModule.
+ */
+
 interface LegacyNativeModules {
   ARTemporaryAPIModule: {
     appVersion: string
