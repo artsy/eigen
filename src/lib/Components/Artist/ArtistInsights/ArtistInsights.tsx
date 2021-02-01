@@ -94,11 +94,6 @@ export const ArtistInsightsFragmentContainer = createFragmentContainer(ArtistIns
       ...ArtistInsightsAuctionResults_artist
     }
   `,
-  priceInsights: graphql`
-    fragment ArtistInsights_priceInsights on PriceInsightConnection {
-      ...MarketStats_priceInsights
-    }
-  `,
 })
 
 export const tracks = {
