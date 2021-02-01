@@ -14,7 +14,6 @@
 
     [SentrySDK startWithConfigureOptions:^(SentryOptions *options) {
         options.dsn = DSN;
-        options.debug = @YES; // Enabled debug when first installing is always helpful
     }];
     
     return self;
