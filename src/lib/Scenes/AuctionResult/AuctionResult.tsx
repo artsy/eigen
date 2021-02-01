@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { AuctionResultQuery, AuctionResultQueryResponse } from "__generated__/AuctionResultQuery.graphql"
+import { AuctionResultsMidEstimate } from "lib/Components/AuctionResults/AuctionResultsMidEstimate"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ratioColor } from "lib/Components/Lists/AuctionResult"
@@ -216,6 +217,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
               />
             </Flex>
           )}
+          <AuctionResultsMidEstimate percentage="%20" />
           <Text variant="largeTitle">
             {hasSalePrice ? `${auctionResult.priceRealized?.display} ${auctionResult.currency}` : salePriceMessage}
           </Text>

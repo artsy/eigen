@@ -16,7 +16,7 @@ import { navigate } from "lib/navigation/navigate"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, bullet, Flex, Separator, Spacer, Text } from "palette"
+import { Box, bullet, color, Flex, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useContext, useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -171,7 +171,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
       )}
       ItemSeparatorComponent={() => (
         <Flex px={2}>
-          <Separator />
+          <Separator borderColor={color("black5")} />
         </Flex>
       )}
       style={{ width: useScreenDimensions().width, left: -20 }}
