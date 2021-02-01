@@ -5,8 +5,8 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CityBMWList_city = {
-    readonly name: string | null;
-    readonly slug: string | null;
+    readonly name: string;
+    readonly slug: string;
     readonly sponsoredContent: {
         readonly shows: {
             readonly edges: ReadonlyArray<{
