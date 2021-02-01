@@ -35,21 +35,19 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   onMutationError(error) {
-    setTimeout(() => {
-      Alert.alert("Sorry, we couldn't process the request.", "Please try again or contact orders@artsy.net for help.", [
-        {
-          text: "Cancel",
-          style: "cancel",
+    Alert.alert("Sorry, we couldn't process the request.", "Please try again or contact orders@artsy.net for help.", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Retry",
+        onPress: () => {
+          this.handleCreateOfferOrder()
         },
-        {
-          text: "Retry",
-          onPress: () => {
-            this.handleCreateOfferOrder()
-          },
-        },
-      ])
-      console.log("src/lib/Scenes/Artwork/Components/MakeOfferButton.tsx", error)
-    }, 2000)
+      },
+    ])
+    console.log("src/lib/Scenes/Artwork/Components/MakeOfferButton.tsx", error)
   }
 
   @track({
