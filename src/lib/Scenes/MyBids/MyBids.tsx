@@ -51,10 +51,8 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
     }
   }, [isActiveTab])
 
-  const lotStandings = extractNodes(me?.auctionsLotStandingConnection)
   const watchedLots = extractNodes(me?.watchedLotConnection)
-  // sort an ordered list of sales by their relevant end time
-  // TODO: add these to the allSales below (unique only)
+  const lotStandings = extractNodes(me?.auctionsLotStandingConnection)
   const registeredSales: Sale[] = me.bidders?.map((b) => b!.sale!) || []
 
   const { activeLotsBySaleId, activeSales: sales, closedStandings } = sortLotsAndSales(
@@ -96,7 +94,6 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
             <Join separator={<Spacer my={1} />}>
               {sales.map((sale) => {
                 const sortedActiveLots = activeLotsBySaleId[sale.internalID] || []
-                // or check for the watched lots id which has a differ data shape
                 const showNoBids = !sortedActiveLots.length && !!sale.registrationStatus?.qualifiedForBidding
                 return (
                   <SaleCardFragmentContainer
@@ -113,6 +110,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
                         </Text>
                       )}
                       {sortedActiveLots.map((lot) => {
+                        // this check performs type narrowing (from Lot | LotStanding)
                         if ("isHighestBidder" in lot) {
                           return <LotStatusListItemContainer key={lot.lot.internalID} lotStanding={lot} lot={null} />
                         } else {
@@ -287,6 +285,9 @@ type SortData = (
   closedStandings: LotStanding[]
 }
 
+/**
+ * This function provides the sorting and ordering logic for our watched lots, lot standings and registered sales.
+ */
 const sortLotsAndSales: SortData = (watchedLots, lotStandings, registeredSales) => {
   // separate active standings from closed standings
   const [activeStandings, closedStandings] = partition(

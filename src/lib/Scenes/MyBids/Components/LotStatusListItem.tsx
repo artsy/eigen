@@ -6,10 +6,12 @@ import { ActiveLotFragmentContainer as ActiveLot } from "./ActiveLot"
 import { ClosedLotFragmentContainer as ClosedLot } from "./ClosedLot"
 import { WatchedLotFragmentContainer as WatchedLot } from "./WatchedLot"
 
-// type LotLike = WatchedLot_lot | LotStanding
 interface Props {
+  /** A general lot to display. */
   lot: LotStatusListItem_lot | null
+  /** A user's lot standing. Takes precedence over `lot` */
   lotStanding?: LotStatusListItem_lotStanding | null
+  /** Whether the lot's entire sale has closed */
   saleIsClosed?: boolean
 }
 
