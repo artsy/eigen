@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { ActiveLot_lotStanding } from "__generated__/ActiveLot_lotStanding.graphql"
+import { ActiveLotStanding_lotStanding } from "__generated__/ActiveLotStanding_lotStanding.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
 import { Flex, Text } from "palette"
@@ -11,7 +11,7 @@ import { TimelySale } from "../helpers/timely"
 import { HighestBid, Outbid, ReserveNotMet } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
-export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding }) => {
+export const ActiveLotStanding = ({ lotStanding }: { lotStanding: ActiveLotStanding_lotStanding }) => {
   const timelySale = TimelySale.create(lotStanding?.saleArtwork?.sale!)
 
   const sellingPrice = lotStanding?.lot?.sellingPrice?.display
@@ -66,9 +66,9 @@ export const ActiveLot = ({ lotStanding }: { lotStanding: ActiveLot_lotStanding 
   )
 }
 
-export const ActiveLotFragmentContainer = createFragmentContainer(ActiveLot, {
+export const ActiveLotStandingFragmentContainer = createFragmentContainer(ActiveLotStanding, {
   lotStanding: graphql`
-    fragment ActiveLot_lotStanding on AuctionsLotStanding {
+    fragment ActiveLotStanding_lotStanding on AuctionsLotStanding {
       isHighestBidder
       lot {
         internalID

@@ -4,19 +4,15 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type AuctionsReserveStatus = "NoReserve" | "ReserveMet" | "ReserveNotMet" | "%future added value";
 export type AuctionsSoldStatus = "ForSale" | "Passed" | "Sold" | "%future added value";
-export type ClosedLot_lotStanding = {
-    readonly isHighestBidder: boolean;
+export type WatchedLot_lot = {
     readonly lot: {
         readonly internalID: string;
-        readonly saleId: string;
         readonly bidCount: number;
-        readonly reserveStatus: AuctionsReserveStatus;
-        readonly soldStatus: AuctionsSoldStatus;
         readonly sellingPrice: {
             readonly display: string | null;
         } | null;
+        readonly soldStatus: AuctionsSoldStatus;
     };
     readonly saleArtwork: {
         readonly artwork: {
@@ -25,17 +21,18 @@ export type ClosedLot_lotStanding = {
             readonly slug: string;
         } | null;
         readonly sale: {
+            readonly liveStartAt: string | null;
             readonly endAt: string | null;
             readonly status: string | null;
         } | null;
         readonly " $fragmentRefs": FragmentRefs<"Lot_saleArtwork">;
     } | null;
-    readonly " $refType": "ClosedLot_lotStanding";
+    readonly " $refType": "WatchedLot_lot";
 };
-export type ClosedLot_lotStanding$data = ClosedLot_lotStanding;
-export type ClosedLot_lotStanding$key = {
-    readonly " $data"?: ClosedLot_lotStanding$data;
-    readonly " $fragmentRefs": FragmentRefs<"ClosedLot_lotStanding">;
+export type WatchedLot_lot$data = WatchedLot_lot;
+export type WatchedLot_lot$key = {
+    readonly " $data"?: WatchedLot_lot$data;
+    readonly " $fragmentRefs": FragmentRefs<"WatchedLot_lot">;
 };
 
 
@@ -52,15 +49,8 @@ return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "ClosedLot_lotStanding",
+  "name": "WatchedLot_lot",
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "isHighestBidder",
-      "storageKey": null
-    },
     {
       "alias": null,
       "args": null,
@@ -74,28 +64,7 @@ return {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
-          "name": "saleId",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
           "name": "bidCount",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "reserveStatus",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "soldStatus",
           "storageKey": null
         },
         {
@@ -114,6 +83,13 @@ return {
               "storageKey": null
             }
           ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "soldStatus",
           "storageKey": null
         }
       ],
@@ -165,6 +141,13 @@ return {
               "alias": null,
               "args": null,
               "kind": "ScalarField",
+              "name": "liveStartAt",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "endAt",
               "storageKey": null
             },
@@ -187,9 +170,9 @@ return {
       "storageKey": null
     }
   ],
-  "type": "AuctionsLotStanding",
+  "type": "Lot",
   "abstractKey": null
 };
 })();
-(node as any).hash = '47a50b528c216b6331947c0d9add8119';
+(node as any).hash = '8e5d2ed17ca72e4bc5086f5c1d2f86db';
 export default node;

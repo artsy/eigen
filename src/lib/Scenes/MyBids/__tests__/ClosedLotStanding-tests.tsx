@@ -1,11 +1,11 @@
 import React from "react"
 
-import { ClosedLot_lotStanding } from "__generated__/ClosedLot_lotStanding.graphql"
+import { ClosedLotStanding_lotStanding } from "__generated__/ClosedLotStanding_lotStanding.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { merge } from "lodash"
 import { StarCircleFill } from "palette/svgs/sf"
-import { ClosedLot } from "../Components/ClosedLot"
+import { ClosedLotStanding } from "../Components/ClosedLotStanding"
 
 const defaultLotStanding = {
   isHighestBidder: true,
@@ -38,28 +38,28 @@ const defaultLotStanding = {
 }
 
 const lotStandingFixture = (overrides = {}) => {
-  return (merge({}, defaultLotStanding, overrides) as unknown) as ClosedLot_lotStanding
+  return (merge({}, defaultLotStanding, overrides) as unknown) as ClosedLotStanding_lotStanding
 }
 
-describe(ClosedLot, () => {
+describe(ClosedLotStanding, () => {
   describe("result message", () => {
     it("says 'You won!' if the user won the lot", () => {
       const tree = renderWithWrappers(
-        <ClosedLot lotStanding={lotStandingFixture({ isHighestBidder: true, lot: { soldStatus: "Sold" } })} />
+        <ClosedLotStanding lotStanding={lotStandingFixture({ isHighestBidder: true, lot: { soldStatus: "Sold" } })} />
       )
       expect(extractText(tree.root)).toContain("You won!")
     })
 
     it("says 'Outbid' if the the lot sold to someone else", () => {
       const tree = renderWithWrappers(
-        <ClosedLot lotStanding={lotStandingFixture({ isHighestBidder: false, lot: { soldStatus: "Sold" } })} />
+        <ClosedLotStanding lotStanding={lotStandingFixture({ isHighestBidder: false, lot: { soldStatus: "Sold" } })} />
       )
       expect(extractText(tree.root)).toContain("Outbid")
     })
 
     it("says 'Passed' if the lot did not sell at all", () => {
       const tree = renderWithWrappers(
-        <ClosedLot lotStanding={lotStandingFixture({ isHighestBidder: true, lot: { soldStatus: "Passed" } })} />
+        <ClosedLotStanding lotStanding={lotStandingFixture({ isHighestBidder: true, lot: { soldStatus: "Passed" } })} />
       )
       expect(extractText(tree.root)).toContain("Passed")
     })
@@ -69,7 +69,7 @@ describe(ClosedLot, () => {
     it("has a little star badge if the user won the lot", () => {
       expect(
         renderWithWrappers(
-          <ClosedLot lotStanding={lotStandingFixture({ isHighestBidder: true, lot: { soldStatus: "Sold" } })} />
+          <ClosedLotStanding lotStanding={lotStandingFixture({ isHighestBidder: true, lot: { soldStatus: "Sold" } })} />
         ).root.findAllByType(StarCircleFill).length
       ).toBe(1)
     })
@@ -77,14 +77,14 @@ describe(ClosedLot, () => {
 
   describe("closing time", () => {
     it("renders the time the sale ended by default", () => {
-      const tree = renderWithWrappers(<ClosedLot lotStanding={lotStandingFixture()} />)
+      const tree = renderWithWrappers(<ClosedLotStanding lotStanding={lotStandingFixture()} />)
       expect(extractText(tree.root)).toContain("Closed Aug 5")
     })
   })
 
   describe("selling price", () => {
     it("shows selling price", () => {
-      const tree = renderWithWrappers(<ClosedLot lotStanding={lotStandingFixture()} />)
+      const tree = renderWithWrappers(<ClosedLotStanding lotStanding={lotStandingFixture()} />)
       expect(extractText(tree.root)).toContain("CHF 1,800")
     })
   })
