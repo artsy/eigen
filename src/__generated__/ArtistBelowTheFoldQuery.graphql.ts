@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c26a4ff05fb00dbb8cc6f0f3e6f4962f */
+/* @relayHash 041077e1438d9f00a08b0cbdf3a32764 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -220,6 +220,9 @@ fragment AuctionResult_auctionResult on AuctionResult {
   mediumText
   organization
   boughtIn
+  performance {
+    mid
+  }
   priceRealized {
     display
     cents
@@ -1063,6 +1066,24 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "concreteType": "AuctionLotPerformance",
+                        "kind": "LinkedField",
+                        "name": "performance",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "mid",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "AuctionResultPriceRealized",
                         "kind": "LinkedField",
                         "name": "priceRealized",
@@ -1197,7 +1218,7 @@ return {
     ]
   },
   "params": {
-    "id": "c26a4ff05fb00dbb8cc6f0f3e6f4962f",
+    "id": "041077e1438d9f00a08b0cbdf3a32764",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",

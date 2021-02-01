@@ -103,6 +103,7 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
         inquireableOnly: { type: "Boolean" }
         atAuction: { type: "Boolean" }
         offerable: { type: "Boolean" }
+        attributionClass: { type: "[String]" }
       ) {
         slug
         internalID
@@ -121,6 +122,7 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
           atAuction: $atAuction
           offerable: $offerable
           aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
+          attributionClass: $attributionClass
         ) @connection(key: "ArtistSeries_artistSeriesArtworks") {
           aggregations {
             slice
@@ -179,6 +181,7 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
         $inquireableOnly: Boolean
         $atAuction: Boolean
         $offerable: Boolean
+        $attributionClass: [String]
       ) {
         artistSeries(id: $id) {
           ...ArtistSeriesArtworks_artistSeries
@@ -196,6 +199,7 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
               inquireableOnly: $inquireableOnly
               atAuction: $atAuction
               offerable: $offerable
+              attributionClass: $attributionClass
             )
         }
       }

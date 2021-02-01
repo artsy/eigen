@@ -52,6 +52,11 @@ const node: ReaderFragment = {
     {
       "defaultValue": null,
       "kind": "LocalArgument",
+      "name": "attributionClass"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
       "name": "color"
     },
     {
@@ -159,6 +164,11 @@ const node: ReaderFragment = {
           "kind": "Variable",
           "name": "atAuction",
           "variableName": "atAuction"
+        },
+        {
+          "kind": "Variable",
+          "name": "attributionClass",
+          "variableName": "attributionClass"
         },
         {
           "kind": "Variable",
@@ -359,5 +369,5 @@ const node: ReaderFragment = {
   "type": "ArtistSeries",
   "abstractKey": null
 };
-(node as any).hash = '39063bcc6423e451869bf45145b839ee';
+(node as any).hash = 'bd0cf8766f02c953535bece7f657c285';
 export default node;

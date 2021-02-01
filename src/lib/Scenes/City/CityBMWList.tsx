@@ -20,12 +20,11 @@ interface State {
   fetchingNextPage: boolean
 }
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 @screenTrack((props: Props) => ({
   context_screen: Schema.PageNames.CityGuideBMWList,
   context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
-  context_screen_owner_slug: props.city.slug,
-  context_screen_owner_id: props.city.slug,
+  context_screen_owner_slug: props.city.slug || undefined,
+  context_screen_owner_id: props.city.slug || undefined,
 }))
 class CityBMWList extends React.Component<Props, State> {
   state = {
