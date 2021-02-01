@@ -1,9 +1,9 @@
 #import "ARSentryAnalyticsProvider.h"
-
 #import <Sentry/SentryClient.h>
 #import <Sentry/SentryUser.h>
 #import <Sentry/SentryBreadcrumb.h>
-#import <Sentry/SentryBreadcrumbStore.h>
+#import <Sentry/SentrySDK.h>
+#import <Sentry/SentryOptions.h>
 
 @implementation ARSentryAnalyticsProvider
 
@@ -12,13 +12,9 @@
     self = [super init];
     if (!self) { return nil; }
 
-    NSError *error = nil;
-    SentryClient *client = [[SentryClient alloc] initWithDsn:DSN didFailWithError:&error];
-    NSAssert(error == nil, @"Unable to initialize a SentryClient SDK: %@", error);
-    error = nil;
-    [client startCrashHandlerWithError:&error];
-    NSAssert(error == nil, @"Unable to start the Sentry crash handler: %@", error);
-    [SentryClient setSharedClient:client];
+    [SentrySDK startWithConfigureOptions:^(SentryOptions *options) {
+        options.dsn = DSN;
+    }];
     
     return self;
 }
@@ -30,7 +26,7 @@
         SentryUser *user = [[SentryUser alloc] initWithUserId:userID];
         user.email = email;
         user.username = email;
-        SentryClient.sharedClient.user = user;
+        [SentrySDK setUser:user];
     }
 }
 
@@ -38,10 +34,10 @@
 
 - (void)event:(NSString *)event withProperties:(NSDictionary *)properties
 {
-    SentryBreadcrumb *breadcrumb = [[SentryBreadcrumb alloc] initWithLevel:kSentrySeverityDebug category:event];
+    SentryBreadcrumb *breadcrumb = [[SentryBreadcrumb alloc] initWithLevel:kSentryLevelDebug category:event];
     breadcrumb.data = properties;
     breadcrumb.timestamp = [NSDate new];
-    [SentryClient.sharedClient.breadcrumbs addBreadcrumb:breadcrumb];
+    [SentrySDK addBreadcrumb:breadcrumb];
 }
 
 @end
