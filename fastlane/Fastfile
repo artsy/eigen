@@ -106,7 +106,7 @@ lane :ship_beta_ios do
                          version: sentry_release_version,
                          dist: bundle_version,
                          file: 'emission/Pod/Assets/Emission.js',
-                         fileURL:'~/Emission.js'
+                         file_url:'~/Emission.js'
       puts "Uploaded Emission.js for #{project_slug}"
 
       sentry_upload_sourcemap auth_token: ENV['SentryUploadAuthKey'],
@@ -115,7 +115,6 @@ lane :ship_beta_ios do
                               version: sentry_release_version,
                               dist: bundle_version,
                               sourcemap: 'emission/Pod/Assets/Emission.js.map',
-                              fileURL:'~/Emission.js.map'
                               rewrite: true
       puts "Uploaded Emission.js.map for #{project_slug}"
     rescue StandardError => e
