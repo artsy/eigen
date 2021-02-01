@@ -7,21 +7,21 @@ describe(formatLargeNumber, () => {
     })
 
     it("returns the number of thousands when less than 1m", () => {
-      expect(formatLargeNumber(123_456)).toEqual("123k")
+      expect(formatLargeNumber(123456)).toEqual("123k")
     })
 
     it("returns the number of millions when less than 1b", () => {
-      expect(formatLargeNumber(987_654_321)).toEqual("988m")
+      expect(formatLargeNumber(987654321)).toEqual("988m")
     })
 
     it("returns the number of billions when less than 1t which is totally going to happen soon", () => {
-      expect(formatLargeNumber(543_235_234_432)).toEqual("543t")
+      expect(formatLargeNumber(543235234432)).toEqual("543t")
     })
   })
 
   describe("decimal places specified", () => {
     it("includes specified decimal places", () => {
-      expect(formatLargeNumber(123_456, 2)).toEqual("123.46k")
+      expect(formatLargeNumber(123456, 2)).toEqual("123.46k")
     })
   })
 })
