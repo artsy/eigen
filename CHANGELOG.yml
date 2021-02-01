@@ -9,6 +9,7 @@ upcoming:
     - Use @artsy/palette-tokens package - justin, david
     - Explicitly tag releases to fix sentry errors - cx
     - Implement analytics on auction results - mounir
+    - Validate CHANGELOG.yml - brian, pavlos, brian, adam, steven, david, mounir
     - Add increase/decrease icons - pepopowitz
   user_facing:
     - Refresh inbox automatically upon revisiting - erik, lily
