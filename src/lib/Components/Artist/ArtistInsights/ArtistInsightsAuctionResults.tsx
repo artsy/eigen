@@ -16,7 +16,7 @@ import { navigate } from "lib/navigation/navigate"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, Flex, Separator, Spacer, Text } from "palette"
+import { Box, bullet, color, Flex, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useContext, useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -130,6 +130,8 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
     )
   }
 
+  const resultsString = Number(artist.auctionResultsConnection?.totalCount) > 1 ? "results" : "result"
+
   return (
     <FlatList
       data={auctionResults}
@@ -161,14 +163,15 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
             />
           </Flex>
           <SortMode variant="small" color="black60">
-            Sorted by {getSortDescription()?.toLowerCase()}
+            {artist.auctionResultsConnection?.totalCount} {resultsString} {bullet} Sorted by{" "}
+            {getSortDescription()?.toLowerCase()}
           </SortMode>
           <Separator mt="2" />
         </Flex>
       )}
       ItemSeparatorComponent={() => (
         <Flex px={2}>
-          <Separator />
+          <Separator borderColor={color("black5")} />
         </Flex>
       )}
       style={{ width: useScreenDimensions().width, left: -20 }}
@@ -213,6 +216,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
             startAt
             endAt
           }
+          totalCount
           edges {
             node {
               id

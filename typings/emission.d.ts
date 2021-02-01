@@ -7,6 +7,7 @@ declare module "react-native" {
   interface NativeModulesStatic {
     ARTemporaryAPIModule: {
       appVersion: string
+      buildVersion: string
       requestNotificationPermissions(): void
       fetchNotificationPermissions(callback: (error: any, result: PushAuthorizationStatus) => void): void
       markNotificationsRead(callback: (error?: Error) => any): void

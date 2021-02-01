@@ -139,21 +139,24 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
 
   return (
     <ArtworkFilterGlobalStateProvider>
-      <StickyTabPageScrollView contentContainerStyle={{ paddingTop: 20 }} onScrollEndDrag={onScrollEndDrag}>
+      <StickyTabPageScrollView
+        contentContainerStyle={{ paddingTop: 20, paddingBottom: 60 }}
+        onScrollEndDrag={onScrollEndDrag}
+      >
         <Join separator={<Separator my={2} ml={-2} width={useScreenDimensions().width} />}>
           {renderMarketStats()}
           <ArtistInsightsAuctionResultsPaginationContainer artist={artist} />
-          <FilterModalNavigator
-            isFilterArtworksModalVisible={isFilterModalVisible}
-            id={artist.id}
-            slug={artist.slug}
-            mode={FilterModalMode.AuctionResults}
-            exitModal={closeFilterModal}
-            closeModal={closeFilterModal}
-            title="Filter auction results"
-          />
         </Join>
       </StickyTabPageScrollView>
+      <FilterModalNavigator
+        isFilterArtworksModalVisible={isFilterModalVisible}
+        id={artist.id}
+        slug={artist.slug}
+        mode={FilterModalMode.AuctionResults}
+        exitModal={closeFilterModal}
+        closeModal={closeFilterModal}
+        title="Filter auction results"
+      />
 
       <AnimatedArtworkFilterButton
         isVisible={isFilterButtonVisible}

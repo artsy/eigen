@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b7ed95d863889f418d87237f834a752e */
+/* @relayHash b75aedfca7e10b59c454feb6d140dfb1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -59,6 +59,9 @@ fragment AuctionResult_auctionResult on AuctionResult {
   mediumText
   organization
   boughtIn
+  performance {
+    mid
+  }
   priceRealized {
     display
     cents
@@ -333,6 +336,24 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "concreteType": "AuctionLotPerformance",
+                        "kind": "LinkedField",
+                        "name": "performance",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "mid",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "AuctionResultPriceRealized",
                         "kind": "LinkedField",
                         "name": "priceRealized",
@@ -385,7 +406,7 @@ return {
     ]
   },
   "params": {
-    "id": "b7ed95d863889f418d87237f834a752e",
+    "id": "b75aedfca7e10b59c454feb6d140dfb1",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
@@ -452,6 +473,13 @@ return {
         "artist.auctionResultsConnection.edges.node.internalID": (v5/*: any*/),
         "artist.auctionResultsConnection.edges.node.mediumText": (v3/*: any*/),
         "artist.auctionResultsConnection.edges.node.organization": (v3/*: any*/),
+        "artist.auctionResultsConnection.edges.node.performance": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "AuctionLotPerformance"
+        },
+        "artist.auctionResultsConnection.edges.node.performance.mid": (v3/*: any*/),
         "artist.auctionResultsConnection.edges.node.priceRealized": {
           "enumValues": null,
           "nullable": true,

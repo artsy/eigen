@@ -139,6 +139,7 @@ export function getCurrentEmissionState() {
       AROptionsNewFairPage: false,
       AROptionsNewInsightsPage: false,
       AROptionsInquiryCheckout: false,
+      AROptionsSentryErrorDebug: false,
     },
     predictionURL: state?.config.sessionState.predictionBaseURL,
     sentryDSN: Config.SENTRY_STAGING_DSN,

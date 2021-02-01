@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f9ac09471a7d8d52da1f6a48e9fcf235 */
+/* @relayHash f94a7e6cf30a055779314b1b0eeb3269 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -57,6 +57,7 @@ fragment ArtistInsightsAuctionResults_artist_4szhbQ on Artist {
       startAt
       endAt
     }
+    totalCount
     edges {
       node {
         id
@@ -92,6 +93,9 @@ fragment AuctionResult_auctionResult on AuctionResult {
   mediumText
   organization
   boughtIn
+  performance {
+    mid
+  }
   priceRealized {
     display
     cents
@@ -320,6 +324,13 @@ return {
               {
                 "alias": null,
                 "args": null,
+                "kind": "ScalarField",
+                "name": "totalCount",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
                 "concreteType": "AuctionResultEdge",
                 "kind": "LinkedField",
                 "name": "edges",
@@ -453,6 +464,24 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "concreteType": "AuctionLotPerformance",
+                        "kind": "LinkedField",
+                        "name": "performance",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "mid",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "AuctionResultPriceRealized",
                         "kind": "LinkedField",
                         "name": "priceRealized",
@@ -559,7 +588,7 @@ return {
     ]
   },
   "params": {
-    "id": "f9ac09471a7d8d52da1f6a48e9fcf235",
+    "id": "f94a7e6cf30a055779314b1b0eeb3269",
     "metadata": {},
     "name": "ArtistInsightsAuctionResultsQuery",
     "operationKind": "query",

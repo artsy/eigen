@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c366b30b3cf1ab44475f5bfd66f4e615 */
+/* @relayHash 0adca9b20db7c99e516a2da6acfdc52d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -131,6 +131,7 @@ fragment ArtistInsightsAuctionResults_artist on Artist {
       startAt
       endAt
     }
+    totalCount
     edges {
       node {
         id
@@ -218,6 +219,9 @@ fragment AuctionResult_auctionResult on AuctionResult {
   mediumText
   organization
   boughtIn
+  performance {
+    mid
+  }
   priceRealized {
     display
     cents
@@ -927,6 +931,13 @@ return {
               {
                 "alias": null,
                 "args": null,
+                "kind": "ScalarField",
+                "name": "totalCount",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
                 "concreteType": "AuctionResultEdge",
                 "kind": "LinkedField",
                 "name": "edges",
@@ -1049,6 +1060,24 @@ return {
                         "args": null,
                         "kind": "ScalarField",
                         "name": "boughtIn",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "AuctionLotPerformance",
+                        "kind": "LinkedField",
+                        "name": "performance",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "mid",
+                            "storageKey": null
+                          }
+                        ],
                         "storageKey": null
                       },
                       {
@@ -1188,7 +1217,7 @@ return {
     ]
   },
   "params": {
-    "id": "c366b30b3cf1ab44475f5bfd66f4e615",
+    "id": "0adca9b20db7c99e516a2da6acfdc52d",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",
