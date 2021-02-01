@@ -3,8 +3,9 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { capitalize } from "lodash"
 import moment from "moment"
 import { bullet, color, Flex, NoArtworkIcon, Text, Touchable } from "palette"
-import React, { useCallback } from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { AuctionResultsMidEstimate } from "../AuctionResult/AuctionResultMidEstimate"
 
 interface Props {
   auctionResult: AuctionResult_auctionResult
@@ -17,15 +18,6 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
   const isFromPastMonth = auctionResult.saleDate
     ? moment(auctionResult.saleDate).isAfter(now.subtract(1, "month"))
     : false
-
-  const getRatio = useCallback(() => {
-    if (!auctionResult.priceRealized?.cents || !auctionResult.estimate?.low) {
-      return null
-    }
-    return auctionResult.priceRealized.cents / auctionResult.estimate.low
-  }, [auctionResult.priceRealized, auctionResult.estimate])
-
-  const ratio = getRatio()
 
   return (
     <Touchable underlayColor={color("black5")} onPress={onPress}>
@@ -90,19 +82,8 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
                 <Text variant="subtitle" fontWeight="bold" testID="price">
                   {(auctionResult.priceRealized?.display ?? "").replace(`${auctionResult.currency} `, "")}
                 </Text>
-                {!!ratio && (
-                  <Flex borderRadius={2} overflow="hidden">
-                    <Flex
-                      position="absolute"
-                      width="100%"
-                      height="100%"
-                      backgroundColor={ratioColor(ratio)}
-                      opacity={0.1}
-                    />
-                    <Text variant="mediumText" color={ratioColor(ratio)} px="5px">
-                      {ratio.toFixed(2)}x
-                    </Text>
-                  </Flex>
+                {!!auctionResult.performance?.mid && (
+                  <AuctionResultsMidEstimate value={auctionResult.performance.mid} shortDescription="est" />
                 )}
               </Flex>
             ) : (
@@ -121,17 +102,6 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
       </Flex>
     </Touchable>
   )
-}
-
-export const ratioColor = (ratio: number) => {
-  if (ratio >= 1.05) {
-    return "green100"
-  }
-  if (ratio <= 0.95) {
-    return "red100"
-  }
-
-  return "black60"
 }
 
 export const AuctionResultFragmentContainer = createFragmentContainer(AuctionResult, {
@@ -155,6 +125,9 @@ export const AuctionResultFragmentContainer = createFragmentContainer(AuctionRes
       mediumText
       organization
       boughtIn
+      performance {
+        mid
+      }
       priceRealized {
         display
         cents

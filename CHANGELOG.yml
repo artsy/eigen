@@ -24,6 +24,7 @@ upcoming:
     - Add NotArtwork Icon to AuctionResult screen   - mounir
     - Add extra bottom padding on artist insights auction results - mounir
     - Remove separator from last auction result - mounir
+    - Show mid-estimate performance on auction results - mounir
 
 releases:
   - version: 6.7.6

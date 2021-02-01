@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { AuctionResultQuery, AuctionResultQueryResponse } from "__generated__/AuctionResultQuery.graphql"
+import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { navigate } from "lib/navigation/navigate"
@@ -10,19 +11,8 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useStickyScrollHeader } from "lib/utils/useStickyScrollHeader"
 import { capitalize } from "lodash"
 import moment from "moment"
-import {
-  Box,
-  color,
-  DecreaseIcon,
-  Flex,
-  IncreaseIcon,
-  NoArtworkIcon,
-  Separator,
-  Spacer,
-  Text,
-  TEXT_FONTS,
-} from "palette"
-import React, { useCallback, useEffect, useState } from "react"
+import { Box, Flex, NoArtworkIcon, Separator, Spacer, Text, TEXT_FONTS } from "palette"
+import React, { useEffect, useState } from "react"
 import { Animated, Image, TextInput, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -65,23 +55,6 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
       </Flex>
     ),
   })
-
-  const getRatio = useCallback(() => {
-    if (!auctionResult.priceRealized?.cents || !auctionResult.estimate?.low) {
-      return null
-    }
-    return auctionResult.priceRealized.cents / auctionResult.estimate.low
-  }, [auctionResult.priceRealized, auctionResult.estimate])
-
-  const getDifference = useCallback(() => {
-    if (!auctionResult.priceRealized?.cents || !auctionResult.estimate?.low) {
-      return null
-    }
-    return (auctionResult.priceRealized.cents - auctionResult.estimate.low) / 100
-  }, [auctionResult.priceRealized, auctionResult.estimate])
-
-  const ratio = getRatio()
-  const difference = getDifference()
 
   const details = []
   const makeRow = (label: string, value: string, options?: { fullWidth?: boolean; testID?: string }) => (
@@ -234,7 +207,9 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
                 variant="largeTitle"
                 mb={0.5}
               >{`${auctionResult.priceRealized?.display} ${auctionResult.currency}`}</Text>
-              <AuctionResultsMidEstimate percentage="%20" />
+              {!!auctionResult.performance?.mid && (
+                <AuctionResultsMidEstimate value={auctionResult.performance.mid} shortDescription="mid-estimate" />
+              )}
             </>
           ) : (
             <Text variant="largeTitle">{salePriceMessage}</Text>
@@ -249,41 +224,6 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
       {headerElement}
     </ProvideScreenTracking>
   )
-}
-
-interface AuctionResultsMidEstimateProps {
-  percentage: string
-}
-
-type ArrowDirections = "up" | "down"
-
-const AuctionResultsMidEstimate: React.FC<AuctionResultsMidEstimateProps> = ({ percentage }) => {
-  const arrowDirection: ArrowDirections = percentage[0] !== "-" ? "up" : "down"
-
-  return (
-    <Flex flexDirection="row" alignItems="center">
-      {arrowDirection === "up" ? (
-        <IncreaseIcon bottom={"2px"} height={12} fill={"green100"} />
-      ) : (
-        <DecreaseIcon bottom={"2px"} height={12} fill={"red100"} />
-      )}
-      <Text variant="mediumText" color={ratioColor(percentage)}>
-        {percentage} mid-estimate
-      </Text>
-    </Flex>
-  )
-}
-
-export const ratioColor = (ratioString: string) => {
-  const ratio = Number(ratioString.replace("%", ""))
-  if (ratio >= 5) {
-    return "green100"
-  }
-  if (ratio <= -5) {
-    return "red100"
-  }
-
-  return "black60"
 }
 
 export const AuctionResultQueryRenderer: React.FC<{
@@ -325,6 +265,9 @@ export const AuctionResultQueryRenderer: React.FC<{
             location
             mediumText
             organization
+            performance {
+              mid
+            }
             priceRealized {
               cents
               centsUSD
