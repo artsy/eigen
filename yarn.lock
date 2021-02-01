@@ -11174,11 +11174,6 @@ react-native-hyperlink@0.0.11:
   dependencies:
     linkify-it "^1.2.0"
 
-react-native-image-colors@^1.2.5:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/react-native-image-colors/-/react-native-image-colors-1.2.5.tgz#9ef185d0d2157ce0a975c2a17b62b405e647d0f5"
-  integrity sha512-fuNLWhKqeXldLuWjKcoSHbR+QIqRs3EcK5mkJVviKNlRKNNZl0GGYZDSFA5KW/xr2LchSS2+jqqsZaO+GeisgQ==
-
 react-native-image-crop-picker@0.35.1:
   version "0.35.1"
   resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.35.1.tgz#590b6ed7af7b63a505132c73819c9166347bf1e3"

@@ -20,6 +20,8 @@ import {
   isControlledLineHeight,
   TEXT_VARIANTS,
   TextVariant,
+  TEXT_LINE_HEIGHTS,
+  TREATMENTS,
 } from "./tokens"
 
 /** BaseTextProps */
@@ -67,6 +69,12 @@ export const Text: React.FC<TextProps> = ({ children, variant, fontSize, letterS
             isControlledLineHeight(lineHeight) && isControlledFontSize(fontSize)
               ? calculateLineHeight(fontSize, lineHeight)
               : lineHeight,
+        }
+      : {}),
+    ...(variant && fontSize && typeof fontSize === "number" && !lineHeight
+      ? // Possibly convert the lineHeight
+        {
+          lineHeight: fontSize * TEXT_LINE_HEIGHTS[TREATMENTS[variant].lineHeight],
         }
       : {}),
     ...rest,

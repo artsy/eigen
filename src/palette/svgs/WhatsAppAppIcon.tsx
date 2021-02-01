@@ -1,6 +1,6 @@
 import { Flex } from "palette/elements"
 import React from "react"
-import { Defs, EMaskUnits, G, Image, Mask, Path, Pattern, Rect, Use } from "react-native-svg"
+import { Path, Rect } from "react-native-svg"
 import { Icon, IconProps } from "./Icon"
 
 export const WhatsAppAppIcon: React.FC<IconProps> = (props) => (

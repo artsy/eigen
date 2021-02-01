@@ -496,8 +496,6 @@ PODS:
     - React
   - RNGestureHandler (1.8.0):
     - React
-  - RNImageColors (1.2.5):
-    - React
   - RNImageCropPicker (0.35.1):
     - React-Core
     - React-RCTImage
@@ -656,7 +654,6 @@ DEPENDENCIES:
   - "RNCMaskedView (from `node_modules/@react-native-community/masked-view`)"
   - "RNCPicker (from `node_modules/@react-native-community/picker`)"
   - RNGestureHandler (from `node_modules/react-native-gesture-handler`)
-  - RNImageColors (from `node_modules/react-native-image-colors`)
   - RNImageCropPicker (from `node_modules/react-native-image-crop-picker`)
   - RNLocalize (from `node_modules/react-native-localize`)
   - RNReactNativeHapticFeedback (from `node_modules/react-native-haptic-feedback`)
@@ -845,8 +842,6 @@ EXTERNAL SOURCES:
     :path: "node_modules/@react-native-community/picker"
   RNGestureHandler:
     :path: node_modules/react-native-gesture-handler
-  RNImageColors:
-    :path: node_modules/react-native-image-colors
   RNImageCropPicker:
     :path: node_modules/react-native-image-crop-picker
   RNLocalize:
@@ -990,7 +985,6 @@ SPEC CHECKSUMS:
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPicker: 7d06ee91dff65b0bcd400ca00039051d5ddcb938
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
-  RNImageColors: f55f90cc27ef799c80e6b9a5798c9405919d328e
   RNImageCropPicker: 16951bc02411f50c4d197488ed6406a23dc3b5f1
   RNLocalize: 41026b7c14878f1a1b381bc79f668f1fbf841adb
   RNReactNativeHapticFeedback: 22c5ecf474428766c6b148f96f2ff6155cd7225e
