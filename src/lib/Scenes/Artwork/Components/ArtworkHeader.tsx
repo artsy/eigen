@@ -1,6 +1,7 @@
 import { ArtworkHeader_artwork } from "__generated__/ArtworkHeader_artwork.graphql"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { TEXT_VARIANTS } from "palette/elements/Text/tokens"
 import {
   ArtsyLogoBlackIcon,
   Box,
@@ -13,8 +14,7 @@ import {
   Spacer,
   Text,
 } from "palette"
-import React, { RefObject, useEffect, useRef, useState } from "react"
-import ImageColors from "react-native-image-colors"
+import React, { RefObject, useRef, useState } from "react"
 // @ts-ignore
 import Share from "react-native-share"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -29,26 +29,13 @@ import Color from "color"
 import { useEmissionOption } from "lib/store/GlobalStore"
 import { CustomShareSheet, CustomShareSheetItem } from "lib/Components/CustomShareSheet"
 import Clipboard from "@react-native-community/clipboard"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ScrollView } from "react-native-gesture-handler"
+import { Image } from "react-native"
 
-const extractGradientColors = async (url: string) => {
-  const colors = await ImageColors.getColors(url, { fallback: "#000000" })
-
-  let topColor = "#000000"
-  let bottomColor = "#000000"
-
-  if (colors.platform === "ios") {
-    topColor = colors.secondary
-    bottomColor = colors.primary
-  } else if (colors.platform === "android") {
-    topColor = colors.darkMuted ?? "#000000"
-    bottomColor = colors.lightMuted ?? "#000000"
-  }
-
-  return { topColor, bottomColor }
+const InstagramStoryBackgroundDimensions = {
+  width: 1080,
+  height: 1920,
 }
-
 interface IGStoryViewShotProps {
   shotRef: RefObject<ViewShot>
   href: string
@@ -59,49 +46,44 @@ interface IGStoryViewShotProps {
 
 const IGStoryViewShot: React.FC<IGStoryViewShotProps> = ({ shotRef, href, aspectRatio, artist, title }) => {
   const { height: screenHeight, width: screenWidth } = useScreenDimensions()
-  const [logo, setLogo] = useState<"light" | "dark">("dark")
-  const [text, setText] = useState<"light" | "dark">("dark")
 
-  const debugViewShot = false
-
-  const outerStyleProps: FlexProps = debugViewShot
-    ? {}
-    : {
-        position: "absolute",
-        left: screenWidth + screenHeight,
-        top: screenWidth + screenHeight,
-      }
-
-  const innerStyleProps: FlexProps = debugViewShot
-    ? {
-        borderWidth: 1,
-        borderColor: "black",
-      }
-    : {}
-
-  useEffect(() => {
-    const doIt = async () => {
-      const { topColor, bottomColor } = await extractGradientColors(href)
-      setLogo(Color(topColor).isDark() ? "light" : "dark")
-      setText(Color(bottomColor).isDark() ? "light" : "dark")
-    }
-    doIt()
-  }, [])
+  const renderOffScreenStyle: FlexProps = {
+    position: "absolute",
+    left: screenWidth + screenHeight,
+    top: screenWidth + screenHeight,
+  }
 
   return (
-    <Flex {...outerStyleProps} alignItems="center">
+    <Flex {...renderOffScreenStyle} alignItems="center">
       <ViewShot ref={shotRef} options={{ format: "png", result: "base64" }}>
-        <Flex alignItems="center" {...innerStyleProps} height={400}>
-          {logo === "dark" ? <ArtsyLogoBlackIcon /> : <ArtsyLogoBlackIcon fill="white100" />}
-          <Spacer mt="2" />
-          <OpaqueImageView highPriority imageURL={href} style={{ flex: 1 }} aspectRatio={aspectRatio} />
-          <Spacer mt="2" />
-          <Text variant="mediumText" color={text === "dark" ? "black100" : "white100"}>
-            {artist}
-          </Text>
-          <Text variant="text" color={text === "dark" ? "black100" : "white100"} opacity={0.6}>
-            {title}
-          </Text>
+        <Flex
+          width={InstagramStoryBackgroundDimensions.width}
+          height={InstagramStoryBackgroundDimensions.height}
+          backgroundColor="white100"
+        >
+          <Flex flex={1}>
+            <Image source={{ uri: href }} style={{ flex: 1 }} resizeMode="contain" />
+          </Flex>
+          <Flex
+            // backgroundColor="red"
+            width="100%"
+            mt={40}
+            mb={180}
+            px={50}
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Flex>
+              <Text variant="mediumText" fontSize={43}>
+                {artist}
+              </Text>
+              <Text variant="text" opacity={0.6} fontSize={43}>
+                {title}
+              </Text>
+            </Flex>
+            <ArtsyLogoBlackIcon scale={2} />
+          </Flex>
         </Flex>
       </ViewShot>
     </Flex>
@@ -160,17 +142,13 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   }
 
   const shareArtworkOnInstagramStory = async () => {
-    const { topColor, bottomColor } = await extractGradientColors(currentImageUrl)
-
     const base64RawData = await shotRef.current!.capture!()
     const base64Data = `data:image/png;base64,${base64RawData}`
 
     await Share.shareSingle({
       social: Share.Social.INSTAGRAM_STORIES,
-      method: Share.InstagramStories.SHARE_STICKER_IMAGE,
-      backgroundTopColor: topColor,
-      backgroundBottomColor: bottomColor,
-      stickerImage: base64Data,
+      method: Share.InstagramStories.SHARE_BACKGROUND_IMAGE,
+      backgroundImage: base64Data,
     })
     setShareSheetVisible(false)
   }
