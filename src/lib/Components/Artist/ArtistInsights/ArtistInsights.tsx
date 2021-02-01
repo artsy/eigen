@@ -7,7 +7,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Join, Separator } from "palette"
 import React, { useCallback, useState } from "react"
 import { NativeScrollEvent, NativeSyntheticEvent } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ReactElement } from "simple-markdown"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
@@ -15,6 +15,7 @@ import { MarketStatsQueryRenderer } from "./MarketStats"
 
 interface ArtistInsightsProps {
   artist: ArtistInsights_artist
+  relay: RelayProp
 }
 
 export interface ViewableItems {
@@ -30,7 +31,9 @@ interface ViewToken {
 }
 
 const FILTER_BUTTON_OFFSET = 50
-export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
+export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
+  const { artist, relay } = props
+
   const tracking = useTracking()
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
@@ -61,7 +64,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({ artist }) => {
         onScrollEndDrag={onScrollEndDrag}
       >
         <Join separator={<Separator my={2} ml={-2} width={useScreenDimensions().width} />}>
-          <MarketStatsQueryRenderer artistInternalID={artist.internalID} />
+          <MarketStatsQueryRenderer artistInternalID={artist.internalID} relay={relay} />
           <ArtistInsightsAuctionResultsPaginationContainer artist={artist} />
         </Join>
       </StickyTabPageScrollView>

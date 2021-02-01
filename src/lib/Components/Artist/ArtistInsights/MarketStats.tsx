@@ -2,13 +2,12 @@ import { ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from
 import { MarketStats_priceInsights } from "__generated__/MarketStats_priceInsights.graphql"
 import { MarketStatsQuery } from "__generated__/MarketStatsQuery.graphql"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { formatLargeNumber } from "lib/utils/formatLargeNumber"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { DecreaseIcon, Flex, IncreaseIcon, Join, Spacer, Text } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface MarketStatsProps {
@@ -140,10 +139,11 @@ export const MarketStatsFragmentContainer = createFragmentContainer(MarketStats,
 
 export const MarketStatsQueryRenderer: React.FC<{
   artistInternalID: string
-}> = ({ artistInternalID }) => {
+  relay: RelayProp
+}> = ({ artistInternalID, relay }) => {
   return (
     <QueryRenderer<MarketStatsQuery>
-      environment={defaultEnvironment}
+      environment={relay.environment}
       variables={{ artistInternalID }}
       query={graphql`
         query MarketStatsQuery($artistInternalID: ID!) {
