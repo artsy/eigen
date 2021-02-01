@@ -104,11 +104,10 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
               if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
                 this.onMutationError(orderOrError.error)
               } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
-                navigate(`/checkout/${orderOrError.order.internalID}`, {
+                navigate(`/orders/${orderOrError.order.internalID}`, {
                   modal: true,
                   passProps: { artworkID: orderOrError.order.internalID },
                 })
-                // navigate(`checkout/${orderOrError.order.internalID}?artworkID=${orderOrError.order.internalID}`, { modal: true })
               }
             })
           },

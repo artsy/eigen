@@ -67,8 +67,6 @@ export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOffer
 
 export const MakeOfferModalQueryRenderer: React.FC<{
   artworkID: string
-  modalIsVisible: boolean
-  toggleVisibility: () => void
 }> = ({ artworkID }) => {
   return (
     <QueryRenderer<MakeOfferModalQuery>

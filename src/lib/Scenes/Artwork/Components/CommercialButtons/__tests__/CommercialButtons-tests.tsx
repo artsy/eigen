@@ -218,7 +218,7 @@ describe("CommercialButtons", () => {
     MakeOfferButton.props().onPress()
     await flushPromiseQueue()
 
-    expect(navigate).toHaveBeenCalledWith("/checkout/makeOfferID", {
+    expect(navigate).toHaveBeenCalledWith("/orders/makeOfferID", {
       modal: true,
       passProps: {
         artworkID: "makeOfferID",

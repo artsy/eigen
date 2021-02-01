@@ -7,7 +7,7 @@ import React, { useState } from "react"
 import { View } from "react-native"
 import WebView from "react-native-webview"
 
-export const WebCheckoutModal: React.FC<{ orderID: string }> = ({ orderID }) => {
+export const Checkout: React.FC<{ orderID: string }> = ({ orderID }) => {
   const webCheckoutUrl = `${getCurrentEmissionState().webURL}/orders/${orderID}`
   const paddingTop = useScreenDimensions().safeAreaInsets.top
 

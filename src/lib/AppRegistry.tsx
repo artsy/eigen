@@ -46,7 +46,7 @@ import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/MakeOfferModal"
-import { WebCheckoutModal } from "./Scenes/Inbox/Screens/WebCheckoutModal"
+import { Checkout } from "./Scenes/Inbox/Screens/Checkout"
 import { MapContainer } from "./Scenes/Map"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
@@ -380,7 +380,7 @@ export const modules = defineModules({
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),
   ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
   ViewingRooms: reactModule(ViewingRoomsListQueryRenderer),
-  WebCheckoutModal: reactModule(WebCheckoutModal, {
+  Checkout: reactModule(Checkout, {
     hasOwnModalCloseButton: true,
   }),
   WorksForYou: reactModule(WorksForYouQueryRenderer),
