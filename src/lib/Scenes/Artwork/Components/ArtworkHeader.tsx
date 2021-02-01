@@ -102,6 +102,8 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   const enableCustomShare = useEmissionOption("AREnableCustomSharesheet")
   const shotRef = useRef<ViewShot>(null)
   const [shareSheetVisible, setShareSheetVisible] = useState(false)
+  const showWhatsAppItem = useCanOpenURL("whatsapp://test")
+  const showInstagramStoriesItem = useCanOpenURL("instagram-stories://test")
 
   const currentImage = (artwork.images ?? [])[currentImageIndex]
   const currentImageUrl = (currentImage?.url ?? "").replace(":version", "large")
@@ -148,6 +150,8 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
     await Share.shareSingle({
       social: Share.Social.INSTAGRAM_STORIES,
       method: Share.InstagramStories.SHARE_BACKGROUND_IMAGE,
+      backgroundTopColor: "white",
+      backgroundBottomColor: "white",
       backgroundImage: base64Data,
     })
     setShareSheetVisible(false)
@@ -194,16 +198,20 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
             title={artwork.title!}
           />
 
-          <CustomShareSheetItem
-            title="WhatsApp"
-            Icon={<WhatsAppAppIcon />}
-            onPress={() => shareArtworkOnInstagramStory()}
-          />
-          <CustomShareSheetItem
-            title="Instagram Stories"
-            Icon={<InstagramAppIcon />}
-            onPress={() => shareArtworkOnInstagramStory()}
-          />
+          {showWhatsAppItem === true ? (
+            <CustomShareSheetItem
+              title="WhatsApp"
+              Icon={<WhatsAppAppIcon />}
+              onPress={() => shareArtworkOnWhatsApp()}
+            />
+          ) : null}
+          {showInstagramStoriesItem === true ? (
+            <CustomShareSheetItem
+              title="Instagram Stories"
+              Icon={<InstagramAppIcon />}
+              onPress={() => shareArtworkOnInstagramStory()}
+            />
+          ) : null}
           <CustomShareSheetItem title="Copy link" Icon={<LinkIcon />} onPress={() => shareArtworkCopyLink()} />
           <CustomShareSheetItem title="More" Icon={<MoreIcon />} onPress={() => shareArtwork()} />
         </ScrollView>
