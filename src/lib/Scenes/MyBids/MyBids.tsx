@@ -15,12 +15,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import moment from "moment-timezone"
-import {
-  ClosedLotFragmentContainer as ClosedLot,
-  MyBidsPlaceholder,
-  SaleCardFragmentContainer,
-  // WatchedLotFragmentContainer as WatchedLot,
-} from "./Components"
+import { MyBidsPlaceholder, SaleCardFragmentContainer } from "./Components"
 import { LotStatusListItemContainer } from "./Components/LotStatusListItem"
 import { NoBids } from "./Components/NoBids"
 import { TimelySale } from "./helpers/timely"
@@ -172,7 +167,6 @@ export const MyBidsContainer = createPaginationContainer(
       fragment MyBids_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 25 }, cursor: { type: "String", defaultValue: "" }) {
         ...SaleCard_me
-        identityVerified
         bidders(active: true) {
           sale {
             internalID

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash bbb8132d3e4f8c20b392c3a103c017ea */
+/* @relayHash 95213d7ac093ef7cf12f099a39f5ffb1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -119,7 +119,6 @@ fragment Lot_saleArtwork on SaleArtwork {
 
 fragment MyBids_me_1G22uz on Me {
   ...SaleCard_me
-  identityVerified
   bidders(active: true) {
     sale {
       internalID
@@ -237,7 +236,9 @@ fragment WatchedLot_lot on Lot {
   saleArtwork {
     ...Lot_saleArtwork
     artwork {
+      internalID
       href
+      slug
       id
     }
     sale {
@@ -433,35 +434,50 @@ v19 = {
 v20 = {
   "alias": null,
   "args": null,
-  "kind": "ScalarField",
-  "name": "artistNames",
-  "storageKey": null
-},
-v21 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "Image",
+  "concreteType": "Artwork",
   "kind": "LinkedField",
-  "name": "image",
+  "name": "artwork",
   "plural": false,
   "selections": [
     {
       "alias": null,
-      "args": [
+      "args": null,
+      "kind": "ScalarField",
+      "name": "artistNames",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "image",
+      "plural": false,
+      "selections": [
         {
-          "kind": "Literal",
-          "name": "version",
-          "value": "medium"
+          "alias": null,
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "version",
+              "value": "medium"
+            }
+          ],
+          "kind": "ScalarField",
+          "name": "url",
+          "storageKey": "url(version:\"medium\")"
         }
       ],
-      "kind": "ScalarField",
-      "name": "url",
-      "storageKey": "url(version:\"medium\")"
-    }
+      "storageKey": null
+    },
+    (v2/*: any*/),
+    (v1/*: any*/),
+    (v3/*: any*/),
+    (v4/*: any*/)
   ],
   "storageKey": null
 },
-v22 = {
+v21 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -661,23 +677,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v19/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Artwork",
-                            "kind": "LinkedField",
-                            "name": "artwork",
-                            "plural": false,
-                            "selections": [
-                              (v20/*: any*/),
-                              (v21/*: any*/),
-                              (v2/*: any*/),
-                              (v1/*: any*/),
-                              (v3/*: any*/),
-                              (v4/*: any*/)
-                            ],
-                            "storageKey": null
-                          },
+                          (v20/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -702,7 +702,7 @@ return {
                             "storageKey": null
                           },
                           (v2/*: any*/),
-                          (v22/*: any*/)
+                          (v21/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -820,21 +820,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v19/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Artwork",
-                            "kind": "LinkedField",
-                            "name": "artwork",
-                            "plural": false,
-                            "selections": [
-                              (v20/*: any*/),
-                              (v21/*: any*/),
-                              (v2/*: any*/),
-                              (v3/*: any*/)
-                            ],
-                            "storageKey": null
-                          },
+                          (v20/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -860,7 +846,7 @@ return {
                           },
                           (v2/*: any*/),
                           (v1/*: any*/),
-                          (v22/*: any*/)
+                          (v21/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -881,7 +867,7 @@ return {
     ]
   },
   "params": {
-    "id": "bbb8132d3e4f8c20b392c3a103c017ea",
+    "id": "95213d7ac093ef7cf12f099a39f5ffb1",
     "metadata": {},
     "name": "MyBidsPaginatedQuery",
     "operationKind": "query",

@@ -6,7 +6,6 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type AuctionsSoldStatus = "ForSale" | "Passed" | "Sold" | "%future added value";
 export type MyBids_me = {
-    readonly identityVerified: boolean | null;
     readonly bidders: ReadonlyArray<{
         readonly sale: {
             readonly internalID: string;
@@ -159,13 +158,6 @@ return {
   },
   "name": "MyBids_me",
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "identityVerified",
-      "storageKey": null
-    },
     {
       "alias": null,
       "args": [
@@ -425,5 +417,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '5a8fd171d5eea48279f2ee66e688e618';
+(node as any).hash = 'dbd4742b3b55bc7fc69e140e04e044e6';
 export default node;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash cc6780218753ef37f62f5833c2a0f1a2 */
+/* @relayHash 5df27bbeb92610e9a2540b424eb8f5a2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -195,7 +195,6 @@ fragment Lot_saleArtwork on SaleArtwork {
 
 fragment MyBids_me on Me {
   ...SaleCard_me
-  identityVerified
   bidders(active: true) {
     sale {
       internalID
@@ -313,7 +312,9 @@ fragment WatchedLot_lot on Lot {
   saleArtwork {
     ...Lot_saleArtwork
     artwork {
+      internalID
       href
+      slug
       id
     }
     sale {
@@ -548,24 +549,40 @@ v26 = {
 v27 = {
   "alias": null,
   "args": null,
-  "concreteType": "Image",
+  "concreteType": "Artwork",
   "kind": "LinkedField",
-  "name": "image",
+  "name": "artwork",
   "plural": false,
   "selections": [
+    (v8/*: any*/),
     {
       "alias": null,
-      "args": [
+      "args": null,
+      "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "image",
+      "plural": false,
+      "selections": [
         {
-          "kind": "Literal",
-          "name": "version",
-          "value": "medium"
+          "alias": null,
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "version",
+              "value": "medium"
+            }
+          ],
+          "kind": "ScalarField",
+          "name": "url",
+          "storageKey": "url(version:\"medium\")"
         }
       ],
-      "kind": "ScalarField",
-      "name": "url",
-      "storageKey": "url(version:\"medium\")"
-    }
+      "storageKey": null
+    },
+    (v5/*: any*/),
+    (v3/*: any*/),
+    (v13/*: any*/),
+    (v14/*: any*/)
   ],
   "storageKey": null
 },
@@ -1073,23 +1090,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v26/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Artwork",
-                            "kind": "LinkedField",
-                            "name": "artwork",
-                            "plural": false,
-                            "selections": [
-                              (v8/*: any*/),
-                              (v27/*: any*/),
-                              (v5/*: any*/),
-                              (v3/*: any*/),
-                              (v13/*: any*/),
-                              (v14/*: any*/)
-                            ],
-                            "storageKey": null
-                          },
+                          (v27/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -1205,21 +1206,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v26/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Artwork",
-                            "kind": "LinkedField",
-                            "name": "artwork",
-                            "plural": false,
-                            "selections": [
-                              (v8/*: any*/),
-                              (v27/*: any*/),
-                              (v5/*: any*/),
-                              (v13/*: any*/)
-                            ],
-                            "storageKey": null
-                          },
+                          (v27/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -1266,7 +1253,7 @@ return {
     ]
   },
   "params": {
-    "id": "cc6780218753ef37f62f5833c2a0f1a2",
+    "id": "5df27bbeb92610e9a2540b424eb8f5a2",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -1513,6 +1500,8 @@ return {
         "me.watchedLotConnection.edges.node.saleArtwork.artwork.id": (v30/*: any*/),
         "me.watchedLotConnection.edges.node.saleArtwork.artwork.image": (v39/*: any*/),
         "me.watchedLotConnection.edges.node.saleArtwork.artwork.image.url": (v34/*: any*/),
+        "me.watchedLotConnection.edges.node.saleArtwork.artwork.internalID": (v30/*: any*/),
+        "me.watchedLotConnection.edges.node.saleArtwork.artwork.slug": (v30/*: any*/),
         "me.watchedLotConnection.edges.node.saleArtwork.id": (v30/*: any*/),
         "me.watchedLotConnection.edges.node.saleArtwork.internalID": (v30/*: any*/),
         "me.watchedLotConnection.edges.node.saleArtwork.lotLabel": (v34/*: any*/),

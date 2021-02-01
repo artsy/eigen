@@ -16,7 +16,9 @@ export type WatchedLot_lot = {
     };
     readonly saleArtwork: {
         readonly artwork: {
+            readonly internalID: string;
             readonly href: string | null;
+            readonly slug: string;
         } | null;
         readonly sale: {
             readonly liveStartAt: string | null;
@@ -35,7 +37,15 @@ export type WatchedLot_lot$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -49,13 +59,7 @@ const node: ReaderFragment = {
       "name": "lot",
       "plural": false,
       "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "internalID",
-          "storageKey": null
-        },
+        (v0/*: any*/),
         {
           "alias": null,
           "args": null,
@@ -107,11 +111,19 @@ const node: ReaderFragment = {
           "name": "artwork",
           "plural": false,
           "selections": [
+            (v0/*: any*/),
             {
               "alias": null,
               "args": null,
               "kind": "ScalarField",
               "name": "href",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "slug",
               "storageKey": null
             }
           ],
@@ -161,5 +173,6 @@ const node: ReaderFragment = {
   "type": "Lot",
   "abstractKey": null
 };
-(node as any).hash = 'aad4c114359ebc65022c54ab9e57c139';
+})();
+(node as any).hash = '8e5d2ed17ca72e4bc5086f5c1d2f86db';
 export default node;
