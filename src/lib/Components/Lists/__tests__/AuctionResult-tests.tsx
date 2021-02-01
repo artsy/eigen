@@ -1,4 +1,5 @@
 import { AuctionResultTestsQuery } from "__generated__/AuctionResultTestsQuery.graphql"
+import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { extractNodes } from "lib/utils/extractNodes"
 import moment from "moment"
@@ -110,7 +111,7 @@ describe("AuctionResults", () => {
   })
 
   it("renders sale date correctly", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironmentPayload(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -125,6 +126,8 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "saleInfo" }).props.children).toContain("Jan 12, 2021")
+    expect(tree.root.findByProps({ testID: "saleInfo" }).props.children).toContain("Jan 12, 2021")
+    expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.value).toEqual("mid-1")
+    expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.shortDescription).toEqual("est")
   })
 })

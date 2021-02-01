@@ -23,6 +23,9 @@ export type AuctionResult_auctionResult = {
     readonly mediumText: string | null;
     readonly organization: string | null;
     readonly boughtIn: boolean | null;
+    readonly performance: {
+        readonly mid: string | null;
+    } | null;
     readonly priceRealized: {
         readonly display: string | null;
         readonly cents: number | null;
@@ -171,6 +174,24 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
+      "concreteType": "AuctionLotPerformance",
+      "kind": "LinkedField",
+      "name": "performance",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "mid",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
       "concreteType": "AuctionResultPriceRealized",
       "kind": "LinkedField",
       "name": "priceRealized",
@@ -211,5 +232,5 @@ const node: ReaderFragment = {
   "type": "AuctionResult",
   "abstractKey": null
 };
-(node as any).hash = '09489d07ebc10408b00b027665c371ab';
+(node as any).hash = '08079bd6d5f87bc40fb0883544dc35c9';
 export default node;
