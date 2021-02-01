@@ -5,7 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CitySectionList_city = {
-    readonly name: string | null;
+    readonly name: string;
     readonly shows: {
         readonly pageInfo: {
             readonly endCursor: string | null;

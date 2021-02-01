@@ -14,8 +14,8 @@ export type GlobalMapTestsQueryResponse = {
 };
 export type GlobalMapTestsQueryRawResponse = {
     readonly city: ({
-        readonly name: string | null;
-        readonly slug: string | null;
+        readonly name: string;
+        readonly slug: string;
         readonly coordinates: ({
             readonly lat: number | null;
             readonly lng: number | null;
