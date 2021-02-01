@@ -6,8 +6,8 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type GlobalMap_viewer = {
     readonly city: {
-        readonly name: string | null;
-        readonly slug: string | null;
+        readonly name: string;
+        readonly slug: string;
         readonly coordinates: {
             readonly lat: number | null;
             readonly lng: number | null;

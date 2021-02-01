@@ -1,16 +1,26 @@
+import {
+  ActionType,
+  ContextModule,
+  OwnerType,
+  TappedAuctionResultGroup,
+  tappedInfoBubble,
+  TappedInfoBubbleArgs,
+} from "@artsy/cohesion"
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
+import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
 import { navigate } from "lib/navigation/navigate"
 import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, Flex, Separator, Text } from "palette"
+import { Box, bullet, Flex, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useContext, useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
 import { AuctionResultFragmentContainer } from "../../Lists/AuctionResult"
@@ -21,6 +31,7 @@ interface Props {
 }
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
+  const tracking = useTracking()
   const { state, dispatch } = useContext(ArtworkFilterContext)
   const filterParams = filterArtworksParams(state.appliedFilters, "auctionResult")
 
@@ -96,6 +107,21 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
     })
   }, [])
 
+  const renderAuctionResultsModal = () => (
+    <>
+      <Text>
+        These auction results bring together sale data from top auction houses around the world, including Christies,
+        Sotheby’s, Phillips, Bonhams, and Heritage. Results are updated daily.
+      </Text>
+      <Spacer mb={2} />
+      <Text>
+        Please note that the sale price includes the hammer price and buyer’s premium, as well as any other additional
+        fees (e.g., Artist’s Resale Rights).
+      </Text>
+      <Spacer mb={2} />
+    </>
+  )
+
   if (!auctionResults.length) {
     return (
       <Box my="80px">
@@ -104,6 +130,8 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
     )
   }
 
+  const resultsString = Number(artist.auctionResultsConnection?.totalCount) > 1 ? "results" : "result"
+
   return (
     <FlatList
       data={auctionResults}
@@ -111,14 +139,32 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
       renderItem={({ item }) => (
         <AuctionResultFragmentContainer
           auctionResult={item}
-          onPress={() => navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)}
+          onPress={() => {
+            tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.id))
+            navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
+          }}
         />
       )}
       ListHeaderComponent={() => (
         <Flex px={2}>
-          <Text variant="title">Auction results</Text>
+          <Flex flexDirection="row" alignItems="center">
+            <InfoButton
+              titleElement={
+                <Text variant="title" mr={0.5}>
+                  Auction Results
+                </Text>
+              }
+              trackEvent={() => {
+                tracking.trackEvent(tappedInfoBubble(tracks.tapAuctionResultsInfo()))
+              }}
+              modalTitle={"Auction Results"}
+              maxModalHeight={310}
+              modalContent={renderAuctionResultsModal()}
+            />
+          </Flex>
           <SortMode variant="small" color="black60">
-            Sorted by {getSortDescription()?.toLowerCase()}
+            {artist.auctionResultsConnection?.totalCount} {resultsString} {bullet} Sorted by{" "}
+            {getSortDescription()?.toLowerCase()}
           </SortMode>
           <Separator mt="2" />
         </Flex>
@@ -170,6 +216,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
             startAt
             endAt
           }
+          totalCount
           edges {
             node {
               id
@@ -221,3 +268,21 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
     `,
   }
 )
+
+export const tracks = {
+  tapAuctionGroup: (auctionId: string, artistId: string): TappedAuctionResultGroup => ({
+    action: ActionType.tappedAuctionResultGroup,
+    context_module: ContextModule.auctionResults,
+    context_screen_owner_type: OwnerType.artistInsights,
+    context_screen_owner_id: artistId,
+    destination_screen_owner_type: OwnerType.auctionResult,
+    destination_screen_owner_id: auctionId,
+    type: "thumbnail",
+  }),
+
+  tapAuctionResultsInfo: (): TappedInfoBubbleArgs => ({
+    contextModule: ContextModule.auctionResults,
+    contextScreenOwnerType: OwnerType.artistInsights,
+    subject: "auctionResults",
+  }),
+}
