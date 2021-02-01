@@ -180,6 +180,8 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
       <FancyModal visible={props.isFilterArtworksModalVisible} onBackgroundPressed={handleClosingModal} maxHeight={550}>
         <View style={{ flex: 1 }}>
           <Stack.Navigator
+            // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
+            detachInactiveScreens={false}
             screenOptions={{
               headerShown: false,
               safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
