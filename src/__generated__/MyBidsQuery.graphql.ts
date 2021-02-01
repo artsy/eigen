@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1c7def597eabf8b6e8d2894ef1b58c7a */
+/* @relayHash a8b75b24d93605a9cb512bdffa9978ac */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,7 +26,7 @@ query MyBidsQuery {
   }
 }
 
-fragment ActiveLot_lotStanding on AuctionsLotStanding {
+fragment ActiveLotStanding_lotStanding on AuctionsLotStanding {
   isHighestBidder
   lot {
     internalID
@@ -57,7 +57,7 @@ fragment ActiveLot_lotStanding on AuctionsLotStanding {
   }
 }
 
-fragment ClosedLot_lotStanding on AuctionsLotStanding {
+fragment ClosedLotStanding_lotStanding on AuctionsLotStanding {
   isHighestBidder
   lot {
     internalID
@@ -92,8 +92,8 @@ fragment LotStatusListItem_lot on Lot {
 }
 
 fragment LotStatusListItem_lotStanding on AuctionsLotStanding {
-  ...ActiveLot_lotStanding
-  ...ClosedLot_lotStanding
+  ...ActiveLotStanding_lotStanding
+  ...ClosedLotStanding_lotStanding
   lot {
     soldStatus
     id
@@ -838,7 +838,7 @@ return {
     ]
   },
   "params": {
-    "id": "1c7def597eabf8b6e8d2894ef1b58c7a",
+    "id": "a8b75b24d93605a9cb512bdffa9978ac",
     "metadata": {},
     "name": "MyBidsQuery",
     "operationKind": "query",

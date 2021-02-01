@@ -6,8 +6,8 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ActiveLot } from "../Components/ActiveLot"
-import { ClosedLot } from "../Components/ClosedLot"
+import { ActiveLotStanding } from "../Components/ActiveLotStanding"
+import { ClosedLotStanding } from "../Components/ClosedLotStanding"
 import { WatchedLot } from "../Components/WatchedLot"
 import { MyBidsContainer, MyBidsQueryRenderer } from "../MyBids"
 
@@ -15,16 +15,16 @@ jest.unmock("react-relay")
 
 const closedSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
   const closedSection = root.findByProps({ "data-test-id": "closed-section" })
-  return closedSection.findAllByType(ClosedLot)
+  return closedSection.findAllByType(ClosedLotStanding)
 }
 
 const activeSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
   const activeSection = root.findByProps({ "data-test-id": "active-section" })
-  const activeLots = activeSection.findAll((instance: ReactTestInstance) => {
-    return [ActiveLot, ClosedLot, WatchedLot].includes((instance as any).type)
+  const ActiveLotStandings = activeSection.findAll((instance: ReactTestInstance) => {
+    return [ActiveLotStanding, ClosedLotStanding, WatchedLot].includes((instance as any).type)
   })
 
-  return activeLots
+  return ActiveLotStandings
 }
 
 describe("My Bids", () => {
@@ -108,10 +108,10 @@ describe("My Bids", () => {
       },
     })
 
-    const closedLots = closedSectionLots(wrapper.root).map(extractText)
-    expect(closedLots[0]).toContain("artistNames")
-    expect(closedLots[0]).toContain("Passed")
-    expect(closedLots[0]).toContain("Closed Aug 13")
+    const ClosedLotStandings = closedSectionLots(wrapper.root).map(extractText)
+    expect(ClosedLotStandings[0]).toContain("artistNames")
+    expect(ClosedLotStandings[0]).toContain("Passed")
+    expect(ClosedLotStandings[0]).toContain("Closed Aug 13")
   })
 
   it("renders a completed lot in an ongoing live sale in the 'active' section", () => {
@@ -151,8 +151,8 @@ describe("My Bids", () => {
       },
     })
 
-    const activeLots = activeSectionLots(wrapper.root).map(extractText)
-    expect(activeLots[0]).toContain("Passed")
+    const ActiveLotStandings = activeSectionLots(wrapper.root).map(extractText)
+    expect(ActiveLotStandings[0]).toContain("Passed")
   })
 
   it("renders the empty view when there are no lots to show", () => {
@@ -296,10 +296,10 @@ describe("My Bids", () => {
         },
       })
 
-      const activeLots = activeSectionLots(wrapper.root).map(extractText)
-      expect(activeLots.length).toEqual(1)
-      expect(activeLots[0]).toContain("Lot standing artist")
-      expect(activeLots[0]).not.toContain("Watched artist")
+      const ActiveLotStandings = activeSectionLots(wrapper.root).map(extractText)
+      expect(ActiveLotStandings.length).toEqual(1)
+      expect(ActiveLotStandings[0]).toContain("Lot standing artist")
+      expect(ActiveLotStandings[0]).not.toContain("Watched artist")
     })
 
     it("renders a watched lot in the active section ordered by lot position", () => {
@@ -377,10 +377,10 @@ describe("My Bids", () => {
         },
       })
 
-      const activeLots = activeSectionLots(wrapper.root).map(extractText)
-      expect(activeLots[0]).toContain("Lot standing artist 1Lot #1")
-      expect(activeLots[1]).toContain("Watched artistLot #2")
-      expect(activeLots[2]).toContain("Lot standing artist 3Lot #3")
+      const ActiveLotStandings = activeSectionLots(wrapper.root).map(extractText)
+      expect(ActiveLotStandings[0]).toContain("Lot standing artist 1Lot #1")
+      expect(ActiveLotStandings[1]).toContain("Watched artistLot #2")
+      expect(ActiveLotStandings[2]).toContain("Lot standing artist 3Lot #3")
     })
   })
 })

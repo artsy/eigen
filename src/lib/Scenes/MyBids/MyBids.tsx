@@ -55,7 +55,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
   const lotStandings = extractNodes(me?.auctionsLotStandingConnection)
   const registeredSales: Sale[] = me.bidders?.map((b) => b!.sale!) || []
 
-  const { activeLotsBySaleId, activeSales: sales, closedStandings } = sortLotsAndSales(
+  const { ActiveLotStandingsBySaleId, activeSales: sales, closedStandings } = sortLotsAndSales(
     watchedLots,
     lotStandings,
     registeredSales
@@ -93,15 +93,15 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
           <Flex data-test-id="active-section">
             <Join separator={<Spacer my={1} />}>
               {sales.map((sale) => {
-                const sortedActiveLots = activeLotsBySaleId[sale.internalID] || []
-                const showNoBids = !sortedActiveLots.length && !!sale.registrationStatus?.qualifiedForBidding
+                const sortedActiveLotStandings = ActiveLotStandingsBySaleId[sale.internalID] || []
+                const showNoBids = !sortedActiveLotStandings.length && !!sale.registrationStatus?.qualifiedForBidding
                 return (
                   <SaleCardFragmentContainer
                     key={sale.internalID}
                     sale={sale}
                     me={me}
                     smallScreen={isSmallScreen}
-                    hideChildren={!showNoBids && !sortedActiveLots.length}
+                    hideChildren={!showNoBids && !sortedActiveLotStandings.length}
                   >
                     <Join separator={<Separator my={1} />}>
                       {!!showNoBids && (
@@ -109,7 +109,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
                           You haven't placed any bids on this sale
                         </Text>
                       )}
-                      {sortedActiveLots.map((lot) => {
+                      {sortedActiveLotStandings.map((lot) => {
                         // this check performs type narrowing (from Lot | LotStanding)
                         if ("isHighestBidder" in lot) {
                           return <LotStatusListItemContainer key={lot.lot.internalID} lotStanding={lot} lot={null} />
@@ -280,7 +280,7 @@ type SortData = (
   lotStandings: LotStanding[],
   registeredSales: Sale[]
 ) => {
-  activeLotsBySaleId: { [saleId: string]: LotLike[] }
+  ActiveLotStandingsBySaleId: { [saleId: string]: LotLike[] }
   activeSales: Sale[]
   closedStandings: LotStanding[]
 }
@@ -295,8 +295,8 @@ const sortLotsAndSales: SortData = (watchedLots, lotStandings, registeredSales) 
     (ls) => !TimelySale.create(ls?.saleArtwork?.sale!).isClosed
   )
 
-  // combine unique watched lots with active standings => `activeLots`
-  const activeLots = watchedLots.reduce(
+  // combine unique watched lots with active standings => `ActiveLotStandings`
+  const ActiveLotStandings = watchedLots.reduce(
     (acc: any[], watchedLot) => {
       if (!!activeStandings.find((existingLot) => existingLot!.lot!.internalID === watchedLot.lot.internalID)) {
         return acc
@@ -308,10 +308,10 @@ const sortLotsAndSales: SortData = (watchedLots, lotStandings, registeredSales) 
   )
 
   // group active lots by sale id
-  const activeBySaleId = groupBy(activeLots, (ls) => ls?.saleArtwork?.sale?.internalID)
+  const activeBySaleId = groupBy(ActiveLotStandings, (ls) => ls?.saleArtwork?.sale?.internalID)
 
   // fetch unique sales from all active lots
-  const salesFromLots = activeLots.reduce((acc: Array<{ internalID: string }>, lot) => {
+  const salesFromLots = ActiveLotStandings.reduce((acc: Array<{ internalID: string }>, lot) => {
     return !!acc.find((sale: { internalID: string }) => sale.internalID === lot.saleArtwork.sale.internalID)
       ? acc
       : [...acc, lot.saleArtwork.sale]
@@ -328,7 +328,7 @@ const sortLotsAndSales: SortData = (watchedLots, lotStandings, registeredSales) 
 
   // sort each group of lot standings by position (lot number)
   // The values of this object are displayed to the user under each sale card
-  const activeLotsBySaleId = mapValues(activeBySaleId, (lss) => sortBy(lss, (ls) => ls?.saleArtwork?.position!))
+  const ActiveLotStandingsBySaleId = mapValues(activeBySaleId, (lss) => sortBy(lss, (ls) => ls?.saleArtwork?.position!))
 
   // sort all sales by their relevant end time
   const activeSales = sortBy(allSales, (sale) => {
@@ -337,7 +337,7 @@ const sortLotsAndSales: SortData = (watchedLots, lotStandings, registeredSales) 
   })
 
   return {
-    activeLotsBySaleId,
+    ActiveLotStandingsBySaleId,
     activeSales,
     closedStandings,
   }

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0cb7092a3250af43ca971aa63333ea37 */
+/* @relayHash b887631f5c52ea1634aa1ff213f90d46 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,7 +26,7 @@ query InboxQuery {
   }
 }
 
-fragment ActiveLot_lotStanding on AuctionsLotStanding {
+fragment ActiveLotStanding_lotStanding on AuctionsLotStanding {
   isHighestBidder
   lot {
     internalID
@@ -57,7 +57,7 @@ fragment ActiveLot_lotStanding on AuctionsLotStanding {
   }
 }
 
-fragment ClosedLot_lotStanding on AuctionsLotStanding {
+fragment ClosedLotStanding_lotStanding on AuctionsLotStanding {
   isHighestBidder
   lot {
     internalID
@@ -174,8 +174,8 @@ fragment LotStatusListItem_lot on Lot {
 }
 
 fragment LotStatusListItem_lotStanding on AuctionsLotStanding {
-  ...ActiveLot_lotStanding
-  ...ClosedLot_lotStanding
+  ...ActiveLotStanding_lotStanding
+  ...ClosedLotStanding_lotStanding
   lot {
     soldStatus
     id
@@ -1147,7 +1147,7 @@ return {
     ]
   },
   "params": {
-    "id": "0cb7092a3250af43ca971aa63333ea37",
+    "id": "b887631f5c52ea1634aa1ff213f90d46",
     "metadata": {},
     "name": "InboxQuery",
     "operationKind": "query",

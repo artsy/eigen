@@ -9,7 +9,7 @@ export type LotStatusListItem_lotStanding = {
     readonly lot: {
         readonly soldStatus: AuctionsSoldStatus;
     };
-    readonly " $fragmentRefs": FragmentRefs<"ActiveLot_lotStanding" | "ClosedLot_lotStanding">;
+    readonly " $fragmentRefs": FragmentRefs<"ActiveLotStanding_lotStanding" | "ClosedLotStanding_lotStanding">;
     readonly " $refType": "LotStatusListItem_lotStanding";
 };
 export type LotStatusListItem_lotStanding$data = LotStatusListItem_lotStanding;
@@ -47,16 +47,16 @@ const node: ReaderFragment = {
     {
       "args": null,
       "kind": "FragmentSpread",
-      "name": "ActiveLot_lotStanding"
+      "name": "ActiveLotStanding_lotStanding"
     },
     {
       "args": null,
       "kind": "FragmentSpread",
-      "name": "ClosedLot_lotStanding"
+      "name": "ClosedLotStanding_lotStanding"
     }
   ],
   "type": "AuctionsLotStanding",
   "abstractKey": null
 };
-(node as any).hash = '6649ceba0b25759250ff0085f6e7a00f';
+(node as any).hash = 'cf199632926afe062d5f2bb9736bcd76';
 export default node;

@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { ClosedLot_lotStanding } from "__generated__/ClosedLot_lotStanding.graphql"
+import { ClosedLotStanding_lotStanding } from "__generated__/ClosedLotStanding_lotStanding.graphql"
 import { navigate } from "lib/navigation/navigate"
 import moment from "moment-timezone"
 import { Flex, Text } from "palette"
@@ -24,12 +24,12 @@ const saleClosedMessage: (sale: { endAt: string | null; status: string | null })
   }
 }
 
-export const ClosedLot = ({
+export const ClosedLotStanding = ({
   lotStanding,
   withTimelyInfo = true,
   inActiveSale = false,
 }: {
-  lotStanding: ClosedLot_lotStanding
+  lotStanding: ClosedLotStanding_lotStanding
   withTimelyInfo?: boolean
   inActiveSale?: boolean
 }) => {
@@ -76,9 +76,9 @@ export const ClosedLot = ({
   )
 }
 
-export const ClosedLotFragmentContainer = createFragmentContainer(ClosedLot, {
+export const ClosedLotStandingFragmentContainer = createFragmentContainer(ClosedLotStanding, {
   lotStanding: graphql`
-    fragment ClosedLot_lotStanding on AuctionsLotStanding {
+    fragment ClosedLotStanding_lotStanding on AuctionsLotStanding {
       isHighestBidder
       lot {
         internalID

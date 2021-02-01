@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f2ef24130e4f93fe8d53ad7140c36a65 */
+/* @relayHash 75bc35f842cf81dc8a6ee6048d944fd4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,7 +26,7 @@ query MyBidsTestsQuery {
   }
 }
 
-fragment ActiveLot_lotStanding on AuctionsLotStanding {
+fragment ActiveLotStanding_lotStanding on AuctionsLotStanding {
   isHighestBidder
   lot {
     internalID
@@ -57,7 +57,7 @@ fragment ActiveLot_lotStanding on AuctionsLotStanding {
   }
 }
 
-fragment ClosedLot_lotStanding on AuctionsLotStanding {
+fragment ClosedLotStanding_lotStanding on AuctionsLotStanding {
   isHighestBidder
   lot {
     internalID
@@ -92,8 +92,8 @@ fragment LotStatusListItem_lot on Lot {
 }
 
 fragment LotStatusListItem_lotStanding on AuctionsLotStanding {
-  ...ActiveLot_lotStanding
-  ...ClosedLot_lotStanding
+  ...ActiveLotStanding_lotStanding
+  ...ClosedLotStanding_lotStanding
   lot {
     soldStatus
     id
@@ -938,7 +938,7 @@ return {
     ]
   },
   "params": {
-    "id": "f2ef24130e4f93fe8d53ad7140c36a65",
+    "id": "75bc35f842cf81dc8a6ee6048d944fd4",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
