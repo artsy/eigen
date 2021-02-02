@@ -48,6 +48,7 @@ NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebVie
          AROptionsPriceTransparency: @"Price Transparency",
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
          AROptionsUseReactNativeWebView: @"Use react native webviews",
+         AROptionsNewInsightsPage: @"Enable artist insights page",
          AROptionsInquiryCheckout: @"Enable inquiry checkout",
         };
     });

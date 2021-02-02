@@ -11,7 +11,6 @@ upcoming:
     - Implement analytics on auction results - mounir
     - Validate CHANGELOG.yml - brian, pavlos, brian, adam, steven, david, mounir
     - Add increase/decrease icons - pepopowitz
-    - remove artist insights feature flag in favor of echo flag - mounir
   user_facing:
     - Refresh inbox automatically upon revisiting - erik, lily
     - Poll and refetch images when images are processing (my collection) - brian
