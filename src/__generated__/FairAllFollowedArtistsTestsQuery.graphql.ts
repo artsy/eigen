@@ -335,6 +335,7 @@ v16 = {
 v17 = {
   "enumValues": [
     "ARTIST",
+    "ATTRIBUTION_CLASS",
     "COLOR",
     "DIMENSION_RANGE",
     "FOLLOWED_ARTISTS",
