@@ -33,6 +33,7 @@ import Clipboard from "@react-native-community/clipboard"
 import { ScrollView } from "react-native-gesture-handler"
 import { Image } from "react-native"
 import { useCanOpenURL } from "lib/utils/useCanOpenURL"
+import { useToast } from "lib/Components/Toast/toastHook"
 
 const InstagramStoryBackgroundDimensions = {
   width: 1080,
@@ -104,6 +105,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   const enableCustomShare = useEmissionOption("AREnableCustomSharesheet")
   const shotRef = useRef<ViewShot>(null)
   const [shareSheetVisible, setShareSheetVisible] = useState(false)
+  const toast = useToast()
   const showWhatsAppItem = useCanOpenURL("whatsapp://test")
   const showInstagramStoriesItem = useCanOpenURL("instagram-stories://test")
 

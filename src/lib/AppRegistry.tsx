@@ -82,6 +82,7 @@ import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRooms
 import { GlobalStore, GlobalStoreProvider, useSelectedTab } from "./store/GlobalStore"
 import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
+import { ToastProvider } from "./Components/Toast/toastHook"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -226,9 +227,11 @@ class PageWrapper extends React.Component<PageWrapperProps> {
         <RelayEnvironmentProvider environment={defaultEnvironment}>
           <GlobalStoreProvider>
             <Theme>
-              <_FancyModalPageWrapper>
-                <InnerPageWrapper {...this.props} />
-              </_FancyModalPageWrapper>
+              <ToastProvider>
+                <_FancyModalPageWrapper>
+                  <InnerPageWrapper {...this.props} />
+                </_FancyModalPageWrapper>
+              </ToastProvider>
             </Theme>
           </GlobalStoreProvider>
         </RelayEnvironmentProvider>
