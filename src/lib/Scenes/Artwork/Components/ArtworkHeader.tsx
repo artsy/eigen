@@ -13,6 +13,7 @@ import {
   MoreIcon,
   Spacer,
   Text,
+  color,
 } from "palette"
 import React, { RefObject, useRef, useState } from "react"
 // @ts-ignore
@@ -163,8 +164,8 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
     await Share.shareSingle({
       social: Share.Social.INSTAGRAM_STORIES,
       method: Share.InstagramStories.SHARE_BACKGROUND_IMAGE,
-      backgroundTopColor: "white",
-      backgroundBottomColor: "white",
+      backgroundTopColor: color("white100"),
+      backgroundBottomColor: color("white100"),
       backgroundImage: base64Data,
     })
     setShareSheetVisible(false)
