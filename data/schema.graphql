@@ -1422,6 +1422,7 @@ type Artwork implements Node & Searchable & Sellable {
 
 enum ArtworkAggregation {
   ARTIST
+  ATTRIBUTION_CLASS
   COLOR
   DIMENSION_RANGE
   FOLLOWED_ARTISTS
@@ -8950,7 +8951,17 @@ type Query {
   ): Show
 
   # A list of Shows
-  showsConnection(after: String, before: String, first: Int, ids: [String], last: Int): ShowConnection
+  showsConnection(
+    after: String
+    atAFair: Boolean
+    before: String
+    displayable: Boolean = true
+    first: Int
+    hasLocation: Boolean
+    ids: [String]
+    last: Int
+    sort: ShowSorts
+  ): ShowConnection
 
   # Content for a specific page or view
   staticContent(
@@ -11163,7 +11174,17 @@ type Viewer {
   ): Show
 
   # A list of Shows
-  showsConnection(after: String, before: String, first: Int, ids: [String], last: Int): ShowConnection
+  showsConnection(
+    after: String
+    atAFair: Boolean
+    before: String
+    displayable: Boolean = true
+    first: Int
+    hasLocation: Boolean
+    ids: [String]
+    last: Int
+    sort: ShowSorts
+  ): ShowConnection
 
   # Content for a specific page or view
   staticContent(
