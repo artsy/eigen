@@ -1,7 +1,7 @@
 import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
-import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native"
+import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
 
 import { navigate } from "lib/navigation/navigate"
 import ConversationSnippet from "./ConversationSnippet"
