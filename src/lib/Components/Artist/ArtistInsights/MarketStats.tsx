@@ -173,7 +173,7 @@ export const MarketStatsQueryRenderer: React.FC<{
       variables={{ artistInternalID }}
       query={graphql`
         query MarketStatsQuery($artistInternalID: ID!) {
-          priceInsightsConnection: priceInsights(artistId: $artistInternalID, sort: DEMAND) {
+          priceInsightsConnection: priceInsights(artistId: $artistInternalID, sort: DEMAND_RANK_DESC) {
             ...MarketStats_priceInsightsConnection
           }
         }

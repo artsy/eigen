@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5e75c4073cf65edb4a6e70e7c0048bca */
+/* @relayHash c9d50c61559ce7b240dc4433a2563a2f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -24,7 +24,7 @@ export type MarketStatsQuery = {
 query MarketStatsQuery(
   $artistInternalID: ID!
 ) {
-  priceInsightsConnection: priceInsights(artistId: $artistInternalID) {
+  priceInsightsConnection: priceInsights(artistId: $artistInternalID, sort: DEMAND_RANK_DESC) {
     ...MarketStats_priceInsightsConnection
   }
 }
@@ -56,6 +56,11 @@ v1 = [
     "kind": "Variable",
     "name": "artistId",
     "variableName": "artistInternalID"
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "DEMAND_RANK_DESC"
   }
 ];
 return {
@@ -169,7 +174,7 @@ return {
     ]
   },
   "params": {
-    "id": "5e75c4073cf65edb4a6e70e7c0048bca",
+    "id": "c9d50c61559ce7b240dc4433a2563a2f",
     "metadata": {},
     "name": "MarketStatsQuery",
     "operationKind": "query",
@@ -177,5 +182,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'fe6ff4c4aa15df808172c3d4f9e98875';
+(node as any).hash = '9d5ded2803382428ef7cb7ca0e062037';
 export default node;
