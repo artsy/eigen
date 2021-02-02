@@ -2,7 +2,7 @@ import { CommercialButtons_artwork } from "__generated__/CommercialButtons_artwo
 import { CommercialButtons_me } from "__generated__/CommercialButtons_me.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import { navigate } from "lib/navigation/navigate"
-import { unsafe_getEmissionOption } from "lib/store/GlobalStore"
+import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { Button, Spacer } from "palette"
@@ -38,8 +38,8 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
     const { artwork, me, auctionState } = this.props
     const { isBuyNowable, isAcquireable, isOfferable, isInquireable, isInAuction, editionSets, isForSale } = artwork
     const noEditions = (editionSets && editionSets.length === 0) || !editionSets
-    // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useEmissionOption` instead
-    const newFirstInquiry = unsafe_getEmissionOption("AROptionsNewFirstInquiry")
+    // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
+    const newFirstInquiry = unsafe_getFeatureFlag("AROptionsNewFirstInquiry")
 
     if (isInAuction && artwork.sale && auctionState !== AuctionTimerState.CLOSED && isForSale) {
       return (

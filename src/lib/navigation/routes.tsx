@@ -1,5 +1,5 @@
 import { AppModule } from "lib/AppRegistry"
-import { unsafe_getEmissionOption } from "lib/store/GlobalStore"
+import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { parse } from "url"
@@ -56,7 +56,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-profile", "MyProfile"),
 
     new RouteMatcher("/artist/:artistID", "Artist"),
-    unsafe_getEmissionOption("AROptionsNewInsightsPage")
+    unsafe_getFeatureFlag("AROptionsNewInsightsPage")
       ? new RouteMatcher("/artist/:artistID/shows", "ArtistShows")
       : null,
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
@@ -74,10 +74,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
     new RouteMatcher("/:profile_id_ignored/artist/:artistID", "Artist"),
     new RouteMatcher("/auction-registration/:id", "AuctionRegistration"),
-    unsafe_getEmissionOption("AROptionsNewSalePage")
+    unsafe_getFeatureFlag("AROptionsNewSalePage")
       ? new RouteMatcher("/auction/:saleID", "Auction2")
       : new RouteMatcher("/auction/:id", "Auction"),
-    unsafe_getEmissionOption("AROptionsNewSalePage") ? new RouteMatcher("/auction/:saleID/info", "AuctionInfo") : null,
+    unsafe_getFeatureFlag("AROptionsNewSalePage") ? new RouteMatcher("/auction/:saleID/info", "AuctionInfo") : null,
     new RouteMatcher("/auction-faq", "AuctionFAQ"),
     new RouteMatcher("/auction/:id/bid/:artwork_id", "AuctionBidArtwork"),
     new RouteMatcher("/gene/:geneID", "Gene"),

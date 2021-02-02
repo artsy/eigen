@@ -14,7 +14,7 @@ The normal workflow for engineers is to first **add a lab option and put all fea
 
 ## Adding a Lab Option
 
-Let's say you want to add a new feature, called "Marketing Banners". We'll add a new lab option called `ARShowMarketingBanner` (this naming is a convention we borrow from Objective-C). You can access the lab options in typescript using `useEmissionOption('ARShowMarketingBanner')`.
+Let's say you want to add a new feature, called "Marketing Banners". We'll add a new lab option called `ARShowMarketingBanner` (this naming is a convention we borrow from Objective-C). You can access the lab options in typescript using `useFeatureFlag('ARShowMarketingBanner')`.
 
 But where are these options set? There are two places and you need to do them both.
 
@@ -67,7 +67,7 @@ What do we mean when we say "a new feature should be **put behind** a lab option
 2. Use your option in code, here we are adding a new view to the hierarchy _if_ the options is set.
 
 ```diff
-+ const enableNewAndExcitingFeature = useEmissionOption("AROptionsNewAndExcitingFeature")
++ const enableNewAndExcitingFeature = useFeatureFlag("AROptionsNewAndExcitingFeature")
   return (<>
     <TitleView />
     <SummaryView />

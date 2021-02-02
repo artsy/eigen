@@ -102,7 +102,7 @@ export function useSelectedTab() {
 
 let globalStoreInstance = createGlobalStore()
 
-export function useEmissionOption(key: FeatureName) {
+export function useFeatureFlag(key: FeatureName) {
   if (Platform.OS === "ios") {
     return GlobalStore.useAppState((state) => state.config.features[key])
   }
@@ -113,10 +113,10 @@ export function useEmissionOption(key: FeatureName) {
 
 /**
  * This is marked as unsafe because it will not cause a re-render
- * if used in a react component. Use `useEmissionOption` instead.
+ * if used in a react component. Use `useFeatureFlag` instead.
  * It is safe to use in contexts that don't require reactivity.
  */
-export function unsafe_getEmissionOption(key: FeatureName) {
+export function unsafe_getFeatureFlag(key: FeatureName) {
   const state = globalStoreInstance?.getState() ?? null
   if (state) {
     return state.config.features[key]
