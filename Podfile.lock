@@ -73,7 +73,7 @@ PODS:
     - React-RCTLinking (= 0.63.3)
     - React-RCTNetwork (= 0.63.3)
     - React-RCTText (= 0.63.3)
-    - RNSentry (= 1.3.2)
+    - RNSentry (= 2.1.1)
     - RNSVG (= 9.13.3)
     - SDWebImage (< 4, >= 3.7.2)
     - tipsi-stripe (= 7.5.0)
@@ -511,9 +511,9 @@ PODS:
     - React
   - RNScreens (2.17.1):
     - React-Core
-  - RNSentry (1.3.2):
-    - React
-    - Sentry (~> 4.4.0)
+  - RNSentry (2.1.1):
+    - React-Core
+    - Sentry (= 6.0.9)
   - RNShare (5.1.0):
     - React-Core
   - RNSVG (9.13.3):
@@ -524,9 +524,9 @@ PODS:
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
-  - Sentry (4.4.3):
-    - Sentry/Core (= 4.4.3)
-  - Sentry/Core (4.4.3)
+  - Sentry (6.0.9):
+    - Sentry/Core (= 6.0.9)
+  - Sentry/Core (6.0.9)
   - Specta (1.0.5)
   - Starscream (3.0.4)
   - Stripe (14.0.1)
@@ -902,7 +902,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 6efe30922f4c8c7c8821ea7cbf3108acfccc662e
+  Emission: 3877074a582f750c160b491d65b02213332d17e8
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": dcff217eef506dabd6dfdc7864ea2da321fafbb8
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
@@ -984,12 +984,12 @@ SPEC CHECKSUMS:
   RNReactNativeHapticFeedback: 22c5ecf474428766c6b148f96f2ff6155cd7225e
   RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
   RNScreens: b6c9607e6fe47c1b6e2f1910d2acd46dd7ecea3a
-  RNSentry: 2ec85f3e314c6a650b1c51b30ff764b6103ed7e2
+  RNSentry: 6b46b6fc1d715a378fbaa5d7d43bc9ce99b500e5
   RNShare: fed99fd743f80ca255903c1da46fc9a6430efab6
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SailthruMobile: df0a457a0be8cc9feaba16cc52deb527d89cab04
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
-  Sentry: 14bdd673870e8cf64932b149fad5bbbf39a9b390
+  Sentry: 388c9dc093b2fd3a264466a5c5b21e25959610a9
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   Stripe: 4305b646743612854819fb5d5cf67aaeb93577c0

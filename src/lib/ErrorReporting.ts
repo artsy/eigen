@@ -1,4 +1,4 @@
-import { init } from "@sentry/react-native"
+import { init, setRelease } from "@sentry/react-native"
 import Config from "react-native-config"
 import { LegacyNativeModules } from "./NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState } from "./store/GlobalStore"
@@ -20,4 +20,5 @@ if (getCurrentEmissionState().sentryDSN) {
     dsn: getCurrentEmissionState().sentryDSN,
     release: sentryReleaseName,
   })
+  setRelease(sentryReleaseName)
 }

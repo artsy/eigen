@@ -1,6 +1,6 @@
 import { PartnerHeader_partner } from "__generated__/PartnerHeader_partner.graphql"
 import { Stack } from "lib/Components/Stack"
-import { formatText } from "lib/utils/formatText"
+import { formatLargeNumberOfItems } from "lib/utils/formatLargeNumberOfItems"
 import { Box, Flex, Sans } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -19,7 +19,7 @@ const PartnerHeader: React.FC<{
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Stack spacing={0.5}>
           {!!eligibleArtworks && (
-            <Sans size="3t">{!!eligibleArtworks && formatText(eligibleArtworks, "work", "works")}</Sans>
+            <Sans size="3t">{!!eligibleArtworks && formatLargeNumberOfItems(eligibleArtworks, "work", "works")}</Sans>
           )}
         </Stack>
         {!!partner.profile && (
