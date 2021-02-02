@@ -21,7 +21,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
 
   const priceInsights = extractNodes(priceInsightsConnection)
 
-  if ((priceInsights.length || 0) <= 0) {
+  if (priceInsights.length === 0) {
     return null
   }
 
@@ -37,7 +37,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
   )
 
   const renderInfoModal = () => (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <Text>
         The following data points provide an overview of an artist’s auction market for a specific medium (e.g.,
         photography, painting) over the past 36 months.
@@ -72,7 +72,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
         estimates set by the auction house before the auction takes place) for lots sold at auction over the past 36
         months.
       </Text>
-      <Spacer mb={2} />
+      <Spacer mb={100} />
     </ScrollView>
   )
 
@@ -105,7 +105,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
         />
       </Flex>
       <Text variant="small" color="black60" my={0.5}>
-        Last 12 months
+        Last 36 months
       </Text>
       <Select
         value={selectedPriceInsight.medium}
@@ -173,7 +173,7 @@ export const MarketStatsQueryRenderer: React.FC<{
       variables={{ artistInternalID }}
       query={graphql`
         query MarketStatsQuery($artistInternalID: ID!) {
-          priceInsightsConnection: priceInsights(artistId: $artistInternalID) {
+          priceInsightsConnection: priceInsights(artistId: $artistInternalID, sort: DEMAND) {
             ...MarketStats_priceInsightsConnection
           }
         }
