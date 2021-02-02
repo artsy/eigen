@@ -1,4 +1,4 @@
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { WorksForYou } from "../WorksForYou"
@@ -19,7 +19,7 @@ describe("with notifications", () => {
         relay={null}
       />
     )
-    expect(ArtsyNativeModules.ARTemporaryAPIModule.markNotificationsRead).toBeCalled()
+    expect(LegacyNativeModules.ARTemporaryAPIModule.markNotificationsRead).toBeCalled()
   })
 
   it("renders without throwing an error", () => {

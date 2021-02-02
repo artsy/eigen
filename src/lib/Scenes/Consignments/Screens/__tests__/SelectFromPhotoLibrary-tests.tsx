@@ -1,5 +1,5 @@
 import CameraRoll from "@react-native-community/cameraroll"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { triggerCamera } from "lib/NativeModules/triggerCamera"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -60,7 +60,7 @@ it("adds new photo to the list, and selects it", () => {
 describe("concerning camera errors", () => {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   let alert: jest.Mock<typeof Alert.alert> = null
-  const { ARTakeCameraPhotoModule } = ArtsyNativeModules
+  const { ARTakeCameraPhotoModule } = LegacyNativeModules
 
   beforeEach(() => {
     alert = Alert.alert as any
@@ -108,7 +108,7 @@ describe("concerning camera errors", () => {
     const settingsButton = call[2][1]
     settingsButton.onPress()
     expect(Linking.openURL).toHaveBeenCalledWith(
-      ArtsyNativeModules.ARCocoaConstantsModule.UIApplicationOpenSettingsURLString
+      LegacyNativeModules.ARCocoaConstantsModule.UIApplicationOpenSettingsURLString
     )
   })
 

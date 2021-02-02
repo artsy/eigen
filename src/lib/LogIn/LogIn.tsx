@@ -11,7 +11,7 @@ const StackNavigator = createStackNavigator()
 
 export const LogIn = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer independent>
       <LogInStore.Provider>
         <KeyboardAvoidingView behavior={Platform.select({ ios: "padding", default: undefined })} style={{ flex: 1 }}>
           <StackNavigator.Navigator

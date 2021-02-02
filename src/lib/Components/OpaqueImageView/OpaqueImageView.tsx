@@ -1,8 +1,10 @@
 import React from "react"
 
 import {
+  Image,
   LayoutChangeEvent,
   PixelRatio,
+  Platform,
   processColor,
   requireNativeComponent,
   StyleSheet,
@@ -155,7 +157,21 @@ export default class OpaqueImageView extends React.Component<Props, State> {
       backgroundColorStyle = { backgroundColor: props.placeholderBackgroundColor }
     }
 
-    return <NativeOpaqueImageView style={[style, backgroundColorStyle]} {...remainderProps} />
+    if (React.Children.count(remainderProps.children) > 0) {
+      console.error("Please don't add children to a OpaqueImageView. Doesn't work on android.")
+    }
+
+    if (Platform.OS === "ios") {
+      return <NativeOpaqueImageView style={[style, backgroundColorStyle]} {...remainderProps} />
+    }
+
+    return (
+      <Image
+        style={[style, backgroundColorStyle] as any}
+        {...remainderProps}
+        source={{ uri: remainderProps.imageURL! }}
+      />
+    )
   }
 }
 

@@ -6,22 +6,25 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ActiveLot } from "../Components/ActiveLot"
-import { ClosedLot } from "../Components/ClosedLot"
+import { ActiveLotStanding } from "../Components/ActiveLotStanding"
+import { ClosedLotStanding } from "../Components/ClosedLotStanding"
+import { WatchedLot } from "../Components/WatchedLot"
 import { MyBidsContainer, MyBidsQueryRenderer } from "../MyBids"
 
 jest.unmock("react-relay")
 
 const closedSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
   const closedSection = root.findByProps({ "data-test-id": "closed-section" })
-  return closedSection.findAllByType(ClosedLot)
+  return closedSection.findAllByType(ClosedLotStanding)
 }
 
 const activeSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
   const activeSection = root.findByProps({ "data-test-id": "active-section" })
-  const activeLots = activeSection.findAllByType(ActiveLot)
-  const closedLots = activeSection.findAllByType(ClosedLot)
-  return [...activeLots, ...closedLots]
+  const ActiveLotStandings = activeSection.findAll((instance: ReactTestInstance) => {
+    return [ActiveLotStanding, ClosedLotStanding, WatchedLot].includes((instance as any).type)
+  })
+
+  return ActiveLotStandings
 }
 
 describe("My Bids", () => {
@@ -83,6 +86,9 @@ describe("My Bids", () => {
 
         return {
           bidders: [],
+          watchedLotConnection: {
+            edges: [],
+          },
           auctionsLotStandingConnection: {
             edges: [
               {
@@ -102,13 +108,13 @@ describe("My Bids", () => {
       },
     })
 
-    const closedLots = closedSectionLots(wrapper.root).map(extractText)
-    expect(closedLots[0]).toContain("artistNames")
-    expect(closedLots[0]).toContain("Passed")
-    expect(closedLots[0]).toContain("Closed Aug 13")
+    const ClosedLotStandings = closedSectionLots(wrapper.root).map(extractText)
+    expect(ClosedLotStandings[0]).toContain("artistNames")
+    expect(ClosedLotStandings[0]).toContain("Passed")
+    expect(ClosedLotStandings[0]).toContain("Closed Aug 13")
   })
 
-  it("renders a completed lot in an ongoing live sale in the 'active' column", () => {
+  it("renders a completed lot in an ongoing live sale in the 'active' section", () => {
     const wrapper = getWrapper({
       Me: () => {
         const sale = {
@@ -122,6 +128,9 @@ describe("My Bids", () => {
               sale,
             },
           ],
+          watchedLotConnection: {
+            edges: [],
+          },
           auctionsLotStandingConnection: {
             edges: [
               {
@@ -142,14 +151,17 @@ describe("My Bids", () => {
       },
     })
 
-    const activeLots = activeSectionLots(wrapper.root).map(extractText)
-    expect(activeLots[0]).toContain("Passed")
+    const ActiveLotStandings = activeSectionLots(wrapper.root).map(extractText)
+    expect(ActiveLotStandings[0]).toContain("Passed")
   })
 
-  it("renders the empty view when there are no lot standings", () => {
+  it("renders the empty view when there are no lots to show", () => {
     const wrapper = getWrapper({
       Me: () => ({
         bidders: [],
+        watchedLotConnection: {
+          edges: [],
+        },
         auctionsLotStandingConnection: {
           edges: [],
         },
@@ -175,6 +187,9 @@ describe("My Bids", () => {
               },
             },
           ],
+          watchedLotConnection: {
+            edges: [],
+          },
           auctionsLotStandingConnection: {
             edges: [],
           },
@@ -182,5 +197,190 @@ describe("My Bids", () => {
       },
     })
     expect(extractText(wrapper.root)).toContain("You haven't placed any bids on this sale")
+  })
+
+  describe("when a user is watching lots", () => {
+    it("renders a watched lot for a sale the user has not registered for", () => {
+      const wrapper = getWrapper({
+        Me: () => ({
+          bidders: [],
+          auctionsLotStandingConnection: { edges: [] },
+          watchedLotConnection: {
+            edges: [
+              {
+                node: {
+                  saleArtwork: {
+                    sale: {
+                      registrationStatus: null,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        }),
+      })
+      expect(extractText(wrapper.root)).toContain("Complete registration")
+    })
+
+    it("renders a watched lot for a sale with a pending registration", () => {
+      const wrapper = getWrapper({
+        Me: () => ({
+          bidders: [],
+          auctionsLotStandingConnection: { edges: [] },
+          watchedLotConnection: {
+            edges: [
+              {
+                node: {
+                  saleArtwork: {
+                    sale: {
+                      registrationStatus: { qualifiedForBidding: false },
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        }),
+      })
+      expect(extractText(wrapper.root)).toContain("Registration pending")
+    })
+
+    it("does not render a watched lot that also has a bid", () => {
+      const wrapper = getWrapper({
+        Me: () => {
+          const sale = {
+            internalID: "sale-id",
+            status: "open",
+            liveStartAt: "2020-08-13T16:00:00+00:00",
+          }
+          return {
+            bidders: [
+              {
+                sale,
+              },
+            ],
+            watchedLotConnection: {
+              edges: [
+                {
+                  node: {
+                    lot: {
+                      internalID: "same-id",
+                    },
+                    saleArtwork: {
+                      artwork: {
+                        artistNames: "Watched artist",
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+            auctionsLotStandingConnection: {
+              edges: [
+                {
+                  node: {
+                    lot: {
+                      internalID: "same-id",
+                    },
+                    saleArtwork: {
+                      artwork: {
+                        artistNames: "Lot standing artist",
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          }
+        },
+      })
+
+      const ActiveLotStandings = activeSectionLots(wrapper.root).map(extractText)
+      expect(ActiveLotStandings.length).toEqual(1)
+      expect(ActiveLotStandings[0]).toContain("Lot standing artist")
+      expect(ActiveLotStandings[0]).not.toContain("Watched artist")
+    })
+
+    it("renders a watched lot in the active section ordered by lot position", () => {
+      const wrapper = getWrapper({
+        Me: () => {
+          const sale = {
+            internalID: "sale-id",
+            status: "open",
+            liveStartAt: "2020-08-13T16:00:00+00:00",
+          }
+          return {
+            bidders: [
+              {
+                sale,
+              },
+            ],
+            watchedLotConnection: {
+              edges: [
+                {
+                  node: {
+                    lot: {
+                      internalID: "Unique id",
+                      soldStatus: "Passed",
+                      reserveStatus: "ReserveNotMet",
+                    },
+                    saleArtwork: {
+                      sale,
+                      position: 2,
+                      lotLabel: "#2",
+                      artwork: {
+                        artistNames: "Watched artist",
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+            auctionsLotStandingConnection: {
+              edges: [
+                {
+                  node: {
+                    lot: {
+                      soldStatus: "Passed",
+                      reserveStatus: "ReserveNotMet",
+                    },
+                    saleArtwork: {
+                      position: 1,
+                      lotLabel: "#1",
+                      artwork: {
+                        artistNames: "Lot standing artist 1",
+                      },
+                      sale,
+                    },
+                  },
+                },
+                {
+                  node: {
+                    lot: {
+                      soldStatus: "Sold",
+                      reserveStatus: "ReserveMet",
+                    },
+                    saleArtwork: {
+                      position: 3,
+                      lotLabel: "#3",
+                      artwork: {
+                        artistNames: "Lot standing artist 3",
+                      },
+                      sale,
+                    },
+                  },
+                },
+              ],
+            },
+          }
+        },
+      })
+
+      const ActiveLotStandings = activeSectionLots(wrapper.root).map(extractText)
+      expect(ActiveLotStandings[0]).toContain("Lot standing artist 1Lot #1")
+      expect(ActiveLotStandings[1]).toContain("Watched artistLot #2")
+      expect(ActiveLotStandings[2]).toContain("Lot standing artist 3Lot #3")
+    })
   })
 })

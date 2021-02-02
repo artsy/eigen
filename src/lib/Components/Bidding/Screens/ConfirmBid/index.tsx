@@ -22,7 +22,7 @@ import { SelectMaxBidEdit } from "lib/Components/Bidding/Screens/SelectMaxBidEdi
 import { Address, Bid, PaymentCardTextFieldParams, StripeToken } from "lib/Components/Bidding/types"
 import { Modal } from "lib/Components/Modal"
 import { LinkText } from "lib/Components/Text/LinkText"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { partnerName } from "lib/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
@@ -420,13 +420,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   presentBidResult(bidderPositionResult: BidderPositionResult) {
-    ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkBidUpdated", {
+    LegacyNativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkBidUpdated", {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       ARAuctionID: this.props.sale_artwork.sale.slug,
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       ARAuctionArtworkID: this.props.sale_artwork.artwork.slug,
     })
-    ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
+    LegacyNativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       ARAuctionID: this.props.sale_artwork.sale.slug,
     })

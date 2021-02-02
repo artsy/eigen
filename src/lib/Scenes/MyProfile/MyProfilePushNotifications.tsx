@@ -1,7 +1,7 @@
 // tslint:disable:no-empty
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "lib/Components/SwitchMenu"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import useAppState from "lib/utils/useAppState"
@@ -58,7 +58,7 @@ export const AllowPushNotificationsBanner = () => (
       <Button
         size="large"
         onPress={() => {
-          ArtsyNativeModules.ARTemporaryAPIModule.requestNotificationPermissions()
+          LegacyNativeModules.ARTemporaryAPIModule.requestNotificationPermissions()
         }}
       >
         Enable
@@ -103,13 +103,13 @@ export const MyProfilePushNotifications: React.FC<{
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
 
   useEffect(() => {
-    ArtsyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
+    LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
       setNotificationAuthorizationStatus(result)
     })
   }, [])
 
   const onForeground = useCallback(() => {
-    ArtsyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
+    LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
       setNotificationAuthorizationStatus(result)
     })
   }, [])

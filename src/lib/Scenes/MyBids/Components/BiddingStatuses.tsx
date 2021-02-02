@@ -1,5 +1,5 @@
 import { ArrowDownCircleFillIcon, ArrowUpCircleFillIcon, Text } from "palette"
-import { ExclamationMarkCircleFill } from "palette/svgs/sf"
+import { BookmarkFill, ExclamationMarkCircleFill } from "palette/svgs/sf"
 import React from "react"
 
 export const ReserveNotMet = () => (
@@ -48,4 +48,14 @@ export const Passed = () => (
   <Text variant="caption" color="black60">
     Passed
   </Text>
+)
+
+export const Watching = () => (
+  <>
+    <BookmarkFill />
+    <Text variant="caption" color="black60">
+      {" "}
+      Watching
+    </Text>
+  </>
 )

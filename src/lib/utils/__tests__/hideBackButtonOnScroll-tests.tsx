@@ -1,4 +1,4 @@
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { hideBackButtonOnScroll } from "../hideBackButtonOnScroll"
 
 function event(
@@ -10,37 +10,37 @@ function event(
 describe(hideBackButtonOnScroll, () => {
   beforeEach(() => {
     hideBackButtonOnScroll(event({ target: Math.random(), nativeEvent: { contentOffset: { y: 0 } } }))
-    ;(ArtsyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton as jest.Mock).mockReset()
+    ;(LegacyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton as jest.Mock).mockReset()
   })
 
   it("hides the back button when the user scrolls down far enough", () => {
     // get going
     hideBackButtonOnScroll(event({ nativeEvent: { contentOffset: { y: 40 } } }))
-    expect(ArtsyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton).not.toHaveBeenCalled()
+    expect(LegacyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton).not.toHaveBeenCalled()
 
     // scroll down far
     hideBackButtonOnScroll(event({ nativeEvent: { contentOffset: { y: 150 } } }))
-    expect(ArtsyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton).toHaveBeenCalledWith(true, "home")
+    expect(LegacyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton).toHaveBeenCalledWith(true, "home")
   })
 
   it("shows the back button when the user scrolls back up", () => {
     hideBackButtonOnScroll(event({ nativeEvent: { contentOffset: { y: 40 } } }))
     hideBackButtonOnScroll(event({ nativeEvent: { contentOffset: { y: 660 } } }))
-    expect(ArtsyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton).toHaveBeenCalledWith(true, "home")
+    expect(LegacyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton).toHaveBeenCalledWith(true, "home")
 
     // need to change direction first
     hideBackButtonOnScroll(event({ nativeEvent: { contentOffset: { y: 650 } } }))
     hideBackButtonOnScroll(event({ nativeEvent: { contentOffset: { y: 400 } } }))
-    expect(ArtsyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton).toHaveBeenCalledWith(false, "home")
+    expect(LegacyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton).toHaveBeenCalledWith(false, "home")
   })
 
   it("always shows the back button when the user is near the top of the scroll view", () => {
     hideBackButtonOnScroll(event({ nativeEvent: { contentOffset: { y: 1 } } }))
     hideBackButtonOnScroll(event({ nativeEvent: { contentOffset: { y: 45 } } }))
-    expect(ArtsyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton).toHaveBeenCalledWith(false, "home")
+    expect(LegacyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton).toHaveBeenCalledWith(false, "home")
     hideBackButtonOnScroll(event({ nativeEvent: { contentOffset: { y: 55 } } }))
-    expect(ArtsyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton).toHaveBeenCalledWith(true, "home")
+    expect(LegacyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton).toHaveBeenCalledWith(true, "home")
     hideBackButtonOnScroll(event({ nativeEvent: { contentOffset: { y: 45 } } }))
-    expect(ArtsyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton).toHaveBeenCalledWith(false, "home")
+    expect(LegacyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton).toHaveBeenCalledWith(false, "home")
   })
 })

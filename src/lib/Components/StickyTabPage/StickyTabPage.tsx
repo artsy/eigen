@@ -1,4 +1,4 @@
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { unsafe__getSelectedTab } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { GlobalState, useGlobalState } from "lib/utils/useGlobalState"
@@ -83,7 +83,7 @@ export const StickyTabPage: React.FC<{
       Animated.onChange(
         shouldHideBackButton,
         Animated.call([shouldHideBackButton], ([shouldHide]) => {
-          ArtsyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton(!!shouldHide, unsafe__getSelectedTab())
+          LegacyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton(!!shouldHide, unsafe__getSelectedTab())
         })
       ),
     []

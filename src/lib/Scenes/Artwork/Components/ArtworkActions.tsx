@@ -1,7 +1,7 @@
 import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
 import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { cm2in } from "lib/utils/conversions"
 import { Schema, track } from "lib/utils/track"
 import { take } from "lodash"
@@ -89,7 +89,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     const heightIn = cm2in(heightCm!)
     const widthIn = cm2in(widthCm!)
 
-    ArtsyNativeModules.ARScreenPresenterModule.presentAugmentedRealityVIR(image?.url!, widthIn, heightIn, slug, id)
+    LegacyNativeModules.ARScreenPresenterModule.presentAugmentedRealityVIR(image?.url!, widthIn, heightIn, slug, id)
   }
 
   render() {
@@ -122,7 +122,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
             </Touchable>
           )}
 
-          {!!(ArtsyNativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
+          {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
             <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
               <UtilButton pr={3}>
                 <Box mr={0.5}>
