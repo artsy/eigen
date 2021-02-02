@@ -380,11 +380,7 @@ static ARAppDelegate *_sharedInstance = nil;
         // Since this is a debug/admin only issue, it’s safe to use private API here.
         [[UIDevice currentDevice] setValue:@(UIInterfaceOrientationPortrait) forKey:@"orientation"];
     }
-    ARAdminSettingsViewController *adminSettings = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-
-    SerifModalWebNavigationController *navController = [[SerifModalWebNavigationController alloc] initWithRootViewController:adminSettings];
-
-    [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
+    [[AREmission sharedInstance] navigate:@"/admin2"];
 }
 
 - (void)countNumberOfRuns

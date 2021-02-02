@@ -98,6 +98,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/conversation/:conversationID", "Conversation"),
     new RouteMatcher("/user/conversations/:conversationID", "Conversation"),
     new RouteMatcher("/admin", "Admin"),
+    new RouteMatcher("/admin2", "Admin2"),
     new RouteMatcher("/about", "About"),
     new RouteMatcher("/favorites", "Favorites"),
     new RouteMatcher("/my-account", "MyAccount"),
