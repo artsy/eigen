@@ -18,7 +18,6 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
     public static void didLaunch(SharedPreferences prefs) {
         launchCount = prefs.getInt(LAUNCH_COUNT, 0) + 1;
         prefs.edit().putInt(LAUNCH_COUNT, launchCount).commit();
-        System.out.println("LaunchCount:" + launchCount);
     }
     private static Integer launchCount = 0;
     ArtsyNativeModule(ReactApplicationContext context) {
