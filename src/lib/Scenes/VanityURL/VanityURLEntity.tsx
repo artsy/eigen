@@ -23,7 +23,7 @@ const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug })
   } else if (fairOrPartner.__typename === "Partner") {
     const { safeAreaInsets } = useScreenDimensions()
     return (
-      <View style={{ flex: 1, top: safeAreaInsets.top ?? 0 }}>
+      <View style={{ flex: 1, paddingTop: safeAreaInsets.top ?? 0 }}>
         <PartnerContainer partner={fairOrPartner} />
       </View>
     )
