@@ -52,7 +52,7 @@ What do we mean when we say "a new feature should be **put behind** a lab option
 
 ```diff
 
-  ArtsyNativeModules.ARNotificationsManager = {
+  ARNotificationsManager: {
     nativeState: {
       options: {
         AROptionsEnableMyCollection: false,

@@ -11,6 +11,7 @@ upcoming:
     - Implement analytics on auction results - mounir
     - Validate CHANGELOG.yml - brian, pavlos, brian, adam, steven, david, mounir
     - Add increase/decrease icons - pepopowitz
+    - Add android navigation infra - david, mounir
     - remove artist insights feature flag in favor of echo flag - mounir
   user_facing:
     - Refresh inbox automatically upon revisiting - erik, lily

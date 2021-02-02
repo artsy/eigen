@@ -1,5 +1,6 @@
 import { action, createStore, createTypedHooks, StoreProvider } from "easy-peasy"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNavigationState"
 import React from "react"
 import { Platform } from "react-native"
 import Config from "react-native-config"
@@ -44,7 +45,8 @@ function createGlobalStore() {
   })
 
   if (!__TEST__) {
-    unpersist().then((state) => {
+    unpersist().then(async (state) => {
+      await loadDevNavigationStateCache()
       store.getActions().rehydrate(state)
     })
   }
@@ -101,13 +103,18 @@ export function useSelectedTab() {
 let globalStoreInstance = createGlobalStore()
 
 export function useEmissionOption(key: keyof EmissionOptions) {
-  return GlobalStore.useAppState((state) => state.native.sessionState.options[key])
+  if (Platform.OS === "ios") {
+    return GlobalStore.useAppState((state) => state.native.sessionState.options[key])
+  }
+
+  // TODO: add feature flags to GlobalStore on android
+  return true
 }
 
 export function getCurrentEmissionState() {
   const state = globalStoreInstance?.getState() ?? null
   if (Platform.OS === "ios") {
-    return state?.native.sessionState ?? ArtsyNativeModules.ARNotificationsManager.nativeState
+    return state?.native.sessionState ?? LegacyNativeModules.ARNotificationsManager.nativeState
   }
 
   const androidData: GlobalStoreModel["native"]["sessionState"] = {
@@ -122,24 +129,24 @@ export function getCurrentEmissionState() {
     onboardingState: "none", // not used on android
     options: {
       // TODO: store options in easy-peasy
-      AROptionsBidManagement: false,
-      AROptionsEnableMyCollection: false,
-      AROptionsLotConditionReport: false,
-      AROptionsPriceTransparency: false,
-      AROptionsViewingRooms: false,
-      AROptionsNewSalePage: false,
-      AREnableViewingRooms: false,
-      AROptionsArtistSeries: false,
+      AROptionsBidManagement: true,
+      AROptionsEnableMyCollection: true,
+      AROptionsLotConditionReport: true,
+      AROptionsPriceTransparency: true,
+      AROptionsViewingRooms: true,
+      AROptionsNewSalePage: true,
+      AREnableViewingRooms: true,
+      AROptionsArtistSeries: true,
       ipad_vir: false,
       iphone_vir: false,
       ARDisableReactNativeBidFlow: false,
-      AREnableNewPartnerView: false,
-      AROptionsNewFirstInquiry: false,
-      AROptionsUseReactNativeWebView: false,
-      AROptionsNewFairPage: false,
-      AROptionsNewInsightsPage: false,
-      AROptionsInquiryCheckout: false,
-      AROptionsSentryErrorDebug: false,
+      AREnableNewPartnerView: true,
+      AROptionsNewFirstInquiry: true,
+      AROptionsUseReactNativeWebView: true,
+      AROptionsNewFairPage: true,
+      AROptionsNewInsightsPage: true,
+      AROptionsInquiryCheckout: true,
+      AROptionsSentryErrorDebug: true,
     },
     predictionURL: state?.config.sessionState.predictionBaseURL,
     sentryDSN: Config.SENTRY_STAGING_DSN,

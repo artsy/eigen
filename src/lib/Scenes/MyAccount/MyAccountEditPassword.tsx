@@ -1,6 +1,6 @@
 import { Input } from "lib/Components/Input/Input"
 import { Stack } from "lib/Components/Stack"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { Flex, Separator } from "palette"
 import React, { useEffect, useState } from "react"
@@ -72,7 +72,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
         [
           {
             text: "OK",
-            onPress: () => ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
+            onPress: () => LegacyNativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
           },
         ],
         { cancelable: false }

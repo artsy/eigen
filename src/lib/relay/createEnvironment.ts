@@ -1,7 +1,7 @@
 import { errorMiddleware, loggerMiddleware, RelayNetworkLayer, urlMiddleware } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
 
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { cacheMiddleware } from "./middlewares/cacheMiddleware"
 import { checkAuthenticationMiddleware } from "./middlewares/checkAuthenticationMiddleware"
@@ -28,7 +28,7 @@ export default function createEnvironment() {
             "User-Agent": userAgent,
             "X-USER-ID": userID,
             "X-ACCESS-TOKEN": authenticationToken,
-            "X-TIMEZONE": ArtsyNativeModules.ARCocoaConstantsModule.LocalTimeZone,
+            "X-TIMEZONE": LegacyNativeModules.ARCocoaConstantsModule.LocalTimeZone,
           }
         },
       }),

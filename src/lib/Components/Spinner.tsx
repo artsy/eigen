@@ -1,5 +1,14 @@
 import React from "react"
-import { ColorPropType, processColor, requireNativeComponent, StyleSheet, View, ViewProperties } from "react-native"
+import {
+  ActivityIndicator,
+  ColorPropType,
+  Platform,
+  processColor,
+  requireNativeComponent,
+  StyleSheet,
+  View,
+  ViewProperties,
+} from "react-native"
 
 interface SpinnerProps extends ViewProperties {
   spinnerColor?: string
@@ -22,9 +31,17 @@ export default class Spinner extends React.Component<SpinnerProps, any> {
   }
 
   render() {
+    if (Platform.OS === "ios") {
+      return (
+        <View style={[this.props.style, styles.container]} testID={this.props.testID}>
+          <NativeSpinner spinnerColor={processColor(this.props.spinnerColor)} style={{ size: this.props.size }} />
+        </View>
+      )
+    }
+
     return (
       <View style={[this.props.style, styles.container]} testID={this.props.testID}>
-        <NativeSpinner spinnerColor={processColor(this.props.spinnerColor)} style={{ size: this.props.size }} />
+        <ActivityIndicator />
       </View>
     )
   }

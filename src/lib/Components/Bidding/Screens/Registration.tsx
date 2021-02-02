@@ -4,7 +4,7 @@ import { RegistrationCreateBidderMutation } from "__generated__/RegistrationCrea
 import { RegistrationCreateCreditCardMutation } from "__generated__/RegistrationCreateCreditCardMutation.graphql"
 import { RegistrationUpdateUserMutation } from "__generated__/RegistrationUpdateUserMutation.graphql"
 import { Modal } from "lib/Components/Modal"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -263,7 +263,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   presentRegistrationSuccess({ createBidder }) {
-    ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
+    LegacyNativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
       ARAuctionID: this.props.sale.slug,
     })
 

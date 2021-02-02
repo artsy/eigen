@@ -1,5 +1,5 @@
 import { AppModule, modules, ViewOptions } from "lib/AppRegistry"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { GlobalStore, unsafe__getSelectedTab } from "lib/store/GlobalStore"
 import { Linking } from "react-native"
 import { matchRoute } from "./routes"
@@ -33,11 +33,11 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
   }
 
   if (presentModally) {
-    ArtsyNativeModules.ARScreenPresenterModule.presentModal(screenDescriptor)
+    LegacyNativeModules.ARScreenPresenterModule.presentModal(screenDescriptor)
   } else if (module.options.isRootViewForTabName) {
     // this view is one of our root tab views, e.g. home, search, etc.
     // switch to the tab, pop the stack, and scroll to the top.
-    await ArtsyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(module.options.isRootViewForTabName)
+    await LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(module.options.isRootViewForTabName)
     GlobalStore.actions.bottomTabs.setTabProps({ tab: module.options.isRootViewForTabName, props: result.params })
     GlobalStore.actions.bottomTabs.switchTab(module.options.isRootViewForTabName)
   } else {
@@ -46,7 +46,7 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
       GlobalStore.actions.bottomTabs.switchTab(module.options.onlyShowInTabName)
     }
 
-    ArtsyNativeModules.ARScreenPresenterModule.pushView(
+    LegacyNativeModules.ARScreenPresenterModule.pushView(
       module.options.onlyShowInTabName ?? selectedTab,
       screenDescriptor
     )
@@ -54,15 +54,15 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
 }
 
 export function dismissModal() {
-  ArtsyNativeModules.ARScreenPresenterModule.dismissModal()
+  LegacyNativeModules.ARScreenPresenterModule.dismissModal()
 }
 
 export function goBack() {
-  ArtsyNativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
+  LegacyNativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
 }
 
 export function popParentViewController() {
-  ArtsyNativeModules.ARScreenPresenterModule.popStack(unsafe__getSelectedTab())
+  LegacyNativeModules.ARScreenPresenterModule.popStack(unsafe__getSelectedTab())
 }
 
 export enum EntityType {

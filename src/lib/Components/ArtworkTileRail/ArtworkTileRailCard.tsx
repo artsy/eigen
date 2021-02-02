@@ -1,7 +1,7 @@
 import { ArtworkTileRailCard_artwork } from "__generated__/ArtworkTileRailCard_artwork.graphql"
 import { Box, color, Flex, Sans } from "palette"
 import React from "react"
-import { GestureResponderEvent } from "react-native"
+import { GestureResponderEvent, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
@@ -53,26 +53,35 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
   const desiredVersion = useSquareAspectRatio ? "square" : "large"
 
   const imageDisplay = imageURL ? (
-    <OpaqueImageView
-      imageURL={imageURL.replace(":version", desiredVersion)}
-      width={imageWidth}
-      height={imageHeight}
+    <View
       style={{
         borderRadius: 2,
         overflow: "hidden",
-        justifyContent: "flex-end",
-        paddingHorizontal: 5,
-        paddingBottom: 5,
       }}
     >
+      <OpaqueImageView
+        imageURL={imageURL.replace(":version", desiredVersion)}
+        width={imageWidth}
+        height={imageHeight}
+        style={{ flex: 1 }}
+      />
       {!!urgencyTag && (
-        <Flex backgroundColor="white" px="5px" py="3px" borderRadius={2} alignSelf="flex-start">
+        <Flex
+          backgroundColor="white"
+          position="absolute"
+          px="5px"
+          py="3px"
+          bottom="5px"
+          left="5px"
+          borderRadius={2}
+          alignSelf="flex-start"
+        >
           <Sans size="2" color="black100" numberOfLines={1}>
             {urgencyTag}
           </Sans>
         </Flex>
       )}
-    </OpaqueImageView>
+    </View>
   ) : (
     <Box bg={color("black30")} width={imageWidth} height={imageHeight} style={{ borderRadius: 2 }} />
   )
