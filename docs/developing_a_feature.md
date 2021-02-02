@@ -2,98 +2,83 @@
 
 Developing new features in Eigen can be a little tricky. For very small features (like adding a single new label to a view), just send a pull request. For big features that will take longer than a sprint, things are a little more complicated.
 
-[Artsy releases the app on a 2-week cadence 🔐](https://www.notion.so/artsy/2-week-Release-Cadence-f3427549d9cb4d8b809ad16c57338c2d), submitting the Monday after a sprint starts. We want engineers and stakeholders to be able to ship and test work without making in progress work visible to our users. To support this, new features are put behind **options**. There are two basic types of options in Eigen, **lab options** and **echo options/flags**.
+[Artsy releases the app on a 2-week cadence 🔐](https://www.notion.so/artsy/2-week-Release-Cadence-f3427549d9cb4d8b809ad16c57338c2d), submitting the Monday after a sprint starts. We want engineers and stakeholders to be able to ship and test work without making in progress work visible to our users. To support this, new features are put behind **feature flags**.
 
-- **Lab Options** should be used for engineers and stakeholders testing in progress work. Lab options can only be enabled in the admin menu (shake your device). [Here is an example pull request adding a lab option](https://github.com/artsy/eigen/pull/2934).
+A feature flag in eigen is simply a boolean value that decides whether a particular feature should be available in the app. Whether this value is 'true' or 'false' depends on two things:
 
-- **Echo Flags** should be used for releasing new features to users and provide a safety valve in the event of a catastrophic bug. [Echo](https://github.com/artsy/echo) is Artsy's feature-flag-as-a-service. If we ship a feature that ends up having a major bug, we can disable the feature remotely until we fix it. [Here is an example pull request adding an Echo Feature](https://github.com/artsy/eigen/pull/3414).
+- Whether the feature is ready for release.
+- Whether the feature has been added to our remote feature configuration service [echo](https://github.com/artsy/echo).
 
-Both lab options and Echo Features [get injected into Emission's `options` automatically](https://github.com/artsy/eigen/blob/d9fd4a5c7a95204bda3c5728aa22b2c6e716e57f/Artsy/App/ARAppDelegate%2BEmission.m#L308-L321). See the [Using an option in Emission](#using-an-option-in-emission) section below for how to actually use these options.
+To illustrate how these two work together, let's go through an example scenario.
 
-The normal workflow for engineers is to first **add a lab option and put all feature development behind it**. Then when it comes time to release **replace that lab option with an echo flag and enable the flag server side**.
+## Adding a feature flag
 
-## Adding a Lab Option
+Let's say you want to add a new feature, called "Marketing Banners". We'll add a new feature flag called `ARShowMarketingBanner` (this naming is a convention we borrow from Objective-C).
 
-Let's say you want to add a new feature, called "Marketing Banners". We'll add a new lab option called `ARShowMarketingBanner` (this naming is a convention we borrow from Objective-C). You can access the lab options in typescript using `useFeatureFlag('ARShowMarketingBanner')`.
-
-But where are these options set? There are two places and you need to do them both.
-
-### Eigen
-
-Inside Eigen you expose the ability to toggle options via
-[`/Artsy/App/AROptions.m`](https://github.com/artsy/eigen/blob/master/Artsy/App/AROptions.m) and [`/Artsy/App/AROptions.h`](https://github.com/artsy/eigen/blob/master/Artsy/App/AROptions.h) - you use the Objective-C hash `options` (note: you prefix strings/bools with an `@`). These files are a bit complicated but you only have to worry about changing in a few places.
-
-Changing [`/Artsy/App/AROptions.m`](https://github.com/artsy/eigen/blob/master/Artsy/App/AROptions.m) to add a new option would look like:
-
-1. Define your option in the header file (.h):
-
-`extern NSString *const ARShowMarketingBanner;`
-
-2. Define your option in the implementation file (.m) and add to the options hash:
-
-`NSString *const ARShowMarketingBanner = @"ARShowMarketingBanner";`
+In the file `features.ts`
 
 ```diff
-    options = @{
-+        ARShowMarketingBanner: @"Show the new marketing banner in the Artist page"
-    };
+   AROptionsNewFirstInquiry: {
+     readyForRelease: true,
+     echoFlagKey: "AROptionsNewFirstInquiry",
+   },
++  ARShowMarketingBanner: {
++    readyForRelease: false,
++    description: "Show new marketing banners",
++  },
+   AROptionsInquiryCheckout: {
+     readyForRelease: false,
+     description: "Enable inquiry checkout",
+   }
 ```
 
-You'll need to re-compile the iOS app to make this show up on your launch screen in the app.
-This change makes the option available to be toggled by any admin: they can shake their phones to see the admin menu in Eigen.
+Adding the `description` property makes it possible to override the feature flag from the admin menu.
 
-## Using an option in Emission
-
-What do we mean when we say "a new feature should be **put behind** a lab option or Echo Feature"? It means that the behaviour of the app changes depending on if this option is set. :
-
-1. Add your option to the Emission native model file [`src/lib/store/NativeModel.ts`](https://github.com/artsy/eigen/blob/master/src/lib/store//NativeModel.ts)
-
-2. Then update Jest's setup file [`src/setupJest.ts`](https://github.com/artsy/eigen/blob/master/src/setupJest.ts#L145).
+You can access the feature flag in a functional react component using `useFeatureFlag`.
 
 ```diff
-
-  ARNotificationsManager: {
-    nativeState: {
-      options: {
-        AROptionsEnableMyCollection: false,
-+       AROptionsNewAndExcitingFeature: false,
-        ....
-      },
-    ...
-  }
-}
++ const showBanner = useFeatureFlag("ARShowMarketingBanner")
+  return (
+    <>
+      <TitleView />
+      <SummaryView />
++     { showBanner && <MarketingBanner /> }
+    <>
+  )
 ```
 
-2. Use your option in code, here we are adding a new view to the hierarchy _if_ the options is set.
+If you need to use the feature flag outside of a functional react component, use `unsafe_getFeatureFlag("ARShowMarketingBanner")`. This is marked as unsafe because it will not cause react components to re-render, but it safe to use in non-reactive contexts, like an `onPress` handler.
+
+## Releasing a feature
+
+When your feature is ready for release, the simplest way to do that is to set `readyForRelease` to `true` in `features.ts`.
 
 ```diff
-+ const enableNewAndExcitingFeature = useFeatureFlag("AROptionsNewAndExcitingFeature")
-  return (<>
-    <TitleView />
-    <SummaryView />
-+   { enableNewAndExcitingFeature && <NewAndExcitingFeature /> }
-  <>)
+   ARShowMarketingBanner: {
+-    readyForRelease: false,
++    readyForRelease: true,
+     description: "Show new marketing banners",
+   },
 ```
 
-This works for when changing a part of Emission that already exists. But when we add _entirely new_ things to Emission, it's often the case that _Eigen_ needs to use the option instead. (For example, [when adding a new Partner profile page](https://github.com/artsy/eigen/pull/2947).) This looks different on a case-by-base basis, and you can ask for help in the #front-end-ios Slack channel if you get stuck.
+Alternatively, or at some point in the future, you can simply delete the feature flag and all the conditional branches associated with it.
 
-## Replacing a lab option with an Echo Flag
+However, often for complex features we want the ability to turn the feature off if something goes horribly wrong. To provide that ability, you should add an echo flag with the same name. [Here's an example PR for how to do that](https://github.com/artsy/echo/pull/70/files).
 
-[Artsy Echo](https://github.com/artsy/echo) has a concept called Features which are boolean options for features. **The Features here are synced across all users devices, in Production** (so be conservative about changes for people's bandwidth) and will be applied on the next launch of an app.
+After adding the echo key, when you mark the feature as being ready for release you can declare the key.
 
-When it comes time to release to users you will need to replace your lab option checks with echo flag checks. It is important to **replace/remove the corresponding lab option otherwise it will override the echo flag and your feature won't be visible to users.**
+```diff
+   ARShowMarketingBanner: {
+-    readyForRelease: false,
++    readyForRelease: true,
++    echoFlagKey: "ARShowMarketingBanner"
+     description: "Show new marketing banners",
+   },
+```
 
-1. First remove your lab option from AROptions.m:
-   https://github.com/artsy/eigen/pull/3421
+With this setup, the echo flag will be the source of truth for whether or not to enable the feature. You can turn the echo flag off or on to control the feature for all users.
 
-2. Then update any native code that was using your lab option to use the new echo flag:
-   https://github.com/artsy/eigen/pull/3414/files#diff-08bc1f903d1666ba6981aab6540e8299R450
-
-3. Enable the feature in [Artsy Echo](https://github.com/artsy/echo)
-
-Any code on the Emission (React Native) side using your option can stay the same if the option still has the same name.
-
-If you make Echo changes, you can update the local bundled copy of the echo settings by running `./scripts/update-echo` in Eigen. This is done automatically when running `pod install`.
+<em>💡 If you make Echo changes, you can update the local bundled copy of the echo settings by running `./scripts/update-echo` in Eigen. This is done automatically when running `pod install`. The app also fetches the latest echo config for itself when launching, so you shouldn't need to do this manually.</em>
 
 ## QAing
 
@@ -101,18 +86,6 @@ You can find documentation about how to do QA on the new shiny feature [here](ht
 
 There is also the general QA page [here](https://www.notion.so/artsy/QA-decba0c3a57a4508b726f3a8624ceca3).
 
-## FAQs
-
-### Why do we need to remove the lab flag when adding echo flag?
-
-In the past, we have used both simultaneously, using a logical or (`||`) to enable the feature: either the lab option _or_ the Echo Feature needed to be enabled. This caused a lot of problems (see note below). The current recommendation is **first add a lab option** while you're developing the feature. Once the feature is fully QA'd and ready to go live for users, then **replace the lab option with the Echo Feature**. Use the same name for both the lab option and the Echo Feature.
-
-<details><summary>What's wrong with logic or-ing lab options and Echo Features?</summary>
-
-The problem is that it conflates the responsibilities of lab options and Echo Features. Lab options are used for admins to see in-progress work; Echo Features are a safety valve so we can disable new features in the event of a catastrophic bug. If we ship a build that respects the Echo Feature but only has in-progress work, then users who install that version but don't upgrade to the fully-featured version will see that in-progress work.
-
-</details>
-
 ## Still Need Help?
 
-Ask for help in the #front-end-ios slack channel, we will be happy to assist!
+Ask for help in the #platform-mobile slack channel, we will be happy to assist!
