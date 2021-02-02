@@ -1,7 +1,7 @@
 import { ArtistHeader_artist } from "__generated__/ArtistHeader_artist.graphql"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
 import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"
-import { formatText } from "lib/utils/formatText"
+import { formatLargeNumberOfItems } from "lib/utils/formatLargeNumberOfItems"
 import { Box, bullet, Button, Flex, Sans, Spacer } from "palette"
 import React, { useState } from "react"
 import { Text } from "react-native"
@@ -126,9 +126,9 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
               </Sans>
             )}
             <Sans size="3t">
-              {formatText(artist.counts?.artworks ?? 0, "work")}
+              {formatLargeNumberOfItems(artist.counts?.artworks ?? 0, "work")}
               {` ${bullet} `}
-              {formatText(artist.counts?.follows ?? 0, "follower")}
+              {formatLargeNumberOfItems(artist.counts?.follows ?? 0, "follower")}
             </Sans>
           </Flex>
           <Flex>

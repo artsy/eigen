@@ -9,7 +9,7 @@ import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "li
 import { Box, Flex, Sans, Spacer } from "palette"
 import { Touchable } from "palette"
 import React, { useContext, useRef } from "react"
-import { StyleSheet, View } from "react-native"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -85,19 +85,25 @@ export const Artwork: React.FC<ArtworkProps> = ({
     <Touchable onPress={() => handleTap()}>
       <View ref={itemRef}>
         {!!artwork.image && (
-          <OpaqueImageView
-            aspectRatio={artwork.image?.aspectRatio ?? 1}
-            imageURL={artwork.image?.url}
-            style={styles.artworkImage}
-          >
+          <View>
+            <OpaqueImageView aspectRatio={artwork.image?.aspectRatio ?? 1} imageURL={artwork.image?.url} />
             {Boolean(!hideUrgencyTags && urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed) && (
-              <Flex backgroundColor="white" px="5px" py="3px" borderRadius={2} alignSelf="flex-start">
+              <Flex
+                position="absolute"
+                bottom="5px"
+                left="5px"
+                backgroundColor="white"
+                px="5px"
+                py="3px"
+                borderRadius={2}
+                alignSelf="flex-start"
+              >
                 <Sans size="2" color="black100" numberOfLines={1}>
                   {urgencyTag}
                 </Sans>
               </Flex>
             )}
-          </OpaqueImageView>
+          </View>
         )}
         <Box mt={1}>
           {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
@@ -187,21 +193,6 @@ export const saleMessageOrBidInfo = ({
   return artwork.saleMessage
 }
 
-const styles = StyleSheet.create({
-  artworkImage: {
-    justifyContent: "flex-end",
-    paddingHorizontal: 5,
-    paddingBottom: 5,
-  },
-
-  endingDateContainer: {
-    backgroundColor: "white",
-    borderRadius: 2,
-    paddingHorizontal: 5,
-    minWidth: 100,
-    paddingVertical: 3,
-  },
-})
 export default createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment ArtworkGridItem_artwork on Artwork {

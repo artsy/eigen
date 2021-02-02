@@ -105,7 +105,8 @@ lane :ship_beta_ios do
                          project_slug: project_slug,
                          version: sentry_release_version,
                          dist: bundle_version,
-                         file: 'emission/Pod/Assets/Emission.js'
+                         file: 'emission/Pod/Assets/Emission.js',
+                         file_url:'~/Emission.js'
       puts "Uploaded Emission.js for #{project_slug}"
 
       sentry_upload_sourcemap auth_token: ENV['SentryUploadAuthKey'],

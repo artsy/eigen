@@ -58,6 +58,11 @@ const node: ReaderFragment = {
     {
       "defaultValue": null,
       "kind": "LocalArgument",
+      "name": "attributionClass"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
       "name": "color"
     },
     {
@@ -177,6 +182,11 @@ const node: ReaderFragment = {
           "kind": "Variable",
           "name": "atAuction",
           "variableName": "atAuction"
+        },
+        {
+          "kind": "Variable",
+          "name": "attributionClass",
+          "variableName": "attributionClass"
         },
         {
           "kind": "Variable",
@@ -389,5 +399,5 @@ const node: ReaderFragment = {
   "type": "Fair",
   "abstractKey": null
 };
-(node as any).hash = 'cc94bd72722e068a2c69e5bd7ed86a60';
+(node as any).hash = 'e8b34b7dd5a4f2647e72d2507678b357';
 export default node;

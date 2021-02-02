@@ -1,5 +1,5 @@
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { BottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
 import { MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
 import { SearchModel } from "lib/Scenes/Search/SearchModel"
@@ -48,7 +48,7 @@ export const GlobalStoreModel: GlobalStoreModel = {
   didRehydrate: thunkOn(
     (actions) => actions.rehydrate,
     () => {
-      ArtsyNativeModules.ARNotificationsManager.didFinishBootstrapping()
+      LegacyNativeModules.ARNotificationsManager.didFinishBootstrapping()
     }
   ),
   sessionState: {

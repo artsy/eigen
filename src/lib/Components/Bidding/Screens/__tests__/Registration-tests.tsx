@@ -2,7 +2,7 @@ import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import { RegistrationResult, RegistrationStatus } from "lib/Components/Bidding/Screens/RegistrationResult"
 import { Modal } from "lib/Components/Modal"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 // FIXME: Uncomment when x'd test is reenabled
 // import { LinkText } from "../../../Text/LinkText"
 import { mockTimezone } from "lib/tests/mockTimezone"
@@ -38,7 +38,7 @@ let nextStep
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const mockNavigator = { push: (route) => (nextStep = route), pop: () => null }
 jest.useFakeTimers()
-const mockPostNotificationName = ArtsyNativeModules.ARNotificationsManager.postNotificationName
+const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager.postNotificationName
 
 beforeEach(() => {
   Date.now = jest.fn(() => 1525983752116)

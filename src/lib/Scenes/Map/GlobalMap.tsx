@@ -4,7 +4,7 @@ import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
 import PinFairSelected from "lib/Icons/PinFairSelected"
 import PinSavedSelected from "lib/Icons/PinSavedSelected"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -520,7 +520,7 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   onDidFinishRenderingMapFully = () => {
-    ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryMapHasRendered", {})
+    LegacyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryMapHasRendered", {})
     this.setState({ mapLoaded: true })
   }
 
@@ -764,7 +764,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
   updateDrawerPosition(position: DrawerPosition) {
     const notificationName = "ARLocalDiscoveryUpdateDrawerPosition"
-    ArtsyNativeModules.ARNotificationsManager.postNotificationName(notificationName, {
+    LegacyNativeModules.ARNotificationsManager.postNotificationName(notificationName, {
       position,
     })
   }

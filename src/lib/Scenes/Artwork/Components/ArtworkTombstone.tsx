@@ -1,5 +1,5 @@
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { Schema, track } from "lib/utils/track"
 import { Box, Flex, Sans, Spacer } from "palette"
@@ -169,7 +169,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
         )}
         {!!artwork.dimensions! /* STRICTNESS_MIGRATION */.in && !!artwork.dimensions! /* STRICTNESS_MIGRATION */.cm && (
           <Sans color="black60" size="3">
-            {ArtsyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
+            {LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
               ? artwork.dimensions! /* STRICTNESS_MIGRATION */.in
               : artwork.dimensions! /* STRICTNESS_MIGRATION */.cm}
           </Sans>

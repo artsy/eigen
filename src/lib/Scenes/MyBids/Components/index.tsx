@@ -1,4 +1,4 @@
-export { ActiveLotFragmentContainer } from "./ActiveLot"
+export { ActiveLotStandingFragmentContainer } from "./ActiveLotStanding"
 export { MyBidsPlaceholder } from "./MyBidsPlaceholder"
-export { ClosedLotFragmentContainer } from "./ClosedLot"
+export { ClosedLotStandingFragmentContainer } from "./ClosedLotStanding"
 export { SaleCardFragmentContainer } from "./SaleCard"

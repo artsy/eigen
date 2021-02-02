@@ -1,7 +1,7 @@
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useEmissionOption } from "lib/store/GlobalStore"
@@ -53,7 +53,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       <MenuItem
         title="Send feedback"
         onPress={() => {
-          ArtsyNativeModules.ARScreenPresenterModule.presentEmailComposer(
+          LegacyNativeModules.ARScreenPresenterModule.presentEmailComposer(
             "feedback@artsy.net",
             "Feedback from the Artsy app"
           )
@@ -169,7 +169,7 @@ export function confirmLogout() {
     {
       text: "Log out",
       style: "destructive",
-      onPress: () => ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
+      onPress: () => LegacyNativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
     },
   ])
 }

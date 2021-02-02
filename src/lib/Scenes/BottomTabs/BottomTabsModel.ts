@@ -1,8 +1,9 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
 import { Action, action, Thunk, thunk, thunkOn, ThunkOn } from "easy-peasy"
+import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { getCurrentEmissionState, GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import type { GlobalStoreModel } from "lib/store/GlobalStoreModel"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
@@ -72,12 +73,14 @@ function persistDevReloadState(tabType: BottomTabType) {
     AsyncStorage.setItem(
       reloadStateKey,
       JSON.stringify({
-        launchCount: getCurrentEmissionState().launchCount,
+        launchCount,
         selectedTab: tabType,
       })
     )
   })
 }
+
+const launchCount = ArtsyNativeModule.launchCount
 
 async function maybeHandleDevReload() {
   if (!__DEV__) {
@@ -88,9 +91,11 @@ async function maybeHandleDevReload() {
     return
   }
   try {
-    const { launchCount, selectedTab } = JSON.parse(json)
-    if (launchCount === getCurrentEmissionState().launchCount) {
+    const { launchCount: previousLaunchCount, selectedTab } = JSON.parse(json)
+    if (launchCount === previousLaunchCount) {
       GlobalStore.actions.bottomTabs.switchTab(selectedTab)
+    } else {
+      AsyncStorage.removeItem(reloadStateKey)
     }
   } catch (e) {
     console.error("failed to handle dev reload state")

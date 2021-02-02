@@ -1317,6 +1317,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Whether a user can make an offer on a work
   isOfferable: Boolean
+
+  # Whether a user can make an offer on the work through inquiry
+  isOfferableFromInquiry: Boolean
   isOnHold: String
   isPriceHidden: Boolean
   isPriceRange: Boolean
@@ -5280,6 +5283,7 @@ type EditionSet implements Sellable {
   isAcquireable: Boolean
   isForSale: Boolean
   isOfferable: Boolean
+  isOfferableFromInquiry: Boolean
   isSold: Boolean
   listPrice: ListPrice
   price: String
@@ -9725,6 +9729,9 @@ interface Sellable {
 
   # Whether a user can make an offer on the work
   isOfferable: Boolean
+
+  # Whether a user can make an offer on the work through inquiry
+  isOfferableFromInquiry: Boolean
   isSold: Boolean
   saleMessage: String
 }

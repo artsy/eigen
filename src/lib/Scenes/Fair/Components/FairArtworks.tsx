@@ -126,6 +126,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
         offerable: { type: "Boolean" }
         includeArtworksByFollowedArtists: { type: "Boolean" }
         artistIDs: { type: "[String]" }
+        attributionClass: { type: "[String]" }
       ) {
         slug
         internalID
@@ -156,6 +157,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
             FOLLOWED_ARTISTS
             ARTIST
           ]
+          attributionClass: $attributionClass
         ) @connection(key: "Fair_fairArtworks") {
           aggregations {
             slice
@@ -217,6 +219,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
         $offerable: Boolean
         $includeArtworksByFollowedArtists: Boolean
         $artistIDs: [String]
+        $attributionClass: [String]
       ) {
         fair(id: $id) {
           ...FairArtworks_fair
@@ -236,6 +239,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
               offerable: $offerable
               includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
               artistIDs: $artistIDs
+              attributionClass: $attributionClass
             )
         }
       }

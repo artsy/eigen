@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0adca9b20db7c99e516a2da6acfdc52d */
+/* @relayHash 041077e1438d9f00a08b0cbdf3a32764 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -151,6 +151,7 @@ fragment ArtistInsightsAuctionResults_artist on Artist {
 fragment ArtistInsights_artist on Artist {
   name
   id
+  internalID
   slug
   ...ArtistInsightsAuctionResults_artist
 }
@@ -1217,7 +1218,7 @@ return {
     ]
   },
   "params": {
-    "id": "0adca9b20db7c99e516a2da6acfdc52d",
+    "id": "041077e1438d9f00a08b0cbdf3a32764",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",
