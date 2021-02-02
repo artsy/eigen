@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6d4c54f3583edf3947f7c26f4b62b0f6 */
+/* @relayHash 5e75c4073cf65edb4a6e70e7c0048bca */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -9,8 +9,8 @@ export type MarketStatsQueryVariables = {
     artistInternalID: string;
 };
 export type MarketStatsQueryResponse = {
-    readonly priceInsights: {
-        readonly " $fragmentRefs": FragmentRefs<"MarketStats_priceInsights">;
+    readonly priceInsightsConnection: {
+        readonly " $fragmentRefs": FragmentRefs<"MarketStats_priceInsightsConnection">;
     } | null;
 };
 export type MarketStatsQuery = {
@@ -24,12 +24,12 @@ export type MarketStatsQuery = {
 query MarketStatsQuery(
   $artistInternalID: ID!
 ) {
-  priceInsights(artistId: $artistInternalID) {
-    ...MarketStats_priceInsights
+  priceInsightsConnection: priceInsights(artistId: $artistInternalID) {
+    ...MarketStats_priceInsightsConnection
   }
 }
 
-fragment MarketStats_priceInsights on PriceInsightConnection {
+fragment MarketStats_priceInsightsConnection on PriceInsightConnection {
   edges {
     node {
       medium
@@ -66,7 +66,7 @@ return {
     "name": "MarketStatsQuery",
     "selections": [
       {
-        "alias": null,
+        "alias": "priceInsightsConnection",
         "args": (v1/*: any*/),
         "concreteType": "PriceInsightConnection",
         "kind": "LinkedField",
@@ -76,7 +76,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "MarketStats_priceInsights"
+            "name": "MarketStats_priceInsightsConnection"
           }
         ],
         "storageKey": null
@@ -92,7 +92,7 @@ return {
     "name": "MarketStatsQuery",
     "selections": [
       {
-        "alias": null,
+        "alias": "priceInsightsConnection",
         "args": (v1/*: any*/),
         "concreteType": "PriceInsightConnection",
         "kind": "LinkedField",
@@ -169,7 +169,7 @@ return {
     ]
   },
   "params": {
-    "id": "6d4c54f3583edf3947f7c26f4b62b0f6",
+    "id": "5e75c4073cf65edb4a6e70e7c0048bca",
     "metadata": {},
     "name": "MarketStatsQuery",
     "operationKind": "query",
@@ -177,5 +177,5 @@ return {
   }
 };
 })();
-(node as any).hash = '95fea73a9e452feb917a979cc4322c0c';
+(node as any).hash = 'fe6ff4c4aa15df808172c3d4f9e98875';
 export default node;

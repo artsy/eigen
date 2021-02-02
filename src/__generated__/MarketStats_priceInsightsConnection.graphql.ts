@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MarketStats_priceInsights = {
+export type MarketStats_priceInsightsConnection = {
     readonly edges: ReadonlyArray<{
         readonly node: {
             readonly medium: string | null;
@@ -14,12 +14,12 @@ export type MarketStats_priceInsights = {
             readonly medianSaleOverEstimatePercentage: number | null;
         } | null;
     } | null> | null;
-    readonly " $refType": "MarketStats_priceInsights";
+    readonly " $refType": "MarketStats_priceInsightsConnection";
 };
-export type MarketStats_priceInsights$data = MarketStats_priceInsights;
-export type MarketStats_priceInsights$key = {
-    readonly " $data"?: MarketStats_priceInsights$data;
-    readonly " $fragmentRefs": FragmentRefs<"MarketStats_priceInsights">;
+export type MarketStats_priceInsightsConnection$data = MarketStats_priceInsightsConnection;
+export type MarketStats_priceInsightsConnection$key = {
+    readonly " $data"?: MarketStats_priceInsightsConnection$data;
+    readonly " $fragmentRefs": FragmentRefs<"MarketStats_priceInsightsConnection">;
 };
 
 
@@ -28,7 +28,7 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "MarketStats_priceInsights",
+  "name": "MarketStats_priceInsightsConnection",
   "selections": [
     {
       "alias": null,
@@ -91,5 +91,5 @@ const node: ReaderFragment = {
   "type": "PriceInsightConnection",
   "abstractKey": null
 };
-(node as any).hash = 'd7e02768653426e9cea4eda723021283';
+(node as any).hash = '9e1f547f87d91ca18d49af81b3c8d5d7';
 export default node;
