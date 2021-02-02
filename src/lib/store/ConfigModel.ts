@@ -63,6 +63,18 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Use react-native web views",
   },
+  AROptionsLotConditionReport: {
+    readyForRelease: true,
+    echoFlagKey: "AROptionsLotConditionReport",
+  },
+  AROptionsNewSalePage: {
+    readyForRelease: true,
+    echoFlagKey: "AROptionsNewSalePage",
+  },
+  AREnableViewingRooms: {
+    readyForRelease: true,
+    echoFlagKey: "AREnableViewingRooms"
+  }
 })
 
 export type FeatureName = keyof typeof features
