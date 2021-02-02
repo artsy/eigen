@@ -9,7 +9,6 @@ static NSDictionary *options = nil;
 // UI Tweaks
 NSString *const AROptionsBidManagement = @"AROptionsBidManagement";
 NSString *const AROptionsEnableMyCollection = @"AROptionsEnableMyCollection";
-NSString *const AROptionsLoadingScreenAlpha = @"AROptionsLoadingScreenAlpha";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
 NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
 NSString *const AROptionsArtistSeries = @"AROptionsArtistSeries";
@@ -46,7 +45,6 @@ NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebVie
          AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
          AROptionsEnableMyCollection: @"Enable new MyCollection view",
          AROptionsPriceTransparency: @"Price Transparency",
-         AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
          AROptionsUseReactNativeWebView: @"Use react native webviews",
          AROptionsNewInsightsPage: @"Enable artist insights page",
          AROptionsInquiryCheckout: @"Enable inquiry checkout",

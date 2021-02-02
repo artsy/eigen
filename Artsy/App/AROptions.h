@@ -7,7 +7,6 @@ extern NSString *const AROptionsDebugARVIR;
 extern NSString *const AROptionsDevReactEnv;
 extern NSString *const AROptionsDisableNativeLiveAuctions;
 extern NSString *const AROptionsEnableMyCollection;
-extern NSString *const AROptionsLoadingScreenAlpha;
 extern NSString *const AROptionsPriceTransparency;
 extern NSString *const AROptionsShowAnalyticsOnScreen;
 extern NSString *const AROptionsShowMartsyOnScreen;
