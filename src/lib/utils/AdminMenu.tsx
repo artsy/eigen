@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { MenuItem } from "lib/Components/MenuItem"
 import { dismissModal, navigate } from "lib/navigation/navigate"
-import { FeatureName, features } from "lib/store/ConfigModel"
+import { FeatureName, features } from "lib/store/features"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { sortBy } from "lodash"
 import { CloseIcon, Flex, Separator, Text } from "palette"
