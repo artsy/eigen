@@ -31,6 +31,7 @@ import { CustomShareSheet, CustomShareSheetItem } from "lib/Components/CustomSha
 import Clipboard from "@react-native-community/clipboard"
 import { ScrollView } from "react-native-gesture-handler"
 import { Image } from "react-native"
+import { useCanOpenURL } from "lib/utils/useCanOpenURL"
 
 const InstagramStoryBackgroundDimensions = {
   width: 1080,
@@ -141,6 +142,18 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
     } finally {
       setShareSheetVisible(false)
     }
+  }
+
+  const shareArtworkOnWhatsApp = async () => {
+    const { title, href, artists } = artwork
+    const details = shareContent(title!, href!, artists)
+
+    await Share.shareSingle({
+      social: Share.Social.WHATSAPP,
+      message: details.message,
+      url: details.url,
+    })
+    setShareSheetVisible(false)
   }
 
   const shareArtworkOnInstagramStory = async () => {
