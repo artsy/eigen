@@ -70,45 +70,45 @@ export const themeProps = {
     /** Full black, primary brand color  */
     black100: "#000",
     /** 80% black  */
-    black80: "#333",
+    black80: "#333333",
     /** 60% black, bold copy, lower in hierarchy  */
-    black60: "#666",
+    black60: "#666666",
     /** 30 black (dark grey), placeholder text only  */
-    black30: "#C2C2C2",
+    black30: "#c2c2c2",
     /** 10 black (grey), borders, divider lines, and grey button only */
-    black10: "#E5E5E5",
+    black10: "#e5e5e5",
     /** 5 black (light grey), backgrounds only */
-    black5: "#F8F8F8",
+    black5: "#f8f8f8",
     /** Full Blue. Calls to action, highlights, edits */
-    blue100: "#0A1AB4",
+    blue100: "#0a1ab4",
     /** 10% of blue100 on white. Backgrounds */
-    blue10: "#E6E8F7",
+    blue10: "#e6e8f7",
     /** Full copper. In consideration, transition, temporary */
-    copper100: "#A85F00",
+    copper100: "#a85f00",
     /** 10% of copper100 on white. Backgrounds */
-    copper10: "#F6EFE5",
+    copper10: "#f6efe5",
     /** Full green. Success, approval, go */
-    green100: "#217C44",
+    green100: "#217c44",
     /** 10% of green100 on white. Backgrounds */
-    green10: "#E9F2EC",
+    green10: "#e9f2ec",
     /** Full purple, secondary brand color. Should only used in time/transitions (on hover, active state), for highlighting vital text, and links.   */
-    purple100: "#6E1EFF",
+    purple100: "#6e1eff",
     /** 30 purple (light purple), avoid usage  */
-    purple30: "#D3BBFF",
+    purple30: "#d3bbff",
     /* 5 purple, highlight, accent */
-    purple5: "#F8F3FF",
+    purple5: "#f8f3ff",
     /** Full red. Notification, error, stop */
-    red100: "#E82F1D",
+    red100: "#e82f1d",
     /** 10% of red100 on white. Backgrounds */
-    red10: "#FDEAE8",
+    red10: "#fdeae8",
     /** Replaced by copper100; hex updated here for consistency but copper100 should be used instead! */
-    yellow100: "#A85F00",
+    yellow100: "#a85f00",
     /** 30 yellow (light yellow), avoid future use */
-    yellow30: "#FAE7BA",
+    yellow30: "#fae7ba",
     /** Replaced by copper10; hex updated here for consistency but copper10 should be used instead! */
-    yellow10: "#F6EFE5",
+    yellow10: "#f6efe5",
     /** Full white */
-    white100: "#FFF",
+    white100: "#ffffff",
   },
 
   fontFamily,
