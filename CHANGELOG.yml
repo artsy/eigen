@@ -13,6 +13,7 @@ upcoming:
     - Add increase/decrease icons - pepopowitz
     - Add android navigation infra - david, mounir
   user_facing:
+    - Added watched lots to MyBids - erik, ashley, christina
     - Refresh inbox automatically upon revisiting - erik, lily
     - Poll and refetch images when images are processing (my collection) - brian
     - Make AuctionResults not available text fit in one line - mounir
