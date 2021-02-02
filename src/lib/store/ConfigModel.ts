@@ -73,11 +73,12 @@ export const features = defineFeatures({
   },
   AREnableViewingRooms: {
     readyForRelease: true,
-    echoFlagKey: "AREnableViewingRooms"
-  }
+    echoFlagKey: "AREnableViewingRooms",
+  },
 })
 
 export type FeatureName = keyof typeof features
+export type FeatureMap = { [k in FeatureName]: boolean }
 
 type EchoJSON = typeof echoLaunchJSON
 
@@ -95,7 +96,7 @@ export interface ConfigModel {
   didRehydrate: ThunkOn<ConfigModel, {}, GlobalStoreModel>
   setEchoState: Action<ConfigModel, EchoJSON>
   fetchRemoteEcho: Thunk<ConfigModel>
-  features: Computed<ConfigModel, { [k in FeatureName]: boolean }>
+  features: Computed<ConfigModel, FeatureMap>
   setAdminOverride: Action<ConfigModel, { key: FeatureName; value: boolean | null }>
 }
 export const ConfigModel: ConfigModel = {

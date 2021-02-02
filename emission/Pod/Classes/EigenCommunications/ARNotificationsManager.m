@@ -21,7 +21,6 @@
 + (NSString *)predictionURL { return @"predictionURL"; }
 + (NSString *)webURL { return @"webURL"; }
 + (NSString *)userAgent { return @"userAgent"; }
-+ (NSString *)options { return @"options"; }
 
 + (NSString *)legacyFairSlugs { return @"legacyFairSlugs"; }
 + (NSString *)legacyFairProfileSlugs { return @"legacyFairProfileSlugs"; }

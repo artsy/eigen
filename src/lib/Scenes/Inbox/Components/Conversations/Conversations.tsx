@@ -11,7 +11,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { unsafe_getEmissionOption } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { ActionNames, ActionTypes } from "lib/utils/track/schema"
 import { color, Flex, Sans, Separator } from "palette"
@@ -90,7 +90,8 @@ export const Conversations: React.FC<Props> = (props) => {
 
   const unreadCount = props.me.conversations?.totalUnreadCount
   const unreadCounter = unreadCount ? `(${unreadCount})` : null
-  const shouldDisplayMyBids = getCurrentEmissionState().options.AROptionsBidManagement
+  // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useEmissionOption` instead
+  const shouldDisplayMyBids = unsafe_getEmissionOption("AROptionsBidManagement")
 
   return (
     <>

@@ -1,6 +1,6 @@
 import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
 import { navigate } from "lib/navigation/navigate"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { useEmissionOption } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { Box, Join, Spacer, Text } from "palette"
 import React from "react"
@@ -14,7 +14,7 @@ interface ArtworkDetailsProps {
 }
 
 export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
-  const enableLotConditionReport = getCurrentEmissionState().options.AROptionsLotConditionReport
+  const enableLotConditionReport = useEmissionOption("AROptionsLotConditionReport")
 
   const listItems = [
     {

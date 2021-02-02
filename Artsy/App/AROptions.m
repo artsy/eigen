@@ -7,16 +7,8 @@ static NSDictionary *options = nil;
 // Up here is the NSUserDefault set, and sent into Emission
 
 // UI Tweaks
-NSString *const AROptionsBidManagement = @"AROptionsBidManagement";
-NSString *const AROptionsEnableMyCollection = @"AROptionsEnableMyCollection";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
 NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
-NSString *const AROptionsArtistSeries = @"AROptionsArtistSeries";
-NSString *const AROptionsNewFirstInquiry = @"AROptionsNewFirstInquiry";
-NSString *const AROptionsNewFairPage = @"AROptionsNewFairPage";
-NSString *const AROptionsNewInsightsPage = @"AROptionsNewInsightsPage";
-NSString *const AROptionsInquiryCheckout = @"AROptionsInquiryCheckout";
-NSString *const AROptionsSentryErrorDebug = @"AROptionsSentryErrorDebug";
 
 // UX changes
 NSString *const AROptionsDisableNativeLiveAuctions = @"AROptionsDisableNativeLiveAuctions";
@@ -25,11 +17,6 @@ NSString *const AROptionsDebugARVIR = @"AROptionsDebugARVIR";
 // RN
 NSString *const AROptionsStagingReactEnv = @"AROptionsStagingReactEnv";
 NSString *const AROptionsDevReactEnv = @"AROptionsDevReactEnv";
-
-// Dev
-NSString *const AROptionsPriceTransparency = @"AROptionsPriceTransparency";
-NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebView";
-
 
 @implementation AROptions
 
@@ -40,14 +27,8 @@ NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebVie
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         options = @{
-         AROptionsSentryErrorDebug: @"Enable sentry error button in profile",
-         AROptionsDebugARVIR: @"Debug AR View in Room",
-         AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
-         AROptionsEnableMyCollection: @"Enable new MyCollection view",
-         AROptionsPriceTransparency: @"Price Transparency",
-         AROptionsUseReactNativeWebView: @"Use react native webviews",
-         AROptionsNewInsightsPage: @"Enable artist insights page",
-         AROptionsInquiryCheckout: @"Enable inquiry checkout",
+          AROptionsDebugARVIR: @"Debug AR View in Room",
+          AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
         };
     });
 }
@@ -75,9 +56,7 @@ NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebVie
 
 + (NSArray *)labsOptionsThatRequireRestart
 {
-    return @[
-        AROptionsDisableNativeLiveAuctions,
-    ];
+    return @[];
 }
 
 + (BOOL)optionExists:(NSString *)option
@@ -94,7 +73,6 @@ NSString *const AROptionsUseReactNativeWebView = @"AROptionsUseReactNativeWebVie
 {
     [[NSUserDefaults standardUserDefaults] setBool:value forKey:option];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [[ARAppDelegate sharedInstance] updateEmissionOptions];
 }
 
 @end

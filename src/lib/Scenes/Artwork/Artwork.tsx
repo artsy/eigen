@@ -8,7 +8,7 @@ import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRec
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { unsafe_getEmissionOption } from "lib/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import {
   PlaceholderBox,
@@ -138,7 +138,8 @@ export class Artwork extends React.Component<Props, State> {
   }
 
   shouldRenderArtworksInArtistSeries = () => {
-    const featureFlagEnabled = getCurrentEmissionState().options.AROptionsArtistSeries
+    // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useEmissionOption` instead
+    const featureFlagEnabled = unsafe_getEmissionOption("AROptionsArtistSeries")
     const { artistSeriesConnection } = this.props.artworkBelowTheFold
     const artistSeries = artistSeriesConnection?.edges?.[0]
     const numArtistSeriesArtworks = artistSeries?.node?.filterArtworksConnection?.edges?.length ?? 0
@@ -146,7 +147,8 @@ export class Artwork extends React.Component<Props, State> {
   }
 
   shouldRenderArtistSeriesMoreSeries = () => {
-    const featureFlagEnabled = getCurrentEmissionState().options.AROptionsArtistSeries
+    // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useEmissionOption` instead
+    const featureFlagEnabled = unsafe_getEmissionOption("AROptionsArtistSeries")
     return featureFlagEnabled && (this.props.artworkBelowTheFold.artist?.artistSeriesConnection?.totalCount ?? 0) > 0
   }
 

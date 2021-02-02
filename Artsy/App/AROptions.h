@@ -2,22 +2,13 @@
 
 
 // All the options as consts
-extern NSString *const AROptionsBidManagement;
 extern NSString *const AROptionsDebugARVIR;
 extern NSString *const AROptionsDevReactEnv;
 extern NSString *const AROptionsDisableNativeLiveAuctions;
-extern NSString *const AROptionsEnableMyCollection;
-extern NSString *const AROptionsPriceTransparency;
 extern NSString *const AROptionsShowAnalyticsOnScreen;
 extern NSString *const AROptionsShowMartsyOnScreen;
 extern NSString *const AROptionsStagingReactEnv;
 extern NSString *const AROptionsTappingPartnerSendsToPartner;
-extern NSString *const AROptionsArtistSeries;
-extern NSString *const AROptionsNewFirstInquiry;
-extern NSString *const AROptionsUseReactNativeWebView;
-extern NSString *const AROptionsNewFairPage;
-extern NSString *const AROptionsNewInsightsPage;
-extern NSString *const AROptionsInquiryCheckout;
 
 
 

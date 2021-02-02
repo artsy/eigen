@@ -14,7 +14,6 @@
 + (NSString *)predictionURL;
 + (NSString *)webURL;
 + (NSString *)userAgent;
-+ (NSString *)options;
 
 + (NSString *)legacyFairSlugs;
 + (NSString *)legacyFairProfileSlugs;
