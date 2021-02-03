@@ -12,6 +12,7 @@ upcoming:
     - Validate CHANGELOG.yml - brian, pavlos, brian, adam, steven, david, mounir
     - Add increase/decrease icons - pepopowitz
     - Add android navigation infra - david, mounir
+    - Use api key in fastlane scripts - brian, mounir
   user_facing:
     - Added watched lots to MyBids - erik, ashley, christina
     - Refresh inbox automatically upon revisiting - erik, lily
