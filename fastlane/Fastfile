@@ -25,7 +25,7 @@ sticker_plist = "../Artsy Stickers/Info.plist"
 
 lane :ship_beta_ios do
   api_key = app_store_connect_api_key(
-    key_id: "B95P9K5S5V",
+    key_id: '9U7GAZP7XS',
     issuer_id: "69a6de72-31ba-47e3-e053-5b8c7c11a4d1",
     key_content: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT'],
     in_house: false,
@@ -241,20 +241,43 @@ lane :ship_beta_android do
 end
 
 lane :promote_beta_ios do
-  client = Spaceship::Tunes.login(ENV['FASTLANE_USERNAME'], ENV['FASTLANE_PASSWORD'])
-  client.team_id = '479887'
-  app = Spaceship::Tunes::Application.find('net.artsy.artsy')
+  # There seems to be some delta between spaceship + deliver token format
+  token = Spaceship::ConnectAPI::Token.create(
+    key_id: '9U7GAZP7XS',
+    issuer_id: "69a6de72-31ba-47e3-e053-5b8c7c11a4d1",
+    key: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT'],
+    in_house: false
+  )
 
-  # app.builds are listed most recent last; we are assuming that we're shipping the most recent beta.
-  beta = app.builds.last
+  api_key = app_store_connect_api_key(
+    key_id: '9U7GAZP7XS',
+    issuer_id: "69a6de72-31ba-47e3-e053-5b8c7c11a4d1",
+    key_content: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT'],
+    in_house: false,
+  )
 
-  puts "Let's deliver beta #{beta.train_version} (#{beta.build_version}) with build number #{latest_testflight_build_number}."
+  Spaceship::ConnectAPI.token = token
+
+  app = Spaceship::ConnectAPI::App.find('net.artsy.artsy')
+  next_app_store_version = app.get_edit_app_store_version.version_string
+
+  # app.builds are listed most recent first; we are assuming that we're shipping the most recent beta.
+  latest_build = app.get_builds.first
+  build_number = latest_build.version
+
+
+  puts "Got next app version #{next_app_store_version}"
+  puts "Got build number #{build_number}"
+
+  puts "Let's deliver beta #{next_app_store_version} (#{build_number}) with build number #{build_number}."
   deliver(
-    build_number: latest_testflight_build_number,
+    api_key: api_key,
+    build_number: build_number,
     force: true, # Skip HTMl report verification
     skip_screenshots: true,
     skip_binary_upload: true,
     submit_for_review: true,
+    precheck_include_in_app_purchases: false,
     submission_information: {
       add_id_info_limits_tracking: true,
       add_id_info_serves_ads: false,
