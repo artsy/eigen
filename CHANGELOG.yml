@@ -20,6 +20,7 @@ upcoming:
     - Show filter button when there are less than 2 auction results available - mounir
     - Hide artist insights tab when no auction results are available - mounir
     - show FilteredArtworkGridZeroState when no results are available  - mounir
+    - hooks up inquiry make offer modal to web view checkout flow - lily
     - show total count of auction results  - mounir
     - Add info modals to artist insights and auction results - brian
     - Make AuctionResult screen fields selectable  - mounir

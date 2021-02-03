@@ -1,33 +1,28 @@
 import { MakeOfferModal_artwork } from "__generated__/MakeOfferModal_artwork.graphql"
 import { MakeOfferModalQuery, MakeOfferModalQueryResponse } from "__generated__/MakeOfferModalQuery.graphql"
-import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { dismissModal } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails } from "lib/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
+import { MakeOfferButtonFragmentContainer as MakeOfferButton } from "lib/Scenes/Artwork/Components/CommercialButtons/MakeOfferButton"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { BorderBox, Button, Flex, Text } from "palette"
 import React from "react"
+import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface MakeOfferModalProps {
-  toggleVisibility: () => void
-  modalIsVisible: boolean
   artwork: MakeOfferModal_artwork
 }
 
 export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
-  const { toggleVisibility, modalIsVisible, artwork } = props
+  const { artwork } = props
 
   return (
-    <FancyModal
-      visible={modalIsVisible}
-      onBackgroundPressed={() => {
-        toggleVisibility()
-      }}
-    >
+    <View>
       <FancyModalHeader
         onLeftButtonPress={() => {
-          toggleVisibility()
+          dismissModal()
         }}
         leftButtonText="Cancel"
         rightButtonDisabled
@@ -43,22 +38,21 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
         <BorderBox p={0} my={2}>
           <CollapsibleArtworkDetails hasSeparator={false} artwork={artwork} />
         </BorderBox>
-        <Button size="large" variant="primaryBlack" block width={100} mb={1}>
-          Confirm
-        </Button>
+        <MakeOfferButton variant="primaryBlack" buttonText="Confirm" artwork={artwork} editionSetID={null} />
         <Button
+          mt={1}
           size="large"
           variant="secondaryOutline"
           block
           width={100}
           onPress={() => {
-            toggleVisibility()
+            dismissModal()
           }}
         >
           Cancel
         </Button>
       </Flex>
-    </FancyModal>
+    </View>
   )
 }
 
@@ -66,15 +60,14 @@ export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOffer
   artwork: graphql`
     fragment MakeOfferModal_artwork on Artwork {
       ...CollapsibleArtworkDetails_artwork
+      ...MakeOfferButton_artwork
     }
   `,
 })
 
 export const MakeOfferModalQueryRenderer: React.FC<{
   artworkID: string
-  modalIsVisible: boolean
-  toggleVisibility: () => void
-}> = ({ artworkID, toggleVisibility, modalIsVisible }) => {
+}> = ({ artworkID }) => {
   return (
     <QueryRenderer<MakeOfferModalQuery>
       environment={defaultEnvironment}
@@ -89,11 +82,7 @@ export const MakeOfferModalQueryRenderer: React.FC<{
         artworkID,
       }}
       render={renderWithLoadProgress<MakeOfferModalQueryResponse>(({ artwork }) => (
-        <MakeOfferModalFragmentContainer
-          artwork={artwork!}
-          modalIsVisible={modalIsVisible}
-          toggleVisibility={toggleVisibility}
-        />
+        <MakeOfferModalFragmentContainer artwork={artwork!} />
       ))}
     />
   )

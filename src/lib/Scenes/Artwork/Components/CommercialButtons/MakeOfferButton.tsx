@@ -13,10 +13,13 @@ export interface MakeOfferButtonProps {
   // EditionSetID is passed down from the edition selected by the user
   editionSetID: string | null
   variant?: ButtonVariant
+  buttonText?: string
 }
 
 export interface State {
   isCommittingCreateOfferOrderMutation: boolean
+  showCheckoutFlowModal: boolean
+  orderUrl: string | null
 }
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -26,6 +29,8 @@ const track: Track<MakeOfferButtonProps, State> = _track
 export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State> {
   state = {
     isCommittingCreateOfferOrderMutation: false,
+    showCheckoutFlowModal: false,
+    orderUrl: null,
   }
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -99,7 +104,10 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
               if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
                 this.onMutationError(orderOrError.error)
               } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
-                navigate(`/orders/${orderOrError.order.internalID}`, { modal: true })
+                navigate(`/orders/${orderOrError.order.internalID}`, {
+                  modal: true,
+                  passProps: { artworkID: orderOrError.order.internalID },
+                })
               }
             })
           },
@@ -123,7 +131,7 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
         variant={this.props.variant}
         haptic
       >
-        Make offer
+        {this.props.buttonText ? this.props.buttonText : "Make offer"}
       </Button>
     )
   }

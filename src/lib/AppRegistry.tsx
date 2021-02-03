@@ -45,6 +45,8 @@ import { FairMoreInfoQueryRenderer } from "./Scenes/Fair/FairMoreInfo"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
+import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/MakeOfferModal"
+import { Checkout } from "./Scenes/Inbox/Screens/Checkout"
 import { MapContainer } from "./Scenes/Map"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
@@ -341,6 +343,9 @@ export const modules = defineModules({
   }),
   LocalDiscovery: nativeModule(),
   WebView: nativeModule(),
+  MakeOfferModal: reactModule(MakeOfferModalQueryRenderer, {
+    hasOwnModalCloseButton: true,
+  }),
   Map: reactModule(MapContainer, { fullBleed: true }),
   MyAccount: reactModule(MyAccountQueryRenderer),
   MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, { hidesBackButton: true }),
@@ -370,6 +375,9 @@ export const modules = defineModules({
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),
   ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
   ViewingRooms: reactModule(ViewingRoomsListQueryRenderer),
+  Checkout: reactModule(Checkout, {
+    hasOwnModalCloseButton: true,
+  }),
   WorksForYou: reactModule(WorksForYouQueryRenderer),
 })
 
