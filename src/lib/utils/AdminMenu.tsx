@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-community/async-storage"
 import { MenuItem } from "lib/Components/MenuItem"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import { FeatureName, features } from "lib/store/features"
-import { GlobalStore } from "lib/store/GlobalStore"
+import { getCurrentEmissionState, GlobalStore } from "lib/store/GlobalStore"
 import { sortBy } from "lodash"
 import { CloseIcon, Flex, ReloadIcon, Separator, Spacer, Text } from "palette"
 import React from "react"
@@ -71,6 +71,13 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         <MenuItem
           title="Throw Sentry Error"
           onPress={() => {
+            if (!getCurrentEmissionState().sentryDSN) {
+              Alert.alert(
+                "No Sentry DSN available",
+                __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
+              )
+              return
+            }
             throw Error("Sentry test error")
           }}
           chevron={null}
