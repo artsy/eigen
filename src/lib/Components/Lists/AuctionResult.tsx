@@ -84,7 +84,7 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
               </Flex>
             ) : (
               <Flex alignItems="flex-end">
-                <Text variant="subtitle" fontWeight="bold" style={{ width: 100 }} textAlign="right" testID="price">
+                <Text variant="caption" fontWeight="bold" style={{ width: 100 }} textAlign="right" testID="price">
                   {auctionResult.boughtIn === true
                     ? "Bought in"
                     : isFromPastMonth
