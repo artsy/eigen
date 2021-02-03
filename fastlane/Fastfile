@@ -317,6 +317,8 @@ lane :promote_beta_ios do
 end
 
 lane :notify_if_new_license_agreement do
+  # TODO: This login method will no longer work for CI with 2fa being enforced
+  # Check spaceship docs for future support with api key
   client = Spaceship::Tunes.login(ENV['FASTLANE_USERNAME'], ENV['FASTLANE_PASSWORD'])
   client.team_id = '479887'
   messages = Spaceship::Tunes.client.fetch_program_license_agreement_messages
