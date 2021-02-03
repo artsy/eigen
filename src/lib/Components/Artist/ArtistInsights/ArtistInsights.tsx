@@ -64,7 +64,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         onScrollEndDrag={onScrollEndDrag}
       >
         <Join separator={<Separator my={2} ml={-2} width={useScreenDimensions().width} />}>
-          <MarketStatsQueryRenderer artistInternalID={artist.internalID} relay={relay} />
+          <MarketStatsQueryRenderer artistInternalID={artist.internalID} environment={relay.environment} />
           <ArtistInsightsAuctionResultsPaginationContainer artist={artist} />
         </Join>
       </StickyTabPageScrollView>

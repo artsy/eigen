@@ -7,8 +7,9 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { DecreaseIcon, Flex, IncreaseIcon, Join, Spacer, Text } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
+import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { MarketStats_priceInsightsConnection } from "../../../../__generated__/MarketStats_priceInsightsConnection.graphql"
 import { extractNodes } from "../../../utils/extractNodes"
 
@@ -165,11 +166,11 @@ export const MarketStatsFragmentContainer = createFragmentContainer(MarketStats,
 
 export const MarketStatsQueryRenderer: React.FC<{
   artistInternalID: string
-  relay: RelayProp
-}> = ({ artistInternalID, relay }) => {
+  environment: RelayModernEnvironment
+}> = ({ artistInternalID, environment }) => {
   return (
     <QueryRenderer<MarketStatsQuery>
-      environment={relay.environment}
+      environment={environment}
       variables={{ artistInternalID }}
       query={graphql`
         query MarketStatsQuery($artistInternalID: ID!) {
