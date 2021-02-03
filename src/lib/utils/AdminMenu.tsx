@@ -4,7 +4,7 @@ import { dismissModal, navigate } from "lib/navigation/navigate"
 import { FeatureName, features } from "lib/store/features"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { sortBy } from "lodash"
-import { CloseIcon, Flex, Separator, Text } from "palette"
+import { CloseIcon, Flex, ReloadIcon, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { Alert, DevSettings, Platform, ScrollView, TouchableOpacity, View } from "react-native"
 import { useScreenDimensions } from "./useScreenDimensions"
@@ -23,19 +23,44 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: "lightcoral",
+        backgroundColor: "white",
       }}
-      px="2"
       pb="2"
       pt={useScreenDimensions().safeAreaInsets.top + 20}
     >
-      <Text color="white" variant="largeTitle" pb="2">
+      <Text variant="largeTitle" pb="2" px="2">
         Admin Settings
       </Text>
       <ScrollView
         style={{ flex: 1, backgroundColor: "white", borderRadius: 4, overflow: "hidden" }}
         contentContainerStyle={{ paddingVertical: 10 }}
       >
+        {Platform.OS === "ios" && (
+          <>
+            <MenuItem
+              title="Go to old Admin menu"
+              onPress={() => {
+                navigate("/admin", { modal: true })
+              }}
+            />
+            <Flex mx="2">
+              <Separator my="1" />
+            </Flex>
+          </>
+        )}
+
+        <Text variant="title" my="1" mx="2">
+          Feature Flags
+        </Text>
+        {configurableFeatureFlagKeys.map((flagKey) => {
+          return <FeatureFlagItem key={flagKey} flagKey={flagKey} />
+        })}
+        <Flex mx="2">
+          <Separator my="1" />
+        </Flex>
+        <Text variant="title" my="1" mx="2">
+          Tools
+        </Text>
         <MenuItem
           title="Clear AsyncStorage"
           chevron={null}
@@ -43,16 +68,6 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
             AsyncStorage.clear()
           }}
         />
-        {!!__DEV__ && (
-          <MenuItem
-            title="Clear AsyncStorage and reload"
-            chevron={null}
-            onPress={() => {
-              AsyncStorage.clear()
-              DevSettings.reload()
-            }}
-          />
-        )}
         <MenuItem
           title="Throw Sentry Error"
           onPress={() => {
@@ -60,44 +75,26 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           }}
           chevron={null}
         />
-        {Platform.OS === "ios" && (
-          <MenuItem
-            title="Show old admin menu"
-            onPress={() => {
-              navigate("/admin", { modal: true })
-            }}
-            chevron={null}
-          />
-        )}
-        <Separator my="1"></Separator>
-        <Text variant="title" px="2" my="1">
-          Feature flags
-        </Text>
-        {configurableFeatureFlagKeys.map((flagKey) => {
-          return <FeatureFlagItem flagKey={flagKey} />
-        })}
       </ScrollView>
-      <CloseButton onPress={onClose} />
+      <Buttons onClose={onClose} />
     </Flex>
   )
 }
 
-const CloseButton: React.FC<{ onPress(): void }> = ({ onPress }) => {
+const Buttons: React.FC<{ onClose(): void }> = ({ onClose }) => {
   return (
-    <View
-      style={{
-        position: "absolute",
-        top: 17,
-        right: 17,
-        backgroundColor: "white",
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <TouchableOpacity onPress={onPress}>
+    <View style={{ position: "absolute", top: 29, right: 20, flexDirection: "row", alignItems: "center" }}>
+      <TouchableOpacity
+        onPress={() => {
+          onClose()
+          requestAnimationFrame(() => DevSettings.reload())
+        }}
+        hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
+      >
+        <ReloadIcon width={16} height={16} />
+      </TouchableOpacity>
+      <Spacer mr="2" />
+      <TouchableOpacity onPress={onClose} hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}>
         <CloseIcon />
       </TouchableOpacity>
     </View>
@@ -115,13 +112,13 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
       onPress={() => {
         Alert.alert(features[flagKey].description!, undefined, [
           {
-            text: "Override to 'Yes'",
+            text: "Override with 'Yes'",
             onPress() {
               GlobalStore.actions.config.setAdminOverride({ key: flagKey, value: true })
             },
           },
           {
-            text: "Override to 'No'",
+            text: "Override with 'No'",
             onPress() {
               GlobalStore.actions.config.setAdminOverride({ key: flagKey, value: false })
             },
@@ -137,11 +134,13 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
       }}
       value={
         isAdminOverrideInEffect ? (
-          <Text variant="mediumText" color="black">
+          <Text variant="subtitle" color="black100" fontWeight="bold">
             {valText}
           </Text>
         ) : (
-          <Text>{valText}</Text>
+          <Text variant="subtitle" color="black60">
+            {valText}
+          </Text>
         )
       }
     />
