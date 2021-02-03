@@ -1,26 +1,8 @@
 import React from "react"
 import { TextProps as RNTextProps } from "react-native"
-import {
-  color,
-  ColorProps,
-  compose,
-  space,
-  SpaceProps,
-  style,
-  typography,
-  TypographyProps,
-  variant as systemVariant,
-} from "styled-system"
+import { color, ColorProps, compose, space, SpaceProps, style, typography, TypographyProps } from "styled-system"
 import { styled as primitives } from "../../platform/primitives"
-import {
-  calculateLetterSpacing,
-  calculateLineHeight,
-  isControlledFontSize,
-  isControlledLetterSpacing,
-  isControlledLineHeight,
-  TEXT_VARIANTS,
-  TextVariant,
-} from "./tokens"
+import { TEXT_VARIANTS, TextVariant } from "./tokens"
 
 /** BaseTextProps */
 export type BaseTextProps = TypographyProps &
@@ -42,33 +24,13 @@ export const textMixin = compose(typography, color, textColor, space)
 export type TextProps = BaseTextProps & RNTextProps
 
 const InnerText = primitives.Text<TextProps>`
-  ${systemVariant({ variants: TEXT_VARIANTS })}
   ${textMixin}
 `
 
 /** Text */
-export const Text: React.FC<TextProps> = ({ children, variant, fontSize, letterSpacing, lineHeight, ...rest }) => {
+export const Text: React.FC<TextProps> = ({ children, variant, ...rest }) => {
   const props = {
-    variant,
-    fontSize,
-    ...(!variant && letterSpacing && fontSize
-      ? // Possibly convert the letterSpacing
-        {
-          letterSpacing:
-            isControlledLetterSpacing(letterSpacing) && isControlledFontSize(fontSize)
-              ? calculateLetterSpacing(fontSize, letterSpacing)
-              : letterSpacing,
-        }
-      : {}),
-    ...(!variant && lineHeight && fontSize
-      ? // Possibly convert the lineHeight
-        {
-          lineHeight:
-            isControlledLineHeight(lineHeight) && isControlledFontSize(fontSize)
-              ? calculateLineHeight(fontSize, lineHeight)
-              : lineHeight,
-        }
-      : {}),
+    ...TEXT_VARIANTS[variant ?? "text"],
     ...rest,
   }
 
@@ -76,7 +38,3 @@ export const Text: React.FC<TextProps> = ({ children, variant, fontSize, letterS
 }
 
 Text.displayName = "Text"
-
-Text.defaultProps = {
-  fontFamily: "sans",
-}
