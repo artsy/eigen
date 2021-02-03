@@ -163,8 +163,9 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
             />
           </Flex>
           <SortMode variant="small" color="black60">
-            {artist.auctionResultsConnection?.totalCount} {resultsString} {bullet} Sorted by{" "}
-            {getSortDescription()?.toLowerCase()}
+            {!!artist.auctionResultsConnection?.totalCount &&
+              new Intl.NumberFormat().format(artist.auctionResultsConnection.totalCount)}{" "}
+            {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
           </SortMode>
           <Separator mt="2" />
         </Flex>
