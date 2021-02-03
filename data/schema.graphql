@@ -7800,7 +7800,7 @@ type Partner implements Node {
     forSale: Boolean
     last: Int
     sort: ArtworkSorts
-  ): ArtworkConnection
+  ): ArtworkConnection @deprecated(reason: "Use `filterArtworksConnection`")
   cached: Int
   categories: [PartnerCategory]
 
@@ -7809,6 +7809,60 @@ type Partner implements Node {
   collectingInstitution: String
   counts: PartnerCounts
   defaultProfileID: String
+
+  # Artworks Elastic Search results
+  filterArtworksConnection(
+    acquireable: Boolean
+    after: String
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    artistNationalities: [String]
+    artistSeriesID: String
+    atAuction: Boolean
+    attributionClass: [String]
+    before: String
+    color: String
+    dimensionRange: String
+    excludeArtworkIDs: [String]
+    extraAggregationGeneIDs: [String]
+    first: Int
+    forSale: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    inquireableOnly: Boolean
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    last: Int
+    majorPeriods: [String]
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    offerable: Boolean
+    page: Int
+    partnerCities: [String]
+    partnerID: ID
+    period: String
+    periods: [String]
+    priceRange: String
+    saleID: ID
+    size: Int
+
+    # Filter results by Artwork sizes
+    sizes: [ArtworkSizes]
+    sort: String
+    tagID: String
+    width: String
+  ): FilterArtworksConnection
   hasFairPartnership: Boolean
   href: String
 
