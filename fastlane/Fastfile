@@ -265,10 +265,6 @@ lane :promote_beta_ios do
   latest_build = app.get_builds.first
   build_number = latest_build.version
 
-
-  puts "Got next app version #{next_app_store_version}"
-  puts "Got build number #{build_number}"
-
   puts "Let's deliver beta #{next_app_store_version} (#{build_number}) with build number #{build_number}."
   deliver(
     api_key: api_key,
@@ -317,6 +313,8 @@ lane :promote_beta_ios do
 end
 
 lane :notify_if_new_license_agreement do
+  # TODO: This login method will no longer work for CI with 2fa being enforced
+  # Check spaceship docs for future support with api key
   client = Spaceship::Tunes.login(ENV['FASTLANE_USERNAME'], ENV['FASTLANE_PASSWORD'])
   client.team_id = '479887'
   messages = Spaceship::Tunes.client.fetch_program_license_agreement_messages
