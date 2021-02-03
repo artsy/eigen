@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6d4c54f3583edf3947f7c26f4b62b0f6 */
+/* @relayHash c9d50c61559ce7b240dc4433a2563a2f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -9,8 +9,8 @@ export type MarketStatsQueryVariables = {
     artistInternalID: string;
 };
 export type MarketStatsQueryResponse = {
-    readonly priceInsights: {
-        readonly " $fragmentRefs": FragmentRefs<"MarketStats_priceInsights">;
+    readonly priceInsightsConnection: {
+        readonly " $fragmentRefs": FragmentRefs<"MarketStats_priceInsightsConnection">;
     } | null;
 };
 export type MarketStatsQuery = {
@@ -24,12 +24,12 @@ export type MarketStatsQuery = {
 query MarketStatsQuery(
   $artistInternalID: ID!
 ) {
-  priceInsights(artistId: $artistInternalID) {
-    ...MarketStats_priceInsights
+  priceInsightsConnection: priceInsights(artistId: $artistInternalID, sort: DEMAND_RANK_DESC) {
+    ...MarketStats_priceInsightsConnection
   }
 }
 
-fragment MarketStats_priceInsights on PriceInsightConnection {
+fragment MarketStats_priceInsightsConnection on PriceInsightConnection {
   edges {
     node {
       medium
@@ -56,6 +56,11 @@ v1 = [
     "kind": "Variable",
     "name": "artistId",
     "variableName": "artistInternalID"
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "DEMAND_RANK_DESC"
   }
 ];
 return {
@@ -66,7 +71,7 @@ return {
     "name": "MarketStatsQuery",
     "selections": [
       {
-        "alias": null,
+        "alias": "priceInsightsConnection",
         "args": (v1/*: any*/),
         "concreteType": "PriceInsightConnection",
         "kind": "LinkedField",
@@ -76,7 +81,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "MarketStats_priceInsights"
+            "name": "MarketStats_priceInsightsConnection"
           }
         ],
         "storageKey": null
@@ -92,7 +97,7 @@ return {
     "name": "MarketStatsQuery",
     "selections": [
       {
-        "alias": null,
+        "alias": "priceInsightsConnection",
         "args": (v1/*: any*/),
         "concreteType": "PriceInsightConnection",
         "kind": "LinkedField",
@@ -169,7 +174,7 @@ return {
     ]
   },
   "params": {
-    "id": "6d4c54f3583edf3947f7c26f4b62b0f6",
+    "id": "c9d50c61559ce7b240dc4433a2563a2f",
     "metadata": {},
     "name": "MarketStatsQuery",
     "operationKind": "query",
@@ -177,5 +182,5 @@ return {
   }
 };
 })();
-(node as any).hash = '95fea73a9e452feb917a979cc4322c0c';
+(node as any).hash = '9d5ded2803382428ef7cb7ca0e062037';
 export default node;
