@@ -5,7 +5,11 @@ import React, { useCallback, useContext, useMemo, useRef, useState } from "react
 import { Toast, ToastProps, ToastPlacement } from "./Toast"
 
 interface ToastContextValue {
-  show: (message: string, placement: ToastPlacement, options?: Omit<ToastProps, "id" | "placement" | "message">) => void
+  show: (
+    message: string,
+    placement: ToastPlacement,
+    options?: Omit<ToastProps, "id" | "positionIndex" | "placement" | "message">
+  ) => void
   hide: (id: string) => void
   hideOldest: () => void
 }
@@ -26,8 +30,19 @@ export const useToast = () => {
   )
 }
 
+const filterToastsAndPosition = (
+  toasts: Omit<ToastProps, "positionIndex">[],
+  placement: ToastPlacement
+): ToastProps[] =>
+  toasts
+    .filter((t) => t.placement === placement)
+    .reduce<{ idx: number; arr: ToastProps[] }>(
+      ({ idx, arr }, t) => ({ idx: idx + 1, arr: [...arr, { ...t, positionIndex: idx }] }),
+      { idx: 0, arr: [] }
+    ).arr
+
 export const ToastProvider: React.FC = ({ children }) => {
-  const [toasts, setToasts] = useState<ToastProps[]>([])
+  const [toasts, setToasts] = useState<Omit<ToastProps, "positionIndex">[]>([])
   const [id, incrementId] = useCounter()
 
   const show: ToastContextValue["show"] = useCallback(
@@ -52,10 +67,14 @@ export const ToastProvider: React.FC = ({ children }) => {
     })
   }, [setToasts])
 
+  const topToasts = useMemo(() => filterToastsAndPosition(toasts, "top"), [toasts])
+  const bottomToasts = useMemo(() => filterToastsAndPosition(toasts, "bottom"), [toasts])
+  const middleToasts = useMemo(() => filterToastsAndPosition(toasts, "middle"), [toasts])
+
   return (
     <ToastContext.Provider value={{ show, hide, hideOldest }}>
       {children}
-      {toasts.map((toastProps) => (
+      {[...topToasts, ...bottomToasts, ...middleToasts].map((toastProps) => (
         <Toast key={toastProps.id} {...toastProps} />
       ))}
     </ToastContext.Provider>

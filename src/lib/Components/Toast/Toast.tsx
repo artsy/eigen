@@ -3,10 +3,12 @@ import useTimeoutFn from "react-use/lib/useTimeoutFn"
 import { color, Flex, IconProps, Text, Touchable } from "palette"
 import React from "react"
 import { useToast } from "./toastHook"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export type ToastPlacement = "middle" | "top" | "bottom"
 export interface ToastProps {
   id: string
+  positionIndex: number
 
   placement: ToastPlacement
   message: string
@@ -15,20 +17,20 @@ export interface ToastProps {
   Icon?: React.FC<IconProps>
 }
 
-export const Toast: React.FC<ToastProps> = ({ id, placement, message, onPress, Icon }) => {
+export const Toast: React.FC<ToastProps> = ({ id, positionIndex, placement, message, onPress, Icon }) => {
   const { width, height } = useScreenDimensions()
   const { hide } = useToast()
+  const { top: topSafeAreaInset } = useSafeAreaInsets()
 
-  const [isReady, cancel, reset] = useTimeoutFn(() => {
+  useTimeoutFn(() => {
     hide(id)
-  }, 2000)
+  }, 2500)
 
 
   if (placement === "middle") {
     const inner = (
       <Flex flex={1} alignItems="center" justifyContent="center">
         {Icon !== undefined ? <Icon fill="white100" width={45} height={45} /> : null}
-        {/* if its not onPress, disable the touch ui feedback */}
         <Text variant="caption" color="white100">
           {message}
         </Text>
@@ -58,11 +60,35 @@ export const Toast: React.FC<ToastProps> = ({ id, placement, message, onPress, I
     )
   }
 
+  const inner = (
+    <Flex flex={1} flexDirection="row" alignItems="center" mx="2">
+      {Icon !== undefined ? <Icon fill="white100" width={25} height={25} mr="1" /> : null}
+      <Text variant="caption" color="white100">
+        {message}
+      </Text>
+    </Flex>
+  )
+
   return (
-    <Flex position="absolute" bottom={70 * parseInt(id)} backgroundColor="white">
-      <Touchable onPress={() => onPress !== undefined && onPress(id)}>
-        <Text> WOW {message} </Text>
-      </Touchable>
+    <Flex
+      position="absolute"
+      left="1"
+      right="1"
+      height={60}
+      bottom={placement === "bottom" ? 10 + positionIndex * (60 + 10) : undefined}
+      top={placement === "top" ? topSafeAreaInset + 44 + 10 + positionIndex * (60 + 10) : undefined}
+      backgroundColor={color("black100")}
+      opacity={0.9}
+      borderRadius={5}
+      overflow="hidden"
+    >
+      {onPress !== undefined ? (
+        <Touchable style={{ flex: 1 }} onPress={() => onPress(id)} underlayColor={color("black60")}>
+          {inner}
+        </Touchable>
+      ) : (
+        inner
+      )}
     </Flex>
   )
 }
