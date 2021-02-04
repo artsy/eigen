@@ -68,7 +68,6 @@ const IGStoryViewShot: React.FC<IGStoryViewShotProps> = ({ shotRef, href, aspect
             <Image source={{ uri: href }} style={{ flex: 1 }} resizeMode="contain" />
           </Flex>
           <Flex
-            // backgroundColor="red"
             width="100%"
             mt={40}
             mb={180}

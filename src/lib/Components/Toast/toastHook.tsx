@@ -1,10 +1,13 @@
 // Some stealing from https://github.com/arnnis/react-native-fast-toast
 // but simplified
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
+import { useCounter } from "lib/utils/useCounter"
+import React, { useCallback, useContext, useMemo, useRef, useState } from "react"
 import { Toast, ToastProps } from "./Toast"
 
 interface ToastContextValue {
-  show: (message: string) => void
+  show: (message: string, options?: { onPress?: (id: string) => void }) => void
+  hide: (id: string) => void
+  hideOldest: () => void
 }
 
 const ToastContext = React.createContext((null as unknown) as ToastContextValue)
@@ -15,6 +18,7 @@ export const useToast = () => {
   return useMemo(
     () => ({
       show: contextValue.show,
+      hide: contextValue.hide,
       hideOldest: contextValue.hideOldest,
     }),
     [contextValue]
@@ -22,32 +26,34 @@ export const useToast = () => {
 }
 
 export const ToastProvider: React.FC = ({ children }) => {
-  const [refState, setRefState] = useState<ToastContextValue | null>(null)
+  const toastRef = useRef(null)
   const [toasts, setToasts] = useState<ToastProps[]>([])
+  const [id, incrementId] = useCounter()
 
-  const show = (message: string) => {
-    setToasts((prevToasts) => [
-      ...prevToasts,
-      { id: Math.random().toString(), message: message + Math.random().toString() },
-    ])
-  }
+  const show: ToastContextValue["show"] = useCallback(
+    (message, options) => {
+      setToasts((prevToasts) => [...prevToasts, { id: `${id}`, message: message + `${id}`, onPress: options?.onPress }])
+      incrementId()
+    },
+    [setToasts, id, incrementId]
+  )
 
-  const hideOldest = () => {
+  const hide: ToastContextValue["hide"] = useCallback(
+    (id) => {
+      setToasts((prevToasts) => prevToasts.filter((t) => t.id !== id))
+    },
+    [setToasts]
+  )
+
+  const hideOldest: ToastContextValue["hideOldest"] = useCallback(() => {
     setToasts((prevToasts) => {
       const [, ...tail] = prevToasts
       return tail
     })
-  }
-
-  useEffect(() => {
-    setRefState({
-      show,
-      hideOldest,
-    })
-  }, [])
+  }, [setToasts])
 
   return (
-    <ToastContext.Provider value={refState!}>
+    <ToastContext.Provider value={{ show, hide, hideOldest }}>
       {children}
       {toasts.map((toastProps) => (
         <Toast ref={toastRef} {...toastProps} />
