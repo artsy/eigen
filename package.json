@@ -30,7 +30,7 @@
     "lint-fix": "yarn lint -- --fix",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "open-sim": "open -a Simulator",
-    "postinstall": "prettier --write package.json",
+    "postinstall": "prettier --write package.json && ./scripts/update-echo",
     "prepare": "patch-package",
     "prettier-project": "yarn run prettier-write 'src/**/*.{ts,tsx}'",
     "prettier-write": "prettier --write",
