@@ -77,26 +77,26 @@ describe("MarketStats", () => {
       return tree
     }
 
-    it("displays down arrow when percentage is under 100", () => {
+    it("displays down arrow when percentage is negative", () => {
       const tree = renderWithOnePriceInsightNode({
-        medianSaleOverEstimatePercentage: 90,
+        medianSaleOverEstimatePercentage: -10,
       })
 
       expect(tree.findByType(DecreaseIcon)).toBeDefined()
     })
 
-    it("displays no arrow when percentage is 100", () => {
+    it("displays no arrow when percentage is 0", () => {
       const tree = renderWithOnePriceInsightNode({
-        medianSaleOverEstimatePercentage: 100,
+        medianSaleOverEstimatePercentage: 0,
       })
 
       expect(tree.findAllByType(DecreaseIcon).length).toEqual(0)
       expect(tree.findAllByType(IncreaseIcon).length).toEqual(0)
     })
 
-    it("displays up arrow when percentage is over 100", () => {
+    it("displays up arrow when percentage is positive", () => {
       const tree = renderWithOnePriceInsightNode({
-        medianSaleOverEstimatePercentage: 110,
+        medianSaleOverEstimatePercentage: 10,
       })
 
       expect(tree.findByType(IncreaseIcon)).toBeDefined()
