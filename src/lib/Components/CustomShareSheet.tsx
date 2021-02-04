@@ -1,5 +1,5 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, ChevronIcon, Flex, FlexSpacer, Spacer, Text, Touchable } from "palette"
+import { ChevronIcon, Flex, FlexSpacer, Text, Touchable } from "palette"
 import React from "react"
 import { FancyModal } from "./FancyModal/FancyModal"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
@@ -14,7 +14,7 @@ export const CustomShareSheet: React.FC<CustomShareSheetProps> = ({ children, vi
 
   return (
     <FancyModal maxHeight={screenHeight / 2} visible={visible} onBackgroundPressed={() => setVisible(false)}>
-      <FancyModalHeader leftButtonIcon="close" onLeftButtonPress={() => setVisible(false)}>
+      <FancyModalHeader useXButton onLeftButtonPress={() => setVisible(false)}>
         Share
       </FancyModalHeader>
       {children}

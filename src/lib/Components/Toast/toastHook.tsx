@@ -1,7 +1,7 @@
 // Some stealing from https://github.com/arnnis/react-native-fast-toast
 // but simplified
 import { useCounter } from "lib/utils/useCounter"
-import React, { useCallback, useContext, useMemo, useRef, useState } from "react"
+import React, { useCallback, useContext, useMemo, useState } from "react"
 import { Toast, ToastProps, ToastPlacement } from "./Toast"
 
 interface ToastContextValue {
