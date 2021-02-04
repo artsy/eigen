@@ -37,7 +37,12 @@ export const ConfigModel: ConfigModel = {
         result[key] = state.adminFeatureFlagOverrides[key as FeatureName]
       } else if (feature.readyForRelease) {
         // If the feature is ready for release, the echo flag takes precedence
-        result[key] = state.echoState.features.find((f) => f.name === feature.echoFlagKey)?.value ?? true
+        const echoFlag = state.echoState.features.find((f) => f.name === feature.echoFlagKey)
+
+        if (feature.echoFlagKey && !echoFlag && __DEV__) {
+          console.error("No echo flag found for feature", key)
+        }
+        result[key] = echoFlag?.value ?? true
       } else {
         // If the feature is not ready for release, uh, don't show it
         result[key] = false

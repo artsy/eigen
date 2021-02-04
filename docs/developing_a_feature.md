@@ -69,7 +69,9 @@ Alternatively, or at some point in the future, you can simply delete the feature
 
 However, often for complex features we want the ability to turn the feature off if something goes horribly wrong. To provide that ability, you should add an echo flag with the same name. [Here's an example PR for how to do that](https://github.com/artsy/echo/pull/70/files).
 
-After adding the echo key, when you mark the feature as being ready for release you can link the feature to the echo flag by specifying the key.
+After adding the echo key, update you local copy of echo by running `./scripts/update-echo`.
+
+Then when you mark the feature as being ready for release you can link the feature to the echo flag by specifying the key.
 
 ```diff
    ARShowMarketingBanner: {
@@ -81,8 +83,6 @@ After adding the echo key, when you mark the feature as being ready for release 
 ```
 
 With this setup, the echo flag will be the source of truth for whether or not to enable the feature. You can turn the echo flag off or on to control the feature for all users.
-
-<em>💡 If you make Echo changes, you can update the local bundled copy of the echo settings by running `./scripts/update-echo` in Eigen. This is done automatically when running `pod install`. The app also fetches the latest echo config for itself when launching, so you shouldn't need to do this manually.</em>
 
 ## QAing
 

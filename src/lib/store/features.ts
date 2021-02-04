@@ -1,12 +1,13 @@
 export interface FeatureDescriptor {
   /**
    * Set readyForRelease to `true` when the feature is ready to be exposed outside of dev mode.
-   * Echo flags and gravity lab features still take precedence after this is set to `true`.
+   * If an echo flag key is specified, the echo flag's value will be used after this is set to `true`.
    * If this is set to `false`, the feature will never be shown except if overridden in the admin menu.
    */
   readonly readyForRelease: boolean
   /**
    * Provide an echo feature flag key to allow this feature to be toggled globally via echo.
+   * Make sure to add the flag to echo before setting this value. Then run ./scripts/update-echo
    */
   readonly echoFlagKey?: string
   /**
