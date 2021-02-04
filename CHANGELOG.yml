@@ -30,6 +30,7 @@ upcoming:
     - Remove separator from last auction result - mounir
     - Show mid-estimate performance on auction results - mounir
     - Loading skeleton for market stats - pepopowitz
+    - Convert cents to dollars in market stats - pepopowitz
 
 releases:
   - version: 6.7.6
