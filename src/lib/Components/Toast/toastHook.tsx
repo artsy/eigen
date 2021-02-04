@@ -11,9 +11,10 @@ interface ToastContextValue {
 }
 
 const ToastContext = React.createContext((null as unknown) as ToastContextValue)
+const useToastContext = () => useContext(ToastContext)
 
 export const useToast = () => {
-  const contextValue = useContext(ToastContext)
+  const contextValue = useToastContext()
 
   return useMemo(
     () => ({
@@ -26,7 +27,6 @@ export const useToast = () => {
 }
 
 export const ToastProvider: React.FC = ({ children }) => {
-  const toastRef = useRef(null)
   const [toasts, setToasts] = useState<ToastProps[]>([])
   const [id, incrementId] = useCounter()
 
@@ -56,7 +56,7 @@ export const ToastProvider: React.FC = ({ children }) => {
     <ToastContext.Provider value={{ show, hide, hideOldest }}>
       {children}
       {toasts.map((toastProps) => (
-        <Toast ref={toastRef} {...toastProps} />
+        <Toast key={toastProps.id} {...toastProps} />
       ))}
     </ToastContext.Provider>
   )
