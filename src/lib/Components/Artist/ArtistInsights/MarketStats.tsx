@@ -83,9 +83,9 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
 
   let deltaIcon: React.ReactNode
   const actualMedianSaleOverEstimatePercentage = selectedPriceInsight?.medianSaleOverEstimatePercentage || 0
-  if (actualMedianSaleOverEstimatePercentage < 0) {
+  if (actualMedianSaleOverEstimatePercentage < 100) {
     deltaIcon = <DecreaseIcon />
-  } else if (actualMedianSaleOverEstimatePercentage > 0) {
+  } else if (actualMedianSaleOverEstimatePercentage > 100) {
     deltaIcon = <IncreaseIcon />
   }
 

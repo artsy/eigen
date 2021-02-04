@@ -28,7 +28,6 @@ upcoming:
     - Remove separator from last auction result - mounir
     - Show mid-estimate performance on auction results - mounir
     - MarketStats on auction results - pepopowitz, mounir
-    - fix - show correct up/down arrows on Market Stats - pepopowitz
 
 releases:
   - version: 6.7.6
