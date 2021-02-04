@@ -3,6 +3,7 @@ import { Theme } from "palette"
 import React from "react"
 import { View } from "react-native"
 import track from "react-tracking"
+import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { LogIn } from "./LogIn/LogIn"
 import { ModalStack } from "./navigation/ModalStack"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
@@ -31,9 +32,11 @@ export const App = () => (
   <ProvideScreenDimensions>
     <Theme>
       <GlobalStoreProvider>
-        <AdminMenuWrapper>
-          <Main />
-        </AdminMenuWrapper>
+        <_FancyModalPageWrapper>
+          <AdminMenuWrapper>
+            <Main />
+          </AdminMenuWrapper>
+        </_FancyModalPageWrapper>
       </GlobalStoreProvider>
     </Theme>
   </ProvideScreenDimensions>
