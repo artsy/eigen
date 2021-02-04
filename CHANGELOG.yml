@@ -1,6 +1,6 @@
 upcoming:
-  version: 6.7.7
-  date: Feb 4, 2021
+  version: 6.7.8
+  date: TBD
   dev:
     - Use api key in fastlane scripts - brian, mounir
   user_facing:
