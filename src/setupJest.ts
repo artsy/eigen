@@ -28,6 +28,9 @@ jest.mock("react-native-screens/native-stack", () => {
   }
 })
 
+// tslint:disable-next-line:no-var-requires
+require("jest-fetch-mock").enableMocks()
+
 jest.mock("react-tracking")
 import track, { useTracking } from "react-tracking"
 const trackEvent = jest.fn()
