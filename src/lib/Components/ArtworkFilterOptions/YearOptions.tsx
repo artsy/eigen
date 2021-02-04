@@ -2,7 +2,7 @@ import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterContext, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { aggregationForFilter, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import { Box, CheckIcon, color, Flex, Separator, Text } from "palette"
+import { Box, CheckIcon, color, Flex, Spacer, Text } from "palette"
 import React, { useContext, useState } from "react"
 import { TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
@@ -87,7 +87,6 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
         paramName: FilterParamName.allowEmptyCreatedDates,
       },
     })
-
     setAllowEmptyCreatedDates(!allowEmptyCreatedDates)
   }
 
@@ -96,7 +95,7 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
       <FancyModalHeader onLeftButtonPress={navigation.goBack}>Year created</FancyModalHeader>
       <Flex flexGrow={1} py={2}>
         <YearText variant="text" mb={15} mx={2}>
-          {sliderValues[0]} - {sliderValues[1]}
+          {sliderValues[0]} – {sliderValues[1]}
         </YearText>
         <Flex alignItems="center" mx={2}>
           <MultiSlider
@@ -123,7 +122,7 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
             }}
           />
         </Flex>
-        <Separator mt={2} />
+        <Spacer mt={2} />
         <OptionItem
           onPress={handleAllowEmptyCreatedDatesPress}
           text={ALLOW_EMPTY_CREATED_DATES_FILTER.displayText}
@@ -164,12 +163,32 @@ export const YearText = styled(Text)`
 
 const CustomMarker = () => <BlackCircle />
 
-export const BlackCircle = styled(View)`
-  height: 24;
-  width: 24;
-  top: 2;
-  border-radius: 12;
-  background-color: ${color("black100")};
-  border-width: 2;
-  border-color: ${color("white100")};
-`
+export const BlackCircle: React.FC = () => {
+  const exteriorCircleSize = 24
+  const interiorCircleSize = 24 * 0.85
+
+  return (
+    <Flex
+      flexDirection={"column"}
+      justifyContent={"center"}
+      alignItems={"center"}
+      alignContent={"center"}
+      height={exteriorCircleSize}
+      width={exteriorCircleSize}
+      mt={"5px"}
+      borderRadius={exteriorCircleSize / 2}
+      style={{
+        backgroundColor: color("white100"),
+      }}
+    >
+      <View
+        style={{
+          width: interiorCircleSize,
+          height: interiorCircleSize,
+          borderRadius: interiorCircleSize / 2,
+          backgroundColor: color("black100"),
+        }}
+      />
+    </Flex>
+  )
+}
