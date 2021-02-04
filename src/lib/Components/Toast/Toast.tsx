@@ -1,10 +1,10 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import useTimeoutFn from "react-use/lib/useTimeoutFn"
 import { color, Flex, IconProps, Text, Touchable } from "palette"
 import React, { useEffect, useState } from "react"
-import { useToast } from "./toastHook"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Animated } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+import useTimeoutFn from "react-use/lib/useTimeoutFn"
+import { useToast } from "./toastHook"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 

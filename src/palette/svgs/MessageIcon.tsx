@@ -1,7 +1,7 @@
 import React from "react"
 import { Path } from "react-native-svg"
-import { Icon, IconProps } from "./Icon"
 import { color } from "../Theme"
+import { Icon, IconProps } from "./Icon"
 
 /** MessageIcon */
 export const MessageIcon: React.FC<IconProps> = (props) => {

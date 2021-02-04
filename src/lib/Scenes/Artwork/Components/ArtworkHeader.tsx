@@ -1,38 +1,38 @@
+import Clipboard from "@react-native-community/clipboard"
 import { ArtworkHeader_artwork } from "__generated__/ArtworkHeader_artwork.graphql"
+import Color from "color"
+import { CustomShareSheet, CustomShareSheetItem } from "lib/Components/CustomShareSheet"
+import { useToast } from "lib/Components/Toast/toastHook"
+import { useEmissionOption } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
+import { useCanOpenURL } from "lib/utils/useCanOpenURL"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import {
   ArtsyLogoBlackIcon,
   Box,
+  color,
   Flex,
   FlexProps,
-  WhatsAppAppIcon,
   InstagramAppIcon,
   LinkIcon,
   MoreIcon,
+  ShareIcon,
   Spacer,
   Text,
-  color,
-  ShareIcon,
+  WhatsAppAppIcon,
 } from "palette"
 import React, { RefObject, useRef, useState } from "react"
+import { Image } from "react-native"
+import { ScrollView } from "react-native-gesture-handler"
 // @ts-ignore
 import Share from "react-native-share"
+import ViewShot from "react-native-view-shot"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import RNFetchBlob from "rn-fetch-blob"
 import { ArtworkActionsFragmentContainer as ArtworkActions, shareContent } from "./ArtworkActions"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./ArtworkTombstone"
 import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
-import ViewShot from "react-native-view-shot"
-import Color from "color"
-import { useEmissionOption } from "lib/store/GlobalStore"
-import { CustomShareSheet, CustomShareSheetItem } from "lib/Components/CustomShareSheet"
-import Clipboard from "@react-native-community/clipboard"
-import { ScrollView } from "react-native-gesture-handler"
-import { Image } from "react-native"
-import { useCanOpenURL } from "lib/utils/useCanOpenURL"
-import { useToast } from "lib/Components/Toast/toastHook"
 
 const InstagramStoryBackgroundDimensions = {
   width: 1080,

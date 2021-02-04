@@ -1,3 +1,4 @@
+import Clipboard from "@react-native-community/clipboard"
 import MapboxGL from "@react-native-mapbox-gl/maps"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import { Pin } from "lib/Icons/Pin"
@@ -8,7 +9,6 @@ import { ActionSheetIOS, Linking, TouchableOpacity } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
-import Clipboard from "@react-native-community/clipboard"
 
 MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 

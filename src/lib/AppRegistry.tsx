@@ -70,6 +70,7 @@ import { Search } from "./Scenes/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
+import { ToastProvider } from "./Components/Toast/toastHook"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
@@ -84,7 +85,6 @@ import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRooms
 import { GlobalStore, GlobalStoreProvider, useSelectedTab } from "./store/GlobalStore"
 import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
-import { ToastProvider } from "./Components/Toast/toastHook"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",

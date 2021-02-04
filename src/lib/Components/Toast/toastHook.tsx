@@ -2,7 +2,7 @@
 // but simplified
 import { useCounter } from "lib/utils/useCounter"
 import React, { useCallback, useContext, useMemo, useState } from "react"
-import { Toast, ToastProps, ToastPlacement } from "./Toast"
+import { Toast, ToastPlacement, ToastProps } from "./Toast"
 
 interface ToastContextValue {
   show: (
@@ -31,7 +31,7 @@ export const useToast = () => {
 }
 
 const filterToastsAndPosition = (
-  toasts: Omit<ToastProps, "positionIndex">[],
+  toasts: Array<Omit<ToastProps, "positionIndex">>,
   placement: ToastPlacement
 ): ToastProps[] =>
   toasts
@@ -42,7 +42,7 @@ const filterToastsAndPosition = (
     ).arr
 
 export const ToastProvider: React.FC = ({ children }) => {
-  const [toasts, setToasts] = useState<Omit<ToastProps, "positionIndex">[]>([])
+  const [toasts, setToasts] = useState<Array<Omit<ToastProps, "positionIndex">>>([])
   const [id, incrementId] = useCounter()
 
   const show: ToastContextValue["show"] = useCallback(
