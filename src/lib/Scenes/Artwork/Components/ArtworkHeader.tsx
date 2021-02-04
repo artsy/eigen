@@ -13,6 +13,7 @@ import {
   Spacer,
   Text,
   color,
+  ShareIcon,
 } from "palette"
 import React, { RefObject, useRef, useState } from "react"
 // @ts-ignore
@@ -101,7 +102,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   const enableCustomShare = useEmissionOption("AREnableCustomSharesheet")
   const shotRef = useRef<ViewShot>(null)
   const [shareSheetVisible, setShareSheetVisible] = useState(false)
-  // const toast = useToast()
+  const toast = useToast()
   const showWhatsAppItem = useCanOpenURL("whatsapp://test")
   const showInstagramStoriesItem = useCanOpenURL("instagram-stories://test")
 
@@ -172,6 +173,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   const shareArtworkCopyLink = async () => {
     Clipboard.setString(`https://artsy.net${artwork.href!}`)
     setShareSheetVisible(false)
+    toast.show("Copied to Clipboard", "middle", { Icon: ShareIcon })
   }
 
   return (

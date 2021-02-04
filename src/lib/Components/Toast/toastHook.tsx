@@ -2,10 +2,10 @@
 // but simplified
 import { useCounter } from "lib/utils/useCounter"
 import React, { useCallback, useContext, useMemo, useRef, useState } from "react"
-import { Toast, ToastProps } from "./Toast"
+import { Toast, ToastProps, ToastPlacement } from "./Toast"
 
 interface ToastContextValue {
-  show: (message: string, options?: { onPress?: (id: string) => void }) => void
+  show: (message: string, placement: ToastPlacement, options?: Omit<ToastProps, "id" | "placement" | "message">) => void
   hide: (id: string) => void
   hideOldest: () => void
 }
@@ -31,8 +31,8 @@ export const ToastProvider: React.FC = ({ children }) => {
   const [id, incrementId] = useCounter()
 
   const show: ToastContextValue["show"] = useCallback(
-    (message, options) => {
-      setToasts((prevToasts) => [...prevToasts, { id: `${id}`, message: message + `${id}`, onPress: options?.onPress }])
+    (message, placement, options) => {
+      setToasts((prevToasts) => [...prevToasts, { id: `${id}`, placement, message, ...options }])
       incrementId()
     },
     [setToasts, id, incrementId]
