@@ -24,7 +24,6 @@ import { ArtworkActionsFragmentContainer as ArtworkActions, shareContent } from 
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./ArtworkTombstone"
 import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
 import ViewShot from "react-native-view-shot"
-// @ts-ignore
 import Color from "color"
 import { useEmissionOption } from "lib/store/GlobalStore"
 import { CustomShareSheet, CustomShareSheetItem } from "lib/Components/CustomShareSheet"
@@ -164,8 +163,8 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
     await Share.shareSingle({
       social: Share.Social.INSTAGRAM_STORIES,
       method: Share.InstagramStories.SHARE_BACKGROUND_IMAGE,
-      backgroundTopColor: color("white100"),
-      backgroundBottomColor: color("white100"),
+      backgroundTopColor: new Color(color("white100")).hex(),
+      backgroundBottomColor: new Color(color("white100")).hex(),
       backgroundImage: base64Data,
     })
     setShareSheetVisible(false)

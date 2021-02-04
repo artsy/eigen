@@ -186,7 +186,7 @@ function getNativeModules(): typeof NativeModules {
           AROptionsNewFairPage: false,
           AROptionsNewInsightsPage: false,
           AROptionsInquiryCheckout: false,
-          AREnableCustomSharesheet: true,
+          AREnableCustomSharesheet: false,
           AROptionsSentryErrorDebug: false,
         },
         legacyFairSlugs: ["some-fairs-slug", "some-other-fair-slug"],
