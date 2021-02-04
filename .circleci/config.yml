@@ -55,14 +55,15 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v5-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+            - v6-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
       - run:
           name: Install node modules
           command: ls node_modules || yarn install
       - save_cache:
-          key: v5-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+          key: v6-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
+            - Artsy/App/EchoNew.json
   generate-query-map:
     steps:
       - run:
