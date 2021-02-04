@@ -67,6 +67,8 @@ export const ConfigModel: ConfigModel = {
   didRehydrate: thunkOn(
     (_, storeActions) => storeActions.rehydrate,
     (actions, __, store) => {
+      // If the app was just updated, then it's possible that the persisted echo config is
+      // older than the version in this JS bundle. We should always use the latest version
       const persistedEchoTimestamp = moment(store.getState().echoState.updated_at)
       const launchEchoTimestamp = moment(echoLaunchJSON.updated_at)
       if (launchEchoTimestamp.isAfter(persistedEchoTimestamp)) {
