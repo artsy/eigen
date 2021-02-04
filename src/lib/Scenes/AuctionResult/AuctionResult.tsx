@@ -143,6 +143,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
 
   const renderRealizedPriceModal = () => (
     <>
+      <Spacer my={1} />
       <Text>
         The sale price includes the hammer price and buyer’s premium, as well as any other additional fees (e.g.,
         Artist’s Resale Rights).
