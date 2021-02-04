@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-community/async-storage"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
 import { Action, action, Thunk, thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
+import createEnvironment from "lib/relay/createEnvironment"
 import { GlobalStore } from "lib/store/GlobalStore"
 import type { GlobalStoreModel } from "lib/store/GlobalStoreModel"
 import { fetchQuery, graphql } from "react-relay"
@@ -33,7 +33,7 @@ export const BottomTabsModel: BottomTabsModel = {
   }),
   fetchCurrentUnreadConversationCount: thunk(async () => {
     const result = await fetchQuery<BottomTabsModelFetchCurrentUnreadConversationCountQuery>(
-      defaultEnvironment,
+      createEnvironment({ noThrow: false }),
       graphql`
         query BottomTabsModelFetchCurrentUnreadConversationCountQuery {
           me @principalField {

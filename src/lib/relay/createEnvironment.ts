@@ -12,7 +12,7 @@ import { timingMiddleware } from "./middlewares/timingMiddleware"
 
 /// WARNING: Creates a whole new, separate Relay environment. Useful for testing.
 /// Use `defaultEnvironment` for production code.
-export default function createEnvironment() {
+export default function createEnvironment({ noThrow = true }: { noThrow?: boolean } = {}) {
   const network = new RelayNetworkLayer(
     [
       // The top middlewares run
@@ -46,7 +46,7 @@ export default function createEnvironment() {
     ],
     // `noThrow` is currently marked as "experimental" and may be deprecated in the future.
     // See: https://github.com/relay-tools/react-relay-network-modern#advanced-options-2nd-argument-after-middlewares
-    { noThrow: true }
+    { noThrow }
   )
 
   const source = new RecordSource()
