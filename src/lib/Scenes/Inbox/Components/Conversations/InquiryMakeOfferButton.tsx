@@ -1,7 +1,7 @@
+import { navigate } from "lib/navigation/navigate"
 import { Button, Flex, Separator } from "palette"
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components/native"
-import { MakeOfferModalQueryRenderer as MakeOfferModal } from "./MakeOfferModal"
 
 export interface InquiryMakeOfferButtonProps {
   artworkID: string
@@ -14,15 +14,13 @@ const ShadowSeparator = styled(Separator)`
 `
 
 export const InquiryMakeOfferButton: React.FC<InquiryMakeOfferButtonProps> = ({ artworkID }) => {
-  const [modalVisibility, setModalVisibility] = useState(false)
-
   return (
     <>
       <ShadowSeparator />
       <Flex p={1.5}>
         <Button
           onPress={() => {
-            setModalVisibility(true)
+            navigate(`make-offer/${artworkID}`, { modal: true })
           }}
           size="large"
           variant="primaryBlack"
@@ -32,11 +30,6 @@ export const InquiryMakeOfferButton: React.FC<InquiryMakeOfferButtonProps> = ({ 
           Make Offer
         </Button>
       </Flex>
-      <MakeOfferModal
-        artworkID={artworkID}
-        toggleVisibility={() => setModalVisibility(!modalVisibility)}
-        modalIsVisible={modalVisibility}
-      />
     </>
   )
 }

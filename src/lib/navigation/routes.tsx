@@ -147,6 +147,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     new RouteMatcher("/city-bmw-list/:citySlug", "CityBMWList"),
     new RouteMatcher("/:slug", "VanityURLEntity"),
+    new RouteMatcher("/make-offer/:artworkID", "MakeOfferModal"),
+    new RouteMatcher("/orders/:orderID", "Checkout"),
 
     new RouteMatcher("/*", "WebView", (params) => ({ url: "/" + params["*"] })),
   ])

@@ -187,9 +187,6 @@ jobs:
       - checkout
       - install-node
       - run:
-          name: Notify if new developer agreement
-          command: ./scripts/notify-if-new-license-agreement
-      - run:
           name: Deploy beta
           command: ./scripts/deploy-both
 

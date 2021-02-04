@@ -12,6 +12,7 @@ upcoming:
     - Validate CHANGELOG.yml - brian, pavlos, brian, adam, steven, david, mounir
     - Add increase/decrease icons - pepopowitz
     - Add android navigation infra - david, mounir
+    - Use api key in fastlane scripts - brian, mounir
   user_facing:
     - Added watched lots to MyBids - erik, ashley, christina
     - Refresh inbox automatically upon revisiting - erik, lily
@@ -20,6 +21,7 @@ upcoming:
     - Show filter button when there are less than 2 auction results available - mounir
     - Hide artist insights tab when no auction results are available - mounir
     - show FilteredArtworkGridZeroState when no results are available  - mounir
+    - hooks up inquiry make offer modal to web view checkout flow - lily
     - show total count of auction results  - mounir
     - Add info modals to artist insights and auction results - brian
     - Make AuctionResult screen fields selectable  - mounir
@@ -29,6 +31,7 @@ upcoming:
     - Show mid-estimate performance on auction results - mounir
     - MarketStats on auction results - pepopowitz, mounir
     - fix - show correct up/down arrows on Market Stats - pepopowitz
+    - Loading skeleton for market stats - pepopowitz
 
 releases:
   - version: 6.7.6
