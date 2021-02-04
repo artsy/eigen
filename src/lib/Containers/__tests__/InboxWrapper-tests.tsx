@@ -14,6 +14,7 @@ jest.mock("lib/Containers/Inbox/InboxOld", () => ({
 
 describe("InboxWrapper", () => {
   it("shows the OldInbox if the AROptionsBidManagement flag is not set", () => {
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsBidManagement: false })
     const tree = renderWithWrappers(<InboxWrapper isVisible={true} />)
     expect(tree.root.findAllByType(InboxOldQueryRenderer).length).toEqual(1)
     expect(tree.root.findAllByType(InboxQueryRenderer).length).toEqual(0)

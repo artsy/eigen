@@ -98,7 +98,8 @@ describe("Artwork", () => {
   )
 
   beforeEach(() => {
-    environment = createMockEnvironment()
+    require("lib/relay/createEnvironment").reset()
+    environment = require("lib/relay/createEnvironment").defaultEnvironment
     ;(useTracking as jest.Mock).mockImplementation(() => {
       return {
         trackEvent,
@@ -304,6 +305,7 @@ describe("Artwork", () => {
   })
 
   it("refetches on re-appear", async () => {
+    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsLotConditionReport: false })
     const tree = renderWithWrappers(<TestRenderer />)
 
     mockMostRecentOperation("ArtworkAboveTheFoldQuery")
