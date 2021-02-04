@@ -91,16 +91,21 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
 const Buttons: React.FC<{ onClose(): void }> = ({ onClose }) => {
   return (
     <View style={{ position: "absolute", top: 29, right: 20, flexDirection: "row", alignItems: "center" }}>
-      <TouchableOpacity
-        onPress={() => {
-          onClose()
-          requestAnimationFrame(() => DevSettings.reload())
-        }}
-        hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
-      >
-        <ReloadIcon width={16} height={16} />
-      </TouchableOpacity>
-      <Spacer mr="2" />
+      {!!__DEV__ && (
+        <>
+          <TouchableOpacity
+            onPress={() => {
+              onClose()
+              requestAnimationFrame(() => DevSettings.reload())
+            }}
+            hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
+          >
+            <ReloadIcon width={16} height={16} />
+          </TouchableOpacity>
+          <Spacer mr="2" />
+        </>
+      )}
+
       <TouchableOpacity onPress={onClose} hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}>
         <CloseIcon />
       </TouchableOpacity>
