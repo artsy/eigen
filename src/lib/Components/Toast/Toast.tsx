@@ -1,9 +1,12 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
 import { color, Flex, IconProps, Text, Touchable } from "palette"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { useToast } from "./toastHook"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { Animated } from "react-native"
+
+const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
 export type ToastPlacement = "middle" | "top" | "bottom"
 export interface ToastProps {
@@ -21,11 +24,23 @@ export const Toast: React.FC<ToastProps> = ({ id, positionIndex, placement, mess
   const { width, height } = useScreenDimensions()
   const { hide } = useToast()
   const { top: topSafeAreaInset } = useSafeAreaInsets()
+  const [opacityAnim] = useState(new Animated.Value(0))
+
+  useEffect(() => {
+    Animated.timing(opacityAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+      duration: 150,
+    }).start()
+  }, [])
 
   useTimeoutFn(() => {
-    hide(id)
+    Animated.timing(opacityAnim, {
+      toValue: 0,
+      useNativeDriver: true,
+      duration: 450,
+    }).start(() => hide(id))
   }, 2500)
-
 
   if (placement === "middle") {
     const inner = (
@@ -38,14 +53,14 @@ export const Toast: React.FC<ToastProps> = ({ id, positionIndex, placement, mess
     )
 
     return (
-      <Flex
+      <AnimatedFlex
         width={120}
         height={120}
         position="absolute"
         top={(height - 120) / 2}
         left={(width - 120) / 2}
         backgroundColor={color("black100")}
-        opacity={0.9}
+        opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 0.9] })}
         borderRadius={5}
         overflow="hidden"
       >
@@ -56,7 +71,7 @@ export const Toast: React.FC<ToastProps> = ({ id, positionIndex, placement, mess
         ) : (
           inner
         )}
-      </Flex>
+      </AnimatedFlex>
     )
   }
 
@@ -70,7 +85,7 @@ export const Toast: React.FC<ToastProps> = ({ id, positionIndex, placement, mess
   )
 
   return (
-    <Flex
+    <AnimatedFlex
       position="absolute"
       left="1"
       right="1"
@@ -78,7 +93,7 @@ export const Toast: React.FC<ToastProps> = ({ id, positionIndex, placement, mess
       bottom={placement === "bottom" ? 10 + positionIndex * (60 + 10) : undefined}
       top={placement === "top" ? topSafeAreaInset + 44 + 10 + positionIndex * (60 + 10) : undefined}
       backgroundColor={color("black100")}
-      opacity={0.9}
+      opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 0.9] })}
       borderRadius={5}
       overflow="hidden"
     >
@@ -89,6 +104,6 @@ export const Toast: React.FC<ToastProps> = ({ id, positionIndex, placement, mess
       ) : (
         inner
       )}
-    </Flex>
+    </AnimatedFlex>
   )
 }
