@@ -1,7 +1,6 @@
 import { ArtworkHeader_artwork } from "__generated__/ArtworkHeader_artwork.graphql"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { TEXT_VARIANTS } from "palette/elements/Text/tokens"
 import {
   ArtsyLogoBlackIcon,
   Box,
@@ -47,7 +46,7 @@ interface IGStoryViewShotProps {
   title: string
 }
 
-const IGStoryViewShot: React.FC<IGStoryViewShotProps> = ({ shotRef, href, aspectRatio, artist, title }) => {
+const IGStoryViewShot: React.FC<IGStoryViewShotProps> = ({ shotRef, href, artist, title }) => {
   const { height: screenHeight, width: screenWidth } = useScreenDimensions()
 
   const renderOffScreenStyle: FlexProps = {
@@ -104,7 +103,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   const enableCustomShare = useEmissionOption("AREnableCustomSharesheet")
   const shotRef = useRef<ViewShot>(null)
   const [shareSheetVisible, setShareSheetVisible] = useState(false)
-  const toast = useToast()
+  // const toast = useToast()
   const showWhatsAppItem = useCanOpenURL("whatsapp://test")
   const showInstagramStoriesItem = useCanOpenURL("instagram-stories://test")
 
