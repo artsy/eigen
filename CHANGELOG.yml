@@ -29,6 +29,7 @@ upcoming:
     - Add extra bottom padding on artist insights auction results - mounir
     - Remove separator from last auction result - mounir
     - Show mid-estimate performance on auction results - mounir
+    - Loading skeleton for market stats - pepopowitz
 
 releases:
   - version: 6.7.6
