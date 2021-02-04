@@ -8,6 +8,7 @@ upcoming:
     - Configure metaphyiscs and relay for android - david
     - Use @artsy/palette-tokens package - justin, david
     - Explicitly tag releases to fix sentry errors - cx
+    - Migrate feature flag infrastructure to easy-peasy - david
     - Implement analytics on auction results - mounir
     - Validate CHANGELOG.yml - brian, pavlos, brian, adam, steven, david, mounir
     - Add increase/decrease icons - pepopowitz
