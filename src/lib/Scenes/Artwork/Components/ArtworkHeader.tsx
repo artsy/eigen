@@ -40,7 +40,6 @@ const InstagramStoryBackgroundDimensions = {
 interface IGStoryViewShotProps {
   shotRef: RefObject<ViewShot>
   href: string
-  aspectRatio: number
   artist: string
   title: string
 }
@@ -206,7 +205,6 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
           <IGStoryViewShot
             shotRef={shotRef}
             href={currentImageUrl}
-            aspectRatio={currentImage!.aspectRatio}
             artist={artwork.artists![0]?.name!}
             title={artwork.title!}
           />
@@ -242,7 +240,6 @@ export const ArtworkHeaderFragmentContainer = createFragmentContainer(ArtworkHea
         ...ImageCarousel_images
         url: imageURL
         imageVersions
-        aspectRatio
       }
       title
       href
