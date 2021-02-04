@@ -98,6 +98,7 @@ LogBox.ignoreLogs([
 
   // This is for the Artist page, which will likely get redone soon anyway.
   "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
+  "Picker has been extracted",
 ])
 
 interface ArtworkProps {
