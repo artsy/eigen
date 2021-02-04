@@ -64,7 +64,7 @@ export const __globalStoreTestUtils__ = __TEST__
       injectState(state: DeepPartial<GlobalStoreState>) {
         ;(GlobalStore.actions as any).__injectState(state)
       },
-      injectEmissionOptions(options: Partial<FeatureMap>) {
+      injectFeatureFlags(options: Partial<FeatureMap>) {
         this.injectState({ config: { adminFeatureFlagOverrides: options } })
       },
       getCurrentState: () => globalStoreInstance.getState(),

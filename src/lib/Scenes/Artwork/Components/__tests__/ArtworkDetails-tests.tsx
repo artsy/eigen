@@ -104,7 +104,7 @@ describe("Artwork Details", () => {
   })
 
   it("shows request condition report if lot condition report enabled and feature flag is enabled", () => {
-    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsLotConditionReport: true })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsLotConditionReport: true })
 
     const testArtwork: ArtworkDetails_artwork = {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -137,7 +137,7 @@ describe("Artwork Details", () => {
   })
 
   it("does not show request condition report if lot condition report enabled and feature flag is disabled", () => {
-    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsLotConditionReport: false })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsLotConditionReport: false })
 
     const testArtwork: ArtworkDetails_artwork = {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
