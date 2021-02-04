@@ -43,7 +43,7 @@ export const Toast: React.FC<ToastProps> = ({ id, positionIndex, placement, mess
   }, 2500)
 
   if (placement === "middle") {
-    const inner = (
+    const innerMiddle = (
       <Flex flex={1} alignItems="center" justifyContent="center">
         {Icon !== undefined ? <Icon fill="white100" width={45} height={45} /> : null}
         <Text variant="caption" color="white100">
@@ -66,16 +66,16 @@ export const Toast: React.FC<ToastProps> = ({ id, positionIndex, placement, mess
       >
         {onPress !== undefined ? (
           <Touchable style={{ flex: 1 }} onPress={() => onPress(id)} underlayColor={color("black60")}>
-            {inner}
+            {innerMiddle}
           </Touchable>
         ) : (
-          inner
+          innerMiddle
         )}
       </AnimatedFlex>
     )
   }
 
-  const inner = (
+  const innerTopBottom = (
     <Flex flex={1} flexDirection="row" alignItems="center" mx="2">
       {Icon !== undefined ? <Icon fill="white100" width={25} height={25} mr="1" /> : null}
       <Text variant="caption" color="white100">
@@ -99,10 +99,10 @@ export const Toast: React.FC<ToastProps> = ({ id, positionIndex, placement, mess
     >
       {onPress !== undefined ? (
         <Touchable style={{ flex: 1 }} onPress={() => onPress(id)} underlayColor={color("black60")}>
-          {inner}
+          {innerTopBottom}
         </Touchable>
       ) : (
-        inner
+        innerTopBottom
       )}
     </AnimatedFlex>
   )

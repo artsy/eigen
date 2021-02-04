@@ -43,14 +43,14 @@ const filterToastsAndPosition = (
 
 export const ToastProvider: React.FC = ({ children }) => {
   const [toasts, setToasts] = useState<Array<Omit<ToastProps, "positionIndex">>>([])
-  const [id, incrementId] = useCounter()
+  const [nextId, incrementNextId] = useCounter()
 
   const show: ToastContextValue["show"] = useCallback(
     (message, placement, options) => {
-      setToasts((prevToasts) => [...prevToasts, { id: `${id}`, placement, message, ...options }])
-      incrementId()
+      setToasts((prevToasts) => [...prevToasts, { id: `${nextId}`, placement, message, ...options }])
+      incrementNextId()
     },
-    [setToasts, id, incrementId]
+    [setToasts, nextId, incrementNextId]
   )
 
   const hide: ToastContextValue["hide"] = useCallback(
