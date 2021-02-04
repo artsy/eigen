@@ -10,9 +10,13 @@ export interface FeatureDescriptor {
    */
   readonly echoFlagKey?: string
   /**
-   * Provide a description to show the feature flag in the admin menu
+   * Provide a short description for the admin menu
    */
   readonly description?: string
+  /**
+   * Whether or not to show the feature flag in the admin menu. Consider also providing a description.
+   */
+  readonly showInAdminMenu?: boolean
 }
 
 // Helper function to get good typings and intellisense
@@ -42,11 +46,13 @@ export const features = defineFeatures({
   AROptionsInquiryCheckout: {
     readyForRelease: false,
     description: "Enable inquiry checkout",
+    showInAdminMenu: true,
   },
   AROptionsPriceTransparency: {
     readyForRelease: true,
     echoFlagKey: "AROptionsPriceTransparency",
     description: "Price Transparency",
+    showInAdminMenu: true,
   },
   ARDisableReactNativeBidFlow: {
     readyForRelease: true,
@@ -59,6 +65,7 @@ export const features = defineFeatures({
   AROptionsUseReactNativeWebView: {
     readyForRelease: false,
     description: "Use react-native web views",
+    showInAdminMenu: true,
   },
   AROptionsLotConditionReport: {
     readyForRelease: true,

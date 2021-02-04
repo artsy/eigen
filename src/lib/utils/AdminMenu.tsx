@@ -10,8 +10,8 @@ import { Alert, DevSettings, Platform, ScrollView, TouchableOpacity, View } from
 import { useScreenDimensions } from "./useScreenDimensions"
 
 const configurableFeatureFlagKeys = sortBy(
-  Object.entries(features).filter(([_, { description }]) => description),
-  ([_, { description }]) => description
+  Object.entries(features).filter(([_, { showInAdminMenu }]) => showInAdminMenu),
+  ([k, { description }]) => description ?? k
 ).map(([k]) => k as FeatureName)
 
 export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModal }) => {
@@ -115,9 +115,9 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
   const valText = currentValue ? "Yes" : "No"
   return (
     <MenuItem
-      title={features[flagKey].description}
+      title={features[flagKey].description ?? flagKey}
       onPress={() => {
-        Alert.alert(features[flagKey].description!, undefined, [
+        Alert.alert(features[flagKey].description ?? flagKey, undefined, [
           {
             text: "Override with 'Yes'",
             onPress() {

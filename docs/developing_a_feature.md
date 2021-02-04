@@ -25,10 +25,12 @@ In the file `features.ts`
 +  ARShowMarketingBanner: {
 +    readyForRelease: false,
 +    description: "Show new marketing banners",
++    showInAdminMenu: true,
 +  },
    AROptionsInquiryCheckout: {
      readyForRelease: false,
      description: "Enable inquiry checkout",
+     showInAdminMenu: true,
    }
 ```
 
@@ -51,13 +53,15 @@ If you need to use the feature flag outside of a functional react component, use
 
 ## Releasing a feature
 
-When your feature is ready for release, the simplest way to do that is to set `readyForRelease` to `true` in `features.ts`.
+When your feature is ready for release, the simplest way to do that is to set `readyForRelease` to `true` in `features.ts`. Consider also removing the entry from the admin menu if developers will no longer need to override the flag.
 
 ```diff
    ARShowMarketingBanner: {
 -    readyForRelease: false,
 +    readyForRelease: true,
      description: "Show new marketing banners",
+-    showInAdminMenu: true,
++    showInAdminMenu: false,
    },
 ```
 
@@ -65,7 +69,7 @@ Alternatively, or at some point in the future, you can simply delete the feature
 
 However, often for complex features we want the ability to turn the feature off if something goes horribly wrong. To provide that ability, you should add an echo flag with the same name. [Here's an example PR for how to do that](https://github.com/artsy/echo/pull/70/files).
 
-After adding the echo key, when you mark the feature as being ready for release you can declare the key.
+After adding the echo key, when you mark the feature as being ready for release you can link the feature to the echo flag by specifying the key.
 
 ```diff
    ARShowMarketingBanner: {
