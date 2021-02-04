@@ -44,19 +44,23 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
             ],
           }}
         >
-          <OpaqueImageView
-            imageURL={sale.coverImage.url}
-            style={{
-              width: Dimensions.get("window").width,
-              height: COVER_IMAGE_HEIGHT,
-            }}
-          >
+          <View testID="sale-header-hero">
+            <OpaqueImageView
+              imageURL={sale.coverImage.url}
+              style={{
+                width: Dimensions.get("window").width,
+                height: COVER_IMAGE_HEIGHT,
+              }}
+            />
             {!!sale.endAt && !!moment().isAfter(sale.endAt) && (
               <Flex
                 style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
                   backgroundColor: "rgba(0,0,0,0.5)",
-                  width: Dimensions.get("window").width,
-                  height: COVER_IMAGE_HEIGHT,
                   justifyContent: "center",
                   alignItems: "center",
                 }}
@@ -66,7 +70,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
                 </Text>
               </Flex>
             )}
-          </OpaqueImageView>
+          </View>
         </Animated.View>
       )}
       <View

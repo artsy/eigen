@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 636f8ce3c9e85f61af14866e6d35c859 */
+/* @relayHash d2aaf72f788fafd8bc258fc5d1d3b59b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -35,6 +35,7 @@ fragment ArtistInsightsAuctionResults_artist on Artist {
       startAt
       endAt
     }
+    totalCount
     edges {
       node {
         id
@@ -70,6 +71,9 @@ fragment AuctionResult_auctionResult on AuctionResult {
   mediumText
   organization
   boughtIn
+  performance {
+    mid
+  }
   priceRealized {
     display
     cents
@@ -243,6 +247,13 @@ return {
               {
                 "alias": null,
                 "args": null,
+                "kind": "ScalarField",
+                "name": "totalCount",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
                 "concreteType": "AuctionResultEdge",
                 "kind": "LinkedField",
                 "name": "edges",
@@ -376,6 +387,24 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "concreteType": "AuctionLotPerformance",
+                        "kind": "LinkedField",
+                        "name": "performance",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "mid",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "AuctionResultPriceRealized",
                         "kind": "LinkedField",
                         "name": "priceRealized",
@@ -482,7 +511,7 @@ return {
     ]
   },
   "params": {
-    "id": "636f8ce3c9e85f61af14866e6d35c859",
+    "id": "d2aaf72f788fafd8bc258fc5d1d3b59b",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
@@ -559,6 +588,13 @@ return {
         "artist.auctionResultsConnection.edges.node.internalID": (v7/*: any*/),
         "artist.auctionResultsConnection.edges.node.mediumText": (v5/*: any*/),
         "artist.auctionResultsConnection.edges.node.organization": (v5/*: any*/),
+        "artist.auctionResultsConnection.edges.node.performance": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "AuctionLotPerformance"
+        },
+        "artist.auctionResultsConnection.edges.node.performance.mid": (v5/*: any*/),
         "artist.auctionResultsConnection.edges.node.priceRealized": {
           "enumValues": null,
           "nullable": true,
@@ -582,6 +618,7 @@ return {
           "plural": false,
           "type": "Boolean"
         },
+        "artist.auctionResultsConnection.totalCount": (v3/*: any*/),
         "artist.birthday": (v5/*: any*/),
         "artist.id": (v7/*: any*/),
         "artist.slug": (v7/*: any*/)

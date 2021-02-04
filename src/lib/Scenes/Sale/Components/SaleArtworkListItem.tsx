@@ -46,7 +46,7 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
     artwork,
   })
 
-  const imageDimensions = getImageDimensions(artwork.image?.height, artwork.image?.width)
+  const imageDimensions = getImageDimensions(artwork.image?.height, artwork.image?.width, CONTAINER_HEIGHT)
 
   return (
     <Touchable onPress={onPress}>
@@ -91,22 +91,26 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
 }
 
 // Get image accurate square dimensions while keeping the same aspect ratio
-const getImageDimensions = (height?: number | null, width?: number | null) => {
+export const getImageDimensions = (
+  height: number | null | undefined,
+  width: number | null | undefined,
+  containerHeight: number
+) => {
   if (height && width) {
     if (height > width) {
       return {
-        height: CONTAINER_HEIGHT,
-        width: (width * CONTAINER_HEIGHT) / height,
+        height: containerHeight,
+        width: (width * containerHeight) / height,
       }
     }
     return {
-      height: (height * CONTAINER_HEIGHT) / width,
-      width: CONTAINER_HEIGHT,
+      height: (height * containerHeight) / width,
+      width: containerHeight,
     }
   }
   return {
-    height: CONTAINER_HEIGHT,
-    width: CONTAINER_HEIGHT,
+    height: containerHeight,
+    width: containerHeight,
   }
 }
 

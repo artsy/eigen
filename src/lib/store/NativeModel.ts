@@ -1,5 +1,5 @@
 import { Action, action, Thunk, thunk } from "easy-peasy"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { NotificationsManager } from "lib/NativeModules/NotificationsManager"
 import { navigate } from "lib/navigation/navigate"
 import { GlobalStore } from "./GlobalStore"
@@ -60,6 +60,7 @@ export interface NativeState {
     AROptionsNewInsightsPage: boolean
     AROptionsInquiryCheckout: boolean
     AREnableCustomSharesheet: boolean
+    AROptionsSentryErrorDebug: boolean
   }
   legacyFairSlugs: string[]
   legacyFairProfileSlugs: string[]
@@ -74,12 +75,12 @@ export interface NativeModel {
 }
 
 export const NativeModel: NativeModel = {
-  sessionState: ArtsyNativeModules.ARNotificationsManager?.nativeState ?? {},
+  sessionState: LegacyNativeModules.ARNotificationsManager?.nativeState ?? {},
   setLocalState: action((state, nextNativeState) => {
     Object.assign(state.sessionState, nextNativeState)
   }),
   setApplicationIconBadgeNumber: thunk((_actions, count) => {
-    ArtsyNativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber(count)
+    LegacyNativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber(count)
   }),
 }
 

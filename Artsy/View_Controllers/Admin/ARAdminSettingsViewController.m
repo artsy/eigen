@@ -4,7 +4,6 @@
 #import "ARAdminSettingsViewController.h"
 #import "AREchoContentsViewController.h"
 #import "ARInternalMobileWebViewController.h"
-#import "ARAdminSentryBreadcrumbViewController.h"
 
 #import "ARDefaults.h"
 #import "ARAnimatedTickView.h"
@@ -20,7 +19,7 @@
 #import "ARAppNotificationsDelegate.h"
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <Emission/AREmission.h>
-#import <Sentry/SentryClient.h>
+#import <Sentry/SentrySDK.h>
 #import <Emission/ARGraphQLQueryCache.h>
 #import <React/RCTBridge.h>
 #import <React/RCTDevSettings.h>
@@ -67,7 +66,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [self generateFeaturePage],
         [self generateShowAllLiveAuctions],
         [self showConsignmentsFlow],
-        [self showSentryBreadcrumbs],
         [self generateEchoContents],
     ]];
 
@@ -188,15 +186,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [[NSNotificationCenter defaultCenter] postNotificationName:@"RCTShowDevMenuNotification" object:nil];
     }];
 }
-
-- (ARCellData *)showSentryBreadcrumbs
-{
-    return [self tappableCellDataWithTitle:@"→ Sentry Breadcrumbs" selection:^{
-        ARAdminSentryBreadcrumbViewController *quicksilver = [[ARAdminSentryBreadcrumbViewController alloc] init];
-        [self.navigationController pushViewController:quicksilver animated:YES];
-    }];
-}
-
 
 - (ARCellData *)generateShowAllLiveAuctions
 {
@@ -477,7 +466,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     labsSectionData.headerTitle = @"Developer";
 
     ARCellData *crashCellData = [self tappableCellDataWithTitle:@"Crash App" selection:^{
-        [SentryClient.sharedClient crash];
+        [SentrySDK crash];
     }];
 
     ARCellData *clearRelayCacheData = [self tappableCellDataWithTitle:@"Clear Relay Cache" selection:^{

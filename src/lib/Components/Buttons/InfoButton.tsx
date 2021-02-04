@@ -6,37 +6,54 @@ import React, { useState } from "react"
 import { TouchableOpacity } from "react-native"
 
 interface InfoButtonProps {
-  title: string
+  maxModalHeight?: number
   modalContent: JSX.Element
   modalTitle?: string
   onPress?: () => void
   subTitle?: string
+  title?: string
+  titleElement?: JSX.Element
+  trackEvent?: () => void
 }
 
-export const InfoButton: React.FC<InfoButtonProps> = ({ title, subTitle, modalTitle, modalContent, onPress }) => {
+export const InfoButton: React.FC<InfoButtonProps> = ({
+  maxModalHeight,
+  modalContent,
+  modalTitle,
+  onPress,
+  subTitle,
+  title,
+  titleElement,
+  trackEvent,
+}) => {
   const [modalVisible, setModalVisible] = useState(false)
 
   return (
     <>
       <Flex flexDirection="row">
-        <Text variant="mediumText" mr={0.5}>
-          {title}
-        </Text>
+        {titleElement ? (
+          titleElement
+        ) : (
+          <Text variant="mediumText" mr={0.5}>
+            {title}
+          </Text>
+        )}
         <TouchableOpacity
           onPress={() => {
             setModalVisible(true)
-            if (onPress) {
-              onPress()
-            }
+            trackEvent?.()
+            onPress?.()
           }}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <InfoCircleIcon style={{ top: 2 }} color="black60" />
+          <InfoCircleIcon style={{ top: 3 }} fill="black60" />
         </TouchableOpacity>
       </Flex>
       {!!subTitle && <Text color="black60">{subTitle}</Text>}
-      <FancyModal visible={modalVisible} onBackgroundPressed={() => setModalVisible(false)}>
-        <FancyModalHeader onLeftButtonPress={() => setModalVisible(false)}>{modalTitle ?? title}</FancyModalHeader>
+      <FancyModal visible={modalVisible} maxHeight={maxModalHeight} onBackgroundPressed={() => setModalVisible(false)}>
+        <FancyModalHeader useXButton={true} onLeftButtonPress={() => setModalVisible(false)}>
+          {modalTitle ?? title}
+        </FancyModalHeader>
         <Spacer my={1} />
         <ScreenMargin>{modalContent}</ScreenMargin>
       </FancyModal>

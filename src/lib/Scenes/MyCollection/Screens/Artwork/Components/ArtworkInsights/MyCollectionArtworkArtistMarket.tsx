@@ -1,6 +1,7 @@
 import { ContextModule, OwnerType, tappedInfoBubble } from "@artsy/cohesion"
 import { MyCollectionArtworkArtistMarket_artwork } from "__generated__/MyCollectionArtworkArtistMarket_artwork.graphql"
 import { MyCollectionArtworkArtistMarket_marketPriceInsights } from "__generated__/MyCollectionArtworkArtistMarket_marketPriceInsights.graphql"
+import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { formatCentsToDollars } from "lib/Scenes/MyCollection/utils/formatCentsToDollars"
 import { Spacer, Text } from "palette"
@@ -8,7 +9,6 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { Field } from "../Field"
-import { InfoButton } from "./InfoButton"
 
 interface MyCollectionArtworkArtistMarketProps {
   artwork: MyCollectionArtworkArtistMarket_artwork

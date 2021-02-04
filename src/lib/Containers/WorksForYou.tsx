@@ -6,7 +6,7 @@ import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import Notification from "lib/Components/WorksForYou/Notification"
 import { PAGE_SIZE } from "lib/data/constants"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -40,7 +40,7 @@ export class WorksForYou extends React.Component<Props, State> {
 
   componentDidMount() {
     // Update read status in gravity
-    ArtsyNativeModules.ARTemporaryAPIModule.markNotificationsRead((error) => {
+    LegacyNativeModules.ARTemporaryAPIModule.markNotificationsRead((error) => {
       if (error) {
         console.warn(error)
       } else {

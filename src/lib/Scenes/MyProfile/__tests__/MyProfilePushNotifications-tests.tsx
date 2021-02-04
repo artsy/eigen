@@ -1,5 +1,5 @@
 import { SwitchMenu } from "lib/Components/SwitchMenu"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Sans } from "palette"
@@ -18,7 +18,7 @@ jest.mock("lib/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
 }))
 
-const mockFetchNotificationPermissions = ArtsyNativeModules.ARTemporaryAPIModule
+const mockFetchNotificationPermissions = LegacyNativeModules.ARTemporaryAPIModule
   .fetchNotificationPermissions as jest.Mock<any>
 
 jest.unmock("react-relay")

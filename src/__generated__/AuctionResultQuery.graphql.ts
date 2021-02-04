@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 04ef7e7cb90f7d41e365d8ad1375901f */
+/* @relayHash e5732e5717b6f089589692083c636033 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type AuctionResultQueryVariables = {
@@ -10,6 +10,7 @@ export type AuctionResultQueryVariables = {
 };
 export type AuctionResultQueryResponse = {
     readonly auctionResult: {
+        readonly internalID: string;
         readonly artistID: string;
         readonly boughtIn: boolean | null;
         readonly categoryText: string | null;
@@ -37,6 +38,9 @@ export type AuctionResultQueryResponse = {
         readonly location: string | null;
         readonly mediumText: string | null;
         readonly organization: string | null;
+        readonly performance: {
+            readonly mid: string | null;
+        } | null;
         readonly priceRealized: {
             readonly cents: number | null;
             readonly centsUSD: number | null;
@@ -64,6 +68,7 @@ query AuctionResultQuery(
   $artistID: String!
 ) {
   auctionResult(id: $auctionResultInternalID) {
+    internalID
     artistID
     boughtIn
     categoryText
@@ -91,6 +96,9 @@ query AuctionResultQuery(
     location
     mediumText
     organization
+    performance {
+      mid
+    }
     priceRealized {
       cents
       centsUSD
@@ -131,59 +139,66 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "artistID",
+  "name": "internalID",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "boughtIn",
+  "name": "artistID",
   "storageKey": null
 },
 v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "categoryText",
+  "name": "boughtIn",
   "storageKey": null
 },
 v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "currency",
+  "name": "categoryText",
   "storageKey": null
 },
 v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "dateText",
+  "name": "currency",
   "storageKey": null
 },
 v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "description",
+  "name": "dateText",
   "storageKey": null
 },
 v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "height",
+  "name": "description",
   "storageKey": null
 },
 v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "width",
+  "name": "height",
   "storageKey": null
 },
 v11 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "width",
+  "storageKey": null
+},
+v12 = {
   "alias": null,
   "args": null,
   "concreteType": "AuctionLotDimensions",
@@ -191,26 +206,26 @@ v11 = {
   "name": "dimensions",
   "plural": false,
   "selections": [
-    (v9/*: any*/),
-    (v10/*: any*/)
+    (v10/*: any*/),
+    (v11/*: any*/)
   ],
-  "storageKey": null
-},
-v12 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "dimensionText",
   "storageKey": null
 },
 v13 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "display",
+  "name": "dimensionText",
   "storageKey": null
 },
 v14 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "display",
+  "storageKey": null
+},
+v15 = {
   "alias": null,
   "args": null,
   "concreteType": "AuctionLotEstimate",
@@ -218,7 +233,7 @@ v14 = {
   "name": "estimate",
   "plural": false,
   "selections": [
-    (v13/*: any*/),
+    (v14/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -236,7 +251,7 @@ v14 = {
   ],
   "storageKey": null
 },
-v15 = {
+v16 = {
   "alias": null,
   "args": null,
   "concreteType": "AuctionLotImages",
@@ -265,8 +280,8 @@ v15 = {
           "name": "url",
           "storageKey": "url(version:\"square140\")"
         },
-        (v9/*: any*/),
         (v10/*: any*/),
+        (v11/*: any*/),
         {
           "alias": null,
           "args": null,
@@ -280,28 +295,46 @@ v15 = {
   ],
   "storageKey": null
 },
-v16 = {
+v17 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "location",
   "storageKey": null
 },
-v17 = {
+v18 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "mediumText",
   "storageKey": null
 },
-v18 = {
+v19 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "organization",
   "storageKey": null
 },
-v19 = {
+v20 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "AuctionLotPerformance",
+  "kind": "LinkedField",
+  "name": "performance",
+  "plural": false,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "mid",
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
+},
+v21 = {
   "alias": null,
   "args": null,
   "concreteType": "AuctionResultPriceRealized",
@@ -323,53 +356,53 @@ v19 = {
       "name": "centsUSD",
       "storageKey": null
     },
-    (v13/*: any*/)
+    (v14/*: any*/)
   ],
-  "storageKey": null
-},
-v20 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "saleDate",
-  "storageKey": null
-},
-v21 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "saleTitle",
   "storageKey": null
 },
 v22 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "saleDate",
+  "storageKey": null
+},
+v23 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "saleTitle",
+  "storageKey": null
+},
+v24 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "title",
   "storageKey": null
 },
-v23 = [
+v25 = [
   {
     "kind": "Variable",
     "name": "id",
     "variableName": "artistID"
   }
 ],
-v24 = {
+v26 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v25 = {
+v27 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "href",
   "storageKey": null
 },
-v26 = {
+v28 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -400,9 +433,9 @@ return {
           (v6/*: any*/),
           (v7/*: any*/),
           (v8/*: any*/),
-          (v11/*: any*/),
+          (v9/*: any*/),
           (v12/*: any*/),
-          (v14/*: any*/),
+          (v13/*: any*/),
           (v15/*: any*/),
           (v16/*: any*/),
           (v17/*: any*/),
@@ -410,20 +443,22 @@ return {
           (v19/*: any*/),
           (v20/*: any*/),
           (v21/*: any*/),
-          (v22/*: any*/)
+          (v22/*: any*/),
+          (v23/*: any*/),
+          (v24/*: any*/)
         ],
         "storageKey": null
       },
       {
         "alias": null,
-        "args": (v23/*: any*/),
+        "args": (v25/*: any*/),
         "concreteType": "Artist",
         "kind": "LinkedField",
         "name": "artist",
         "plural": false,
         "selections": [
-          (v24/*: any*/),
-          (v25/*: any*/)
+          (v26/*: any*/),
+          (v27/*: any*/)
         ],
         "storageKey": null
       }
@@ -454,9 +489,9 @@ return {
           (v6/*: any*/),
           (v7/*: any*/),
           (v8/*: any*/),
-          (v11/*: any*/),
+          (v9/*: any*/),
           (v12/*: any*/),
-          (v14/*: any*/),
+          (v13/*: any*/),
           (v15/*: any*/),
           (v16/*: any*/),
           (v17/*: any*/),
@@ -465,28 +500,30 @@ return {
           (v20/*: any*/),
           (v21/*: any*/),
           (v22/*: any*/),
-          (v26/*: any*/)
+          (v23/*: any*/),
+          (v24/*: any*/),
+          (v28/*: any*/)
         ],
         "storageKey": null
       },
       {
         "alias": null,
-        "args": (v23/*: any*/),
+        "args": (v25/*: any*/),
         "concreteType": "Artist",
         "kind": "LinkedField",
         "name": "artist",
         "plural": false,
         "selections": [
-          (v24/*: any*/),
-          (v25/*: any*/),
-          (v26/*: any*/)
+          (v26/*: any*/),
+          (v27/*: any*/),
+          (v28/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "04ef7e7cb90f7d41e365d8ad1375901f",
+    "id": "e5732e5717b6f089589692083c636033",
     "metadata": {},
     "name": "AuctionResultQuery",
     "operationKind": "query",
@@ -494,5 +531,5 @@ return {
   }
 };
 })();
-(node as any).hash = '38f6a969b1adf21e0148d9daeb402eb1';
+(node as any).hash = '197b6471d2cd60c6bd51f7fb5e778923';
 export default node;

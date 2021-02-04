@@ -1,6 +1,6 @@
 import Spinner from "lib/Components/Spinner"
 import ChevronIcon from "lib/Icons/ChevronIcon"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { Box, color, Flex, Sans } from "palette"
 import React, { Component } from "react"
 import { TouchableWithoutFeedback } from "react-native"
@@ -37,7 +37,7 @@ export class CitySwitcherButton extends Component<Props> {
           if (this.props.onPress) {
             this.props.onPress()
           }
-          ArtsyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryOpenCityPicker", {
+          LegacyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryOpenCityPicker", {
             ...(sponsoredContentUrl && { sponsoredContentUrl }),
           })
         }}

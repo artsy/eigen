@@ -1,5 +1,5 @@
 import { CommercialEditionSetInformation_artwork } from "__generated__/CommercialEditionSetInformation_artwork.graphql"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { Box, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
@@ -73,7 +73,7 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
               <TouchableWithoutFeedback key={id} onPress={() => this.selectEdition(internalID)}>
                 <EditionSelector px={2} height={26} mt={1} mr={1} selected={selected}>
                   <Sans size="2" weight="medium" color="black100">
-                    {ArtsyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
+                    {LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
                       ? dimensions.in
                       : dimensions.cm}
                   </Sans>

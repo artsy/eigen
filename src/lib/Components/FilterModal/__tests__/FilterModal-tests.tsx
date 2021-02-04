@@ -351,13 +351,15 @@ describe("Filter modal states", () => {
 
     expect(filterScreen.find(CurrentOption).at(1).text()).toEqual("Drawing")
 
-    expect(filterScreen.find(CurrentOption).at(2).text()).toEqual("$10,000-20,000")
+    expect(filterScreen.find(CurrentOption).at(2).text()).toEqual("All")
 
-    expect(filterScreen.find(CurrentOption).at(3).text()).toEqual("Bid")
+    expect(filterScreen.find(CurrentOption).at(3).text()).toEqual("$10,000-20,000")
 
-    expect(filterScreen.find(CurrentOption).at(4).text()).toEqual("All")
+    expect(filterScreen.find(CurrentOption).at(4).text()).toEqual("Bid")
 
-    expect(filterScreen.find(CurrentOption)).toHaveLength(5)
+    expect(filterScreen.find(CurrentOption).at(5).text()).toEqual("All")
+
+    expect(filterScreen.find(CurrentOption)).toHaveLength(6)
   })
 })
 
@@ -391,13 +393,13 @@ describe("Clearing filters", () => {
 
     expect(filterScreen.find(CurrentOption).at(0).text()).toEqual("Price (low to high)")
 
-    expect(filterScreen.find(CurrentOption).at(3).text()).toEqual("Buy Now")
+    expect(filterScreen.find(CurrentOption).at(4).text()).toEqual("Buy Now")
 
     filterScreen.find(ClearAllButton).at(0).props().onPress()
 
     expect(filterScreen.find(CurrentOption).at(0).text()).toEqual("Default")
 
-    expect(filterScreen.find(CurrentOption).at(1).text()).toEqual("All")
+    expect(filterScreen.find(CurrentOption).at(4).text()).toEqual("All")
   })
 
   it("enables the apply button when clearing all if no other options are selected", () => {
@@ -521,6 +523,7 @@ describe("Applying filters on Artworks", () => {
       Object {
         "acquireable": false,
         "atAuction": false,
+        "attributionClass": null,
         "color": null,
         "count": 10,
         "cursor": null,

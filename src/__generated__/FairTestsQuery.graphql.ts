@@ -1519,7 +1519,8 @@ return {
               "offerable",
               "includeArtworksByFollowedArtists",
               "artistIDs",
-              "aggregations"
+              "aggregations",
+              "attributionClass"
             ],
             "handle": "connection",
             "key": "Fair_fairArtworks",

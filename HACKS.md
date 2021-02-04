@@ -69,7 +69,7 @@
 
   Now.
 
-  react-native-config load the `.env` file by default. We wanted to use `.env.shared` and `.env.ci` instead. We did that by using a patch-package patch, to add our customization.
+  react-native-config loads the `.env` file by default. We wanted to use `.env.shared` and `.env.ci` instead. We did that by using a patch-package patch, to add our customization.
   We can do this better using https://github.com/luggit/react-native-config#ios-1. Take a look at https://artsyproduct.atlassian.net/browse/CX-949.
 
 - react-native-share patch-package
@@ -77,3 +77,14 @@
   When we make a PR and it's merged about this.
 
   We need this patch because the lib by itself doesn't set the background colors when we send a backgroundImage, even though Instagram supports it. We add it here as a package because we use it.
+
+- @react-navigation/core patch-package
+
+  react-navigation has a bug with nested independent `NavigationContainer` instances. https://github.com/react-navigation/react-navigation/issues/8611
+
+  Our patch alleviates the issue in our case, but would not work as an upstream PR.
+
+  To remove this hack we can do one of two things:
+
+  - Stop using nested navigation containers.
+  - Fix `@react-navigation/core` properly upstream.

@@ -1,6 +1,6 @@
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
-import { AppRegistry, LogBox, View } from "react-native"
+import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
@@ -45,6 +45,8 @@ import { FairMoreInfoQueryRenderer } from "./Scenes/Fair/FairMoreInfo"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
+import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/MakeOfferModal"
+import { Checkout } from "./Scenes/Inbox/Screens/Checkout"
 import { MapContainer } from "./Scenes/Map"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
@@ -92,12 +94,7 @@ LogBox.ignoreLogs([
   // RN 0.59.0 ships with this bug, see: https://github.com/facebook/react-native/issues/16376
   "RCTBridge required dispatch_sync to load RCTDevLoadingView. This may lead to deadlocks",
 
-  // The following item exist in node_modules. Once this PR is merged, to make warnings opt-in, we can ignore: https://github.com/facebook/metro/issues/287
-
-  // RN 0.59.0 ships with this issue, which has been effectively marked as #wontfix: https://github.com/facebook/react-native/issues/23130
-  "Require cycle: node_modules/react-native/Libraries/Network/fetch.js -> node_modules/react-native/Libraries/vendor/core/whatwg-fetch.js -> node_modules/react-native/Libraries/Network/fetch.js",
-
-  "Require cycle: src/lib/store/GlobalStore.tsx",
+  "Require cycle:",
 
   // This is for the Artist page, which will likely get redone soon anyway.
   "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
@@ -349,6 +346,9 @@ export const modules = defineModules({
   }),
   LocalDiscovery: nativeModule(),
   WebView: nativeModule(),
+  MakeOfferModal: reactModule(MakeOfferModalQueryRenderer, {
+    hasOwnModalCloseButton: true,
+  }),
   Map: reactModule(MapContainer, { fullBleed: true }),
   MyAccount: reactModule(MyAccountQueryRenderer),
   MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, { hidesBackButton: true }),
@@ -378,6 +378,9 @@ export const modules = defineModules({
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),
   ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
   ViewingRooms: reactModule(ViewingRoomsListQueryRenderer),
+  Checkout: reactModule(Checkout, {
+    hasOwnModalCloseButton: true,
+  }),
   WorksForYou: reactModule(WorksForYouQueryRenderer),
 })
 
@@ -385,7 +388,9 @@ export const modules = defineModules({
 for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
   if ("Component" in descriptor) {
-    register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed })
+    if (Platform.OS === "ios") {
+      register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed })
+    }
   }
 }
 
@@ -403,4 +408,6 @@ const Main: React.FC<{}> = track()(({}) => {
   return <BottomTabsNavigator />
 })
 
-register("Main", Main, { fullBleed: true })
+if (Platform.OS === "ios") {
+  register("Main", Main, { fullBleed: true })
+}

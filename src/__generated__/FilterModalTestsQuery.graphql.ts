@@ -729,7 +729,8 @@ return {
               "inquireableOnly",
               "atAuction",
               "offerable",
-              "aggregations"
+              "aggregations",
+              "attributionClass"
             ],
             "handle": "connection",
             "key": "Collection_collectionArtworks",

@@ -36,5 +36,7 @@ export const SearchModel: SearchModel = {
 }
 
 export const useRecentSearches = (numSearches: number = MAX_SHOWN_RECENT_SEARCHES) => {
-  return GlobalStore.useAppState((state) => state.search.recentSearches).slice(0, numSearches)
+  return GlobalStore.useAppState((state) => {
+    return state.search.recentSearches
+  }).slice(0, numSearches)
 }

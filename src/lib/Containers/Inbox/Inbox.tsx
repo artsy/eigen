@@ -11,7 +11,7 @@ import { track } from "lib/utils/track"
 import { ActionNames, ActionTypes } from "lib/utils/track/schema"
 import { Flex, Separator, Text } from "palette"
 import React from "react"
-import { EmitterSubscription, LayoutChangeEvent, View, ViewProps } from "react-native"
+import { EmitterSubscription, View, ViewProps } from "react-native"
 // @ts-expect-error @types file generates duplicate declaration problems
 import ScrollableTabView, { TabBarProps } from "react-native-scrollable-tab-view"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -84,8 +84,6 @@ export class Inbox extends React.Component<Props, State> {
     activeTab: Tab.bids,
   }
 
-  scrollViewVerticalStart = 0
-
   listener: EmitterSubscription | null = null
 
   flatListHeight = 0
@@ -102,10 +100,6 @@ export class Inbox extends React.Component<Props, State> {
 
   componentWillUnmount() {
     this.listener?.remove()
-  }
-
-  onScrollableTabViewLayout = (layout: LayoutChangeEvent) => {
-    this.scrollViewVerticalStart = layout.nativeEvent.layout.y
   }
 
   @track((_props, _state, args) => {
@@ -126,16 +120,11 @@ export class Inbox extends React.Component<Props, State> {
   }
 
   render() {
-    const bottomInset = this.scrollViewVerticalStart
     return (
       <ScrollableTabView
         style={{ paddingTop: 30 }}
         initialPage={0}
         renderTabBar={() => <InboxTabs />}
-        contentProps={{
-          contentInset: { bottom: bottomInset },
-          onLayout: this.onScrollableTabViewLayout,
-        }}
         onChangeTab={({ i }: { i: number }) => this.handleNavigationTab(i)}
       >
         <TabWrapper tabLabel="Bids" key="bids" style={{ flexGrow: 1, justifyContent: "center" }}>

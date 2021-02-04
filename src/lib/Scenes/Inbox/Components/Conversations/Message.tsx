@@ -1,5 +1,5 @@
 import { Message_message } from "__generated__/Message_message.graphql"
-import { ArtsyNativeModules } from "lib/NativeModules/ArtsyNativeModules"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { compact } from "lodash"
@@ -41,7 +41,7 @@ export class Message extends React.Component<Props> {
     // download progress bar on.
     const previewAttachment = (reactNodeHandle: number, attachmentID: string) => {
       const attachment = compact(attachments).find(({ internalID }) => internalID === attachmentID)!
-      ArtsyNativeModules.ARScreenPresenterModule.presentMediaPreviewController(
+      LegacyNativeModules.ARScreenPresenterModule.presentMediaPreviewController(
         reactNodeHandle,
         attachment.downloadURL,
         attachment.contentType,

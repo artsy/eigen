@@ -22,7 +22,15 @@ app_json = JSON.parse(File.read(app_json_path))
 app_plist = "../Artsy/App_Resources/Artsy-Info.plist"
 sticker_plist = "../Artsy Stickers/Info.plist"
 
+
 lane :ship_beta_ios do
+  api_key = app_store_connect_api_key(
+    key_id: "B95P9K5S5V",
+    issuer_id: "69a6de72-31ba-47e3-e053-5b8c7c11a4d1",
+    key_content: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT'],
+    in_house: false,
+  )
+
   set_build_version_ios
 
   changelog_yaml = File.read('../CHANGELOG.yml')
@@ -60,25 +68,33 @@ lane :ship_beta_ios do
   bundle_version = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'Artsy/App_Resources/Artsy-Info.plist')}`.strip
   tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
 
-  # First make individual dSYM archives available to the sentry-cli tool.
-  sentry_version = latest_version
+
+  # important! this much match the release version specified
+  # in Eigen in order for sourcemaps to work correctly
+  sentry_release_version = "#{latest_version}+#{bundle_version}"
+
+  # make individual dSYM archives available to the sentry-cli tool.
   dsym_archive = File.join(root, 'Artsy.app.dSYM.zip')
   dsyms_path = File.join(root, 'dSYMs')
   sh "unzip -d #{dsyms_path} #{dsym_archive}"
 
-  upload_to_sentry = lambda do |project_slug|
+  upload_to_sentry = lambda do |project_slug, postfix|
     org_slug = 'artsynet'
+
+    # releases on sentry are org-wide so we need to distinguish in staging
+    sentry_release_version = sentry_release_version + postfix
+
     sentry_create_release auth_token: ENV['SentryUploadAuthKey'],
                           org_slug: org_slug,
                           project_slug: project_slug,
-                          version: sentry_version,
+                          version: sentry_release_version,
                           finalize: false
     puts "Created a release for #{project_slug}"
 
     sentry_set_commits auth_token: ENV['SentryUploadAuthKey'],
                        org_slug: org_slug,
                        project_slug: project_slug,
-                       version: sentry_version,
+                       version: sentry_release_version,
                        auto: true
     puts "Associated commits for Sentry release"
 
@@ -95,15 +111,16 @@ lane :ship_beta_ios do
       sentry_upload_file auth_token: ENV['SentryUploadAuthKey'],
                          org_slug: org_slug,
                          project_slug: project_slug,
-                         version: sentry_version,
+                         version: sentry_release_version,
                          dist: bundle_version,
-                         file: 'emission/Pod/Assets/Emission.js'
+                         file: 'emission/Pod/Assets/Emission.js',
+                         file_url:'~/Emission.js'
       puts "Uploaded Emission.js for #{project_slug}"
 
       sentry_upload_sourcemap auth_token: ENV['SentryUploadAuthKey'],
                               org_slug: org_slug,
                               project_slug: project_slug,
-                              version: sentry_version,
+                              version: sentry_release_version,
                               dist: bundle_version,
                               sourcemap: 'emission/Pod/Assets/Emission.js.map',
                               rewrite: true
@@ -125,11 +142,8 @@ lane :ship_beta_ios do
     end
   end
 
-  upload_to_sentry.call('eigen')
-  # We get "file already present" when trying to upload this for staging
-  # https://circleci.com/gh/artsy/eigen/5274
-  #
-  # upload_to_sentry.call('eigen-staging')
+  upload_to_sentry.call('eigen', '')
+  upload_to_sentry.call('eigen-staging', '-dev')
 
   # Send to the app store
   beta_app_review_info = {
@@ -140,11 +154,12 @@ lane :ship_beta_ios do
     demo_account_name: ENV['BETA_DEMO_ACCOUNT_NAME'],
     demo_account_password: ENV['BETA_DEMO_ACCOUNT_PWD']
   }
-  pilot beta_app_review_info: beta_app_review_info,
+  pilot(api_key: api_key,
+        beta_app_review_info: beta_app_review_info,
         changelog: beta_readme,
         itc_provider: 'ArtsyInc',
         distribute_external: true,
-        groups: ['Artsy']
+        groups: ['Artsy'])
 end
 
 lane :update_version_string do

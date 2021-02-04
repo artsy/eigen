@@ -1,7 +1,7 @@
 import React from "react"
 import { Circle, EMaskUnits } from "react-native-svg"
-import { color } from "../../helpers"
 import { Icon, IconProps, Mask, Path, Rect } from "../Icon"
+import { color } from "../../Theme"
 
 /** StarCircleFill */
 export const StarCircleFill: React.FC<IconProps> = (props) => {

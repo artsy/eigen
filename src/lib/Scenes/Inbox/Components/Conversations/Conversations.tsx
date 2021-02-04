@@ -1,7 +1,7 @@
 import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
-import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native"
+import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
 
 import { navigate } from "lib/navigation/navigate"
 import ConversationSnippet from "./ConversationSnippet"
@@ -93,7 +93,7 @@ export const Conversations: React.FC<Props> = (props) => {
   const shouldDisplayMyBids = getCurrentEmissionState().options.AROptionsBidManagement
 
   return (
-    <View style={{ flexGrow: 1 }}>
+    <>
       {!shouldDisplayMyBids && (
         <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
           <Sans mx={2} mt={1} size="8" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
@@ -117,7 +117,7 @@ export const Conversations: React.FC<Props> = (props) => {
           return <ConversationSnippet conversation={item} onSelected={() => handleSelectConversation(item)} />
         }}
         onEndReached={fetchData}
-        onEndReachedThreshold={2}
+        onEndReachedThreshold={0.2}
         contentContainerStyle={{ flexGrow: 1, justifyContent: !conversations.length ? "center" : "flex-start" }}
         ListEmptyComponent={<NoMessages />}
       />
@@ -126,7 +126,7 @@ export const Conversations: React.FC<Props> = (props) => {
           <ActivityIndicator />
         </Flex>
       )}
-    </View>
+    </>
   )
 }
 

@@ -276,6 +276,11 @@ describe("filterArtworksParams helper", () => {
         paramValue: true,
         paramName: FilterParamName.artistsIFollow,
       },
+      {
+        displayText: "Rarity",
+        paramValue: ["unique", "unknown edition"],
+        paramName: FilterParamName.attributionClass,
+      },
     ]
     expect(filterArtworksParams(appliedFilters)).toEqual({
       sort: "-partner_updated_at",
@@ -288,6 +293,7 @@ describe("filterArtworksParams helper", () => {
       acquireable: true,
       offerable: false,
       includeArtworksByFollowedArtists: true,
+      attributionClass: ["unique", "unknown edition"],
     })
   })
 
@@ -561,6 +567,48 @@ describe("selectedOption", () => {
         expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations: [] })).toEqual(
           "All artists I follow, 2 more"
         )
+      })
+
+      it("returns the correct value for no (all) attribution classes", () => {
+        expect(
+          selectedOption({
+            selectedOptions: [],
+            filterScreen: "attributionClass",
+            aggregations: [],
+          })
+        ).toEqual("All")
+      })
+
+      it("returns the correct value for a single attribution classes", () => {
+        expect(
+          selectedOption({
+            selectedOptions: [
+              {
+                displayText: "",
+                paramName: FilterParamName.attributionClass,
+                paramValue: ["unique"],
+              },
+            ],
+            filterScreen: "attributionClass",
+            aggregations: [],
+          })
+        ).toEqual("Unique")
+      })
+
+      it("returns the correct value for multiple attribution classes", () => {
+        expect(
+          selectedOption({
+            selectedOptions: [
+              {
+                displayText: "",
+                paramName: FilterParamName.attributionClass,
+                paramValue: ["unique", "unknown edition"],
+              },
+            ],
+            filterScreen: "attributionClass",
+            aggregations: [],
+          })
+        ).toEqual("Unique, Unknown edition")
       })
     })
 
