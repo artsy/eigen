@@ -721,6 +721,8 @@ return {
         "fair.fairArtworks.aggregations.slice": {
           "enumValues": [
             "ARTIST",
+            "ARTIST_NATIONALITY",
+            "ATTRIBUTION_CLASS",
             "COLOR",
             "DIMENSION_RANGE",
             "FOLLOWED_ARTISTS",
