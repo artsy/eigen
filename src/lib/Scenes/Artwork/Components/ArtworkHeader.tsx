@@ -38,6 +38,8 @@ const InstagramStoryBackgroundDimensions = {
   width: 1080,
   height: 1920,
 }
+
+// tslint:disable-next-line:interface-name
 interface IGStoryViewShotProps {
   shotRef: RefObject<ViewShot>
   href: string
