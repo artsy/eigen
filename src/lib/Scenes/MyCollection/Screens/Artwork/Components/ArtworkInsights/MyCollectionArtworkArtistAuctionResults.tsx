@@ -35,6 +35,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
           title={`Auction Results for ${props?.artwork?.artist?.name}`}
           modalContent={
             <>
+              <Spacer my={1} />
               <Text>
                 This data set includes the latest lots from auction sales at top commercial auction houses. Lots are
                 updated daily.

@@ -15,10 +15,11 @@ export const AuctionResultsMidEstimate: React.FC<AuctionResultsMidEstimateProps>
 
   return (
     <Flex flexDirection="row" alignItems="center">
+      {/* Up arrow is heavier toward bottom so appears off center without padding */}
       {arrowDirection === "up" ? (
-        <IncreaseIcon bottom={"2px"} height={12} fill={color} />
+        <IncreaseIcon bottom={"1px"} height={12} fill={color} />
       ) : (
-        <DecreaseIcon bottom={"2px"} height={12} fill={color} />
+        <DecreaseIcon height={12} fill={color} />
       )}
       <Text variant="small" color={color}>
         {value.replace("-", "")} {shortDescription}

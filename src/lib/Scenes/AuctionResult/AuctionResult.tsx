@@ -48,10 +48,10 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   const { headerElement, scrollProps } = useStickyScrollHeader({
     header: (
       <Flex flex={1} pl={6} pr={4} pt={0.5} flexDirection="row">
-        <Text variant="subtitle" numberOfLines={1} style={{ flexShrink: 1 }}>
+        <Text variant="mediumText" numberOfLines={1} style={{ flexShrink: 1 }}>
           {auctionResult.title}
         </Text>
-        {!!auctionResult.dateText && <Text variant="subtitle">, {auctionResult.dateText}</Text>}
+        {!!auctionResult.dateText && <Text variant="mediumText">, {auctionResult.dateText}</Text>}
       </Flex>
     ),
   })
@@ -143,6 +143,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
 
   const renderRealizedPriceModal = () => (
     <>
+      <Spacer my={1} />
       <Text>
         The sale price includes the hammer price and buyer’s premium, as well as any other additional fees (e.g.,
         Artist’s Resale Rights).

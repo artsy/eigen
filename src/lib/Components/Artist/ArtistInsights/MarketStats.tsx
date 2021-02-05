@@ -3,8 +3,10 @@ import { MarketStatsQuery } from "__generated__/MarketStatsQuery.graphql"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { Select } from "lib/Components/Select"
 import { formatLargeNumber } from "lib/utils/formatLargeNumber"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { DecreaseIcon, Flex, IncreaseIcon, Join, Spacer, Text } from "palette"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { DecreaseIcon, Flex, IncreaseIcon, Join, Separator, Spacer, Text } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
@@ -38,6 +40,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
 
   const renderInfoModal = () => (
     <ScrollView showsVerticalScrollIndicator={false}>
+      <Spacer my={1} />
       <Text>
         The following data points provide an overview of an artist’s auction market for a specific medium (e.g.,
         photography, painting) over the past 36 months.
@@ -45,7 +48,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
       <Spacer mb={2} />
       <Text>
         These market signals bring together data from top auction houses around the world, including Christie’s,
-        Sotheby’s, Phillips, Bonhams, and Heritage.
+        Sotheby’s, Phillips and Bonhams.
       </Text>
       <Spacer mb={2} />
       <Text>
@@ -77,7 +80,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
   )
 
   const averageValueSold =
-    (selectedPriceInsight.annualValueSoldCents as number) / (selectedPriceInsight.annualLotsSold || 1)
+    (selectedPriceInsight.annualValueSoldCents as number) / 100 / (selectedPriceInsight.annualLotsSold || 1)
   const formattedAverageValueSold = formatLargeNumber(averageValueSold)
 
   let deltaIcon: React.ReactNode
@@ -143,6 +146,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
           <Text variant="text">Sale price over estimate</Text>
         </Flex>
       </Flex>
+      <Separator my={2} ml={-2} width={useScreenDimensions().width} />
     </>
   )
 }
@@ -187,7 +191,42 @@ export const MarketStatsQueryRenderer: React.FC<{
 }
 
 const LoadingSkeleton = () => {
-  return <Text>Loading!!!!</Text>
+  return (
+    <>
+      <Flex flexDirection="row" alignItems="center">
+        <Text variant="title" mr={0.5}>
+          Market Signals by Medium
+        </Text>
+      </Flex>
+      <Text variant="small" color="black60" my={0.5}>
+        Last 36 months
+      </Text>
+      <Spacer mb={0.5} />
+      <PlaceholderBox width="100%" height={40} />
+      <Flex flexDirection="row" flexWrap="wrap" mt={15}>
+        <Flex width="50%">
+          <Spacer mb={0.3} />
+          <PlaceholderText width={30} height={25} />
+          <Text variant="text">Yearly lots sold</Text>
+        </Flex>
+        <Flex width="50%">
+          <Spacer mb={0.3} />
+          <PlaceholderText width={60} height={25} />
+          <Text variant="text">Sell-through rate</Text>
+        </Flex>
+        <Flex width="50%" mt={2}>
+          <Spacer mb={0.3} />
+          <PlaceholderText width={50} height={25} />
+          <Text variant="text">Average sale price</Text>
+        </Flex>
+        <Flex width="50%" mt={2}>
+          <Spacer mb={0.3} />
+          <PlaceholderText width={70} height={25} />
+          <Text variant="text">Sale price over estimate</Text>
+        </Flex>
+      </Flex>
+    </>
+  )
 }
 
 export const tracks = {
