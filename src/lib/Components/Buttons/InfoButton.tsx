@@ -1,7 +1,7 @@
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { Flex, InfoCircleIcon, Spacer, Text } from "palette"
+import { Flex, InfoCircleIcon, Text } from "palette"
 import React, { useState } from "react"
 import { TouchableOpacity } from "react-native"
 
@@ -54,7 +54,6 @@ export const InfoButton: React.FC<InfoButtonProps> = ({
         <FancyModalHeader useXButton={true} onLeftButtonPress={() => setModalVisible(false)}>
           {modalTitle ?? title}
         </FancyModalHeader>
-        <Spacer my={1} />
         <ScreenMargin>{modalContent}</ScreenMargin>
       </FancyModal>
     </>

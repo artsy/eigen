@@ -40,6 +40,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
 
   const renderInfoModal = () => (
     <ScrollView showsVerticalScrollIndicator={false}>
+      <Spacer my={1} />
       <Text>
         The following data points provide an overview of an artist’s auction market for a specific medium (e.g.,
         photography, painting) over the past 36 months.

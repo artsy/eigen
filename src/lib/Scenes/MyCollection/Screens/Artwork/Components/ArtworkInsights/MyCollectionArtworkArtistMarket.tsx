@@ -73,6 +73,7 @@ const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketP
         modalTitle="Artist Market Insights"
         modalContent={
           <>
+            <Spacer my={1} />
             <Text>
               These statistics are based on the last 36 months of auction sale data from top commercial auction houses.
             </Text>
