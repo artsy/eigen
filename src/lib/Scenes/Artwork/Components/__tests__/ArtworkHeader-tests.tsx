@@ -1,5 +1,5 @@
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { ArtworkActions } from "../ArtworkActions"
 import { ArtworkHeader } from "../ArtworkHeader"
