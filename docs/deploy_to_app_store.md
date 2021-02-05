@@ -1,6 +1,6 @@
 # Deploy to App Store
 
-AppStore builds have to go through the beta process first. [Check out the beta docs](./deploy_to_beta.md) for more info.
+App Store builds have to go through the beta process first. [Check out the beta docs](./deploy_to_beta.md) for more info.
 
 ## Test the Beta
 
@@ -26,7 +26,7 @@ Our App Store releases are done manually, instead of automatically once Apple ap
 1. Navigate to Eigen.
 1. Select the version.
 1. Hit "Release this Version" button. It will take several hours for the new version to propagate through the AppStore to users.
-1. Monitor [Sentry](https://sentry.io/artsynet/eigen/) in the #front-end channel on Slack for any errors (all production errors are sent to Slack when they first occur).
+1. Monitor [Sentry](https://sentry.io/artsynet/eigen/) in the #practice-mobile channel on Slack for any errors (all production errors are sent to Slack when they first occur).
 1. Make sure to tell all your dev friends over at [#dev](https://artsy.slack.com/archives/C02BC3HEJ)!
 
 ## Prepare for the Next Release
