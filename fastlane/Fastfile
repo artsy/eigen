@@ -357,6 +357,14 @@ lane :notify_beta_failed do |options|
   )
 end
 
+lane :promote_beta_android do
+  supply(
+    track: 'alpha',
+    track_promote_to: 'production',
+    skip_upload_changelogs: true,
+  )
+end
+
 lane :tag_and_push do |options|
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for circle is read-only
