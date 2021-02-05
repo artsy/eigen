@@ -5,7 +5,8 @@ import { Select } from "lib/Components/Select"
 import { formatLargeNumber } from "lib/utils/formatLargeNumber"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { DecreaseIcon, Flex, IncreaseIcon, Join, Spacer, Text } from "palette"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { DecreaseIcon, Flex, IncreaseIcon, Join, Separator, Spacer, Text } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
@@ -144,6 +145,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
           <Text variant="text">Sale price over estimate</Text>
         </Flex>
       </Flex>
+      <Separator my={2} ml={-2} width={useScreenDimensions().width} />
     </>
   )
 }
