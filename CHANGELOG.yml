@@ -4,6 +4,8 @@ upcoming:
   dev:
     - Use api key in fastlane scripts - brian, mounir
   user_facing:
+    - MarketStats on auction results - pepopowitz, mounir
+    - fix - show correct up/down arrows on Market Stats - pepopowitz
     - Loading skeleton for market stats - pepopowitz
     - hooks up inquiry make offer modal to web view checkout flow - lily
     - Convert cents to dollars in market stats - pepopowitz
