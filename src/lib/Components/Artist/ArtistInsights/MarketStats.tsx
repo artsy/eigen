@@ -48,7 +48,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
       <Spacer mb={2} />
       <Text>
         These market signals bring together data from top auction houses around the world, including Christie’s,
-        Sotheby’s, Phillips, Bonhams, and Heritage.
+        Sotheby’s, Phillips and Bonhams.
       </Text>
       <Spacer mb={2} />
       <Text>
