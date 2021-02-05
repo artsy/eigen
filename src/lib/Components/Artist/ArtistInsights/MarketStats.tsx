@@ -80,7 +80,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
   )
 
   const averageValueSold =
-    (selectedPriceInsight.annualValueSoldCents as number) / (selectedPriceInsight.annualLotsSold || 1)
+    (selectedPriceInsight.annualValueSoldCents as number) / 100 / (selectedPriceInsight.annualLotsSold || 1)
   const formattedAverageValueSold = formatLargeNumber(averageValueSold)
 
   let deltaIcon: React.ReactNode
