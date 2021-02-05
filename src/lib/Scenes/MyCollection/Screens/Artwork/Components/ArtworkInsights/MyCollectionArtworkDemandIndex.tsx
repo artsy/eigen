@@ -32,6 +32,7 @@ const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexPro
         title="Demand index"
         modalContent={
           <>
+            <Spacer my={1} />
             <Text>
               Overall strength of demand for this artist and medium combination. Based on the last 36 months of auction
               sale data from top commercial auction houses.

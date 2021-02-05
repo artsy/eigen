@@ -105,6 +105,7 @@ const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimat
         subTitle={`Based on ${artsyQInventory} comparable works`}
         modalContent={
           <>
+            <Spacer my={1} />
             <Text>
               This is an estimated range based on artist, medium, and size (if provided). It is not an official
               evaluation of your exact artwork. This is based on the last 36 months of auction sale data from top

@@ -6,6 +6,7 @@ upcoming:
   user_facing:
     - Loading skeleton for market stats - pepopowitz
     - hooks up inquiry make offer modal to web view checkout flow - lily
+    - Convert cents to dollars in market stats - pepopowitz
 
 releases:
   - version: 6.7.7
