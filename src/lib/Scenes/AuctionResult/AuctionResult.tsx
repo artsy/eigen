@@ -82,25 +82,25 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           />
         </Flex>
       ) : (
-        <Flex flexDirection="row" justifyContent="space-between">
+        <Flex flexDirection="row" justifyContent="space-between" alignItems="flex-start">
           <Text style={{ width: "35%" }} color="black60">
             {label}
           </Text>
-          <Flex width="65%" pl={15}>
-            <TextInput
-              editable={false}
-              value={value}
-              multiline
-              testID={options?.testID}
-              scrollEnabled={false}
-              style={{
-                fontFamily: TEXT_FONTS.sans,
-                fontSize: 14,
-                textAlign: "right",
-                paddingLeft: 20,
-              }}
-            />
-          </Flex>
+          <TextInput
+            editable={false}
+            value={value}
+            multiline
+            testID={options?.testID}
+            scrollEnabled={false}
+            style={{
+              fontFamily: TEXT_FONTS.sans,
+              fontSize: 14,
+              textAlign: "right",
+              paddingLeft: 35,
+              top: -5,
+              width: "65%",
+            }}
+          />
         </Flex>
       )}
     </Flex>
