@@ -16,6 +16,7 @@ upcoming:
     - Added watched lots to MyBids - erik, ashley, christina
     - Refresh inbox automatically upon revisiting - erik, lily
     - Poll and refetch images when images are processing (my collection) - brian
+    - Add custom ShareSheet and sharing to Instagram Stories - pavlos
     - Make AuctionResults not available text fit in one line - mounir
     - Show filter button when there are less than 2 auction results available - mounir
     - Hide artist insights tab when no auction results are available - mounir
