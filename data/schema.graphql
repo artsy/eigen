@@ -7441,6 +7441,9 @@ type Mutation {
   # Attach an gemini asset to a consignment submission
   createGeminiEntryForAsset(input: CreateGeminiEntryForAssetInput!): CreateGeminiEntryForAssetPayload
   createImage(input: CreateImageInput!): CreateImagePayload
+  createInquiryOfferOrder(
+    input: CommerceCreateInquiryOfferOrderWithArtworkInput!
+  ): CommerceCreateInquiryOfferOrderWithArtworkPayload
   createSmsSecondFactor(input: CreateSmsSecondFactorInput!): CreateSmsSecondFactorPayload
   createUserAddress(input: CreateUserAddressInput!): CreateUserAddressPayload
   createViewingRoom(input: CreateViewingRoomInput!): CreateViewingRoomPayload
