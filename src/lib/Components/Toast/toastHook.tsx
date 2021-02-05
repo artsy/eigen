@@ -14,7 +14,7 @@ interface ToastContextValue {
   hideOldest: () => void
 }
 
-const ToastContext = React.createContext((null as unknown) as ToastContextValue)
+const ToastContext = React.createContext<ToastContextValue>({ show: () => {}, hide: () => {}, hideOldest: () => {} })
 const useToastContext = () => useContext(ToastContext)
 
 export const useToast = () => {
