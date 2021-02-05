@@ -5,6 +5,7 @@ import { aggregationForFilter, FilterParamName } from "lib/utils/ArtworkFilter/F
 import { Box, CheckIcon, color, Flex, Separator, Text } from "palette"
 import React, { useContext, useState } from "react"
 import { TouchableOpacity, View } from "react-native"
+import Haptic from "react-native-haptic-feedback"
 import styled from "styled-components/native"
 import { FilterData } from "../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { useScreenDimensions } from "../../utils/useScreenDimensions"
@@ -96,13 +97,16 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
       <FancyModalHeader onLeftButtonPress={navigation.goBack}>Year created</FancyModalHeader>
       <Flex flexGrow={1} py={2}>
         <YearText variant="text" mb={15} mx={2}>
-          {sliderValues[0]} - {sliderValues[1]}
+          {sliderValues[0]} – {sliderValues[1]}
         </YearText>
         <Flex alignItems="center" mx={2}>
           <MultiSlider
             values={[Number(sliderValues[0]), Number(sliderValues[1])]}
-            sliderLength={screenWidth - 60}
-            onValuesChange={setSliderValues}
+            sliderLength={screenWidth - 40}
+            onValuesChange={(values) => {
+              Haptic.trigger("impactLight")
+              setSliderValues(values)
+            }}
             onValuesChangeFinish={onValuesChangeFinish}
             min={artistEarliestCreatedYear}
             max={artistLatestCreatedYear}
@@ -141,10 +145,7 @@ interface OptionItemProps {
 }
 
 export const OptionItem = ({ onPress, text, selected }: OptionItemProps) => (
-  <TouchableOpacity
-    onPress={onPress}
-    style={{ borderTopWidth: 1, borderBottomWidth: 1, borderColor: color("black10") }}
-  >
+  <TouchableOpacity onPress={onPress}>
     <Flex flexGrow={1} justifyContent="space-between" flexDirection="row" height={60}>
       <Flex flexDirection="row" justifyContent="space-between" flexGrow={1} alignItems="center" pl={2} pr={2}>
         <Text variant="text">{text}</Text>
@@ -170,6 +171,4 @@ export const BlackCircle = styled(View)`
   top: 2;
   border-radius: 12;
   background-color: ${color("black100")};
-  border-width: 2;
-  border-color: ${color("white100")};
 `
