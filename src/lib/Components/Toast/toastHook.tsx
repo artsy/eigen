@@ -14,6 +14,7 @@ interface ToastContextValue {
   hideOldest: () => void
 }
 
+// tslint:disable-next-line:no-empty
 const ToastContext = React.createContext<ToastContextValue>({ show: () => {}, hide: () => {}, hideOldest: () => {} })
 const useToastContext = () => useContext(ToastContext)
 
