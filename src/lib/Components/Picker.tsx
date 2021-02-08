@@ -1,4 +1,4 @@
-import { PickerIOS } from "@react-native-community/picker"
+import { PickerIOS } from "@react-native-picker/picker"
 import { Portal } from "lib/Components/Portal"
 import { Flex, Sans, Separator, Spacer } from "palette"
 import React from "react"

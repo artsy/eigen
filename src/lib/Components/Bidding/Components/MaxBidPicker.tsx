@@ -1,5 +1,5 @@
-import { Picker } from "@react-native-community/picker"
-import { PickerProps } from "@react-native-community/picker/typings/Picker"
+import { Picker } from "@react-native-picker/picker"
+import { PickerProps } from "@react-native-picker/picker/typings/Picker"
 import React from "react"
 
 import styled from "styled-components/native"
