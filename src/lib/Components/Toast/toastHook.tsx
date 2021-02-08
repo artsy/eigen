@@ -1,7 +1,7 @@
 // Some stealing from https://github.com/arnnis/react-native-fast-toast
 // but simplified
-import { useCounter } from "lib/utils/useCounter"
 import React, { useCallback, useContext, useMemo, useState } from "react"
+import useCounter from "react-use/lib/useCounter"
 import { Toast, ToastPlacement, ToastProps } from "./Toast"
 
 interface ToastContextValue {
@@ -44,7 +44,7 @@ const filterToastsAndPosition = (
 
 export const ToastProvider: React.FC = ({ children }) => {
   const [toasts, setToasts] = useState<Array<Omit<ToastProps, "positionIndex">>>([])
-  const [nextId, incrementNextId] = useCounter()
+  const [nextId, { inc: incrementNextId }] = useCounter()
 
   const show: ToastContextValue["show"] = useCallback(
     (message, placement, options) => {
