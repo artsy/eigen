@@ -16,7 +16,6 @@ import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/util
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useInterval } from "lib/utils/useInterval"
-import { usePrevious } from "lib/utils/usePrevious"
 import _, { times } from "lodash"
 import moment from "moment"
 import { Box, Flex, Join, Spacer } from "palette"
@@ -24,6 +23,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Animated, FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import usePrevious from "react-use/lib/usePrevious"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { SaleBelowTheFoldQueryResponse } from "../../../__generated__/SaleBelowTheFoldQuery.graphql"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
@@ -72,7 +72,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const [isLive, setIsLive] = useState(false)
-  const prevIsLive = usePrevious(isLive, false)
+  const prevIsLive = usePrevious(isLive)
 
   const scrollAnim = useRef(new Animated.Value(0)).current
 
