@@ -10,6 +10,7 @@ import React, { useState } from "react"
 import { Dimensions, FlatList, ScrollView } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { FairEditorialShare } from "./Components/FairEditorialShare"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 
 const FAIR2_ARTICLES_PAGE_SIZE = 10
 
@@ -87,7 +88,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                   <FairEditorialShare
                     mt={1}
                     subject={heroArticle!.title!}
-                    url={`https://www.artsy.net${heroArticle!.href}`}
+                    url={`${getCurrentEmissionState().webURL}${heroArticle!.href}`}
                   />
                 </Box>
               </Box>
@@ -124,7 +125,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                       <FairEditorialShare
                         mt={1}
                         subject={article!.title!}
-                        url={`https://www.artsy.net${article!.href}`}
+                        url={`${getCurrentEmissionState().webURL}${article!.href}`}
                       />
                     </Box>
                   </Touchable>

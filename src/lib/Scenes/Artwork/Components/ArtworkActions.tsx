@@ -22,6 +22,7 @@ import React from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 
 interface ArtworkActionsProps {
   artwork: ArtworkActions_artwork
@@ -44,7 +45,7 @@ export const shareContent = (title: string, href: string, artists: ArtworkAction
     title: computedTitle,
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     message: computedTitle,
-    url: `https://artsy.net${href}?utm_content=artwork-share`,
+    url: `${getCurrentEmissionState().webURL}${href}?utm_content=artwork-share`,
   }
 }
 
