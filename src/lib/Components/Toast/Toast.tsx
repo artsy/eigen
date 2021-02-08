@@ -8,6 +8,11 @@ import { useToast } from "./toastHook"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
+const MIDDLE_TOAST_SIZE = 120
+const EDGE_TOAST_HEIGHT = 60
+const EDGE_TOAST_PADDING = 10
+const NAVBAR_HEIGHT = 44
+
 export type ToastPlacement = "middle" | "top" | "bottom"
 export interface ToastProps {
   id: string
@@ -54,11 +59,11 @@ export const Toast: React.FC<ToastProps> = ({ id, positionIndex, placement, mess
 
     return (
       <AnimatedFlex
-        width={120}
-        height={120}
+        width={MIDDLE_TOAST_SIZE}
+        height={MIDDLE_TOAST_SIZE}
         position="absolute"
-        top={(height - 120) / 2}
-        left={(width - 120) / 2}
+        top={(height - MIDDLE_TOAST_SIZE) / 2}
+        left={(width - MIDDLE_TOAST_SIZE) / 2}
         backgroundColor={color("black100")}
         opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 0.9] })}
         borderRadius={5}
@@ -89,9 +94,20 @@ export const Toast: React.FC<ToastProps> = ({ id, positionIndex, placement, mess
       position="absolute"
       left="1"
       right="1"
-      height={60}
-      bottom={placement === "bottom" ? 10 + positionIndex * (60 + 10) : undefined}
-      top={placement === "top" ? topSafeAreaInset + 44 + 10 + positionIndex * (60 + 10) : undefined}
+      height={EDGE_TOAST_HEIGHT}
+      bottom={
+        placement === "bottom"
+          ? EDGE_TOAST_PADDING + positionIndex * (EDGE_TOAST_HEIGHT + EDGE_TOAST_PADDING)
+          : undefined
+      }
+      top={
+        placement === "top"
+          ? topSafeAreaInset +
+            NAVBAR_HEIGHT +
+            EDGE_TOAST_PADDING +
+            positionIndex * (EDGE_TOAST_HEIGHT + EDGE_TOAST_PADDING)
+          : undefined
+      }
       backgroundColor={color("black100")}
       opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 0.9] })}
       borderRadius={5}
