@@ -211,14 +211,14 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
             title={artwork.title!}
           />
 
-          {showWhatsAppItem === true ? (
+          {showWhatsAppItem ? (
             <CustomShareSheetItem
               title="WhatsApp"
               Icon={<WhatsAppAppIcon />}
               onPress={() => shareArtworkOnWhatsApp()}
             />
           ) : null}
-          {showInstagramStoriesItem === true ? (
+          {showInstagramStoriesItem ? (
             <CustomShareSheetItem
               title="Instagram Stories"
               Icon={<InstagramAppIcon />}
