@@ -1,8 +1,14 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { ArtsyLogoBlackIcon, Flex, FlexProps, LinkIcon, MoreIcon, ShareIcon, Spacer, Text } from "palette"
+import { ArtsyLogoBlackIcon, Flex, FlexProps, Text } from "palette"
 import React, { RefObject } from "react"
 import { Image } from "react-native"
 import ViewShot from "react-native-view-shot"
+
+/**
+ * This component is used to generate an image to share in Instagram Stories.
+ * The way we do this is we render what we want the image to have (artist name, arsty logo, etc)
+ * completely off-screen, and we use viewshot to snap a png of the rendered component.
+ */
 
 const InstagramStoryBackgroundDimensions = {
   width: 1080,
