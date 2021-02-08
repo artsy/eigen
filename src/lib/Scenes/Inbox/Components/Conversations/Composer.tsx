@@ -7,6 +7,7 @@ import React from "react"
 import { Dimensions, TextInput, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 import { InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
+import { ReviewOfferButton } from "./ReviewOfferButton"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -97,9 +98,10 @@ export default class Composer extends React.Component<Props, State> {
           <StyledKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={safeAreaInsets.top}>
             {this.props.children}
             <Flex flexDirection="column">
-              {!!showInquiryMakeOfferButton && this.props.artworkID != null && (
+              {/* {!!showInquiryMakeOfferButton && this.props.artworkID != null && (
                 <InquiryMakeOfferButton artworkID={this.props.artworkID} />
-              )}
+              )} */}
+              {!!showInquiryMakeOfferButton && this.props.artworkID != null && <ReviewOfferButton />}
               <Container active={this.state.active}>
                 <TextInput
                   placeholder={"Type your message"}
