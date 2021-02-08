@@ -61,7 +61,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         contentContainerStyle={{ paddingTop: 20, paddingBottom: 60 }}
         onScrollEndDrag={onScrollEndDrag}
       >
-        <MarketStatsQueryRenderer artistInternalID={artist.internalID} relay={relay} />
+        <MarketStatsQueryRenderer artistInternalID={artist.internalID} environment={relay.environment} />
         <ArtistInsightsAuctionResultsPaginationContainer artist={artist} />
       </StickyTabPageScrollView>
       <FilterModalNavigator
