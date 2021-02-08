@@ -34,7 +34,7 @@ In the file `features.ts`
    }
 ```
 
-Adding the `description` property makes it possible to override the feature flag from the admin menu.
+Adding the `showInAdminMenu` property makes it possible to override the feature flag from the admin menu.
 
 You can access the feature flag in a functional react component using `useFeatureFlag`.
 
