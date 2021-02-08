@@ -6,21 +6,8 @@ import { useEmissionOption } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useCanOpenURL } from "lib/utils/useCanOpenURL"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import {
-  ArtsyLogoBlackIcon,
-  Box,
-  Flex,
-  FlexProps,
-  InstagramAppIcon,
-  LinkIcon,
-  MoreIcon,
-  ShareIcon,
-  Spacer,
-  Text,
-  WhatsAppAppIcon,
-} from "palette"
-import React, { RefObject, useRef, useState } from "react"
-import { Image } from "react-native"
+import { Box, Flex, InstagramAppIcon, LinkIcon, MoreIcon, ShareIcon, Spacer, WhatsAppAppIcon } from "palette"
+import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native-gesture-handler"
 // @ts-ignore
 import Share from "react-native-share"
@@ -31,64 +18,7 @@ import RNFetchBlob from "rn-fetch-blob"
 import { ArtworkActionsFragmentContainer as ArtworkActions, shareContent } from "./ArtworkActions"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./ArtworkTombstone"
 import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
-
-const InstagramStoryBackgroundDimensions = {
-  width: 1080,
-  height: 1920,
-}
-
-// tslint:disable-next-line:interface-name
-interface IGStoryViewShotProps {
-  shotRef: RefObject<ViewShot>
-  href: string
-  artist: string
-  title: string
-}
-
-const IGStoryViewShot: React.FC<IGStoryViewShotProps> = ({ shotRef, href, artist, title }) => {
-  const { height: screenHeight, width: screenWidth } = useScreenDimensions()
-
-  const renderOffScreenStyle: FlexProps = {
-    position: "absolute",
-    left: screenWidth + screenHeight,
-    top: screenWidth + screenHeight,
-  }
-
-  return (
-    <Flex {...renderOffScreenStyle} alignItems="center">
-      <ViewShot ref={shotRef} options={{ format: "png", result: "base64" }}>
-        <Flex
-          width={InstagramStoryBackgroundDimensions.width}
-          height={InstagramStoryBackgroundDimensions.height}
-          backgroundColor="white100"
-        >
-          <Flex flex={1}>
-            <Image source={{ uri: href }} style={{ flex: 1 }} resizeMode="contain" />
-          </Flex>
-          <Flex
-            width="100%"
-            mt={40}
-            mb={180}
-            px={50}
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Flex>
-              <Text variant="mediumText" fontSize={43}>
-                {artist}
-              </Text>
-              <Text variant="text" opacity={0.6} fontSize={43}>
-                {title}
-              </Text>
-            </Flex>
-            <ArtsyLogoBlackIcon scale={2} />
-          </Flex>
-        </Flex>
-      </ViewShot>
-    </Flex>
-  )
-}
+import { IGStoryViewShot } from "./IGStoryViewShot"
 
 interface ArtworkHeaderProps {
   artwork: ArtworkHeader_artwork
