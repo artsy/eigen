@@ -3,8 +3,6 @@ import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graph
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Join, Separator } from "palette"
 import React, { useCallback, useState } from "react"
 import { NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -63,10 +61,8 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         contentContainerStyle={{ paddingTop: 20, paddingBottom: 60 }}
         onScrollEndDrag={onScrollEndDrag}
       >
-        <Join separator={<Separator my={2} ml={-2} width={useScreenDimensions().width} />}>
-          <MarketStatsQueryRenderer artistInternalID={artist.internalID} relay={relay} />
-          <ArtistInsightsAuctionResultsPaginationContainer artist={artist} />
-        </Join>
+        <MarketStatsQueryRenderer artistInternalID={artist.internalID} environment={relay.environment} />
+        <ArtistInsightsAuctionResultsPaginationContainer artist={artist} />
       </StickyTabPageScrollView>
       <FilterModalNavigator
         isFilterArtworksModalVisible={isFilterModalVisible}
@@ -77,7 +73,6 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         closeModal={closeFilterModal}
         title="Filter auction results"
       />
-
       <AnimatedArtworkFilterButton
         isVisible={isFilterButtonVisible}
         onPress={openFilterModal}

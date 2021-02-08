@@ -1,37 +1,46 @@
 upcoming:
-  version: 6.7.7
+  version: 6.7.8
   date: TBD
   dev:
-    - Remove unused files and scripts - pavlos
-    - Add basic log-in flow for android - david
-    - Add android ci for testing PRs and deploying betas - pavlos, david
-    - Configure metaphyiscs and relay for android - david
-    - Use @artsy/palette-tokens package - justin, david
-    - Explicitly tag releases to fix sentry errors - cx
     - Migrate feature flag infrastructure to easy-peasy - david
-    - Implement analytics on auction results - mounir
-    - Validate CHANGELOG.yml - brian, pavlos, brian, adam, steven, david, mounir
-    - Add increase/decrease icons - pepopowitz
-    - Add android navigation infra - david, mounir
-    - Use api key in fastlane scripts - brian, mounir
   user_facing:
-    - Added watched lots to MyBids - erik, ashley, christina
-    - Refresh inbox automatically upon revisiting - erik, lily
-    - Poll and refetch images when images are processing (my collection) - brian
-    - Make AuctionResults not available text fit in one line - mounir
-    - Show filter button when there are less than 2 auction results available - mounir
-    - Hide artist insights tab when no auction results are available - mounir
-    - show FilteredArtworkGridZeroState when no results are available  - mounir
+    - MarketStats on auction results - pepopowitz, mounir
+    - fix - show correct up/down arrows on Market Stats - pepopowitz
+    - Loading skeleton for market stats - pepopowitz
     - hooks up inquiry make offer modal to web view checkout flow - lily
-    - show total count of auction results  - mounir
-    - Add info modals to artist insights and auction results - brian
-    - Make AuctionResult screen fields selectable  - mounir
-    - Add NotArtwork Icon to AuctionResult screen   - mounir
-    - Add extra bottom padding on artist insights auction results - mounir
-    - Remove separator from last auction result - mounir
-    - Show mid-estimate performance on auction results - mounir
+    - Convert cents to dollars in market stats - pepopowitz
 
 releases:
+  - version: 6.7.7
+    date: Feb 4, 2021
+    dev:
+      - Remove unused files and scripts - pavlos
+      - Add basic log-in flow for android - david
+      - Add android ci for testing PRs and deploying betas - pavlos, david
+      - Configure metaphyiscs and relay for android - david
+      - Use @artsy/palette-tokens package - justin, david
+      - Explicitly tag releases to fix sentry errors - cx
+      - Implement analytics on auction results - mounir
+      - Validate CHANGELOG.yml - brian, pavlos, brian, adam, steven, david, mounir
+      - Add increase/decrease icons - pepopowitz
+      - Add android navigation infra - david, mounir
+      - Use api key in fastlane scripts - brian, mounir
+    user_facing:
+      - Added watched lots to MyBids - erik, ashley, christina
+      - Refresh inbox automatically upon revisiting - erik, lily
+      - Poll and refetch images when images are processing (my collection) - brian
+      - Make AuctionResults not available text fit in one line - mounir
+      - Show filter button when there are less than 2 auction results available - mounir
+      - Hide artist insights tab when no auction results are available - mounir
+      - show FilteredArtworkGridZeroState when no results are available  - mounir
+      - show total count of auction results  - mounir
+      - Add info modals to artist insights and auction results - brian
+      - Make AuctionResult screen fields selectable  - mounir
+      - Add NotArtwork Icon to AuctionResult screen   - mounir
+      - Add extra bottom padding on artist insights auction results - mounir
+      - Remove separator from last auction result - mounir
+      - Show mid-estimate performance on auction results - mounir
+
   - version: 6.7.6
     date: Jan 20, 2021
     dev:
