@@ -11,6 +11,7 @@ upcoming:
     - Implement analytics on auction results - mounir
     - Validate CHANGELOG.yml - brian, pavlos, brian, adam, steven, david, mounir
     - Add increase/decrease icons - pepopowitz
+    - Add scripts and docs for android beta promotion - pavlos
     - Add basic deep links for android - david
     - Add android navigation infra - david, mounir
     - Use api key in fastlane scripts - brian, mounir
