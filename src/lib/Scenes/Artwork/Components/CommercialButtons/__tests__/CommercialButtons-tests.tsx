@@ -68,7 +68,8 @@ const relayComponent = async ({ artwork }) => {
 }
 
 describe("CommercialButtons", () => {
-  it("renders button for Contact Gallery button if isInquireable", async () => {
+  it("renders button for Contact Gallery button if isInquireable and not newFirstInquiry", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({AROptionsNewFirstInquiry: false})
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: false,

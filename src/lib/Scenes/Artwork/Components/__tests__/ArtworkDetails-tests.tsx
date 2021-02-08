@@ -1,7 +1,7 @@
 import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { ArtworkDetails } from "../ArtworkDetails"
@@ -11,9 +11,11 @@ jest.unmock("react-relay")
 describe("Artwork Details", () => {
   const mountArtworkDetails = (artwork: ArtworkDetails_artwork) =>
     mount(
-      <Theme>
-        <ArtworkDetails artwork={artwork} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <ArtworkDetails artwork={artwork} />
+        </Theme>
+      </GlobalStoreProvider>
     )
 
   it("renders the data if available", () => {
@@ -102,7 +104,7 @@ describe("Artwork Details", () => {
   })
 
   it("shows request condition report if lot condition report enabled and feature flag is enabled", () => {
-    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsLotConditionReport: true })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsLotConditionReport: true })
 
     const testArtwork: ArtworkDetails_artwork = {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -135,7 +137,7 @@ describe("Artwork Details", () => {
   })
 
   it("does not show request condition report if lot condition report enabled and feature flag is disabled", () => {
-    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsLotConditionReport: false })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsLotConditionReport: false })
 
     const testArtwork: ArtworkDetails_artwork = {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

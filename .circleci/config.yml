@@ -38,7 +38,7 @@ commands:
           name: "Generate initial checksum manifests"
           command: |
             mkdir .manifests
-            scripts/generate-manifest.js .manifests/node_modules '^yarn\.lock$' '^patches/'
+            scripts/generate-manifest.js .manifests/node_modules '^yarn\.lock$' '^patches/' '^package\.json$'
             scripts/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
             scripts/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__tests__|__mocks__|__fixtures__))'
             scripts/generate-manifest.js .manifests/js_test_results '^\.manifests/js_transform' '^data/' '^src/'
@@ -55,14 +55,19 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v5-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+            - v6-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
       - run:
           name: Install node modules
           command: ls node_modules || yarn install
       - save_cache:
-          key: v5-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+          key: v6-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
+  update-echo:
+    steps:
+      - run:
+          name: Update echo
+          command: ./scripts/update-echo
   generate-query-map:
     steps:
       - run:
@@ -227,6 +232,7 @@ jobs:
       - generate-checksums
       - setup-env-file
       - install-node-modules
+      - update-echo
       - generate-query-map
       - run:
           name: Check generated folder
@@ -286,6 +292,7 @@ jobs:
       - install-node
       - setup-env-file
       - install-node-modules
+      - update-echo
       - install-gems
       - install-cocoapods
       - build-app-ios
@@ -348,6 +355,7 @@ jobs:
               circleci step halt
             fi
       - install-node-modules
+      - update-echo
       - install-gems
       - build-app-android
       - run:

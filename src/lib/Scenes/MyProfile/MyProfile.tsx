@@ -4,7 +4,6 @@ import { MenuItem } from "lib/Components/MenuItem"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { useEmissionOption } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -17,8 +16,6 @@ import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 
 const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const listRef = useRef<FlatList<any>>(null)
-
-  const enableSentryDebugButton = useEmissionOption("AROptionsSentryErrorDebug")
 
   const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
   const shouldDisplayMyCollection = me.labFeatures?.includes("My Collection")
@@ -62,16 +59,6 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       <MenuItem title="Personal data request" onPress={() => navigate("privacy-request")} />
       <MenuItem title="About" onPress={() => navigate("about")} />
       <MenuItem title="Log out" onPress={confirmLogout} chevron={null} />
-      {enableSentryDebugButton ? (
-        <MenuItem
-          title="Throw Sentry Error"
-          onPress={() => {
-            throw Error("Sentry test error")
-          }}
-          chevron={null}
-        />
-      ) : null}
-      {}
       <Spacer mb={1} />
     </ScrollView>
   )

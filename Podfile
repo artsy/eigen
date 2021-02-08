@@ -172,9 +172,6 @@ post_install do |installer|
   emission_podspec_json = installer.pod_targets.find { |f| f.name == 'Emission' }.specs[0].to_json
   File.write('Pods/Local Podspecs/Emission.podspec.json', emission_podspec_json)
 
-  puts 'Updating Echo...'
-  `./scripts/update-echo &> /dev/null`
-
   # Disable bitcode for now. Specifically needed for HockeySDK and ARAnalytics.
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|

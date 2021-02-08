@@ -14,7 +14,7 @@ import {
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { useEmissionOption } from "lib/store/GlobalStore"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
@@ -135,7 +135,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
   const artworksTotal = artworks?.edges?.length
   const shouldShowCollections = artist.iconicCollections && artist.iconicCollections.length > 1
   const shouldShowNotables = artist.notableWorks?.edges?.length === 3
-  const shouldShowArtistSeries = useEmissionOption("AROptionsArtistSeries")
+  const shouldShowArtistSeries = useFeatureFlag("AROptionsArtistSeries")
 
   useEffect(() => {
     if (state.applyFilters) {
