@@ -3053,6 +3053,7 @@ type CommerceOfferOrder implements CommerceOrder {
   currencyCode: String!
   displayCommissionRate: String
   id: ID!
+  impulseConversationId: String
   internalID: ID!
   itemsTotal(
     decimal: String = "."
