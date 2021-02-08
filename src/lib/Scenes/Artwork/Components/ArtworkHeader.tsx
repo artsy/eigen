@@ -1,6 +1,5 @@
 import Clipboard from "@react-native-community/clipboard"
 import { ArtworkHeader_artwork } from "__generated__/ArtworkHeader_artwork.graphql"
-import Color from "color"
 import { CustomShareSheet, CustomShareSheetItem } from "lib/Components/CustomShareSheet"
 import { useToast } from "lib/Components/Toast/toastHook"
 import { useEmissionOption } from "lib/store/GlobalStore"
@@ -10,7 +9,6 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import {
   ArtsyLogoBlackIcon,
   Box,
-  color,
   Flex,
   FlexProps,
   InstagramAppIcon,
@@ -165,8 +163,8 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
     await Share.shareSingle({
       social: Share.Social.INSTAGRAM_STORIES,
       method: Share.InstagramStories.SHARE_BACKGROUND_IMAGE,
-      backgroundTopColor: new Color(color("white100")).hex(),
-      backgroundBottomColor: new Color(color("white100")).hex(),
+      backgroundTopColor: "#ffffff",
+      backgroundBottomColor: "#ffffff",
       backgroundImage: base64Data,
     })
     setShareSheetVisible(false)
