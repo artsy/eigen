@@ -92,4 +92,4 @@ There is also the general QA page [here](https://www.notion.so/artsy/QA-decba0c3
 
 ## Still Need Help?
 
-Ask for help in the #platform-mobile slack channel, we will be happy to assist!
+Ask for help in the #practice-mobile slack channel, we will be happy to assist!
