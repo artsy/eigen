@@ -5,7 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MakeOfferModal_artwork = {
-    readonly " $fragmentRefs": FragmentRefs<"CollapsibleArtworkDetails_artwork">;
+    readonly " $fragmentRefs": FragmentRefs<"CollapsibleArtworkDetails_artwork" | "MakeOfferButton_artwork">;
     readonly " $refType": "MakeOfferModal_artwork";
 };
 export type MakeOfferModal_artwork$data = MakeOfferModal_artwork;
@@ -26,10 +26,15 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "FragmentSpread",
       "name": "CollapsibleArtworkDetails_artwork"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "MakeOfferButton_artwork"
     }
   ],
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '00983b7780e837551d84dc4b8bbd6a2c';
+(node as any).hash = '2a880f80c8aa3b9a4b8a913bbce52b20';
 export default node;

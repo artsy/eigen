@@ -1,8 +1,5 @@
-This update includes a number of bug fixes and improvements, including:
+This update includes a number of improvements and bug fixes, including:
 
-• Adds the ability to share on Instagram
-• Improves the experience of submitting for consignment
-• Improves the experience of viewing past shows
-• Fixes various layout bugs
+• Watched lots are now available under my bids in the Inbox tab
 
 Have feedback? Email us at support@artsy.net

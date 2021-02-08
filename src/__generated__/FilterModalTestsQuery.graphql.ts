@@ -5,7 +5,7 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtworkAggregation = "ARTIST" | "ATTRIBUTION_CLASS" | "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
+export type ArtworkAggregation = "ARTIST" | "ARTIST_NATIONALITY" | "ATTRIBUTION_CLASS" | "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 export type FilterModalTestsQueryVariables = {};
 export type FilterModalTestsQueryResponse = {
     readonly marketingCollection: {
@@ -782,6 +782,7 @@ return {
         "marketingCollection.collectionArtworks.aggregations.slice": {
           "enumValues": [
             "ARTIST",
+            "ARTIST_NATIONALITY",
             "ATTRIBUTION_CLASS",
             "COLOR",
             "DIMENSION_RANGE",
@@ -791,6 +792,7 @@ return {
             "MAJOR_PERIOD",
             "MEDIUM",
             "MERCHANDISABLE_ARTISTS",
+            "PARTNER",
             "PARTNER_CITY",
             "PERIOD",
             "PRICE_RANGE",

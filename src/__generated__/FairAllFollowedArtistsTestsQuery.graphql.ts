@@ -335,6 +335,7 @@ v16 = {
 v17 = {
   "enumValues": [
     "ARTIST",
+    "ARTIST_NATIONALITY",
     "ATTRIBUTION_CLASS",
     "COLOR",
     "DIMENSION_RANGE",
@@ -344,6 +345,7 @@ v17 = {
     "MAJOR_PERIOD",
     "MEDIUM",
     "MERCHANDISABLE_ARTISTS",
+    "PARTNER",
     "PARTNER_CITY",
     "PERIOD",
     "PRICE_RANGE",

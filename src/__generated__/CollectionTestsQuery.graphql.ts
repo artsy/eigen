@@ -1243,6 +1243,7 @@ return {
         "marketingCollection.collectionArtworks.aggregations.slice": {
           "enumValues": [
             "ARTIST",
+            "ARTIST_NATIONALITY",
             "ATTRIBUTION_CLASS",
             "COLOR",
             "DIMENSION_RANGE",
@@ -1252,6 +1253,7 @@ return {
             "MAJOR_PERIOD",
             "MEDIUM",
             "MERCHANDISABLE_ARTISTS",
+            "PARTNER",
             "PARTNER_CITY",
             "PERIOD",
             "PRICE_RANGE",

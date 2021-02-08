@@ -109,6 +109,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
 
   const renderAuctionResultsModal = () => (
     <>
+      <Spacer my={1} />
       <Text>
         These auction results bring together sale data from top auction houses around the world, including Christies,
         Sotheby’s, Phillips, Bonhams, and Heritage. Results are updated daily.
@@ -163,8 +164,9 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
             />
           </Flex>
           <SortMode variant="small" color="black60">
-            {artist.auctionResultsConnection?.totalCount} {resultsString} {bullet} Sorted by{" "}
-            {getSortDescription()?.toLowerCase()}
+            {!!artist.auctionResultsConnection?.totalCount &&
+              new Intl.NumberFormat().format(artist.auctionResultsConnection.totalCount)}{" "}
+            {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
           </SortMode>
           <Separator mt="2" />
         </Flex>

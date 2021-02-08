@@ -1,24 +1,47 @@
 import { ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
-import { MarketStats_priceInsights } from "__generated__/MarketStats_priceInsights.graphql"
 import { MarketStatsQuery } from "__generated__/MarketStatsQuery.graphql"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
+import { Select } from "lib/Components/Select"
 import { formatLargeNumber } from "lib/utils/formatLargeNumber"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { DecreaseIcon, Flex, IncreaseIcon, Join, Spacer, Text } from "palette"
-import React from "react"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { DecreaseIcon, Flex, IncreaseIcon, Join, Separator, Spacer, Text } from "palette"
+import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
+import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import { MarketStats_priceInsightsConnection } from "../../../../__generated__/MarketStats_priceInsightsConnection.graphql"
+import { extractNodes } from "../../../utils/extractNodes"
 
 interface MarketStatsProps {
-  priceInsights: MarketStats_priceInsights
+  priceInsightsConnection: MarketStats_priceInsightsConnection
 }
 
-const MarketStats: React.FC<MarketStatsProps> = ({ priceInsights }) => {
+const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) => {
   const tracking = useTracking()
 
+  const priceInsights = extractNodes(priceInsightsConnection)
+
+  if (priceInsights.length === 0) {
+    return null
+  }
+
+  const [selectedPriceInsight, setSelectedPriceInsight] = useState(priceInsights[0])
+
+  const mediumOptions = useRef<Array<{ value: string; label: string }>>(
+    priceInsights
+      .filter((pI) => pI.medium)
+      .map((priceInsight) => ({
+        value: priceInsight.medium as string,
+        label: priceInsight.medium as string,
+      }))
+  )
+
   const renderInfoModal = () => (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <Spacer my={1} />
       <Text>
         The following data points provide an overview of an artist’s auction market for a specific medium (e.g.,
         photography, painting) over the past 36 months.
@@ -26,7 +49,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsights }) => {
       <Spacer mb={2} />
       <Text>
         These market signals bring together data from top auction houses around the world, including Christie’s,
-        Sotheby’s, Phillips, Bonhams, and Heritage.
+        Sotheby’s, Phillips and Bonhams.
       </Text>
       <Spacer mb={2} />
       <Text>
@@ -53,23 +76,19 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsights }) => {
         estimates set by the auction house before the auction takes place) for lots sold at auction over the past 36
         months.
       </Text>
-      <Spacer mb={2} />
+      <Spacer mb={100} />
     </ScrollView>
   )
 
-  if ((priceInsights.edges?.length || 0) <= 0) {
-    return null
-  }
-
-  const priceInsight = priceInsights.edges?.[0]?.node
-  const averageValueSold = (priceInsight?.annualValueSoldCents as number) / (priceInsight?.annualLotsSold || 1)
+  const averageValueSold =
+    (selectedPriceInsight.annualValueSoldCents as number) / 100 / (selectedPriceInsight.annualLotsSold || 1)
   const formattedAverageValueSold = formatLargeNumber(averageValueSold)
 
   let deltaIcon: React.ReactNode
-  const actualMedianSaleOverEstimatePercentage = priceInsight?.medianSaleOverEstimatePercentage || 0
-  if (actualMedianSaleOverEstimatePercentage < 100) {
+  const actualMedianSaleOverEstimatePercentage = selectedPriceInsight?.medianSaleOverEstimatePercentage || 0
+  if (actualMedianSaleOverEstimatePercentage < 0) {
     deltaIcon = <DecreaseIcon />
-  } else if (actualMedianSaleOverEstimatePercentage > 100) {
+  } else if (actualMedianSaleOverEstimatePercentage > 0) {
     deltaIcon = <IncreaseIcon />
   }
 
@@ -89,18 +108,31 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsights }) => {
           modalContent={renderInfoModal()}
         />
       </Flex>
-      <Text variant="small" color="black60">
-        Last 12 months
+      <Text variant="small" color="black60" my={0.5}>
+        Last 36 months
       </Text>
-      <Text>{priceInsight?.medium}</Text>
+      <Select
+        value={selectedPriceInsight.medium}
+        options={mediumOptions.current}
+        title="Select medium"
+        showTitleLabel={false}
+        onSelectValue={(selectedMedium) => {
+          const priceInsight = priceInsights.find((p) => p.medium === selectedMedium)
+          if (priceInsight) {
+            setSelectedPriceInsight(priceInsight)
+          }
+        }}
+      />
       {/* Market Stats Values */}
       <Flex flexDirection="row" flexWrap="wrap" mt={15}>
         <Flex width="50%">
-          <Text variant="largeTitle">{priceInsight?.annualLotsSold}</Text>
+          <Text variant="largeTitle" data-test-id="annualLotsSold">
+            {selectedPriceInsight.annualLotsSold}
+          </Text>
           <Text variant="text">Yearly lots sold</Text>
         </Flex>
         <Flex width="50%">
-          <Text variant="largeTitle">{priceInsight?.sellThroughRate}%</Text>
+          <Text variant="largeTitle">{selectedPriceInsight.sellThroughRate}%</Text>
           <Text variant="text">Sell-through rate</Text>
         </Flex>
         <Flex width="50%" mt={2}>
@@ -117,13 +149,14 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsights }) => {
           <Text variant="text">Sale price over estimate</Text>
         </Flex>
       </Flex>
+      <Separator my={2} ml={-2} width={useScreenDimensions().width} />
     </>
   )
 }
 
 export const MarketStatsFragmentContainer = createFragmentContainer(MarketStats, {
-  priceInsights: graphql`
-    fragment MarketStats_priceInsights on PriceInsightConnection {
+  priceInsightsConnection: graphql`
+    fragment MarketStats_priceInsightsConnection on PriceInsightConnection {
       edges {
         node {
           medium
@@ -139,16 +172,16 @@ export const MarketStatsFragmentContainer = createFragmentContainer(MarketStats,
 
 export const MarketStatsQueryRenderer: React.FC<{
   artistInternalID: string
-  relay: RelayProp
-}> = ({ artistInternalID, relay }) => {
+  environment: RelayModernEnvironment
+}> = ({ artistInternalID, environment }) => {
   return (
     <QueryRenderer<MarketStatsQuery>
-      environment={relay.environment}
+      environment={environment}
       variables={{ artistInternalID }}
       query={graphql`
         query MarketStatsQuery($artistInternalID: ID!) {
-          priceInsights(artistId: $artistInternalID) {
-            ...MarketStats_priceInsights
+          priceInsightsConnection: priceInsights(artistId: $artistInternalID, sort: DEMAND_RANK_DESC) {
+            ...MarketStats_priceInsightsConnection
           }
         }
       `}
@@ -161,7 +194,42 @@ export const MarketStatsQueryRenderer: React.FC<{
 }
 
 const LoadingSkeleton = () => {
-  return <Text>Loading!!!!</Text>
+  return (
+    <>
+      <Flex flexDirection="row" alignItems="center">
+        <Text variant="title" mr={0.5}>
+          Market Signals by Medium
+        </Text>
+      </Flex>
+      <Text variant="small" color="black60" my={0.5}>
+        Last 36 months
+      </Text>
+      <Spacer mb={0.5} />
+      <PlaceholderBox width="100%" height={40} />
+      <Flex flexDirection="row" flexWrap="wrap" mt={15}>
+        <Flex width="50%">
+          <Spacer mb={0.3} />
+          <PlaceholderText width={30} height={25} />
+          <Text variant="text">Yearly lots sold</Text>
+        </Flex>
+        <Flex width="50%">
+          <Spacer mb={0.3} />
+          <PlaceholderText width={60} height={25} />
+          <Text variant="text">Sell-through rate</Text>
+        </Flex>
+        <Flex width="50%" mt={2}>
+          <Spacer mb={0.3} />
+          <PlaceholderText width={50} height={25} />
+          <Text variant="text">Average sale price</Text>
+        </Flex>
+        <Flex width="50%" mt={2}>
+          <Spacer mb={0.3} />
+          <PlaceholderText width={70} height={25} />
+          <Text variant="text">Sale price over estimate</Text>
+        </Flex>
+      </Flex>
+    </>
+  )
 }
 
 export const tracks = {

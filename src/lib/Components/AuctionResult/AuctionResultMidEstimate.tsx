@@ -11,14 +11,17 @@ type ArrowDirections = "up" | "down"
 export const AuctionResultsMidEstimate: React.FC<AuctionResultsMidEstimateProps> = ({ value, shortDescription }) => {
   const arrowDirection: ArrowDirections = value[0] !== "-" ? "up" : "down"
 
+  const color = ratioColor(value)
+
   return (
     <Flex flexDirection="row" alignItems="center">
+      {/* Up arrow is heavier toward bottom so appears off center without padding */}
       {arrowDirection === "up" ? (
-        <IncreaseIcon bottom={"2px"} height={12} fill={"green100"} />
+        <IncreaseIcon bottom={"1px"} height={12} fill={color} />
       ) : (
-        <DecreaseIcon bottom={"2px"} height={12} fill={"red100"} />
+        <DecreaseIcon height={12} fill={color} />
       )}
-      <Text variant="small" color={ratioColor(value)}>
+      <Text variant="small" color={color}>
         {value.replace("-", "")} {shortDescription}
       </Text>
     </Flex>
