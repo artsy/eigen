@@ -70,11 +70,12 @@ export interface FilterDisplayConfig {
 export enum FilterModalMode {
   ArtistArtworks = "ArtistArtworks",
   ArtistSeries = "ArtistSeries",
-  Collection = "Collection",
-  SaleArtworks = "SaleArtworks",
-  Fair = "Fair",
-  Show = "Show",
   AuctionResults = "AuctionResults",
+  Collection = "Collection",
+  Fair = "Fair",
+  Partner = "Partner",
+  SaleArtworks = "SaleArtworks",
+  Show = "Show",
 }
 
 interface FilterModalProps extends ViewProperties {
@@ -269,6 +270,15 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                     trackChangeFilters(
                       PageNames.AuctionResult,
                       OwnerEntityTypes.AuctionResult,
+                      appliedFiltersParams,
+                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
+                    )
+                    break
+
+                  case FilterModalMode.Partner:
+                    trackChangeFilters(
+                      PageNames.PartnerPage,
+                      OwnerEntityTypes.Partner,
                       appliedFiltersParams,
                       changedFiltersParams(appliedFiltersParams, state.selectedFilters)
                     )
@@ -482,6 +492,18 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
       break
     case FilterModalMode.AuctionResults:
       sortOrder = AuctionResultsFiltersSorted
+      break
+    case FilterModalMode.Partner:
+      sortOrder = [
+        "sort",
+        "medium",
+        "attributionClass",
+        "priceRange",
+        "waysToBuy",
+        "dimensionRange",
+        "majorPeriods",
+        "color",
+      ]
       break
   }
 
