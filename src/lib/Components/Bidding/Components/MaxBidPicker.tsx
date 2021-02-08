@@ -1,12 +1,11 @@
 import { Picker } from "@react-native-community/picker"
+import { PickerProps } from "@react-native-community/picker/typings/Picker"
 import React from "react"
 
 import styled from "styled-components/native"
 
-export interface MaxBidPickerProps {
+export interface MaxBidPickerProps extends PickerProps {
   bids: ReadonlyArray<{ display: string }>
-  onValueChange: (itemValue: any, itemPosition: number) => void
-  selectedValue: string | number
 }
 
 export const MaxBidPicker: React.FC<MaxBidPickerProps> = ({ bids, onValueChange, selectedValue, ...rest }) => (
