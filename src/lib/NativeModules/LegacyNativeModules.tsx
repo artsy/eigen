@@ -51,7 +51,8 @@ interface LegacyNativeModules {
     popToRootOrScrollToTop(stackID: string): void
     popToRootAndScrollToTop(stackID: string): Promise<void>
     presentMediaPreviewController(reactTag: number, route: string, mimeType: string, cacheKey: string): void
-    presentEmailComposer(to: string, subject: string, body?: string): void
+    presentEmailComposerWithBody(body: string, subject: string, toAddress: string): void
+    presentEmailComposerWithSubject(subject: string, toAddress: string): void
     presentAugmentedRealityVIR(
       imgUrl: string,
       widthInches: number,

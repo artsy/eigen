@@ -273,8 +273,21 @@ RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag rou
 
 }
 
-RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSString *)toAddress subject:(nonnull NSString *)subject body:(NSString *)body)
+/**
+   We want an optional body parameter but are getting errors in debug mode when not passing, to get around this instead have two
+   methods one with body param and one without and choose which to use based on params passed in js
+ */
+RCT_EXPORT_METHOD(presentEmailComposerWithBody:(NSString *)body subject:(NSString *)subject toAddress:(NSString *)toAddress)
 {
+    [self presentNativeEmailComposer:toAddress subject:subject body:body];
+}
+
+RCT_EXPORT_METHOD(presentEmailComposerWithSubject:(NSString *)subject toAddress:(NSString *)toAddress)
+{
+    [self presentNativeEmailComposer:toAddress subject:subject body:nil];
+}
+
+- (void)presentNativeEmailComposer:(nonnull NSString *)toAddress subject:(nonnull NSString *)subject body:(nullable NSString *)body {
     UIViewController *fromViewController = [self.class currentlyPresentedVC];
     if ([MFMailComposeViewController canSendMail]) {
       MFMailComposeViewController *composer = [[MFMailComposeViewController alloc] init];
@@ -294,7 +307,6 @@ RCT_EXPORT_METHOD(presentEmailComposer:(nonnull NSString *)toAddress subject:(no
       [fromViewController presentViewController:alert animated:YES completion:nil];
     }
 }
-
 
 RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)widthIn height:(CGFloat)heightIn artworkSlug:(NSString *)artworkSlug artworkId:(NSString *)artworkId)
 {
