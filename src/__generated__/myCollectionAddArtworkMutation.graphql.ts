@@ -20,8 +20,6 @@ export type MyCollectionCreateArtworkInput = {
     isEdition?: boolean | null;
     medium: string;
     metric?: string | null;
-    pricePaidCents?: number | null;
-    pricePaidCurrency?: string | null;
     provenance?: string | null;
     title?: string | null;
     width?: string | null;
