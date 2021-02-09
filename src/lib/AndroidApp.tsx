@@ -3,10 +3,12 @@ import { Theme } from "palette"
 import React, { useEffect } from "react"
 import { Linking, View } from "react-native"
 import track from "react-tracking"
+import { RelayEnvironmentProvider } from "relay-hooks"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { LogIn } from "./LogIn/LogIn"
 import { ModalStack } from "./navigation/ModalStack"
 import { navigate } from "./navigation/navigate"
+import { defaultEnvironment } from "./relay/createEnvironment"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { AdminMenuWrapper } from "./utils/AdminMenuWrapper"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
@@ -38,15 +40,15 @@ const Main: React.FC<{}> = track()(({}) => {
 })
 
 export const App = () => (
-  <ProvideScreenDimensions>
-    <Theme>
-      <GlobalStoreProvider>
-        <_FancyModalPageWrapper>
+  <RelayEnvironmentProvider environment={defaultEnvironment}>
+    <ProvideScreenDimensions>
+      <Theme>
+        <GlobalStoreProvider>
           <AdminMenuWrapper>
             <Main />
           </AdminMenuWrapper>
-        </_FancyModalPageWrapper>
-      </GlobalStoreProvider>
-    </Theme>
-  </ProvideScreenDimensions>
+        </GlobalStoreProvider>
+      </Theme>
+    </ProvideScreenDimensions>
+  </RelayEnvironmentProvider>
 )
