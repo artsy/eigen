@@ -103,8 +103,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     </Flex>
   )
   if (auctionResult.estimate?.display) {
-    const { currency, estimate } = auctionResult
-    details.push(makeRow("Estimate range", `${estimate.display} ${currency}`))
+    details.push(makeRow("Estimate range", auctionResult.estimate?.display))
   }
   if (auctionResult.mediumText) {
     details.push(makeRow("Medium", capitalize(auctionResult.mediumText)))
@@ -133,7 +132,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     details.push(makeRow("Description", auctionResult.description, { fullWidth: true }))
   }
 
-  const hasSalePrice = !!auctionResult.priceRealized?.display && !!auctionResult.currency
+  const hasSalePrice = !!auctionResult.priceRealized?.display
   const now = moment()
   const isFromPastMonth = auctionResult.saleDate
     ? moment(auctionResult.saleDate).isAfter(now.subtract(1, "month"))
@@ -204,10 +203,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           )}
           {hasSalePrice ? (
             <>
-              <Text
-                variant="largeTitle"
-                mb={0.5}
-              >{`${auctionResult.priceRealized?.display} ${auctionResult.currency}`}</Text>
+              <Text variant="largeTitle" mb={0.5}>{`${auctionResult.priceRealized?.display}`}</Text>
               {!!auctionResult.performance?.mid && (
                 <AuctionResultsMidEstimate value={auctionResult.performance.mid} shortDescription="mid-estimate" />
               )}
@@ -242,7 +238,6 @@ export const AuctionResultQueryRenderer: React.FC<{
             artistID
             boughtIn
             categoryText
-            currency
             dateText
             description
             dimensions {
