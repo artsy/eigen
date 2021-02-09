@@ -4,11 +4,12 @@ import { ArtworkFilterContext, useSelectedOptionsDisplay } from "lib/utils/Artwo
 import { aggregationForFilter, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Box, CheckIcon, color, Flex, Separator, Text } from "palette"
 import React, { useContext, useState } from "react"
-import { TouchableOpacity, View } from "react-native"
+import { TouchableOpacity } from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import styled from "styled-components/native"
 import { FilterData } from "../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { useScreenDimensions } from "../../utils/useScreenDimensions"
+import { CircleWithBorder } from "../CircleWithBorder/CircleWithBorder"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
 import { FilterModalNavigationStack } from "../FilterModal"
 
@@ -113,7 +114,15 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
             step={1}
             allowOverlap
             snapped
-            customMarker={CustomMarker}
+            customMarker={() => (
+              <CircleWithBorder
+                borderWidth={2}
+                backgroundColor={color("black100")}
+                borderColor={color("white100")}
+                diameter={24}
+                top="2px"
+              />
+            )}
             selectedStyle={{
               backgroundColor: "black",
               height: 5,
@@ -161,14 +170,4 @@ export const OptionItem = ({ onPress, text, selected }: OptionItemProps) => (
 
 export const YearText = styled(Text)`
   margin-bottom: 15;
-`
-
-const CustomMarker = () => <BlackCircle />
-
-export const BlackCircle = styled(View)`
-  height: 24;
-  width: 24;
-  top: 2;
-  border-radius: 12;
-  background-color: ${color("black100")};
 `
