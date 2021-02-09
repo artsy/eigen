@@ -3,6 +3,7 @@ import { FairArticlesQuery } from "__generated__/FairArticlesQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { compact } from "lodash"
 import { Box, Button, Join, Message, space, Spacer, Text, Theme, Touchable } from "palette"
@@ -10,7 +11,6 @@ import React, { useState } from "react"
 import { Dimensions, FlatList, ScrollView } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { FairEditorialShare } from "./Components/FairEditorialShare"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
 
 const FAIR2_ARTICLES_PAGE_SIZE = 10
 

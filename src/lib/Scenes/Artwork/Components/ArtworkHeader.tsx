@@ -17,8 +17,8 @@ import { useTracking } from "react-tracking"
 import RNFetchBlob from "rn-fetch-blob"
 import { ArtworkActionsFragmentContainer as ArtworkActions, shareContent } from "./ArtworkActions"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./ArtworkTombstone"
-import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
 import { IGStoryViewShot } from "./IGStoryViewShot"
+import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
 
 interface ArtworkHeaderProps {
   artwork: ArtworkHeader_artwork
