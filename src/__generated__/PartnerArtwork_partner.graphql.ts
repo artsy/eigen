@@ -4,9 +4,19 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type ArtworkAggregation = "ARTIST" | "ARTIST_NATIONALITY" | "ATTRIBUTION_CLASS" | "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 export type PartnerArtwork_partner = {
     readonly internalID: string;
+    readonly slug: string;
     readonly artworks: {
+        readonly aggregations: ReadonlyArray<{
+            readonly slice: ArtworkAggregation | null;
+            readonly counts: ReadonlyArray<{
+                readonly count: number;
+                readonly name: string;
+                readonly value: string;
+            } | null> | null;
+        } | null> | null;
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
@@ -27,6 +37,21 @@ export type PartnerArtwork_partner$key = {
 const node: ReaderFragment = {
   "argumentDefinitions": [
     {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "acquireable"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "attributionClass"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "color"
+    },
+    {
       "defaultValue": 10,
       "kind": "LocalArgument",
       "name": "count"
@@ -37,7 +62,37 @@ const node: ReaderFragment = {
       "name": "cursor"
     },
     {
-      "defaultValue": "PARTNER_UPDATED_AT_DESC",
+      "defaultValue": "*-*",
+      "kind": "LocalArgument",
+      "name": "dimensionRange"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "inquireableOnly"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "majorPeriods"
+    },
+    {
+      "defaultValue": "*",
+      "kind": "LocalArgument",
+      "name": "medium"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "offerable"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "priceRange"
+    },
+    {
+      "defaultValue": "-partner_updated_at",
       "kind": "LocalArgument",
       "name": "sort"
     }
@@ -65,15 +120,78 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
+      "storageKey": null
+    },
+    {
       "alias": "artworks",
       "args": [
+        {
+          "kind": "Variable",
+          "name": "acquireable",
+          "variableName": "acquireable"
+        },
+        {
+          "kind": "Literal",
+          "name": "aggregations",
+          "value": [
+            "COLOR",
+            "DIMENSION_RANGE",
+            "MAJOR_PERIOD",
+            "MEDIUM",
+            "PRICE_RANGE"
+          ]
+        },
+        {
+          "kind": "Variable",
+          "name": "attributionClass",
+          "variableName": "attributionClass"
+        },
+        {
+          "kind": "Variable",
+          "name": "color",
+          "variableName": "color"
+        },
+        {
+          "kind": "Variable",
+          "name": "dimensionRange",
+          "variableName": "dimensionRange"
+        },
+        {
+          "kind": "Variable",
+          "name": "inquireableOnly",
+          "variableName": "inquireableOnly"
+        },
+        {
+          "kind": "Variable",
+          "name": "majorPeriods",
+          "variableName": "majorPeriods"
+        },
+        {
+          "kind": "Variable",
+          "name": "medium",
+          "variableName": "medium"
+        },
+        {
+          "kind": "Variable",
+          "name": "offerable",
+          "variableName": "offerable"
+        },
+        {
+          "kind": "Variable",
+          "name": "priceRange",
+          "variableName": "priceRange"
+        },
         {
           "kind": "Variable",
           "name": "sort",
           "variableName": "sort"
         }
       ],
-      "concreteType": "ArtworkConnection",
+      "concreteType": "FilterArtworksConnection",
       "kind": "LinkedField",
       "name": "__Partner_artworks_connection",
       "plural": false,
@@ -81,7 +199,57 @@ const node: ReaderFragment = {
         {
           "alias": null,
           "args": null,
-          "concreteType": "ArtworkEdge",
+          "concreteType": "ArtworksAggregationResults",
+          "kind": "LinkedField",
+          "name": "aggregations",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "slice",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "AggregationCount",
+              "kind": "LinkedField",
+              "name": "counts",
+              "plural": true,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "count",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "name",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "value",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "FilterArtworksEdge",
           "kind": "LinkedField",
           "name": "edges",
           "plural": true,
@@ -158,5 +326,5 @@ const node: ReaderFragment = {
   "type": "Partner",
   "abstractKey": null
 };
-(node as any).hash = 'b27da342175e4f75b7de50768f5da346';
+(node as any).hash = 'a3d3c9fce966b742cea47d5d171eb8f8';
 export default node;

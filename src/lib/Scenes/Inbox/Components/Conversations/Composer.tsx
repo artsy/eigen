@@ -1,5 +1,5 @@
 import colors from "lib/data/colors"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
 import { Button, color, Flex, themeProps } from "palette"
@@ -91,7 +91,9 @@ export default class Composer extends React.Component<Props, State> {
     }
 
     const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
-    const showInquiryMakeOfferButton = getCurrentEmissionState().options.AROptionsInquiryCheckout
+
+    // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
+    const showInquiryMakeOfferButton = unsafe_getFeatureFlag("AROptionsInquiryCheckout")
     return (
       <ScreenDimensionsContext.Consumer>
         {({ safeAreaInsets }) => (

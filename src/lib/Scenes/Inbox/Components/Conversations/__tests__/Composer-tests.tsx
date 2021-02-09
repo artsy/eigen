@@ -38,19 +38,19 @@ describe("regarding the send button", () => {
 
 describe("regarding the make offer button", () => {
   it("renders the inquiry make offer button if inquiry checkout flag is true and artwork ID is  not null", () => {
-    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsInquiryCheckout: true })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsInquiryCheckout: true })
     const tree = renderWithWrappers(<Composer artworkID="12234" />)
     expect(tree.root.findAllByType(Button).length).toEqual(2)
   })
 
   it("renders the inquiry make offer button if inquiry checkout flag is true but artwork ID is null", () => {
-    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsInquiryCheckout: true })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsInquiryCheckout: true })
     const tree = renderWithWrappers(<Composer artworkID={null} />)
     expect(tree.root.findAllByType(Button).length).toEqual(1)
   })
 
   it("doesn't render the inquiry make offer button if inquiry item is not an artwork", () => {
-    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsInquiryCheckout: false })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsInquiryCheckout: false })
     const tree = renderWithWrappers(<Composer />)
     expect(tree.root.findAllByType(Button).length).toEqual(1)
   })

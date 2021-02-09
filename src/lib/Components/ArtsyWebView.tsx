@@ -1,11 +1,11 @@
-import { useEmissionOption } from "lib/store/GlobalStore"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import WebView from "react-native-webview"
 import InternalWebView from "./InternalWebView"
 
 export const ArtsyWebView: React.FC<{ url: string }> = ({ url }) => {
-  const useReactNativeWebView = useEmissionOption("AROptionsUseReactNativeWebView")
+  const useReactNativeWebView = useFeatureFlag("AROptionsUseReactNativeWebView")
 
   const paddingTop = useScreenDimensions().safeAreaInsets.top
 

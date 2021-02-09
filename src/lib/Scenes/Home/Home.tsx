@@ -18,7 +18,7 @@ import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "palette"
 
 import { Home_featured } from "__generated__/Home_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import { GlobalStore, useEmissionOption } from "lib/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -75,7 +75,7 @@ const Home = (props: Props) => {
   - Trending artists to follow
   */
 
-  const viewingRoomsEchoFlag = useEmissionOption("AREnableViewingRooms")
+  const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
 
   const rowData = compact([
     !!viewingRoomsEchoFlag && ({ type: "viewing-rooms" } as const),
@@ -243,7 +243,7 @@ const HomePlaceholder: React.FC<{}> = () => {
   // We use Math.random() here instead of PlaceholderRaggedText because its random
   // length is too deterministic, and we don't have any snapshot tests to worry about.
 
-  const viewingRoomsEchoFlag = useEmissionOption("AREnableViewingRooms")
+  const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
 
   return (
     <Theme>

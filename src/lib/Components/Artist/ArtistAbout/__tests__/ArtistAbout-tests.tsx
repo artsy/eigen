@@ -100,7 +100,7 @@ describe("ArtistAbout", () => {
 
   describe("ArtistAboutShows", () => {
     it("is shown when AROptionsNewInsightsPage is true", () => {
-      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewInsightsPage: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewInsightsPage: true })
 
       const tree = renderWithWrappers(<TestRenderer />)
 
@@ -110,7 +110,7 @@ describe("ArtistAbout", () => {
     })
 
     it("is hidden when AROptionsNewInsightsPage is false", () => {
-      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewInsightsPage: false })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewInsightsPage: false })
 
       const tree = renderWithWrappers(<TestRenderer />)
 
