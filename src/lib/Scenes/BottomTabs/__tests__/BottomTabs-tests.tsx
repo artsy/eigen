@@ -9,6 +9,7 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { BottomTabs } from "../BottomTabs"
 import { BottomTabsButton } from "../BottomTabsButton"
 
+jest.mock("react-use/lib/useInterval")
 jest.unmock("react-relay")
 jest.mock("lib/relay/createEnvironment", () => {
   return { defaultEnvironment: require("relay-test-utils").createMockEnvironment() }
