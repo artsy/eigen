@@ -66,7 +66,7 @@ describe("Year Options Screen", () => {
 
   it("renders propertly", () => {
     const tree = renderWithWrappers(<MockYearOptionsScreen initialState={state} />)
-    expect(extractText(tree.root.findAllByType(YearText)[0])).toEqual("2010 - 2021")
+    expect(extractText(tree.root.findAllByType(YearText)[0])).toEqual("2010 – 2021")
     expect(extractText(tree.root.findAllByType(OptionItem)[0])).toEqual(ALLOW_EMPTY_CREATED_DATES_FILTER.displayText)
   })
 
