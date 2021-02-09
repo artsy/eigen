@@ -2,7 +2,7 @@ upcoming:
   version: 6.7.8
   date: TBD
   dev:
-    - Use api key in fastlane scripts - brian, mounir
+    - Migrate feature flag infrastructure to easy-peasy - david
   user_facing:
     - Add custom ShareSheet and sharing to Instagram Stories - pavlos
     - MarketStats on auction results - pepopowitz, mounir
@@ -10,6 +10,7 @@ upcoming:
     - Loading skeleton for market stats - pepopowitz
     - hooks up inquiry make offer modal to web view checkout flow - lily
     - Convert cents to dollars in market stats - pepopowitz
+    - Dedupe currencies in auction results - pepopowitz
 
 releases:
   - version: 6.7.7

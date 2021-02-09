@@ -25,7 +25,7 @@ import { LinkText } from "lib/Components/Text/LinkText"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { partnerName } from "lib/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { getCurrentEmissionState, unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { get, isEmpty } from "lodash"
@@ -468,8 +468,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const artworkImage = artwork.image
 
-    // GOTCHA: Don't copy this kind of code if you're working in a functional component. use `useEmissionOption` instead
-    const enablePriceTransparency = getCurrentEmissionState().options.AROptionsPriceTransparency
+    // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
+    const enablePriceTransparency = unsafe_getFeatureFlag("AROptionsPriceTransparency")
 
     return (
       <BiddingThemeProvider>

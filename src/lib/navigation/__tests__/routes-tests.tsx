@@ -261,7 +261,7 @@ describe("artsy.net routes", () => {
   })
 
   it("routes to the old Auction view when the AROptionsNewSalePage option is false", () => {
-    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewSalePage: false })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewSalePage: false })
     expect(matchRoute("/auction/special-auction")).toMatchInlineSnapshot(`
       Object {
         "module": "Auction",
@@ -274,7 +274,7 @@ describe("artsy.net routes", () => {
   })
 
   it("routes to the new Auction view when the AROptionsNewSalePage option is true", () => {
-    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewSalePage: true })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewSalePage: true })
     expect(matchRoute("/auction/special-auction")).toMatchInlineSnapshot(`
       Object {
         "module": "Auction2",

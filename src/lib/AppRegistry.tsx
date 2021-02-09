@@ -83,6 +83,7 @@ import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoo
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
 import { GlobalStore, GlobalStoreProvider, useSelectedTab } from "./store/GlobalStore"
+import { AdminMenu } from "./utils/AdminMenu"
 import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 
@@ -98,6 +99,7 @@ LogBox.ignoreLogs([
 
   // This is for the Artist page, which will likely get redone soon anyway.
   "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
+  "Picker has been extracted",
 ])
 
 interface ArtworkProps {
@@ -296,7 +298,8 @@ function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
 export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
-  Admin: nativeModule(),
+  Admin: nativeModule({ alwaysPresentModally: true }),
+  Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
   Artist: reactModule(ArtistQueryRenderer),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),

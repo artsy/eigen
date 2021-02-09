@@ -1,8 +1,8 @@
 diff --git a/node_modules/@react-navigation/core/src/BaseNavigationContainer.tsx b/node_modules/@react-navigation/core/src/BaseNavigationContainer.tsx
-index b5e0627..615e6d6 100644
+index e028273..9f84783 100644
 --- a/node_modules/@react-navigation/core/src/BaseNavigationContainer.tsx
 +++ b/node_modules/@react-navigation/core/src/BaseNavigationContainer.tsx
-@@ -166,8 +166,16 @@ const BaseNavigationContainer = React.forwardRef(
+@@ -179,8 +179,16 @@ const BaseNavigationContainer = React.forwardRef(
      );
  
      const getRootState = React.useCallback(() => {
@@ -21,7 +21,7 @@ index b5e0627..615e6d6 100644
  
      const getCurrentRoute = React.useCallback(() => {
        let state = getRootState();
-@@ -180,6 +188,8 @@ const BaseNavigationContainer = React.forwardRef(
+@@ -193,6 +201,8 @@ const BaseNavigationContainer = React.forwardRef(
        return state.routes[state.index];
      }, [getRootState]);
  
@@ -30,7 +30,7 @@ index b5e0627..615e6d6 100644
      const emitter = useEventEmitter<NavigationContainerEventMap>();
  
      const { addOptionsGetter, getCurrentOptions } = useOptionsGetters({});
-@@ -202,7 +212,7 @@ const BaseNavigationContainer = React.forwardRef(
+@@ -215,7 +225,7 @@ const BaseNavigationContainer = React.forwardRef(
        dispatch,
        canGoBack,
        getRootState,

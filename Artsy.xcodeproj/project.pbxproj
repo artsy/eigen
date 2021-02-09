@@ -64,7 +64,6 @@
 		342F9FBB86D02FABC8AA9339 /* ARNavigationButtonsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F965F76AA25C6C700FE1C /* ARNavigationButtonsViewControllerTests.m */; };
 		3A1DDDA6216D04DB00190F84 /* ARAuthValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1DDDA5216D04DB00190F84 /* ARAuthValidator.m */; };
 		3A6EBA7F22358DE60052D0C0 /* Emission.podspec.json in Resources */ = {isa = PBXBuildFile; fileRef = 3A6EBA7E22358DE60052D0C0 /* Emission.podspec.json */; };
-		3AF584D7217A231E00BE4713 /* ARAppDelegateEmissionSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF584D5217A1CF400BE4713 /* ARAppDelegateEmissionSpec.m */; };
 		3AF584D9217A282100BE4713 /* AROptionsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF584D8217A282100BE4713 /* AROptionsSpec.m */; };
 		3C205B59189000A5004280E0 /* ARAppNotificationsDelegateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C205B58189000A5004280E0 /* ARAppNotificationsDelegateTests.m */; };
 		3C22227418C6487C00B7CE3A /* User_v0.data in Resources */ = {isa = PBXBuildFile; fileRef = 3C22227318C6487C00B7CE3A /* User_v0.data */; };
@@ -611,7 +610,6 @@
 		3A1DDDA4216D04DB00190F84 /* ARAuthValidator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAuthValidator.h; sourceTree = "<group>"; };
 		3A1DDDA5216D04DB00190F84 /* ARAuthValidator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAuthValidator.m; sourceTree = "<group>"; };
 		3A6EBA7E22358DE60052D0C0 /* Emission.podspec.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Emission.podspec.json; path = "Pods/Local Podspecs/Emission.podspec.json"; sourceTree = "<group>"; };
-		3AF584D5217A1CF400BE4713 /* ARAppDelegateEmissionSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAppDelegateEmissionSpec.m; sourceTree = "<group>"; };
 		3AF584D8217A282100BE4713 /* AROptionsSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AROptionsSpec.m; sourceTree = "<group>"; };
 		3C205B58189000A5004280E0 /* ARAppNotificationsDelegateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppNotificationsDelegateTests.m; sourceTree = "<group>"; };
 		3C22227318C6487C00B7CE3A /* User_v0.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = User_v0.data; sourceTree = "<group>"; };
@@ -1487,7 +1485,6 @@
 				5108A7BB1BA1AB2C0011CD72 /* ARAppActivityContinuationDelegateTests.m */,
 				0CAC95371BA9E18B008E9848 /* ARUserActivityAndSpotlightTests.m */,
 				6022F5AD1BDFAC3800D975F0 /* ARWebViewCacheHostSpec.m */,
-				3AF584D5217A1CF400BE4713 /* ARAppDelegateEmissionSpec.m */,
 				3AF584D8217A282100BE4713 /* AROptionsSpec.m */,
 				9D3ED24521ADB11B00A0318A /* ArtsyEchoTests.m */,
 			);
@@ -3755,7 +3752,6 @@
 				6022F5AE1BDFAC3800D975F0 /* ARWebViewCacheHostSpec.m in Sources */,
 				3C205B59189000A5004280E0 /* ARAppNotificationsDelegateTests.m in Sources */,
 				60F242FC1CB3F32F00387AA1 /* LiveAuctionBidViewControllerTests.swift in Sources */,
-				3AF584D7217A231E00BE4713 /* ARAppDelegateEmissionSpec.m in Sources */,
 				5E6A16931C98A914004DB29B /* LiveAuctionStateManagerSpec.swift in Sources */,
 				510261711BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m in Sources */,
 				3C6BDCBD18E0AEF60028EF5D /* ArtsyAPI+PrivateTests.m in Sources */,

@@ -3053,6 +3053,7 @@ type CommerceOfferOrder implements CommerceOrder {
   currencyCode: String!
   displayCommissionRate: String
   id: ID!
+  impulseConversationId: String
   internalID: ID!
   itemsTotal(
     decimal: String = "."
@@ -7597,6 +7598,8 @@ input MyCollectionCreateArtworkInput {
   isEdition: Boolean
   medium: String!
   metric: String
+  pricePaidCents: Int
+  pricePaidCurrency: String
   provenance: String
   title: String
   width: String
@@ -7642,6 +7645,8 @@ input MyCollectionUpdateArtworkInput {
   isEdition: Boolean
   medium: String
   metric: String
+  pricePaidCents: Int
+  pricePaidCurrency: String
   provenance: String
   title: String
   width: String

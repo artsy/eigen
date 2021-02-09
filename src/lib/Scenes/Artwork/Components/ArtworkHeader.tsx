@@ -2,7 +2,7 @@ import Clipboard from "@react-native-community/clipboard"
 import { ArtworkHeader_artwork } from "__generated__/ArtworkHeader_artwork.graphql"
 import { CustomShareSheet, CustomShareSheetItem } from "lib/Components/CustomShareSheet"
 import { useToast } from "lib/Components/Toast/toastHook"
-import { getCurrentEmissionState, useEmissionOption } from "lib/store/GlobalStore"
+import { getCurrentEmissionState, useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useCanOpenURL } from "lib/utils/useCanOpenURL"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -29,7 +29,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   const screenDimensions = useScreenDimensions()
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const { trackEvent } = useTracking()
-  const enableCustomShare = useEmissionOption("AREnableCustomSharesheet")
+  const enableCustomShare = useFeatureFlag("AREnableCustomSharesheet")
   const shotRef = useRef<ViewShot>(null)
   const [shareSheetVisible, setShareSheetVisible] = useState(false)
   const toast = useToast()

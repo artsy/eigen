@@ -28,6 +28,9 @@ jest.mock("react-native-screens/native-stack", () => {
   }
 })
 
+// tslint:disable-next-line:no-var-requires
+require("jest-fetch-mock").enableMocks()
+
 jest.mock("react-tracking")
 import track, { useTracking } from "react-tracking"
 const trackEvent = jest.fn()
@@ -168,27 +171,6 @@ function getNativeModules(): typeof NativeModules {
         sentryDSN: "sentryDSN",
         stripePublishableKey: "stripePublishableKey",
         userID: "userID",
-        options: {
-          AROptionsBidManagement: false,
-          AROptionsEnableMyCollection: false,
-          AROptionsLotConditionReport: false,
-          AROptionsPriceTransparency: false,
-          AROptionsViewingRooms: false,
-          AROptionsNewSalePage: false,
-          AREnableViewingRooms: false,
-          AROptionsArtistSeries: false,
-          ipad_vir: false,
-          iphone_vir: false,
-          ARDisableReactNativeBidFlow: false,
-          AREnableNewPartnerView: false,
-          AROptionsNewFirstInquiry: false,
-          AROptionsUseReactNativeWebView: false,
-          AROptionsNewFairPage: false,
-          AROptionsNewInsightsPage: false,
-          AROptionsInquiryCheckout: false,
-          AREnableCustomSharesheet: false,
-          AROptionsSentryErrorDebug: false,
-        },
         legacyFairSlugs: ["some-fairs-slug", "some-other-fair-slug"],
         legacyFairProfileSlugs: [],
       },

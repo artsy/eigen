@@ -14,11 +14,7 @@
         [aero checkForUpdates:^(BOOL updatedDataOnServer) {
             if (!updatedDataOnServer) return;
             
-            [aero update:^(BOOL updated, NSError *error) {
-                if (!ARAppStatus.isRunningTests) {
-                    [[ARAppDelegate sharedInstance] updateEmissionOptions];
-                }
-            }];
+            [aero update:^(BOOL updated, NSError *error) {}];
         }];
     });    
 }
