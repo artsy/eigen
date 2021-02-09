@@ -45,7 +45,7 @@ describe("ArtistAboutShows", () => {
   })
 
   it("returns nothing if the user has no past/running/upcoming events", () => {
-    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewInsightsPage: false })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewInsightsPage: false })
 
     const tree = renderWithWrappers(<TestRenderer />)
 
@@ -66,7 +66,7 @@ describe("ArtistAboutShows", () => {
   })
 
   it("returns list of shows if the user has past/running/upcoming events", () => {
-    __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewInsightsPage: false })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewInsightsPage: false })
 
     const tree = renderWithWrappers(<TestRenderer />)
 
@@ -89,7 +89,7 @@ describe("ArtistAboutShows", () => {
 
   describe("See all past shows Button", () => {
     it("is visible when the user has past shows", () => {
-      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewInsightsPage: false })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewInsightsPage: false })
 
       const tree = renderWithWrappers(<TestRenderer />)
 
@@ -110,7 +110,7 @@ describe("ArtistAboutShows", () => {
     })
 
     it("is hidden when the user has no past shows", () => {
-      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsNewInsightsPage: false })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewInsightsPage: false })
 
       const tree = renderWithWrappers(<TestRenderer />)
 

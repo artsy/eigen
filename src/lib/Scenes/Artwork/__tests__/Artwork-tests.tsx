@@ -98,7 +98,8 @@ describe("Artwork", () => {
   )
 
   beforeEach(() => {
-    environment = createMockEnvironment()
+    require("lib/relay/createEnvironment").reset()
+    environment = require("lib/relay/createEnvironment").defaultEnvironment
     ;(useTracking as jest.Mock).mockImplementation(() => {
       return {
         trackEvent,
@@ -133,7 +134,7 @@ describe("Artwork", () => {
 
   describe("artist series components", () => {
     it("renders with the feature flag enabled and artist series to show", async () => {
-      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsArtistSeries: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsArtistSeries: true })
       const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -154,7 +155,7 @@ describe("Artwork", () => {
     })
 
     it("does not render with the feature flag disabled", async () => {
-      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsArtistSeries: false })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsArtistSeries: false })
       const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -175,7 +176,7 @@ describe("Artwork", () => {
     })
 
     it("does not render when there are no artist series to show", async () => {
-      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsArtistSeries: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsArtistSeries: true })
       const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -199,7 +200,7 @@ describe("Artwork", () => {
     })
 
     it("tracks a click to an artist series item", async () => {
-      __globalStoreTestUtils__?.injectEmissionOptions({ AROptionsArtistSeries: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsArtistSeries: true })
       const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork() {
@@ -304,6 +305,7 @@ describe("Artwork", () => {
   })
 
   it("refetches on re-appear", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsLotConditionReport: false })
     const tree = renderWithWrappers(<TestRenderer />)
 
     mockMostRecentOperation("ArtworkAboveTheFoldQuery")

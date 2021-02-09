@@ -4,6 +4,7 @@ import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlacehold
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
@@ -38,7 +39,11 @@ class Partner extends React.Component<Props> {
           {
             title: "Artworks",
             initial: true,
-            content: <PartnerArtwork partner={partner} />,
+            content: (
+              <ArtworkFilterGlobalStateProvider>
+                <PartnerArtwork partner={partner} />
+              </ArtworkFilterGlobalStateProvider>
+            ),
           },
           {
             title: "Shows",

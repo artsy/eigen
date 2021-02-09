@@ -736,6 +736,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     attributionClass: [String]
     before: String
     color: String
+    colors: [String]
     dimensionRange: String
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
@@ -763,6 +764,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     page: Int
     partnerCities: [String]
     partnerID: ID
+    partnerIDs: [String]
     period: String
     periods: [String]
     priceRange: String
@@ -1078,6 +1080,7 @@ type ArtistSeries {
     attributionClass: [String]
     before: String
     color: String
+    colors: [String]
     dimensionRange: String
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
@@ -1099,6 +1102,7 @@ type ArtistSeries {
     page: Int
     partnerCities: [String]
     partnerID: ID
+    partnerIDs: [String]
     period: String
     periods: [String]
     priceRange: String
@@ -1434,6 +1438,7 @@ enum ArtworkAggregation {
   MAJOR_PERIOD
   MEDIUM
   MERCHANDISABLE_ARTISTS
+  PARTNER
   PARTNER_CITY
   PERIOD
   PRICE_RANGE
@@ -3048,6 +3053,7 @@ type CommerceOfferOrder implements CommerceOrder {
   currencyCode: String!
   displayCommissionRate: String
   id: ID!
+  impulseConversationId: String
   internalID: ID!
   itemsTotal(
     decimal: String = "."
@@ -5377,6 +5383,7 @@ interface EntityWithFilterArtworksConnectionInterface {
     attributionClass: [String]
     before: String
     color: String
+    colors: [String]
     dimensionRange: String
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
@@ -5404,6 +5411,7 @@ interface EntityWithFilterArtworksConnectionInterface {
     page: Int
     partnerCities: [String]
     partnerID: ID
+    partnerIDs: [String]
     period: String
     periods: [String]
     priceRange: String
@@ -5522,6 +5530,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     attributionClass: [String]
     before: String
     color: String
+    colors: [String]
     dimensionRange: String
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
@@ -5549,6 +5558,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     page: Int
     partnerCities: [String]
     partnerID: ID
+    partnerIDs: [String]
     period: String
     periods: [String]
     priceRange: String
@@ -6146,6 +6156,7 @@ type Gene implements Node & Searchable {
     attributionClass: [String]
     before: String
     color: String
+    colors: [String]
     dimensionRange: String
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
@@ -6173,6 +6184,7 @@ type Gene implements Node & Searchable {
     page: Int
     partnerCities: [String]
     partnerID: ID
+    partnerIDs: [String]
     period: String
     periods: [String]
     priceRange: String
@@ -6873,6 +6885,7 @@ type MarketingCollection {
     attributionClass: [String]
     before: String
     color: String
+    colors: [String]
     dimensionRange: String
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
@@ -6894,6 +6907,7 @@ type MarketingCollection {
     page: Int
     partnerCities: [String]
     partnerID: ID
+    partnerIDs: [String]
     period: String
     periods: [String]
     priceRange: String
@@ -7441,6 +7455,9 @@ type Mutation {
   # Attach an gemini asset to a consignment submission
   createGeminiEntryForAsset(input: CreateGeminiEntryForAssetInput!): CreateGeminiEntryForAssetPayload
   createImage(input: CreateImageInput!): CreateImagePayload
+  createInquiryOfferOrder(
+    input: CommerceCreateInquiryOfferOrderWithArtworkInput!
+  ): CommerceCreateInquiryOfferOrderWithArtworkPayload
   createSmsSecondFactor(input: CreateSmsSecondFactorInput!): CreateSmsSecondFactorPayload
   createUserAddress(input: CreateUserAddressInput!): CreateUserAddressPayload
   createViewingRoom(input: CreateViewingRoomInput!): CreateViewingRoomPayload
@@ -7581,6 +7598,8 @@ input MyCollectionCreateArtworkInput {
   isEdition: Boolean
   medium: String!
   metric: String
+  pricePaidCents: Int
+  pricePaidCurrency: String
   provenance: String
   title: String
   width: String
@@ -7626,6 +7645,8 @@ input MyCollectionUpdateArtworkInput {
   isEdition: Boolean
   medium: String
   metric: String
+  pricePaidCents: Int
+  pricePaidCurrency: String
   provenance: String
   title: String
   width: String
@@ -7856,6 +7877,7 @@ type Partner implements Node {
     attributionClass: [String]
     before: String
     color: String
+    colors: [String]
     dimensionRange: String
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
@@ -7883,6 +7905,7 @@ type Partner implements Node {
     page: Int
     partnerCities: [String]
     partnerID: ID
+    partnerIDs: [String]
     period: String
     periods: [String]
     priceRange: String
@@ -8617,6 +8640,7 @@ type Query {
     attributionClass: [String]
     before: String
     color: String
+    colors: [String]
     dimensionRange: String
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
@@ -8644,6 +8668,7 @@ type Query {
     page: Int
     partnerCities: [String]
     partnerID: ID
+    partnerIDs: [String]
     period: String
     periods: [String]
     priceRange: String
@@ -9988,6 +10013,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     attributionClass: [String]
     before: String
     color: String
+    colors: [String]
     dimensionRange: String
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
@@ -10015,6 +10041,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     page: Int
     partnerCities: [String]
     partnerID: ID
+    partnerIDs: [String]
     period: String
     periods: [String]
     priceRange: String
@@ -10395,6 +10422,7 @@ type Tag implements Node {
     attributionClass: [String]
     before: String
     color: String
+    colors: [String]
     dimensionRange: String
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
@@ -10422,6 +10450,7 @@ type Tag implements Node {
     page: Int
     partnerCities: [String]
     partnerID: ID
+    partnerIDs: [String]
     period: String
     periods: [String]
     priceRange: String
@@ -11049,6 +11078,7 @@ type Viewer {
     attributionClass: [String]
     before: String
     color: String
+    colors: [String]
     dimensionRange: String
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
@@ -11076,6 +11106,7 @@ type Viewer {
     page: Int
     partnerCities: [String]
     partnerID: ID
+    partnerIDs: [String]
     period: String
     periods: [String]
     priceRange: String

@@ -5,8 +5,9 @@ import React from "react"
 import { Platform } from "react-native"
 import Config from "react-native-config"
 import { Action, Middleware } from "redux"
+import { FeatureMap } from "./ConfigModel"
+import { FeatureName, features } from "./features"
 import { GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
-import { EmissionOptions } from "./NativeModel"
 import { assignDeep, persistenceMiddleware, unpersist } from "./persistence"
 
 function createGlobalStore() {
@@ -63,8 +64,8 @@ export const __globalStoreTestUtils__ = __TEST__
       injectState(state: DeepPartial<GlobalStoreState>) {
         ;(GlobalStore.actions as any).__injectState(state)
       },
-      injectEmissionOptions(options: Partial<EmissionOptions>) {
-        this.injectState({ native: { sessionState: { options } } })
+      injectFeatureFlags(options: Partial<FeatureMap>) {
+        this.injectState({ config: { adminFeatureFlagOverrides: options } })
       },
       getCurrentState: () => globalStoreInstance.getState(),
       dispatchedActions: [] as Action[],
@@ -102,13 +103,29 @@ export function useSelectedTab() {
 
 let globalStoreInstance = createGlobalStore()
 
-export function useEmissionOption(key: keyof EmissionOptions) {
+export function useFeatureFlag(key: FeatureName) {
   if (Platform.OS === "ios") {
-    return GlobalStore.useAppState((state) => state.native.sessionState.options[key])
+    return GlobalStore.useAppState((state) => state.config.features[key])
   }
 
   // TODO: add feature flags to GlobalStore on android
   return true
+}
+
+/**
+ * This is marked as unsafe because it will not cause a re-render
+ * if used in a react component. Use `useFeatureFlag` instead.
+ * It is safe to use in contexts that don't require reactivity.
+ */
+export function unsafe_getFeatureFlag(key: FeatureName) {
+  const state = globalStoreInstance?.getState() ?? null
+  if (state) {
+    return state.config.features[key]
+  }
+  if (__DEV__) {
+    throw new Error(`Unable to access ${key} before GlobalStore bootstraps`)
+  }
+  return features[key].readyForRelease
 }
 
 export function getCurrentEmissionState() {
@@ -127,27 +144,6 @@ export function getCurrentEmissionState() {
     legacyFairSlugs: [], // TODO: take from echo
     metaphysicsURL: state?.config.sessionState.metaphysicsBaseURL,
     onboardingState: "none", // not used on android
-    options: {
-      // TODO: store options in easy-peasy
-      AROptionsBidManagement: true,
-      AROptionsEnableMyCollection: true,
-      AROptionsLotConditionReport: true,
-      AROptionsPriceTransparency: true,
-      AROptionsViewingRooms: true,
-      AROptionsNewSalePage: true,
-      AREnableViewingRooms: true,
-      AROptionsArtistSeries: true,
-      ipad_vir: false,
-      iphone_vir: false,
-      ARDisableReactNativeBidFlow: false,
-      AREnableNewPartnerView: true,
-      AROptionsNewFirstInquiry: true,
-      AROptionsUseReactNativeWebView: true,
-      AROptionsNewFairPage: true,
-      AROptionsNewInsightsPage: true,
-      AROptionsInquiryCheckout: true,
-      AROptionsSentryErrorDebug: true,
-    },
     predictionURL: state?.config.sessionState.predictionBaseURL,
     sentryDSN: Config.SENTRY_STAGING_DSN,
     stripePublishableKey: "stripePublishableKey", // TODO: take key from echo config

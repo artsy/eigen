@@ -7,7 +7,7 @@ import Biography from "../Biography"
 
 import { ArtistAbout_artist } from "__generated__/ArtistAbout_artist.graphql"
 import { navigate } from "lib/navigation/navigate"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { CaretButton } from "../../Buttons/CaretButton"
 import { Stack } from "../../Stack"
@@ -31,9 +31,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
           <CaretButton text="Auction results" onPress={() => navigate(`/artist/${artist.slug}/auction-results`)} />
         )}
         <ArtistConsignButton artist={artist} />
-        {!!getCurrentEmissionState().options.AROptionsNewInsightsPage && (
-          <ArtistAboutShowsFragmentContainer artist={artist} />
-        )}
+        {!!useFeatureFlag("AROptionsNewInsightsPage") && <ArtistAboutShowsFragmentContainer artist={artist} />}
         {!!articles.length && <Articles articles={articles} />}
         {!!relatedArtists.length && <RelatedArtists artists={relatedArtists} />}
       </Stack>

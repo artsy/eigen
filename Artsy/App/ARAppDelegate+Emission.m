@@ -135,8 +135,6 @@ SOFTWARE.
     NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
     AROnboardingUserProgressStage onboardingState = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage];
 
-    NSDictionary *options = [self getOptionsForEmission:[aero featuresMap] labOptions:[AROptions labOptionsMap]];
-
     AREmission *emission = [[AREmission alloc] initWithState:@{
                                                                  [ARStateKey userID] : (userID ?: [NSNull null]),
                                                                  [ARStateKey authenticationToken] : (authenticationToken ?: [NSNull null]),
@@ -150,7 +148,6 @@ SOFTWARE.
                                                                  [ARStateKey webURL] : [[ARRouter baseWebURL] absoluteString],
                                                                  [ARStateKey userAgent] : ARRouter.userAgent,
                                                                  [ARStateKey env] : env,
-                                                                 [ARStateKey options] : options,
                                                                  [ARStateKey legacyFairSlugs] : fairSlugs,
                                                                  [ARStateKey legacyFairProfileSlugs] : fairProfileSlugs,
                                                                  [ARStateKey deviceId] : self.deviceId
@@ -215,29 +212,6 @@ SOFTWARE.
             [ARAnalytics pageView:info[@"context_screen"]  withProperties:[properties copy]];
         }
     };
-}
-
-- (void)updateEmissionOptions
-{
-    ArtsyEcho *aero = [[ArtsyEcho alloc] init];
-    [aero setup];
-    [[AREmission sharedInstance] updateState:@{[ARStateKey options] : [self getOptionsForEmission:[aero featuresMap] labOptions:[AROptions labOptionsMap]]}];
-}
-
-- (NSDictionary *)getOptionsForEmission:(NSDictionary *)echoFeatures labOptions:(NSDictionary *)labOptions
-{
-    // Set up all the difference places we get settings to merge into one place
-    NSMutableDictionary *options = [NSMutableDictionary dictionary];
-
-    [options addEntriesFromDictionary:echoFeatures];
-
-    // Lab options come last (as they are admin/dev controlled, giving them a chance to override)
-    [options addEntriesFromDictionary:labOptions];
-
-    options[@"AROptionsPriceTransparency"] = @([options[@"AROptionsPriceTransparency"] boolValue] || [labOptions[AROptionsPriceTransparency] boolValue]);
-    options[@"AROptionsArtistSeries"] = @([options[@"AROptionsArtistSeries"] boolValue] || [labOptions[AROptionsArtistSeries] boolValue]);
-
-    return options;
 }
 
 @end

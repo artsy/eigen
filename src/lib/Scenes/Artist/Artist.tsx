@@ -15,7 +15,7 @@ import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlacehold
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { isPad } from "lib/utils/hardware"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
@@ -50,7 +50,7 @@ export const Artist: React.FC<{
     })
   }
 
-  const isArtistInsightsEnabled = getCurrentEmissionState().options.AROptionsNewInsightsPage
+  const isArtistInsightsEnabled = useFeatureFlag("AROptionsNewInsightsPage")
 
   if ((artistAboveTheFold.counts?.partner_shows ?? 0) > 0 && !isArtistInsightsEnabled) {
     tabs.push({

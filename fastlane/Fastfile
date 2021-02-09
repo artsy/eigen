@@ -25,8 +25,8 @@ sticker_plist = "../Artsy Stickers/Info.plist"
 
 lane :ship_beta_ios do
   api_key = app_store_connect_api_key(
-    key_id: '9U7GAZP7XS',
-    issuer_id: "69a6de72-31ba-47e3-e053-5b8c7c11a4d1",
+    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
+    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
     key_content: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT'],
     in_house: false,
   )
@@ -243,15 +243,15 @@ end
 lane :promote_beta_ios do
   # There seems to be some delta between spaceship + deliver token format
   token = Spaceship::ConnectAPI::Token.create(
-    key_id: '9U7GAZP7XS',
-    issuer_id: "69a6de72-31ba-47e3-e053-5b8c7c11a4d1",
+    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
+    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
     key: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT'],
     in_house: false
   )
 
   api_key = app_store_connect_api_key(
-    key_id: '9U7GAZP7XS',
-    issuer_id: "69a6de72-31ba-47e3-e053-5b8c7c11a4d1",
+    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
+    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
     key_content: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT'],
     in_house: false,
   )

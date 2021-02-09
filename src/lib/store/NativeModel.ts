@@ -41,31 +41,9 @@ export interface NativeState {
   // Empty is falsy in JS, so these are fine too.
   stripePublishableKey: string
   sentryDSN: string
-  options: {
-    AROptionsBidManagement: boolean
-    AROptionsEnableMyCollection: boolean
-    AROptionsLotConditionReport: boolean
-    AROptionsPriceTransparency: boolean
-    AROptionsNewSalePage: boolean
-    AROptionsViewingRooms: boolean
-    AREnableViewingRooms: boolean
-    ipad_vir: boolean
-    iphone_vir: boolean
-    ARDisableReactNativeBidFlow: boolean
-    AREnableNewPartnerView: boolean
-    AROptionsArtistSeries: boolean
-    AROptionsNewFirstInquiry: boolean
-    AROptionsUseReactNativeWebView: boolean
-    AROptionsNewFairPage: boolean
-    AROptionsNewInsightsPage: boolean
-    AROptionsInquiryCheckout: boolean
-    AROptionsSentryErrorDebug: boolean
-  }
   legacyFairSlugs: string[]
   legacyFairProfileSlugs: string[]
 }
-
-export type EmissionOptions = NativeState["options"]
 
 export interface NativeModel {
   sessionState: NativeState

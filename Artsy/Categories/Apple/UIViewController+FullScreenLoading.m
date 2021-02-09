@@ -18,9 +18,6 @@ static const NSString *AR_LOADING_VIEW = @"ARLoadingView";
     }
 
     loadingView = [[ARReusableLoadingView alloc] init];
-    if ([AROptions boolForOption:AROptionsLoadingScreenAlpha]) {
-        loadingView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.3];
-    }
 
     [self.view addSubview:loadingView];
     [loadingView startIndeterminateAnimated:animated completion:nil];
