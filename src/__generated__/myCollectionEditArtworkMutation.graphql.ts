@@ -21,6 +21,8 @@ export type MyCollectionUpdateArtworkInput = {
     isEdition?: boolean | null;
     medium?: string | null;
     metric?: string | null;
+    pricePaidCents?: number | null;
+    pricePaidCurrency?: string | null;
     provenance?: string | null;
     title?: string | null;
     width?: string | null;
