@@ -2,7 +2,6 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { color, Flex, IconProps, Text, Touchable } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
 import { useToast } from "./toastHook"
 
@@ -28,7 +27,7 @@ export interface ToastProps {
 export const Toast: React.FC<ToastProps> = ({ id, positionIndex, placement, message, onPress, Icon }) => {
   const { width, height } = useScreenDimensions()
   const { hide } = useToast()
-  const { top: topSafeAreaInset } = useSafeAreaInsets()
+  const { top: topSafeAreaInset } = useScreenDimensions().safeAreaInsets
   const [opacityAnim] = useState(new Animated.Value(0))
 
   useEffect(() => {
