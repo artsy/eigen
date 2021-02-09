@@ -3,7 +3,6 @@ import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Theme } from "palette"
 import React from "react"
-import { SafeAreaProvider } from "react-native-safe-area-context"
 import ReactTestRenderer from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 
