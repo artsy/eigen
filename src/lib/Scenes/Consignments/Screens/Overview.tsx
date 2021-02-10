@@ -6,6 +6,7 @@ import type NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim
 import { AsyncStorage, Dimensions, ScrollView, View, ViewProperties } from "react-native"
 
 import { dismissModal } from "lib/navigation/navigate"
+import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { Box, Button, Flex, Spacer, Text } from "palette"
 import { ArtistResult, ConsignmentMetadata, ConsignmentSetup } from "../"
 import TODO from "../Components/ArtworkConsignmentTodo"
@@ -18,7 +19,6 @@ import Edition from "./Edition"
 import Location from "./Location"
 import Metadata from "./Metadata"
 import Provenance from "./Provenance"
-import SelectFromPhotoLibrary from "./SelectFromPhotoLibrary"
 
 const consignmentsStateKey = "ConsignmentsStoredState"
 
@@ -72,11 +72,16 @@ export default class Overview extends React.Component<Props, State> {
       passProps: { ...this.state, updateWithProvenance: this.updateProvenance },
     })
 
-  goToPhotosTapped = () =>
-    this.props.navigator.push({
-      component: SelectFromPhotoLibrary,
-      passProps: { setup: this.state, updateWithPhotos: this.updatePhotos },
-    })
+  goToPhotosTapped = () => {
+    if (this.state.photos && this.state.photos.length > 0) {
+      console.log("We have photos", this.state.photos)
+    } else {
+      showPhotoActionSheet().then((images) => {
+        const imageFiles = images.map((image) => image.path)
+        this.updatePhotos(imageFiles)
+      })
+    }
+  }
 
   goToMetadataTapped = () =>
     this.props.navigator.push({
