@@ -50,7 +50,7 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
         {/* Sale Artwork Details */}
         <Flex pl={15} flex={1} flexDirection="row" justifyContent="space-between">
           <Flex flex={3}>
-            <Flex flexDirection="row" mb={0.5}>
+            <Flex flexDirection="row" mb={"3px"}>
               <Text variant="caption" ellipsizeMode="middle" numberOfLines={2} style={{ flexShrink: 1 }}>
                 {auctionResult.title}
                 {!!auctionResult.dateText && auctionResult.dateText !== "" && `, ${auctionResult.dateText}`}
