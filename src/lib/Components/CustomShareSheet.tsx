@@ -1,5 +1,5 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { ChevronIcon, Flex, FlexSpacer, Text, Touchable } from "palette"
+import { ChevronIcon, Flex, Text, Touchable } from "palette"
 import React from "react"
 import { FancyModal } from "./FancyModal/FancyModal"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
@@ -35,7 +35,7 @@ export const CustomShareSheetItem: React.FC<CustomShareSheetItemProps> = ({ titl
       <Text variant="text" ml="2">
         {title}
       </Text>
-      <FlexSpacer />
+      <Flex flex={1} />
       <ChevronIcon />
     </Flex>
   </Touchable>
