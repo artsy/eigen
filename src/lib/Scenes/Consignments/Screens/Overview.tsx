@@ -2,12 +2,15 @@ import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { Alert } from "react-native"
 
+import AsyncStorage from "@react-native-community/async-storage"
 import type NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
-import { AsyncStorage, Dimensions, ScrollView, View, ViewProperties } from "react-native"
+import { Dimensions, ScrollView, View } from "react-native"
 
+import { AddPhotos } from "lib/Components/Photos/AddPhotos"
 import { dismissModal } from "lib/navigation/navigate"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { Box, Button, Flex, Spacer, Text } from "palette"
+import { Image as RNCImage } from "react-native-image-crop-picker"
 import { ArtistResult, ConsignmentMetadata, ConsignmentSetup } from "../"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import { createConsignmentSubmission } from "../Submission/createConsignmentSubmission"
@@ -22,7 +25,7 @@ import Provenance from "./Provenance"
 
 const consignmentsStateKey = "ConsignmentsStoredState"
 
-interface Props extends ViewProperties {
+interface Props {
   navigator: NavigatorIOS
   setup: ConsignmentSetup
 }
@@ -74,11 +77,13 @@ export default class Overview extends React.Component<Props, State> {
 
   goToPhotosTapped = () => {
     if (this.state.photos && this.state.photos.length > 0) {
-      console.log("We have photos", this.state.photos)
+      this.props.navigator.push({
+        component: AddPhotos,
+        passProps: { ...this.state },
+      })
     } else {
       showPhotoActionSheet().then((images) => {
-        const imageFiles = images.map((image) => image.path)
-        this.updatePhotos(imageFiles)
+        this.updatePhotos(images)
       })
     }
   }
@@ -105,8 +110,8 @@ export default class Overview extends React.Component<Props, State> {
   updateLocation = (city: string, state: string, country: string) =>
     this.updateStateAndMetaphysics({ location: { city, state, country } })
 
-  updatePhotos = (photos: string[]) =>
-    photos.length && this.updateStateAndMetaphysics({ photos: photos.map((f) => ({ file: f, uploaded: false })) })
+  updatePhotos = (photos: RNCImage[]) =>
+    photos.length && this.updateStateAndMetaphysics({ photos: photos.map((p) => ({ image: p, uploaded: false })) })
 
   updateStateAndMetaphysics = (state: Partial<ConsignmentSetup>) =>
     this.setState(state, this.updateLocalStateAndMetaphysics)
