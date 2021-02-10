@@ -205,7 +205,11 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             <>
               <Text variant="largeTitle" mb={0.5}>{`${auctionResult.priceRealized?.display}`}</Text>
               {!!auctionResult.performance?.mid && (
-                <AuctionResultsMidEstimate value={auctionResult.performance.mid} shortDescription="mid-estimate" />
+                <AuctionResultsMidEstimate
+                  textVariant="caption"
+                  value={auctionResult.performance.mid}
+                  shortDescription="mid-estimate"
+                />
               )}
             </>
           ) : (
