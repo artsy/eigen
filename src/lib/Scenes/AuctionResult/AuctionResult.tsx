@@ -103,16 +103,16 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     </Flex>
   )
   if (auctionResult.estimate?.display) {
-    details.push(makeRow("Estimate range", auctionResult.estimate?.display))
+    details.push(makeRow("Pre-sale estimate", auctionResult.estimate?.display))
   }
   if (auctionResult.mediumText) {
-    details.push(makeRow("Medium", capitalize(auctionResult.mediumText)))
+    details.push(makeRow("Materials", capitalize(auctionResult.mediumText)))
   }
   if (auctionResult.dimensionText) {
     details.push(makeRow("Dimensions", auctionResult.dimensionText))
   }
   if (auctionResult.dateText) {
-    details.push(makeRow("Year created", auctionResult.dateText))
+    details.push(makeRow("Artwork date", auctionResult.dateText))
   }
   if (auctionResult.saleDate) {
     details.push(

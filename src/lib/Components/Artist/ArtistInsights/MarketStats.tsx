@@ -57,7 +57,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
         other additional fees (e.g., Artist’s Resale Rights).
       </Text>
       <Spacer mb={2} />
-      <Text fontWeight={"bold"}>Yearly lots sold</Text>
+      <Text fontWeight={"bold"}>Average yearly lots sold</Text>
       <Spacer mb={1} />
       <Text>The average number of lots sold per year at auction over the past 36 months.</Text>
       <Spacer mb={2} />

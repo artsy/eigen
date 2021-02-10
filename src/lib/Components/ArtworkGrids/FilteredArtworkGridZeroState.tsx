@@ -19,7 +19,7 @@ export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) =>
 
   return (
     <Flex flexDirection="column" px={4}>
-      <ZeroStateMessage size="3">Unfortunately, there are no works that meet your criteria.</ZeroStateMessage>
+      <ZeroStateMessage size="3">No results found{"\n"}Please try another search.</ZeroStateMessage>
       <Flex m="0 auto" pt={2}>
         <Button
           size="medium"
