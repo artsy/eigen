@@ -30,7 +30,7 @@
     "lint-fix": "yarn lint -- --fix",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "open-sim": "open -a Simulator",
-    "open-url": "npx uri-scheme open", "//": "Use like `yarn open-url artsy:///works-for-you --android`",
+    "open-url": "npx uri-scheme open",
     "postinstall": "prettier --write package.json && ./scripts/update-echo",
     "prepare": "patch-package",
     "prettier-project": "yarn run prettier-write 'src/**/*.{ts,tsx}'",
