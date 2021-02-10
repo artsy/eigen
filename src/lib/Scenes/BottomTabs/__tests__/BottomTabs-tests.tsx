@@ -3,13 +3,13 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { useInterval } from "lib/utils/useInterval"
 import React from "react"
+import useInterval from "react-use/lib/useInterval"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { BottomTabs } from "../BottomTabs"
 import { BottomTabsButton } from "../BottomTabsButton"
 
-jest.mock("lib/utils/useInterval")
+jest.mock("react-use/lib/useInterval")
 jest.unmock("react-relay")
 jest.mock("lib/relay/createEnvironment", () => {
   return { defaultEnvironment: require("relay-test-utils").createMockEnvironment() }

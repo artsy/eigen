@@ -1,4 +1,3 @@
-// tslint:disable:no-empty
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "lib/Components/SwitchMenu"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"

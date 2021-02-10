@@ -1,4 +1,6 @@
+import { ToastProvider } from "lib/Components/Toast/toastHook"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Theme } from "palette"
 import React from "react"
 import ReactTestRenderer from "react-test-renderer"
@@ -42,7 +44,11 @@ export const renderWithWrappers = (component: ReactElement) => {
 export const componentWithWrappers = (component: ReactElement) => {
   return (
     <GlobalStoreProvider>
-      <Theme>{component}</Theme>
+      <Theme>
+        <ToastProvider>
+          <ProvideScreenDimensions>{component}</ProvideScreenDimensions>
+        </ToastProvider>
+      </Theme>
     </GlobalStoreProvider>
   )
 }

@@ -6,6 +6,7 @@ import { useSelectedTab } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useEffect, useRef } from "react"
 import { Animated, Platform, View } from "react-native"
+import usePrevious from "react-use/lib/usePrevious"
 import { BottomTabs } from "./BottomTabs"
 import { BottomTabType } from "./BottomTabType"
 
@@ -49,7 +50,12 @@ const FadeBetween: React.FC<{ views: JSX.Element[]; activeIndex: number }> = ({ 
   const hasLoaded = useRef({ [activeIndex]: true }).current
   const opacities = useRef(views.map((_, index) => new Animated.Value(index === activeIndex ? 1 : 0.01))).current
   const lastActiveIndex = usePrevious(activeIndex)
+
   useEffect(() => {
+    if (lastActiveIndex === undefined) {
+      return
+    }
+
     if (lastActiveIndex < activeIndex) {
       // fade in screen above, then make previous screen transparent
       opacities[activeIndex].setValue(0)
@@ -65,8 +71,10 @@ const FadeBetween: React.FC<{ views: JSX.Element[]; activeIndex: number }> = ({ 
         Animated.spring(opacities[lastActiveIndex], { toValue: 0, useNativeDriver: true, speed: 100 }).start()
       })
     }
+
     hasLoaded[activeIndex] = true
-  }, [activeIndex])
+  }, [activeIndex, lastActiveIndex])
+
   return (
     <View style={{ flex: 1, overflow: "hidden" }}>
       {views.map((v, index) => {
@@ -84,12 +92,4 @@ const FadeBetween: React.FC<{ views: JSX.Element[]; activeIndex: number }> = ({ 
       })}
     </View>
   )
-}
-
-function usePrevious<T>(value: T) {
-  const ref = useRef<T>(value)
-  useEffect(() => {
-    ref.current = value
-  }, [value])
-  return ref.current
 }

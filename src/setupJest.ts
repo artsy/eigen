@@ -167,7 +167,7 @@ function getNativeModules(): typeof NativeModules {
         metaphysicsURL: "metaphysicsURL",
         deviceId: "testDevice",
         predictionURL: "predictionURL",
-        webURL: "webURL",
+        webURL: "https://artsy.net",
         sentryDSN: "sentryDSN",
         stripePublishableKey: "stripePublishableKey",
         userID: "userID",

@@ -4,13 +4,13 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Image } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
-import { useInterval } from "lib/utils/useInterval"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { ArtworkIcon, color, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import useInterval from "react-use/lib/useInterval"
 
 interface MyCollectionArtworkHeaderProps {
   artwork: MyCollectionArtworkHeader_artwork
