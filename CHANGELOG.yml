@@ -11,6 +11,7 @@ upcoming:
     - hooks up inquiry make offer modal to web view checkout flow - lily
     - Convert cents to dollars in market stats - pepopowitz
     - Dedupe currencies in auction results - pepopowitz
+    - update support email - brian
 
 releases:
   - version: 6.7.7
