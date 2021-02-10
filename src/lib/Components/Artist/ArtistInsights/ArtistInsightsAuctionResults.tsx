@@ -168,7 +168,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
               new Intl.NumberFormat().format(artist.auctionResultsConnection.totalCount)}{" "}
             {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
           </SortMode>
-          <Separator mt="2" />
+          <Separator borderColor={color("black5")} mt="2" />
         </Flex>
       )}
       ItemSeparatorComponent={() => (
