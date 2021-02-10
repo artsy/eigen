@@ -56,7 +56,7 @@ describe("regarding the make offer button", () => {
   })
 
   it("doesn't render the inquiry make offer button if the artwork is not offerable", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsInquiryCheckout: false })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsInquiryCheckout: true })
     const tree = renderWithWrappers(<Composer artworkID="123456" isOfferableFromInquiry={false} />)
     expect(tree.root.findAllByType(Button).length).toEqual(1)
   })
