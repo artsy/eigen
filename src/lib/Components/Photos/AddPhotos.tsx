@@ -31,6 +31,11 @@ export const AddPhotos: React.FC<AddPhotosProps> = ({ initialPhotos, navigator }
     setPhotos(allPhotos)
   }
 
+  const deletePhoto = (deletedPhoto: Photo) => {
+    const updatedPhotos = photos.filter((p) => p.image.path !== deletedPhoto.image.path)
+    setPhotos(updatedPhotos)
+  }
+
   const items = [<AddPhotosButton addPhotos={addPhotos} key="button" imageSize={imageSize} />].concat(
     photos.map((photo, index) => {
       return (
@@ -39,7 +44,7 @@ export const AddPhotos: React.FC<AddPhotosProps> = ({ initialPhotos, navigator }
             style={{ width: imageSize, height: imageSize, resizeMode: "cover" }}
             source={{ uri: photo.image.path }}
           />
-          <DeletePhotoButton photo={photo} />
+          <DeletePhotoButton photo={photo} deletePhoto={deletePhoto} />
         </Box>
       )
     })
@@ -85,13 +90,13 @@ const AddPhotosButton: React.FC<{ imageSize: number; addPhotos: (addedImages: RN
   )
 }
 
-const DeletePhotoButton: React.FC<{ photo: Photo }> = ({ photo }) => {
+const DeletePhotoButton: React.FC<{ photo: Photo; deletePhoto: (deletedPhoto: Photo) => void }> = ({
+  photo,
+  deletePhoto,
+}) => {
   return (
     <Box position="absolute" right={-4} top={-5}>
-      <TouchableOpacity
-        hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }}
-        onPress={() => console.log("Handle remove photo")}
-      >
+      <TouchableOpacity hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }} onPress={() => deletePhoto(photo)}>
         <XCircleIcon width={20} height={20} />
       </TouchableOpacity>
     </Box>
