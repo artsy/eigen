@@ -1,10 +1,9 @@
 import { ReviewOfferButton_order } from "__generated__/ReviewOfferButton_order.graphql"
-import { MoneyIcon } from "lib/Icons/Consignments"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { useEventTiming } from "lib/utils/useEventTiming"
 import { DateTime } from "luxon"
-import { ArrowRightIcon, Flex, Text } from "palette"
+import { AlertCircleFillIcon, ArrowRightIcon, Flex, MoneyFillIcon, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -19,6 +18,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
   let backgroundColor = "green100"
   let message = ""
   let subMessage = "Tap to view"
+  let icon = <MoneyFillIcon mt="3px" fill="white100" />
   const offerType = offerNodes.length > 1 ? "Counteroffer" : "Offer"
 
   const expiration = useEventTiming({
@@ -38,6 +38,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
     backgroundColor = "copper100"
     message = `${offerType} Received`
     subMessage = `Expires in ${expiration}hr`
+    icon = <AlertCircleFillIcon mt="3px" fill="white100" />
   }
 
   const onTap = (orderID: string | null, state: string | null) => {
@@ -59,7 +60,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
         height={60}
       >
         <Flex flexDirection="row">
-          <MoneyIcon mt={1.5} height="18px" width="18px" fill="white100" />
+          {icon}
           <Flex flexDirection="column" pl={1}>
             <Text color="white100" variant="mediumText">
               {message}

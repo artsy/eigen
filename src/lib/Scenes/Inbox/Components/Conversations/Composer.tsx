@@ -100,10 +100,9 @@ export default class Composer extends React.Component<Props, State> {
           <StyledKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={safeAreaInsets.top}>
             {this.props.children}
             <Flex flexDirection="column">
-              {/* {!!showInquiryMakeOfferButton && this.props.artworkID != null && (
+              {!!showInquiryMakeOfferButton && this.props.artworkID != null && (
                 <InquiryMakeOfferButton artworkID={this.props.artworkID} />
-              )} */}
-              {!!showInquiryMakeOfferButton && this.props.artworkID != null && <ReviewOfferButton />}
+              )}
               <Container active={this.state.active}>
                 <TextInput
                   placeholder={"Type your message"}
