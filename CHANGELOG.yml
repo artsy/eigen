@@ -4,12 +4,15 @@ upcoming:
   dev:
     - Migrate feature flag infrastructure to easy-peasy - david
   user_facing:
+    - Add custom ShareSheet and sharing to Instagram Stories - pavlos
     - MarketStats on auction results - pepopowitz, mounir
     - fix - show correct up/down arrows on Market Stats - pepopowitz
     - Loading skeleton for market stats - pepopowitz
     - hooks up inquiry make offer modal to web view checkout flow - lily
     - Convert cents to dollars in market stats - pepopowitz
     - Dedupe currencies in auction results - pepopowitz
+    - update support email - brian
+    - Market stats formatting fixes - brian
 
 releases:
   - version: 6.7.7

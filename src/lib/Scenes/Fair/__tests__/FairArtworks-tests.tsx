@@ -93,6 +93,8 @@ describe("FairArtworks", () => {
     expect(wrapper.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(0)
     expect(wrapper.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(0)
     expect(wrapper.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
-    expect(extractText(wrapper.root)).toContain("Unfortunately, there are no works that meet your criteria.")
+    expect(extractText(wrapper.root)).toContain(
+      "No results found\nPlease try another search.Clear filtersClear filters"
+    )
   })
 })

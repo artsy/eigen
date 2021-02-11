@@ -54,19 +54,17 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
 
   renderSingleArtist(artist: Artist) {
     return (
-      <React.Fragment>
-        <Text>
-          {this.renderArtistName(
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            artist.name,
-            artist.href
-          )}
-          <Sans size="4t" weight="medium">
-            {"  "}·{"  "}
-          </Sans>
-          <FollowArtistButton artist={artist} contextModule={Schema.ContextModules.ArtworkTombstone} />
-        </Text>
-      </React.Fragment>
+      <Text>
+        {this.renderArtistName(
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          artist.name,
+          artist.href
+        )}
+        <Sans size="4t" weight="medium">
+          {"  "}·{"  "}
+        </Sans>
+        <FollowArtistButton artist={artist} contextModule={Schema.ContextModules.ArtworkTombstone} />
+      </Text>
     )
   }
 

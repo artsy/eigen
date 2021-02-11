@@ -3,6 +3,7 @@ import { FairArticlesQuery } from "__generated__/FairArticlesQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { compact } from "lodash"
 import { Box, Button, Join, Message, space, Spacer, Text, Theme, Touchable } from "palette"
@@ -87,7 +88,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                   <FairEditorialShare
                     mt={1}
                     subject={heroArticle!.title!}
-                    url={`https://www.artsy.net${heroArticle!.href}`}
+                    url={`${getCurrentEmissionState().webURL}${heroArticle!.href}`}
                   />
                 </Box>
               </Box>
@@ -124,7 +125,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                       <FairEditorialShare
                         mt={1}
                         subject={article!.title!}
-                        url={`https://www.artsy.net${article!.href}`}
+                        url={`${getCurrentEmissionState().webURL}${article!.href}`}
                       />
                     </Box>
                   </Touchable>
