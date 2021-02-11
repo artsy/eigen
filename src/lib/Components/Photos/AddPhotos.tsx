@@ -1,12 +1,12 @@
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Stack } from "lib/Components/Stack"
 import { Photo } from "lib/Scenes/Consignments"
+import { BottomAlignedButton } from "lib/Scenes/Consignments/Components/BottomAlignedButton"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { isPad } from "lib/utils/hardware"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { chunk } from "lodash"
-import { AddIcon, BorderBox, Box, color, Flex, XCircleIcon } from "palette"
+import { AddIcon, BorderBox, Box, color, Flex, Text, XCircleIcon } from "palette"
 import React, { useState } from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
@@ -37,7 +37,7 @@ export const AddPhotos: React.FC<AddPhotosProps> = ({ initialPhotos, photosUpdat
     setPhotos(updatedPhotos)
   }
 
-  const handleBack = () => {
+  const doneTapped = () => {
     photosUpdated(photos)
     navigator.pop()
   }
@@ -58,10 +58,12 @@ export const AddPhotos: React.FC<AddPhotosProps> = ({ initialPhotos, photosUpdat
   const rows = chunk(items, numColumns)
 
   return (
-    <>
-      <FancyModalHeader onLeftButtonPress={handleBack}>
-        Photos {!!photos.length && `(${photos.length})`}
-      </FancyModalHeader>
+    <BottomAlignedButton onPress={doneTapped} buttonText="Done">
+      <Flex alignContent="center" alignItems="center">
+        <Text variant="title" mt={3}>
+          Photos {!!photos.length && `(${photos.length})`}
+        </Text>
+      </Flex>
       <ScrollView>
         <Flex flexDirection="row" flexWrap="wrap" my="2">
           {rows.map((row, i) => (
@@ -71,7 +73,7 @@ export const AddPhotos: React.FC<AddPhotosProps> = ({ initialPhotos, photosUpdat
           ))}
         </Flex>
       </ScrollView>
-    </>
+    </BottomAlignedButton>
   )
 }
 
