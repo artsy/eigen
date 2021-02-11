@@ -271,6 +271,7 @@ export const ParamDefaultValues = {
   dimensionRange: "*-*",
   earliestCreatedYear: undefined,
   estimateRange: "",
+  additionalGeneIDs: [],
   includeArtworksByFollowedArtists: false,
   inquireableOnly: false,
   latestCreatedYear: undefined,
@@ -285,7 +286,8 @@ export const ParamDefaultValues = {
   viewAs: ViewAsValues.Grid,
 }
 
-const defaultCommonFilterOptions: Record<FilterParamName, string | boolean | undefined | string[]> = {
+// const defaultCommonFilterOptions: Record<FilterParamName, string | boolean | undefined | string[]> = {
+const defaultCommonFilterOptions = {
   acquireable: ParamDefaultValues.acquireable,
   allowEmptyCreatedDates: ParamDefaultValues.allowEmptyCreatedDates,
   artistIDs: ParamDefaultValues.artistIDs,
@@ -293,6 +295,7 @@ const defaultCommonFilterOptions: Record<FilterParamName, string | boolean | und
   attributionClass: ParamDefaultValues.attributionClass,
   categories: ParamDefaultValues.categories,
   color: ParamDefaultValues.color,
+  additionalGeneIDs: ParamDefaultValues.additionalGeneIDs,
   dimensionRange: ParamDefaultValues.dimensionRange,
   earliestCreatedYear: ParamDefaultValues.earliestCreatedYear,
   estimateRange: ParamDefaultValues.estimateRange,
@@ -545,11 +548,13 @@ export type AggregationName =
   | "earliestCreatedYear"
   | "latestCreatedYear"
 
+export interface Aggregation {
+  count: number
+  value: string
+  name: string
+}
+
 export type Aggregations = Array<{
   slice: AggregationName
-  counts: Array<{
-    count: number
-    value: string
-    name: string
-  }>
+  counts: Aggregation[]
 }>

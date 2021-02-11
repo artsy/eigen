@@ -6,26 +6,27 @@ import {
   FilterCounts,
   FilterType,
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { capitalize, compact, forOwn, groupBy, sortBy } from "lodash"
+import { capitalize, compact, forOwn, groupBy, lowerCase, sortBy, startCase } from "lodash"
 
 // General filter types and objects
 export enum FilterParamName {
-  artistIDs = "artistIDs",
+  additionalGeneIDs = "additionalGeneIDs",
   allowEmptyCreatedDates = "allowEmptyCreatedDates",
+  artistIDs = "artistIDs",
   artistsIFollow = "includeArtworksByFollowedArtists",
   attributionClass = "attributionClass",
   categories = "categories",
   color = "color",
   earliestCreatedYear = "earliestCreatedYear",
-  latestCreatedYear = "latestCreatedYear",
   estimateRange = "estimateRange",
   gallery = "partnerID",
   institution = "partnerID",
+  latestCreatedYear = "latestCreatedYear",
   medium = "medium",
   priceRange = "priceRange",
   size = "dimensionRange",
-  sort = "sort",
   sizes = "sizes",
+  sort = "sort",
   timePeriod = "majorPeriods",
   viewAs = "viewAs",
   waysToBuyBid = "atAuction",
@@ -41,11 +42,12 @@ export type FilterParams = {
 
 export enum FilterDisplayName {
   // artist = "Artists",
+  additionalGeneIDs = "Category",
   artistIDs = "Artists",
   artistsIFollow = "Artist",
   attributionClass = "Rarity",
-  color = "Color",
   categories = "Medium",
+  color = "Color",
   estimateRange = "Price/estimate range",
   gallery = "Gallery",
   institution = "Institution",
@@ -56,8 +58,8 @@ export enum FilterDisplayName {
   sort = "Sort by",
   timePeriod = "Time period",
   viewAs = "View as",
-  year = "Artwork date",
   waysToBuy = "Ways to buy",
+  year = "Artwork date",
 }
 
 export enum ViewAsValues {
@@ -171,6 +173,19 @@ export const changedFiltersParams = (currentFilterParams: FilterParams, selected
 }
 
 /**
+ * NOTE: I am not happy this exists — but right now we can only dispatch arrays of paramValues
+ */
+const humanizeSlug = (input: string) => {
+  return (
+    startCase(input)
+      // Downcase insignficant words
+      .replace(/(\s\w{2}\s)/g, (match) => lowerCase(match))
+      // Replace humanized symbols
+      .replace(/\sSlash\s/g, "/")
+  )
+}
+
+/**
  * Formats the display for the Filter Modal "home" screen.
  */
 export const selectedOption = ({
@@ -185,6 +200,22 @@ export const selectedOption = ({
   aggregations: Aggregations
 }) => {
   const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
+
+  if (filterScreen === "additionalGeneIDs") {
+    const additionalGeneIDsOption = selectedOptions.find((option) => {
+      return option.paramName === FilterParamName.additionalGeneIDs
+    })
+
+    if (
+      additionalGeneIDsOption?.paramValue &&
+      Array.isArray(additionalGeneIDsOption?.paramValue) &&
+      additionalGeneIDsOption?.paramValue.length > 0
+    ) {
+      return additionalGeneIDsOption?.paramValue.map(humanizeSlug).join(", ")
+    }
+
+    return "All"
+  }
 
   if (filterScreen === "attributionClass") {
     const selectedAttributionClassOption = selectedOptions.find((option) => {

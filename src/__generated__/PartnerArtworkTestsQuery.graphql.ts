@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2500e2ecf289c7fb8f3c250b5516cf47 */
+/* @relayHash 06f66dea309ba0701eb846eb8c41e413 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -156,7 +156,7 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
 fragment PartnerArtwork_partner on Partner {
   internalID
   slug
-  artworks: filterArtworksConnection(aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], dimensionRange: "*-*", first: 10, medium: "*", sort: "-partner_updated_at") {
+  artworks: filterArtworksConnection(aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], dimensionRange: "*-*", first: 10, sort: "-partner_updated_at") {
     aggregations {
       slice
       counts {
@@ -225,11 +225,6 @@ v3 = [
     "kind": "Literal",
     "name": "first",
     "value": 10
-  },
-  {
-    "kind": "Literal",
-    "name": "medium",
-    "value": "*"
   },
   {
     "kind": "Literal",
@@ -643,7 +638,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,medium:\"*\",sort:\"-partner_updated_at\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,sort:\"-partner_updated_at\")"
           },
           {
             "alias": "artworks",
@@ -654,9 +649,9 @@ return {
               "attributionClass",
               "color",
               "dimensionRange",
+              "additionalGeneIDs",
               "inquireableOnly",
               "majorPeriods",
-              "medium",
               "offerable",
               "priceRange",
               "sort"
@@ -673,7 +668,7 @@ return {
     ]
   },
   "params": {
-    "id": "2500e2ecf289c7fb8f3c250b5516cf47",
+    "id": "06f66dea309ba0701eb846eb8c41e413",
     "metadata": {},
     "name": "PartnerArtworkTestsQuery",
     "operationKind": "query",
