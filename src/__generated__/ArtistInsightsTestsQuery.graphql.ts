@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 578bc181e319a1996f1cffeaf3ab0559 */
+/* @relayHash eb532881b707687b5e7a8da20e451998 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,6 +30,7 @@ fragment ArtistInsightsAuctionResults_artist on Artist {
   birthday
   slug
   id
+  internalID
   auctionResultsConnection(allowEmptyCreatedDates: true, earliestCreatedYear: 1000, first: 10, latestCreatedYear: 2050, sort: DATE_DESC) {
     createdYearRange {
       startAt
@@ -528,7 +529,7 @@ return {
     ]
   },
   "params": {
-    "id": "578bc181e319a1996f1cffeaf3ab0559",
+    "id": "eb532881b707687b5e7a8da20e451998",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {

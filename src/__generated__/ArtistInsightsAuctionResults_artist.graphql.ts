@@ -8,6 +8,7 @@ export type ArtistInsightsAuctionResults_artist = {
     readonly birthday: string | null;
     readonly slug: string;
     readonly id: string;
+    readonly internalID: string;
     readonly auctionResultsConnection: {
         readonly createdYearRange: {
             readonly startAt: number | null;
@@ -38,6 +39,13 @@ var v0 = {
   "args": null,
   "kind": "ScalarField",
   "name": "id",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 };
 return {
@@ -113,6 +121,7 @@ return {
       "storageKey": null
     },
     (v0/*: any*/),
+    (v1/*: any*/),
     {
       "alias": "auctionResultsConnection",
       "args": [
@@ -201,13 +210,7 @@ return {
               "plural": false,
               "selections": [
                 (v0/*: any*/),
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "internalID",
-                  "storageKey": null
-                },
+                (v1/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -266,5 +269,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'd8b668ce7aca0e2eeae96fd01902c647';
+(node as any).hash = 'ecf483180f50bb5ad551070484de1045';
 export default node;
