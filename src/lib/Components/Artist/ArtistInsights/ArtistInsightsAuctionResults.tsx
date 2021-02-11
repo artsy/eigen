@@ -28,9 +28,10 @@ import { AuctionResultFragmentContainer } from "../../Lists/AuctionResult"
 interface Props {
   artist: ArtistInsightsAuctionResults_artist
   relay: RelayPaginationProp
+  scrollToTop: () => void
 }
 
-const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
+const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop }) => {
   const tracking = useTracking()
   const { state, dispatch } = useContext(ArtworkFilterContext)
   const filterParams = filterArtworksParams(state.appliedFilters, "auctionResult")
@@ -53,6 +54,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
         },
         filterParams
       )
+      scrollToTop()
     }
   }, [state.appliedFilters])
 

@@ -3,8 +3,8 @@ import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graph
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import React, { useCallback, useState } from "react"
-import { NativeScrollEvent, NativeSyntheticEvent } from "react-native"
+import React, { useCallback, useRef, useState } from "react"
+import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ReactElement } from "simple-markdown"
@@ -33,8 +33,11 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
   const { artist, relay } = props
 
   const tracking = useTracking()
+  const flatListRef = useRef<{ getNode(): FlatList<any> } | null>(null)
+
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
+  const [auctionResultsYCoordinate, setAuctionResultsYCoordinate] = useState(0)
 
   const openFilterModal = () => {
     tracking.trackEvent(tracks.openFilter(artist.id, artist.slug))
@@ -45,6 +48,10 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     tracking.trackEvent(tracks.closeFilter(artist.id, artist.slug))
     setIsFilterModalVisible(false)
   }
+
+  const scrollToTop = useCallback(() => {
+    flatListRef.current?.getNode().scrollToOffset({ animated: true, offset: auctionResultsYCoordinate })
+  }, [auctionResultsYCoordinate])
 
   // Show or hide floating filter button depending on the scroll position
   const onScrollEndDrag = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -60,9 +67,20 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
       <StickyTabPageScrollView
         contentContainerStyle={{ paddingTop: 20, paddingBottom: 60 }}
         onScrollEndDrag={onScrollEndDrag}
+        innerRef={flatListRef}
       >
         <MarketStatsQueryRenderer artistInternalID={artist.internalID} environment={relay.environment} />
-        <ArtistInsightsAuctionResultsPaginationContainer artist={artist} />
+        <View
+          onLayout={({
+            nativeEvent: {
+              layout: { y },
+            },
+          }) => {
+            setAuctionResultsYCoordinate(y)
+          }}
+        >
+          <ArtistInsightsAuctionResultsPaginationContainer artist={artist} scrollToTop={scrollToTop} />
+        </View>
       </StickyTabPageScrollView>
       <FilterModalNavigator
         isFilterArtworksModalVisible={isFilterModalVisible}
