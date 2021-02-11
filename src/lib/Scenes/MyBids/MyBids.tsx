@@ -2,21 +2,12 @@ import { groupBy, mapValues, partition, sortBy } from "lodash"
 import { Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { RefreshControl, ScrollView } from "react-native"
-import {
-  createFragmentContainer,
-  createPaginationContainer,
-  graphql,
-  QueryRenderer,
-  RelayPaginationProp,
-  RelayProp,
-  RelayRefetchProp,
-} from "react-relay"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { MyBids_me } from "__generated__/MyBids_me.graphql"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -42,7 +33,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
     if (withSpinner) {
       setIsFetching(true)
     }
-    relay.refetch((error) => {
+    relay.refetch({}, null, (error) => {
       if (error) {
         console.error("MyBids/index.tsx #refreshMyBids", error.message)
         // FIXME: Handle error
@@ -164,70 +155,80 @@ const BidTitle: React.FC<{ topBorder?: boolean }> = (props) => (
   </Flex>
 )
 
-export const MyBidsContainer = createFragmentContainer(MyBids, {
-  me: graphql`
-    fragment MyBids_me on Me {
-      ...SaleCard_me
-      bidders(active: true) {
-        sale {
-          internalID
-          ...SaleCard_sale
-          registrationStatus {
-            qualifiedForBidding
-          }
-          internalID
-          liveStartAt
-          endAt
-          status
-        }
-      }
-      auctionsLotStandingConnection(first: 50) {
-        edges {
-          node {
-            isHighestBidder
-            ...LotStatusListItem_lotStanding
-            lot {
-              internalID
-              saleId
-              soldStatus
+export const MyBidsContainer = createRefetchContainer(
+  MyBids,
+  {
+    me: graphql`
+      fragment MyBids_me on Me {
+        ...SaleCard_me
+        bidders(active: true) {
+          sale {
+            internalID
+            ...SaleCard_sale
+            registrationStatus {
+              qualifiedForBidding
             }
-            saleArtwork {
-              position
-              sale {
-                ...SaleCard_sale
+            internalID
+            liveStartAt
+            endAt
+            status
+          }
+        }
+        auctionsLotStandingConnection(first: 50) {
+          edges {
+            node {
+              isHighestBidder
+              ...LotStatusListItem_lotStanding
+              lot {
                 internalID
-                liveStartAt
-                endAt
-                status
+                saleId
+                soldStatus
+              }
+              saleArtwork {
+                position
+                sale {
+                  ...SaleCard_sale
+                  internalID
+                  liveStartAt
+                  endAt
+                  status
+                }
+              }
+            }
+          }
+        }
+        watchedLotConnection(first: 100) {
+          edges {
+            node {
+              ...LotStatusListItem_lot
+              lot {
+                internalID
+              }
+              saleArtwork {
+                internalID
+                position
+                sale {
+                  ...SaleCard_sale
+                  internalID
+                  liveStartAt
+                  endAt
+                  status
+                }
               }
             }
           }
         }
       }
-      watchedLotConnection(first: 100) {
-        edges {
-          node {
-            ...LotStatusListItem_lot
-            lot {
-              internalID
-            }
-            saleArtwork {
-              internalID
-              position
-              sale {
-                ...SaleCard_sale
-                internalID
-                liveStartAt
-                endAt
-                status
-              }
-            }
-          }
-        }
+    `,
+  },
+  graphql`
+    query MyBidsRefetchQuery {
+      me {
+        ...MyBids_me
       }
     }
-  `,
-})
+  `
+)
 
 export const MyBidsQueryRenderer: React.FC = () => (
   <QueryRenderer<MyBidsQuery>
