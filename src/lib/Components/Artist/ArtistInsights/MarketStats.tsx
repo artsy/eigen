@@ -57,7 +57,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
         other additional fees (e.g., Artist’s Resale Rights).
       </Text>
       <Spacer mb={2} />
-      <Text fontWeight={"bold"}>Yearly lots sold</Text>
+      <Text fontWeight={"bold"}>Average yearly lots sold</Text>
       <Spacer mb={1} />
       <Text>The average number of lots sold per year at auction over the past 36 months.</Text>
       <Spacer mb={2} />
@@ -91,6 +91,11 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
   } else if (actualMedianSaleOverEstimatePercentage > 0) {
     deltaIcon = <IncreaseIcon />
   }
+  const formattedMedianSaleOverEstimatePercentage = Math.abs(actualMedianSaleOverEstimatePercentage)
+
+  const sellThroughRatePercentage = (selectedPriceInsight.sellThroughRate as number) * 100
+  // show up to 2 decimal places
+  const formattedSellThroughRate = Math.round(sellThroughRatePercentage * 100) / 100
 
   return (
     <>
@@ -132,7 +137,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
           <Text variant="text">Yearly lots sold</Text>
         </Flex>
         <Flex width="50%">
-          <Text variant="largeTitle">{selectedPriceInsight.sellThroughRate}%</Text>
+          <Text variant="largeTitle">{formattedSellThroughRate}%</Text>
           <Text variant="text">Sell-through rate</Text>
         </Flex>
         <Flex width="50%" mt={2}>
@@ -143,7 +148,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
           <Flex width="50%" flexDirection="row" alignItems="center">
             <Join separator={<Spacer mr={0.5} />}>
               {deltaIcon}
-              <Text variant="largeTitle">{actualMedianSaleOverEstimatePercentage}%</Text>
+              <Text variant="largeTitle">{formattedMedianSaleOverEstimatePercentage}%</Text>
             </Join>
           </Flex>
           <Text variant="text">Sale price over estimate</Text>
@@ -180,7 +185,7 @@ export const MarketStatsQueryRenderer: React.FC<{
       variables={{ artistInternalID }}
       query={graphql`
         query MarketStatsQuery($artistInternalID: ID!) {
-          priceInsightsConnection: priceInsights(artistId: $artistInternalID, sort: DEMAND_RANK_DESC) {
+          priceInsightsConnection: priceInsights(artistId: $artistInternalID, sort: ANNUAL_VALUE_SOLD_CENTS_DESC) {
             ...MarketStats_priceInsightsConnection
           }
         }
