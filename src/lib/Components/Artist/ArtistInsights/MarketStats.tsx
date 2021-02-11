@@ -92,6 +92,10 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
     deltaIcon = <IncreaseIcon />
   }
 
+  const sellThroughRatePercentage = (selectedPriceInsight.sellThroughRate as number) * 100
+  // show up to 2 decimal places
+  const formattedSellThroughRate = Math.round(sellThroughRatePercentage * 100) / 100
+
   return (
     <>
       <Flex flexDirection="row" alignItems="center">
@@ -132,7 +136,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
           <Text variant="text">Yearly lots sold</Text>
         </Flex>
         <Flex width="50%">
-          <Text variant="largeTitle">{selectedPriceInsight.sellThroughRate}%</Text>
+          <Text variant="largeTitle">{formattedSellThroughRate}%</Text>
           <Text variant="text">Sell-through rate</Text>
         </Flex>
         <Flex width="50%" mt={2}>
