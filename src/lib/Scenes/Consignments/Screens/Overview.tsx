@@ -79,7 +79,7 @@ export default class Overview extends React.Component<Props, State> {
     if (this.state.photos && this.state.photos.length > 0) {
       this.props.navigator.push({
         component: AddPhotos,
-        passProps: { ...this.state },
+        passProps: { initialPhotos: this.state.photos },
       })
     } else {
       showPhotoActionSheet().then((images) => {
@@ -203,7 +203,7 @@ export default class Overview extends React.Component<Props, State> {
 
   uploadPhotosIfNeeded = async () => {
     const uploading = this.state.photos && this.state.photos.some((f) => f.uploading)
-    const toUpload = this.state.photos && this.state.photos.filter((f) => !f.uploaded && f.file)
+    const toUpload = this.state.photos && this.state.photos.filter((f) => !f.uploaded && f.image.path)
     if (!uploading && toUpload && toUpload.length) {
       // Pull out the first in the queue and upload it
       const photo = toUpload[0]
@@ -213,7 +213,7 @@ export default class Overview extends React.Component<Props, State> {
         photo.uploading = true
         this.setState({ photos: this.state.photos })
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        await uploadImageAndPassToGemini(photo.file, "private", this.state.submissionID)
+        await uploadImageAndPassToGemini(photo.image.path, "private", this.state.submissionID)
 
         // Mutate state 'unexpectedly', then send it back through "setState" to trigger the next
         // in the queue
