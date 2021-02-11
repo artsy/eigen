@@ -91,6 +91,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
   } else if (actualMedianSaleOverEstimatePercentage > 0) {
     deltaIcon = <IncreaseIcon />
   }
+  const formattedMedianSaleOverEstimatePercentage = Math.abs(actualMedianSaleOverEstimatePercentage)
 
   const sellThroughRatePercentage = (selectedPriceInsight.sellThroughRate as number) * 100
   // show up to 2 decimal places
@@ -147,7 +148,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
           <Flex width="50%" flexDirection="row" alignItems="center">
             <Join separator={<Spacer mr={0.5} />}>
               {deltaIcon}
-              <Text variant="largeTitle">{actualMedianSaleOverEstimatePercentage}%</Text>
+              <Text variant="largeTitle">{formattedMedianSaleOverEstimatePercentage}%</Text>
             </Join>
           </Flex>
           <Text variant="text">Sale price over estimate</Text>
