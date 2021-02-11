@@ -1,5 +1,5 @@
 import { LinkText } from "lib/Components/Text/LinkText"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { presentEmailComposer } from "lib/NativeModules/presentEmailComposer"
 import { navigate } from "lib/navigation/navigate"
 import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
 import React from "react"
@@ -27,14 +27,7 @@ export class PrivacyRequest extends React.Component {
             </Sans>
             <Sans size="3" textAlign="left">
               To submit a personal data request tap the button below or email{" "}
-              <LinkText
-                onPress={() =>
-                  LegacyNativeModules.ARScreenPresenterModule.presentEmailComposer(
-                    "privacy@artsy.net",
-                    "Personal Data Request"
-                  )
-                }
-              >
+              <LinkText onPress={() => presentEmailComposer("privacy@artsy.net", "Personal Data Request")}>
                 privacy@artsy.net.
               </LinkText>{" "}
             </Sans>
@@ -44,7 +37,7 @@ export class PrivacyRequest extends React.Component {
               size="large"
               mt={1}
               onPress={() =>
-                LegacyNativeModules.ARScreenPresenterModule.presentEmailComposer(
+                presentEmailComposer(
                   "privacy@artsy.net",
                   "Personal Data Request",
                   "Hello, I'm contacting you to ask that..."
