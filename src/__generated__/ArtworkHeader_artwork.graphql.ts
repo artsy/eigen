@@ -12,7 +12,7 @@ export type ArtworkHeader_artwork = {
     } | null> | null;
     readonly title: string | null;
     readonly href: string | null;
-    readonly id: string;
+    readonly internalID: string;
     readonly slug: string;
     readonly artists: ReadonlyArray<{
         readonly name: string | null;
@@ -82,7 +82,7 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "id",
+      "name": "internalID",
       "storageKey": null
     },
     {
@@ -124,5 +124,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '89b36c2d67b90e526cc78af0f2eb3f23';
+(node as any).hash = '13684b2f69c685bc5a951d0454e4910f';
 export default node;

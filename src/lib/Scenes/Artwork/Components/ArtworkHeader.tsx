@@ -63,7 +63,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
         urls: [base64Data, details.url],
         message: details.message,
       })
-      trackEvent(share(tracks.iosShare(res.app, artwork.id, artwork.slug)))
+      trackEvent(share(tracks.iosShare(res.app, artwork.internalID, artwork.slug)))
     } catch (err) {
       console.log({ err })
     } finally {
@@ -80,7 +80,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
       message: details.message,
       url: details.url,
     })
-    trackEvent(share(tracks.customShare(CustomService.whatsapp, artwork.id, artwork.slug)))
+    trackEvent(share(tracks.customShare(CustomService.whatsapp, artwork.internalID, artwork.slug)))
     setShareSheetVisible(false)
   }
 
@@ -95,13 +95,13 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
       backgroundBottomColor: "#ffffff",
       backgroundImage: base64Data,
     })
-    trackEvent(share(tracks.customShare(CustomService.instagram_stories, artwork.id, artwork.slug)))
+    trackEvent(share(tracks.customShare(CustomService.instagram_stories, artwork.internalID, artwork.slug)))
     setShareSheetVisible(false)
   }
 
   const shareArtworkCopyLink = async () => {
     Clipboard.setString(`${getCurrentEmissionState().webURL}${artwork.href!}`)
-    trackEvent(share(tracks.customShare(CustomService.copy_link, artwork.id, artwork.slug)))
+    trackEvent(share(tracks.customShare(CustomService.copy_link, artwork.internalID, artwork.slug)))
     setShareSheetVisible(false)
     toast.show("Copied to Clipboard", "middle", { Icon: ShareIcon })
   }
@@ -175,7 +175,7 @@ export const ArtworkHeaderFragmentContainer = createFragmentContainer(ArtworkHea
       }
       title
       href
-      id
+      internalID
       slug
       artists {
         name

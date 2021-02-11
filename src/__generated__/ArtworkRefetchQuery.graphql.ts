@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3bdbeb8673f17edfba81a906191be57b */
+/* @relayHash 74a699fb4ad3276cb33d747e4f6c0cef */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -206,7 +206,7 @@ fragment ArtworkHeader_artwork on Artwork {
   }
   title
   href
-  id
+  internalID
   slug
   artists {
     name
@@ -2361,7 +2361,7 @@ return {
     ]
   },
   "params": {
-    "id": "3bdbeb8673f17edfba81a906191be57b",
+    "id": "74a699fb4ad3276cb33d747e4f6c0cef",
     "metadata": {},
     "name": "ArtworkRefetchQuery",
     "operationKind": "query",
