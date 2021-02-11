@@ -1,3 +1,4 @@
+import { ContextModule, CustomService, OwnerType, share } from "@artsy/cohesion"
 import Clipboard from "@react-native-community/clipboard"
 import { ArtworkHeader_artwork } from "__generated__/ArtworkHeader_artwork.graphql"
 import { CustomShareSheet, CustomShareSheetItem } from "lib/Components/CustomShareSheet"
@@ -62,13 +63,9 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
         urls: [base64Data, details.url],
         message: details.message,
       })
-      // placeholder for analytics
-      console.log({ res })
-      // {"res": {"app": "com.facebook.Messenger.ShareExtension", "message": "com.facebook.Messenger.ShareExtension"}}
+      trackEvent(share(tracks.iosShare(res.app, artwork.internalID, artwork.slug)))
     } catch (err) {
-      // placeholder for analytics
       console.log({ err })
-      // {"err": [Error: User did not share]}
     } finally {
       setShareSheetVisible(false)
     }
@@ -83,6 +80,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
       message: details.message,
       url: details.url,
     })
+    trackEvent(share(tracks.customShare(CustomService.whatsapp, artwork.internalID, artwork.slug)))
     setShareSheetVisible(false)
   }
 
@@ -97,11 +95,13 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
       backgroundBottomColor: "#ffffff",
       backgroundImage: base64Data,
     })
+    trackEvent(share(tracks.customShare(CustomService.instagram_stories, artwork.internalID, artwork.slug)))
     setShareSheetVisible(false)
   }
 
   const shareArtworkCopyLink = async () => {
     Clipboard.setString(`${getCurrentEmissionState().webURL}${artwork.href!}`)
+    trackEvent(share(tracks.customShare(CustomService.copy_link, artwork.internalID, artwork.slug)))
     setShareSheetVisible(false)
     toast.show("Copied to Clipboard", "middle", { Icon: ShareIcon })
   }
@@ -175,9 +175,28 @@ export const ArtworkHeaderFragmentContainer = createFragmentContainer(ArtworkHea
       }
       title
       href
+      internalID
+      slug
       artists {
         name
       }
     }
   `,
 })
+
+export const tracks = {
+  customShare: (service: string, id: string, slug?: string) => ({
+    context_module: ContextModule.artworkImage,
+    context_owner_type: OwnerType.artwork,
+    context_owner_id: id,
+    context_owner_slug: slug,
+    service,
+  }),
+  iosShare: (app: string, id: string, slug?: string) => ({
+    context_module: ContextModule.artworkImage,
+    context_owner_type: OwnerType.artwork,
+    context_owner_id: id,
+    context_owner_slug: slug,
+    service: app,
+  }),
+}
