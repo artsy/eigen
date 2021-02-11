@@ -7853,13 +7853,22 @@ type Partner implements Node {
   # A connection of artworks from a Partner.
   artworksConnection(
     after: String
+
+    # Return only artwork(s) included in this list of IDs.
+    artworkIDs: [String]
     before: String
     exclude: [String]
     first: Int
     forSale: Boolean
+
+    # Return artworks with less than x additional_images.
+    imageCountLessThan: Int
     last: Int
+
+    # Return artworks published less than x seconds ago.
+    publishedWithin: Int
     sort: ArtworkSorts
-  ): ArtworkConnection @deprecated(reason: "Use `filterArtworksConnection`")
+  ): ArtworkConnection
   cached: Int
   categories: [PartnerCategory]
 
