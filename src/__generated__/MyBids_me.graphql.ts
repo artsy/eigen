@@ -131,31 +131,9 @@ v6 = {
   "storageKey": null
 };
 return {
-  "argumentDefinitions": [
-    {
-      "defaultValue": 25,
-      "kind": "LocalArgument",
-      "name": "count"
-    },
-    {
-      "defaultValue": "",
-      "kind": "LocalArgument",
-      "name": "cursor"
-    }
-  ],
+  "argumentDefinitions": [],
   "kind": "Fragment",
-  "metadata": {
-    "connection": [
-      {
-        "count": "count",
-        "cursor": "cursor",
-        "direction": "forward",
-        "path": [
-          "auctionsLotStandingConnection"
-        ]
-      }
-    ]
-  },
+  "metadata": null,
   "name": "MyBids_me",
   "selections": [
     {
@@ -210,11 +188,17 @@ return {
       "storageKey": "bidders(active:true)"
     },
     {
-      "alias": "auctionsLotStandingConnection",
-      "args": null,
+      "alias": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 50
+        }
+      ],
       "concreteType": "AuctionsLotStandingConnection",
       "kind": "LinkedField",
-      "name": "__MyBids_auctionsLotStandingConnection_connection",
+      "name": "auctionsLotStandingConnection",
       "plural": false,
       "selections": [
         {
@@ -280,70 +264,26 @@ return {
                   "storageKey": null
                 },
                 {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "__typename",
-                  "storageKey": null
-                },
-                {
                   "args": null,
                   "kind": "FragmentSpread",
                   "name": "LotStatusListItem_lotStanding"
                 }
               ],
               "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "cursor",
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "AuctionsPageInfo",
-          "kind": "LinkedField",
-          "name": "pageInfo",
-          "plural": false,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "endCursor",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "hasNextPage",
-              "storageKey": null
             }
           ],
           "storageKey": null
         }
       ],
-      "storageKey": null
+      "storageKey": "auctionsLotStandingConnection(first:50)"
     },
     {
       "alias": null,
       "args": [
         {
-          "kind": "Variable",
-          "name": "after",
-          "variableName": "cursor"
-        },
-        {
           "kind": "Literal",
           "name": "first",
-          "value": 20
+          "value": 100
         }
       ],
       "concreteType": "LotConnection",
@@ -405,7 +345,7 @@ return {
           "storageKey": null
         }
       ],
-      "storageKey": null
+      "storageKey": "watchedLotConnection(first:100)"
     },
     {
       "args": null,
@@ -417,5 +357,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'dbd4742b3b55bc7fc69e140e04e044e6';
+(node as any).hash = '164555dca59d74b468d367d411c1637e';
 export default node;

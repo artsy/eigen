@@ -2,7 +2,15 @@ import { groupBy, mapValues, partition, sortBy } from "lodash"
 import { Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { RefreshControl, ScrollView } from "react-native"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import {
+  createFragmentContainer,
+  createPaginationContainer,
+  graphql,
+  QueryRenderer,
+  RelayPaginationProp,
+  RelayProp,
+  RelayRefetchProp,
+} from "react-relay"
 
 import { MyBids_me } from "__generated__/MyBids_me.graphql"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
@@ -23,7 +31,7 @@ import { TimelySale } from "./helpers/timely"
 export interface MyBidsProps {
   me: MyBids_me
   isActiveTab: boolean
-  relay: RelayPaginationProp
+  relay: RelayRefetchProp
 }
 
 const MyBids: React.FC<MyBidsProps> = (props) => {
@@ -31,18 +39,16 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
   const { relay, isActiveTab, me } = props
 
   const refreshMyBids = (withSpinner: boolean = false) => {
-    if (!relay.isLoading()) {
-      if (withSpinner) {
-        setIsFetching(true)
-      }
-      relay.refetchConnection(PAGE_SIZE, (error) => {
-        if (error) {
-          console.error("MyBids/index.tsx #refreshMyBids", error.message)
-          // FIXME: Handle error
-        }
-        setIsFetching(false)
-      })
+    if (withSpinner) {
+      setIsFetching(true)
     }
+    relay.refetch((error) => {
+      if (error) {
+        console.error("MyBids/index.tsx #refreshMyBids", error.message)
+        // FIXME: Handle error
+      }
+      setIsFetching(false)
+    })
   }
 
   React.useEffect(() => {
@@ -158,96 +164,70 @@ const BidTitle: React.FC<{ topBorder?: boolean }> = (props) => (
   </Flex>
 )
 
-export const MyBidsContainer = createPaginationContainer(
-  MyBids,
-  {
-    me: graphql`
-      fragment MyBids_me on Me
-      @argumentDefinitions(count: { type: "Int", defaultValue: 25 }, cursor: { type: "String", defaultValue: "" }) {
-        ...SaleCard_me
-        bidders(active: true) {
-          sale {
-            internalID
-            ...SaleCard_sale
-            registrationStatus {
-              qualifiedForBidding
-            }
-            internalID
-            liveStartAt
-            endAt
-            status
+export const MyBidsContainer = createFragmentContainer(MyBids, {
+  me: graphql`
+    fragment MyBids_me on Me {
+      ...SaleCard_me
+      bidders(active: true) {
+        sale {
+          internalID
+          ...SaleCard_sale
+          registrationStatus {
+            qualifiedForBidding
           }
+          internalID
+          liveStartAt
+          endAt
+          status
         }
-        auctionsLotStandingConnection(first: $count, after: $cursor)
-          @connection(key: "MyBids_auctionsLotStandingConnection") {
-          edges {
-            node {
-              isHighestBidder
-              ...LotStatusListItem_lotStanding
-              lot {
-                internalID
-                saleId
-                soldStatus
-              }
-              saleArtwork {
-                position
-                sale {
-                  ...SaleCard_sale
-                  internalID
-                  liveStartAt
-                  endAt
-                  status
-                }
-              }
+      }
+      auctionsLotStandingConnection(first: 50) {
+        edges {
+          node {
+            isHighestBidder
+            ...LotStatusListItem_lotStanding
+            lot {
+              internalID
+              saleId
+              soldStatus
             }
-          }
-        }
-        watchedLotConnection(first: 20, after: $cursor) {
-          edges {
-            node {
-              ...LotStatusListItem_lot
-              lot {
+            saleArtwork {
+              position
+              sale {
+                ...SaleCard_sale
                 internalID
-              }
-              saleArtwork {
-                internalID
-                position
-                sale {
-                  ...SaleCard_sale
-                  internalID
-                  liveStartAt
-                  endAt
-                  status
-                }
+                liveStartAt
+                endAt
+                status
               }
             }
           }
         }
       }
-    `,
-  },
-  {
-    getConnectionFromProps(props) {
-      return props.me && props.me.auctionsLotStandingConnection
-    },
-    getVariables(_props, { count, cursor }, fragmentVariables) {
-      return {
-        // in most cases, for variables other than connection filters like
-        // `first`, `after`, etc. you may want to use the previous values.
-        ...fragmentVariables,
-        count,
-        cursor,
-      }
-    },
-    query: graphql`
-      query MyBidsPaginatedQuery($count: Int!, $cursor: String) {
-        me {
-          ...MyBids_me @arguments(count: $count, cursor: $cursor)
+      watchedLotConnection(first: 100) {
+        edges {
+          node {
+            ...LotStatusListItem_lot
+            lot {
+              internalID
+            }
+            saleArtwork {
+              internalID
+              position
+              sale {
+                ...SaleCard_sale
+                internalID
+                liveStartAt
+                endAt
+                status
+              }
+            }
+          }
         }
       }
-    `,
-  }
-)
+    }
+  `,
+})
 
 export const MyBidsQueryRenderer: React.FC = () => (
   <QueryRenderer<MyBidsQuery>
