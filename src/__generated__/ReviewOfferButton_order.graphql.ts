@@ -112,7 +112,13 @@ return {
         },
         {
           "alias": null,
-          "args": null,
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "first",
+              "value": 5
+            }
+          ],
           "concreteType": "CommerceOfferConnection",
           "kind": "LinkedField",
           "name": "offers",
@@ -142,7 +148,7 @@ return {
               "storageKey": null
             }
           ],
-          "storageKey": null
+          "storageKey": "offers(first:5)"
         }
       ],
       "type": "CommerceOfferOrder",
@@ -153,5 +159,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = '996d05a6ce03619468892e10f70ea2f4';
+(node as any).hash = 'dc4619f8864aa50efde32fd4a92b2eb9';
 export default node;
