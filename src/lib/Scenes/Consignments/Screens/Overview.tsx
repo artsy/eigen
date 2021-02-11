@@ -11,7 +11,7 @@ import { dismissModal } from "lib/navigation/navigate"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { Box, Button, Flex, Spacer, Text } from "palette"
 import { Image as RNCImage } from "react-native-image-crop-picker"
-import { ArtistResult, ConsignmentMetadata, ConsignmentSetup } from "../"
+import { ArtistResult, ConsignmentMetadata, ConsignmentSetup, Photo } from "../"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import { createConsignmentSubmission } from "../Submission/createConsignmentSubmission"
 import { updateConsignmentSubmission } from "../Submission/updateConsignmentSubmission"
@@ -75,11 +75,16 @@ export default class Overview extends React.Component<Props, State> {
       passProps: { ...this.state, updateWithProvenance: this.updateProvenance },
     })
 
+  photosUpdated = (updatedPhotos: Photo[]) => {
+    const updatedImages = updatedPhotos.map((p) => p.image)
+    this.updatePhotos(updatedImages)
+  }
+
   goToPhotosTapped = () => {
     if (this.state.photos && this.state.photos.length > 0) {
       this.props.navigator.push({
         component: AddPhotos,
-        passProps: { initialPhotos: this.state.photos },
+        passProps: { initialPhotos: this.state.photos, photosUpdated: this.photosUpdated },
       })
     } else {
       showPhotoActionSheet().then((images) => {

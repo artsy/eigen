@@ -29,11 +29,11 @@ export async function showPhotoActionSheet(): Promise<Image[]> {
             resolve(photos)
           }
           if (buttonIndex === 1) {
-            photos = await ImagePicker.openCamera({
+            const photo = await ImagePicker.openCamera({
               mediaType: "photo",
             })
-            // FIXME: any
-            resolve(photos as any)
+            photos = [photo]
+            resolve(photos)
           }
         } catch (error) {
           reject(error)

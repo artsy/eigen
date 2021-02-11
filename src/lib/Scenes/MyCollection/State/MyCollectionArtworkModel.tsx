@@ -168,13 +168,14 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
             photos = await requestPhotos()
           }
           if (buttonIndex === 1) {
-            photos = await ImagePicker.openCamera({
+            const photo = await ImagePicker.openCamera({
               mediaType: "photo",
             })
+            photos = [photo]
           }
 
           if (photos) {
-            actions.addPhotos(photos as any) // FIXME: any
+            actions.addPhotos(photos)
           }
         } catch (error) {
           // Photo picker closes by throwing error that we need to catch

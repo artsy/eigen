@@ -15,10 +15,11 @@ const MARGIN = 20
 
 interface AddPhotosProps {
   initialPhotos: Photo[]
+  photosUpdated: (updatedPhotos: Photo[]) => void
   navigator: NavigatorIOS
 }
 
-export const AddPhotos: React.FC<AddPhotosProps> = ({ initialPhotos, navigator }) => {
+export const AddPhotos: React.FC<AddPhotosProps> = ({ initialPhotos, photosUpdated, navigator }) => {
   const [photos, setPhotos] = useState(initialPhotos)
 
   const { width: screenWidth } = useScreenDimensions()
@@ -34,6 +35,11 @@ export const AddPhotos: React.FC<AddPhotosProps> = ({ initialPhotos, navigator }
   const deletePhoto = (deletedPhoto: Photo) => {
     const updatedPhotos = photos.filter((p) => p.image.path !== deletedPhoto.image.path)
     setPhotos(updatedPhotos)
+  }
+
+  const handleBack = () => {
+    photosUpdated(photos)
+    navigator.pop()
   }
 
   const items = [<AddPhotosButton addPhotos={addPhotos} key="button" imageSize={imageSize} />].concat(
@@ -53,7 +59,7 @@ export const AddPhotos: React.FC<AddPhotosProps> = ({ initialPhotos, navigator }
 
   return (
     <>
-      <FancyModalHeader onLeftButtonPress={() => navigator.pop()}>
+      <FancyModalHeader onLeftButtonPress={handleBack}>
         Photos {!!photos.length && `(${photos.length})`}
       </FancyModalHeader>
       <ScrollView>
