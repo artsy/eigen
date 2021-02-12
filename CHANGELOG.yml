@@ -13,6 +13,7 @@ upcoming:
     - Dedupe currencies in auction results - pepopowitz
     - update support email - brian
     - Market stats formatting fixes - brian
+    - Add fonts to android - mounir, steven
 
 releases:
   - version: 6.7.7
