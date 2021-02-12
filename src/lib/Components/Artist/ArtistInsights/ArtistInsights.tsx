@@ -38,7 +38,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
 
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
-  const [auctionResultsYCoordinate, setAuctionResultsYCoordinate] = useState(0)
+  const auctionResultsYCoordinate = useRef<number>(0)
 
   const openFilterModal = () => {
     tracking.trackEvent(tracks.openFilter(artist.internalID, artist.slug))
@@ -51,7 +51,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
   }
 
   const scrollToTop = useCallback(() => {
-    flatListRef.current?.getNode().scrollToOffset({ animated: true, offset: auctionResultsYCoordinate })
+    flatListRef.current?.getNode().scrollToOffset({ animated: true, offset: auctionResultsYCoordinate.current })
   }, [auctionResultsYCoordinate])
 
   // Show or hide floating filter button depending on the scroll position
@@ -77,7 +77,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
               layout: { y },
             },
           }) => {
-            setAuctionResultsYCoordinate(y)
+            auctionResultsYCoordinate.current = y
           }}
         >
           <ArtistInsightsAuctionResultsPaginationContainer artist={artist} scrollToTop={scrollToTop} />
