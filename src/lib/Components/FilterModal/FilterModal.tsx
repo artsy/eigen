@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native"
-import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
+import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import {
   AggregationName,
   ArtworkFilterContext,
@@ -187,6 +187,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
             // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
             detachInactiveScreens={false}
             screenOptions={{
+              ...TransitionPresets.SlideFromRightIOS,
               headerShown: false,
               safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
               cardStyle: { backgroundColor: "white" },
