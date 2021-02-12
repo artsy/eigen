@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Migrate feature flag infrastructure to easy-peasy - david
   user_facing:
+    - Fix issue where user's watched lots are not always up to date - erik
     - Add custom ShareSheet and sharing to Instagram Stories - pavlos
     - MarketStats on auction results - pepopowitz, mounir
     - fix - show correct up/down arrows on Market Stats - pepopowitz
