@@ -130,6 +130,7 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksO
       filterOptions={displayOptions}
       selectedOptions={selectedOptions}
       navigation={navigation}
+      withIndent
     />
   )
 }

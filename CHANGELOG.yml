@@ -12,6 +12,7 @@ upcoming:
     - Convert cents to dollars in market stats - pepopowitz
     - Dedupe currencies in auction results - pepopowitz
     - update support email - brian
+    - scroll to the top after applying a filter on auction results- mounir
     - Market stats formatting fixes - brian
 
 releases:
