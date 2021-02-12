@@ -131,4 +131,57 @@ describe(navigate, () => {
       ]
     `)
   })
+
+  describe("debouncing", () => {
+    const dateNow = Date.now
+    const mockDateNow = jest.fn(() => 0)
+    beforeEach(() => {
+      mockDateNow.mockClear()
+    })
+    beforeAll(() => {
+      Date.now = mockDateNow
+    })
+    afterAll(() => {
+      Date.now = dateNow
+    })
+
+    it("happens when the user taps more than once in under a second", async () => {
+      await navigate("/artist/banksy")
+      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(1)
+
+      mockDateNow.mockReturnValue(100)
+      await navigate("/artist/banksy")
+      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(1)
+
+      mockDateNow.mockReturnValue(500)
+      await navigate("/artist/banksy")
+      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(1)
+
+      mockDateNow.mockReturnValue(999)
+      await navigate("/artist/banksy")
+      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(1)
+    })
+
+    it("doesn't happen when the user taps more than once in more than a second", async () => {
+      mockDateNow.mockReturnValue(0)
+      await navigate("/artist/andy-warhol")
+      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(1)
+
+      mockDateNow.mockReturnValue(100)
+      await navigate("/artist/andy-warhol")
+      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(1)
+
+      mockDateNow.mockReturnValue(1500)
+      await navigate("/artist/andy-warhol")
+      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(2)
+
+      mockDateNow.mockReturnValue(2000)
+      await navigate("/artist/andy-warhol")
+      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(2)
+
+      mockDateNow.mockReturnValue(5000)
+      await navigate("/artist/andy-warhol")
+      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(3)
+    })
+  })
 })
