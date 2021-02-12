@@ -10,7 +10,16 @@ export interface ViewDescriptor extends ViewOptions {
   props: object
 }
 
+let lastInvocation = { url: "", timestamp: 0 }
+
 export async function navigate(url: string, options: { modal?: boolean; passProps?: object } = {}) {
+  // Debounce double taps
+  if (lastInvocation.url === url && Date.now() - lastInvocation.timestamp < 1000) {
+    return
+  }
+
+  lastInvocation = { url, timestamp: Date.now() }
+
   const result = matchRoute(url)
 
   if (result.type === "external_url") {
