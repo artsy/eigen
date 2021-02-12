@@ -130,3 +130,7 @@ buck-out/
 *.keystore
 !debug.keystore
 android-secret.json
+
+
+# Fonts
+android/app/src/main/assets/fonts
