@@ -1,11 +1,4 @@
-import {
-  ActionType,
-  ContextModule,
-  OwnerType,
-  TappedAuctionResultGroup,
-  tappedInfoBubble,
-  TappedInfoBubbleArgs,
-} from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -143,7 +136,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         <AuctionResultFragmentContainer
           auctionResult={item}
           onPress={() => {
-            tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.id))
+            tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))
             navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
           }}
         />
@@ -206,6 +199,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         birthday
         slug
         id
+        internalID
         auctionResultsConnection(
           after: $cursor
           allowEmptyCreatedDates: $allowEmptyCreatedDates
@@ -274,10 +268,10 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
 )
 
 export const tracks = {
-  tapAuctionGroup: (auctionId: string, artistId: string): TappedAuctionResultGroup => ({
+  tapAuctionGroup: (auctionId: string, artistId: string) => ({
     action: ActionType.tappedAuctionResultGroup,
     context_module: ContextModule.auctionResults,
-    context_screen_owner_type: OwnerType.artistInsights,
+    context_screen_owner_type: OwnerType.artist,
     context_screen_owner_id: artistId,
     destination_screen_owner_type: OwnerType.auctionResult,
     destination_screen_owner_id: auctionId,
