@@ -36,9 +36,9 @@ export const calculateLetterSpacing = (fontSize: TextFontSize, letterSpacing: Te
  * to a px string. Since unitless line-heights are valid/normal, styled-system
  * won't convert it to px.
  */
-export const calculateLineHeight = (fontSize: TextFontSize, lineHeight: TextLineHeight): string => {
+export const calculateLineHeight = (fontSize: TextFontSize, lineHeight: TextLineHeight): number => {
   const size = parseInt(TEXT_FONT_SIZES[fontSize], 10)
-  return `${size * TEXT_LINE_HEIGHTS[lineHeight]}px`
+  return size * TEXT_LINE_HEIGHTS[lineHeight]
 }
 
 export interface TextTreatment extends Omit<WebTextTreatment, "lineHeight" | "letterSpacing"> {
@@ -49,7 +49,7 @@ export interface TextTreatment extends Omit<WebTextTreatment, "lineHeight" | "le
 /**
  * Utilizes only the small treatments on mobile
  */
-const TREATMENTS = WEB_TEXT_VARIANTS.small
+export const TREATMENTS = WEB_TEXT_VARIANTS.small
 
 /**
  * TextTreatments

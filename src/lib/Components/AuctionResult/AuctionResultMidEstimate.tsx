@@ -1,14 +1,19 @@
-import { DecreaseIcon, Flex, IncreaseIcon, Text } from "palette"
+import { DecreaseIcon, Flex, IncreaseIcon, Text, TextVariant } from "palette"
 import React from "react"
 
 interface AuctionResultsMidEstimateProps {
   value: string
   shortDescription: string
+  textVariant?: TextVariant
 }
 
 type ArrowDirections = "up" | "down"
 
-export const AuctionResultsMidEstimate: React.FC<AuctionResultsMidEstimateProps> = ({ value, shortDescription }) => {
+export const AuctionResultsMidEstimate: React.FC<AuctionResultsMidEstimateProps> = ({
+  value,
+  textVariant = "small",
+  shortDescription,
+}) => {
   const arrowDirection: ArrowDirections = value[0] !== "-" ? "up" : "down"
 
   const color = ratioColor(value)
@@ -21,8 +26,8 @@ export const AuctionResultsMidEstimate: React.FC<AuctionResultsMidEstimateProps>
       ) : (
         <DecreaseIcon height={12} fill={color} />
       )}
-      <Text variant="small" color={color}>
-        {value.replace("-", "")} {shortDescription}
+      <Text variant={textVariant} color={color}>
+        {new Intl.NumberFormat().format(Number(value.replace(/%|-/gm, "")))}% {shortDescription}
       </Text>
     </Flex>
   )

@@ -2,6 +2,7 @@ import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { presentEmailComposer } from "lib/NativeModules/presentEmailComposer"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -50,10 +51,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       <MenuItem
         title="Send feedback"
         onPress={() => {
-          LegacyNativeModules.ARScreenPresenterModule.presentEmailComposer(
-            "feedback@artsy.net",
-            "Feedback from the Artsy app"
-          )
+          presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")
         }}
       />
       <MenuItem title="Personal data request" onPress={() => navigate("privacy-request")} />

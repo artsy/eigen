@@ -1,0 +1,63 @@
+diff --git a/node_modules/react-native-share/ios/InstagramStories.m b/node_modules/react-native-share/ios/InstagramStories.m
+index 777c284..52f704a 100644
+--- a/node_modules/react-native-share/ios/InstagramStories.m
++++ b/node_modules/react-native-share/ios/InstagramStories.m
+@@ -20,13 +20,16 @@
+ @implementation InstagramStories
+ RCT_EXPORT_MODULE();
+ 
+-- (void)backgroundImage:(NSData *)backgroundImage attributionURL:(NSString *)attributionURL {
++- (void)backgroundImage:(NSData *)backgroundImage
++     backgroundTopColor:(NSString *)backgroundTopColor
++  backgroundBottomColor:(NSString *)backgroundBottomColor
++         attributionURL:(NSString *)attributionURL {
+     // Verify app can open custom URL scheme, open if able
+     
+     NSURL *urlScheme = [NSURL URLWithString:@"instagram-stories://share"];
+     if ([[UIApplication sharedApplication] canOpenURL:urlScheme]) {
+         // Assign background image asset and attribution link URL to pasteboard
+-        NSArray *pasteboardItems = @[@{@"com.instagram.sharedSticker.backgroundImage" : backgroundImage, @"com.instagram.sharedSticker.contentURL" : attributionURL}];
++        NSArray *pasteboardItems = @[@{@"com.instagram.sharedSticker.backgroundImage" : backgroundImage, @"com.instagram.sharedSticker.backgroundTopColor" : backgroundTopColor, @"com.instagram.sharedSticker.backgroundBottomColor" : backgroundBottomColor, @"com.instagram.sharedSticker.contentURL" : attributionURL}];
+         NSDictionary *pasteboardOptions = @{UIPasteboardOptionExpirationDate : [[NSDate date] dateByAddingTimeInterval:60 * 5]};
+         // This call is iOS 10+, can use 'setItems' depending on what versions you support
+         [[UIPasteboard generalPasteboard] setItems:pasteboardItems options:pasteboardOptions];
+@@ -110,27 +113,29 @@ - (void)shareSingle:(NSDictionary *)options
+     
+     NSString *method = [RCTConvert NSString:options[@"method"]];
+     if (method) {
+-        if([method isEqualToString:@"shareBackgroundImage"]) {
+ 
++        NSString *backgroundTopColor = [RCTConvert NSString:options[@"backgroundTopColor"]];
++        if (backgroundTopColor == nil) {
++            backgroundTopColor = @"#906df4";
++        }
++        NSString *backgroundBottomColor = [RCTConvert NSString:options[@"backgroundBottomColor"]];
++        if (backgroundBottomColor == nil) {
++            backgroundBottomColor = @"#837DF4";
++        }
++
++        if([method isEqualToString:@"shareBackgroundImage"]) {
+             NSURL *URL = [RCTConvert NSURL:options[@"backgroundImage"]];
+             if (URL == nil) {
+                 RCTLogError(@"key 'backgroundImage' missing in options");
+             } else {
+                 UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:URL]];
+ 
+-                [self backgroundImage:UIImagePNGRepresentation(image) attributionURL:attrURL];
++                [self backgroundImage:UIImagePNGRepresentation(image) backgroundTopColor:backgroundTopColor backgroundBottomColor:backgroundBottomColor attributionURL:attrURL];
+             }
+         } else if([method isEqualToString:@"shareStickerImage"]) {
+             RCTLog(@"method shareStickerImage");
+             
+-            NSString *backgroundTopColor = [RCTConvert NSString:options[@"backgroundTopColor"]];
+-            if (backgroundTopColor == nil) {
+-                backgroundTopColor = @"#906df4";
+-            }
+-            NSString *backgroundBottomColor = [RCTConvert NSString:options[@"backgroundBottomColor"]];
+-            if (backgroundBottomColor == nil) {
+-                backgroundBottomColor = @"#837DF4";
+-            }
++
+             
+             NSURL *URL = [RCTConvert NSURL:options[@"stickerImage"]];
+             if (URL == nil) {

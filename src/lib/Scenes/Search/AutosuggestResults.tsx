@@ -13,6 +13,7 @@ import { useCallback, useEffect, useMemo, useRef } from "react"
 import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import usePrevious from "react-use/lib/usePrevious"
 import { OnResultPress, SearchResult } from "./SearchResult"
 
 export type AutosuggestResult = NonNullable<
@@ -64,7 +65,7 @@ const AutosuggestResultsFlatList: React.FC<{
   // in when the previous results we encountered were `null` (when the query changed but
   /// the fetch/cache-lookup has not completed yet) so we can scroll the user back to
   // the top whenever that happens.
-  const lastResults = usePreviousValue(latestResults, undefined)
+  const lastResults = usePrevious(latestResults)
   const flatListRef = useRef<FlatList<any>>(null)
   useEffect(() => {
     if (lastResults === null && latestResults !== null) {
@@ -233,10 +234,3 @@ export const AutosuggestResults: React.FC<{
   },
   (a, b) => a.query === b.query
 )
-
-function usePreviousValue<T>(val: T, init: T) {
-  const prev = useRef(init)
-  const result = prev.current
-  prev.current = val
-  return result
-}

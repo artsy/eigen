@@ -1,5 +1,6 @@
+import { ContextModule } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
-import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
+import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import {
   AggregationName,
   ArtworkFilterContext,
@@ -129,13 +130,21 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
     exitModal?.()
   }
 
-  const trackChangeFilters = (
-    screenName: PageNames,
-    ownerEntity: OwnerEntityTypes,
-    currentParams: FilterParams,
+  const trackChangeFilters = ({
+    changedParams,
+    contextModule,
+    currentParams,
+    ownerEntity,
+    screenName,
+  }: {
     changedParams: any
-  ) => {
+    contextModule?: ContextModule
+    currentParams: FilterParams
+    ownerEntity: OwnerEntityTypes
+    screenName: PageNames
+  }) => {
     tracking.trackEvent({
+      context_module: contextModule,
       context_screen: screenName,
       context_screen_owner_type: ownerEntity,
       context_screen_owner_id: id,
@@ -187,6 +196,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
             // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
             detachInactiveScreens={false}
             screenOptions={{
+              ...TransitionPresets.SlideFromRightIOS,
               headerShown: false,
               safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
               cardStyle: { backgroundColor: "white" },
@@ -227,61 +237,62 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                 // TODO: Update to use cohesion
                 switch (mode) {
                   case FilterModalMode.Collection:
-                    trackChangeFilters(
-                      PageNames.Collection,
-                      OwnerEntityTypes.Collection,
-                      appliedFiltersParams,
-                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                    )
+                    trackChangeFilters({
+                      screenName: PageNames.Collection,
+                      ownerEntity: OwnerEntityTypes.Collection,
+                      currentParams: appliedFiltersParams,
+                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                    })
                     break
                   case FilterModalMode.ArtistArtworks:
-                    trackChangeFilters(
-                      PageNames.ArtistPage,
-                      OwnerEntityTypes.Artist,
-                      appliedFiltersParams,
-                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                    )
+                    trackChangeFilters({
+                      screenName: PageNames.ArtistPage,
+                      ownerEntity: OwnerEntityTypes.Artist,
+                      currentParams: appliedFiltersParams,
+                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                    })
                     break
                   case FilterModalMode.Fair:
-                    trackChangeFilters(
-                      PageNames.FairPage,
-                      OwnerEntityTypes.Fair,
-                      appliedFiltersParams,
-                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                    )
+                    trackChangeFilters({
+                      screenName: PageNames.FairPage,
+                      ownerEntity: OwnerEntityTypes.Fair,
+                      currentParams: appliedFiltersParams,
+                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                    })
                     break
                   case FilterModalMode.SaleArtworks:
-                    trackChangeFilters(
-                      PageNames.Auction,
-                      OwnerEntityTypes.Auction,
-                      appliedFiltersParams,
-                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                    )
+                    trackChangeFilters({
+                      screenName: PageNames.Auction,
+                      ownerEntity: OwnerEntityTypes.Auction,
+                      currentParams: appliedFiltersParams,
+                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                    })
                     break
                   case FilterModalMode.Show:
-                    trackChangeFilters(
-                      PageNames.ShowPage,
-                      OwnerEntityTypes.Show,
-                      appliedFiltersParams,
-                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                    )
+                    trackChangeFilters({
+                      screenName: PageNames.ShowPage,
+                      ownerEntity: OwnerEntityTypes.Show,
+                      currentParams: appliedFiltersParams,
+                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                    })
                     break
                   case FilterModalMode.AuctionResults:
-                    trackChangeFilters(
-                      PageNames.AuctionResult,
-                      OwnerEntityTypes.AuctionResult,
-                      appliedFiltersParams,
-                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                    )
+                    trackChangeFilters({
+                      screenName: PageNames.ArtistPage,
+                      ownerEntity: OwnerEntityTypes.Artist,
+                      currentParams: appliedFiltersParams,
+                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                      contextModule: ContextModule.auctionResults,
+                    })
                     break
 
                   case FilterModalMode.Partner:
-                    trackChangeFilters(
-                      PageNames.PartnerPage,
-                      OwnerEntityTypes.Partner,
-                      appliedFiltersParams,
-                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                    )
+                    trackChangeFilters({
+                      screenName: PageNames.PartnerPage,
+                      ownerEntity: OwnerEntityTypes.Partner,
+                      currentParams: appliedFiltersParams,
+                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                    })
                     break
                 }
                 applyFilters()

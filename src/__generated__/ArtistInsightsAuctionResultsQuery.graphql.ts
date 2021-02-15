@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f94a7e6cf30a055779314b1b0eeb3269 */
+/* @relayHash b00f315921f38dd8a745d9b1a1daf901 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -52,6 +52,7 @@ fragment ArtistInsightsAuctionResults_artist_4szhbQ on Artist {
   birthday
   slug
   id
+  internalID
   auctionResultsConnection(after: $cursor, allowEmptyCreatedDates: $allowEmptyCreatedDates, categories: $categories, earliestCreatedYear: $earliestCreatedYear, first: $count, latestCreatedYear: $latestCreatedYear, sizes: $sizes, sort: $sort) {
     createdYearRange {
       startAt
@@ -197,7 +198,14 @@ v8 = {
   "name": "id",
   "storageKey": null
 },
-v9 = [
+v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v10 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -288,9 +296,10 @@ return {
             "storageKey": null
           },
           (v8/*: any*/),
+          (v9/*: any*/),
           {
             "alias": null,
-            "args": (v9/*: any*/),
+            "args": (v10/*: any*/),
             "concreteType": "AuctionResultConnection",
             "kind": "LinkedField",
             "name": "auctionResultsConnection",
@@ -345,13 +354,7 @@ return {
                     "plural": false,
                     "selections": [
                       (v8/*: any*/),
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "internalID",
-                        "storageKey": null
-                      },
+                      (v9/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -568,7 +571,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v9/*: any*/),
+            "args": (v10/*: any*/),
             "filters": [
               "allowEmptyCreatedDates",
               "categories",
@@ -588,7 +591,7 @@ return {
     ]
   },
   "params": {
-    "id": "f94a7e6cf30a055779314b1b0eeb3269",
+    "id": "b00f315921f38dd8a745d9b1a1daf901",
     "metadata": {},
     "name": "ArtistInsightsAuctionResultsQuery",
     "operationKind": "query",

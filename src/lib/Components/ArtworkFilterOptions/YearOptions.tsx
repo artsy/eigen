@@ -16,7 +16,7 @@ import { FilterModalNavigationStack } from "../FilterModal"
 interface YearOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "YearOptionsScreen"> {}
 
 export const ALLOW_EMPTY_CREATED_DATES_FILTER: FilterData = {
-  displayText: "Include lots without year created info",
+  displayText: "Include lots without artwork date listed",
   paramName: FilterParamName.allowEmptyCreatedDates,
   paramValue: true,
 }

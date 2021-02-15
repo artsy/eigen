@@ -82,4 +82,10 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableViewingRooms",
   },
+  AREnableCustomSharesheet: {
+    readyForRelease: true,
+    echoFlagKey: "AREnableCustomSharesheet",
+    description: "Enable custom share sheet",
+    showInAdminMenu: true,
+  },
 })
