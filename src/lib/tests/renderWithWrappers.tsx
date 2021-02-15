@@ -1,3 +1,4 @@
+import { render } from "@testing-library/react-native"
 import { ToastProvider } from "lib/Components/Toast/toastHook"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -6,11 +7,32 @@ import React from "react"
 import ReactTestRenderer from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 
+export const Wrappers: React.FC = ({ children }) => {
+  return (
+    <GlobalStoreProvider>
+      <Theme>
+        <ToastProvider>
+          <ProvideScreenDimensions>{children}</ProvideScreenDimensions>
+        </ToastProvider>
+      </Theme>
+    </GlobalStoreProvider>
+  )
+}
+
+/**
+ * Returns given component wrapped with our page wrappers
+ * @param component
+ */
+export const componentWithWrappers = (component: ReactElement) => {
+  return <Wrappers>{component}</Wrappers>
+}
+
 /**
  * Renders a React Component with our page wrappers
  * @param component
+ * @deprecated Try to use `renderWithWrappers`. If there is any problem and this function works, please report it to CX.
  */
-export const renderWithWrappers = (component: ReactElement) => {
+export const renderWithWrappers_legacy = (component: ReactElement) => {
   const wrappedComponent = componentWithWrappers(component)
   try {
     // tslint:disable-next-line:use-wrapped-components
@@ -38,17 +60,9 @@ export const renderWithWrappers = (component: ReactElement) => {
 }
 
 /**
- * Returns given component wrapped with our page wrappers
+ * Renders a React Component with our page wrappers
  * @param component
  */
-export const componentWithWrappers = (component: ReactElement) => {
-  return (
-    <GlobalStoreProvider>
-      <Theme>
-        <ToastProvider>
-          <ProvideScreenDimensions>{component}</ProvideScreenDimensions>
-        </ToastProvider>
-      </Theme>
-    </GlobalStoreProvider>
-  )
+export const renderWithWrappers = (component: ReactElement) => {
+  return render(component, { wrapper: Wrappers })
 }

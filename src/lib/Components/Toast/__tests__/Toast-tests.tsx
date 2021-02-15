@@ -21,15 +21,15 @@ describe("Toasts", () => {
   it("renders a toast when", async () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    expect(tree.root.findAllByType(Toast)).toHaveLength(0)
+    expect(tree.UNSAFE_queryAllByType(Toast)).toHaveLength(0)
 
-    const buttonInstance = tree.root.findByType(Button)
+    const buttonInstance = tree.UNSAFE_getByType(Button)
     act(() => buttonInstance.props.onPress())
 
-    expect(tree.root.findAllByType(Toast)).toHaveLength(1)
+    expect(tree.UNSAFE_queryAllByType(Toast)).toHaveLength(1)
 
     jest.advanceTimersByTime(3000)
 
-    expect(tree.root.findAllByType(Toast)).toHaveLength(0)
+    expect(tree.UNSAFE_queryAllByType(Toast)).toHaveLength(0)
   })
 })
