@@ -114,7 +114,7 @@ lane :ship_beta_ios do
                          version: sentry_release_version,
                          dist: bundle_version,
                          file: 'emission/Pod/Assets/Emission.js',
-                         file_url:'~/Emission.js'
+                         file_url: '~/Emission.js'
       puts "Uploaded Emission.js for #{project_slug}"
 
       sentry_upload_sourcemap auth_token: ENV['SentryUploadAuthKey'],
@@ -180,23 +180,23 @@ end
 
 build_gradle = "../android/app/build.gradle"
 lane :set_build_version_android do
-  currentVersionCode = google_play_track_version_codes(
+  current_version_code = google_play_track_version_codes(
     track: "alpha",
   ).first
 
-  nextVersionName = app_json['version']
-  nextVersionCode = currentVersionCode+1
+  next_version_name = app_json['version']
+  next_version_code = current_version_code + 1
 
   contents = File.read(build_gradle)
 
-  contents = contents.gsub(/(versionName) .*/, "\\1 \"#{nextVersionName}\"")
-  contents = contents.gsub(/(versionCode) (.*)/, "\\1 #{nextVersionCode}")
+  contents = contents.gsub(/(versionName) .*/, "\\1 \"#{next_version_name}\"")
+  contents = contents.gsub(/(versionCode) (.*)/, "\\1 #{next_version_code}")
 
   File.open(build_gradle, 'w') do |file|
     file.puts contents
   end
 
-  [nextVersionName, nextVersionCode]
+  [next_version_name, next_version_code]
 end
 
 git_commit_rev = `git log -n1 --format='%h'`.chomp
@@ -320,7 +320,9 @@ lane :notify_if_new_license_agreement do
   messages = Spaceship::Tunes.client.fetch_program_license_agreement_messages
 
   # ignore membership expiration warnings, auto-renew should take care of
-  unless messages.empty? || messages[0].include?("membership expiration")
+  if messages.empty? || messages[0].include?('membership expiration')
+    puts 'No new developer agreements'
+  else
     message = <<~MSG
                 :apple: :handshake: :pencil:
                 There is a new developer program agreement that needs to be signed to continue shipping!
@@ -334,8 +336,6 @@ lane :notify_if_new_license_agreement do
       success: false,
       default_payloads: []
     )
-  else
-    puts 'No new developer agreements'
   end
 end
 
@@ -357,6 +357,18 @@ lane :notify_beta_failed do |options|
   )
 end
 
+lane :promote_beta_android do
+  current_version_code = google_play_track_version_codes(
+    track: "alpha",
+  ).first
+
+  supply(
+    track: 'alpha',
+    track_promote_to: 'production',
+    version_code: current_version_code
+  )
+end
+
 lane :tag_and_push do |options|
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for circle is read-only
@@ -368,7 +380,7 @@ lane :tag_and_push do |options|
 end
 
 error do |lane, exception|
- if lane == :ship_beta or lane == :ship_beta_ios or lane == :ship_beta_android
-  notify_beta_failed(exception: exception)
- end
+  if lane == :ship_beta or lane == :ship_beta_ios or lane == :ship_beta_android
+    notify_beta_failed(exception: exception)
+  end
 end

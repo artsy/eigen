@@ -2,6 +2,7 @@ upcoming:
   version: 6.7.8
   date: TBD
   dev:
+    - Add scripts and docs for android beta promotion - pavlos
     - Migrate feature flag infrastructure to easy-peasy - david
   user_facing:
     - Add custom ShareSheet and sharing to Instagram Stories - pavlos
