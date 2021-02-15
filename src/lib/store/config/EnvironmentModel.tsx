@@ -19,7 +19,7 @@ export const environment = defineEnvironmentOptions({
   gravityURL: {
     description: "Gravity URL",
     presets: {
-      local: "https://localhost:3000",
+      local: "http://localhost:3000",
       staging: "https://stagingapi.artsy.net",
       production: "https://api.artsy.net",
     },
@@ -27,7 +27,7 @@ export const environment = defineEnvironmentOptions({
   metaphysicsURL: {
     description: "Metaphysics URL",
     presets: {
-      local: "https://localhost:3000/v2",
+      local: "http://localhost:3000/v2",
       staging: "https://metaphysics-staging.artsy.net/v2",
       production: "https://metaphysics.artsy.net/v2",
     },
@@ -35,7 +35,7 @@ export const environment = defineEnvironmentOptions({
   predictionURL: {
     description: "Prediction URL",
     presets: {
-      local: "https://localhost:3000/v2",
+      local: "http://localhost:3000/v2",
       staging: "https://live-staging.artsy.net",
       production: "https://live.artsy.net",
     },
@@ -43,7 +43,7 @@ export const environment = defineEnvironmentOptions({
   webURL: {
     description: "Force URL",
     presets: {
-      local: "https://localhost:5000",
+      local: "http://localhost:5000",
       staging: "https://staging.artsy.net",
       production: "https://artsy.net",
     },
@@ -56,6 +56,7 @@ export interface EnvironmentModel {
   strings: Computed<EnvironmentModel, { [k in EnvironmentKey]: string }>
   setAdminOverride: Action<EnvironmentModel, { key: EnvironmentKey; value: string | null }>
   setEnv: Action<EnvironmentModel, Environment>
+  clearAdminOverrides: Action<EnvironmentModel>
 }
 
 export const EnvironmentModel: EnvironmentModel = {
@@ -79,5 +80,8 @@ export const EnvironmentModel: EnvironmentModel = {
   }),
   setEnv: action((state, env) => {
     state.env = env
+  }),
+  clearAdminOverrides: action((state) => {
+    state.adminOverrides = {}
   }),
 }

@@ -14,7 +14,6 @@ export interface AuthModel {
   getXAppToken: Thunk<AuthModel, void, {}, GlobalStoreModel, Promise<string>>
   userExists: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel>
   signIn: Thunk<AuthModel, { email: string; password: string }, {}, GlobalStoreModel, Promise<boolean>>
-  signOut: Action<AuthModel, void>
   gravityUnauthenticatedRequest: Thunk<
     AuthModel,
     {
@@ -122,14 +121,5 @@ export const AuthModel: AuthModel = {
     }
 
     return false
-  }),
-  signOut: action((state) => {
-    Object.assign(state, {
-      userID: null,
-      userAccessToken: null,
-      userAccessTokenExpiresIn: null,
-      xAppToken: null,
-      xApptokenExpiresIn: null,
-    })
   }),
 }

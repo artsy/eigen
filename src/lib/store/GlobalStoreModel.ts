@@ -26,6 +26,7 @@ interface GlobalStoreStateModel {
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
   reset: Action<GlobalStoreModel>
+  signOut: Action<GlobalStoreModel>
   didRehydrate: ThunkOn<GlobalStoreModel>
 }
 
@@ -44,6 +45,13 @@ export const GlobalStoreModel: GlobalStoreModel = {
     const result = createStore(GlobalStoreModel).getState()
     result.sessionState.isHydrated = true
     return result
+  }),
+  signOut: action((state) => {
+    const clean = createStore(GlobalStoreModel).getState()
+    // keep existing config state
+    const config = state.config
+    clean.config = config
+    return clean
   }),
   didRehydrate: thunkOn(
     (actions) => actions.rehydrate,
