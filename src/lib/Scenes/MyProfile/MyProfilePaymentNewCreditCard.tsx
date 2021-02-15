@@ -145,7 +145,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
         }
       }}
     >
-      <Stack spacing={2}>
+      <Stack spacing="2">
         <>
           <InputTitle>Credit Card</InputTitle>
           <PaymentCardTextField

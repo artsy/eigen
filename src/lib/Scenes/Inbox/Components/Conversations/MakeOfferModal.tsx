@@ -29,18 +29,18 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
         rightButtonText=" "
         hideBottomDivider
       ></FancyModalHeader>
-      <Flex p={1.5}>
+      <Flex p="1.5">
         <Text variant="largeTitle">Confirm Artwork</Text>
         <Text variant="small" color="black60">
           {" "}
           Make sure the artwork below matches the intended work you're making an offer on.
         </Text>
-        <BorderBox p={0} my={2}>
+        <BorderBox p={0} my="2">
           <CollapsibleArtworkDetails hasSeparator={false} artwork={artwork} />
         </BorderBox>
         <MakeOfferButton variant="primaryBlack" buttonText="Confirm" artwork={artwork} editionSetID={null} />
         <Button
-          mt={1}
+          mt="1"
           size="large"
           variant="secondaryOutline"
           block

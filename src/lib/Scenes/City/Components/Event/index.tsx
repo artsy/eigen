@@ -138,14 +138,14 @@ export class Event extends React.Component<Props, State> {
     const url = cover_image ? cover_image.url : null
     return (
       <TouchableWithoutFeedback onPress={() => this.handleTap()}>
-        <Box mb={2} px={2}>
+        <Box mb="2" px="2">
           {!!url && (
-            <Box mb={2}>
+            <Box mb="2">
               <OpaqueImageView imageURL={url} height={145} />
             </Box>
           )}
           <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
-            <TextContainer mb={2}>
+            <TextContainer mb="2">
               <Sans size="3" weight="medium" numberOfLines={1} ellipsizeMode="tail">
                 {partnerName}
               </Sans>

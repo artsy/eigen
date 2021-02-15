@@ -53,11 +53,11 @@ class PartnerLocationSection extends React.Component<Props> {
             )}
             .
           </Sans>
-          <Spacer mb={2} />
+          <Spacer mb="2" />
           <Button variant="secondaryGray" size="small" block width="100%" onPress={() => handleSeeAllLocations()}>
             See all location details
           </Button>
-          <Spacer mb={3} />
+          <Spacer mb="3" />
         </>
       )
     )

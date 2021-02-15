@@ -104,8 +104,8 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
         <Flex flexDirection="row">
           {isOpenSale ? (
             <Touchable haptic onPress={() => this.handleArtworkSave()}>
-              <UtilButton pr={3}>
-                <Box mr={0.5}>{is_saved ? <BellFillIcon fill="purple100" /> : <BellIcon />}</Box>
+              <UtilButton pr="3">
+                <Box mr="0.5">{is_saved ? <BellFillIcon fill="purple100" /> : <BellIcon />}</Box>
                 <Sans size="3" color={is_saved ? color("purple100") : color("black100")}>
                   Watch lot
                 </Sans>
@@ -113,8 +113,8 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
             </Touchable>
           ) : (
             <Touchable haptic onPress={() => this.handleArtworkSave()}>
-              <UtilButton pr={3}>
-                <Box mr={0.5}>{is_saved ? <HeartFillIcon fill="purple100" /> : <HeartIcon />}</Box>
+              <UtilButton pr="3">
+                <Box mr="0.5">{is_saved ? <HeartFillIcon fill="purple100" /> : <HeartIcon />}</Box>
                 <Sans size="3" color={is_saved ? color("purple100") : color("black100")}>
                   {is_saved ? "Saved" : "Save"}
                 </Sans>
@@ -124,8 +124,8 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
 
           {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
             <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
-              <UtilButton pr={3}>
-                <Box mr={0.5}>
+              <UtilButton pr="3">
+                <Box mr="0.5">
                   <EyeOpenedIcon />
                 </Box>
                 <Sans size="3">View in Room</Sans>
@@ -134,7 +134,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
           )}
           <Touchable noFeedback haptic onPress={() => this.props.shareOnPress()}>
             <UtilButton>
-              <Box mr={0.5}>
+              <Box mr="0.5">
                 <ShareIcon />
               </Box>
               <Sans size="3">Share</Sans>

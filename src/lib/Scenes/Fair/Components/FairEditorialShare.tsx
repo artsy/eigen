@@ -14,7 +14,7 @@ export const FairEditorialShare: React.FC<FairEditorialShareProps> = ({ subject,
         Linking.openURL(`https://www.facebook.com/sharer/sharer.php?u=${url}`)
       }}
     >
-      <FacebookIcon title="Post this article to Facebook" mr={0.5} />
+      <FacebookIcon title="Post this article to Facebook" mr="0.5" />
     </Touchable>
 
     <Touchable
@@ -22,7 +22,7 @@ export const FairEditorialShare: React.FC<FairEditorialShareProps> = ({ subject,
         Linking.openURL(`mailto:?subject=${subject}&amp;body=Check out ${subject} on Artsy: ${url}`)
       }}
     >
-      <EnvelopeIcon title="Share this article via email" mr={0.5} />
+      <EnvelopeIcon title="Share this article via email" mr="0.5" />
     </Touchable>
 
     <Touchable

@@ -93,7 +93,7 @@ function PaginationDots() {
   const { images } = useContext(ImageCarouselContext)
   return (
     <>
-      <Spacer mb={2} />
+      <Spacer mb="2" />
       <Flex flexDirection="row" justifyContent="center">
         {images.map((_, index) => (
           <PaginationDot key={index} diameter={5} index={index} />

@@ -27,10 +27,10 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
     return (
       <>
         <Flex alignItems="flex-start">
-          <Sans size="4t" mb={2}>
+          <Sans size="4t" mb="2">
             {hasSingleArtist ? "About the artist" : "About the artists"}
           </Sans>
-          <Join separator={<Spacer my={1} />}>
+          <Join separator={<Spacer my="1" />}>
             {artists! /* STRICTNESS_MIGRATION */
               .map((artist) => (
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -39,7 +39,7 @@ export class AboutArtist extends React.Component<AboutArtistProps> {
           </Join>
         </Flex>
         {hasSingleArtist && text && (
-          <Box mt={2}>
+          <Box mt="2">
             <ReadMore
               content={text}
               contextModule={Schema.ContextModules.ArtistBiography}

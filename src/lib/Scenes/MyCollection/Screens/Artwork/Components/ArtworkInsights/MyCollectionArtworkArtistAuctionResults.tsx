@@ -28,14 +28,14 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
   return (
     <View>
       <ScreenMargin>
-        <Box my={3}>
+        <Box my="3">
           <Separator />
         </Box>
         <InfoButton
           title={`Auction Results for ${props?.artwork?.artist?.name}`}
           modalContent={
             <>
-              <Spacer my={1} />
+              <Spacer my="1" />
               <Text>
                 This data set includes the latest lots from auction sales at top commercial auction houses. Lots are
                 updated daily.
@@ -45,7 +45,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
           onPress={() => trackEvent(tracks.tappedInfoBubble(props?.artwork?.internalID, props?.artwork?.slug))}
         />
 
-        <Spacer my={0.5} />
+        <Spacer my="0.5" />
 
         <FlatList
           data={auctionResults}
@@ -57,7 +57,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
             />
           )}
           ListHeaderComponent={() => (
-            <Flex px={2}>
+            <Flex px="2">
               <Text variant="title">Auction results</Text>
               <Text variant="small" color="black60">
                 Sorted by most recent sale date
@@ -66,14 +66,14 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
             </Flex>
           )}
           ItemSeparatorComponent={() => (
-            <Flex px={2}>
+            <Flex px="2">
               <Separator />
             </Flex>
           )}
           style={{ width: useScreenDimensions().width, left: -20 }}
         />
         <Separator />
-        <Box pt={3}>
+        <Box pt="3">
           <CaretButton
             data-test-id="AuctionsResultsButton"
             onPress={() => {

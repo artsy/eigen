@@ -33,7 +33,7 @@ export default class ZeroStateInbox extends React.Component {
         alwaysBounceVertical={false}
         keyExtractor={(_item, index) => String(index)}
         ListHeaderComponent={() => (
-          <Box px={2}>
+          <Box px="2">
             <Sans size="4" textAlign="center" weight="medium">
               Buying art on Artsy is simple
             </Sans>

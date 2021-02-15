@@ -90,11 +90,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
             {Boolean(!hideUrgencyTags && urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed) && (
               <Flex
                 position="absolute"
-                bottom="5px"
-                left="5px"
+                bottom="5"
+                left={5}
                 backgroundColor="white"
-                px="5px"
-                py="3px"
+                px="5"
+                py="3"
                 borderRadius={2}
                 alignSelf="flex-start"
               >
@@ -105,7 +105,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             )}
           </View>
         )}
-        <Box mt={1}>
+        <Box mt="1">
           {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
             <Sans size="3t" color="black60" numberOfLines={1}>
               Lot {artwork.saleArtwork.lotLabel}

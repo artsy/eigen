@@ -50,17 +50,17 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
 
   return (
     <Box>
-      <Spacer mb={2} />
+      <Spacer mb="2" />
       <ImageCarouselFragmentContainer
         images={artwork.images as any /* STRICTNESS_MIGRATION */}
         cardHeight={screenDimensions.width >= 375 ? 340 : 290}
         onImageIndexChange={(imageIndex) => setCurrentImageIndex(imageIndex)}
       />
-      <Flex alignItems="center" mt={2}>
+      <Flex alignItems="center" mt="2">
         <ArtworkActions artwork={artwork} shareOnPress={() => shareArtwork()} />
       </Flex>
-      <Spacer mb={2} />
-      <Box px={2}>
+      <Spacer mb="2" />
+      <Box px="2">
         <ArtworkTombstone artwork={artwork} />
       </Box>
     </Box>

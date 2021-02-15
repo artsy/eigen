@@ -51,7 +51,7 @@ class CityFairList extends React.Component<Props, State> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   renderItem = (item) => {
     return (
-      <Box py={2}>
+      <Box py="2">
         <TabFairItemRow item={item.node} />
       </Box>
     )
@@ -68,11 +68,11 @@ class CityFairList extends React.Component<Props, State> {
     const { fetchingNextPage } = this.state
     return (
       <Theme>
-        <Box mx={2}>
+        <Box mx="2">
           <FlatList
             ListHeaderComponent={() => {
               return (
-                <Box pt={6} mt={3} mb={2}>
+                <Box pt="6" mt="3" mb="2">
                   <Serif size="8">Fairs</Serif>
                 </Box>
               )

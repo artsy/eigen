@@ -253,15 +253,15 @@ export default class Overview extends React.Component<Props, State> {
             maxWidth: 540,
           }}
         >
-          <Box px={2}>
+          <Box px="2">
             <Text variant="mediumText" style={{ textAlign: isPad ? "center" : "left" }}>
               Step 1 of 2
             </Text>
-            <Spacer mb={1} />
+            <Spacer mb="1" />
             <Text variant="largeTitle" style={{ textAlign: isPad ? "center" : "left" }}>
               Add details for your work
             </Text>
-            <Spacer mb={1} />
+            <Spacer mb="1" />
             <Text
               variant="text"
               color="black60"

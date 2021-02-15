@@ -81,7 +81,7 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
             navigate(`/artist/${artist.slug}`)
           }}
         >
-          <Spacer my={0.5} />
+          <Spacer my="0.5" />
           <EntityHeader
             smallVariant
             name={artist.name!}
@@ -99,7 +99,7 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
               </Touchable>
             }
           />
-          <Spacer my={0.5} />
+          <Spacer my="0.5" />
         </TouchableOpacity>
       )}
       <ReadMore

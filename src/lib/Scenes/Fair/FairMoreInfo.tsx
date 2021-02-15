@@ -45,28 +45,28 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
     >
       <ScrollView>
         <Theme>
-          <Box px={2} pb={2} pt={6}>
+          <Box px="2" pb="2" pt="6">
             <Text variant="largeTitle">About</Text>
 
-            <Spacer my={1} />
+            <Spacer my="1" />
 
             {!!fair.summary && (
               <>
                 <Markdown rules={markdownRules}>{fair.summary}</Markdown>
-                <Spacer my={1} />
+                <Spacer my="1" />
               </>
             )}
             {!!fair.about && (
               <>
                 <Markdown rules={markdownRules}>{fair.about}</Markdown>
-                <Spacer my={1} />
+                <Spacer my="1" />
               </>
             )}
 
             {!!fair.tagline && (
               <>
                 <Text variant="text">{fair.tagline}</Text>
-                <Spacer my={1} />
+                <Spacer my="1" />
               </>
             )}
 
@@ -76,19 +76,19 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
                 {!!fair.location?.summary && <Text variant="text">{fair.location?.summary}</Text>}
                 {!!shouldShowLocationMap(fair.location?.coordinates) && (
                   <>
-                    <Spacer my={1} />
+                    <Spacer my="1" />
                     <LocationMapContainer location={fair.location} partnerName={fair.profile?.name ?? fair.name} />
                   </>
                 )}
-                <Spacer my={1} />
+                <Spacer my="1" />
               </>
             )}
 
             {!!shouldShowFairBMWArtActivationLink(fair) && (
               <TouchableOpacity onPress={() => navigate(`/fair/${fair.slug}/bmw-sponsored-content`)}>
-                <Flex py={2} flexDirection="row" justifyContent="flex-start">
+                <Flex py="2" flexDirection="row" justifyContent="flex-start">
                   <Text variant="mediumText">View BMW art activations</Text>
-                  <ChevronIcon mr="-5px" mt="3px" />
+                  <ChevronIcon mr="-5" mt="3" />
                 </Flex>
               </TouchableOpacity>
             )}
@@ -97,14 +97,14 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
               <>
                 <Text variant="mediumText">Hours</Text>
                 <Markdown rules={markdownRules}>{fair.fairHours}</Markdown>
-                <Spacer my={1} />
+                <Spacer my="1" />
               </>
             )}
             {!!fair.fairTickets && (
               <>
                 <Text variant="mediumText">Tickets</Text>
                 <Markdown rules={markdownRules}>{fair.fairTickets}</Markdown>
-                <Spacer my={1} />
+                <Spacer my="1" />
               </>
             )}
             {!!fair.ticketsLink && (
@@ -112,21 +112,21 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
                 <TouchableOpacity onPress={() => navigate(fair.ticketsLink!)}>
                   <LinkText>Buy Tickets</LinkText>
                 </TouchableOpacity>
-                <Spacer my={1} />
+                <Spacer my="1" />
               </>
             )}
             {!!fair.fairLinks && (
               <>
                 <Text variant="mediumText">Links</Text>
                 <Markdown rules={markdownRules}>{fair.fairLinks}</Markdown>
-                <Spacer my={1} />
+                <Spacer my="1" />
               </>
             )}
             {!!fair.fairContact && (
               <>
                 <Text variant="mediumText">Contact</Text>
                 <Markdown rules={markdownRules}>{fair.fairContact}</Markdown>
-                <Spacer my={1} />
+                <Spacer my="1" />
               </>
             )}
           </Box>

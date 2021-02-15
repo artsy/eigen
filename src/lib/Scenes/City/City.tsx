@@ -178,7 +178,7 @@ export class CityView extends Component<Props, State> {
     return buckets || relayErrorState ? (
       <Theme>
         <Flex style={{ flex: 1 }}>
-          <Flex py={1} alignItems="center">
+          <Flex py="1" alignItems="center">
             <Handle />
           </Flex>
           {relayErrorState ? (
@@ -245,12 +245,12 @@ const Handle = styled.View`
 // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
 const ErrorScreen: React.FC<{ relayErrorState: RelayErrorState }> = ({ relayErrorState: { retry, isRetrying } }) => {
   return (
-    <Box py={2}>
-      <Sans size="3t" textAlign="center" mx={2}>
+    <Box py="2">
+      <Sans size="3t" textAlign="center" mx="2">
         We are having trouble loading content right now, please try again later.
       </Sans>
       <Flex justifyContent="center" flexDirection="row">
-        <Box mt={2}>
+        <Box mt="2">
           <Button onPress={retry} loading={isRetrying}>
             Retry
           </Button>

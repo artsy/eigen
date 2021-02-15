@@ -34,7 +34,7 @@ export class ContextGridCTA extends React.Component<ContextGridCTAProps> {
             <Sans size="3" textAlign="left" weight="medium">
               {label}
             </Sans>
-            <ArrowRightIcon fill="black30" ml={1} mt={0.3} />
+            <ArrowRightIcon fill="black30" ml="1" mt="0.3" />
           </Flex>
         </TouchableWithoutFeedback>
       )

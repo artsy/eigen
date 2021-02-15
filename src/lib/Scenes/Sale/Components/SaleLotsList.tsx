@@ -41,7 +41,7 @@ export const SaleLotsListSortMode = ({
   }, [filterParams])
 
   return (
-    <Flex px={2} mb={2}>
+    <Flex px="2" mb="2">
       <FilterTitle size="4" ellipsizeMode="tail">
         Sorted by {getSortDescription()?.toLowerCase()}
       </FilterTitle>
@@ -139,14 +139,14 @@ export const SaleLotsList: React.FC<Props> = ({
 
   if (!saleArtworksConnection.saleArtworksConnection?.edges?.length) {
     return (
-      <Box my="80px">
+      <Box my={80}>
         <FilteredArtworkGridZeroState id={saleID} slug={saleSlug} trackClear={trackClear} />
       </Box>
     )
   }
 
   return (
-    <Flex flex={0} my={4}>
+    <Flex flex={0} my="4">
       <SaleLotsListSortMode filterParams={filterParams} filteredTotal={counts?.total} totalCount={totalCount} />
 
       {viewAsFilter?.paramValue === ViewAsValues.List ? (
@@ -160,7 +160,7 @@ export const SaleLotsList: React.FC<Props> = ({
           contextScreenOwnerSlug={saleSlug}
         />
       ) : (
-        <Flex px={2}>
+        <Flex px="2">
           <InfiniteScrollArtworksGridContainer
             connection={saleArtworksConnection.saleArtworksConnection!}
             contextScreenOwnerType={OwnerType.sale}

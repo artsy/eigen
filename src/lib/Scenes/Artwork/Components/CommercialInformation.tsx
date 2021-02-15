@@ -212,7 +212,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
         <Box>
           {!!(canTakeCommercialAction && !isInClosedAuction) && (
             <>
-              {!hidesPriceInformation && <Spacer mb={2} />}
+              {!hidesPriceInformation && <Spacer mb="2" />}
               <CommercialButtons
                 artwork={artwork}
                 me={me}
@@ -225,7 +225,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
           )}
           {!!isBiddableInAuction && (
             <>
-              <Spacer mb={2} />
+              <Spacer mb="2" />
               <Countdown
                 label={this.props.label}
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -235,7 +235,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
           )}
           {!!(!!artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
             <>
-              <Spacer mb={2} />
+              <Spacer mb="2" />
               <ArtworkExtraLinks
                 artwork={artwork}
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

@@ -25,7 +25,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
 
   return (
     <StickyTabPageScrollView>
-      <Stack spacing={3} my={2}>
+      <Stack spacing="3" my="2">
         {!!artist.hasMetadata && <Biography artist={artist as any} />}
         {!!artist.isDisplayAuctionLink && (
           <CaretButton text="Auction results" onPress={() => navigate(`/artist/${artist.slug}/auction-results`)} />

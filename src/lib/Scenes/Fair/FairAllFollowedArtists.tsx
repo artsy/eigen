@@ -45,12 +45,12 @@ export const FairAllFollowedArtists: React.FC<FairAllFollowedArtistsProps> = ({ 
             <Theme>
               <>
                 <ScrollView>
-                  <Text mt={2} mb={1} textAlign="center" variant="mediumText">
+                  <Text mt="2" mb="1" textAlign="center" variant="mediumText">
                     Artworks
                   </Text>
                   <Separator />
-                  <Spacer mb={2} />
-                  <Box px="15px">
+                  <Spacer mb="2" />
+                  <Box px={15}>
                     <FairArtworksFragmentContainer
                       fair={fair}
                       initiallyAppliedFilter={initialFilter}
@@ -152,9 +152,9 @@ export const FairAllFollowedArtistsQueryRenderer: React.FC<{ fairID: string }> =
 
 export const FairAllFollowedArtistsPlaceholder: React.FC = () => (
   <Flex>
-    <Spacer mb={2} />
+    <Spacer mb="2" />
     <PlaceholderText width={220} />
-    <Separator my={2} />
+    <Separator my="2" />
     {/* masonry grid */}
     <PlaceholderGrid />
   </Flex>

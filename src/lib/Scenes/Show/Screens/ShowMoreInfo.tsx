@@ -40,7 +40,7 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
     {
       key: "title",
       element: (
-        <Box mx={2}>
+        <Box mx="2">
           <Text variant="largeTitle">About</Text>
         </Box>
       ),
@@ -51,9 +51,9 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
           {
             key: "partner-entity-header",
             element: (
-              <Box mx={2}>
+              <Box mx="2">
                 {!!shouldDisplayPartnerType && (
-                  <Text variant="mediumText" mb={1}>
+                  <Text variant="mediumText" mb="1">
                     {displayablePartnerType}
                   </Text>
                 )}
@@ -69,8 +69,8 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
           {
             key: "about",
             element: (
-              <Box mx={2}>
-                <Text variant="mediumText" mb={0.5}>
+              <Box mx="2">
+                <Text variant="mediumText" mb="0.5">
                   Statement
                 </Text>
                 <Text variant="text">{show.about}</Text>
@@ -85,8 +85,8 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
           {
             key: "press-release",
             element: (
-              <Box mx={2}>
-                <Text variant="mediumText" mb={0.5}>
+              <Box mx="2">
+                <Text variant="mediumText" mb="0.5">
                   Press Release
                 </Text>
                 <ReadMore content={show.pressRelease} textStyle="new" maxChars={500} />
@@ -101,8 +101,8 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
           {
             key: "hours",
             element: (
-              <Box mx={2}>
-                <Text variant="mediumText" mb={0.5}>
+              <Box mx="2">
+                <Text variant="mediumText" mb="0.5">
                   Hours
                 </Text>
                 <ShowHours show={show} />
@@ -117,8 +117,8 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
           {
             key: "location",
             element: (
-              <Box mx={2}>
-                <Text variant="mediumText" mb={0.5}>
+              <Box mx="2">
+                <Text variant="mediumText" mb="0.5">
                   Location
                 </Text>
                 <ShowLocation show={show} />
@@ -141,8 +141,8 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
       <FlatList<Section>
         data={sections}
         keyExtractor={({ key }) => key}
-        ListHeaderComponent={<Spacer mt={6} pt={2} />}
-        ListFooterComponent={<Spacer my={2} />}
+        ListHeaderComponent={<Spacer mt="6" pt="2" />}
+        ListFooterComponent={<Spacer my="2" />}
         ItemSeparatorComponent={() => <Spacer my={15} />}
         renderItem={({ item: { element } }) => element}
       />

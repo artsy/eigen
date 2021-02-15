@@ -62,7 +62,7 @@ export const SearchResult: React.FC<{
           imageURL={result.imageUrl}
           style={{ width: 40, height: 40, borderRadius: 2, overflow: "hidden" }}
         />
-        <Spacer ml={1} />
+        <Spacer ml="1" />
         <View style={{ flex: 1 }}>
           <Text ellipsizeMode="tail" numberOfLines={1}>
             {applyHighlight(result.displayLabel!, highlight)}
@@ -83,7 +83,7 @@ export const SearchResult: React.FC<{
               right: 20,
             }}
           >
-            <Flex pl={1}>
+            <Flex pl="1">
               <CloseIcon fill="black60" />
             </Flex>
           </TouchableOpacity>

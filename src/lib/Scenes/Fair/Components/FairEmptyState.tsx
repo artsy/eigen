@@ -19,7 +19,7 @@ const FairEmptyState: React.FC<FairEmptyStateProps> = ({ fair }) => {
       : []),
   ].join(" ")
 
-  return <Message mx={2}>{message}</Message>
+  return <Message mx="2">{message}</Message>
 }
 
 export const FairEmptyStateFragmentContainer = createFragmentContainer(FairEmptyState, {

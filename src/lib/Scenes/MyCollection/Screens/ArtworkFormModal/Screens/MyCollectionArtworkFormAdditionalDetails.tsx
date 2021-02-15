@@ -27,8 +27,8 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
     <Flex style={{ flex: 1 }}>
       <FancyModalHeader onLeftButtonPress={() => navigation.goBack()}>Additional Details</FancyModalHeader>
       <ScrollView style={{ flex: 1 }}>
-        <Flex p={2}>
-          <Join separator={<Spacer my={1} />}>
+        <Flex p="2">
+          <Join separator={<Spacer my="1" />}>
             <Input
               title="Title"
               placeholder="Title"

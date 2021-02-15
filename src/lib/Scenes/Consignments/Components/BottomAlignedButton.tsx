@@ -28,12 +28,12 @@ export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({
       {children}
     </View>
     {!!showSeparator && <Separator key="separator" />}
-    <Spacer mb={1} />
-    <Box px={2}>
+    <Spacer mb="1" />
+    <Box px="2">
       <Button block width="100%" onPress={onPress} disabled={disabled}>
         {buttonText}
       </Button>
     </Box>
-    <Spacer mb={1} />
+    <Spacer mb="1" />
   </KeyboardAvoidingView>
 )

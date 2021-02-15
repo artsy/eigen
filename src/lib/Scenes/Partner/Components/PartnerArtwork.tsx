@@ -22,7 +22,7 @@ export const PartnerArtwork: React.FC<{
   return (
     <>
       <StickyTabPageScrollView>
-        <Spacer mb={2} />
+        <Spacer mb="2" />
 
         {artworks ? (
           <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} hasMore={relay.hasMore} />

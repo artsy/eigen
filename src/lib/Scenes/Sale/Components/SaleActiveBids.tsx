@@ -34,11 +34,11 @@ export const SaleActiveBids: React.FC<SaleActiveBidsProps> = ({ me, relay, saleI
   }
 
   return (
-    <Flex px={2} mt={3}>
+    <Flex px="2" mt="3">
       <FlatList
         data={me.lotStandings}
         ListHeaderComponent={() => <SectionTitle title="Your active bids" />}
-        ItemSeparatorComponent={() => <Separator my={0.5} />}
+        ItemSeparatorComponent={() => <Separator my="0.5" />}
         renderItem={({ item }) => <SaleActiveBidItemContainer lotStanding={item!} />}
         keyExtractor={(item) => item!.saleArtwork!.slug}
       />

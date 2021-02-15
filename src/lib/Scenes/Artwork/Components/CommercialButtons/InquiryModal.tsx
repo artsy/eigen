@@ -95,7 +95,7 @@ const InquiryQuestionOption: React.FC<{
 
           {!!isShipping && !!questionSelected && (
             <>
-              <Separator my={2} />
+              <Separator my="2" />
 
               <TouchableOpacity
                 data-test-id="toggle-shipping-modal"
@@ -227,7 +227,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         {state.inquiryType}
       </FancyModalHeader>
       {!!mutationError && (
-        <ErrorMessageFlex bg="red100" py={1} alignItems="center">
+        <ErrorMessageFlex bg="red100" py="1" alignItems="center">
           <Text variant="small" color="white">
             Sorry, we were unable to send this message. Please try again.
           </Text>
@@ -235,7 +235,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
       )}
       <ScrollView ref={scrollViewRef}>
         <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
-        <Box m={2}>
+        <Box m="2">
           <Text variant="mediumText">What information are you looking for?</Text>
           {
             // NOTE: For now the inquiryQuestions field values are always present and therefore never null, so it is safe to destructure them
@@ -258,8 +258,8 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           }
         </Box>
         <Box
-          mx={2}
-          mb={4}
+          mx="2"
+          mb="4"
           onLayout={({ nativeEvent }) => {
             setAddMessageYCoordinate(nativeEvent.layout.y)
           }}

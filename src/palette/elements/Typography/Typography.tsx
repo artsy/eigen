@@ -1,8 +1,7 @@
+import { SpaceProps } from "palette/helpers"
+import { FontFamily, fontFamily } from "palette/platform/fonts/fontFamily"
 import React from "react"
-import { styled as primitives, styledWrapper } from "../../platform/primitives"
-
-import { SansSize, SerifSize, themeProps, TypeSizes } from "../../Theme"
-
+import { TextProps } from "react-native"
 import {
   color,
   ColorProps,
@@ -15,15 +14,13 @@ import {
   maxWidth,
   MaxWidthProps,
   space,
-  SpaceProps,
   textAlign,
   TextAlignProps,
   verticalAlign,
   VerticalAlignProps,
 } from "styled-system"
-
-import { FontFamily, fontFamily } from "palette/platform/fonts/fontFamily"
-import { TextProps } from "react-native"
+import { styled as primitives, styledWrapper } from "../../platform/primitives"
+import { SansSize, SerifSize, themeProps, TypeSizes } from "../../Theme"
 
 /**
  * Spec: https://www.notion.so/artsy/Typography-d1f9f6731f3d47c78003d6d016c30221

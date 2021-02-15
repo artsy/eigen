@@ -25,7 +25,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
   ...remainderProps
 }) => {
   const followButton = FollowButton && (
-    <Flex ml={smallVariant ? 0.3 : 1} flexDirection="row" alignItems="center" justifyContent="flex-end">
+    <Flex ml={smallVariant ? "0.3" : "1"} flexDirection="row" alignItems="center" justifyContent="flex-end">
       {FollowButton}
     </Flex>
   )
@@ -45,7 +45,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
   return (
     <Flex flexDirection="row" flexWrap="nowrap" {...remainderProps}>
       {!!(imageUrl || initials) && (
-        <Flex mr={1} justifyContent="center">
+        <Flex mr="1" justifyContent="center">
           <Avatar size="xs" src={imageUrl} initials={initials} />
         </Flex>
       )}
@@ -54,7 +54,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
         <Flex flexDirection="row" justifyContent="flex-start" flexGrow={1} alignItems="center">
           {headerName}
 
-          <Sans size="3" ml={0.3}>
+          <Sans size="3" ml="0.3">
             {bullet}
           </Sans>
 

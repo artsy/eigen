@@ -47,8 +47,8 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
 
   return collections.length > 0 ? (
     <>
-      <Flex ml={"-20px"}>
-        <Sans size="4" my={2} ml={4} data-test-id="group">
+      <Flex ml={-20}>
+        <Sans size="4" my="2" ml="4" data-test-id="group">
           {collectionGroup.name}
         </Sans>
       </Flex>
@@ -58,9 +58,9 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
         data={collections as FeaturedCollection[]}
         keyExtractor={(_item, index) => String(index)}
         initialNumToRender={3}
-        ListHeaderComponent={() => <Spacer mx={1} />}
-        ListFooterComponent={() => <Spacer mx={1} />}
-        ItemSeparatorComponent={() => <Spacer mx={0.5} />}
+        ListHeaderComponent={() => <Spacer mx="1" />}
+        ListFooterComponent={() => <Spacer mx="1" />}
+        ItemSeparatorComponent={() => <Spacer mx="0.5" />}
         renderItem={({ item: result, index }) => {
           return (
             <Touchable
@@ -82,17 +82,17 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
                 handleNavigation(result.slug)
               }}
             >
-              <ImageWrapper key={index} p={2}>
+              <ImageWrapper key={index} p="2">
                 <ImageView
                   width={220}
                   height={190}
                   imageURL={result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.url ?? ""}
                 />
-                <Sans size="3t" weight="medium" mt={"15px"} data-test-id={"title-" + index}>
+                <Sans size="3t" weight="medium" mt={15} data-test-id={"title-" + index}>
                   {result.title}
                 </Sans>
                 {!!result.priceGuidance && (
-                  <Sans color={color("black60")} size="3t" mb={1} data-test-id={"price-" + index}>
+                  <Sans color={color("black60")} size="3t" mb="1" data-test-id={"price-" + index}>
                     {"From $" + `${result.priceGuidance!.toLocaleString()}`}
                   </Sans>
                 )}

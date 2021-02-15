@@ -53,7 +53,7 @@ export class SelectMaxBidEdit extends React.Component<SelectMaxBidProps, SelectM
             selectedValue={this.state.selectedBidIndex}
           />
 
-          <Box m={4}>
+          <Box m="4">
             <Button onPress={this.onPressNext} block width={100}>
               Next
             </Button>

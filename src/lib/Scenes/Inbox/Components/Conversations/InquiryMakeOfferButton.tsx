@@ -17,7 +17,7 @@ export const InquiryMakeOfferButton: React.FC<InquiryMakeOfferButtonProps> = ({ 
   return (
     <>
       <ShadowSeparator />
-      <Flex p={1.5}>
+      <Flex p="1.5">
         <Button
           onPress={() => {
             navigate(`make-offer/${artworkID}`, { modal: true })

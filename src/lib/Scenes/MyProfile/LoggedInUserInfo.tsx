@@ -46,7 +46,7 @@ export const UserProfileQueryRenderer: React.FC = () => (
         return <UserProfileFragmentContainer {...props} />
       } else {
         return (
-          <Box mb={1}>
+          <Box mb="1">
             <Spinner />
           </Box>
         )

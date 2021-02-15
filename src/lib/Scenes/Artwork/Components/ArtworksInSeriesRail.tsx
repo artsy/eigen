@@ -80,9 +80,9 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
           navigate(`/artist-series/${artistSeriesSlug}`)
         }}
       >
-        <Flex pb={1} flexDirection="row" justifyContent="space-between">
+        <Flex pb="1" flexDirection="row" justifyContent="space-between">
           <Sans size="4">More from this series</Sans>
-          <ArrowRightIcon mr="-5px" />
+          <ArrowRightIcon mr="-5" />
         </Flex>
       </TouchableOpacity>
       <FlatList

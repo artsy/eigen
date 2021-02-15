@@ -43,7 +43,7 @@ export class ShowArtistsPreview extends React.Component<Props> {
     return (
       <>
         <Sans size="4t">Artists</Sans>
-        <Spacer m={1} />
+        <Spacer m="1" />
         {items.map((artist, idx, arr) => {
           // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           const { id } = artist
@@ -54,13 +54,13 @@ export class ShowArtistsPreview extends React.Component<Props> {
                 artist={artist}
                 Component={Component}
               />
-              {idx < arr.length - 1 && <Spacer m={1} />}
+              {idx < arr.length - 1 && <Spacer m="1" />}
             </React.Fragment>
           )
         })}
         {artists.length > artistsShown && (
           <>
-            <Spacer m={1} />
+            <Spacer m="1" />
             <CaretButton text={`View all ${artists.length} artists`} onPress={() => onViewAllArtistsPressed()} />
           </>
         )}

@@ -26,7 +26,7 @@ interface ArtworkProps {
 export const ShowArtworksWithNavigation = (props: ArtworkProps) => {
   const { show, isFilterArtworksModalVisible, toggleFilterArtworksModal } = props
   return (
-    <Box px={2}>
+    <Box px="2">
       <ShowArtworksPaginationContainer show={show} />
       <FilterModalNavigator
         isFilterArtworksModalVisible={isFilterArtworksModalVisible}
@@ -82,7 +82,7 @@ const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) 
   }
 
   return (
-    <Box mb={3}>
+    <Box mb="3">
       <InfiniteScrollArtworksGridContainer
         connection={artworks}
         loadMore={relay.loadMore}

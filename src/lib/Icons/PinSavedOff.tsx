@@ -10,7 +10,7 @@ const PinSavedOff = (props: any /* STRICTNESS_MIGRATION */) => (
         strokeWidth={1.25}
         opacity={0.4}
       />
-      <Path strokeWidth={1.5} opacity={0.5} d="M12.115 7.133l-3.824 5.045-2.518-2.9" />
+      <Path strokeWidth={1.5} opacity="0.5" d="M12.115 7.133l-3.824 5.045-2.518-2.9" />
     </G>
   </Svg>
 )

@@ -321,7 +321,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }}>
           <View>
             <Flex alignItems="center">
-              <Title mb={3}>Register to bid</Title>
+              <Title mb="3">Register to bid</Title>
               <Timer
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 liveStartsAt={live_start_at}
@@ -332,7 +332,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 startsAt={start_at}
               />
-              <Serif size="4t" weight="semibold" my={5} mx={6} textAlign="center">
+              <Serif size="4t" weight="semibold" my="5" mx="6" textAlign="center">
                 {sale.name}
               </Serif>
             </Flex>
@@ -375,18 +375,18 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
           <View>
             <Checkbox
-              mb={4}
+              mb="4"
               justifyContent="center"
               onPress={() => this.conditionsOfSalePressed()}
               disabled={isLoading}
             >
-              <Serif size="2" mt={2} color="black60">
+              <Serif size="2" mt="2" color="black60">
                 Agree to{" "}
                 <LinkText onPress={isLoading ? undefined : this.onPressConditionsOfSale}>Conditions of Sale</LinkText>
               </Serif>
             </Checkbox>
 
-            <Box m={4}>
+            <Box m="4">
               <Button
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onPress={this.canCreateBidder() ? this.register.bind(this) : null}

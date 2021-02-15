@@ -80,11 +80,11 @@ export const PhoneInput = React.forwardRef<
                   <Flex flexDirection="row" px="1" alignItems="center" backgroundColor="black10">
                     {/* selectedValue should always be present */}
                     <Sans size="4">{countryIndex[selectedValue ?? countryCode].flag}</Sans>
-                    <Spacer mr={0.5} />
+                    <Spacer mr="0.5" />
                     <TriangleDown width="8" />
                   </Flex>
                   <Flex justifyContent="center" pl="1">
-                    <Sans color="black60" size="3" mt="2px">
+                    <Sans color="black60" size="3" mt="2">
                       +{dialCode}
                     </Sans>
                   </Flex>

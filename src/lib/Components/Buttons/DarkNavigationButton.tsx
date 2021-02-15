@@ -13,7 +13,7 @@ export default class DarkNavigationButton extends React.Component<Props, any> {
   render() {
     const showNavArrow = this.props.href || this.props.onPress
     return (
-      <Box px={2} py={1} style={{ backgroundColor: color("black100") }}>
+      <Box px="2" py="1" style={{ backgroundColor: color("black100") }}>
         <TouchableWithoutFeedback onPress={this.openLink.bind(this)}>
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <Serif color={color("white100")} size="3t">

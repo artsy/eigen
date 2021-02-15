@@ -41,7 +41,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
 
   return (
     <Flex {...rest}>
-      <Flex mb="15px" flexDirection="row" justifyContent="space-between">
+      <Flex mb={15} flexDirection="row" justifyContent="space-between">
         <Sans size="4t" data-test-id="header">
           {artistSeriesHeader}
         </Sans>

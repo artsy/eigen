@@ -68,15 +68,15 @@ const ConfirmContactInfo: React.FC<{
             flex: 1,
           }}
         >
-          <Box px={2}>
+          <Box px="2">
             <Text variant="mediumText" style={{ textAlign: isPad ? "center" : "left" }}>
               Step 2 of 2
             </Text>
-            <Spacer mb={1} />
+            <Spacer mb="1" />
             <Text variant="largeTitle" style={{ textAlign: isPad ? "center" : "left" }}>
               Confirm your contact information
             </Text>
-            <Spacer mb={1} />
+            <Spacer mb="1" />
             <Text
               variant="text"
               color="black60"
@@ -85,7 +85,7 @@ const ConfirmContactInfo: React.FC<{
               Please verify your phone number so we can reach you about the status of your work. This info will also be
               saved to your account.
             </Text>
-            <Spacer mb={3} />
+            <Spacer mb="3" />
             {me ? (
               <PhoneInput
                 ref={inputRef}
@@ -101,7 +101,7 @@ const ConfirmContactInfo: React.FC<{
               <ActivityIndicator />
             )}
 
-            <Spacer mb={3} />
+            <Spacer mb="3" />
           </Box>
         </View>
       </ScrollView>

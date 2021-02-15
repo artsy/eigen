@@ -1,3 +1,4 @@
+import { SpaceProps } from "palette/helpers"
 import React from "react"
 import { TextProps as RNTextProps } from "react-native"
 import {
@@ -5,7 +6,6 @@ import {
   ColorProps,
   compose,
   space,
-  SpaceProps,
   style,
   typography,
   TypographyProps,

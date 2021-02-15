@@ -32,7 +32,7 @@ const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexPro
         title="Demand index"
         modalContent={
           <>
-            <Spacer my={1} />
+            <Spacer my="1" />
             <Text>
               Overall strength of demand for this artist and medium combination. Based on the last 36 months of auction
               sale data from top commercial auction houses.
@@ -42,9 +42,9 @@ const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexPro
         onPress={() => trackEvent(tracks.tappedInfoBubble(artwork?.internalID, artwork?.slug))}
       />
 
-      <Spacer my={0.5} />
+      <Spacer my="0.5" />
       <DemandRankScale demandRank={demandRank} />
-      <Spacer my={1} />
+      <Spacer my="1" />
       <DemandRankDetails demandRank={demandRank}></DemandRankDetails>
     </ScreenMargin>
   )
@@ -112,7 +112,7 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
         </Text>
       </Box>
       <ProgressBar width={width} />
-      <Spacer my={0.3} />
+      <Spacer my="0.3" />
       <Flex flexDirection="row" justifyContent="space-between">
         <Text>0</Text>
         <Text>10</Text>

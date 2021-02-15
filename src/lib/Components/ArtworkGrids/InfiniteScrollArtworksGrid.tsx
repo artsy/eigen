@@ -271,7 +271,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
     const { shouldAddPadding, autoFetch, hasMore, stickyHeaderIndices } = this.props
-    const boxPadding = shouldAddPadding ? 2 : 0
+    const boxPadding = shouldAddPadding ? "2" : 0
 
     return (
       <Theme>
@@ -299,8 +299,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
           {!autoFetch && !!hasMore() && (
             <Button
-              mt={5}
-              mb={3}
+              mt="5"
+              mb="3"
               variant="secondaryGray"
               size="large"
               block

@@ -71,7 +71,7 @@ export class HoursCollapsible extends React.Component<Props, State> {
                 daySchedule.hours
               }
             </Sans>
-            {idx < arr.length - 1 && <Spacer m={0.5} />}
+            {idx < arr.length - 1 && <Spacer m="0.5" />}
           </Box>
         )
       })
@@ -87,13 +87,13 @@ export class HoursCollapsible extends React.Component<Props, State> {
             <Sans size="3t" weight="medium" color={isExpanded ? color("black60") : color("black100")}>
               Opening hours
             </Sans>
-            <Box ml={1}>
+            <Box ml="1">
               <ChevronIcon initialDirection="down" expanded={isExpanded} />
             </Box>
           </Flex>
         </TouchableWithoutFeedback>
         <Collapse open={isExpanded}>
-          <Box mt={2}>{this.renderHours()}</Box>
+          <Box mt="2">{this.renderHours()}</Box>
         </Collapse>
       </Box>
     )

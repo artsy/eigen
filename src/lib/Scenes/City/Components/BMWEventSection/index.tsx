@@ -33,7 +33,7 @@ export class BMWEventSection extends React.Component<Props> {
 
     return featuredShows.map((show, i) => {
       return (
-        <Box key={i} mb={1}>
+        <Box key={i} mb="1">
           <Event section="bmw" event={show} relay={relay} />
         </Box>
       )
@@ -73,25 +73,25 @@ export class BMWEventSection extends React.Component<Props> {
 
     return (
       <>
-        <Box my={2} px={2}>
+        <Box my="2" px="2">
           <Serif size="8">{title}</Serif>
         </Box>
-        <Box mb={2} px={2}>
+        <Box mb="2" px="2">
           <Sans weight="medium" size="3">
             Presented by BMW
           </Sans>
-          <Box mt={1}>
+          <Box mt="1">
             <Serif size="3" color={color("black60")}>
               {introText}
             </Serif>
           </Box>
         </Box>
-        <Box mb={3} px={2}>
+        <Box mb="3" px="2">
           <CaretButton onPress={() => this.getArtGuidePressed(artGuideUrl, citySlug)} text="Get the BMW Art Guide" />
         </Box>
         {this.renderEvents()}
         {totalCount > 2 && (
-          <Box px={2} mb={2}>
+          <Box px="2" mb="2">
             <CaretButton onPress={() => this.viewAllBmwShows()} text={`View all ${totalCount} shows`} />
           </Box>
         )}

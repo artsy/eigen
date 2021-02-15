@@ -178,7 +178,7 @@ export class Gene extends React.Component<Props, State> {
       <Box backgroundColor="white" paddingTop={15}>
         <Separator style={{ backgroundColor: separatorColor }} />
         <View style={styles.refineContainer}>
-          <Sans size="3t" color="black60" maxWidth={maxLabelWidth} marginTop="2px">
+          <Sans size="3t" color="black60" maxWidth={maxLabelWidth}>
             {this.artworkQuerySummaryString()}
           </Sans>
           <Button variant="secondaryOutline" onPress={() => this.refineTapped()} size="small">

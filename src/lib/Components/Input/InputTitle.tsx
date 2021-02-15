@@ -8,7 +8,7 @@ export const InputTitle: React.FC<{ required?: boolean }> = ({ children: title, 
   }
 
   return (
-    <Sans mb={0.5} size="3" weight="medium">
+    <Sans mb="0.5" size="3" weight="medium">
       {title}
       {!!required && <Text style={{ color: color("purple100") }}>*</Text>}
     </Sans>

@@ -96,8 +96,8 @@ export const Conversations: React.FC<Props> = (props) => {
   return (
     <>
       {!shouldDisplayMyBids && (
-        <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
-          <Sans mx={2} mt={1} size="8" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
+        <Flex py="1" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
+          <Sans mx="2" mt="1" size="8" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
             Inbox {unreadCounter}
           </Sans>
         </Flex>
@@ -113,7 +113,7 @@ export const Conversations: React.FC<Props> = (props) => {
           />
         }
         keyExtractor={(item) => item.internalID!}
-        ItemSeparatorComponent={() => <Separator mx={2} width="auto" />}
+        ItemSeparatorComponent={() => <Separator mx="2" width="auto" />}
         renderItem={({ item }) => {
           return <ConversationSnippet conversation={item} onSelected={() => handleSelectConversation(item)} />
         }}
@@ -123,7 +123,7 @@ export const Conversations: React.FC<Props> = (props) => {
         ListEmptyComponent={<NoMessages />}
       />
       {!!(relay.hasMore() && isLoading) && (
-        <Flex p={3} alignItems="center">
+        <Flex p="3" alignItems="center">
           <ActivityIndicator />
         </Flex>
       )}

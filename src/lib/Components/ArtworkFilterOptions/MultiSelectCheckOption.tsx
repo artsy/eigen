@@ -47,7 +47,7 @@ export const MultiSelectCheckOptionScreen: React.FC<MultiSelectOptionScreenProps
           data={filterOptions}
           ItemSeparatorComponent={() => <Separator />}
           renderItem={({ item }) => (
-            <Box ml={0.5}>
+            <Box ml="0.5">
               <CheckMarkOptionListItem item={item} onSelect={onSelect} selected={isSelected(item) as boolean} />
             </Box>
           )}
@@ -83,7 +83,7 @@ export const CheckMarkOptionListItem = ({
         flexGrow={1}
         alignItems="center"
         pl={item.paramName === FilterParamName.artistsIFollow || item.paramValue === "all" ? 2 : 3}
-        pr={2}
+        pr="2"
         height={60}
       >
         <Sans color="black100" size="3t">

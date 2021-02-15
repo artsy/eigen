@@ -55,7 +55,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
     return (
       <Theme>
         <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
-          <Flex style={{ flex: 1 }} p={1}>
+          <Flex style={{ flex: 1 }} p="1">
             <Form>
               <Flex justifyContent="space-between" alignItems="center" flexDirection="row" flexWrap="nowrap">
                 <Flex style={{ flex: 1 }}>
@@ -63,7 +63,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
                 </Flex>
                 <Toggle selected={!!this.state.editionInfo} left="Yes" right="No" onPress={this.updateEdition} />
               </Flex>
-              <Spacer mb={2} />
+              <Spacer mb="2" />
               {this.state.editionInfo ? (
                 <>
                   <Row>
@@ -75,7 +75,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
                         value: this.state.editionInfo && this.state.editionInfo.size,
                       }}
                     />
-                    <Spacer mr={2} />
+                    <Spacer mr="2" />
                     <Text
                       text={{
                         placeholder: "Edition number",
@@ -84,7 +84,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
                       }}
                     />
                   </Row>
-                  <Spacer mb={2} />
+                  <Spacer mb="2" />
                 </>
               ) : null}
               <Flex justifyContent="space-between" alignItems="center" flexDirection="row" flexWrap="nowrap">
@@ -98,12 +98,12 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
                   onPress={this.updateSigned}
                 />
               </Flex>
-              <Spacer mb={2} />
+              <Spacer mb="2" />
               <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
                 <Flex style={{ flex: 1 }}>
                   <Sans size="4">Do you have a certificate of authenticity?</Sans>
                 </Flex>
-                <Spacer mr={2} />
+                <Spacer mr="2" />
                 <Toggle
                   selected={this.state.certificateOfAuth! /* STRICTNESS_MIGRATION */}
                   left="Yes"

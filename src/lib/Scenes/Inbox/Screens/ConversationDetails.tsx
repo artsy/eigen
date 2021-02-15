@@ -23,8 +23,8 @@ export const ConversationDetails: React.FC<Props> = (props) => {
   const item = conversation?.items?.[0]?.item
   const itemInfoSection = !!item && item.__typename !== "%other" && (
     <Box key="iteminfo-section">
-      <Flex flexDirection="column" p={2}>
-        <Text mb={2} variant="mediumText">
+      <Flex flexDirection="column" p="2">
+        <Text mb="2" variant="mediumText">
           {item.__typename}
         </Text>
 
@@ -44,8 +44,8 @@ export const ConversationDetails: React.FC<Props> = (props) => {
   )
 
   const supportSection = (
-    <Flex flexDirection="column" p={2} key="support-section">
-      <Text variant="mediumText" mb={2}>
+    <Flex flexDirection="column" p="2" key="support-section">
+      <Text variant="mediumText" mb="2">
         Support
       </Text>
       <Touchable
@@ -53,8 +53,8 @@ export const ConversationDetails: React.FC<Props> = (props) => {
           navigate("https://support.artsy.net/hc/en-us/sections/360008203054-Contact-a-gallery", { modal: true })
         }}
       >
-        <Flex mb={1} flexDirection="row">
-          <QuestionCircleIcon mr={1} />
+        <Flex mb="1" flexDirection="row">
+          <QuestionCircleIcon mr="1" />
           <Text variant="text">Inquiries FAQ</Text>
         </Flex>
       </Touchable>
@@ -66,7 +66,7 @@ export const ConversationDetails: React.FC<Props> = (props) => {
   return (
     <PageWithSimpleHeader title={partnerName!}>
       <Flex>
-        <Join separator={<Separator my={1} />}>{sections}</Join>
+        <Join separator={<Separator my="1" />}>{sections}</Join>
       </Flex>
     </PageWithSimpleHeader>
   )

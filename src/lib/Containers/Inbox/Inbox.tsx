@@ -25,7 +25,7 @@ const TabWrapper: React.FC<TabWrapperProps> = (props) => <View {...props} />
 
 const InboxTabs: React.FC<TabBarProps> = (props) => (
   <>
-    <Flex flexDirection="row" px={1.5} mb={2}>
+    <Flex flexDirection="row" px="1.5" mb="2">
       {props.tabs?.map((name: JSX.Element, page: number) => {
         const isTabActive = props.activeTab === page
         return (
@@ -36,7 +36,7 @@ const InboxTabs: React.FC<TabBarProps> = (props) => (
             key={`inbox-tab-${name}`}
           >
             <Text
-              mr={2}
+              mr="2"
               color="black100"
               variant="largeTitle"
               onPress={() => {

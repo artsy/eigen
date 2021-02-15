@@ -18,7 +18,7 @@ export class AboutWork extends React.Component<AboutWorkProps> {
 
     return (
       hasArtworkInfo && (
-        <Join separator={<Spacer mb={2} />}>
+        <Join separator={<Spacer mb="2" />}>
           <Sans size="4t">About the work</Sans>
           {!!additional_information && (
             <ReadMore
@@ -32,7 +32,7 @@ export class AboutWork extends React.Component<AboutWorkProps> {
           {!!description && (
             <Flex>
               {!isInAuction && (
-                <Sans size="2" color="black60" mb="3px">
+                <Sans size="2" color="black60" mb="3">
                   From Artsy Specialist:
                 </Sans>
               )}

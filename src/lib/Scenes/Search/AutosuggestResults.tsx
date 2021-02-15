@@ -90,7 +90,7 @@ const AutosuggestResultsFlatList: React.FC<{
   const hasMoreResults = results.current && results.current.results?.edges?.length! > 0 && relay.hasMore()
   const ListFooterComponent = useMemo(() => {
     return () => (
-      <Flex justifyContent="center" p={3} pb={6}>
+      <Flex justifyContent="center" p="3" pb="6">
         {hasMoreResults ? <Spinner /> : null}
       </Flex>
     )
@@ -117,7 +117,7 @@ const AutosuggestResultsFlatList: React.FC<{
       }
       renderItem={({ item }) => {
         return (
-          <Flex mb={2}>
+          <Flex mb="2">
             <SearchResult
               highlight={query}
               result={item}

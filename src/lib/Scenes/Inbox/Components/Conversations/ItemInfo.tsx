@@ -37,10 +37,10 @@ export const ItemInfo: React.FC<Props> = (props) => {
   }
   return (
     <Flex flexDirection="row">
-      <Box height="80px" width="80px">
+      <Box height={80} width={80}>
         <ImageView imageURL={itemInfo.imageURL} />
       </Box>
-      <Flex flexDirection="column" ml={2} flexShrink={1}>
+      <Flex flexDirection="column" ml="2" flexShrink={1}>
         <Text variant="mediumText" numberOfLines={1}>
           {itemInfo.line1}
         </Text>

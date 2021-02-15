@@ -1,6 +1,7 @@
+import { SpaceProps } from "palette/helpers"
 // @ts-ignore
 import React from "react"
-import { border, BorderProps, space as styledSpace, SpaceProps } from "styled-system"
+import { border, BorderProps, space as styledSpace } from "styled-system"
 import { styledWrapper } from "../../platform/primitives"
 import { color, space } from "../../Theme"
 import { Flex, FlexProps } from "../Flex"

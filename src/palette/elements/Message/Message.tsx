@@ -23,7 +23,7 @@ const StyledFlex = styledWrapper(Flex)`
  */
 export const Message: React.FC<MessageProps> = ({ children, textSize = "3t", ...others }) => {
   return (
-    <StyledFlex p={2} {...others}>
+    <StyledFlex p="2" {...others}>
       <Sans size={textSize} color={color("black60")} weight="regular">
         {children}
       </Sans>

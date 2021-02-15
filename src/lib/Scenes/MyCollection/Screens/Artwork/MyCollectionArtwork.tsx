@@ -62,7 +62,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
           }}
           hideBottomDivider
         />
-        <Join separator={<Spacer my={1} />}>
+        <Join separator={<Spacer my="1" />}>
           <MyCollectionArtworkHeaderRefetchContainer artwork={artwork} />
           <MyCollectionArtworkMetaFragmentContainer artwork={artwork} />
           <MyCollectionArtworkInsightsFragmentContainer artwork={artwork} marketPriceInsights={marketPriceInsights} />
@@ -82,7 +82,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
               Submit this work
             </Button>
 
-            <Spacer my={0.5} />
+            <Spacer my="0.5" />
 
             <Button
               size="large"
@@ -98,7 +98,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
             </Button>
           </ScreenMargin>
 
-          <Spacer my={2} />
+          <Spacer my="2" />
         </Join>
       </ScrollView>
     </ProvideScreenTrackingWithCohesionSchema>
@@ -186,25 +186,25 @@ const LoadingSkeleton = () => {
   return (
     <>
       <ScreenMargin>
-        <Spacer mb={6} />
+        <Spacer mb="6" />
 
         {/* Artist Name */}
         <PlaceholderBox width={300} height={30} />
-        <Spacer mb={1} />
+        <Spacer mb="1" />
 
         {/* Artwork title, year */}
         <PlaceholderText width={100} />
-        <Spacer mb={1} />
+        <Spacer mb="1" />
       </ScreenMargin>
 
       {/* Main image */}
       <PlaceholderBox width="100%" height={300} />
-      <Spacer mb={3} />
+      <Spacer mb="3" />
 
       {/* Metadata stats  */}
       <ScreenMargin>
         <Flex flexDirection="column">
-          <Join separator={<Spacer mb={1} />}>
+          <Join separator={<Spacer mb="1" />}>
             <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
               <PlaceholderBox width={50} height={20} />
               <PlaceholderBox width={80} height={20} />
@@ -225,18 +225,18 @@ const LoadingSkeleton = () => {
               <PlaceholderBox width={50} height={20} />
               <PlaceholderBox width={80} height={20} />
             </Flex>
-            <Flex flexDirection="row" justifyContent="space-between" alignItems="center" pt={1}>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center" pt="1">
               <PlaceholderText width={50} />
             </Flex>
           </Join>
         </Flex>
 
         {/* Price / Market insight info */}
-        <Spacer mb={3} />
+        <Spacer mb="3" />
         <Divider />
-        <Spacer mb={2} />
+        <Spacer mb="2" />
         <PlaceholderBox width={100} height={30} />
-        <Spacer mb={1} />
+        <Spacer mb="1" />
         <PlaceholderText width={30} />
       </ScreenMargin>
     </>

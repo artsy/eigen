@@ -22,18 +22,18 @@ export const MyBidsPlaceholder: React.FC = () => (
       </Flex>
     </Flex>
 
-    <Separator mt={1} mb={2} />
+    <Separator mt="1" mb="2" />
 
     {/* registered sales */}
     <Flex px="1">
-      <PlaceholderText marginTop={5} marginBottom={20} width={100 + Math.random() * 100} />
+      <PlaceholderText marginTop="5" marginBottom={20} width={100 + Math.random() * 100} />
 
-      <Flex flexDirection="row" pb={2}>
+      <Flex flexDirection="row" pb="2">
         {times(3).map((index) => (
-          <Flex key={index} marginRight={2}>
+          <Flex key={index} marginRight="2">
             <PlaceholderBox height={COVER_IMAGE_HEIGHT} width="100%" />
             <PlaceholderText marginTop={10} width={40 + Math.random() * 80} />
-            <PlaceholderText marginTop={5} width={40 + Math.random() * 80} />
+            <PlaceholderText marginTop="5" width={40 + Math.random() * 80} />
           </Flex>
         ))}
       </Flex>
@@ -43,20 +43,20 @@ export const MyBidsPlaceholder: React.FC = () => (
     <Flex px="1">
       <PlaceholderText marginTop={10} width={80} />
 
-      <Join separator={<Separator my={1} />}>
+      <Join separator={<Separator my="1" />}>
         {times(4).map((index) => (
-          <Flex mt={1} key={index} flexDirection="row">
+          <Flex mt="1" key={index} flexDirection="row">
             <PlaceholderBox height={60} width={60} />
 
-            <Flex ml={1} flex={1}>
+            <Flex ml="1" flex={1}>
               <PlaceholderText width={50 + Math.random() * 80} />
-              <PlaceholderText marginTop={5} width={50 + Math.random() * 80} />
-              <PlaceholderText marginTop={5} width={50 + Math.random() * 80} />
+              <PlaceholderText marginTop="5" width={50 + Math.random() * 80} />
+              <PlaceholderText marginTop="5" width={50 + Math.random() * 80} />
             </Flex>
 
             <Flex flexGrow={1} alignItems="flex-end">
               <PlaceholderText width={30 + Math.random() * 80} />
-              <PlaceholderText marginTop={5} width={30 + Math.random() * 80} />
+              <PlaceholderText marginTop="5" width={30 + Math.random() * 80} />
             </Flex>
           </Flex>
         ))}

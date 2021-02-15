@@ -58,7 +58,7 @@ class Sales extends React.Component<Props, State> {
         <ScrollView
           refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
         >
-          <Stack py={2} spacing={3}>
+          <Stack py="2" spacing="3">
             <SaleList title="Current Live Auctions" sales={liveAuctions} />
             <SaleList title="Current Timed Auctions" sales={timedAuctions} />
             <LotsByFollowedArtists title={"Lots by Artists You Follow"} me={this.props.me} />

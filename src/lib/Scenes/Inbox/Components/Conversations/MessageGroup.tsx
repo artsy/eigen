@@ -61,7 +61,7 @@ export class MessageGroup extends React.Component<MessageGroupProps> {
   render() {
     return (
       <View>
-        <TimeSince style={{ alignSelf: "center" }} time={this.props.group[0].createdAt} exact mb={1} />
+        <TimeSince style={{ alignSelf: "center" }} time={this.props.group[0].createdAt} exact mb="1" />
         {[...this.props.group].reverse().map(this.renderMessage)}
       </View>
     )

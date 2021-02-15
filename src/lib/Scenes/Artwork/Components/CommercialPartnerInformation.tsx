@@ -14,11 +14,12 @@ export class CommercialPartnerInformation extends React.Component<Props> {
     const artworkEcommerceAvailable = artwork.isAcquireable || artwork.isOfferable
     const showsSellerInfo = artwork.partner && artwork.partner.name
     const availabilityDisplayText = artwork.isForSale || artworkIsSold ? "From" : "At"
+
     return (
       <>
         {showsSellerInfo && (
           <>
-            <Spacer mb={1} />
+            <Spacer mb="1" />
             <Sans size="3t" color="black60">
               {availabilityDisplayText} {artwork.partner! /* STRICTNESS_MIGRATION */.name}
             </Sans>

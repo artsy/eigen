@@ -23,10 +23,10 @@ export const CollectionHeader: React.FC<CollectionHeaderProps> = (props) => {
 
   return (
     <>
-      <Box mb={2}>
+      <Box mb="2">
         <OpaqueImageView imageURL={url} height={HEADER_IMAGE_HEIGHT} width={screenWidth} />
       </Box>
-      <Sans size="8" mx={2} mb={collectionTitleMargin}>
+      <Sans size="8" mx="2" mb={collectionTitleMargin}>
         {title}
       </Sans>
       {!!collectionDescription && (

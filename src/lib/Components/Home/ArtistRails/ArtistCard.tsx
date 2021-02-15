@@ -96,7 +96,7 @@ export class ArtistCard extends React.Component<Props, State> {
               <ArtistAvatar>
                 <ImageView imageURL={avatarImageURL} width={40} height={40} />
               </ArtistAvatar>
-              <Flex flexDirection="column" ml={10} mr={2} justifyContent="center">
+              <Flex flexDirection="column" ml={10} mr="2" justifyContent="center">
                 <Sans size="3t" weight="medium" numberOfLines={1}>
                   {artist.name}
                 </Sans>
@@ -122,7 +122,7 @@ export class ArtistCard extends React.Component<Props, State> {
           </View>
         </CardRailCard>
         {this.props.showBasedOn && artist.basedOn?.name ? (
-          <Flex mt={1} flexDirection="row">
+          <Flex mt="1" flexDirection="row">
             <Sans size="2" color="black60">
               Based on{" "}
             </Sans>

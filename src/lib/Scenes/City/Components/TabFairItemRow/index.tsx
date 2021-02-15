@@ -25,7 +25,7 @@ export class TabFairItemRow extends React.Component<Props> {
           <RoundedImageWrapper>
             <OpaqueImageView height={58} width={58} imageURL={fairImage! /* STRICTNESS_MIGRATION */} />
           </RoundedImageWrapper>
-          <Box width={boxWidth} pl={1}>
+          <Box width={boxWidth} pl="1">
             {!!item.name && (
               <Sans weight="medium" size="3t" numberOfLines={1} ellipsizeMode="tail">
                 {item.name}

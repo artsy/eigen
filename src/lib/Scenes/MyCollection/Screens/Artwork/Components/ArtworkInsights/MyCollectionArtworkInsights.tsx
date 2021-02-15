@@ -27,7 +27,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
       {showMarketPriceInsights && (
         <>
           <Separator />
-          <Spacer my={1} />
+          <Spacer my="1" />
 
           <ScreenMargin>
             <Text variant="title">Price and market insights</Text>
@@ -36,19 +36,19 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
               {artwork.artist?.name || "Unknown Artist"}
             </Text>
           </ScreenMargin>
-          <Spacer mt={3} />
+          <Spacer mt="3" />
           <MyCollectionArtworkDemandIndexFragmentContainer
             artwork={artwork}
             marketPriceInsights={marketPriceInsights}
           />
-          <ScreenMargin my={3}>
+          <ScreenMargin my="3">
             <Separator />
           </ScreenMargin>
           <MyCollectionArtworkPriceEstimateFragmentContainer
             artwork={artwork}
             marketPriceInsights={marketPriceInsights}
           />
-          <ScreenMargin mt={2} mb={3}>
+          <ScreenMargin mt="2" mb="3">
             <Separator />
           </ScreenMargin>
           <MyCollectionArtworkArtistMarketFragmentContainer

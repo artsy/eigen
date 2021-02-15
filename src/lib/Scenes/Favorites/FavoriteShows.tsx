@@ -86,7 +86,7 @@ export class Shows extends Component<Props, State> {
         contentContainerStyle={{ paddingVertical: 15 }}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
-        ItemSeparatorComponent={() => <Spacer mb="5px" />}
+        ItemSeparatorComponent={() => <Spacer mb="5" />}
         refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
         ListFooterComponent={
           this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null

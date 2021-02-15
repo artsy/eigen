@@ -247,7 +247,7 @@ export function defaultRules({
       ),
     },
     hr: {
-      react: () => <Separator mb={2}></Separator>,
+      react: () => <Separator mb="2"></Separator>,
     },
     ...ruleOverrides,
   })

@@ -32,7 +32,7 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: Ot
       return (
         <Join
           separator={
-            <Box my={3}>
+            <Box my="3">
               <Separator />
             </Box>
           }
@@ -40,13 +40,13 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: Ot
           {gridsToShow.map((grid, index) => (
             <React.Fragment key={`Grid-${index}`}>
               <Header title={grid.title!} />
-              <Spacer mb={3} />
+              <Spacer mb="3" />
               <GenericGrid
                 trackingFlow={Schema.Flow.RecommendedArtworks}
                 contextModule={grid.__typename}
                 artworks={extractNodes(grid.artworks)}
               />
-              <Box mt={2}>
+              <Box mt="2">
                 <ContextGridCTA
                   contextModule={grid.__typename}
                   href={grid.ctaHref || undefined}

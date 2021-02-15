@@ -78,7 +78,7 @@ export class FilteredInfiniteScrollGrid extends React.Component<Props, State> {
 
     return (
       <PortalProvider>
-        <Box pt={3}>
+        <Box pt="3">
           <InfiniteScrollArtworksGridContainer
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             connection={filterArtworksConnection}
@@ -87,8 +87,8 @@ export class FilteredInfiniteScrollGrid extends React.Component<Props, State> {
             shouldAddPadding={true}
             hideBackButtonOnScroll={this.props.hideBackButtonOnScroll}
             HeaderComponent={
-              <Box px={2}>
-                <Spacer m={2} />
+              <Box px="2">
+                <Spacer m="2" />
                 <Serif size="8">Works</Serif>
                 <Filters
                   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

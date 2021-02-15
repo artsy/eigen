@@ -18,7 +18,7 @@ export const BMWSponsorship: React.FC<BMWSponsorshipProps> = (props) => {
   const view = (
     <Flex flexDirection="row" alignItems="center">
       <Logo resizeMode="contain" source={require("@images/bmw-logo.png")} />
-      <Sans size="3t" ml={1}>
+      <Sans size="3t" ml="1">
         {logoText}
       </Sans>
     </Flex>

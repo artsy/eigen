@@ -150,7 +150,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     saleStatus(sale.startAt, sale.endAt, sale.registrationEndsAt) !== "closed" && {
       key: SALE_REGISTER_TO_BID,
       content: (
-        <Flex mx="2" mt={2}>
+        <Flex mx="2" mt="2">
           <RegisterToBidButtonContainer
             sale={sale}
             me={me}
@@ -266,22 +266,22 @@ export const tracks = {
 export const SalePlaceholder: React.FC<{}> = () => (
   <ProvidePlaceholderContext>
     <PlaceholderBox height={COVER_IMAGE_HEIGHT} width="100%" />
-    <Flex px={2}>
-      <Join separator={<Spacer my={2} />}>
+    <Flex px="2">
+      <Join separator={<Spacer my="2" />}>
         <Box>
           <PlaceholderText width={200 + Math.random() * 100} marginTop={20} />
           <PlaceholderText width={200 + Math.random() * 100} marginTop={20} />
-          <PlaceholderText width={100 + Math.random() * 100} marginTop={5} />
+          <PlaceholderText width={100 + Math.random() * 100} marginTop="5" />
         </Box>
         <Box>
           <PlaceholderText height={20} width={100 + Math.random() * 100} marginBottom={20} />
           <PlaceholderBox height={50} width="100%" />
         </Box>
         <Box>
-          <PlaceholderText height={20} width={100 + Math.random() * 100} marginBottom={5} />
-          <Flex flexDirection="row" py={2}>
+          <PlaceholderText height={20} width={100 + Math.random() * 100} marginBottom="5" />
+          <Flex flexDirection="row" py="2">
             {times(3).map((index: number) => (
-              <Flex key={index} marginRight={1}>
+              <Flex key={index} marginRight="1">
                 <PlaceholderBox height={120} width={120} />
                 <PlaceholderText marginTop={20} key={index} width={40 + Math.random() * 80} />
               </Flex>

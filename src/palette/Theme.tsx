@@ -9,7 +9,21 @@ import { ThemeProvider } from "./platform/primitives"
  * design system from our design team:
  * https://www.notion.so/artsy/Master-Library-810612339f474d0997fe359af4285c56
  */
-export * from "@artsy/palette-tokens"
+export {
+  breakpoints,
+  unitlessBreakpoints,
+  color,
+  space,
+  SpacingUnit as PaletteSpacingUnit,
+  Color,
+  ColorValue,
+  Breakpoint,
+  TypeSizes,
+  SansSize,
+  SerifSize,
+  DisplaySize,
+} from "@artsy/palette-tokens"
+
 export const themeProps = {
   ...tokens,
   fontFamily,

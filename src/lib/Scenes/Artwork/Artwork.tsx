@@ -294,13 +294,13 @@ export class Artwork extends React.Component<Props, State> {
         keyboardShouldPersistTaps="handled"
         data={this.sections()}
         ItemSeparatorComponent={() => (
-          <Box mx={2} my={3}>
+          <Box mx="2" my="3">
             <Separator />
           </Box>
         )}
         refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
         contentContainerStyle={{ paddingBottom: 40 }}
-        renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
+        renderItem={({ item }) => (item.excludePadding ? item.element : <Box px="2">{item.element}</Box>)}
       />
     )
   }
@@ -498,27 +498,27 @@ const AboveTheFoldPlaceholder: React.FC<{}> = ({}) => {
     <View style={{ flex: 1, padding: space(2) }}>
       {/* Artwork thumbnail */}
       <PlaceholderBox height={artworkHeight} />
-      <Spacer mb={2} />
+      <Spacer mb="2" />
       {/* save/share buttons */}
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
         <PlaceholderText width={50} marginHorizontal={space(1)} />
         <PlaceholderText width={50} marginHorizontal={space(1)} />
         <PlaceholderText width={50} marginHorizontal={space(1)} />
       </View>
-      <Spacer mb={2} />
+      <Spacer mb="2" />
       {/* Artist name */}
       <PlaceholderText width={100} />
-      <Spacer mb={2} />
+      <Spacer mb="2" />
       {/* Artwork tombstone details */}
       <View style={{ width: 130 }}>
         <PlaceholderRaggedText numLines={4} />
       </View>
-      <Spacer mb={3} />
+      <Spacer mb="3" />
       {/* more junk */}
       <Separator />
-      <Spacer mb={3} />
+      <Spacer mb="3" />
       <PlaceholderRaggedText numLines={3} />
-      <Spacer mb={2} />
+      <Spacer mb="2" />
       {/* commerce button */}
       <PlaceholderBox height={60} />
     </View>
@@ -529,17 +529,17 @@ const BelowTheFoldPlaceholder: React.FC<{}> = ({}) => {
   return (
     <ProvidePlaceholderContext>
       <Separator />
-      <Spacer mb={3} />
+      <Spacer mb="3" />
       {/* About the artwork title */}
       <PlaceholderText width={60} />
-      <Spacer mb={2} />
+      <Spacer mb="2" />
       {/* About the artwork copy */}
       <PlaceholderRaggedText numLines={4} />
-      <Spacer mb={3} />
+      <Spacer mb="3" />
       <Separator />
-      <Spacer mb={3} />
+      <Spacer mb="3" />
       <ActivityIndicator />
-      <Spacer mb={3} />
+      <Spacer mb="3" />
     </ProvidePlaceholderContext>
   )
 }
