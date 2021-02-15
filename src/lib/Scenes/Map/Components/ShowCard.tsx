@@ -81,7 +81,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     const props = noWidth ? { mr: 1 } : { width: this.cardWidth }
 
     return (
-      <Background ml={1} p={1} style={shadowDetails} {...props}>
+      <Background ml="1" p="1" style={shadowDetails} {...props}>
         <TouchableOpacity onPress={this.handleTap.bind(this, item)}>
           {item.type === "Show" ? (
             <ShowItemRow
@@ -148,8 +148,8 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
       show && this.renderItem({ item: show }, true)
     ) : (
       <>
-        <PageIndicator style={shadowDetails} mx={1} py={0.3} px={0.5} my={0.5}>
-          <Sans size="1" weight="medium" px={0.5}>{`${currentPage} of ${shows.length}`}</Sans>
+        <PageIndicator style={shadowDetails} mx="1" py="0.3" px="0.5" my="0.5">
+          <Sans size="1" weight="medium" px="0.5">{`${currentPage} of ${shows.length}`}</Sans>
         </PageIndicator>
         <FlatList
           ref={(c) => (this.list = c as any)}

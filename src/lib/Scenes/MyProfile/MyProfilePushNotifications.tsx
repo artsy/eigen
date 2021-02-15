@@ -24,7 +24,7 @@ export type UserPushNotificationSettings =
 
 export const OpenSettingsBanner = () => (
   <>
-    <Flex py={3} px={2} backgroundColor="black5" alignItems="center">
+    <Flex py="3" px="2" backgroundColor="black5" alignItems="center">
       <Sans size="4t" weight="medium" color="black">
         Turn on notifications
       </Sans>
@@ -47,7 +47,7 @@ export const OpenSettingsBanner = () => (
 
 export const AllowPushNotificationsBanner = () => (
   <>
-    <Flex py={3} px={2} backgroundColor="black5" alignItems="center">
+    <Flex py="3" px="2" backgroundColor="black5" alignItems="center">
       <Sans size="4t" weight="medium" color="black">
         Turn on notifications
       </Sans>
@@ -76,8 +76,8 @@ const NotificationPermissionsBox = ({
   title: string
   isLoading: boolean
 }) => (
-  <Box py={1} px={2}>
-    <Sans size="4t" color={isLoading ? "black60" : "black100"} weight="medium" py={1}>
+  <Box py="1" px="2">
+    <Sans size="4t" color={isLoading ? "black60" : "black100"} weight="medium" py="1">
       {title}
     </Sans>
     {children}
@@ -151,7 +151,7 @@ export const MyProfilePushNotifications: React.FC<{
       style={{ opacity: notificationAuthorizationStatus === PushAuthorizationStatus.Authorized ? 1 : 0.5 }}
       pointerEvents={notificationAuthorizationStatus === PushAuthorizationStatus.Authorized ? "auto" : "none"}
     >
-      <Join separator={<Separator my={1} />}>
+      <Join separator={<Separator my="1" />}>
         <NotificationPermissionsBox title="Purchase Updates" isLoading={isLoading}>
           <SwitchMenu
             title="Messages"

@@ -17,7 +17,7 @@ const dateString = (m: number) => new Date(m).toISOString()
 const CountdownText: React.FC<CountdownProps> = ({ duration, label }) => (
   <Flex justifyContent="center" alignItems="center">
     <LabeledTicker
-      renderSeparator={() => <Spacer mr={0.5} />}
+      renderSeparator={() => <Spacer mr="0.5" />}
       textProps={{ color: "white", size: "3t" }}
       duration={duration}
     />

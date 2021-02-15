@@ -19,12 +19,12 @@ interface PriceSummaryViewProps {
 }
 
 const _PriceSummary = ({ bid, calculatedCost }: PriceSummaryViewProps) => (
-  <Box mx={4}>
-    <Serif mb={1} size="4" weight="semibold" color="black100">
+  <Box mx="4">
+    <Serif mb="1" size="4" weight="semibold" color="black100">
       Summary
     </Serif>
 
-    <Flex mb={1} flexDirection="row" justifyContent="space-between">
+    <Flex mb="1" flexDirection="row" justifyContent="space-between">
       <Sans size="3" color="black100">
         Your max bid
       </Sans>
@@ -33,7 +33,7 @@ const _PriceSummary = ({ bid, calculatedCost }: PriceSummaryViewProps) => (
       </Sans>
     </Flex>
 
-    <Flex mb={1} flexDirection="row" justifyContent="space-between">
+    <Flex mb="1" flexDirection="row" justifyContent="space-between">
       <Sans size="3" color="black100">
         Buyer’s premium
       </Sans>
@@ -42,7 +42,7 @@ const _PriceSummary = ({ bid, calculatedCost }: PriceSummaryViewProps) => (
       </Sans>
     </Flex>
 
-    <Flex mb={1} flexDirection="row" justifyContent="space-between">
+    <Flex mb="1" flexDirection="row" justifyContent="space-between">
       <Sans size="3" color="black100">
         Subtotal
       </Sans>

@@ -145,7 +145,7 @@ export class ArtistListItem extends React.Component<Props, State> {
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <Flex flex={1}>
               <EntityHeader
-                mr={1}
+                mr="1"
                 name={name}
                 meta={formatTombstoneText(nationality, birthday, deathday) ?? undefined}
                 imageUrl={imageURl ?? undefined}

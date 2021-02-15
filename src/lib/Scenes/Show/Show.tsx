@@ -64,20 +64,20 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
   const artworkProps = { show, isFilterArtworksModalVisible, toggleFilterArtworksModal }
 
   const sections: Section[] = [
-    { key: "header", element: <ShowHeader show={show} mx={2} /> },
+    { key: "header", element: <ShowHeader show={show} mx="2" /> },
 
     ...(Boolean(show.images?.length) ? [{ key: "install-shots", element: <ShowInstallShots show={show} /> }] : []),
 
-    { key: "info", element: <ShowInfo show={show} mx={2} /> },
+    { key: "info", element: <ShowInfo show={show} mx="2" /> },
 
     ...(Boolean(show.viewingRoomIDs.length)
-      ? [{ key: "viewing-room", element: <ShowViewingRoom show={show} mx={2} /> }]
+      ? [{ key: "viewing-room", element: <ShowViewingRoom show={show} mx="2" /> }]
       : []),
 
     {
       key: "separator-top",
       element: (
-        <Box mx={2}>
+        <Box mx="2">
           <Separator />
         </Box>
       ),
@@ -88,20 +88,20 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
       element: Boolean(show.counts?.eligibleArtworks) ? (
         <ShowArtworks {...artworkProps} />
       ) : (
-        <ShowArtworksEmptyStateFragmentContainer show={show} mx={2} />
+        <ShowArtworksEmptyStateFragmentContainer show={show} mx="2" />
       ),
     },
 
     {
       key: "separator-bottom",
       element: (
-        <Box mx={2}>
+        <Box mx="2">
           <Separator />
         </Box>
       ),
     },
 
-    { key: "context", element: <ShowContextCard show={show} mx={2} /> },
+    { key: "context", element: <ShowContextCard show={show} mx="2" /> },
   ]
 
   return (
@@ -119,8 +119,8 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
           keyExtractor={({ key }) => key}
           viewabilityConfig={viewConfigRef.current}
           onViewableItemsChanged={viewableItemsChangedRef.current}
-          ListHeaderComponent={<Spacer mt={6} pt={2} />}
-          ListFooterComponent={<Spacer my={2} />}
+          ListHeaderComponent={<Spacer mt="6" pt="2" />}
+          ListFooterComponent={<Spacer my="2" />}
           ItemSeparatorComponent={() => <Spacer my={15} />}
           contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top, paddingBottom: 40 }}
           renderItem={({ item: { element } }) => element}
@@ -178,7 +178,7 @@ export const ShowQueryRenderer: React.FC<ShowQueryRendererProps> = ({ showID }) 
 }
 
 export const ShowPlaceholder: React.FC = () => (
-  <Flex px={2} pt={useScreenDimensions().safeAreaInsets.top + 80}>
+  <Flex px="2" pt={useScreenDimensions().safeAreaInsets.top + 80}>
     {/* Title */}
     <PlaceholderText height={25} width={200 + Math.random() * 100} />
     <PlaceholderText height={25} width={100 + Math.random() * 100} />
@@ -189,9 +189,9 @@ export const ShowPlaceholder: React.FC = () => (
     <PlaceholderText width={70} />
     <Spacer mb={15} />
     {/* Images */}
-    <Flex flexDirection="row" py={2}>
+    <Flex flexDirection="row" py="2">
       {times(3).map((index: number) => (
-        <Flex key={index} marginRight={1}>
+        <Flex key={index} marginRight="1">
           <PlaceholderBox height={300} width={250} />
         </Flex>
       ))}

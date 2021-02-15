@@ -55,7 +55,7 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
     const editionSets = artwork.editionSets
 
     if (!editionSets || !editionSets.length) {
-      return <></>
+      return null
     }
 
     return (
@@ -71,7 +71,7 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
             const selected = internalID === selectedEdition.internalID
             return (
               <TouchableWithoutFeedback key={id} onPress={() => this.selectEdition(internalID)}>
-                <EditionSelector px={2} height={26} mt={1} mr={1} selected={selected}>
+                <EditionSelector px="2" height={26} mt="1" mr="1" selected={selected}>
                   <Sans size="2" weight="medium" color="black100">
                     {LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
                       ? dimensions.in
@@ -84,7 +84,7 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
         </Flex>
         {!!selectedEdition! /* STRICTNESS_MIGRATION */.editionOf && (
           <>
-            <Spacer mb={1} />
+            <Spacer mb="1" />
             <Sans size="3t" color="black30">
               {
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -95,7 +95,7 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
         )}
         {!!selectedEdition! /* STRICTNESS_MIGRATION */.saleMessage && (
           <>
-            <Spacer mb={2} />
+            <Spacer mb="2" />
 
             <Sans size="4" weight="medium" color="black100">
               {

@@ -57,13 +57,13 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
         }
 
         return (
-          <Box key={show.id} mb={3}>
+          <Box key={show.id} mb="3">
             <FairExhibitorRailFragmentContainer key={show.id} show={show} />
           </Box>
         )
       })}
       <Row>
-        <Col sm={6} mx="15px">
+        <Col sm="6" mx={15}>
           <Button
             variant="secondaryGray"
             size="large"

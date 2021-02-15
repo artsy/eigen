@@ -155,7 +155,7 @@ export class Picker extends React.Component<Props, State> {
                   <BottomSheet justifyContent="center" flexDirection="column">
                     <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
                       <TouchableOpacity onPress={this.handleSelect}>
-                        <Flex py={1} px={2} justifyContent="center">
+                        <Flex py="1" px="2" justifyContent="center">
                           <Sans size="3" color="black" weight="medium">
                             Done
                           </Sans>
@@ -192,7 +192,7 @@ export class Picker extends React.Component<Props, State> {
           <Sans size="3" weight="medium">
             {displayPrompt}
           </Sans>
-          <Spacer m={0.5} />
+          <Spacer m="0.5" />
           <Chevron source={chevronURI} />
         </Flex>
       </TouchableOpacity>

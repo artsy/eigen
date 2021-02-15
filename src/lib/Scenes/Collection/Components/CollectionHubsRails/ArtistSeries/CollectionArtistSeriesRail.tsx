@@ -19,8 +19,8 @@ export const CollectionArtistSeriesRail: React.FC<CollectionArtistSeriesRailProp
   const collections = collectionGroup?.members ?? []
 
   return (
-    <Flex ml={"-20px"}>
-      <Sans size="4" mb={2} ml={4}>
+    <Flex ml={-20}>
+      <Sans size="4" mb="2" ml="4">
         {collectionGroup.name}
       </Sans>
       <GenericArtistSeriesRail

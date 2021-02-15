@@ -96,11 +96,11 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
   return (
     <Flex flexGrow={1}>
       <FancyModalHeader onLeftButtonPress={navigation.goBack}>Year created</FancyModalHeader>
-      <Flex flexGrow={1} py={2}>
-        <YearText variant="text" mb={15} mx={2}>
+      <Flex flexGrow={1} py="2">
+        <YearText variant="text" mb={15} mx="2">
           {sliderValues[0]} – {sliderValues[1]}
         </YearText>
-        <Flex alignItems="center" mx={2}>
+        <Flex alignItems="center" mx="2">
           <MultiSlider
             values={[Number(sliderValues[0]), Number(sliderValues[1])]}
             sliderLength={screenWidth - 40}
@@ -120,7 +120,7 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
                 backgroundColor={color("black100")}
                 borderColor={color("white100")}
                 diameter={24}
-                top="2px"
+                top="2"
               />
             )}
             selectedStyle={{
@@ -136,7 +136,7 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
             }}
           />
         </Flex>
-        <Separator mt={2} />
+        <Separator mt="2" />
         <OptionItem
           onPress={handleAllowEmptyCreatedDatesPress}
           text={ALLOW_EMPTY_CREATED_DATES_FILTER.displayText}
@@ -156,7 +156,7 @@ interface OptionItemProps {
 export const OptionItem = ({ onPress, text, selected }: OptionItemProps) => (
   <TouchableOpacity onPress={onPress}>
     <Flex flexGrow={1} justifyContent="space-between" flexDirection="row" height={60}>
-      <Flex flexDirection="row" justifyContent="space-between" flexGrow={1} alignItems="center" pl={2} pr={2}>
+      <Flex flexDirection="row" justifyContent="space-between" flexGrow={1} alignItems="center" pl="2" pr="2">
         <Text variant="text">{text}</Text>
         {!!selected && (
           <Box mb={0.1}>

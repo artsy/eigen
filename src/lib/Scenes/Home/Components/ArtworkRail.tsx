@@ -89,7 +89,7 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
             contextModule={HomeAnalytics.artworkRailContextModule(rail.key)}
           />
         ) : (
-          <Box mx={2}>
+          <Box mx="2">
             <GenericGrid
               artworks={artworks}
               trackTap={(artworkSlug, index) => {

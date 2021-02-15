@@ -18,7 +18,7 @@ const AttachmentList: React.FC<Props> = (props) => {
       ?.filter((attachment) => attachment && !attachment?.contentType.includes("image")) || []
 
   return (
-    <Box px={1}>
+    <Box px="1">
       <FlatList
         data={attachmentItems}
         keyExtractor={(item, index) => String(item?.id || index)}
@@ -26,13 +26,13 @@ const AttachmentList: React.FC<Props> = (props) => {
           return item && <FileDownload tiny={true} attachment={item} />
         }}
         ListHeaderComponent={
-          <Text variant="mediumText" mb={2} px={1}>
+          <Text variant="mediumText" mb="2" px="1">
             Attachments
           </Text>
         }
-        ItemSeparatorComponent={() => <Spacer mb={0.5} />}
+        ItemSeparatorComponent={() => <Spacer mb="0.5" />}
         ListEmptyComponent={
-          <Text px={1} pb={1}>
+          <Text px="1" pb="1">
             No Attachments
           </Text>
         }

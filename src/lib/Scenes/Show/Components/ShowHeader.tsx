@@ -30,7 +30,7 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
 
   return (
     <Box {...rest}>
-      <Text variant="largeTitle" mb={1}>
+      <Text variant="largeTitle" mb="1">
         {show.name}
       </Text>
 
@@ -45,7 +45,7 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
       )}
 
       {!!show.partner && (
-        <Text variant="text" color="black60" mt={1}>
+        <Text variant="text" color="black60" mt="1">
           {show.partner.name}
         </Text>
       )}

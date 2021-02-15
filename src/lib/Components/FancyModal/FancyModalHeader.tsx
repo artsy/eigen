@@ -23,16 +23,16 @@ export const FancyModalHeader: React.FC<{
 }) => {
   const leftButton = () => {
     if (!useXButton) {
-      return <ArrowLeftIcon fill="black100" top="2px" />
+      return <ArrowLeftIcon fill="black100" top="2" />
     } else {
-      return <CloseIcon fill="black100" top="2px" />
+      return <CloseIcon fill="black100" top="2" />
     }
   }
 
   return (
     <Flex>
       <Container>
-        <Flex mt={0.5} flexDirection="column" alignContent="center" alignItems="center">
+        <Flex mt="0.5" flexDirection="column" alignContent="center" alignItems="center">
           {!!onLeftButtonPress && (
             <LeftButtonContainer
               hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
@@ -43,11 +43,11 @@ export const FancyModalHeader: React.FC<{
           )}
         </Flex>
 
-        <Sans mt={2} weight="medium" size="4" color="black100">
+        <Sans mt="2" weight="medium" size="4" color="black100">
           {children}
         </Sans>
 
-        <Flex mt={0.5} flexDirection="column" alignContent="center" alignItems="center">
+        <Flex mt="0.5" flexDirection="column" alignContent="center" alignItems="center">
           {!!onRightButtonPress && (
             <RightButtonContainer
               hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
@@ -58,7 +58,7 @@ export const FancyModalHeader: React.FC<{
                   {rightButtonText}
                 </Sans>
               ) : (
-                <ArrowRightIcon fill="black100" top="2px" />
+                <ArrowRightIcon fill="black100" top="2" />
               )}
             </RightButtonContainer>
           )}

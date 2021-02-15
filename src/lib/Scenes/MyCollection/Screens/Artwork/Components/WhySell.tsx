@@ -6,10 +6,10 @@ export const WhySell: React.FC = () => {
   return (
     <>
       <Separator />
-      <Spacer my={1} />
+      <Spacer my="1" />
 
       <ScreenMargin>
-        <Join separator={<Spacer my={1} />}>
+        <Join separator={<Spacer my="1" />}>
           <Text variant="title">Interested in selling this work?</Text>
           <WhySellStep
             step={1}
@@ -35,10 +35,10 @@ export const WhySell: React.FC = () => {
 const WhySellStep: React.FC<{ step: number; title: string; description: string }> = ({ step, title, description }) => {
   return (
     <Flex flexDirection="row">
-      <Box mr={2}>
+      <Box mr="2">
         <Text>{step}</Text>
       </Box>
-      <Box mr={2}>
+      <Box mr="2">
         <Text>{title}</Text>
         <Text color="black60">{description}</Text>
       </Box>

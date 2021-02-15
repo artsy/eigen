@@ -2,7 +2,7 @@ import React from "react"
 import { Flex } from "../Elements/Flex"
 
 export const Container = (props: any /* STRICTNESS_MIGRATION */) => (
-  <Flex m={4} flex={1} flexDirection="column" justifyContent="space-between" {...props} />
+  <Flex m="4" flex={1} flexDirection="column" justifyContent="space-between" {...props} />
 )
 
 export const CenteringContainer = (props: any /* STRICTNESS_MIGRATION */) => (

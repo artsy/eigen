@@ -161,7 +161,7 @@ export class LocationMap extends React.Component<Props> {
 
     const renderSummaryAddress = () => {
       return (
-        <Box m={2}>
+        <Box m="2">
           {!!partnerName && (
             <Text variant="mediumText" color="black100" textAlign="center">
               {partnerName}
@@ -176,7 +176,7 @@ export class LocationMap extends React.Component<Props> {
 
     const renderSegmentedAddress = () => {
       return (
-        <Box m={2}>
+        <Box m="2">
           {!!partnerName && (
             <Text variant="mediumText" color="black100" textAlign="center">
               {partnerName}

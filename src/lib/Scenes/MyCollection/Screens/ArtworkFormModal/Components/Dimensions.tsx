@@ -14,11 +14,11 @@ export const Dimensions: React.FC = () => {
         <Sans size="3" weight="medium">
           Dimensions
         </Sans>
-        <Sans size="3" ml="2px">
+        <Sans size="3" ml="2">
           (optional)
         </Sans>
       </Flex>
-      <Spacer my={0.5} />
+      <Spacer my="0.5" />
       <Flex flexDirection="row">
         <Input
           placeholder="Height"
@@ -44,7 +44,7 @@ export const Dimensions: React.FC = () => {
           defaultValue={formik.values.depth}
         />
       </Flex>
-      <Spacer my={1} />
+      <Spacer my="1" />
       <Select
         ref={metricInputRef}
         onSelectValue={(value) => {

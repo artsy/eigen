@@ -92,20 +92,20 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
         </Flex>
         <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
           {!!bidText && (
-            <Sans size="2" pr={1} color="black60">
+            <Sans size="2" pr="1" color="black60">
               {bidText}
             </Sans>
           )}
 
           {!!myMaxBid && (
-            <Sans size="2" color="black60" pl={1}>
+            <Sans size="2" color="black60" pl="1">
               Your max: {myMaxBid}
             </Sans>
           )}
         </Flex>
         {sale! /* STRICTNESS_MIGRATION */.isWithBuyersPremium && (
           <>
-            <Spacer mb={1} />
+            <Spacer mb="1" />
             <Sans size="3t" color="black60">
               This auction has a{" "}
               <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleBuyersPremiumTap()}>

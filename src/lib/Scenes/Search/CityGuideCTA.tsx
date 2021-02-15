@@ -21,7 +21,7 @@ export class CityGuideCTA extends React.Component {
               <Sans size="3t" style={{ color: color("black60") }}>
                 Browse fairs and shows in different cities
               </Sans>
-              <Spacer mb={1} />
+              <Spacer mb="1" />
               <BMWSponsorship logoText="Presented in partnership with BMW" pressable={false} />
             </Flex>
           </Flex>

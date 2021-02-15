@@ -38,7 +38,7 @@ export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
         Add Location
       </FancyModalHeader>
       <ScrollView keyboardShouldPersistTaps="always">
-        <Flex m={2} flex={1}>
+        <Flex m="2" flex={1}>
           <LocationAutocomplete onChange={setLocationInput} initialLocation={location} />
         </Flex>
       </ScrollView>

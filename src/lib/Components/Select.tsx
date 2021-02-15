@@ -112,11 +112,11 @@ const SelectButton: React.FC<{
       {showTitleLabel ? <InputTitle>{title}</InputTitle> : null}
 
       {subTitle ? (
-        <Sans mb={0.5} size="2" color={color("black60")}>
+        <Sans mb="0.5" size="2" color={color("black60")}>
           {subTitle}
         </Sans>
       ) : (
-        <Spacer mb={0.5} />
+        <Spacer mb="0.5" />
       )}
       <TouchableOpacity accessible accessibilityRole="button" onPress={onPress}>
         <Flex

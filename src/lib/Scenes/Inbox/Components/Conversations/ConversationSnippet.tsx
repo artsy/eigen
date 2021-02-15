@@ -90,7 +90,7 @@ export class ConversationSnippet extends React.Component<Props> {
     const date = moment(conversation.lastMessageAt).fromNow(true) + " ago"
     return (
       <Touchable onPress={() => this.conversationSelected()} underlayColor={color("black5")}>
-        <Flex py={2} px={2}>
+        <Flex py="2" px="2">
           <Flex flexDirection="row">
             <Flex>
               {!!conversation.unread && (
@@ -105,14 +105,14 @@ export class ConversationSnippet extends React.Component<Props> {
                 }
               />
             </Flex>
-            <Flex ml={1} style={{ flex: 1 }} justifyContent="flex-start">
-              <Flex flexDirection="row" mb="2px" style={{ flex: 0, alignItems: "center" }}>
+            <Flex ml="1" style={{ flex: 1 }} justifyContent="flex-start">
+              <Flex flexDirection="row" mb="2" style={{ flex: 0, alignItems: "center" }}>
                 <Sans
                   size="3t"
                   weight="medium"
                   ellipsizeMode="tail"
                   numberOfLines={1}
-                  mr="5px"
+                  mr="5"
                   color={conversation.unread ? "black" : "black60"}
                   style={{ flex: 3 }}
                 >
@@ -128,7 +128,7 @@ export class ConversationSnippet extends React.Component<Props> {
               {!!conversationText && (
                 <Sans
                   size="3t"
-                  mr="15px"
+                  mr={15}
                   ellipsizeMode="tail"
                   numberOfLines={3}
                   color={conversation.unread ? "black" : "black60"}

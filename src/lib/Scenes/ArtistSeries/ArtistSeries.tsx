@@ -93,24 +93,24 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
                   onViewableItemsChanged={viewableItemsChangedRef.current}
                   keyExtractor={(_item, index) => String(index)}
                   data={sections}
-                  ItemSeparatorComponent={() => <Spacer mb={2} />}
+                  ItemSeparatorComponent={() => <Spacer mb="2" />}
                   renderItem={({ item }): null | any => {
                     switch (item) {
                       case "artistSeriesHeader":
                         return (
-                          <Box px={2}>
+                          <Box px="2">
                             <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
                           </Box>
                         )
                       case "artistSeriesMeta":
                         return (
-                          <Box px={2} pt={1}>
+                          <Box px="2" pt="1">
                             <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
                           </Box>
                         )
                       case "artistSeriesArtworks":
                         return (
-                          <Box px={2}>
+                          <Box px="2">
                             <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
                             <FilterModalNavigator
                               {...props}
@@ -127,8 +127,8 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
                         return (
                           !((artist?.artistSeriesConnection?.totalCount ?? 0) === 0) && (
                             <>
-                              <Separator mb={2} />
-                              <Box px={2} pb={2}>
+                              <Separator mb="2" />
+                              <Box px="2" pb="2">
                                 <ArtistSeriesMoreSeriesFragmentContainer
                                   contextScreenOwnerId={artistSeries.internalID}
                                   contextScreenOwnerSlug={artistSeries.slug}
@@ -183,14 +183,14 @@ const ArtistSeriesPlaceholder: React.FC<{}> = ({}) => {
         <Box px="2" pt="1">
           {/* Series header image */}
           <PlaceholderBox height={180} width={180} alignSelf="center" />
-          <Spacer mb={2} />
+          <Spacer mb="2" />
           {/* Artist Series name */}
           <PlaceholderText width={220} />
           {/* Artist series info */}
           <PlaceholderText width={190} />
           <PlaceholderText width={190} />
         </Box>
-        <Spacer mb={2} />
+        <Spacer mb="2" />
         {/* masonry grid */}
         <PlaceholderGrid />
       </Box>

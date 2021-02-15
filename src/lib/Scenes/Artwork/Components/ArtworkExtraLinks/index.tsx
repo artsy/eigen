@@ -71,7 +71,7 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
             </Text>
             .
           </Sans>
-          <Spacer mb={1} />
+          <Spacer mb="1" />
           <Sans size="2" color="black60">
             Have a question?{" "}
             <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleReadOurAuctionFAQsTap()}>

@@ -96,14 +96,14 @@ export class WorksForYou extends React.Component<Props, State> {
           }}
           onEndReached={this.fetchNextPage}
           ItemSeparatorComponent={() => (
-            <Box px={2}>
+            <Box px="2">
               <Separator />
             </Box>
           )}
           ListFooterComponent={
             this.state.loadingContent
               ? () => (
-                  <Box p={2} style={{ height: 50 }}>
+                  <Box p="2" style={{ height: 50 }}>
                     <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
                       <Spinner />
                     </Flex>

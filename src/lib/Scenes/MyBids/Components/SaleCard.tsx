@@ -19,11 +19,11 @@ export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string 
     underlayColor={props.navLink ? "black5" : "transparent"}
     onPress={() => props.navLink && navigate(props.navLink)}
   >
-    <Flex flexDirection="row" alignItems="center" justifyContent="center" py={1} bg="black5" mt={1}>
+    <Flex flexDirection="row" alignItems="center" justifyContent="center" py="1" bg="black5" mt="1">
       {!props.children && (
         <>
           <ExclamationMarkCircleFill fill="black100" />
-          <Text mx={0.5} variant="mediumText">
+          <Text mx="0.5" variant="mediumText">
             Complete registration
           </Text>
           <ArrowRightIcon />
@@ -66,7 +66,7 @@ export const SaleCard: React.FC<SaleCardProps> = ({ sale, me, smallScreen, hideC
       RegistrationCTA = () => (
         <RegistrationCTAWrapper>
           <ClockFill fill="black60" />
-          <Text ml={0.5} color="black60" variant="mediumText">
+          <Text ml="0.5" color="black60" variant="mediumText">
             Registration pending
           </Text>
         </RegistrationCTAWrapper>
@@ -109,7 +109,7 @@ export const SaleCard: React.FC<SaleCardProps> = ({ sale, me, smallScreen, hideC
         </Flex>
         {!hideChildren && (
           <>
-            <Separator mt={1} />
+            <Separator mt="1" />
             <Flex style={{ marginHorizontal: smallScreen! ? 10 : 20, marginVertical: 10 }}>{children}</Flex>
           </>
         )}

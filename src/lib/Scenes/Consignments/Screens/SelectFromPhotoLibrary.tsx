@@ -201,12 +201,12 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
       <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
         <ScrollView style={{ flex: 1 }} scrollsToTop={true} onScroll={this.onScroll} scrollEventThrottle={50}>
           <View style={{ paddingTop: 40 }}>
-            <Box px={2}>
+            <Box px="2">
               <Sans size="4" style={{ textAlign: "center" }}>
                 Please add photos of the work. We suggest including the front and back as well as the signature.
               </Sans>
             </Box>
-            <Spacer mb={2} />
+            <Spacer mb="2" />
             <ImageSelection
               data={this.state.cameraImages}
               onPressNewPhoto={this.onPressNewPhoto}

@@ -56,12 +56,12 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
   return (
     <ScrollView>
       <Theme>
-        <Box px={2} py={6}>
+        <Box px="2" py="6">
           <Text variant="largeTitle">Articles</Text>
 
-          <Spacer my={1} />
+          <Spacer my="1" />
 
-          <Join separator={<Spacer my={3} />}>
+          <Join separator={<Spacer my="3" />}>
             <Touchable
               onPress={() => {
                 navigate(heroArticle!.href!)
@@ -74,8 +74,8 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                   imageURL={heroArticle!.thumbnailImage?.url}
                 />
 
-                <Box bg="white100" pt={2} px={2} width="85%" position="absolute" bottom={0} right={0}>
-                  <Text variant="title" mb={1}>
+                <Box bg="white100" pt="2" px="2" width="85%" position="absolute" bottom={0} right={0}>
+                  <Text variant="title" mb="1">
                     {heroArticle!.title}
                   </Text>
 
@@ -86,7 +86,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                   <Text variant="caption">{heroArticle!.publishedAt}</Text>
 
                   <FairEditorialShare
-                    mt={1}
+                    mt="1"
                     subject={heroArticle!.title!}
                     url={`${getCurrentEmissionState().webURL}${heroArticle!.href}`}
                   />
@@ -97,7 +97,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
             <FlatList<typeof remainingArticles[number]>
               data={remainingArticles}
               keyExtractor={({ node }, i) => node?.internalID ?? `${i}`}
-              ItemSeparatorComponent={() => <Spacer my={3} />}
+              ItemSeparatorComponent={() => <Spacer my="3" />}
               renderItem={({ item: { node: article } }) => {
                 return (
                   <Touchable
@@ -112,7 +112,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                     />
 
                     <Box width="95%">
-                      <Text variant="subtitle" mt={1} mb={1}>
+                      <Text variant="subtitle" mt="1" mb="1">
                         {article!.title}
                       </Text>
 
@@ -123,7 +123,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                       <Text variant="caption">{article!.publishedAt}</Text>
 
                       <FairEditorialShare
-                        mt={1}
+                        mt="1"
                         subject={article!.title!}
                         url={`${getCurrentEmissionState().webURL}${article!.href}`}
                       />

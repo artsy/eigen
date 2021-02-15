@@ -37,7 +37,7 @@ class Article extends React.Component<Props> {
                 }}
               />
             )}
-            <Spacer mb={1} />
+            <Spacer mb="1" />
             <Sans numberOfLines={2} ellipsizeMode="tail" size="3t" weight="medium">
               {article.thumbnail_title}
             </Sans>

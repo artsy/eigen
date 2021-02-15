@@ -39,7 +39,7 @@ export const FairCollections: React.FC<FairCollectionsProps> = ({ fair, ...rest 
 
   return (
     <Box {...rest}>
-      <Text mx={2} mb={2} variant="subtitle">
+      <Text mx="2" mb="2" variant="subtitle">
         Curated Highlights
       </Text>
 

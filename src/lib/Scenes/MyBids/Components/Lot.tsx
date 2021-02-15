@@ -29,7 +29,7 @@ class Lot extends React.Component<Props> {
                 imageURL={saleArtwork?.artwork?.image?.url}
               />
               {!!ArtworkBadge && (
-                <Box position="absolute" top={-2} left={-5}>
+                <Box position="absolute" top="-2" left={-5}>
                   {<ArtworkBadge />}
                 </Box>
               )}

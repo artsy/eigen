@@ -34,7 +34,7 @@ export const InfoButton: React.FC<InfoButtonProps> = ({
         {titleElement ? (
           titleElement
         ) : (
-          <Text variant="mediumText" mr={0.5}>
+          <Text variant="mediumText" mr="0.5">
             {title}
           </Text>
         )}

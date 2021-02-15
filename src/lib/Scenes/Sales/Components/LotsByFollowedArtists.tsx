@@ -26,7 +26,7 @@ export class LotsByFollowedArtists extends Component<Props> {
 
     return (
       <Theme>
-        <Box px={2}>
+        <Box px="2">
           <InfiniteScrollArtworksGrid
             loadMore={this.props.relay.loadMore}
             hasMore={this.props.relay.hasMore}

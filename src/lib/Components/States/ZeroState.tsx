@@ -16,7 +16,7 @@ export const ZeroState = (props: ZeroStateProps) => (
         <Sans size="6" textAlign="center" maxWidth="80%">
           {props.title}
         </Sans>
-        <Spacer mb={3} />
+        <Spacer mb="3" />
       </>
     )}
 
@@ -25,7 +25,7 @@ export const ZeroState = (props: ZeroStateProps) => (
         <Sans size="4" textAlign="center" maxWidth={props.title ? "100%" : "80%"}>
           {props.subtitle}
         </Sans>
-        <Spacer mb={3} />
+        <Spacer mb="3" />
       </>
     )}
     {!!props.callToAction && <>{props.callToAction}</>}

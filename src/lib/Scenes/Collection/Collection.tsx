@@ -117,12 +117,12 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                     keyExtractor={(_item, index) => String(index)}
                     data={sections}
                     ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
-                    ItemSeparatorComponent={() => <Spacer mb={2} />}
+                    ItemSeparatorComponent={() => <Spacer mb="2" />}
                     renderItem={({ item }): null | any => {
                       switch (item) {
                         case "collectionFeaturedArtists":
                           return (
-                            <Box px={2}>
+                            <Box px="2">
                               <CollectionFeaturedArtists collection={collection} />
                             </Box>
                           )
@@ -132,7 +132,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                           ) : null
                         case "collectionArtworks":
                           return (
-                            <Box px={2}>
+                            <Box px="2">
                               <CollectionArtworks collection={collection} scrollToTop={() => this.scrollToTop()} />
                               <FilterModalNavigator
                                 {...this.props}

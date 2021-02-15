@@ -73,7 +73,7 @@ const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketP
         modalTitle="Artist Market Insights"
         modalContent={
           <>
-            <Spacer my={1} />
+            <Spacer my="1" />
             <Text>
               These statistics are based on the last 36 months of auction sale data from top commercial auction houses.
             </Text>
@@ -82,7 +82,7 @@ const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketP
         onPress={() => trackEvent(tracks.tappedInfoBubble(artwork.internalID, artwork.slug))}
       />
 
-      <Spacer my={0.5} />
+      <Spacer my="0.5" />
 
       <Field label="Avg. Annual Value Sold" value={formattedAnnualValueSold} />
       <Field label="Avg. Annual Lots Sold" value={`${annualLotsSold}`} />

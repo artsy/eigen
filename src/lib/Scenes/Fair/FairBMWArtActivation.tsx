@@ -41,7 +41,7 @@ export const shouldShowFairBMWArtActivationLink = (data: ShowMoreMetadataForFair
   context_screen_owner_id: props.fair.internalID,
 }))
 export class FairBMWArtActivation extends React.Component<Props, State> {
-  renderItemSeparator = () => <Box py={3} px={2} />
+  renderItemSeparator = () => <Box py="3" px="2" />
 
   @track(eventProps(Schema.ActionNames.PressRelease))
   handleViewPressRelease(url: string) {
@@ -75,12 +75,12 @@ export class FairBMWArtActivation extends React.Component<Props, State> {
     }
     return (
       <Theme>
-        <Box px={2} py={6}>
+        <Box px="2" py="6">
           <FlatList
             data={sections}
-            renderItem={(item) => <Box my={1}>{item.item.content}</Box>}
+            renderItem={(item) => <Box my="1">{item.item.content}</Box>}
             ListHeaderComponent={
-              <Box mt={6} mb={1} display="flex" alignItems="center" flexDirection="row">
+              <Box mt="6" mb="1" display="flex" alignItems="center" flexDirection="row">
                 <BMWSponsorship logoText="BMW Art Activations" />
               </Box>
             }

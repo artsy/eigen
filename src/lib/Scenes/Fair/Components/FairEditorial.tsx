@@ -35,7 +35,7 @@ export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) =
 
   return (
     <Box {...rest}>
-      <Box mx={2} mb={2} display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
+      <Box mx="2" mb="2" display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
         <Text variant="subtitle">Related Reading</Text>
 
         {(fair.articles.totalCount ?? 0) > 5 && (
@@ -66,8 +66,8 @@ export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) =
               navigate(article.href)
             }}
           >
-            <Box flexDirection="row" py={1} px={2}>
-              <Box flex={1} pr={2}>
+            <Box flexDirection="row" py="1" px="2">
+              <Box flex={1} pr="2">
                 <Text variant="subtitle">{article.title}</Text>
 
                 <Text variant="text" color="black60">

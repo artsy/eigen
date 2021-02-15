@@ -96,7 +96,7 @@ export class BidButton extends React.Component<BidButtonProps> {
       <>
         {!registrationStatus && (
           <>
-            <Button width={100} block size="large" mt={1} onPress={() => this.redirectToRegister()} haptic>
+            <Button width={100} block size="large" mt="1" onPress={() => this.redirectToRegister()} haptic>
               Register to bid
             </Button>
             {needsIdentityVerification && (
@@ -106,7 +106,7 @@ export class BidButton extends React.Component<BidButtonProps> {
         )}
         {registrationStatus && !registrationStatus.qualifiedForBidding && (
           <>
-            <Button width={100} block size="large" mt={1} disabled>
+            <Button width={100} block size="large" mt="1" disabled>
               Registration pending
             </Button>
             {needsIdentityVerification && (
@@ -115,7 +115,7 @@ export class BidButton extends React.Component<BidButtonProps> {
           </>
         )}
         {registrationStatus?.qualifiedForBidding && (
-          <Button width={100} block size="large" mt={1} disabled>
+          <Button width={100} block size="large" mt="1" disabled>
             Registration complete
           </Button>
         )}
@@ -129,7 +129,7 @@ export class BidButton extends React.Component<BidButtonProps> {
     return (
       <>
         {isWatchOnly && (
-          <Sans size="2" color={color("black60")} pb={1} textAlign="center">
+          <Sans size="2" color={color("black60")} pb="1" textAlign="center">
             Registration closed
           </Sans>
         )}
@@ -188,7 +188,7 @@ export class BidButton extends React.Component<BidButtonProps> {
     } else if (needsIdentityVerification) {
       return (
         <>
-          <Button width={100} block size="large" mt={1} onPress={() => this.redirectToRegister()}>
+          <Button width={100} block size="large" mt="1" onPress={() => this.redirectToRegister()}>
             Register to bid
           </Button>
           <IdentityVerificationRequiredMessage onPress={() => this.redirectToIdentityVerificationFAQ()} />

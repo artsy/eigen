@@ -113,7 +113,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
     <SaleArtworkCard onPress={handleTap}>
       <Flex>
         {imageDisplay}
-        <Box mt={1} width={CONTAINER_HEIGHT}>
+        <Box mt="1" width={CONTAINER_HEIGHT}>
           {lotNumber}
           {artistNamesDisplay}
           {titleAndDateDisplay}

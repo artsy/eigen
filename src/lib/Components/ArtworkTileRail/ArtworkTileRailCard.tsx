@@ -69,10 +69,10 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
         <Flex
           backgroundColor="white"
           position="absolute"
-          px="5px"
-          py="3px"
-          bottom="5px"
-          left="5px"
+          px="5"
+          py="3"
+          bottom="5"
+          left={5}
           borderRadius={2}
           alignSelf="flex-start"
         >
@@ -121,7 +121,7 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
     <ArtworkCard onPress={onPress || undefined}>
       <Flex>
         {imageDisplay}
-        <Box mt={1} width={imageWidth}>
+        <Box mt="1" width={imageWidth}>
           {lotNumber}
           {artistNamesDisplay}
           {titleAndDateDisplay}

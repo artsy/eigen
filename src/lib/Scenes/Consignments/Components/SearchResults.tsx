@@ -47,7 +47,7 @@ function render<T>(props: SearchQueryProps<T>) {
             {!!result.image && (
               <>
                 <Image source={{ uri: result.image.url }} />
-                <Spacer mr={1} />
+                <Spacer mr="1" />
               </>
             )}
             <Flex flexDirection="row" alignItems="center" style={{ height: 35 }}>
@@ -55,7 +55,7 @@ function render<T>(props: SearchQueryProps<T>) {
             </Flex>
           </Flex>
         </TouchableOpacity>
-        <Spacer mb={1} />
+        <Spacer mb="1" />
       </Box>
     )
   }

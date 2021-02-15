@@ -138,13 +138,7 @@ export const ColorOptionsScreen: React.FC<ColorOptionsScreenProps> = ({ navigati
     <View onLayout={handleLayout}>
       <Flex flexGrow={1}>
         <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{FilterDisplayName.color}</FancyModalHeader>
-        <Flex
-          ml={`${FLEX_MARGIN}px`}
-          mr={`${FLEX_MARGIN}px`}
-          flexWrap="wrap"
-          flexDirection="row"
-          justifyContent="flex-start"
-        >
+        <Flex ml={FLEX_MARGIN} mr={FLEX_MARGIN} flexWrap="wrap" flexDirection="row" justifyContent="flex-start">
           {sortedDisplayOptions.map((item, index) => {
             return (
               <ColorContainer onPress={() => selectOption(item)} key={index}>

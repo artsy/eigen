@@ -48,7 +48,7 @@ export const ClosedNotice: React.FC<{ status: string; partnerHref: string }> = (
       <Sans mt="3" size="3t" mx="4" textAlign="center">
         {finalText}
       </Sans>
-      <Button variant="secondaryGray" onPress={() => navigate(partnerHref)} mt={2}>
+      <Button variant="secondaryGray" onPress={() => navigate(partnerHref)} mt="2">
         Visit gallery
       </Button>
     </Flex>
@@ -148,7 +148,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
     return (
       <TouchableWithoutFeedback onPress={() => handleViewingRoomShare()} data-test-id="share-button">
         <ButtonBox>
-          <ShareIcon fill="black100" height="25px" width="100%" />
+          <ShareIcon fill="black100" height={25} width="100%" />
         </ButtonBox>
       </TouchableWithoutFeedback>
     )
@@ -171,7 +171,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
             viewabilityConfig={{ itemVisiblePercentThreshold: 15 }}
             data={sections}
             ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
-            ItemSeparatorComponent={() => <Spacer mb={3} />}
+            ItemSeparatorComponent={() => <Spacer mb="3" />}
             renderItem={({ item }) => {
               return item.content
             }}

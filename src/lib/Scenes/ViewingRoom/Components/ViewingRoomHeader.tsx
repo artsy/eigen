@@ -105,7 +105,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
           width={screenWidth}
         />
         <Overlay colors={["rgba(255, 255, 255, 0)", "rgba(0, 0, 0, 1)"]} />
-        <Flex flexDirection="row" justifyContent="center" alignItems="flex-end" px={2} height={imageHeight - 60}>
+        <Flex flexDirection="row" justifyContent="center" alignItems="flex-end" px="2" height={imageHeight - 60}>
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
             <Text data-test-id="title" variant="largeTitle" textAlign="center" color="white100">
               {title}
@@ -116,7 +116,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
           <TouchableWithoutFeedback onPress={() => navigate(partner!.href!)}>
             <Flex flexDirection="row" justifyContent="center" alignItems="center">
               {!!partnerIconImageURL && (
-                <Box mr={0.5}>
+                <Box mr="0.5">
                   <PartnerIconImage
                     source={{ uri: partnerIconImageURL, width: 20, height: 20 }}
                     data-test-id="partner-icon"

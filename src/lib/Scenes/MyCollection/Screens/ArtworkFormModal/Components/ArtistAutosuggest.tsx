@@ -17,10 +17,10 @@ export const ArtistAutosuggest: React.FC = () => {
     <>
       {!!artistSearchResult ? (
         <>
-          <Sans size="3" mt="2px" weight="medium">
+          <Sans size="3" mt="2" weight="medium">
             Artist
           </Sans>
-          <Spacer mt={0.5} />
+          <Spacer mt="0.5" />
           <ArtistSearchResult result={artistSearchResult} />
         </>
       ) : (

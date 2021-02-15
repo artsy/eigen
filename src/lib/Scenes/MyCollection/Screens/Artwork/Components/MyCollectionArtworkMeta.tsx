@@ -71,7 +71,7 @@ const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwo
             falsly populating this field */}
         {!!(costMinor && costCurrencyCode) && <Field label="Price paid" value={`${costMinor} ${costCurrencyCode}`} />}
 
-        <Spacer my={0.5} />
+        <Spacer my="0.5" />
 
         <CaretButton
           onPress={() => {

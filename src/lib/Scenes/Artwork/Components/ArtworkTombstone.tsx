@@ -138,7 +138,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             this.renderArtistName(artwork.cultural_maker, null)}
         </Flex>
-        <Spacer mb={1} />
+        <Spacer mb="1" />
         {!!displayAuctionLotLabel && (
           <Sans color="black100" size="3" weight="medium">
             Lot{" "}
@@ -178,7 +178,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
           </Sans>
         )}
         {!!artwork.attribution_class && (
-          <Sans color="black60" size="3" mt={1}>
+          <Sans color="black60" size="3" mt="1">
             <TouchableWithoutFeedback onPress={() => this.handleClassificationTap("/artwork-classifications")}>
               <Text style={{ textDecorationLine: "underline" }}>{artwork.attribution_class.shortDescription}</Text>
             </TouchableWithoutFeedback>
@@ -187,7 +187,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
         )}
         {!!artwork.isInAuction && !!artwork.sale && !artwork.sale.isClosed && (
           <>
-            <Spacer mb={1} />
+            <Spacer mb="1" />
             {!!artwork.partner && (
               <Sans color="black100" size="3" weight="medium">
                 {artwork.partner.name}

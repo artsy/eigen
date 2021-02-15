@@ -44,15 +44,17 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
     const input = useRef<TextInput>()
     useImperativeHandle(ref, () => input.current!)
+
     return (
       <Flex flexGrow={1} style={containerStyle}>
         <InputTitle required={required}>{title}</InputTitle>
 
         {!!description && (
-          <Sans color="black60" mb={1} size="2">
+          <Sans color="black60" mb="1" size="2">
             {description}
           </Sans>
         )}
+
         <TouchableWithoutFeedback onPressIn={() => input.current?.focus()}>
           <View
             style={[
@@ -109,6 +111,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
             )}
           </View>
         </TouchableWithoutFeedback>
+
         {!!error && (
           <Sans color="red100" mt="1" size="2">
             {error}

@@ -44,7 +44,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
         {addOrEditLabel} Artwork
       </FancyModalHeader>
       <ScrollView keyboardDismissMode={"on-drag"} keyboardShouldPersistTaps={"handled"}>
-        <Spacer my={1} />
+        <Spacer my="1" />
 
         <Sans size="4" textAlign="center">
           {addOrEditLabel} details about your artwork to access {"\n"}
@@ -52,14 +52,14 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
         </Sans>
 
         <ScreenMargin>
-          <Join separator={<Spacer my={1} />}>
+          <Join separator={<Spacer my="1" />}>
             <ArtistAutosuggest />
             <MediumPicker />
             <Dimensions />
           </Join>
         </ScreenMargin>
 
-        <Spacer my={2} />
+        <Spacer my="2" />
 
         <PhotosButton
           data-test-id="PhotosButton"
@@ -78,7 +78,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
           }}
         />
 
-        <Spacer mt={2} mb={1} />
+        <Spacer mt="2" mb="1" />
 
         <ScreenMargin>
           <Button
@@ -93,7 +93,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
 
           {modalType === "edit" && (
             <Button
-              mt={1}
+              mt="1"
               variant="secondaryOutlineWarning"
               block
               onPress={() => {
@@ -116,13 +116,13 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
               Delete artwork
             </Button>
           )}
-          <Spacer mt={4} />
+          <Spacer mt="4" />
         </ScreenMargin>
 
         {/* Show validation errors during development */}
         {!!(SHOW_FORM_VALIDATION_ERRORS_IN_DEV && __DEV__ && formik.errors) && (
           <ScreenMargin>
-            <Box my={2}>
+            <Box my="2">
               <Sans size="3">Errors: {JSON.stringify(formik.errors)}</Sans>
             </Box>
           </ScreenMargin>
@@ -137,7 +137,7 @@ const PhotosButton: React.FC<{ onPress: () => void }> = ({ onPress }) => {
   const photos = artworkState.sessionState.formValues.photos
 
   return (
-    <BorderBox px={0} top={-1}>
+    <BorderBox px={0} top="-1">
       <ScreenMargin>
         <ArrowButton onPress={onPress}>
           <Flex flexDirection="row">
@@ -166,14 +166,14 @@ const PhotosButton: React.FC<{ onPress: () => void }> = ({ onPress }) => {
 
 const AdditionalDetailsButton: React.FC<{ onPress: () => void }> = ({ onPress }) => {
   return (
-    <BorderBox px={0} position="relative" top={-2}>
+    <BorderBox px={0} position="relative" top="-2">
       <ScreenMargin>
         <ArrowButton onPress={onPress}>
           <Flex flexDirection="row">
             <Sans size="3" weight="medium">
               Additional details
             </Sans>
-            <Sans size="3" ml="2px">
+            <Sans size="3" ml="2">
               (optional)
             </Sans>
           </Flex>

@@ -104,7 +104,7 @@ export class PartnerCard extends React.Component<Props, State> {
         {!!showPartnerType && (
           <>
             <Sans size="4t">At {partnerTypeDisplayText}</Sans>
-            <Spacer my={1} />
+            <Spacer my="1" />
           </>
         )}
         <TouchableWithoutFeedback onPress={this.handleTap.bind(this, partner.href!)}>

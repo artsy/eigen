@@ -70,7 +70,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
 
   render() {
     const buttonComponent = (
-      <Box m={4}>
+      <Box m="4">
         <Button
           disabled={!this.state.valid}
           loading={this.state.isLoading}
@@ -114,8 +114,8 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
               <View>
                 <Title>Your credit card</Title>
 
-                <Box m={4}>
-                  <Serif size="3t" mb={2}>
+                <Box m="4">
+                  <Serif size="3t" mb="2">
                     Card Information
                   </Serif>
                   <PaymentCardTextField
@@ -127,7 +127,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
                     cvcPlaceholde="CVC"
                   />
                   {!!this.state.isError && (
-                    <Sans size="2" mt={3} color="red100">
+                    <Sans size="2" mt="3" color="red100">
                       {errorText}
                     </Sans>
                   )}

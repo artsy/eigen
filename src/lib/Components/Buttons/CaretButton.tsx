@@ -16,7 +16,7 @@ export const CaretButton: React.FC<Props> = ({ text, onPress, textColor }) => {
         <Sans size="3t" weight="medium" color={textColor}>
           {text}
         </Sans>
-        <Box ml={0.5} style={{ marginTop: 1.5 }}>
+        <Box ml="0.5" style={{ marginTop: 1.5 }}>
           <ChevronIcon />
         </Box>
       </Flex>

@@ -114,14 +114,14 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
   const bylineRequired = artist.nationality || artist.birthday
 
   return (
-    <Box px={2} pt={6} pb={1}>
+    <Box px="2" pt="6" pb="1">
       <Sans size="8">{artist.name}</Sans>
-      <Spacer mb={1} />
+      <Spacer mb="1" />
       {Boolean(followersCount || bylineRequired) && (
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
           <Flex flex={1}>
             {!!bylineRequired && (
-              <Sans mr={1} size="3t">
+              <Sans mr="1" size="3t">
                 {descriptiveString}
               </Sans>
             )}

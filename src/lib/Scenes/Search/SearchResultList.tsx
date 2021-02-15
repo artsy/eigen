@@ -5,7 +5,7 @@ import { SearchResult } from "./SearchResult"
 
 export const SearchResultList: React.FC<{ results: React.ReactElement[] }> = ({ results }) => {
   return (
-    <Join separator={<Spacer mb="15px" />}>
+    <Join separator={<Spacer mb={15} />}>
       {React.Children.map(results, (child, i) => {
         if (__DEV__ && child.type !== SearchResult) {
           throw new Error("children of SearchResultList should be only of type SearchResult")

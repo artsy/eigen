@@ -191,8 +191,8 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                   ref={flatListRef}
                   viewabilityConfig={viewConfigRef.current}
                   onViewableItemsChanged={viewableItemsChangedRef.current}
-                  ItemSeparatorComponent={() => <Spacer mb={3} />}
-                  ListFooterComponent={<Spacer mb={3} />}
+                  ItemSeparatorComponent={() => <Spacer mb="3" />}
+                  ListFooterComponent={<Spacer mb="3" />}
                   keyExtractor={(_item, index) => String(index)}
                   stickyHeaderIndices={[tabIndex]}
                   onScroll={hideBackButtonOnScroll}
@@ -205,7 +205,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                         return (
                           <>
                             <FairHeaderFragmentContainer fair={fair} />
-                            <Separator mt={3} />
+                            <Separator mt="3" />
                           </>
                         )
                       }
@@ -248,7 +248,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
                         if (tabToShow.label === "Artworks") {
                           return (
-                            <Box px={2}>
+                            <Box px="2">
                               <FairArtworksFragmentContainer fair={fair} />
                               <FilterModalNavigator
                                 isFilterArtworksModalVisible={isFilterArtworksModalVisible}
@@ -337,7 +337,7 @@ export const FairPlaceholder: React.FC = () => (
     <PlaceholderBox height={400} />
     <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
       <Flex>
-        <Spacer mb={2} />
+        <Spacer mb="2" />
         {/* Fair name */}
         <PlaceholderText width={220} />
         {/* Fair info */}
@@ -345,9 +345,9 @@ export const FairPlaceholder: React.FC = () => (
         <PlaceholderText width={190} />
       </Flex>
     </Flex>
-    <Spacer mb={2} />
+    <Spacer mb="2" />
     <Separator />
-    <Spacer mb={2} />
+    <Spacer mb="2" />
     {/* masonry grid */}
     <PlaceholderGrid />
   </Flex>

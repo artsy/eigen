@@ -19,11 +19,11 @@ export const NoMessages: React.FC = () => {
   }
 
   return (
-    <Flex mt={3} mx={2}>
+    <Flex mt="3" mx="2">
       <Text variant="title" textAlign="center" fontWeight="normal">
         Keep track of your conversations with galleries.
       </Text>
-      <Text mb={2} mt={1} mx={4} variant="text" textAlign="center" fontWeight="normal" color="black60">
+      <Text mb="2" mt="1" mx="4" variant="text" textAlign="center" fontWeight="normal" color="black60">
         Contact galleries to learn more about works you want to collect. Use your inbox to stay on top of your
         inquiries.
       </Text>

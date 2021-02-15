@@ -72,7 +72,7 @@ const DeletePhotoButton: React.FC<{ photo: ImageProps }> = ({ photo }) => {
   const artworkActions = GlobalStore.actions.myCollection.artwork
 
   return (
-    <Box position="absolute" right={-4} top={-5}>
+    <Box position="absolute" right={-4} top="-5">
       <TouchableOpacity
         hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }}
         onPress={() => artworkActions.removePhoto(photo)}

@@ -142,7 +142,7 @@ export class AllEvents extends React.Component<Props, State> {
   renderItemSeparator = ({ leadingItem }) => {
     if (["fairs", "saved", "header"].indexOf(leadingItem.type) === -1) {
       return (
-        <Box py={1} px={2}>
+        <Box py="1" px="2">
           <Separator />
         </Box>
       )
@@ -209,7 +209,7 @@ export class AllEvents extends React.Component<Props, State> {
         return <SavedEventSection data={data} citySlug={citySlug} sponsoredContentUrl={sponsoredContent.artGuideUrl} />
       case "header":
         return (
-          <Box px={2} pt={4}>
+          <Box px="2" pt="4">
             {!!data && <Serif size="8">{data}</Serif>}
           </Box>
         )
@@ -229,7 +229,7 @@ export class AllEvents extends React.Component<Props, State> {
           // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           keyExtractor={(item) => item.type}
           renderItem={(item) => this.renderItem(item)}
-          ListFooterComponent={() => <Spacer m={3} />}
+          ListFooterComponent={() => <Spacer m="3" />}
         />
       </Theme>
     )

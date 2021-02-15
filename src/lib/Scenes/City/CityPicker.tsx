@@ -37,7 +37,7 @@ export const CityPicker: React.FC<Props> = (props) => {
   const handleCityList = (scrnHeight: number, city: string) => {
     return (
       <Serif
-        mt={1}
+        mt="1"
         size={dimensions(scrnHeight)[screen(scrnHeight)].cityFontSize}
         lineHeight={dimensions(scrnHeight)[screen(scrnHeight)].lineHeight}
       >
@@ -58,19 +58,19 @@ export const CityPicker: React.FC<Props> = (props) => {
       }}
     >
       <Overlay bounces={false} showsVerticalScrollIndicator={false}>
-        <Box ml={2}>
+        <Box ml="2">
           <Sans size="3" weight="medium">
             Fairs and Shows by City
           </Sans>
         </Box>
-        <Box mx={2}>
+        <Box mx="2">
           {cityList.map((city, i) => (
             <Box key={i}>
               <TouchableOpacity onPress={() => selectCity(city, i)}>
                 <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
                   {handleCityList(screenHeight, city)}
                   {selectedCity === city && (
-                    <Box mb={2} mt={2}>
+                    <Box mb="2" mt="2">
                       <CircleWhiteCheckIcon width={26} height={26} />
                     </Box>
                   )}

@@ -57,7 +57,7 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
         navigate(`/artist-series/${listItem?.node?.slug}`)
       }}
     >
-      <Flex flexDirection="row" mb={1} justifyContent="space-between">
+      <Flex flexDirection="row" mb="1" justifyContent="space-between">
         <Flex flexDirection="row" justifyContent="space-between" width="100%">
           <Flex flexDirection="row">
             <OpaqueImageView
@@ -66,7 +66,7 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
               width={70}
               style={{ borderRadius: 2, overflow: "hidden" }}
             />
-            <Flex ml={1} justifyContent="center">
+            <Flex ml="1" justifyContent="center">
               <Sans size="3t" data-test-id="title">
                 {listItem?.node?.title}
               </Sans>

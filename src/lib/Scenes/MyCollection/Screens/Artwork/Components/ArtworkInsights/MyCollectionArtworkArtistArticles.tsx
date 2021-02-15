@@ -25,7 +25,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
 
   return (
     <ScreenMargin>
-      <Box my={3}>
+      <Box my="3">
         <Separator />
       </Box>
       <Text variant="mediumText" mb="1">
@@ -35,13 +35,13 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
       {articleEdges.map(({ thumbnailTitle, slug, publishedAt, internalID, thumbnailImage }) => {
         return (
           <TouchableOpacity onPress={() => navigate(`/article/${slug}`)} key={internalID}>
-            <Box my={0.5}>
+            <Box my="0.5">
               <Flex flexDirection="row">
-                <Box pr={1} style={{ flex: 1 }}>
+                <Box pr="1" style={{ flex: 1 }}>
                   <Flex flexDirection="row">
                     <Text style={{ flex: 1 }}>{thumbnailTitle}</Text>
                   </Flex>
-                  <Text color="black60" my={0.5}>
+                  <Text color="black60" my="0.5">
                     {publishedAt}
                   </Text>
                 </Box>
@@ -55,7 +55,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
         )
       })}
 
-      <Spacer my={1} />
+      <Spacer my="1" />
 
       <Box>
         <CaretButton

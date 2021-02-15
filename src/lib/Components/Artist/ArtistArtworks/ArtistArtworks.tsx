@@ -173,14 +173,14 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
   const filteredArtworks = () => {
     if (artworksTotal === 0) {
       return (
-        <Box mb="80px" pt={1}>
+        <Box mb={80} pt="1">
           <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} trackClear={trackClear} />
         </Box>
       )
     } else {
       return (
         <>
-          <Spacer mb={2} />
+          <Spacer mb="2" />
           <InfiniteScrollArtworksGrid
             connection={artist.artworks!}
             loadMore={relay.loadMore}
@@ -229,7 +229,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
                 contextModule={ContextModule.artistSeriesRail}
                 artist={artist}
                 artistSeriesHeader="Top Artist Series"
-                mt={2}
+                mt="2"
               />
             )
           case "notableWorks":
@@ -244,7 +244,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
             )
           case "separator":
             return (
-              <Box m={-2} mb={1} mt={1}>
+              <Box m="-2" mb="1" mt="1">
                 <Separator />
               </Box>
             )

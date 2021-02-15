@@ -4,6 +4,7 @@ import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
+import { SpacingUnit } from "../../helpers"
 import { SansSize, themeProps } from "../../Theme"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
@@ -168,14 +169,14 @@ export const Button: React.FC<ButtonProps> = (props) => {
   const [previous, setPrevious] = useState(DisplayState.Enabled)
   const [current, setCurrent] = useState(DisplayState.Enabled)
 
-  const getSize = (): { height: number; size: SansSize; px: number } => {
+  const getSize = (): { height: number; size: SansSize; px: SpacingUnit } => {
     switch (size) {
       case "small":
-        return { height: props.inline ? 17 : 26, size: "2", px: props.inline ? 0 : 1 }
+        return { height: props.inline ? 17 : 26, size: "2", px: props.inline ? 0 : "1" }
       case "medium":
-        return { height: props.inline ? 21 : 41, size: "3t", px: props.inline ? 0 : 2 }
+        return { height: props.inline ? 21 : 41, size: "3t", px: props.inline ? 0 : "2" }
       case "large":
-        return { height: props.inline ? 21 : 50, size: "3t", px: props.inline ? 0 : 3 }
+        return { height: props.inline ? 21 : 50, size: "3t", px: props.inline ? 0 : "3" }
     }
   }
 

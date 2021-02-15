@@ -11,7 +11,7 @@ export const HeaderTabsGridPlaceholder: React.FC = () => {
             <Spacer mb={75} />
             {/* Entity name */}
             <PlaceholderText width={180} />
-            <Spacer mb={1} />
+            <Spacer mb="1" />
             {/* subtitle text */}
             <PlaceholderText width={100} />
             {/* more subtitle text */}
@@ -19,16 +19,16 @@ export const HeaderTabsGridPlaceholder: React.FC = () => {
           </Flex>
           <PlaceholderText width={70} alignSelf="flex-end" />
         </Flex>
-        <Spacer mb={3} />
+        <Spacer mb="3" />
         {/* tabs */}
-        <Flex justifyContent="space-around" flexDirection="row" px={2}>
+        <Flex justifyContent="space-around" flexDirection="row" px="2">
           <PlaceholderText width={40} />
           <PlaceholderText width={50} />
           <PlaceholderText width={40} />
         </Flex>
-        <Spacer mb={1} />
+        <Spacer mb="1" />
         <Separator />
-        <Spacer mb={3} />
+        <Spacer mb="3" />
         {/* masonry grid */}
         <PlaceholderGrid />
       </Flex>

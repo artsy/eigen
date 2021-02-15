@@ -97,7 +97,7 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
             <Title mt={0}>Select country</Title>
 
             <Input
-              mb={3}
+              mb="3"
               autoCorrect={false}
               clearButtonMode="while-editing"
               placeholder="Country"
@@ -113,14 +113,14 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
               {results.length > 0 && !isLoading
                 ? results.map((result) => (
                     <TouchableWithoutFeedback key={result.id} onPress={() => this.locationSelected(result)}>
-                      <Serif size="4" ml={3} mb={3}>
+                      <Serif size="4" ml="3" mb="3">
                         {result.name}
                       </Serif>
                     </TouchableWithoutFeedback>
                   ))
                 : !!query &&
                   !isLoading && (
-                    <Serif size="4" ml={3} color="black30">
+                    <Serif size="4" ml="3" color="black30">
                       Could not find “{query}.”
                     </Serif>
                   )}

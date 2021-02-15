@@ -21,7 +21,7 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
 
   return (
     <Touchable underlayColor={color("black5")} onPress={onPress}>
-      <Flex py="2" px={2} flexDirection="row">
+      <Flex py="2" px="2" flexDirection="row">
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
           <Flex
@@ -32,7 +32,7 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
             alignItems="center"
             justifyContent="center"
           >
-            <NoArtworkIcon width={28} height={28} opacity={0.3} />
+            <NoArtworkIcon width={28} height={28} opacity="0.3" />
           </Flex>
         ) : (
           <Flex
@@ -50,7 +50,7 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
         {/* Sale Artwork Details */}
         <Flex pl={15} flex={1} flexDirection="row" justifyContent="space-between">
           <Flex flex={3}>
-            <Flex flexDirection="row" mb={"3px"}>
+            <Flex flexDirection="row" mb={3}>
               <Text variant="caption" ellipsizeMode="middle" numberOfLines={2} style={{ flexShrink: 1 }}>
                 {auctionResult.title}
                 {!!auctionResult.dateText && auctionResult.dateText !== "" && `, ${auctionResult.dateText}`}

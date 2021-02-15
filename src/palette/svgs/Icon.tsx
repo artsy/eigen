@@ -1,17 +1,7 @@
+import { SpaceProps } from "palette/helpers"
 import Svg, { SvgProps } from "react-native-svg"
 import styled from "styled-components"
-import {
-  left,
-  LeftProps,
-  position,
-  PositionProps,
-  right,
-  RightProps,
-  space,
-  SpaceProps,
-  top,
-  TopProps,
-} from "styled-system"
+import { left, LeftProps, position, PositionProps, right, RightProps, space, top, TopProps } from "styled-system"
 import { Color } from "../Theme"
 
 // tslint:disable-next-line:no-empty-interface

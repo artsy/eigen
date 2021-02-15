@@ -154,17 +154,17 @@ const Home = (props: Props) => {
               }
             }}
             ListHeaderComponent={
-              <Box mb={1} mt={2}>
+              <Box mb="1" mt="2">
                 <Flex alignItems="center">
                   <ArtsyLogoIcon scale={0.75} />
                 </Flex>
-                <Spacer mb="15px" />
+                <Spacer mb={15} />
                 <HomeHeroContainer homePage={homePage} />
                 <Spacer mb="2" />
               </Box>
             }
-            ItemSeparatorComponent={() => <Spacer mb={3} />}
-            ListFooterComponent={() => <Spacer mb={3} />}
+            ItemSeparatorComponent={() => <Spacer mb="3" />}
+            ListFooterComponent={() => <Spacer mb="3" />}
             keyExtractor={(_item, index) => String(index)}
           />
           <EmailConfirmationBannerFragmentContainer me={me} />
@@ -248,7 +248,7 @@ const HomePlaceholder: React.FC<{}> = () => {
   return (
     <Theme>
       <Flex>
-        <Box mb={1} mt={2}>
+        <Box mb="1" mt="2">
           <Flex alignItems="center">
             <ArtsyLogoIcon scale={0.75} />
           </Flex>
@@ -268,21 +268,21 @@ const HomePlaceholder: React.FC<{}> = () => {
         {
           // Small tiles to mimic the artwork rails
           times(3).map((r) => (
-            <Box key={r} ml={2} mr={2}>
-              <Spacer mb={3} />
+            <Box key={r} ml="2" mr="2">
+              <Spacer mb="3" />
               <PlaceholderText width={100 + Math.random() * 100} />
-              <Flex flexDirection="row" mt={1}>
+              <Flex flexDirection="row" mt="1">
                 <Join separator={<Spacer width={15} />}>
                   {times(3 + Math.random() * 10).map((index) => (
                     <Flex key={index}>
                       <PlaceholderBox height={120} width={120} />
-                      <Spacer mb={2} />
+                      <Spacer mb="2" />
                       <PlaceholderText width={120} />
                       <PlaceholderText width={30 + Math.random() * 60} />
                     </Flex>
                   ))}
                 </Join>
-                <Spacer mb={2} />
+                <Spacer mb="2" />
               </Flex>
             </Box>
           ))
@@ -290,16 +290,16 @@ const HomePlaceholder: React.FC<{}> = () => {
         {
           // Larger tiles to mimic the fairs, sales, and collections rails
           times(3).map((r) => (
-            <Box key={r} ml={2} mr={2}>
-              <Spacer mb={3} />
+            <Box key={r} ml="2" mr="2">
+              <Spacer mb="3" />
               <PlaceholderText width={100 + Math.random() * 100} />
-              <Flex flexDirection="row" mt={1}>
+              <Flex flexDirection="row" mt="1">
                 <Join separator={<Spacer width={15} />}>
                   {times(10).map((index) => (
                     <PlaceholderBox key={index} height={270} width={270} />
                   ))}
                 </Join>
-                <Spacer mb={2} />
+                <Spacer mb="2" />
               </Flex>
             </Box>
           ))

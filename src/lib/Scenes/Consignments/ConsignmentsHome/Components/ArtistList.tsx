@@ -31,23 +31,23 @@ export const ArtistList: React.FC<ArtistListProps> = ({ targetSupply, isLoading 
   return (
     <Box>
       <Box>
-        <Sans size="4" px={2}>
+        <Sans size="4" px="2">
           Artists in-demand on Artsy
         </Sans>
 
-        <Spacer mb={2} />
+        <Spacer mb="2" />
 
         <FlatList
           horizontal
-          ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
-          ListFooterComponent={() => <Spacer mr={2}></Spacer>}
-          ItemSeparatorComponent={() => <Spacer mr={3} />}
+          ListHeaderComponent={() => <Spacer mr="2" />}
+          ListFooterComponent={() => <Spacer mr="2" />}
+          ItemSeparatorComponent={() => <Spacer mr="3" />}
           showsHorizontalScrollIndicator={false}
           data={chunksOfArtists}
           initialNumToRender={2}
           renderItem={({ item }) => (
             <Flex>
-              <Join separator={<Spacer mb={2} />}>
+              <Join separator={<Spacer mb="2" />}>
                 {item.map((artist, index) => {
                   return <ArtistItem artist={artist} key={artist?.name || index} />
                 })}
@@ -121,15 +121,15 @@ const ArtistItem: React.FC<{ artist: any }> = ({ artist }) => {
 const ArtistListPlaceholder: React.FC = () => {
   return (
     <Box>
-      <Box px={2}>
+      <Box px="2">
         <PlaceholderText width={250} />
       </Box>
 
-      <Spacer mb={2} />
+      <Spacer mb="2" />
 
-      <Flex flexDirection="row" pl={2}>
+      <Flex flexDirection="row" pl="2">
         <Flex>
-          <Join separator={<Spacer mb={2} />}>
+          <Join separator={<Spacer mb="2" />}>
             {[...new Array(4)].map((_, index) => {
               return (
                 <Flex flexDirection="row" alignItems="center" key={index}>

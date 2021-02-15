@@ -27,10 +27,10 @@ export class ArtworkHistory extends React.Component<ArtworkHistoryProps> {
     const textLimit = truncatedTextLimit()
 
     return (
-      <Join separator={<Spacer pb={3} />}>
+      <Join separator={<Spacer pb="3" />}>
         {displaySections.map(({ title, value, contextModule }, index) => (
           <Box key={index}>
-            <Sans size="4t" pb={2}>
+            <Sans size="4t" pb="2">
               {title}
             </Sans>
             <ReadMore

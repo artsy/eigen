@@ -43,7 +43,7 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(({ enab
               }}
               hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
             >
-              <Flex pl={1}>
+              <Flex pl="1">
                 <Sans size="2" color="black60">
                   Cancel
                 </Sans>

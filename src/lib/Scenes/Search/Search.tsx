@@ -19,7 +19,7 @@ export const Search: React.FC = () => {
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
-        <Flex p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
+        <Flex p="2" pb="1" style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
           <SearchInput
             ref={searchProviderValues.inputRef}
             placeholder="Search artists, artworks, galleries, etc"
@@ -50,9 +50,9 @@ export const Search: React.FC = () => {
         ) : (
           <Scrollable>
             <RecentSearches />
-            <Spacer mb={3} />
+            <Spacer mb="3" />
             {!isPad() && Platform.OS === "ios" && <CityGuideCTA />}
-            <Spacer mb="40px" />
+            <Spacer mb={40} />
           </Scrollable>
         )}
       </KeyboardAvoidingView>

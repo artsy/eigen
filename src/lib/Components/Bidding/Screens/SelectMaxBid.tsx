@@ -83,7 +83,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
             />
           )}
 
-          <Box m={4}>
+          <Box m="4">
             <Button block width={100} onPress={this.onPressNext}>
               Next
             </Button>

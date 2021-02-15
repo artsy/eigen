@@ -51,7 +51,7 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
 
   return (
     <Box {...rest}>
-      <Box flexDirection="row" justifyContent="space-between" mx={2} mb={2}>
+      <Box flexDirection="row" justifyContent="space-between" mx="2" mb="2">
         <Text variant="subtitle">Works by artists you follow</Text>
         {artworks.length > 3 && (
           <TouchableOpacity
@@ -70,9 +70,9 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
       <FlatList<typeof artworks[number]>
         horizontal
         data={artworks}
-        ListHeaderComponent={<Spacer mx={1} />}
-        ListFooterComponent={<Spacer mx={1} />}
-        ItemSeparatorComponent={() => <Spacer mx={0.5} />}
+        ListHeaderComponent={<Spacer mx="1" />}
+        ListFooterComponent={<Spacer mx="1" />}
+        ItemSeparatorComponent={() => <Spacer mx="0.5" />}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item, index) => String(item.artwork!.id || index)}
         renderItem={({ item: { artwork }, index }) => (

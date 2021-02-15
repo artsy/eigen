@@ -100,7 +100,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
           {formattedTitleAndYear}
         </Text>
       </ScreenMargin>
-      <Spacer my={1} />
+      <Spacer my="1" />
       <TouchableOpacity
         disabled={hasImagesStillProcessing(defaultImage, images)}
         onPress={() => {
@@ -111,15 +111,15 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
         {renderMainImageView()}
         {!!images && !hasImagesStillProcessing(defaultImage, images) && (
           <Flex
-            mr={2}
+            mr="2"
             style={{
               top: -50,
               alignItems: "flex-end",
             }}
           >
             <Flex
-              py={0.5}
-              px={2}
+              py="0.5"
+              px="2"
               style={{
                 backgroundColor: "rgba(255, 255, 255, 0.95)",
                 borderRadius: 3,

@@ -19,9 +19,9 @@ export const ShowInstallShots: React.FC<ShowInstallShotsProps> = ({ show, ...res
         data={images}
         horizontal
         showsHorizontalScrollIndicator={false}
-        ListHeaderComponent={<Spacer mx={1} />}
-        ListFooterComponent={<Spacer mx={1} />}
-        ItemSeparatorComponent={() => <Spacer mx={0.5} />}
+        ListHeaderComponent={<Spacer mx="1" />}
+        ListFooterComponent={<Spacer mx="1" />}
+        ItemSeparatorComponent={() => <Spacer mx="0.5" />}
         keyExtractor={(image, i) => String(image.internalID || i)}
         renderItem={({ item: image }) => {
           if (!image.src || !image.dimensions) {
@@ -36,7 +36,7 @@ export const ShowInstallShots: React.FC<ShowInstallShotsProps> = ({ show, ...res
                 <Text
                   variant="caption"
                   color="black60"
-                  mt={0.5}
+                  mt="0.5"
                   numberOfLines={1}
                   ellipsizeMode="tail"
                   style={{ width: image.dimensions.width! }}

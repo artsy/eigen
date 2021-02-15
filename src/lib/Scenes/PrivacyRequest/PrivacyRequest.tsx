@@ -9,7 +9,7 @@ export class PrivacyRequest extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <Box mb={1} mt={2}>
+        <Box mb="1" mt="2">
           <Flex alignItems="center">
             <Sans size="4" weight="medium">
               Personal data request
@@ -17,9 +17,9 @@ export class PrivacyRequest extends React.Component {
           </Flex>
         </Box>
         <Separator />
-        <Spacer my={1} />
-        <Box mx={2}>
-          <Join separator={<Spacer mb={2} />}>
+        <Spacer my="1" />
+        <Box mx="2">
+          <Join separator={<Spacer mb="2" />}>
             <Sans size="3" textAlign="left">
               Please see Artsy’s{" "}
               <LinkText onPress={() => navigate("/privacy", { modal: true })}>Privacy Policy</LinkText> for more
@@ -29,13 +29,13 @@ export class PrivacyRequest extends React.Component {
               To submit a personal data request tap the button below or email{" "}
               <LinkText onPress={() => presentEmailComposer("privacy@artsy.net", "Personal Data Request")}>
                 privacy@artsy.net.
-              </LinkText>{" "}
+              </LinkText>
             </Sans>
             <Button
               variant="secondaryGray"
               block
               size="large"
-              mt={1}
+              mt="1"
               onPress={() =>
                 presentEmailComposer(
                   "privacy@artsy.net",

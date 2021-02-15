@@ -34,7 +34,7 @@ const MyCollectionArtworkImages: React.FC<MyCollectionArtworkImagesProps> = ({ a
               height={(dimensions.width / (image!.width || 1)) * (image!.height || 1)}
               width={dimensions.width}
             />
-            <Spacer my={1} />
+            <Spacer my="1" />
           </View>
         ))}
       </ScrollView>

@@ -32,7 +32,7 @@ const Shows: React.FC<Props> = ({ artist }) => {
   }
   return (
     <StickyTabPageScrollView>
-      <Stack spacing={3} py={2}>
+      <Stack spacing={3} py="2">
         {!!currentAndUpcomingShows.length && (
           <View>
             <SectionTitle title="Current & Upcoming Shows" />

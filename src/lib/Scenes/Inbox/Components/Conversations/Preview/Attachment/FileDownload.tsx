@@ -30,7 +30,7 @@ export const FileDownload: React.FC<Props> = (props) => {
   return (
     <AttachmentPreview attachment={attachment} onSelected={() => downloadFile(attachment)}>
       <Container>
-        <DownloadIcon width={iconSize} height={iconSize} mx={1} my={0.5} />
+        <DownloadIcon width={iconSize} height={iconSize} mx="1" my="0.5" />
         <AttachmentTextContainer>
           <Text variant="caption">{attachment.fileName}</Text>
         </AttachmentTextContainer>

@@ -11,7 +11,7 @@ export const ArtistSeriesHeader: React.FC<ArtistSeriesHeaderProps> = ({ artistSe
   const url = artistSeries.image?.url!
 
   return (
-    <Flex flexDirection="row" justifyContent="center" pt={1}>
+    <Flex flexDirection="row" justifyContent="center" pt="1">
       <OpaqueImageView width={180} height={180} imageURL={url} style={{ borderRadius: 2, overflow: "hidden" }} />
     </Flex>
   )

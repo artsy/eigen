@@ -95,7 +95,7 @@ export default class TabBar extends React.Component<TabBarProps> {
     })
 
     return (
-      <Wrapper px={2}>
+      <Wrapper px="2">
         <Tabs>
           {this.props.tabs.map((name, page) => {
             const isTabActive = this.props.activeTab === page

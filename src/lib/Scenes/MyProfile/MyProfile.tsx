@@ -34,7 +34,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       <Sans size="8" mx="2" mt="3">
         {me.name}
       </Sans>
-      <Separator my={2} />
+      <Separator my="2" />
       <SectionHeading title="Favorites" />
       {!!shouldDisplayMyCollection && (
         <MenuItem isBeta={true} title="My Collection" onPress={() => navigate("my-collection")} />
@@ -43,7 +43,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       {!!recentlySavedArtworks.length && (
         <SmallTileRailContainer artworks={recentlySavedArtworks} listRef={listRef} contextModule={null as any} />
       )}
-      <Separator mt={3} mb={2} />
+      <Separator mt="3" mb="2" />
       <SectionHeading title="Account Settings" />
       <MenuItem title="Account" onPress={() => navigate("my-account")} />
       <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
@@ -57,21 +57,21 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       <MenuItem title="Personal data request" onPress={() => navigate("privacy-request")} />
       <MenuItem title="About" onPress={() => navigate("about")} />
       <MenuItem title="Log out" onPress={confirmLogout} chevron={null} />
-      <Spacer mb={1} />
+      <Spacer mb="1" />
     </ScrollView>
   )
 }
 
 export const MyProfilePlaceholder: React.FC<{}> = () => (
   <Flex pt="3" px="2">
-    <Join separator={<Separator my={2} />}>
+    <Join separator={<Separator my="2" />}>
       <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
       <Flex>
         <PlaceholderText width={100 + Math.random() * 100} />
         <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
-        <Flex flexDirection="row" py={2}>
+        <Flex flexDirection="row" py="2">
           {times(3).map((index: number) => (
-            <Flex key={index} marginRight={1}>
+            <Flex key={index} marginRight="1">
               <PlaceholderBox height={120} width={120} />
               <PlaceholderText marginTop={20} key={index} width={40 + Math.random() * 80} />
             </Flex>
@@ -81,7 +81,7 @@ export const MyProfilePlaceholder: React.FC<{}> = () => (
       <Flex>
         <PlaceholderText width={100 + Math.random() * 100} />
         {times(3).map((index: number) => (
-          <Flex key={index} py={1}>
+          <Flex key={index} py="1">
             <PlaceholderText width={200 + Math.random() * 100} />
           </Flex>
         ))}

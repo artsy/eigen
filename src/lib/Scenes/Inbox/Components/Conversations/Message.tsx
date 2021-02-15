@@ -109,10 +109,10 @@ export class Message extends React.Component<Props> {
               </Sans>
             </Hyperlink>
           </AttachmentContainer>
-          {!!message.attachments?.length && <Spacer mb={0.5} />}
+          {!!message.attachments?.length && <Spacer mb="0.5" />}
           {this.renderAttachmentPreviews(message.attachments, backgroundColor)}
         </Flex>
-        {showTimeSince && <TimeSince time={message.createdAt} style={{ alignSelf }} mt={0.5} />}
+        {showTimeSince && <TimeSince time={message.createdAt} style={{ alignSelf }} mt="0.5" />}
       </>
     )
   }
