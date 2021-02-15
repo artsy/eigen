@@ -18,7 +18,7 @@ export const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => {
   return (
     <>
       {!!title && (
-        <Text mb={1} variant="mediumText">
+        <Text mb="1" variant="mediumText">
           {title}
         </Text>
       )}

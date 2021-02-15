@@ -1,5 +1,6 @@
+import { ContextModule } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
-import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
+import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import {
   AggregationName,
   ArtworkFilterContext,
@@ -129,13 +130,21 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
     exitModal?.()
   }
 
-  const trackChangeFilters = (
-    screenName: PageNames,
-    ownerEntity: OwnerEntityTypes,
-    currentParams: FilterParams,
+  const trackChangeFilters = ({
+    changedParams,
+    contextModule,
+    currentParams,
+    ownerEntity,
+    screenName,
+  }: {
     changedParams: any
-  ) => {
+    contextModule?: ContextModule
+    currentParams: FilterParams
+    ownerEntity: OwnerEntityTypes
+    screenName: PageNames
+  }) => {
     tracking.trackEvent({
+      context_module: contextModule,
       context_screen: screenName,
       context_screen_owner_type: ownerEntity,
       context_screen_owner_id: id,
@@ -187,6 +196,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
             // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
             detachInactiveScreens={false}
             screenOptions={{
+              ...TransitionPresets.SlideFromRightIOS,
               headerShown: false,
               safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
               cardStyle: { backgroundColor: "white" },
@@ -227,61 +237,62 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                 // TODO: Update to use cohesion
                 switch (mode) {
                   case FilterModalMode.Collection:
-                    trackChangeFilters(
-                      PageNames.Collection,
-                      OwnerEntityTypes.Collection,
-                      appliedFiltersParams,
-                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                    )
+                    trackChangeFilters({
+                      screenName: PageNames.Collection,
+                      ownerEntity: OwnerEntityTypes.Collection,
+                      currentParams: appliedFiltersParams,
+                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                    })
                     break
                   case FilterModalMode.ArtistArtworks:
-                    trackChangeFilters(
-                      PageNames.ArtistPage,
-                      OwnerEntityTypes.Artist,
-                      appliedFiltersParams,
-                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                    )
+                    trackChangeFilters({
+                      screenName: PageNames.ArtistPage,
+                      ownerEntity: OwnerEntityTypes.Artist,
+                      currentParams: appliedFiltersParams,
+                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                    })
                     break
                   case FilterModalMode.Fair:
-                    trackChangeFilters(
-                      PageNames.FairPage,
-                      OwnerEntityTypes.Fair,
-                      appliedFiltersParams,
-                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                    )
+                    trackChangeFilters({
+                      screenName: PageNames.FairPage,
+                      ownerEntity: OwnerEntityTypes.Fair,
+                      currentParams: appliedFiltersParams,
+                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                    })
                     break
                   case FilterModalMode.SaleArtworks:
-                    trackChangeFilters(
-                      PageNames.Auction,
-                      OwnerEntityTypes.Auction,
-                      appliedFiltersParams,
-                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                    )
+                    trackChangeFilters({
+                      screenName: PageNames.Auction,
+                      ownerEntity: OwnerEntityTypes.Auction,
+                      currentParams: appliedFiltersParams,
+                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                    })
                     break
                   case FilterModalMode.Show:
-                    trackChangeFilters(
-                      PageNames.ShowPage,
-                      OwnerEntityTypes.Show,
-                      appliedFiltersParams,
-                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                    )
+                    trackChangeFilters({
+                      screenName: PageNames.ShowPage,
+                      ownerEntity: OwnerEntityTypes.Show,
+                      currentParams: appliedFiltersParams,
+                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                    })
                     break
                   case FilterModalMode.AuctionResults:
-                    trackChangeFilters(
-                      PageNames.AuctionResult,
-                      OwnerEntityTypes.AuctionResult,
-                      appliedFiltersParams,
-                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                    )
+                    trackChangeFilters({
+                      screenName: PageNames.ArtistPage,
+                      ownerEntity: OwnerEntityTypes.Artist,
+                      currentParams: appliedFiltersParams,
+                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                      contextModule: ContextModule.auctionResults,
+                    })
                     break
 
                   case FilterModalMode.Partner:
-                    trackChangeFilters(
-                      PageNames.PartnerPage,
-                      OwnerEntityTypes.Partner,
-                      appliedFiltersParams,
-                      changedFiltersParams(appliedFiltersParams, state.selectedFilters)
-                    )
+                    trackChangeFilters({
+                      screenName: PageNames.PartnerPage,
+                      ownerEntity: OwnerEntityTypes.Partner,
+                      currentParams: appliedFiltersParams,
+                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                    })
                     break
                 }
                 applyFilters()
@@ -369,7 +380,7 @@ export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigatio
             {title}
           </Sans>
         </Flex>
-        <Flex alignItems="flex-end" mt={0.5} mb={2}>
+        <Flex alignItems="flex-end" mt="0.5" mb="2">
           <CloseIconContainer hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={handleTappingCloseIcon}>
             <CloseIcon fill="black100" />
           </CloseIconContainer>
@@ -395,7 +406,7 @@ export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigatio
             clearAllFilters()
           }}
         >
-          <Sans mr={2} mt={2} size="4" color={isClearAllButtonEnabled ? "black100" : "black30"}>
+          <Sans mr="2" mt="2" size="4" color={isClearAllButtonEnabled ? "black100" : "black30"}>
             Clear all
           </Sans>
         </ClearAllButton>
@@ -411,7 +422,7 @@ export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigatio
             <Box>
               <TouchableOptionListItemRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
                 <OptionListItem>
-                  <Flex p={2} pr="15px" flexDirection="row" justifyContent="space-between" flexGrow={1}>
+                  <Flex p="2" pr={15} flexDirection="row" justifyContent="space-between" flexGrow={1}>
                     <Flex flex={1}>
                       <Sans size="3t" color="black100">
                         {item.displayText}
@@ -531,7 +542,7 @@ const OptionDetail: React.FC<{ currentOption: any; filterType: any }> = ({ curre
 const ColorSwatch: React.FC<{ colorOption: ColorOption }> = ({ colorOption }) => {
   return (
     <Box
-      mr={0.3}
+      mr="0.3"
       style={{
         alignSelf: "center",
         width: 10,
@@ -561,6 +572,7 @@ interface AnimatedArtworkFilterButtonProps {
   onPress: () => void
   text?: string
 }
+
 export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonProps> = ({
   isVisible,
   onPress,
@@ -611,10 +623,10 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
         </Sans>
         {getFiltersCount() > 0 && (
           <>
-            <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+            <Sans size="3t" pl="0.5" py="1" color="white100" weight="medium">
               {"\u2022"}
             </Sans>
-            <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+            <Sans size="3t" pl="0.5" py="1" color="white100" weight="medium">
               {getFiltersCount()}
             </Sans>
           </>

@@ -164,5 +164,9 @@ export function unsafe__getSelectedTab() {
 }
 
 export function useIsStaging() {
+  // TODO: support non-staging environments on android
+  if (Platform.OS === "android") {
+    return true
+  }
   return GlobalStore.useAppState((state) => state.native.sessionState.env === "staging")
 }

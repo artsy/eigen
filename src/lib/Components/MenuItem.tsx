@@ -22,11 +22,11 @@ export const MenuItem: React.FC<{
 }) => {
   return (
     <Touchable onPress={onPress} underlayColor={color("black5")} disabled={disabled}>
-      <Flex flexDirection="row" alignItems="center" justifyContent="space-between" py={7.5} px="2" pr="15px">
+      <Flex flexDirection="row" alignItems="center" justifyContent="space-between" py={7.5} px="2" pr={15}>
         <Flex flexDirection="row" mr="2">
           <Sans size="4">{title}</Sans>
           {!!isBeta && (
-            <Flex px={0.5} mx={1} backgroundColor={color("black10")}>
+            <Flex px="0.5" mx="1" backgroundColor={color("black10")}>
               <Sans size="3" color={color("black60")}>
                 Beta
               </Sans>

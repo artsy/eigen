@@ -41,12 +41,12 @@ const PartnerLocations: React.FC<{
         onScroll={isCloseToBottom(fetchNextPage)}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={() => (
-          <Box pt={60} px={2}>
+          <Box pt={60} px="2">
             <Sans size="3t">{locations.length > 1 ? "Locations" : "Location"}</Sans>
             <Serif size="5">{partner.name}</Serif>
           </Box>
         )}
-        ListFooterComponent={() => <Spacer mb={2} />}
+        ListFooterComponent={() => <Spacer mb="2" />}
         renderItem={({ item }) => <PartnerMap location={item} />}
       />
     </Theme>

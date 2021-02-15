@@ -94,6 +94,8 @@
 		<string>fbauth2</string>
 		<string>fbshareextension</string>
 		<string>instagram</string>
+		<string>instagram-stories</string>
+		<string>whatsapp</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

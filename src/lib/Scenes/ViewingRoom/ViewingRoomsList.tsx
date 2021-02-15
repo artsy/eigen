@@ -75,7 +75,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = (props
   return (
     <ProvideScreenTracking info={tracks.screen()}>
       <Flex flexDirection="column" justifyContent="space-between" height="100%">
-        <Sans size="4t" weight="medium" textAlign="center" mb={1} mt={2}>
+        <Sans size="4t" weight="medium" textAlign="center" mb="1" mt="2">
           Viewing Rooms
         </Sans>
         <Separator />
@@ -177,7 +177,7 @@ const Placeholder = () => (
         <React.Fragment key={i}>
           <PlaceholderBox width="100%" height={220} />
           <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
-          <PlaceholderText width={80 + Math.random() * 100} marginTop={5} />
+          <PlaceholderText width={80 + Math.random() * 100} marginTop="5" />
         </React.Fragment>
       ))}
     </Flex>
@@ -191,7 +191,7 @@ const LoadingMorePlaceholder = () => (
         <React.Fragment key={i}>
           <PlaceholderBox width="100%" height={220} />
           <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
-          <PlaceholderText width={80 + Math.random() * 100} marginTop={5} />
+          <PlaceholderText width={80 + Math.random() * 100} marginTop="5" />
           <Spacer mb="3" />
         </React.Fragment>
       ))}

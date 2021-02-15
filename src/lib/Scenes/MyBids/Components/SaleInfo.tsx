@@ -79,7 +79,7 @@ export const SaleInfo = ({
   return (
     <Flex style={{ marginTop: 15 }}>
       <Flex flexDirection="row">
-        <Box width="25px" alignSelf="center">
+        <Box width={25} alignSelf="center">
           <Icon fill={noteColor as any} />
         </Box>
         <Text style={{ flex: -1 }} variant="caption" color={noteColor}>
@@ -87,7 +87,7 @@ export const SaleInfo = ({
         </Text>
       </Flex>
       {!!line2 && (
-        <Text ml="25px" variant="caption" color="yellow100">
+        <Text ml={25} variant="caption" color="yellow100">
           {line2}
         </Text>
       )}

@@ -70,6 +70,7 @@ import { Search } from "./Scenes/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
+import { ToastProvider } from "./Components/Toast/toastHook"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
@@ -225,9 +226,11 @@ class PageWrapper extends React.Component<PageWrapperProps> {
         <RelayEnvironmentProvider environment={defaultEnvironment}>
           <GlobalStoreProvider>
             <Theme>
-              <_FancyModalPageWrapper>
-                <InnerPageWrapper {...this.props} />
-              </_FancyModalPageWrapper>
+              <ToastProvider>
+                <_FancyModalPageWrapper>
+                  <InnerPageWrapper {...this.props} />
+                </_FancyModalPageWrapper>
+              </ToastProvider>
             </Theme>
           </GlobalStoreProvider>
         </RelayEnvironmentProvider>

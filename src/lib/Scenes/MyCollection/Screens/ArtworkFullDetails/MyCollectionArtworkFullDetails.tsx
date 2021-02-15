@@ -29,7 +29,7 @@ const MyCollectionArtworkFullDetails: React.FC<{ artwork: MyCollectionArtworkFul
       >
         Artwork Details
       </FancyModalHeader>
-      <Spacer my={0.5} />
+      <Spacer my="0.5" />
       <MyCollectionArtworkMetaFragmentContainer artwork={props.artwork} viewAll />
 
       <MyCollectionArtworkFormModal

@@ -11,12 +11,12 @@ interface SwitchMenuProps {
 }
 
 export const SwitchMenu = ({ onChange, value, title, description, disabled = false }: SwitchMenuProps) => (
-  <Flex flexDirection="row" alignItems="flex-start" flexShrink={0} my={1}>
+  <Flex flexDirection="row" alignItems="flex-start" flexShrink={0} my="1">
     <Flex style={{ width: "80%", justifyContent: "center" }}>
       <Sans size="4t" color={disabled ? "black60" : "black100"}>
         {title}
       </Sans>
-      <Sans size="3t" color={disabled ? "black30" : "black60"} py={0.5}>
+      <Sans size="3t" color={disabled ? "black30" : "black60"} py="0.5">
         {description}
       </Sans>
     </Flex>

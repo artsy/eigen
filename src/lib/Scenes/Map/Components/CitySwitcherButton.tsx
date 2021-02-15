@@ -54,10 +54,10 @@ export class CitySwitcherButton extends Component<Props> {
         >
           {city ? (
             <>
-              <Sans size="3t" weight="medium" ml={3}>
+              <Sans size="3t" weight="medium" ml="3">
                 {city.name}
               </Sans>
-              <Box ml={2} mr={3}>
+              <Box ml="2" mr="3">
                 <ChevronIcon initialDirection="down" color={color("black100")} width={20} height={20} />
               </Box>
             </>

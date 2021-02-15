@@ -42,14 +42,14 @@ class ShowGridItem extends React.Component<ShowGridItemProps> {
             ) : (
               <EmptyImage />
             )}
-            <Spacer mb={0.5} />
+            <Spacer mb="0.5" />
             <Sans size="3t">{show.name}</Sans>
             <Sans size="3t" color="black60">
               {show.exhibitionPeriod}
             </Sans>
           </Box>
         </TouchableWithoutFeedback>
-        <Spacer mb={2} />
+        <Spacer mb="2" />
       </GridItem>
     )
   }
@@ -78,7 +78,7 @@ export const PartnerShows: React.FC<{
     sections.push({
       key: "past_shows_header",
       content: (
-        <Flex mb={2}>
+        <Flex mb="2">
           <Sans size="4t">Past shows</Sans>
         </Flex>
       ),

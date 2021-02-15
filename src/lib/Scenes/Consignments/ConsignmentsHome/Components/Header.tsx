@@ -18,20 +18,20 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress }) => {
   }
 
   return (
-    <Box px={2} mt={3}>
+    <Box px="2" mt="3">
       <Box>
-        <Sans size="8" textAlign="center" px={2}>
+        <Sans size="8" textAlign="center" px="2">
           Sell Art From Your Collection
         </Sans>
 
-        <Spacer my={0.5} />
+        <Spacer my="0.5" />
 
         <Sans size="4" textAlign="center">
           Reach art buyers all over the world.
         </Sans>
       </Box>
 
-      <Spacer mb={2} />
+      <Spacer mb="2" />
 
       <Button data-test-id="header-cta" variant="primaryBlack" block onPress={handlePress} haptic>
         <Sans size="3" weight="medium">

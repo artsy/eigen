@@ -141,14 +141,14 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
 
     return (
       <BiddingThemeProvider>
-        <Container mt={6}>
+        <Container mt="6">
           <View>
             <Flex alignItems="center">
               {status !== RegistrationStatus.RegistrationStatusPending && <Icon20 source={Icons[status]} />}
-              <Title mt={2} mb={4}>
+              <Title mt="2" mb="4">
                 {title}
               </Title>
-              <Markdown rules={markdownRules} mb={5}>
+              <Markdown rules={markdownRules} mb="5">
                 {msg}
               </Markdown>
             </Flex>

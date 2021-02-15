@@ -71,8 +71,8 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
       }}
     >
       <Flex
-        my={1}
-        mx={2}
+        my="1"
+        mx="2"
         flexDirection="row"
         alignItems="center"
         justifyContent="space-between"
@@ -81,7 +81,7 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
       >
         <Flex flexDirection="row" alignItems="center">
           {renderImage()}
-          <Box m={1} maxWidth={width} style={{ flex: 1 }}>
+          <Box m="1" maxWidth={width} style={{ flex: 1 }}>
             <Sans size="4">{artistNames}</Sans>
             {!!title ? (
               <Sans size="3t" color="black60" numberOfLines={2} style={{ flex: 1 }}>

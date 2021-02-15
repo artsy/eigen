@@ -56,7 +56,7 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
 const MyAccountPlaceholder: React.FC<{}> = ({}) => {
   return (
     <PageWithSimpleHeader title="Account">
-      <Flex px={2} py={1}>
+      <Flex px="2" py="1">
         {times(5).map((index: number) => (
           <Flex key={index} py={7.5}>
             <PlaceholderText width={100 + Math.random() * 100} />

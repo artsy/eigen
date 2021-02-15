@@ -2,6 +2,7 @@ import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.gra
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
 import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { cm2in } from "lib/utils/conversions"
 import { Schema, track } from "lib/utils/track"
 import { take } from "lodash"
@@ -44,7 +45,7 @@ export const shareContent = (title: string, href: string, artists: ArtworkAction
     title: computedTitle,
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     message: computedTitle,
-    url: `https://artsy.net${href}?utm_content=artwork-share`,
+    url: `${getCurrentEmissionState().webURL}${href}?utm_content=artwork-share`,
   }
 }
 
@@ -104,8 +105,8 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
         <Flex flexDirection="row">
           {isOpenSale ? (
             <Touchable haptic onPress={() => this.handleArtworkSave()}>
-              <UtilButton pr={3}>
-                <Box mr={0.5}>{is_saved ? <BellFillIcon fill="purple100" /> : <BellIcon />}</Box>
+              <UtilButton pr="3">
+                <Box mr="0.5">{is_saved ? <BellFillIcon fill="purple100" /> : <BellIcon />}</Box>
                 <Sans size="3" color={is_saved ? color("purple100") : color("black100")}>
                   Watch lot
                 </Sans>
@@ -113,8 +114,8 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
             </Touchable>
           ) : (
             <Touchable haptic onPress={() => this.handleArtworkSave()}>
-              <UtilButton pr={3}>
-                <Box mr={0.5}>{is_saved ? <HeartFillIcon fill="purple100" /> : <HeartIcon />}</Box>
+              <UtilButton pr="3">
+                <Box mr="0.5">{is_saved ? <HeartFillIcon fill="purple100" /> : <HeartIcon />}</Box>
                 <Sans size="3" color={is_saved ? color("purple100") : color("black100")}>
                   {is_saved ? "Saved" : "Save"}
                 </Sans>
@@ -124,8 +125,8 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
 
           {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
             <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
-              <UtilButton pr={3}>
-                <Box mr={0.5}>
+              <UtilButton pr="3">
+                <Box mr="0.5">
                   <EyeOpenedIcon />
                 </Box>
                 <Sans size="3">View in Room</Sans>
@@ -134,7 +135,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
           )}
           <Touchable noFeedback haptic onPress={() => this.props.shareOnPress()}>
             <UtilButton>
-              <Box mr={0.5}>
+              <Box mr="0.5">
                 <ShareIcon />
               </Box>
               <Sans size="3">Share</Sans>

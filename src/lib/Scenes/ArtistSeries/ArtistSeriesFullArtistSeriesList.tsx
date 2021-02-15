@@ -36,7 +36,7 @@ export const FullArtistSeriesList: React.FC<FullArtistSeriesListProps> = ({ arti
           </Sans>
         </Box>
         {seriesList.map((series, index) => (
-          <Flex key={series?.node?.internalID ?? index} flexDirection="row" mb={1} px={2}>
+          <Flex key={series?.node?.internalID ?? index} flexDirection="row" mb="1" px="2">
             <ArtistSeriesListItem
               listItem={series}
               contextModule={ContextModule.artistSeriesRail}

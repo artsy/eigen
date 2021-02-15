@@ -42,12 +42,12 @@ export class EventSection extends React.Component<Props> {
     const { data, title } = this.props
     return (
       <>
-        <Box my={2} px={2}>
+        <Box my="2" px="2">
           <Serif size="8">{title}</Serif>
         </Box>
         {this.renderEvents()}
         {data.length > 2 && (
-          <Box px={2} mb={2}>
+          <Box px="2" mb="2">
             <CaretButton onPress={() => this.viewAllPressed()} text={`View all ${data.length} shows`} />
           </Box>
         )}

@@ -1,10 +1,11 @@
+import Clipboard from "@react-native-community/clipboard"
 import MapboxGL from "@react-native-mapbox-gl/maps"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import { Pin } from "lib/Icons/Pin"
 import { ArtsyMapStyleURL } from "lib/Scenes/Map/GlobalMap"
 import { Box, color, Flex, Text } from "palette"
 import React from "react"
-import { ActionSheetIOS, Clipboard, Linking, TouchableOpacity } from "react-native"
+import { ActionSheetIOS, Linking, TouchableOpacity } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
@@ -160,7 +161,7 @@ export class LocationMap extends React.Component<Props> {
 
     const renderSummaryAddress = () => {
       return (
-        <Box m={2}>
+        <Box m="2">
           {!!partnerName && (
             <Text variant="mediumText" color="black100" textAlign="center">
               {partnerName}
@@ -175,7 +176,7 @@ export class LocationMap extends React.Component<Props> {
 
     const renderSegmentedAddress = () => {
       return (
-        <Box m={2}>
+        <Box m="2">
           {!!partnerName && (
             <Text variant="mediumText" color="black100" textAlign="center">
               {partnerName}

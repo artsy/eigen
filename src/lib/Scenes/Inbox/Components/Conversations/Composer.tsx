@@ -34,6 +34,7 @@ interface Props {
   onSubmit?: (text: string) => any
   value?: string
   artworkID?: string | null
+  isOfferableFromInquiry?: boolean | null
 }
 
 interface State {
@@ -92,7 +93,8 @@ export default class Composer extends React.Component<Props, State> {
     const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
 
     // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
-    const showInquiryMakeOfferButton = unsafe_getFeatureFlag("AROptionsInquiryCheckout")
+    const showInquiryMakeOfferButton =
+      unsafe_getFeatureFlag("AROptionsInquiryCheckout") && this.props.isOfferableFromInquiry
     return (
       <ScreenDimensionsContext.Consumer>
         {({ safeAreaInsets }) => (
@@ -117,7 +119,7 @@ export default class Composer extends React.Component<Props, State> {
                   autoFocus={typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
                 />
                 <TouchableWithoutFeedback disabled={disableSendButton} onPress={this.submitText.bind(this)}>
-                  <Button ml={1} disabled={!!disableSendButton}>
+                  <Button ml="1" disabled={!!disableSendButton}>
                     Send
                   </Button>
                 </TouchableWithoutFeedback>

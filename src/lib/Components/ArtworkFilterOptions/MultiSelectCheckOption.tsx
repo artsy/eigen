@@ -15,6 +15,7 @@ interface MultiSelectOptionScreenProps {
   navigation: StackNavigationProp<ParamListBase>
   onSelect: (filterData: FilterData, updatedValue: boolean) => void
   selectedOptions: string[] | undefined
+  withIndent?: boolean
 }
 
 export const MultiSelectCheckOptionScreen: React.FC<MultiSelectOptionScreenProps> = ({
@@ -24,6 +25,7 @@ export const MultiSelectCheckOptionScreen: React.FC<MultiSelectOptionScreenProps
   navigation,
   onSelect,
   selectedOptions,
+  withIndent = false,
 }) => {
   const handleBackNavigation = () => {
     navigation.goBack()
@@ -47,8 +49,15 @@ export const MultiSelectCheckOptionScreen: React.FC<MultiSelectOptionScreenProps
           data={filterOptions}
           ItemSeparatorComponent={() => <Separator />}
           renderItem={({ item }) => (
-            <Box ml={0.5}>
-              <CheckMarkOptionListItem item={item} onSelect={onSelect} selected={isSelected(item) as boolean} />
+            <Box ml="0.5">
+              <CheckMarkOptionListItem
+                hasExtraLeftPadding={
+                  withIndent && item.paramName !== FilterParamName.artistsIFollow && item.paramValue !== "all"
+                }
+                item={item}
+                onSelect={onSelect}
+                selected={isSelected(item) as boolean}
+              />
             </Box>
           )}
         />
@@ -70,10 +79,12 @@ export const CheckMarkOptionListItem = ({
   item,
   onSelect,
   selected,
+  hasExtraLeftPadding,
 }: {
   item: FilterData
   onSelect: (filterData: FilterData, updatedValue: boolean) => void
   selected: boolean
+  hasExtraLeftPadding: boolean
 }) => (
   <TouchableOpacity onPress={() => onSelect(item, !item.paramValue)}>
     <Flex flexGrow={1} justifyContent="space-between" flexDirection="row">
@@ -82,8 +93,8 @@ export const CheckMarkOptionListItem = ({
         justifyContent="space-between"
         flexGrow={1}
         alignItems="center"
-        pl={item.paramName === FilterParamName.artistsIFollow || item.paramValue === "all" ? 2 : 3}
-        pr={2}
+        pl={hasExtraLeftPadding ? "3" : "2"}
+        pr="2"
         height={60}
       >
         <Sans color="black100" size="3t">

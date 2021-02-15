@@ -28,6 +28,7 @@ export function clear(queryID: string, variables: object): void {
 export function clearAll(): void {
   if (Platform.OS !== "ios") {
     RelayCache.clearAll()
+    return
   }
   ARGraphQLQueryCache._clearAll()
 }

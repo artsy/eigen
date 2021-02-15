@@ -3,7 +3,7 @@ import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { color, Flex, Spacer } from "palette"
 import React, { useState } from "react"
-import { KeyboardAvoidingView, ScrollView } from "react-native"
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AutosuggestResults } from "./AutosuggestResults"
@@ -19,7 +19,7 @@ export const Search: React.FC = () => {
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
-        <Flex p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
+        <Flex p="2" pb="1" style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
           <SearchInput
             ref={searchProviderValues.inputRef}
             placeholder="Search artists, artworks, galleries, etc"
@@ -50,9 +50,9 @@ export const Search: React.FC = () => {
         ) : (
           <Scrollable>
             <RecentSearches />
-            <Spacer mb={3} />
-            {!isPad() && <CityGuideCTA />}
-            <Spacer mb="40px" />
+            <Spacer mb="3" />
+            {!isPad() && Platform.OS === "ios" && <CityGuideCTA />}
+            <Spacer mb={40} />
           </Scrollable>
         )}
       </KeyboardAvoidingView>

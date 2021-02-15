@@ -56,10 +56,10 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
           ItemSeparatorComponent={Separator}
           renderItem={({ item }) => {
             return (
-              <Box ml={0.5}>
+              <Box ml="0.5">
                 {
                   <OptionListItem>
-                    <Flex mb={0.5}>
+                    <Flex mb="0.5">
                       <Sans color="black100" size="3t">
                         {item.displayText}
                       </Sans>

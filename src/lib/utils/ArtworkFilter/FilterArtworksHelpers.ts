@@ -56,7 +56,7 @@ export enum FilterDisplayName {
   sort = "Sort by",
   timePeriod = "Time period",
   viewAs = "View as",
-  year = "Year created",
+  year = "Artwork date",
   waysToBuy = "Ways to buy",
 }
 

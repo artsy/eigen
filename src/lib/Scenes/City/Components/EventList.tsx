@@ -40,7 +40,7 @@ export class EventList extends React.Component<Props> {
   renderItem = (item) => {
     const { type } = this.props
     return (
-      <Box height={RowHeight} py={2}>
+      <Box height={RowHeight} py="2">
         {type === "fairs" ? <TabFairItemRow item={item} /> : <ShowItemRow show={item} relay={this.props.relay} />}
       </Box>
     )
@@ -56,7 +56,7 @@ export class EventList extends React.Component<Props> {
       return (
         <>
           <Separator />
-          <Box mt={2} mb={3}>
+          <Box mt="2" mb="3">
             <CaretButton onPress={() => this.viewAllPressed()} text={`View all ${bucket.length} shows`} />
           </Box>
         </>
@@ -90,7 +90,7 @@ export class EventList extends React.Component<Props> {
         ListHeaderComponent={() => {
           if (!!header) {
             return (
-              <Box pt={6} mt={3} mb={2}>
+              <Box pt="6" mt="3" mb="2">
                 <Serif size="8">{header}</Serif>
               </Box>
             )
@@ -116,19 +116,19 @@ export class EventList extends React.Component<Props> {
     switch (type) {
       case "saved":
         return (
-          <Box py={2} mx={2}>
+          <Box py="2" mx="2">
             <Message textSize="3t">{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</Message>
           </Box>
         )
       case "fairs":
         return (
-          <Box py={2} mx={2}>
+          <Box py="2" mx="2">
             <Message textSize="3t">{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</Message>
           </Box>
         )
       default:
         return (
-          <Box py={2} mx={2}>
+          <Box py="2" mx="2">
             <Message textSize="3t">{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</Message>
           </Box>
         )

@@ -78,7 +78,7 @@ describe("CollectionArtworks", () => {
     })
 
     expect(tree.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
-    expect(extractText(tree.root)).toContain("Unfortunately, there are no works that meet your criteria.")
+    expect(extractText(tree.root)).toContain("No results found\nPlease try another search.Clear filtersClear filters")
   })
 
   it("returns artworks", () => {

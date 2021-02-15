@@ -120,7 +120,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
         keyExtractor={(item) => item.internalID}
         contentContainerStyle={{ paddingTop: creditCards.length === 0 ? 10 : 20 }}
         renderItem={({ item }) => (
-          <Flex flexDirection="row" justifyContent="space-between" px={2}>
+          <Flex flexDirection="row" justifyContent="space-between" px="2">
             <CreditCardDetailsContainer card={item} />
             {deletingIDs[item.internalID] ? (
               <ActivityIndicator size="small" />
@@ -151,9 +151,9 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
 
 export const MyProfilePaymentPlaceholder: React.FC<{}> = () => (
   <PageWithSimpleHeader title="Payment">
-    <Flex px={2} py={15}>
+    <Flex px="2" py={15}>
       {times(2).map((index: number) => (
-        <Flex key={index} py={1}>
+        <Flex key={index} py="1">
           <PlaceholderText width={100 + Math.random() * 100} />
         </Flex>
       ))}

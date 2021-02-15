@@ -83,13 +83,13 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
   return (
     <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
       <Flex style={{ flex: 1 }}>
-        <Sans size="4t" weight="medium" textAlign="center" mb={1} mt={2}>
+        <Sans size="4t" weight="medium" textAlign="center" mb="1" mt="2">
           Artworks
         </Sans>
         <Separator />
         <FlatList
           data={sections}
-          ItemSeparatorComponent={() => <Box px={2} mb={3} />}
+          ItemSeparatorComponent={() => <Box px="2" mb="3" />}
           renderItem={({ item }) => <Box>{item.content}</Box>}
           onEndReached={() => {
             if (isLoadingMore || !relay.hasMore()) {

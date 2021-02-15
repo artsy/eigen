@@ -29,7 +29,7 @@ export const Filters: React.FC<Props> = ({ onFilterChange, mediumValue, priceRan
     ? getAggregationOptions(getAggregationSlice("PRICE_RANGE", filteredArtworks))
     : []
   return (
-    <Flex flexDirection="row" pt={2} pb={3}>
+    <Flex flexDirection="row" pt="2" pb="3">
       <Picker
         options={mediumOptions as PickerOption[]}
         selected={mediumValue}
@@ -37,7 +37,7 @@ export const Filters: React.FC<Props> = ({ onFilterChange, mediumValue, priceRan
         type={PickerType.Small}
         onSelect={onFilterChange("medium")}
       />
-      <Spacer m={2} />
+      <Spacer m="2" />
       <Picker
         options={priceRangeOptions as PickerOption[]}
         selected={priceRangeValue}

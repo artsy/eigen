@@ -91,7 +91,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
         {!!hasActiveSales && <BidTitle>Active Bids</BidTitle>}
         {!!hasActiveSales && (
           <Flex data-test-id="active-section">
-            <Join separator={<Spacer my={1} />}>
+            <Join separator={<Spacer my="1" />}>
               {sales.map((sale) => {
                 const sortedActiveLotStandings = ActiveLotStandingsBySaleId[sale.internalID] || []
                 const showNoBids = !sortedActiveLotStandings.length && !!sale.registrationStatus?.qualifiedForBidding
@@ -103,9 +103,9 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
                     smallScreen={isSmallScreen}
                     hideChildren={!showNoBids && !sortedActiveLotStandings.length}
                   >
-                    <Join separator={<Separator my={1} />}>
+                    <Join separator={<Separator my="1" />}>
                       {!!showNoBids && (
-                        <Text color="black60" py={1} textAlign="center">
+                        <Text color="black60" py="1" textAlign="center">
                           You haven't placed any bids on this sale
                         </Text>
                       )}
@@ -127,8 +127,8 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
         {!!hasClosedBids && <BidTitle>Closed Bids</BidTitle>}
         {!!hasClosedBids && (
           <Flex data-test-id="closed-section">
-            <Flex mt={2} px={1.5}>
-              <Join separator={<Separator my={2} />}>
+            <Flex mt="2" px="1.5">
+              <Join separator={<Separator my="2" />}>
                 {closedStandings?.map((lotStanding) => {
                   return (
                     <LotStatusListItemContainer
@@ -143,7 +143,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
             </Flex>
           </Flex>
         )}
-        <Spacer my={2} />
+        <Spacer my="2" />
       </ScrollView>
     </ProvideScreenTrackingWithCohesionSchema>
   )
@@ -151,7 +151,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
 
 const BidTitle: React.FC<{ topBorder?: boolean }> = (props) => (
   <Flex bg="white100">
-    <Text variant="subtitle" mx={1.5} my={2}>
+    <Text variant="subtitle" mx="1.5" my="2">
       {props.children}
     </Text>
     <Separator />

@@ -51,7 +51,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = (props) =
         <Flex flexDirection="row" alignItems="center">
           <Flex alignItems="center" flexDirection="row" style={{ flex: 1 }}>
             {!!(showImage && !!imageURL) && (
-              <Box pr={2}>
+              <Box pr="2">
                 <Image source={{ uri: imageURL }} />
               </Box>
             )}
@@ -71,7 +71,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = (props) =
               </Box>
             </Flex>
           </Flex>
-          <Box px={2}>
+          <Box px="2">
             <ArrowRightIcon />
           </Box>
         </Flex>

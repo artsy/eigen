@@ -7,7 +7,7 @@ export class ZeroState extends React.Component {
     return (
       <Theme>
         <View style={{ flex: 1 }}>
-          <Sans size="4" textAlign="center" mb={1} mt={2}>
+          <Sans size="4" textAlign="center" mb="1" mt="2">
             Auctions
           </Sans>
           <Separator />

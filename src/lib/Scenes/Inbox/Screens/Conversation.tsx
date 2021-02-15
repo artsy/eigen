@@ -141,11 +141,12 @@ export class Conversation extends React.Component<Props, State> {
     const conversation = this.props.me.conversation
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const partnerName = conversation.to.name
-
     const artworkSlug =
       conversation?.items?.[0]?.item && conversation?.items?.[0]?.item.__typename === "Artwork"
-        ? conversation?.items?.[0]?.item.slug
+        ? conversation?.items?.[0]?.item?.slug
         : null
+    const showOfferableInquiryButton =
+      conversation?.items?.[0]?.item?.__typename === "Artwork" && conversation?.items?.[0]?.item?.isOfferableFromInquiry
 
     return (
       <Composer
@@ -155,6 +156,7 @@ export class Conversation extends React.Component<Props, State> {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         value={this.state.failedMessageText}
         artworkID={artworkSlug}
+        isOfferableFromInquiry={showOfferableInquiryButton}
         onSubmit={(text) => {
           this.setState({ sendingMessage: true, failedMessageText: null })
           sendConversationMessage(
@@ -174,7 +176,7 @@ export class Conversation extends React.Component<Props, State> {
       >
         <Container>
           <Header>
-            <Flex flexDirection="row" alignSelf="stretch" mx={2}>
+            <Flex flexDirection="row" alignSelf="stretch" mx="2">
               <HeaderTextContainer>
                 <Text variant="mediumText">{partnerName}</Text>
                 <PlaceholderView />
@@ -224,6 +226,7 @@ export const ConversationFragmentContainer = createFragmentContainer(Conversatio
             ... on Artwork {
               href
               slug
+              isOfferableFromInquiry
             }
             ... on Show {
               href

@@ -82,7 +82,7 @@ export const SaleArtworkGridItem: React.FC<ArtworkProps> = ({
             style={styles.artworkImage}
           />
         )}
-        <Box mt={1}>
+        <Box mt="1">
           {!!saleArtwork?.lotLabel && (
             <Sans size="3t" color="black60" numberOfLines={1}>
               Lot {saleArtwork.lotLabel}

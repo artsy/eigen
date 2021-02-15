@@ -62,7 +62,7 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
           </Flex>
         )}
 
-        <Flex ml={2} height={100} flex={1} justifyContent="center">
+        <Flex ml="2" height={100} flex={1} justifyContent="center">
           {!!artwork.saleArtwork?.lotLabel && (
             <Sans size="3t" color="black60" numberOfLines={1}>
               Lot {artwork.saleArtwork.lotLabel}

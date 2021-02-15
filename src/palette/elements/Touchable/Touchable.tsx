@@ -30,7 +30,7 @@ export const Touchable: React.FC<TouchableHighlightProps & ExtraTouchableProps> 
   onPress,
   ...props
 }) => {
-  const inner = <Flex flex={flex}>{children}</Flex>
+  const inner = React.Children.count(children) === 1 ? children : <Flex flex={flex}>{children}</Flex>
 
   const onPressWrapped = (evt: GestureResponderEvent) => {
     if (onPress === undefined) {

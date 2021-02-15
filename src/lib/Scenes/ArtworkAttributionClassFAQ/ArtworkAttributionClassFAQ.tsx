@@ -19,12 +19,12 @@ export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttribution
   return (
     <Theme>
       <ScrollView>
-        <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
-          <Box my={3}>
-            <Join separator={<Spacer my={1.5} />}>
+        <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px="2">
+          <Box my="3">
+            <Join separator={<Spacer my="1.5" />}>
               <Text variant="largeTitle">Artwork classifications</Text>
 
-              <Join separator={<Spacer my={1} />}>
+              <Join separator={<Spacer my="1" />}>
                 {artworkAttributionClasses.map((attributionClass, index) => {
                   return (
                     <React.Fragment key={index}>

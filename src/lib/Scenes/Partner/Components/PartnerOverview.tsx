@@ -31,7 +31,7 @@ export const PartnerOverview: React.FC<{
       return (
         <Box key={artist.id}>
           <ArtistListItem artist={artist} />
-          <Spacer mb={2} />
+          <Spacer mb="2" />
         </Box>
       )
     })
@@ -64,11 +64,11 @@ export const PartnerOverview: React.FC<{
         })
       }}
     >
-      <Spacer mb={2} />
+      <Spacer mb="2" />
       {!!aboutText && (
         <>
           <ReadMore content={aboutText} maxChars={300} textStyle="sans" />
-          <Spacer mb={2} />
+          <Spacer mb="2" />
         </>
       )}
       <PartnerLocationSection partner={partner} />
@@ -77,16 +77,16 @@ export const PartnerOverview: React.FC<{
           <Text>
             <Sans size="4t">Artists ({filteredArtists.length})</Sans>
           </Text>
-          <Spacer mb={2} />
+          <Spacer mb="2" />
           {renderArtists()}
           {!!fetchingNextPage && (
-            <Box p={2}>
+            <Box p="2">
               <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
                 <Spinner />
               </Flex>
             </Box>
           )}
-          <Spacer mb={3} />
+          <Spacer mb="3" />
         </>
       )}
     </StickyTabPageScrollView>

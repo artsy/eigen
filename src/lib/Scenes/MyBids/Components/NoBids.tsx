@@ -19,11 +19,11 @@ export const NoBids: React.FC<{ headerText: string }> = ({ headerText }) => {
   }
 
   return (
-    <Flex mt={3} mx={2}>
+    <Flex mt="3" mx="2">
       <Text variant="title" textAlign="center" fontWeight="normal">
         {headerText}
       </Text>
-      <Text mb={2} mt={1} mx={4} variant="text" textAlign="center" fontWeight="normal" color="black60">
+      <Text mb="2" mt="1" mx="4" variant="text" textAlign="center" fontWeight="normal" color="black60">
         Browse and bid in auctions around the world, from online-only sales to benefit auctions—all in the Artsy app.
       </Text>
       <Flex width="100%" justifyContent="center" flexDirection="row">

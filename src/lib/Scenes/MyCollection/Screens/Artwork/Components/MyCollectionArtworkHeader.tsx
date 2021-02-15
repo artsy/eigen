@@ -4,13 +4,13 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Image } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
-import { useInterval } from "lib/utils/useInterval"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { ArtworkIcon, color, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import useInterval from "react-use/lib/useInterval"
 
 interface MyCollectionArtworkHeaderProps {
   artwork: MyCollectionArtworkHeader_artwork
@@ -100,7 +100,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
           {formattedTitleAndYear}
         </Text>
       </ScreenMargin>
-      <Spacer my={1} />
+      <Spacer my="1" />
       <TouchableOpacity
         disabled={hasImagesStillProcessing(defaultImage, images)}
         onPress={() => {
@@ -111,15 +111,15 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
         {renderMainImageView()}
         {!!images && !hasImagesStillProcessing(defaultImage, images) && (
           <Flex
-            mr={2}
+            mr="2"
             style={{
               top: -50,
               alignItems: "flex-end",
             }}
           >
             <Flex
-              py={0.5}
-              px={2}
+              py="0.5"
+              px="2"
               style={{
                 backgroundColor: "rgba(255, 255, 255, 0.95)",
                 borderRadius: 3,

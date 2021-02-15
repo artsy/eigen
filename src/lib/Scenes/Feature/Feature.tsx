@@ -121,7 +121,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
             })
           }
 
-          renderedSet.push(addSeparatorBetweenAllSections(renderedRows, set.id + ":featuredLink", <Spacer mb={4} />))
+          renderedSet.push(addSeparatorBetweenAllSections(renderedRows, set.id + ":featuredLink", <Spacer mb="4" />))
 
           break
         case "Artwork":
@@ -151,7 +151,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           addSeparatorBetweenAllSections(
             contentSections,
             "content",
-            <Separator mt={4} mb={3} style={{ borderColor: "black" }} />
+            <Separator mt="4" mb="3" style={{ borderColor: "black" }} />
           )
         ),
       ]}
@@ -214,7 +214,7 @@ export const FeatureQueryRenderer: React.FC<{ slug: string }> = ({ slug }) => {
           return (
             <Flex>
               <FeatureHeaderPlaceholder />
-              <Flex p={2} pt={3}>
+              <Flex p="2" pt="3">
                 <Stack width="100%" alignSelf="center" maxWidth={550}>
                   <PlaceholderRaggedText numLines={12} />
                   <PlaceholderRaggedText numLines={12} />

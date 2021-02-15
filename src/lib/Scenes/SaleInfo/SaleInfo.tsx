@@ -27,8 +27,8 @@ interface Props {
 
 const AuctionSupport = () => {
   return (
-    <Flex mt={1}>
-      <Text variant="subtitle" px={2} mb={15}>
+    <Flex mt="1">
+      <Text variant="subtitle" px="2" mb={15}>
         Auction support
       </Text>
       <MenuItem
@@ -48,8 +48,8 @@ const AuctionSupport = () => {
 }
 
 const AuctionIsLive = () => (
-  <Flex px={2} data-test-id="live-auction">
-    <Sans size="5t" mb={2} mt={1}>
+  <Flex px="2" data-test-id="live-auction">
+    <Sans size="5t" mb="2" mt="1">
       This is a live auction
     </Sans>
     <Text variant="text" color="black" fontSize="size4">
@@ -74,7 +74,7 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
     }
 
     return (
-      <Flex mb={1}>
+      <Flex mb="1">
         <Text variant="text" color="black" fontSize="size4" mt={25} fontWeight="500">
           Live bidding opens on
         </Text>
@@ -90,15 +90,15 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
   return (
     <ProvideScreenTracking info={tracks.screen(sale.internalID, sale.slug)}>
       <ScrollView contentContainerStyle={{ paddingBottom: 30 }}>
-        <Join separator={<Separator my={2} />}>
+        <Join separator={<Separator my="2" />}>
           {/*  About Auction */}
-          <Flex px={2} mt={70}>
+          <Flex px="2" mt={70}>
             <Sans size="8">About this auction</Sans>
-            <Sans size="5" mt={1} mb={3}>
+            <Sans size="5" mt="1" mb="3">
               {sale.name}
             </Sans>
             {saleStatus(sale.startAt, sale.endAt, sale.registrationEndsAt) === "closed" || (
-              <Flex mb={4}>
+              <Flex mb="4">
                 <RegisterToBidButtonContainer
                   sale={sale}
                   contextType={OwnerType.saleInformation}
@@ -155,7 +155,7 @@ const BuyersPremiumItem: React.FC<BuyersPremiumItemProps> = (props) => {
     premiumText = `On the hammer price in excess of ${amount} up to and including ${nextValue?.amount}: ${percent}`
   }
   return (
-    <Text variant="text" mb={1}>
+    <Text variant="text" mb="1">
       {premiumText}
     </Text>
   )
@@ -175,8 +175,8 @@ const BuyersPremium: React.FC<{ sale: SaleInfo_sale }> = (props) => {
     premiumDisplay = createPremiumDisplay(props)
   }
   return (
-    <Flex px={2}>
-      <Text variant="subtitle" mb={2} mt={1}>
+    <Flex px="2">
+      <Text variant="subtitle" mb="2" mt="1">
         Buyer's Premium for this Auction
       </Text>
       {premiumDisplay}
@@ -185,10 +185,10 @@ const BuyersPremium: React.FC<{ sale: SaleInfo_sale }> = (props) => {
 }
 
 const SaleInfoPlaceholder = () => (
-  <Join separator={<Separator my={2} />}>
-    <Flex px={2} mt={70}>
+  <Join separator={<Separator my="2" />}>
+    <Flex px="2" mt={70}>
       <Sans size="8">About this auction</Sans>
-      <Separator my={1} />
+      <Separator my="1" />
       <PlaceholderBox marginBottom={20} height={30} width={200 + Math.random() * 100} />
       <PlaceholderBox marginBottom={10} height={50} />
       <PlaceholderText marginBottom={20} height={30} width={200 + Math.random() * 100} />

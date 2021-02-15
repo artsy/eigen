@@ -60,15 +60,15 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
   if ((artworks?.counts?.total ?? 0) === 0) {
     return (
       <Box>
-        <Separator mb={2} />
+        <Separator mb="2" />
         <FilteredArtworkGridZeroState id={artistSeries.internalID} slug={artistSeries.slug} trackClear={trackClear} />
-        <Spacer mb={1} />
+        <Spacer mb="1" />
       </Box>
     )
   } else {
     return (
       <Box>
-        <Separator mb={2} />
+        <Separator mb="2" />
         <InfiniteScrollArtworksGridContainer
           connection={artworks}
           loadMore={relay.loadMore}

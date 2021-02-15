@@ -1,25 +1,30 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { shallow } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { ArtworkActions } from "../ArtworkActions"
 import { ArtworkHeader } from "../ArtworkHeader"
 import { ArtworkTombstone } from "../ArtworkTombstone"
 import { ImageCarousel } from "../ImageCarousel/ImageCarousel"
 
+jest.mock("react-native-view-shot", () => ({}))
+
+const TestRenderer: React.FC = () => {
+  return <ArtworkHeader artwork={ArtworkFixture} />
+}
+
 describe("ArtworkHeader", () => {
   it("renders tombstone component", () => {
-    const component = shallow(<ArtworkHeader artwork={ArtworkFixture} />)
-    expect(component.find(ArtworkTombstone).length).toEqual(1)
+    const tree = renderWithWrappers(<TestRenderer />)
+    expect(tree.root.findAllByType(ArtworkTombstone)).toHaveLength(1)
   })
 
   it("renders artwork actions component", () => {
-    const component = shallow(<ArtworkHeader artwork={ArtworkFixture} />)
-    expect(component.find(ArtworkActions).length).toEqual(1)
+    const tree = renderWithWrappers(<TestRenderer />)
+    expect(tree.root.findAllByType(ArtworkActions)).toHaveLength(1)
   })
 
   it("renders image carousel component", () => {
-    const component = shallow(<ArtworkHeader artwork={ArtworkFixture} />)
-    expect(component.find(ImageCarousel).length).toEqual(1)
+    const tree = renderWithWrappers(<TestRenderer />)
+    expect(tree.root.findAllByType(ImageCarousel)).toHaveLength(1)
   })
 })

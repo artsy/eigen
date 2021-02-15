@@ -43,7 +43,7 @@ const TodoButton: React.FC<{ label: string; isComplete: boolean; onPress?(): voi
 }) => {
   return (
     <TouchableOpacity onPress={onPress}>
-      <Flex flexDirection="row" justifyContent="space-between" py={2} alignItems="center">
+      <Flex flexDirection="row" justifyContent="space-between" py="2" alignItems="center">
         <Text variant="subtitle">{label}</Text>
         {isComplete ? DoneButton() : ToDoButton()}
       </Flex>

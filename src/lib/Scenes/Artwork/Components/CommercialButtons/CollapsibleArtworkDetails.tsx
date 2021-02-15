@@ -57,7 +57,7 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
               style={{ alignSelf: "center" }}
             />
           )}
-          <Flex ml={2} flex={1}>
+          <Flex ml="2" flex={1}>
             <Text>{artwork.artistNames}</Text>
             <Text color="black60" variant="caption">
               {artwork.title}, {artwork.date}
@@ -67,8 +67,8 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
         </Flex>
       </TouchableOpacity>
       <Collapse open={isExpanded}>
-        <Flex mx={2} mb={1}>
-          <Join separator={<Spacer my={1} />}>
+        <Flex mx="2" mb="1">
+          <Join separator={<Spacer my="1" />}>
             {detailItems.map(({ title, value }, index) => (
               <ArtworkDetailsRow key={index.toString()} title={title} value={value} />
             ))}

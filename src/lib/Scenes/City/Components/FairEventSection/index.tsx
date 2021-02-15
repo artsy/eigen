@@ -28,7 +28,7 @@ export class FairEventSection extends Component<Props> {
   renderItem = ({ item }) => {
     const fair = item
     return (
-      <Box pr={1}>
+      <Box pr="1">
         <FairEventSectionCard fair={fair} />
       </Box>
     )
@@ -38,7 +38,7 @@ export class FairEventSection extends Component<Props> {
     const { data } = this.props
     return (
       <FairSectionBackground>
-        <Box mx={2} mt={3}>
+        <Box mx="2" mt="3">
           <Serif size="8" color="white">
             Fairs
           </Serif>
@@ -51,7 +51,7 @@ export class FairEventSection extends Component<Props> {
           horizontal
         />
         {data.length > 2 && (
-          <Box mx={2} mb={3}>
+          <Box mx="2" mb="3">
             <CaretButton
               onPress={() => this.viewAllPressed()}
               text={`View all ${data.length} fairs`}

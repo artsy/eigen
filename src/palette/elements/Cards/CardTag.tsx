@@ -30,7 +30,7 @@ export const CardTag: React.FC<CardTagProps> = ({ text, textColor, color: bgColo
         },
       ]}
     >
-      <Sans size="2" px={0.5} py={0.3} color={textColor}>
+      <Sans size="2" px="0.5" py="0.3" color={textColor}>
         {text}
       </Sans>
     </View>

@@ -29,7 +29,7 @@ export const useStickyScrollHeader = ({
     !header && !!headerText ? (
       <Flex backgroundColor="white">
         <FancyModalHeader>
-          <Flex flex={1} pt={0.5} flexDirection="row">
+          <Flex flex={1} pt="0.5" flexDirection="row">
             <Text variant="subtitle" numberOfLines={1} style={{ flexShrink: 1 }}>
               {headerText}
             </Text>

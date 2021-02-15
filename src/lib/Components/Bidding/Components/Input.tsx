@@ -54,8 +54,8 @@ export class Input extends Component<InputProps, InputState> {
         border={1}
         borderColor={this.state.borderColor}
         fontSize={3}
-        p={3}
-        pb={2}
+        p="3"
+        pb="2"
         {...this.props}
         // These props should not be overridden so they are declared after `{...this.props}`
         ref={this.props.inputRef}

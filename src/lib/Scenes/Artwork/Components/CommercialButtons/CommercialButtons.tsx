@@ -47,7 +47,7 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
           {isBuyNowable && noEditions ? (
             <>
               <BidButtonFragmentContainer artwork={artwork} me={me} auctionState={auctionState} />
-              <Spacer mb={1} />
+              <Spacer mb="1" />
               <BuyNowButtonFragmentContainer
                 variant="secondaryOutline"
                 artwork={artwork}
@@ -68,7 +68,7 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             editionSetID={this.props.editionSetID}
           />
-          <Spacer mb={1} />
+          <Spacer mb="1" />
           <MakeOfferButtonFragmentContainer
             artwork={artwork}
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

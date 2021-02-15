@@ -160,7 +160,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
 
     return (
       <>
-        <Box mb={2}>
+        <Box mb="2">
           <Sans size="3t" weight="medium" color="black100">
             {header}
           </Sans>

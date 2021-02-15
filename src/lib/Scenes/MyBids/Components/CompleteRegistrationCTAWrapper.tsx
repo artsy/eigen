@@ -32,11 +32,11 @@ export const CompleteRegistrationCTAWrapper: React.FunctionComponent<CompleteReg
         navigate(navLink)
       }}
     >
-      <Flex flexDirection="row" alignItems="center" justifyContent="center" py={1} bg="black5" mt={1}>
+      <Flex flexDirection="row" alignItems="center" justifyContent="center" py="1" bg="black5" mt="1">
         {
           <>
             <ExclamationMarkCircleFill fill="black100" />
-            <Text mx={0.5} variant="mediumText">
+            <Text mx="0.5" variant="mediumText">
               Complete registration
             </Text>
             <ArrowRightIcon />

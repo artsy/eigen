@@ -48,14 +48,14 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist 
 
   return (
     <Box>
-      <Box mt={1}>
+      <Box mt="1">
         <SectionTitle title="Notable Works" />
       </Box>
       <ArtistNotableWorksRailWrapper>
         <AboveTheFoldFlatList<NotableArtwork>
           horizontal
-          ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
-          ListFooterComponent={() => <Spacer mr={2}></Spacer>}
+          ListHeaderComponent={() => <Spacer mr="2" />}
+          ListFooterComponent={() => <Spacer mr="2" />}
           ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
           showsHorizontalScrollIndicator={false}
           data={artworks}

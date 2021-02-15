@@ -725,6 +725,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   # Artworks Elastic Search results
   filterArtworksConnection(
     acquireable: Boolean
+    additionalGeneIDs: [String]
     after: String
     aggregationPartnerCities: [String]
     aggregations: [ArtworkAggregation]
@@ -1069,6 +1070,7 @@ type ArtistSeries {
   featured: Boolean!
   filterArtworksConnection(
     acquireable: Boolean
+    additionalGeneIDs: [String]
     after: String
     aggregationPartnerCities: [String]
     aggregations: [ArtworkAggregation]
@@ -2479,6 +2481,7 @@ type CommerceBuyOrder implements CommerceOrder {
   displayCommissionRate: String
   id: ID!
   internalID: ID!
+  isInquiryOrder: Boolean!
   itemsTotal(
     decimal: String = "."
 
@@ -3055,6 +3058,7 @@ type CommerceOfferOrder implements CommerceOrder {
   id: ID!
   impulseConversationId: String
   internalID: ID!
+  isInquiryOrder: Boolean!
   itemsTotal(
     decimal: String = "."
 
@@ -3236,6 +3240,7 @@ interface CommerceOrder {
   displayCommissionRate: String
   id: ID!
   internalID: ID!
+  isInquiryOrder: Boolean!
   itemsTotal(
     decimal: String = "."
 
@@ -5372,6 +5377,7 @@ type EndSalePayload {
 interface EntityWithFilterArtworksConnectionInterface {
   filterArtworksConnection(
     acquireable: Boolean
+    additionalGeneIDs: [String]
     after: String
     aggregationPartnerCities: [String]
     aggregations: [ArtworkAggregation]
@@ -5519,6 +5525,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   # Artworks Elastic Search results
   filterArtworksConnection(
     acquireable: Boolean
+    additionalGeneIDs: [String]
     after: String
     aggregationPartnerCities: [String]
     aggregations: [ArtworkAggregation]
@@ -6145,6 +6152,7 @@ type Gene implements Node & Searchable {
   # Artworks Elastic Search results
   filterArtworksConnection(
     acquireable: Boolean
+    additionalGeneIDs: [String]
     after: String
     aggregationPartnerCities: [String]
     aggregations: [ArtworkAggregation]
@@ -6874,6 +6882,7 @@ type LotStanding {
 type MarketingCollection {
   artworksConnection(
     acquireable: Boolean
+    additionalGeneIDs: [String]
     after: String
     aggregationPartnerCities: [String]
     aggregations: [ArtworkAggregation]
@@ -7847,13 +7856,22 @@ type Partner implements Node {
   # A connection of artworks from a Partner.
   artworksConnection(
     after: String
+
+    # Return only artwork(s) included in this list of IDs.
+    artworkIDs: [String]
     before: String
     exclude: [String]
     first: Int
     forSale: Boolean
+
+    # Return artworks with less than x additional_images.
+    imageCountLessThan: Int
     last: Int
+
+    # Return artworks published less than x seconds ago.
+    publishedWithin: Int
     sort: ArtworkSorts
-  ): ArtworkConnection @deprecated(reason: "Use `filterArtworksConnection`")
+  ): ArtworkConnection
   cached: Int
   categories: [PartnerCategory]
 
@@ -7866,6 +7884,7 @@ type Partner implements Node {
   # Artworks Elastic Search results
   filterArtworksConnection(
     acquireable: Boolean
+    additionalGeneIDs: [String]
     after: String
     aggregationPartnerCities: [String]
     aggregations: [ArtworkAggregation]
@@ -8629,6 +8648,7 @@ type Query {
   # Artworks Elastic Search results
   artworksConnection(
     acquireable: Boolean
+    additionalGeneIDs: [String]
     after: String
     aggregationPartnerCities: [String]
     aggregations: [ArtworkAggregation]
@@ -10002,6 +10022,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   # Artworks Elastic Search results
   filterArtworksConnection(
     acquireable: Boolean
+    additionalGeneIDs: [String]
     after: String
     aggregationPartnerCities: [String]
     aggregations: [ArtworkAggregation]
@@ -10411,6 +10432,7 @@ type Tag implements Node {
   # Artworks Elastic Search results
   filterArtworksConnection(
     acquireable: Boolean
+    additionalGeneIDs: [String]
     after: String
     aggregationPartnerCities: [String]
     aggregations: [ArtworkAggregation]
@@ -11067,6 +11089,7 @@ type Viewer {
   # Artworks Elastic Search results
   artworksConnection(
     acquireable: Boolean
+    additionalGeneIDs: [String]
     after: String
     aggregationPartnerCities: [String]
     aggregations: [ArtworkAggregation]

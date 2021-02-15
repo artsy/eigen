@@ -25,11 +25,11 @@ const PartnerMap: React.FC<{
   }
 
   return (
-    <Box px={2} mt={2}>
+    <Box px="2" mt="2">
       <Sans size="3" weight="medium">
         {city}
       </Sans>
-      <Spacer mb={0.5} />
+      <Spacer mb="0.5" />
       <TouchableOpacity onPress={() => tappedOnMap(lat, lng, address, null, null, city, postalCode)}>
         <MapWrapper>
           <MapboxGL.MapView
@@ -45,7 +45,7 @@ const PartnerMap: React.FC<{
               <Pin />
             </MapboxGL.PointAnnotation>
           </MapboxGL.MapView>
-          <Box my={2}>
+          <Box my="2">
             {!!address && (
               <Serif size="3t" color="black60" textAlign="center">
                 {address}

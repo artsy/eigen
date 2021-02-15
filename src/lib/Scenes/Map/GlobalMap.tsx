@@ -577,7 +577,7 @@ export class GlobalMap extends React.Component<Props, State> {
     }
 
     return (
-      <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: colors["gray-light"] }}>
+      <Flex mb="0.5" flexDirection="column" style={{ backgroundColor: colors["gray-light"] }}>
         <LoadingScreen
           source={require("../../../../images/map-bg.png")}
           resizeMode="cover"
@@ -596,7 +596,7 @@ export class GlobalMap extends React.Component<Props, State> {
               ],
             }}
           >
-            <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end" px={3}>
+            <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end" px="3">
               <CitySwitcherButton
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 sponsoredContentUrl={this.props.viewer && this.props.viewer.city.sponsoredContent.artGuideUrl}

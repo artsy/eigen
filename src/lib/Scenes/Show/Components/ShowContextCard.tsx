@@ -118,7 +118,7 @@ const ContextCard: React.FC<ContextCardProps> = ({
               bg="white100"
               width={80}
               height={60}
-              px={1}
+              px="1"
               position="absolute"
               bottom={0}
               left={2}
@@ -128,7 +128,7 @@ const ContextCard: React.FC<ContextCardProps> = ({
           )}
         </Box>
 
-        <Text variant="mediumText" mt={0.5}>
+        <Text variant="mediumText" mt="0.5">
           {title}
         </Text>
 

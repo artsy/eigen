@@ -24,13 +24,13 @@ export class ShowArtworksPreview extends React.Component<Props> {
     return (
       <>
         {!!title && (
-          <Sans size="4t" mb={2}>
+          <Sans size="4t" mb="2">
             {title}
           </Sans>
         )}
         <GenericGrid artworks={artworks} />
         {counts! /*STRICTNESS_MIGRATION*/.artworks! /*STRICTNESS_MIGRATION*/ > artworks.length && (
-          <Box mt={1}>
+          <Box mt="1">
             <CaretButton
               text={`View all ${
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

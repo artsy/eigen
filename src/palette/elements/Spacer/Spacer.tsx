@@ -1,5 +1,6 @@
+import { SpaceProps } from "palette/helpers"
 import React from "react"
-import { HeightProps, SpaceProps, WidthProps } from "styled-system"
+import { HeightProps, WidthProps } from "styled-system"
 import { Box } from "../../elements/Box"
 
 export interface SpacerProps extends SpaceProps, WidthProps, HeightProps {}

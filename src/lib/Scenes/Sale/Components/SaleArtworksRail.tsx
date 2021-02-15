@@ -23,14 +23,14 @@ export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
   }
 
   return (
-    <Flex mt={3}>
-      <Flex mx={2} my={1}>
+    <Flex mt="3">
+      <Flex mx="2" my="1">
         <SectionTitle title="Lots by artists you follow" />
       </Flex>
       <AboveTheFoldFlatList
         horizontal
-        ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
-        ListFooterComponent={() => <Spacer mr={2}></Spacer>}
+        ListHeaderComponent={() => <Spacer mr="2"></Spacer>}
+        ListFooterComponent={() => <Spacer mr="2"></Spacer>}
         ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
         showsHorizontalScrollIndicator={false}
         data={artworks}

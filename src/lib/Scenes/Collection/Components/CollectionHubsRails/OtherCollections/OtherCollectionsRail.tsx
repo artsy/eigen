@@ -26,7 +26,7 @@ export const OtherCollectionsRail: React.FC<OtherCollectionsRailProps> = ({ coll
 
   return (
     <View ref={ref}>
-      <Sans size="4" m={2}>
+      <Sans size="4" m="2">
         {name}
       </Sans>
 
@@ -34,7 +34,7 @@ export const OtherCollectionsRail: React.FC<OtherCollectionsRailProps> = ({ coll
         data={members}
         initialNumToRender={3}
         keyExtractor={({ id }) => id}
-        ItemSeparatorComponent={() => <Spacer mr={0.5} />}
+        ItemSeparatorComponent={() => <Spacer mr="0.5" />}
         renderItem={({ item: { slug, title } }) => {
           return (
             <TouchableOpacity

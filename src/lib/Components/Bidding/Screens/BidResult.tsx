@@ -79,7 +79,7 @@ export class BidResult extends React.Component<BidResultProps> {
 
     return (
       <BiddingThemeProvider>
-        <Container mt={6}>
+        <Container mt="6">
           <View>
             <Flex alignItems="center">
               <Icon20
@@ -88,11 +88,11 @@ export class BidResult extends React.Component<BidResultProps> {
                   Icons[status] || require("../../../../../images/circle-x-red.png")
                 }
               />
-              <Title mt={2} mb={5}>
+              <Title mt="2" mb="5">
                 {status === "PENDING" ? messageForPollingTimeout.title : message_header || "You’re the highest bidder"}
               </Title>
               {status !== "WINNING" && (
-                <Markdown mb={5}>
+                <Markdown mb="5">
                   {status === "PENDING" ? messageForPollingTimeout.description : message_description_md}
                 </Markdown>
               )}

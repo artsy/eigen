@@ -476,7 +476,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
         <Flex m={0} flex={1} flexDirection="column">
           <ScrollView scrollEnabled>
             <Flex alignItems="center">
-              <Title mb={3}>Confirm your bid</Title>
+              <Title mb="3">Confirm your bid</Title>
               <Timer
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 liveStartsAt={sale.live_start_at}
@@ -486,13 +486,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
             </Flex>
 
             <Box>
-              <Flex m={4} alignItems="center">
+              <Flex m="4" alignItems="center">
                 {!!artworkImage && (
                   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                   <Image resizeMode="contain" style={{ width: 50, height: 50 }} source={{ uri: artworkImage.url }} />
                 )}
 
-                <Serif mt={4} size="4t" weight="semibold" numberOfLines={1} ellipsizeMode={"tail"}>
+                <Serif mt="4" size="4t" weight="semibold" numberOfLines={1} ellipsizeMode={"tail"}>
                   {
                     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     artwork.artist_names
@@ -537,11 +537,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                   creditCardToken={this.state.creditCardToken}
                 />
               ) : (
-                <Divider mb={2} />
+                <Divider mb="2" />
               )}
 
               {enablePriceTransparency ? (
-                <Box mt={4}>
+                <Box mt="4">
                   <PriceSummary saleArtworkId={id} bid={this.selectedBid()} />
                 </Box>
               ) : null}
@@ -560,13 +560,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
             {requiresCheckbox ? (
               <Checkbox
-                mt={4}
-                mx={5}
+                mt="4"
+                mx="5"
                 justifyContent="center"
                 onPress={() => this.onConditionsOfSaleCheckboxPressed()}
                 disabled={isLoading}
               >
-                <Serif size="2" mt={2} color="black60">
+                <Serif size="2" mt="2" color="black60">
                   You agree to{" "}
                   <LinkText onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}>
                     {partnerName(sale! /* STRICTNESS_MIGRATION */)} Conditions of Sale
@@ -576,7 +576,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               </Checkbox>
             ) : (
               <Flex alignItems="center">
-                <Serif size="2" mt={2} color="black60">
+                <Serif size="2" mt="2" color="black60">
                   You agree to{" "}
                   <LinkText onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}>
                     {partnerName(sale! /* STRICTNESS_MIGRATION */)} Conditions of Sale
@@ -586,7 +586,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               </Flex>
             )}
 
-            <Box m={4}>
+            <Box m="4">
               <Button
                 loading={this.state.isLoading}
                 block

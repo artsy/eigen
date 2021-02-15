@@ -12,12 +12,12 @@ const PartnerHeader: React.FC<{
   const eligibleArtworks = partner.counts?.eligibleArtworks ?? 0
 
   return (
-    <Box px={2} pb={1} pt={6}>
-      <Sans mb={1} size="8">
+    <Box px="2" pb="1" pt="6">
+      <Sans mb="1" size="8">
         {partner.name}
       </Sans>
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Stack spacing={0.5}>
+        <Stack spacing="0.5">
           {!!eligibleArtworks && (
             <Sans size="3t">{!!eligibleArtworks && formatLargeNumberOfItems(eligibleArtworks, "work", "works")}</Sans>
           )}

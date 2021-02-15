@@ -26,10 +26,10 @@ export class FairEventSectionCard extends Component<Props> {
         <Container>
           {!!image && <BackgroundImage imageURL={image.url} />}
           <Overlay />
-          <Flex flexDirection="column" px={2}>
+          <Flex flexDirection="column" px="2">
             {profile?.icon?.url ? <Logo source={{ uri: profile.icon.url }} /> : null}
           </Flex>
-          <Box p={2} style={{ position: "absolute", bottom: 0, left: 0 }}>
+          <Box p="2" style={{ position: "absolute", bottom: 0, left: 0 }}>
             <Flex flexDirection="column" flexGrow={1}>
               <Sans size="3t" weight="medium" color="white">
                 {name}

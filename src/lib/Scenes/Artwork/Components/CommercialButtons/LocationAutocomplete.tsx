@@ -121,7 +121,7 @@ export const LocationPredictions = ({
             style={{ padding: 10 }}
           >
             <Flex flexDirection="row">
-              <LocationIcon mr={1} />
+              <LocationIcon mr="1" />
               <Text style={{ flex: 1 }} ellipsizeMode="tail" numberOfLines={1}>
                 {highlightedQuery(p.name)}
               </Text>

@@ -38,11 +38,11 @@ interface StyledInputProps extends InputProps {
   errorMessage?: string
 }
 const StyledInput: React.FC<StyledInputProps> = ({ label, errorMessage, onLayout, ...props }) => (
-  <Flex mb={4} onLayout={onLayout}>
-    <Serif size="3" mb={2}>
+  <Flex mb="4" onLayout={onLayout}>
+    <Serif size="3" mb="2">
       {label}
     </Serif>
-    <Input mb={3} error={Boolean(errorMessage)} {...props} />
+    <Input mb="3" error={Boolean(errorMessage)} {...props} />
     {!!errorMessage && (
       <Sans size="2" color="red100">
         {errorMessage}
@@ -215,7 +215,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
           />
           <ScrollView ref={(scrollView) => (this.scrollView = scrollView as any)}>
             <Container>
-              <Title mt={0} mb={6}>
+              <Title mt={0} mb="6">
                 Your billing address
               </Title>
 
@@ -303,13 +303,13 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.phoneNumberLayout) })}
               />
 
-              <Flex mb={4}>
-                <Serif size="3" mb={2}>
+              <Flex mb="4">
+                <Serif size="3" mb="2">
                   Country
                 </Serif>
 
                 <TouchableWithoutFeedback onPress={() => this.presentSelectCountry()}>
-                  <Flex mb={3} p={3} pb={2} border={1} borderColor={errorForCountry ? "red100" : "black10"}>
+                  <Flex mb="3" p="3" pb="2" border={1} borderColor={errorForCountry ? "red100" : "black10"}>
                     {this.state.values.country ? (
                       <Serif size="3">{this.state.values.country.longName}</Serif>
                     ) : (

@@ -1,10 +1,10 @@
 import { SaleActiveBids_me } from "__generated__/SaleActiveBids_me.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import { useInterval } from "lib/utils/useInterval"
 import { Flex, Separator } from "palette"
 import React from "react"
 import { FlatList, LayoutAnimation } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import useInterval from "react-use/lib/useInterval"
 import { SaleActiveBidItemContainer } from "./SaleActiveBidItem"
 
 interface SaleActiveBidsProps {
@@ -34,11 +34,11 @@ export const SaleActiveBids: React.FC<SaleActiveBidsProps> = ({ me, relay, saleI
   }
 
   return (
-    <Flex px={2} mt={3}>
+    <Flex px="2" mt="3">
       <FlatList
         data={me.lotStandings}
         ListHeaderComponent={() => <SectionTitle title="Your active bids" />}
-        ItemSeparatorComponent={() => <Separator my={0.5} />}
+        ItemSeparatorComponent={() => <Separator my="0.5" />}
         renderItem={({ item }) => <SaleActiveBidItemContainer lotStanding={item!} />}
         keyExtractor={(item) => item!.saleArtwork!.slug}
       />

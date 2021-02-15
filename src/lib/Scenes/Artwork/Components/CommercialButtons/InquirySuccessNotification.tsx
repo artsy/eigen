@@ -53,7 +53,7 @@ export const InquirySuccessNotification: React.FC<InquirySuccessNotificationProp
             }}
           >
             <TouchableOpacity onPress={navigateToConversation}>
-              <Flex p={1}>
+              <Flex p="1">
                 <Flex flexDirection="row" justifyContent="space-between">
                   <Text color="green100" variant="mediumText">
                     Message Sent

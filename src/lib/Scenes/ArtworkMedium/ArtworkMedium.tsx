@@ -19,9 +19,9 @@ export const ArtworkMedium: React.FC<Props> = ({ artwork }) => {
   return (
     <Theme>
       <ScrollView>
-        <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
-          <Box my={3}>
-            <Join separator={<Spacer my={1.5} />} flatten>
+        <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px="2">
+          <Box my="3">
+            <Join separator={<Spacer my="1.5" />} flatten>
               {!!artwork.mediumType && (
                 <>
                   <Text variant="largeTitle">{artwork.mediumType.name}</Text>

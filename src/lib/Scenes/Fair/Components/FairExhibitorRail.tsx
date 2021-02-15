@@ -59,7 +59,7 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
 
   return (
     <>
-      <Box px={2}>
+      <Box px="2">
         <SectionTitle
           title={partnerName}
           subtitle={`${count} works`}
@@ -74,8 +74,8 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
       </Box>
       <FlatList
         horizontal
-        ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
-        ListFooterComponent={() => <Spacer mr={2}></Spacer>}
+        ListHeaderComponent={() => <Spacer mr="2"></Spacer>}
+        ListFooterComponent={() => <Spacer mr="2"></Spacer>}
         ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
         showsHorizontalScrollIndicator={false}
         data={artworks}

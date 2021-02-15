@@ -13,7 +13,7 @@ export const ShowInfo: React.FC<ShowInfoProps> = ({ show, ...rest }) => {
   return (
     <Box {...rest}>
       {!!show.about && (
-        <Text variant="text" mb={1}>
+        <Text variant="text" mb="1">
           {show.about}
         </Text>
       )}

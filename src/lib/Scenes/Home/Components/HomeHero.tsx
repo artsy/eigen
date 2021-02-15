@@ -50,12 +50,12 @@ const HomeHero: React.FC<{ homePage: HomeHero_homePage }> = ({ homePage }) => {
             {unit.title}
           </Sans>
           {unit.subtitle ? (
-            <Sans size="3t" color="white" mt={0.5}>
+            <Sans size="3t" color="white" mt="0.5">
               {unit.subtitle}
             </Sans>
           ) : null}
           {unit.linkText ? (
-            <Sans size="3t" color="white" weight="medium" mt={0.5}>
+            <Sans size="3t" color="white" weight="medium" mt="0.5">
               {unit.linkText}
             </Sans>
           ) : null}

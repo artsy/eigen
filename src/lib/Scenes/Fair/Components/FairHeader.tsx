@@ -60,7 +60,7 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
               bg="white100"
               width={80}
               height={60}
-              px={1}
+              px="1"
               position="absolute"
               bottom={0}
               left={2}
@@ -72,17 +72,17 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
       ) : (
         <SafeTopMargin />
       )}
-      <Box px={2}>
-        <Text variant="largeTitle" py={2}>
+      <Box px="2">
+        <Text variant="largeTitle" py="2">
           {name}
         </Text>
         <FairTiming fair={fair} />
         {!!previewText && <ReadMore textStyle="new" content={previewText} maxChars={truncatedTextLimit()} />}
         {!!canShowMoreInfoLink && (
           <TouchableOpacity onPress={() => navigate(`/fair/${slug}/info`)}>
-            <Flex pt={2} flexDirection="row" justifyContent="flex-start">
+            <Flex pt="2" flexDirection="row" justifyContent="flex-start">
               <Text variant="mediumText">More info</Text>
-              <ChevronIcon mr="-5px" mt="2px" />
+              <ChevronIcon mr="-5" mt="2" />
             </Flex>
           </TouchableOpacity>
         )}
@@ -91,7 +91,7 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
   )
 }
 
-const SafeTopMargin = () => <Spacer mt={6} pt={2} />
+const SafeTopMargin = () => <Spacer mt="6" pt="2" />
 
 export const FairHeaderFragmentContainer = createFragmentContainer(FairHeader, {
   fair: graphql`

@@ -89,7 +89,7 @@ const MyCollection: React.FC<{
             setShowModal(true)
           }}
         ></FancyModalHeader>
-        <Text variant="largeTitle" ml={2} mb={2}>
+        <Text variant="largeTitle" ml="2" mb="2">
           My Collection
         </Text>
         {artworks.length === 0 ? (
@@ -212,19 +212,19 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 const LoadingSkeleton = () => {
   return (
     <>
-      <Text variant="largeTitle" ml={2} mb={2} mt={6}>
+      <Text variant="largeTitle" ml="2" mb="2" mt="6">
         My Collection
       </Text>
 
       <Box>
-        <Spacer mb={2} />
+        <Spacer mb="2" />
 
         {/* List items  */}
-        <Flex flexDirection="column" pl={2}>
-          <Join separator={<Spacer mr={0.5} />}>
+        <Flex flexDirection="column" pl="2">
+          <Join separator={<Spacer mr="0.5" />}>
             {[...new Array(8)].map((_, index) => {
               return (
-                <Flex key={index} flexDirection="row" mb={1} alignItems="center">
+                <Flex key={index} flexDirection="row" mb="1" alignItems="center">
                   <PlaceholderBox width={90} height={90} marginRight={10} />
                   <Box>
                     <PlaceholderText width={200} />

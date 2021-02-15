@@ -111,7 +111,7 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
     return (
       <View>
         <Button
-          mt={1}
+          mt="1"
           size="small"
           variant="secondaryGray"
           loading={requestingConditionReport}
