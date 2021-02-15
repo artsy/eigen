@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { MenuItem } from "lib/Components/MenuItem"
 import { dismissModal, navigate } from "lib/navigation/navigate"
-import { FeatureName, features } from "lib/store/features"
+import { FeatureName, features } from "lib/store/config/features"
 import { getCurrentEmissionState, GlobalStore } from "lib/store/GlobalStore"
 import { sortBy } from "lodash"
 import { CloseIcon, Flex, ReloadIcon, Separator, Spacer, Text } from "palette"
@@ -115,8 +115,8 @@ const Buttons: React.FC<{ onClose(): void }> = ({ onClose }) => {
 
 const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
   const config = GlobalStore.useAppState((s) => s.config)
-  const currentValue = config.features[flagKey]
-  const isAdminOverrideInEffect = config.adminFeatureFlagOverrides[flagKey] != null
+  const currentValue = config.features.flags[flagKey]
+  const isAdminOverrideInEffect = flagKey in config.features.adminFeatureFlagOverrides
   const valText = currentValue ? "Yes" : "No"
   return (
     <MenuItem
@@ -126,19 +126,19 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
           {
             text: "Override with 'Yes'",
             onPress() {
-              GlobalStore.actions.config.setAdminOverride({ key: flagKey, value: true })
+              GlobalStore.actions.config.features.setAdminOverride({ key: flagKey, value: true })
             },
           },
           {
             text: "Override with 'No'",
             onPress() {
-              GlobalStore.actions.config.setAdminOverride({ key: flagKey, value: false })
+              GlobalStore.actions.config.features.setAdminOverride({ key: flagKey, value: false })
             },
           },
           {
             text: isAdminOverrideInEffect ? "Revert to default value" : "Keep default value",
             onPress() {
-              GlobalStore.actions.config.setAdminOverride({ key: flagKey, value: null })
+              GlobalStore.actions.config.features.setAdminOverride({ key: flagKey, value: null })
             },
             style: "destructive",
           },

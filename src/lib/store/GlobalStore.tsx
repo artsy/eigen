@@ -1,12 +1,13 @@
 import { action, createStore, createTypedHooks, StoreProvider } from "easy-peasy"
+import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNavigationState"
 import React from "react"
 import { Platform } from "react-native"
 import Config from "react-native-config"
 import { Action, Middleware } from "redux"
-import { FeatureMap } from "./ConfigModel"
-import { FeatureName, features } from "./features"
+import { FeatureName, features } from "./config/features"
+import { FeatureMap } from "./config/FeaturesModel"
 import { GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { assignDeep, persistenceMiddleware, unpersist } from "./persistence"
 
@@ -65,7 +66,7 @@ export const __globalStoreTestUtils__ = __TEST__
         ;(GlobalStore.actions as any).__injectState(state)
       },
       injectFeatureFlags(options: Partial<FeatureMap>) {
-        this.injectState({ config: { adminFeatureFlagOverrides: options } })
+        this.injectState({ config: { features: { adminFeatureFlagOverrides: options } } })
       },
       getCurrentState: () => globalStoreInstance.getState(),
       dispatchedActions: [] as Action[],
@@ -105,7 +106,7 @@ let globalStoreInstance = createGlobalStore()
 
 export function useFeatureFlag(key: FeatureName) {
   if (Platform.OS === "ios") {
-    return GlobalStore.useAppState((state) => state.config.features[key])
+    return GlobalStore.useAppState((state) => state.config.features.flags[key])
   }
 
   // TODO: add feature flags to GlobalStore on android
@@ -120,7 +121,7 @@ export function useFeatureFlag(key: FeatureName) {
 export function unsafe_getFeatureFlag(key: FeatureName) {
   const state = globalStoreInstance?.getState() ?? null
   if (state) {
-    return state.config.features[key]
+    return state.config.features.flags[key]
   }
   if (__DEV__) {
     throw new Error(`Unable to access ${key} before GlobalStore bootstraps`)
@@ -137,19 +138,19 @@ export function getCurrentEmissionState() {
   const androidData: GlobalStoreModel["native"]["sessionState"] = {
     authenticationToken: state?.auth.userAccessToken!,
     deviceId: "Android", // TODO: get better device info
-    env: "staging", // TODO: add production support
-    gravityURL: state?.config.sessionState.gravityBaseURL,
-    launchCount: 1, // TODO: add support for this somehow??
-    legacyFairProfileSlugs: [], // TODO: take from echo
-    legacyFairSlugs: [], // TODO: take from echo
-    metaphysicsURL: state?.config.sessionState.metaphysicsBaseURL,
+    env: state?.config.environment.env,
+    gravityURL: state?.config.environment.strings.gravityURL,
+    launchCount: ArtsyNativeModule.launchCount,
+    metaphysicsURL: state?.config.environment.strings.metaphysicsURL,
     onboardingState: "none", // not used on android
-    predictionURL: state?.config.sessionState.predictionBaseURL,
+    predictionURL: state?.config.environment.strings.predictionURL,
     sentryDSN: Config.SENTRY_BETA_DSN,
-    stripePublishableKey: "stripePublishableKey", // TODO: take key from echo config
+    stripePublishableKey: state?.config.echo.stripePublishableKey,
+    legacyFairProfileSlugs: state?.config.echo.legacyFairProfileSlugs,
+    legacyFairSlugs: state?.config.echo.legacyFairSlugs,
     userAgent: "eigen android", // TODO: proper user agent
     userID: state?.auth.userID!,
-    webURL: state?.config.sessionState.webURL,
+    webURL: state?.config.environment.strings.webURL,
   }
   return androidData
 }
