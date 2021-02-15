@@ -101,7 +101,7 @@ describe("availableTabs", () => {
   })
 
   it("returns Shows tab if artist has shows", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewInsightsPage: false })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewArtistInsightsPage: false })
     const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -115,8 +115,8 @@ describe("availableTabs", () => {
     expect(tree.root.findAllByType(ArtistShows)).toHaveLength(1)
   })
 
-  it("returns all three tabs if artist has metadata, works, and shows when AROptionsNewInsightsPage is false", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewInsightsPage: false })
+  it("returns all three tabs if artist has metadata, works, and shows when AROptionsNewArtistInsightsPage is false", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewArtistInsightsPage: false })
     const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -133,8 +133,8 @@ describe("availableTabs", () => {
     expect(tree.root.findAllByType(ArtistInsights)).toHaveLength(0)
   })
 
-  it("returns two tabs if artist has metadata, works, and shows when AROptionsNewInsightsPage is true", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewInsightsPage: true })
+  it("returns two tabs if artist has metadata, works, and shows when AROptionsNewArtistInsightsPage is true", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewArtistInsightsPage: true })
     const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -154,8 +154,8 @@ describe("availableTabs", () => {
     expect(tree.root.findAllByType(ArtistInsights)).toHaveLength(1)
   })
 
-  it("Hide Artist insights tab when AROptionsNewInsightsPage is true and there are no auction results", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewInsightsPage: true })
+  it("Hide Artist insights tab when AROptionsNewArtistInsightsPage is true and there are no auction results", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewArtistInsightsPage: true })
     const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {

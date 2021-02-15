@@ -50,7 +50,7 @@ export const Artist: React.FC<{
     })
   }
 
-  const isArtistInsightsEnabled = useFeatureFlag("AROptionsNewInsightsPage")
+  const isArtistInsightsEnabled = useFeatureFlag("AROptionsNewArtistInsightsPage")
 
   if ((artistAboveTheFold.counts?.partner_shows ?? 0) > 0 && !isArtistInsightsEnabled) {
     tabs.push({
