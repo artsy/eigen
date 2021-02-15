@@ -14,6 +14,7 @@ upcoming:
     - update support email - brian
     - scroll to the top after applying a filter on auction results- mounir
     - Market stats formatting fixes - brian
+    - Add fonts to android - mounir, steven
 
 releases:
   - version: 6.7.7
