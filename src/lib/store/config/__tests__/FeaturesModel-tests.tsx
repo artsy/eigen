@@ -4,6 +4,7 @@ import { FeatureDescriptor, features } from "../features"
 
 jest.mock("../../../../../Artsy/App/EchoNew.json", () => {
   const echo: Partial<typeof echoLaunchJSON> = {
+    ...jest.requireActual("../../../../../Artsy/App/EchoNew.json"),
     updated_at: "2021-02-04T11:10:33.768Z",
     features: [
       { name: "FeatureAEchoKey", value: true },
@@ -33,7 +34,7 @@ jest.mock("lib/store/config/features", () => {
 })
 
 const getComputedFeatures = () => {
-  return (__globalStoreTestUtils__?.getCurrentState().config.features! as any) as Record<TestFeatures, boolean>
+  return (__globalStoreTestUtils__?.getCurrentState().config.features.flags as any) as Record<TestFeatures, boolean>
 }
 
 describe("Feature flags", () => {

@@ -4,6 +4,7 @@ import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import echoLaunchJSON from "../../../../../Artsy/App/EchoNew.json"
 
 jest.mock("../../../../../Artsy/App/EchoNew.json", () => ({
+  ...jest.requireActual("../../../../../Artsy/App/EchoNew.json"),
   updated_at: "2021-02-04T11:10:33.768Z",
 }))
 
