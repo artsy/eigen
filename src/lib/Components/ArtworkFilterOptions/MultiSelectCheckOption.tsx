@@ -49,7 +49,7 @@ export const MultiSelectCheckOptionScreen: React.FC<MultiSelectOptionScreenProps
           data={filterOptions}
           ItemSeparatorComponent={() => <Separator />}
           renderItem={({ item }) => (
-            <Box ml="0.5">
+            <Box ml={0.5}>
               <CheckMarkOptionListItem
                 hasExtraLeftPadding={
                   withIndent && item.paramName !== FilterParamName.artistsIFollow && item.paramValue !== "all"
@@ -93,8 +93,8 @@ export const CheckMarkOptionListItem = ({
         justifyContent="space-between"
         flexGrow={1}
         alignItems="center"
-        pl={hasExtraLeftPadding ? "3" : "2"}
-        pr="2"
+        pl={hasExtraLeftPadding ? 3 : 2}
+        pr={2}
         height={60}
       >
         <Sans color="black100" size="3t">

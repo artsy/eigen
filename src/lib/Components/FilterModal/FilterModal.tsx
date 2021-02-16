@@ -380,7 +380,7 @@ export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigatio
             {title}
           </Sans>
         </Flex>
-        <Flex alignItems="flex-end" mt="0.5" mb="2">
+        <Flex alignItems="flex-end" mt={0.5} mb={2}>
           <CloseIconContainer hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={handleTappingCloseIcon}>
             <CloseIcon fill="black100" />
           </CloseIconContainer>
@@ -406,7 +406,7 @@ export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigatio
             clearAllFilters()
           }}
         >
-          <Sans mr="2" mt="2" size="4" color={isClearAllButtonEnabled ? "black100" : "black30"}>
+          <Sans mr={2} mt={2} size="4" color={isClearAllButtonEnabled ? "black100" : "black30"}>
             Clear all
           </Sans>
         </ClearAllButton>
@@ -422,7 +422,7 @@ export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigatio
             <Box>
               <TouchableOptionListItemRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
                 <OptionListItem>
-                  <Flex p="2" pr={15} flexDirection="row" justifyContent="space-between" flexGrow={1}>
+                  <Flex p={2} pr="15px" flexDirection="row" justifyContent="space-between" flexGrow={1}>
                     <Flex flex={1}>
                       <Sans size="3t" color="black100">
                         {item.displayText}
@@ -542,7 +542,7 @@ const OptionDetail: React.FC<{ currentOption: any; filterType: any }> = ({ curre
 const ColorSwatch: React.FC<{ colorOption: ColorOption }> = ({ colorOption }) => {
   return (
     <Box
-      mr="0.3"
+      mr={0.3}
       style={{
         alignSelf: "center",
         width: 10,
@@ -572,7 +572,6 @@ interface AnimatedArtworkFilterButtonProps {
   onPress: () => void
   text?: string
 }
-
 export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonProps> = ({
   isVisible,
   onPress,
@@ -623,10 +622,10 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
         </Sans>
         {getFiltersCount() > 0 && (
           <>
-            <Sans size="3t" pl="0.5" py="1" color="white100" weight="medium">
+            <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
               {"\u2022"}
             </Sans>
-            <Sans size="3t" pl="0.5" py="1" color="white100" weight="medium">
+            <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
               {getFiltersCount()}
             </Sans>
           </>

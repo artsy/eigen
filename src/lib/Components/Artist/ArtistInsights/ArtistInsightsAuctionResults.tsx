@@ -104,23 +104,23 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
 
   const renderAuctionResultsModal = () => (
     <>
-      <Spacer my="1" />
+      <Spacer my={1} />
       <Text>
         These auction results bring together sale data from top auction houses around the world, including
         Christie&rsquo;s, Sotheby&rsquo;s, Phillips, Bonhams, and Heritage. Results are updated daily.
       </Text>
-      <Spacer mb="2" />
+      <Spacer mb={2} />
       <Text>
         Please note that the sale price includes the hammer price and buyer’s premium, as well as any other additional
         fees (e.g., Artist’s Resale Rights).
       </Text>
-      <Spacer mb="2" />
+      <Spacer mb={2} />
     </>
   )
 
   if (!auctionResults.length) {
     return (
-      <Box my={80}>
+      <Box my="80px">
         <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} />
       </Box>
     )
@@ -142,11 +142,11 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         />
       )}
       ListHeaderComponent={() => (
-        <Flex px="2">
+        <Flex px={2}>
           <Flex flexDirection="row" alignItems="center">
             <InfoButton
               titleElement={
-                <Text variant="title" mr="0.5">
+                <Text variant="title" mr={0.5}>
                   Auction Results
                 </Text>
               }
@@ -167,7 +167,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         </Flex>
       )}
       ItemSeparatorComponent={() => (
-        <Flex px="2">
+        <Flex px={2}>
           <Separator borderColor={color("black5")} />
         </Flex>
       )}

@@ -1,6 +1,7 @@
-import { Box, SpaceProps } from "palette"
+import { Box } from "palette"
 import React from "react"
 import { View } from "react-native"
+import { SpaceProps } from "styled-system"
 
 interface ScreenMarginProps extends SpaceProps {
   ref?: React.Ref<View>
@@ -8,7 +9,7 @@ interface ScreenMarginProps extends SpaceProps {
 
 export const ScreenMargin: React.FC<ScreenMarginProps> = ({ children, ...rest }) => {
   return (
-    <Box px="2" {...rest}>
+    <Box px={2} {...rest}>
       {children}
     </Box>
   )
