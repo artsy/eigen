@@ -4,7 +4,7 @@ import { MyCollectionArtworkDemandIndex_marketPriceInsights } from "__generated_
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { Box, Flex, Percentage, Spacer, Text } from "palette"
+import { Box, Flex, Spacer, Text } from "palette"
 import React from "react"
 import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -122,7 +122,7 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
 }
 
 const ProgressBar: React.FC<{ width: number }> = ({ width }) => {
-  const pctWidth = `${width}%` as Percentage
+  const pctWidth = width + "%"
   const opacity = width / 100
 
   return (

@@ -54,7 +54,7 @@ export const Tabs: React.FC<TabsProps> = ({ setActiveTab, activeTab, tabs }) => 
             borderBottomColor={active ? color("black100") : "transparent"}
             borderBottomWidth={2}
             position="relative"
-            bottom={-1}
+            bottom="-1px"
             key={label}
           >
             <Tab label={label} onPress={() => setActiveTab(index)} active={active} />

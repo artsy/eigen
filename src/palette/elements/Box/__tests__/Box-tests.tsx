@@ -12,14 +12,10 @@ describe("Box", () => {
     // number is number of pixels
     tree = renderWithWrappers(<Box width={10} height={10} ml={1} />).root
     expect(tree.findByType(View).props.style).toStrictEqual([{ width: 10, height: 10, marginLeft: 1 }])
-    tree = renderWithWrappers(<Box width={10} height={10} top={1} />).root
-    expect(tree.findByType(View).props.style).toStrictEqual([{ width: 10, height: 10, top: 1 }])
 
     // string is for our design system
     tree = renderWithWrappers(<Box width={10} height={10} ml="1" />).root
     expect(tree.findByType(View).props.style).toStrictEqual([{ width: 10, height: 10, marginLeft: 10 }])
-    tree = renderWithWrappers(<Box width={10} height={10} top="1" />).root
-    expect(tree.findByType(View).props.style).toStrictEqual([{ width: 10, height: 10, top: 10 }])
 
     // we don't really use these in eigen but let's have them tested
     tree = renderWithWrappers(<Box width={10} height={10} ml={[1, 2]} />).root
@@ -34,10 +30,6 @@ describe("Box", () => {
 
     tree = renderWithWrappers(<Box width={10} height={10} ml="-1" />).root
     expect(tree.findByType(View).props.style).toStrictEqual([{ width: 10, height: 10, marginLeft: -10 }])
-
-    // percentages
-    tree = renderWithWrappers(<Box width={200} height={300} top="10%" />).root
-    expect(tree.findByType(View).props.style).toStrictEqual([{ width: 200, height: 300, top: "10%" }])
 
     // some extra tests
     tree = renderWithWrappers(<Box width={10} height={10} ml="1.5" />).root
