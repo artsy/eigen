@@ -1,11 +1,11 @@
-import { SpaceProps } from "palette/helpers"
+import { PositionProps, SpaceProps } from "palette/helpers"
 import Svg, { SvgProps } from "react-native-svg"
 import styled from "styled-components"
-import { left, LeftProps, position, PositionProps, right, RightProps, space, top, TopProps } from "styled-system"
+import { left, position, right, space, top } from "styled-system"
 import { Color } from "../Theme"
 
 // tslint:disable-next-line:no-empty-interface
-export interface IconProps extends SvgProps, SpaceProps, PositionProps, TopProps, RightProps, LeftProps {
+export interface IconProps extends SvgProps, SpaceProps, PositionProps {
   fill?: Color
 }
 

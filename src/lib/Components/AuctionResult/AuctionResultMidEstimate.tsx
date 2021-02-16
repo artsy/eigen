@@ -22,7 +22,7 @@ export const AuctionResultsMidEstimate: React.FC<AuctionResultsMidEstimateProps>
     <Flex flexDirection="row" alignItems="center">
       {/* Up arrow is heavier toward bottom so appears off center without padding */}
       {arrowDirection === "up" ? (
-        <IncreaseIcon bottom={"1px"} height={12} fill={color} />
+        <IncreaseIcon bottom={1} height={12} fill={color} />
       ) : (
         <DecreaseIcon height={12} fill={color} />
       )}
