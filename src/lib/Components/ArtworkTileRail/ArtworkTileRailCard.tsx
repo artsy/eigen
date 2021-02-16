@@ -69,9 +69,9 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
         <Flex
           backgroundColor="white"
           position="absolute"
-          px="5"
-          py="3"
-          bottom="5"
+          px={5}
+          py={3}
+          bottom={5}
           left={5}
           borderRadius={2}
           alignSelf="flex-start"

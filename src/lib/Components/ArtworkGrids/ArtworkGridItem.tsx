@@ -90,11 +90,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
             {Boolean(!hideUrgencyTags && urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed) && (
               <Flex
                 position="absolute"
-                bottom="5"
+                bottom={5}
                 left={5}
                 backgroundColor="white"
-                px="5"
-                py="3"
+                px={5}
+                py={3}
                 borderRadius={2}
                 alignSelf="flex-start"
               >
