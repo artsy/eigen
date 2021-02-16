@@ -50,7 +50,7 @@ export const Artist: React.FC<{
     })
   }
 
-  const isArtistInsightsEnabled = useFeatureFlag("AROptionsNewArtistInsightsPage")
+  const isArtistInsightsEnabled = useFeatureFlag("AROptionsNewInsightsPage")
 
   if ((artistAboveTheFold.counts?.partner_shows ?? 0) > 0 && !isArtistInsightsEnabled) {
     tabs.push({
@@ -66,7 +66,7 @@ export const Artist: React.FC<{
     })
   }
 
-  if (tabs.length === 0) {
+  if ((!isArtistInsightsEnabled && tabs.length === 0) || (isArtistInsightsEnabled && tabs.length === 1)) {
     tabs.push({
       title: "Artworks",
       content: (

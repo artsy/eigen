@@ -56,7 +56,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-profile", "MyProfile"),
 
     new RouteMatcher("/artist/:artistID", "Artist"),
-    unsafe_getFeatureFlag("AROptionsNewArtistInsightsPage")
+    unsafe_getFeatureFlag("AROptionsNewInsightsPage")
       ? new RouteMatcher("/artist/:artistID/shows", "ArtistShows")
       : null,
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
