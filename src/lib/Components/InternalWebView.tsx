@@ -1,8 +1,9 @@
 import React from "react"
-import { requireNativeComponent } from "react-native"
+import { requireNativeComponent, View } from "react-native"
 
 interface Props {
   route: string
+  showFullScreen?: boolean
 }
 
 /**
@@ -11,8 +12,8 @@ interface Props {
  */
 export default class InternalWebView extends React.Component<Props, any> {
   render() {
-    return <NativeInternalWebView {...this.props} />
+    return <NativeInternalWebView style={{ flex: 1 }} {...this.props} />
   }
 }
 
-const NativeInternalWebView = requireNativeComponent("ARInternalWebView")
+const NativeInternalWebView = requireNativeComponent("ARInternalWebView") as typeof View
