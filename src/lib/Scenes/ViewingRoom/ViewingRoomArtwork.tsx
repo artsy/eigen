@@ -109,7 +109,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (p
               <TouchableWithoutFeedback onPress={viewInAR}>
                 <Flex flexDirection="row" mx="1" height={24} alignItems="center">
                   <EyeOpenedIcon />
-                  <Spacer ml="5" />
+                  <Spacer ml="0.5" />
                   <Sans size="2">View on wall</Sans>
                 </Flex>
               </TouchableWithoutFeedback>
