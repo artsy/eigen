@@ -12,7 +12,7 @@ import {
 type ToString<N extends number> = `${N}`
 type ToNegative<S extends string> = `-${S}`
 
-type Percentage = `${number}%`
+export type Percentage = `${number}%`
 
 export type SpacingUnit =
   | number // pixels
