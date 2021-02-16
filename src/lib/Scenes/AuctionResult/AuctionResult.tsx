@@ -11,7 +11,7 @@ import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { useStickyScrollHeader } from "lib/utils/useStickyScrollHeader"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { Box, color, Flex, NoArtworkIcon, Spacer, Text, TEXT_FONTS } from "palette"
+import { Box, Flex, NoArtworkIcon, Separator, Spacer, Text, TEXT_FONTS } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated, Image, TextInput, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -61,7 +61,6 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
 
   const details = []
   const makeRow = (label: string, value: string, options?: { fullWidth?: boolean; testID?: string }) => (
-<<<<<<< HEAD
     <Flex key={label} mb="1">
       <Flex style={{ opacity: 0.5 }}>
         <Separator mb="1" />
@@ -69,12 +68,6 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
       {options?.fullWidth ? (
         <Flex>
           <Text color="black60" mb="1">
-=======
-    <Flex key={label} borderTopWidth={1} borderTopColor={color("black5")}>
-      {options?.fullWidth ? (
-        <Flex my={1}>
-          <Text color="black60" mb={1}>
->>>>>>> 6ea45ddf3 (fix: review comment)
             {label}
           </Text>
           <TextInput
@@ -85,35 +78,20 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             style={{
               fontFamily: TEXT_FONTS.sans,
               fontSize: 14,
+              lineHeight: 21,
             }}
           />
         </Flex>
       ) : (
-        <Flex mt="14px" mb="10px" flexDirection="row" justifyContent="space-between" alignItems="flex-start">
-          <Flex width="35%" justifyContent="center" minHeight="20">
-            <Text variant="caption" color="black60">
-              {label}
+        <Flex flexDirection="row" justifyContent="space-between">
+          <Text style={{ width: "35%" }} color="black60">
+            {label}
+          </Text>
+          <Flex width="65%" pl={15}>
+            <Text pl={2} textAlign="right" testID={options?.testID} selectable>
+              {value}
             </Text>
           </Flex>
-          <TextInput
-            editable={false}
-            value={value}
-            multiline
-            testID={options?.testID}
-            scrollEnabled={false}
-            textAlignVertical="center"
-            style={{
-              fontFamily: TEXT_FONTS.sans,
-              fontSize: 14,
-              lineHeight: 21,
-              top: -7,
-              textAlign: "right",
-              alignItems: "center",
-              minHeight: 20,
-              paddingLeft: 35,
-              width: "65%",
-            }}
-          />
         </Flex>
       )}
     </Flex>
