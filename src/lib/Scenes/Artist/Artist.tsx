@@ -66,7 +66,7 @@ export const Artist: React.FC<{
     })
   }
 
-  if ((!isArtistInsightsEnabled && tabs.length === 0) || (isArtistInsightsEnabled && tabs.length === 1)) {
+  if (tabs.length === 0) {
     tabs.push({
       title: "Artworks",
       content: (

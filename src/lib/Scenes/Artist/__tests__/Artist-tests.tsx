@@ -51,13 +51,16 @@ describe("availableTabs", () => {
     return <ArtistQueryRenderer artistID="ignored" environment={environment} isPad={false} />
   }
 
-  it("returns an empty state if artist has no metadata, shows, or works", async () => {
+  it("returns an empty state if artist has no metadata, shows, insights, or works", async () => {
     const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
         return {
           has_metadata: false,
           counts: { articles: 0, related_artists: 0, artworks: 0, partner_shows: 0 },
+          auctionResultsConnection: {
+            totalCount: 0,
+          },
         }
       },
     })
@@ -68,13 +71,16 @@ describe("availableTabs", () => {
     )
   })
 
-  it("returns About tab if artist has metadata", async () => {
+  it("returns only About tab if artist has only metadata", async () => {
     const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
         return {
           has_metadata: true,
           counts: { articles: 0, related_artists: 0, artworks: 0, partner_shows: 0 },
+          auctionResultsConnection: {
+            totalCount: 0,
+          },
         }
       },
     })
@@ -86,13 +92,16 @@ describe("availableTabs", () => {
     expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(1)
   })
 
-  it("returns About tab if artist has articles", async () => {
+  it("returns About tab if artist has only articles", async () => {
     const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
         return {
           has_metadata: false,
           counts: { articles: 1, related_artists: 0, artworks: 0, partner_shows: 0 },
+          auctionResultsConnection: {
+            totalCount: 0,
+          },
         }
       },
     })
