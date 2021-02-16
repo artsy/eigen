@@ -21,7 +21,7 @@ export const VanityURLPossibleRedirect: React.FC<{ slug: string }> = ({ slug }) 
       : GlobalStore.useAppState((store) => {
           return {
             authenticationToken: store.auth.userAccessToken!,
-            webURL: store.config.sessionState.webURL,
+            webURL: store.config.environment.strings.gravityURL,
           }
         })
   const resolvedURL = join(webURL, slug)
