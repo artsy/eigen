@@ -78,6 +78,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             style={{
               fontFamily: TEXT_FONTS.sans,
               fontSize: 14,
+              lineHeight: 21,
             }}
           />
         </Flex>
@@ -87,19 +88,9 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             {label}
           </Text>
           <Flex width="65%" pl={15}>
-            <TextInput
-              editable={false}
-              value={value}
-              multiline
-              testID={options?.testID}
-              scrollEnabled={false}
-              style={{
-                fontFamily: TEXT_FONTS.sans,
-                fontSize: 14,
-                textAlign: "right",
-                paddingLeft: 20,
-              }}
-            />
+            <Text pl={2} textAlign="right" testID={options?.testID} selectable>
+              {value}
+            </Text>
           </Flex>
         </Flex>
       )}
