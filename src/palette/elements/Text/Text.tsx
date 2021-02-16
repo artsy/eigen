@@ -1,17 +1,8 @@
 import { TEXT_LINE_HEIGHTS } from "@artsy/palette-tokens/dist/text"
-import { SpaceProps } from "palette/helpers"
+import { paletteSpace, SpaceProps } from "palette/helpers"
 import React from "react"
 import { TextProps as RNTextProps } from "react-native"
-import {
-  color,
-  ColorProps,
-  compose,
-  space,
-  style,
-  typography,
-  TypographyProps,
-  variant as systemVariant,
-} from "styled-system"
+import { color, ColorProps, compose, style, typography, TypographyProps, variant as systemVariant } from "styled-system"
 import { styled as primitives } from "../../platform/primitives"
 import {
   calculateLetterSpacing,
@@ -38,7 +29,7 @@ const textColor = style({
 })
 
 /** styled functions for Text */
-export const textMixin = compose(typography, color, textColor, space)
+export const textMixin = compose(typography, color, textColor, paletteSpace)
 
 /** TextProps */
 export type TextProps = BaseTextProps & RNTextProps
