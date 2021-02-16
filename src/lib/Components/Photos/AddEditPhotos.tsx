@@ -13,13 +13,13 @@ import { Image as RNCImage } from "react-native-image-crop-picker"
 
 const MARGIN = 20
 
-interface AddPhotosProps {
+interface AddEditPhotosProps {
   initialPhotos: Photo[]
   photosUpdated: (updatedPhotos: Photo[]) => void
   navigator: NavigatorIOS
 }
 
-export const AddPhotos: React.FC<AddPhotosProps> = ({ initialPhotos, photosUpdated, navigator }) => {
+export const AddEditPhotos: React.FC<AddEditPhotosProps> = ({ initialPhotos, photosUpdated, navigator }) => {
   const [photos, setPhotos] = useState(initialPhotos)
 
   const { width: screenWidth } = useScreenDimensions()

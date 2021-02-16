@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-community/async-storage"
 import type NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Dimensions, ScrollView, View } from "react-native"
 
-import { AddPhotos } from "lib/Components/Photos/AddPhotos"
+import { AddEditPhotos } from "lib/Components/Photos/AddEditPhotos"
 import { dismissModal } from "lib/navigation/navigate"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { Box, Button, Flex, Spacer, Text } from "palette"
@@ -83,7 +83,7 @@ export default class Overview extends React.Component<Props, State> {
   goToPhotosTapped = () => {
     if (this.state.photos && this.state.photos.length > 0) {
       this.props.navigator.push({
-        component: AddPhotos,
+        component: AddEditPhotos,
         passProps: { initialPhotos: this.state.photos, photosUpdated: this.photosUpdated },
       })
     } else {
@@ -115,8 +115,10 @@ export default class Overview extends React.Component<Props, State> {
   updateLocation = (city: string, state: string, country: string) =>
     this.updateStateAndMetaphysics({ location: { city, state, country } })
 
-  updatePhotos = (photos: RNCImage[]) =>
-    photos.length && this.updateStateAndMetaphysics({ photos: photos.map((p) => ({ image: p, uploaded: false })) })
+  updatePhotos = (photos: RNCImage[]) => {
+    console.log("Update photos called", photos)
+    this.updateStateAndMetaphysics({ photos: photos.map((p) => ({ image: p, uploaded: false })) })
+  }
 
   updateStateAndMetaphysics = (state: Partial<ConsignmentSetup>) =>
     this.setState(state, this.updateLocalStateAndMetaphysics)
