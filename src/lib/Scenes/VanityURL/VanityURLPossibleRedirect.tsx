@@ -78,7 +78,7 @@ const Loading: React.FC<{}> = ({}) => {
 
 const NotFound: React.FC<{ url: string }> = ({ url }) => {
   return (
-    <Stack style={{ flex: 1 }} mx="2" alignItems="center" justifyContent="center">
+    <Stack style={{ flex: 1 }} mx={2} alignItems="center" justifyContent="center">
       <Text variant="largeTitle">404</Text>
       <Text variant="text" textAlign="center">
         We can't find that page.

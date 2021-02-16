@@ -4,7 +4,7 @@ import { MyCollectionArtworkDemandIndex_marketPriceInsights } from "__generated_
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { Box, Flex, Percentage, Spacer, Text } from "palette"
+import { Box, Flex, Spacer, Text } from "palette"
 import React from "react"
 import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -32,7 +32,7 @@ const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexPro
         title="Demand index"
         modalContent={
           <>
-            <Spacer my="1" />
+            <Spacer my={1} />
             <Text>
               Overall strength of demand for this artist and medium combination. Based on the last 36 months of auction
               sale data from top commercial auction houses.
@@ -42,9 +42,9 @@ const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexPro
         onPress={() => trackEvent(tracks.tappedInfoBubble(artwork?.internalID, artwork?.slug))}
       />
 
-      <Spacer my="0.5" />
+      <Spacer my={0.5} />
       <DemandRankScale demandRank={demandRank} />
-      <Spacer my="1" />
+      <Spacer my={1} />
       <DemandRankDetails demandRank={demandRank}></DemandRankDetails>
     </ScreenMargin>
   )
@@ -112,7 +112,7 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
         </Text>
       </Box>
       <ProgressBar width={width} />
-      <Spacer my="0.3" />
+      <Spacer my={0.3} />
       <Flex flexDirection="row" justifyContent="space-between">
         <Text>0</Text>
         <Text>10</Text>
@@ -122,7 +122,7 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
 }
 
 const ProgressBar: React.FC<{ width: number }> = ({ width }) => {
-  const pctWidth = `${width}%` as Percentage
+  const pctWidth = width + "%"
   const opacity = width / 100
 
   return (

@@ -45,16 +45,22 @@ interface TabsProps {
 export const Tabs: React.FC<TabsProps> = ({ setActiveTab, activeTab, tabs }) => {
   const tabWidth = 100 / tabs.length
   return (
-    <Flex flexDirection="row" backgroundColor="white" borderBottomColor={color("black10")} borderBottomWidth={1} px="2">
+    <Flex
+      flexDirection="row"
+      backgroundColor="white"
+      borderBottomColor={color("black10")}
+      borderBottomWidth="1px"
+      px="2"
+    >
       {tabs.map(({ label }, index) => {
         const active = activeTab === index
         return (
           <Box
             width={`${tabWidth}%`}
             borderBottomColor={active ? color("black100") : "transparent"}
-            borderBottomWidth={2}
+            borderBottomWidth="2px"
             position="relative"
-            bottom={-1}
+            bottom="-1px"
             key={label}
           >
             <Tab label={label} onPress={() => setActiveTab(index)} active={active} />

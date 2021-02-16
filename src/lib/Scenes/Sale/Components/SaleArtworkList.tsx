@@ -48,7 +48,7 @@ export const SaleArtworkList: React.FC<Props> = ({
     <FlatList
       data={artworks}
       onEndReached={loadMoreArtworks}
-      ItemSeparatorComponent={() => <Spacer mb={20} />}
+      ItemSeparatorComponent={() => <Spacer mb="20px" />}
       ListFooterComponent={loadingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null}
       renderItem={({ item }) => (
         <SaleArtworkListItem artwork={item} key={item.id} contextScreenOwnerType={contextScreenOwnerType} />

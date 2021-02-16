@@ -1,9 +1,8 @@
-import { SpaceProps } from "palette/helpers"
 import React from "react"
 import { ViewStyle } from "react-native"
 import styled from "styled-components/native"
 import { height, position, space, textAlign, width } from "styled-system"
-import { HeightProps, TextAlignProps, WidthProps } from "./types"
+import { HeightProps, SpaceProps, TextAlignProps, WidthProps } from "./types"
 
 interface IconProps
   extends SpaceProps,

@@ -1,5 +1,3 @@
-import { paletteSpace, PositionProps, SpaceProps } from "palette/helpers"
-import { palettePosition } from "palette/helpers/styled-system/position"
 import { View, ViewProps } from "react-native"
 import styled from "styled-components/native"
 import {
@@ -14,6 +12,10 @@ import {
   FlexboxProps,
   layout,
   LayoutProps,
+  position,
+  PositionProps,
+  space,
+  SpaceProps,
   textAlign,
   TextAlignProps,
 } from "styled-system"
@@ -32,7 +34,7 @@ export interface BoxProps
 /**
  * All the system functions for Box
  */
-export const boxMixin = compose(background, border, color, flexbox, layout, palettePosition, paletteSpace, textAlign)
+export const boxMixin = compose(background, border, color, flexbox, layout, position, space, textAlign)
 
 /**
  * Box is just a `View` with common styled-system props.

@@ -1,7 +1,7 @@
-import { PositionProps } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { StyleProp, ViewStyle } from "react-native"
+import { PositionProps } from "styled-system"
 
 import { Sans } from ".."
 import { color } from "../../Theme"
@@ -30,7 +30,7 @@ export const CardTag: React.FC<CardTagProps> = ({ text, textColor, color: bgColo
         },
       ]}
     >
-      <Sans size="2" px="0.5" py="0.3" color={textColor}>
+      <Sans size="2" px={0.5} py={0.3} color={textColor}>
         {text}
       </Sans>
     </View>
