@@ -54,7 +54,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
       <Spacer mb={2} />
       <Text>
         In this data set, please note that the sale price includes the hammer price and buyer’s premium, as well as any
-        other additional fees (e.g., Artist’s Resale Rights).
+        other additional fees (e.g., Artist’s Resale Rights). The data set only includes works valued over $1,000.
       </Text>
       <Spacer mb={2} />
       <Text fontWeight={"bold"}>Average yearly lots sold</Text>
@@ -72,8 +72,9 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
       <Text fontWeight={"bold"}>Sale price over estimate</Text>
       <Spacer mb={1} />
       <Text lineHeight={50}>
-        In this data set, please note that the sale price includes the hammer price and buyer’s premium, as well as any
-        other additional fees (e.g., Artist’s Resale Rights). The data set only includes works valued over $1,000.
+        The average percentage difference of the sale price over the mid-estimate (the midpoint of the low and high
+        estimates set by the auction house before the auction takes place) for lots sold at auction over the past 36
+        months.
       </Text>
       <Spacer mb={100} />
     </ScrollView>
@@ -101,19 +102,19 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
       <Flex flexDirection="row" alignItems="center">
         <InfoButton
           titleElement={
-            <Text variant="title" mr="0.5">
-              Market Signals by Medium
+            <Text variant="title" mr={0.5}>
+              Market Signals
             </Text>
           }
           trackEvent={() => {
             tracking.trackEvent(tappedInfoBubble(tracks.tapMarketStatsInfo()))
           }}
-          modalTitle={"Market Signals by Medium"}
+          modalTitle={"Market Signals"}
           modalContent={renderInfoModal()}
         />
       </Flex>
       <Text variant="small" color="black60" my={0.5}>
-        Last 36 months
+        Averages over last 36 months
       </Text>
       <Select
         value={selectedPriceInsight.medium}
@@ -133,7 +134,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
           <Text variant="largeTitle" data-test-id="annualLotsSold">
             {selectedPriceInsight.annualLotsSold}
           </Text>
-          <Text variant="text">Average yearly lots sold</Text>
+          <Text variant="text">Yearly lots sold</Text>
         </Flex>
         <Flex width="50%">
           <Text variant="largeTitle">{formattedSellThroughRate}%</Text>
@@ -141,7 +142,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
         </Flex>
         <Flex width="50%" mt={2}>
           <Text variant="largeTitle">${formattedAverageValueSold}</Text>
-          <Text variant="text">Average sale price</Text>
+          <Text variant="text">Sale price</Text>
         </Flex>
         <Flex width="50%" mt={2}>
           <Flex width="50%" flexDirection="row" alignItems="center">
@@ -203,7 +204,7 @@ const LoadingSkeleton = () => {
     <>
       <Flex flexDirection="row" alignItems="center">
         <Text variant="title" mr={0.5}>
-          Market Signals by Medium
+          Market Signals
         </Text>
       </Flex>
       <Text variant="small" color="black60" my={0.5}>
