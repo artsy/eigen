@@ -6,7 +6,7 @@ import { RegistrationUpdateUserMutation } from "__generated__/RegistrationUpdate
 import { Modal } from "lib/Components/Modal"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { unsafe__getEnvironment } from "lib/store/GlobalStore"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { bidderNeedsIdentityVerification } from "lib/utils/auction"
 import { Schema, screenTrack } from "lib/utils/track"
@@ -26,8 +26,6 @@ import { Title } from "../Components/Title"
 import { Flex } from "../Elements/Flex"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
-
-stripe.setOptions({ publishableKey: getCurrentEmissionState().stripePublishableKey })
 
 export interface RegistrationProps extends ViewProperties {
   sale: Registration_sale
@@ -60,6 +58,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
+
+    stripe.setOptions({ publishableKey: unsafe__getEnvironment().stripePublishableKey })
 
     const { has_credit_cards } = this.props.me
     const requiresPaymentInformation = !has_credit_cards

@@ -4,7 +4,6 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNavigationState"
 import React from "react"
 import { Platform } from "react-native"
-import Config from "react-native-config"
 import { Action, Middleware } from "redux"
 import { FeatureName, features } from "./config/features"
 import { FeatureMap } from "./config/FeaturesModel"
@@ -64,6 +63,9 @@ export const __globalStoreTestUtils__ = __TEST__
       // takes effect until the next test starts
       injectState(state: DeepPartial<GlobalStoreState>) {
         ;(GlobalStore.actions as any).__injectState(state)
+      },
+      setProductionMode() {
+        this.injectState({ config: { environment: { env: "production" } } })
       },
       injectFeatureFlags(options: Partial<FeatureMap>) {
         this.injectState({ config: { features: { adminFeatureFlagOverrides: options } } })
@@ -138,19 +140,10 @@ export function getCurrentEmissionState() {
   const androidData: GlobalStoreModel["native"]["sessionState"] = {
     authenticationToken: state?.auth.userAccessToken!,
     deviceId: "Android", // TODO: get better device info
-    env: state?.config.environment.env,
-    gravityURL: state?.config.environment.strings.gravityURL,
     launchCount: ArtsyNativeModule.launchCount,
-    metaphysicsURL: state?.config.environment.strings.metaphysicsURL,
     onboardingState: "none", // not used on android
-    predictionURL: state?.config.environment.strings.predictionURL,
-    sentryDSN: Config.SENTRY_BETA_DSN,
-    stripePublishableKey: state?.config.echo.stripePublishableKey,
-    legacyFairProfileSlugs: state?.config.echo.legacyFairProfileSlugs,
-    legacyFairSlugs: state?.config.echo.legacyFairSlugs,
     userAgent: "eigen android", // TODO: proper user agent
     userID: state?.auth.userID!,
-    webURL: state?.config.environment.strings.webURL,
   }
   return androidData
 }
@@ -165,9 +158,26 @@ export function unsafe__getSelectedTab() {
 }
 
 export function useIsStaging() {
-  // TODO: support non-staging environments on android
-  if (Platform.OS === "android") {
-    return true
-  }
-  return GlobalStore.useAppState((state) => state.native.sessionState.env === "staging")
+  return GlobalStore.useAppState((state) => state.config.environment.env === "staging")
+}
+
+/**
+ * This is marked as unsafe because it will not cause a re-render
+ * if used during a react component's render. Use `useEnvironment` instead.
+ * This is safe to use in contexts that don't require reactivity, e.g. onPress handlers.
+ */
+export function unsafe__getEnvironment() {
+  const {
+    environment: { env, strings },
+    echo: { stripePublishableKey },
+  } = globalStoreInstance?.getState().config
+  return { ...strings, stripePublishableKey, env }
+}
+
+export function useEnvironment() {
+  const {
+    environment: { env, strings },
+    echo: { stripePublishableKey },
+  } = GlobalStore.useAppState((state) => state.config)
+  return { ...strings, stripePublishableKey, env }
 }

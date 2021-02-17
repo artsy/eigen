@@ -32,6 +32,14 @@ interface LegacyNativeModules {
     nativeState: NativeState
     postNotificationName(type: string, data: object): void
     didFinishBootstrapping(): void
+    reactStateUpdated(state: {
+      gravityURL: string
+      metaphysicsURL: string
+      predictionURL: string
+      webURL: string
+      causalityURL: string
+      env: string
+    }): void
   }
   ARPHPhotoPickerModule: {
     requestPhotos(): Promise<RNCImage[]>

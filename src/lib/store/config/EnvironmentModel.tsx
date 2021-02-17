@@ -1,4 +1,7 @@
-import { action, Action, computed, Computed } from "easy-peasy"
+import { action, Action, computed, Computed, thunkOn, ThunkOn } from "easy-peasy"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { unsafe__getEnvironment } from "../GlobalStore"
+import { GlobalStoreModel } from "../GlobalStoreModel"
 
 type Environment = "staging" | "production"
 
@@ -48,6 +51,14 @@ export const environment = defineEnvironmentOptions({
       production: "https://artsy.net",
     },
   },
+  causalityURL: {
+    description: "Causality WebSocket URI",
+    presets: {
+      local: "ws://localhost:8080",
+      staging: "wss://causality-staging.artsy.net",
+      production: "wss://causality.artsy.net",
+    },
+  },
 })
 
 export interface EnvironmentModel {
@@ -57,6 +68,7 @@ export interface EnvironmentModel {
   setAdminOverride: Action<EnvironmentModel, { key: EnvironmentKey; value: string | null }>
   setEnv: Action<EnvironmentModel, Environment>
   clearAdminOverrides: Action<EnvironmentModel>
+  updateNativeState: ThunkOn<EnvironmentModel, {}, GlobalStoreModel>
 }
 
 export const EnvironmentModel: EnvironmentModel = {
@@ -84,4 +96,10 @@ export const EnvironmentModel: EnvironmentModel = {
   clearAdminOverrides: action((state) => {
     state.adminOverrides = {}
   }),
+  updateNativeState: thunkOn(
+    (actions) => [actions.clearAdminOverrides, actions.setAdminOverride, actions.setEnv],
+    () => {
+      LegacyNativeModules.ARNotificationsManager.reactStateUpdated(unsafe__getEnvironment())
+    }
+  ),
 }

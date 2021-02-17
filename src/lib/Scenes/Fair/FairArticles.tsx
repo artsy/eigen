@@ -3,7 +3,7 @@ import { FairArticlesQuery } from "__generated__/FairArticlesQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { useEnvironment } from "lib/store/GlobalStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { compact } from "lodash"
 import { Box, Button, Join, Message, space, Spacer, Text, Theme, Touchable } from "palette"
@@ -53,6 +53,8 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
   const { width: screenWidth } = Dimensions.get("screen")
   const imageWidth = screenWidth - space(4)
 
+  const webURL = useEnvironment().webURL
+
   return (
     <ScrollView>
       <Theme>
@@ -85,11 +87,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
 
                   <Text variant="caption">{heroArticle!.publishedAt}</Text>
 
-                  <FairEditorialShare
-                    mt={1}
-                    subject={heroArticle!.title!}
-                    url={`${getCurrentEmissionState().webURL}${heroArticle!.href}`}
-                  />
+                  <FairEditorialShare mt={1} subject={heroArticle!.title!} url={`${webURL}${heroArticle!.href}`} />
                 </Box>
               </Box>
             </Touchable>
@@ -122,11 +120,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
 
                       <Text variant="caption">{article!.publishedAt}</Text>
 
-                      <FairEditorialShare
-                        mt={1}
-                        subject={article!.title!}
-                        url={`${getCurrentEmissionState().webURL}${article!.href}`}
-                      />
+                      <FairEditorialShare mt={1} subject={article!.title!} url={`${webURL}${article!.href}`} />
                     </Box>
                   </Touchable>
                 )

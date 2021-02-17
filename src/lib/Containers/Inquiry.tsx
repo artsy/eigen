@@ -7,7 +7,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { BottomAlignedButton } from "lib/Scenes/Consignments/Components/BottomAlignedButton"
 import ArtworkPreview from "lib/Scenes/Inbox/Components/Conversations/Preview/ArtworkPreview"
 import { MetadataText, SmallHeadline } from "lib/Scenes/Inbox/Components/Typography"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { Dimensions } from "react-native"
@@ -135,7 +135,8 @@ export class Inquiry extends React.Component<Props, State> {
     owner_slug: props.artwork.slug,
   }))
   sendInquiry() {
-    const { gravityURL, authenticationToken, userAgent } = getCurrentEmissionState()
+    const { authenticationToken, userAgent } = getCurrentEmissionState()
+    const gravityURL = unsafe__getEnvironment().gravityURL
     // Using setState to trigger re-render for the button
     this.setState(() => ({ sending: true }))
     fetch(gravityURL + "/api/v1/me/artwork_inquiry_request", {

@@ -71,7 +71,6 @@ static AREmission *_sharedInstance = nil;
         [ARStateKey authenticationToken]: [NSNull null],
         [ARStateKey userID]: [NSNull null],
         [ARStateKey onboardingState]: @"none",
-        [ARStateKey selectedTab]: @"home",
     }];
     [self.notificationsManagerModule reset];
 }
@@ -95,6 +94,15 @@ static AREmission *_sharedInstance = nil;
     return result;
 }
 
+- (NSString *)reactStateStringForKey:(NSString *)stateKey
+{
+    NSString *result = [self.notificationsManagerModule.reactState valueForKey:stateKey];
+    if (result && ![result isKindOfClass:NSString.class]) {
+        [NSException raise:NSInternalInconsistencyException format:@"Value for key '%@' is not a string.", stateKey];
+    }
+    return result;
+}
+
 - (NSURL *)releaseBundleURL;
 {
   return [[NSBundle bundleForClass:self.class] URLForResource:@"Emission" withExtension:@"js"];
@@ -102,7 +110,12 @@ static AREmission *_sharedInstance = nil;
 
 - (NSURL *)liveAuctionsURL
 {
-    return [NSURL URLWithString:[self stateStringForKey:[ARStateKey predictionURL]]];
+    return [NSURL URLWithString:[self reactStateStringForKey:[ARReactStateKey predictionURL]]];
+}
+
+- (BOOL)isStaging
+{
+    return [[self reactStateStringForKey:[ARReactStateKey env]] isEqualToString:@"staging"];
 }
 
 @end

@@ -4,7 +4,7 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import { environment, EnvironmentKey } from "lib/store/config/EnvironmentModel"
 import { FeatureName, features } from "lib/store/config/features"
-import { getCurrentEmissionState, GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { capitalize, sortBy } from "lodash"
 import { ChevronIcon, CloseIcon, color, Flex, ReloadIcon, Separator, Spacer, Text } from "palette"
 import React, { useState } from "react"
@@ -18,6 +18,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native"
+import Config from "react-native-config"
 import { useScreenDimensions } from "./useScreenDimensions"
 
 const configurableFeatureFlagKeys = sortBy(
@@ -87,7 +88,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         <MenuItem
           title="Throw Sentry Error"
           onPress={() => {
-            if (!getCurrentEmissionState().sentryDSN) {
+            if (!Config.SENTRY_DSN) {
               Alert.alert(
                 "No Sentry DSN available",
                 __DEV__ ? "Set it in .env.shared and re-build the app." : undefined

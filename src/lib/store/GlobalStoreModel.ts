@@ -5,6 +5,7 @@ import { MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionMod
 import { SearchModel } from "lib/Scenes/Search/SearchModel"
 import { AuthModel } from "./AuthModel"
 import { ConfigModel } from "./ConfigModel"
+import { unsafe__getEnvironment } from "./GlobalStore"
 import { CURRENT_APP_VERSION } from "./migration"
 import { NativeModel } from "./NativeModel"
 import { assignDeep } from "./persistence"
@@ -56,6 +57,7 @@ export const GlobalStoreModel: GlobalStoreModel = {
   didRehydrate: thunkOn(
     (actions) => actions.rehydrate,
     () => {
+      LegacyNativeModules.ARNotificationsManager.reactStateUpdated(unsafe__getEnvironment())
       LegacyNativeModules.ARNotificationsManager.didFinishBootstrapping()
     }
   ),

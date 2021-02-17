@@ -188,9 +188,6 @@ describe("BidResult component", () => {
     })
 
     it("dismisses controller and presents live interface when continue button is pressed", () => {
-      __globalStoreTestUtils__?.injectState({
-        native: { sessionState: { predictionURL: "https://live-staging.artsy.net" } },
-      })
       const bidResult = renderWithWrappers(
         <BiddingThemeProvider>
           <BidResult

@@ -2,7 +2,7 @@ import { ArtsyWebView } from "lib/Components/ArtsyWebView"
 import { Stack } from "lib/Components/Stack"
 import { goBack, navigate } from "lib/navigation/navigate"
 import { matchRoute } from "lib/navigation/routes"
-import { GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore, useEnvironment } from "lib/store/GlobalStore"
 import { Button, Flex, Spinner, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { Linking, Platform } from "react-native"
@@ -14,16 +14,11 @@ function join(...parts: string[]) {
 export const VanityURLPossibleRedirect: React.FC<{ slug: string }> = ({ slug }) => {
   const [jsx, setJSX] = useState(<Loading />)
 
-  const { authenticationToken, webURL } =
-    // TODO: resolve these once android onboarding and user env config are done
+  const authenticationToken =
     Platform.OS === "ios"
-      ? GlobalStore.useAppState((store) => store.native.sessionState)
-      : GlobalStore.useAppState((store) => {
-          return {
-            authenticationToken: store.auth.userAccessToken!,
-            webURL: store.config.environment.strings.gravityURL,
-          }
-        })
+      ? GlobalStore.useAppState((store) => store.native.sessionState.authenticationToken)
+      : GlobalStore.useAppState((store) => store.auth.userAccessToken!)
+  const webURL = useEnvironment().webURL
   const resolvedURL = join(webURL, slug)
 
   useEffect(() => {

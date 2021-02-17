@@ -2,7 +2,7 @@ import { errorMiddleware, loggerMiddleware, RelayNetworkLayer, urlMiddleware } f
 import { Environment, RecordSource, Store } from "relay-runtime"
 
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
 import { cacheMiddleware } from "./middlewares/cacheMiddleware"
 import { checkAuthenticationMiddleware } from "./middlewares/checkAuthenticationMiddleware"
 import { metaphysicsExtensionsLoggerMiddleware } from "./middlewares/metaphysicsMiddleware"
@@ -20,7 +20,7 @@ export default function createEnvironment() {
       cacheMiddleware(),
       rateLimitMiddleware(),
       urlMiddleware({
-        url: () => getCurrentEmissionState().metaphysicsURL,
+        url: () => unsafe__getEnvironment().metaphysicsURL,
         headers: () => {
           const { userAgent, userID, authenticationToken } = getCurrentEmissionState()
           return {

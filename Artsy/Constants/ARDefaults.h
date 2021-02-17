@@ -5,12 +5,6 @@ extern NSString *const ARUsernameKeychainKey;
 extern NSString *const ARPasswordKeychainKey;
 
 extern NSString *const ARUserIdentifierDefault;
-extern NSString *const ARUseStagingDefault;
-
-extern NSString *const ARStagingAPIURLDefault;
-extern NSString *const ARStagingWebURLDefault;
-extern NSString *const ARStagingMetaphysicsURLDefault;
-extern NSString *const ARStagingLiveAuctionSocketURLDefault;
 
 extern NSString *const AROAuthTokenDefault;
 extern NSString *const AROAuthTokenExpiryDateDefault;

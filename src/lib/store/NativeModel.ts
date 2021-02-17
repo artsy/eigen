@@ -28,21 +28,8 @@ export interface NativeState {
   authenticationToken: string
   launchCount: number
   onboardingState: "none" | "incomplete" | "complete"
-
-  gravityURL: string
-  metaphysicsURL: string
-  predictionURL: string
-  webURL: string
   userAgent: string
-
-  env: "production" | "staging" | "test"
   deviceId: string
-
-  // Empty is falsy in JS, so these are fine too.
-  stripePublishableKey: string
-  sentryDSN: string
-  legacyFairSlugs: string[]
-  legacyFairProfileSlugs: string[]
 }
 
 export interface NativeModel {

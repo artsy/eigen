@@ -66,7 +66,7 @@
 
     if (ARAppStatus.isBetaOrDev) {
         segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_STAGING_WRITE_KEY"];
-        sentryEnv = [ReactNativeConfig envFor:@"SENTRY_BETA_DSN"];
+        sentryEnv = [ReactNativeConfig envFor:@"SENTRY_DSN"];
     }
 
     if (ARAppStatus.isDev) {

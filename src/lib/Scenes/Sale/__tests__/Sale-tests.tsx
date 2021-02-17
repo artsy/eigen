@@ -42,12 +42,6 @@ describe("Sale", () => {
 
   it("switches to live auction view when sale goes live", () => {
     renderWithWrappers(<TestRenderer />)
-    __globalStoreTestUtils__?.injectState({
-      native: {
-        sessionState: { predictionURL: "https://live-staging.artsy.net" },
-      },
-    })
-
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
@@ -74,12 +68,6 @@ describe("Sale", () => {
 
   it("switches to live auction view when sale goes live with no endAt", () => {
     renderWithWrappers(<TestRenderer />)
-
-    __globalStoreTestUtils__?.injectState({
-      native: {
-        sessionState: { predictionURL: "https://live-staging.artsy.net" },
-      },
-    })
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {

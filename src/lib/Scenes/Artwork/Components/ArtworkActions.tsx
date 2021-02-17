@@ -2,7 +2,7 @@ import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.gra
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
 import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { unsafe__getEnvironment } from "lib/store/GlobalStore"
 import { cm2in } from "lib/utils/conversions"
 import { Schema, track } from "lib/utils/track"
 import { take } from "lodash"
@@ -45,7 +45,7 @@ export const shareContent = (title: string, href: string, artists: ArtworkAction
     title: computedTitle,
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     message: computedTitle,
-    url: `${getCurrentEmissionState().webURL}${href}?utm_content=artwork-share`,
+    url: `${unsafe__getEnvironment().webURL}${href}?utm_content=artwork-share`,
   }
 }
 

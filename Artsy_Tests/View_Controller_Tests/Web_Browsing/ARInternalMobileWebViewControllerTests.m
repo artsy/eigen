@@ -27,9 +27,6 @@ SpecBegin(ARInternalMobileViewController);
 
 describe(@"initWithURL", ^{
     describe(@"in production", ^{
-        beforeEach(^{
-            [AROptions setBool:false forOption:ARUseStagingDefault];
-        });
 
         it(@"rewrites the scheme", ^{
             ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://www.artsy.net/foo/bar"]];
@@ -64,7 +61,6 @@ describe(@"initWithURL", ^{
 
     describe(@"in production on ipad", ^{
         beforeEach(^{
-            [AROptions setBool:false forOption:ARUseStagingDefault];
             [ARTestContext stubDevice:ARDeviceTypePad];
         });
 
@@ -79,9 +75,6 @@ describe(@"initWithURL", ^{
     });
 
     describe(@"in staging", ^{
-        beforeEach(^{
-            [AROptions setBool:true forOption:ARUseStagingDefault];
-        });
 
         it(@"rewrites the scheme", ^{
             ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://staging.artsy.net/foo/bar"]];

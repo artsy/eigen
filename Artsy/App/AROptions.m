@@ -14,9 +14,6 @@ NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
 NSString *const AROptionsDisableNativeLiveAuctions = @"AROptionsDisableNativeLiveAuctions";
 NSString *const AROptionsDebugARVIR = @"AROptionsDebugARVIR";
 
-// RN
-NSString *const AROptionsStagingReactEnv = @"AROptionsStagingReactEnv";
-NSString *const AROptionsDevReactEnv = @"AROptionsDevReactEnv";
 
 @implementation AROptions
 

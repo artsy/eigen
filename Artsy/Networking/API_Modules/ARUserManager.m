@@ -532,28 +532,12 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     });
 }
 
-+ (void)logoutAndSetUseStaging:(BOOL)useStaging
-{
-    [ArtsyAPI deleteAPNTokenForCurrentDeviceWithCompletion:^ {
-        [self clearUserData:[self sharedManager] useStaging:@(useStaging)];
-        // Clearning the Relay cache is an asynchonous operation, let's give it 0.5s to finish.
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            exit(0);
-        });
-    }];
-}
-
 + (void)clearUserData
 {
-    id useStaging = [[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault];
-    [self clearUserData:[self sharedManager] useStaging:useStaging];
+    [self clearUserData:[self sharedManager]];
 }
 
-// This takes `id` instead of `BOOL` because if you call this method from `clearUserData` and
-// `ARUseStagingDefault` was not previously set, we don't want to explicitly set it to `0` or `NO`.
-// If the value passed is `nil`, we will leave `ARUseStagingDefault` unset after clearing all user defaults.
-
-+ (void)clearUserData:(ARUserManager *)manager useStaging:(id)useStaging
++ (void)clearUserData:(ARUserManager *)manager
 {
     [ARAppDelegate.sharedInstance.sailThru clearDeviceData:STMDeviceDataTypeEvents | STMDeviceDataTypeAttributes | STMDeviceDataTypeMessageStream withResponse:nil];
     [ARAppDelegate.sharedInstance.sailThru setUserEmail:nil withResponse:nil];
@@ -576,11 +560,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
     RNCAsyncStorage *asyncStorage = [[[AREmission sharedInstance] bridge] moduleForName:@"RNCAsyncStorage"];
     [asyncStorage clearAllData];
-
-    if (useStaging != nil) {
-        [[NSUserDefaults standardUserDefaults] setValue:useStaging forKey:ARUseStagingDefault];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
 
     [[AREmission sharedInstance] reset];
 }
