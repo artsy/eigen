@@ -11,7 +11,7 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { Flex, Join, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useRef, useState } from "react"
-import { Alert, FlatList, Linking, Platform, RefreshControl, ScrollView } from "react-native"
+import { Alert, FlatList, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 
