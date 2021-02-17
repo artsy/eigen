@@ -28,7 +28,7 @@ it("uploads a photo when there's an photo without upload as true", () => {
   const overview = new Overview({
     nav,
     route,
-    setup: { submissionID: 1, photos: [{ file: "/a/b/c.png", uploaded: false }] },
+    setup: { submissionID: 1, photos: [{ image: { path: "/a/b/c.png" }, uploaded: false }] },
   })
   overview.setState = jest.fn()
   overview.uploadPhotosIfNeeded()
