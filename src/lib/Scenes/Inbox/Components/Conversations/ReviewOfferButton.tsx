@@ -4,7 +4,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { useEventTiming } from "lib/utils/useEventTiming"
 import { DateTime } from "luxon"
 import { AlertCircleFillIcon, ArrowRightIcon, Flex, MoneyFillIcon, Text } from "palette"
-import React from "react"
+import React, { useEffect } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -15,10 +15,11 @@ export interface ReviewOfferButtonProps {
 export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) => {
   const offerNodes = extractNodes(order.offers)
 
-  let backgroundColor = "green100"
-  let message = ""
-  let subMessage = "Tap to view"
-  let icon = <MoneyFillIcon mt="3px" fill="white100" />
+  const [backgroundColor, setBackgroundColor] = React.useState("green100")
+  const [message, setMessage] = React.useState("")
+  const [subMessage, setSubMessage] = React.useState("Tap to view")
+  const [icon, setIcon] = React.useState(<MoneyFillIcon mt="3px" fill="white100" />)
+
   const offerType = offerNodes.length > 1 ? "Counteroffer" : "Offer"
 
   const expiration = useEventTiming({
@@ -27,22 +28,21 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
     endAt: order?.stateExpiresAt || undefined,
   }).hours
 
-  if (order.state === "APPROVED") {
-    message = `${offerType} Accepted - Please Confirm`
-    backgroundColor = "green100"
-    subMessage = `Expires in ${expiration}hr`
+  if (order.state === "PENDING") {
+    setMessage(`${offerType} Accepted - Please Confirm`)
+    setSubMessage(`Expires in ${expiration}hr`)
   } else if (order.state === "CANCELED" && order?.stateReason?.includes("seller_rejected")) {
-    message = `${offerType} Declined`
-    backgroundColor = "red100"
+    setMessage(`${offerType} Declined`)
+    setBackgroundColor("red100")
   } else if (order?.lastOffer?.fromParticipant === "SELLER") {
-    backgroundColor = "copper100"
-    message = `${offerType} Received`
-    subMessage = `Expires in ${expiration}hr`
-    icon = <AlertCircleFillIcon mt="3px" fill="white100" />
+    setBackgroundColor("copper100")
+    setMessage(`${offerType} Received`)
+    setSubMessage(`Expires in ${expiration}hr`)
+    setIcon(<AlertCircleFillIcon mt="3px" fill="white100" />)
   }
 
   const onTap = (orderID: string | null, state: string | null) => {
-    if (state === "APPROVED") {
+    if (state === "PENDING") {
       // ORDER CONFIRMATION PAGE DOESN'T EXIST YET
     } else {
       navigate(`/orders/${orderID}/review`)
