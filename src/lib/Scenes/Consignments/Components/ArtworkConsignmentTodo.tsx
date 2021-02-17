@@ -69,7 +69,11 @@ export default class ConsignmentTODO extends React.Component<TODOProps> {
         <Separator />
         <TodoButton label="Artist/Designer name" onPress={this.props.goToArtist} isComplete={!!this.props.artist} />
         <Separator />
-        <TodoButton label="Photos" onPress={this.props.goToPhotos} isComplete={!!this.props.photos} />
+        <TodoButton
+          label="Photos"
+          onPress={this.props.goToPhotos}
+          isComplete={!!this.props.photos && this.props.photos.length > 0}
+        />
         <Separator />
         <TodoButton
           label="Work details"
