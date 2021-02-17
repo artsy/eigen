@@ -107,7 +107,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
       <Spacer my={1} />
       <Text>
         These auction results bring together sale data from top auction houses around the world, including
-        Christie&rsquo;s, Sotheby&rsquo;s, Phillips, Bonhams, and Heritage. Results are updated daily.
+        Christie&rsquo;s, Sotheby&rsquo;s, Phillips and Bonhams. Results are updated daily.
       </Text>
       <Spacer mb={2} />
       <Text>
