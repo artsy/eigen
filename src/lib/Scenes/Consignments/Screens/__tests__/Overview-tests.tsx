@@ -1,4 +1,5 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import React from "react"
 import "react-native"
 
@@ -10,9 +11,9 @@ import Overview from "../Overview"
 
 import Provenance from "../Provenance"
 
-jest.mock("@react-native-community/cameraroll", () => jest.fn())
-
-import SelectFromPhotoLibrary from "../SelectFromPhotoLibrary"
+jest.mock("lib/utils/requestPhotos", () => ({
+  showPhotoActionSheet: jest.fn(() => Promise.resolve({ photos: [] })),
+}))
 
 const nav = {} as any
 const route = {} as any
@@ -57,9 +58,9 @@ describe("Opening the right page", () => {
     expect(navigator.push).toBeCalledWith({ component: Provenance, passProps: anything() })
   })
 
-  it("pushes a SelectFromPhotoLibrary when you tap on Photos", () => {
+  it("shows photo selection action sheet when you tap on Photos", () => {
     overview.goToPhotosTapped()
-    expect(navigator.push).toBeCalledWith({ component: SelectFromPhotoLibrary, passProps: anything() })
+    expect(showPhotoActionSheet).toHaveBeenCalled()
   })
 })
 
