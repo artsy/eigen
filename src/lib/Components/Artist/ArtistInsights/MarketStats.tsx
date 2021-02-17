@@ -192,6 +192,7 @@ export const MarketStatsQueryRenderer: React.FC<{
       render={renderWithPlaceholder({
         Container: MarketStatsFragmentContainer,
         renderPlaceholder: LoadingSkeleton,
+        renderFallback: () => null,
       })}
     />
   )
