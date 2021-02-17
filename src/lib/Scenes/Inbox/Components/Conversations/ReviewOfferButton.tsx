@@ -21,13 +21,13 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
   const [icon, setIcon] = React.useState(<MoneyFillIcon mt="3px" fill="white100" />)
 
   useEffect(() => {
-    const offerType = offerNodes.length > 1 ? "Counteroffer" : "Offer"
-
     const expiration = useEventTiming({
       currentTime: DateTime.local().toString(),
       startAt: order?.lastOffer?.createdAt,
       endAt: order?.stateExpiresAt || undefined,
     }).hours
+
+    const offerType = offerNodes.length > 1 ? "Counteroffer" : "Offer"
 
     if (order.state === "PENDING") {
       setMessage(`${offerType} Accepted - Please Confirm`)
