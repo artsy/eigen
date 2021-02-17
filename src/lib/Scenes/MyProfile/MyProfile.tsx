@@ -29,11 +29,6 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
     })
   }, [])
 
-  const sendFeedback = () =>
-    Platform.OS === "android"
-      ? Linking.openURL("mailto:support@artsy.net?subject=Feedback%20from%20the%20Artsy%20app")
-      : presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")
-
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
       <Sans size="8" mx="2" mt="3">
@@ -53,7 +48,10 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       <MenuItem title="Account" onPress={() => navigate("my-account")} />
       <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
       <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />
-      <MenuItem title="Send feedback" onPress={sendFeedback} />
+      <MenuItem
+        title="Send feedback"
+        onPress={() => presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")}
+      />
       <MenuItem title="Personal data request" onPress={() => navigate("privacy-request")} />
       <MenuItem title="About" onPress={() => navigate("about")} />
       <MenuItem title="Log out" onPress={confirmLogout} chevron={null} />
