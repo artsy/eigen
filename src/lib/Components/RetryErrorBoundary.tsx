@@ -34,9 +34,7 @@ export class RetryErrorBoundary extends React.Component<Props, State> {
     const { render } = this.props
     const containers = {
       [ErrorState.Okay]: () => render({ isRetry: false }),
-      [ErrorState.Error]: () => (
-        <LoadFailureView style={{ flex: 1 }} onRetry={() => this.setState({ errorState: ErrorState.Retry })} />
-      ),
+      [ErrorState.Error]: () => <LoadFailureView onRetry={() => this.setState({ errorState: ErrorState.Retry })} />,
       [ErrorState.Retry]: () => render({ isRetry: true }),
     }
     return containers[this.state.errorState]()
