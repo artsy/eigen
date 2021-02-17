@@ -11,7 +11,7 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { Flex, Join, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useRef, useState } from "react"
-import { Alert, FlatList, RefreshControl, ScrollView } from "react-native"
+import { Alert, FlatList, Linking, Platform, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 
@@ -28,6 +28,11 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       listRef.current?.scrollToOffset({ offset: 0, animated: false })
     })
   }, [])
+
+  const sendFeedback = () =>
+    Platform.OS === "android"
+      ? Linking.openURL("mailto:support@artsy.net?subject=Feedback%20from%20the%20Artsy%20app")
+      : presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")
 
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
@@ -48,12 +53,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       <MenuItem title="Account" onPress={() => navigate("my-account")} />
       <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
       <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />
-      <MenuItem
-        title="Send feedback"
-        onPress={() => {
-          presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")
-        }}
-      />
+      <MenuItem title="Send feedback" onPress={sendFeedback} />
       <MenuItem title="Personal data request" onPress={() => navigate("privacy-request")} />
       <MenuItem title="About" onPress={() => navigate("about")} />
       <MenuItem title="Log out" onPress={confirmLogout} chevron={null} />
