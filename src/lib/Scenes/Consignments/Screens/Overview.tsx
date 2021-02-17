@@ -116,7 +116,6 @@ export default class Overview extends React.Component<Props, State> {
     this.updateStateAndMetaphysics({ location: { city, state, country } })
 
   updatePhotos = (photos: RNCImage[]) => {
-    console.log("Update photos called", photos)
     this.updateStateAndMetaphysics({ photos: photos.map((p) => ({ image: p, uploaded: false })) })
   }
 
