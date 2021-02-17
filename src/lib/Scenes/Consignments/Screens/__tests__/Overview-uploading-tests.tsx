@@ -37,8 +37,8 @@ it("uploads a photo when there's an photo without upload as true", () => {
 
 it("doesnt upload a photo when when uploading is true", () => {
   const photos = [
-    { file: "/a/b/c.png", uploaded: false, uploading: true },
-    { file: "/a/b/d.png", uploaded: false, uploading: false },
+    { image: { path: "/a/b/c.png" }, uploaded: false, uploading: true },
+    { image: { path: "/a/b/d.png" }, uploaded: false, uploading: false },
   ]
   const overview = new Overview({
     nav,
