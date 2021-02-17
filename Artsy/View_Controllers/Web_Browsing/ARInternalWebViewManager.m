@@ -10,5 +10,6 @@ RCT_EXPORT_MODULE()
 }
 
 RCT_EXPORT_VIEW_PROPERTY(route, NSString *)
+RCT_EXPORT_VIEW_PROPERTY(showFullScreen, BOOL)
 
 @end

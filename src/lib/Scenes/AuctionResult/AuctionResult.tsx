@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
 import { AuctionResultQuery, AuctionResultQueryResponse } from "__generated__/AuctionResultQuery.graphql"
 import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
@@ -7,7 +7,7 @@ import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { useStickyScrollHeader } from "lib/utils/useStickyScrollHeader"
 import { capitalize } from "lodash"
 import moment from "moment"
@@ -15,6 +15,7 @@ import { Box, Flex, NoArtworkIcon, Separator, Spacer, Text, TEXT_FONTS } from "p
 import React, { useEffect, useState } from "react"
 import { Animated, Image, TextInput, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
+import { useTracking } from "react-tracking"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { getImageDimensions } from "../Sale/Components/SaleArtworkListItem"
 
@@ -28,6 +29,8 @@ interface Props {
 const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   const [imageHeight, setImageHeight] = useState<number>(0)
   const [imageWidth, setImageWidth] = useState<number>(0)
+
+  const tracking = useTracking()
 
   if (!auctionResult) {
     // The only chance someone would land on this case is using a deep link for an auction result
@@ -75,6 +78,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             style={{
               fontFamily: TEXT_FONTS.sans,
               fontSize: 14,
+              lineHeight: 21,
             }}
           />
         </Flex>
@@ -84,19 +88,9 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             {label}
           </Text>
           <Flex width="65%" pl={15}>
-            <TextInput
-              editable={false}
-              value={value}
-              multiline
-              testID={options?.testID}
-              scrollEnabled={false}
-              style={{
-                fontFamily: TEXT_FONTS.sans,
-                fontSize: 14,
-                textAlign: "right",
-                paddingLeft: 20,
-              }}
-            />
+            <Text pl={2} textAlign="right" testID={options?.testID} selectable>
+              {value}
+            </Text>
           </Flex>
         </Flex>
       )}
@@ -152,7 +146,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   )
 
   return (
-    <ProvideScreenTracking info={tracks.screen(auctionResult.internalID)}>
+    <ProvideScreenTrackingWithCohesionSchema info={tracks.screen(auctionResult.internalID) as any}>
       <Animated.ScrollView {...scrollProps}>
         <FancyModalHeader hideBottomDivider />
         <Box px={2} pb={4}>
@@ -195,6 +189,9 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
                     Sale Price
                   </Text>
                 }
+                trackEvent={() => {
+                  tracking.trackEvent(tappedInfoBubble(tracks.tapMarketStatsInfo()))
+                }}
                 modalTitle="Sale Price"
                 maxModalHeight={180}
                 modalContent={renderRealizedPriceModal()}
@@ -223,7 +220,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
         </Box>
       </Animated.ScrollView>
       {headerElement}
-    </ProvideScreenTracking>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
@@ -339,11 +336,15 @@ const LoadingSkeleton = () => {
 }
 
 export const tracks = {
-  screen: (id: string) => {
-    return {
-      context_screen: Schema.PageNames.AuctionResult,
-      context_screen_owner_type: OwnerType.auctionResult,
-      context_screen_owner_id: id,
-    }
-  },
+  screen: (id: string) => ({
+    action: ActionType.screen,
+    context_screen_owner_type: OwnerType.auctionResult,
+    context_screen_owner_id: id,
+  }),
+
+  tapMarketStatsInfo: (): TappedInfoBubbleArgs => ({
+    contextModule: ContextModule.auctionResult,
+    contextScreenOwnerType: OwnerType.artistInsights,
+    subject: "auctionResultSalePrice",
+  }),
 }

@@ -11,6 +11,7 @@ export type Conversation_me = {
                 readonly __typename: "Artwork";
                 readonly href: string | null;
                 readonly slug: string;
+                readonly isOfferableFromInquiry: boolean | null;
             } | {
                 readonly __typename: "Show";
                 readonly href: string | null;
@@ -108,6 +109,13 @@ return {
                       "kind": "ScalarField",
                       "name": "slug",
                       "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "isOfferableFromInquiry",
+                      "storageKey": null
                     }
                   ],
                   "type": "Artwork",
@@ -204,5 +212,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '7416664765d5665693a643c35d881392';
+(node as any).hash = '14ee975eb276b28d515aa0d357d6e1cb';
 export default node;

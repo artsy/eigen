@@ -72,9 +72,8 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
       <Text fontWeight={"bold"}>Sale price over estimate</Text>
       <Spacer mb={1} />
       <Text lineHeight={50}>
-        The average percentage difference of the sale price over the mid-estimate (the midpoint of the low and high
-        estimates set by the auction house before the auction takes place) for lots sold at auction over the past 36
-        months.
+        In this data set, please note that the sale price includes the hammer price and buyer’s premium, as well as any
+        other additional fees (e.g., Artist’s Resale Rights). The data set only includes works valued over $1,000.
       </Text>
       <Spacer mb={100} />
     </ScrollView>
@@ -102,7 +101,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
       <Flex flexDirection="row" alignItems="center">
         <InfoButton
           titleElement={
-            <Text variant="title" mr={0.5}>
+            <Text variant="title" mr="0.5">
               Market Signals by Medium
             </Text>
           }
@@ -134,7 +133,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
           <Text variant="largeTitle" data-test-id="annualLotsSold">
             {selectedPriceInsight.annualLotsSold}
           </Text>
-          <Text variant="text">Yearly lots sold</Text>
+          <Text variant="text">Average yearly lots sold</Text>
         </Flex>
         <Flex width="50%">
           <Text variant="largeTitle">{formattedSellThroughRate}%</Text>

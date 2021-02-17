@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+./scripts/setup-distribute-linux
+
+# Create fonts directory
+mkdir -p android/app/src/main/assets/fonts
+
+# Get fonts from eigen s3 bueck
+aws s3 cp s3://artsy-citadel/eigen/fonts.tar.gz android/app/src/main/assets/fonts
+
+# Extract fonts from the fonts directory
+cd android/app/src/main/assets/fonts
+tar -xvzf fonts.tar.gz
+rm fonts.tar.gz

@@ -40,11 +40,9 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AROptionsNewFirstInquiry",
   },
-  AROptionsNewInsightsPage: {
-    readyForRelease: false,
-    echoFlagKey: "AROptionsNewInsightsPage",
-    showInAdminMenu: true,
-    description: "Show new Artist Insights tab",
+  AROptionsNewArtistInsightsPage: {
+    readyForRelease: true,
+    echoFlagKey: "AROptionsNewArtistInsightsPage",
   },
   AROptionsInquiryCheckout: {
     readyForRelease: false,

@@ -66,7 +66,7 @@
 
     if (ARAppStatus.isBetaOrDev) {
         segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_STAGING_WRITE_KEY"];
-        sentryEnv = [ReactNativeConfig envFor:@"SENTRY_STAGING_DSN"];
+        sentryEnv = [ReactNativeConfig envFor:@"SENTRY_BETA_DSN"];
     }
 
     if (ARAppStatus.isDev) {
@@ -83,7 +83,7 @@
         ARAnalyticsVisualizer *visualizer = [ARAnalyticsVisualizer new];
         [ARAnalytics setupProvider:visualizer];
     }
-    
+
     [ARAnalytics setupProvider:[ARSailthruIntegration new]];
 
     [ARAnalytics setupProvider:[[ARSegmentProvider alloc] initWithIdentifier:segmentWriteKey integrations:nil]];
