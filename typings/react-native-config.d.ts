@@ -8,7 +8,7 @@ declare module "react-native-config" {
     SEGMENT_PRODUCTION_WRITE_KEY: string
     SEGMENT_STAGING_WRITE_KEY: string
     SENTRY_PRODUCTION_DSN: string
-    SENTRY_STAGING_DSN: string
+    SENTRY_BETA_DSN: string
     GOOGLE_MAPS_API_KEY: string
     MAPBOX_API_CLIENT_KEY: string
     SAILTHRU_KEY: string

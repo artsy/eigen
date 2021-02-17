@@ -87,7 +87,7 @@ export const LegacyNativeModules: LegacyNativeModules = Platform.select({
 
     ARCocoaConstantsModule: {
       UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
-      AREnabled: true,
+      AREnabled: false,
       CurrentLocale: getLocales()[0].languageTag,
       LocalTimeZone: getTimeZone(),
     },

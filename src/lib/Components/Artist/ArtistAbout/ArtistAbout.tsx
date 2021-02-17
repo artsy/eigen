@@ -31,7 +31,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
           <CaretButton text="Auction results" onPress={() => navigate(`/artist/${artist.slug}/auction-results`)} />
         )}
         <ArtistConsignButton artist={artist} />
-        {!!useFeatureFlag("AROptionsNewInsightsPage") && <ArtistAboutShowsFragmentContainer artist={artist} />}
+        {!!useFeatureFlag("AROptionsNewArtistInsightsPage") && <ArtistAboutShowsFragmentContainer artist={artist} />}
         {!!articles.length && <Articles articles={articles} />}
         {!!relatedArtists.length && <RelatedArtists artists={relatedArtists} />}
       </Stack>

@@ -49,7 +49,12 @@ describe("ArtistInsightsAuctionResults", () => {
         if (props?.artist) {
           return (
             <ArtworkFilterContext.Provider value={{ state: getState(), dispatch: jest.fn() }}>
-              <ArtistInsightsAuctionResultsPaginationContainer artist={props.artist} />
+              <ArtistInsightsAuctionResultsPaginationContainer
+                artist={props.artist}
+                scrollToTop={() => {
+                  console.log("do nothing")
+                }}
+              />
             </ArtworkFilterContext.Provider>
           )
         }

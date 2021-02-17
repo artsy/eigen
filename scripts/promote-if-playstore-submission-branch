@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+source ./scripts/source-for-bash-env
+
+if [ "${LOCAL_BRANCH}" == "play_store_submission" ]; then
+	./scripts/setup-fastlane-env
+	bundle exec fastlane update_plugins
+	bundle exec fastlane promote_beta_android
+fi

@@ -423,7 +423,7 @@ jest.mock("react-native-config", () => ({
   SEGMENT_PRODUCTION_WRITE_KEY: "segment_production_write_key",
   SEGMENT_STAGING_WRITE_KEY: "segment_staging_write_key",
   SENTRY_PRODUCTION_DSN: "sentry_production_dsn",
-  SENTRY_STAGING_DSN: "sentry_staging_dsn",
+  SENTRY_BETA_DSN: "sentry_beta_dsn",
   GOOGLE_MAPS_API_KEY: "google_maps_api_key",
   MAPBOX_API_CLIENT_KEY: "mapbox_api_client_key",
   SAILTHRU_KEY: "sailthru_key",

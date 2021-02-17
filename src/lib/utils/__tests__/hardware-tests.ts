@@ -1,8 +1,19 @@
 jest.mock("react-native", () => ({
-  Platform: jest.fn(),
+  Platform: {
+    isPad: true,
+    OS: "ios",
+  },
+  Dimensions: {
+    get: jest.fn(() => ({ width: 300, height: 600 })),
+  },
 }))
 
-import { Platform } from "react-native"
+beforeEach(() => {
+  Platform.OS = "ios"
+  ;(Platform as any).isPad = false
+})
+
+import { Dimensions, Platform } from "react-native"
 import { isPad, osMajorVersion, truncatedTextLimit } from "../hardware"
 
 describe(isPad, () => {
@@ -14,6 +25,36 @@ describe(isPad, () => {
   it("returns false if device is not an iPad", () => {
     ;(Platform as any).isPad = false
     expect(isPad()).toBe(false)
+  })
+
+  describe("on android", () => {
+    let dimensions = {
+      width: 300,
+      height: 500,
+    }
+    beforeEach(() => {
+      Platform.OS = "android"
+      ;(Dimensions.get as jest.Mock).mockImplementationOnce(() => dimensions)
+    })
+    afterEach(() => {
+      Platform.OS = "ios"
+    })
+    it('returns true if the device is bigger than 3.5" wide in portrait mode', () => {
+      // nexus 7. values taken from simulator
+      dimensions = {
+        width: 600,
+        height: 960,
+      }
+      expect(isPad()).toBe(true)
+    })
+    it('returns false if the device is smaller than 3.5" wide in portrait mode', () => {
+      // pixel 2xl. values taken from simulator
+      dimensions = {
+        width: 411,
+        height: 822,
+      }
+      expect(isPad()).toBe(false)
+    })
   })
 })
 

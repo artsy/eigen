@@ -4,5 +4,6 @@
 
 @property (nonatomic, weak) UIViewController *webViewController;
 @property (nonatomic) NSString *route;
+@property (nonatomic, assign) BOOL showFullScreen;
 
 @end

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash af022aaf5846304690e83d53e8bca0d8 */
+/* @relayHash 5d748adb621af109ac3562fca471eb8d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -54,6 +54,7 @@ fragment Conversation_me on Me {
         ... on Artwork {
           href
           slug
+          isOfferableFromInquiry
         }
         ... on Show {
           href
@@ -385,6 +386,13 @@ return {
                         "selections": [
                           (v2/*: any*/),
                           (v3/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "isOfferableFromInquiry",
+                            "storageKey": null
+                          },
                           (v4/*: any*/),
                           {
                             "alias": null,
@@ -709,7 +717,7 @@ return {
     ]
   },
   "params": {
-    "id": "af022aaf5846304690e83d53e8bca0d8",
+    "id": "5d748adb621af109ac3562fca471eb8d",
     "metadata": {},
     "name": "ConversationQuery",
     "operationKind": "query",
