@@ -1,8 +1,9 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { OwnerType } from "@artsy/cohesion"
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { Schema } from "lib/utils/track"
 import React, { useCallback, useState } from "react"
 import { NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -37,12 +38,12 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
   const openFilterModal = () => {
-    tracking.trackEvent(tracks.openFilter(artist.id, artist.slug))
+    tracking.trackEvent(tracks.openFilter(artist.internalID, artist.slug))
     setIsFilterModalVisible(true)
   }
 
   const closeFilterModal = () => {
-    tracking.trackEvent(tracks.closeFilter(artist.id, artist.slug))
+    tracking.trackEvent(tracks.closeFilter(artist.internalID, artist.slug))
     setIsFilterModalVisible(false)
   }
 
@@ -66,7 +67,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
       </StickyTabPageScrollView>
       <FilterModalNavigator
         isFilterArtworksModalVisible={isFilterModalVisible}
-        id={artist.id}
+        id={artist.internalID}
         slug={artist.slug}
         mode={FilterModalMode.AuctionResults}
         exitModal={closeFilterModal}
@@ -98,21 +99,19 @@ export const tracks = {
   openFilter: (id: string, slug: string) => {
     return {
       action_name: "filter",
-      context_module: ContextModule.auctionResults,
-      context_screen_owner_type: OwnerType.artistInsights,
+      context_screen_owner_type: OwnerType.artist,
       context_screen_owner_id: id,
       context_screen_owner_slug: slug,
-      action_type: ActionType.commercialFilterParamsChanged,
+      action_type: Schema.ActionTypes.Tap,
     }
   },
   closeFilter: (id: string, slug: string) => {
     return {
       action_name: "closeFilterWindow",
-      context_module: ContextModule.auctionResults,
-      context_screen_owner_type: OwnerType.artistInsights,
+      context_screen_owner_type: OwnerType.artist,
       context_screen_owner_id: id,
       context_screen_owner_slug: slug,
-      action_type: ActionType.commercialFilterParamsChanged,
+      action_type: Schema.ActionTypes.Tap,
     }
   },
 }

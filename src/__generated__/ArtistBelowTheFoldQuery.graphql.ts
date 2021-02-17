@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 041077e1438d9f00a08b0cbdf3a32764 */
+/* @relayHash 186f42defc378934f11085ded50165d7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -126,6 +126,7 @@ fragment ArtistInsightsAuctionResults_artist on Artist {
   birthday
   slug
   id
+  internalID
   auctionResultsConnection(allowEmptyCreatedDates: true, earliestCreatedYear: 1000, first: 10, latestCreatedYear: 2050, sort: DATE_DESC) {
     createdYearRange {
       startAt
@@ -1218,7 +1219,7 @@ return {
     ]
   },
   "params": {
-    "id": "041077e1438d9f00a08b0cbdf3a32764",
+    "id": "186f42defc378934f11085ded50165d7",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",

@@ -21,9 +21,9 @@ describe(PrivacyRequest, () => {
 
     tree.find(LinkText).at(1).simulate("press")
 
-    expect(LegacyNativeModules.ARScreenPresenterModule.presentEmailComposer).toHaveBeenCalledWith(
-      "privacy@artsy.net",
-      "Personal Data Request"
+    expect(LegacyNativeModules.ARScreenPresenterModule.presentEmailComposerWithSubject).toHaveBeenCalledWith(
+      "Personal Data Request",
+      "privacy@artsy.net"
     )
   })
 
@@ -32,10 +32,10 @@ describe(PrivacyRequest, () => {
 
     tree.find(Button).simulate("press")
 
-    expect(LegacyNativeModules.ARScreenPresenterModule.presentEmailComposer).toHaveBeenCalledWith(
-      "privacy@artsy.net",
+    expect(LegacyNativeModules.ARScreenPresenterModule.presentEmailComposerWithBody).toHaveBeenCalledWith(
+      "Hello, I'm contacting you to ask that...",
       "Personal Data Request",
-      "Hello, I'm contacting you to ask that..."
+      "privacy@artsy.net"
     )
   })
 })

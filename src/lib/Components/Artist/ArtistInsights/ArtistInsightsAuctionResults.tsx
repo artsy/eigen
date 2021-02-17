@@ -1,11 +1,4 @@
-import {
-  ActionType,
-  ContextModule,
-  OwnerType,
-  TappedAuctionResultGroup,
-  tappedInfoBubble,
-  TappedInfoBubbleArgs,
-} from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -111,8 +104,8 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
     <>
       <Spacer my={1} />
       <Text>
-        These auction results bring together sale data from top auction houses around the world, including Christies,
-        Sotheby’s, Phillips, Bonhams, and Heritage. Results are updated daily.
+        These auction results bring together sale data from top auction houses around the world, including
+        Christie&rsquo;s, Sotheby&rsquo;s, Phillips, Bonhams, and Heritage. Results are updated daily.
       </Text>
       <Spacer mb={2} />
       <Text>
@@ -141,7 +134,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
         <AuctionResultFragmentContainer
           auctionResult={item}
           onPress={() => {
-            tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.id))
+            tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))
             navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
           }}
         />
@@ -168,7 +161,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay }) => {
               new Intl.NumberFormat().format(artist.auctionResultsConnection.totalCount)}{" "}
             {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
           </SortMode>
-          <Separator mt="2" />
+          <Separator borderColor={color("black5")} mt="2" />
         </Flex>
       )}
       ItemSeparatorComponent={() => (
@@ -204,6 +197,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         birthday
         slug
         id
+        internalID
         auctionResultsConnection(
           after: $cursor
           allowEmptyCreatedDates: $allowEmptyCreatedDates
@@ -272,10 +266,10 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
 )
 
 export const tracks = {
-  tapAuctionGroup: (auctionId: string, artistId: string): TappedAuctionResultGroup => ({
+  tapAuctionGroup: (auctionId: string, artistId: string) => ({
     action: ActionType.tappedAuctionResultGroup,
     context_module: ContextModule.auctionResults,
-    context_screen_owner_type: OwnerType.artistInsights,
+    context_screen_owner_type: OwnerType.artist,
     context_screen_owner_id: artistId,
     destination_screen_owner_type: OwnerType.auctionResult,
     destination_screen_owner_id: auctionId,
