@@ -1,5 +1,6 @@
 This update includes a number of improvements and bug fixes, including:
 
-• Watched lots are now available under my bids in the Inbox tab
+• Auction Results and Market Signals now available on Insights tab of artist pages
+• Artworks can now be shared to Instagram Stories
 
 Have feedback? Email us at support@artsy.net
