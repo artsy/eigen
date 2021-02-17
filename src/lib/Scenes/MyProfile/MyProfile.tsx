@@ -50,9 +50,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />
       <MenuItem
         title="Send feedback"
-        onPress={() => {
-          presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")
-        }}
+        onPress={() => presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")}
       />
       <MenuItem title="Personal data request" onPress={() => navigate("privacy-request")} />
       <MenuItem title="About" onPress={() => navigate("about")} />
