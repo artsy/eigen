@@ -20,26 +20,28 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
   const [subMessage, setSubMessage] = React.useState("Tap to view")
   const [icon, setIcon] = React.useState(<MoneyFillIcon mt="3px" fill="white100" />)
 
-  const offerType = offerNodes.length > 1 ? "Counteroffer" : "Offer"
+  useEffect(() => {
+    const offerType = offerNodes.length > 1 ? "Counteroffer" : "Offer"
 
-  const expiration = useEventTiming({
-    currentTime: DateTime.local().toString(),
-    startAt: order?.lastOffer?.createdAt,
-    endAt: order?.stateExpiresAt || undefined,
-  }).hours
+    const expiration = useEventTiming({
+      currentTime: DateTime.local().toString(),
+      startAt: order?.lastOffer?.createdAt,
+      endAt: order?.stateExpiresAt || undefined,
+    }).hours
 
-  if (order.state === "PENDING") {
-    setMessage(`${offerType} Accepted - Please Confirm`)
-    setSubMessage(`Expires in ${expiration}hr`)
-  } else if (order.state === "CANCELED" && order?.stateReason?.includes("seller_rejected")) {
-    setMessage(`${offerType} Declined`)
-    setBackgroundColor("red100")
-  } else if (order?.lastOffer?.fromParticipant === "SELLER") {
-    setBackgroundColor("copper100")
-    setMessage(`${offerType} Received`)
-    setSubMessage(`Expires in ${expiration}hr`)
-    setIcon(<AlertCircleFillIcon mt="3px" fill="white100" />)
-  }
+    if (order.state === "PENDING") {
+      setMessage(`${offerType} Accepted - Please Confirm`)
+      setSubMessage(`Expires in ${expiration}hr`)
+    } else if (order.state === "CANCELED" && order?.stateReason?.includes("seller_rejected")) {
+      setMessage(`${offerType} Declined`)
+      setBackgroundColor("red100")
+    } else if (order?.lastOffer?.fromParticipant === "SELLER") {
+      setBackgroundColor("copper100")
+      setMessage(`${offerType} Received`)
+      setSubMessage(`Expires in ${expiration}hr`)
+      setIcon(<AlertCircleFillIcon mt="3px" fill="white100" />)
+    }
+  })
 
   const onTap = (orderID: string | null, state: string | null) => {
     if (state === "PENDING") {
