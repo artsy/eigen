@@ -75,14 +75,14 @@ describe("AddEditPhotos", () => {
     const images = tree.root.findAllByType(Image)
     expect(images.length).toEqual(3)
 
-    showPhotoActionSheetMock.mockReturnValueOnce(
-      Promise.resolve({
-        photos: [fakePhoto("path4"), fakePhoto("path5")],
-      })
-    )
+    const photosPromise = Promise.resolve([fakePhoto("path4").image, fakePhoto("path5").image])
+
+    showPhotoActionSheetMock.mockReturnValueOnce(photosPromise)
 
     const addButton = tree.root.findByProps({ "data-test-id": "add-photos-button" })
-    await addButton.props.onPress()
+    addButton.props.onPress()
+
+    await photosPromise
 
     expect(showPhotoActionSheetMock).toHaveBeenCalled()
 
