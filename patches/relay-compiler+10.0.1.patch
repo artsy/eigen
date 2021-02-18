@@ -1,5 +1,5 @@
 diff --git a/node_modules/relay-compiler/bin/relay-compiler b/node_modules/relay-compiler/bin/relay-compiler
-index 14d0619..0f400f8 100755
+index 14d0619..0fc167e 100755
 --- a/node_modules/relay-compiler/bin/relay-compiler
 +++ b/node_modules/relay-compiler/bin/relay-compiler
 @@ -291,7 +291,7 @@ function highlightSourceAtLocation(source, location) {
@@ -36,7 +36,21 @@ index 14d0619..0f400f8 100755
        this._filesystem.writeFileSync(filePath, content, 'utf8');
      }
    }
-@@ -18128,10 +18137,11 @@ module.exports = function (tagFinder, getFileFilter) {
+@@ -8027,7 +8036,12 @@ function getRelayFileWriter(baseDir, languagePlugin, noFutureProofEnums, outputD
+         }
+ 
+         var data = JSON.stringify(object, null, 2);
+-        fs.writeFileSync(persistedQueryPath, data, 'utf8');
++        if (
++          !fs.existsSync(persistedQueryPath) ||
++          data !== fs.readFileSync(persistedQueryPath, 'utf8').toString()
++        ) {
++          fs.writeFileSync(persistedQueryPath, data, 'utf8');
++        }
+       }
+ 
+       return results;
+@@ -18128,10 +18142,11 @@ module.exports = function (tagFinder, getFileFilter) {
  
      var astDefinitions = [];
      var sources = [];
@@ -51,7 +65,7 @@ index 14d0619..0f400f8 100755
        sources.push(source.body);
        astDefinitions.push.apply(astDefinitions, (0, _toConsumableArray2["default"])(ast.definitions));
      });
-@@ -18216,9 +18226,7 @@ function find(tagFinder, text, absPath) {
+@@ -18216,9 +18231,7 @@ function find(tagFinder, text, absPath) {
    tags.forEach(function (tag) {
      return validateTemplate(tag, moduleName, absPath);
    });
