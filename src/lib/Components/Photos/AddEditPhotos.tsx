@@ -1,15 +1,15 @@
 import { Stack } from "lib/Components/Stack"
 import { Photo } from "lib/Scenes/Consignments"
-import { BottomAlignedButton } from "lib/Scenes/Consignments/Components/BottomAlignedButton"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { isPad } from "lib/utils/hardware"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { chunk } from "lodash"
-import { AddIcon, BorderBox, Box, color, Flex, Text, XCircleIcon } from "palette"
+import { AddIcon, BorderBox, Box, Button, color, Flex, Spacer, Text, XCircleIcon } from "palette"
 import React, { useState } from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
+import Separator from "../Separator"
 
 const MARGIN = 20
 
@@ -58,14 +58,15 @@ export const AddEditPhotos: React.FC<AddEditPhotosProps> = ({ initialPhotos, pho
   const rows = chunk(items, numColumns)
 
   return (
-    <BottomAlignedButton onPress={doneTapped} buttonText="Done">
+    <>
       <Flex alignContent="center" alignItems="center">
-        <Text variant="title" mt={3}>
-          Photos {!!photos.length && `(${photos.length})`}
-        </Text>
+        <Spacer m={1} />
+        <Text variant="title">Photos {!!photos.length && `(${photos.length})`}</Text>
+        <Spacer m={1} />
       </Flex>
+      <Separator key="separator2" />
       <ScrollView>
-        <Flex flexDirection="row" flexWrap="wrap" my="2">
+        <Flex flexDirection="row" flexWrap="wrap" mt={2}>
           {rows.map((row, i) => (
             <Stack horizontal key={i} mb="2" mx="2">
               {row}
@@ -73,7 +74,15 @@ export const AddEditPhotos: React.FC<AddEditPhotosProps> = ({ initialPhotos, pho
           ))}
         </Flex>
       </ScrollView>
-    </BottomAlignedButton>
+      <Separator key="separator" />
+      <Spacer mb={1} />
+      <Box px={2}>
+        <Button block width="100%" onPress={doneTapped}>
+          Done
+        </Button>
+      </Box>
+      <Spacer mb={1} />
+    </>
   )
 }
 
