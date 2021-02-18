@@ -43,11 +43,13 @@ export const App = () => (
   <RelayEnvironmentProvider environment={defaultEnvironment}>
     <ProvideScreenDimensions>
       <Theme>
-        <GlobalStoreProvider>
-          <AdminMenuWrapper>
-            <Main />
-          </AdminMenuWrapper>
-        </GlobalStoreProvider>
+        <_FancyModalPageWrapper>
+          <GlobalStoreProvider>
+            <AdminMenuWrapper>
+              <Main />
+            </AdminMenuWrapper>
+          </GlobalStoreProvider>
+        </_FancyModalPageWrapper>
       </Theme>
     </ProvideScreenDimensions>
   </RelayEnvironmentProvider>

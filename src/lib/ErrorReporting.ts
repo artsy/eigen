@@ -12,8 +12,8 @@ if (getCurrentEmissionState().sentryDSN) {
 
   // Releases on sentry are org-wide so we need to distinguish
   // names in staging
-  if (Config.SENTRY_STAGING_DSN === getCurrentEmissionState().sentryDSN) {
-    sentryReleaseName = sentryReleaseName + "-dev"
+  if (Config.SENTRY_BETA_DSN === getCurrentEmissionState().sentryDSN) {
+    sentryReleaseName = sentryReleaseName + "-beta"
   }
 
   init({

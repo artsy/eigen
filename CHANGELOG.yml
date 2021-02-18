@@ -2,8 +2,12 @@ upcoming:
   version: 6.7.8
   date: TBD
   dev:
+    - Add scripts and docs for android beta promotion - pavlos
     - Migrate feature flag infrastructure to easy-peasy - david
+    - Update artist insights flag and set readyToRelease to true - mounir
+    - use native webview to share auth creds in checkout - brian
   user_facing:
+    - Fix issue where user's watched lots are not always up to date - erik
     - Add custom ShareSheet and sharing to Instagram Stories - pavlos
     - MarketStats on auction results - pepopowitz, mounir
     - fix - show correct up/down arrows on Market Stats - pepopowitz
@@ -12,7 +16,10 @@ upcoming:
     - Convert cents to dollars in market stats - pepopowitz
     - Dedupe currencies in auction results - pepopowitz
     - update support email - brian
+    - scroll to the top after applying a filter on auction results- mounir
     - Market stats formatting fixes - brian
+    - Add fonts to android - mounir, steven
+    - Fix send feedback on Android - adam
     - Update consignment photo selection flow for iOS 14 - brian
 
 releases:

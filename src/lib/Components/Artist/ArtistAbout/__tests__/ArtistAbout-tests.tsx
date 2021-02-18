@@ -99,8 +99,8 @@ describe("ArtistAbout", () => {
   })
 
   describe("ArtistAboutShows", () => {
-    it("is shown when AROptionsNewInsightsPage is true", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewInsightsPage: true })
+    it("is shown when AROptionsNewArtistInsightsPage is true", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewArtistInsightsPage: true })
 
       const tree = renderWithWrappers(<TestRenderer />)
 
@@ -109,8 +109,8 @@ describe("ArtistAbout", () => {
       expect(tree.root.findAllByType(ArtistAboutShowsFragmentContainer).length).toEqual(1)
     })
 
-    it("is hidden when AROptionsNewInsightsPage is false", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewInsightsPage: false })
+    it("is hidden when AROptionsNewArtistInsightsPage is false", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewArtistInsightsPage: false })
 
       const tree = renderWithWrappers(<TestRenderer />)
 

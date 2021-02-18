@@ -101,7 +101,7 @@ SOFTWARE.
 
     NSString *sentryDSN = nil;
     if (![ARAppStatus isDev]) {
-        sentryDSN = [ReactNativeConfig envFor:[ARAppStatus isBeta] ? @"SENTRY_STAGING_DSN" : @"SENTRY_PRODUCTION_DSN"];
+        sentryDSN = [ReactNativeConfig envFor:[ARAppStatus isBeta] ? @"SENTRY_BETA_DSN" : @"SENTRY_PRODUCTION_DSN"];
     }
 
     // Don't let the JS raise an error about Sentry's DSN being a stub on OSS builds

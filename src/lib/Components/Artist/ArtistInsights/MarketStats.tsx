@@ -54,7 +54,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
       <Spacer mb={2} />
       <Text>
         In this data set, please note that the sale price includes the hammer price and buyer’s premium, as well as any
-        other additional fees (e.g., Artist’s Resale Rights).
+        other additional fees (e.g., Artist’s Resale Rights). The data set only includes works valued over $1,000.
       </Text>
       <Spacer mb={2} />
       <Text fontWeight={"bold"}>Average yearly lots sold</Text>
@@ -103,18 +103,18 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
         <InfoButton
           titleElement={
             <Text variant="title" mr={0.5}>
-              Market Signals by Medium
+              Market Signals
             </Text>
           }
           trackEvent={() => {
             tracking.trackEvent(tappedInfoBubble(tracks.tapMarketStatsInfo()))
           }}
-          modalTitle={"Market Signals by Medium"}
+          modalTitle={"Market Signals"}
           modalContent={renderInfoModal()}
         />
       </Flex>
       <Text variant="small" color="black60" my={0.5}>
-        Last 36 months
+        Averages over last 36 months
       </Text>
       <Select
         value={selectedPriceInsight.medium}
@@ -142,7 +142,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
         </Flex>
         <Flex width="50%" mt={2}>
           <Text variant="largeTitle">${formattedAverageValueSold}</Text>
-          <Text variant="text">Average sale price</Text>
+          <Text variant="text">Sale price</Text>
         </Flex>
         <Flex width="50%" mt={2}>
           <Flex width="50%" flexDirection="row" alignItems="center">
@@ -193,6 +193,7 @@ export const MarketStatsQueryRenderer: React.FC<{
       render={renderWithPlaceholder({
         Container: MarketStatsFragmentContainer,
         renderPlaceholder: LoadingSkeleton,
+        renderFallback: () => null,
       })}
     />
   )
@@ -203,7 +204,7 @@ const LoadingSkeleton = () => {
     <>
       <Flex flexDirection="row" alignItems="center">
         <Text variant="title" mr={0.5}>
-          Market Signals by Medium
+          Market Signals
         </Text>
       </Flex>
       <Text variant="small" color="black60" my={0.5}>

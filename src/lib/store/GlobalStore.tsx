@@ -145,7 +145,7 @@ export function getCurrentEmissionState() {
     metaphysicsURL: state?.config.sessionState.metaphysicsBaseURL,
     onboardingState: "none", // not used on android
     predictionURL: state?.config.sessionState.predictionBaseURL,
-    sentryDSN: Config.SENTRY_STAGING_DSN,
+    sentryDSN: Config.SENTRY_BETA_DSN,
     stripePublishableKey: "stripePublishableKey", // TODO: take key from echo config
     userAgent: "eigen android", // TODO: proper user agent
     userID: state?.auth.userID!,
@@ -164,5 +164,9 @@ export function unsafe__getSelectedTab() {
 }
 
 export function useIsStaging() {
+  // TODO: support non-staging environments on android
+  if (Platform.OS === "android") {
+    return true
+  }
   return GlobalStore.useAppState((state) => state.native.sessionState.env === "staging")
 }

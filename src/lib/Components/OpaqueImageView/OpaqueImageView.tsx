@@ -148,7 +148,7 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     // that it shows immediately.
     let backgroundColorStyle = null
     let remainderProps = props
-    if (this.props.imageURL) {
+    if (Platform.OS === "ios" && this.props.imageURL) {
       const anyProps = props as any
       anyProps.placeholderBackgroundColor = processColor(props.placeholderBackgroundColor)
     } else {

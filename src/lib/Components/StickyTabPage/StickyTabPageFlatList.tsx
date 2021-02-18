@@ -28,6 +28,7 @@ export interface StickyTabFlatListProps
   extends Omit<FlatListProps<any>, "onScroll" | "data" | "scrollEventThrottle" | "ListHeaderComponent" | "renderItem"> {
   data: StickyTabSection[]
   paddingHorizontal?: number
+  innerRef?: React.MutableRefObject<{ getNode(): FlatList<any> } | null>
 }
 
 export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) => {
@@ -104,7 +105,12 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
           style,
         ]}
         showsVerticalScrollIndicator={false}
-        ref={flatListRef as any}
+        ref={(ref) => {
+          flatListRef.current = ref as any
+          if (props.innerRef) {
+            props.innerRef.current = ref as any
+          }
+        }}
         onScroll={Animated.event(
           [
             {
