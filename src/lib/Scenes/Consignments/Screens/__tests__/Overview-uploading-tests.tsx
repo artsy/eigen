@@ -1,11 +1,9 @@
-import { AsyncStorage } from "react-native"
+import AsyncStorage from "@react-native-community/async-storage"
 AsyncStorage.setItem = jest.fn()
 AsyncStorage.getItem = jest.fn()
 AsyncStorage.removeItem = jest.fn()
 
 import Overview from "../Overview"
-
-jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
 jest.mock("../../Submission/updateConsignmentSubmission", () => ({ updateConsignmentSubmission: jest.fn() }))
 import { updateConsignmentSubmission } from "../../Submission/updateConsignmentSubmission"
