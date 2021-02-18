@@ -66,7 +66,7 @@ describe("ReviewOfferButton", () => {
   it("shows correct message for accepted offers", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
-        state: "APPROVED",
+        state: "PENDING",
       }),
     })
 
@@ -74,9 +74,10 @@ describe("ReviewOfferButton", () => {
     expect(text).toContain("Offer Accepted - Please Confirm")
   })
 
-  it("shows correct message for recieved counteroffers", () => {
+  it("shows correct message for received counteroffers", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
+        state: "SUBMITTED",
         lastOffer: {
           fromParticipant: "SELLER",
         },

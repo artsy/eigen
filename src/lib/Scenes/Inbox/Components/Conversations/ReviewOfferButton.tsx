@@ -18,28 +18,28 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
   const [backgroundColor, setBackgroundColor] = React.useState("green100")
   const [message, setMessage] = React.useState("")
   const [subMessage, setSubMessage] = React.useState("Tap to view")
-  const [icon, setIcon] = React.useState(<MoneyFillIcon mt="3px" fill="white100" />)
+  const [showMoneyIcon, setShowMoneyIcon] = React.useState(true)
+
+  const { hours } = useEventTiming({
+    currentTime: DateTime.local().toString(),
+    startAt: order?.lastOffer?.createdAt,
+    endAt: order?.stateExpiresAt || undefined,
+  })
 
   useEffect(() => {
-    const expiration = useEventTiming({
-      currentTime: DateTime.local().toString(),
-      startAt: order?.lastOffer?.createdAt,
-      endAt: order?.stateExpiresAt || undefined,
-    }).hours
-
     const offerType = offerNodes.length > 1 ? "Counteroffer" : "Offer"
 
     if (order.state === "PENDING") {
       setMessage(`${offerType} Accepted - Please Confirm`)
-      setSubMessage(`Expires in ${expiration}hr`)
+      setSubMessage(`Expires in ${hours}hr`)
     } else if (order.state === "CANCELED" && order?.stateReason?.includes("seller_rejected")) {
       setMessage(`${offerType} Declined`)
       setBackgroundColor("red100")
-    } else if (order?.lastOffer?.fromParticipant === "SELLER") {
+    } else if (order.lastOffer?.fromParticipant === "SELLER") {
       setBackgroundColor("copper100")
       setMessage(`${offerType} Received`)
-      setSubMessage(`Expires in ${expiration}hr`)
-      setIcon(<AlertCircleFillIcon mt="3px" fill="white100" />)
+      setSubMessage(`Expires in ${hours}hr`)
+      setShowMoneyIcon(false)
     }
   })
 
@@ -62,7 +62,11 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
         height={60}
       >
         <Flex flexDirection="row">
-          {icon}
+          {showMoneyIcon ? (
+            <AlertCircleFillIcon mt="3px" fill="white100" />
+          ) : (
+            <MoneyFillIcon mt="3px" fill="white100" />
+          )}
           <Flex flexDirection="column" pl={1}>
             <Text color="white100" variant="mediumText">
               {message}
