@@ -311,6 +311,7 @@ GEM
       xcpretty (~> 0.2, >= 0.0.7)
 
 PLATFORMS
+  ruby
   x86_64-darwin-19
 
 DEPENDENCIES

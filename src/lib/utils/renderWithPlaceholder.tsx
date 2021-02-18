@@ -59,11 +59,11 @@ export function renderWithPlaceholder<Props>({
         //
         // This will re-use the native view first created in the renderFailure callback, which means it can
         // continue its ‘retry’ animation.
-        return <LoadFailureView style={{ flex: 1 }} />
+        return <LoadFailureView />
       } else {
         retrying = true
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        return <LoadFailureView onRetry={retry} style={{ flex: 1 }} />
+        return <LoadFailureView onRetry={retry} />
       }
     } else if (props) {
       if (render) {

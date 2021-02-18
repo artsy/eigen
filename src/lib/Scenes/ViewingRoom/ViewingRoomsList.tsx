@@ -207,7 +207,7 @@ export const ViewingRoomsListQueryRenderer: React.FC = () => {
   }
   if (error) {
     console.error(error)
-    return <LoadFailureView onRetry={retry} style={{ flex: 1 }} />
+    return <LoadFailureView onRetry={retry} />
   }
 
   return <Placeholder />
