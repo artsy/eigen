@@ -11,7 +11,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { ProvideScreenTracking } from "lib/utils/track"
 import { Box, Button, Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { FlatList, RefreshControl, ScrollView, View } from "react-native"
@@ -67,7 +67,7 @@ const MyCollection: React.FC<{
   }
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
+    <ProvideScreenTracking
       info={{
         action: ActionType.screen,
         context_screen_owner_type: OwnerType.myCollection,
@@ -142,7 +142,7 @@ const MyCollection: React.FC<{
           />
         )}
       </View>
-    </ProvideScreenTrackingWithCohesionSchema>
+    </ProvideScreenTracking>
   )
 }
 

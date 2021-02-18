@@ -12,7 +12,7 @@ import { MyCollectionArtworkInsightsFragmentContainer } from "lib/Scenes/MyColle
 import { GlobalStore } from "lib/store/GlobalStore"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { ProvideScreenTracking } from "lib/utils/track"
 import { Button, Flex, Join, Spacer } from "palette"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
@@ -33,7 +33,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
   const [showModal, setShowModal] = useState(false)
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
+    <ProvideScreenTracking
       info={{
         action: ActionType.screen,
         context_screen_owner_type: OwnerType.myCollectionArtwork,
@@ -101,7 +101,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
           <Spacer my={2} />
         </Join>
       </ScrollView>
-    </ProvideScreenTrackingWithCohesionSchema>
+    </ProvideScreenTracking>
   )
 }
 
