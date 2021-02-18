@@ -373,7 +373,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayMo
                 } else {
                   captureMessage(error.stack!)
                 }
-                return <LoadFailureView style={{ flex: 1 }} />
+                return <LoadFailureView />
               }
               if (!props?.above.me || !props.above.sale) {
                 return <SalePlaceholder />
