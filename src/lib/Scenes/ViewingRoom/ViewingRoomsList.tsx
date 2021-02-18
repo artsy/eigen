@@ -6,7 +6,7 @@ import { SectionTitle } from "lib/Components/SectionTitle"
 import { PAGE_SIZE } from "lib/data/constants"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
-import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { ProvideScreenTracking, Schema, ScreenTrackEventT } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
 import { Flex, Sans, Separator, space, Spacer } from "palette"
@@ -134,10 +134,8 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = (props
 }
 
 const tracks = {
-  screen: () => ({
-    screen: Schema.PageNames.ViewingRoomsList,
-    context_screen: Schema.PageNames.ViewingRoomsList,
-    context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
+  screen: (): ScreenTrackEventT => ({
+    context_screen_owner_type: Schema.PageNames.viewingRoom,
   }),
 }
 

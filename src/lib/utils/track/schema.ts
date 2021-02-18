@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+
 /**
  * Useful notes:
  *  * At the bottom of this file there is an example of how to test track'd code.
@@ -49,7 +50,7 @@ export interface Entity extends Global {
   /**
    * The type of entity, e.g. Artwork, Artist, etc.
    */
-  owner_type?: OwnerEntityTypes
+  owner_type?: OwnerType
 
   /**
    * Provides a context, usually the component the event is emitted from.
@@ -61,7 +62,7 @@ export interface PageView {
   /**
    * The root container component should specify this as the screen context.
    */
-  context_screen: PageNames
+  context_screen: OwnerType
 
   /**
    * The public slug for the entity that owns this page (e.g. for the Artist page)
@@ -78,90 +79,12 @@ export interface PageView {
   /**
    * The type of entity (owner), E.g. Artist, Artwork, etc.
    */
-  context_screen_owner_type: OwnerEntityTypes | OwnerType | null
+  context_screen_owner_type: OwnerType | null
 }
 
-export enum PageNames {
-  AboutTheFairPage = "AboutTheFair",
-  AboutTheShowPage = "AboutTheShow",
-  AllArtistSeriesPage = "AllArtistSeries",
-  ArtistPage = "Artist",
-  ArtistSeriesPage = "ArtistSeries",
-  ArtworkClassificationsPage = "ArtworkClassifications",
-  ArtworkPage = "Artwork",
-  Auction = "Auction",
-  AuctionInfo = "AuctionInfo",
-  AuctionResult = "AuctionResult",
-  Auctions = "Auctions",
-  BidFlowBillingAddressPage = "YourBillingAddress",
-  BidFlowConfirmBidPage = "ConfirmYourBid",
-  BidFlowMaxBidPage = "YourMaxBid",
-  BidFlowRegistration = "Registration",
-  BidFlowRegistrationResultConfirmed = "RegistrationConfirmed",
-  BidFlowRegistrationResultError = "RegistrationError",
-  BidFlowRegistrationResultPending = "RegistrationPending",
-  BMWFairActivation = "BMWFairActivation",
-  CityGuide = "CityGuideGuide",
-  CityGuideBMWList = "CityGuideBMWList",
-  CityGuideClosingSoonList = "CityGuideClosingSoonList",
-  CityGuideFairsList = "CityGuideFairsList",
-  CityGuideGalleriesList = "CityGuideGalleriesList",
-  CityGuideMap = "CityGuideMap",
-  CityGuideMuseumsList = "CityGuideMuseumsList",
-  CityGuideOpeningSoonList = "CityGuideOpeningSoonList",
-  CityGuideSavedList = "CityGuideSavedList",
-  CityPicker = "CityPicker",
-  Collection = "Collection",
-  ConsignmentsOverView = "ConsignmentsOverview",
-  ConsignmentsSubmission = "ConsignmentsSubmit",
-  ConsignmentsWelcome = "ConsignmentsWelcome",
-  ConversationPage = "Conversation",
-  FairAllArtistsPage = "FairAllArtistsPage",
-  FairAllArtworksPage = "FairAllArtworksPage",
-  FairAllExhibitorsPage = "FairAllExhibitorsPage",
-  FairBoothPage = "FairBoothPage",
-  GenePage = "Gene",
-  Home = "Home",
-  InboxPage = "Inbox",
-  InquiryPage = "Inquiry",
-  PartnerPage = "PartnerPage",
-  SavesAndFollows = "SavesAndFollows",
-  Search = "Search",
-  Sell = "Sell",
-  ViewingRoom = "ViewingRoom",
-  ViewingRoomArtworkPage = "ViewingRoomArtworkPage",
-  ViewingRoomArtworks = "ViewingRoomArtworks",
-  ViewingRoomsList = "ViewingRoomsList",
-  WorksForYou = "WorksForYou",
-  FairPage = "Fair",
-  FairMoreInfoPage = "Fair",
-  ShowPage = "Show",
-  ShowMoreInfoPage = "moreInfo",
-}
+export const PageNames = OwnerType
 
-export enum OwnerEntityTypes {
-  AllArtistSeries = "AllArtistSeries",
-  Artist = "Artist",
-  ArtistSeries = "ArtistSeries",
-  Artwork = "Artwork",
-  AuctionInfo = "AuctionInfo",
-  Auction = "Auction",
-  AuctionResult = "AuctionResult",
-  CityGuide = "CityGuide",
-  Collection = "Collection",
-  Consignment = "ConsignmentSubmission",
-  Conversation = "Conversation",
-  Gallery = "Gallery",
-  Gene = "Gene",
-  Home = "home",
-  Inbox = "Inbox",
-  Fair = "Fair",
-  FairMoreInfo = "moreInfo",
-  Partner = "Partner",
-  Search = "Search",
-  Show = "Show",
-  ViewingRoom = "ViewingRoom",
-}
+export const OwnerEntityTypes = OwnerType
 
 export enum ActionTypes {
   /**
