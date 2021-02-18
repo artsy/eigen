@@ -1,5 +1,5 @@
 diff --git a/node_modules/relay-compiler/bin/relay-compiler b/node_modules/relay-compiler/bin/relay-compiler
-index 14d0619..6830169 100755
+index 14d0619..0f400f8 100755
 --- a/node_modules/relay-compiler/bin/relay-compiler
 +++ b/node_modules/relay-compiler/bin/relay-compiler
 @@ -291,7 +291,7 @@ function highlightSourceAtLocation(source, location) {
@@ -20,7 +20,23 @@ index 14d0619..6830169 100755
      Profiler.run('CodegenDirectory.writeFile', function () {
        _this2._addGenerated(filename);
  
-@@ -18128,10 +18128,11 @@ module.exports = function (tagFinder, getFileFilter) {
+@@ -2400,6 +2400,15 @@ var CodegenDirectory = /*#__PURE__*/function () {
+ 
+   _proto._writeFile = function _writeFile(filePath, content) {
+     if (!this.onlyValidate) {
++      // Don't overwrite files that have not changed
++      // This fixes an issue that was causing metro to HMR way too often
++      // on android, and to fall back to a full refresh instead of a fast reload on iOS
++      if (this._filesystem.existsSync(filePath)) {
++        const existing = this._filesystem.readFileSync(filePath, 'utf8').toString()
++        if (existing === content) {
++          return
++        }
++      }
+       this._filesystem.writeFileSync(filePath, content, 'utf8');
+     }
+   }
+@@ -18128,10 +18137,11 @@ module.exports = function (tagFinder, getFileFilter) {
  
      var astDefinitions = [];
      var sources = [];
@@ -35,7 +51,7 @@ index 14d0619..6830169 100755
        sources.push(source.body);
        astDefinitions.push.apply(astDefinitions, (0, _toConsumableArray2["default"])(ast.definitions));
      });
-@@ -18216,9 +18217,7 @@ function find(tagFinder, text, absPath) {
+@@ -18216,9 +18226,7 @@ function find(tagFinder, text, absPath) {
    tags.forEach(function (tag) {
      return validateTemplate(tag, moduleName, absPath);
    });
