@@ -3,11 +3,17 @@
 // @ts-check
 
 const { GraphQLClient } = require("graphql-request")
-const { values, range } = require("lodash")
+const { values } = require("lodash")
 const { exit, stdout } = require("process")
+
+const [userId, token] = [
+]
 
 const metaphysics = new GraphQLClient("https://metaphysics-staging.artsy.net/v2", {
   headers: {
+    // sd.CURRENT_USER.id and accessToken
+    "X-Access-Token": token,
+    "X-User-Id": userId,
   },
 })
 
