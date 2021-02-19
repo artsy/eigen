@@ -5,19 +5,28 @@
 const { GraphQLClient } = require("graphql-request")
 const { values } = require("lodash")
 const { exit, stdout } = require("process")
-
-const [userId, token] = [
-]
-
-const metaphysics = new GraphQLClient("https://metaphysics-staging.artsy.net/v2", {
-  headers: {
-    // sd.CURRENT_USER.id and accessToken
-    "X-Access-Token": token,
-    "X-User-Id": userId,
-  },
-})
+const puppeteer = require("puppeteer")
 
 const doIt = async () => {
+  const browser = await puppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+  await page.goto("https://staging.artsy.net")
+  await page.click('aria/button[name="Log in"]')
+  await page.click('aria/textbox[name="Enter your email address"]')
+  await page.type('aria/textbox[name="Enter your email address"]', process.env.FRESHNESS_TEST_EMAIL)
+  await page.click('aria/textbox[name="Enter your password"]')
+  await page.type('aria/textbox[name="Enter your password"]', process.env.FRESHNESS_TEST_PASSWORD)
+  await page.click('aria/pushbutton[name="Log in"]')
+  await page.waitForNavigation()
+  const { id: userId, accessToken: token } = await page.evaluate("sd.CURRENT_USER")
+
+  const metaphysics = new GraphQLClient("https://metaphysics-staging.artsy.net/v2", {
+    headers: {
+      "X-Access-Token": token,
+      "X-User-Id": userId,
+    },
+  })
+
   const allQueries = values(require("../data/complete.queryMap.json"))
   const problemQueries = allQueries.filter(
     (q) =>
