@@ -1,9 +1,12 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { NavigationContainerRef } from "@react-navigation/native"
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
+import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import { useEffect } from "react"
 
 const NAV_STATE_STORAGE_KEY = "ARDevNavState"
+
+export const BOTTOM_NAV_STATE_STORAGE_KEY = "__dev__reloadState"
 
 interface NavStateCache {
   launchCount: number
@@ -55,4 +58,26 @@ export function useReloadedDevNavigationState(
   }, [])
 
   return reloadedCache?.stackStates[stackID]
+}
+
+const launchCount = ArtsyNativeModule.launchCount
+
+export async function maybeHandleDevReload(switchTabAction: (tabName: BottomTabType) => void) {
+  if (!__DEV__) {
+    return
+  }
+  const json = await AsyncStorage.getItem(BOTTOM_NAV_STATE_STORAGE_KEY)
+  if (!json) {
+    return
+  }
+  try {
+    const { launchCount: previousLaunchCount, selectedTab } = JSON.parse(json)
+    if (launchCount === previousLaunchCount) {
+      switchTabAction(selectedTab)
+    } else {
+      AsyncStorage.removeItem(BOTTOM_NAV_STATE_STORAGE_KEY)
+    }
+  } catch (e) {
+    console.error("failed to handle dev reload state")
+  }
 }

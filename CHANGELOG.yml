@@ -3,8 +3,9 @@ upcoming:
   date: TBD
   dev:
     - Migrate LoadFailureView to typescript - adam, brian, david, mounir, pavlos
+    - Improve bottom tabs dev state management  - david, mounir
   user_facing:
-    - 
+    -
 
 releases:
   - version: 6.7.8
