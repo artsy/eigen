@@ -228,6 +228,7 @@ GEM
     memoist (0.16.2)
     mini_magick (4.11.0)
     mini_mime (1.0.2)
+    mini_portile2 (2.5.0)
     minitest (5.14.3)
     molinillo (0.6.6)
     multi_json (1.15.0)
@@ -239,7 +240,8 @@ GEM
     netrc (0.11.0)
     nio4r (2.5.4)
     no_proxy_fix (0.1.2)
-    nokogiri (1.11.1-x86_64-darwin)
+    nokogiri (1.11.1)
+      mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     octokit (4.20.0)
       faraday (>= 0.9)
@@ -311,7 +313,7 @@ GEM
       xcpretty (~> 0.2, >= 0.0.7)
 
 PLATFORMS
-  x86_64-darwin-19
+  ruby
 
 DEPENDENCIES
   cocoapods (~> 1.7.2)
@@ -323,7 +325,7 @@ DEPENDENCIES
   fastlane-plugin-sentry
   json
   lowdown
-  nokogiri (>= 1.10.4)
+  nokogiri (= 1.11.1)
   psych
   second_curtain
   xcode-install
