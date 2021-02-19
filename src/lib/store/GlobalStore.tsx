@@ -47,7 +47,7 @@ function createGlobalStore() {
 
   if (!__TEST__) {
     unpersist().then(async (state) => {
-      await loadDevNavigationStateCache()
+      await loadDevNavigationStateCache(store.getActions().bottomTabs.switchTab)
       store.getActions().rehydrate(state)
     })
   }
