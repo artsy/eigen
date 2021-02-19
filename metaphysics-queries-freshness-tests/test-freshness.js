@@ -13,16 +13,17 @@ const metaphysics = new GraphQLClient("https://metaphysics-staging.artsy.net/v2"
 
 const doIt = async () => {
   const allQueries = values(require("../data/complete.queryMap.json"))
-  const allNonTestQueries = allQueries.filter((q) => !q.includes("Test"))
+  const allNonTestQueries = allQueries.filter(
+    (q) => !q.includes("Test") && !q.includes("Mock") && !q.includes("Fixtures")
+  )
   const queries = allNonTestQueries.filter((q) => q.startsWith("query"))
   const queriesWithoutVars = queries.filter((q) => !q.includes("$"))
   const mutations = allNonTestQueries.filter((q) => q.startsWith("mutation"))
 
-  // console.log(queries.length)
-  // console.log(queriesWithoutVars.length)
   console.warn(`Skipping ${mutations.length} mutations`)
   console.log(`Skipping ${allQueries.length - allNonTestQueries.length} test queries`)
 
+  console.log(`Running ${queriesWithoutVars.length} no-var queries`)
   await Promise.all(
     queriesWithoutVars.map(async (q) => {
       try {
