@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a18dae78b377778745117c2f5e67b8d4 */
+/* @relayHash 3d32e5c1e9160ef29b2474f9d23b6051 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -92,7 +92,7 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
 fragment ShowArtworks_show on Show {
   slug
   internalID
-  showArtworks: filterArtworksConnection(first: 30, sort: "partner_show_position", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  showArtworks: filterArtworksConnection(first: 30, sort: "partner_show_position", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -171,11 +171,6 @@ v4 = [
     "kind": "Literal",
     "name": "first",
     "value": 30
-  },
-  {
-    "kind": "Literal",
-    "name": "medium",
-    "value": "*"
   },
   {
     "kind": "Literal",
@@ -637,14 +632,14 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:30,medium:\"*\",sort:\"partner_show_position\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:30,sort:\"partner_show_position\")"
           },
           {
             "alias": "showArtworks",
             "args": (v4/*: any*/),
             "filters": [
               "sort",
-              "medium",
+              "additionalGeneIDs",
               "priceRange",
               "color",
               "dimensionRange",
@@ -668,7 +663,7 @@ return {
     ]
   },
   "params": {
-    "id": "a18dae78b377778745117c2f5e67b8d4",
+    "id": "3d32e5c1e9160ef29b2474f9d23b6051",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {

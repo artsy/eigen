@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9466a18a3ed143b389f77319923a7102 */
+/* @relayHash f5fd7afde4121593124f033cefb58ec0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -79,7 +79,7 @@ fragment ArtworkTileRailCard_artwork on Artwork {
 fragment FairArtworks_fair on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
+  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
     aggregations {
       slice
       counts {
@@ -524,11 +524,6 @@ v19 = [
     "value": "*-*"
   },
   (v18/*: any*/),
-  {
-    "kind": "Literal",
-    "name": "medium",
-    "value": "*"
-  },
   {
     "kind": "Literal",
     "name": "sort",
@@ -1386,14 +1381,14 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,medium:\"*\",sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,sort:\"-decayed_merch\")"
           },
           {
             "alias": "fairArtworks",
             "args": (v19/*: any*/),
             "filters": [
               "sort",
-              "medium",
+              "additionalGeneIDs",
               "priceRange",
               "color",
               "partnerID",
@@ -1626,7 +1621,7 @@ return {
     ]
   },
   "params": {
-    "id": "9466a18a3ed143b389f77319923a7102",
+    "id": "f5fd7afde4121593124f033cefb58ec0",
     "metadata": {},
     "name": "FairQuery",
     "operationKind": "query",

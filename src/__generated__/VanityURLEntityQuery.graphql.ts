@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash df0e0c527837bbceaad780b3690f622e */
+/* @relayHash 3a1774cbdda70445c7d3746d06fb8e4a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -99,7 +99,7 @@ fragment ArtworkTileRailCard_artwork on Artwork {
 fragment FairArtworks_fair on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
+  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
     aggregations {
       slice
       counts {
@@ -767,11 +767,6 @@ v22 = [
   },
   (v20/*: any*/),
   (v21/*: any*/),
-  {
-    "kind": "Literal",
-    "name": "medium",
-    "value": "*"
-  },
   {
     "kind": "Literal",
     "name": "sort",
@@ -1741,14 +1736,14 @@ return {
                   (v5/*: any*/),
                   (v37/*: any*/)
                 ],
-                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,medium:\"*\",sort:\"-decayed_merch\")"
+                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,sort:\"-decayed_merch\")"
               },
               {
                 "alias": "fairArtworks",
                 "args": (v22/*: any*/),
                 "filters": [
                   "sort",
-                  "medium",
+                  "additionalGeneIDs",
                   "priceRange",
                   "color",
                   "partnerID",
@@ -2407,7 +2402,7 @@ return {
     ]
   },
   "params": {
-    "id": "df0e0c527837bbceaad780b3690f622e",
+    "id": "3a1774cbdda70445c7d3746d06fb8e4a",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",
