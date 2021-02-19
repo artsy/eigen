@@ -97,4 +97,4 @@
     `__genearted__` folder in the root of your project, but we put it in `src`.
   - We make sure that files which do not change are not overwritten. This prevents excessive reloading by metro.
 
-  We can remove these hacks when they don't matter anymore. Neither are liley to be fixed by facebook.
+  We can remove these hacks when they don't matter anymore. Neither are likely to be fixed by facebook.
