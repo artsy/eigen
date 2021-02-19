@@ -1,6 +1,6 @@
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
 import { Action, action, Thunk, thunk } from "easy-peasy"
-import { saveDevNavState } from "lib/navigation/useReloadedDevNavigationState"
+import { saveDevNavigationStateSelectedTab } from "lib/navigation/useReloadedDevNavigationState"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { fetchQuery, graphql } from "react-relay"
@@ -51,6 +51,6 @@ export const BottomTabsModel: BottomTabsModel = {
   }),
   switchTab: action((state, tabType) => {
     state.sessionState.selectedTab = tabType
-    saveDevNavState(tabType)
+    saveDevNavigationStateSelectedTab(tabType)
   }),
 }

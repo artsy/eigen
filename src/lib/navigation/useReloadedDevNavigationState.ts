@@ -6,8 +6,6 @@ import { useEffect } from "react"
 
 const NAV_STATE_STORAGE_KEY = "ARDevNavState"
 
-export const BOTTOM_NAV_STATE_STORAGE_KEY = "__dev__reloadState"
-
 interface NavStateCache {
   launchCount: number
   stackStates: {
@@ -24,6 +22,8 @@ const currentCache: NavStateCache = {
   selectedTab: "home",
 }
 
+// On dev mode, if the app restarted because of a bundle reload/fast refresh,
+// We want to rehydrate the navigation state
 export async function loadDevNavigationStateCache(switchTabAction: (tabName: BottomTabType) => void) {
   if (!__DEV__) {
     return
@@ -35,7 +35,6 @@ export async function loadDevNavigationStateCache(switchTabAction: (tabName: Bot
       // only reinstate the navigation state cache for bundle reloads, not for app reboots
       if (parsedCache?.launchCount === currentCache.launchCount) {
         switchTabAction(parsedCache.selectedTab)
-
         reloadedCache = parsedCache
       }
     } catch (e) {
@@ -44,6 +43,8 @@ export async function loadDevNavigationStateCache(switchTabAction: (tabName: Bot
   }
 }
 
+// We want the navigation stack state to persist across dev reloads
+// So whenever we find out it changed, we save it
 export function useReloadedDevNavigationState(
   stackID: string | undefined,
   ref: React.RefObject<NavigationContainerRef>
@@ -65,8 +66,9 @@ export function useReloadedDevNavigationState(
   return reloadedCache?.stackStates[stackID]
 }
 
-// We want to save the selected Tab after the user switches tabs
-export async function saveDevNavState(selectedTab: BottomTabType) {
+// We want the selected tab state to persist across dev reloads
+// So we save it whenever the user switches tabs
+export async function saveDevNavigationStateSelectedTab(selectedTab: BottomTabType) {
   if (!__DEV__) {
     return
   }
