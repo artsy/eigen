@@ -56,6 +56,11 @@ return {
     {
       "defaultValue": null,
       "kind": "LocalArgument",
+      "name": "additionalGeneIDs"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
       "name": "atAuction"
     },
     {
@@ -92,11 +97,6 @@ return {
       "defaultValue": null,
       "kind": "LocalArgument",
       "name": "majorPeriods"
-    },
-    {
-      "defaultValue": "*",
-      "kind": "LocalArgument",
-      "name": "medium"
     },
     {
       "defaultValue": null,
@@ -158,6 +158,11 @@ return {
           "variableName": "acquireable"
         },
         {
+          "kind": "Variable",
+          "name": "additionalGeneIDs",
+          "variableName": "additionalGeneIDs"
+        },
+        {
           "kind": "Literal",
           "name": "aggregations",
           "value": [
@@ -199,11 +204,6 @@ return {
           "kind": "Variable",
           "name": "majorPeriods",
           "variableName": "majorPeriods"
-        },
-        {
-          "kind": "Variable",
-          "name": "medium",
-          "variableName": "medium"
         },
         {
           "kind": "Variable",
@@ -374,5 +374,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '1e65e47708f32d93e8b7607980305c68';
+(node as any).hash = '7c4b5d90ca875995146f13e80ea32ed3';
 export default node;
