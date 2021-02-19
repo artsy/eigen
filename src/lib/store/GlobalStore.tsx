@@ -1,6 +1,6 @@
 import { action, createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { loadDevNavigationStateCache, maybeHandleDevReload } from "lib/navigation/useReloadedDevNavigationState"
+import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNavigationState"
 import React from "react"
 import { Platform } from "react-native"
 import Config from "react-native-config"
@@ -47,8 +47,7 @@ function createGlobalStore() {
 
   if (!__TEST__) {
     unpersist().then(async (state) => {
-      await loadDevNavigationStateCache()
-      await maybeHandleDevReload(store.getActions().bottomTabs.switchTab)
+      await loadDevNavigationStateCache(store.getActions().bottomTabs.switchTab)
       store.getActions().rehydrate(state)
     })
   }

@@ -13,15 +13,18 @@ interface NavStateCache {
   stackStates: {
     [stackID: string]: any
   }
+  selectedTab: BottomTabType
 }
 
 let reloadedCache: NavStateCache | null = null
+
 const currentCache: NavStateCache = {
   launchCount: ArtsyNativeModule.launchCount,
   stackStates: {},
+  selectedTab: "home",
 }
 
-export async function loadDevNavigationStateCache() {
+export async function loadDevNavigationStateCache(switchTabAction: (tabName: BottomTabType) => void) {
   if (!__DEV__) {
     return
   }
@@ -31,6 +34,8 @@ export async function loadDevNavigationStateCache() {
       const parsedCache = JSON.parse(json)
       // only reinstate the navigation state cache for bundle reloads, not for app reboots
       if (parsedCache?.launchCount === currentCache.launchCount) {
+        switchTabAction(parsedCache.selectedTab)
+
         reloadedCache = parsedCache
       }
     } catch (e) {
@@ -60,24 +65,12 @@ export function useReloadedDevNavigationState(
   return reloadedCache?.stackStates[stackID]
 }
 
-const launchCount = ArtsyNativeModule.launchCount
-
-export async function maybeHandleDevReload(switchTabAction: (tabName: BottomTabType) => void) {
+// We want to save the selected Tab after the user switches tabs
+export async function saveDevNavState(selectedTab: BottomTabType) {
   if (!__DEV__) {
     return
   }
-  const json = await AsyncStorage.getItem(BOTTOM_NAV_STATE_STORAGE_KEY)
-  if (!json) {
-    return
-  }
-  try {
-    const { launchCount: previousLaunchCount, selectedTab } = JSON.parse(json)
-    if (launchCount === previousLaunchCount) {
-      switchTabAction(selectedTab)
-    } else {
-      AsyncStorage.removeItem(BOTTOM_NAV_STATE_STORAGE_KEY)
-    }
-  } catch (e) {
-    console.error("failed to handle dev reload state")
-  }
+
+  currentCache.selectedTab = selectedTab
+  AsyncStorage.setItem(NAV_STATE_STORAGE_KEY, JSON.stringify(currentCache))
 }

@@ -1,8 +1,6 @@
-import AsyncStorage from "@react-native-community/async-storage"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
 import { Action, action, Thunk, thunk } from "easy-peasy"
-import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
-import { BOTTOM_NAV_STATE_STORAGE_KEY } from "lib/navigation/useReloadedDevNavigationState"
+import { saveDevNavState } from "lib/navigation/useReloadedDevNavigationState"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { fetchQuery, graphql } from "react-relay"
@@ -53,27 +51,6 @@ export const BottomTabsModel: BottomTabsModel = {
   }),
   switchTab: action((state, tabType) => {
     state.sessionState.selectedTab = tabType
-    persistDevReloadState(tabType)
+    saveDevNavState(tabType)
   }),
-}
-
-// We want the selected tab state to persist across dev reloads, but not across app launches.
-// So every time we switch tab we'll also save the number of launches + the newly selected tab
-// and every time the store rehydrates we'll check whether the number of launches is the same as the last
-// time the app switched tab. if so, we reinstate the last selected tab.
-const launchCount = ArtsyNativeModule.launchCount
-
-function persistDevReloadState(tabType: BottomTabType) {
-  if (!__DEV__) {
-    return
-  }
-  setImmediate(() => {
-    AsyncStorage.setItem(
-      BOTTOM_NAV_STATE_STORAGE_KEY,
-      JSON.stringify({
-        launchCount,
-        selectedTab: tabType,
-      })
-    )
-  })
 }
