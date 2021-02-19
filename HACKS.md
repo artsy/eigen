@@ -94,7 +94,7 @@
   There are two hacks here:
 
   - We hack the output of the compiler to provide clickable links for error messages. Relay assumes that you put your
-    `__genearted__` folder in the root of your project, but we put it in `src`.
+    `__generated__` folder in the root of your project, but we put it in `src`.
   - We make sure that files which do not change are not overwritten. This prevents excessive reloading by metro.
 
   We can remove these hacks when they don't matter anymore. Neither are likely to be fixed by facebook.
