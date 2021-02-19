@@ -182,6 +182,11 @@ commands:
             - android/build
             - android/app/build
             - node_modules/react-native-config
+  check-metaphysics-freshness:
+    steps:
+      - run:
+          name: Check Metaphysics freshness
+          command: ./metaphysics-queries-freshness-tests/test-freshness.js
 
 jobs:
   deploy-nightly-beta:
@@ -402,6 +407,17 @@ workflows:
     jobs:
       - deploy-nightly-beta
 
+  nightly-freshness:
+    triggers:
+      - schedule:
+          cron: "0 6 * * *"
+          filters:
+            branches:
+              only:
+                - mp-queries-tester
+    jobs:
+      - check-metaphysics-freshness
+
   promote:
     jobs:
       - promote-beta-to-app-store:
@@ -412,6 +428,11 @@ workflows:
 
   test-build-deploy:
     jobs:
+      - check-metaphysics-freshness:
+          filters:
+            branches:
+              only:
+                - mp-queries-tester
       - check-pr:
           filters:
             branches:
