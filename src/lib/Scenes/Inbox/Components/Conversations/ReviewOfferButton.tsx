@@ -7,40 +7,39 @@ import { AlertCircleFillIcon, ArrowRightIcon, Flex, MoneyFillIcon, Text } from "
 import React, { useEffect } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { returnButtonMessaging } from "./utils/returnButtonMessaging"
 
 export interface ReviewOfferButtonProps {
   order: ReviewOfferButton_order
 }
 
 export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) => {
-  const offerNodes = extractNodes(order.offers)
-
-  const [backgroundColor, setBackgroundColor] = React.useState("green100")
-  const [message, setMessage] = React.useState("")
-  const [subMessage, setSubMessage] = React.useState("Tap to view")
-  const [showMoneyIcon, setShowMoneyIcon] = React.useState(true)
+  const [buttonBackgroundColor, setButtonBackgroundColor] = React.useState("green100")
+  const [buttonMessage, setButtonMessage] = React.useState("")
+  const [buttonSubMessage, setButtonSubMessage] = React.useState("Tap to view")
+  const [showMoneyIconInButton, setShowMoneyIconInButton] = React.useState(true)
 
   const { hours } = useEventTiming({
     currentTime: DateTime.local().toString(),
-    startAt: order?.lastOffer?.createdAt,
-    endAt: order?.stateExpiresAt || undefined,
+    startAt: order.lastOffer?.createdAt,
+    endAt: order.stateExpiresAt || undefined,
   })
 
   useEffect(() => {
-    const offerType = offerNodes.length > 1 ? "Counteroffer" : "Offer"
+    const nodeCount = extractNodes(order.offers).length
 
-    if (order.state === "PENDING") {
-      setMessage(`${offerType} Accepted - Please Confirm`)
-      setSubMessage(`Expires in ${hours}hr`)
-    } else if (order.state === "CANCELED" && order?.stateReason?.includes("seller_rejected")) {
-      setMessage(`${offerType} Declined`)
-      setBackgroundColor("red100")
-    } else if (order.lastOffer?.fromParticipant === "SELLER") {
-      setBackgroundColor("copper100")
-      setMessage(`${offerType} Received`)
-      setSubMessage(`Expires in ${hours}hr`)
-      setShowMoneyIcon(false)
-    }
+    const { backgroundColor, message, subMessage, showMoneyIcon } = returnButtonMessaging({
+      state: order.state,
+      stateReason: order.stateReason,
+      nodeCount,
+      lastOfferFromParticipant: order.lastOffer?.fromParticipant,
+      hoursTillExpiration: hours,
+    })
+
+    setButtonMessage(message)
+    setButtonSubMessage(subMessage)
+    setShowMoneyIconInButton(showMoneyIcon)
+    setButtonBackgroundColor(backgroundColor)
   })
 
   const onTap = (orderID: string | null, state: string | null) => {
@@ -57,22 +56,22 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
         px={2}
         justifyContent="space-between"
         alignItems="center"
-        bg={backgroundColor}
+        bg={buttonBackgroundColor}
         flexDirection="row"
         height={60}
       >
         <Flex flexDirection="row">
-          {showMoneyIcon ? (
+          {showMoneyIconInButton ? (
             <AlertCircleFillIcon mt="3px" fill="white100" />
           ) : (
             <MoneyFillIcon mt="3px" fill="white100" />
           )}
           <Flex flexDirection="column" pl={1}>
             <Text color="white100" variant="mediumText">
-              {message}
+              {buttonMessage}
             </Text>
             <Text color="white100" variant="caption">
-              {subMessage}
+              {buttonSubMessage}
             </Text>
           </Flex>
         </Flex>
