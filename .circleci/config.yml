@@ -407,17 +407,6 @@ workflows:
     jobs:
       - deploy-nightly-beta
 
-  nightly-freshness:
-    triggers:
-      - schedule:
-          cron: "0 6 * * *"
-          filters:
-            branches:
-              only:
-                - mp-queries-tester
-    jobs:
-      - check-metaphysics-freshness
-
   promote:
     jobs:
       - promote-beta-to-app-store:
