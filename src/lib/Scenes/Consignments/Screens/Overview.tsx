@@ -2,12 +2,16 @@ import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { Alert } from "react-native"
 
+import AsyncStorage from "@react-native-community/async-storage"
 import type NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
-import { AsyncStorage, Dimensions, ScrollView, View, ViewProperties } from "react-native"
+import { Dimensions, ScrollView, View } from "react-native"
 
+import { AddEditPhotos } from "lib/Components/Photos/AddEditPhotos"
 import { dismissModal } from "lib/navigation/navigate"
+import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { Box, Button, Flex, Spacer, Text } from "palette"
-import { ArtistResult, ConsignmentMetadata, ConsignmentSetup } from "../"
+import { Image as RNCImage } from "react-native-image-crop-picker"
+import { ArtistResult, ConsignmentMetadata, ConsignmentSetup, Photo } from "../"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import { createConsignmentSubmission } from "../Submission/createConsignmentSubmission"
 import { updateConsignmentSubmission } from "../Submission/updateConsignmentSubmission"
@@ -18,11 +22,10 @@ import Edition from "./Edition"
 import Location from "./Location"
 import Metadata from "./Metadata"
 import Provenance from "./Provenance"
-import SelectFromPhotoLibrary from "./SelectFromPhotoLibrary"
 
 const consignmentsStateKey = "ConsignmentsStoredState"
 
-interface Props extends ViewProperties {
+interface Props {
   navigator: NavigatorIOS
   setup: ConsignmentSetup
 }
@@ -72,11 +75,23 @@ export default class Overview extends React.Component<Props, State> {
       passProps: { ...this.state, updateWithProvenance: this.updateProvenance },
     })
 
-  goToPhotosTapped = () =>
-    this.props.navigator.push({
-      component: SelectFromPhotoLibrary,
-      passProps: { setup: this.state, updateWithPhotos: this.updatePhotos },
-    })
+  photosUpdated = (updatedPhotos: Photo[]) => {
+    const updatedImages = updatedPhotos.map((p) => p.image)
+    this.updatePhotos(updatedImages)
+  }
+
+  goToPhotosTapped = () => {
+    if (this.state.photos && this.state.photos.length > 0) {
+      this.props.navigator.push({
+        component: AddEditPhotos,
+        passProps: { initialPhotos: this.state.photos, photosUpdated: this.photosUpdated },
+      })
+    } else {
+      showPhotoActionSheet().then((images) => {
+        this.updatePhotos(images)
+      })
+    }
+  }
 
   goToMetadataTapped = () =>
     this.props.navigator.push({
@@ -100,8 +115,9 @@ export default class Overview extends React.Component<Props, State> {
   updateLocation = (city: string, state: string, country: string) =>
     this.updateStateAndMetaphysics({ location: { city, state, country } })
 
-  updatePhotos = (photos: string[]) =>
-    photos.length && this.updateStateAndMetaphysics({ photos: photos.map((f) => ({ file: f, uploaded: false })) })
+  updatePhotos = (photos: RNCImage[]) => {
+    this.updateStateAndMetaphysics({ photos: photos.map((p) => ({ image: p, uploaded: false })) })
+  }
 
   updateStateAndMetaphysics = (state: Partial<ConsignmentSetup>) =>
     this.setState(state, this.updateLocalStateAndMetaphysics)
@@ -193,7 +209,7 @@ export default class Overview extends React.Component<Props, State> {
 
   uploadPhotosIfNeeded = async () => {
     const uploading = this.state.photos && this.state.photos.some((f) => f.uploading)
-    const toUpload = this.state.photos && this.state.photos.filter((f) => !f.uploaded && f.file)
+    const toUpload = this.state.photos && this.state.photos.filter((f) => !f.uploaded && f.image.path)
     if (!uploading && toUpload && toUpload.length) {
       // Pull out the first in the queue and upload it
       const photo = toUpload[0]
@@ -203,7 +219,7 @@ export default class Overview extends React.Component<Props, State> {
         photo.uploading = true
         this.setState({ photos: this.state.photos })
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        await uploadImageAndPassToGemini(photo.file, "private", this.state.submissionID)
+        await uploadImageAndPassToGemini(photo.image.path, "private", this.state.submissionID)
 
         // Mutate state 'unexpectedly', then send it back through "setState" to trigger the next
         // in the queue

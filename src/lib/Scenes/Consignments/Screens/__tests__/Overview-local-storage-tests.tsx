@@ -1,4 +1,5 @@
-import { AsyncStorage } from "react-native"
+import AsyncStorage from "@react-native-community/async-storage"
+
 AsyncStorage.setItem = jest.fn()
 AsyncStorage.getItem = jest.fn()
 AsyncStorage.removeItem = jest.fn()

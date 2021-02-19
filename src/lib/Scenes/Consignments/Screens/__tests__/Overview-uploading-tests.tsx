@@ -1,11 +1,9 @@
-import { AsyncStorage } from "react-native"
+import AsyncStorage from "@react-native-community/async-storage"
 AsyncStorage.setItem = jest.fn()
 AsyncStorage.getItem = jest.fn()
 AsyncStorage.removeItem = jest.fn()
 
 import Overview from "../Overview"
-
-jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
 jest.mock("../../Submission/updateConsignmentSubmission", () => ({ updateConsignmentSubmission: jest.fn() }))
 import { updateConsignmentSubmission } from "../../Submission/updateConsignmentSubmission"
@@ -28,7 +26,7 @@ it("uploads a photo when there's an photo without upload as true", () => {
   const overview = new Overview({
     nav,
     route,
-    setup: { submissionID: 1, photos: [{ file: "/a/b/c.png", uploaded: false }] },
+    setup: { submissionID: 1, photos: [{ image: { path: "/a/b/c.png" }, uploaded: false }] },
   })
   overview.setState = jest.fn()
   overview.uploadPhotosIfNeeded()
@@ -37,8 +35,8 @@ it("uploads a photo when there's an photo without upload as true", () => {
 
 it("doesnt upload a photo when when uploading is true", () => {
   const photos = [
-    { file: "/a/b/c.png", uploaded: false, uploading: true },
-    { file: "/a/b/d.png", uploaded: false, uploading: false },
+    { image: { path: "/a/b/c.png" }, uploaded: false, uploading: true },
+    { image: { path: "/a/b/d.png" }, uploaded: false, uploading: false },
   ]
   const overview = new Overview({
     nav,

@@ -1,10 +1,8 @@
 import { Action, action, thunk, Thunk } from "easy-peasy"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
 import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
-import { requestPhotos } from "lib/utils/requestPhotos"
+import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { uniqBy } from "lodash"
-import { ActionSheetIOS } from "react-native"
-import ImagePicker from "react-native-image-crop-picker"
 
 import { Metric } from "../Screens/ArtworkFormModal/Components/Dimensions"
 
@@ -155,32 +153,9 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   }),
 
   takeOrPickPhotos: thunk((actions, _payload) => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: ["Photo Library", "Take Photo", "Cancel"],
-        cancelButtonIndex: 2,
-      },
-      async (buttonIndex) => {
-        try {
-          let photos = null
-
-          if (buttonIndex === 0) {
-            photos = await requestPhotos()
-          }
-          if (buttonIndex === 1) {
-            photos = await ImagePicker.openCamera({
-              mediaType: "photo",
-            })
-          }
-
-          if (photos) {
-            actions.addPhotos(photos as any) // FIXME: any
-          }
-        } catch (error) {
-          // Photo picker closes by throwing error that we need to catch
-        }
-      }
-    )
+    showPhotoActionSheet().then((photos) => {
+      actions.addPhotos(photos)
+    })
   }),
 
   /**
