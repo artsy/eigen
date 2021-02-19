@@ -182,11 +182,6 @@ commands:
             - android/build
             - android/app/build
             - node_modules/react-native-config
-  check-metaphysics-freshness:
-    steps:
-      - run:
-          name: Check Metaphysics freshness
-          command: ./metaphysics-queries-freshness-tests/test-freshness.js
 
 jobs:
   deploy-nightly-beta:
@@ -230,6 +225,17 @@ jobs:
       - run:
           name: Prevent Strictness Regressions
           command: node scripts/strictness-migration.js check-pr
+
+  check-metaphysics-freshness:
+    executor:
+      name: node/default
+      tag: "14.13.1"
+    steps:
+      - checkout
+      - install-node-modules
+      - run:
+          name: Check Metaphysics freshness
+          command: ./metaphysics-queries-freshness-tests/test-freshness.js
 
   build-test-js:
     executor:
