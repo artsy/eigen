@@ -46,7 +46,6 @@
 static const NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
 static const NSString *stateChanged = @"STATE_CHANGED";
 static const NSString *reactStateChanged = @"STATE_CHANGED";
-static const NSString *resetState = @"RESET_APP_STATE";
 static const NSString *requestNavigation = @"REQUEST_NAVIGATION";
 
 
@@ -110,11 +109,6 @@ RCT_EXPORT_MODULE();
 - (void)notificationReceived
 {
     [self dispatch:notificationReceived data:@{}];
-}
-
-- (void)reset
-{
-    [self dispatch:resetState data:self.state];
 }
 
 - (void)requestNavigation:(NSString *)route

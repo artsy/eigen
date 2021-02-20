@@ -5,7 +5,7 @@ typedef void(^ARNotificationReadStatusAssigner)(RCTResponseSenderBlock block);
 
 typedef void(^ARNotificationPermissionsPrompter)();
 
-typedef void(^ARAuthValidationChecker)();
+typedef void(^ARUserDataClearer)();
 
 typedef void(^ARAugmentedRealityVIRPresenter)(NSString *imgUrl, CGFloat widthIn, CGFloat heightIn, NSString *artworkSlug, NSString *artworkId);
 
@@ -22,7 +22,7 @@ typedef void(^ARRelativeURLResolver)(NSString *path, RCTPromiseResolveBlock reso
 
 @property (nonatomic, copy, readwrite) ARAugmentedRealityVIRPresenter augmentedRealityVIRPresenter;
 
-@property (nonatomic, copy, readwrite) ARAuthValidationChecker authValidationChecker;
+@property (nonatomic, copy, readwrite) ARUserDataClearer userDataClearer;
 
 @property (nonatomic, copy, readwrite) ARRelativeURLResolver urlResolver;
 

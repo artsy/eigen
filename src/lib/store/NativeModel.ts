@@ -15,10 +15,6 @@ export type NativeEvent =
       payload: any
     }
   | {
-      type: "RESET_APP_STATE"
-      payload: NativeState
-    }
-  | {
       type: "REQUEST_NAVIGATION"
       payload: { route: string }
     }
@@ -59,10 +55,6 @@ listenToNativeEvents((event: NativeEvent) => {
       return
     case "NOTIFICATION_RECEIVED":
       GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
-      return
-    case "RESET_APP_STATE":
-      GlobalStore.actions.reset()
-      GlobalStore.actions.native.setLocalState(event.payload)
       return
     case "REQUEST_NAVIGATION":
       navigate(event.payload.route)

@@ -1,6 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { MenuItem } from "lib/Components/MenuItem"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import { environment, EnvironmentKey } from "lib/store/config/EnvironmentModel"
 import { FeatureName, features } from "lib/store/config/features"
@@ -198,10 +197,8 @@ function envMenuOption(
         GlobalStore.actions.config.environment.setEnv(env)
         if (Platform.OS === "ios") {
           dismissModal()
-          LegacyNativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {})
-        } else {
-          GlobalStore.actions.signOut()
         }
+        GlobalStore.actions.signOut()
       } else {
         setShowCustomURLOptions(!showCustomURLOptions)
       }

@@ -98,11 +98,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
     _keychain = [[ARKeychain alloc] init];
 
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"ARUserRequestedLogout" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        NSLog(@"Hey, we're logging out!");
-        [[self class] logout];
-    }];
-
     return self;
 }
 
@@ -521,15 +516,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [ArtsyAPI deleteAPNTokenForCurrentDeviceWithCompletion:^ {
         [[self class] clearUserData];
     }];
-}
-
-+ (void)logoutAndExit
-{
-    [self clearUserData];
-    // Clearing the Relay cache is an asynchonous operation, let's give it 0.5s to finish.
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        exit(0);
-    });
 }
 
 + (void)clearUserData

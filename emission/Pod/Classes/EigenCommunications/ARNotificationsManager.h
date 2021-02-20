@@ -31,7 +31,6 @@
 - (NSDictionary *)reactState;
 
 - (void)notificationReceived;
-- (void)reset;
 - (void)requestNavigation:(NSString *)route;
 - (void)afterBootstrap:(void (^)(void))completion;
 

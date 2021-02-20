@@ -72,7 +72,6 @@ static AREmission *_sharedInstance = nil;
         [ARStateKey userID]: [NSNull null],
         [ARStateKey onboardingState]: @"none",
     }];
-    [self.notificationsManagerModule reset];
 }
 
 - (void)navigate:(NSString *)route

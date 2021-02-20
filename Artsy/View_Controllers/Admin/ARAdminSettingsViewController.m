@@ -50,7 +50,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
     [userSectionData addCellDataFromArray:@[
         [self generateRestart],
-        [self generateLogOut],
     ]];
     [tableViewData addSectionData:userSectionData];
 
@@ -88,14 +87,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     return UIStatusBarStyleLightContent;
 }
 
-- (ARCellData *)generateLogOut
-{
-    return [self tappableCellDataWithTitle:@"Log Out & Exit" selection:^{
-        [self showAlertViewWithTitle:@"Confirm Log Out" message:@"" actionTitle:@"Continue" actionHandler:^{
-            [ARUserManager logoutAndExit];
-        }];
-    }];
-}
 
 - (ARCellData *)generateFeaturePage
 {

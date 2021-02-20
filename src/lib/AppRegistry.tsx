@@ -1,6 +1,6 @@
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import React from "react"
-import { AppRegistry, LogBox, Platform, View } from "react-native"
+import React, { useEffect } from "react"
+import { Alert, AppRegistry, LogBox, Platform, View } from "react-native"
 import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
@@ -403,7 +403,7 @@ const Main: React.FC<{}> = track()(({}) => {
   const onboardingState = GlobalStore.useAppState((state) => state.native.sessionState.onboardingState)
 
   if (!isHydrated) {
-    return <View />
+    return <View style={{ backgroundColor: "papayawhip" }} />
   }
   if (!isLoggedIn || onboardingState === "incomplete") {
     return <NativeViewController viewName="Onboarding" />

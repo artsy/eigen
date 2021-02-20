@@ -26,7 +26,7 @@ interface LegacyNativeModules {
     fetchNotificationPermissions(callback: (error: any, result: PushAuthorizationStatus) => void): void
     markNotificationsRead(callback: (error?: Error) => any): void
     setApplicationIconBadgeNumber(n: number): void
-    validateAuthCredentialsAreCorrect(): void
+    clearUserData(): void
   }
   ARNotificationsManager: {
     nativeState: NativeState
@@ -107,7 +107,6 @@ export const LegacyNativeModules: LegacyNativeModules = Platform.select({
     },
 
     ARTemporaryAPIModule: {
-      validateAuthCredentialsAreCorrect: noop("validateAuthCredentialsAreCorrect"),
       requestNotificationPermissions: noop("requestNotificationPermissions"),
       fetchNotificationPermissions: noop("fetchNotificationPermissions"),
       markNotificationsRead: noop("markNotificationsRead"),

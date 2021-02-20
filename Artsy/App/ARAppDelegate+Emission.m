@@ -22,7 +22,6 @@
 #import "ARRouter.h"
 #import "ARReactPackagerHost.h"
 #import "AROptions.h"
-#import "ARAuthValidator.h"
 
 #import <react-native-config/ReactNativeConfig.h>
 #import <Emission/AREmission.h>
@@ -114,7 +113,7 @@ SOFTWARE.
 
     [emission.notificationsManagerModule afterBootstrap:^{
         [ARRouter setup];
-        
+
         if (launchCount == 1) {
             [ARAnalytics event:ARAnalyticsFreshInstall];
         }
@@ -160,10 +159,8 @@ SOFTWARE.
         }];
     };
 
-    emission.APIModule.authValidationChecker = ^() {
-        if ([User currentUser]) {
-            [ARAuthValidator validateAuthCredentialsAreCorrect];
-        };
+    emission.APIModule.userDataClearer = ^() {
+        [ARUserManager logout];
     };
 
 

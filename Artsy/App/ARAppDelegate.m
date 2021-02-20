@@ -30,7 +30,6 @@
 #import "ARSystemTime.h"
 #import "ARDispatchManager.h"
 #import "ARLogger.h"
-#import "ARAuthValidator.h"
 
 #import "UIDevice-Hardware.h"
 #import "ArtsyEcho.h"
