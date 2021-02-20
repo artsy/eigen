@@ -142,6 +142,10 @@ android {
         versionCode 7
         versionName "1.0.0"
 
+        manifestPlaceholders = [
+          appAuthRedirectScheme: 'artsy'
+        ]
+
         multiDexEnabled true
 
         buildConfigField "String", "GITCommitRev", '"c77772ee1"'
