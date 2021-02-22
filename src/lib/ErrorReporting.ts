@@ -1,4 +1,4 @@
-import Sentry from "@sentry/react-native"
+import * as Sentry from "@sentry/react-native"
 import Config from "react-native-config"
 import { LegacyNativeModules } from "./NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState } from "./store/GlobalStore"
