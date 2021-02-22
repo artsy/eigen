@@ -4,7 +4,7 @@ import { dismissModal, navigate } from "lib/navigation/navigate"
 import { environment, EnvironmentKey } from "lib/store/config/EnvironmentModel"
 import { FeatureName, features } from "lib/store/config/features"
 import { GlobalStore } from "lib/store/GlobalStore"
-import { capitalize, sortBy } from "lodash"
+import { capitalize, compact, sortBy } from "lodash"
 import { ChevronIcon, CloseIcon, color, Flex, ReloadIcon, Separator, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import {
@@ -181,9 +181,12 @@ function envMenuOption(
   showCustomURLOptions: boolean,
   setShowCustomURLOptions: (newValue: boolean) => void,
   onClose: () => void
-): AlertButton {
+): AlertButton | null {
   let text = `Log out and switch to '${capitalize(env)}'`
   if (currentEnv === env) {
+    if (!__DEV__) {
+      return null
+    }
     if (showCustomURLOptions) {
       text = `Reset all to '${capitalize(env)}'`
     } else {
@@ -219,14 +222,14 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           Alert.alert(
             "Environment",
             undefined,
-            [
+            compact([
               envMenuOption("staging", env, showCustomURLOptions, setShowCustomURLOptions, onClose),
               envMenuOption("production", env, showCustomURLOptions, setShowCustomURLOptions, onClose),
               {
                 text: "Cancel",
                 style: "destructive",
               },
-            ],
+            ]),
             { cancelable: true }
           )
         }}
