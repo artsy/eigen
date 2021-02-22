@@ -40,27 +40,6 @@ NSString *const AROptionsDebugARVIR = @"AROptionsDebugARVIR";
     return options[option];
 }
 
-+ (NSDictionary *)labOptionsMap
-{
-    NSArray *options = [self labsOptions];
-    NSMutableDictionary *mutableOptions = [NSMutableDictionary dictionary];
-
-    for (NSString *option in options) {
-        [mutableOptions setObject:@([self boolForOption:option]) forKey:option];
-    }
-    return [mutableOptions copy];
-}
-
-+ (NSArray *)labsOptionsThatRequireRestart
-{
-    return @[];
-}
-
-+ (BOOL)optionExists:(NSString *)option
-{
-    return [[NSUserDefaults standardUserDefaults] objectForKey:option];
-}
-
 + (BOOL)boolForOption:(NSString *)option
 {
     return [[NSUserDefaults standardUserDefaults] boolForKey:option];
