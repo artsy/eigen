@@ -548,6 +548,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [asyncStorage clearAllData];
 
     [[AREmission sharedInstance] reset];
+    [ARRouter setup];
 }
 
 - (void)deleteHTTPCookies

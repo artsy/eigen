@@ -56,8 +56,7 @@ static NSString *hostFromString(NSString *string)
         stagingAPI, stagingWeb, stagingDeprecatedMobileWeb
     ]];
 
-    [ARRouter setupWithBaseApiURL:[ARRouter baseApiURL]];
-
+    [self setupHttpClient];
     [self setupUserAgent];
 }
 
@@ -92,9 +91,9 @@ static NSString *hostFromString(NSString *string)
     return [NSURL URLWithString:path relativeToURL:[ARRouter baseWebURL]];
 }
 
-+ (void)setupWithBaseApiURL:(NSURL *)baseApiURL
++ (void)setupHttpClient
 {
-    staticHTTPClient = [[AFHTTPSessionManager alloc] initWithBaseURL:baseApiURL];
+    staticHTTPClient = [[AFHTTPSessionManager alloc] initWithBaseURL:[self baseApiURL]];
     [staticHTTPClient.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
             switch (status) {
                 case AFNetworkReachabilityStatusUnknown:
