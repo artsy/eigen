@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c874ea0d71602e5e39dcec0f130a3406 */
+/* @relayHash 685cba279858e5937269be13e9354b83 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -17,8 +17,11 @@ export type MyCollectionArtworkQueryResponse = {
         } | null;
         readonly artistNames: string | null;
         readonly category: string | null;
-        readonly costMinor: number | null;
-        readonly costCurrencyCode: string | null;
+        readonly pricePaid: {
+            readonly display: string | null;
+            readonly minor: number;
+            readonly currencyCode: string;
+        } | null;
         readonly date: string | null;
         readonly depth: string | null;
         readonly editionSize: string | null;
@@ -66,8 +69,11 @@ query MyCollectionArtworkQuery(
     }
     artistNames
     category
-    costMinor
-    costCurrencyCode
+    pricePaid {
+      display
+      minor
+      currencyCode
+    }
     date
     depth
     editionSize
@@ -241,8 +247,9 @@ fragment MyCollectionArtworkMeta_artwork on Artwork {
   internalID
   artistNames
   category
-  costMinor
-  costCurrencyCode
+  pricePaid {
+    display
+  }
   date
   depth
   editionNumber
@@ -255,8 +262,9 @@ fragment MyCollectionArtworkMeta_artwork on Artwork {
 }
 
 fragment MyCollectionArtworkPriceEstimate_artwork on Artwork {
-  costCurrencyCode
-  costMinor
+  pricePaid {
+    display
+  }
   internalID
   sizeBucket
   slug
@@ -327,14 +335,33 @@ v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "costMinor",
+  "name": "display",
   "storageKey": null
 },
 v8 = {
   "alias": null,
   "args": null,
-  "kind": "ScalarField",
-  "name": "costCurrencyCode",
+  "concreteType": "Money",
+  "kind": "LinkedField",
+  "name": "pricePaid",
+  "plural": false,
+  "selections": [
+    (v7/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "minor",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "currencyCode",
+      "storageKey": null
+    }
+  ],
   "storageKey": null
 },
 v9 = {
@@ -499,7 +526,6 @@ return {
           },
           (v5/*: any*/),
           (v6/*: any*/),
-          (v7/*: any*/),
           (v8/*: any*/),
           (v9/*: any*/),
           (v10/*: any*/),
@@ -755,13 +781,7 @@ return {
                             "name": "priceRealized",
                             "plural": false,
                             "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "display",
-                                "storageKey": null
-                              },
+                              (v7/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -900,7 +920,6 @@ return {
           },
           (v5/*: any*/),
           (v6/*: any*/),
-          (v7/*: any*/),
           (v8/*: any*/),
           (v9/*: any*/),
           (v10/*: any*/),
@@ -1104,7 +1123,7 @@ return {
     ]
   },
   "params": {
-    "id": "c874ea0d71602e5e39dcec0f130a3406",
+    "id": "685cba279858e5937269be13e9354b83",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",

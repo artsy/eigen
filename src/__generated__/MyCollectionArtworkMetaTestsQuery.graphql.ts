@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e95371724d6510f34d5afe283595007b */
+/* @relayHash 7edbb2aaa4aba37eb688e9e9cec000c3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,8 +31,9 @@ fragment MyCollectionArtworkMeta_artwork on Artwork {
   internalID
   artistNames
   category
-  costMinor
-  costCurrencyCode
+  pricePaid {
+    display
+  }
   date
   depth
   editionNumber
@@ -137,15 +138,19 @@ return {
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
-            "name": "costMinor",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "costCurrencyCode",
+            "concreteType": "Money",
+            "kind": "LinkedField",
+            "name": "pricePaid",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "display",
+                "storageKey": null
+              }
+            ],
             "storageKey": null
           },
           {
@@ -224,7 +229,7 @@ return {
     ]
   },
   "params": {
-    "id": "e95371724d6510f34d5afe283595007b",
+    "id": "7edbb2aaa4aba37eb688e9e9cec000c3",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -235,13 +240,6 @@ return {
         },
         "artwork.artistNames": (v1/*: any*/),
         "artwork.category": (v1/*: any*/),
-        "artwork.costCurrencyCode": (v1/*: any*/),
-        "artwork.costMinor": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Int"
-        },
         "artwork.date": (v1/*: any*/),
         "artwork.depth": (v1/*: any*/),
         "artwork.editionNumber": (v1/*: any*/),
@@ -251,6 +249,13 @@ return {
         "artwork.internalID": (v2/*: any*/),
         "artwork.medium": (v1/*: any*/),
         "artwork.metric": (v1/*: any*/),
+        "artwork.pricePaid": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Money"
+        },
+        "artwork.pricePaid.display": (v1/*: any*/),
         "artwork.slug": (v2/*: any*/),
         "artwork.title": (v1/*: any*/),
         "artwork.width": (v1/*: any*/)

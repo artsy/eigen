@@ -1,3 +1,4 @@
+import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { Action, action, thunk, Thunk } from "easy-peasy"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
 import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
@@ -21,8 +22,8 @@ export interface ArtworkFormValues {
   artistIds: string[]
   artistSearchResult: AutosuggestResult | null
   category: string // this refers to "materials" in UI
-  costMinor: string
-  costCurrencyCode: string
+  pricePaidCents: string
+  pricePaidCurrency: string
   date: string
   depth: string
   editionSize: string
@@ -42,8 +43,8 @@ export const initialFormValues: ArtworkFormValues = {
   artistIds: [],
   artistSearchResult: null,
   category: "",
-  costMinor: "", // in cents
-  costCurrencyCode: "",
+  pricePaidCents: "",
+  pricePaidCurrency: "",
   date: "",
   depth: "",
   editionSize: "",
@@ -79,7 +80,7 @@ export interface MyCollectionArtworkModel {
 
   startEditingArtwork: Thunk<
     MyCollectionArtworkModel,
-    Partial<ArtworkFormValues> & {
+    Partial<MyCollectionArtwork_sharedProps> & {
       internalID: string
       id: string
       artist: { internalID: string }
@@ -167,6 +168,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       artworkId: artwork.internalID,
     })
 
+    const pricePaidDollars = artwork.pricePaid ? artwork.pricePaid.minor / 100 : null
+
     const editProps: any /* FIXME: any */ = {
       artistSearchResult: {
         internalID: artwork?.artist?.internalID,
@@ -176,8 +179,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       category: artwork.category,
       date: artwork.date,
       depth: artwork.depth,
-      costMinor: artwork.costMinor,
-      costCurrencyCode: artwork.costCurrencyCode,
+      pricePaidCents: pricePaidDollars?.toString() ?? "",
+      pricePaidCurrency: artwork.pricePaid?.currencyCode ?? "",
       editionSize: artwork.editionSize,
       editionNumber: artwork.editionNumber,
       height: artwork.height,

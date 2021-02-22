@@ -76,15 +76,30 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
     enableReinitialize: true,
     initialValues: formValues,
     initialErrors: validateArtworkSchema(formValues),
-    onSubmit: async ({ photos, artistSearchResult, costMinor, artist, artistIds, ...others }) => {
+    onSubmit: async ({
+      photos,
+      artistSearchResult,
+      pricePaidCents,
+      pricePaidCurrency,
+      artist,
+      artistIds,
+      ...others
+    }) => {
       setLoading(true)
       try {
         const externalImageUrls = await uploadPhotos(photos)
+
+        let pricePaidCentsClean
+        if (pricePaidCents && !isNaN(Number(pricePaidCents))) {
+          pricePaidCentsClean = Number(pricePaidCents) * 100
+        }
+
         if (props.mode === "add") {
           await myCollectionAddArtwork({
             artistIds: [artistSearchResult!.internalID as string],
             externalImageUrls,
-            costMinor: Number(costMinor),
+            pricePaidCents: pricePaidCentsClean,
+            pricePaidCurrency,
             ...cleanArtworkPayload(others),
           })
         } else {
@@ -92,7 +107,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
             artistIds: [artistSearchResult!.internalID as string],
             artworkId: props.artwork.internalID,
             externalImageUrls,
-            costMinor: Number(costMinor),
+            pricePaidCents: pricePaidCentsClean,
             ...cleanArtworkPayload(others),
             ...explicitlyClearedFields(others, dirtyFormCheckValues),
           })

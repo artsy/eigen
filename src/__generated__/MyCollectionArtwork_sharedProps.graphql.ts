@@ -10,8 +10,11 @@ export type MyCollectionArtwork_sharedProps = {
     } | null;
     readonly artistNames: string | null;
     readonly category: string | null;
-    readonly costMinor: number | null;
-    readonly costCurrencyCode: string | null;
+    readonly pricePaid: {
+        readonly display: string | null;
+        readonly minor: number;
+        readonly currencyCode: string;
+    } | null;
     readonly date: string | null;
     readonly depth: string | null;
     readonly editionSize: string | null;
@@ -100,15 +103,33 @@ return {
     {
       "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "costMinor",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "costCurrencyCode",
+      "concreteType": "Money",
+      "kind": "LinkedField",
+      "name": "pricePaid",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "display",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "minor",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "currencyCode",
+          "storageKey": null
+        }
+      ],
       "storageKey": null
     },
     {
@@ -224,5 +245,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'dbb2354d2ebced71e67a6e3602be4985';
+(node as any).hash = '4f3e66cf3dd0c8bc3ce19ba48d5eba14';
 export default node;

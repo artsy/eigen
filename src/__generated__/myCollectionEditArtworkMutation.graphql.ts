@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9a407986cf51a60e75d96b92f254e5a4 */
+/* @relayHash 4f84ee957d3f3ec49580d93b569c57e8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -78,8 +78,11 @@ fragment MyCollectionArtwork_sharedProps on Artwork {
   }
   artistNames
   category
-  costMinor
-  costCurrencyCode
+  pricePaid {
+    display
+    minor
+    currencyCode
+  }
   date
   depth
   editionSize
@@ -299,15 +302,33 @@ return {
                       {
                         "alias": null,
                         "args": null,
-                        "kind": "ScalarField",
-                        "name": "costMinor",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "costCurrencyCode",
+                        "concreteType": "Money",
+                        "kind": "LinkedField",
+                        "name": "pricePaid",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "display",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "minor",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "currencyCode",
+                            "storageKey": null
+                          }
+                        ],
                         "storageKey": null
                       },
                       {
@@ -429,7 +450,7 @@ return {
     ]
   },
   "params": {
-    "id": "9a407986cf51a60e75d96b92f254e5a4",
+    "id": "4f84ee957d3f3ec49580d93b569c57e8",
     "metadata": {},
     "name": "myCollectionEditArtworkMutation",
     "operationKind": "mutation",
