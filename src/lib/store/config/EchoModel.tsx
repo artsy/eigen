@@ -3,11 +3,11 @@ import moment from "moment-timezone"
 import echoLaunchJSON from "../../../../Artsy/App/EchoNew.json"
 import { GlobalStoreModel } from "../GlobalStoreModel"
 
-type EchoJSON = typeof echoLaunchJSON
+type Echo = typeof echoLaunchJSON
 
 export interface EchoModel {
-  json: EchoJSON
-  setEchoState: Action<EchoModel, EchoJSON>
+  state: Echo
+  setEchoState: Action<EchoModel, Echo>
   fetchRemoteEcho: Thunk<EchoModel>
   didRehydrate: ThunkOn<EchoModel, {}, GlobalStoreModel>
   stripePublishableKey: Computed<EchoModel, string, GlobalStoreModel>
@@ -16,9 +16,9 @@ export interface EchoModel {
 }
 
 export const EchoModel: EchoModel = {
-  json: echoLaunchJSON,
+  state: echoLaunchJSON,
   setEchoState: action((state, echoJSON) => {
-    state.json = echoJSON
+    state.state = echoJSON
   }),
   fetchRemoteEcho: thunk(async (actions) => {
     const result = await fetch("https://echo.artsy.net/Echo.json")
@@ -32,7 +32,7 @@ export const EchoModel: EchoModel = {
     (actions, __, store) => {
       // If the app was just updated, then it's possible that the persisted echo config is
       // older than the version in this JS bundle. We should always use the latest version
-      const persistedEchoTimestamp = moment(store.getState().json.updated_at)
+      const persistedEchoTimestamp = moment(store.getState().state.updated_at)
       const launchEchoTimestamp = moment(echoLaunchJSON.updated_at)
       if (launchEchoTimestamp.isAfter(persistedEchoTimestamp)) {
         actions.setEchoState(echoLaunchJSON)
@@ -42,12 +42,12 @@ export const EchoModel: EchoModel = {
   ),
   stripePublishableKey: computed([(_, store) => store.config.environment.env, (state) => state], (env, state) => {
     const key = env === "production" ? "StripeProductionPublishableKey" : "StripeStagingPublishableKey"
-    return state.json.messages.find((e) => e.name === key)?.content!
+    return state.state.messages.find((e) => e.name === key)?.content!
   }),
   legacyFairProfileSlugs: computed((state) => {
-    return state.json.messages.find((e) => e.name === "LegacyFairProfileSlugs")?.content.split(",")!
+    return state.state.messages.find((e) => e.name === "LegacyFairProfileSlugs")?.content.split(",")!
   }),
   legacyFairSlugs: computed((state) => {
-    return state.json.messages.find((e) => e.name === "LegacyFairSlugs")?.content.split(",")!
+    return state.state.messages.find((e) => e.name === "LegacyFairSlugs")?.content.split(",")!
   }),
 }

@@ -27,7 +27,7 @@ export const FeaturesModel: FeaturesModel = {
         result[key] = state.adminFeatureFlagOverrides[key as FeatureName]
       } else if (feature.readyForRelease) {
         // If the feature is ready for release, the echo flag takes precedence
-        const echoFlag = echo.json.features.find((f) => f.name === feature.echoFlagKey)
+        const echoFlag = echo.state.features.find((f) => f.name === feature.echoFlagKey)
 
         if (feature.echoFlagKey && !echoFlag && __DEV__) {
           console.error("No echo flag found for feature", key)

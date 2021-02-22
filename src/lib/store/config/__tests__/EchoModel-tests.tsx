@@ -13,7 +13,7 @@ beforeEach(() => {
 })
 
 const getEchoState = () => {
-  return __globalStoreTestUtils__?.getCurrentState().config.echo.json!
+  return __globalStoreTestUtils__?.getCurrentState().config.echo.state!
 }
 
 describe("Echo", () => {
@@ -43,7 +43,7 @@ describe("Echo", () => {
       updated_at: "2021-02-05T11:10:33.768Z",
     }
     expect(getEchoState()?.updated_at).toEqual(echoLaunchJSON.updated_at)
-    GlobalStore.actions.rehydrate({ config: { echo: { json: newEcho } } })
+    GlobalStore.actions.rehydrate({ config: { echo: { state: newEcho } } })
     expect(getEchoState()?.updated_at).toEqual(newEcho.updated_at)
   })
   it("is not rehydrated if the stored version is older than the bundled version", () => {
@@ -52,7 +52,7 @@ describe("Echo", () => {
       updated_at: "2021-02-01T11:10:33.768Z",
     }
     expect(getEchoState()?.updated_at).toEqual(echoLaunchJSON.updated_at)
-    GlobalStore.actions.rehydrate({ config: { echo: { json: oldEcho } } })
+    GlobalStore.actions.rehydrate({ config: { echo: { state: oldEcho } } })
     expect(getEchoState()?.updated_at).toEqual(echoLaunchJSON.updated_at)
     expect(getEchoState()?.updated_at).not.toEqual(oldEcho.updated_at)
   })
