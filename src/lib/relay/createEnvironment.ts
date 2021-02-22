@@ -1,4 +1,4 @@
-import { errorMiddleware, loggerMiddleware, RelayNetworkLayer, urlMiddleware } from "react-relay-network-modern/node8"
+import { loggerMiddleware, RelayNetworkLayer, urlMiddleware } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
 
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
@@ -38,9 +38,6 @@ export default function createEnvironment() {
       // session is still valid. This is why we need to keep it as low as possible in the middlewares array.
       checkAuthenticationMiddleware(),
       loggerMiddleware(),
-      errorMiddleware({
-        disableServerMiddlewareTip: true,
-      }),
       metaphysicsExtensionsLoggerMiddleware(),
       timingMiddleware(),
     ],
