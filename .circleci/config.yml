@@ -233,6 +233,7 @@ jobs:
       tag: "14.13.1"
     steps:
       - checkout
+      - puppeteer/install
       - install-node-modules
       - run:
           name: Check Metaphysics freshness
