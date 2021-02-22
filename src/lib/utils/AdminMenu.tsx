@@ -132,7 +132,7 @@ const Buttons: React.FC<{ onClose(): void }> = ({ onClose }) => {
 const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
   const config = GlobalStore.useAppState((s) => s.config)
   const currentValue = config.features.flags[flagKey]
-  const isAdminOverrideInEffect = flagKey in config.features.adminFeatureFlagOverrides
+  const isAdminOverrideInEffect = flagKey in config.features.adminOverrides
   const valText = currentValue ? "Yes" : "No"
   return (
     <MenuItem
