@@ -1,5 +1,6 @@
 import { Action, action, createStore, State, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { clearAll } from "lib/relay/RelayCache"
 import { BottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
 import { MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
 import { SearchModel } from "lib/Scenes/Search/SearchModel"
@@ -56,6 +57,7 @@ export const GlobalStoreModel: GlobalStoreModel = {
     if (Platform.OS === "ios") {
       LegacyNativeModules.ARTemporaryAPIModule.clearUserData()
     }
+    clearAll()
     actions.reset({ config })
   }),
   didRehydrate: thunkOn(
