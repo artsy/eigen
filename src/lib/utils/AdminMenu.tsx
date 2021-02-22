@@ -59,7 +59,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
             </Flex>
           </>
         )}
-        <EnvironmentOptions></EnvironmentOptions>
+        <EnvironmentOptions onClose={onClose} />
 
         <Flex mx="2">
           <Separator my="1" />
@@ -179,7 +179,8 @@ function envMenuOption(
   env: "staging" | "production",
   currentEnv: "staging" | "production",
   showCustomURLOptions: boolean,
-  setShowCustomURLOptions: (newValue: boolean) => void
+  setShowCustomURLOptions: (newValue: boolean) => void,
+  onClose: () => void
 ): AlertButton {
   let text = `Log out and switch to '${capitalize(env)}'`
   if (currentEnv === env) {
@@ -195,9 +196,7 @@ function envMenuOption(
       GlobalStore.actions.config.environment.clearAdminOverrides()
       if (env !== currentEnv) {
         GlobalStore.actions.config.environment.setEnv(env)
-        if (Platform.OS === "ios") {
-          dismissModal()
-        }
+        onClose()
         GlobalStore.actions.signOut()
       } else {
         setShowCustomURLOptions(!showCustomURLOptions)
@@ -206,7 +205,7 @@ function envMenuOption(
   }
 }
 
-const EnvironmentOptions: React.FC<{}> = ({}) => {
+const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { env, adminOverrides, strings } = GlobalStore.useAppState((store) => store.config.environment)
   // show custom url options if there are already admin overrides in effect, or if the user has tapped the option
   // to set custom overrides during the lifetime of this component
@@ -221,8 +220,8 @@ const EnvironmentOptions: React.FC<{}> = ({}) => {
             "Environment",
             undefined,
             [
-              envMenuOption("staging", env, showCustomURLOptions, setShowCustomURLOptions),
-              envMenuOption("production", env, showCustomURLOptions, setShowCustomURLOptions),
+              envMenuOption("staging", env, showCustomURLOptions, setShowCustomURLOptions, onClose),
+              envMenuOption("production", env, showCustomURLOptions, setShowCustomURLOptions, onClose),
               {
                 text: "Cancel",
                 style: "destructive",
