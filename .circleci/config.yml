@@ -6,6 +6,7 @@ orbs:
   node: circleci/node@1.1.6
   queue: eddiewebb/queue@1.0.110
   horizon: artsy/release@0.0.1
+  puppeteer: threetreeslight/puppeteer@0.1.2
 
 commands:
   await-previous-builds:
