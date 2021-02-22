@@ -51,7 +51,8 @@ export const GlobalStoreModel: GlobalStoreModel = {
   }),
   signOut: thunk(async (actions, _, store) => {
     // keep existing config state
-    const config = sanitize(store.getState().config) as any
+    const existingConfig = store.getState().config
+    const config = sanitize(existingConfig) as typeof existingConfig
     if (Platform.OS === "ios") {
       LegacyNativeModules.ARTemporaryAPIModule.clearUserData()
     }
