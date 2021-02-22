@@ -251,7 +251,7 @@ const EnvironmentOptions: React.FC<{}> = ({}) => {
                 )
               }}
             >
-              <Flex ml="2" mr={15} my={5} flexDirection="row" justifyContent="space-between" alignItems="center">
+              <Flex ml="2" mr="15px" my="5px" flexDirection="row" justifyContent="space-between" alignItems="center">
                 <Flex>
                   <Text variant="caption" color="black60" mb="0.5">
                     {description}
