@@ -754,6 +754,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     # When true, will only return exact keyword match
     keywordMatchExact: Boolean
     last: Int
+    locationCities: [String]
     majorPeriods: [String]
 
     # When true, will only return `marketable` works (not nude or provocative).
@@ -1097,6 +1098,7 @@ type ArtistSeries {
     keyword: String
     keywordMatchExact: Boolean
     last: Int
+    locationCities: [String]
     majorPeriods: [String]
     marketable: Boolean
     medium: String
@@ -5406,6 +5408,7 @@ interface EntityWithFilterArtworksConnectionInterface {
     # When true, will only return exact keyword match
     keywordMatchExact: Boolean
     last: Int
+    locationCities: [String]
     majorPeriods: [String]
 
     # When true, will only return `marketable` works (not nude or provocative).
@@ -5554,6 +5557,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     # When true, will only return exact keyword match
     keywordMatchExact: Boolean
     last: Int
+    locationCities: [String]
     majorPeriods: [String]
 
     # When true, will only return `marketable` works (not nude or provocative).
@@ -6181,6 +6185,7 @@ type Gene implements Node & Searchable {
     # When true, will only return exact keyword match
     keywordMatchExact: Boolean
     last: Int
+    locationCities: [String]
     majorPeriods: [String]
 
     # When true, will only return `marketable` works (not nude or provocative).
@@ -6909,6 +6914,7 @@ type MarketingCollection {
     keyword: String
     keywordMatchExact: Boolean
     last: Int
+    locationCities: [String]
     majorPeriods: [String]
     marketable: Boolean
     medium: String
@@ -7913,6 +7919,7 @@ type Partner implements Node {
     # When true, will only return exact keyword match
     keywordMatchExact: Boolean
     last: Int
+    locationCities: [String]
     majorPeriods: [String]
 
     # When true, will only return `marketable` works (not nude or provocative).
@@ -8683,6 +8690,7 @@ type Query {
     # When true, will only return exact keyword match
     keywordMatchExact: Boolean
     last: Int
+    locationCities: [String]
     majorPeriods: [String]
 
     # When true, will only return `marketable` works (not nude or provocative).
@@ -10057,6 +10065,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     # When true, will only return exact keyword match
     keywordMatchExact: Boolean
     last: Int
+    locationCities: [String]
     majorPeriods: [String]
 
     # When true, will only return `marketable` works (not nude or provocative).
@@ -10467,6 +10476,7 @@ type Tag implements Node {
     # When true, will only return exact keyword match
     keywordMatchExact: Boolean
     last: Int
+    locationCities: [String]
     majorPeriods: [String]
 
     # When true, will only return `marketable` works (not nude or provocative).
@@ -11130,6 +11140,7 @@ type Viewer {
     # When true, will only return exact keyword match
     keywordMatchExact: Boolean
     last: Int
+    locationCities: [String]
     majorPeriods: [String]
 
     # When true, will only return `marketable` works (not nude or provocative).
