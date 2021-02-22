@@ -48,7 +48,8 @@ export const GlobalStoreModel: GlobalStoreModel = {
   reset: action((_, state) => {
     const result = createStore(GlobalStoreModel).getState()
     result.sessionState.isHydrated = true
-    return assignDeep(result, state)
+    assignDeep(result, state)
+    return result
   }),
   signOut: thunk(async (actions, _, store) => {
     // keep existing config state
