@@ -35,6 +35,7 @@ interface Props {
   value?: string
   artworkID?: string | null
   isOfferableFromInquiry?: boolean | null
+  impulseConversationId: string | null | undefined
 }
 
 interface State {
@@ -104,7 +105,10 @@ export default class Composer extends React.Component<Props, State> {
             {this.props.children}
             <Flex flexDirection="column">
               {!!showOpenInquiryModalButton && this.props.artworkID != null && (
-                <OpenInquiryModalButton artworkID={this.props.artworkID} />
+                <OpenInquiryModalButton
+                  artworkID={this.props.artworkID}
+                  impulseConversationId={this.props.impulseConversationId}
+                />
               )}
               <Container active={this.state.active}>
                 <TextInput
