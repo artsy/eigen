@@ -233,6 +233,9 @@ jobs:
       tag: "14.13.1"
     steps:
       - checkout
+      - run:
+          name: apt-get update
+          command: apt-get update --fix-missing
       - puppeteer/install
       - install-node-modules
       - run:
