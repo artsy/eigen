@@ -1,6 +1,6 @@
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import React, { useEffect } from "react"
-import { Alert, AppRegistry, LogBox, Platform, View } from "react-native"
+import React from "react"
+import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
