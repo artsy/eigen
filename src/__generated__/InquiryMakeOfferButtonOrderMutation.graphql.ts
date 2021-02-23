@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9461d853b303e5ce6000dd700b810749 */
+/* @relayHash d1f542ac7d03a1437f5091d0bf859609 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type CommerceOrderModeEnum = "BUY" | "OFFER" | "%future added value";
@@ -17,7 +17,7 @@ export type InquiryMakeOfferButtonOrderMutationVariables = {
     input: CommerceCreateInquiryOfferOrderWithArtworkInput;
 };
 export type InquiryMakeOfferButtonOrderMutationResponse = {
-    readonly commerceCreateInquiryOfferOrderWithArtwork: {
+    readonly createInquiryOfferOrder: {
         readonly orderOrError: {
             readonly __typename: "CommerceOrderWithMutationSuccess";
             readonly order: {
@@ -49,7 +49,7 @@ export type InquiryMakeOfferButtonOrderMutation = {
 mutation InquiryMakeOfferButtonOrderMutation(
   $input: CommerceCreateInquiryOfferOrderWithArtworkInput!
 ) {
-  commerceCreateInquiryOfferOrderWithArtwork(input: $input) {
+  createInquiryOfferOrder(input: $input) {
     orderOrError {
       __typename
       ... on CommerceOrderWithMutationSuccess {
@@ -159,7 +159,7 @@ return {
         "args": (v1/*: any*/),
         "concreteType": "CommerceCreateInquiryOfferOrderWithArtworkPayload",
         "kind": "LinkedField",
-        "name": "commerceCreateInquiryOfferOrderWithArtwork",
+        "name": "createInquiryOfferOrder",
         "plural": false,
         "selections": [
           {
@@ -213,7 +213,7 @@ return {
         "args": (v1/*: any*/),
         "concreteType": "CommerceCreateInquiryOfferOrderWithArtworkPayload",
         "kind": "LinkedField",
-        "name": "commerceCreateInquiryOfferOrderWithArtwork",
+        "name": "createInquiryOfferOrder",
         "plural": false,
         "selections": [
           {
@@ -263,7 +263,7 @@ return {
     ]
   },
   "params": {
-    "id": "9461d853b303e5ce6000dd700b810749",
+    "id": "d1f542ac7d03a1437f5091d0bf859609",
     "metadata": {},
     "name": "InquiryMakeOfferButtonOrderMutation",
     "operationKind": "mutation",
@@ -271,5 +271,5 @@ return {
   }
 };
 })();
-(node as any).hash = '15b1ff6be766e85b0e571ae7be8baa74';
+(node as any).hash = 'f4e91203efe9bf499396c64f5e748fab';
 export default node;

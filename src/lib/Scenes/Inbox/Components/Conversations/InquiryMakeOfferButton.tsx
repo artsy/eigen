@@ -1,5 +1,5 @@
+import { InquiryMakeOfferButton_artwork } from "__generated__/InquiryMakeOfferButton_artwork.graphql"
 import { InquiryMakeOfferButtonOrderMutation } from "__generated__/InquiryMakeOfferButtonOrderMutation.graphql"
-import { InquiryMakeOfferButton_artwork } from "__generated__/MakeOfferButton_artwork.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { Button, ButtonVariant } from "palette"
@@ -57,7 +57,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
   //   context_module: Schema.ContextModules.Conversation,
   // })
   handleCreateInquiryOfferOrder() {
-    const { relay, artwork, editionSetID } = this.props
+    const { relay, artwork, editionSetID, impulseConversationId } = this.props
     const { isCommittingCreateOfferOrderMutation } = this.state
     const { internalID } = artwork
 
@@ -70,7 +70,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
         commitMutation<InquiryMakeOfferButtonOrderMutation>(relay.environment, {
           mutation: graphql`
             mutation InquiryMakeOfferButtonOrderMutation($input: CommerceCreateInquiryOfferOrderWithArtworkInput!) {
-              commerceCreateInquiryOfferOrderWithArtwork(input: $input) {
+              createInquiryOfferOrder(input: $input) {
                 orderOrError {
                   __typename
                   ... on CommerceOrderWithMutationSuccess {
@@ -94,15 +94,16 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
             input: {
               artworkId: internalID,
               editionSetId: editionSetID,
-              impulseConversationId: this.props.impulseConversationId,
+              impulseConversationId,
             },
           },
           onCompleted: (data) => {
             this.setState({ isCommittingCreateOfferOrderMutation: false }, () => {
               const {
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                commerceCreateInquiryOfferOrderWithArtwork: { orderOrError },
+                createInquiryOfferOrder: { orderOrError },
               } = data
+              console.warn("ORDER OR ERROR", orderOrError)
               if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
                 this.onMutationError(orderOrError.error)
               } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
@@ -122,6 +123,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
 
   render() {
     const { isCommittingCreateOfferOrderMutation } = this.state
+    console.warn("PROPS", this.props.artwork.internalID)
 
     return (
       <Button

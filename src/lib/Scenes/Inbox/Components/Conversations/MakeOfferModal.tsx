@@ -4,12 +4,12 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { dismissModal } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails } from "lib/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
-import { InquiryMakeOfferButtonFragmentContainer as InquiryMakeOfferButton } from "lib/Scenes/Artwork/Components/CommercialButtons/MakeOfferButton"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { BorderBox, Button, Flex, Text } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { InquiryMakeOfferButtonFragmentContainer as InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
 
 interface MakeOfferModalProps {
   artwork: MakeOfferModal_artwork
@@ -17,7 +17,7 @@ interface MakeOfferModalProps {
 }
 
 export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
-  const { artwork } = props
+  const { artwork, impulseConversationId } = props
 
   return (
     <View>
@@ -39,7 +39,13 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
         <BorderBox p={0} my={2}>
           <CollapsibleArtworkDetails hasSeparator={false} artwork={artwork} />
         </BorderBox>
-        <InquiryMakeOfferButton variant="primaryBlack" buttonText="Confirm" artwork={artwork} editionSetID={null} />
+        <InquiryMakeOfferButton
+          variant="primaryBlack"
+          buttonText="Confirm"
+          artwork={artwork}
+          editionSetID={null}
+          impulseConversationId={impulseConversationId}
+        />
         <Button
           mt={1}
           size="large"
@@ -61,7 +67,7 @@ export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOffer
   artwork: graphql`
     fragment MakeOfferModal_artwork on Artwork {
       ...CollapsibleArtworkDetails_artwork
-      ...MakeOfferButton_artwork
+      ...InquiryMakeOfferButton_artwork
     }
   `,
 })

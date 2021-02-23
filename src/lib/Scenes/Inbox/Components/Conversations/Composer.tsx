@@ -97,7 +97,6 @@ export default class Composer extends React.Component<Props, State> {
     const showOpenInquiryModalButton =
       unsafe_getFeatureFlag("AROptionsInquiryCheckout") && this.props.isOfferableFromInquiry
 
-    console.warn("WOOO", showOpenInquiryModalButton)
     return (
       <ScreenDimensionsContext.Consumer>
         {({ safeAreaInsets }) => (
