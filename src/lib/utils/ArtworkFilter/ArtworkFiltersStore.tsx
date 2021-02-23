@@ -1,7 +1,6 @@
-import { Action, action, createStore, createTypedHooks, State, StoreProvider } from "easy-peasy"
+import { Action, action, createContextStore, State } from "easy-peasy"
 import { assignDeep } from "lib/store/persistence"
 import { filter, find, pullAllBy, union, unionBy } from "lodash"
-import React from "react"
 import {
   Aggregations,
   defaultCommonFilterOptions,
@@ -368,7 +367,7 @@ function createArtworkFiltersStore() {
 
   // Might be useful some day to add a middleware to get some tracking on place here
   // But we'll cross that bridge when we reach it
-  const store = createStore<ArtworkFiltersModel>(ArtworkFiltersModel)
+  const store = createContextStore<ArtworkFiltersModel>(ArtworkFiltersModel)
 
   return store
 }
@@ -382,9 +381,9 @@ export const __filterArtworksStoreTestUtils__ = __TEST__
       // e.g. `__filterArtworksStoreTestUtils__.injectState({ filterType: "artwork" })`
       // takes effect until the next test starts
       injectState(state: DeepPartial<ArtworkFiltersState>) {
-        ;(ArtworksFiltersStore.actions as any).__injectState(state)
+        return ArtworksFiltersStore.useStoreActions((state) => (state as any).__injectState as any)(state)
       },
-      getCurrentState: () => artworkFiltersStoreInstance.getState(),
+      getCurrentState: () => artworkFiltersStoreInstance.useStoreState((state) => state),
       // dispatchedActions: [] as Action[],
       // getLastAction() {
       //   return this.dispatchedActions[this.dispatchedActions.length - 1]
@@ -395,16 +394,6 @@ export const __filterArtworksStoreTestUtils__ = __TEST__
     }
   : null
 
-const hooks = createTypedHooks<ArtworkFiltersModel>()
+export const ArtworksFiltersStore = artworkFiltersStoreInstance
 
-export const ArtworksFiltersStore = {
-  ...hooks,
-  // useStoreState: hooks.useStoreState,
-  get actions() {
-    return artworkFiltersStoreInstance.getActions()
-  },
-}
-
-export const ArtworkFiltersStoreProvider: React.FC<{}> = ({ children }) => (
-  <StoreProvider store={artworkFiltersStoreInstance}>{children}</StoreProvider>
-)
+export const ArtworkFiltersStoreProvider = artworkFiltersStoreInstance.Provider

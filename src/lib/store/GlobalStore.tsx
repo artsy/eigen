@@ -106,6 +106,10 @@ let globalStoreInstance = createGlobalStore()
 export function useFeatureFlag(key: FeatureName) {
   if (Platform.OS === "ios") {
     return GlobalStore.useAppState((state) => {
+      if (!state?.config?.features[key]) {
+        console.log("abc, ", state)
+        console.warn("abc, ", key)
+      }
       return state.config.features[key]
     })
   }

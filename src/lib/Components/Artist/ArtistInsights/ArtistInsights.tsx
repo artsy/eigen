@@ -2,7 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
-import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
@@ -64,7 +64,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
   }, [])
 
   return (
-    <ArtworkFilterGlobalStateProvider>
+    <ArtworkFiltersStoreProvider>
       <StickyTabPageScrollView
         contentContainerStyle={{ paddingTop: 20, paddingBottom: 60 }}
         onScrollEndDrag={onScrollEndDrag}
@@ -97,7 +97,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         onPress={openFilterModal}
         text="Filter auction results"
       />
-    </ArtworkFilterGlobalStateProvider>
+    </ArtworkFiltersStoreProvider>
   )
 }
 
