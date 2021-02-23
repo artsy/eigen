@@ -460,3 +460,26 @@ export interface AggregateOption {
   displayText: string
   paramValue: string
 }
+
+export type aggregationsType =
+  | ReadonlyArray<{
+      slice: string
+      counts: Array<{ count: number; value: string; name?: string }>
+    }>
+  | []
+
+export const aggregationsWithFollowedArtists = (
+  followedArtistCount: number,
+  artworkAggregations: aggregationsType
+): aggregationsType => {
+  const followedArtistAggregation =
+    followedArtistCount > 0
+      ? [
+          {
+            slice: "FOLLOWED_ARTISTS",
+            counts: [{ count: followedArtistCount, value: "followed_artists" }],
+          },
+        ]
+      : []
+  return [...artworkAggregations, ...followedArtistAggregation]
+}

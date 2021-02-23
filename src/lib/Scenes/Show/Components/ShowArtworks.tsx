@@ -5,10 +5,10 @@ import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { SHOW2_ARTWORKS_PAGE_SIZE } from "lib/data/constants"
-import { ArtworkFilterContext, FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { aggregationsType, filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { ArtworksFiltersStore } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { aggregationsType, FilterArray, filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Box } from "palette"
-import React, { useContext, useEffect } from "react"
+import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 interface Props {
@@ -43,19 +43,26 @@ export const ShowArtworksWithNavigation = (props: ArtworkProps) => {
 const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) => {
   const artworks = show.showArtworks!
   const { internalID, slug } = show
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-  const filterParams = filterArtworksParams(state.appliedFilters, "showArtwork")
+
+  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
+  const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
+  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+  const setFilterTypeAction = ArtworksFiltersStore.useStoreActions((state) => state.setFilterTypeAction)
+
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+
+  const filterParams = filterArtworksParams(appliedFilters, "showArtwork")
 
   useEffect(() => {
-    dispatch({ type: "setFilterType", payload: "showArtwork" })
+    setFilterTypeAction("showArtwork")
 
     if (initiallyAppliedFilter) {
-      dispatch({ type: "setInitialFilterState", payload: initiallyAppliedFilter })
+      setInitialFilterStateAction(initiallyAppliedFilter)
     }
   }, [])
 
   useEffect(() => {
-    if (state.applyFilters) {
+    if (applyFilters) {
       relay.refetchConnection(
         SHOW2_ARTWORKS_PAGE_SIZE,
         (error) => {
@@ -66,15 +73,12 @@ const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) 
         filterParams
       )
     }
-  }, [state.appliedFilters])
+  }, [appliedFilters])
 
   const artworkAggregations = (artworks?.aggregations ?? []) as aggregationsType
 
   useEffect(() => {
-    dispatch({
-      type: "setAggregations",
-      payload: artworkAggregations,
-    })
+    setAggregationsAction(artworkAggregations)
   }, [])
 
   if ((artworks?.counts?.total ?? 0) === 0) {

@@ -15,11 +15,11 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { PAGE_SIZE } from "lib/data/constants"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { Box, Flex, Separator, Spacer } from "palette"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { ActivityIndicator, FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -73,33 +73,29 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 25 })
 
   return (
-    <ArtworkFilterGlobalStateProvider>
-      <ArtworkFilterContext.Consumer>
-        {() => (
-          <>
-            <StickyTabPageScrollView>
-              <ArtistArtworksContainer
-                {...props}
-                viewableItemsRef={onViewRef}
-                viewConfigRef={viewConfigRef}
-                artist={artist}
-                relay={relay}
-              />
-              <FilterModalNavigator
-                {...props}
-                id={artist.id}
-                slug={artist.slug}
-                isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-                exitModal={handleFilterArtworksModal}
-                closeModal={closeFilterArtworksModal}
-                mode={FilterModalMode.ArtistArtworks}
-              />
-            </StickyTabPageScrollView>
-            <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
-          </>
-        )}
-      </ArtworkFilterContext.Consumer>
-    </ArtworkFilterGlobalStateProvider>
+    <ArtworkFiltersStoreProvider>
+      <>
+        <StickyTabPageScrollView>
+          <ArtistArtworksContainer
+            {...props}
+            viewableItemsRef={onViewRef}
+            viewConfigRef={viewConfigRef}
+            artist={artist}
+            relay={relay}
+          />
+          <FilterModalNavigator
+            {...props}
+            id={artist.id}
+            slug={artist.slug}
+            isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+            exitModal={handleFilterArtworksModal}
+            closeModal={closeFilterArtworksModal}
+            mode={FilterModalMode.ArtistArtworks}
+          />
+        </StickyTabPageScrollView>
+        <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
+      </>
+    </ArtworkFiltersStoreProvider>
   )
 }
 
@@ -129,8 +125,12 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
   ...props
 }) => {
   const tracking = useTracking()
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-  const filterParams = filterArtworksParams(state.appliedFilters)
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+
+  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
+
+  const filterParams = filterArtworksParams(appliedFilters)
   const artworks = artist.artworks
   const artworksTotal = artworks?.edges?.length
   const shouldShowCollections = artist.iconicCollections && artist.iconicCollections.length > 1
@@ -138,7 +138,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
   const shouldShowArtistSeries = useFeatureFlag("AROptionsArtistSeries")
 
   useEffect(() => {
-    if (state.applyFilters) {
+    if (applyFilters) {
       relay.refetchConnection(
         PAGE_SIZE,
         (error) => {
@@ -149,13 +149,10 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
         filterParams
       )
     }
-  }, [state.appliedFilters])
+  }, [appliedFilters])
 
   useEffect(() => {
-    dispatch({
-      type: "setAggregations",
-      payload: artworks?.aggregations,
-    })
+    setAggregationsAction(artworks?.aggregations)
   }, [])
 
   // TODO: Convert to use cohesion

@@ -11,7 +11,7 @@ import { Box, Separator, Spacer, Theme } from "palette"
 import React, { useRef, useState } from "react"
 
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
-import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
@@ -82,74 +82,70 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
         context_screen_owner_id: artistSeries.internalID,
       }}
     >
-      <ArtworkFilterGlobalStateProvider>
-        <ArtworkFilterContext.Consumer>
-          {() => (
-            <Theme>
-              <View style={{ flex: 1 }}>
-                <FlatList
-                  ref={flatListRef}
-                  viewabilityConfig={viewConfigRef.current}
-                  onViewableItemsChanged={viewableItemsChangedRef.current}
-                  keyExtractor={(_item, index) => String(index)}
-                  data={sections}
-                  ItemSeparatorComponent={() => <Spacer mb={2} />}
-                  renderItem={({ item }): null | any => {
-                    switch (item) {
-                      case "artistSeriesHeader":
-                        return (
-                          <Box px={2}>
-                            <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
-                          </Box>
-                        )
-                      case "artistSeriesMeta":
-                        return (
-                          <Box px={2} pt={1}>
-                            <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
-                          </Box>
-                        )
-                      case "artistSeriesArtworks":
-                        return (
-                          <Box px={2}>
-                            <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
-                            <FilterModalNavigator
-                              {...props}
-                              isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-                              id={artistSeries.internalID}
-                              slug={artistSeries.slug}
-                              mode={FilterModalMode.ArtistSeries}
-                              exitModal={handleFilterArtworksModal}
-                              closeModal={closeFilterArtworksModal}
+      <ArtworkFiltersStoreProvider>
+        <Theme>
+          <View style={{ flex: 1 }}>
+            <FlatList
+              ref={flatListRef}
+              viewabilityConfig={viewConfigRef.current}
+              onViewableItemsChanged={viewableItemsChangedRef.current}
+              keyExtractor={(_item, index) => String(index)}
+              data={sections}
+              ItemSeparatorComponent={() => <Spacer mb={2} />}
+              renderItem={({ item }): null | any => {
+                switch (item) {
+                  case "artistSeriesHeader":
+                    return (
+                      <Box px={2}>
+                        <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
+                      </Box>
+                    )
+                  case "artistSeriesMeta":
+                    return (
+                      <Box px={2} pt={1}>
+                        <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
+                      </Box>
+                    )
+                  case "artistSeriesArtworks":
+                    return (
+                      <Box px={2}>
+                        <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
+                        <FilterModalNavigator
+                          {...props}
+                          isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+                          id={artistSeries.internalID}
+                          slug={artistSeries.slug}
+                          mode={FilterModalMode.ArtistSeries}
+                          exitModal={handleFilterArtworksModal}
+                          closeModal={closeFilterArtworksModal}
+                        />
+                      </Box>
+                    )
+                  case "artistSeriesMoreSeries":
+                    return (
+                      !((artist?.artistSeriesConnection?.totalCount ?? 0) === 0) && (
+                        <>
+                          <Separator mb={2} />
+                          <Box px={2} pb={2}>
+                            <ArtistSeriesMoreSeriesFragmentContainer
+                              contextScreenOwnerId={artistSeries.internalID}
+                              contextScreenOwnerSlug={artistSeries.slug}
+                              contextScreenOwnerType={OwnerType.artistSeries}
+                              artist={artist}
+                              artistSeriesHeader="More series by this artist"
+                              currentArtistSeriesExcluded
                             />
                           </Box>
-                        )
-                      case "artistSeriesMoreSeries":
-                        return (
-                          !((artist?.artistSeriesConnection?.totalCount ?? 0) === 0) && (
-                            <>
-                              <Separator mb={2} />
-                              <Box px={2} pb={2}>
-                                <ArtistSeriesMoreSeriesFragmentContainer
-                                  contextScreenOwnerId={artistSeries.internalID}
-                                  contextScreenOwnerSlug={artistSeries.slug}
-                                  contextScreenOwnerType={OwnerType.artistSeries}
-                                  artist={artist}
-                                  artistSeriesHeader="More series by this artist"
-                                  currentArtistSeriesExcluded
-                                />
-                              </Box>
-                            </>
-                          )
-                        )
-                    }
-                  }}
-                />
-                <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
-              </View>
-            </Theme>
-          )}
-        </ArtworkFilterContext.Consumer>
-      </ArtworkFilterGlobalStateProvider>
+                        </>
+                      )
+                    )
+                }
+              }}
+            />
+            <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
+          </View>
+        </Theme>
+      </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>
   )
 }

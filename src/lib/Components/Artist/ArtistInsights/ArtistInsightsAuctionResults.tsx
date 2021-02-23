@@ -6,11 +6,11 @@ import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
 import { navigate } from "lib/navigation/navigate"
-import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Box, bullet, color, Flex, Separator, Spacer, Text } from "palette"
-import React, { useCallback, useContext, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -26,14 +26,15 @@ interface Props {
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop }) => {
   const tracking = useTracking()
-  const { state, dispatch } = useContext(ArtworkFilterContext)
-  const filterParams = filterArtworksParams(state.appliedFilters, "auctionResult")
+
+  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
+  const setFilterTypeAction = ArtworksFiltersStore.useStoreActions((state) => state.setFilterTypeAction)
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+
+  const filterParams = filterArtworksParams(appliedFilters, "auctionResult")
 
   useEffect(() => {
-    dispatch({
-      type: "setFilterType",
-      payload: "auctionResult",
-    })
+    setFilterTypeAction("auctionResult")
   }, [])
 
   useEffect(() => {
@@ -49,7 +50,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
       )
       scrollToTop()
     }
-  }, [state.appliedFilters])
+  }, [appliedFilters])
 
   const auctionResults = extractNodes(artist.auctionResultsConnection)
   const [loadingMoreData, setLoadingMoreData] = useState(false)
@@ -77,29 +78,26 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
   // We are using the same logic used in Force but it might be useful
   // to adjust metaphysics to support aggregations like other filters in the app
   useEffect(() => {
-    dispatch({
-      type: "setAggregations",
-      payload: [
-        {
-          slice: "earliestCreatedYear",
-          counts: [
-            {
-              value: artist.auctionResultsConnection?.createdYearRange?.startAt || artist.birthday,
-              name: "earliestCreatedYear",
-            },
-          ],
-        },
-        {
-          slice: "latestCreatedYear",
-          counts: [
-            {
-              value: artist.auctionResultsConnection?.createdYearRange?.endAt || new Date().getFullYear(),
-              name: "latestCreatedYear",
-            },
-          ],
-        },
-      ],
-    })
+    setAggregationsAction([
+      {
+        slice: "earliestCreatedYear",
+        counts: [
+          {
+            value: artist.auctionResultsConnection?.createdYearRange?.startAt || artist.birthday,
+            name: "earliestCreatedYear",
+          },
+        ],
+      },
+      {
+        slice: "latestCreatedYear",
+        counts: [
+          {
+            value: artist.auctionResultsConnection?.createdYearRange?.endAt || new Date().getFullYear(),
+            name: "latestCreatedYear",
+          },
+        ],
+      },
+    ])
   }, [])
 
   const renderAuctionResultsModal = () => (

@@ -5,11 +5,11 @@ import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } fro
 import { get } from "lib/utils/get"
 import { Schema } from "lib/utils/track"
 import { Box, Separator } from "palette"
-import React, { useContext, useEffect } from "react"
+import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { ArtworkFilterContext } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams } from "../../../utils/ArtworkFilter/FilterArtworksHelpers"
 
 interface CollectionArtworksProps {
@@ -25,11 +25,15 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
   const { isDepartment } = collection
   const artworks = get(collection, (p) => p.collectionArtworks)
   const artworksTotal = artworks?.counts?.total
-  const { state, dispatch } = useContext(ArtworkFilterContext)
-  const filterParams = filterArtworksParams(state.appliedFilters)
+
+  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+
+  const filterParams = filterArtworksParams(appliedFilters)
 
   useEffect(() => {
-    if (state.applyFilters) {
+    if (applyFilters) {
       scrollToTop()
 
       relay.refetchConnection(
@@ -42,13 +46,10 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
         filterParams
       )
     }
-  }, [state.appliedFilters])
+  }, [appliedFilters])
 
   useEffect(() => {
-    dispatch({
-      type: "setAggregations",
-      payload: collection.collectionArtworks!.aggregations,
-    })
+    setAggregationsAction(collection.collectionArtworks!.aggregations)
   }, [])
 
   const trackClear = (id: string, slug: string) => {
