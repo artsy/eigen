@@ -2,6 +2,8 @@
 
 // @ts-check
 
+require("dotenv").config()
+
 const { GraphQLClient } = require("graphql-request")
 const { values } = require("lodash")
 const { exit, stdout } = require("process")

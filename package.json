@@ -181,6 +181,7 @@
     "danger": "6.1.1",
     "danger-plugin-jest": "1.1.0",
     "dedent": "0.7.0",
+    "dotenv": "8.2.0",
     "enzyme": "3.9.0",
     "enzyme-adapter-react-16": "1.13.0",
     "glob": "7.1.6",
