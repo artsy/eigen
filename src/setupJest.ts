@@ -84,7 +84,7 @@ jest.mock("rn-fetch-blob", () => ({
 }))
 
 // tslint:disable-next-line:no-empty
-jest.mock("@sentry/react-native", () => ({ captureMessage() {} }))
+jest.mock("@sentry/react-native", () => ({ captureMessage() {}, init() {}, setUser() {} }))
 
 // Needing to mock react-native-scrollable-tab-view due to Flow issue
 jest.mock("react-native-scrollable-tab-view", () => jest.fn(() => null))
