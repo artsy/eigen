@@ -1,20 +1,17 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import {
-  ArtworkFilterContext,
-  FilterData,
-  ParamDefaultValues,
-  useSelectedOptionsDisplay,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
   AggregateOption,
   aggregationForFilter,
+  FilterData,
   FilterDisplayName,
   FilterParamName,
+  ParamDefaultValues,
 } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { isPad } from "lib/utils/hardware"
 import { floor } from "lodash"
 import { Flex } from "palette"
-import React, { useContext, useState } from "react"
+import React, { useState } from "react"
 import { LayoutChangeEvent, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
@@ -78,6 +75,8 @@ const FLEX_MARGIN = SIDE_MARGIN - INTER_ITEM_SPACE / 2
 export const ColorOptionsScreen: React.FC<ColorOptionsScreenProps> = ({ navigation }) => {
   const [itemSize, setItemSize] = useState(0)
 
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+
   const paramName = FilterParamName.color
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const aggregation = aggregationForFilter(paramName, aggregations)
@@ -103,15 +102,12 @@ export const ColorOptionsScreen: React.FC<ColorOptionsScreenProps> = ({ navigati
 
   const selectOption = (option: AggregateOption) => {
     if (option.displayText === selectedOption.displayText) {
-      dispatch({ type: "selectFilters", payload: allOption })
+      selectFiltersAction(allOption)
     } else {
-      dispatch({
-        type: "selectFilters",
-        payload: {
-          displayText: option.displayText,
-          paramValue: option.paramValue,
-          paramName,
-        },
+      selectFiltersAction({
+        displayText: option.displayText,
+        paramValue: option.paramValue,
+        paramName,
       })
     }
   }

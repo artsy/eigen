@@ -455,3 +455,8 @@ export const aggregationForFilter = (filterKey: string, aggregations: Aggregatio
   const aggregation = aggregations!.find((value) => value.slice === aggregationName)
   return aggregation
 }
+
+export interface AggregateOption {
+  displayText: string
+  paramValue: string
+}

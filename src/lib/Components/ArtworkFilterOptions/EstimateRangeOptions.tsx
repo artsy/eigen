@@ -1,8 +1,8 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworkFilterContext, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { AggregateOption, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Sans, Separator } from "palette"
-import React, { useContext } from "react"
+import React from "react"
 import { FilterModalNavigationStack } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
@@ -19,9 +19,9 @@ const EstimateRanges = [
 ]
 
 export const EstimateRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch } = useContext(ArtworkFilterContext)
-
   const paramName = FilterParamName.estimateRange
+
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
 
   const options = EstimateRanges.map((estimateRange) => {
     return {
@@ -35,13 +35,10 @@ export const EstimateRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> 
   const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
 
   const selectOption = (option: AggregateOption) => {
-    dispatch({
-      type: "selectFilters",
-      payload: {
-        displayText: option.displayText,
-        paramValue: option.paramValue,
-        paramName,
-      },
+    selectFiltersAction({
+      displayText: option.displayText,
+      paramValue: option.paramValue,
+      paramName,
     })
   }
 
