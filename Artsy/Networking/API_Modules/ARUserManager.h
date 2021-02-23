@@ -9,6 +9,7 @@ extern NSString *const ARUserSessionStartedNotification;
 + (ARUserManager *)sharedManager;
 
 + (void)logout;
++ (void)clearUserData;
 
 + (BOOL)didCreateAccountThisSession;
 
