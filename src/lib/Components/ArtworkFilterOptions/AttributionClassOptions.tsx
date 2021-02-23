@@ -1,11 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import {
-  ArtworkFilterContext,
-  FilterData,
-  useSelectedOptionsDisplay,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import React, { useContext, useState } from "react"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { FilterData, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import React, { useState } from "react"
 import { FilterModalNavigationStack } from "../FilterModal"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
@@ -36,9 +32,9 @@ export const ATTRIBUTION_CLASS_OPTIONS: FilterData[] = [
 ]
 
 export const AttributionClassOptionsScreen: React.FC<AttributionClassOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch } = useContext(ArtworkFilterContext)
-
   const selectedOptions = useSelectedOptionsDisplay()
+
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
 
   const selectedAttributionClassOptions = selectedOptions.find((option) => {
     return option.paramName === FilterParamName.attributionClass
@@ -58,13 +54,10 @@ export const AttributionClassOptionsScreen: React.FC<AttributionClassOptionsScre
           })?.paramValue as string,
         ]
 
-        dispatch({
-          type: "selectFilters",
-          payload: {
-            displayText: option.displayText,
-            paramValue: next,
-            paramName: option.paramName,
-          },
+        selectFiltersAction({
+          displayText: option.displayText,
+          paramValue: next,
+          paramName: option.paramName,
         })
 
         return next
@@ -80,13 +73,10 @@ export const AttributionClassOptionsScreen: React.FC<AttributionClassOptionsScre
           )
         })
 
-        dispatch({
-          type: "selectFilters",
-          payload: {
-            displayText: option.displayText,
-            paramValue: next,
-            paramName: option.paramName,
-          },
+        selectFiltersAction({
+          displayText: option.displayText,
+          paramValue: next,
+          paramName: option.paramName,
         })
 
         return next
