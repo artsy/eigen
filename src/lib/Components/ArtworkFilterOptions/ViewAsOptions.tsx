@@ -1,12 +1,12 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
   AggregateOption,
   FilterDisplayName,
   FilterParamName,
   ViewAsValues,
 } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter2/ArtworkFiltersStore"
-import { FilterData } from "lib/utils/ArtworkFilter2/FilterArtworksHelpers"
+import { FilterData } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { FilterModalNavigationStack } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"

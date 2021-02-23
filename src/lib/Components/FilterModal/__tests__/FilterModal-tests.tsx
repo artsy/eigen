@@ -2,13 +2,13 @@
 import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import {
   __filterArtworksStoreTestUtils__,
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
-} from "lib/utils/ArtworkFilter2/ArtworkFiltersStore"
-import { Aggregations } from "lib/utils/ArtworkFilter2/FilterArtworksHelpers"
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { Aggregations } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Sans, Theme } from "palette"
 import React from "react"
 import { act } from "react-test-renderer"

@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter2/ArtworkFiltersStore"
+import { ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Theme } from "palette"
 import React from "react"
 import { FilterModalMode, FilterModalNavigationStack, FilterOptionsScreen } from "../FilterModal"

@@ -1,12 +1,12 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter2/ArtworkFiltersStore"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
   aggregationForFilter,
   AggregationName,
   FilterData,
   FilterDisplayName,
   FilterParamName,
-} from "lib/utils/ArtworkFilter2/FilterArtworksHelpers"
+} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 
 import { sortBy } from "lodash"
 import React from "react"

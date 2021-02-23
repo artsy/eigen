@@ -1,12 +1,12 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworksFiltersStore } from "lib/utils/ArtworkFilter2/ArtworkFiltersStore"
+import { ArtworksFiltersStore } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
   FilterData,
   FilterDisplayName,
   FilterParamName,
   ParamDefaultValues,
-} from "lib/utils/ArtworkFilter2/FilterArtworksHelpers"
-import { useArtworkFiltersAggregation } from "lib/utils/ArtworkFilter2/useArtworkFilters"
+} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { useArtworkFiltersAggregation } from "lib/utils/ArtworkFilter/useArtworkFilters"
 import React, { useState } from "react"
 import { FilterModalNavigationStack } from "../FilterModal"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"

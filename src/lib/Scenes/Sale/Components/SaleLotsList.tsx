@@ -4,13 +4,13 @@ import { SaleLotsList_unfilteredSaleArtworksConnection } from "__generated__/Sal
 import { ORDERED_SALE_ARTWORK_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { ArtworksFiltersStore } from "lib/utils/ArtworkFilter2/ArtworkFiltersStore"
+import { ArtworksFiltersStore } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
   filterArtworksParams,
   FilterParamName,
   FilterParams,
   ViewAsValues,
-} from "lib/utils/ArtworkFilter2/FilterArtworksHelpers"
+} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { Box, color, Flex, Sans } from "palette"
 import React, { useCallback, useEffect, useState } from "react"

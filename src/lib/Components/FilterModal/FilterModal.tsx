@@ -2,7 +2,7 @@ import { ContextModule } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter2/ArtworkFiltersStore"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
   changedFiltersParams,
   FilterArray,
@@ -11,7 +11,7 @@ import {
   filterKeyFromAggregation,
   FilterParamName,
   FilterParams,
-} from "lib/utils/ArtworkFilter2/FilterArtworksHelpers"
+} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
@@ -20,7 +20,7 @@ import React from "react"
 import { FlatList, TouchableOpacity, View, ViewProperties } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { selectedOption } from "../../utils/ArtworkFilter2/FilterArtworksHelpers"
+import { selectedOption } from "../../utils/ArtworkFilter/FilterArtworksHelpers"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
 // @ts-ignore
 import { AdditionalGeneIDsOptionsScreen } from "../ArtworkFilterOptions/AdditionalGeneIDsOptions"

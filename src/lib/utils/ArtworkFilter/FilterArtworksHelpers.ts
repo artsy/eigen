@@ -1,12 +1,27 @@
 import { FilterScreen } from "lib/Components/FilterModal"
-import {
-  AggregationName,
-  Aggregations,
-  FilterArray,
-  FilterCounts,
-  FilterType,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { capitalize, compact, forOwn, groupBy, lowerCase, sortBy, startCase } from "lodash"
+
+export enum FilterDisplayName {
+  // artist = "Artists",
+  additionalGeneIDs = "Category",
+  artistIDs = "Artists",
+  artistsIFollow = "Artist",
+  attributionClass = "Rarity",
+  categories = "Medium",
+  color = "Color",
+  estimateRange = "Price/estimate range",
+  gallery = "Gallery",
+  institution = "Institution",
+  medium = "Medium",
+  priceRange = "Price",
+  size = "Size",
+  sizes = "Size",
+  sort = "Sort by",
+  timePeriod = "Time period",
+  viewAs = "View as",
+  waysToBuy = "Ways to buy",
+  year = "Artwork date",
+}
 
 // General filter types and objects
 export enum FilterParamName {
@@ -40,48 +55,126 @@ export type FilterParams = {
   [Name in FilterParamName]: string | number | boolean | undefined | string[]
 }
 
-export enum FilterDisplayName {
-  // artist = "Artists",
-  additionalGeneIDs = "Category",
-  artistIDs = "Artists",
-  artistsIFollow = "Artist",
-  attributionClass = "Rarity",
-  categories = "Medium",
-  color = "Color",
-  estimateRange = "Price/estimate range",
-  gallery = "Gallery",
-  institution = "Institution",
-  medium = "Medium",
-  priceRange = "Price",
-  size = "Size",
-  sizes = "Size",
-  sort = "Sort by",
-  timePeriod = "Time period",
-  viewAs = "View as",
-  waysToBuy = "Ways to buy",
-  year = "Artwork date",
-}
-
 export enum ViewAsValues {
   Grid = "grid",
   List = "list",
 }
 
-export interface InitialState {
-  initialState: {
-    selectedFilters: FilterArray
-    appliedFilters: FilterArray
-    previouslyAppliedFilters: FilterArray
-    applyFilters: boolean
-    aggregations: Aggregations
-    filterType: FilterType
-    counts: FilterCounts
-  }
+export const getSortDefaultValueByFilterType = (filterType: FilterType) => {
+  return {
+    artwork: "-decayed_merch",
+    saleArtwork: "position",
+    showArtwork: "partner_show_position",
+    auctionResult: "DATE_DESC",
+  }[filterType]
 }
 
-export interface AggregateOption {
-  displayText: string
-  paramValue: string
+export const ParamDefaultValues = {
+  acquireable: false,
+  allowEmptyCreatedDates: true,
+  artistIDs: [],
+  atAuction: false,
+  attributionClass: undefined,
+  categories: undefined,
+  color: undefined,
+  dimensionRange: "*-*",
+  earliestCreatedYear: undefined,
+  estimateRange: "",
+  additionalGeneIDs: [],
+  includeArtworksByFollowedArtists: false,
+  inquireableOnly: false,
+  latestCreatedYear: undefined,
+  majorPeriods: undefined,
+  medium: "*",
+  offerable: false,
+  partnerID: undefined,
+  priceRange: "*-*",
+  sizes: undefined,
+  sortArtworks: "-decayed_merch",
+  sortSaleArtworks: "position",
+  viewAs: ViewAsValues.Grid,
+}
+
+export const defaultCommonFilterOptions = {
+  acquireable: ParamDefaultValues.acquireable,
+  allowEmptyCreatedDates: ParamDefaultValues.allowEmptyCreatedDates,
+  artistIDs: ParamDefaultValues.artistIDs,
+  atAuction: ParamDefaultValues.atAuction,
+  attributionClass: ParamDefaultValues.attributionClass,
+  categories: ParamDefaultValues.categories,
+  color: ParamDefaultValues.color,
+  additionalGeneIDs: ParamDefaultValues.additionalGeneIDs,
+  dimensionRange: ParamDefaultValues.dimensionRange,
+  earliestCreatedYear: ParamDefaultValues.earliestCreatedYear,
+  estimateRange: ParamDefaultValues.estimateRange,
+  includeArtworksByFollowedArtists: ParamDefaultValues.includeArtworksByFollowedArtists,
+  inquireableOnly: ParamDefaultValues.inquireableOnly,
+  latestCreatedYear: ParamDefaultValues.latestCreatedYear,
+  majorPeriods: ParamDefaultValues.majorPeriods,
+  medium: ParamDefaultValues.medium,
+  offerable: ParamDefaultValues.offerable,
+  partnerID: ParamDefaultValues.partnerID,
+  priceRange: ParamDefaultValues.priceRange,
+  sizes: ParamDefaultValues.sizes,
+  sort: ParamDefaultValues.sortArtworks,
+  viewAs: ParamDefaultValues.viewAs,
+}
+
+export type Aggregations = Array<{
+  slice: AggregationName
+  counts: Aggregation[]
+}>
+
+/**
+ * Possible aggregations that can be passed
+ */
+export type AggregationName =
+  | "COLOR"
+  | "DIMENSION_RANGE"
+  | "GALLERY"
+  | "INSTITUTION"
+  | "MAJOR_PERIOD"
+  | "MEDIUM"
+  | "PRICE_RANGE"
+  | "FOLLOWED_ARTISTS"
+  | "ARTIST"
+  | "earliestCreatedYear"
+  | "latestCreatedYear"
+
+export interface Aggregation {
+  count: number
+  value: string
+  name: string
+}
+
+export interface FilterData {
+  readonly displayText: string
+  readonly paramName: FilterParamName
+  paramValue?: string | number | boolean | string[]
+  filterKey?: string // gallery and institution share a paramName so need to distinguish
+  count?: number | null // aggregations count
+}
+export type FilterArray = ReadonlyArray<FilterData>
+
+export type FilterType = "artwork" | "saleArtwork" | "showArtwork" | "auctionResult"
+
+export interface FilterCounts {
+  total: number | null
+  followedArtists: number | null
+}
+
+export const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string | undefined> = {
+  COLOR: FilterParamName.color,
+  DIMENSION_RANGE: FilterParamName.size,
+  GALLERY: "gallery",
+  INSTITUTION: "institution",
+  MAJOR_PERIOD: FilterParamName.timePeriod,
+  MEDIUM: FilterParamName.additionalGeneIDs,
+  PRICE_RANGE: FilterParamName.priceRange,
+  FOLLOWED_ARTISTS: "artistsIFollow",
+  ARTIST: "artistIDs",
+  earliestCreatedYear: "earliestCreatedYear",
+  latestCreatedYear: "earliestCreatedYear",
 }
 
 const DEFAULT_ARTWORKS_PARAMS = {
@@ -114,15 +207,6 @@ const DEFAULT_AUCTION_RESULT_PARAMS = {
   allowEmptyCreatedDates: true,
 } as FilterParams
 
-const getDefaultParamsByType = (filterType: FilterType) => {
-  return {
-    artwork: DEFAULT_ARTWORKS_PARAMS,
-    saleArtwork: DEFAULT_SALE_ARTWORKS_PARAMS,
-    showArtwork: DEFAULT_SHOW_ARTWORKS_PARAMS,
-    auctionResult: DEFAULT_AUCTION_RESULT_PARAMS,
-  }[filterType]
-}
-
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams, filterType: FilterType) => {
   const groupedFilters = groupBy(appliedFilters, "paramName")
 
@@ -141,9 +225,13 @@ const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: Fil
   return filterParams
 }
 
-export const filterArtworksParams = (appliedFilters: FilterArray, filterType: FilterType = "artwork") => {
-  const defaultFilterParams = getDefaultParamsByType(filterType)
-  return paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams }, filterType)
+const getDefaultParamsByType = (filterType: FilterType) => {
+  return {
+    artwork: DEFAULT_ARTWORKS_PARAMS,
+    saleArtwork: DEFAULT_SALE_ARTWORKS_PARAMS,
+    showArtwork: DEFAULT_SHOW_ARTWORKS_PARAMS,
+    auctionResult: DEFAULT_AUCTION_RESULT_PARAMS,
+  }[filterType]
 }
 
 const getChangedParams = (appliedFilters: FilterArray, filterType: FilterType = "artwork") => {
@@ -170,6 +258,11 @@ export const changedFiltersParams = (currentFilterParams: FilterParams, selected
   })
 
   return changedFilters
+}
+
+export const filterArtworksParams = (appliedFilters: FilterArray, filterType: FilterType = "artwork") => {
+  const defaultFilterParams = getDefaultParamsByType(filterType)
+  return paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams }, filterType)
 }
 
 /**
@@ -339,29 +432,6 @@ export const selectedOption = ({
     }
   }
   return selectedOptions.find((option) => option.paramName === filterScreen)?.displayText
-}
-
-export type aggregationsType =
-  | ReadonlyArray<{
-      slice: string
-      counts: Array<{ count: number; value: string; name?: string }>
-    }>
-  | []
-
-export const aggregationsWithFollowedArtists = (
-  followedArtistCount: number,
-  artworkAggregations: aggregationsType
-): aggregationsType => {
-  const followedArtistAggregation =
-    followedArtistCount > 0
-      ? [
-          {
-            slice: "FOLLOWED_ARTISTS",
-            counts: [{ count: followedArtistCount, value: "followed_artists" }],
-          },
-        ]
-      : []
-  return [...artworkAggregations, ...followedArtistAggregation]
 }
 
 // For most cases filter key can simply be FilterParamName, exception
