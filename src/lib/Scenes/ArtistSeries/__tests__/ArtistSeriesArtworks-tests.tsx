@@ -46,7 +46,8 @@ describe("Artist Series Artworks", () => {
       render={({ props, error }) => {
         if (props?.artistSeries) {
           return (
-            <ArtworkFilterContext.Provider value={{ state, dispatch: jest.fn() }}>
+            <ArtworkFiltersStoreProvider>
+<ArtworkFilterContext.provider value={{ state, dispatch: jest.fn() }}>
               <ArtistSeriesArtworksFragmentContainer artistSeries={props.artistSeries} />
             </ArtworkFilterContext.Provider>
           )

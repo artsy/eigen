@@ -1,6 +1,6 @@
-import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { Aggregations, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
-import { Aggregations, ArtworkFilterContext, reducer } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersStoreProvider } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { SizeOptionsScreen } from "../SizeOptions"
 import { sharedAggregateFilterValidation, ValidationParams } from "./AggregationOptionCommonValidation"
 import { getEssentialProps } from "./helper"
@@ -34,18 +34,11 @@ describe("Size Options Screen", () => {
     },
   ]
 
-  const MockSizeScreen = ({ initialState }: any) => {
-    const [filterState, dispatch] = React.useReducer(reducer, initialState)
-
+  const MockSizeScreen = () => {
     return (
-      <ArtworkFilterContext.Provider
-        value={{
-          state: filterState,
-          dispatch,
-        }}
-      >
+      <ArtworkFiltersStoreProvider>
         <SizeOptionsScreen {...getEssentialProps()} />
-      </ArtworkFilterContext.Provider>
+      </ArtworkFiltersStoreProvider>
     )
   }
 

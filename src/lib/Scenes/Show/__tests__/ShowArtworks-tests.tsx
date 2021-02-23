@@ -51,7 +51,8 @@ describe("ShowArtworks", () => {
             return null
           }
           return (
-            <ArtworkFilterContext.Provider value={{ state, dispatch: jest.fn() }}>
+            <ArtworkFiltersStoreProvider>
+<ArtworkFilterContext.provider value={{ state, dispatch: jest.fn() }}>
               <ShowArtworks show={props.show} />
             </ArtworkFilterContext.Provider>
           )

@@ -32,7 +32,8 @@ describe("CollectionArtworks", () => {
       render={({ props, error }) => {
         if (props?.marketingCollection) {
           return (
-            <ArtworkFilterContext.Provider value={{ state, dispatch: jest.fn() }}>
+            <ArtworkFiltersStoreProvider>
+<ArtworkFilterContext.provider value={{ state, dispatch: jest.fn() }}>
               <CollectionArtworks collection={props.marketingCollection} scrollToTop={jest.fn()} />
             </ArtworkFilterContext.Provider>
           )

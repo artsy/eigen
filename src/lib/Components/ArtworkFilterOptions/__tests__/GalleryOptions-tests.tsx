@@ -1,6 +1,6 @@
-import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { Aggregations, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
-import { Aggregations, ArtworkFilterContext, reducer } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersStoreProvider } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { GalleryOptionsScreen } from "../GalleryOptions"
 import { sharedAggregateFilterValidation, ValidationParams } from "./AggregationOptionCommonValidation"
 import { getEssentialProps } from "./helper"
@@ -44,18 +44,11 @@ describe("Gallery Options Screen", () => {
     },
   ]
 
-  const MockGalleryScreen = ({ initialState }: any) => {
-    const [filterState, dispatch] = React.useReducer(reducer, initialState)
-
+  const MockGalleryScreen = () => {
     return (
-      <ArtworkFilterContext.Provider
-        value={{
-          state: filterState,
-          dispatch,
-        }}
-      >
+      <ArtworkFiltersStoreProvider>
         <GalleryOptionsScreen {...getEssentialProps()} />
-      </ArtworkFilterContext.Provider>
+      </ArtworkFiltersStoreProvider>
     )
   }
 

@@ -52,7 +52,8 @@ describe("Year Options Screen", () => {
   const MockYearOptionsScreen = ({ initialState }: InitialState) => {
     return (
       <Theme>
-        <ArtworkFilterContext.Provider
+        <ArtworkFiltersStoreProvider>
+<ArtworkFilterContext.provider
           value={{
             state: initialState,
             dispatch: dispatchMock,

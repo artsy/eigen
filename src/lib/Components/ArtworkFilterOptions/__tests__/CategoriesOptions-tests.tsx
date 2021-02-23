@@ -1,27 +1,21 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkFilterContext, ArtworkFilterContextState, reducer } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { CheckIcon } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
+import { __filterArtworksStoreTestUtils__ } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { CATEGORIES_OPTIONS, CategoriesOptionsScreen } from "../CategoriesOptions"
 import { CheckMarkOptionListItem } from "../MultiSelectCheckOption"
 import { getEssentialProps } from "./helper"
 
 describe("Categories options screen", () => {
-  let state: ArtworkFilterContextState
-  const MockCategoryScreen = ({ initialState }: any) => {
-    const [filterState, dispatch] = React.useReducer(reducer, initialState)
-
+  let state: ArtworkFiltersState
+  const MockCategoryScreen = () => {
     return (
-      <ArtworkFilterContext.Provider
-        value={{
-          state: filterState,
-          dispatch,
-        }}
-      >
+      <ArtworkFiltersStoreProvider>
         <CategoriesOptionsScreen {...getEssentialProps()} />
-      </ArtworkFilterContext.Provider>
+      </ArtworkFiltersStoreProvider>
     )
   }
 
@@ -38,6 +32,8 @@ describe("Categories options screen", () => {
         followedArtists: null,
       },
     }
+
+    __filterArtworksStoreTestUtils__?.injectState(state)
   })
 
   it("selects only the option that is selected", () => {

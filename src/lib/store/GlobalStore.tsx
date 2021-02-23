@@ -105,7 +105,9 @@ let globalStoreInstance = createGlobalStore()
 
 export function useFeatureFlag(key: FeatureName) {
   if (Platform.OS === "ios") {
-    return GlobalStore.useAppState((state) => state.config.features[key])
+    return GlobalStore.useAppState((state) => {
+      return state.config.features[key]
+    })
   }
 
   // TODO: add feature flags to GlobalStore on android

@@ -1,7 +1,7 @@
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkFiltersState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { aggregationForFilter, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { __filterArtworksStoreTestUtils__, ArtworkFiltersState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { aggregationForFilter, Aggregations, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { CheckIcon } from "palette"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
@@ -27,10 +27,10 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
   }
 
   describe(params.name + " filter option", () => {
-    let state: ArtworkFiltersState
+    let initState: ArtworkFiltersState
 
     beforeEach(() => {
-      state = {
+      initState = {
         selectedFilters: [],
         appliedFilters: [],
         previouslyAppliedFilters: [],
@@ -42,31 +42,32 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           followedArtists: null,
         },
       }
+      __filterArtworksStoreTestUtils__?.injectState(initState)
     })
 
     const aggregation = aggregationForFilter(params.filterKey, params.aggregations!)
 
     it("renders the correct number of " + params.name + " options", () => {
-      const tree = renderWithWrappers(<params.Screen initialState={state} {...getEssentialProps()} />)
+      const tree = renderWithWrappers(<params.Screen {...getEssentialProps()} />)
       // Counts returned + all option
       expect(tree.root.findAllByType(OptionListItem)).toHaveLength(aggregation!.counts.length + 1)
     })
 
     it("adds an all option", () => {
-      const tree = renderWithWrappers(<params.Screen initialState={state} {...getEssentialProps()} />)
+      const tree = renderWithWrappers(<params.Screen {...getEssentialProps()} />)
       const firstRow = tree.root.findAllByType(SingleSelectOptionListItemRow)[0]
       expect(extractText(firstRow)).toContain("All")
     })
 
     describe("selecting a " + params.name + " filter", () => {
       it("displays the default " + params.name + " if no selected filters", () => {
-        const component = renderWithWrappers(<params.Screen initialState={state} {...getEssentialProps()} />)
+        const component = renderWithWrappers(<params.Screen {...getEssentialProps()} />)
         const selectedOption = selectedFilterOption(component)
         expect(extractText(selectedOption)).toContain("All")
       })
 
       it("displays a " + params.name + " filter option when selected", () => {
-        state = {
+        const injectedState: ArtworkFiltersState = {
           selectedFilters: [
             {
               paramName: params.paramName,
@@ -84,8 +85,9 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
             followedArtists: null,
           },
         }
+        __filterArtworksStoreTestUtils__?.injectState(injectedState)
 
-        const component = renderWithWrappers(<params.Screen initialState={state} {...getEssentialProps()} />)
+        const component = renderWithWrappers(<params.Screen {...getEssentialProps()} />)
         const selectedOption = selectedFilterOption(component)
         expect(extractText(selectedOption)).toContain(aggregation!.counts[0].name)
       })
@@ -97,7 +99,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           params.name +
           " options are tapped",
         () => {
-          const tree = renderWithWrappers(<params.Screen initialState={state} {...getEssentialProps()} />)
+          const tree = renderWithWrappers(<params.Screen {...getEssentialProps()} />)
 
           const [firstOptionInstance, secondOptionInstance, thirdOptionInstance] = tree.root.findAllByType(
             SingleSelectOptionListItemRow

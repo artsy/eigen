@@ -30,7 +30,8 @@ describe("Sort Options Screen", () => {
   const MockSortScreen = ({ initialState }: InitialState) => {
     return (
       <Theme>
-        <ArtworkFilterContext.Provider
+        <ArtworkFiltersStoreProvider>
+<ArtworkFilterContext.provider
           value={{
             state: initialState,
             dispatch: jest.fn(),

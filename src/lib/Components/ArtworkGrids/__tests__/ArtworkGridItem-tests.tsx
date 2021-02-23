@@ -24,7 +24,8 @@ const ArtworkWithProviders = (props: any) => {
   })
 
   return (
-    <ArtworkFilterContext.Provider value={{ state, dispatch }}>
+    <ArtworkFiltersStoreProvider>
+<ArtworkFilterContext.provider value={{ state, dispatch }}>
       <Artwork {...props} />
     </ArtworkFilterContext.Provider>
   )

@@ -1,19 +1,15 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import {
-  Aggregations,
-  ArtworkFilterContext,
-  ArtworkFilterContextState,
-  reducer,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { aggregationForFilter, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { aggregationForFilter, Aggregations, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
+import { __filterArtworksStoreTestUtils__ } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { ColorContainer, ColorOptionsScreen } from "../ColorOptions"
 import { ColorSwatch } from "../ColorSwatch"
 import { getEssentialProps } from "./helper"
 
 describe("Color options screen", () => {
-  let state: ArtworkFilterContextState
+  let state: ArtworkFiltersState
 
   const mockAggregations: Aggregations = [
     {
@@ -54,18 +50,11 @@ describe("Color options screen", () => {
     return selectedOption
   }
 
-  const MockColorScreen = ({ initialState }: any) => {
-    const [filterState, dispatch] = React.useReducer(reducer, initialState)
-
+  const MockColorScreen = () => {
     return (
-      <ArtworkFilterContext.Provider
-        value={{
-          state: filterState,
-          dispatch,
-        }}
-      >
+      <ArtworkFiltersStoreProvider>
         <ColorOptionsScreen {...getEssentialProps()} />
-      </ArtworkFilterContext.Provider>
+      </ArtworkFiltersStoreProvider>
     )
   }
 
@@ -82,6 +71,8 @@ describe("Color options screen", () => {
         followedArtists: null,
       },
     }
+
+    __filterArtworksStoreTestUtils__?.injectState(state)
   })
 
   const aggregation = aggregationForFilter(FilterParamName.color, mockAggregations)
@@ -96,7 +87,7 @@ describe("Color options screen", () => {
 
   describe("selecting a color filter", () => {
     it("displays a color filter option when selected", () => {
-      state = {
+      const injectedState: ArtworkFiltersState = {
         selectedFilters: [
           {
             paramName: FilterParamName.color,
@@ -114,6 +105,8 @@ describe("Color options screen", () => {
           followedArtists: null,
         },
       }
+
+      __filterArtworksStoreTestUtils__?.injectState(injectedState)
 
       const component = renderWithWrappers(<MockColorScreen initialState={state} {...getEssentialProps()} />)
       const selectedOption = selectedColorOptions(component)[0]
@@ -121,7 +114,7 @@ describe("Color options screen", () => {
     })
 
     it("allows only one color option to be selected when several are tapped", () => {
-      state = {
+      const injectedState: ArtworkFiltersState = {
         selectedFilters: [
           {
             paramName: FilterParamName.color,
@@ -140,6 +133,7 @@ describe("Color options screen", () => {
         },
       }
 
+      __filterArtworksStoreTestUtils__?.injectState(injectedState)
       const tree = renderWithWrappers(<MockColorScreen initialState={state} {...getEssentialProps()} />)
 
       const firstOptionInstance = tree.root.findAllByType(ColorContainer)[0]
@@ -156,7 +150,7 @@ describe("Color options screen", () => {
     })
 
     it("deselects color option on second tap", () => {
-      state = {
+      const injectedState: ArtworkFiltersState = {
         selectedFilters: [],
         appliedFilters: [],
         previouslyAppliedFilters: [],
@@ -169,6 +163,7 @@ describe("Color options screen", () => {
         },
       }
 
+      __filterArtworksStoreTestUtils__?.injectState(injectedState)
       const tree = renderWithWrappers(<MockColorScreen initialState={state} {...getEssentialProps()} />)
 
       const secondOptionInstance = tree.root.findAllByType(ColorContainer)[1]

@@ -36,7 +36,8 @@ describe("Ways to Buy Options Screen", () => {
     const [filterState, dispatch] = React.useReducer(reducer, initialState)
 
     return (
-      <ArtworkFilterContext.Provider
+      <ArtworkFiltersStoreProvider>
+<ArtworkFilterContext.provider
         value={{
           state: filterState,
           dispatch,

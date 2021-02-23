@@ -53,7 +53,8 @@ describe("FairArtworks", () => {
             return null
           }
           return (
-            <ArtworkFilterContext.Provider value={{ state, dispatch: jest.fn() }}>
+            <ArtworkFiltersStoreProvider>
+<ArtworkFilterContext.provider value={{ state, dispatch: jest.fn() }}>
               <FairArtworksFragmentContainer fair={props.fair} />
             </ArtworkFilterContext.Provider>
           )

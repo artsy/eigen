@@ -1,14 +1,13 @@
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { Aggregations, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Box, Theme } from "palette"
 import React from "react"
 import { ReactTestRenderer } from "react-test-renderer"
-
 import {
-  Aggregations,
-  ArtworkFilterContext,
-  ArtworkFilterContextState,
+  __filterArtworksStoreTestUtils__,
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
 } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { PriceRangeOptionsScreen } from "../PriceRangeOptions"
 import { InnerOptionListItem, OptionListItem } from "../SingleSelectOption"
@@ -53,10 +52,10 @@ const aggregations: Aggregations = [
 ]
 
 describe("Price Range Options Screen", () => {
-  let state: ArtworkFilterContextState
+  let initialState: ArtworkFiltersState
 
   beforeEach(() => {
-    state = {
+    initialState = {
       selectedFilters: [],
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -68,19 +67,15 @@ describe("Price Range Options Screen", () => {
         followedArtists: null,
       },
     }
+    __filterArtworksStoreTestUtils__?.injectState(initialState)
   })
 
-  const MockPriceRangeScreen = ({ initialState }: InitialState) => {
+  const MockPriceRangeScreen = () => {
     return (
       <Theme>
-        <ArtworkFilterContext.Provider
-          value={{
-            state: initialState,
-            dispatch: null as any,
-          }}
-        >
+        <ArtworkFiltersStoreProvider>
           <PriceRangeOptionsScreen {...getEssentialProps()} />
-        </ArtworkFilterContext.Provider>
+        </ArtworkFiltersStoreProvider>
       </Theme>
     )
   }
@@ -92,18 +87,18 @@ describe("Price Range Options Screen", () => {
   }
 
   it("renders the correct number of price range options", () => {
-    const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
+    const tree = renderWithWrappers(<MockPriceRangeScreen />)
     expect(tree.root.findAllByType(OptionListItem)).toHaveLength(6)
   })
 
   it("has an all option", () => {
-    const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
+    const tree = renderWithWrappers(<MockPriceRangeScreen />)
     const firstOption = tree.root.findAllByType(OptionListItem)[0]
     expect(extractText(firstOption)).toContain("All")
   })
 
   it("renders price range options from most to least expensive", () => {
-    const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
+    const tree = renderWithWrappers(<MockPriceRangeScreen />)
     const options = tree.root.findAllByType(OptionListItem)
     const renderedOptions = options.map(extractText)
 
@@ -112,13 +107,13 @@ describe("Price Range Options Screen", () => {
 
   describe("selectedPriceRangeOption", () => {
     it("returns the default option if there are no selected or applied filters", () => {
-      const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
+      const tree = renderWithWrappers(<MockPriceRangeScreen />)
       const selectedOption = selectedPriceRangeOption(tree)
       expect(extractText(selectedOption)).toContain("All")
     })
 
     it("prefers an applied filter over the default filter", () => {
-      state = {
+      const injectedState: ArtworkFiltersState = {
         selectedFilters: [],
         appliedFilters: [
           {
@@ -145,13 +140,14 @@ describe("Price Range Options Screen", () => {
         },
       }
 
-      const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
+      __filterArtworksStoreTestUtils__?.injectState(injectedState)
+      const tree = renderWithWrappers(<MockPriceRangeScreen />)
       const selectedOption = selectedPriceRangeOption(tree)
       expect(extractText(selectedOption)).toContain("$5,000-10,000")
     })
 
     it("prefers the selected filter over the default filter", () => {
-      state = {
+      const injectedState: ArtworkFiltersState = {
         selectedFilters: [
           {
             displayText: "$5,000-10,000",
@@ -171,13 +167,14 @@ describe("Price Range Options Screen", () => {
         },
       }
 
-      const component = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
+      __filterArtworksStoreTestUtils__?.injectState(injectedState)
+      const component = renderWithWrappers(<MockPriceRangeScreen />)
       const selectedOption = selectedPriceRangeOption(component)
       expect(extractText(selectedOption)).toContain("$5,000-10,000")
     })
 
     it("prefers the selected filter over an applied filter", () => {
-      state = {
+      const injectedState: ArtworkFiltersState = {
         selectedFilters: [
           {
             displayText: "$5,000-10,000",
@@ -211,7 +208,8 @@ describe("Price Range Options Screen", () => {
         },
       }
 
-      const tree = renderWithWrappers(<MockPriceRangeScreen initialState={state} />)
+      __filterArtworksStoreTestUtils__?.injectState(injectedState)
+      const tree = renderWithWrappers(<MockPriceRangeScreen />)
       const selectedOption = selectedPriceRangeOption(tree)
       expect(extractText(selectedOption)).toContain("$5,000-10,000")
     })

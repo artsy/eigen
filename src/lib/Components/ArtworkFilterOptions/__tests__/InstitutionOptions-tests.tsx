@@ -1,6 +1,6 @@
-import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { Aggregations, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
-import { Aggregations, ArtworkFilterContext, reducer } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { InstitutionOptionsScreen } from "../InstitutionOptions"
 import { sharedAggregateFilterValidation, ValidationParams } from "./AggregationOptionCommonValidation"
 import { getEssentialProps } from "./helper"
@@ -29,18 +29,11 @@ describe("Institution Options Screen", () => {
     },
   ]
 
-  const MockInstitutionScreen = ({ initialState }: any) => {
-    const [filterState, dispatch] = React.useReducer(reducer, initialState)
-
+  const MockInstitutionScreen = () => {
     return (
-      <ArtworkFilterContext.Provider
-        value={{
-          state: filterState,
-          dispatch,
-        }}
-      >
+      <ArtworkFiltersStoreProvider>
         <InstitutionOptionsScreen {...getEssentialProps()} />
-      </ArtworkFilterContext.Provider>
+      </ArtworkFiltersStoreProvider>
     )
   }
 
