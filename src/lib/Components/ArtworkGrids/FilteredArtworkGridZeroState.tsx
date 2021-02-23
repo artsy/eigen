@@ -1,6 +1,6 @@
-import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Button, color, Flex, Sans } from "palette"
-import React, { useContext } from "react"
+import React from "react"
 import styled from "styled-components/native"
 
 interface ZeroStateProps {
@@ -11,11 +11,7 @@ interface ZeroStateProps {
 
 export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) => {
   const { id, slug, trackClear } = props
-  const { dispatch } = useContext(ArtworkFilterContext)
-
-  const refetchArtworks = () => {
-    dispatch({ type: "clearFiltersZeroState" })
-  }
+  const clearFiltersZeroStateAction = ArtworksFiltersStore.useStoreActions((state) => state.clearFiltersZeroStateAction)
 
   return (
     <Flex flexDirection="column" px={4}>
@@ -28,7 +24,7 @@ export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) =>
             if (trackClear) {
               trackClear(id, slug)
             }
-            refetchArtworks()
+            clearFiltersZeroStateAction()
           }}
         >
           Clear filters
