@@ -47,7 +47,6 @@ import { PriceRangeOptionsScreen } from "../ArtworkFilterOptions/PriceRangeOptio
 import { SizeOptionsScreen } from "../ArtworkFilterOptions/SizeOptions"
 // @ts-ignore
 import { SizesOptionsScreen } from "../ArtworkFilterOptions/SizesOptions"
-// @ts-ignore
 import { SortOptionsScreen } from "../ArtworkFilterOptions/SortOptions"
 // @ts-ignore
 import { TimePeriodOptionsScreen } from "../ArtworkFilterOptions/TimePeriodOptions"
@@ -228,19 +227,19 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
             }}
           >
             <Stack.Screen name="FilterOptionsScreen" component={FilterOptionsScreen} initialParams={props} />
-            {/* <Stack.Screen name="ArtistIDsOptionsScreen" component={ArtistIDsOptionsScreen} />
-            <Stack.Screen name="AttributionClassOptionsScreen" component={AttributionClassOptionsScreen} />
-            <Stack.Screen name="ColorOptionsScreen" component={ColorOptionsScreen} />
-            <Stack.Screen name="EstimateRangeOptionsScreen" component={EstimateRangeOptionsScreen} />
-            <Stack.Screen name="GalleryOptionsScreen" component={GalleryOptionsScreen} />
-            <Stack.Screen name="AdditionalGeneIDsOptionsScreen" component={AdditionalGeneIDsOptionsScreen} />
-            <Stack.Screen name="InstitutionOptionsScreen" component={InstitutionOptionsScreen} />
-            <Stack.Screen name="MediumOptionsScreen" component={MediumOptionsScreen} />
-            <Stack.Screen name="PriceRangeOptionsScreen" component={PriceRangeOptionsScreen} />
-            <Stack.Screen name="SizeOptionsScreen" component={SizeOptionsScreen} />
-            <Stack.Screen name="SizesOptionsScreen" component={SizesOptionsScreen} />
+            {/* <Stack.Screen name="ArtistIDsOptionsScreen" component={ArtistIDsOptionsScreen} /> */}
+            {/* <Stack.Screen name="AttributionClassOptionsScreen" component={AttributionClassOptionsScreen} /> */}
+            {/* <Stack.Screen name="ColorOptionsScreen" component={ColorOptionsScreen} /> */}
+            {/* <Stack.Screen name="EstimateRangeOptionsScreen" component={EstimateRangeOptionsScreen} /> */}
+            {/* <Stack.Screen name="GalleryOptionsScreen" component={GalleryOptionsScreen} /> */}
+            {/* <Stack.Screen name="AdditionalGeneIDsOptionsScreen" component={AdditionalGeneIDsOptionsScreen} /> */}
+            {/* <Stack.Screen name="InstitutionOptionsScreen" component={InstitutionOptionsScreen} /> */}
+            {/* <Stack.Screen name="MediumOptionsScreen" component={MediumOptionsScreen} /> */}
+            {/* <Stack.Screen name="PriceRangeOptionsScreen" component={PriceRangeOptionsScreen} /> */}
+            {/* <Stack.Screen name="SizeOptionsScreen" component={SizeOptionsScreen} /> */}
+            {/* <Stack.Screen name="SizesOptionsScreen" component={SizesOptionsScreen} /> */}
             <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
-            <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} /> */}
+            {/* <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} /> */}
             <Stack.Screen name="ViewAsOptionsScreen" component={ViewAsOptionsScreen} />
             {/* <Stack.Screen
               name="YearOptionsScreen"
@@ -249,9 +248,9 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                 // Avoid PanResponser conflicts between the slider and the slide back gesture
                 gestureEnabled: false,
               }}
-            />
-            <Stack.Screen name="WaysToBuyOptionsScreen" component={WaysToBuyOptionsScreen} />
-            <Stack.Screen name="CategoriesOptionsScreen" component={CategoriesOptionsScreen} /> */}
+            /> */}
+            {/* <Stack.Screen name="WaysToBuyOptionsScreen" component={WaysToBuyOptionsScreen} /> */}
+            {/* <Stack.Screen name="CategoriesOptionsScreen" component={CategoriesOptionsScreen} /> */}
           </Stack.Navigator>
 
           <Separator my={0} />
