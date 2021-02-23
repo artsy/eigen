@@ -5,21 +5,8 @@ upcoming:
     - Migrate LoadFailureView to typescript - adam, brian, david, mounir, pavlos
     - Improve bottom tabs dev state management  - david, mounir
   user_facing:
-    - Fix issue where user's watched lots are not always up to date - erik
-    - Add custom ShareSheet and sharing to Instagram Stories - pavlos
-    - MarketStats on auction results - pepopowitz, mounir
-    - fix - show correct up/down arrows on Market Stats - pepopowitz
-    - Loading skeleton for market stats - pepopowitz
-    - hooks up inquiry make offer modal to web view checkout flow - lily
-    - Convert cents to dollars in market stats - pepopowitz
-    - Dedupe currencies in auction results - pepopowitz
-    - update support email - brian
-    - scroll to the top after applying a filter on auction results- mounir
-    - Market stats formatting fixes - brian
     - Adds inquiry checkout offer status CTA - lily
-    - Add fonts to android - mounir, steven
-    - Fix send feedback on Android - adam
-    -
+    - Update consignment photo selection flow for iOS 14 - brian
 
 releases:
   - version: 6.7.8

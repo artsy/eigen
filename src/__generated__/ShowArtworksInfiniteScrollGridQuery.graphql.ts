@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0559d18617f36d00f4b6f561120c8e41 */
+/* @relayHash f2324a933932b6d75c43aeab28c9f69c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -10,7 +10,7 @@ export type ShowArtworksInfiniteScrollGridQueryVariables = {
     count: number;
     cursor?: string | null;
     sort?: string | null;
-    medium?: string | null;
+    additionalGeneIDs?: Array<string | null> | null;
     priceRange?: string | null;
     color?: string | null;
     dimensionRange?: string | null;
@@ -38,7 +38,7 @@ query ShowArtworksInfiniteScrollGridQuery(
   $id: String!
   $cursor: String
   $sort: String
-  $medium: String
+  $additionalGeneIDs: [String]
   $priceRange: String
   $color: String
   $dimensionRange: String
@@ -50,7 +50,7 @@ query ShowArtworksInfiniteScrollGridQuery(
   $attributionClass: [String]
 ) {
   show(id: $id) {
-    ...ShowArtworks_show_3IiyVu
+    ...ShowArtworks_show_3mnOQ1
     id
   }
 }
@@ -114,10 +114,10 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
   }
 }
 
-fragment ShowArtworks_show_3IiyVu on Show {
+fragment ShowArtworks_show_3mnOQ1 on Show {
   slug
   internalID
-  showArtworks: filterArtworksConnection(first: 30, after: $cursor, sort: $sort, medium: $medium, priceRange: $priceRange, color: $color, dimensionRange: $dimensionRange, majorPeriods: $majorPeriods, acquireable: $acquireable, inquireableOnly: $inquireableOnly, atAuction: $atAuction, offerable: $offerable, aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], attributionClass: $attributionClass) {
+  showArtworks: filterArtworksConnection(first: 30, after: $cursor, sort: $sort, additionalGeneIDs: $additionalGeneIDs, priceRange: $priceRange, color: $color, dimensionRange: $dimensionRange, majorPeriods: $majorPeriods, acquireable: $acquireable, inquireableOnly: $inquireableOnly, atAuction: $atAuction, offerable: $offerable, aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], attributionClass: $attributionClass) {
     aggregations {
       slice
       counts {
@@ -155,52 +155,52 @@ var v0 = {
 v1 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "atAuction"
+  "name": "additionalGeneIDs"
 },
 v2 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "attributionClass"
+  "name": "atAuction"
 },
 v3 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "color"
+  "name": "attributionClass"
 },
 v4 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "count"
+  "name": "color"
 },
 v5 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "cursor"
+  "name": "count"
 },
 v6 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "dimensionRange"
+  "name": "cursor"
 },
 v7 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "id"
+  "name": "dimensionRange"
 },
 v8 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "inquireableOnly"
+  "name": "id"
 },
 v9 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "majorPeriods"
+  "name": "inquireableOnly"
 },
 v10 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "medium"
+  "name": "majorPeriods"
 },
 v11 = {
   "defaultValue": null,
@@ -231,38 +231,38 @@ v15 = {
 },
 v16 = {
   "kind": "Variable",
+  "name": "additionalGeneIDs",
+  "variableName": "additionalGeneIDs"
+},
+v17 = {
+  "kind": "Variable",
   "name": "atAuction",
   "variableName": "atAuction"
 },
-v17 = {
+v18 = {
   "kind": "Variable",
   "name": "attributionClass",
   "variableName": "attributionClass"
 },
-v18 = {
+v19 = {
   "kind": "Variable",
   "name": "color",
   "variableName": "color"
 },
-v19 = {
+v20 = {
   "kind": "Variable",
   "name": "dimensionRange",
   "variableName": "dimensionRange"
 },
-v20 = {
+v21 = {
   "kind": "Variable",
   "name": "inquireableOnly",
   "variableName": "inquireableOnly"
 },
-v21 = {
+v22 = {
   "kind": "Variable",
   "name": "majorPeriods",
   "variableName": "majorPeriods"
-},
-v22 = {
-  "kind": "Variable",
-  "name": "medium",
-  "variableName": "medium"
 },
 v23 = {
   "kind": "Variable",
@@ -295,6 +295,7 @@ v27 = {
 },
 v28 = [
   (v15/*: any*/),
+  (v16/*: any*/),
   {
     "kind": "Variable",
     "name": "after",
@@ -311,16 +312,15 @@ v28 = [
       "PRICE_RANGE"
     ]
   },
-  (v16/*: any*/),
   (v17/*: any*/),
   (v18/*: any*/),
   (v19/*: any*/),
+  (v20/*: any*/),
   {
     "kind": "Literal",
     "name": "first",
     "value": 30
   },
-  (v20/*: any*/),
   (v21/*: any*/),
   (v22/*: any*/),
   (v23/*: any*/),
@@ -384,6 +384,7 @@ return {
               (v16/*: any*/),
               (v17/*: any*/),
               (v18/*: any*/),
+              (v19/*: any*/),
               {
                 "kind": "Variable",
                 "name": "count",
@@ -394,7 +395,6 @@ return {
                 "name": "cursor",
                 "variableName": "cursor"
               },
-              (v19/*: any*/),
               (v20/*: any*/),
               (v21/*: any*/),
               (v22/*: any*/),
@@ -415,20 +415,20 @@ return {
   "kind": "Request",
   "operation": {
     "argumentDefinitions": [
-      (v7/*: any*/),
-      (v4/*: any*/),
-      (v5/*: any*/),
-      (v13/*: any*/),
-      (v10/*: any*/),
-      (v12/*: any*/),
-      (v3/*: any*/),
-      (v6/*: any*/),
-      (v9/*: any*/),
-      (v0/*: any*/),
       (v8/*: any*/),
+      (v5/*: any*/),
+      (v6/*: any*/),
+      (v13/*: any*/),
       (v1/*: any*/),
+      (v12/*: any*/),
+      (v4/*: any*/),
+      (v7/*: any*/),
+      (v10/*: any*/),
+      (v0/*: any*/),
+      (v9/*: any*/),
+      (v2/*: any*/),
       (v11/*: any*/),
-      (v2/*: any*/)
+      (v3/*: any*/)
     ],
     "kind": "Operation",
     "name": "ShowArtworksInfiniteScrollGridQuery",
@@ -810,7 +810,7 @@ return {
             "args": (v28/*: any*/),
             "filters": [
               "sort",
-              "medium",
+              "additionalGeneIDs",
               "priceRange",
               "color",
               "dimensionRange",
@@ -834,7 +834,7 @@ return {
     ]
   },
   "params": {
-    "id": "0559d18617f36d00f4b6f561120c8e41",
+    "id": "f2324a933932b6d75c43aeab28c9f69c",
     "metadata": {},
     "name": "ShowArtworksInfiniteScrollGridQuery",
     "operationKind": "query",
@@ -842,5 +842,5 @@ return {
   }
 };
 })();
-(node as any).hash = '4e086ee0a8ba4eaf348b248c966a5a5b';
+(node as any).hash = 'f43980d86a1d42a3f42a07e2463c20a1';
 export default node;

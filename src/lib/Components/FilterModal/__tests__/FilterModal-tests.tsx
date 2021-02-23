@@ -238,7 +238,7 @@ describe("Filter modal navigation flow", () => {
 
     act(() => instance.props.onPress())
 
-    expect(navigateMock).toBeCalledWith("MediumOptionsScreen")
+    expect(navigateMock).toBeCalledWith("AdditionalGeneIDsOptionsScreen")
   })
 
   it("allows users to exit filter modal screen when selecting close icon", () => {
@@ -270,7 +270,13 @@ describe("Filter modal states", () => {
 
   it("displays the currently selected medium option on the filter screen", () => {
     state = {
-      selectedFilters: [{ displayText: "Performance art", paramName: FilterParamName.medium }],
+      selectedFilters: [
+        {
+          displayText: "Performance Art",
+          paramValue: ["performance-art"],
+          paramName: FilterParamName.additionalGeneIDs,
+        },
+      ],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
@@ -283,7 +289,8 @@ describe("Filter modal states", () => {
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={state} />)
-    expect(filterScreen.find(CurrentOption).at(1).text()).toEqual("Performance art")
+
+    expect(filterScreen.find(CurrentOption).at(1).text()).toEqual("Performance Art")
   })
 
   it("displays the filter screen apply button correctly when no filters are selected", () => {
@@ -324,7 +331,7 @@ describe("Filter modal states", () => {
   it("displays selected filters on the Filter modal", () => {
     state = {
       selectedFilters: [
-        { displayText: "Drawing", paramName: FilterParamName.medium },
+        { displayText: "Drawing", paramValue: ["drawing"], paramName: FilterParamName.additionalGeneIDs },
         { displayText: "Price (low to high)", paramName: FilterParamName.sort },
         { displayText: "$10,000-20,000", paramName: FilterParamName.priceRange },
         {
@@ -522,6 +529,7 @@ describe("Applying filters on Artworks", () => {
     expect(env.mock.getMostRecentOperation().request.variables).toMatchInlineSnapshot(`
       Object {
         "acquireable": false,
+        "additionalGeneIDs": null,
         "atAuction": false,
         "attributionClass": null,
         "color": null,
@@ -531,7 +539,6 @@ describe("Applying filters on Artworks", () => {
         "id": "street-art-now",
         "inquireableOnly": false,
         "majorPeriods": null,
-        "medium": "*",
         "offerable": false,
         "partnerID": null,
         "priceRange": "*-*",

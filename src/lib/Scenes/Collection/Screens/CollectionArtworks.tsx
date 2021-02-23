@@ -102,7 +102,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
         sort: { type: "String", defaultValue: "-decayed_merch" }
-        medium: { type: "String", defaultValue: "*" }
+        additionalGeneIDs: { type: "[String]" }
         priceRange: { type: "String" }
         color: { type: "String" }
         partnerID: { type: "ID" }
@@ -121,7 +121,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
           first: $count
           after: $cursor
           sort: $sort
-          medium: $medium
+          additionalGeneIDs: $additionalGeneIDs
           priceRange: $priceRange
           color: $color
           partnerID: $partnerID
@@ -173,7 +173,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         $count: Int!
         $cursor: String
         $sort: String
-        $medium: String
+        $additionalGeneIDs: [String]
         $priceRange: String
         $color: String
         $partnerID: ID
@@ -191,7 +191,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
               count: $count
               cursor: $cursor
               sort: $sort
-              medium: $medium
+              additionalGeneIDs: $additionalGeneIDs
               color: $color
               partnerID: $partnerID
               priceRange: $priceRange

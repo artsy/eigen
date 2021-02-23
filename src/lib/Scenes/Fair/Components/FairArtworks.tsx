@@ -114,7 +114,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
         count: { type: "Int", defaultValue: 30 }
         cursor: { type: "String" }
         sort: { type: "String", defaultValue: "-decayed_merch" }
-        medium: { type: "String", defaultValue: "*" }
+        additionalGeneIDs: { type: "[String]" }
         priceRange: { type: "String" }
         color: { type: "String" }
         partnerID: { type: "ID" }
@@ -134,7 +134,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
           first: 30
           after: $cursor
           sort: $sort
-          medium: $medium
+          additionalGeneIDs: $additionalGeneIDs
           priceRange: $priceRange
           color: $color
           partnerID: $partnerID
@@ -207,7 +207,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
         $count: Int!
         $cursor: String
         $sort: String
-        $medium: String
+        $additionalGeneIDs: [String]
         $priceRange: String
         $color: String
         $partnerID: ID
@@ -227,7 +227,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
               count: $count
               cursor: $cursor
               sort: $sort
-              medium: $medium
+              additionalGeneIDs: $additionalGeneIDs
               color: $color
               partnerID: $partnerID
               priceRange: $priceRange

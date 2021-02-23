@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtworkAggregation = "ARTIST" | "ARTIST_NATIONALITY" | "ATTRIBUTION_CLASS" | "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
+export type ArtworkAggregation = "ARTIST" | "ARTIST_NATIONALITY" | "ATTRIBUTION_CLASS" | "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "LOCATION_CITY" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 export type ArtistSeriesArtworks_artistSeries = {
     readonly slug: string;
     readonly internalID: string;
@@ -47,6 +47,11 @@ const node: ReaderFragment = {
     {
       "defaultValue": null,
       "kind": "LocalArgument",
+      "name": "additionalGeneIDs"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
       "name": "atAuction"
     },
     {
@@ -83,11 +88,6 @@ const node: ReaderFragment = {
       "defaultValue": null,
       "kind": "LocalArgument",
       "name": "majorPeriods"
-    },
-    {
-      "defaultValue": "*",
-      "kind": "LocalArgument",
-      "name": "medium"
     },
     {
       "defaultValue": null,
@@ -148,6 +148,11 @@ const node: ReaderFragment = {
           "variableName": "acquireable"
         },
         {
+          "kind": "Variable",
+          "name": "additionalGeneIDs",
+          "variableName": "additionalGeneIDs"
+        },
+        {
           "kind": "Literal",
           "name": "aggregations",
           "value": [
@@ -189,11 +194,6 @@ const node: ReaderFragment = {
           "kind": "Variable",
           "name": "majorPeriods",
           "variableName": "majorPeriods"
-        },
-        {
-          "kind": "Variable",
-          "name": "medium",
-          "variableName": "medium"
         },
         {
           "kind": "Variable",
@@ -369,5 +369,5 @@ const node: ReaderFragment = {
   "type": "ArtistSeries",
   "abstractKey": null
 };
-(node as any).hash = 'bd0cf8766f02c953535bece7f657c285';
+(node as any).hash = '86de307244f966207da8c7cb5beda338';
 export default node;
