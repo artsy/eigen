@@ -1,12 +1,7 @@
 import { ContextModule } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
-import {
-  AggregationName,
-  ArtworkFilterContext,
-  FilterArray,
-  useSelectedOptionsDisplay,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { FilterArray, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
   changedFiltersParams,
   filterArtworksParams,
@@ -15,14 +10,25 @@ import {
   FilterParams,
   selectedOption,
 } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { filterKeyFromAggregation } from "lib/utils/ArtworkFilter2/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
 import { ArrowRightIcon, Box, Button, CloseIcon, color, FilterIcon, Flex, Sans, Separator } from "palette"
-import React, { useContext } from "react"
+import React from "react"
 import { FlatList, TouchableOpacity, View, ViewProperties } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
+import {
+  aggregationsState,
+  appliedFiltersState,
+  applyFiltersAction,
+  clearAllAction,
+  filterTypeState,
+  previouslyAppliedFiltersState,
+  resetFiltersAction,
+  selectedFiltersState,
+} from "../../utils/ArtworkFilter2/ArtworkFiltersContext"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
 import { AdditionalGeneIDsOptionsScreen } from "../ArtworkFilterOptions/AdditionalGeneIDsOptions"
 import { ArtistIDsOptionsScreen } from "../ArtworkFilterOptions/ArtistIDsOptionsScreen"
@@ -120,16 +126,15 @@ const Stack = createStackNavigator<FilterModalNavigationStack>()
 
 export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
   const tracking = useTracking()
-  const { dispatch, state } = useContext(ArtworkFilterContext)
   const { exitModal, id, mode, slug, closeModal } = props
 
   const handleClosingModal = () => {
-    dispatch({ type: "resetFilters" })
+    resetFiltersAction()
     closeModal?.()
   }
 
   const applyFilters = () => {
-    dispatch({ type: "applyFilters" })
+    applyFiltersAction()
     exitModal?.()
   }
 
@@ -159,14 +164,14 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
   }
 
   const getApplyButtonCount = () => {
-    let selectedFiltersSum = state.selectedFilters.length
+    let selectedFiltersSum = selectedFiltersState.length
 
     // For Auction results, the earliestCreatedYear and latestCreatedYear filters behave like one
-    if (state.filterType === "auctionResult") {
-      const hasEarliestCreatedYearFilterEnabled = !!state.selectedFilters.find(
+    if (filterTypeState === "auctionResult") {
+      const hasEarliestCreatedYearFilterEnabled = !!selectedFiltersState.find(
         (filter) => filter.paramName === FilterParamName.earliestCreatedYear
       )
-      const hasLatestCreatedYearFilterEnabled = !!state.selectedFilters.find(
+      const hasLatestCreatedYearFilterEnabled = !!selectedFiltersState.find(
         (filter) => filter.paramName === FilterParamName.latestCreatedYear
       )
       if (hasEarliestCreatedYearFilterEnabled && hasLatestCreatedYearFilterEnabled) {
@@ -175,11 +180,11 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
     }
 
     // For Sale Artworks, the artistsIDs and the includeArtworksByFollowedArtists filters behave like one
-    if (state.filterType === "saleArtwork") {
-      const hasArtistsIFollow = !!state.selectedFilters.find(
+    if (filterTypeState === "saleArtwork") {
+      const hasArtistsIFollow = !!selectedFiltersState.find(
         (filter) => filter.paramName === FilterParamName.artistsIFollow
       )
-      const hasArtistIDs = !!state.selectedFilters.find((filter) => filter.paramName === FilterParamName.artistIDs)
+      const hasArtistIDs = !!selectedFiltersState.find((filter) => filter.paramName === FilterParamName.artistIDs)
 
       if (hasArtistIDs && hasArtistsIFollow) {
         --selectedFiltersSum
@@ -189,7 +194,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
   }
 
   const isApplyButtonEnabled =
-    state.selectedFilters.length > 0 || (state.previouslyAppliedFilters.length === 0 && state.appliedFilters.length > 0)
+    selectedFiltersState.length > 0 || (previouslyAppliedFiltersState.length === 0 && appliedFiltersState.length > 0)
 
   return (
     <NavigationContainer independent>
@@ -237,7 +242,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
             <ApplyButton
               disabled={!isApplyButtonEnabled}
               onPress={() => {
-                const appliedFiltersParams = filterArtworksParams(state.appliedFilters, state.filterType)
+                const appliedFiltersParams = filterArtworksParams(appliedFiltersState, filterTypeState)
                 // TODO: Update to use cohesion
                 switch (mode) {
                   case FilterModalMode.Collection:
@@ -245,7 +250,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                       screenName: PageNames.Collection,
                       ownerEntity: OwnerEntityTypes.Collection,
                       currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
                     })
                     break
                   case FilterModalMode.ArtistArtworks:
@@ -253,7 +258,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                       screenName: PageNames.ArtistPage,
                       ownerEntity: OwnerEntityTypes.Artist,
                       currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
                     })
                     break
                   case FilterModalMode.Fair:
@@ -261,7 +266,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                       screenName: PageNames.FairPage,
                       ownerEntity: OwnerEntityTypes.Fair,
                       currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
                     })
                     break
                   case FilterModalMode.SaleArtworks:
@@ -269,7 +274,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                       screenName: PageNames.Auction,
                       ownerEntity: OwnerEntityTypes.Auction,
                       currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
                     })
                     break
                   case FilterModalMode.Show:
@@ -277,7 +282,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                       screenName: PageNames.ShowPage,
                       ownerEntity: OwnerEntityTypes.Show,
                       currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
                     })
                     break
                   case FilterModalMode.AuctionResults:
@@ -285,7 +290,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                       screenName: PageNames.ArtistPage,
                       ownerEntity: OwnerEntityTypes.Artist,
                       currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
                       contextModule: ContextModule.auctionResults,
                     })
                     break
@@ -295,7 +300,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                       screenName: PageNames.PartnerPage,
                       ownerEntity: OwnerEntityTypes.Partner,
                       currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, state.selectedFilters),
+                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
                     })
                     break
                 }
@@ -332,17 +337,15 @@ export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigatio
   const tracking = useTracking()
   const { closeModal, id, mode, slug, title = "Filter" } = route.params
 
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-
   const selectedOptions = useSelectedOptionsDisplay()
 
   const navigateToNextFilterScreen = (screenName: keyof FilterModalNavigationStack) => {
     navigation.navigate(screenName)
   }
 
-  const concreteAggregations = state.aggregations ?? []
+  const concreteAggregations = aggregationsState ?? []
 
-  const isClearAllButtonEnabled = state.appliedFilters.length > 0 || state.selectedFilters.length > 0
+  const isClearAllButtonEnabled = appliedFiltersState.length > 0 || selectedFiltersState.length > 0
 
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
     concreteAggregations.map((aggregation) => {
@@ -358,7 +361,7 @@ export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigatio
     .filter((filterOption) => filterOption.filterType)
 
   const clearAllFilters = () => {
-    dispatch({ type: "clearAll" })
+    clearAllAction()
   }
 
   const trackClear = (screenName: PageNames, ownerEntity: OwnerEntityTypes) => {
@@ -437,8 +440,8 @@ export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigatio
                         currentOption={selectedOption({
                           selectedOptions,
                           filterScreen: item.filterType,
-                          filterType: state.filterType,
-                          aggregations: state.aggregations,
+                          filterType: filterTypeState,
+                          aggregations: aggregationsState,
                         })}
                         filterType={item.filterType}
                       />
@@ -581,18 +584,16 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
   onPress,
   text = "Sort & Filter",
 }) => {
-  const { state } = useContext(ArtworkFilterContext)
-
   const getFiltersCount = () => {
-    let selectedFiltersSum = state.appliedFilters.length
+    let selectedFiltersSum = appliedFiltersState.length
 
     // the earliest created year and the latest created year are different fileters but they behave as one
     // therefore we need to decrement the number of filters by one when they are active
-    if (state.filterType === "auctionResult") {
-      const hasEarliestCreatedYearFilterEnabled = !!state.appliedFilters.find(
+    if (filterTypeState === "auctionResult") {
+      const hasEarliestCreatedYearFilterEnabled = !!appliedFiltersState.find(
         (filter) => filter.paramName === FilterParamName.earliestCreatedYear
       )
-      const hasLatestCreatedYearFilterEnabled = !!state.appliedFilters.find(
+      const hasLatestCreatedYearFilterEnabled = !!appliedFiltersState.find(
         (filter) => filter.paramName === FilterParamName.latestCreatedYear
       )
 
@@ -602,11 +603,11 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
     }
     // For Sale Artworks, the artistsIDs and the includeArtworksByFollowedArtists filters behave like one
     // Therefore we need to decrement the number of filters by one to give the user the impression they are one
-    if (state.filterType === "saleArtwork") {
-      const hasArtistsIFollow = !!state.appliedFilters.find(
+    if (filterTypeState === "saleArtwork") {
+      const hasArtistsIFollow = !!appliedFiltersState.find(
         (filter) => filter.paramName === FilterParamName.artistsIFollow
       )
-      const hasArtistIDs = !!state.appliedFilters.find((filter) => filter.paramName === FilterParamName.artistIDs)
+      const hasArtistIDs = !!appliedFiltersState.find((filter) => filter.paramName === FilterParamName.artistIDs)
 
       if (hasArtistIDs && hasArtistsIFollow) {
         --selectedFiltersSum
@@ -660,20 +661,6 @@ export const ApplyButtonContainer = styled(Box)`
   padding: 20px;
   padding-bottom: 30px;
 `
-
-const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string | undefined> = {
-  COLOR: FilterParamName.color,
-  DIMENSION_RANGE: FilterParamName.size,
-  GALLERY: "gallery",
-  INSTITUTION: "institution",
-  MAJOR_PERIOD: FilterParamName.timePeriod,
-  MEDIUM: FilterParamName.additionalGeneIDs,
-  PRICE_RANGE: FilterParamName.priceRange,
-  FOLLOWED_ARTISTS: "artistsIFollow",
-  ARTIST: "artistIDs",
-  earliestCreatedYear: "earliestCreatedYear",
-  latestCreatedYear: "earliestCreatedYear",
-}
 
 export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
   additionalGeneIDs: {

@@ -132,3 +132,17 @@ export interface FilterCounts {
   total: number | null
   followedArtists: number | null
 }
+
+export const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string | undefined> = {
+  COLOR: FilterParamName.color,
+  DIMENSION_RANGE: FilterParamName.size,
+  GALLERY: "gallery",
+  INSTITUTION: "institution",
+  MAJOR_PERIOD: FilterParamName.timePeriod,
+  MEDIUM: FilterParamName.additionalGeneIDs,
+  PRICE_RANGE: FilterParamName.priceRange,
+  FOLLOWED_ARTISTS: "artistsIFollow",
+  ARTIST: "artistIDs",
+  earliestCreatedYear: "earliestCreatedYear",
+  latestCreatedYear: "earliestCreatedYear",
+}
