@@ -30,6 +30,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
   const setFilterTypeAction = ArtworksFiltersStore.useStoreActions((state) => state.setFilterTypeAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
 
   const filterParams = filterArtworksParams(appliedFilters, "auctionResult")
 
@@ -38,7 +39,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
   }, [])
 
   useEffect(() => {
-    if (state.applyFilters) {
+    if (applyFilters) {
       relay.refetchConnection(
         PAGE_SIZE,
         (error) => {

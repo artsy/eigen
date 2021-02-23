@@ -3,12 +3,13 @@ import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/Filter
 import { extractText } from "lib/tests/extractText"
 import { mockEdges } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { mockEnvironmentPayload } from "../../../../tests/mockEnvironmentPayload"
+import { __filterArtworksStoreTestUtils__ } from "../../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { AuctionResultFragmentContainer } from "../../../Lists/AuctionResult"
 import { ArtistInsightsAuctionResultsPaginationContainer, SortMode } from "../ArtistInsightsAuctionResults"
 
@@ -16,11 +17,12 @@ jest.unmock("react-relay")
 
 describe("ArtistInsightsAuctionResults", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  let getState: () => ArtworkFilterContextState
+  let initialState: ArtworkFiltersState
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    getState = () => ({
+
+    initialState = {
       selectedFilters: [],
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -31,7 +33,8 @@ describe("ArtistInsightsAuctionResults", () => {
         total: null,
         followedArtists: null,
       },
-    })
+    }
+    __filterArtworksStoreTestUtils__?.injectState(initialState)
   })
 
   const TestRenderer = () => (
@@ -48,14 +51,14 @@ describe("ArtistInsightsAuctionResults", () => {
       render={({ props }) => {
         if (props?.artist) {
           return (
-            <ArtworkFilterContext.Provider value={{ state: getState(), dispatch: jest.fn() }}>
+            <ArtworkFiltersStoreProvider>
               <ArtistInsightsAuctionResultsPaginationContainer
                 artist={props.artist}
                 scrollToTop={() => {
                   console.log("do nothing")
                 }}
               />
-            </ArtworkFilterContext.Provider>
+            </ArtworkFiltersStoreProvider>
           )
         }
         return null

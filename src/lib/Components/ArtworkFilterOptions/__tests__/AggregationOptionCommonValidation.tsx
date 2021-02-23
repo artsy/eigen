@@ -1,6 +1,6 @@
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Aggregations, ArtworkFilterContextState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { aggregationForFilter, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { CheckIcon } from "palette"
 import React from "react"
@@ -9,7 +9,7 @@ import { ReactElement } from "simple-markdown"
 import { InnerOptionListItem, OptionListItem, SingleSelectOptionListItemRow } from "../SingleSelectOption"
 import { getEssentialProps } from "./helper"
 
-type MockScreen = (props: { initialState: ArtworkFilterContextState }) => ReactElement
+type MockScreen = (props: { initialState: ArtworkFiltersState }) => ReactElement
 
 export interface ValidationParams {
   Screen: MockScreen
@@ -27,7 +27,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
   }
 
   describe(params.name + " filter option", () => {
-    let state: ArtworkFilterContextState
+    let state: ArtworkFiltersState
 
     beforeEach(() => {
       state = {
