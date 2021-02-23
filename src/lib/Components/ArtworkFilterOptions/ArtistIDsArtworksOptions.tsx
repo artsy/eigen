@@ -1,13 +1,15 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter2/ArtworkFiltersStore"
 import {
+  aggregationForFilter,
   AggregationName,
-  ArtworkFilterContext,
   FilterData,
-  useSelectedOptionsDisplay,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { aggregationForFilter, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/utils/ArtworkFilter2/FilterArtworksHelpers"
+
 import { sortBy } from "lodash"
-import React, { useContext } from "react"
+import React from "react"
 import { FilterModalNavigationStack } from "../FilterModal"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
@@ -15,8 +17,9 @@ interface ArtistIDsArtworksOptionsScreenProps
   extends StackScreenProps<FilterModalNavigationStack, "ArtistIDsOptionsScreen"> {}
 
 export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
   const selectedOptions = useSelectedOptionsDisplay()
+  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
 
   const selectedArtistOptions = selectedOptions.filter((value) => {
     return value.paramName === FilterParamName.artistIDs
@@ -26,7 +29,7 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
     return value.paramName === FilterParamName.artistsIFollow
   })
 
-  const aggregation = aggregationForFilter(FilterParamName.artistIDs, state.aggregations)
+  const aggregation = aggregationForFilter(FilterParamName.artistIDs, aggregations)
   const artistDisplayOptions = aggregation?.counts.map((aggCount) => {
     return {
       displayText: aggCount.name,
@@ -54,14 +57,11 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
     // send the opposite of the current val.
     const selectedVal = option.paramName === FilterParamName.artistIDs ? option.paramValue : !option.paramValue
 
-    dispatch({
-      type: "selectFilters",
-      payload: {
-        displayText: option.displayText,
-        paramValue: selectedVal,
-        paramName: option.paramName,
-        filterKey: option.filterKey,
-      },
+    selectFiltersAction({
+      displayText: option.displayText,
+      paramValue: selectedVal,
+      paramName: option.paramName,
+      filterKey: option.filterKey,
     })
   }
 
@@ -75,9 +75,7 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
 
   // If FOLLOWED_ARTISTS is included in the list of available aggregations, it means
   // the user has at least one artist they follow in the fair.
-  const hasWorksByFollowedArtists = !!state.aggregations.find(
-    (agg) => agg.slice === ("FOLLOWED_ARTISTS" as AggregationName)
-  )
+  const hasWorksByFollowedArtists = !!aggregations.find((agg) => agg.slice === ("FOLLOWED_ARTISTS" as AggregationName))
   const itemIsDisabled = (item: FilterData): boolean => {
     return item.paramName === FilterParamName.artistsIFollow && !hasWorksByFollowedArtists
   }

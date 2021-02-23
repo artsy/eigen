@@ -1,6 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworkFilterContext, reducer } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter2/ArtworkFiltersStore"
 import { Theme } from "palette"
 import React from "react"
 import { FilterModalMode, FilterModalNavigationStack, FilterOptionsScreen } from "../FilterModal"
@@ -28,19 +27,12 @@ export const getEssentialProps = (params: {} = {}) =>
     // navigation
   } as unknown) as StackScreenProps<FilterModalNavigationStack, "FilterOptionsScreen">)
 
-export const MockFilterScreen = ({ initialState }: InitialState) => {
-  const [filterState, dispatch] = React.useReducer(reducer, initialState)
-
+export const MockFilterScreen = () => {
   return (
     <Theme>
-      <ArtworkFilterContext.Provider
-        value={{
-          state: filterState,
-          dispatch,
-        }}
-      >
+      <ArtworkFiltersStoreProvider>
         <FilterOptionsScreen {...getEssentialProps()} />
-      </ArtworkFilterContext.Provider>
+      </ArtworkFiltersStoreProvider>
     </Theme>
   )
 }

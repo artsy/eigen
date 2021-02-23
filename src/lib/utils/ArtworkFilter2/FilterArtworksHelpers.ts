@@ -1,4 +1,4 @@
-import { FilterScreen } from "lib/Components/FilterModal2"
+import { FilterScreen } from "lib/Components/FilterModal"
 import { capitalize, compact, forOwn, groupBy, lowerCase, sortBy, startCase } from "lodash"
 
 export enum FilterDisplayName {
