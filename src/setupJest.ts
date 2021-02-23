@@ -135,10 +135,11 @@ mockedModule("./lib/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "Artis
 mockedModule("./lib/Components/Gene/Header.tsx", "Header")
 
 // Native modules
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
 
-function getNativeModules(): typeof NativeModules {
+function getNativeModules(): typeof LegacyNativeModules {
   return {
     ARTakeCameraPhotoModule: {
       errorCodes: {
@@ -147,6 +148,7 @@ function getNativeModules(): typeof NativeModules {
         cameraAccessDenied: "cameraAccessDenied",
         saveFailed: "saveFailed",
       },
+      triggerCameraModal: jest.fn(),
     },
 
     ARCocoaConstantsModule: {
@@ -159,24 +161,15 @@ function getNativeModules(): typeof NativeModules {
     ARNotificationsManager: {
       nativeState: {
         userAgent: "Jest Unit Tests",
-        env: "test",
         authenticationToken: "authenticationToken",
         onboardingState: "complete",
-        gravityURL: "gravityURL",
         launchCount: 1,
-        metaphysicsURL: "metaphysicsURL",
         deviceId: "testDevice",
-        predictionURL: "predictionURL",
-        webURL: "https://artsy.net",
-        sentryDSN: "sentryDSN",
-        stripePublishableKey: "stripePublishableKey",
         userID: "userID",
-        legacyFairSlugs: ["some-fairs-slug", "some-other-fair-slug"],
-        legacyFairProfileSlugs: [],
       },
       postNotificationName: jest.fn(),
       didFinishBootstrapping: jest.fn(),
-      reactStateUpdate: jest.fn(),
+      reactStateUpdated: jest.fn(),
     },
 
     ARTemporaryAPIModule: {
@@ -184,6 +177,7 @@ function getNativeModules(): typeof NativeModules {
       fetchNotificationPermissions: jest.fn(),
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
+      clearUserData: jest.fn(),
       appVersion: "appVersion",
       buildVersion: "buildVersion",
     },
