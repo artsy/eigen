@@ -1,16 +1,17 @@
 import { ContextModule } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
-import { FilterArray, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+
+import { useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter2/ArtworkFiltersStore"
 import {
   changedFiltersParams,
+  FilterArray,
   filterArtworksParams,
   FilterDisplayName,
+  filterKeyFromAggregation,
   FilterParamName,
   FilterParams,
-  selectedOption,
-} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import { filterKeyFromAggregation } from "lib/utils/ArtworkFilter2/FilterArtworksHelpers"
+} from "lib/utils/ArtworkFilter2/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
@@ -29,6 +30,7 @@ import {
   resetFiltersAction,
   selectedFiltersState,
 } from "../../utils/ArtworkFilter2/ArtworkFiltersContext"
+import { selectedOption } from "../../utils/ArtworkFilter2/FilterArtworksHelpers"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
 import { AdditionalGeneIDsOptionsScreen } from "../ArtworkFilterOptions/AdditionalGeneIDsOptions"
 import { ArtistIDsOptionsScreen } from "../ArtworkFilterOptions/ArtistIDsOptionsScreen"

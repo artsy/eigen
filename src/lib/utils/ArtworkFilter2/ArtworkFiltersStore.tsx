@@ -1,5 +1,6 @@
 import { Action, action } from "easy-peasy"
 import { filter, find, pullAllBy, union, unionBy } from "lodash"
+import { filterTypeState, previouslyAppliedFiltersState, selectedFiltersState } from "./ArtworkFiltersContext"
 import {
   Aggregations,
   defaultCommonFilterOptions,
@@ -220,4 +221,133 @@ export const ArtworkFiltersStore: ArtworkFiltersStore = {
     state.previouslyAppliedFilters = payload
     state.applyFilters = false
   }),
+}
+
+// Return the list of selected options (union of selected and applied)
+export const useSelectedOptionsDisplay = (): FilterArray => {
+  return selectedOptionsUnion({
+    selectedFilters: selectedFiltersState,
+    previouslyAppliedFilters: previouslyAppliedFiltersState,
+    filterType: filterTypeState,
+  })
+}
+
+export const selectedOptionsUnion = ({
+  selectedFilters,
+  previouslyAppliedFilters,
+  filterType = "artwork",
+}: {
+  selectedFilters: FilterArray
+  previouslyAppliedFilters: FilterArray
+  filterType?: FilterType
+}): FilterArray => {
+  const defaultSortFilter = {
+    artwork: {
+      paramName: FilterParamName.sort,
+      paramValue: "-decayed_merch",
+      displayText: "Default",
+    },
+    saleArtwork: {
+      paramName: FilterParamName.sort,
+      paramValue: "position",
+      displayText: "Lot number ascending",
+    },
+    showArtwork: {
+      paramName: FilterParamName.sort,
+      paramValue: "partner_show_position",
+      displayText: "Gallery Curated",
+    },
+    auctionResult: {
+      paramName: FilterParamName.sort,
+      paramValue: "DATE_DESC",
+      displayText: "Most recent sale date",
+    },
+  }[filterType]
+
+  const defaultFilters: FilterArray = [
+    defaultSortFilter,
+    { paramName: FilterParamName.estimateRange, paramValue: "", displayText: "All" },
+    { paramName: FilterParamName.medium, paramValue: "*", displayText: "All" },
+    { paramName: FilterParamName.priceRange, paramValue: "*-*", displayText: "All" },
+    { paramName: FilterParamName.size, paramValue: "*-*", displayText: "All" },
+    { paramName: FilterParamName.gallery, displayText: "All" },
+    {
+      paramName: FilterParamName.institution,
+      displayText: "All",
+    },
+    { paramName: FilterParamName.color, displayText: "All" },
+    { paramName: FilterParamName.timePeriod, paramValue: "*-*", displayText: "All" },
+    {
+      paramName: FilterParamName.waysToBuyBuy,
+      paramValue: false,
+      displayText: "Buy now",
+    },
+    {
+      paramName: FilterParamName.waysToBuyInquire,
+      paramValue: false,
+      displayText: "Inquire",
+    },
+    {
+      paramName: FilterParamName.waysToBuyMakeOffer,
+      paramValue: false,
+      displayText: "Make offer",
+    },
+    {
+      paramName: FilterParamName.waysToBuyBid,
+      paramValue: false,
+      displayText: "Bid",
+    },
+    {
+      paramName: FilterParamName.artistsIFollow,
+      paramValue: false,
+      displayText: "All artists I follow",
+    },
+    {
+      paramName: FilterParamName.artistIDs,
+      paramValue: [],
+      displayText: "All",
+    },
+    {
+      paramName: FilterParamName.viewAs,
+      paramValue: false,
+      displayText: "Grid",
+    },
+    { paramName: FilterParamName.attributionClass, paramValue: "", displayText: "All" },
+  ]
+
+  // First, naively attempt to union all of the existing filters. Give selectedFilters
+  // precedence over previouslyAppliedFilters and defaultFilters.
+  const preliminarySelectedFilters = unionBy(
+    selectedFilters,
+    previouslyAppliedFilters,
+    defaultFilters,
+    ({ paramValue, paramName }) => {
+      if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
+        return paramValue
+      } else {
+        return paramName
+      }
+    }
+  )
+
+  // Then, handle the case where a multi-select option is technically de-selected.
+  return preliminarySelectedFilters.filter(({ paramName, paramValue }) => {
+    if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
+      // See if we have an existing entry in previouslyAppliedFilters
+      const hasExistingPreviouslyAppliedFilter = previouslyAppliedFilters.find(
+        (previouslyAppliedFilter) =>
+          paramName === previouslyAppliedFilter.paramName && paramValue === previouslyAppliedFilter.paramValue
+      )
+
+      const hasExistingSelectedAppliedFilter = selectedFilters.find(
+        (selectedFilter) => paramName === selectedFilter.paramName && paramValue === selectedFilter.paramValue
+      )
+
+      // If so, it means that this filter had been previously applied and is now being de-selected.
+      // We need it to exist in the "selectedFilters" array so that our counts, etc. are correct,
+      // but it's technically de-selected.
+      return !(hasExistingPreviouslyAppliedFilter && hasExistingSelectedAppliedFilter)
+    }
+    return true
+  })
 }
