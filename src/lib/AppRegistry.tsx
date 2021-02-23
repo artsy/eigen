@@ -71,6 +71,7 @@ import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { ToastProvider } from "./Components/Toast/toastHook"
+import { useSentryConfig } from "./ErrorReporting"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
@@ -401,6 +402,8 @@ const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.native.sessionState.userID)
   const onboardingState = GlobalStore.useAppState((state) => state.native.sessionState.onboardingState)
+
+  useSentryConfig()
 
   if (!isHydrated) {
     return <View />

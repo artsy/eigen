@@ -5,6 +5,7 @@ import { Linking, View } from "react-native"
 import track from "react-tracking"
 import { RelayEnvironmentProvider } from "relay-hooks"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
+import { useSentryConfig } from "./ErrorReporting"
 import { LogIn } from "./LogIn/LogIn"
 import { ModalStack } from "./navigation/ModalStack"
 import { navigate } from "./navigation/navigate"
@@ -16,6 +17,8 @@ import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
 const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
+
+  useSentryConfig()
 
   useEffect(() => {
     // TODO: handle opening the app from deep link (Linking.getInitialURL)
