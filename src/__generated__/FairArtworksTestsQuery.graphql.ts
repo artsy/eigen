@@ -724,7 +724,6 @@ return {
             "FOLLOWED_ARTISTS",
             "GALLERY",
             "INSTITUTION",
-            "LOCATION_CITY",
             "MAJOR_PERIOD",
             "MEDIUM",
             "MERCHANDISABLE_ARTISTS",
