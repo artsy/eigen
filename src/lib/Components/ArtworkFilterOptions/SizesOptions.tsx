@@ -1,8 +1,8 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworkFilterContext, FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { ArtworksFiltersStore } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { FilterData, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Separator, Text } from "palette"
-import React, { useContext, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import { FilterModalNavigationStack } from "../FilterModal"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 
@@ -27,16 +27,16 @@ export const SIZES_OPTIONS: FilterData[] = [
 ]
 
 export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigation }) => {
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const selectedFilters = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+
   const oldAppliedFilterSizs = useRef(
-    state.appliedFilters.find((filter) => filter.paramName === FilterParamName.sizes)?.paramValue as
-      | string[]
-      | undefined
+    appliedFilters.find((filter) => filter.paramName === FilterParamName.sizes)?.paramValue as string[] | undefined
   )
 
   const oldSelectedFilterSizs = useRef(
-    state.selectedFilters.find((filter) => filter.paramName === FilterParamName.sizes)?.paramValue as
-      | string[]
-      | undefined
+    selectedFilters.find((filter) => filter.paramName === FilterParamName.sizes)?.paramValue as string[] | undefined
   )
   const [selectedOptions, setSelectedOptions] = useState(oldSelectedFilterSizs.current || oldAppliedFilterSizs.current)
 
@@ -52,13 +52,10 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
     }
 
     setSelectedOptions(updatedParamValue)
-    dispatch({
-      type: "selectFilters",
-      payload: {
-        displayText: option.displayText,
-        paramValue: updatedParamValue,
-        paramName: FilterParamName.sizes,
-      },
+    selectFiltersAction({
+      displayText: option.displayText,
+      paramValue: updatedParamValue,
+      paramName: FilterParamName.sizes,
     })
   }
 

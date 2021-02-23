@@ -1,13 +1,14 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
-  ArtworkFilterContext,
+  aggregationForFilter,
   FilterData,
+  FilterDisplayName,
+  FilterParamName,
   ParamDefaultValues,
-  useSelectedOptionsDisplay,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { aggregationForFilter, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import _ from "lodash"
-import React, { useContext } from "react"
+import React from "react"
 import { FilterModalNavigationStack } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
@@ -37,6 +38,9 @@ export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = (
 
   const paramName = FilterParamName.timePeriod
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
+
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+
   const aggregation = aggregationForFilter(paramName, aggregations)
   const options = aggregation?.counts.map((aggCount) => aggCount.value) ?? []
   const aggFilterOptions: FilterData[] = _.compact(
@@ -57,7 +61,7 @@ export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = (
   const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
 
   const selectOption = (option: FilterData) => {
-    dispatch({ type: "selectFilters", payload: option })
+    selectFiltersAction(option)
   }
 
   return (

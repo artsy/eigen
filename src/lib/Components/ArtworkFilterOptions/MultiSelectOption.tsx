@@ -1,7 +1,7 @@
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterToggleButton } from "lib/Components/ArtworkFilterOptions/FilterToggleButton"
-import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { FilterData } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Box, Flex, Sans, Separator } from "palette"
 import React from "react"
 import { FlatList, TouchableWithoutFeedback } from "react-native"

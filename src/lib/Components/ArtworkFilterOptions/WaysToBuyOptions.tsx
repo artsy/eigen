@@ -1,18 +1,15 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import {
-  ArtworkFilterContext,
-  FilterData,
-  useSelectedOptionsDisplay,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import React, { useContext } from "react"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { FilterData, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import React from "react"
 import { FilterModalNavigationStack } from "../FilterModal"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
 interface WaysToBuyOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "WaysToBuyOptionsScreen"> {}
 
 export const WaysToBuyOptionsScreen: React.FC<WaysToBuyOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch } = useContext(ArtworkFilterContext)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+
   const selectedOptions = useSelectedOptionsDisplay()
 
   const waysToBuyFilterNames = [
@@ -36,13 +33,10 @@ export const WaysToBuyOptionsScreen: React.FC<WaysToBuyOptionsScreenProps> = ({ 
   const sortedOptions = waysToBuyOptions.sort(waysToBuySort)
 
   const selectOption = (option: FilterData, updatedValue: boolean) => {
-    dispatch({
-      type: "selectFilters",
-      payload: {
-        displayText: option.displayText,
-        paramValue: updatedValue,
-        paramName: option.paramName,
-      },
+    selectFiltersAction({
+      displayText: option.displayText,
+      paramValue: updatedValue,
+      paramName: option.paramName,
     })
   }
 

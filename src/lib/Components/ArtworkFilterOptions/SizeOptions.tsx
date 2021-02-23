@@ -1,17 +1,14 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import {
-  ArtworkFilterContext,
-  FilterData,
-  ParamDefaultValues,
-  useSelectedOptionsDisplay,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
   AggregateOption,
   aggregationForFilter,
+  FilterData,
   FilterDisplayName,
   FilterParamName,
+  ParamDefaultValues,
 } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import React, { useContext } from "react"
+import React from "react"
 import { FilterModalNavigationStack } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
@@ -21,6 +18,9 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
   const paramName = FilterParamName.size
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const aggregation = aggregationForFilter(paramName, aggregations)
+
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+
   const options = aggregation?.counts.map((aggCount) => {
     return {
       displayText: aggCount.name,
@@ -35,13 +35,10 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
   const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
 
   const selectOption = (option: AggregateOption) => {
-    dispatch({
-      type: "selectFilters",
-      payload: {
-        displayText: option.displayText,
-        paramValue: option.paramValue,
-        paramName,
-      },
+    selectFiltersAction({
+      displayText: option.displayText,
+      paramValue: option.paramValue,
+      paramName,
     })
   }
 
