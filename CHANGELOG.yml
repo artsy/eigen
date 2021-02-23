@@ -5,8 +5,8 @@ upcoming:
     - Migrate LoadFailureView to typescript - adam, brian, david, mounir, pavlos
     - Improve bottom tabs dev state management  - david, mounir
   user_facing:
+    - Adds inquiry checkout offer status CTA - lily
     - Update consignment photo selection flow for iOS 14 - brian
-
 
 releases:
   - version: 6.7.8
