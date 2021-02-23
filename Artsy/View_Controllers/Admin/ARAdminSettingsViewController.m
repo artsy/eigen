@@ -251,14 +251,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     ARSectionData *labsSectionData = [[ARSectionData alloc] init];
     labsSectionData.headerTitle = @"Developer";
 
-    ARCellData *crashCellData = [self tappableCellDataWithTitle:@"Crash App" selection:^{
-        [SentrySDK crash];
-    }];
-
-    ARCellData *clearRelayCacheData = [self tappableCellDataWithTitle:@"Clear Relay Cache" selection:^{
-        [[ARGraphQLQueryCache new] clearAll];
-    }];
-
     return labsSectionData;
 }
 
