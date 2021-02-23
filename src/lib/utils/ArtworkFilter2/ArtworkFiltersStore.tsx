@@ -1,6 +1,7 @@
-import { Action, action } from "easy-peasy"
+import { Action, action, createStore, createTypedHooks, State, StoreProvider } from "easy-peasy"
+import { assignDeep } from "lib/store/persistence"
 import { filter, find, pullAllBy, union, unionBy } from "lodash"
-import { ArtworkFiltersStoreContext } from "./ArtworkFiltersContext"
+import React from "react"
 import {
   Aggregations,
   defaultCommonFilterOptions,
@@ -12,7 +13,7 @@ import {
   getSortDefaultValueByFilterType,
 } from "./FilterArtworksHelpers"
 
-export interface ArtworkFiltersStore {
+export interface ArtworkFiltersModel {
   appliedFilters: FilterArray
   selectedFilters: FilterArray
   previouslyAppliedFilters: FilterArray
@@ -20,18 +21,20 @@ export interface ArtworkFiltersStore {
   aggregations: Aggregations
   filterType: FilterType
   counts: FilterCounts
-  applyFiltersAction: Action<ArtworkFiltersStore>
-  selectFiltersAction: Action<ArtworkFiltersStore, FilterData>
-  clearAllAction: Action<ArtworkFiltersStore>
-  resetFiltersAction: Action<ArtworkFiltersStore>
-  clearFiltersZeroStateAction: Action<ArtworkFiltersStore>
-  setAggregationsAction: Action<ArtworkFiltersStore, any>
-  setFiltersCountAction: Action<ArtworkFiltersStore, FilterCounts>
-  setFilterTypeAction: Action<ArtworkFiltersStore, FilterType>
-  setInitialFilterStateAction: Action<ArtworkFiltersStore, FilterArray>
+  applyFiltersAction: Action<ArtworkFiltersModel>
+  selectFiltersAction: Action<ArtworkFiltersModel, FilterData>
+  clearAllAction: Action<ArtworkFiltersModel>
+  resetFiltersAction: Action<ArtworkFiltersModel>
+  clearFiltersZeroStateAction: Action<ArtworkFiltersModel>
+  setAggregationsAction: Action<ArtworkFiltersModel, any>
+  setFiltersCountAction: Action<ArtworkFiltersModel, FilterCounts>
+  setFilterTypeAction: Action<ArtworkFiltersModel, FilterType>
+  setInitialFilterStateAction: Action<ArtworkFiltersModel, FilterArray>
 }
 
-export const ArtworkFiltersStore: ArtworkFiltersStore = {
+export type ArtworkFiltersState = State<ArtworkFiltersModel>
+
+export const ArtworkFiltersModel: ArtworkFiltersModel = {
   /**
    * Store state
    */
@@ -225,11 +228,9 @@ export const ArtworkFiltersStore: ArtworkFiltersStore = {
 
 // Return the list of selected options (union of selected and applied)
 export const useSelectedOptionsDisplay = (): FilterArray => {
-  const selectedFiltersState = ArtworkFiltersStoreContext.useStoreState((state) => state.selectedFilters)
-  const previouslyAppliedFiltersState = ArtworkFiltersStoreContext.useStoreState(
-    (state) => state.previouslyAppliedFilters
-  )
-  const filterTypeState = ArtworkFiltersStoreContext.useStoreState((state) => state.filterType)
+  const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
+  const previouslyAppliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.previouslyAppliedFilters)
+  const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
 
   return selectedOptionsUnion({
     selectedFilters: selectedFiltersState,
@@ -357,3 +358,53 @@ export const selectedOptionsUnion = ({
     return true
   })
 }
+
+function createArtworkFiltersStore() {
+  if (__TEST__) {
+    ;(ArtworkFiltersModel as any).__injectState = action((state, injectedState) => {
+      assignDeep(state, injectedState)
+    })
+  }
+
+  // Might be useful some day to add a middleware to get some tracking on place here
+  // But we'll cross that bridge when we reach it
+  const store = createStore<ArtworkFiltersModel>(ArtworkFiltersModel)
+
+  return store
+}
+
+let artworkFiltersStoreInstance = createArtworkFiltersStore()
+
+// tslint:disable-next-line:variable-name
+export const __filterArtworksStoreTestUtils__ = __TEST__
+  ? {
+      // this can be used to mock the initial state before mounting a test renderer
+      // e.g. `__filterArtworksStoreTestUtils__.injectState({ filterType: "artwork" })`
+      // takes effect until the next test starts
+      injectState(state: DeepPartial<ArtworkFiltersState>) {
+        ;(ArtworksFiltersStore.actions as any).__injectState(state)
+      },
+      getCurrentState: () => artworkFiltersStoreInstance.getState(),
+      // dispatchedActions: [] as Action[],
+      // getLastAction() {
+      //   return this.dispatchedActions[this.dispatchedActions.length - 1]
+      // },
+      reset: () => {
+        artworkFiltersStoreInstance = createArtworkFiltersStore()
+      },
+    }
+  : null
+
+const hooks = createTypedHooks<ArtworkFiltersModel>()
+
+export const ArtworksFiltersStore = {
+  ...hooks,
+  // useStoreState: hooks.useStoreState,
+  get actions() {
+    return artworkFiltersStoreInstance.getActions()
+  },
+}
+
+export const ArtworkFiltersStoreProvider: React.FC<{}> = ({ children }) => (
+  <StoreProvider store={artworkFiltersStoreInstance}>{children}</StoreProvider>
+)

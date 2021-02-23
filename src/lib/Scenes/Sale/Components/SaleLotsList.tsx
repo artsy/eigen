@@ -4,15 +4,19 @@ import { SaleLotsList_unfilteredSaleArtworksConnection } from "__generated__/Sal
 import { ORDERED_SALE_ARTWORK_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { filterArtworksParams, FilterParamName, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import { ArtworkFiltersStoreContext } from "lib/utils/ArtworkFilter2/ArtworkFiltersContext"
+import { ArtworksFiltersStore } from "lib/utils/ArtworkFilter2/ArtworkFiltersStore"
+import {
+  filterArtworksParams,
+  FilterParamName,
+  FilterParams,
+  ViewAsValues,
+} from "lib/utils/ArtworkFilter2/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { Box, color, Flex, Sans } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { FilterParams } from "../../../utils/ArtworkFilter/FilterArtworksHelpers"
 import { SaleArtworkListContainer } from "./SaleArtworkList"
 
 interface Props {
@@ -64,12 +68,12 @@ export const SaleLotsList: React.FC<Props> = ({
   const [totalCount, setTotalCount] = useState<number | null>(null)
   const tracking = useTracking()
 
-  const appliedFiltersState = ArtworkFiltersStoreContext.useStoreState((state) => state.appliedFilters)
-  const applyFiltersState = ArtworkFiltersStoreContext.useStoreState((state) => state.applyFilters)
-  const filterTypeState = ArtworkFiltersStoreContext.useStoreState((state) => state.filterType)
-  const setAggregationsAction = ArtworkFiltersStoreContext.useStoreActions((action) => action.setAggregationsAction)
-  const setFiltersCountAction = ArtworkFiltersStoreContext.useStoreActions((action) => action.setFiltersCountAction)
-  const setFilterTypeAction = ArtworkFiltersStoreContext.useStoreActions((action) => action.setFilterTypeAction)
+  const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const applyFiltersState = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+  const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
+  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((action) => action.setAggregationsAction)
+  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((action) => action.setFiltersCountAction)
+  const setFilterTypeAction = ArtworksFiltersStore.useStoreActions((action) => action.setFilterTypeAction)
 
   const filterParams = filterArtworksParams(appliedFiltersState, filterTypeState)
   const viewAsFilter = appliedFiltersState.find((filter) => filter.paramName === FilterParamName.viewAs)

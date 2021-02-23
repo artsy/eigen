@@ -1,9 +1,8 @@
 import { ContextModule } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
-import { ArtworkFiltersStoreContext } from "lib/utils/ArtworkFilter2/ArtworkFiltersContext"
 
-import { useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter2/ArtworkFiltersStore"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter2/ArtworkFiltersStore"
 import {
   changedFiltersParams,
   FilterArray,
@@ -138,15 +137,13 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
   const tracking = useTracking()
   const { exitModal, id, mode, slug, closeModal } = props
 
-  const appliedFiltersState = ArtworkFiltersStoreContext.useStoreState((state) => state.appliedFilters)
-  const selectedFiltersState = ArtworkFiltersStoreContext.useStoreState((state) => state.selectedFilters)
-  const previouslyAppliedFiltersState = ArtworkFiltersStoreContext.useStoreState(
-    (state) => state.previouslyAppliedFilters
-  )
-  const filterTypeState = ArtworkFiltersStoreContext.useStoreState((state) => state.filterType)
+  const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
+  const previouslyAppliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.previouslyAppliedFilters)
+  const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
 
-  const applyFiltersAction = ArtworkFiltersStoreContext.useStoreActions((action) => action.applyFiltersAction)
-  const resetFiltersAction = ArtworkFiltersStoreContext.useStoreActions((action) => action.resetFiltersAction)
+  const applyFiltersAction = ArtworksFiltersStore.useStoreActions((action) => action.applyFiltersAction)
+  const resetFiltersAction = ArtworksFiltersStore.useStoreActions((action) => action.resetFiltersAction)
 
   const handleClosingModal = () => {
     resetFiltersAction()
@@ -357,12 +354,12 @@ export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigatio
   const tracking = useTracking()
   const { closeModal, id, mode, slug, title = "Filter" } = route.params
 
-  const appliedFiltersState = ArtworkFiltersStoreContext.useStoreState((state) => state.appliedFilters)
-  const selectedFiltersState = ArtworkFiltersStoreContext.useStoreState((state) => state.selectedFilters)
-  const aggregationsState = ArtworkFiltersStoreContext.useStoreState((state) => state.aggregations)
-  const filterTypeState = ArtworkFiltersStoreContext.useStoreState((state) => state.filterType)
+  const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
+  const aggregationsState = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
+  const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
 
-  const clearAllAction = ArtworkFiltersStoreContext.useStoreActions((action) => action.clearAllAction)
+  const clearAllAction = ArtworksFiltersStore.useStoreActions((action) => action.clearAllAction)
 
   const selectedOptions = useSelectedOptionsDisplay()
 
@@ -611,8 +608,8 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
   onPress,
   text = "Sort & Filter",
 }) => {
-  const appliedFiltersState = ArtworkFiltersStoreContext.useStoreState((state) => state.appliedFilters)
-  const filterTypeState = ArtworkFiltersStoreContext.useStoreState((state) => state.filterType)
+  const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
 
   const getFiltersCount = () => {
     let selectedFiltersSum = appliedFiltersState.length
