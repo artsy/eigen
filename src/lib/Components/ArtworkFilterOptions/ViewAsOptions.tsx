@@ -1,23 +1,21 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import {
-  ArtworkFilterContext,
-  FilterData,
-  useSelectedOptionsDisplay,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import {
   AggregateOption,
   FilterDisplayName,
   FilterParamName,
   ViewAsValues,
 } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import React, { useContext } from "react"
+import { ArtworkFiltersStoreContext } from "lib/utils/ArtworkFilter2/ArtworkFiltersContext"
+import { useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter2/ArtworkFiltersStore"
+import { FilterData } from "lib/utils/ArtworkFilter2/FilterArtworksHelpers"
+import React from "react"
 import { FilterModalNavigationStack } from "../FilterModal"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface ViewAsOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "WaysToBuyOptionsScreen"> {}
 
 export const ViewAsOptionsScreen: React.FC<ViewAsOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch } = useContext(ArtworkFilterContext)
+  const selectFiltersAction = ArtworkFiltersStoreContext.useStoreActions((action) => action.selectFiltersAction)
 
   const paramName = FilterParamName.viewAs
 
@@ -30,13 +28,10 @@ export const ViewAsOptionsScreen: React.FC<ViewAsOptionsScreenProps> = ({ naviga
   const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
 
   const selectOption = (option: AggregateOption) => {
-    dispatch({
-      type: "selectFilters",
-      payload: {
-        displayText: option.displayText,
-        paramValue: option.paramValue,
-        paramName,
-      },
+    selectFiltersAction({
+      displayText: option.displayText,
+      paramValue: option.paramValue,
+      paramName,
     })
   }
 

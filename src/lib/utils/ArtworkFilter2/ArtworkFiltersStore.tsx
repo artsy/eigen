@@ -1,6 +1,6 @@
 import { Action, action } from "easy-peasy"
 import { filter, find, pullAllBy, union, unionBy } from "lodash"
-import { filterTypeState, previouslyAppliedFiltersState, selectedFiltersState } from "./ArtworkFiltersContext"
+import { ArtworkFiltersStoreContext } from "./ArtworkFiltersContext"
 import {
   Aggregations,
   defaultCommonFilterOptions,
@@ -225,6 +225,12 @@ export const ArtworkFiltersStore: ArtworkFiltersStore = {
 
 // Return the list of selected options (union of selected and applied)
 export const useSelectedOptionsDisplay = (): FilterArray => {
+  const selectedFiltersState = ArtworkFiltersStoreContext.useStoreState((state) => state.selectedFilters)
+  const previouslyAppliedFiltersState = ArtworkFiltersStoreContext.useStoreState(
+    (state) => state.previouslyAppliedFilters
+  )
+  const filterTypeState = ArtworkFiltersStoreContext.useStoreState((state) => state.filterType)
+
   return selectedOptionsUnion({
     selectedFilters: selectedFiltersState,
     previouslyAppliedFilters: previouslyAppliedFiltersState,

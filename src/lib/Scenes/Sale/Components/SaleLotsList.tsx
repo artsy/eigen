@@ -4,11 +4,11 @@ import { SaleLotsList_unfilteredSaleArtworksConnection } from "__generated__/Sal
 import { ORDERED_SALE_ARTWORK_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams, FilterParamName, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { ArtworkFiltersStoreContext } from "lib/utils/ArtworkFilter2/ArtworkFiltersContext"
 import { Schema } from "lib/utils/track"
 import { Box, color, Flex, Sans } from "palette"
-import React, { useCallback, useContext, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -61,19 +61,22 @@ export const SaleLotsList: React.FC<Props> = ({
   saleSlug,
   scrollToTop,
 }) => {
-  const { state, dispatch } = useContext(ArtworkFilterContext)
   const [totalCount, setTotalCount] = useState<number | null>(null)
   const tracking = useTracking()
 
-  const filterParams = filterArtworksParams(state.appliedFilters, state.filterType)
-  const viewAsFilter = state.appliedFilters.find((filter) => filter.paramName === FilterParamName.viewAs)
+  const appliedFiltersState = ArtworkFiltersStoreContext.useStoreState((state) => state.appliedFilters)
+  const applyFiltersState = ArtworkFiltersStoreContext.useStoreState((state) => state.applyFilters)
+  const filterTypeState = ArtworkFiltersStoreContext.useStoreState((state) => state.filterType)
+  const setAggregationsAction = ArtworkFiltersStoreContext.useStoreActions((action) => action.setAggregationsAction)
+  const setFiltersCountAction = ArtworkFiltersStoreContext.useStoreActions((action) => action.setFiltersCountAction)
+  const setFilterTypeAction = ArtworkFiltersStoreContext.useStoreActions((action) => action.setFilterTypeAction)
+
+  const filterParams = filterArtworksParams(appliedFiltersState, filterTypeState)
+  const viewAsFilter = appliedFiltersState.find((filter) => filter.paramName === FilterParamName.viewAs)
   const counts = saleArtworksConnection.saleArtworksConnection?.counts
 
   useEffect(() => {
-    dispatch({
-      type: "setFilterType",
-      payload: "saleArtwork",
-    })
+    setFilterTypeAction("saleArtwork")
   }, [])
 
   useEffect(() => {
@@ -81,7 +84,7 @@ export const SaleLotsList: React.FC<Props> = ({
   }, [])
 
   useEffect(() => {
-    if (state.applyFilters) {
+    if (applyFiltersState) {
       // Add the new medium to geneIDs array
       const medium: string[] = []
       if (typeof filterParams.medium === "string") {
@@ -104,21 +107,15 @@ export const SaleLotsList: React.FC<Props> = ({
       )
       scrollToTop()
     }
-  }, [state.appliedFilters])
+  }, [appliedFiltersState])
 
   useEffect(() => {
-    dispatch({
-      type: "setAggregations",
-      payload: saleArtworksConnection.saleArtworksConnection?.aggregations,
-    })
+    setAggregationsAction(saleArtworksConnection.saleArtworksConnection?.aggregations)
   }, [])
 
   useEffect(() => {
     if (saleArtworksConnection.saleArtworksConnection?.counts) {
-      dispatch({
-        type: "setFilterCounts",
-        payload: saleArtworksConnection.saleArtworksConnection?.counts,
-      })
+      setFiltersCountAction(saleArtworksConnection.saleArtworksConnection?.counts)
     }
   }, [])
 

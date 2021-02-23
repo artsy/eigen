@@ -1,6 +1,7 @@
 import { ContextModule } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
+import { ArtworkFiltersStoreContext } from "lib/utils/ArtworkFilter2/ArtworkFiltersContext"
 
 import { useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter2/ArtworkFiltersStore"
 import {
@@ -20,35 +21,42 @@ import React from "react"
 import { FlatList, TouchableOpacity, View, ViewProperties } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import {
-  aggregationsState,
-  appliedFiltersState,
-  applyFiltersAction,
-  clearAllAction,
-  filterTypeState,
-  previouslyAppliedFiltersState,
-  resetFiltersAction,
-  selectedFiltersState,
-} from "../../utils/ArtworkFilter2/ArtworkFiltersContext"
 import { selectedOption } from "../../utils/ArtworkFilter2/FilterArtworksHelpers"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
+// @ts-ignore
 import { AdditionalGeneIDsOptionsScreen } from "../ArtworkFilterOptions/AdditionalGeneIDsOptions"
+// @ts-ignore
 import { ArtistIDsOptionsScreen } from "../ArtworkFilterOptions/ArtistIDsOptionsScreen"
+// @ts-ignore
 import { AttributionClassOptionsScreen } from "../ArtworkFilterOptions/AttributionClassOptions"
+// @ts-ignore
 import { CategoriesOptionsScreen } from "../ArtworkFilterOptions/CategoriesOptions"
+// @ts-ignore
 import { ColorOption, ColorOptionsScreen } from "../ArtworkFilterOptions/ColorOptions"
 import { colorHexMap } from "../ArtworkFilterOptions/ColorSwatch"
+// @ts-ignore
 import { EstimateRangeOptionsScreen } from "../ArtworkFilterOptions/EstimateRangeOptions"
+// @ts-ignore
 import { GalleryOptionsScreen } from "../ArtworkFilterOptions/GalleryOptions"
+// @ts-ignore
 import { InstitutionOptionsScreen } from "../ArtworkFilterOptions/InstitutionOptions"
+// @ts-ignore
 import { MediumOptionsScreen } from "../ArtworkFilterOptions/MediumOptions"
+// @ts-ignore
 import { PriceRangeOptionsScreen } from "../ArtworkFilterOptions/PriceRangeOptions"
+// @ts-ignore
 import { SizeOptionsScreen } from "../ArtworkFilterOptions/SizeOptions"
+// @ts-ignore
 import { SizesOptionsScreen } from "../ArtworkFilterOptions/SizesOptions"
+// @ts-ignore
 import { SortOptionsScreen } from "../ArtworkFilterOptions/SortOptions"
+// @ts-ignore
 import { TimePeriodOptionsScreen } from "../ArtworkFilterOptions/TimePeriodOptions"
+// @ts-ignore
 import { ViewAsOptionsScreen } from "../ArtworkFilterOptions/ViewAsOptions"
+// @ts-ignore
 import { WaysToBuyOptionsScreen } from "../ArtworkFilterOptions/WaysToBuyOptions"
+// @ts-ignore
 import { YearOptionsScreen } from "../ArtworkFilterOptions/YearOptions"
 import { FancyModal } from "../FancyModal/FancyModal"
 
@@ -129,6 +137,16 @@ const Stack = createStackNavigator<FilterModalNavigationStack>()
 export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
   const tracking = useTracking()
   const { exitModal, id, mode, slug, closeModal } = props
+
+  const appliedFiltersState = ArtworkFiltersStoreContext.useStoreState((state) => state.appliedFilters)
+  const selectedFiltersState = ArtworkFiltersStoreContext.useStoreState((state) => state.selectedFilters)
+  const previouslyAppliedFiltersState = ArtworkFiltersStoreContext.useStoreState(
+    (state) => state.previouslyAppliedFilters
+  )
+  const filterTypeState = ArtworkFiltersStoreContext.useStoreState((state) => state.filterType)
+
+  const applyFiltersAction = ArtworkFiltersStoreContext.useStoreActions((action) => action.applyFiltersAction)
+  const resetFiltersAction = ArtworkFiltersStoreContext.useStoreActions((action) => action.resetFiltersAction)
 
   const handleClosingModal = () => {
     resetFiltersAction()
@@ -213,7 +231,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
             }}
           >
             <Stack.Screen name="FilterOptionsScreen" component={FilterOptionsScreen} initialParams={props} />
-            <Stack.Screen name="ArtistIDsOptionsScreen" component={ArtistIDsOptionsScreen} />
+            {/* <Stack.Screen name="ArtistIDsOptionsScreen" component={ArtistIDsOptionsScreen} />
             <Stack.Screen name="AttributionClassOptionsScreen" component={AttributionClassOptionsScreen} />
             <Stack.Screen name="ColorOptionsScreen" component={ColorOptionsScreen} />
             <Stack.Screen name="EstimateRangeOptionsScreen" component={EstimateRangeOptionsScreen} />
@@ -225,9 +243,9 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
             <Stack.Screen name="SizeOptionsScreen" component={SizeOptionsScreen} />
             <Stack.Screen name="SizesOptionsScreen" component={SizesOptionsScreen} />
             <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
-            <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} />
+            <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} /> */}
             <Stack.Screen name="ViewAsOptionsScreen" component={ViewAsOptionsScreen} />
-            <Stack.Screen
+            {/* <Stack.Screen
               name="YearOptionsScreen"
               component={YearOptionsScreen}
               options={{
@@ -236,7 +254,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
               }}
             />
             <Stack.Screen name="WaysToBuyOptionsScreen" component={WaysToBuyOptionsScreen} />
-            <Stack.Screen name="CategoriesOptionsScreen" component={CategoriesOptionsScreen} />
+            <Stack.Screen name="CategoriesOptionsScreen" component={CategoriesOptionsScreen} /> */}
           </Stack.Navigator>
 
           <Separator my={0} />
@@ -338,6 +356,13 @@ export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigatio
 }) => {
   const tracking = useTracking()
   const { closeModal, id, mode, slug, title = "Filter" } = route.params
+
+  const appliedFiltersState = ArtworkFiltersStoreContext.useStoreState((state) => state.appliedFilters)
+  const selectedFiltersState = ArtworkFiltersStoreContext.useStoreState((state) => state.selectedFilters)
+  const aggregationsState = ArtworkFiltersStoreContext.useStoreState((state) => state.aggregations)
+  const filterTypeState = ArtworkFiltersStoreContext.useStoreState((state) => state.filterType)
+
+  const clearAllAction = ArtworkFiltersStoreContext.useStoreActions((action) => action.clearAllAction)
 
   const selectedOptions = useSelectedOptionsDisplay()
 
@@ -586,6 +611,9 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
   onPress,
   text = "Sort & Filter",
 }) => {
+  const appliedFiltersState = ArtworkFiltersStoreContext.useStoreState((state) => state.appliedFilters)
+  const filterTypeState = ArtworkFiltersStoreContext.useStoreState((state) => state.filterType)
+
   const getFiltersCount = () => {
     let selectedFiltersSum = appliedFiltersState.length
 

@@ -4,7 +4,7 @@ import { Sale_me } from "__generated__/Sale_me.graphql"
 import { Sale_sale } from "__generated__/Sale_sale.graphql"
 import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
 import { SaleBelowTheFoldQuery } from "__generated__/SaleBelowTheFoldQuery.graphql"
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
+import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal2"
 import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import Spinner from "lib/Components/Spinner"
@@ -12,7 +12,7 @@ import { navigate, popParentViewController } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
-import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter2/ArtworkFiltersContext"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import _, { times } from "lodash"
@@ -189,46 +189,42 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   ])
 
   return (
-    <ArtworkFilterGlobalStateProvider>
-      <ArtworkFilterContext.Consumer>
-        {() => (
-          <ProvideScreenTracking info={tracks.screen(sale.internalID, sale.slug)}>
-            <Animated.FlatList
-              ref={flatListRef}
-              data={saleSectionsData}
-              viewabilityConfig={viewConfigRef.current}
-              onViewableItemsChanged={viewableItemsChangedRef.current}
-              contentContainerStyle={{ paddingBottom: 40 }}
-              renderItem={({ item }: { item: SaleSection }) => item.content}
-              keyExtractor={(item: SaleSection) => item.key}
-              onScroll={Animated.event(
-                [
-                  {
-                    nativeEvent: {
-                      contentOffset: { y: scrollAnim },
-                    },
-                  },
-                ],
-                {
-                  useNativeDriver: true,
-                }
-              )}
-              refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-              scrollEventThrottle={16}
-            />
-            <FilterModalNavigator
-              isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-              id={sale.internalID}
-              slug={sale.slug}
-              mode={FilterModalMode.SaleArtworks}
-              exitModal={closeFilterArtworksModal}
-              closeModal={closeFilterArtworksModal}
-            />
-            <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
-          </ProvideScreenTracking>
-        )}
-      </ArtworkFilterContext.Consumer>
-    </ArtworkFilterGlobalStateProvider>
+    <ArtworkFiltersStoreProvider>
+      <ProvideScreenTracking info={tracks.screen(sale.internalID, sale.slug)}>
+        <Animated.FlatList
+          ref={flatListRef}
+          data={saleSectionsData}
+          viewabilityConfig={viewConfigRef.current}
+          onViewableItemsChanged={viewableItemsChangedRef.current}
+          contentContainerStyle={{ paddingBottom: 40 }}
+          renderItem={({ item }: { item: SaleSection }) => item.content}
+          keyExtractor={(item: SaleSection) => item.key}
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: {
+                  contentOffset: { y: scrollAnim },
+                },
+              },
+            ],
+            {
+              useNativeDriver: true,
+            }
+          )}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+          scrollEventThrottle={16}
+        />
+        <FilterModalNavigator
+          isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+          id={sale.internalID}
+          slug={sale.slug}
+          mode={FilterModalMode.SaleArtworks}
+          exitModal={closeFilterArtworksModal}
+          closeModal={closeFilterArtworksModal}
+        />
+        <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
+      </ProvideScreenTracking>
+    </ArtworkFiltersStoreProvider>
   )
 }
 
