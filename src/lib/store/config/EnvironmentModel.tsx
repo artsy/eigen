@@ -1,5 +1,6 @@
 import { action, Action, computed, Computed, thunkOn, ThunkOn } from "easy-peasy"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { Platform } from "react-native"
 import { unsafe__getEnvironment } from "../GlobalStore"
 import { GlobalStoreModel } from "../GlobalStoreModel"
 
@@ -52,7 +53,7 @@ export const environment = defineEnvironmentOptions({
     },
   },
   causalityURL: {
-    description: "Causality WebSocket URI",
+    description: "Causality WebSocket URL",
     presets: {
       local: "ws://localhost:8080",
       staging: "wss://causality-staging.artsy.net",
@@ -62,12 +63,15 @@ export const environment = defineEnvironmentOptions({
 })
 
 export interface EnvironmentModel {
-  env: Environment
-  adminOverrides: { [k in EnvironmentKey]?: string }
-  strings: Computed<EnvironmentModel, { [k in EnvironmentKey]: string }>
-  setAdminOverride: Action<EnvironmentModel, { key: EnvironmentKey; value: string | null }>
+  env: Environment // 'staging' | 'production'
   setEnv: Action<EnvironmentModel, Environment>
+
+  adminOverrides: { [k in EnvironmentKey]?: string }
+  setAdminOverride: Action<EnvironmentModel, { key: EnvironmentKey; value: string | null }>
   clearAdminOverrides: Action<EnvironmentModel>
+
+  strings: Computed<EnvironmentModel, { [k in EnvironmentKey]: string }>
+
   updateNativeState: ThunkOn<EnvironmentModel, {}, GlobalStoreModel>
 }
 
@@ -78,6 +82,7 @@ export const EnvironmentModel: EnvironmentModel = {
     const result: { [k in EnvironmentKey]: string } = {} as any
 
     for (const [key, val] of Object.entries(environment)) {
+      // use the admin override value if present, otherwise use the value for the current environment
       result[key as EnvironmentKey] = adminOverrides[key as EnvironmentKey] ?? val.presets[env]
     }
 
@@ -99,7 +104,9 @@ export const EnvironmentModel: EnvironmentModel = {
   updateNativeState: thunkOn(
     (actions) => [actions.clearAdminOverrides, actions.setAdminOverride, actions.setEnv],
     () => {
-      LegacyNativeModules.ARNotificationsManager.reactStateUpdated(unsafe__getEnvironment())
+      if (Platform.OS === "ios") {
+        LegacyNativeModules.ARNotificationsManager.reactStateUpdated(unsafe__getEnvironment())
+      }
     }
   ),
 }
