@@ -35,9 +35,9 @@
 @interface ARNotificationsManager ()
 @property (nonatomic, assign, readwrite) BOOL isBeingObserved;
 @property (strong, nonatomic, readwrite) NSDictionary *state;
-@property (strong, nonatomic, readwrite) NSDictionary *reactState;
+@property (strong, nonatomic, readwrite) NSMutableDictionary *reactState;
 
-@property (readwrite, nonatomic, strong) NSMutableArray<void (^)()> *bootstrapQueue;
+@property (readwrite, nonatomic, strong) NSMutableArray<void (^)(void)> *bootstrapQueue;
 @property (readwrite, nonatomic, assign) BOOL didBootStrap;
 @end
 
@@ -59,6 +59,7 @@ RCT_EXPORT_MODULE();
     if (self) {
         _state = [state copy];
         _bootstrapQueue = [[NSMutableArray alloc] init];
+        _reactState = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -159,9 +160,16 @@ RCT_EXPORT_METHOD(didFinishBootstrapping)
     }
 }
 
+- (void)updateReactState:(nonnull NSDictionary *)reactState
+{
+    @synchronized (self) {
+        [_reactState addEntriesFromDictionary:reactState];
+    }
+}
+
 RCT_EXPORT_METHOD(reactStateUpdated:(nonnull NSDictionary *)reactState)
 {
-    self.reactState = reactState;
+    [self updateReactState:reactState];
 }
 
 // All notification JS methods occur on the main queue/thread.

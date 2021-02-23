@@ -10,7 +10,6 @@
 + (NSString *)onboardingState;
 + (NSString *)userAgent;
 + (NSString *)deviceId;
-+ (NSString *)sentryDSN;
 @end
 
 // these state values are sent to obj-c from react
@@ -31,6 +30,10 @@
 - (NSDictionary *)reactState;
 
 - (void)notificationReceived;
+
+// this is exported only for tests
+- (void)updateReactState:(NSDictionary *)reactState;
+
 - (void)requestNavigation:(NSString *)route;
 - (void)afterBootstrap:(void (^)(void))completion;
 
