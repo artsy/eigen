@@ -87,6 +87,7 @@ import { GlobalStore, GlobalStoreProvider, useSelectedTab } from "./store/Global
 import { AdminMenu } from "./utils/AdminMenu"
 import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
+import { useStripeConfig } from "./utils/useStripeConfig"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -404,6 +405,7 @@ const Main: React.FC<{}> = track()(({}) => {
   const onboardingState = GlobalStore.useAppState((state) => state.native.sessionState.onboardingState)
 
   useSentryConfig()
+  useStripeConfig()
 
   if (!isHydrated) {
     return <View />

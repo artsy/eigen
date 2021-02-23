@@ -13,12 +13,14 @@ import { defaultEnvironment } from "./relay/createEnvironment"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { AdminMenuWrapper } from "./utils/AdminMenuWrapper"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
+import { useStripeConfig } from "./utils/useStripeConfig"
 
 const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
 
   useSentryConfig()
+  useStripeConfig()
 
   useEffect(() => {
     // TODO: handle opening the app from deep link (Linking.getInitialURL)
