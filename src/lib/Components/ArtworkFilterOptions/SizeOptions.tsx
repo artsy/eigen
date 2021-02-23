@@ -18,10 +18,9 @@ import { SingleSelectOptionScreen } from "./SingleSelectOption"
 interface SizeOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "SizeOptionsScreen"> {}
 
 export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-
   const paramName = FilterParamName.size
-  const aggregation = aggregationForFilter(paramName, state.aggregations)
+  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
+  const aggregation = aggregationForFilter(paramName, aggregations)
   const options = aggregation?.counts.map((aggCount) => {
     return {
       displayText: aggCount.name,

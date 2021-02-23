@@ -27,8 +27,6 @@ export const SIZES_OPTIONS: FilterData[] = [
 ]
 
 export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-
   const oldAppliedFilterSizs = useRef(
     state.appliedFilters.find((filter) => filter.paramName === FilterParamName.sizes)?.paramValue as
       | string[]

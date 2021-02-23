@@ -18,10 +18,9 @@ import { SingleSelectOptionScreen } from "./SingleSelectOption"
 interface MediumOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "MediumOptionsScreen"> {}
 
 export const MediumOptionsScreen: React.FC<MediumOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-
   const paramName = FilterParamName.medium
-  const aggregation = aggregationForFilter(paramName, state.aggregations)
+  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
+  const aggregation = aggregationForFilter(paramName, aggregations)
   const options = aggregation?.counts.map((aggCount) => {
     return {
       displayText: aggCount.name,

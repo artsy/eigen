@@ -43,8 +43,6 @@ export const CATEGORIES_OPTIONS: FilterData[] = [
 ]
 
 export const CategoriesOptionsScreen: React.FC<ArtistIDsArtworksOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-
   const oldAppliedFilterCategories = state.appliedFilters.find(
     (filter) => filter.paramName === FilterParamName.categories
   )?.paramValue as string[] | undefined

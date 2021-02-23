@@ -19,8 +19,6 @@ interface InstitutionOptionsScreenProps
   extends StackScreenProps<FilterModalNavigationStack, "InstitutionOptionsScreen"> {}
 
 export const InstitutionOptionsScreen: React.FC<InstitutionOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-
   const paramName = FilterParamName.institution
   const filterKey = "institution"
   const aggregation = aggregationForFilter(filterKey, state.aggregations)

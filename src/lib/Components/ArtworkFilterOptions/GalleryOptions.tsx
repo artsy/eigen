@@ -18,8 +18,6 @@ import { SingleSelectOptionScreen } from "./SingleSelectOption"
 interface GalleryOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "GalleryOptionsScreen"> {}
 
 export const GalleryOptionsScreen: React.FC<GalleryOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-
   const paramName = FilterParamName.gallery
   const filterKey = "gallery"
   const aggregation = aggregationForFilter(filterKey, state.aggregations)

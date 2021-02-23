@@ -1,13 +1,12 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworkFilterContext, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { aggregationForFilter, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { aggregationForFilter, FilterData, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Box, CheckIcon, color, Flex, Separator, Text } from "palette"
-import React, { useContext, useState } from "react"
+import React, { useState } from "react"
 import { TouchableOpacity } from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import styled from "styled-components/native"
-import { FilterData } from "../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { useScreenDimensions } from "../../utils/useScreenDimensions"
 import { CircleWithBorder } from "../CircleWithBorder/CircleWithBorder"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
@@ -23,13 +22,18 @@ export const ALLOW_EMPTY_CREATED_DATES_FILTER: FilterData = {
 
 export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation }) => {
   const screenWidth = useScreenDimensions().width
-  const { dispatch, state } = useContext(ArtworkFilterContext)
+
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const selectedFilters = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
+
+  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
 
   const artistEarliestCreatedYear = Number(
-    aggregationForFilter(FilterParamName.earliestCreatedYear, state.aggregations)?.counts[0].value
+    aggregationForFilter(FilterParamName.earliestCreatedYear, aggregations)?.counts[0].value
   )
   const artistLatestCreatedYear = Number(
-    aggregationForFilter(FilterParamName.latestCreatedYear, state.aggregations)?.counts[0].value
+    aggregationForFilter(FilterParamName.latestCreatedYear, aggregations)?.counts[0].value
   )
 
   const selectedOptions = useSelectedOptionsDisplay()
@@ -41,10 +45,10 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
     (option) => option.paramName === FilterParamName.latestCreatedYear
   )?.paramValue
 
-  const appliedAllowEmptyCreatedDates = state.appliedFilters.find(
+  const appliedAllowEmptyCreatedDates = appliedFilters.find(
     (option) => option.paramName === FilterParamName.allowEmptyCreatedDates
   )?.paramValue as boolean
-  const selectedAllowEmptyCreatedDates = state.selectedFilters.find(
+  const selectedAllowEmptyCreatedDates = selectedFilters.find(
     (option) => option.paramName === FilterParamName.allowEmptyCreatedDates
   )?.paramValue as boolean
 
@@ -61,33 +65,24 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
     const earliestCreatedYear = values[0]
     const latestCreatedYear = values[1]
 
-    dispatch({
-      type: "selectFilters",
-      payload: {
-        displayText: earliestCreatedYear.toString(),
-        paramValue: earliestCreatedYear,
-        paramName: FilterParamName.earliestCreatedYear,
-      },
+    selectFiltersAction({
+      displayText: earliestCreatedYear.toString(),
+      paramValue: earliestCreatedYear,
+      paramName: FilterParamName.earliestCreatedYear,
     })
 
-    dispatch({
-      type: "selectFilters",
-      payload: {
-        displayText: latestCreatedYear.toString(),
-        paramValue: latestCreatedYear,
-        paramName: FilterParamName.latestCreatedYear,
-      },
+    selectFiltersAction({
+      displayText: latestCreatedYear.toString(),
+      paramValue: latestCreatedYear,
+      paramName: FilterParamName.latestCreatedYear,
     })
   }
 
   const handleAllowEmptyCreatedDatesPress = () => {
-    dispatch({
-      type: "selectFilters",
-      payload: {
-        displayText: ALLOW_EMPTY_CREATED_DATES_FILTER.displayText,
-        paramValue: !allowEmptyCreatedDates,
-        paramName: FilterParamName.allowEmptyCreatedDates,
-      },
+    selectFiltersAction({
+      displayText: ALLOW_EMPTY_CREATED_DATES_FILTER.displayText,
+      paramValue: !allowEmptyCreatedDates,
+      paramName: FilterParamName.allowEmptyCreatedDates,
     })
 
     setAllowEmptyCreatedDates(!allowEmptyCreatedDates)

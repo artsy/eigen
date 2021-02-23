@@ -15,8 +15,6 @@ interface TimePeriodOptionsScreenProps
   extends StackScreenProps<FilterModalNavigationStack, "TimePeriodOptionsScreen"> {}
 
 export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-
   // TODO: a lot of redundant types, see if we can clean up
   const displayValue: Record<string, string> = {
     "2020": "2020-today",
@@ -38,7 +36,8 @@ export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = (
   }
 
   const paramName = FilterParamName.timePeriod
-  const aggregation = aggregationForFilter(paramName, state.aggregations)
+  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
+  const aggregation = aggregationForFilter(paramName, aggregations)
   const options = aggregation?.counts.map((aggCount) => aggCount.value) ?? []
   const aggFilterOptions: FilterData[] = _.compact(
     options.map((value) => {
