@@ -2,7 +2,7 @@ import { Action, action } from "easy-peasy"
 import { filter, find, pullAllBy, union, unionBy } from "lodash"
 import { FilterParamName, getSortDefaultValueByFilterType, ViewAsValues } from "./FilterArtworksHelpers"
 
-export interface ArtworkFiltersModel {
+export interface ArtworkFiltersStore {
   appliedFilters: FilterArray
   selectedFilters: FilterArray
   previouslyAppliedFilters: FilterArray
@@ -10,18 +10,18 @@ export interface ArtworkFiltersModel {
   aggregations: Aggregations
   filterType: FilterType
   counts: FilterCounts
-  applyFiltersAction: Action<ArtworkFiltersModel>
-  selectFiltersAction: Action<ArtworkFiltersModel, FilterData>
-  clearAllAction: Action<ArtworkFiltersModel>
-  resetFiltersAction: Action<ArtworkFiltersModel>
-  clearFiltersZeroStateAction: Action<ArtworkFiltersModel>
-  setAggregationsAction: Action<ArtworkFiltersModel, any>
-  setFiltersCountAction: Action<ArtworkFiltersModel, FilterCounts>
-  setFilterTypeAction: Action<ArtworkFiltersModel, FilterType>
-  setInitialFilterStateAction: Action<ArtworkFiltersModel, FilterArray>
+  applyFiltersAction: Action<ArtworkFiltersStore>
+  selectFiltersAction: Action<ArtworkFiltersStore, FilterData>
+  clearAllAction: Action<ArtworkFiltersStore>
+  resetFiltersAction: Action<ArtworkFiltersStore>
+  clearFiltersZeroStateAction: Action<ArtworkFiltersStore>
+  setAggregationsAction: Action<ArtworkFiltersStore, any>
+  setFiltersCountAction: Action<ArtworkFiltersStore, FilterCounts>
+  setFilterTypeAction: Action<ArtworkFiltersStore, FilterType>
+  setInitialFilterStateAction: Action<ArtworkFiltersStore, FilterArray>
 }
 
-export const ArtworkFiltersModel: ArtworkFiltersModel = {
+export const ArtworkFiltersStore: ArtworkFiltersStore = {
   /**
    * Store state
    */
