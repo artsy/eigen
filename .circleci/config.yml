@@ -426,11 +426,7 @@ workflows:
 
   test-build-deploy:
     jobs:
-      - check-metaphysics-freshness:
-          filters:
-            branches:
-              only:
-                - mp-queries-tester
+      - check-metaphysics-freshness
       - check-pr:
           filters:
             branches:
