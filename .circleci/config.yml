@@ -1,5 +1,3 @@
-# .circleci/config.yml
-
 version: 2.1
 
 orbs:
@@ -223,24 +221,21 @@ jobs:
       - run:
           name: Danger
           command: yarn danger ci --verbose
+          # replace all node/default with docker node?
       - run:
           name: Prevent Strictness Regressions
           command: node scripts/strictness-migration.js check-pr
 
   check-metaphysics-freshness:
-    executor:
-      name: node/default
-      tag: "14.13.1"
+    docker:
+      - image: circleci/node:14
     steps:
       - checkout
-      - run:
-          name: apt-get update
-          command: apt-get update --fix-missing
       - puppeteer/install
       - install-node-modules
       - run:
           name: Check Metaphysics freshness
-          command: ./metaphysics-queries-freshness-tests/test-freshness.js
+          command: ./metaphysics-queries-freshness-tests/test-freshness.ts
 
   build-test-js:
     executor:
