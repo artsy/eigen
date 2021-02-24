@@ -2,7 +2,7 @@ import { Show_show } from "__generated__/Show_show.graphql"
 import { ShowQuery } from "__generated__/ShowQuery.graphql"
 import { AnimatedArtworkFilterButton } from "lib/Components/FilterModal"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
@@ -113,7 +113,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
         context_screen_owner_slug: show.slug,
       }}
     >
-      <ArtworkFilterGlobalStateProvider>
+      <ArtworkFiltersStoreProvider>
         <FlatList<Section>
           data={sections}
           keyExtractor={({ key }) => key}
@@ -129,7 +129,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
           isVisible={isFilterButtonVisible && Boolean(show.counts?.eligibleArtworks)}
           onPress={toggleFilterArtworksModal}
         />
-      </ArtworkFilterGlobalStateProvider>
+      </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>
   )
 }

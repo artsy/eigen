@@ -4,11 +4,11 @@ import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlacehold
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { ArtworkFiltersStoreProvider } from "../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./Components/PartnerArtwork"
 import { PartnerHeaderContainer as PartnerHeader } from "./Components/PartnerHeader"
 import { PartnerOverviewFragmentContainer as PartnerOverview } from "./Components/PartnerOverview"
@@ -40,9 +40,9 @@ class Partner extends React.Component<Props> {
             title: "Artworks",
             initial: true,
             content: (
-              <ArtworkFilterGlobalStateProvider>
+              <ArtworkFiltersStoreProvider>
                 <PartnerArtwork partner={partner} />
-              </ArtworkFilterGlobalStateProvider>
+              </ArtworkFiltersStoreProvider>
             ),
           },
           {
