@@ -221,7 +221,6 @@ jobs:
       - run:
           name: Danger
           command: yarn danger ci --verbose
-          # replace all node/default with docker node?
       - run:
           name: Prevent Strictness Regressions
           command: node scripts/strictness-migration.js check-pr
@@ -232,6 +231,7 @@ jobs:
     steps:
       - checkout
       - puppeteer/install
+      - generate-checksums
       - install-node-modules
       - run:
           name: Check Metaphysics freshness
