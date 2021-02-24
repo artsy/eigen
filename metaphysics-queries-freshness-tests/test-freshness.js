@@ -124,7 +124,7 @@ const doIt = async () => {
     console.log("")
   }
 
-  executeRequests(queriesWithoutVars, "no-var queries")
+  await executeRequests(queriesWithoutVars, "no-var queries")
 
   executeRequests(queriesWithVars, "var queries")
 
