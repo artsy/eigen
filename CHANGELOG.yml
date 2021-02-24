@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Migrate LoadFailureView to typescript - adam, brian, david, mounir, pavlos
     - Improve bottom tabs dev state management  - david, mounir
+    - Make android app full-bleed - david
   user_facing:
     - Adds inquiry checkout offer status CTA - lily
     - Update consignment photo selection flow for iOS 14 - brian
