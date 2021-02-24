@@ -9,7 +9,8 @@ const { values } = require("lodash")
 const { exit, stdout } = require("process")
 const puppeteer = require("puppeteer")
 
-const doIt = async () => {
+const login = async () => {
+  console.log("Logging in..")
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
   await page.goto("https://staging.artsy.net")
@@ -20,11 +21,16 @@ const doIt = async () => {
   await page.type('aria/textbox[name="Enter your password"]', process.env.FRESHNESS_TEST_PASSWORD)
   await page.click('aria/pushbutton[name="Log in"]')
   await page.waitForNavigation()
-  const { id: userId, accessToken: token } = await page.evaluate("sd.CURRENT_USER")
+  const { id: userId, accessToken } = await page.evaluate("sd.CURRENT_USER")
+  console.log("Logged in.")
+  return { userId, accessToken }
+}
 
+const doIt = async () => {
+  const { userId, accessToken } = await login()
   const metaphysics = new GraphQLClient("https://metaphysics-staging.artsy.net/v2", {
     headers: {
-      "X-Access-Token": token,
+      "X-Access-Token": accessToken,
       "X-User-Id": userId,
     },
   })
