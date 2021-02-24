@@ -86,9 +86,9 @@ const doIt = async () => {
   console.warn(`Skipping ${queriesWithCursor.length} queries with cursors`)
 
   const errors = []
-  const executeRequests = async (requests, description, verbose = false) => {
+  const executeRequests = async (requests, description, options) => {
     const log = (...args) => {
-      if (verbose) {
+      if (options.verbose) {
         console.log(...args)
       }
     }
@@ -98,21 +98,7 @@ const doIt = async () => {
       requests.map(async (req) => {
         try {
           log(req)
-          const response = await metaphysics.request(req, {
-            artworkID: "felipe-pantone-subtractive-variability-silk-robe-w-slash-j-balvin",
-            artworkSlug: "felipe-pantone-subtractive-variability-silk-robe-w-slash-j-balvin",
-            fairID: "london-art-fair-edit",
-            citySlug: "athens-greece",
-            artistInternalID: "4dd1584de0091e000100207c", // banksy
-            artistSlug: "banksy",
-            artistID: "banksy",
-            medium: "prints",
-            collectionID: "agnes-martin-lithographs",
-            viewingRoomID: "movart-mario-macilau-circle-of-memories",
-            isPad: false,
-            heroImageVersion: "NARROW",
-            count: 4,
-          })
+          const response = await metaphysics.request(req, options.vars)
           stdout.write(".")
           log(JSON.stringify(response))
         } catch (e) {
@@ -126,11 +112,27 @@ const doIt = async () => {
 
   await executeRequests(queriesWithoutVars, "no-var queries")
 
-  executeRequests(queriesWithVars, "var queries")
+  await executeRequests(queriesWithVars, "var queries", {
+    vars: {
+      artworkID: "felipe-pantone-subtractive-variability-silk-robe-w-slash-j-balvin",
+      artworkSlug: "felipe-pantone-subtractive-variability-silk-robe-w-slash-j-balvin",
+      fairID: "london-art-fair-edit",
+      citySlug: "athens-greece",
+      artistInternalID: "4dd1584de0091e000100207c", // banksy
+      artistSlug: "banksy",
+      artistID: "banksy",
+      medium: "prints",
+      collectionID: "agnes-martin-lithographs",
+      viewingRoomID: "movart-mario-macilau-circle-of-memories",
+      isPad: false,
+      heroImageVersion: "NARROW",
+      count: 4,
+    },
+  })
 
   // end game
   if (errors.length !== 0) {
-    console.error(`${errors.length} queries failed!`)
+    console.error(`Oh noes! ${errors.length} queries failed!`)
     errors.map(({ request, error }) => {
       console.warn("- The following query:")
       console.log(request)
