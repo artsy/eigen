@@ -235,7 +235,7 @@ jobs:
       - install-node-modules
       - run:
           name: Check Metaphysics freshness
-          command: ./metaphysics-queries-freshness-tests/test-freshness.ts
+          command: yarn ts-node ./metaphysics-queries-freshness-tests/test-freshness.ts
 
   build-test-js:
     executor:
