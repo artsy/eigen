@@ -16,7 +16,6 @@ interface GlobalStoreStateModel {
   version: number
   sessionState: {
     isHydrated: boolean
-    didSessionExpire: boolean
   }
 
   native: NativeModel
@@ -71,7 +70,6 @@ export const GlobalStoreModel: GlobalStoreModel = {
   sessionState: {
     // we don't perform hydration at test time so let's set it to always true for tests
     isHydrated: __TEST__,
-    didSessionExpire: false,
   },
 
   // NATIVE MIGRATION STATE
