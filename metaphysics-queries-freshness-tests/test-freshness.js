@@ -79,57 +79,61 @@ const doIt = async () => {
   console.log(`Skipping ${allQueries.length - allNonTestQueries.length} test queries`)
   console.warn(`Skipping ${queriesWithCursor.length} queries with cursors`)
 
-  console.log(`Running ${queriesWithoutVars.length} no-var queries`)
-  await Promise.all(
-    queriesWithoutVars.map(async (q) => {
-      try {
-        stdout.write(".")
-        // console.log(q)
-        const r = await metaphysics.request(q)
-        // console.log(JSON.stringify(r))
-      } catch (e) {
-        console.log("")
-        console.error("The following query failed:")
-        console.warn(q)
-        exit(-1)
+  const errors = []
+  const executeRequests = async (requests, description, verbose = false) => {
+    const log = (...args) => {
+      if (verbose) {
+        console.log(...args)
       }
-    })
-  )
+    }
 
-  console.log("")
-  console.log(`Running ${queriesWithVars.length} var queries`)
-  await Promise.all(
-    queriesWithVars.map(async (q) => {
-      try {
-        stdout.write(".")
-        // console.log(q)
-        const r = await metaphysics.request(q, {
-          artworkID: "felipe-pantone-subtractive-variability-silk-robe-w-slash-j-balvin",
-          artworkSlug: "felipe-pantone-subtractive-variability-silk-robe-w-slash-j-balvin",
-          fairID: "london-art-fair-edit",
-          citySlug: "athens-greece",
-          artistInternalID: "4dd1584de0091e000100207c", // banksy
-          artistSlug: "banksy",
-          artistID: "banksy",
-          medium: "prints",
-          collectionID: "agnes-martin-lithographs",
-          viewingRoomID: "movart-mario-macilau-circle-of-memories",
-          isPad: false,
-          heroImageVersion: "NARROW",
-          count: 4,
-        })
-        // console.log(JSON.stringify(r))
-      } catch (e) {
-        console.log("")
-        console.error("The following query failed:")
-        console.warn(q)
-        exit(-1)
-      }
-    })
-  )
+    console.log(`Running ${requests.length} ${description}`)
+    await Promise.all(
+      requests.map(async (req) => {
+        try {
+          log(req)
+          const response = await metaphysics.request(req, {
+            artworkID: "felipe-pantone-subtractive-variability-silk-robe-w-slash-j-balvin",
+            artworkSlug: "felipe-pantone-subtractive-variability-silk-robe-w-slash-j-balvin",
+            fairID: "london-art-fair-edit",
+            citySlug: "athens-greece",
+            artistInternalID: "4dd1584de0091e000100207c", // banksy
+            artistSlug: "banksy",
+            artistID: "banksy",
+            medium: "prints",
+            collectionID: "agnes-martin-lithographs",
+            viewingRoomID: "movart-mario-macilau-circle-of-memories",
+            isPad: false,
+            heroImageVersion: "NARROW",
+            count: 4,
+          })
+          stdout.write(".")
+          log(JSON.stringify(response))
+        } catch (e) {
+          stdout.write("x")
+          errors.push({ request: req, error: e })
+        }
+      })
+    )
+    console.log("")
+  }
 
-  console.log("")
-  console.log("done")
+  executeRequests(queriesWithoutVars, "no-var queries")
+
+  executeRequests(queriesWithVars, "var queries")
+
+  // end game
+  if (errors.length !== 0) {
+    console.error(`${errors.length} queries failed!`)
+    errors.map(({ request, error }) => {
+      console.warn("- The following query:")
+      console.log(request)
+      console.warn("failed with error:")
+      console.log(error)
+    })
+    exit(-1)
+  }
+  console.log("Success! Our queries are so so fresh.")
   exit(0)
 }
 
