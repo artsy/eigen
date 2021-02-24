@@ -372,7 +372,7 @@ function createArtworkFiltersStore() {
   return store
 }
 
-let artworkFiltersStoreInstance = createArtworkFiltersStore()
+export const ArtworksFiltersStore = createArtworkFiltersStore()
 
 // tslint:disable-next-line:variable-name
 export const __filterArtworksStoreTestUtils__ = __TEST__
@@ -381,19 +381,10 @@ export const __filterArtworksStoreTestUtils__ = __TEST__
       // e.g. `__filterArtworksStoreTestUtils__.injectState({ filterType: "artwork" })`
       // takes effect until the next test starts
       injectState(state: DeepPartial<ArtworkFiltersState>) {
-        return ArtworksFiltersStore.useStoreActions((state) => (state as any).__injectState as any)(state)
+        return ArtworksFiltersStore.useStoreActions((storeState) => (storeState as any).__injectState as any)(state)
       },
-      getCurrentState: () => artworkFiltersStoreInstance.useStoreState((state) => state),
-      // dispatchedActions: [] as Action[],
-      // getLastAction() {
-      //   return this.dispatchedActions[this.dispatchedActions.length - 1]
-      // },
-      reset: () => {
-        artworkFiltersStoreInstance = createArtworkFiltersStore()
-      },
+      getCurrentState: () => ArtworksFiltersStore.useStoreState((state) => state),
     }
   : null
 
-export const ArtworksFiltersStore = artworkFiltersStoreInstance
-
-export const ArtworkFiltersStoreProvider = artworkFiltersStoreInstance.Provider
+export const ArtworkFiltersStoreProvider = ArtworksFiltersStore.Provider
