@@ -1,24 +1,22 @@
-#!/usr/bin/env node
-
-// @ts-check
+#!/usr/bin/env yarn ts-node
 
 require("dotenv").config()
 
-const { GraphQLClient } = require("graphql-request")
-const { values } = require("lodash")
-const { exit, stdout } = require("process")
-const puppeteer = require("puppeteer")
+import { GraphQLClient } from "graphql-request"
+import { values } from "lodash"
+import { exit, stdout } from "process"
+import puppeteer from "puppeteer"
 
-const login = async () => {
+const login = async (): Promise<{ userId: string; accessToken: string }> => {
   console.log("Logging in..")
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
   await page.goto("https://staging.artsy.net")
   await page.click('aria/button[name="Log in"]')
   await page.click('aria/textbox[name="Enter your email address"]')
-  await page.type('aria/textbox[name="Enter your email address"]', process.env.FRESHNESS_TEST_EMAIL)
+  await page.type('aria/textbox[name="Enter your email address"]', process.env.FRESHNESS_TEST_EMAIL ?? "missing email")
   await page.click('aria/textbox[name="Enter your password"]')
-  await page.type('aria/textbox[name="Enter your password"]', process.env.FRESHNESS_TEST_PASSWORD)
+  await page.type('aria/textbox[name="Enter your password"]', process.env.FRESHNESS_TEST_PASSWORD ?? "missing password")
   await page.click('aria/pushbutton[name="Log in"]')
   await page.waitForNavigation()
   const { id: userId, accessToken } = await page.evaluate("sd.CURRENT_USER")
@@ -26,7 +24,7 @@ const login = async () => {
   return { userId, accessToken }
 }
 
-const doIt = async () => {
+const doIt = async (): Promise<never> => {
   const { userId, accessToken } = await login()
   const metaphysics = new GraphQLClient("https://metaphysics-staging.artsy.net/v2", {
     headers: {
@@ -35,7 +33,7 @@ const doIt = async () => {
     },
   })
 
-  const allQueries = values(require("../data/complete.queryMap.json"))
+  const allQueries = values(require("../data/complete.queryMap.json")) as string[]
   const problemQueries = allQueries.filter(
     (q) =>
       q.includes("$conversationID") ||
@@ -85,9 +83,14 @@ const doIt = async () => {
   console.log(`Skipping ${allQueries.length - allNonTestQueries.length} test queries`)
   console.warn(`Skipping ${queriesWithCursor.length} queries with cursors`)
 
-  const errors = []
-  const executeRequests = async (requests, description, options) => {
-    const log = (...args) => {
+  type Error = { request: string; error: string }
+  const errors: Error[] = [] as Error[]
+  const executeRequests = async (
+    requests: string[],
+    description: string,
+    options: { verbose?: boolean; vars?: { [Var: string]: any } } = { verbose: false }
+  ) => {
+    const log = (...args: Parameters<typeof console.log>) => {
       if (options.verbose) {
         console.log(...args)
       }
@@ -139,6 +142,7 @@ const doIt = async () => {
       console.warn("failed with error:")
       console.log(error)
     })
+    console.error(`Again, ${errors.length} queries failed. Look above for more details.`)
     exit(-1)
   }
   console.log("Success! Our queries are so so fresh.")
@@ -146,3 +150,9 @@ const doIt = async () => {
 }
 
 doIt()
+
+// make puppeteer run in circleci
+// make tickets for:
+// find some users that use the app a lot and test with their accounts in staging funky account in the backend that causes a different respose for different users
+// move to other repo and put force
+// keep running and print out all brokens things, dont stop at first
