@@ -227,12 +227,15 @@ jobs:
 
   check-metaphysics-freshness:
     docker:
-      - image: circleci/node:14
+      - image: circleci/node:14.13.1
     steps:
       - checkout
       - puppeteer/install
       - generate-checksums
       - install-node-modules
+      - run:
+          name: Generate queries json
+          command: yarn relay
       - run:
           name: Check Metaphysics freshness
           command: yarn ts-node ./metaphysics-queries-freshness-tests/test-freshness.ts
