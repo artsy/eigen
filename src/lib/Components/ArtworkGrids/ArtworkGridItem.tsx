@@ -49,9 +49,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const itemRef = useRef<any>()
   const tracking = useTracking()
 
-  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  let filterParams: any
 
-  const filterParams = filterArtworksParams(appliedFilters)
+  // This is needed to make sure the filter context is defined
+  if (ArtworksFiltersStore.useStore()) {
+    const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+    filterParams = filterArtworksParams(appliedFilters)
+  }
 
   const handleTap = () => {
     trackArtworkTap()
