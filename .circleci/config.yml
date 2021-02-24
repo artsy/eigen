@@ -4,7 +4,6 @@ orbs:
   node: circleci/node@1.1.6
   queue: eddiewebb/queue@1.0.110
   horizon: artsy/release@0.0.1
-  puppeteer: threetreeslight/puppeteer@0.1.2
 
 commands:
   await-previous-builds:
@@ -230,7 +229,16 @@ jobs:
       - image: circleci/node:14.13.1
     steps:
       - checkout
-      - puppeteer/install
+      - run:
+          name: Install Headless Chrome dependencies for puppeteer
+          # from https://github.com/threetreeslight/puppeteer-orb/blob/master/orb.yml
+          command: |
+            sudo apt-get install --fix-missing -yq \
+            gconf-service libasound2 libatk1.0-0 libatk-bridge2.0-0 libc6 libcairo2 libcups2 libdbus-1-3 \
+            libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 \
+            libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 \
+            libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates \
+            fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
       - generate-checksums
       - install-node-modules
       - run:
