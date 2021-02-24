@@ -58,7 +58,7 @@ describe("explicitlyClearedFields", () => {
         isEdition: false,
         title: "some-title",
         artistSearchResult: {} as any,
-        pricePaidCents: "10000",
+        pricePaidDollars: "100",
         pricePaidCurrency: "USD",
         date: "some-date",
         editionSize: "some-edition-size",

@@ -28,7 +28,7 @@ export function explicitlyClearedFields(
   // These are provided in update mutation separately so should be ignored here
   delete diffPayload.photos
   delete diffPayload.artistSearchResult
-  delete diffPayload.pricePaidCents
+  delete diffPayload.pricePaidDollars
   delete diffPayload.pricePaidCurrency
 
   const payloadUnion = {

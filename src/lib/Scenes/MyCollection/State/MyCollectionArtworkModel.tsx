@@ -22,7 +22,7 @@ export interface ArtworkFormValues {
   artistIds: string[]
   artistSearchResult: AutosuggestResult | null
   category: string // this refers to "materials" in UI
-  pricePaidCents: string
+  pricePaidDollars: string
   pricePaidCurrency: string
   date: string
   depth: string
@@ -43,7 +43,7 @@ export const initialFormValues: ArtworkFormValues = {
   artistIds: [],
   artistSearchResult: null,
   category: "",
-  pricePaidCents: "",
+  pricePaidDollars: "",
   pricePaidCurrency: "",
   date: "",
   depth: "",
@@ -179,7 +179,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       category: artwork.category,
       date: artwork.date,
       depth: artwork.depth,
-      pricePaidCents: pricePaidDollars?.toString() ?? "",
+      pricePaidDollars: pricePaidDollars?.toString() ?? "",
       pricePaidCurrency: artwork.pricePaid?.currencyCode ?? "",
       editionSize: artwork.editionSize,
       editionNumber: artwork.editionNumber,

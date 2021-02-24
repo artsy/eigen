@@ -101,10 +101,10 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
               title="Price paid"
               placeholder="Price paid"
               keyboardType="decimal-pad"
-              onChangeText={formik.handleChange("pricePaidCents")}
-              onBlur={formik.handleBlur("pricePaidCents")}
+              onChangeText={formik.handleChange("pricePaidDollars")}
+              onBlur={formik.handleBlur("pricePaidDollars")}
               data-test-id="PricePaidInput"
-              defaultValue={formikValues.pricePaidCents}
+              defaultValue={formikValues.pricePaidDollars}
             />
 
             <Select
