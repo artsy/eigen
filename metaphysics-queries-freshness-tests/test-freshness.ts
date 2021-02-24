@@ -151,8 +151,3 @@ const doIt = async (): Promise<never> => {
 
 doIt()
 
-// make puppeteer run in circleci
-// make tickets for:
-// find some users that use the app a lot and test with their accounts in staging funky account in the backend that causes a different respose for different users
-// move to other repo and put force
-// keep running and print out all brokens things, dont stop at first
