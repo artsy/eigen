@@ -103,7 +103,6 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 createInquiryOfferOrder: { orderOrError },
               } = data
-              console.warn("ORDER OR ERROR", orderOrError)
               if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
                 this.onMutationError(orderOrError.error)
               } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
@@ -123,7 +122,6 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
 
   render() {
     const { isCommittingCreateOfferOrderMutation } = this.state
-    console.warn("PROPS", this.props.artwork.internalID)
 
     return (
       <Button
