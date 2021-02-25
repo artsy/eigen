@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - Migrate LoadFailureView to typescript - adam, brian, david, mounir, pavlos
+    - Migrate environment configuration to TypeScript - david
     - Improve bottom tabs dev state management  - david, mounir
   user_facing:
     - Adds inquiry checkout offer status CTA - lily

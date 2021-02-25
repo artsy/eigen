@@ -129,61 +129,6 @@ describe(@"login", ^{
 });
 
 describe(@"clearUserData", ^{
-    describe(@"unsetting user defaults", ^{
-
-        before(^{
-            [[NSUserDefaults standardUserDefaults] setValue:@"test value" forKey:@"TestKey"];
-        });
-
-        after(^{
-            [ARDefaults resetDefaults];
-        });
-
-        it(@"sets use staging to previous YES value", ^{
-            [[NSUserDefaults standardUserDefaults] setValue:@(YES) forKey:ARUseStagingDefault];
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beTruthy();
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.equal(@"test value");
-            [ARUserManager clearUserData];
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beTruthy();
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.beNil();
-        });
-
-        it(@"sets use staging to previous NO value", ^{
-            [[NSUserDefaults standardUserDefaults] setValue:@(NO) forKey:ARUseStagingDefault];
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beFalsy();
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.equal(@"test value");
-            [ARUserManager clearUserData];
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beFalsy();
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.beNil();
-        });
-    });
-
-    describe(@"clearUserDataAndSetUserStaging", ^{
-        before(^{
-            [[NSUserDefaults standardUserDefaults] setValue:@"test value" forKey:@"TestKey"];
-        });
-
-        after(^{
-            [ARDefaults resetDefaults];
-        });
-
-        it(@"explicitly sets staging default to yes", ^{
-            expect([[NSUserDefaults standardUserDefaults] objectForKey:ARUseStagingDefault]).to.beTruthy();
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.equal(@"test value");
-            [ARUserManager clearUserData:[ARUserManager sharedManager] useStaging:@(YES)];
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beTruthy();
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.beNil();
-        });
-        
-        it(@"explicitly sets staging default to no", ^{
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beTruthy();
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.equal(@"test value");
-            [ARUserManager clearUserData:[ARUserManager sharedManager] useStaging:@(NO)];
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:ARUseStagingDefault]).to.beFalsy();
-            expect([[NSUserDefaults standardUserDefaults] valueForKey:@"TestKey"]).to.beNil();
-        });
-
-    });
 
     describe(@"with email and password", ^{
         __block NSString * _userDataPath;

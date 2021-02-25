@@ -3,12 +3,7 @@
 #import "AROptions.h"
 
 NSString *const ARUserIdentifierDefault = @"ARUserIdentifier";
-NSString *const ARUseStagingDefault = @"ARUseStagingDefault";
 
-NSString *const ARStagingAPIURLDefault = @"ARStagingAPIURLDefault";
-NSString *const ARStagingWebURLDefault = @"ARStagingWebURLDefault";
-NSString *const ARStagingMetaphysicsURLDefault = @"ARStagingMetaphysicsURLDefault";
-NSString *const ARStagingLiveAuctionSocketURLDefault = @"ARStagingLiveAuctionSocketURLDefault";
 
 NSString *const ARAppleDisplayNameKeychainKey = @"ARAppleDisplayNameKeychainKey";
 NSString *const ARAppleEmailKeyChainKey = @"ARAppleEmailKeyChainKey";
@@ -43,21 +38,8 @@ NSString *const ARAugmentedRealityHasSuccessfullyRan = @"ARAugmentedRealityHasSu
 
 + (void)setup
 {
-    BOOL isDebugMode;
-#if DEBUG
-    isDebugMode = YES;
-#else
-    isDebugMode = NO;
-#endif
-
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{
         AROnboardingUserProgressionStage : @(0),
-        AROptionsDevReactEnv: @(isDebugMode),
-        ARUseStagingDefault : @(isDebugMode),
-        ARStagingAPIURLDefault : @"https://stagingapi.artsy.net",
-        ARStagingWebURLDefault : @"https://staging.artsy.net",
-        ARStagingMetaphysicsURLDefault : @"https://metaphysics-staging.artsy.net/v2",
-        ARStagingLiveAuctionSocketURLDefault : @"wss://causality-staging.artsy.net"
     }];
 }
 

@@ -7,8 +7,7 @@ declare module "react-native-config" {
     ARTSY_FACEBOOK_APP_ID: string
     SEGMENT_PRODUCTION_WRITE_KEY: string
     SEGMENT_STAGING_WRITE_KEY: string
-    SENTRY_PRODUCTION_DSN: string
-    SENTRY_BETA_DSN: string
+    SENTRY_DSN: string
     GOOGLE_MAPS_API_KEY: string
     MAPBOX_API_CLIENT_KEY: string
     SAILTHRU_KEY: string

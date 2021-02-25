@@ -12,7 +12,7 @@ import { VanityURLPossibleRedirect } from "../VanityURLPossibleRedirect"
 const fetchMock = ((global as any).fetch = jest.fn())
 
 beforeEach(() => {
-  __globalStoreTestUtils__?.injectState({ native: { sessionState: { webURL: "https://artsy.net" } } })
+  __globalStoreTestUtils__?.setProductionMode()
   fetchMock.mockReset()
 })
 

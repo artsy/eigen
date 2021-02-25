@@ -1,7 +1,6 @@
 import { Input } from "lib/Components/Input/Input"
 import { Stack } from "lib/Components/Stack"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { getCurrentEmissionState, GlobalStore, unsafe__getEnvironment } from "lib/store/GlobalStore"
 import { Flex, Separator } from "palette"
 import React, { useEffect, useState } from "react"
 import { MyAccountFieldEditScreen, MyAccountFieldEditScreenProps } from "./Components/MyAccountFieldEditScreen"
@@ -26,7 +25,8 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
   }, [passwordConfirmation])
 
   const onSave: MyAccountFieldEditScreenProps["onSave"] = async (_, alert) => {
-    const { gravityURL, authenticationToken, userAgent } = getCurrentEmissionState()
+    const { authenticationToken, userAgent } = getCurrentEmissionState()
+    const { gravityURL } = unsafe__getEnvironment()
     if (newPassword !== passwordConfirmation) {
       setReceivedErrorConfirm("Password confirmation does not match")
       return
@@ -72,7 +72,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
         [
           {
             text: "OK",
-            onPress: () => LegacyNativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
+            onPress: () => GlobalStore.actions.signOut(),
           },
         ],
         { cancelable: false }

@@ -1,13 +1,13 @@
 import { ArtsyWebView } from "lib/Components/ArtsyWebView"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { dismissModal } from "lib/navigation/navigate"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { useEnvironment } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { KeyboardAvoidingView, View } from "react-native"
 
 export const Checkout: React.FC<{ orderID: string }> = ({ orderID }) => {
-  const webCheckoutUrl = `${getCurrentEmissionState().webURL}/orders/${orderID}`
+  const webCheckoutUrl = `${useEnvironment().webURL}/orders/${orderID}`
   return (
     <KeyboardAvoidingView
       behavior="padding"

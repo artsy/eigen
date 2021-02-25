@@ -14,9 +14,10 @@ export const Versions = {
   RemoveMyCollectionNavigationState: 4,
   AddAuthAndConfigState: 5,
   AddFeatureFlagInfra: 6,
+  RefactorConfigModel: 7,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddFeatureFlagInfra
+export const CURRENT_APP_VERSION = Versions.RefactorConfigModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -51,6 +52,13 @@ export const artsyAppMigrations: Migrations = {
   [Versions.AddFeatureFlagInfra]: (state) => {
     state.config.adminFeatureFlagOverrides = {}
     state.config.echoState = echoLaunchJSON
+  },
+  [Versions.RefactorConfigModel]: (state) => {
+    const newConfig = {} as any
+    newConfig.features = { adminOverrides: state.config.adminFeatureFlagOverrides }
+    newConfig.echo = { state: state.config.echoState }
+    newConfig.environment = { adminOverrides: {}, env: "staging" }
+    state.config = newConfig
   },
 }
 

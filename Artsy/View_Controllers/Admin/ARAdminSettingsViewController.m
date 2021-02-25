@@ -28,7 +28,7 @@
 NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 @interface ARAdminSettingsViewController()
-@property (nonatomic) NSDictionary *emissionPodspec;
+
 @end
 
 @implementation ARAdminSettingsViewController
@@ -36,11 +36,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    NSString *emissionPodspecURL = [[NSBundle mainBundle] pathForResource:@"Emission.podspec" ofType:@"json"];
-    NSData *data = [NSData dataWithContentsOfFile:emissionPodspecURL];
-    self.emissionPodspec = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:NULL];
-
 
     ARTableViewData *tableViewData = [[ARTableViewData alloc] init];
 
@@ -54,9 +49,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     userSectionData.headerTitle = [NSString stringWithFormat:@"%@ v%@, build %@ (%@), %@", name, version, build, gitCommitRevision, userEmail];
 
     [userSectionData addCellDataFromArray:@[
-        [self generateStagingSwitch],
         [self generateRestart],
-        [self generateLogOut],
     ]];
     [tableViewData addSectionData:userSectionData];
 
@@ -71,9 +64,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
     launcherSections.headerTitle = @"Launcher";
     [tableViewData addSectionData:launcherSections];
-
-    ARSectionData *rnSection = [self createReactNativeSection];
-    [tableViewData addSectionData:rnSection];
 
     ARSectionData *labsSection = [self createLabsSection];
     [tableViewData addSectionData:labsSection];
@@ -97,14 +87,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     return UIStatusBarStyleLightContent;
 }
 
-- (ARCellData *)generateLogOut
-{
-    return [self tappableCellDataWithTitle:@"Log Out & Exit" selection:^{
-        [self showAlertViewWithTitle:@"Confirm Log Out" message:@"" actionTitle:@"Continue" actionHandler:^{
-            [ARUserManager logoutAndExit];
-        }];
-    }];
-}
 
 - (ARCellData *)generateFeaturePage
 {
@@ -132,24 +114,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     return [self tappableCellDataWithTitle:@"Restart" selection:^{
         exit(0);
     }];
-}
-
-- (ARCellData *)generateStagingSwitch
-{
-    BOOL useStaging = [AROptions boolForOption:ARUseStagingDefault];
-    NSString *title = NSStringWithFormat(@"Switch to %@ (Logs out)", useStaging ? @"Production" : @"Staging");
-
-    ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
-        cell.textLabel.text = title;
-    }];
-
-    [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
-        [self showAlertViewWithTitle:@"Confirm Logout" message:@"Switching servers requires logout. App will exit. Please re-open to log back in." actionTitle:@"Continue" actionHandler:^{
-            [ARUserManager logoutAndSetUseStaging:!useStaging];
-        }];
-    }];
-    return crashCellData;
 }
 
 - (ARCellData *)generateRemoteDebug
@@ -252,176 +216,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 }
 #endif
 
-- (ARSectionData *)createReactNativeSection
-{
-    ARSectionData *sectionData = [[ARSectionData alloc] init];
-    sectionData.headerTitle = [NSString stringWithFormat:@"Emission v%@", self.emissionPodspec[@"version"]];
-
-    BOOL isStagingReact = [AROptions boolForOption:AROptionsStagingReactEnv];
-    BOOL isDevReact = [AROptions boolForOption:AROptionsDevReactEnv];
-
-    if (isStagingReact) {
-        [sectionData addCellDataFromArray:self.emissionInformationCells];
-        [sectionData addCellData:self.emissionVersionUpdater];
-    }
-    if (!isDevReact) {
-        [sectionData addCellData:self.toggleStagingReactNative];
-    }
-    if (!isStagingReact) {
-        [sectionData addCellData:self.useDevReactNative];
-        [sectionData addCellData:[self generateRemoteDebug]];
-        [sectionData addCellData:[self generateShowReactNativeDevMenu]];
-    }
-    return sectionData;
-}
-
-- (NSArray<ARCellData *> *)emissionInformationCells
-{
-    NSError *jsonError = nil;
-    NSURL *metadataURL = [ARAdminNetworkModel fileURLForLatestCommitMetadata];
-
-    NSData *data = [NSData dataWithContentsOfURL:metadataURL];
-    if(!data) { return @[]; }
-
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
-    Metadata *metadata = [[Metadata alloc] initFromJSONDict:json];
-
-    if (jsonError) { return @[]; }
-
-    ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
-    NSDate *lastUpdate = [dateFormatter dateFromString:[metadata date]];
-
-    NSUInteger unitFlags = NSCalendarUnitDay;
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierISO8601];
-    NSDateComponents *components = [calendar components:unitFlags fromDate:lastUpdate toDate:[NSDate dateWithTimeIntervalSinceNow:0] options:0];
-
-    NSString *pr = [NSString stringWithFormat:@"Last PR #%@ - %@", [metadata number], [metadata title]];
-    NSString *emissionVersion = [[NSUserDefaults standardUserDefaults] valueForKey:AREmissionHeadVersionDefault];
-    NSString *days = [NSString stringWithFormat:@"%@ %@", @([components day]), [components day] == 1 ? @"day" : @"days"];
-
-    return @[
-     [self informationCellDataWithTitle:[NSString stringWithFormat:@"Emission v%@", emissionVersion]],
-     [self informationCellDataWithTitle:[NSString stringWithFormat:@"Current Code is %@ old", days]],
-
-     [self tappableCellDataWithTitle:pr selection:^{
-         NSString *addr = [NSString stringWithFormat:@"https://github.com/artsy/emission/pull/%@", metadata.number];
-         NSURL *url = [NSURL URLWithString:addr];
-         id viewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
-         [self.navigationController pushViewController:viewController animated:YES];
-     }]
- ];
-}
-
-- (ARCellData *)emissionVersionUpdater
-{
-    // This should stay the long-form version so that it can edit the cell's text
-
-    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    cellData.keepSelection = YES;
-
-    cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
-        cell.textLabel.text = @"Update Emission to latest";
-    };
-
-    cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
-        NSIndexPath *selection = tableView.indexPathForSelectedRow;
-        UITableViewCell *cell = [tableView cellForRowAtIndexPath:selection];
-        cell.textLabel.text = @"Updating...";
-
-        [self updateEmissionVersion:^() {
-            exit(0);
-        }];
-    };
-    return cellData;
-}
-
-- (void)updateEmissionVersion:(void (^)(void))completion;
-{
-    __block NSString *subtitleMessage = @"Emission from master";
-    ARAdminNetworkModel *model = [[ARAdminNetworkModel alloc] init];
-    [model downloadJavaScriptForMasterCommit:^(NSString * _Nullable title, NSString * _Nullable subtitle) {
-        subtitleMessage = subtitle;
-
-    } completion:^(NSURL * _Nullable downloadedFileURL, NSError * _Nullable error) {
-        if (error) {
-            NSLog(@"Err: %@", error);
-        } else {
-            [self showAlertViewWithTitle:@"Restarting" message:subtitleMessage actionTitle:@"Restart" actionHandler:^{
-                completion();
-            }];
-        }
-    }];
-}
-
-- (ARCellData *)toggleStagingReactNative
-{
-    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    cellData.keepSelection = YES;
-
-    BOOL isStagingReact = [AROptions boolForOption:AROptionsStagingReactEnv];
-    NSString *message = isStagingReact? @"Return to original" : @"Switch to Staging";
-    NSString *title = NSStringWithFormat(@"%@ React Native ENV (restarts)", message);
-
-
-    cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
-        cell.textLabel.text = title;
-    };
-
-    cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
-        // Update defaults
-        [AROptions setBool: ![AROptions boolForOption:AROptionsStagingReactEnv] forOption:AROptionsStagingReactEnv];
-
-        // Pass some metadata
-        NSBundle *bundle = [NSBundle bundleForClass:AREmission.class];
-        NSString *version = bundle.infoDictionary[@"CFBundleShortVersionString"];
-        [[NSUserDefaults standardUserDefaults] setValue:version forKey:AREmissionHeadVersionDefault];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-
-        if (!isStagingReact) {
-            // Let the user know we're updating the JS
-            NSIndexPath *selection = tableView.indexPathForSelectedRow;
-            UITableViewCell *cell = [tableView cellForRowAtIndexPath:selection];
-            cell.textLabel.text = @"Downloading Emission...";
-
-            return [self updateEmissionVersion:^{ exit(0); }];
-        }
-
-        exit(0);
-    };
-
-    return cellData;
-}
-
-- (ARCellData *)useDevReactNative
-{
-    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    BOOL isDevReact = [AROptions boolForOption:AROptionsDevReactEnv];
-
-    cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
-        if (isDevReact) {
-            cell.textLabel.text = @"Use bundled Emission (restarts)";
-        } else {
-            cell.textLabel.text = @"Use local Emission packaging server (restarts)";
-        }
-    };
-    cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
-        [AROptions setBool: !isDevReact forOption:AROptionsDevReactEnv];
-
-        // Bail quick if we're turning it off
-        if (isDevReact) { exit(0); }
-
-        // Warn to see the docs
-        NSString *message = @"See the Emission docs on this, github.com/artsy/Emission/docs/using_dev_emission.md";
-        UIAlertController *controller = [UIAlertController alertControllerWithTitle:@"Note" message:message preferredStyle:UIAlertControllerStyleAlert];
-
-        [controller addAction:[UIAlertAction actionWithTitle:@"Got it" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            [AROptions setBool: !isDevReact forOption:AROptionsDevReactEnv];
-            exit(0);
-        }]];
-        [self presentViewController:controller animated:YES completion:nil];
-    };
-    return cellData;
-}
 
 - (ARSectionData *)createLabsSection
 {
@@ -432,24 +226,16 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     for (NSInteger index = 0; index < options.count; index++) {
         NSString *key = options[index];
         NSString *title = [AROptions descriptionForOption:key];
-        BOOL requiresRestart = [[AROptions labsOptionsThatRequireRestart] indexOfObject:title] != NSNotFound;
 
         ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
         [cellData setCellConfigurationBlock:^(UITableViewCell *cell) {
-            cell.textLabel.text = requiresRestart ? [title stringByAppendingString:@" (restarts)"] : title;
+            cell.textLabel.text = title;
             cell.accessoryView = [[ARAnimatedTickView alloc] initWithSelection:[AROptions boolForOption:key]];
         }];
 
         [cellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
             BOOL currentSelection = [AROptions boolForOption:key];
             [AROptions setBool:!currentSelection forOption:key];
-
-            if (requiresRestart) {
-                // Show checkmark.
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    exit(0);
-                });
-            }
 
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             [(ARAnimatedTickView *)cell.accessoryView setSelected:!currentSelection animated:YES];
@@ -465,28 +251,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     ARSectionData *labsSectionData = [[ARSectionData alloc] init];
     labsSectionData.headerTitle = @"Developer";
 
-    ARCellData *crashCellData = [self tappableCellDataWithTitle:@"Crash App" selection:^{
-        [SentrySDK crash];
-    }];
-
-    ARCellData *clearRelayCacheData = [self tappableCellDataWithTitle:@"Clear Relay Cache" selection:^{
-        [[ARGraphQLQueryCache new] clearAll];
-    }];
-
-    BOOL usingStaging = [[NSUserDefaults standardUserDefaults] boolForKey:ARUseStagingDefault];
-
-    [labsSectionData addCellDataFromArray:@[
-        crashCellData,
-        clearRelayCacheData,
-#if !TARGET_IPHONE_SIMULATOR
-        [self generateNotificationTokenPasteboardCopy],
-        [self requestNotificationsAlert],
-#endif
-        [self editableTextCellDataWithName:@"Gravity API" defaultKey:ARStagingAPIURLDefault enabled:usingStaging],
-        [self editableTextCellDataWithName:@"Web" defaultKey:ARStagingWebURLDefault enabled:usingStaging],
-        [self editableTextCellDataWithName:@"Metaphysics" defaultKey:ARStagingMetaphysicsURLDefault enabled:usingStaging],
-        [self editableTextCellDataWithName:@"Live Auctions Socket" defaultKey:ARStagingLiveAuctionSocketURLDefault enabled:usingStaging],
-    ]];
     return labsSectionData;
 }
 
