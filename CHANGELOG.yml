@@ -5,6 +5,7 @@ upcoming:
     - Migrate LoadFailureView to typescript - adam, brian, david, mounir, pavlos
     - Migrate environment configuration to TypeScript - david
     - Improve bottom tabs dev state management  - david, mounir
+    - Use adjustPan for windowSoftInputMode  - mounir
     - Make android app full-bleed - david
   user_facing:
     - Adds inquiry checkout offer status CTA - lily
