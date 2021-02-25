@@ -26,12 +26,20 @@ interface LegacyNativeModules {
     fetchNotificationPermissions(callback: (error: any, result: PushAuthorizationStatus) => void): void
     markNotificationsRead(callback: (error?: Error) => any): void
     setApplicationIconBadgeNumber(n: number): void
-    validateAuthCredentialsAreCorrect(): void
+    clearUserData(): void
   }
   ARNotificationsManager: {
     nativeState: NativeState
     postNotificationName(type: string, data: object): void
     didFinishBootstrapping(): void
+    reactStateUpdated(state: {
+      gravityURL: string
+      metaphysicsURL: string
+      predictionURL: string
+      webURL: string
+      causalityURL: string
+      env: string
+    }): void
   }
   ARPHPhotoPickerModule: {
     requestPhotos(): Promise<RNCImage[]>
@@ -72,46 +80,49 @@ interface LegacyNativeModules {
     triggerCameraModal(reactTag: number | null): Promise<void>
   }
 }
+const LegacyNativeModulesIOS: LegacyNativeModules = AllNativeModules as any
 
-export const LegacyNativeModules: LegacyNativeModules = Platform.select({
-  ios: AllNativeModules as any,
-  default: {
-    ARTakeCameraPhotoModule: {
-      errorCodes: {
-        cameraNotAvailable: "cameraNotAvailable",
-        imageMediaNotAvailable: "imageMediaNotAvailable",
-        cameraAccessDenied: "cameraAccessDenied",
-        saveFailed: "saveFailed",
-      },
-    },
+export const LegacyNativeModules: LegacyNativeModules =
+  Platform.OS === "ios"
+    ? LegacyNativeModulesIOS
+    : {
+        ARTakeCameraPhotoModule: {
+          errorCodes: {
+            cameraNotAvailable: "cameraNotAvailable",
+            imageMediaNotAvailable: "imageMediaNotAvailable",
+            cameraAccessDenied: "cameraAccessDenied",
+            saveFailed: "saveFailed",
+          },
+          triggerCameraModal: noop("triggerCameraModal"),
+        },
 
-    ARCocoaConstantsModule: {
-      UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
-      AREnabled: false,
-      CurrentLocale: getLocales()[0].languageTag,
-      LocalTimeZone: getTimeZone(),
-    },
+        ARCocoaConstantsModule: {
+          UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
+          AREnabled: false,
+          CurrentLocale: getLocales()[0].languageTag,
+          LocalTimeZone: getTimeZone(),
+        },
 
-    ARNotificationsManager: {
-      nativeState: null as any,
-      postNotificationName: noop("postNotificationName"),
-      didFinishBootstrapping: () => null,
-    },
+        ARNotificationsManager: {
+          nativeState: null as any,
+          postNotificationName: noop("postNotificationName"),
+          didFinishBootstrapping: () => null,
+          reactStateUpdated: () => null,
+        },
 
-    ARTemporaryAPIModule: {
-      validateAuthCredentialsAreCorrect: noop("validateAuthCredentialsAreCorrect"),
-      requestNotificationPermissions: noop("requestNotificationPermissions"),
-      fetchNotificationPermissions: noop("fetchNotificationPermissions"),
-      markNotificationsRead: noop("markNotificationsRead"),
-      setApplicationIconBadgeNumber: () => {
-        console.log("TODO: make app icon badge work on android")
-      },
-      appVersion: "appVersion",
-      buildVersion: "buildVersion",
-    },
-    ARPHPhotoPickerModule: {
-      requestPhotos: noop("requestPhotos"),
-    },
-    ARScreenPresenterModule,
-  },
-})
+        ARTemporaryAPIModule: {
+          requestNotificationPermissions: noop("requestNotificationPermissions"),
+          fetchNotificationPermissions: noop("fetchNotificationPermissions"),
+          markNotificationsRead: noop("markNotificationsRead"),
+          setApplicationIconBadgeNumber: () => {
+            console.log("TODO: make app icon badge work on android")
+          },
+          appVersion: "appVersion",
+          buildVersion: "buildVersion",
+          clearUserData: () => null,
+        },
+        ARPHPhotoPickerModule: {
+          requestPhotos: noop("requestPhotos"),
+        },
+        ARScreenPresenterModule,
+      }

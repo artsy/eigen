@@ -1,5 +1,6 @@
 import { action, Action, StateMapper, thunk, Thunk } from "easy-peasy"
 import { stringify } from "qs"
+import Config from "react-native-config"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 
@@ -13,7 +14,6 @@ export interface AuthModel {
   getXAppToken: Thunk<AuthModel, void, {}, GlobalStoreModel, Promise<string>>
   userExists: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel>
   signIn: Thunk<AuthModel, { email: string; password: string }, {}, GlobalStoreModel, Promise<boolean>>
-  signOut: Action<AuthModel, void>
   gravityUnauthenticatedRequest: Thunk<
     AuthModel,
     {
@@ -41,13 +41,12 @@ export const AuthModel: AuthModel = {
       // TODO: handle expiry
       return xAppToken
     }
-    const { gravityBaseURL, gravitySecret, gravityKey } = context.getStoreState().config.sessionState
-    const result = await fetch(
-      `${gravityBaseURL}/api/v1/xapp_token?${stringify({
-        client_id: gravityKey,
-        client_secret: gravitySecret,
-      })}`
-    )
+    const gravityBaseURL = context.getStoreState().config.environment.strings.gravityURL
+    const tokenURL = `${gravityBaseURL}/api/v1/xapp_token?${stringify({
+      client_id: Config.ARTSY_API_CLIENT_KEY,
+      client_secret: Config.ARTSY_API_CLIENT_SECRET,
+    })}`
+    const result = await fetch(tokenURL)
     // TODO: check status
     const json = (await result.json()) as {
       xapp_token: string
@@ -60,10 +59,10 @@ export const AuthModel: AuthModel = {
       })
       return json.xapp_token
     }
-    throw new Error("unable to get x-app-token " + JSON.stringify({ gravityKey, gravitySecret }))
+    throw new Error("Unable to get x-app-token from " + tokenURL)
   }),
   gravityUnauthenticatedRequest: thunk(async (actions, payload, context) => {
-    const { gravityBaseURL } = context.getStoreState().config.sessionState
+    const gravityBaseURL = context.getStoreState().config.environment.strings.gravityURL
     const xAppToken = await actions.getXAppToken()
     return await fetch(`${gravityBaseURL}${payload.path}`, {
       method: payload.method || "GET",
@@ -87,8 +86,7 @@ export const AuthModel: AuthModel = {
       throw new Error(JSON.stringify(await result.json()))
     }
   }),
-  signIn: thunk(async (actions, { email, password }, context) => {
-    const { gravityKey, gravitySecret } = context.getStoreState().config.sessionState
+  signIn: thunk(async (actions, { email, password }) => {
     const result = await actions.gravityUnauthenticatedRequest({
       path: `/oauth2/access_token`,
       method: "POST",
@@ -98,8 +96,8 @@ export const AuthModel: AuthModel = {
       body: {
         email,
         password,
-        client_id: gravityKey,
-        client_secret: gravitySecret,
+        client_id: Config.ARTSY_API_CLIENT_KEY,
+        client_secret: Config.ARTSY_API_CLIENT_SECRET,
         grant_type: "credentials",
         scope: "offline_access",
       },
@@ -123,14 +121,5 @@ export const AuthModel: AuthModel = {
     }
 
     return false
-  }),
-  signOut: action((state) => {
-    Object.assign(state, {
-      userID: null,
-      userAccessToken: null,
-      userAccessTokenExpiresIn: null,
-      xAppToken: null,
-      xApptokenExpiresIn: null,
-    })
   }),
 }

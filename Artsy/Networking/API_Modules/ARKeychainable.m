@@ -2,6 +2,7 @@
 #import "ARDefaults.h"
 #import "AROptions.h"
 #import "ARKeychainable.h"
+#import <AREmission.h>
 
 
 @implementation ARKeychain
@@ -14,7 +15,7 @@
 
 - (NSString *)keyForEnvironment:(NSString *)key
 {
-    BOOL useStaging = [AROptions boolForOption:ARUseStagingDefault];
+    BOOL useStaging = [[AREmission sharedInstance] isStaging];
     // For prod, keep backawards compatabilty by re-using existing key
     if (!useStaging) {
         return key;

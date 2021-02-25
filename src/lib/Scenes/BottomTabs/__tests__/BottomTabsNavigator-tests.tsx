@@ -2,10 +2,11 @@ import { NativeViewController } from "lib/Components/NativeViewController"
 import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
+import { act } from "react-test-renderer"
 import { BottomTabsNavigator } from "../BottomTabsNavigator"
 
 describe(BottomTabsNavigator, () => {
-  it("shows the current tab content", () => {
+  it("shows the current tab content", async () => {
     const tree = renderWithWrappers(<BottomTabsNavigator />)
     expect(
       tree.root.findAll((node) => node.type === NativeViewController && node.props.viewProps.tabName === "home")
@@ -14,7 +15,9 @@ describe(BottomTabsNavigator, () => {
       tree.root.findAll((node) => node.type === NativeViewController && node.props.viewProps.tabName === "search")
     ).toHaveLength(0)
 
-    GlobalStore.actions.bottomTabs.switchTab("search")
+    await act(() => {
+      GlobalStore.actions.bottomTabs.switchTab("search")
+    })
 
     expect(
       tree.root.findAll((node) => node.type === NativeViewController && node.props.viewProps.tabName === "search")

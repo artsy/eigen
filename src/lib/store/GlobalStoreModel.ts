@@ -1,13 +1,16 @@
-import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
+import { Action, action, createStore, State, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { clearAll } from "lib/relay/RelayCache"
 import { BottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
 import { MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
 import { SearchModel } from "lib/Scenes/Search/SearchModel"
+import { Platform } from "react-native"
 import { AuthModel } from "./AuthModel"
 import { ConfigModel } from "./ConfigModel"
+import { unsafe__getEnvironment } from "./GlobalStore"
 import { CURRENT_APP_VERSION } from "./migration"
 import { NativeModel } from "./NativeModel"
-import { assignDeep } from "./persistence"
+import { assignDeep, sanitize } from "./persistence"
 
 interface GlobalStoreStateModel {
   version: number
@@ -25,7 +28,8 @@ interface GlobalStoreStateModel {
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
-  reset: Action<GlobalStoreModel>
+  reset: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
+  signOut: Thunk<GlobalStoreModel>
   didRehydrate: ThunkOn<GlobalStoreModel>
 }
 
@@ -40,14 +44,26 @@ export const GlobalStoreModel: GlobalStoreModel = {
     assignDeep(state, unpersistedState)
     state.sessionState.isHydrated = true
   }),
-  reset: action(() => {
+  reset: action((_, state) => {
     const result = createStore(GlobalStoreModel).getState()
     result.sessionState.isHydrated = true
+    assignDeep(result, state)
     return result
+  }),
+  signOut: thunk(async (actions, _, store) => {
+    // keep existing config state
+    const existingConfig = store.getState().config
+    const config = sanitize(existingConfig) as typeof existingConfig
+    if (Platform.OS === "ios") {
+      LegacyNativeModules.ARTemporaryAPIModule.clearUserData()
+    }
+    clearAll()
+    actions.reset({ config })
   }),
   didRehydrate: thunkOn(
     (actions) => actions.rehydrate,
     () => {
+      LegacyNativeModules.ARNotificationsManager.reactStateUpdated(unsafe__getEnvironment())
       LegacyNativeModules.ARNotificationsManager.didFinishBootstrapping()
     }
   ),

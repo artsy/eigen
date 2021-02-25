@@ -3,7 +3,7 @@ import Clipboard from "@react-native-community/clipboard"
 import { ArtworkHeader_artwork } from "__generated__/ArtworkHeader_artwork.graphql"
 import { CustomShareSheet, CustomShareSheetItem } from "lib/Components/CustomShareSheet"
 import { useToast } from "lib/Components/Toast/toastHook"
-import { getCurrentEmissionState, useFeatureFlag } from "lib/store/GlobalStore"
+import { unsafe__getEnvironment, useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useCanOpenURL } from "lib/utils/useCanOpenURL"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -100,7 +100,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   }
 
   const shareArtworkCopyLink = async () => {
-    Clipboard.setString(`${getCurrentEmissionState().webURL}${artwork.href!}`)
+    Clipboard.setString(`${unsafe__getEnvironment().webURL}${artwork.href!}`)
     trackEvent(share(tracks.customShare(CustomService.copy_link, artwork.internalID, artwork.slug)))
     setShareSheetVisible(false)
     toast.show("Copied to Clipboard", "middle", { Icon: ShareIcon })

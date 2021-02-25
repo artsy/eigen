@@ -1,12 +1,23 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { MenuItem } from "lib/Components/MenuItem"
 import { dismissModal, navigate } from "lib/navigation/navigate"
-import { FeatureName, features } from "lib/store/features"
-import { getCurrentEmissionState, GlobalStore } from "lib/store/GlobalStore"
-import { sortBy } from "lodash"
-import { CloseIcon, Flex, ReloadIcon, Separator, Spacer, Text } from "palette"
-import React from "react"
-import { Alert, DevSettings, Platform, ScrollView, TouchableOpacity, View } from "react-native"
+import { environment, EnvironmentKey } from "lib/store/config/EnvironmentModel"
+import { FeatureName, features } from "lib/store/config/features"
+import { GlobalStore } from "lib/store/GlobalStore"
+import { capitalize, compact, sortBy } from "lodash"
+import { ChevronIcon, CloseIcon, color, Flex, ReloadIcon, Separator, Spacer, Text } from "palette"
+import React, { useState } from "react"
+import {
+  Alert,
+  AlertButton,
+  DevSettings,
+  Platform,
+  ScrollView,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from "react-native"
+import Config from "react-native-config"
 import { useScreenDimensions } from "./useScreenDimensions"
 
 const configurableFeatureFlagKeys = sortBy(
@@ -48,6 +59,11 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
             </Flex>
           </>
         )}
+        <EnvironmentOptions onClose={onClose} />
+
+        <Flex mx="2">
+          <Separator my="1" />
+        </Flex>
 
         <Text variant="title" my="1" mx="2">
           Feature Flags
@@ -71,7 +87,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         <MenuItem
           title="Throw Sentry Error"
           onPress={() => {
-            if (!getCurrentEmissionState().sentryDSN) {
+            if (!Config.SENTRY_DSN) {
               Alert.alert(
                 "No Sentry DSN available",
                 __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
@@ -115,8 +131,8 @@ const Buttons: React.FC<{ onClose(): void }> = ({ onClose }) => {
 
 const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
   const config = GlobalStore.useAppState((s) => s.config)
-  const currentValue = config.features[flagKey]
-  const isAdminOverrideInEffect = config.adminFeatureFlagOverrides[flagKey] != null
+  const currentValue = config.features.flags[flagKey]
+  const isAdminOverrideInEffect = flagKey in config.features.adminOverrides
   const valText = currentValue ? "Yes" : "No"
   return (
     <MenuItem
@@ -126,19 +142,19 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
           {
             text: "Override with 'Yes'",
             onPress() {
-              GlobalStore.actions.config.setAdminOverride({ key: flagKey, value: true })
+              GlobalStore.actions.config.features.setAdminOverride({ key: flagKey, value: true })
             },
           },
           {
             text: "Override with 'No'",
             onPress() {
-              GlobalStore.actions.config.setAdminOverride({ key: flagKey, value: false })
+              GlobalStore.actions.config.features.setAdminOverride({ key: flagKey, value: false })
             },
           },
           {
             text: isAdminOverrideInEffect ? "Revert to default value" : "Keep default value",
             onPress() {
-              GlobalStore.actions.config.setAdminOverride({ key: flagKey, value: null })
+              GlobalStore.actions.config.features.setAdminOverride({ key: flagKey, value: null })
             },
             style: "destructive",
           },
@@ -156,5 +172,101 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
         )
       }
     />
+  )
+}
+
+function envMenuOption(
+  env: "staging" | "production",
+  currentEnv: "staging" | "production",
+  showCustomURLOptions: boolean,
+  setShowCustomURLOptions: (newValue: boolean) => void,
+  onClose: () => void
+): AlertButton | null {
+  let text = `Log out and switch to '${capitalize(env)}'`
+  if (currentEnv === env) {
+    if (!__DEV__) {
+      return null
+    }
+    if (showCustomURLOptions) {
+      text = `Reset all to '${capitalize(env)}'`
+    } else {
+      text = `Customize '${capitalize(env)}'`
+    }
+  }
+  return {
+    text,
+    onPress() {
+      GlobalStore.actions.config.environment.clearAdminOverrides()
+      if (env !== currentEnv) {
+        GlobalStore.actions.config.environment.setEnv(env)
+        onClose()
+        GlobalStore.actions.signOut()
+      } else {
+        setShowCustomURLOptions(!showCustomURLOptions)
+      }
+    },
+  }
+}
+
+const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const { env, adminOverrides, strings } = GlobalStore.useAppState((store) => store.config.environment)
+  // show custom url options if there are already admin overrides in effect, or if the user has tapped the option
+  // to set custom overrides during the lifetime of this component
+  const [showCustomURLOptions, setShowCustomURLOptions] = useState(Object.keys(adminOverrides).length > 0)
+  return (
+    <>
+      <MenuItem
+        title="Environment"
+        value={showCustomURLOptions ? `Custom (${capitalize(env)})` : capitalize(env)}
+        onPress={() => {
+          Alert.alert(
+            "Environment",
+            undefined,
+            compact([
+              envMenuOption("staging", env, showCustomURLOptions, setShowCustomURLOptions, onClose),
+              envMenuOption("production", env, showCustomURLOptions, setShowCustomURLOptions, onClose),
+              {
+                text: "Cancel",
+                style: "destructive",
+              },
+            ]),
+            { cancelable: true }
+          )
+        }}
+      />
+      {!!showCustomURLOptions &&
+        Object.entries(environment).map(([key, { description, presets }]) => {
+          return (
+            <TouchableHighlight
+              key={key}
+              underlayColor={color("black5")}
+              onPress={() => {
+                Alert.alert(
+                  description,
+                  undefined,
+                  Object.entries(presets).map(([name, value]) => ({
+                    text: name,
+                    onPress: () => {
+                      GlobalStore.actions.config.environment.setAdminOverride({ key: key as EnvironmentKey, value })
+                    },
+                  }))
+                )
+              }}
+            >
+              <Flex ml="2" mr="15px" my="5px" flexDirection="row" justifyContent="space-between" alignItems="center">
+                <Flex>
+                  <Text variant="caption" color="black60" mb="0.5">
+                    {description}
+                  </Text>
+                  <Flex key={key} flexDirection="row" justifyContent="space-between">
+                    <Text variant="caption">{strings[key as EnvironmentKey]}</Text>
+                  </Flex>
+                </Flex>
+                <ChevronIcon fill="black60" direction="right" />
+              </Flex>
+            </TouchableHighlight>
+          )
+        })}
+    </>
   )
 }

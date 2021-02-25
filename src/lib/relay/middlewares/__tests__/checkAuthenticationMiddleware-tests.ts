@@ -1,4 +1,5 @@
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+import { last } from "lodash"
 import { GraphQLResponseErrors, MiddlewareNextFn, RelayNetworkLayerResponse } from "react-relay-network-modern/node8"
 import { checkAuthenticationMiddleware } from "../checkAuthenticationMiddleware"
 import { GraphQLRequest } from "../types"
@@ -12,16 +13,24 @@ describe(checkAuthenticationMiddleware, () => {
       operationKind: "query",
     },
     getID: () => "xxx",
+    fetchOpts: {
+      headers: {
+        "X-ACCESS-TOKEN": "token-value",
+      },
+    } as any,
   }
 
-  it("calls validateAuthCredentialsAreCorrect if there are errors", async () => {
+  it("calls signOut if there are errors", async () => {
     const errors: GraphQLResponseErrors = [{ message: "The access token is invalid or has expired." }]
     // @ts-ignore
     const relayResponse: RelayNetworkLayerResponse = { errors }
 
     const next: MiddlewareNextFn = () => Promise.resolve(relayResponse)
+    fetchMock.mockResponseOnce("", { status: 401 })
+    expect(fetchMock).toHaveBeenCalledTimes(0)
     await middleware(next)(request)
-    expect(LegacyNativeModules.ARTemporaryAPIModule.validateAuthCredentialsAreCorrect).toBeCalled()
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(last(__globalStoreTestUtils__?.dispatchedActions)?.type).toMatchInlineSnapshot(`"@thunk.signOut"`)
   })
 
   it("passes through if there is no errors", async () => {

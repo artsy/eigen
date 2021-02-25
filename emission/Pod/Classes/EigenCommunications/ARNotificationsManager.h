@@ -2,38 +2,39 @@
 #import <React/RCTEventEmitter.h>
 
 
+// These state values are sent to react from obj-c
 @interface ARStateKey : NSObject
-+ (NSString *)selectedTab;
 + (NSString *)userID;
 + (NSString *)authenticationToken;
 + (NSString *)launchCount;
 + (NSString *)onboardingState;
++ (NSString *)userAgent;
++ (NSString *)deviceId;
+@end
 
+// these state values are sent to obj-c from react
+@interface ARReactStateKey : NSObject
 + (NSString *)gravityURL;
 + (NSString *)metaphysicsURL;
 + (NSString *)predictionURL;
 + (NSString *)webURL;
-+ (NSString *)userAgent;
-
-+ (NSString *)legacyFairSlugs;
-+ (NSString *)legacyFairProfileSlugs;
-
++ (NSString *)causalityURL;
 + (NSString *)env;
-+ (NSString *)deviceId;
-
-+ (NSString *)stripePublishableKey;
-+ (NSString *)sentryDSN;
 @end
-
 
 @interface ARNotificationsManager : RCTEventEmitter <RCTBridgeModule>
 
 - (instancetype)initWithState:(NSDictionary *)state;
 - (void)updateState:(NSDictionary *)state;
 - (NSDictionary *)state;
+- (NSDictionary *)reactState;
 
 - (void)notificationReceived;
-- (void)reset;
+
+// this is exported only for tests
+- (void)updateReactState:(NSDictionary *)reactState;
+
 - (void)requestNavigation:(NSString *)route;
+- (void)afterBootstrap:(void (^)(void))completion;
 
 @end
