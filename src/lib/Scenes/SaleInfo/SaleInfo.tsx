@@ -73,15 +73,17 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
       return null
     }
 
+    const tz = moment.tz.guess(true)
+
     return (
       <Flex mb={1}>
         <Text variant="text" color="black" fontSize="size4" mt={25} fontWeight="500">
           Live bidding opens on
         </Text>
         <Text variant="text" color="black" fontSize="size4">
-          {`${moment(sale.liveStartAt).format("dddd, MMMM, D, YYYY")} at ${moment(sale.liveStartAt).format(
-            "h:mma"
-          )} ${moment.tz(sale.timeZone).zoneAbbr()}`}
+          {`${moment(sale.liveStartAt).format("dddd, MMMM, D, YYYY")} at ${moment(sale.liveStartAt)
+            .tz(tz)
+            .format("h:mma z")}`}
         </Text>
       </Flex>
     )
