@@ -10650,6 +10650,9 @@ input UpdateMyProfileInput {
   # The collector level for the user
   collectorLevel: Int
 
+  # The user completed onboarding.
+  completedOnboarding: Boolean
+
   # The given email of the user.
   email: String
 
