@@ -35,7 +35,7 @@ interface Props {
   value?: string
   artworkID?: string | null
   isOfferableFromInquiry?: boolean | null
-  impulseConversationId: string | null | undefined
+  impulseConversationId?: string | null | undefined
 }
 
 interface State {

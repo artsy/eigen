@@ -1,7 +1,7 @@
 import { InquiryMakeOfferButton_artwork } from "__generated__/InquiryMakeOfferButton_artwork.graphql"
 import { InquiryMakeOfferButtonOrderMutation } from "__generated__/InquiryMakeOfferButtonOrderMutation.graphql"
 import { navigate } from "lib/navigation/navigate"
-import { Schema, Track, track as _track } from "lib/utils/track"
+import { Track, track as _track } from "lib/utils/track"
 import { Button, ButtonVariant } from "palette"
 import React from "react"
 import { Alert } from "react-native"
