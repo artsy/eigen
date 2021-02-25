@@ -1,5 +1,6 @@
 import { NavigationContainer, NavigationContainerRef, Route, useNavigationState } from "@react-navigation/native"
 import { AppModule, modules } from "lib/AppRegistry"
+import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { View } from "react-native"
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
@@ -28,11 +29,18 @@ const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) =
   const showBackButton = !isRootScreen && !module.options.hidesBackButton
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
-      <module.Component {...route.params.props} />
-      {!!showBackButton && <BackButton />}
-    </View>
+    <ProvideScreenDimensions>
+      <ScreenPadding fullBleed={!!module.options.fullBleed}>
+        <module.Component {...route.params.props} />
+        {!!showBackButton && <BackButton />}
+      </ScreenPadding>
+    </ProvideScreenDimensions>
   )
+}
+
+const ScreenPadding: React.FC<{ fullBleed: boolean }> = ({ fullBleed, children }) => {
+  const topInset = useScreenDimensions().safeAreaInsets.top
+  return <View style={{ flex: 1, backgroundColor: "white", paddingTop: fullBleed ? 0 : topInset }}>{children}</View>
 }
 
 /**
