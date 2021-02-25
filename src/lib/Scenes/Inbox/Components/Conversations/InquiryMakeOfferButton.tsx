@@ -52,7 +52,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
   }
 
   // @track({
-  //   action_name: Schema.ActionNames.MakeOffer,
+  //   action_name: Schema.ActionNames.InquiryMakeOffer,
   //   action_type: Schema.ActionTypes.Tap,
   //   context_module: Schema.ContextModules.Conversation,
   // })
