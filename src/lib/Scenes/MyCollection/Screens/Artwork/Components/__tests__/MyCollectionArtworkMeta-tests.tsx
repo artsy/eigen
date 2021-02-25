@@ -55,8 +55,9 @@ describe("MyCollectionArtworkMeta", () => {
     slug: "some-slug",
     artistNames: "some-artist-name",
     category: "Painting",
-    costMinor: 200,
-    costCurrencyCode: "USD",
+    pricePaid: {
+      display: "$200",
+    },
     date: "Jan 20th",
     editionSize: "10x10x10",
     editionNumber: "1",
@@ -93,7 +94,7 @@ describe("MyCollectionArtworkMeta", () => {
         expect(text).toContain("Edition number")
         expect(text).toContain("1")
         expect(text).toContain("Price paid")
-        expect(text).toContain("200 USD")
+        expect(text).toContain("$200")
       })
 
       it("navigates to artwork details and passes props on button click", () => {
@@ -127,7 +128,7 @@ describe("MyCollectionArtworkMeta", () => {
         expect(text).toContain("Edition number")
         expect(text).toContain("1")
         expect(text).toContain("Price paid")
-        expect(text).toContain("200 USD")
+        expect(text).toContain("$200")
       })
     })
   })

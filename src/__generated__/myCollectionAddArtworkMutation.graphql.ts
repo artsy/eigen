@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 32ac002019818b8aeeb31357c5cc43cb */
+/* @relayHash 3a6001bf3015f018521a31d410b7c714 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -82,8 +82,11 @@ fragment MyCollectionArtwork_sharedProps on Artwork {
   }
   artistNames
   category
-  costMinor
-  costCurrencyCode
+  pricePaid {
+    display
+    minor
+    currencyCode
+  }
   date
   depth
   editionSize
@@ -335,15 +338,33 @@ return {
                           {
                             "alias": null,
                             "args": null,
-                            "kind": "ScalarField",
-                            "name": "costMinor",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "costCurrencyCode",
+                            "concreteType": "Money",
+                            "kind": "LinkedField",
+                            "name": "pricePaid",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "display",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "minor",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "currencyCode",
+                                "storageKey": null
+                              }
+                            ],
                             "storageKey": null
                           },
                           {
@@ -469,7 +490,7 @@ return {
     ]
   },
   "params": {
-    "id": "32ac002019818b8aeeb31357c5cc43cb",
+    "id": "3a6001bf3015f018521a31d410b7c714",
     "metadata": {},
     "name": "myCollectionAddArtworkMutation",
     "operationKind": "mutation",

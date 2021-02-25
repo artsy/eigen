@@ -101,22 +101,22 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
               title="Price paid"
               placeholder="Price paid"
               keyboardType="decimal-pad"
-              onChangeText={formik.handleChange("costMinor")}
-              onBlur={formik.handleBlur("costMinor")}
+              onChangeText={formik.handleChange("pricePaidDollars")}
+              onBlur={formik.handleBlur("pricePaidDollars")}
               data-test-id="PricePaidInput"
-              defaultValue={formikValues.costMinor}
+              defaultValue={formikValues.pricePaidDollars}
             />
 
             <Select
               title="Currency"
               placeholder="Currency"
               options={pricePaidCurrencySelectOptions}
-              value={formikValues.costCurrencyCode}
+              value={formikValues.pricePaidCurrency}
               enableSearch={false}
               showTitleLabel={false}
               ref={pricePaidCurrencyInputRef}
               onSelectValue={(value) => {
-                formik.handleChange("costCurrencyCode")(value)
+                formik.handleChange("pricePaidCurrency")(value)
               }}
               data-test-id="CurrencyInput"
             />

@@ -120,8 +120,11 @@ export const ArtworkMetaProps = graphql`
     }
     artistNames
     category
-    costMinor
-    costCurrencyCode
+    pricePaid {
+      display
+      minor
+      currencyCode
+    }
     date
     depth
     editionSize
