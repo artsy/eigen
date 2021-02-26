@@ -2,7 +2,7 @@ import React from "react"
 
 import { ActiveLotStanding_lotStanding } from "__generated__/ActiveLotStanding_lotStanding.graphql"
 import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers_legacy } from "lib/tests/renderWithWrappers"
 import { merge } from "lodash"
 import { ActiveLotStanding } from "../Components/ActiveLotStanding"
 
@@ -40,7 +40,7 @@ const lotStandingFixture = (overrides = {}) => {
 describe(ActiveLotStanding, () => {
   describe("User winning status", () => {
     it("says 'Highest bid' if the user is winning the lot", () => {
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappers_legacy(
         <ActiveLotStanding
           lotStanding={lotStandingFixture({ isHighestBidder: true, lot: { reserveStatus: "ReserveMet" } })}
         />
@@ -49,7 +49,7 @@ describe(ActiveLotStanding, () => {
     })
 
     it("says 'Highest bid' if the user is has the high bid and reserveStatus is UnknownReserve", () => {
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappers_legacy(
         <ActiveLotStanding
           lotStanding={lotStandingFixture({ isHighestBidder: true, lot: { reserveStatus: "UnknownReserve" } })}
         />
@@ -60,7 +60,7 @@ describe(ActiveLotStanding, () => {
     it("says 'Highest bid' if the user is winning the lot but the reserveStatus is ReserveNotMet in a Live Auction", () => {
       const date = new Date()
       date.setDate(date.getDate() + 1)
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappers_legacy(
         <ActiveLotStanding
           lotStanding={lotStandingFixture({
             isHighestBidder: true,
@@ -73,7 +73,7 @@ describe(ActiveLotStanding, () => {
     })
 
     it("says 'Reserve not met' if the user is winning the lot, but the reserveStatus is ReserveNotMet", () => {
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappers_legacy(
         <ActiveLotStanding
           lotStanding={lotStandingFixture({ isHighestBidder: true, lot: { reserveStatus: "ReserveNotMet" } })}
         />
@@ -82,7 +82,7 @@ describe(ActiveLotStanding, () => {
     })
 
     it("says 'Outbid' if the user is outbid on the lot, but the reserveStatus is ReserveNotMet", () => {
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappers_legacy(
         <ActiveLotStanding
           lotStanding={lotStandingFixture({ isHighestBidder: false, lot: { reserveStatus: "ReserveNotMet" } })}
         />
@@ -91,7 +91,7 @@ describe(ActiveLotStanding, () => {
     })
 
     it("says 'outbid' if the user is outbid on the lot and reserve is met", () => {
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappers_legacy(
         <ActiveLotStanding
           lotStanding={lotStandingFixture({ isHighestBidder: false, lot: { reserveStatus: "ReserveMet" } })}
         />
@@ -102,7 +102,7 @@ describe(ActiveLotStanding, () => {
 
   describe("selling price", () => {
     it("shows floor selling price", () => {
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappers_legacy(
         <ActiveLotStanding
           lotStanding={lotStandingFixture({ isHighestBidder: true, lot: { reserveStatus: "ReserveMet" } })}
         />

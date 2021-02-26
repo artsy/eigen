@@ -1,6 +1,6 @@
 import { SaleCardTestsQuery } from "__generated__/SaleCardTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers_legacy } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -42,7 +42,7 @@ describe("SaleCard", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappers_legacy(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
     })

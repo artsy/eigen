@@ -1,6 +1,6 @@
 import { MyBidsTestsQuery } from "__generated__/MyBidsTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers_legacy } from "lib/tests/renderWithWrappers"
 import { PlaceholderText } from "lib/utils/placeholders"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -56,7 +56,7 @@ describe("My Bids", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappers_legacy(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
     })
@@ -65,7 +65,7 @@ describe("My Bids", () => {
 
   describe("MyBidsQueryRenderer loading state", () => {
     it("shows placeholder until the operation resolves", () => {
-      const tree = renderWithWrappers(<MyBidsQueryRenderer />)
+      const tree = renderWithWrappers_legacy(<MyBidsQueryRenderer />)
       expect(tree.root.findAllByType(PlaceholderText).length).toBeGreaterThan(0)
     })
   })

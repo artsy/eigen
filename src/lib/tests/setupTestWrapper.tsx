@@ -4,7 +4,7 @@ import { act } from "react-test-renderer"
 import { GraphQLTaggedNode, OperationType } from "relay-runtime"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
-import { renderWithWrappers } from "./renderWithWrappers"
+import { renderWithWrappers_legacy } from "./renderWithWrappers"
 
 interface SetupTestWrapper<T extends OperationType> {
   // TODO: Component: React.ComponentType<T['response']> type errors here
@@ -37,7 +37,7 @@ export const setupTestWrapper = <T extends OperationType>({
       />
     )
 
-    const wrapper = renderWithWrappers(<TestRenderer />)
+    const wrapper = renderWithWrappers_legacy(<TestRenderer />)
 
     act(() => {
       env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))

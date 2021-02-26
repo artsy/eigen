@@ -7,6 +7,7 @@
 // Object.assign(babelHelpers, { applyDecoratedDescriptor, initializerDefineProperty })
 // import "@babel/runtime"
 
+import "@testing-library/jest-native/extend-expect"
 import chalk from "chalk"
 // @ts-ignore
 import Enzyme from "enzyme"
