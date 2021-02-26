@@ -4661,6 +4661,13 @@ type Conversation implements Node {
 
   # A connection for all messages in a single conversation
   messagesConnection(after: String, before: String, first: Int, last: Int, sort: sort): MessageConnection
+  orderConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    participantType: CommerceOrderParticipantEnum!
+  ): CommerceOrderConnectionWithTotalCount
 
   # The participant(s) responding to the conversation
   to: ConversationResponder!
@@ -8803,6 +8810,7 @@ type Query {
 
     # Returns the first _n_ elements from the list.
     first: Int
+    impulseConversationId: String
 
     # Returns the last _n_ elements from the list.
     last: Int
