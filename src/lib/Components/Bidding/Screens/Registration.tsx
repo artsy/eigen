@@ -318,7 +318,9 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }}>
           <View>
             <Flex alignItems="center">
-              <Title mb={3}>Register to bid</Title>
+              <Title style={{ paddingTop: 10 }} mb={3}>
+                Register to bid
+              </Title>
               <Timer
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 liveStartsAt={live_start_at}
