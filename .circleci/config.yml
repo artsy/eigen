@@ -230,6 +230,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: apt-get update
+          command: apt-get update --fix-missing
+      - run:
           name: Install Headless Chrome dependencies for puppeteer
           # from https://github.com/threetreeslight/puppeteer-orb/blob/master/orb.yml
           command: |
