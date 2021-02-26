@@ -7972,6 +7972,9 @@ type Partner implements Node {
   # A connection of shows from a Partner.
   showsConnection(
     after: String
+
+    # True for only shows that are part of a fair, false for only shows not part of a fair, blank for all shows
+    atAFair: Boolean
     before: String
 
     # Only used when status is CLOSING_SOON or UPCOMING. Number of days used to filter upcoming and closing soon shows
@@ -9998,6 +10001,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     last: Int
     published: Boolean = true
   ): ArtworkConnection
+
+  # The total count of artworks, both unpublished and published, in a show
+  artworksCount: Int
   cached: Int
 
   # The general city, derived from a fair location, a show location or a potential city
