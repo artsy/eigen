@@ -5,7 +5,7 @@ import styled from "styled-components/native"
 
 export interface OpenInquiryModalButtonProps {
   artworkID: string
-  impulseConversationId: string | null | undefined
+  conversationID: string | null | undefined
 }
 
 const ShadowSeparator = styled(Separator)`
@@ -14,7 +14,7 @@ const ShadowSeparator = styled(Separator)`
   height: 0;
 `
 
-export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ artworkID, impulseConversationId }) => {
+export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ artworkID, conversationID }) => {
   return (
     <>
       <ShadowSeparator />
@@ -23,7 +23,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ 
           onPress={() => {
             navigate(`make-offer/${artworkID}`, {
               modal: true,
-              passProps: { impulseConversationId },
+              passProps: { conversationID },
             })
           }}
           size="large"

@@ -43,7 +43,7 @@ const TestRenderer = () => {
             <InquiryMakeOfferButtonFragmentContainer
               artwork={props!.artwork!}
               editionSetID={null}
-              impulseConversationId="1234"
+              conversationID="1234"
             />
           )
         } else if (Boolean(error)) {

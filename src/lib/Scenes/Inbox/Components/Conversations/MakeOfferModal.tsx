@@ -13,11 +13,11 @@ import { InquiryMakeOfferButtonFragmentContainer as InquiryMakeOfferButton } fro
 
 interface MakeOfferModalProps {
   artwork: MakeOfferModal_artwork
-  impulseConversationId: string
+  conversationID: string
 }
 
 export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
-  const { artwork, impulseConversationId } = props
+  const { artwork, conversationID } = props
 
   return (
     <View>
@@ -44,7 +44,7 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
           buttonText="Confirm"
           artwork={artwork}
           editionSetID={null}
-          impulseConversationId={impulseConversationId}
+          conversationID={conversationID}
         />
         <Button
           mt={1}
@@ -74,8 +74,8 @@ export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOffer
 
 export const MakeOfferModalQueryRenderer: React.FC<{
   artworkID: string
-  impulseConversationId: string
-}> = ({ artworkID, impulseConversationId }) => {
+  conversationID: string
+}> = ({ artworkID, conversationID }) => {
   return (
     <QueryRenderer<MakeOfferModalQuery>
       environment={defaultEnvironment}
@@ -90,7 +90,7 @@ export const MakeOfferModalQueryRenderer: React.FC<{
         artworkID,
       }}
       render={renderWithLoadProgress<MakeOfferModalQueryResponse>(({ artwork }) => (
-        <MakeOfferModalFragmentContainer artwork={artwork!} impulseConversationId={impulseConversationId} />
+        <MakeOfferModalFragmentContainer artwork={artwork!} conversationID={conversationID} />
       ))}
     />
   )

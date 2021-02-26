@@ -150,7 +150,7 @@ export class Conversation extends React.Component<Props, State> {
 
     return (
       <Composer
-        impulseConversationId={conversation?.internalID}
+        conversationID={conversation?.internalID}
         disabled={this.state.sendingMessage || !this.state.isConnected}
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         ref={(composer) => (this.composer = composer)}

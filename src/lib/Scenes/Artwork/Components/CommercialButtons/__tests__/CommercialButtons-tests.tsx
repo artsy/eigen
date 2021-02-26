@@ -69,7 +69,7 @@ const relayComponent = async ({ artwork }) => {
 
 describe("CommercialButtons", () => {
   it("renders button for Contact Gallery button if isInquireable and not newFirstInquiry", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({AROptionsNewFirstInquiry: false})
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewFirstInquiry: false })
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: false,
@@ -222,7 +222,7 @@ describe("CommercialButtons", () => {
     expect(navigate).toHaveBeenCalledWith("/orders/makeOfferID", {
       modal: true,
       passProps: {
-        artworkID: "makeOfferID",
+        orderID: "makeOfferID",
       },
     })
   })

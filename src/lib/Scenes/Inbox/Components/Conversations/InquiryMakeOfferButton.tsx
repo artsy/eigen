@@ -14,7 +14,7 @@ export interface InquiryMakeOfferButtonProps {
   editionSetID: string | null
   variant?: ButtonVariant
   buttonText?: string
-  impulseConversationId: string
+  conversationID: string
 }
 
 export interface State {
@@ -57,7 +57,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
   //   context_module: Schema.ContextModules.Conversation,
   // })
   handleCreateInquiryOfferOrder() {
-    const { relay, artwork, editionSetID, impulseConversationId } = this.props
+    const { relay, artwork, editionSetID, conversationID } = this.props
     const { isCommittingCreateOfferOrderMutation } = this.state
     const { internalID } = artwork
 
@@ -94,13 +94,12 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
             input: {
               artworkId: internalID,
               editionSetId: editionSetID,
-              impulseConversationId,
+              conversationID,
             },
           },
           onCompleted: (data) => {
             this.setState({ isCommittingCreateOfferOrderMutation: false }, () => {
               const {
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 createInquiryOfferOrder: { orderOrError },
               } = data
               if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
