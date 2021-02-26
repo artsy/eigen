@@ -1,5 +1,6 @@
 import { AuctionResult_auctionResult } from "__generated__/AuctionResult_auctionResult.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { auctionResultHasPrice, auctionResultText } from "lib/Scenes/AuctionResult/helpers"
 import { capitalize } from "lodash"
 import moment from "moment"
 import { bullet, color, Flex, NoArtworkIcon, Text, Touchable } from "palette"
@@ -13,12 +14,6 @@ interface Props {
 }
 
 const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
-  const now = moment()
-
-  const isFromPastMonth = auctionResult.saleDate
-    ? moment(auctionResult.saleDate).isAfter(now.subtract(1, "month"))
-    : false
-
   return (
     <Touchable underlayColor={color("black5")} onPress={onPress}>
       <Flex py="2" px={2} flexDirection="row">
@@ -73,7 +68,7 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
 
           {/* Sale Artwork Auction Result */}
           <Flex alignItems="flex-end" pl={15}>
-            {!!auctionResult.priceRealized?.display && !!auctionResult.currency ? (
+            {auctionResultHasPrice(auctionResult) ? (
               <Flex alignItems="flex-end">
                 <Text variant="caption" fontWeight="bold" testID="price">
                   {(auctionResult.priceRealized?.display ?? "").replace(`${auctionResult.currency} `, "")}
@@ -85,11 +80,7 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
             ) : (
               <Flex alignItems="flex-end">
                 <Text variant="caption" fontWeight="bold" style={{ width: 100 }} textAlign="right" testID="price">
-                  {auctionResult.boughtIn === true
-                    ? "Bought in"
-                    : isFromPastMonth
-                    ? "Awaiting results"
-                    : "Not available"}
+                  {auctionResultText(auctionResult)}
                 </Text>
               </Flex>
             )}
