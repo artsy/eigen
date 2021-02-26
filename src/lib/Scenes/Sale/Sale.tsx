@@ -357,10 +357,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayMo
             }}
             below={{
               query: graphql`
-                query SaleBelowTheFoldQuery($saleID: ID, $saleIDAsString: String!) {
-                  sale(id: $saleIDAsString) {
-                    ...SaleLotsList_sale
-                  }
+                query SaleBelowTheFoldQuery($saleID: ID) {
                   ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleID)
                   unfilteredSaleArtworksConnection: saleArtworksConnection(saleID: $saleID, aggregations: [TOTAL]) {
                     ...SaleLotsList_unfilteredSaleArtworksConnection
@@ -370,7 +367,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayMo
                   }
                 }
               `,
-              variables: { saleID, saleIDAsString: saleID },
+              variables: { saleID },
             }}
             render={({ props, error }) => {
               if (error) {
