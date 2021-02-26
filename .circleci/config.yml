@@ -225,8 +225,9 @@ jobs:
           command: node scripts/strictness-migration.js check-pr
 
   check-metaphysics-freshness:
-    docker:
-      - image: circleci/node:14.13.1
+    executor:
+      name: node/default
+      tag: "14.13.1"
     steps:
       - checkout
       - run:
