@@ -190,7 +190,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
         </Flex>
       ),
     },
-  ]).filter((section) => section.content)
+  ])
 
   return (
     <ArtworkFilterGlobalStateProvider>
