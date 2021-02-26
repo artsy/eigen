@@ -94,12 +94,13 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
             input: {
               artworkId: internalID,
               editionSetId: editionSetID,
-              conversationID,
+              impulseConversationId: conversationID,
             },
           },
           onCompleted: (data) => {
             this.setState({ isCommittingCreateOfferOrderMutation: false }, () => {
               const {
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 createInquiryOfferOrder: { orderOrError },
               } = data
               if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
