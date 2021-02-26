@@ -5,6 +5,8 @@ import moment from "moment"
 import React, { Suspense } from "react"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { RegisterToBidButtonContainer } from "../Components/RegisterToBidButton"
+import { SaleArtworksRailContainer } from "../Components/SaleArtworksRail"
+import { SaleLotsListContainer } from "../Components/SaleLotsList"
 import { SaleQueryRenderer } from "../Sale"
 
 jest.unmock("react-relay")
@@ -169,5 +171,20 @@ describe("Sale", () => {
     )
 
     expect(tree.findAllByType(RegisterToBidButtonContainer)).toHaveLength(0)
+  })
+
+  it("doesn't show lots when an auction closed", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Sale: () => ({
+          endAt: moment().subtract(1, "day").toISOString(),
+        }),
+      })
+    )
+
+    expect(tree.findAllByType(SaleArtworksRailContainer)).toHaveLength(0)
+    expect(tree.findAllByType(SaleLotsListContainer)).toHaveLength(0)
   })
 })

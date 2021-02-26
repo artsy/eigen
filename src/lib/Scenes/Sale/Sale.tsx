@@ -31,7 +31,7 @@ import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
 import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
 import { COVER_IMAGE_HEIGHT, SaleHeaderContainer as SaleHeader } from "./Components/SaleHeader"
 import { SaleLotsListContainer } from "./Components/SaleLotsList"
-import { saleStatus } from "./helpers"
+import { isAuctionClosed, saleStatus } from "./helpers"
 
 interface Props {
   relay: RelayRefetchProp
@@ -42,7 +42,7 @@ interface Props {
 
 interface SaleSection {
   key: string
-  content: JSX.Element
+  content: JSX.Element | null
 }
 
 const SALE_HEADER = "header"
@@ -166,18 +166,22 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     },
     {
       key: SALE_ARTWORKS_RAIL,
-      content: <SaleArtworksRailContainer me={me} />,
+      content: !isAuctionClosed(sale.endAt) ? <SaleArtworksRailContainer me={me} /> : null,
     },
     {
       key: SALE_LOTS_LIST,
-      content: below ? (
-        <SaleLotsListContainer
-          saleArtworksConnection={below}
-          unfilteredSaleArtworksConnection={below.unfilteredSaleArtworksConnection}
-          saleID={sale.internalID}
-          saleSlug={sale.slug}
-          scrollToTop={scrollToTop}
-        />
+      // If we already fetched all lots, show them, otherwise show the spinner
+      content: !!below ? (
+        // We are legally obliged to hide lots if an auction is closed
+        !isAuctionClosed(sale.endAt) ? (
+          <SaleLotsListContainer
+            saleArtworksConnection={below}
+            unfilteredSaleArtworksConnection={below.unfilteredSaleArtworksConnection}
+            saleID={sale.internalID}
+            saleSlug={sale.slug}
+            scrollToTop={scrollToTop}
+          />
+        ) : null
       ) : (
         // Since most likely this part of the screen will be already loaded when the user
         // reaches it, there is no need to create the fancy placeholders here
@@ -186,7 +190,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
         </Flex>
       ),
     },
-  ])
+  ]).filter((section) => section.content)
 
   return (
     <ArtworkFilterGlobalStateProvider>
@@ -353,8 +357,10 @@ export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayMo
             }}
             below={{
               query: graphql`
-                # query SaleBelowTheFoldQuery($saleID: String!, $saleSlug: ID!) {
-                query SaleBelowTheFoldQuery($saleID: ID) {
+                query SaleBelowTheFoldQuery($saleID: ID, $saleIDAsString: String!) {
+                  sale(id: $saleIDAsString) {
+                    ...SaleLotsList_sale
+                  }
                   ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleID)
                   unfilteredSaleArtworksConnection: saleArtworksConnection(saleID: $saleID, aggregations: [TOTAL]) {
                     ...SaleLotsList_unfilteredSaleArtworksConnection
@@ -364,7 +370,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayMo
                   }
                 }
               `,
-              variables: { saleID },
+              variables: { saleID, saleIDAsString: saleID },
             }}
             render={({ props, error }) => {
               if (error) {

@@ -1,7 +1,6 @@
 import { SaleHeader_sale } from "__generated__/SaleHeader_sale.graphql"
 import { saleTime } from "lib/utils/saleTime"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import moment from "moment"
 import { Flex, Text } from "palette"
 import React from "react"
 import { Animated, Dimensions, View } from "react-native"
@@ -9,6 +8,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { CaretButton } from "../../../Components/Buttons/CaretButton"
 import OpaqueImageView from "../../../Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "../../../navigation/navigate"
+import { isAuctionClosed } from "../helpers"
 
 export const COVER_IMAGE_HEIGHT = 260
 
@@ -52,7 +52,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
                 height: COVER_IMAGE_HEIGHT,
               }}
             />
-            {!!sale.endAt && !!moment().isAfter(sale.endAt) && (
+            {!!isAuctionClosed(sale.endAt) && (
               <Flex
                 style={{
                   position: "absolute",

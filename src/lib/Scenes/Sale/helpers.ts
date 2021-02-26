@@ -37,3 +37,5 @@ export const formatDisplayTimelyAt = (displayTimelyAt: string | null) => {
       .replace("\n", " ")
   ).replace(/(jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)/, (s) => capitalize(s))
 }
+
+export const isAuctionClosed = (saleEndAt: string | null | undefined) => !!saleEndAt && !!moment().isAfter(saleEndAt)

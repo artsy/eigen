@@ -11,6 +11,7 @@ upcoming:
     - Adds inquiry checkout offer status CTA - lily
     - Update consignment photo selection flow for iOS 14 - brian
     - Allow adding pricePaid info in my collection - barry, brian
+    - Hide auction lots when an auction is closed - mounir
 
 releases:
   - version: 6.7.8
