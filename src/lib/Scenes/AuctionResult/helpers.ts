@@ -10,7 +10,7 @@ export interface AuctionResultHelperData {
   saleDate: string | null
 }
 
-const auctionResultHasPrice = (auctionResult: AuctionResultHelperData): boolean => {
+export const auctionResultHasPrice = (auctionResult: AuctionResultHelperData): boolean => {
   if (
     auctionResult.priceRealized === null ||
     auctionResult.priceRealized.cents === null ||
