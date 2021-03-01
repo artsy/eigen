@@ -1,19 +1,20 @@
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+  ArtworksFiltersStore,
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Aggregations, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
-import { __filterArtworksStoreTestUtils__ } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
-import { FakeNavigator as MockNavigator } from "../../Bidding/__tests__/Helpers/FakeNavigator"
 import { ArtistIDsArtworksOptionsScreen } from "../ArtistIDsArtworksOptions"
 import { FilterToggleButton } from "../FilterToggleButton"
 import { OptionListItem } from "../MultiSelectOption"
 import { getEssentialProps } from "./helper"
 
 describe("Artist options screen", () => {
-  let mockNavigator: MockNavigator
-  let initialState: ArtworkFiltersState
+  let storeInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
 
   const mockAggregations: Aggregations = [
     {
@@ -66,17 +67,23 @@ describe("Artist options screen", () => {
     return selectedOptions
   }
 
+  const ArtworkFiltersStoreConsumer = () => {
+    storeInstance = ArtworksFiltersStore.useStore()
+    return null
+  }
+
   const MockArtistScreen = () => {
     return (
       <ArtworkFiltersStoreProvider>
         <ArtistIDsArtworksOptionsScreen {...getEssentialProps()} />
+        <ArtworkFiltersStoreConsumer />
       </ArtworkFiltersStoreProvider>
     )
   }
 
-  beforeEach(() => {
-    mockNavigator = new MockNavigator()
-    initialState = {
+  it("shows the correct number of artist options", () => {
+    const tree = renderWithWrappers(<MockArtistScreen />)
+    const injectedState: ArtworkFiltersState = {
       selectedFilters: [],
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -88,12 +95,8 @@ describe("Artist options screen", () => {
         followedArtists: null,
       },
     }
+    ;(storeInstance as any).getActions().__injectState?.(injectedState)
 
-    __filterArtworksStoreTestUtils__?.injectState(initialState)
-  })
-
-  it("shows the correct number of artist options", () => {
-    const tree = renderWithWrappers(<MockArtistScreen />)
     // Includes a button for each artist + one for followed artists,
     // but our FlatList is configured to only show 4 in the initial render pass
     expect(tree.root.findAllByType(FilterToggleButton)).toHaveLength(4)
@@ -120,9 +123,9 @@ describe("Artist options screen", () => {
         },
       }
 
-      __filterArtworksStoreTestUtils__?.injectState(injectedState)
-
       const component = renderWithWrappers(<MockArtistScreen />)
+      ;(storeInstance as any).getActions().__injectState?.(injectedState)
+
       const selectedOption = selectedArtistOptions(component)[0]
       expect(extractText(selectedOption)).toEqual("Artist 2")
     })
@@ -141,8 +144,8 @@ describe("Artist options screen", () => {
         },
       }
 
-      __filterArtworksStoreTestUtils__?.injectState(injectedState)
       const tree = renderWithWrappers(<MockArtistScreen />)
+      ;(storeInstance as any).getActions().__injectState?.(injectedState)
 
       const firstOptionInstance = tree.root.findAllByType(FilterToggleButton)[0] // Artists I follow
       const secondOptionInstance = tree.root.findAllByType(FilterToggleButton)[1] // Artist 1
@@ -179,8 +182,8 @@ describe("Artist options screen", () => {
         },
       }
 
-      __filterArtworksStoreTestUtils__?.injectState(injectedState)
       const tree = renderWithWrappers(<MockArtistScreen />)
+      ;(storeInstance as any).getActions().__injectState?.(injectedState)
 
       const secondOptionInstance = tree.root.findAllByType(FilterToggleButton)[2] // Artists I follow, Artist 1, Artist 2
       const selectedOptionsBeforeTapping = selectedArtistOptions(tree)
@@ -230,8 +233,9 @@ describe("Artist options screen", () => {
         },
       }
 
-      __filterArtworksStoreTestUtils__?.injectState(injectedState)
       const tree = renderWithWrappers(<MockArtistScreen />)
+      ;(storeInstance as any).getActions().__injectState?.(injectedState)
+
       expect(tree.root.findAllByType(FilterToggleButton)).toHaveLength(4)
 
       // Artists I followed option should be disabled
