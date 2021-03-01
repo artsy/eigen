@@ -16,6 +16,10 @@ interface WatchedLotProps {
 
 export const WatchedLot: React.FC<WatchedLotProps> = ({ lot }) => {
   const { saleArtwork, lot: lotState } = lot
+  if (!lotState) {
+    return null
+  }
+
   const bidCount = lotState.bidCount
   const sellingPrice = lotState?.sellingPrice?.display
   const tracking = useTracking()
