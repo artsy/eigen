@@ -1,48 +1,29 @@
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import { Box, CheckIcon, Theme } from "palette"
+import { Box, CheckIcon } from "palette"
 import React from "react"
 import { ReactTestRenderer } from "react-test-renderer"
-import {
-  __filterArtworksStoreTestUtils__,
-  ArtworkFiltersState,
-  ArtworkFiltersStoreProvider,
-  ArtworksFiltersStore,
-} from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersState, ArtworksFiltersStore } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { InnerOptionListItem, OptionListItem } from "../SingleSelectOption"
 import { SortOptionsScreen } from "../SortOptions"
 import { getEssentialProps } from "./helper"
 
 describe("Sort Options Screen", () => {
-  let initialState: ArtworkFiltersState
+  let storeInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
 
-  beforeEach(() => {
-    initialState = {
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-      aggregations: [],
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    }
-
-    // __filterArtworksStoreTestUtils__?.injectState(initialState)
-  })
-
-  const MockSortScreen = () => {
-    return (
-      <Theme>
-        <ArtworkFiltersStoreProvider>
-          <SortOptionsScreen {...getEssentialProps()} />
-        </ArtworkFiltersStoreProvider>
-      </Theme>
-    )
+  const ArtworkFiltersStoreConsumer = () => {
+    storeInstance = ArtworksFiltersStore.useStore()
+    return null
   }
+
+  const MockSortScreen = () => (
+    <ArtworkFiltersStoreProvider>
+      <SortOptionsScreen {...getEssentialProps()} />
+      <ArtworkFiltersStoreConsumer />
+    </ArtworkFiltersStoreProvider>
+  )
 
   const selectedSortOption = (componentTree: ReactTestRenderer) => {
     const innerOptions = componentTree.root.findAllByType(InnerOptionListItem)
@@ -62,7 +43,7 @@ describe("Sort Options Screen", () => {
       expect(extractText(selectedOption)).toContain("Default")
     })
 
-    it.only("prefers an applied filter over the default filter", () => {
+    it("prefers an applied filter over the default filter", () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [],
         appliedFilters: [
@@ -91,6 +72,8 @@ describe("Sort Options Screen", () => {
       }
 
       const tree = renderWithWrappers(<MockSortScreen />)
+
+      ;(storeInstance as any).getActions().__injectState?.(injectedState)
       const selectedOption = selectedSortOption(tree)
       expect(extractText(selectedOption)).toContain("Recently added")
     })
@@ -116,9 +99,9 @@ describe("Sort Options Screen", () => {
         },
       }
 
-      __filterArtworksStoreTestUtils__?.injectState(injectedState)
-
       const tree = renderWithWrappers(<MockSortScreen />)
+      ;(storeInstance as any).getActions().__injectState?.(injectedState)
+
       const selectedOption = selectedSortOption(tree)
       expect(extractText(selectedOption)).toContain("Recently added")
     })
@@ -158,9 +141,9 @@ describe("Sort Options Screen", () => {
         },
       }
 
-      __filterArtworksStoreTestUtils__?.injectState(injectedState)
-
       const tree = renderWithWrappers(<MockSortScreen />)
+      ;(storeInstance as any).getActions().__injectState?.(injectedState)
+
       const selectedOption = selectedSortOption(tree)
       expect(extractText(selectedOption)).toContain("Recently added")
     })
@@ -192,9 +175,10 @@ describe("Sort Options Screen", () => {
         followedArtists: null,
       },
     }
-    __filterArtworksStoreTestUtils__?.injectState(injectedState)
 
     const tree = renderWithWrappers(<MockSortScreen />)
+    ;(storeInstance as any).getActions().__injectState?.(injectedState)
+
     const selectedRow = selectedSortOption(tree)
     expect(extractText(selectedRow)).toEqual("Price (high to low)")
     expect(selectedRow.findAllByType(CheckIcon)).toHaveLength(1)
@@ -215,9 +199,9 @@ describe("Sort Options Screen", () => {
         },
       }
 
-      __filterArtworksStoreTestUtils__?.injectState(injectedState)
-
       const tree = renderWithWrappers(<MockSortScreen />)
+      ;(storeInstance as any).getActions().__injectState?.(injectedState)
+
       const selectedRow = selectedSortOption(tree)
 
       expect(extractText(selectedRow)).toEqual("Gallery Curated")
@@ -240,9 +224,9 @@ describe("Sort Options Screen", () => {
         },
       }
 
-      __filterArtworksStoreTestUtils__?.injectState(injectedState)
-
       const tree = renderWithWrappers(<MockSortScreen />)
+      ;(storeInstance as any).getActions().__injectState?.(injectedState)
+
       const selectedRow = selectedSortOption(tree)
 
       expect(extractText(selectedRow)).toEqual("Most recent sale date")

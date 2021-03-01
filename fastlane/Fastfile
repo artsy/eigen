@@ -143,7 +143,6 @@ lane :ship_beta_ios do
   end
 
   upload_to_sentry.call('eigen', '')
-  upload_to_sentry.call('eigen-beta', '-beta')
 
   # Send to the app store
   beta_app_review_info = {

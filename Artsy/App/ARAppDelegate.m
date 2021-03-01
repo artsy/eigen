@@ -30,7 +30,6 @@
 #import "ARSystemTime.h"
 #import "ARDispatchManager.h"
 #import "ARLogger.h"
-#import "ARAuthValidator.h"
 
 #import "UIDevice-Hardware.h"
 #import "ArtsyEcho.h"
@@ -110,7 +109,6 @@ static ARAppDelegate *_sharedInstance = nil;
     [self setupEcho];
 
     [ARDefaults setup];
-    [ARRouter setup];
 
     self.initialLaunchOptions = launchOptions;
     return YES;
@@ -386,13 +384,6 @@ static ARAppDelegate *_sharedInstance = nil;
 - (void)countNumberOfRuns
 {
     NSInteger numberOfRuns = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty] + 1;
-    if (numberOfRuns == 1) {
-        [ARAnalytics event:ARAnalyticsFreshInstall];
-    }
-
-    if (numberOfRuns == 3) {
-        [[ARUserManager sharedManager] tryStoreSavedCredentialsToWebKeychain];
-    }
 
     [[NSUserDefaults standardUserDefaults] setInteger:numberOfRuns forKey:ARAnalyticsAppUsageCountProperty];
     [[NSUserDefaults standardUserDefaults] synchronize];

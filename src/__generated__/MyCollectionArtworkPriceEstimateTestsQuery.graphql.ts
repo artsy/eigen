@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1a93cef46acdd481a44b4a935b6b9c67 */
+/* @relayHash 6cbe758069973caad756e33f49aceff6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,8 +34,9 @@ query MyCollectionArtworkPriceEstimateTestsQuery {
 }
 
 fragment MyCollectionArtworkPriceEstimate_artwork on Artwork {
-  costCurrencyCode
-  costMinor
+  pricePaid {
+    display
+  }
   internalID
   sizeBucket
   slug
@@ -87,23 +88,17 @@ v2 = {
 },
 v3 = {
   "enumValues": null,
-  "nullable": true,
+  "nullable": false,
   "plural": false,
-  "type": "String"
+  "type": "ID"
 },
 v4 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
-  "type": "Int"
+  "type": "String"
 },
 v5 = {
-  "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "ID"
-},
-v6 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -169,15 +164,19 @@ return {
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
-            "name": "costCurrencyCode",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "costMinor",
+            "concreteType": "Money",
+            "kind": "LinkedField",
+            "name": "pricePaid",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "display",
+                "storageKey": null
+              }
+            ],
             "storageKey": null
           },
           {
@@ -311,7 +310,7 @@ return {
     ]
   },
   "params": {
-    "id": "1a93cef46acdd481a44b4a935b6b9c67",
+    "id": "6cbe758069973caad756e33f49aceff6",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -320,32 +319,42 @@ return {
           "plural": false,
           "type": "Artwork"
         },
-        "artwork.costCurrencyCode": (v3/*: any*/),
-        "artwork.costMinor": (v4/*: any*/),
-        "artwork.id": (v5/*: any*/),
-        "artwork.internalID": (v5/*: any*/),
-        "artwork.sizeBucket": (v3/*: any*/),
-        "artwork.slug": (v5/*: any*/),
+        "artwork.id": (v3/*: any*/),
+        "artwork.internalID": (v3/*: any*/),
+        "artwork.pricePaid": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Money"
+        },
+        "artwork.pricePaid.display": (v4/*: any*/),
+        "artwork.sizeBucket": (v4/*: any*/),
+        "artwork.slug": (v3/*: any*/),
         "marketPriceInsights": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "MarketPriceInsights"
         },
-        "marketPriceInsights.artsyQInventory": (v4/*: any*/),
-        "marketPriceInsights.highRangeCents": (v6/*: any*/),
-        "marketPriceInsights.id": (v5/*: any*/),
-        "marketPriceInsights.largeHighRangeCents": (v6/*: any*/),
-        "marketPriceInsights.largeLowRangeCents": (v6/*: any*/),
-        "marketPriceInsights.largeMidRangeCents": (v6/*: any*/),
-        "marketPriceInsights.lowRangeCents": (v6/*: any*/),
-        "marketPriceInsights.mediumHighRangeCents": (v6/*: any*/),
-        "marketPriceInsights.mediumLowRangeCents": (v6/*: any*/),
-        "marketPriceInsights.mediumMidRangeCents": (v6/*: any*/),
-        "marketPriceInsights.midRangeCents": (v6/*: any*/),
-        "marketPriceInsights.smallHighRangeCents": (v6/*: any*/),
-        "marketPriceInsights.smallLowRangeCents": (v6/*: any*/),
-        "marketPriceInsights.smallMidRangeCents": (v6/*: any*/)
+        "marketPriceInsights.artsyQInventory": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Int"
+        },
+        "marketPriceInsights.highRangeCents": (v5/*: any*/),
+        "marketPriceInsights.id": (v3/*: any*/),
+        "marketPriceInsights.largeHighRangeCents": (v5/*: any*/),
+        "marketPriceInsights.largeLowRangeCents": (v5/*: any*/),
+        "marketPriceInsights.largeMidRangeCents": (v5/*: any*/),
+        "marketPriceInsights.lowRangeCents": (v5/*: any*/),
+        "marketPriceInsights.mediumHighRangeCents": (v5/*: any*/),
+        "marketPriceInsights.mediumLowRangeCents": (v5/*: any*/),
+        "marketPriceInsights.mediumMidRangeCents": (v5/*: any*/),
+        "marketPriceInsights.midRangeCents": (v5/*: any*/),
+        "marketPriceInsights.smallHighRangeCents": (v5/*: any*/),
+        "marketPriceInsights.smallLowRangeCents": (v5/*: any*/),
+        "marketPriceInsights.smallMidRangeCents": (v5/*: any*/)
       }
     },
     "name": "MyCollectionArtworkPriceEstimateTestsQuery",

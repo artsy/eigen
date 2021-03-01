@@ -15,10 +15,6 @@ export type NativeEvent =
       payload: any
     }
   | {
-      type: "RESET_APP_STATE"
-      payload: NativeState
-    }
-  | {
       type: "REQUEST_NAVIGATION"
       payload: { route: string }
     }
@@ -28,21 +24,8 @@ export interface NativeState {
   authenticationToken: string
   launchCount: number
   onboardingState: "none" | "incomplete" | "complete"
-
-  gravityURL: string
-  metaphysicsURL: string
-  predictionURL: string
-  webURL: string
   userAgent: string
-
-  env: "production" | "staging" | "test"
   deviceId: string
-
-  // Empty is falsy in JS, so these are fine too.
-  stripePublishableKey: string
-  sentryDSN: string
-  legacyFairSlugs: string[]
-  legacyFairProfileSlugs: string[]
 }
 
 export interface NativeModel {
@@ -72,10 +55,6 @@ listenToNativeEvents((event: NativeEvent) => {
       return
     case "NOTIFICATION_RECEIVED":
       GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
-      return
-    case "RESET_APP_STATE":
-      GlobalStore.actions.reset()
-      GlobalStore.actions.native.setLocalState(event.payload)
       return
     case "REQUEST_NAVIGATION":
       navigate(event.payload.route)

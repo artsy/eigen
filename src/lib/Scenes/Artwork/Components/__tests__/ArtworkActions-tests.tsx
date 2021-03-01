@@ -2,6 +2,7 @@ import { ArtworkActionsTestsQueryRawResponse } from "__generated__/ArtworkAction
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { shallow } from "enzyme"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { BellIcon, Sans } from "palette"
@@ -13,6 +14,9 @@ import { ArtworkActions, ArtworkActionsFragmentContainer, shareContent } from ".
 jest.unmock("react-relay")
 
 describe("ArtworkActions", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.setProductionMode()
+  })
   describe("share button message", () => {
     it("displays only 3 artists when there are more than 3 artist", async () => {
       const content = shareContent("Title 1", "/artwork/title-1", [

@@ -1,5 +1,12 @@
 package net.artsy.app;
 
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+import android.view.WindowInsets;
+import android.view.WindowManager;
+
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
@@ -24,5 +31,24 @@ public class MainActivity extends ReactActivity {
        return new RNGestureHandlerEnabledRootView(MainActivity.this);
       }
     };
+  }
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      getWindow().setStatusBarColor(Color.TRANSPARENT);
+      getWindow().setNavigationBarColor(Color.WHITE);
+      View decorView = getWindow().getDecorView();
+      decorView.setOnApplyWindowInsetsListener(
+        (v, insets) -> {
+          WindowInsets defaultInsets = v.onApplyWindowInsets(insets);
+          return defaultInsets.replaceSystemWindowInsets(
+                  defaultInsets.getSystemWindowInsetLeft(),
+                  0,
+                  defaultInsets.getSystemWindowInsetRight(),
+                  defaultInsets.getSystemWindowInsetBottom());
+        });
+    }
   }
 }

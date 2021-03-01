@@ -1,12 +1,12 @@
 import { action, createStore, createTypedHooks, StoreProvider } from "easy-peasy"
+import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNavigationState"
 import React from "react"
 import { Platform } from "react-native"
-import Config from "react-native-config"
 import { Action, Middleware } from "redux"
-import { FeatureMap } from "./ConfigModel"
-import { FeatureName, features } from "./features"
+import { FeatureName, features } from "./config/features"
+import { FeatureMap } from "./config/FeaturesModel"
 import { GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { assignDeep, persistenceMiddleware, unpersist } from "./persistence"
 
@@ -64,8 +64,11 @@ export const __globalStoreTestUtils__ = __TEST__
       injectState(state: DeepPartial<GlobalStoreState>) {
         ;(GlobalStore.actions as any).__injectState(state)
       },
+      setProductionMode() {
+        this.injectState({ config: { environment: { env: "production" } } })
+      },
       injectFeatureFlags(options: Partial<FeatureMap>) {
-        this.injectState({ config: { adminFeatureFlagOverrides: options } })
+        this.injectState({ config: { features: { adminOverrides: options } } })
       },
       getCurrentState: () => globalStoreInstance.getState(),
       dispatchedActions: [] as Action[],
@@ -105,13 +108,7 @@ let globalStoreInstance = createGlobalStore()
 
 export function useFeatureFlag(key: FeatureName) {
   if (Platform.OS === "ios") {
-    return GlobalStore.useAppState((state) => {
-      if (!state?.config?.features[key]) {
-        console.log("abc, ", state)
-        console.warn("abc, ", key)
-      }
-      return state.config.features[key]
-    })
+    return GlobalStore.useAppState((state) => state.config.features.flags[key])
   }
 
   // TODO: add feature flags to GlobalStore on android
@@ -126,7 +123,7 @@ export function useFeatureFlag(key: FeatureName) {
 export function unsafe_getFeatureFlag(key: FeatureName) {
   const state = globalStoreInstance?.getState() ?? null
   if (state) {
-    return state.config.features[key]
+    return state.config.features.flags[key]
   }
   if (__DEV__) {
     throw new Error(`Unable to access ${key} before GlobalStore bootstraps`)
@@ -143,19 +140,10 @@ export function getCurrentEmissionState() {
   const androidData: GlobalStoreModel["native"]["sessionState"] = {
     authenticationToken: state?.auth.userAccessToken!,
     deviceId: "Android", // TODO: get better device info
-    env: "staging", // TODO: add production support
-    gravityURL: state?.config.sessionState.gravityBaseURL,
-    launchCount: 1, // TODO: add support for this somehow??
-    legacyFairProfileSlugs: [], // TODO: take from echo
-    legacyFairSlugs: [], // TODO: take from echo
-    metaphysicsURL: state?.config.sessionState.metaphysicsBaseURL,
+    launchCount: ArtsyNativeModule.launchCount,
     onboardingState: "none", // not used on android
-    predictionURL: state?.config.sessionState.predictionBaseURL,
-    sentryDSN: Config.SENTRY_BETA_DSN,
-    stripePublishableKey: "stripePublishableKey", // TODO: take key from echo config
     userAgent: "eigen android", // TODO: proper user agent
     userID: state?.auth.userID!,
-    webURL: state?.config.sessionState.webURL,
   }
   return androidData
 }
@@ -170,9 +158,26 @@ export function unsafe__getSelectedTab() {
 }
 
 export function useIsStaging() {
-  // TODO: support non-staging environments on android
-  if (Platform.OS === "android") {
-    return true
-  }
-  return GlobalStore.useAppState((state) => state.native.sessionState.env === "staging")
+  return GlobalStore.useAppState((state) => state.config.environment.env === "staging")
+}
+
+/**
+ * This is marked as unsafe because it will not cause a re-render
+ * if used during a react component's render. Use `useEnvironment` instead.
+ * This is safe to use in contexts that don't require reactivity, e.g. onPress handlers.
+ */
+export function unsafe__getEnvironment() {
+  const {
+    environment: { env, strings },
+    echo: { stripePublishableKey },
+  } = globalStoreInstance?.getState().config
+  return { ...strings, stripePublishableKey, env }
+}
+
+export function useEnvironment() {
+  const {
+    environment: { env, strings },
+    echo: { stripePublishableKey },
+  } = GlobalStore.useAppState((state) => state.config)
+  return { ...strings, stripePublishableKey, env }
 }

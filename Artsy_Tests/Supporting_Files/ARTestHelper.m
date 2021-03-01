@@ -26,7 +26,6 @@
     ARPerformWorkAsynchronously = NO;
 
     [ARDefaults setup];
-    [ARRouter setup];
 
     // Shared Web Credentials involve async processes that trigger OS alerts and are generally hard to deal with.
     // The related ARUserManager methods can still be invoked, they will just silently do nothing.
@@ -52,6 +51,15 @@
     // You might need to run `yarn bundle` or `yarn bundle-for-native-ci` to generate the jsbundle needed for emission
     AREmission *emission = [[AREmission alloc] initWithState:@{} packagerURL:nil];
     [AREmission setSharedInstance:emission];
+    [AREmission.sharedInstance.notificationsManagerModule updateReactState:@{
+        @"gravityURL": @"https://stagingapi.artsy.net",
+        @"metaphysicsURL": @"https://metaphysics-staging.artsy.net/v2",
+        @"predictionURL": @"https://live-staging.artsy.net",
+        @"webURL": @"https://staging.artsy.net",
+        @"causalityURL": @"wss://causality-staging.artsy.net",
+        @"env": @"staging"
+    }];
+    [ARRouter setup];
 
     // Needed for "usesDrawRect" based Nimble-Snapshots testing
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

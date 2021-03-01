@@ -358,33 +358,18 @@ export const selectedOptionsUnion = ({
   })
 }
 
-function createArtworkFiltersStore() {
+export let artworkFiltersStoreInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
+
+export function createArtworkFiltersStore() {
   if (__TEST__) {
     ;(ArtworkFiltersModel as any).__injectState = action((state, injectedState) => {
       assignDeep(state, injectedState)
     })
   }
-
-  // Might be useful some day to add a middleware to get some tracking on place here
-  // But we'll cross that bridge when we reach it
   const store = createContextStore<ArtworkFiltersModel>(ArtworkFiltersModel)
-
   return store
 }
 
 export const ArtworksFiltersStore = createArtworkFiltersStore()
-
-// tslint:disable-next-line:variable-name
-export const __filterArtworksStoreTestUtils__ = __TEST__
-  ? {
-      // this can be used to mock the initial state before mounting a test renderer
-      // e.g. `__filterArtworksStoreTestUtils__.injectState({ filterType: "artwork" })`
-      // takes effect until the next test starts
-      injectState(state: DeepPartial<ArtworkFiltersState>) {
-        return ArtworksFiltersStore.useStoreActions((storeState) => (storeState as any).__injectState as any)(state)
-      },
-      getCurrentState: () => ArtworksFiltersStore.useStoreState((state) => state),
-    }
-  : null
 
 export const ArtworkFiltersStoreProvider = ArtworksFiltersStore.Provider

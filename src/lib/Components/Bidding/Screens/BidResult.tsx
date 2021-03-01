@@ -17,7 +17,7 @@ import { Title } from "../Components/Title"
 import { BidderPositionResult } from "../types"
 
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { unsafe__getEnvironment } from "lib/store/GlobalStore"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 
@@ -64,7 +64,7 @@ export class BidResult extends React.Component<BidResultProps> {
     if (this.props.bidderPositionResult.status === "LIVE_BIDDING_STARTED") {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const saleSlug = this.props.sale_artwork.sale.slug
-      const url = `${getCurrentEmissionState().predictionURL}/${saleSlug}`
+      const url = `${unsafe__getEnvironment().predictionURL}/${saleSlug}`
       navigate(url, { modal: true })
     } else {
       dismissModal()

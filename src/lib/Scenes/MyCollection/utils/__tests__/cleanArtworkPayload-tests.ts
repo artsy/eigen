@@ -58,8 +58,8 @@ describe("explicitlyClearedFields", () => {
         isEdition: false,
         title: "some-title",
         artistSearchResult: {} as any,
-        costMinor: "some",
-        costCurrencyCode: "some",
+        pricePaidDollars: "100",
+        pricePaidCurrency: "USD",
         date: "some-date",
         editionSize: "some-edition-size",
         metric: "in",
@@ -81,11 +81,9 @@ describe("explicitlyClearedFields", () => {
       const updatedPayload: Partial<ArtworkFormValues> = artworkFormValues()
       delete updatedPayload.width
       delete updatedPayload.height
-      delete updatedPayload.costMinor
       const explicitlyClearedPayload = explicitlyClearedFields(updatedPayload, initialPayload)
       expect(explicitlyClearedPayload).toHaveProperty("width")
       expect(explicitlyClearedPayload).toHaveProperty("height")
-      expect(explicitlyClearedPayload).toHaveProperty("costMinor")
     })
 
     it("doesn't return fields previously empty", () => {
@@ -94,11 +92,9 @@ describe("explicitlyClearedFields", () => {
       const updatedPayload: Partial<ArtworkFormValues> = artworkFormValues()
       delete updatedPayload.width
       delete updatedPayload.height
-      delete updatedPayload.costMinor
       const explicitlyClearedPayload = explicitlyClearedFields(updatedPayload, initialPayload)
       expect(explicitlyClearedPayload).not.toHaveProperty("width")
       expect(explicitlyClearedPayload).toHaveProperty("height")
-      expect(explicitlyClearedPayload).toHaveProperty("costMinor")
     })
   })
 })

@@ -10,8 +10,11 @@ export type MyCollectionArtworkFullDetails_artwork = {
     } | null;
     readonly artistNames: string | null;
     readonly category: string | null;
-    readonly costMinor: number | null;
-    readonly costCurrencyCode: string | null;
+    readonly pricePaid: {
+        readonly display: string | null;
+        readonly minor: number;
+        readonly currencyCode: string;
+    } | null;
     readonly date: string | null;
     readonly depth: string | null;
     readonly editionSize: string | null;
@@ -101,15 +104,33 @@ return {
     {
       "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "costMinor",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "costCurrencyCode",
+      "concreteType": "Money",
+      "kind": "LinkedField",
+      "name": "pricePaid",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "display",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "minor",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "currencyCode",
+          "storageKey": null
+        }
+      ],
       "storageKey": null
     },
     {

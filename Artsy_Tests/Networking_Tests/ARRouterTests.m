@@ -152,23 +152,6 @@ describe(@"User-Agent", ^{
     });
 });
 
-describe(@"baseWebURL", ^{
-    beforeEach(^{
-        [AROptions setBool:false forOption:ARUseStagingDefault];
-        [ARRouter setup];
-    });
-
-    it(@"points to artsy web on iphone", ^{
-        expect([ARRouter baseWebURL]).to.equal([NSURL URLWithString:@"https://www.artsy.net"]);
-    });
-
-    it(@"points to artsy web on ipad", ^{
-        [ARTestContext stubDevice:ARDeviceTypePad];
-        expect([ARRouter baseWebURL]).to.equal([NSURL URLWithString:@"https://www.artsy.net"]);
-        [ARTestContext stopStubbing];
-    });
-});
-
 describe(@"metaphysics", ^{
     it(@"does not add a role for nil role param", ^{
         NSURLRequest *request = [ARRouter liveSaleStaticDataRequest:@"my-sale" role:nil];

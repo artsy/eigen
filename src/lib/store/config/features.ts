@@ -21,7 +21,7 @@ export interface FeatureDescriptor {
 }
 
 // Helper function to get good typings and intellisense
-export function defineFeatures<T extends string>(featureMap: { readonly [featureName in T]: FeatureDescriptor }) {
+function defineFeatures<T extends string>(featureMap: { readonly [featureName in T]: FeatureDescriptor }) {
   return featureMap
 }
 

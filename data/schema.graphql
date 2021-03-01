@@ -4661,6 +4661,13 @@ type Conversation implements Node {
 
   # A connection for all messages in a single conversation
   messagesConnection(after: String, before: String, first: Int, last: Int, sort: sort): MessageConnection
+  orderConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    participantType: CommerceOrderParticipantEnum!
+  ): CommerceOrderConnectionWithTotalCount
 
   # The participant(s) responding to the conversation
   to: ConversationResponder!
@@ -7972,6 +7979,9 @@ type Partner implements Node {
   # A connection of shows from a Partner.
   showsConnection(
     after: String
+
+    # True for only shows that are part of a fair, false for only shows not part of a fair, blank for all shows
+    atAFair: Boolean
     before: String
 
     # Only used when status is CLOSING_SOON or UPCOMING. Number of days used to filter upcoming and closing soon shows
@@ -8800,6 +8810,7 @@ type Query {
 
     # Returns the first _n_ elements from the list.
     first: Int
+    impulseConversationId: String
 
     # Returns the last _n_ elements from the list.
     last: Int
@@ -9998,6 +10009,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     last: Int
     published: Boolean = true
   ): ArtworkConnection
+
+  # The total count of artworks, both unpublished and published, in a show
+  artworksCount: Int
   cached: Int
 
   # The general city, derived from a fair location, a show location or a potential city
@@ -10649,6 +10663,9 @@ input UpdateMyProfileInput {
 
   # The collector level for the user
   collectorLevel: Int
+
+  # The user completed onboarding.
+  completedOnboarding: Boolean
 
   # The given email of the user.
   email: String

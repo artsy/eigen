@@ -22,7 +22,6 @@
 #import "ARRouter.h"
 #import "ARReactPackagerHost.h"
 #import "AROptions.h"
-#import "ARAuthValidator.h"
 
 #import <react-native-config/ReactNativeConfig.h>
 #import <Emission/AREmission.h>
@@ -47,15 +46,16 @@
 
 - (void)setupEmission;
 {
-    if ([AROptions boolForOption:AROptionsStagingReactEnv]) {
-        NSURL *packagerURL = [ARAdminNetworkModel fileURLForLatestCommitJavaScript];
-        [self setupSharedEmissionWithPackagerURL:packagerURL];
-
-    } else if ([AROptions boolForOption:AROptionsDevReactEnv]) {
+    BOOL isDebugMode;
+#if DEBUG
+    isDebugMode = YES;
+#else
+    isDebugMode = NO;
+#endif
+    if (isDebugMode) {
         NSString *bundleUrlString = [NSString stringWithFormat:@"http://%@:8081/index.ios.bundle?platform=ios&dev=true", [ARReactPackagerHost hostname]];
         NSURL *packagerURL = [NSURL URLWithString:bundleUrlString];
         [self setupSharedEmissionWithPackagerURL:packagerURL];
-
     } else {
         // The normal flow for users
         [self setupSharedEmissionWithPackagerURL:nil];
@@ -99,39 +99,6 @@ SOFTWARE.
     NSString *userID = [[[ARUserManager sharedManager] currentUser] userID];
     NSString *authenticationToken = [[ARUserManager sharedManager] userAuthenticationToken];
 
-    NSString *sentryDSN = nil;
-    if (![ARAppStatus isDev]) {
-        sentryDSN = [ReactNativeConfig envFor:[ARAppStatus isBeta] ? @"SENTRY_BETA_DSN" : @"SENTRY_PRODUCTION_DSN"];
-    }
-
-    // Don't let the JS raise an error about Sentry's DSN being a stub on OSS builds
-    if ([sentryDSN isEqualToString:@"-"]) {
-        sentryDSN = nil;
-    }
-
-    NSString *gravity = [[ARRouter baseApiURL] absoluteString];
-    NSString *metaphysics = [ARRouter baseMetaphysicsApiURLString];
-
-    // Grab echo features and make that the base of all options
-    ArtsyEcho *aero = [[ArtsyEcho alloc] init];
-    [aero setup];
-
-    NSString *env;
-    NSString *stripePublishableKey;
-    NSString *liveAuctionsURL;
-    if ([AROptions boolForOption:ARUseStagingDefault]) {
-        env = @"staging";
-        stripePublishableKey = [aero.messages[@"StripeStagingPublishableKey"] content];
-        liveAuctionsURL = @"https://live-staging.artsy.net";
-    } else {
-        env = @"production";
-        stripePublishableKey = [aero.messages[@"StripeProductionPublishableKey"] content];
-        liveAuctionsURL = @"https://live.artsy.net";
-    }
-
-    NSArray *fairSlugs = [aero legacyFairSlugs];
-    NSArray *fairProfileSlugs = [aero legacyFairProfileSlugs];
-
     NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
     AROnboardingUserProgressStage onboardingState = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage];
 
@@ -140,18 +107,21 @@ SOFTWARE.
                                                                  [ARStateKey authenticationToken] : (authenticationToken ?: [NSNull null]),
                                                                  [ARStateKey launchCount] : @(launchCount),
                                                                  [ARStateKey onboardingState] : onboardingState == AROnboardingStageDefault ? @"none" : onboardingState == AROnboardingStageOnboarded ? @"complete" : @"incomplete",
-                                                                 [ARStateKey sentryDSN] : (sentryDSN ?: [NSNull null]),
-                                                                 [ARStateKey stripePublishableKey] : (stripePublishableKey ?: [NSNull null]),
-                                                                 [ARStateKey gravityURL] : gravity,
-                                                                 [ARStateKey metaphysicsURL] : metaphysics,
-                                                                 [ARStateKey predictionURL] : liveAuctionsURL,
-                                                                 [ARStateKey webURL] : [[ARRouter baseWebURL] absoluteString],
                                                                  [ARStateKey userAgent] : ARRouter.userAgent,
-                                                                 [ARStateKey env] : env,
-                                                                 [ARStateKey legacyFairSlugs] : fairSlugs,
-                                                                 [ARStateKey legacyFairProfileSlugs] : fairProfileSlugs,
                                                                  [ARStateKey deviceId] : self.deviceId
     } packagerURL:packagerURL];
+
+    [emission.notificationsManagerModule afterBootstrap:^{
+        [ARRouter setup];
+
+        if (launchCount == 1) {
+            [ARAnalytics event:ARAnalyticsFreshInstall];
+        }
+
+        if (launchCount == 3) {
+            [[ARUserManager sharedManager] tryStoreSavedCredentialsToWebKeychain];
+        }
+    }];
 
     // Disable default React Native dev menu shake motion handler
     static dispatch_once_t onceToken;
@@ -189,10 +159,8 @@ SOFTWARE.
         }];
     };
 
-    emission.APIModule.authValidationChecker = ^() {
-        if ([User currentUser]) {
-            [ARAuthValidator validateAuthCredentialsAreCorrect];
-        };
+    emission.APIModule.userDataClearer = ^() {
+        [ARUserManager logout];
     };
 
 

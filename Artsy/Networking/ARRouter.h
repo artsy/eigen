@@ -13,9 +13,6 @@
 + (NSURL *)baseWebURL;
 + (NSString *)baseMetaphysicsApiURLString;
 
-+ (AFHTTPSessionManager *)httpClient;
-+ (void)setupWithBaseApiURL:(NSURL *)baseApiURL;
-
 + (void)setupUserAgent;
 + (BOOL)isWebURL:(NSURL *)url;
 + (BOOL)isTelURL:(NSURL *)url;

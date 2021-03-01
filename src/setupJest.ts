@@ -84,7 +84,7 @@ jest.mock("rn-fetch-blob", () => ({
 }))
 
 // tslint:disable-next-line:no-empty
-jest.mock("@sentry/react-native", () => ({ captureMessage() {} }))
+jest.mock("@sentry/react-native", () => ({ captureMessage() {}, init() {}, setUser() {} }))
 
 // Needing to mock react-native-scrollable-tab-view due to Flow issue
 jest.mock("react-native-scrollable-tab-view", () => jest.fn(() => null))
@@ -135,10 +135,11 @@ mockedModule("./lib/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "Artis
 mockedModule("./lib/Components/Gene/Header.tsx", "Header")
 
 // Native modules
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
 
-function getNativeModules(): typeof NativeModules {
+function getNativeModules(): typeof LegacyNativeModules {
   return {
     ARTakeCameraPhotoModule: {
       errorCodes: {
@@ -147,6 +148,7 @@ function getNativeModules(): typeof NativeModules {
         cameraAccessDenied: "cameraAccessDenied",
         saveFailed: "saveFailed",
       },
+      triggerCameraModal: jest.fn(),
     },
 
     ARCocoaConstantsModule: {
@@ -159,31 +161,23 @@ function getNativeModules(): typeof NativeModules {
     ARNotificationsManager: {
       nativeState: {
         userAgent: "Jest Unit Tests",
-        env: "test",
         authenticationToken: "authenticationToken",
         onboardingState: "complete",
-        gravityURL: "gravityURL",
         launchCount: 1,
-        metaphysicsURL: "metaphysicsURL",
         deviceId: "testDevice",
-        predictionURL: "predictionURL",
-        webURL: "https://artsy.net",
-        sentryDSN: "sentryDSN",
-        stripePublishableKey: "stripePublishableKey",
         userID: "userID",
-        legacyFairSlugs: ["some-fairs-slug", "some-other-fair-slug"],
-        legacyFairProfileSlugs: [],
       },
       postNotificationName: jest.fn(),
       didFinishBootstrapping: jest.fn(),
+      reactStateUpdated: jest.fn(),
     },
 
     ARTemporaryAPIModule: {
-      validateAuthCredentialsAreCorrect: jest.fn(),
       requestNotificationPermissions: jest.fn(),
       fetchNotificationPermissions: jest.fn(),
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
+      clearUserData: jest.fn(),
       appVersion: "appVersion",
       buildVersion: "buildVersion",
     },
@@ -422,8 +416,7 @@ jest.mock("react-native-config", () => ({
   ARTSY_FACEBOOK_APP_ID: "artsy_facebook_app_id",
   SEGMENT_PRODUCTION_WRITE_KEY: "segment_production_write_key",
   SEGMENT_STAGING_WRITE_KEY: "segment_staging_write_key",
-  SENTRY_PRODUCTION_DSN: "sentry_production_dsn",
-  SENTRY_BETA_DSN: "sentry_beta_dsn",
+  SENTRY_DSN: "sentry_dsn",
   GOOGLE_MAPS_API_KEY: "google_maps_api_key",
   MAPBOX_API_CLIENT_KEY: "mapbox_api_client_key",
   SAILTHRU_KEY: "sailthru_key",
