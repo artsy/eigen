@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Migrate LoadFailureView to typescript - adam, brian, david, mounir, pavlos
     - Migrate environment configuration to TypeScript - david
+    - Fix auction results showing zero price - pavlos, steve
     - Improve bottom tabs dev state management  - david, mounir
     - Use adjustPan for windowSoftInputMode  - mounir
     - Make android app full-bleed - david

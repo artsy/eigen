@@ -1,5 +1,7 @@
 import moment from "moment"
 
+// This interface just mirrors the types that come back from metaphysics.
+// If tests or types break, the fix should be to just update this interface with the new metaphysics types.
 export interface AuctionResultHelperData {
   currency: string | null
   boughtIn: boolean | null
