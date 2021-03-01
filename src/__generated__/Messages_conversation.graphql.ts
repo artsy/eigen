@@ -4,6 +4,8 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type CommerceOrderParticipantEnum = "BUYER" | "SELLER" | "%future added value";
+export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FULFILLED" | "PENDING" | "REFUNDED" | "SUBMITTED" | "%future added value";
 export type Messages_conversation = {
     readonly id: string;
     readonly internalID: string | null;
@@ -41,6 +43,26 @@ export type Messages_conversation = {
                     readonly " $fragmentRefs": FragmentRefs<"ImagePreview_attachment" | "PDFPreview_attachment" | "FileDownload_attachment">;
                 } | null> | null;
                 readonly " $fragmentRefs": FragmentRefs<"Message_message">;
+            } | null;
+        } | null> | null;
+    } | null;
+    readonly orderConnection: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly isInquiryOrder?: boolean;
+                readonly state?: CommerceOrderStateEnum;
+                readonly stateReason?: string | null;
+                readonly stateUpdatedAt?: string | null;
+                readonly offers?: {
+                    readonly nodes: ReadonlyArray<{
+                        readonly amount: string | null;
+                        readonly createdAt: string;
+                        readonly fromParticipant: CommerceOrderParticipantEnum | null;
+                        readonly from: {
+                            readonly __typename: string;
+                        };
+                    } | null> | null;
+                } | null;
             } | null;
         } | null> | null;
     } | null;
@@ -95,10 +117,38 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "__typename",
+  "name": "endCursor",
   "storageKey": null
 },
 v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "hasNextPage",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "cursor",
+  "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "createdAt",
+  "storageKey": null
+},
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
+  "storageKey": null
+},
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -127,6 +177,14 @@ return {
         "direction": "forward",
         "path": [
           "messagesConnection"
+        ]
+      },
+      {
+        "count": "count",
+        "cursor": "after",
+        "direction": "forward",
+        "path": [
+          "orderConnection"
         ]
       }
     ]
@@ -203,13 +261,7 @@ return {
               "name": "startCursor",
               "storageKey": null
             },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "endCursor",
-              "storageKey": null
-            },
+            (v3/*: any*/),
             {
               "alias": null,
               "args": null,
@@ -217,13 +269,7 @@ return {
               "name": "hasPreviousPage",
               "storageKey": null
             },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "hasNextPage",
-              "storageKey": null
-            }
+            (v4/*: any*/)
           ],
           "storageKey": null
         },
@@ -235,13 +281,7 @@ return {
           "name": "edges",
           "plural": true,
           "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "cursor",
-              "storageKey": null
-            },
+            (v5/*: any*/),
             {
               "alias": null,
               "args": null,
@@ -273,13 +313,7 @@ return {
                   "name": "body",
                   "storageKey": null
                 },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "createdAt",
-                  "storageKey": null
-                },
+                (v6/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -329,7 +363,7 @@ return {
                   ],
                   "storageKey": null
                 },
-                (v3/*: any*/),
+                (v7/*: any*/),
                 {
                   "args": null,
                   "kind": "FragmentSpread",
@@ -338,6 +372,138 @@ return {
               ],
               "storageKey": null
             }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": "orderConnection",
+      "args": null,
+      "concreteType": "CommerceOrderConnectionWithTotalCount",
+      "kind": "LinkedField",
+      "name": "__Messages_orderConnection_connection",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "CommerceOrderEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": null,
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                (v7/*: any*/),
+                {
+                  "kind": "InlineFragment",
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "isInquiryOrder",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "state",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "stateReason",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "stateUpdatedAt",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "concreteType": "CommerceOfferConnection",
+                      "kind": "LinkedField",
+                      "name": "offers",
+                      "plural": false,
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "concreteType": "CommerceOffer",
+                          "kind": "LinkedField",
+                          "name": "nodes",
+                          "plural": true,
+                          "selections": [
+                            {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "amount",
+                              "storageKey": null
+                            },
+                            (v6/*: any*/),
+                            {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "fromParticipant",
+                              "storageKey": null
+                            },
+                            {
+                              "alias": null,
+                              "args": null,
+                              "concreteType": null,
+                              "kind": "LinkedField",
+                              "name": "from",
+                              "plural": false,
+                              "selections": [
+                                (v7/*: any*/)
+                              ],
+                              "storageKey": null
+                            }
+                          ],
+                          "storageKey": null
+                        }
+                      ],
+                      "storageKey": null
+                    }
+                  ],
+                  "type": "CommerceOfferOrder",
+                  "abstractKey": null
+                }
+              ],
+              "storageKey": null
+            },
+            (v5/*: any*/)
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "CommercePageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
+          "plural": false,
+          "selections": [
+            (v3/*: any*/),
+            (v4/*: any*/)
           ],
           "storageKey": null
         }
@@ -360,11 +526,11 @@ return {
           "name": "item",
           "plural": false,
           "selections": [
-            (v3/*: any*/),
+            (v7/*: any*/),
             {
               "kind": "InlineFragment",
               "selections": [
-                (v4/*: any*/),
+                (v8/*: any*/),
                 {
                   "args": null,
                   "kind": "FragmentSpread",
@@ -377,7 +543,7 @@ return {
             {
               "kind": "InlineFragment",
               "selections": [
-                (v4/*: any*/),
+                (v8/*: any*/),
                 {
                   "args": null,
                   "kind": "FragmentSpread",
@@ -398,5 +564,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '8175de5196eb8355c89e6f428a9a3002';
+(node as any).hash = 'e8346f41d9ac276eb0c7a3ab1e6e9176';
 export default node;

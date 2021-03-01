@@ -1,14 +1,11 @@
+import { Messages_conversation } from "__generated__/Messages_conversation.graphql"
+import { PAGE_SIZE } from "lib/data/constants"
+import { extractNodes } from "lib/utils/extractNodes"
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { Dimensions, FlatList, RefreshControl, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
-
-import { PAGE_SIZE } from "lib/data/constants"
-
 import { MessageGroup } from "./MessageGroup"
-
-import { Messages_conversation } from "__generated__/Messages_conversation.graphql"
-import { extractNodes } from "lib/utils/extractNodes"
 
 import { groupMessages, MessageGroup as MessageGroupType } from "./utils/groupMessages"
 
@@ -18,6 +15,7 @@ interface Props {
   conversation: Messages_conversation
   relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
+  order: Messages_orderConnection
 }
 
 const LoadingIndicator = styled.ActivityIndicator`
@@ -106,6 +104,10 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
       }
     : {}
 
+  const allOffers = extractNodes(conversation?.orderConnection)?.[0]?.offers?.nodes
+
+  console.warn("OFFWAES", allOffers[0].state)
+
   return (
     <FlatList
       key={conversation.internalID!}
@@ -189,6 +191,29 @@ export default createPaginationContainer(
                 ...FileDownload_attachment
               }
               ...Message_message
+            }
+          }
+        }
+        orderConnection(first: $count, after: $after, participantType: BUYER)
+          @connection(key: "Messages_orderConnection", filters: []) {
+          edges {
+            node {
+              ... on CommerceOfferOrder {
+                isInquiryOrder
+                state
+                stateReason
+                stateUpdatedAt
+                offers {
+                  nodes {
+                    amount
+                    createdAt
+                    fromParticipant
+                    from {
+                      __typename
+                    }
+                  }
+                }
+              }
             }
           }
         }
