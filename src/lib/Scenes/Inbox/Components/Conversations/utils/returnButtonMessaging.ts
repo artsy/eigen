@@ -18,11 +18,9 @@ export const returnButtonMessaging = ({
   let subMessage = "Tap to view"
   let backgroundColor = "green100"
   let showMoneyIcon = true
+  console.warn("WOOO", state, stateReason, lastOfferFromParticipant)
 
-  if (state === "PENDING") {
-    message = `${offerType} Accepted - Please Confirm`
-    subMessage = `Expires in ${hoursTillExpiration}hr`
-  } else if (state === "CANCELED" && stateReason?.includes("seller_rejected")) {
+  if (state === "CANCELED" && stateReason?.includes("seller_rejected")) {
     message = `${offerType} Declined`
     backgroundColor = "red100"
   } else if (lastOfferFromParticipant === "SELLER") {
@@ -30,6 +28,9 @@ export const returnButtonMessaging = ({
     message = `${offerType} Received`
     subMessage = `Expires in ${hoursTillExpiration}hr`
     showMoneyIcon = false
+  } else if (state === "PENDING" && lastOfferFromParticipant === "BUYER") {
+    message = `${offerType} Accepted - Please Confirm`
+    subMessage = `Expires in ${hoursTillExpiration}hr`
   }
   return {
     backgroundColor,

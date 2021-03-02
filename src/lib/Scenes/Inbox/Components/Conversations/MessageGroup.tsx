@@ -47,7 +47,12 @@ export class MessageGroup extends React.Component<MessageGroupProps> {
             )}
           </SubjectContainer>
         )}
-        {!!message.fromParticipant && <OfferNotification offer={message} />}
+        {!!message.fromParticipant && (
+          <OfferNotification
+            offer={message}
+            showTimeSince={!!(message.createdAt && today && group.length - 1 === messageIndex)}
+          />
+        )}
         {!!message.body && (
           <Message
             message={message}
