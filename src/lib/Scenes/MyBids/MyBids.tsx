@@ -109,9 +109,9 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
                       {sortedActiveLotStandings.map((lot) => {
                         // this check performs type narrowing (from Lot | LotStanding)
                         if ("isHighestBidder" in lot) {
-                          return <LotStatusListItemContainer key={lot.lot.internalID} lotStanding={lot} lot={null} />
+                          return <LotStatusListItemContainer key={lot.lot?.internalID} lotStanding={lot} lot={null} />
                         } else {
-                          return <LotStatusListItemContainer key={lot.lot.internalID} lot={lot} lotStanding={null} />
+                          return <LotStatusListItemContainer key={lot.lot?.internalID} lot={lot} lotStanding={null} />
                         }
                       })}
                     </Join>
@@ -279,7 +279,7 @@ const sortLotsAndSales: SortData = (watchedLots, lotStandings, registeredSales) 
   // combine unique watched lots with active standings => `ActiveLotStandings`
   const ActiveLotStandings = watchedLots.reduce(
     (acc: any[], watchedLot) => {
-      if (!!activeStandings.find((existingLot) => existingLot!.lot!.internalID === watchedLot.lot.internalID)) {
+      if (!!activeStandings.find((existingLot) => existingLot!.lot!.internalID === watchedLot.lot?.internalID)) {
         return acc
       } else {
         return [...acc, watchedLot]
