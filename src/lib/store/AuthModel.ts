@@ -5,11 +5,17 @@ import type { GlobalStoreModel } from "./GlobalStoreModel"
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 
 export interface AuthModel {
+  // State
   userID: string | null
   userAccessToken: string | null
   userAccessTokenExpiresIn: string | null
   xAppToken: string | null
   xApptokenExpiresIn: string | null
+  sessionState: {
+    url: string | null
+  }
+
+  // Actions
   setState: Action<AuthModel, Partial<StateMapper<AuthModel, "1">>>
   getXAppToken: Thunk<AuthModel, void, {}, GlobalStoreModel, Promise<string>>
   userExists: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel>
@@ -34,6 +40,9 @@ export const AuthModel: AuthModel = {
   userAccessTokenExpiresIn: null,
   xAppToken: null,
   xApptokenExpiresIn: null,
+  sessionState: {
+    url: null,
+  },
   setState: action((state, payload) => Object.assign(state, payload)),
   getXAppToken: thunk(async (actions, _payload, context) => {
     const xAppToken = context.getState().xAppToken
