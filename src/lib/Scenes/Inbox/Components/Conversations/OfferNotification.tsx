@@ -19,22 +19,25 @@ export const OfferNotification: React.FC<OfferNotificationProps> = ({ offer, sho
       setNotificationMessage(`You sent an offer for ${offer.amount}`)
     } else if (offer.fromParticipant === "BUYER" && offer.respondsTo !== null) {
       setNotificationMessage(`You sent a counteroffer for ${offer.amount}`)
-    } else {
-      const { message, backgroundColor, showMoneyIcon } = returnButtonMessaging({
-        state: offer.order.state,
-        stateReason: offer.order.stateReason,
-        isCounter: offer.respondsTo.fromParticipant != null,
-        lastOfferFromParticipant: offer.fromParticipant,
-      })
-
-      setNotificationMessage(message)
-      setShowMoneyIconInNotification(showMoneyIcon)
-      setNotificationColor(backgroundColor)
+    } else if (offer.fromParticipant === "SELLER") {
+      if (offer.respondsTo === null) {
+        setNotificationMessage(`You recieved an offer for ${offer.amount}`)
+      } else {
+        setNotificationMessage(`You recieved a counteroffer for ${offer.amount}`)
+      }
+      // const { message, backgroundColor, showMoneyIcon } = returnButtonMessaging({
+      //   state: offer.order.state,
+      //   stateReason: offer.order.stateReason,
+      //   isCounter: offer.respondsTo.fromParticipant != null,
+      //   lastOfferFromParticipant: offer.fromParticipant,
+      // })
+      setShowMoneyIconInNotification(false)
+      setNotificationColor("copper100")
     }
   })
 
   return (
-    <Flex height={30}>
+    <Flex>
       <Flex px={2} justifyContent="center" flexDirection="row">
         <Flex flexDirection="row">
           {showMoneyIconInNotification ? (
