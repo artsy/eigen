@@ -6,6 +6,7 @@ upcoming:
     - Migrate environment configuration to TypeScript - david
     - Improve bottom tabs dev state management  - david, mounir
     - Use adjustPan for windowSoftInputMode  - mounir
+    - Improve relay environment setup - david
     - Make android app full-bleed - david
   user_facing:
     - Adds inquiry checkout offer status CTA - lily

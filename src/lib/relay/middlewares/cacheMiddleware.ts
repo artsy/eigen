@@ -1,4 +1,3 @@
-import { captureMessage } from "@sentry/react-native"
 import { Platform } from "react-native"
 import { MiddlewareNextFn } from "react-relay-network-modern/node8"
 import * as cache from "../../NativeModules/GraphQLQueryCache"
@@ -29,37 +28,7 @@ export const cacheMiddleware = () => {
       cache.clear(queryID!, variables)
     }
 
-    // Get query body either from local queryMap or
-    // send queryID to metaphysics
-    let body: { variables?: object; query?: string; documentID?: string } = {}
-    if (__DEV__) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      body = { query: require("../../../../data/complete.queryMap.json")[queryID], variables }
-      req.operation.text = body.query ?? null
-    } else {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      body = { documentID: queryID, variables }
-    }
-
-    if (body && (body.query || body.documentID)) {
-      req.fetchOpts.body = JSON.stringify(body)
-    }
-
-    let response: any
-    try {
-      response = await next(req)
-    } catch (e) {
-      if (!__DEV__ && e.toString().includes("Unable to serve persisted query with ID")) {
-        // this should not happen normally, but let's try again with full query text to avoid ruining the user's day?
-        captureMessage(e.stack)
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        body = { query: require("../../../../data/complete.queryMap.json")[queryID], variables }
-        req.fetchOpts.body = JSON.stringify(body)
-        response = await next(req)
-      } else {
-        throw e
-      }
-    }
+    const response = await next(req)
 
     const clearCache = () => {
       cache.clear(queryID!, req.variables)
@@ -68,7 +37,7 @@ export const cacheMiddleware = () => {
     if (response.status >= 200 && response.status < 300) {
       if (isQuery) {
         // Don't cache responses with errors in them (GraphQL responses are always 200, even if they contain errors).
-        if (response.json.errors === undefined) {
+        if ((response.json as any).errors === undefined) {
           cache.set(queryID!, req.variables, JSON.stringify(response.json), req.cacheConfig.emissionCacheTTLSeconds)
         } else {
           clearCache()
