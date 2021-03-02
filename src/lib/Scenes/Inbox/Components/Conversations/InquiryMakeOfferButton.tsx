@@ -1,7 +1,6 @@
 import { InquiryMakeOfferButton_artwork } from "__generated__/InquiryMakeOfferButton_artwork.graphql"
 import { InquiryMakeOfferButtonOrderMutation } from "__generated__/InquiryMakeOfferButtonOrderMutation.graphql"
 import { navigate } from "lib/navigation/navigate"
-import { Track, track as _track } from "lib/utils/track"
 import { Button, ButtonVariant } from "palette"
 import React from "react"
 import { Alert } from "react-native"
@@ -23,10 +22,6 @@ export interface State {
   orderUrl: string | null
 }
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const track: Track<InquiryMakeOfferButtonProps, State> = _track
-
-@track()
 export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButtonProps, State> {
   state = {
     isCommittingCreateOfferOrderMutation: false,
@@ -48,14 +43,9 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
         },
       },
     ])
-    console.log("src/lib/Scenes/Artwork/Components/InquiryMakeOfferButton.tsx", error)
+    console.log("src/lib/Scenes/Inbox/Components/Conversations/InquiryMakeOfferButton.tsx", error)
   }
 
-  // @track({
-  //   action_name: Schema.ActionNames.InquiryMakeOffer,
-  //   action_type: Schema.ActionTypes.Tap,
-  //   context_module: Schema.ContextModules.Conversation,
-  // })
   handleCreateInquiryOfferOrder() {
     const { relay, artwork, editionSetID, conversationID } = this.props
     const { isCommittingCreateOfferOrderMutation } = this.state
