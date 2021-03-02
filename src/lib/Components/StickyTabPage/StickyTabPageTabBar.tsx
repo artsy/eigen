@@ -47,6 +47,7 @@ export const StickyTabPageTabBar: React.FC<{ onTabPress?(tab: { label: string; i
         borderBottomWidth: 1,
         borderBottomColor: color("black30"),
       }}
+      contentContainerStyle={{ flex: 1 }}
     >
       <View
         style={{
