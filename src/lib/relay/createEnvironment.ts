@@ -14,7 +14,7 @@ import { timingMiddleware } from "./middlewares/timingMiddleware"
 
 /// WARNING: Creates a whole new, separate Relay environment. Useful for testing.
 /// Use `defaultEnvironment` for production code.
-export default function createEnvironment(
+export function createEnvironment(
   networkConfig: ConstructorParameters<typeof RelayNetworkLayer> = [
     [
       // The top middlewares run last, i.e. they are the closest to the fetch
