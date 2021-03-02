@@ -8480,6 +8480,9 @@ type Query {
   # Do not use (only used internally for stitching)
   _do_not_use_image: Image
 
+  # Returns a lot with specific `id`.
+  _unused_auctionsLot(id: ID!): AuctionsLotState
+
   # Lot standings for a user
   _unused_auctionsLotStandingConnection(
     after: String
@@ -8736,9 +8739,6 @@ type Query {
     # The ID of the auction result
     id: String!
   ): AuctionResult
-
-  # Returns a lot with specific `id`.
-  auctionsLot(id: ID!): AuctionsLotState
 
   # A list of cities
   cities(featured: Boolean = false): [City!]!
