@@ -3,7 +3,7 @@ import { compact } from "lodash"
 import { color, Sans, space } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, LayoutRectangle, ScrollView, TouchableOpacity, View, ViewProperties } from "react-native"
-import { useStickyTabPageContext } from "./StickyTabPage"
+import { useStickyTabPageContext } from "./SitckyTabPageContext"
 
 export const TAB_BAR_HEIGHT = 48
 
