@@ -105,11 +105,13 @@ export function persistedQueryMiddleware(): Middleware {
     // Get query body either from local queryMap or
     // send queryID to metaphysics
     let body: { variables?: object; query?: string; documentID?: string } = {}
+    const queryID = req.getID()
+    const variables = req.getVariables()
     if (__DEV__) {
-      body = { query: require("../../../../data/complete.queryMap.json")[req.getID()], variables: req.getVariables() }
+      body = { query: require("../../../../data/complete.queryMap.json")[queryID], variables }
       ;(req as any).operation.text = body.query ?? null
     } else {
-      body = { documentID: req.getID(), variables: req.getVariables() }
+      body = { documentID: queryID, variables }
     }
 
     if (body && (body.query || body.documentID)) {
@@ -122,7 +124,6 @@ export function persistedQueryMiddleware(): Middleware {
       if (!__DEV__ && e.toString().includes("Unable to serve persisted query with ID")) {
         // this should not happen normally, but let's try again with full query text to avoid ruining the user's day?
         captureMessage(e.stack)
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         body = { query: require("../../../../data/complete.queryMap.json")[queryID], variables }
         req.fetchOpts.body = JSON.stringify(body)
         return await next(req)
