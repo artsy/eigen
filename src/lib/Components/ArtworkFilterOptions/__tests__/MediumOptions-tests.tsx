@@ -1,6 +1,5 @@
 import { Aggregations, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
-import { ArtworkFiltersStoreProvider } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { MediumOptionsScreen } from "../MediumOptions"
 import { sharedAggregateFilterValidation, ValidationParams } from "./AggregationOptionCommonValidation"
 import { getEssentialProps } from "./helper"
@@ -54,13 +53,7 @@ describe("Medium Options Screen", () => {
     },
   ]
 
-  const MockMediumScreen = () => {
-    return (
-      <ArtworkFiltersStoreProvider>
-        <MediumOptionsScreen {...getEssentialProps()} />
-      </ArtworkFiltersStoreProvider>
-    )
-  }
+  const MockMediumScreen = () => <MediumOptionsScreen {...getEssentialProps()} />
 
   const aggregateParams: ValidationParams = {
     Screen: MockMediumScreen,

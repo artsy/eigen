@@ -2,7 +2,11 @@ import { ShowArtworksTestsQuery } from "__generated__/ShowArtworksTestsQuery.gra
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ShowArtworksPaginationContainer as ShowArtworks } from "lib/Scenes/Show/Components/ShowArtworks"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import {
+  ArtworkFilterContext,
+  ArtworkFilterContextState,
+  ArtworkFiltersStoreProvider,
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -52,9 +56,8 @@ describe("ShowArtworks", () => {
           }
           return (
             <ArtworkFiltersStoreProvider>
-<ArtworkFilterContext.provider value={{ state, dispatch: jest.fn() }}>
               <ShowArtworks show={props.show} />
-            </ArtworkFilterContext.Provider>
+            </ArtworkFiltersStoreProvider>
           )
         }}
       />

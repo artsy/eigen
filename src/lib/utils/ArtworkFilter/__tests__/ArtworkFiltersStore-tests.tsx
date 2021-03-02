@@ -1,21 +1,20 @@
-import {
-  ArtworkFilterContextState,
-  FilterActions,
-  FilterArray,
-  reducer,
-  selectedOptionsUnion,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { createStore } from "easy-peasy"
+import { selectedOptionsUnion } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { ArtworkFiltersAction, ArtworkFiltersModel, ArtworkFiltersState } from "../ArtworkFiltersStore"
 
-let filterState: ArtworkFilterContextState
-let filterAction: FilterActions
+let filterState: ArtworkFiltersState
+let filterAction: ArtworkFiltersAction
+
+const getFilterArtworksStore = (state: ArtworkFiltersState) =>
+  createStore<ArtworkFiltersModel>({ ...ArtworkFiltersModel, ...state })
 
 describe("Clear All Filters", () => {
   it("clears out the previouslyAppliedFilters if nothing has been applied", () => {
     filterState = {
       appliedFilters: [],
       selectedFilters: [],
-      previouslyAppliedFilters: [],
+      previouslyAppliedFilters: [{ displayText: "Price (low to high)", paramName: FilterParamName.sort }],
       applyFilters: false,
       aggregations: [],
       filterType: "artwork",
@@ -24,12 +23,10 @@ describe("Clear All Filters", () => {
         followedArtists: null,
       },
     }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().clearAllAction()
 
-    const r = reducer(filterState, {
-      type: "clearAll",
-    })
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       appliedFilters: [],
       applyFilters: false,
       selectedFilters: [],

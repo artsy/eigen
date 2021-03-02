@@ -1,6 +1,5 @@
 import { Aggregations, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
-import { ArtworkFiltersStoreProvider } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { SizeOptionsScreen } from "../SizeOptions"
 import { sharedAggregateFilterValidation, ValidationParams } from "./AggregationOptionCommonValidation"
 import { getEssentialProps } from "./helper"
@@ -34,13 +33,7 @@ describe("Size Options Screen", () => {
     },
   ]
 
-  const MockSizeScreen = () => {
-    return (
-      <ArtworkFiltersStoreProvider>
-        <SizeOptionsScreen {...getEssentialProps()} />
-      </ArtworkFiltersStoreProvider>
-    )
-  }
+  const MockSizeScreen = () => <SizeOptionsScreen {...getEssentialProps()} />
 
   const aggregateParams: ValidationParams = {
     Screen: MockSizeScreen,

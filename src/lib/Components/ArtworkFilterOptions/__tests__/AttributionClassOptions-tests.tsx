@@ -1,7 +1,7 @@
 import {
-  __filterArtworksStoreTestUtils__,
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  ArtworksFiltersStore,
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import React from "react"
 import { Switch } from "react-native"
@@ -15,28 +15,18 @@ import { OptionListItem } from "../MultiSelectOption"
 import { getEssentialProps } from "./helper"
 
 describe("AttributionClassOptions Screen", () => {
-  let state: ArtworkFiltersState
+  let storeInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
 
-  beforeEach(() => {
-    state = {
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-      aggregations: [],
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    }
-    __filterArtworksStoreTestUtils__?.injectState(state)
-  })
+  const ArtworkFiltersStoreConsumer = () => {
+    storeInstance = ArtworksFiltersStore.useStore()
+    return null
+  }
 
   const MockAttributionClassOptionsScreen = () => {
     return (
       <ArtworkFiltersStoreProvider>
         <AttributionClassOptionsScreen {...getEssentialProps()} />
+        <ArtworkFiltersStoreConsumer />
       </ArtworkFiltersStoreProvider>
     )
   }
@@ -62,8 +52,8 @@ describe("AttributionClassOptions Screen", () => {
       },
     }
 
-    __filterArtworksStoreTestUtils__?.injectState(injectedState)
-    const tree = renderWithWrappers(<MockFilterScreen />)
+    const tree = renderWithWrappers(<MockFilterScreen StoreConsumer={ArtworkFiltersStoreConsumer} />)
+    ;(storeInstance as any).getActions().__injectState?.(injectedState)
     const items = tree.root.findAllByType(FilterModalOptionListItem)
     expect(extractText(items[items.length - 1])).toContain("All")
   })
@@ -88,8 +78,8 @@ describe("AttributionClassOptions Screen", () => {
       },
     }
 
-    __filterArtworksStoreTestUtils__?.injectState(injectedState)
-    const tree = renderWithWrappers(<MockFilterScreen />)
+    const tree = renderWithWrappers(<MockFilterScreen StoreConsumer={ArtworkFiltersStoreConsumer} />)
+    ;(storeInstance as any).getActions().__injectState?.(injectedState)
     const items = tree.root.findAllByType(FilterModalOptionListItem)
 
     expect(extractText(items[1])).toContain("Unique, Unknown edition")
@@ -115,8 +105,9 @@ describe("AttributionClassOptions Screen", () => {
       },
     }
 
-    __filterArtworksStoreTestUtils__?.injectState(injectedState)
+    // TODO: Fix this test
     const tree = renderWithWrappers(<MockAttributionClassOptionsScreen />)
+    ;(storeInstance as any).getActions().__injectState?.(injectedState)
     const switches = tree.root.findAllByType(Switch)
 
     expect(switches[0].props.value).toBe(true)

@@ -3,12 +3,15 @@ import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+  ArtworksFiltersStore,
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { FilterParamName, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { __filterArtworksStoreTestUtils__ } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { FilterParams } from "../../../utils/ArtworkFilter/FilterArtworksHelpers"
 import { SaleArtworkListContainer } from "../Components/SaleArtworkList"
 import { FilterDescription, FilterTitle, SaleLotsListContainer, SaleLotsListSortMode } from "../Components/SaleLotsList"
@@ -17,6 +20,12 @@ jest.unmock("react-relay")
 
 describe("SaleLotsListContainer", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  let storeInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
+
+  const ArtworkFiltersStoreConsumer = () => {
+    storeInstance = ArtworksFiltersStore.useStore()
+    return null
+  }
 
   // const TestRenderer = ({ viewAs = ViewAsValues.Grid }: { viewAs?: ViewAsValues }) => (
   const TestRenderer = () => (
@@ -39,6 +48,7 @@ describe("SaleLotsListContainer", () => {
                 saleSlug="sale-slug"
                 scrollToTop={jest.fn()}
               />
+              <ArtworkFiltersStoreConsumer />
             </ArtworkFiltersStoreProvider>
           )
         }
@@ -68,7 +78,6 @@ describe("SaleLotsListContainer", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    __filterArtworksStoreTestUtils__?.injectState(getState())
   })
 
   // Investigate why this test is failing
@@ -76,7 +85,7 @@ describe("SaleLotsListContainer", () => {
   // Follow-up ticket https://artsyproduct.atlassian.net/browse/CX-1108
   it.skip("Renders nothing if not sale artworks are available", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-
+    ;(storeInstance as any).getActions().__injectState?.(getState())
     const mockProps = {
       SaleArtworksConnection: () => ({
         aggregations: [],
@@ -93,7 +102,6 @@ describe("SaleLotsListContainer", () => {
   })
 
   it("Renders list of sale artworks as a grid", () => {
-    __filterArtworksStoreTestUtils__?.injectState(getState(ViewAsValues.Grid))
     const tree = renderWithWrappers(<TestRenderer />)
 
     const mockProps = {
@@ -107,13 +115,13 @@ describe("SaleLotsListContainer", () => {
     }
 
     mockEnvironmentPayload(mockEnvironment, mockProps)
+    ;(storeInstance as any).getActions().__injectState?.(getState(ViewAsValues.Grid))
 
     expect(tree.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(1)
   })
 
   it("Renders list of sale artworks as a list", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-
     const mockProps = {
       SaleArtworksConnection: () => ({
         aggregations: [],
@@ -125,23 +133,25 @@ describe("SaleLotsListContainer", () => {
     }
 
     mockEnvironmentPayload(mockEnvironment, mockProps)
+    ;(storeInstance as any).getActions().__injectState?.(getState())
 
     expect(tree.root.findAllByType(SaleArtworkListContainer)).toHaveLength(1)
   })
-})
 
-describe("SaleLotsListSortMode", () => {
-  it("renders the right sort mode and count", () => {
-    const tree = renderWithWrappers(
-      <SaleLotsListSortMode
-        filterParams={{ sort: "bidder_positions_count" } as FilterParams}
-        filteredTotal={20}
-        totalCount={100}
-      />
-    )
+  describe("SaleLotsListSortMode", () => {
+    it("renders the right sort mode and count", () => {
+      const tree = renderWithWrappers(
+        <SaleLotsListSortMode
+          filterParams={{ sort: "bidder_positions_count" } as FilterParams}
+          filteredTotal={20}
+          totalCount={100}
+        />
+      )
+      ;(storeInstance as any).getActions().__injectState?.(getState())
 
-    expect(extractText(tree.root.findByType(FilterTitle))).toBe("Sorted by least bids")
-    expect(extractText(tree.root.findByType(FilterDescription))).toBe("Showing 20 of 100")
+      expect(extractText(tree.root.findByType(FilterTitle))).toBe("Sorted by least bids")
+      expect(extractText(tree.root.findByType(FilterDescription))).toBe("Showing 20 of 100")
+    })
   })
 })
 

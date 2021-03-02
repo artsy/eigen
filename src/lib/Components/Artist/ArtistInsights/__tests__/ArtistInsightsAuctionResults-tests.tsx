@@ -3,13 +3,16 @@ import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/Filter
 import { extractText } from "lib/tests/extractText"
 import { mockEdges } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+  ArtworksFiltersStore,
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { mockEnvironmentPayload } from "../../../../tests/mockEnvironmentPayload"
-import { __filterArtworksStoreTestUtils__ } from "../../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { AuctionResultFragmentContainer } from "../../../Lists/AuctionResult"
 import { ArtistInsightsAuctionResultsPaginationContainer, SortMode } from "../ArtistInsightsAuctionResults"
 
@@ -17,25 +20,29 @@ jest.unmock("react-relay")
 
 describe("ArtistInsightsAuctionResults", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  let initialState: ArtworkFiltersState
+  let storeInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
+
+  const initialState: ArtworkFiltersState = {
+    selectedFilters: [],
+    appliedFilters: [],
+    previouslyAppliedFilters: [],
+    applyFilters: false,
+    aggregations: [],
+    filterType: "auctionResult",
+    counts: {
+      total: null,
+      followedArtists: null,
+    },
+  }
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-
-    initialState = {
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-      aggregations: [],
-      filterType: "auctionResult",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    }
-    __filterArtworksStoreTestUtils__?.injectState(initialState)
   })
+
+  const ArtworkFiltersStoreConsumer = () => {
+    storeInstance = ArtworksFiltersStore.useStore()
+    return null
+  }
 
   const TestRenderer = () => (
     <QueryRenderer<ArtistInsightsAuctionResultsTestsQuery>
@@ -58,6 +65,7 @@ describe("ArtistInsightsAuctionResults", () => {
                   console.log("do nothing")
                 }}
               />
+              <ArtworkFiltersStoreConsumer />
             </ArtworkFiltersStoreProvider>
           )
         }
@@ -76,6 +84,7 @@ describe("ArtistInsightsAuctionResults", () => {
         },
       }),
     })
+    ;(storeInstance as any).getActions().__injectState?.(initialState)
 
     expect(tree.root.findAllByType(FlatList).length).toEqual(1)
     expect(tree.root.findAllByType(AuctionResultFragmentContainer).length).toEqual(5)
@@ -91,6 +100,7 @@ describe("ArtistInsightsAuctionResults", () => {
         },
       }),
     })
+    ;(storeInstance as any).getActions().__injectState?.(initialState)
 
     expect(tree.root.findAllByType(FilteredArtworkGridZeroState).length).toEqual(1)
   })
@@ -106,6 +116,7 @@ describe("ArtistInsightsAuctionResults", () => {
           },
         }),
       })
+      ;(storeInstance as any).getActions().__injectState?.(initialState)
 
       expect(extractText(tree.root.findByType(SortMode))).toBe("1 result • Sorted by most recent sale date")
     })
@@ -120,7 +131,7 @@ describe("ArtistInsightsAuctionResults", () => {
           },
         }),
       })
-
+      ;(storeInstance as any).getActions().__injectState?.(initialState)
       expect(extractText(tree.root.findByType(SortMode))).toBe("10 results • Sorted by most recent sale date")
     })
   })

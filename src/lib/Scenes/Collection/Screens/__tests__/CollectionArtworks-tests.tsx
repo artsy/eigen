@@ -4,8 +4,11 @@ import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } fro
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import {
+  ArtworkFilterContextState,
+  ArtworkFiltersStoreProvider,
+  FilterArray,
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -33,9 +36,8 @@ describe("CollectionArtworks", () => {
         if (props?.marketingCollection) {
           return (
             <ArtworkFiltersStoreProvider>
-<ArtworkFilterContext.provider value={{ state, dispatch: jest.fn() }}>
               <CollectionArtworks collection={props.marketingCollection} scrollToTop={jest.fn()} />
-            </ArtworkFilterContext.Provider>
+            </ArtworkFiltersStoreProvider>
           )
         } else if (error) {
           console.error(error)

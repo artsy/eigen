@@ -1,4 +1,8 @@
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+  ArtworksFiltersStore,
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import React from "react"
 import { Switch } from "react-native"
 import { OptionListItem as FilterModalOptionListItem } from "../../../../lib/Components/FilterModal"
@@ -6,7 +10,6 @@ import { MockFilterScreen } from "../../../../lib/Components/FilterModal/__tests
 import { extractText } from "../../../../lib/tests/extractText"
 import { renderWithWrappers } from "../../../../lib/tests/renderWithWrappers"
 import { Aggregations, FilterParamName } from "../../../../lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import { __filterArtworksStoreTestUtils__ } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { AdditionalGeneIDsOptionsScreen } from "../AdditionalGeneIDsOptions"
 import { OptionListItem } from "../MultiSelectOption"
 import { getEssentialProps } from "./helper"
@@ -28,41 +31,47 @@ const MOCK_AGGREGATIONS: Aggregations = [
 ]
 
 describe("AdditionalGeneIDsOptions Screen", () => {
-  let state: ArtworkFiltersState
+  let storeInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
 
-  beforeEach(() => {
-    state = {
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-      aggregations: MOCK_AGGREGATIONS,
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    }
-  })
+  const initialState: ArtworkFiltersState = {
+    selectedFilters: [],
+    appliedFilters: [],
+    previouslyAppliedFilters: [],
+    applyFilters: false,
+    aggregations: MOCK_AGGREGATIONS,
+    filterType: "artwork",
+    counts: {
+      total: null,
+      followedArtists: null,
+    },
+  }
 
-  const MockAdditionalGeneIDsOptionsScreen = ({ initialState = state }: { initialState?: ArtworkFiltersState }) => {
-    __filterArtworksStoreTestUtils__?.injectState(initialState)
+  const ArtworkFiltersStoreConsumer = () => {
+    storeInstance = ArtworksFiltersStore.useStore()
+    return null
+  }
+
+  const MockAdditionalGeneIDsOptionsScreen = () => {
     return (
       <ArtworkFiltersStoreProvider>
         <AdditionalGeneIDsOptionsScreen {...getEssentialProps()} />
+        <ArtworkFiltersStoreConsumer />
       </ArtworkFiltersStoreProvider>
     )
   }
 
   it("renders the options", () => {
     const tree = renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen />)
+    ;(storeInstance as any).getActions().__injectState?.(initialState)
+
     expect(tree.root.findAllByType(OptionListItem)).toHaveLength(4) // initialNumToRender={4}
     const items = tree.root.findAllByType(OptionListItem)
     expect(items.map(extractText)).toEqual(["All", "Prints", "Design", "Sculpture"])
   })
 
   it("displays the default text when no filter selected on the filter modal screen", () => {
-    const tree = renderWithWrappers(<MockFilterScreen />)
+    const tree = renderWithWrappers(<MockFilterScreen StoreConsumer={ArtworkFiltersStoreConsumer} />)
+    ;(storeInstance as any).getActions().__injectState?.(initialState)
     const items = tree.root.findAllByType(FilterModalOptionListItem)
     expect(extractText(items[items.length - 1])).toContain("All")
   })
@@ -87,8 +96,8 @@ describe("AdditionalGeneIDsOptions Screen", () => {
       },
     }
 
-    __filterArtworksStoreTestUtils__?.injectState(injectedState)
-    const tree = renderWithWrappers(<MockFilterScreen />)
+    const tree = renderWithWrappers(<MockFilterScreen StoreConsumer={ArtworkFiltersStoreConsumer} />)
+    ;(storeInstance as any).getActions().__injectState?.(injectedState)
     const items = tree.root.findAllByType(FilterModalOptionListItem)
 
     expect(extractText(items[1])).toContain("Prints, Sculpture")
@@ -114,7 +123,9 @@ describe("AdditionalGeneIDsOptions Screen", () => {
       },
     }
 
-    const tree = renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialState={injectedState} />)
+    // TODO: Fix this test
+    const tree = renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen />)
+    ;(storeInstance as any).getActions().__injectState?.(injectedState)
     const switches = tree.root.findAllByType(Switch)
 
     expect(switches[0].props.value).toBe(false)

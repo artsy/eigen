@@ -4,7 +4,11 @@ import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids
 import { ArtistSeriesArtworksFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import {
+  ArtworkFilterContext,
+  ArtworkFilterContextState,
+  ArtworkFiltersStoreProvider,
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -47,9 +51,8 @@ describe("Artist Series Artworks", () => {
         if (props?.artistSeries) {
           return (
             <ArtworkFiltersStoreProvider>
-<ArtworkFilterContext.provider value={{ state, dispatch: jest.fn() }}>
               <ArtistSeriesArtworksFragmentContainer artistSeries={props.artistSeries} />
-            </ArtworkFilterContext.Provider>
+            </ArtworkFiltersStoreProvider>
           )
         } else if (error) {
           console.log(error)

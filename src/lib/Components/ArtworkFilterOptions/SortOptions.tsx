@@ -118,8 +118,6 @@ export const ORDERED_AUCTION_RESULTS_SORTS: FilterData[] = [
 ]
 
 export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation }) => {
-  // console.log("====")
-  // console.log(ArtworksFiltersStore.useStoreState((state) => state))
   const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
 

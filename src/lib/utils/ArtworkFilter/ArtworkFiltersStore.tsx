@@ -32,6 +32,7 @@ export interface ArtworkFiltersModel {
 }
 
 export type ArtworkFiltersState = State<ArtworkFiltersModel>
+export type ArtworkFiltersAction = Action<ArtworkFiltersModel>
 
 export const ArtworkFiltersModel: ArtworkFiltersModel = {
   /**
@@ -357,8 +358,6 @@ export const selectedOptionsUnion = ({
     return true
   })
 }
-
-export let artworkFiltersStoreInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
 
 export function createArtworkFiltersStore() {
   if (__TEST__) {

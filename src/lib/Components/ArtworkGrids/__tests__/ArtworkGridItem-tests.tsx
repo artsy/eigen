@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkFilterContext, reducer } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFilterContext, ArtworkFiltersStoreProvider, reducer } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Touchable } from "palette"
 import React from "react"
 import "react-native"
@@ -25,9 +25,8 @@ const ArtworkWithProviders = (props: any) => {
 
   return (
     <ArtworkFiltersStoreProvider>
-<ArtworkFilterContext.provider value={{ state, dispatch }}>
       <Artwork {...props} />
-    </ArtworkFilterContext.Provider>
+    </ArtworkFiltersStoreProvider>
   )
 }
 

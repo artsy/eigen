@@ -1,4 +1,3 @@
-import { ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Aggregations, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { InstitutionOptionsScreen } from "../InstitutionOptions"
@@ -29,13 +28,7 @@ describe("Institution Options Screen", () => {
     },
   ]
 
-  const MockInstitutionScreen = () => {
-    return (
-      <ArtworkFiltersStoreProvider>
-        <InstitutionOptionsScreen {...getEssentialProps()} />
-      </ArtworkFiltersStoreProvider>
-    )
-  }
+  const MockInstitutionScreen = () => <InstitutionOptionsScreen {...getEssentialProps()} />
 
   const aggregateParams: ValidationParams = {
     Screen: MockInstitutionScreen,

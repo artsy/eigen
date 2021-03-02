@@ -1,15 +1,18 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+  ArtworksFiltersStore,
+} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { aggregationForFilter, Aggregations, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
-import { __filterArtworksStoreTestUtils__ } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { ColorContainer, ColorOptionsScreen } from "../ColorOptions"
 import { ColorSwatch } from "../ColorSwatch"
 import { getEssentialProps } from "./helper"
 
 describe("Color options screen", () => {
-  let state: ArtworkFiltersState
+  let storeInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
 
   const mockAggregations: Aggregations = [
     {
@@ -44,43 +47,45 @@ describe("Color options screen", () => {
     },
   ]
 
+  const initialState: ArtworkFiltersState = {
+    selectedFilters: [],
+    appliedFilters: [],
+    previouslyAppliedFilters: [],
+    applyFilters: false,
+    aggregations: mockAggregations,
+    filterType: "artwork",
+    counts: {
+      total: null,
+      followedArtists: null,
+    },
+  }
+
   const selectedColorOptions = (componentTree: ReactTestRenderer) => {
     const colorSwatches = componentTree.root.findAllByType(ColorSwatch)
     const selectedOption = colorSwatches.filter((item) => item.props.selected)
     return selectedOption
   }
 
+  const ArtworkFiltersStoreConsumer = () => {
+    storeInstance = ArtworksFiltersStore.useStore()
+    return null
+  }
+
   const MockColorScreen = () => {
     return (
       <ArtworkFiltersStoreProvider>
         <ColorOptionsScreen {...getEssentialProps()} />
+        <ArtworkFiltersStoreConsumer />
       </ArtworkFiltersStoreProvider>
     )
   }
 
-  beforeEach(() => {
-    state = {
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-      aggregations: mockAggregations,
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    }
-
-    __filterArtworksStoreTestUtils__?.injectState(state)
-  })
-
   const aggregation = aggregationForFilter(FilterParamName.color, mockAggregations)
 
   it("shows the correct number of color options", () => {
-    const tree = renderWithWrappers(
-      <MockColorScreen initialState={state} aggregations={mockAggregations} {...getEssentialProps()} />
-    )
+    const tree = renderWithWrappers(<MockColorScreen aggregations={mockAggregations} {...getEssentialProps()} />)
+    ;(storeInstance as any).getActions().__injectState?.(initialState)
+
     // Counts returned + extra black and white option
     expect(tree.root.findAllByType(ColorSwatch)).toHaveLength(aggregation!.counts.length + 1)
   })
@@ -106,9 +111,9 @@ describe("Color options screen", () => {
         },
       }
 
-      __filterArtworksStoreTestUtils__?.injectState(injectedState)
+      const component = renderWithWrappers(<MockColorScreen {...getEssentialProps()} />)
+      ;(storeInstance as any).getActions().__injectState?.(injectedState)
 
-      const component = renderWithWrappers(<MockColorScreen initialState={state} {...getEssentialProps()} />)
       const selectedOption = selectedColorOptions(component)[0]
       expect(selectedOption.props.colorOption).toMatch(aggregation!.counts[0].name)
     })
@@ -133,8 +138,8 @@ describe("Color options screen", () => {
         },
       }
 
-      __filterArtworksStoreTestUtils__?.injectState(injectedState)
-      const tree = renderWithWrappers(<MockColorScreen initialState={state} {...getEssentialProps()} />)
+      const tree = renderWithWrappers(<MockColorScreen {...getEssentialProps()} />)
+      ;(storeInstance as any).getActions().__injectState?.(injectedState)
 
       const firstOptionInstance = tree.root.findAllByType(ColorContainer)[0]
       const secondOptionInstance = tree.root.findAllByType(ColorContainer)[1]
@@ -163,8 +168,8 @@ describe("Color options screen", () => {
         },
       }
 
-      __filterArtworksStoreTestUtils__?.injectState(injectedState)
-      const tree = renderWithWrappers(<MockColorScreen initialState={state} {...getEssentialProps()} />)
+      const tree = renderWithWrappers(<MockColorScreen {...getEssentialProps()} />)
+      ;(storeInstance as any).getActions().__injectState?.(injectedState)
 
       const secondOptionInstance = tree.root.findAllByType(ColorContainer)[1]
 
